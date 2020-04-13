@@ -60,9 +60,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     'banner' => 'field_ar_banner',
     'closed' => 'field_ar_closed',
     'contact information' => 'field_ar_contact_information',
+    'content creation' => 'field_ar_content_creation',
     'creation date' => 'created',
     'description' => 'field_ar_description',
-    'elibrary creation' => 'field_ar_elibrary_creation',
     'logo' => 'field_ar_logo',
     'moderation' => 'field_ar_moderation',
     'modification date' => 'changed',
@@ -99,11 +99,13 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @When I go to (the homepage of )the :collection collection
    * @When I visit (the homepage of )the :collection collection
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitCollection(string $collection): void {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
-    $collection = $this->getCollectionByName($collection);
-    $this->visitPath($collection->url());
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getCollectionByName($collection);
+    $this->visitPath($entity->toUrl()->toString());
   }
 
   /**
@@ -152,6 +154,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Navigates to the collections overview page.
    *
+   * @todo This is currently dependent on the Joinup profile being installed,
+   *   since the view providing this overview page is exported in the profile.
+   *   Remove this todo when ISAICP-5176 is fixed.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5176
+   *
    * @When I visit the collection overview( page)
    */
   public function visitCollectionOverviewPage(): void {
@@ -163,7 +171,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation                     | featured | logo | moderation | modification date | owner | state                                                               |
+   * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | content creation                      | featured | logo | moderation | modification date | owner | state                                                               |
    * | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users | yes      |      | yes        |                   |       |                                                                     |
    * | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users | no       |      | no         |                   |       | draft|proposed|validated|archival request|deletion request|archived |
    * @codingStandardsIgnoreEnd
@@ -241,10 +249,10 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   protected function convertValueAliases(array $fields): array {
     $mapped_values = [
       'field_ar_moderation' => ['no' => 0, 'yes' => 1],
-      'field_ar_elibrary_creation' => [
-        'facilitators' => 0,
-        'members' => 1,
-        'registered users' => 2,
+      'field_ar_content_creation' => [
+        'facilitators' => 'only_facilitators',
+        'members' => 'only_members',
+        'registered users' => 'any_user',
       ],
       'field_ar_closed' => ['no' => 0, 'yes' => 1],
       'field_ar_state' => [
@@ -319,15 +327,15 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @codingStandardsIgnoreStart
    * Table format:
-   * | title           | Open Data Initiative                                                |
-   * | author          | Mightily Oats                                                       |
-   * | logo            | logo.png                                                            |
-   * | featured        | yes|no                                                              |
-   * | moderation      | yes|no                                                              |
-   * | closed          | yes|no                                                              |
-   * | create elibrary | facilitators|members|registered users                               |
-   * | metadata url    | https://ec.europa.eu/my/url                                         |
-   * | state           | draft|proposed|validated|archival request|deletion request|archived |
+   * | title            | Open Data Initiative                                                |
+   * | author           | Mightily Oats                                                       |
+   * | logo             | logo.png                                                            |
+   * | featured         | yes|no                                                              |
+   * | moderation       | yes|no                                                              |
+   * | closed           | yes|no                                                              |
+   * | content creation | facilitators|members|registered users                               |
+   * | metadata url     | https://ec.europa.eu/my/url                                         |
+   * | state            | draft|proposed|validated|archival request|deletion request|archived |
    * @codingStandardsIgnoreEnd
    *
    * Only the title field is required.
@@ -463,58 +471,18 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Creates menu items for an og group menu.
-   *
-   * This function uses only the navigation menu for the items.
-   * If the collection passed does not have a menu yet, one is created.
-   * Nodes are loaded by title.
-   *
-   * Table format:
-   * | collection   | label             | page         | weight |
-   * | Collection 1 | Page 1 menu label | Page 1 title | 0      |
-   * | Collection 1 | Page 2 menu label | Page 2 title | 1      |
-   * | Collection 2 | Page 3 menu label | Page 3 title | 0      |
-   *
-   * @param string $bundle
-   *   The bundle of the content entity.
-   * @param \Behat\Gherkin\Node\TableNode $menu_table
-   *   The menu table.
-   *
-   * @Given (the following ):bundle content menu items for the corresponding collections:
-   */
-  public function givenCollectionMenuItems(string $bundle, TableNode $menu_table): void {
-    foreach ($menu_table->getColumnsHash() as $values) {
-      $group = $this->getRdfEntityByLabel($values['collection'], 'collection');
-      $content = $this->getNodeByTitle($values['page'], $bundle);
-      $og_menu_instance = $this->getOgMenuInstance($group->id(), 'navigation');
-      if (empty($og_menu_instance)) {
-        $og_menu_instance = $this->createOgMenuInstance($group->id(), 'navigation');
-      }
-
-      // Prepare the array to pass to MenuLinkContent::create method.
-      $menu_item_data = [
-        'title' => $values['label'],
-        'link' => ['uri' => 'internal:/node/' . $content->id()],
-        'menu_name' => 'ogmenu-' . $og_menu_instance->id(),
-        'weight' => $values['weight'],
-        'expanded' => TRUE,
-      ];
-
-      $this->createOgMenuItem($menu_item_data);
-    }
-  }
-
-  /**
-   * Alters relationships between menu items for the custom pages menu.
+   * Alters custom page menu items for group navigation menus.
    *
    * It does not create the menu items as they are created automatically when
    * the custom pages are created.
    *
    * Table format:
-   * | title              | parent              | weight |
-   * | Custom page parent | Custom page child 1 |      1 |
-   * | Custom page parent | Custom page child 2 |      3 |
-   * | Custom page parent | Custom page child 3 |      2 |
+   * | title              | parent              | weight | enabled |
+   * | Custom page parent | Custom page child 1 |      1 | yes     |
+   * | Custom page parent | Custom page child 2 |      3 | yes     |
+   * | Custom page parent | Custom page child 3 |      2 | no      |
+   *
+   * All columns except the 'title' column are optional.
    *
    * @param \Behat\Gherkin\Node\TableNode $menu_table
    *   The menu table.
@@ -529,9 +497,13 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
     $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
     foreach ($menu_table->getColumnsHash() as $values) {
-      if (isset($values['parent']) && !empty($values['parent'])) {
+      if (!empty($values['parent'])) {
         $parent_link = $this->getMenuLinkByTitle($values['parent']);
         $values['parent'] = $parent_link->getPluginId();
+      }
+
+      if (!empty($values['enabled'])) {
+        $values['enabled'] = (int) ($values['enabled'] === 'yes');
       }
 
       $child_link = $this->getMenuLinkByTitle($values['title']);
@@ -685,7 +657,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Then I am member of :labels collection(s)
    * @Then user :user_name is member of :labels collection(s)
    */
-  public function assertUserIsMemberOfCollection(string $labels, string $user_name = NULL): void {
+  public function assertUserIsMemberOfCollection(string $labels, ?string $user_name = NULL): void {
     /** @var \Drupal\user\UserInterface $account */
     if (!$user_name) {
       $user = $this->getUserManager()->getCurrentUser();
@@ -709,6 +681,24 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     if ($failures) {
       throw new \Exception("User $user_name is not member of the next collections: '" . implode("', '", $failures) . "'");
     }
+  }
+
+  /**
+   * Updates the name of a collection.
+   *
+   * @param string $collection
+   *   The name of the collection to update.
+   * @param string $name
+   *   The new anem for the collection.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when the updated collection cannot be saved.
+   *
+   * @When I change the name of the :collection collection to :name
+   */
+  public function updateCollectionName(string $collection, string $name): void {
+    $entity = $this->getCollectionByName($collection);
+    $entity->setName($name)->save();
   }
 
   /**

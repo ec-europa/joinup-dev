@@ -17,7 +17,10 @@ class OwnerValidationTest extends RdfEntityValidationTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
+    'joinup_workflow',
     'owner',
+    'state_machine',
+    'workflow_state_permission',
   ];
 
   /**

@@ -5,6 +5,8 @@
  * Install, uninstall and update scripts for the Joinup Collection module.
  */
 
+declare(strict_types = 1);
+
 /**
  * Clear the cache after installing the 'last_update' base computed field.
  */

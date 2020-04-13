@@ -66,6 +66,7 @@ Feature: Submit the contact form
 
   Scenario: Check required fields
     When I am on the contact form
+    And I wait for the spam protection time limit to pass
     And I press "Submit"
     Then I should see the following error messages:
       | error messages                    |

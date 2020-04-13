@@ -7,7 +7,6 @@ package: Joinup
 dependencies:
   - cached_computed_field:cached_computed_field
   - joinup:collection
-  - ds:ds
   - drupal:image
   - joinup:joinup_comment
   - joinup:joinup_community_content

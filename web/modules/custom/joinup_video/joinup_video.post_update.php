@@ -5,6 +5,8 @@
  * Contains post update functions for the joinup_video module.
  */
 
+declare(strict_types = 1);
+
 /**
  * Enforce the privacy mode for providers that support it.
  */

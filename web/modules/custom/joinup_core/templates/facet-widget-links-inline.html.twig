@@ -9,7 +9,7 @@
     <div{{ button_attributes }}></div>
 
     {%- if items -%}
-      <ul class="filter__menu mdl-menu mdl-menu--bottom-right mdl-js-menu" for="{{ button_attributes.id }}">
+      <ul class="filter__menu mdl-menu mdl-menu--bottom-left mdl-js-menu" for="{{ button_attributes.id }}">
         {%- for item in items -%}
           {%- set item_attributes = create_attribute({'class': ['facet-item', 'mdl-menu__item']}) -%}
           <li{{ item_attributes }}>{{ item }}</li>

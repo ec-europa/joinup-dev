@@ -1,0 +1,140 @@
+// Featured large
+//
+// Featured large component
+
+// Component
+// --------------------------------------------------
+.featured-lg {
+  position: relative;
+  margin: 0 auto;
+  padding: 20px 0;
+  background: $color-blue-default url("../images/featured-lg-background.jpg") no-repeat center top;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+// Elements
+// --------------------------------------------------
+.featured-lg__wrapper {
+  position: relative;
+  max-width: 970px;
+  margin: 0 auto;
+  text-align: center;
+  color: #fff;
+
+  @include z-index(highlight);
+}
+
+.featured-lg__text,
+.featured-lg__search-bar {
+  margin-bottom: 30px;
+
+  @include breakpoint(tablet) {
+    margin-bottom: 60px;
+  }
+}
+
+.featured-lg__logo {
+  margin-top: 40px;
+  margin-bottom: 30px;
+
+  img {
+    height: 60px;
+  }
+
+  @include breakpoint(tablet) {
+    margin-bottom: 40px;
+
+    img {
+      height: 90px;
+    }
+  }
+}
+
+.featured-lg__stats {
+  margin-bottom: 40px;
+}
+
+.featured-lg__text {
+  margin-top: 0;
+  padding: 0 20px;
+  font-weight: $font-weight-thin;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// Dependiencies
+// --------------------------------------------------
+.featured-lg__stats {
+  .stats__wrapper {
+    position: relative;
+    text-align: left;
+
+    @include breakpoint(sm-mobile, mobile) {
+      width: 200px;
+      margin: 0 auto 30px auto;
+    }
+
+
+    @include breakpoint(mobile) {
+      display: inline-block;
+      vertical-align: top;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+
+    @include breakpoint(mobile, tablet) {
+      width: 25%;
+      margin-right: 5%;
+    }
+
+
+    @include breakpoint(tablet) {
+      width: 200px;
+      margin-right: 40px;
+    }
+
+
+    a {
+      color: #fff;
+      display: inline-block;
+      text-decoration: none;
+    }
+  }
+
+  .stats__icon {
+    position: absolute;
+    top: 6px;
+    left: 0;
+
+    @include icon-size(45px);
+  }
+
+  .stats__text {
+    margin-bottom: 15px;
+    padding-left: 60px;
+  }
+
+  .stats__description {
+    text-align: left;
+  }
+}
+
+// Modifiers
+// --------------------------------------------------
+.featured-lg__stats {
+  .stats__text--upper,
+  .stats__text--lower {
+    text-align: left;
+  }
+
+  .stats__text--upper {
+    font-size: 32px;
+  }
+}

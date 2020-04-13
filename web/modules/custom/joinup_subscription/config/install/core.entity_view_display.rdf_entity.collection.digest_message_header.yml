@@ -10,7 +10,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
     - field.field.rdf_entity.collection.field_ar_description
-    - field.field.rdf_entity.collection.field_ar_elibrary_creation
     - field.field.rdf_entity.collection.field_ar_logo
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_owner
@@ -23,7 +22,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_spatial_coverage
     - rdf_entity.rdfentity.collection
   module:
-    - ds
     - joinup
     - user
 id: rdf_entity.collection.digest_message_header
@@ -38,13 +36,6 @@ content:
     settings:
       link_to_entity: true
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: 'New content published in'
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content
@@ -58,7 +49,6 @@ hidden:
   field_ar_closed: true
   field_ar_contact_information: true
   field_ar_description: true
-  field_ar_elibrary_creation: true
   field_ar_logo: true
   field_ar_moderation: true
   field_ar_owner: true

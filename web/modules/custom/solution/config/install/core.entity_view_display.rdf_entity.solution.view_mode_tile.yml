@@ -9,10 +9,10 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_content
+    - field.field.rdf_entity.solution.field_is_content_creation
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
-    - field.field.rdf_entity.solution.field_is_elibrary_creation
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
     - field.field.rdf_entity.solution.field_is_issue_tracker
@@ -24,8 +24,9 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_owner
     - field.field.rdf_entity.solution.field_is_pinned_in
     - field.field.rdf_entity.solution.field_is_product_type
-    - field.field.rdf_entity.solution.field_is_show_eira_related
     - field.field.rdf_entity.solution.field_is_related_solutions
+    - field.field.rdf_entity.solution.field_is_shared_in
+    - field.field.rdf_entity.solution.field_is_show_eira_related
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
@@ -45,8 +46,8 @@ dependencies:
     - image.style.horizontal_medium_image
     - rdf_entity.rdfentity.solution
   module:
-    - ds
     - image
+    - joinup
     - smart_trim
     - user
 id: rdf_entity.solution.view_mode_tile
@@ -72,14 +73,9 @@ content:
         text: false
       more_class: more-link
       summary_handler: full
+      wrap_output: false
+      wrap_class: trimmed
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     type: smart_trim
@@ -91,14 +87,7 @@ content:
     settings:
       image_style: horizontal_medium_image
       image_link: content
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
   label:
     type: string
@@ -106,14 +95,7 @@ content:
     label: hidden
     settings:
       link_to_entity: true
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
 hidden:
   changed: true
@@ -125,9 +107,9 @@ hidden:
   field_is_business_process: true
   field_is_contact_information: true
   field_is_content: true
+  field_is_content_creation: true
   field_is_distribution: true
   field_is_documentation: true
-  field_is_elibrary_creation: true
   field_is_has_version: true
   field_is_included_asset: true
   field_is_issue_tracker: true
@@ -138,8 +120,9 @@ hidden:
   field_is_owner: true
   field_is_pinned_in: true
   field_is_product_type: true
-  field_is_show_eira_related: true
   field_is_related_solutions: true
+  field_is_shared_in: true
+  field_is_show_eira_related: true
   field_is_solution_type: true
   field_is_source_code_repository: true
   field_is_standardization_level: true
@@ -160,5 +143,7 @@ hidden:
   og_group: true
   rdf_entity_field_is_content_inline_facets: true
   rdf_entity_field_is_content_top: true
+  read_more: true
   related_solutions: true
   releases_overview: true
+  share_link: true

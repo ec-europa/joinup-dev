@@ -11,7 +11,7 @@ use Drupal\og\OgRoleInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class CommunityContentSubscriber.
+ * Handles notifications related to collections.
  */
 class CollectionRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 

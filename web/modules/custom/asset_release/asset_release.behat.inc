@@ -41,10 +41,13 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @When I go to (the homepage of )the :asset_release release
    * @When I visit (the homepage of )the :asset_release release
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitRelease(string $asset_release): void {
-    $asset_release = $this->getAssetReleaseByName($asset_release);
-    $this->visitPath($asset_release->url());
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getAssetReleaseByName($asset_release);
+    $this->visitPath($entity->toUrl()->toString());
   }
 
   /**
@@ -55,12 +58,13 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @When I go to the :release release edit form
    * @When I visit the :release release edit form
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitEditAssetDistribution(string $release): void {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $release */
-    $release = $this->getAssetReleaseByName($release);
-    $path = $release->url('edit-form');
-    $this->visitPath($path);
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getAssetReleaseByName($release);
+    $this->visitPath($entity->toUrl('edit-form')->toString());
   }
 
   /**

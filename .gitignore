@@ -27,11 +27,10 @@
 /drush/drush.yml
 /phpcs.xml
 /tests/behat.yml
-/web/phpunit.xml
+/phpunit.xml
 /web/sites/default/services.yml
 
-# Ignore compiled CSS and SASS cache.
-.sass-cache/
+# Ignore compiled CSS.
 /web/themes/joinup/css
 /web/themes/joinup/prototype/css/*.css
 # Ignore theme libraries
@@ -43,8 +42,9 @@
 # Ignore the config_readonly killswitch.
 /disable-config-readonly
 
-# Ignore temporary files
+# Ignore temporary and auto-generated files.
 /tmp
+/VERSION
 
 # Ignore local docker-compose file.
 docker-compose.local.yml

@@ -8,7 +8,6 @@ dependencies:
     - field.field.node.newsletter.simplenews_issue
     - node.type.newsletter
   module:
-    - ds
     - smart_trim
     - user
 id: node.newsletter.teaser
@@ -30,13 +29,6 @@ content:
         text: false
       more_class: more-link
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     label: hidden

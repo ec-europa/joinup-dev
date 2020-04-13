@@ -5,6 +5,8 @@
  * Contains \LicenceSubContext.
  */
 
+declare(strict_types = 1);
+
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -38,11 +40,13 @@ class JoinupLicenceSubContext extends DrupalSubContextBase implements DrupalSubC
    *
    * @When I go to (the homepage of )the :licence licence
    * @When I visit (the homepage of )the :licence licence
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitLicence($licence) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $licence */
-    $licence = $this->getLicenceByName($licence);
-    $this->visitPath($licence->url());
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getLicenceByName($licence);
+    $this->visitPath($entity->toUrl()->toString());
   }
 
   /**
@@ -55,11 +59,13 @@ class JoinupLicenceSubContext extends DrupalSubContextBase implements DrupalSubC
    *
    * @When I go to (the homepage of )the :licence licence in the :format serialisation.
    * @When I visit (the homepage of )the :licence licence in the :format serialisation.
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitLicenceWithFormat($licence, $format) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
-    $licence = $this->getLicenceByName($licence);
-    $this->visitPath($licence->url('canonical', ['query' => ['_format' => $format]]));
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getLicenceByName($licence);
+    $this->visitPath($entity->toUrl('canonical', ['query' => ['_format' => $format]])->toString());
   }
 
   /**
@@ -197,7 +203,7 @@ class JoinupLicenceSubContext extends DrupalSubContextBase implements DrupalSubC
    *
    * @Then I should have :number licence(s)
    */
-  public function assertLicenceCount($number) {
+  public function assertLicenceCount(int $number): void {
     $this->assertRdfEntityCount($number, 'licence');
   }
 

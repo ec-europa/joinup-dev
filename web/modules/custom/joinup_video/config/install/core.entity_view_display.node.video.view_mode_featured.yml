@@ -11,7 +11,6 @@ dependencies:
     - field.field.node.video.og_audience
     - node.type.video
   module:
-    - ds
     - smart_trim
     - user
 id: node.video.view_mode_featured
@@ -34,13 +33,6 @@ content:
         text: false
       more_class: more-link
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content

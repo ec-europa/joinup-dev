@@ -13,7 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_front_page\FrontPageMenuHelperInterface;
+use Drupal\joinup_menu\JoinupMenuHelperInterface;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\MembershipManager;
 use Drupal\search_api\Query\QueryInterface;
@@ -63,11 +63,11 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
   protected $entityTypeManager;
 
   /**
-   * The front page menu helper service.
+   * The menu helper service.
    *
-   * @var \Drupal\joinup_front_page\FrontPageMenuHelperInterface
+   * @var \Drupal\joinup_menu\JoinupMenuHelperInterface
    */
-  protected $frontPageHelper;
+  protected $menuHelper;
 
   /**
    * Constructs a new RecommendedContentBlock object.
@@ -84,15 +84,15 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    *   The og membership manager service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
-   * @param \Drupal\joinup_front_page\FrontPageMenuHelperInterface $front_page_helper
-   *   The front page menu helper service.
+   * @param \Drupal\joinup_menu\JoinupMenuHelperInterface $menu_helper
+   *   The menu helper service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user, MembershipManager $og_membership_manager, EntityTypeManagerInterface $entity_type_manager, FrontPageMenuHelperInterface $front_page_helper) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user, MembershipManager $og_membership_manager, EntityTypeManagerInterface $entity_type_manager, JoinupMenuHelperInterface $menu_helper) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentUser = $current_user;
     $this->ogMembershipManager = $og_membership_manager;
     $this->entityTypeManager = $entity_type_manager;
-    $this->frontPageHelper = $front_page_helper;
+    $this->menuHelper = $menu_helper;
   }
 
   /**
@@ -106,7 +106,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
       $container->get('current_user'),
       $container->get('og.membership_manager'),
       $container->get('entity_type.manager'),
-      $container->get('joinup_front_page.front_page_helper')
+      $container->get('joinup_menu.menu_helper')
     );
   }
 
@@ -124,6 +124,8 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
     $build = [
       'header' => [
         '#type' => 'inline_template',
+        // Warning: when changing this text, also update the metatags to match.
+        // See `metatag.metatag_defaults.front.yml`.
         '#template' => '<p>{% trans %}Joinup is a collaborative platform created by the European Commission and funded by the European Union via the <a href="https://ec.europa.eu/isa2/">Interoperability solutions for public administrations, businesses and citizens</a> (ISA<sup>2</sup>) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions.{% endtrans %}</p>',
       ],
     ];
@@ -201,7 +203,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
     });
     $menu_items = array_splice($menu_items, 0, $this->configuration['count']);
 
-    return $this->frontPageHelper->loadEntitiesFromMenuItems($menu_items);
+    return $this->menuHelper->loadEntitiesFromMenuItems($menu_items);
   }
 
   /**

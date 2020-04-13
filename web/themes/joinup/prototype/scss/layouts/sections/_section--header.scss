@@ -1,0 +1,28 @@
+// Header
+//
+// Header component
+
+// Component
+// --------------------------------------------------
+.section--header {
+  background-color: $color-blue-default;
+
+  @include hidden-print;
+}
+
+// Elements
+// --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+.section--header {
+  nav {
+    position: relative;
+
+    @include z-index(navigation);
+
+    &.block--small-nav {
+      @include z-index(header);
+    }
+  }
+}

@@ -21,7 +21,7 @@ trait RdfEntityTrait {
    *
    * @param string $label
    *   The RDF entity label.
-   * @param string $type
+   * @param string|null $type
    *   Optional RDF entity type.
    *
    * @return \Drupal\rdf_entity\RdfInterface
@@ -30,7 +30,7 @@ trait RdfEntityTrait {
    * @throws \InvalidArgumentException
    *   Thrown when an RDF entity with the given name and type does not exist.
    */
-  protected static function getRdfEntityByLabel(string $label, string $type = NULL): RdfInterface {
+  protected static function getRdfEntityByLabel(string $label, ?string $type = NULL): RdfInterface {
     $query = \Drupal::entityQuery('rdf_entity')
       ->condition('label', $label)
       ->range(0, 1);

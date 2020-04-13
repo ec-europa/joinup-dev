@@ -3,8 +3,6 @@ services:
     class: Drupal\joinup_front_page\FrontPageMenuHelper
     arguments: ['@entity_type.manager', '@plugin.manager.menu.link', '@module_handler', '@cache_tags.invalidator']
     lazy: true
-  joinup_front_page.menu_access:
-    class: Drupal\joinup_front_page\Access\MenuAccess
   joinup_front_page.route_subscriber:
     class: Drupal\joinup_front_page\Routing\RouteSubscriber
     tags:

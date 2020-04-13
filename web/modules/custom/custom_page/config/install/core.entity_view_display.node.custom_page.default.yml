@@ -9,7 +9,6 @@ dependencies:
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
-    - ds
     - field_group
     - file
     - link
@@ -53,14 +52,6 @@ content:
     settings:
       use_description_as_link_text: true
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset__show_more
     type: file_default

@@ -5,6 +5,8 @@
  * Main functions and hook implementations of the Owner module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -167,7 +169,9 @@ function owner_rdf_entity_access(EntityInterface $entity, $operation, AccountInt
 
   switch ($operation) {
     case 'edit':
-      $allowed_states = \Drupal::service('joinup_core.workflow.helper')->getAvailableTargetStates($entity, $account);
+      /** @var \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper */
+      $workflow_helper = \Drupal::service('joinup_workflow.workflow_helper');
+      $allowed_states = $workflow_helper->getAvailableTargetStates($entity, $account);
       return AccessResult::forbiddenIf(empty($allowed_states));
   }
   // Revoke access to canonical route for anonymous users.

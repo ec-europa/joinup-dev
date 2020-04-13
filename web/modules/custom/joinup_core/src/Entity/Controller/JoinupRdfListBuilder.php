@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Entity\Controller;
 
 use Drupal\rdf_entity\Entity\Controller\RdfListBuilder;

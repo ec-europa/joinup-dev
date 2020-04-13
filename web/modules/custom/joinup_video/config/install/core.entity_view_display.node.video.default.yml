@@ -12,7 +12,6 @@ dependencies:
     - node.type.video
   module:
     - comment
-    - ds
     - link
     - text
     - user
@@ -47,13 +46,6 @@ content:
       height: 480
       autoplay: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset_wrapper
     type: video_embed_field_video

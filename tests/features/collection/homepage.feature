@@ -9,7 +9,7 @@ Feature: Collection homepage
       | Username | Status | Roles     |
       | Frodo    | active |           |
       | Boromir  | active |           |
-      | Legoloas | active |           |
+      | Legolas  | active |           |
       | Gimli    | active |           |
       | Samwise  | active | moderator |
     And the following owner:
@@ -25,21 +25,21 @@ Feature: Collection homepage
       | contact information | Kalikatoura                      |
       | logo                | logo.png                         |
       | moderation          | yes                              |
-      | elibrary creation   | members                          |
+      | content creation    | members                          |
       | state               | validated                        |
       | policy domain       | Employment and Support Allowance |
     And the following solution:
-      | title             | Bilbo's book          |
-      | collection        | Middle earth daily    |
-      | description       | Bilbo's autobiography |
-      | elibrary creation | members               |
-      | creation date     | 2014-10-17 8:32am     |
-      | state             | validated             |
+      | title            | Bilbo's book          |
+      | collection       | Middle earth daily    |
+      | description      | Bilbo's autobiography |
+      | content creation | members               |
+      | creation date    | 2014-10-17 8:32am     |
+      | state            | validated             |
     And the following collection user memberships:
-      | collection         | user     | roles       |
-      | Middle earth daily | Frodo    | facilitator |
-      | Middle earth daily | Boromir  |             |
-      | Middle earth daily | Legoloas |             |
+      | collection         | user    | roles       |
+      | Middle earth daily | Frodo   | facilitator |
+      | Middle earth daily | Boromir |             |
+      | Middle earth daily | Legolas |             |
     And news content:
       | title                                             | body                | policy domain     | collection         | state     | created           | changed  |
       | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated | 2014-10-17 8:34am | 2017-7-5 |
@@ -145,34 +145,6 @@ Feature: Collection homepage
     And I should see the "Rohirrim make extraordinary deal" tile
     But I should not see the "Big hobbit feast - fireworks at midnight" tile
 
-  Scenario: Forward search facets to the search page (Advanced search)
-    Given I go to the homepage of the "Middle earth daily" collection
-    When I click the News content tab
-    And I click "Supplier exchange" in the "collection policy domain" inline facet
-    And I click "Advanced search"
-    Then I should be on the search page
-    Then the News content tab should be selected
-    And "Middle earth daily (1)" should be selected in the "from" inline facet
-    And "Supplier exchange (1)" should be selected in the "policy domain" inline facet
-    Then I should see the following tiles in the correct order:
-      | Breaking: Gandalf supposedly plans his retirement |
-
-  Scenario: Forward search facets to the search page are ordered properly
-    Given I go to the homepage of the "Middle earth daily" collection
-    When I click the News content tab
-    And I click "Advanced search"
-    Then I should be on the search page
-    Then the News content tab should be selected
-    Then I should see the following tiles in the correct order:
-      | Rohirrim make extraordinary deal                  |
-      | Breaking: Gandalf supposedly plans his retirement |
-
-  Scenario: Search engines and link crawlers should not follow advanced search link.
-    Given I go to the homepage of the "Middle earth daily" collection
-    Then search engines should be discouraged to follow the link "Advanced search"
-    When I click "Supplier exchange" in the "collection policy domain" inline facet
-    Then search engines should be discouraged to follow the link "Advanced search"
-
   # Regression test to ensure that related community content does not appear in the draft view.
   # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
   Scenario: The related content should not be shown in the draft view version as part of the content.
@@ -184,6 +156,7 @@ Feature: Collection homepage
     And I click "View draft" in the "Entity actions" region
     Then I should see the text "Moderated"
     And I should see the text "Open collection"
+    And I should see the text "Only members can create content."
     And I should see the text "Bilbo Baggins"
     And I should see the text "Employment and Support Allowance"
     And I should see the heading "Middle earth nightly"

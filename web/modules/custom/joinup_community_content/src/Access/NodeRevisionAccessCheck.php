@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_community_content\Access;
 
 use Drupal\Core\Access\AccessResult;
@@ -42,7 +44,7 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
    * Constructs a new NodeRevisionAccessCheck.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity manager.
+   *   The entity type manager.
    * @param \Drupal\og\GroupTypeManager $group_type_manager
    *   The OG group manager.
    * @param \Drupal\og\OgAccessInterface $og_access
@@ -61,7 +63,7 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
   /**
    * {@inheritdoc}
    */
-  public function access(Route $route, AccountInterface $account, $node_revision = NULL, NodeInterface $node = NULL) {
+  public function access(Route $route, AccountInterface $account, $node_revision = NULL, ?NodeInterface $node = NULL) {
     if ($node_revision) {
       $node = $this->nodeStorage->loadRevision($node_revision);
     }

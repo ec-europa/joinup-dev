@@ -10,7 +10,6 @@ dependencies:
   - 'drupal:image'
   - 'drupal:link'
   - 'drupal:tour'
-  - 'ds:ds'
   - 'facets:facets'
   - 'joinup:oe_newsroom_newsletter'
   - 'joinup:workflow_state_permission'

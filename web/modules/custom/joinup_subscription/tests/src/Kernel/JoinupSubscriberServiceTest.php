@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\joinup_subscription\Kernel;
 
 use Drupal\Core\Session\AccountInterface;
-use Drupal\entity_test\Entity\EntityTest;
-use Drupal\flag\Entity\Flag;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\entity_test\Entity\EntityTest;
+use Drupal\flag\Entity\Flag;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -166,7 +168,7 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
    * @return \Drupal\Core\Session\AccountInterface[]
    *   The subscribed users.
    */
-  protected function createSubscribedUsers(int $count = 3) : array {
+  protected function createSubscribedUsers(int $count = 3): array {
     $users = [];
     for ($i = 0; $i < $count; $i++) {
       $users[$i] = $this->createUser();
@@ -181,7 +183,7 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
    * @param \Drupal\Core\Session\AccountInterface[] $expected_subscribers
    *   The subscribers that are expected to be present.
    */
-  protected function assertSubscribers(array $expected_subscribers) : void {
+  protected function assertSubscribers(array $expected_subscribers): void {
     $actual_subscribers = $this->subscriptionService->getSubscribers($this->entity, $this->testFlagId);
     foreach ($expected_subscribers as $expected_subscriber) {
       // Check that an entry with the subscriber ID is present in the list.

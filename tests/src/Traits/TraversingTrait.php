@@ -4,9 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup\Traits;
 
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Element\TraversableElement;
 use Behat\Mink\Exception\ElementNotFoundException;
+use PHPUnit\Framework\Assert;
 
 /**
  * Helper methods to deal with traversing of page elements.
@@ -18,14 +20,14 @@ trait TraversingTrait {
    *
    * @param string $field
    *   The field label.
-   * @param \Behat\Mink\Element\TraversableElement $region
+   * @param \Behat\Mink\Element\TraversableElement|null $region
    *   (Optional) The region to search in. If a region is not provided, the
    *   whole page will be used.
    *
    * @return \Behat\Mink\Element\TraversableElement|null
    *   The field element or NULL if not found.
    */
-  protected function findAnyFormField(string $field, TraversableElement $region = NULL): ?TraversableElement {
+  protected function findAnyFormField(string $field, ?TraversableElement $region = NULL): ?TraversableElement {
     if (!$region) {
       $region = $this->getSession()->getPage();
     }
@@ -48,7 +50,7 @@ trait TraversingTrait {
    *
    * @param string $select
    *   The name of the select element.
-   * @param \Behat\Mink\Element\TraversableElement $region
+   * @param \Behat\Mink\Element\TraversableElement|null $region
    *   (optional) The region in which to search for the select. Defaults to the
    *   whole page.
    *
@@ -58,7 +60,7 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when no select field is found.
    */
-  protected function findSelect(string $select, TraversableElement $region = NULL): TraversableElement {
+  protected function findSelect(string $select, ?TraversableElement $region = NULL): TraversableElement {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }
@@ -70,6 +72,48 @@ trait TraversingTrait {
     }
 
     return $element;
+  }
+
+  /**
+   * Helper method that asserts a selected option of a select element.
+   *
+   * @param \Behat\Mink\Element\NodeElement $element
+   *   The select node element.
+   * @param string $option
+   *   The select option.
+   *
+   * @throws \Exception
+   *   Thrown if there is no selected option or the selected option is not the
+   *   correct one.
+   */
+  protected function assertSelectedOption(NodeElement $element, string $option): void {
+    $option_element = $element->find('xpath', '//option[@selected="selected"]');
+    if (!$option_element) {
+      throw new \Exception('No option is selected in the requested select');
+    }
+
+    if (trim($option_element->getText()) !== $option) {
+      throw new \Exception(sprintf('The option "%s" was not selected in the page %s, %s was selected', $option, $this->getSession()->getCurrentUrl(), $option_element->getHtml()));
+    }
+  }
+
+  /**
+   * Helper method that asserts the available options of select fields.
+   *
+   * @param \Behat\Mink\Element\NodeElement $element
+   *   The select element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws \Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   */
+  protected function assertSelectAvailableOptions(NodeElement $element, TableNode $table): void {
+    $available_options = $this->getSelectOptions($element);
+
+    $rows = $table->getColumn(0);
+    Assert::assertEquals($rows, $available_options);
   }
 
   /**
@@ -85,7 +129,7 @@ trait TraversingTrait {
     $options = [];
     foreach ($select->findAll('xpath', '//option') as $element) {
       /** @var \Behat\Mink\Element\NodeElement $element */
-      $options[$element->getValue()] = trim($element->getText());
+      $options[] = trim($element->getText());
     }
 
     return $options;
@@ -243,16 +287,27 @@ trait TraversingTrait {
    *
    * @param string $alias
    *   The facet alias.
+   * @param \Behat\Mink\Element\NodeElement|null $region
+   *   (optional) Limit the search to a specific region. If empty, the whole
+   *   page will be used. Defaults to NULL.
+   * @param string $html_tag
+   *   (optional) Limit to a specific html tag when searching for an element.
+   *   This can be useful in cases where the data drupal facet id is placed in
+   *   more than one html tag e.g. the dropdown has the id placed in both the
+   *   <li> tag of links as well as the <select> element.
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The facet node element.
    *
    * @throws \Exception
-   *   Thrown when the facet is not found in the page.
+   *   Thrown when the facet is not found in the designated area.
    */
-  protected function findFacetByAlias(string $alias): NodeElement {
+  protected function findFacetByAlias(string $alias, ?NodeElement $region = NULL, string $html_tag = '*'): NodeElement {
+    if ($region === NULL) {
+      $region = $this->getSession()->getPage();
+    }
     $facet_id = self::getFacetIdFromAlias($alias);
-    $element = $this->getSession()->getPage()->find('xpath', "//*[@data-drupal-facet-id='{$facet_id}']");
+    $element = $region->find('xpath', "//{$html_tag}[@data-drupal-facet-id='{$facet_id}']");
 
     if (!$element) {
       throw new \Exception("The facet '$alias' was not found in the page.");
@@ -279,7 +334,7 @@ trait TraversingTrait {
     $mappings = [
       'collection type' => 'collection_type',
       'collection policy domain' => 'collection_policy_domain',
-      'from' => 'group',
+      'collection/solution' => 'group',
       'policy domain' => 'policy_domain',
       'solution policy domain' => 'solution_policy_domain',
       'solution spatial coverage' => 'solution_spatial_coverage',
@@ -289,6 +344,7 @@ trait TraversingTrait {
       'My content' => 'content_my_content',
       'Event date' => 'event_date',
       'Collection event date' => 'collection_event_type',
+      'Content types' => 'type',
     ];
 
     if (!isset($mappings[$alias])) {
@@ -303,10 +359,12 @@ trait TraversingTrait {
    *
    * @param string $field
    *   The date range field name.
-   * @param string $date
-   *   The sub-field name. Either "start" or "end".
    * @param string $component
    *   The sub-field component. Either "date" or "time".
+   * @param string|null $date
+   *   (optional) The sub-field name. Either "start" or "end". If left empty, it
+   *   is assumed that the field is a simple datetime field and not a range,
+   *   thus, the date or time components are looked in the whole field.
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The date or time component element.
@@ -314,7 +372,7 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when the date range field is not found.
    */
-  protected function findDateRangeComponent(string $field, string $date, string $component): NodeElement {
+  protected function findDateRangeComponent(string $field, string $component, ?string $date = NULL): NodeElement {
     /** @var \Behat\Mink\Element\NodeElement $fieldset */
     $fieldset = $this->getSession()->getPage()->find('named', ['fieldset', $field]);
 
@@ -322,16 +380,19 @@ trait TraversingTrait {
       throw new \Exception("The '$field' field was not found.");
     }
 
-    $date = ucfirst($date) . ' date';
-    /** @var \Behat\Mink\Element\NodeElement $element */
-    $element = $fieldset->find('xpath', '//h4[text()="' . $date . '"]//following-sibling::div[1]');
-
-    if (!$element) {
-      throw new \Exception("The '$date' sub-field of the '$field' field was not found.");
+    if ($date !== NULL) {
+      $date = ucfirst($date) . ' date';
+      /** @var \Behat\Mink\Element\NodeElement $element */
+      $element = $fieldset->find('xpath', '//h4[text()="' . $date . '"]//following-sibling::div[1]');
+      if (!$element) {
+        throw new \Exception("The '$date' sub-field of the '$field' field was not found.");
+      }
+    }
+    else {
+      $element = $fieldset;
     }
 
     $component_node = $element->findField(ucfirst($component));
-
     if (!$component_node) {
       throw new \Exception("The '$component' component for the '$field' '$element' was not found.");
     }
@@ -403,7 +464,7 @@ trait TraversingTrait {
    * @param string $element
    *   The element name, e.g. 'fieldset', 'field', 'link', 'button', 'content',
    *   'select', 'checkbox', 'radio', 'file', 'optgroup', 'option', 'table', ...
-   * @param \Behat\Mink\Element\TraversableElement $region
+   * @param \Behat\Mink\Element\TraversableElement|null $region
    *   (optional) The region to check in.
    *
    * @return \Behat\Mink\Element\NodeElement
@@ -414,7 +475,7 @@ trait TraversingTrait {
    *
    * @see \Behat\Mink\Selector\NamedSelector
    */
-  protected function findNamedElementInRegion(string $locator, string $element, TraversableElement $region = NULL): TraversableElement {
+  protected function findNamedElementInRegion(string $locator, string $element, ?TraversableElement $region = NULL): TraversableElement {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }
@@ -427,17 +488,83 @@ trait TraversingTrait {
   }
 
   /**
+   * Returns selectors used to find elements with a human readable identifier.
+   *
+   * @param string $alias
+   *   A human readable element identifier.
+   *
+   * @return array[]
+   *   An indexed array of selectors intended to be used with Mink's `find()`
+   *   methods. Each value is a tuple containing two strings:
+   *   - 0: the selector, e.g. 'css' or 'xpath'.
+   *   - 1: the locator.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the element name is not defined.
+   */
+  protected function getSelectorsMatchingElementAlias(string $alias): array {
+    $elements = [
+      // The various search input fields.
+      [
+        'names' => [
+          'search bar',
+          'search bars',
+          'search field',
+          'search fields',
+        ],
+        'selectors' => [
+          // The site-wide search field in the top right corner.
+          ['css', 'input#search-bar__input'],
+          // The search field on the search result pages.
+          ['css', '#block-exposed-form-search-page input.form-text'],
+        ],
+      ],
+    ];
+
+    foreach ($elements as $element) {
+      if (in_array($alias, $element['names'])) {
+        return $element['selectors'];
+      }
+    }
+
+    throw new \InvalidArgumentException("No selectors are defined for the element named '$alias'.");
+  }
+
+  /**
+   * Returns elements that match the given human readable identifier.
+   *
+   * @param string $alias
+   *   A human readable element identifier.
+   *
+   * @return \Behat\Mink\Element\NodeElement[]
+   *   The elements matching the identifier.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the element name is not defined.
+   */
+  protected function getElementsMatchingElementAlias(string $alias): array {
+    $elements = [];
+
+    foreach ($this->getSelectorsMatchingElementAlias($alias) as $selector_tuple) {
+      [$selector, $locator] = $selector_tuple;
+      $elements = array_merge($elements, $this->getSession()->getPage()->findAll($selector, $locator));
+    }
+
+    return $elements;
+  }
+
+  /**
    * Finds an image element in a region given the file name.
    *
    * @param string $filename
    *   The file name.
-   * @param \Behat\Mink\Element\NodeElement $region
+   * @param \Behat\Mink\Element\NodeElement|null $region
    *   (optional) The region to check in.
    *
    * @return bool
    *   Whether the element exists or not in the given region.
    */
-  protected function findImageInRegion(string $filename, NodeElement $region = NULL): bool {
+  protected function findImageInRegion(string $filename, ?NodeElement $region = NULL): bool {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }

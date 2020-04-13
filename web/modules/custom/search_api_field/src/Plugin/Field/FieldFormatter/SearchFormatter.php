@@ -12,6 +12,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Logger\RfcLogLevel;
+use Drupal\Core\Pager\PagerManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\search_api\IndexInterface;
@@ -73,6 +74,13 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
   protected $request;
 
   /**
+   * The pager manager.
+   *
+   * @var \Drupal\Core\Pager\PagerManagerInterface
+   */
+  protected $pagerManager;
+
+  /**
    * Constructs a SearchFormatter object.
    *
    * @param string $plugin_id
@@ -99,8 +107,10 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
    *   The filter plugin manager.
    * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
    *   The search_api logger channel.
+   * @param \Drupal\Core\Pager\PagerManagerInterface $pager_manager
+   *   The pager manager.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager, Request $request, ParseModePluginManager $parse_mode_manager, FilterPluginManagerInterface $filter_plugin_manager, LoggerChannelInterface $logger) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager, Request $request, ParseModePluginManager $parse_mode_manager, FilterPluginManagerInterface $filter_plugin_manager, LoggerChannelInterface $logger, PagerManagerInterface $pager_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
 
     $this->entityTypeManager = $entity_type_manager;
@@ -108,6 +118,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     $this->parseModeManager = $parse_mode_manager;
     $this->request = $request;
     $this->logger = $logger;
+    $this->pagerManager = $pager_manager;
   }
 
   /**
@@ -126,7 +137,8 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       $container->get('request_stack')->getCurrentRequest(),
       $container->get('plugin.manager.search_api.parse_mode'),
       $container->get('plugin.manager.search_api_field.filter'),
-      $container->get('logger.channel.search_api')
+      $container->get('logger.channel.search_api'),
+      $container->get('pager.manager')
     );
   }
 
@@ -301,7 +313,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       ];
 
       // Build pager.
-      pager_default_initialize($result->getResultCount(), $limit);
+      $this->pagerManager->createPager($result->getResultCount(), $limit);
     }
     else {
       $build['#no_results_found'] = [

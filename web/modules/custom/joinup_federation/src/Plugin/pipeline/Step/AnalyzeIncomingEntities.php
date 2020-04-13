@@ -115,8 +115,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *   The hash generator service.
    */
   public function __construct(array $configuration, string $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, ProvenanceHelperInterface $provenance_helper, SchemaFieldValidatorInterface $rdf_schema_field_validator, JoinupFederationHashGenerator $hash_generator) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
-    $this->entityTypeManager = $entity_type_manager;
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql, $entity_type_manager);
     $this->entityFieldManager = $entity_field_manager;
     $this->provenanceHelper = $provenance_helper;
     $this->rdfSchemaFieldValidator = $rdf_schema_field_validator;

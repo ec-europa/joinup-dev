@@ -17,7 +17,6 @@ dependencies:
   module:
     - asset_distribution
     - digital_size_formatter
-    - ds
     - joinup
     - user
 _core:
@@ -37,13 +36,6 @@ content:
       remote_files_title: External
       show_remote_files: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
   field_ad_file_size:
@@ -67,14 +59,7 @@ content:
     weight: 0
     settings:
       link_to_entity: true
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
 hidden:
   changed: true

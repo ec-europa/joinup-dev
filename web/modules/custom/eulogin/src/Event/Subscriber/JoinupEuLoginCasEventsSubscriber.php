@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_eulogin\Event\Subscriber;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\cas\Event\CasPostLoginEvent;
 use Drupal\cas\Event\CasPostValidateEvent;
 use Drupal\cas\Event\CasPreLoginEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
 use Drupal\cas\Service\CasHelper;
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\Url;
 use Drupal\user\UserDataInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

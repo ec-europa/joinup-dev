@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_federation\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use Drupal\pipeline\PipelineState;
 use Drupal\pipeline\PipelineStateInterface;
 use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
-use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Provides a base class for pipeline step kernel tests.
@@ -51,7 +51,13 @@ abstract class StepTestBase extends KernelTestBase {
   protected function setUp() {
     parent::setUp();
     $this->setUpSparql();
+    $this->setUpPipeline();
+  }
 
+  /**
+   * Sets up the pipeline with the joinup_federation_testing_pipeline plugin.
+   */
+  protected function setUpPipeline(): void {
     /** @var \Drupal\pipeline\Plugin\PipelinePipelinePluginManager $pipeline_plugin_manager */
     $pipeline_plugin_manager = $this->container->get('plugin.manager.pipeline_pipeline');
     /** @var \Drupal\pipeline\Plugin\PipelinePipelineInterface $pipeline */
@@ -60,15 +66,33 @@ abstract class StepTestBase extends KernelTestBase {
   }
 
   /**
+   * Runs the ::prepare method of the given step.
+   *
+   * @param string $step_plugin_id
+   *   The pipeline step.
+   * @param \Drupal\pipeline\PipelineStateInterface|null $state
+   *   (optional) The pipeline state object. If missed a brand new will be
+   *   created from the passed step.
+   */
+  protected function runPipelinePrepare(string $step_plugin_id, ?PipelineStateInterface $state = NULL) {
+    $step_plugin_instance = $this->pipeline->createStepInstance($step_plugin_id);
+    if (!$state) {
+      $state = (new PipelineState())->setStepId($step_plugin_id);
+    }
+    $this->pipeline->setCurrentState($state);
+    $step_plugin_instance->prepare();
+  }
+
+  /**
    * Runs a given step.
    *
    * @param string $step_plugin_id
    *   The pipeline step.
-   * @param \Drupal\pipeline\PipelineStateInterface $state
+   * @param \Drupal\pipeline\PipelineStateInterface|null $state
    *   (optional) The pipeline state object. If missed a brand new will be
    *   created from the passed step.
    */
-  protected function runPipelineStep(string $step_plugin_id, PipelineStateInterface $state = NULL) {
+  protected function runPipelineStep(string $step_plugin_id, ?PipelineStateInterface $state = NULL) {
     $step_plugin_instance = $this->pipeline->createStepInstance($step_plugin_id);
     if (!$state) {
       $state = (new PipelineState())->setStepId($step_plugin_id);

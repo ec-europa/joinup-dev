@@ -29,7 +29,7 @@ trait AdmsSchemaEntityReferenceFieldsTrait {
    *   Associative array with the list of fields keyed by field name and having
    *   the target entity type ID as value.
    */
-  protected function getAdmsSchemaEntityReferenceFields(string $bundle, array $target_entity_type_ids = NULL): array {
+  protected function getAdmsSchemaEntityReferenceFields(string $bundle, ?array $target_entity_type_ids = NULL): array {
     if (!isset($this->admsSchemaEntityReferenceFields[$bundle])) {
       $this->admsSchemaEntityReferenceFields[$bundle] = [];
       /** @var \Drupal\Core\Field\FieldDefinitionInterface $field_definition */

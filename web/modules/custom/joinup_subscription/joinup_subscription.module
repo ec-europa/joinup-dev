@@ -7,9 +7,9 @@
 
 declare(strict_types = 1);
 
-use Drupal\field\FieldStorageConfigInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\field\FieldStorageConfigInterface;
 use Drupal\message\MessageInterface;
 use Drupal\message_notify\Plugin\Notifier\MessageNotifierInterface;
 use Drupal\user\UserInterface;

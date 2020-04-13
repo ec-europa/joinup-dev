@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_federation_test\Plugin\pipeline\Pipeline;
 
 use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
@@ -29,7 +31,7 @@ class JoinupFederationTestingPipeline extends JoinupFederationPipelinePluginBase
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): ?string {
+  public function getCollection(): string {
     return 'http://catalog';
   }
 

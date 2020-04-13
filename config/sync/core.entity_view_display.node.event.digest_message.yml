@@ -30,8 +30,8 @@ dependencies:
     - image.style.digest_image
     - node.type.event
   module:
-    - ds
     - image
+    - joinup
     - joinup_core
     - smart_trim
     - user
@@ -58,13 +58,6 @@ content:
       wrap_output: false
       more_link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
     region: content
@@ -79,13 +72,6 @@ content:
       month_diff_format: 'd F'
       year_diff_format: 'd F Y'
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
     type: daterange_condensed
@@ -96,13 +82,6 @@ content:
     settings:
       image_style: digest_image
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     type: image_url

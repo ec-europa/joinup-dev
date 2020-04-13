@@ -10,15 +10,14 @@ declare(strict_types = 1);
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
-use Drupal\comment\CommentInterface;
-use Drupal\comment\Entity\Comment;
-use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
+use Drupal\User\Entity\User;
+use Drupal\comment\CommentInterface;
+use Drupal\comment\Entity\Comment;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
@@ -26,6 +25,7 @@ use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\FormTrait;
+use Drupal\joinup\Traits\KeyboardInteractionTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -42,7 +42,6 @@ use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
-use Drupal\User\Entity\User;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -59,6 +58,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   use EntityTrait;
   use FileTrait;
   use FormTrait;
+  use KeyboardInteractionTrait;
   use MaterialDesignTrait;
   use NodeTrait;
   use OgTrait;
@@ -302,7 +302,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function checkSelectContainsOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = array_values($this->getSelectOptions($field));
+    $available_options = $this->getSelectOptions($field);
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     if (array_intersect($options, $available_options) !== $options) {
@@ -325,7 +325,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function checkSelectDoesNotContainOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = array_values($this->getSelectOptions($field));
+    $available_options = $this->getSelectOptions($field);
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     $intersection = array_intersect($available_options, $options);
@@ -351,10 +351,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function assertSelectOptionsAsList($select, TableNode $table) {
     $field = $this->findSelect($select);
-    $available_options = array_values($this->getSelectOptions($field));
-
-    $rows = $table->getColumn(0);
-    Assert::assertEquals($rows, $available_options);
+    $this->assertSelectAvailableOptions($field, $table);
   }
 
   /**
@@ -451,11 +448,13 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @When I go to the :bundle (content ) :title edit screen
    * @When I visit the :bundle (content ) :title edit screen
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitNodeEditForm($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
-    $this->visitPath($node->url('edit-form'));
+    $this->visitPath($node->toUrl('edit-form')->toString());
   }
 
   /**
@@ -471,11 +470,13 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @When I go to the content page of the type :type with the title :title
    * @When I visit the content page of the type :type with the title :title
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitNodePage($type, $title) {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->getNodeByTitle($title, $type);
-    $this->visitPath($node->url());
+    $this->visitPath($node->toUrl()->toString());
   }
 
   /**
@@ -591,7 +592,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @BeforeNodeCreate
    */
-  public static function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
+  public function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
     $node = $scope->getEntity();
 
     // Replace field label aliases with the actual field names.
@@ -605,6 +606,22 @@ class JoinupSubContext extends DrupalSubContextBase {
         if (!empty($value)) {
           $node->$name = $value;
         }
+      }
+    }
+
+    if (!empty($node->field_attachment)) {
+      // We want to copy it from the fixtures into the file system and register
+      // it in the CustomPageSubContext so it can be cleaned up after the
+      // scenario ends. Perform a small dance to get access to the context class
+      // from inside this static callback.
+      /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
+      $environment = $scope->getEnvironment();
+      /** @var \CustomPageSubContext $context */
+      $context = $environment->getContext(self::class);
+      foreach ($context->explodeCommaSeparatedStepArgument($node->field_attachment) as $filename) {
+        // The file is tracked by its filename so the value still remains to be
+        // the filenames instead of the url.
+        $context->createFile($filename);
       }
     }
 
@@ -640,6 +657,25 @@ class JoinupSubContext extends DrupalSubContextBase {
       ]);
     }
 
+    if (property_exists($node, 'published_at') && !empty($node->published_at)) {
+      // If the entry is not numeric, then it means that the scenario is using a
+      // human readable version of the timestamp.
+      // Example: Sun, 01 Dec 2019 13:00:00 +0100.
+      // This will allow dynamic tests as well. `strtotime` will also be able to
+      // receive entries like "1 day ago" or "+1 month".
+      if (!is_numeric($node->published_at)) {
+        $node->published_at = strtotime($node->published_at);
+      }
+    }
+
+    $image_fields = ['field_news_logo', 'field_event_logo'];
+    foreach ($image_fields as $image_field) {
+      if (!empty($node->$image_field)) {
+        $file = $this->createFile($node->$image_field);
+        $node->$image_field = $file->getFileUri();
+      }
+    }
+
     // Replace the human-readable values for multiple fields.
     self::convertObjectPropertyValues($node, 'pinned', [
       'yes' => 1,
@@ -673,34 +709,44 @@ class JoinupSubContext extends DrupalSubContextBase {
         'logo' => 'field_custom_page_logo',
       ],
       'discussion' => [
+        'attachments' => 'field_attachment',
         'content' => 'body',
+        'keywords' => 'field_keywords',
         'state' => 'field_state',
+        'publication date' => 'published_at',
       ],
       'document' => [
         'document type' => 'field_type',
+        'document publication date' => 'field_document_publication_date',
         'file' => 'field_file',
         'keywords' => 'field_keywords',
         'licence' => 'field_licence',
         'short title' => 'field_short_title',
         'spatial coverage' => 'field_document_spatial_coverage',
         'state' => 'field_state',
+        'publication date' => 'published_at',
       ],
       'event' => [
         'keywords' => 'field_keywords',
+        'logo' => 'field_event_logo',
         'short title' => 'field_short_title',
         'start date' => 'field_event_date:value',
         'end date' => 'field_event_date:end_value',
         'agenda' => 'field_event_agenda',
         'location' => 'field_location',
+        'online location' => 'field_event_online_location',
         'organisation' => 'field_organisation',
+        'web url' => 'field_event_web_url',
         'scope' => 'field_scope',
         'state' => 'field_state',
       ],
       'news' => [
         'headline' => 'field_news_headline',
         'keywords' => 'field_keywords',
+        'logo' => 'field_news_logo',
         'spatial coverage' => 'field_news_spatial_coverage',
         'state' => 'field_state',
+        'publication date' => 'published_at',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
@@ -799,20 +845,22 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @param string $field
    *   The date range field name.
-   * @param string $date
-   *   The sub-field name. Either "start" or "end".
    * @param string $component
    *   The sub-field component. Either "date" or "time".
    * @param string $value
    *   The field value.
+   * @param string $date
+   *   (optional) The sub-field name. Either "start" or "end". If left empty, it
+   *   is assumed that the field is a simple datetime field and not a range,
+   *   thus, the date or time components are looked in the whole field.
    *
    * @throws \Exception
    *   Thrown when the date range field is not found.
    *
    * @When I fill the :date :component of the :field widget with :value
    */
-  public function fillDateRangeField($field, $date, $component, $value) {
-    $element = $this->findDateRangeComponent($field, $date, $component);
+  public function fillDateRangeField($field, $component, $value, $date = NULL) {
+    $element = $this->findDateRangeComponent($field, $component, $date);
     $element->setValue($value);
   }
 
@@ -821,18 +869,21 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @param string $field
    *   The date range field name.
-   * @param string $date
-   *   The sub-field name. Either "start" or "end".
    * @param string $component
    *   The sub-field component. Either "date" or "time".
+   * @param string $date
+   *   (optional) The sub-field name. Either "start" or "end". If left empty, it
+   *   is assumed that the field is a simple datetime field and not a range,
+   *   thus, the date or time components are looked in the whole field.
    *
    * @throws \Exception
    *   Thrown when the date range field is not found.
    *
    * @When I clear the :date :component of the :field widget
+   * @When I clear the :component of the :field widget
    */
-  public function clearDateRangeField($field, $date, $component) {
-    $element = $this->findDateRangeComponent($field, $date, $component);
+  public function clearDateRangeField($field, $component, $date = NULL) {
+    $element = $this->findDateRangeComponent($field, $component, $date);
     $element->setValue('');
   }
 
@@ -935,9 +986,12 @@ class JoinupSubContext extends DrupalSubContextBase {
     $entity_type = self::translateEntityTypeAlias($entity_type);
     $entity = $this->getEntityByLabel($entity_type, $title);
     $this->getEntityStateField($entity)->set('value', $state);
-    if ($entity instanceof RevisionableInterface) {
+
+    // Only create a new revision if the entity type supports it.
+    if ($entity->getEntityType()->isRevisionable()) {
       $entity->setNewRevision(TRUE);
     }
+
     $entity->save();
   }
 
@@ -1823,7 +1877,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function assertHomepageStatistics(TableNode $statistics_table) {
     foreach ($statistics_table->getRowsHash() as $type => $expected_value) {
-      $wrapper_selector = Unicode::strtolower("stats__wrapper__$type");
+      $wrapper_selector = mb_strtolower("stats__wrapper__$type");
       $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " ' . $wrapper_selector . ' ")]//div[contains(concat(" ", normalize-space(@class), " "), " stats__text--upper ")]';
       $element = $this->getSession()->getPage()->find('xpath', $xpath);
       Assert::assertEquals($expected_value, $element->getText());
@@ -2341,20 +2395,23 @@ JS;
   }
 
   /**
-   * Press the enter key in the keyboard.
+   * Press a key in a field.
    *
    * Works only in JavaScript-enabled browsers.
    *
+   * @param string $key
+   *   The human readable name of the key to press.
    * @param string $field
-   *   The field where to press the enter key.
+   *   The field in which to press the key.
    *
    * @throws \Exception
    *   Thrown when the browser doesn't support JavaScript or when the field is
    *   not found.
    *
-   * @When I hit enter( in the keyboard) on the field :field
+   * @When I hit :key( in the keyboard) on the field :field
+   * @When I hit|press the :key key in the :field field
    */
-  public function hitEnterKeyboard($field) {
+  public function pressKeyInField(string $key, string $field): void {
     if (!$this->browserSupportsJavaScript()) {
       throw new \Exception('This step requires JavaScript to run.');
     }
@@ -2364,19 +2421,7 @@ JS;
       throw new \Exception("Could not find field '$field'");
     }
 
-    $element->keyDown("\r");
-    try {
-      $element->keyUp("\r");
-    }
-    catch (StaleElementReference $e) {
-      // Depending on the implementation of the user interaction we are trying
-      // to trigger by pressing the enter key, it is posssible the action is
-      // triggered on the keydown event or on the keyup event. If it is
-      // implemented on the keydown event then it might happen that the page
-      // refreshes immediately without waiting for the key to be released.
-      // Ignore the fact that the field might already be gone when performing
-      // the keyup event.
-    }
+    $this->pressKeyInElement($key, $element);
   }
 
   /**
@@ -2643,7 +2688,7 @@ JS;
    *   The button label.
    * @param string $status
    *   The expected status. Possible values are 'enabled' and 'disabled'.
-   * @param string $region
+   * @param string|null $region
    *   (optional) The region name. If left empty, the whole page will be used.
    *
    * @throws \InvalidArgumentException
@@ -2656,7 +2701,7 @@ JS;
    * @Then the :button button on the :region region should be :status
    * @Then the :button button should be :status
    */
-  public function assertButtonStatus(string $button, string $status, string $region = NULL): void {
+  public function assertButtonStatus(string $button, string $status, ?string $region = NULL): void {
     if (!in_array($status, ['enabled', 'disabled'])) {
       throw new InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
     }
@@ -2675,6 +2720,86 @@ JS;
   }
 
   /**
+   * Checks that there are exactly the given number of elements on the page.
+   *
+   * @param string $count
+   *   The number of elements that should be present on the page.
+   * @param string $element_name
+   *   The human readable name of the element to find on the page.
+   *
+   * @Then there should be exactly :count :element_name on the page
+   */
+  public function assertElementCount(string $count, string $element_name): void {
+    Assert::assertEquals((int) $count, count($this->getElementsMatchingElementAlias($element_name)));
+  }
+
+  /**
+   * Returns selectors used to find elements with a human readable identifier.
+   *
+   * @param string $alias
+   *   A human readable element identifier.
+   *
+   * @return array[]
+   *   An indexed array of selectors intended to be used with Mink's `find()`
+   *   methods. Each value is a tuple containing two strings:
+   *   - 0: the selector, e.g. 'css' or 'xpath'.
+   *   - 1: the locator.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the element name is not defined.
+   */
+  protected function getSelectorsMatchingElementAlias(string $alias): array {
+    $elements = [
+      // The various search input fields.
+      [
+        'names' => [
+          'search bar',
+          'search bars',
+          'search field',
+          'search fields',
+        ],
+        'selectors' => [
+          // The site-wide search field in the top right corner.
+          ['css', 'input#search-bar__input'],
+          // The search field on the search result pages.
+          ['css', '#block-exposed-form-search-page input.form-text'],
+        ],
+      ],
+    ];
+
+    foreach ($elements as $element) {
+      if (in_array($alias, $element['names'])) {
+        return $element['selectors'];
+      }
+    }
+
+    throw new \InvalidArgumentException("No selectors are defined for the element named '$alias'.");
+  }
+
+  /**
+   * Returns elements that match the given human readable identifier.
+   *
+   * @param string $alias
+   *   A human readable element identifier.
+   *
+   * @return \Behat\Mink\Element\NodeElement[]
+   *   The elements matching the identifier.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the element name is not defined.
+   */
+  protected function getElementsMatchingElementAlias(string $alias): array {
+    $elements = [];
+
+    foreach ($this->getSelectorsMatchingElementAlias($alias) as $selector_tuple) {
+      list ($selector, $locator) = $selector_tuple;
+      $elements = array_merge($elements, $this->getSession()->getPage()->findAll($selector, $locator));
+    }
+
+    return $elements;
+  }
+
+  /**
    * Asserts that a paragraph containing the given text is present in the page.
    *
    * @param string $text
@@ -2685,6 +2810,133 @@ JS;
   public function assertParagraphText(string $text): void {
     $element = $this->getSession()->getPage()->find('xpath', '//p[text() = "' . $text . '"]');
     Assert::assertNotEmpty($element);
+  }
+
+  /**
+   * Asserts that the content absolute urls exist as links.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $titles
+   *   The titles of the nodes.
+   *
+   * @throws \Exception
+   *   Thrown if any link does not exist in the page.
+   *
+   * @Given I should see the absolute urls of the following content entities:
+   */
+  public function assertContentAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
+    foreach ($titles->getRows() as $title) {
+      $this->assertEntityUrlInSitemap('node', $title[0]);
+    }
+  }
+
+  /**
+   * Asserts that the rdf entity absolute urls exist as links.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $titles
+   *   The titles of the rdf entities.
+   *
+   * @throws \Exception
+   *   Thrown if any link does not exist in the page.
+   *
+   * @Given I should see the absolute urls of the following RDF entities:
+   */
+  public function assertRdfEntityAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
+    foreach ($titles->getRows() as $title) {
+      $this->assertEntityUrlInSitemap('rdf_entity', $title[0]);
+    }
+  }
+
+  /**
+   * Asserts that the content absolute urls do not exist as links.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $titles
+   *   The titles of the nodes.
+   *
+   * @throws \Exception
+   *   Thrown if at least a link exists in the page.
+   *
+   * @Given I should not see the absolute urls of the following content entities:
+   */
+  public function assertNotContentAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
+    foreach ($titles->getRows() as $title) {
+      $this->assertEntityUrlInSitemap('node', $title[0], FALSE);
+    }
+  }
+
+  /**
+   * Changes the publication date of an entity.
+   *
+   * @param string $title
+   *   The title of the entity.
+   * @param string $bundle
+   *   The bundle of the entity.
+   * @param string $entity_type_id
+   *   The entity type id. Either 'content' or 'rdf entity' is accepted.
+   * @param string $new_publication_date
+   *   The new publication date.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when one of the parameters is not correct.
+   *
+   * @Given the publication date of the :title :bundle :entity_type_id is changed to :new_value
+   */
+  public function givenPublicationDateChanged(string $title, string $bundle, string $entity_type_id, string $new_publication_date): void {
+    if (!in_array($entity_type_id, ['content', 'rdf entity'])) {
+      throw new \InvalidArgumentException('Only "content" and "rdf entity" are allowed for the $entity_type_id parameter.');
+    }
+    $entity_type_id = $entity_type_id === 'content' ? 'node' : 'rdf_entity';
+    $entity = $this->getEntityByLabel($entity_type_id, $title, $bundle);
+    $publication_date = is_numeric($new_publication_date) ? ((int) $new_publication_date) : strtotime($new_publication_date);
+    if (empty($new_publication_date)) {
+      throw new \InvalidArgumentException("'{$new_publication_date}' could not be converted to a proper timestamp.");
+    }
+
+    $entity->set('published_at', $publication_date);
+    $entity->save();
+  }
+
+  /**
+   * Asserts that the absolute url of an rdf entity exists as a link.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $titles
+   *   The titles of the rdf entities.
+   *
+   * @throws \Exception
+   *   Thrown if the link does not exist in the page.
+   *
+   * @Given I should not see the absolute urls of the following RDF entities:
+   */
+  public function assertEmptyRdfEntityAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
+    foreach ($titles->getRows() as $title) {
+      $this->assertEntityUrlInSitemap('rdf_entity', $title[0], FALSE);
+    }
+  }
+
+  /**
+   * Asserts a url in the sitemap response.
+   *
+   * @param string $entity_type_id
+   *   The entity type id.
+   * @param string $entity_label
+   *   The entity label.
+   * @param bool $exists
+   *   (optional) Whether to assert that a link exists or not exists. Defaults
+   *   to TRUE.
+   *
+   * @throws \Exception
+   *   Thrown if the link assertion is not the expected one.
+   */
+  protected function assertEntityUrlInSitemap(string $entity_type_id, string $entity_label, bool $exists = TRUE): void {
+    $entity = $this->getEntityByLabel($entity_type_id, $entity_label);
+    $link_text = $entity->toUrl()->setAbsolute()->toString();
+    $expected = '<loc>' . $link_text . '</loc>';
+    $response = $this->getSession()->getPage()->getContent();
+    if ($exists) {
+      Assert::assertContains($expected, $response);
+    }
+    else {
+      Assert::assertNotContains($expected, $response);
+    }
   }
 
   /**

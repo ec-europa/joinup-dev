@@ -28,7 +28,6 @@ dependencies:
     - field.field.node.event.og_audience
     - node.type.event
   module:
-    - ds
     - options
     - smart_trim
     - user
@@ -52,13 +51,6 @@ content:
         text: false
       more_class: more-link
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content

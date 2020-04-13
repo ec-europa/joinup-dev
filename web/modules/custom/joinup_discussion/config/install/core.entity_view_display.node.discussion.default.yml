@@ -16,7 +16,6 @@ dependencies:
     - node.type.discussion
   module:
     - comment
-    - ds
     - file
     - link
     - options
@@ -41,14 +40,6 @@ content:
     label: above
     settings: {  }
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: with_label
   field_policy_domain:
@@ -57,14 +48,6 @@ content:
     settings:
       link: true
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: comma_separated
     type: entity_reference_label
@@ -87,14 +70,6 @@ content:
       view_mode: view_mode_tile
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: entity_reference__listing_tile
   field_state:
@@ -138,13 +113,6 @@ content:
       rel: '0'
       target: '0'
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
     type: link

@@ -122,22 +122,11 @@
 
     <!-- Set up PHPUnit. -->
     <target name="setup-phpunit" description="Generate the configuration file for PHPUnit.">
-        <if>
-            <available file="${phpunit.config}" type="file" property="phpunit.config.available" />
-            <then>
-                <echo message="Deleting existing PHPUnit configuration file." />
-                <delete file="${phpunit.config}" failonerror="false" />
-            </then>
-        </if>
         <phpunitconfiguration
                 configFile="${phpunit.config}"
                 distFile="${phpunit.dist}"
-                files="${phpunit.files}"
-                directories="${phpunit.directories}"
-                testsuiteName="${phpunit.testsuite.name}"
                 baseUrl="${phpunit.base_url}"
                 dbUrl="${phpunit.db_url}"
-                legacyDbUrl="${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${phpunit.migrate.legacy_db.name}"
                 browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
                 browsertestOutputFile="${phpunit.browsertest_output_file}" />
 
@@ -148,11 +137,13 @@
 
     <!-- Set up Drush. -->
     <target name="setup-drush" description="Generate the configuration file for Drush.">
+        <!-- Allow to override from environment variable, if exist. This is
+        useful on environments where we cannot configure local properties. -->
         <if>
-            <available file="${drush.yml.path}" type="file" property="drush.yml.available" />
+            <isset property="env.DRUPAL_BASE_URL"/>
             <then>
-                <echo message="Deleting existing drush.yml configuration file" />
-                <delete file="${drush.yml.path}" failonerror="false" />
+                <property name="drupal.base_url" value="${env.DRUPAL_BASE_URL}" override="true"/>
+                <echo message="The 'drupal.base_url' Phing property has been overridden by the DRUPAL_BASE_URL environment variable."/>
             </then>
         </if>
         <echo message="Creating drush.yml configuration file" />
@@ -178,19 +169,19 @@
     <!-- Create a demo user. Subtarget of "create-demo-users". -->
     <target name="create-demo-user">
         <drush
-            command="user-create"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}">
+                command="user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
             <option name="mail" value="${drupal.demo.user}@example.com" />
             <option name="password" value="${drupal.demo.user}" />
             <param>${drupal.demo.user}</param>
         </drush>
         <drush
-            command="user-add-role"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}">
+                command="user-add-role"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
             <param>${drupal.demo.user}</param>
             <param>${drupal.demo.user}</param>
         </drush>
@@ -261,10 +252,10 @@
     <!-- Enable a module. -->
     <target name="enable-module">
         <drush
-            command="pm-enable"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}">
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
             <param>${module}</param>
         </drush>
     </target>

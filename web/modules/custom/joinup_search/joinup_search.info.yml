@@ -19,13 +19,14 @@ dependencies:
   - drupal:views
 
 config_devel:
- - facets.facet.group
- - facets.facet.policy_domain
- - facets.facet.spatial_coverage
- - facets.facet.type
- - facets.facet_source.search_api_views__search__page_1
- - search_api.index.published
- - search_api.index.unpublished
- - search_api.server.solr_published
- - search_api.server.solr_unpublished
- - views.view.search
+  - block.block.global_search
+  - facets.facet.group
+  - facets.facet.policy_domain
+  - facets.facet.spatial_coverage
+  - facets.facet.type
+  - facets.facet_source.search_api_views__search__page_1
+  - search_api.index.published
+  - search_api.index.unpublished
+  - search_api.server.solr_published
+  - search_api.server.solr_unpublished
+  - views.view.search

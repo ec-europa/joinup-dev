@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_group\Form;
 
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfirmFormHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
@@ -34,13 +36,13 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
    *   The temp store factory.
    * @param \Drupal\user\UserStorageInterface $user_storage
    *   The user storage.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *   The entity manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\joinup_group\JoinupGroupManagerInterface $joinup_group_manager
    *   The Joinup group manager.
    */
-  public function __construct(PrivateTempStoreFactory $temp_store_factory, UserStorageInterface $user_storage, EntityManagerInterface $entity_manager, JoinupGroupManagerInterface $joinup_group_manager) {
-    parent::__construct($temp_store_factory, $user_storage, $entity_manager);
+  public function __construct(PrivateTempStoreFactory $temp_store_factory, UserStorageInterface $user_storage, EntityTypeManagerInterface $entity_type_manager, JoinupGroupManagerInterface $joinup_group_manager) {
+    parent::__construct($temp_store_factory, $user_storage, $entity_type_manager);
     $this->groupManager = $joinup_group_manager;
   }
 
@@ -50,8 +52,8 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('tempstore.private'),
-      $container->get('entity.manager')->getStorage('user'),
-      $container->get('entity.manager'),
+      $container->get('entity_type.manager')->getStorage('user'),
+      $container->get('entity_type.manager'),
       $container->get('joinup_group.group_manager')
     );
   }

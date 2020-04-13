@@ -5,6 +5,8 @@
  * Contains installation functions for the tallinn module.
  */
 
+declare(strict_types = 1);
+
 /**
  * Implements hook_uninstall().
  */
