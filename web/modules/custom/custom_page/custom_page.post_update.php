@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Update the custom pages URL aliases.
@@ -164,4 +165,32 @@ function custom_page_post_update_default_global_search(array &$sandbox): string 
   $sandbox['#finished'] = (int) empty($sandbox['rows']);
 
   return 'Processed ' . count($rows) . ' items out of ' . $sandbox['total'];
+}
+
+/**
+ * Implements hook_post_update_NAME().
+ */
+function custom_page_post_update_0000_copy_body_to_paragraphs(&$sandbox) {
+  if (!isset($sandbox['nids'])) {
+    $sandbox['nids'] = \Drupal::database()->query("SELECT nid FROM {node_field_data} n WHERE n.type = 'custom_page';")->fetchCol();
+    $sandbox['count'] = 0;
+    $sandbox['max'] = count($sandbox['nids']);
+  }
+
+  $limit = 10;
+  $nids = array_splice($sandbox['nids'], 0, $limit);
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  foreach ($node_storage->loadMultiple($nids) as $custom_page) {
+    $paragraph = Paragraph::create([
+      'type' => 'simple_paragraph',
+    ]);
+    $paragraph->set('field_body', $custom_page->get('body')->getValue());
+    $paragraph->save();
+    $custom_page->set('field_paragraphs_body', ['target_id' => $paragraph->id()]);
+    $custom_page->save();
+    $sandbox['count']++;
+  }
+
+  $sandbox['#finished'] = (int) empty($sandbox['nids']);
+  return "Processed {$sandbox['count']} items out of {$sandbox['max']}.";
 }
