@@ -7,11 +7,13 @@ dependencies:
     - field.field.node.custom_page.field_attachment
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.field_custom_page_logo
+    - field.field.node.custom_page.field_paragraphs_body
     - field.field.node.custom_page.og_audience
     - image.style.horizontal_medium_image
     - node.type.custom_page
   module:
     - image
+    - joinup
     - user
 id: node.custom_page.view_mode_tile
 targetEntityType: node
@@ -33,8 +35,10 @@ hidden:
   body: true
   field_attachment: true
   field_cp_content_listing: true
+  field_paragraphs_body: true
   langcode: true
   links: true
   node_field_cp_content_listing_top: true
   og_audience: true
+  published_at: true
   report: true

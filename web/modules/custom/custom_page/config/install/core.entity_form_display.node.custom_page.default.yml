@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.custom_page.field_attachment
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.field_custom_page_logo
+    - field.field.node.custom_page.field_paragraphs_body
     - field.field.node.custom_page.og_audience
     - image.style.thumbnail
     - node.type.custom_page
@@ -14,7 +15,6 @@ dependencies:
     - custom_page
     - file
     - image
-    - publication_date
     - text
 id: node.custom_page.default
 targetEntityType: node
@@ -28,6 +28,7 @@ content:
       rows: 9
       placeholder: ''
       summary_rows: 3
+      show_summary: false
     third_party_settings:
       allowed_formats:
         hide_help: '0'
@@ -85,6 +86,7 @@ content:
 hidden:
   created: true
   current_workflow_state: true
+  field_paragraphs_body: true
   og_audience: true
   path: true
   promote: true
