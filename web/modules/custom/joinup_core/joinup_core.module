@@ -8,7 +8,6 @@
 declare(strict_types = 1);
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -21,10 +20,8 @@ use Drupal\Core\Template\Attribute;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
 use Drupal\node\NodeInterface;
-use Drupal\og\OgMembershipInterface;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\Utility;
-use Drupal\user\UserInterface;
 
 /**
  * Implements hook_theme().
@@ -429,56 +426,6 @@ function joinup_core_local_tasks_alter(&$local_tasks) {
   if (isset($local_tasks['user.login'])) {
     $local_tasks['user.login']['title'] = t('Sign in');
   }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_predelete().
- *
- * Mimic the og_entity_predelete function to delete the memberships of the user
- * before the user is deleted. The goal is to skip all notification attempts
- * related to the membership deletion.
- *
- * This workaround will prevent extra side loading and saving of entities.
- */
-function joinup_core_user_predelete(EntityInterface $entity) {
-  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-  $membership_manager = \Drupal::service('og.membership_manager');
-  foreach ($membership_manager->getMemberships($entity->id(), []) as $membership) {
-    $membership->skip_notification = TRUE;
-    $membership->delete();
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_update().
- *
- * Invalidates group membership list cache tags after a user is (un)blocked.
- *
- * If a user gets blocked in the entire site we no longer want to include this
- * user in the collection membership counts. We handle this use case here in
- * Joinup Core since Organic Groups currently only handles users that are
- * blocked on group level through the membership state; at this time OG is
- * not acting on users that are blocked on user level.
- */
-function joinup_core_user_update(UserInterface $user) {
-  // Only invalidate the tags if the user is being (un)blocked.
-  if ($user->isBlocked() == $user->original->isBlocked()) {
-    return;
-  }
-
-  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-  $membership_manager = \Drupal::service('og.membership_manager');
-  $memberships = $membership_manager->getMemberships($user->id());
-
-  $tags = [];
-  foreach ($memberships as $membership) {
-    if ($group = $membership->getGroup()) {
-      $group_membership_list_cache_tags = Cache::buildTags(OgMembershipInterface::GROUP_MEMBERSHIP_LIST_CACHE_TAG_PREFIX, $group->getCacheTagsToInvalidate());
-      $tags = Cache::mergeTags($tags, $group_membership_list_cache_tags);
-    }
-  }
-
-  Cache::invalidateTags($tags);
 }
 
 /**
