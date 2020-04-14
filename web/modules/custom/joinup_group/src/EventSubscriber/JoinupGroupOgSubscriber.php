@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\EventSubscriber;
+namespace Drupal\joinup_group\EventSubscriber;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\og\Event\PermissionEventInterface as OgPermissionEventInterface;
@@ -10,9 +10,9 @@ use Drupal\og\GroupPermission;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Joinup core subscriber for og related events.
+ * Subscribes to events fired by Organic Groups.
  */
-class JoinupCoreOgSubscriber implements EventSubscriberInterface {
+class JoinupGroupOgSubscriber implements EventSubscriberInterface {
 
   use StringTranslationTrait;
 
@@ -31,7 +31,7 @@ class JoinupCoreOgSubscriber implements EventSubscriberInterface {
    * @param \Drupal\og\Event\PermissionEventInterface $event
    *   The OG permission event.
    */
-  public function provideOgGroupPermissions(OgPermissionEventInterface $event) {
+  public function provideOgGroupPermissions(OgPermissionEventInterface $event): void {
     $event->setPermission(
       new GroupPermission([
         'name' => 'administer shared entities',
