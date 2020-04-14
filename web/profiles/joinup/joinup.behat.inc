@@ -41,6 +41,7 @@ use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\search_api\Entity\Server;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\Assert;
@@ -70,6 +71,13 @@ class JoinupSubContext extends DrupalSubContextBase {
   use UtilityTrait;
   use WorkflowTrait;
   use WysiwygTrait;
+
+  /**
+   * An array of created paragraphs to delete in the end of the scenario.
+   *
+   * @var \Drupal\paragraphs\Entity\ParagraphInterface[]
+   */
+  protected $paragraphs = [];
 
   /**
    * Creates a user with data provided in a table.
@@ -676,6 +684,18 @@ class JoinupSubContext extends DrupalSubContextBase {
       }
     }
 
+    if (isset($node->field_paragraphs_body)) {
+      $paragraph = Paragraph::create([
+        'type' => 'simple_paragraph',
+        'field_body' => $node->field_paragraphs_body,
+      ]);
+      $paragraph->save();
+      $node->{"field_paragraphs_body:target_id"} = $paragraph->id();
+      $node->{"field_paragraphs_body:target_revision_id"} = $paragraph->getRevisionId();
+      unset($node->field_paragraphs_body);
+      $this->paragraphs[$paragraph->id()] = $paragraph;
+    }
+
     // Replace the human-readable values for multiple fields.
     self::convertObjectPropertyValues($node, 'pinned', [
       'yes' => 1,
@@ -707,6 +727,7 @@ class JoinupSubContext extends DrupalSubContextBase {
       'custom_page' => [
         'attachments' => 'field_attachment',
         'logo' => 'field_custom_page_logo',
+        'body' => 'field_paragraphs_body',
       ],
       'discussion' => [
         'attachments' => 'field_attachment',
@@ -1972,6 +1993,10 @@ class JoinupSubContext extends DrupalSubContextBase {
       $worker->processItem($item->data);
       $queue->deleteItem($item);
     }
+
+    foreach ($this->paragraphs as $paragraph) {
+      $paragraph->delete();
+    }
   }
 
   /**
@@ -2792,7 +2817,7 @@ JS;
     $elements = [];
 
     foreach ($this->getSelectorsMatchingElementAlias($alias) as $selector_tuple) {
-      list ($selector, $locator) = $selector_tuple;
+      [$selector, $locator] = $selector_tuple;
       $elements = array_merge($elements, $this->getSession()->getPage()->findAll($selector, $locator));
     }
 
