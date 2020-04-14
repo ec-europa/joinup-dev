@@ -374,7 +374,6 @@
     table-layout: fixed;
   }
 
-
   td {
     padding: 5px;
   }
@@ -438,6 +437,12 @@
 // --------------------------------------------------
 .licence-tile {
   &.is-hidden {
+    display: none;
+  }
+}
+
+.licence-search-submit {
+  html.js & {
     display: none;
   }
 }

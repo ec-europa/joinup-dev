@@ -4,3 +4,10 @@ licence-filter:
   dependencies:
     - core/jquery
     - core/drupal
+
+search_auto_submit:
+  js:
+    js/search_auto_submit.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal

@@ -7,7 +7,10 @@ namespace Drupal\joinup_licence\Controller;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\joinup_licence\LicenceComparerHelper;
+use Drupal\rdf_entity\RdfInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a page controller callbacks.
@@ -20,6 +23,29 @@ class LicenceComparerController extends ControllerBase {
    * @var \Drupal\rdf_entity\RdfInterface[]
    */
   protected $licences = [];
+
+  /**
+   * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(RendererInterface $renderer) {
+    $this->renderer = $renderer;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('renderer')
+    );
+  }
 
   /**
    * Responds to a request made to 'joinup_licence.comparer' route.
@@ -223,7 +249,7 @@ class LicenceComparerController extends ControllerBase {
       ];
     }
 
-    $this->padWithEmptyCells($row, ['licence-comparer__header', 'licence-comparer__empty']);
+    $this->fillHeaderRows($row);
 
     return $row;
   }
@@ -264,13 +290,74 @@ class LicenceComparerController extends ControllerBase {
       ];
     }
 
-    $this->padWithEmptyCells($row, [
+    $this->fillContentRows($row);
+
+    return $row;
+  }
+
+  /**
+   * Fills in the header rows with an add licence option and empty cells.
+   *
+   * @param array $row
+   *   A row array.
+   */
+  protected function fillHeaderRows(array &$row): void {
+    $amount = LicenceComparerHelper::MAX_LICENCE_COUNT - count($this->licences);
+    if ($amount === 0) {
+      return;
+    }
+
+    $classes = ['licence-comparer__header', 'licence-comparer__empty'];
+    // \Drupal\Core\Render\Element\Select::processSelect does not seem
+    // to be called if the element is not rendered through a form
+    // builder. Thus, the name of the field and the default values are
+    // not set. Manually set the additional properties.
+    $row[] = [
+      'data' => [
+        'licence_search_label' => [
+          '#type' => 'label',
+          '#for' => 'licence-search',
+          '#title' => $this->t('Add licence'),
+          '#title_display' => 'invisible',
+        ],
+        'licence_search' => [
+          '#type' => 'select',
+          '#options' => $this->getLicenceOptions(),
+          '#default_value' => '',
+          '#attributes' => [
+            'class' => ['auto-submit'],
+            'name' => 'licence_search',
+            'id' => 'licence-search',
+            'title' => $this->t('Add licence'),
+          ],
+          '#attached' => [
+            'library' => [
+              'joinup_licence/search_auto_submit',
+            ],
+          ],
+        ],
+      ],
+      'class' => $classes,
+    ];
+    $amount--;
+
+    $this->padWithEmptyCells($row, $classes, $amount);
+  }
+
+  /**
+   * Fills in the content rows with empty cells.
+   *
+   * @param array $row
+   *   A row array.
+   */
+  protected function fillContentRows(array &$row): void {
+    $classes = [
       'licence-comparer__cell',
       'licence-comparer__empty',
       'licence-comparer__empty-cell',
-    ]);
-
-    return $row;
+    ];
+    $amount = LicenceComparerHelper::MAX_LICENCE_COUNT - count($this->licences);
+    $this->padWithEmptyCells($row, $classes, $amount);
   }
 
   /**
@@ -280,15 +367,50 @@ class LicenceComparerController extends ControllerBase {
    *   A row array.
    * @param array $class
    *   A list of classes to be added to the empty cell.
+   * @param int $amount
+   *   The number of empty cells to add.
    */
-  protected function padWithEmptyCells(array &$row, array $class): void {
-    $amount = LicenceComparerHelper::MAX_LICENCE_COUNT - count($this->licences);
+  protected function padWithEmptyCells(array &$row, array $class, int $amount): void {
     for ($i = 0; $i < $amount; $i++) {
       $row[] = [
         'data' => '',
         'class' => $class,
       ];
     }
+  }
+
+  /**
+   * Returns list of available licences to add to the compare table.
+   *
+   * @return array
+   *   A list of licence labels indexed by their SPDX ID.
+   */
+  protected function getLicenceOptions(): array {
+    $rdf_storage = $this->entityTypeManager->getStorage('rdf_entity');
+
+    $query = $rdf_storage->getQuery()->condition('rid', 'licence');
+    if (!empty($this->licences)) {
+      // Do not include licences already in the comparison page if any.
+      $existing_ids = array_map(function (RdfInterface $licence): string {
+        return $licence->id();
+      }, $this->licences);
+      $query->condition('id', $existing_ids, 'NOT IN');
+    }
+
+    // In any case, do not show licences that are not linked to an SPDX licence.
+    $query->exists('field_licence_spdx_licence');
+    $options = ['' => $this->t('- Add licence -')];
+    $ids = $query->execute();
+    foreach ($rdf_storage->loadMultiple($ids) as $licence) {
+      $spdx_licence = $licence->get('field_licence_spdx_licence')->entity;
+      $options[$spdx_licence->get('field_spdx_licence_id')->value] = $spdx_licence->label() . ' | ' . $licence->label();
+    }
+    // Query sorting on properties other than ID and rid are not supported in
+    // sparql_entity_storage yet.
+    // @see: https://github.com/ec-europa/sparql_entity_storage/issues/10
+    asort($options);
+
+    return $options;
   }
 
 }
