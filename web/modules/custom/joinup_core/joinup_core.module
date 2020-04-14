@@ -18,7 +18,6 @@ use Drupal\Core\Link;
 use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\Core\Template\Attribute;
 use Drupal\joinup_core\Element\Datetime;
-use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
 use Drupal\node\NodeInterface;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\Utility;
@@ -178,11 +177,6 @@ function joinup_core_entity_type_alter(array &$entity_types) {
   if (!isset($entity_types['rdf_entity'])) {
     return;
   }
-
-  // Provides a workaround for asset_release and solution RDF entity bundles.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
-  // @todo Remove when ISAICP-3126 gets in.
-  $entity_types['rdf_entity']->setListBuilderClass(JoinupRdfListBuilder::class);
 
   // Add the about page and member overview as link templates, so the OG context
   // will be automatically solved.
