@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\Action;
+namespace Drupal\joinup_group_content_management\Plugin\Action;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityReferenceSelection\SelectionPluginManagerInterface;
