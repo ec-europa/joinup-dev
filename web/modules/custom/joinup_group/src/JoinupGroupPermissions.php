@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core;
+namespace Drupal\joinup_group;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\rdf_entity\Entity\RdfEntityType;
@@ -10,7 +10,7 @@ use Drupal\rdf_entity\Entity\RdfEntityType;
 /**
  * Dynamic permissions provider.
  */
-class JoinupPermissions {
+class JoinupGroupPermissions {
 
   use StringTranslationTrait;
 
