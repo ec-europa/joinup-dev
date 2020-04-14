@@ -16,6 +16,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
+    - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_site_featured
@@ -102,6 +103,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: search_api_field
+    region: content
+  field_keywords:
+    weight: 5
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
   label:
     label: hidden
