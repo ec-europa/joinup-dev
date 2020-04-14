@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\Menu;
+namespace Drupal\joinup_user\Plugin\Menu;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\user\Plugin\Menu\LoginLogoutMenuLink as CoreLoginLogoutMenuLink;
