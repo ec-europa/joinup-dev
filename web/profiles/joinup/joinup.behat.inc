@@ -2576,17 +2576,22 @@ JS;
    *   The position of the row in the table. First position starts at 1.
    * @param string $direction
    *   The direction to move the row to. One of "up", "down", "left", "right".
+   * @param string|null $region
+   *   (optional) Only search within a certain region for the given drag icon.
+   *   Default to the whole page.
    *
    * @throws \Exception
    *   Thrown when the table row with the given position cannot be found in the
    *   page.
    *
    * @Then I drag the table row at position :position( to the) :direction
+   * @Then I drag the table row in the :region region at position :position( to the) :direction
    */
-  public function findTableRowByPositionAndDragTowardsDirection(string $position, string $direction): void {
+  public function findTableRowByPositionAndDragTowardsDirection(string $position, string $direction, ?string $region = NULL): void {
     self::assertJavaScriptEnabledBrowser();
 
-    $row = $this->findDraggableTableRowByPosition((int) $position);
+    $region = empty($region) ? $this->getSession()->getPage() : $this->getRegion($region);
+    $row = $this->findDraggableTableRowByPosition((int) $position, $region);
     $this->dragTableRowTowardsDirection($row, $direction);
   }
 
