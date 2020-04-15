@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\joinup_core\Kernel;
+namespace Drupal\Tests\joinup_test\Kernel;
 
 use Drupal\Tests\rdf_entity\Kernel\RdfKernelTestBase;
 
