@@ -1,0 +1,9 @@
+name: 'Joinup RDF'
+type: module
+description: 'Integrates the RDF data model in Joinup.'
+core: 8.x
+package: Joinup
+
+dependencies:
+  - 'rdf_entity:rdf_entity'
+  - 'sparql_entity_storage:sparql_entity_storage'

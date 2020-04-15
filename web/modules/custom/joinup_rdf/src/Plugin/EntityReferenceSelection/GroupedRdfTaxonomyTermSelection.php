@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\EntityReferenceSelection;
+namespace Drupal\joinup_rdf\Plugin\EntityReferenceSelection;
 
 use Drupal\taxonomy\Plugin\EntityReferenceSelection\TermSelection;
 
@@ -41,6 +41,7 @@ class GroupedRdfTaxonomyTermSelection extends TermSelection {
         ->getStorage('taxonomy_term')
         ->loadTree($bundle, 0, NULL, TRUE);
       if ($terms) {
+        $parent_name = NULL;
         foreach ($terms as $term) {
           if ($term->parents[0] === '') {
             $parent_name = $term->label();
