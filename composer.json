@@ -180,6 +180,7 @@
             "web/modules/custom/joinup_news/joinup_news.behat.inc",
             "web/modules/custom/joinup_newsletter/joinup_newsletter.behat.inc",
             "web/modules/custom/joinup_notification/joinup_notification.behat.inc",
+            "web/modules/custom/joinup_paragraphs/joinup_paragraphs.behat.inc",
             "web/modules/custom/joinup_search/joinup_search.behat.inc",
             "web/modules/custom/joinup_seo/joinup_seo.behat.inc",
             "web/modules/custom/joinup_sparql/driver/joinup_sparql/Connection.php",
