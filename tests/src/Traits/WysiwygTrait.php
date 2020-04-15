@@ -84,7 +84,7 @@ trait WysiwygTrait {
    */
   public function hasWysiwyg(string $field): bool {
     try {
-      $this->getWysiwyg($field);
+      $this->getWysiwyg($field, $this->getSession()->getPage());
       return TRUE;
     }
     // Only catch the specific exception that is thrown when the WYSIWYG editor
