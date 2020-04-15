@@ -14,7 +14,4 @@ Feature: Validation of owners created through UI
     And I fill in "Name" with "Leandro Keen"
     And I press "Create owner"
     Then I should see "Leandro Keen"
-    Then I should not see the error message "Name field is required."
-
-    # Clean up the owner created through the UI.
-    Then I delete the "Leandro Keen" owner
+    And I should not see the error message "Name field is required."
