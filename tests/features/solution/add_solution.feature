@@ -15,7 +15,7 @@ Feature: "Add solution" visibility options.
     # Submit the incomplete form, so error messages about missing fields will
     # be shown.
     When I press "Propose"
-    Then I should see the following error message:
+    Then I should see the following error messages:
       | error messages                    |
       | Title field is required.          |
       | Description field is required.    |

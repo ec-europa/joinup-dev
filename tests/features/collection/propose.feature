@@ -41,7 +41,7 @@ Feature: Proposing a collection
 
     # Check that validations errors are shown for required fields.
     When I press "Propose"
-    Then I should see the following error message:
+    Then I should see the following error messages:
       | error messages                    |
       | Title field is required.          |
       | Description field is required.    |
