@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_licence\Kernel;
 
-use Drupal\Tests\joinup_core\Kernel\RdfEntityValidationTestBase;
+use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
 use Drupal\joinup_core\Plugin\Validation\Constraint\UniqueFieldInBundleConstraint;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -13,7 +13,7 @@ use Drupal\rdf_entity\Entity\Rdf;
  *
  * @group entity_validation
  */
-class LicenceValidationTest extends RdfEntityValidationTestBase {
+class UniqueSpdxReferenceTest extends JoinupKernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -23,6 +23,18 @@ class LicenceValidationTest extends RdfEntityValidationTestBase {
     'field_group',
     'smart_trim',
     'spdx',
+    'allowed_formats',
+    'comment',
+    'image',
+    'joinup_core',
+    'node',
+    'oe_newsroom_newsletter',
+    'og',
+    'rdf_taxonomy',
+    'rdf_entity',
+    'rdf_schema_field_validation',
+    'taxonomy',
+    'tour',
   ];
 
   /**
@@ -38,26 +50,9 @@ class LicenceValidationTest extends RdfEntityValidationTestBase {
   protected function setUp() {
     parent::setUp();
 
+    $this->installConfig('joinup_core');
     $this->installConfig('joinup_licence');
     $this->installConfig('spdx');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function getRequiredFields(): array {
-    return [
-      'label',
-      'field_licence_description',
-      'field_licence_type',
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function bundle(): string {
-    return 'licence';
   }
 
   /**

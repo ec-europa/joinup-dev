@@ -38,6 +38,18 @@ Feature: Proposing a collection
     And I should see the description "Web page for the external Repository." for the "Access URL" field
     And I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
     And I should see the description "For best result the image must be larger than 2400x345 pixels." for the "Banner" field
+
+    # Check that validations errors are shown for required fields.
+    When I press "Propose"
+    Then I should see the following error messages:
+      | error messages                    |
+      | Title field is required.          |
+      | Description field is required.    |
+      | Policy domain field is required.  |
+      | Owner field is required.          |
+      | Name field is required.           |
+      | E-mail address field is required. |
+
     When I fill in the following:
       | Title                 | Ancient and Classical Mythology                                                                      |
       | Description           | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
