@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup\Traits;
 
+use Behat\Mink\Element\TraversableElement;
 use Drupal\joinup\Exception\WysiwygEditorNotFoundException;
 
 /**
@@ -19,22 +20,26 @@ trait WysiwygTrait {
    *   example 'Body'.
    * @param string $button
    *   The title of the button to click.
+   * @param TraversableElement|null $region
+   *   (optional) Limit the region to the specific element. Defaults to the full
+   *   page.
    *
    * @throws \Exception
    *   Thrown when the button is not found, or if there are multiple buttons
    *   with the same title.
    */
-  public function pressWysiwygButton($field, $button) {
-    $wysiwyg = $this->getWysiwyg($field);
-    $button_elements = $this->getSession()->getDriver()->find($wysiwyg->getXpath() . '//a[@title="' . $button . '"]');
-    if (empty($button_elements)) {
+  public function pressWysiwygButton(string $field, string $button, ?TraversableElement $region = NULL): void {
+    if (empty($region)) {
+      $region = $this->getSession()->getPage();
+    }
+
+    $wysiwyg = $this->getWysiwyg($field, $region);
+    $button_element = $wysiwyg->find('xpath', '//a[@title="' . $button . '"]');
+    if (empty($button_element)) {
       throw new \Exception("Could not find the '$button' button.");
     }
-    if (count($button_elements) > 1) {
-      throw new \Exception("Multiple '$button' buttons found in the editor.");
-    }
-    $button = reset($button_elements);
-    $button->click();
+
+    $button_element->click();
   }
 
   /**
@@ -47,22 +52,25 @@ trait WysiwygTrait {
    *   example 'Body'.
    * @param string $text
    *   The text to enter in the textarea.
+   * @param TraversableElement|null $region
+   *   (optional) Limit the region to the specific element. Defaults to the full
+   *   page.
    *
    * @throws \Exception
    *   Thrown when the textarea could not be found or if there are multiple
    *   textareas.
    */
-  public function setWysiwygText($field, $text) {
-    $wysiwyg = $this->getWysiwyg($field);
-    $textarea_elements = $this->getSession()->getDriver()->find($wysiwyg->getXpath() . '//textarea');
-    if (empty($textarea_elements)) {
+  public function setWysiwygText(string $field, string $text, ?TraversableElement $region = NULL): void {
+    if (empty($region)) {
+      $region = $this->getSession()->getPage();
+    }
+
+    $wysiwyg = $this->getWysiwyg($field, $region);
+    $textarea_element = $wysiwyg->find('xpath', '//textarea');
+    if (empty($textarea_element)) {
       throw new \Exception("Could not find the textarea for the '$field' field.");
     }
-    if (count($textarea_elements) > 1) {
-      throw new \Exception("Multiple textareas found for '$field'.");
-    }
-    $textarea = reset($textarea_elements);
-    $textarea->setValue($text);
+    $textarea_element->setValue($text);
   }
 
   /**
@@ -74,7 +82,7 @@ trait WysiwygTrait {
    * @return bool
    *   TRUE if the editor is present, FALSE otherwise.
    */
-  public function hasWysiwyg($field) {
+  public function hasWysiwyg(string $field): bool {
     try {
       $this->getWysiwyg($field);
       return TRUE;
@@ -93,8 +101,11 @@ trait WysiwygTrait {
    *
    * @param string $field
    *   The label of the field to which the WYSIWYG editor is attached.
+   * @param TraversableElement|null $region
+   *   (optional) Limit the region to the specific element. Defaults to the full
+   *   page.
    *
-   * @return \Behat\Mink\Element\NodeElement
+   * @return \Behat\Mink\Element\TraversableElement
    *   The WYSIWYG editor.
    *
    * @throws \Exception
@@ -103,24 +114,19 @@ trait WysiwygTrait {
    * @throws \Drupal\joinup\Exception\WysiwygEditorNotFoundException
    *   Thrown when the wysiwyg editor can not be found in the page.
    */
-  protected function getWysiwyg($field) {
-    $driver = $this->getSession()->getDriver();
-    $label_elements = $driver->find('//label[text()="' . $field . '"]');
-    if (empty($label_elements)) {
+  protected function getWysiwyg(string $field, TraversableElement $region): TraversableElement {
+    $label_element = $region->find('xpath', '//label[text()="' . $field . '"]');
+    if (empty($label_element)) {
       throw new \Exception("Could not find the '$field' field label.");
     }
-    if (count($label_elements) > 1) {
-      throw new \Exception("Multiple '$field' labels found in the page.");
-    }
-    $wysiwyg_id = 'cke_' . $label_elements[0]->getAttribute('for');
-    $wysiwyg_elements = $driver->find('//div[@id="' . $wysiwyg_id . '"]');
-    if (empty($wysiwyg_elements)) {
+
+    $wysiwyg_id = 'cke_' . $label_element->getAttribute('for');
+    $wysiwyg_element = $region->find('xpath', '//div[@id="' . $wysiwyg_id . '"]');
+    if (empty($wysiwyg_element)) {
       throw new WysiwygEditorNotFoundException("Could not find the '$field' wysiwyg editor.");
     }
-    if (count($wysiwyg_elements) > 1) {
-      throw new \Exception("Multiple '$field' wysiwyg editors found in the page.");
-    }
-    return reset($wysiwyg_elements);
+
+    return $wysiwyg_element;
   }
 
 }
