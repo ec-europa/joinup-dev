@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_core\Kernel;
 
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\Tests\joinup_test\Kernel\JoinupKernelTestBase;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Base class for tests that verify the validation of rdf entities.
