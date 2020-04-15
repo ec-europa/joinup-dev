@@ -20,7 +20,7 @@ trait WysiwygTrait {
    *   example 'Body'.
    * @param string $button
    *   The title of the button to click.
-   * @param TraversableElement|null $region
+   * @param \Behat\Mink\Element\TraversableElement|null $region
    *   (optional) Limit the region to the specific element. Defaults to the full
    *   page.
    *
@@ -52,7 +52,7 @@ trait WysiwygTrait {
    *   example 'Body'.
    * @param string $text
    *   The text to enter in the textarea.
-   * @param TraversableElement|null $region
+   * @param \Behat\Mink\Element\TraversableElement|null $region
    *   (optional) Limit the region to the specific element. Defaults to the full
    *   page.
    *
@@ -101,7 +101,7 @@ trait WysiwygTrait {
    *
    * @param string $field
    *   The label of the field to which the WYSIWYG editor is attached.
-   * @param TraversableElement|null $region
+   * @param \Behat\Mink\Element\TraversableElement|null $region
    *   (optional) Limit the region to the specific element. Defaults to the full
    *   page.
    *
