@@ -212,4 +212,15 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
     return $element;
   }
 
+  /**
+   * Clears up any manually created remaining paragraphs in the database.
+   *
+   * @AfterScenario @paragraphs_cleanup
+   */
+  public function paragraphsCleanup(): void {
+    foreach (\Drupal::entityTypeManager()->getStorage('paragraph')->loadMultiple() as $paragraph) {
+      $paragraph->delete();
+    }
+  }
+
 }

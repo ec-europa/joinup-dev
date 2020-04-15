@@ -1993,7 +1993,14 @@ class JoinupSubContext extends DrupalSubContextBase {
       $worker->processItem($item->data);
       $queue->deleteItem($item);
     }
+  }
 
+  /**
+   * Cleans up the paragraphs entities created when nodes where created.
+   *
+   * @AfterScenario
+   */
+  public function paragraphsCleanup(): void {
     foreach ($this->paragraphs as $paragraph) {
       $paragraph->delete();
     }
