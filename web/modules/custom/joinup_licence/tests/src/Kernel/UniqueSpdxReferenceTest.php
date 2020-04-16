@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_licence\Kernel;
 
-use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
+use Drupal\Tests\joinup_test\Kernel\JoinupKernelTestBase;
 use Drupal\joinup_core\Plugin\Validation\Constraint\UniqueFieldInBundleConstraint;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -19,20 +19,21 @@ class UniqueSpdxReferenceTest extends JoinupKernelTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
-    'joinup_licence',
-    'field_group',
-    'smart_trim',
-    'spdx',
     'allowed_formats',
     'comment',
+    'field_group',
     'image',
     'joinup_core',
+    'joinup_licence',
+    'joinup_rdf',
     'node',
     'oe_newsroom_newsletter',
     'og',
-    'rdf_taxonomy',
     'rdf_entity',
     'rdf_schema_field_validation',
+    'rdf_taxonomy',
+    'smart_trim',
+    'spdx',
     'taxonomy',
     'tour',
   ];
