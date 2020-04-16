@@ -8,6 +8,7 @@ dependencies:
     - rdf_entity.rdfentity.licence
   module:
     - smart_trim
+    - template_suggestion
     - user
 id: rdf_entity.licence.view_mode_tile
 targetEntityType: rdf_entity
@@ -31,7 +32,7 @@ content:
       more_link: false
       summary_handler: full
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: smart_trim
     region: content
@@ -42,7 +43,7 @@ content:
     settings:
       link_to_entity: true
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
 hidden:

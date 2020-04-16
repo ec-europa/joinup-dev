@@ -25,6 +25,7 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_status
     - rdf_entity.rdfentity.asset_release
   module:
+    - template_suggestion
     - user
 id: rdf_entity.asset_release.view_mode_featured
 targetEntityType: rdf_entity
@@ -41,7 +42,7 @@ content:
       custom_date_format: ''
       timezone: ''
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
   field_isr_affiliations_requests:
     weight: 22
@@ -128,7 +129,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     region: content
   field_isr_source_code_repository:
@@ -185,7 +186,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
   label:
     label: hidden
@@ -194,7 +195,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     region: content
 hidden:

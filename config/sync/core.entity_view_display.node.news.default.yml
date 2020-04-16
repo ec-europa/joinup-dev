@@ -26,8 +26,8 @@ dependencies:
     - field_group
     - file
     - image
-    - joinup
     - link
+    - template_suggestion
     - text
     - user
 third_party_settings:
@@ -68,7 +68,7 @@ content:
     settings:
       use_description_as_link_text: true
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: with_label
   field_comments:
     type: comment_default
@@ -85,7 +85,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: string
     region: content
@@ -98,7 +98,7 @@ content:
       image_style: image_style_news_logo
       image_link: content
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
   field_news_referenced_solution:
     weight: 8
@@ -107,7 +107,7 @@ content:
       view_mode: view_mode_tile
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: entity_reference__listing_tile
     type: entity_reference_entity_view
     region: content
@@ -121,7 +121,7 @@ content:
       rel: '0'
       target: '0'
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
     type: link
     region: content
@@ -134,7 +134,7 @@ content:
       view_mode: view_mode_tile
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: entity_reference__listing_tile
   report:
     label: hidden
@@ -147,7 +147,7 @@ content:
       rel: '0'
       target: '0'
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: link
   share_link:

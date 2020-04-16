@@ -10,6 +10,7 @@ dependencies:
     - rdf_entity.rdfentity.licence
   module:
     - field_group
+    - template_suggestion
     - text
     - user
 third_party_settings:
@@ -53,7 +54,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_licence_spdx_licence:
     weight: 5
@@ -61,7 +62,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
     type: entity_reference_label
     region: content
@@ -71,7 +72,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
     type: entity_reference_label
     region: content
@@ -82,7 +83,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     region: content
   spdx_licence_id:
