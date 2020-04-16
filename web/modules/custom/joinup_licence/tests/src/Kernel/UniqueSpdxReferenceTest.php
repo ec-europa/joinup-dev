@@ -38,6 +38,14 @@ class UniqueSpdxReferenceTest extends JoinupKernelTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
+    $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
 
