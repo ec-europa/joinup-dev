@@ -19,21 +19,13 @@ class UniqueSpdxReferenceTest extends JoinupKernelTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
-    'allowed_formats',
-    'comment',
-    'field_group',
-    'image',
-    'joinup_core',
     'joinup_licence',
-    'joinup_rdf',
-    'node',
-    'oe_newsroom_newsletter',
-    'og',
-    'rdf_entity',
+    'joinup_validation',
     'rdf_schema_field_validation',
     'rdf_taxonomy',
     'spdx',
     'taxonomy',
+    'template_suggestion',
   ];
 
   /**
@@ -49,7 +41,6 @@ class UniqueSpdxReferenceTest extends JoinupKernelTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->installConfig('joinup_rdf');
     $this->installConfig('joinup_licence');
     $this->installConfig('spdx');
   }
