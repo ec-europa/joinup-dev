@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_licence\Kernel;
 
 use Drupal\Tests\joinup_test\Kernel\JoinupKernelTestBase;
-use Drupal\joinup_core\Plugin\Validation\Constraint\UniqueFieldInBundleConstraint;
+use Drupal\joinup_validation\Plugin\Validation\Constraint\UniqueFieldInBundleConstraint;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**

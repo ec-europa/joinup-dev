@@ -83,6 +83,7 @@ module:
   joinup_stats: 0
   joinup_subscription: 0
   joinup_user: 0
+  joinup_validation: 0
   joinup_video: 0
   joinup_workflow: 0
   language: 0
