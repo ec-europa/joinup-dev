@@ -17,7 +17,6 @@ config_devel:
     - core.entity_view_mode.rdf_entity.view_mode_featured
     - core.entity_view_mode.rdf_entity.view_mode_tile
     - field.storage.rdf_entity.field_keywords
-    - field.storage.rdf_entity.field_newsletter
     - field.storage.rdf_entity.field_policy_domain
     - field.storage.rdf_entity.field_site_featured
     - field.storage.rdf_entity.field_site_pinned
@@ -25,3 +24,5 @@ config_devel:
     - field.storage.rdf_entity.field_status
     - field.storage.rdf_entity.field_topic
     - field.storage.rdf_entity.og_audience
+  optional:
+    - field.storage.rdf_entity.field_newsletter
