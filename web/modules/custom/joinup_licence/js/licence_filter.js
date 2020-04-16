@@ -135,6 +135,14 @@
     $('.licence-search__input input').val('');
     $('.licence-search__input .mdl-js-textfield')[0].MaterialTextfield.checkDirty();
     checkLicenceCategories();
+    // Also, uncheck any selected licences checked for comparison and disable
+    // the "Compare" buttons. The 'data-licence-compare' attribute which is set
+    // to [], is the attribute that stores the licences set-up for comparison.
+    $('.licence-tile .mdl-js-checkbox').each(function () {
+      $(this)[0].MaterialCheckbox.uncheck();
+    });
+    $('.listing--licences').attr('data-licence-compare', '[]');
+    enableCompareButton(false);
   });
 
   // Change compare elements if the checkbox is clicked.
