@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_eulogin\ExistingSite;
 
 use Drupal\Tests\cas\Traits\CasTestTrait;
-use Drupal\Tests\joinup_core\ExistingSite\JoinupExistingSiteTestBase;
+use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
 use Drupal\user\Entity\User;
 use weitzman\LoginTrait\LoginTrait;
 

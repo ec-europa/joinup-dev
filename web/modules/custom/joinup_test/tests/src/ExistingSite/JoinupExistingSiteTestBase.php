@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\joinup_core\ExistingSite;
+namespace Drupal\Tests\joinup_test\ExistingSite;
 
 use Drupal\joinup\Traits\AntibotTrait;
 use Drupal\joinup\Traits\MailConfigTrait;
