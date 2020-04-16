@@ -71,9 +71,16 @@ class SolutionAffiliationTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
+    $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
-    $this->setUpSparql();
 
     RdfEntityType::create(['rid' => 'collection'])->save();
 
