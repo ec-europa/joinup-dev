@@ -32,10 +32,8 @@ class UniqueSpdxReferenceTest extends JoinupKernelTestBase {
     'rdf_entity',
     'rdf_schema_field_validation',
     'rdf_taxonomy',
-    'smart_trim',
     'spdx',
     'taxonomy',
-    'tour',
   ];
 
   /**
@@ -51,7 +49,7 @@ class UniqueSpdxReferenceTest extends JoinupKernelTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->installConfig('joinup_core');
+    $this->installConfig('joinup_rdf');
     $this->installConfig('joinup_licence');
     $this->installConfig('spdx');
   }
