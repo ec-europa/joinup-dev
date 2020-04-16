@@ -38,6 +38,7 @@ class SolutionAffiliationTest extends KernelTestBase {
     'image',
     'inline_entity_form',
     'joinup_core',
+    'joinup_rdf',
     'joinup_sparql',
     'joinup_workflow',
     'link',
@@ -59,6 +60,7 @@ class SolutionAffiliationTest extends KernelTestBase {
     'state_machine',
     'system',
     'taxonomy',
+    'template_suggestion',
     'text',
     'tour',
     'user',
@@ -81,6 +83,8 @@ class SolutionAffiliationTest extends KernelTestBase {
     $this->installEntitySchema('rdf_entity');
     $this->installConfig([
       'joinup_core',
+      'joinup_rdf',
+      'template_suggestion',
       'rdf_draft',
       'rdf_entity',
       'solution',
