@@ -5,7 +5,6 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - 'allowed_formats:allowed_formats'
   - 'drupal:comment'
   - 'drupal:image'
   - 'drupal:link'
@@ -30,13 +29,11 @@ dependencies:
 config_devel:
   install:
     - comment.type.comment
-    - core.entity_form_display.comment.comment.default
     - core.entity_view_display.comment.comment.default
     - core.entity_view_display.taxonomy_term.eira.default
     - core.entity_view_mode.node.moderation
     - core.entity_view_mode.node.view_mode_featured
     - core.entity_view_mode.node.view_mode_tile
-    - field.field.comment.comment.field_body
     - field.field.taxonomy_term.eira.field_taxonomy_deprecated
     - field.field.taxonomy_term.eira.field_taxonomy_related_term
     - field.field.taxonomy_term.eira.field_taxonomy_replaces
@@ -93,3 +90,6 @@ config_devel:
     - tour.tour.account
     - tour.tour.content_overview
     - tour.tour.rdf_entity_canonical
+  optional:
+    - core.entity_form_display.comment.comment.default
+    - field.field.comment.comment.field_body
