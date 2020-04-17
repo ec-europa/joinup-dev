@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\Validation\Constraint;
+namespace Drupal\joinup_validation\Plugin\Validation\Constraint;
 
 use Drupal\joinup_core\Traits\FieldItemsTrait;
 use Symfony\Component\Validator\Constraint;
@@ -26,7 +26,7 @@ class RequiredIfOtherFieldHasValueConstraintValidator extends ConstraintValidato
     }
 
     $entity = $items->getEntity();
-    /** @var \Drupal\joinup_core\Plugin\Validation\Constraint\RequiredIfOtherFieldHasValueConstraint $constraint */
+    /** @var \Drupal\joinup_validation\Plugin\Validation\Constraint\RequiredIfOtherFieldHasValueConstraint $constraint */
     /** @var \Drupal\Core\Field\FieldItemListInterface $dependent_field */
     $dependent_field = $entity->get($constraint->field);
 

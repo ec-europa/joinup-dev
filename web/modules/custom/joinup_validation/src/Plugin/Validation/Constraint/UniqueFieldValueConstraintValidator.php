@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\Validation\Constraint;
+namespace Drupal\joinup_validation\Plugin\Validation\Constraint;
 
 use Drupal\joinup_core\Traits\FieldItemsTrait;
 use Symfony\Component\Validator\Constraint;
