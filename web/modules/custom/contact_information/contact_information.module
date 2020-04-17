@@ -16,6 +16,11 @@ use Drupal\Core\Session\AccountInterface;
  * Implements hook_entity_bundle_field_info_alter().
  */
 function contact_information_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  // During the development of the contact information functionality we were
+  // helpfully supplied by the business analysts with a regular expression to
+  // validate the email addresses, and they were insistent to use this. So we
+  // use a bespoke regex instead of \Drupal\Component\Utility\EmailValidator.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2404
   if ($entity_type->id() == 'rdf_entity' && $bundle == 'contact_information' && !empty($fields['field_ci_email'])) {
     $fields['field_ci_email']->addConstraint('JoinupEmail');
   }
