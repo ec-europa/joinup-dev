@@ -24,6 +24,7 @@ use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
+use Drupal\joinup_subscription\JoinupSubscriptionsInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\user\Entity\User;
 use PHPUnit\Framework\Assert;
@@ -302,8 +303,8 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
    * navigated to the my subscription form before performing this step.
    *
    * Table format:
-   * | Collection A | Discussion, Document, Event, News |
-   * | Collection B | Discussion, Event                 |
+   * | Collection A | Solution, Discussion, Document, Event, News |
+   * | Collection B | Discussion, Event                           |
    *
    * @param \Behat\Gherkin\Node\TableNode $subscription_options
    *   The Behat table node containing the subscription options.
@@ -315,16 +316,20 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
    * @Then the following collection content subscriptions should be selected:
    */
   public function assertSubscriptionOptionsInMySubscriptions(TableNode $subscription_options): void {
-    foreach ($subscription_options->getRowsHash() as $collection_label => $bundle_ids) {
-      $bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($bundle_ids));
+    foreach ($subscription_options->getRowsHash() as $collection_label => $expected_bundle_ids) {
+      $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
       $collection = self::getRdfEntityByLabel($collection_label, 'collection');
-      foreach (CommunityContentHelper::BUNDLES as $bundle_id) {
-        $locator = 'collections[' . $collection->id() . '][bundles][' . $bundle_id . ']';
-        if (in_array($bundle_id, $bundle_ids)) {
-          $this->assertSession()->checkboxChecked($locator);
-        }
-        else {
-          $this->assertSession()->checkboxNotChecked($locator);
+      foreach (JoinupSubscriptionsInterface::BUNDLES as $entity_type_id => $bundle_ids) {
+        foreach ($bundle_ids as $bundle_id) {
+          $key = implode('|', [$entity_type_id, $bundle_id]);
+          $locator = 'collections[' . $collection->id() . '][bundles][' . $key . ']';
+          if (in_array($bundle_id, $expected_bundle_ids)) {
+            $this->assertSession()->checkboxChecked($locator);
+          }
+          else {
+            $this->assertSession()->checkboxNotChecked($locator);
+          }
+
         }
       }
     }
