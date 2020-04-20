@@ -113,6 +113,7 @@ class MySubscriptionsForm extends FormBase {
     $this->loadUserSubscriptionFrequencyWidget($form, $form_state, $user);
 
     $memberships = $this->groupManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
+    $user_is_subscribed = FALSE;
 
     // Add a JS behavior to enable the buttons when the checkboxes or the
     // dropdown on the form are toggled.
@@ -143,7 +144,6 @@ class MySubscriptionsForm extends FormBase {
 
     // Keep track of the collections with subscriptions in order to properly
     // show or hide the 'Unsubscribe from all' button in the end of the page.
-    $collections_with_subscription = $form_state->has('collections_with_subscription') ? $form_state->get('collections_with_subscription') : [];
     foreach ($memberships as $membership) {
       $collection = $membership->getGroup();
       if ($collection === NULL) {
@@ -182,14 +182,13 @@ class MySubscriptionsForm extends FormBase {
       $subscription_status = [];
 
       $subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
-      $membership_has_subscription = FALSE;
       foreach (JoinupSubscriptionsInterface::BUNDLES as $entity_type_id => $bundle_ids) {
         foreach ($bundle_ids as $bundle_id) {
           $key = static::getSubscriptionKey($entity_type_id, $bundle_id);
           $value = array_reduce($subscription_bundles, function (bool $carry, EntityBundlePairItem $entity_bundle_pair) use ($entity_type_id, $bundle_id): bool {
             return $carry || $entity_bundle_pair->getEntityTypeId() === $entity_type_id && $entity_bundle_pair->getBundleId() === $bundle_id;
           }, FALSE);
-          $membership_has_subscription = $membership_has_subscription || $value;
+          $user_is_subscribed = $user_is_subscribed || $value;
           $form['collections'][$collection->id()]['bundles'][$key] = [
             '#type' => 'checkbox',
             '#title' => $bundle_info[$entity_type_id][$bundle_id]['label'],
@@ -204,10 +203,6 @@ class MySubscriptionsForm extends FormBase {
           // Store status of checkboxes.
           $subscription_status[$key] = $value;
         }
-      }
-
-      if ($membership_has_subscription) {
-        $collections_with_subscription[$collection->id()] = $collection->id();
       }
 
       $form['collections'][$collection->id()]['bundles']['submit'] = [
@@ -247,12 +242,9 @@ class MySubscriptionsForm extends FormBase {
       '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
         'user' => $user->id(),
       ]),
-      '#access' => !empty($collections_with_subscription),
+      '#access' => $user_is_subscribed,
     ];
 
-    // Store the information for the AJAX submit handlers to properly update the
-    // form.
-    $form_state->set('collections_with_subscription', $collections_with_subscription);
     return $form;
   }
 
@@ -332,7 +324,6 @@ class MySubscriptionsForm extends FormBase {
    */
   public function reloadCollection(array &$form, FormStateInterface $form_state): AjaxResponse {
     $submitted_collection_id = $this->getTriggeringElementCollectionId($form_state);
-    $collections_with_subscription = $form_state->get('collections_with_subscription');
     $form['collections'][$submitted_collection_id]['bundles']['submit']['#value'] = $this->t('Saved!');
 
     // Change status of checkboxes.
@@ -345,17 +336,8 @@ class MySubscriptionsForm extends FormBase {
     }
     $form['collections'][$submitted_collection_id]['bundles']['submit']['#attributes']['data-drupal-subscriptions'] = Json::encode(array_values($subscription_status));
 
-    // Add the collection to (or remove it from) the list of collections with a
-    // subscription to properly handle the 'Unsubscribe from all' button.
-    if (empty(array_filter($subscription_status)) && isset($collections_with_subscription[$submitted_collection_id])) {
-      unset($collections_with_subscription[$submitted_collection_id]);
-    }
-    else {
-      $collections_with_subscription[$submitted_collection_id] = $submitted_collection_id;
-    }
-
-    $form_state->set('collections_with_subscription', $collections_with_subscription);
-    $form['edit-actions']['unsubscribe_all']['#access'] = !empty($collections_with_subscription);
+    $user = $form_state->getBuildInfo()['args'][0];
+    $form['edit-actions']['unsubscribe_all']['#access'] = $this->hasSubscriptions($user);
 
     return (new AjaxResponse())
       ->addCommand(new ReplaceCommand("#{$form['collections'][$submitted_collection_id]['#id']}", $form['collections'][$submitted_collection_id]))
@@ -446,6 +428,25 @@ class MySubscriptionsForm extends FormBase {
    */
   protected static function getSubscriptionKey(string $entity_type_id, string $bundle_id): string {
     return implode('|', [$entity_type_id, $bundle_id]);
+  }
+
+  /**
+   * Returns whether the given user has any subscriptions.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *   The user to check.
+   *
+   * @return bool
+   *   TRUE if the user is subscribed to at least one collection content type.
+   */
+  protected function hasSubscriptions(AccountInterface $user): bool {
+    foreach ($this->groupManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection') as $membership) {
+      $subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
+      if (!empty($subscription_bundles)) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
 }
