@@ -228,7 +228,9 @@ class MySubscriptionsForm extends FormBase {
           // Make sure to turn autocomplete off so that the browser doesn't try
           // to restore a half submitted form when the user does a soft reload.
           'autocomplete' => 'off',
-          'data-drupal-subscriptions' => Json::encode($subscription_status),
+          // Store the initial state of the subscriptions so that we can unlock
+          // the save button in JS whenever a state changes.
+          'data-drupal-subscriptions' => Json::encode(array_values($subscription_status)),
         ],
       ];
     }
@@ -341,7 +343,7 @@ class MySubscriptionsForm extends FormBase {
         $subscription_status[$key] = $form['collections'][$submitted_collection_id]['bundles'][$key]['#checked'];
       }
     }
-    $form['collections'][$submitted_collection_id]['bundles']['submit']['#attributes']['data-drupal-subscriptions'] = Json::encode($subscription_status);
+    $form['collections'][$submitted_collection_id]['bundles']['submit']['#attributes']['data-drupal-subscriptions'] = Json::encode(array_values($subscription_status));
 
     // Add the collection to (or remove it from) the list of collections with a
     // subscription to properly handle the 'Unsubscribe from all' button.

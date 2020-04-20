@@ -339,8 +339,8 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
    * Checks that the given collection content subscriptions are present.
    *
    * Table format:
-   * | Collection A | Discussion, Document, Event, News |
-   * | Collection B | Discussion, Event                 |
+   * | Collection A | Discussion, Document, Event, News, Solution |
+   * | Collection B | Discussion, Event                           |
    *
    * @param \Behat\Gherkin\Node\TableNode $subscriptions
    *   The Behat table node containing the expected subscriptions. The first
@@ -355,17 +355,24 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
    */
   public function assertCollectionContentSubscriptions(TableNode $subscriptions): void {
     $user = $this->getUserManager()->getCurrentUser();
+    /** @var \Drupal\Core\Session\AccountInterface $account */
     $account = User::load($user->uid);
+
     foreach ($subscriptions->getRowsHash() as $collection_label => $expected_bundle_ids) {
       $collection = self::getRdfEntityByLabel($collection_label);
-      $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
       $membership = $this->getMembershipByGroupAndUser($collection, $account, OgMembershipInterface::ALL_STATES);
+
+      $expected_bundle_ids = array_map(function (string $bundle) {
+        return static::translateSubscriptionBundle($bundle);
+      }, $this->explodeCommaSeparatedStepArgument($expected_bundle_ids));
+
       $actual_bundle_ids = array_map(function (array $item): string {
         return $item['bundle'];
       }, $membership->get('subscription_bundles')->getValue());
 
       sort($expected_bundle_ids);
       sort($actual_bundle_ids);
+
       Assert::assertEquals($expected_bundle_ids, $actual_bundle_ids);
     }
   }
@@ -522,6 +529,28 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
     }
 
     return $emails;
+  }
+
+  /**
+   * Converts a human readable subscription bundle into a subscription key.
+   *
+   * @param string $bundle
+   *   The human readable subscription bundle, one of 'Discussion', 'Document',
+   *   'Event', 'News', 'Solution'. Case insensitive.
+   *
+   * @return string
+   *   The subscription key, e.g. 'node|discussion'.
+   */
+  protected static function translateSubscriptionBundle(string $bundle): string {
+    $bundle = strtolower($bundle);
+    foreach (JoinupSubscriptionsInterface::BUNDLES as $entity_type_id => $bundle_ids) {
+      foreach ($bundle_ids as $bundle_id) {
+        if ($bundle_id === $bundle) {
+          return implode('|', [$entity_type_id, $bundle_id]);
+        }
+      }
+    }
+    throw new \InvalidArgumentException(sprintf('Cannot translate invalid bundle "%s".', $bundle));
   }
 
 }
