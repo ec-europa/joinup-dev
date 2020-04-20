@@ -280,8 +280,8 @@ class MySubscriptionsForm extends FormBase {
     sort($original_bundles);
     if ($subscribed_bundles !== $original_bundles) {
       // Bundle subscriptions have changed, update the membership.
-      $membership->set('subscription_bundles', array_map(function (string $bundle): array {
-        return ['entity_type' => 'node', 'bundle' => $bundle];
+      $membership->set('subscription_bundles', array_map(function (string $key): array {
+        return array_combine(['entity_type', 'bundle'], explode('|', $key));
       }, $subscribed_bundles))->save();
     }
   }
