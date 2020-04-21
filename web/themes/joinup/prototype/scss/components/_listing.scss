@@ -374,6 +374,7 @@
   @include number-rows(3, $row-height);
 }
 
+.listing__card--challenge,
 .listing__card--collection,
 .listing__card--solution,
 .listing__card--custom-page {
