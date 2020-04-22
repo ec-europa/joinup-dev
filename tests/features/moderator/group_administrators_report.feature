@@ -32,18 +32,24 @@ Feature: Group administrators report
 
     And I am logged in as a moderator
     And I click "Reporting" in the "Administration toolbar" region
-    And I click "Collection administrators"
+    And I click "Group administrators and facilitators"
 
-    Then the "collection administrator report" table should be:
-      | Collection         | User name         | E-mail                       | Role          |
-      | bony fishes        | melissa Kevorkian | mkevorkian@fishes.co.uk      | facilitator   |
-      | bony fishes        | Victor Otto       | votto@fishes.co.uk           | administrator |
-      | bony fishes        | Victor Otto       | votto@fishes.co.uk           | facilitator   |
-      | Large living birds | Melor Vescovi     | melor1998@hotmail.com        | facilitator   |
-      | Large living birds | Najib Randall     | randall@najib-industries.com | administrator |
-      | Large living birds | Panteleimon Kita  | pantopanto@gmail.com         | facilitator   |
+    Then I should see the button "Generate data"
+    And I should not see the button "Download"
+    And I should not see the button "Regenerate data"
 
-    And the "collection administrator report" table should not contain the following columns:
-      | Collection         | User name      |
-      | Large living birds | Major Jacobsen |
-      | bony fishes        | Melor Vescovi  |
+    When I press "Generate data"
+    And I wait for the batch process to finish
+    Then I should see the success message "Data have been rebuilt."
+    And I should see the button "Download"
+    And I should see the button "Regenerate data"
+    But I should not see the button "Generate data"
+
+    Given I press "Download"
+    Then the response should contain "\"User name\",\"User url\",\"User email\",\"Group bundle\",\"Group ID\",\"Group label\",\"Group url\",\"Is administrator\""
+    And the response should contain "Victor Otto"
+    And the response should contain "Melor Vescovi"
+    # Only using the name partially to ensure that spaces don't affect the result.
+    But the response should not contain "Najib"
+    And the response should not contain "Panteleimon"
+    And the response should not contain "Jakobsen"
