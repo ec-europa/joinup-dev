@@ -4,16 +4,16 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.message.mail_body
-    - field.field.message.community_content_subscription.field_community_content
-    - message.template.community_content_subscription
+    - field.field.message.collection_content_subscription.field_collection_content
+    - message.template.collection_content_subscription
   module:
     - joinup
-id: message.community_content_subscription.mail_body
+id: message.collection_content_subscription.mail_body
 targetEntityType: message
-bundle: community_content_subscription
+bundle: collection_content_subscription
 mode: mail_body
 content:
-  field_community_content:
+  field_collection_content:
     type: entity_reference_entity_view
     weight: 0
     region: content

@@ -1,0 +1,34 @@
+uuid: b5b5ec6f-5d48-4a8d-9a51-d2b069634c3b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_collection_content
+    - message.template.collection_content_subscription
+    - node.type.discussion
+    - node.type.document
+    - node.type.event
+    - node.type.news
+id: message.collection_content_subscription.field_collection_content
+field_name: field_collection_content
+entity_type: message
+bundle: collection_content_subscription
+label: 'Collection content'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      discussion: discussion
+      document: document
+      event: event
+      news: news
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: document
+field_type: entity_reference

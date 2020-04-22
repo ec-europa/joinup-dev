@@ -81,7 +81,7 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
       return;
     }
 
-    $this->sendMessage($entity, 'community_content_subscription');
+    $this->sendMessage($entity, 'collection_content_subscription');
   }
 
   /**
@@ -99,7 +99,7 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
       return;
     }
 
-    $this->sendMessage($entity, 'community_content_subscription');
+    $this->sendMessage($entity, 'collection_content_subscription');
   }
 
   /**

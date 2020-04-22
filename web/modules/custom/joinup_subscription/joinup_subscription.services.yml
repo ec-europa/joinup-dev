@@ -1,5 +1,5 @@
 services:
-  joinup_subscription.community_content_subscription_subscriber:
+  joinup_subscription.collection_content_subscription_subscriber:
     class: Drupal\joinup_subscription\EventSubscriber\CollectionContentSubscriptionSubscriber
     arguments: ['@entity_type.manager', '@joinup_notification.message_delivery', '@logger.factory']
     tags:

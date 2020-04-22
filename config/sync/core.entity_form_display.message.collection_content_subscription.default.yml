@@ -3,14 +3,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.message.community_content_subscription.field_community_content
-    - message.template.community_content_subscription
-id: message.community_content_subscription.default
+    - field.field.message.collection_content_subscription.field_collection_content
+    - message.template.collection_content_subscription
+id: message.collection_content_subscription.default
 targetEntityType: message
-bundle: community_content_subscription
+bundle: collection_content_subscription
 mode: default
 content:
-  field_community_content:
+  field_collection_content:
     weight: 0
     settings:
       match_operator: CONTAINS

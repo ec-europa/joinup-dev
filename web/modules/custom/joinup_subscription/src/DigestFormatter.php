@@ -25,7 +25,7 @@ class DigestFormatter extends OriginalFormatter {
    * This is used to identify if we are sending a digest for community content
    * subscriptions.
    */
-  const TEMPLATE_ID = 'community_content_subscription';
+  const TEMPLATE_ID = 'collection_content_subscription';
 
   /**
    * {@inheritdoc}
