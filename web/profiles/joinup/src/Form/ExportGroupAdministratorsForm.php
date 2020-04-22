@@ -250,7 +250,7 @@ class ExportGroupAdministratorsForm extends FormBase {
     $this->messenger()->addMessage('Data have been rebuilt.');
 
     // Handle the file here.
-    return new RedirectResponse(Url::fromRoute('joinup.group_administrators_export')->toString());
+    return new RedirectResponse(Url::fromRoute('joinup.group_administrators_report')->toString());
   }
 
   /**

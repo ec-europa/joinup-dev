@@ -54,7 +54,7 @@ joinup.group_administrators_report:
   path: '/admin/reporting/group-administrators/export'
   defaults:
     _form: '\Drupal\joinup\Form\ExportGroupAdministratorsForm'
-    _title: 'Export administrators list'
+    _title: 'Group administrators and facilitators'
   requirements:
     _permission: 'administer users'
   options:
