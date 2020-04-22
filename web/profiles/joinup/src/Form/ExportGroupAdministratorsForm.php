@@ -116,10 +116,11 @@ class ExportGroupAdministratorsForm extends FormBase {
       $form_state->set('download_data', array_values($data->data));
     }
 
-    $button_value = empty($data) ? 'Generate data' : 'Regenerate data';
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t($button_value),
+      '#value' => $this->t(':generate data', [
+        ':generate' => empty($data) ? 'Generate data' : 'Regenerate data',
+      ]),
       '#submit' => ['::generateData'],
     ];
 
