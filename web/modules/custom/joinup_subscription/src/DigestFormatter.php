@@ -102,7 +102,7 @@ class DigestFormatter extends OriginalFormatter {
   protected function getCollection(MessageInterface $message): RdfInterface {
     // Find the collections by resolving the entity references from the message
     // to the community content to the collection.
-    $content = $message->field_community_content->first()->entity;
+    $content = $message->field_collection_content->first()->entity;
     return $content->og_audience->first()->entity;
   }
 

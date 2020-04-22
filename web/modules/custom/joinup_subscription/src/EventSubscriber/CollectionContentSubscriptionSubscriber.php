@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_subscription\EventSubscriber;
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
@@ -105,13 +106,13 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
   /**
    * Returns the list of subscribers.
    *
-   * @param \Drupal\node\NodeInterface $entity
-   *   The community content entity for which to return the subscribers.
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The collection content entity for which to return the subscribers.
    *
    * @return \Drupal\user\UserInterface[]
    *   The list of subscribers as an array of user accounts, keyed by user ID.
    */
-  protected function getSubscribers(NodeInterface $entity): array {
+  protected function getSubscribers(ContentEntityInterface $entity): array {
     $group_id = $entity->get('og_audience')->target_id;
     $group_entity_type = $entity->getFieldDefinition('og_audience')->getSetting('target_type');
     $membership_storage = $this->entityTypeManager->getStorage('og_membership');
@@ -138,25 +139,25 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
   /**
    * Sends the notification to the recipients.
    *
-   * @param \Drupal\node\NodeInterface $community_content
-   *   The community content for which to send the notification.
+   * @param \Drupal\Core\Entity\ContentEntityInterface $collection_content
+   *   The collection content for which to send the notification.
    * @param string $message_template
    *   The ID of the message template to use.
    *
    * @return bool
    *   Whether or not the sending of the e-mails has succeeded.
    */
-  protected function sendMessage(NodeInterface $community_content, string $message_template): bool {
+  protected function sendMessage(ContentEntityInterface $collection_content, string $message_template): bool {
     try {
       $success = TRUE;
       // Create individual messages for each subscriber so that we can honor the
       // user's chosen digest frequency.
-      foreach ($this->getSubscribers($community_content) as $subscriber) {
+      foreach ($this->getSubscribers($collection_content) as $subscriber) {
         $message_values = [
-          'field_community_content' => [
+          'field_collection_content' => [
             0 => [
-              'target_type' => $community_content->getEntityTypeId(),
-              'target_id' => $community_content->id(),
+              'target_type' => $collection_content->getEntityTypeId(),
+              'target_id' => $collection_content->id(),
             ],
           ],
         ];
@@ -166,7 +167,7 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
     }
     catch (\Exception $e) {
       $context = ['exception' => $e];
-      $this->loggerFactory->get('mail')->critical('Unexpected exception thrown when sending a community content subscription message.', $context);
+      $this->loggerFactory->get('mail')->critical('Unexpected exception thrown when sending a collection content subscription message.', $context);
       return FALSE;
     }
   }
