@@ -113,13 +113,13 @@ class ExportGroupAdministratorsForm extends FormBase {
         '#submit' => ['::downloadCsv'],
       ];
 
-      $form_state->set('download_data', array_values($data->data));
+      $form_state->set('download_data', $data->data);
     }
 
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t(':generate data', [
-        ':generate' => empty($data) ? 'Generate data' : 'Regenerate data',
+        ':generate' => empty($data) ? 'Generate' : 'Regenerate',
       ]),
       '#submit' => ['::generateData'],
     ];
@@ -178,15 +178,12 @@ class ExportGroupAdministratorsForm extends FormBase {
    *   The form state object.
    */
   public function downloadCsv(array &$form, FormStateInterface $form_state) {
-    $csv_encoder = new CsvEncoder();
-    $data = $csv_encoder->encode($form_state->get('download_data'), 'csv');
-
     $headers = [
       'Content-Type' => 'text/csv',
       'Content-Disposition' => 'attachment;filename=user_list.csv',
     ];
 
-    $response = new Response($data, 200, $headers);
+    $response = new Response($form_state->get('download_data'), 200, $headers);
     $form_state->setResponse($response);
   }
 
@@ -244,9 +241,12 @@ class ExportGroupAdministratorsForm extends FormBase {
     // Set the expiration time to 1 day.
     $expire = $this->time->getRequestTime() + 3600 * 24;
 
+    $csv_encoder = new CsvEncoder();
+    $data = $csv_encoder->encode(array_values($results['data']), 'csv');
+
     // The cache entry varies per the og membership list, the user list and the
     // rdf entity list cache tag.
-    $this->cacheStorage->set(self::GROUP_ADMINISTRATION_CACHE_TAG, $results['data'], $expire);
+    $this->cacheStorage->set(self::GROUP_ADMINISTRATION_CACHE_TAG, $data, $expire);
     $this->messenger()->addMessage('Data have been rebuilt.');
 
     // Handle the file here.
