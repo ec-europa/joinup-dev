@@ -219,6 +219,7 @@ class ExportGroupAdministratorsForm extends FormBase {
       'User name' => $user_name,
       'User url' => $user_url,
       'User email' => $user->getEmail(),
+      'Group bundle' => $group->bundle(),
       'Group ID' => $group->id(),
       'Group label' => $group_label,
       'Group url' => $group_url,
