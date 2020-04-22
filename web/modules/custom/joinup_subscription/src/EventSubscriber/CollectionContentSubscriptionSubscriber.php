@@ -8,10 +8,10 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\NotificationEvents;
-use Drupal\node\NodeInterface;
 use Drupal\og\OgMembershipInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -64,6 +64,7 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
     return [
       NotificationEvents::COMMUNITY_CONTENT_CREATE => 'notifyOnCommunityContentCreation',
       NotificationEvents::COMMUNITY_CONTENT_UPDATE => 'notifyOnCommunityContentPublication',
+      NotificationEvents::RDF_ENTITY_CRUD => 'notifyOnRdfEntityCrudOperation',
     ];
   }
 
@@ -104,6 +105,39 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
   }
 
   /**
+   * Notifies subscribed users when a new solution is added to the collection.
+   *
+   * @param \Drupal\joinup_notification\Event\NotificationEvent $event
+   *   The event object.
+   */
+  public function notifyOnRdfEntityCrudOperation(NotificationEvent $event) {
+    // Only act on entities that are being created or updated. Subscribers are
+    // not notified about solutions that are being removed.
+    if (!in_array($event->getOperation(), ['create', 'update'])) {
+      return;
+    }
+
+    // We are only concerned about solutions that belong to a collection, are
+    // published and are newly created or are being published for the first
+    // time. Let's filter it down.
+    /** @var \Drupal\rdf_entity\RdfInterface $entity */
+    $entity = $event->getEntity();
+    if (
+      !JoinupGroupHelper::isSolution($entity) ||
+      $entity->get('collection')->isEmpty() ||
+      !$entity->isPublished() ||
+      // Note: the `->hasPublished` property is a hack that will be removed once
+      // we have revisionable RDF entities.
+      // @see joinup_group_entity_presave()
+      (!$entity->isNew() && $entity->hasPublished)
+    ) {
+      return;
+    }
+
+    $this->sendMessage($entity, 'collection_content_subscription');
+  }
+
+  /**
    * Returns the list of subscribers.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
@@ -113,13 +147,11 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
    *   The list of subscribers as an array of user accounts, keyed by user ID.
    */
   protected function getSubscribers(ContentEntityInterface $entity): array {
-    $group_id = $entity->get('og_audience')->target_id;
-    $group_entity_type = $entity->getFieldDefinition('og_audience')->getSetting('target_type');
     $membership_storage = $this->entityTypeManager->getStorage('og_membership');
     $membership_ids = $membership_storage
       ->getQuery()
-      ->condition('entity_type', $group_entity_type)
-      ->condition('entity_id', $group_id)
+      ->condition('entity_type', 'rdf_entity')
+      ->condition('entity_id', $this->getGroupId($entity))
       ->condition('state', OgMembershipInterface::STATE_ACTIVE)
       ->condition('subscription_bundles', $entity->bundle())
       ->execute();
@@ -209,6 +241,27 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
       ->execute();
     reset($revision_ids);
     return !empty($revision_ids) ? key($revision_ids) : NULL;
+  }
+
+  /**
+   * Returns the entity ID of the collection the given entity belongs to.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity for which to return the collection ID.
+   *
+   * @return string
+   *   The collection ID.
+   */
+  protected function getGroupId(ContentEntityInterface $entity): string {
+    $field_name = JoinupGroupHelper::isSolution($entity) ? 'collection' : 'og_audience';
+
+    $field_item_list = $entity->get($field_name);
+
+    if ($field_item_list->isEmpty()) {
+      throw new \InvalidArgumentException('Entity does not belong to a collection.');
+    }
+
+    return $field_item_list->target_id;
   }
 
 }
