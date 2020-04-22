@@ -212,16 +212,16 @@ class ExportGroupAdministratorsForm extends FormBase {
     $user_url = $user->toUrl()->setAbsolute()->toString();
     $group_label = $group->label();
     $group_url = $group->toUrl()->setAbsolute()->toString();
-    $is_administrator = $membership->hasRole("rdf_entity-{$group->bundle()}-administrator") ? $this->t('Yes') : $this->t('No');
+    $is_administrator = (string) ($membership->hasRole("rdf_entity-{$group->bundle()}-administrator") ? $this->t('Yes') : $this->t('No'));
 
     $context['results']['data'][$membership->id()] = [
-      'user_name' => $user_name,
-      'user_url' => $user_url,
-      'user_email' => $user->getEmail(),
-      'group_id' => $group->id(),
-      'group_label' => $group_label,
-      'group_url' => $group_url,
-      'is_administrator' => $is_administrator,
+      'User name' => $user_name,
+      'User url' => $user_url,
+      'User email' => $user->getEmail(),
+      'Group ID' => $group->id(),
+      'Group label' => $group_label,
+      'Group url' => $group_url,
+      'Is administrator' => $is_administrator,
     ];
   }
 
