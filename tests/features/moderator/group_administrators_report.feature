@@ -47,8 +47,7 @@ Feature: Group administrators report
 
     # The data are cached for a day so refreshing the page should not need to generate the data.
     Given I reload the page
-    Then I should see the success message "Data have been rebuilt."
-    And I should see the button "Download"
+    Then I should see the button "Download"
     And I should see the button "Regenerate data"
     But I should not see the button "Generate data"
 
