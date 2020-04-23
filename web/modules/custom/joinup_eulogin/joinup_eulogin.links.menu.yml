@@ -1,4 +1,4 @@
-joinup_core.eulogin:
+joinup_eulogin.eulogin:
   title: 'Sign in with EU Login'
   menu_name: account
   route_name: cas.login
