@@ -7,12 +7,12 @@ namespace Drupal\contact_information\Plugin\Validation\Constraint;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Checks if an email is valid according Joinup specifications.
+ * Checks if an email is valid according to Joinup specific rules.
  *
  * Do not use this for anything other than contact information emails. For all
- * other emails use the standard EmailValidator.
+ * other emails use the standard EmailConstraint that ships with Drupal core.
  *
- * @see \Drupal\Component\Utility\EmailValidator
+ * @see \Drupal\Core\Validation\Plugin\Validation\Constraint\EmailConstraint
  *
  * @Constraint(
  *   id = "JoinupEmail",
