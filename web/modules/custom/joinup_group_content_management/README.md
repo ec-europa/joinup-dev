@@ -1,7 +1,8 @@
 Joinup Group Content Management
 ===============================
 
-This module contains business logic related to managing content in groups. It is
-used for tightly interwoven functionality that depends on joinup_group as well
-as individual entity types or bundles. This cannot be included in joinup_group
-without introducing circular dependencies.
+This module contains business logic related to managing content in groups.
+
+It currently comprises of a single action which could not be included in the
+`joinup_group` module but had to be split off into a separate module to solve a
+circular dependency.

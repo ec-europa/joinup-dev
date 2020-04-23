@@ -25,6 +25,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * This will also move the node into the OG Menu for the 'navigation' menu.
  *
+ * The business requirements for this action call for special handling of custom
+ * pages which necessitated this action to be placed into a separate module,
+ * since it would introduce a circular dependency between the `joinup_group` and
+ * `custom_page` modules.
+ *
+ * @todo Implement an event subscriber inside `ChangeGroupAction` that allows to
+ *   alter the list of actions. This will allow us to move all the custom logic
+ *   into a listener in the `custom_page` module and solve the circular
+ *   dependency. The action can then be moved inside `joinup_group` and this
+ *   module is no longer needed.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5969
+ *
  * @Action(
  *   id = "joinup_change_group",
  *   label = @Translation("Move to other group"),
