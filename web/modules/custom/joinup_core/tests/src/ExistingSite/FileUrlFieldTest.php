@@ -7,6 +7,7 @@ namespace Drupal\Tests\joinup_core\ExistingSite;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
+use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
 use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
 use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
 use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;

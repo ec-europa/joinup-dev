@@ -23,9 +23,9 @@ dependencies:
     - rdf_entity.rdfentity.collection
   module:
     - field_group
-    - joinup
     - search_api_field
     - smart_trim
+    - template_suggestion
     - user
 third_party_settings:
   field_group:
@@ -72,7 +72,7 @@ content:
       more_link: false
       summary_handler: full
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: p_wrapper
   field_ar_description:
     type: smart_trim
@@ -93,7 +93,7 @@ content:
       more_link: false
       summary_handler: full
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: p_wrapper
   field_collection_content:
     weight: 4

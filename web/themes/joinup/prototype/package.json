@@ -5,7 +5,7 @@
     "gulp": "^4.0.2",
     "gulp-concat": "~2.6.0",
     "gulp-livereload": "^4.0.2",
-    "gulp-mustache": "~2.2.0",
+    "gulp-mustache": "^5.0.0",
     "gulp-rename": "~1.2.2",
     "gulp-sass": "^4.0.2",
     "gulp-watch": "^5.0.1"

@@ -48,8 +48,8 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - image
-    - joinup
     - smart_trim
+    - template_suggestion
     - user
 id: rdf_entity.solution.view_mode_featured
 targetEntityType: rdf_entity
@@ -77,7 +77,7 @@ content:
       wrap_output: false
       wrap_class: trimmed
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: smart_trim
     region: content
