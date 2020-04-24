@@ -17,6 +17,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
+    - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_short_id
@@ -78,6 +79,7 @@ third_party_settings:
         - field_ar_logo
         - field_ar_banner
         - field_spatial_coverage
+        - field_keywords
         - field_ar_closed
         - field_ar_content_creation
         - field_ar_moderation
@@ -220,6 +222,14 @@ content:
       query_builder: false
     third_party_settings: {  }
     type: search_api_field_default
+    region: content
+  field_keywords:
+    weight: 15
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_newsletter:
     weight: 19

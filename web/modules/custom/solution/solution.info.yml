@@ -14,19 +14,33 @@ dependencies:
   - 'inline_entity_form:inline_entity_form'
   - 'joinup:asset_release'
   - 'joinup:contact_information'
-  - 'joinup:joinup_core'
   - 'joinup:joinup_group'
   - 'joinup:joinup_workflow'
   - 'joinup:owner'
   - 'joinup:workflow_state_permission'
   - 'rdf_entity:rdf_entity'
-  - 'smart_trim:smart_trim'
   - 'state_machine:state_machine'
   - 'token:token'
 
 config_devel:
   install:
     - core.base_field_override.rdf_entity.solution.label
+    - og.og_role.rdf_entity-solution-administrator
+    - og.og_role.rdf_entity-solution-facilitator
+    - og.og_role.rdf_entity-solution-member
+    - og.og_role.rdf_entity-solution-non-member
+    - rdf_entity.rdfentity.solution
+    - solution.settings
+    - sparql_entity_storage.mapping.rdf_entity.solution
+    - system.action.change_collection
+  optional:
+    - core.entity_form_display.rdf_entity.solution.default
+    - core.entity_view_display.rdf_entity.solution.about
+    - core.entity_view_display.rdf_entity.solution.default
+    - core.entity_view_display.rdf_entity.solution.group_header
+    - core.entity_view_display.rdf_entity.solution.rdf_draft
+    - core.entity_view_display.rdf_entity.solution.view_mode_featured
+    - core.entity_view_display.rdf_entity.solution.view_mode_tile
     - facets.facet.solution_content_bundle
     - facets.facet.solution_policy_domain
     - facets.facet.solution_spatial_coverage
@@ -107,20 +121,4 @@ config_devel:
     - field.storage.rdf_entity.field_is_webdav_creation
     - field.storage.rdf_entity.field_is_webdav_url
     - field.storage.rdf_entity.field_is_wiki
-    - og.og_role.rdf_entity-solution-administrator
-    - og.og_role.rdf_entity-solution-facilitator
-    - og.og_role.rdf_entity-solution-member
-    - og.og_role.rdf_entity-solution-non-member
-    - rdf_entity.rdfentity.solution
-    - solution.settings
-    - sparql_entity_storage.mapping.rdf_entity.solution
-    - system.action.change_collection
     - views.view.manage_collection_solutions
-  optional:
-    - core.entity_form_display.rdf_entity.solution.default
-    - core.entity_view_display.rdf_entity.solution.about
-    - core.entity_view_display.rdf_entity.solution.default
-    - core.entity_view_display.rdf_entity.solution.group_header
-    - core.entity_view_display.rdf_entity.solution.rdf_draft
-    - core.entity_view_display.rdf_entity.solution.view_mode_featured
-    - core.entity_view_display.rdf_entity.solution.view_mode_tile

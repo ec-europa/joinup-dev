@@ -658,7 +658,9 @@ function joinup_core_post_update_set_news_default_version() {
   // forward draft revision in the entity, the draft versions are not published
   // and thus, are not the default versions. This will set the latest published
   // revision as the default one.
-  $results = \Drupal::service('joinup_core.requirements_helper')->getNodesWithProblematicRevisions();
+  /** @var \Drupal\joinup_core\RequirementsHelper $requirements_helper */
+  $requirements_helper = \Drupal::service('joinup_core.requirements_helper');
+  $results = $requirements_helper->getNodesWithProblematicRevisions();
   $nids = array_keys($results);
   /** @var \Drupal\node\NodeStorage $node_storage */
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');

@@ -49,9 +49,16 @@ class RefreshCountersTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
+    $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp(): void {
     parent::setUp();
-    $this->setUpSparql();
 
     $this->installEntitySchema('meta_entity');
     $this->installEntitySchema('user');

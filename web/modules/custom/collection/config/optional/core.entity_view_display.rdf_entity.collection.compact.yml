@@ -26,7 +26,7 @@ dependencies:
     - rdf_entity.rdfentity.collection
   module:
     - image
-    - joinup
+    - template_suggestion
     - user
 id: rdf_entity.collection.compact
 targetEntityType: rdf_entity
@@ -42,7 +42,7 @@ content:
       image_style: image_style_collection_logo
       image_link: ''
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
   label:
     type: string
@@ -52,7 +52,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
 hidden:
   changed: true

@@ -1,10 +1,6 @@
 services:
   joinup_core.joinup_version:
     class: Drupal\joinup_core\JoinupVersion
-  joinup_core.og_subscriber:
-    class: Drupal\joinup_core\EventSubscriber\JoinupCoreOgSubscriber
-    tags:
-      - name: event_subscriber
   joinup_core.vocabulary_fixtures.helper:
     class: Drupal\joinup_core\VocabularyFixturesHelper
     arguments: ['@sparql_endpoint']

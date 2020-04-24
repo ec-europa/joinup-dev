@@ -52,6 +52,7 @@ dependencies:
     - image
     - inline_entity_form
     - joinup_core
+    - joinup_workflow
     - link
     - text
 third_party_settings:

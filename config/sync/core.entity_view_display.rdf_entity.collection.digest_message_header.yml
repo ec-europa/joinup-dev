@@ -17,6 +17,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
+    - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_short_id
@@ -25,7 +26,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_spatial_coverage
     - rdf_entity.rdfentity.collection
   module:
-    - joinup
+    - template_suggestion
     - user
 id: rdf_entity.collection.digest_message_header
 targetEntityType: rdf_entity
@@ -39,7 +40,7 @@ content:
     settings:
       link_to_entity: true
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
 hidden:
@@ -58,6 +59,7 @@ hidden:
   field_ar_owner: true
   field_ar_state: true
   field_collection_content: true
+  field_keywords: true
   field_newsletter: true
   field_policy_domain: true
   field_short_id: true
