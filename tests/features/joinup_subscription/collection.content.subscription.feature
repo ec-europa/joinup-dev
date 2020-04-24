@@ -23,13 +23,13 @@ Feature: Subscribing to community content in collections
       | Cities of Bulgaria   | bisera |             |
       | Cities of Bulgaria   | kalin  | facilitator |
     And the following collection content subscriptions:
-      | collection           | user   | subscriptions              |
-      | Products of Bulgaria | hristo | discussion, event, news    |
-      | Products of Bulgaria | bisera | discussion, document, news |
-      | Products of Bulgaria | kalin  | document, event            |
-      | Cities of Bulgaria   | hristo | document, event            |
-      | Cities of Bulgaria   | bisera | discussion, event, news    |
-      | Cities of Bulgaria   | kalin  | discussion, document, news |
+      | collection           | user   | subscriptions                        |
+      | Products of Bulgaria | hristo | discussion, event, news, solution    |
+      | Products of Bulgaria | bisera | discussion, document, news           |
+      | Products of Bulgaria | kalin  | document, event                      |
+      | Cities of Bulgaria   | hristo | document, event, solution            |
+      | Cities of Bulgaria   | bisera | discussion, event, news              |
+      | Cities of Bulgaria   | kalin  | discussion, document, news, solution |
     And all message digests have been delivered
     And the mail collector cache is empty
 
@@ -53,8 +53,15 @@ Feature: Subscribing to community content in collections
       | title    | body                        | collection           | state     | author |
       | Rose oil | A widely used essential oil | Products of Bulgaria | validated | bisera |
       | Burgas   | City of dreams              | Cities of Bulgaria   | validated | hristo |
+    And solutions:
+      | title          | description                      | collection           | state     | author |
+      | Double seaming | The rolls roll around the chuck  | Products of Bulgaria | proposed  | kalin  |
+      | Belt conveyors | As throughed belts gently slope  | Products of Bulgaria | validated | bisera |
+      | New urbanism   | Context-appropriate architecture | Cities of Bulgaria   | validated | hristo |
 
     Then the daily collection content subscription digest for hristo should match the following messages:
+      | Belt conveyors  |
+      | New urbanism    |
       | Duck liver      |
       | Sunflower seeds |
       | Rose oil        |
@@ -73,6 +80,7 @@ Feature: Subscribing to community content in collections
       | Sofia           |
       | Plovdiv         |
       | Burgas          |
+      | New urbanism    |
 
     # Check that only the user's chosen frequency is digested.
     But the weekly digest for hristo should not contain any messages
@@ -109,6 +117,7 @@ Feature: Subscribing to community content in collections
       | Plovdiv              |
       | Stara Zagora         |
       | Products of Bulgaria |
+      | Belt conveyors       |
       | Duck liver           |
       | Rose oil             |
       | Sunflower seeds      |
@@ -129,6 +138,7 @@ Feature: Subscribing to community content in collections
       | title                |
       | Cities of Bulgaria   |
       | Burgas               |
+      | New urbanism         |
       | Plovdiv              |
       | Sofia                |
       | Products of Bulgaria |
