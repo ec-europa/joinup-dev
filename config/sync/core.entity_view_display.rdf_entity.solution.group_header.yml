@@ -49,8 +49,7 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - image
-    - joinup
-    - joinup_core
+    - template_suggestion
     - user
 id: rdf_entity.solution.group_header
 targetEntityType: rdf_entity
@@ -83,7 +82,7 @@ content:
       image_style: image_style_collection_logo
       image_link: ''
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
   label:
@@ -93,7 +92,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
   releases_overview:

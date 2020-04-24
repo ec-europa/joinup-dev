@@ -1,0 +1,6 @@
+field.formatter.third_party.template_suggestion:
+  type: mapping
+  label: 'Third party settings for the Template suggestion module.'
+  mapping:
+    template_suggestion:
+      type: string

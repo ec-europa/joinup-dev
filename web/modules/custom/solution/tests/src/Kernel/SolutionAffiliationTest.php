@@ -26,66 +26,43 @@ class SolutionAffiliationTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'allowed_formats',
-    'cached_computed_field',
-    'comment',
-    'contact_information',
-    'facets',
     'field',
-    'field_group',
-    'file',
-    'file_url',
-    'image',
-    'inline_entity_form',
-    'joinup_core',
-    'joinup_sparql',
-    'joinup_workflow',
-    'link',
-    'matomo_reporting_api',
-    'node',
-    'oe_newsroom_newsletter',
+    'joinup_rdf',
     'og',
-    'options',
-    'owner',
     'rdf_schema_field_validation',
     'rdf_draft',
     'rdf_entity',
-    'rdf_taxonomy',
-    'search_api',
-    'search_api_field',
-    'smart_trim',
     'solution',
     'sparql_entity_storage',
     'state_machine',
     'system',
     'taxonomy',
-    'text',
-    'tour',
     'user',
-    'views',
     'workflow_state_permission',
   ];
 
   /**
    * {@inheritdoc}
    */
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
+    $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
-    $this->setUpSparql();
 
     RdfEntityType::create(['rid' => 'collection'])->save();
 
     $this->installEntitySchema('user');
-    $this->installEntitySchema('file');
-    $this->installSchema('file', ['file_usage']);
     $this->installEntitySchema('rdf_entity');
     $this->installConfig([
-      'joinup_core',
+      'joinup_rdf',
       'rdf_draft',
-      'rdf_entity',
       'solution',
-      'contact_information',
-      'owner',
       'sparql_entity_storage',
     ]);
 
