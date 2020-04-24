@@ -25,7 +25,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_spatial_coverage
     - rdf_entity.rdfentity.collection
   module:
-    - joinup
+    - template_suggestion
     - user
 id: rdf_entity.collection.digest_message_header
 targetEntityType: rdf_entity
@@ -39,7 +39,7 @@ content:
     settings:
       link_to_entity: true
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
 hidden:

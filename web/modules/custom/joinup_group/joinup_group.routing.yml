@@ -11,6 +11,19 @@ entity.rdf_entity.about_page:
       rdf_entity:
         type: entity:rdf_entity
 
+entity.rdf_entity.member_overview:
+  path: 'rdf_entity/{rdf_entity}/members'
+  defaults:
+    _controller: '\Drupal\joinup_group\Controller\GroupMembersController::membersList'
+    _title: 'Members'
+  requirements:
+    _permission: 'access user profiles'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+    _og_entity_type_id: rdf_entity
+
 joinup_group.membership_delete_action.confirm:
   path: '/group/delete/membership'
   defaults:

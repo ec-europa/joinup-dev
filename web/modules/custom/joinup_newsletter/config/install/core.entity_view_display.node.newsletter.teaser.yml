@@ -9,6 +9,7 @@ dependencies:
     - node.type.newsletter
   module:
     - smart_trim
+    - template_suggestion
     - user
 id: node.newsletter.teaser
 targetEntityType: node
@@ -29,7 +30,7 @@ content:
         text: false
       more_class: more-link
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     label: hidden
     region: content

@@ -17,6 +17,7 @@ dependencies:
   module:
     - options
     - smart_trim
+    - template_suggestion
     - user
 id: node.discussion.moderation
 targetEntityType: node
@@ -39,7 +40,7 @@ content:
       wrap_output: false
       wrap_class: trimmed
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: smart_trim
     region: content

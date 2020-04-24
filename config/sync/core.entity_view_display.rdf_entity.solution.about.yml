@@ -48,9 +48,9 @@ dependencies:
   module:
     - field_group
     - file_url
-    - joinup
     - link
     - options
+    - template_suggestion
     - text
     - user
 third_party_settings:
@@ -173,7 +173,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_business_process:
     type: entity_reference_label
@@ -183,7 +183,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_contact_information:
     weight: 7
@@ -192,7 +192,7 @@ content:
       view_mode: about
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: two_columns
     type: entity_reference_entity_view
     region: content
@@ -203,7 +203,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_description:
     type: text_default
@@ -220,7 +220,7 @@ content:
     settings:
       mode: link
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_landing_page:
     type: link_separate
@@ -234,7 +234,7 @@ content:
       url_plain: false
       rel: '0'
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
   field_is_language:
     type: entity_reference_label
@@ -244,7 +244,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_metrics_page:
     type: link_separate
@@ -258,7 +258,7 @@ content:
       url_plain: false
       rel: '0'
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
   field_is_moderation:
     type: boolean
@@ -270,7 +270,7 @@ content:
       format_custom_true: ''
       format_custom_false: ''
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_owner:
     weight: 6
@@ -279,7 +279,7 @@ content:
       view_mode: about
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: two_columns
     type: entity_reference_entity_view
     region: content
@@ -291,7 +291,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_solution_type:
     type: entity_reference_label
@@ -301,7 +301,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_standardization_level:
     type: entity_reference_label
@@ -311,7 +311,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_test_resource_type:
     type: entity_reference_label
@@ -321,7 +321,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_status:
     type: entity_reference_label
@@ -331,7 +331,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   share_link:
     weight: 7
