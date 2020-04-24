@@ -46,6 +46,13 @@ Feature: "Add release" visibility options.
     And the following fields should be present "Name, Release number, Release notes, Upload a new file or enter a URL, Geographical coverage, Keyword, Status, Language"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Description, Logo, Banner, Solution type, Contact information, Included asset, Translation, Distribution, Current workflow state, Langcode, Motivation"
+
+    When I press "Publish"
+    Then I should see the following error messages:
+      | error messages                    |
+      | Name field is required.           |
+      | Release number field is required. |
+
     When I fill in "Name" with "Chasing shadows"
     And I fill in "Release number" with "1.0"
     And I fill in "Release notes" with "Changed release."

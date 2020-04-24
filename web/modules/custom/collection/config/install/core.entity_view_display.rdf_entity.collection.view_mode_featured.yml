@@ -25,8 +25,8 @@ dependencies:
     - rdf_entity.rdfentity.collection
   module:
     - image
-    - joinup
     - smart_trim
+    - template_suggestion
     - user
 id: rdf_entity.collection.view_mode_featured
 targetEntityType: rdf_entity
@@ -51,7 +51,7 @@ content:
       wrap_output: false
       wrap_class: trimmed
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
   field_ar_logo:
     weight: 0
