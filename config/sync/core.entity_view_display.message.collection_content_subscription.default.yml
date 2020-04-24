@@ -5,6 +5,8 @@ dependencies:
   config:
     - field.field.message.collection_content_subscription.field_collection_content
     - message.template.collection_content_subscription
+  module:
+    - dynamic_entity_reference
 id: message.collection_content_subscription.default
 targetEntityType: message
 bundle: collection_content_subscription
@@ -16,7 +18,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    type: dynamic_entity_reference_label
     region: content
 hidden:
   partial_0: true
