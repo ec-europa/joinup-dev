@@ -28,7 +28,7 @@ dependencies:
     - field_group
     - image
     - inline_entity_form
-    - joinup_core
+    - joinup_workflow
     - link
     - oe_newsroom_newsletter
     - search_api_field

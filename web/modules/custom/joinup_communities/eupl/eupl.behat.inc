@@ -235,6 +235,33 @@ class EuplSubContext extends DrupalSubContextBase {
   }
 
   /**
+   * Asserts that the given licence is/is not selected.
+   *
+   * @param string $spdx_id
+   *   The licence SPDX ID.
+   * @param string $checked
+   *   Either 'checked' or 'unchecked'.
+   *
+   * @throws \Exception
+   *   When the licence tile is not found on the page.
+   *
+   * @Then the :spdx_id licence should be :checked
+   */
+  public function assertLicenceChecked(string $spdx_id, string $checked) {
+    \assert(in_array($checked, ['checked', 'unchecked']), 'The $checked parameter should take one of the values "checked" or "unchecked" but "' . $checked . '" was given.');
+
+    $licence = $this->findLicenceTile($spdx_id);
+    $checkbox = $licence->find('xpath', '//label[text()="Add to compare list"]/../..');
+
+    if ($checked === 'checked' && !$checkbox->hasClass('is-checked')) {
+      throw new \Exception("The licence '$spdx_id' should be checked but is not.");
+    }
+    elseif ($checked === 'unchecked' && $checkbox->hasClass('is-checked')) {
+      throw new \Exception("The licence '$spdx_id' should not be checked but it is.");
+    }
+  }
+
+  /**
    * Finds a licence tile on the page given a licence SPDX ID.
    *
    * @param string $spdx_id

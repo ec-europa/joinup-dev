@@ -63,6 +63,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     'content creation' => 'field_ar_content_creation',
     'creation date' => 'created',
     'description' => 'field_ar_description',
+    'keywords' => 'field_keywords',
     'logo' => 'field_ar_logo',
     'moderation' => 'field_ar_moderation',
     'modification date' => 'changed',

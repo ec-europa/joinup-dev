@@ -71,7 +71,7 @@ class LicenceOverviewController extends ControllerBase {
     $cacheable_metadata = (new CacheableMetadata())
       // Tag the response cache with rdf_entity_list:licence so that this page
       // cache is invalidated when a new licence is added.
-      // @see joinup_core_rdf_entity_insert()
+      // @see joinup_group_rdf_entity_insert()
       ->addCacheTags(['rdf_entity_list:licence']);
 
     $rows = [];

@@ -9,6 +9,7 @@ dependencies:
   - file_url:file_url
   - joinup:joinup_community_content
   - joinup:joinup_licence
+  - joinup:joinup_validation
   - drupal:language
   - smart_trim:smart_trim
 

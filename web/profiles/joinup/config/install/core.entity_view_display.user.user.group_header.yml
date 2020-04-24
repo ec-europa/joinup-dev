@@ -18,8 +18,8 @@ dependencies:
     - image.style.image_style_collection_logo
   module:
     - image
-    - joinup
     - social_media_links_field
+    - template_suggestion
     - user
 id: user.user.group_header
 targetEntityType: user
@@ -39,7 +39,7 @@ content:
         target: _blank
         rel: '<none>'
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
   field_user_business_title:
     weight: 5
@@ -55,7 +55,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: string
     region: content
@@ -65,7 +65,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: string
     region: content
@@ -75,7 +75,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: entity_reference_label
     region: content
@@ -94,7 +94,7 @@ content:
       image_style: image_style_collection_logo
       image_link: ''
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: image
     region: content
@@ -104,7 +104,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: entity_reference_label
     region: content
