@@ -65,8 +65,10 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
   uasort($messages, function (MessageInterface $a, MessageInterface $b) {
     // Find the collections by resolving the entity references from the message
     // to the community content to the collection.
-    $a_content = $a->field_community_content->first()->entity;
-    $b_content = $b->field_community_content->first()->entity;
+    $a_content = $a->field_collection_content->first()->entity;
+    $b_content = $b->field_collection_content->first()->entity;
+    // @todo Implement a `CollectionContentInterface` which has a method to
+    //   retrieve the collection.
     /** @var \Drupal\rdf_entity\RdfInterface $a_collection */
     $a_collection = $a_content->og_audience->first()->entity;
     /** @var \Drupal\rdf_entity\RdfInterface $b_collection */
