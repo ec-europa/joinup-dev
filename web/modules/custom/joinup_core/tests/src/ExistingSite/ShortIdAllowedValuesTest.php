@@ -2,23 +2,27 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\joinup_core\Kernel;
+namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Drupal\Core\Validation\Plugin\Validation\Constraint\RegexConstraint;
+use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
- * Base test class for groups. Tests the short ID allowed values.
+ * Tests the short ID allowed values.
  */
-abstract class GroupValidationTestBase extends RdfEntityValidationTestBase {
+class ShortIdAllowedValuesTest extends JoinupExistingSiteTestBase {
 
   /**
    * Tests that empty short ID is allowed.
    */
   public function testEmptyShortId(): void {
-    $entity = $this->createEntity();
-    $violations = $entity->validate()->findByCodes([RegexConstraint::REGEX_FAILED_ERROR]);
-    $violations = iterator_to_array($violations);
-    $this->assertEmpty($violations);
+    foreach (['collection', 'solution'] as $bundle) {
+      $entity = Rdf::create(['rid' => $bundle]);;
+      $violations = $entity->validate()->findByCodes([RegexConstraint::REGEX_FAILED_ERROR]);
+      $violations = iterator_to_array($violations);
+      $this->assertEmpty($violations);
+    }
   }
 
   /**
@@ -27,13 +31,17 @@ abstract class GroupValidationTestBase extends RdfEntityValidationTestBase {
    * @dataProvider shortIdAllowedValuesProvider
    */
   public function testShortIdAllowedValues(string $short_id, bool $violation_expected): void {
-    $collection = $this->createEntity([
-      'field_short_id' => $short_id,
-    ]);
-    $violations = $collection->validate()->findByCodes([RegexConstraint::REGEX_FAILED_ERROR]);
-    $violations = iterator_to_array($violations);
+    foreach (['collection', 'solution'] as $bundle) {
+      $entity = Rdf::create([
+        'rid' => $bundle,
+        'field_short_id' => $short_id,
+      ]);;
 
-    $this->assertCount((int) $violation_expected, $violations);
+      $violations = $entity->validate()->findByCodes([RegexConstraint::REGEX_FAILED_ERROR]);
+      $violations = iterator_to_array($violations);
+
+      $this->assertCount((int) $violation_expected, $violations);
+    }
   }
 
   /**
