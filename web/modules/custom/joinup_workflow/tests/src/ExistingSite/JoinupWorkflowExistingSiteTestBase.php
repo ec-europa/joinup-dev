@@ -7,7 +7,7 @@ namespace Drupal\Tests\joinup_workflow\ExistingSite;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Tests\joinup_core\ExistingSite\JoinupExistingSiteTestBase;
+use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
 use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
 use weitzman\DrupalTestTraits\Entity\UserCreationTrait;
 

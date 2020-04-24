@@ -13,6 +13,7 @@ dependencies:
   module:
     - joinup
     - smart_trim
+    - template_suggestion
     - user
 id: node.custom_page.view_mode_featured
 targetEntityType: node
@@ -36,7 +37,7 @@ content:
       wrap_output: false
       wrap_class: trimmed
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
 hidden:

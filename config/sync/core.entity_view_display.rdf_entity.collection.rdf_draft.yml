@@ -17,6 +17,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
+    - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_site_featured
@@ -34,7 +35,7 @@ bundle: collection
 mode: rdf_draft
 content:
   field_ar_abstract:
-    weight: 7
+    weight: 8
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -54,7 +55,7 @@ content:
     region: content
   field_ar_closed:
     type: boolean
-    weight: 8
+    weight: 9
     region: content
     label: above
     settings:
@@ -72,7 +73,7 @@ content:
     region: content
   field_ar_content_creation:
     type: list_default
-    weight: 9
+    weight: 10
     region: content
     label: above
     settings: {  }
@@ -85,7 +86,7 @@ content:
     type: text_default
     region: content
   field_ar_moderation:
-    weight: 10
+    weight: 11
     label: above
     settings:
       format: default
@@ -102,6 +103,14 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_keywords:
+    type: string
+    weight: 7
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   field_policy_domain:
     weight: 5
     label: above

@@ -18,6 +18,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
+    - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_site_featured
@@ -30,7 +31,7 @@ dependencies:
     - field_group
     - image
     - inline_entity_form
-    - joinup_core
+    - joinup_workflow
     - link
     - text
 third_party_settings:
@@ -74,6 +75,7 @@ third_party_settings:
         - field_ar_logo
         - field_ar_banner
         - field_spatial_coverage
+        - field_keywords
         - field_ar_closed
         - field_ar_content_creation
         - field_ar_moderation
@@ -124,7 +126,7 @@ content:
     region: content
   field_ar_closed:
     type: boolean_checkbox
-    weight: 14
+    weight: 15
     region: content
     settings:
       display_label: false
@@ -148,7 +150,7 @@ content:
     region: content
   field_ar_content_creation:
     type: options_buttons
-    weight: 15
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -172,7 +174,7 @@ content:
     type: image_image
     region: content
   field_ar_moderation:
-    weight: 16
+    weight: 17
     settings:
       display_label: false
     third_party_settings: {  }
@@ -202,6 +204,14 @@ content:
       use_transition_label: 1
     third_party_settings: {  }
     region: content
+  field_keywords:
+    type: string_textfield
+    weight: 14
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_policy_domain:
     weight: 2
     settings: {  }

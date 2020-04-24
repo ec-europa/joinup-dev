@@ -13,7 +13,8 @@ dependencies:
     - node.type.custom_page
   module:
     - entity_reference_revisions
-    - joinup
+    - smart_trim
+    - template_suggestion
     - user
 _core:
   default_config_hash: DWb669UswawqVOlf5T9Ak9DOZ7EQRFXjnmhJMA9YpH4
@@ -31,7 +32,7 @@ content:
       view_mode: preview
       link: ''
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
 hidden:
   body: true

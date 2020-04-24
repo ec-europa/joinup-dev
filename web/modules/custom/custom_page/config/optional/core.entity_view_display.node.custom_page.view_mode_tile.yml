@@ -13,7 +13,7 @@ dependencies:
     - node.type.custom_page
   module:
     - image
-    - joinup
+    - template_suggestion
     - user
 id: node.custom_page.view_mode_tile
 targetEntityType: node
@@ -29,7 +29,7 @@ content:
       image_style: horizontal_medium_image
       image_link: ''
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
 hidden:
   body: true
