@@ -7,44 +7,49 @@
             <div class="row">
               <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--4-col">
-                  <h3 class="footer__site-name">
-                    <a href="{{ base_path }}" title="{{ 'Home'|t }}">
-                      <img src="{{ base_path ~ directory }}/images/logo.svg" alt="{{ 'Home'|t }}">
-                    </a>
-                  </h3>
-                  <p class="footer__version"><a href="{{ version_url }}">{{ version }}</a></p>
+                  <h3 class="external_links__label">European Commission</h3>
+                  <ul class="menu vertical-menu">
+                    <li class="menu-item vertical-menu__item">
+                      <a class="vertical-menu__link" href="//ec.europa.eu/commission/index_en">Commission and its priorities</a>
+                    </li>
+                    <li class="menu-item vertical-menu__item">
+                      <a class="vertical-menu__link" href="//ec.europa.eu/info/index_en">Policies information and services</a>
+                    </li>
+                  </ul>
+
+
+
                 </div>
                 <div class="mdl-cell mdl-cell--4-col">
 
                   <div class="social-media">
-
-                    <h3 class="social-media__label">{{ 'Follow us'|t }}:</h3>
-
-
-                    <ul class="social-media__menu">
-                      <li class="social-media__item">
-                        <a href="https://www.linkedin.com/groups/2600644/" class="social-media__link" target="_blank">
-                          <span class="icon icon--linkedin"></span>
-                          <span class="text">{{ 'LinkedIn'|t }}</span>
-                        </a>
-                      </li>
-                      <li class="social-media__item">
-                        <a href="http://twitter.com/Joinup_eu" class="social-media__link" target="_blank">
-                          <span class="icon icon--twitter"></span>
-                          <span class="text">{{ 'Twitter'|t }}</span>
-                        </a>
-                      </li>
-                      <li class="social-media__item">
-                        <a href="http://ec.europa.eu/newsroom/joinup/newsletter-specific-archive-issue.cfm?newsletter_service_id=877&lang=default" class="social-media__link" target="_blank">
-                          <span class="icon icon--footer-newsletter"></span>
-                          <span class="text">{{ 'Joinup Newsletter'|t }}</span>
-                        </a>
-                      </li>
-                    </ul>
-
+                    <h3 class="social-media__label">{{ 'Follow the European Commission'|t }}</h3>
+                    <div class="social-media__list">
+                      <ul class="menu vertical-menu">
+                        <li class="menu-item vertical-menu__item">
+                          <a href=https://twitter.com/EUeic" class="social-media__link" target="_blank">
+                            <span class="icon icon--twitter"></span>
+                            <span class="text">{{ 'Twitter'|t }}</span>
+                          </a>
+                        </li>
+                        <li class="menu-item vertical-menu__item">
+                          <a href="https://www.linkedin.com/groups/8294580" class="social-media__link" target="_blank">
+                            <span class="icon icon--linkedin"></span>
+                            <span class="text">{{ 'LinkedIn'|t }}</span>
+                          </a>
+                        </li>
+                        <li class="menu-item vertical-menu__item">
+                          <a href="https://www.youtube.com/playlist?list=PLXP2yyGajWaY6mCKMIjcSnQ4lLiMJ4FMC" class="social-media__link" target="_blank">
+                            <span class="icon icon--youtube "></span>
+                            <span class="text">{{ 'Joinup Newsletter'|t }}</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
                 <div class="mdl-cell mdl-cell--4-col">
+                  <h3 class="external_links__label">European Union</h3>
                   {{ page.footer }}
                 </div>
               </div>
@@ -58,7 +63,7 @@
     <div class="main-container">
       <div class="row">
         <div class="mdl-grid mdl-grid--center">
-          <div class="mdl-cell mdl-cell--8-col">
+          <div class="mdl-cell mdl-cell--7-col">
             <ul class="ec-menu">
               <li class="ec-menu__item">
                 <a href="http://ec.europa.eu/info/about-commissions-new-web-presence_en" class="ec-menu__link" target="_blank">{{ 'About the Commission\'s new web presence'|t }}</a>
@@ -79,6 +84,13 @@
                 <a href="http://ec.europa.eu/info/europa-analytics_en" class="ec-menu__link" target="_blank">{{ 'Europa Analytics' }}</a>
               </li>
             </ul>
+          </div>
+          <div class="mdl-cell mdl-cell--1-col footer__powered_by">
+            <span>Powered by:</span>
+            <a href="//joinup.ec.europa.eu" title="{{ 'Joinup'|t }}">
+              <img src="{{ base_path ~ directory }}/images/logo.svg" alt="{{ 'Home'|t }}">
+            </a>
+            <p class="footer__version"><a href="{{ version_url }}">{{ version }}</a></p>
           </div>
         </div>
       </div>

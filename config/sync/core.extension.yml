@@ -40,6 +40,7 @@ module:
   error_page: 0
   eu_sic: 0
   eupl: 0
+  external_links_footer: 0
   facets: 0
   field: 0
   field_group: 0
