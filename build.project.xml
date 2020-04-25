@@ -625,7 +625,23 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, setup-config-sync-dir, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, verbose-error-logging, start-cas-mock-server, enable-config-read-only" />
+        depends="setup-virtuoso-permissions, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, setup-config-sync-dir">
+        <exec command="./vendor/bin/run solr:empty" checkreturn="true" passthru="true"/>
+        <phingcall target="install"/>
+        <phingcall target="ensure-search-api-solr-site-hash"/>
+        <phingcall target="setup-redis"/>
+        <phingcall target="import-rdf-fixtures"/>
+        <phingcall target="setup-dev"/>
+        <phingcall target="configure-apache-solr-drupal"/>
+        <phingcall target="configure-matomo-drupal"/>
+        <phingcall target="create-demo-users"/>
+        <phingcall target="enable-webtools-geocoding-cache"/>
+        <phingcall target="setup-mocked-newsroom-newsletter-subscriber"/>
+        <phingcall target="set-custom-error-handlers"/>
+        <phingcall target="verbose-error-logging"/>
+        <phingcall target="start-cas-mock-server"/>
+        <phingcall target="enable-config-read-only"/>
+    </target>
 
     <target name="check-deprecated-code">
         <exec command="${project.basedir}/vendor/bin/phpstan --no-progress --ansi -n -vvv analyse web/modules/custom web/profiles web/themes src scripts/composer tests/src" passthru="true" checkreturn="true"/>
