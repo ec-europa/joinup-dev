@@ -106,17 +106,17 @@ using your favourite text editor:
 $ vim build.properties.local
 ```
 
-This file will contain configuration which is unique to your development
+This file will contain the configuration which is unique to your development
 machine. This is mainly useful for specifying your database credentials and the
-username and password of the Drupal admin user so they can be used during the
+username and password of the Drupal admin user, so they can be used during the
 installation.
 
 Because these settings are personal they should not be shared with the rest of
 the team. Make sure you never commit this file!
 
-All options you can use can be found in the `build.properties.dist` file. Just
-copy the lines you want to override and change their values. Do not copy the
-entire `build.properties.dist` file, since this would override all options.
+All options you can use can be found in the `build.properties` file. Just copy
+the lines you want to override and change their values. Do not copy the entire
+`build.properties` file, since this would override all options.
 
 Example `build.properties.local`:
 

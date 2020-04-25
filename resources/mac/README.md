@@ -76,7 +76,7 @@ Redis](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-
    composer.bin = /usr/local/bin/composer
 
    # Database settings.
-   drupal.db.name = Joinup
+   drupal.db.name = joinup
    drupal.db.user = root
    drupal.db.password =
 
