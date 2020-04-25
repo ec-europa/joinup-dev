@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace DrupalProject\Phing;
+namespace Joinup\Phing;
 
 /**
  * Provides a Phing task that drops all the tables from a MySQL database.

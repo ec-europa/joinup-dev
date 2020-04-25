@@ -2,7 +2,7 @@
 
 <project name="EU Login" default="help">
 
-    <taskdef name="eulogin-create-docker-compose" classname="\DrupalProject\Phing\EuLoginBuildEcasMockDockerCompose"/>
+    <taskdef name="eulogin-create-docker-compose" classname="\Joinup\Phing\EuLoginBuildEcasMockDockerCompose"/>
 
     <!-- Checks requirements for the heavyweight proprietary ECAS mock server. -->
     <target name="eulogin-ecas-mock-check-requirements">

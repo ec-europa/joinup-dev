@@ -460,7 +460,7 @@ QUERY;
 
   // Finally, repeat the process that initially fixed the eira skos vocabulary.
   // @see ISAICP-3216.
-  // @see \DrupalProject\Phing\AfterFixturesImportCleanup::main()
+  // @see \Joinup\Phing\AfterFixturesImportCleanup::main()
   //
   // Add the "Concept" type to all collection elements so that they are listed
   // as Parent terms.

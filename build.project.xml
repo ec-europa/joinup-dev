@@ -30,22 +30,22 @@
     <taskdef name="behat" classname="BehatTask" />
 
     <echo msg="Loading After Import RDF fixtures task." />
-    <taskdef name="afterrdffixturesimport" classname="\DrupalProject\Phing\AfterFixturesImportCleanup" />
+    <taskdef name="afterrdffixturesimport" classname="\Joinup\Phing\AfterFixturesImportCleanup" />
 
     <echo msg="Setting-up MySQL auto-increment values for {comment}, {file_managed}, {node} and {users}." />
-    <taskdef name="setmysqlautoincrement" classname="\DrupalProject\Phing\SetMysqlAutoincrement" />
+    <taskdef name="setmysqlautoincrement" classname="\Joinup\Phing\SetMysqlAutoincrement" />
 
     <echo msg="Loading Amazon S3 download task." />
-    <taskdef name="s3dl" classname="\DrupalProject\Phing\AwsS3GetTask" />
+    <taskdef name="s3dl" classname="\Joinup\Phing\AwsS3GetTask" />
 
     <echo msg="Loading Amazon S3 list task." />
-    <taskdef name="s3list" classname="\DrupalProject\Phing\AwsS3ListTask" />
+    <taskdef name="s3list" classname="\Joinup\Phing\AwsS3ListTask" />
 
     <echo msg="Loading Truncate Cache Tables task." />
-    <taskdef name="truncatecachetables" classname="\DrupalProject\Phing\TruncateCacheTablesTask" />
+    <taskdef name="truncatecachetables" classname="\Joinup\Phing\TruncateCacheTablesTask" />
 
     <echo msg="Loading Empty MySQL Database task." />
-    <taskdef name="emptymysqldatabase" classname="\DrupalProject\Phing\MySqlEmptyDatabaseTask" />
+    <taskdef name="emptymysqldatabase" classname="\Joinup\Phing\MySqlEmptyDatabaseTask" />
 
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">

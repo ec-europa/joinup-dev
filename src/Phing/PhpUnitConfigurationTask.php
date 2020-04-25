@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \DrupalProject\build\Phing\PhpUnitConfigurationTask.
+ * Contains \Joinup\build\Phing\PhpUnitConfigurationTask.
  */
 
-namespace DrupalProject\Phing;
+namespace Joinup\Phing;
 
 require_once 'phing/Task.php';
 
