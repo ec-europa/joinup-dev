@@ -11,12 +11,8 @@
     <!-- Import project specific Phing targets. -->
     <import file="${project.basedir}/build.project.xml" optional="true" />
 
-    <!-- Import main Phing targets. -->
-    <import file="${project.basedir}/build.dist.xml" />
-
     <!-- Import build properties. -->
     <property file="build.properties.local" />
     <property file="build.properties" />
-    <property file="build.properties.dist" />
 
 </project>
