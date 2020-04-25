@@ -41,11 +41,251 @@
     <echo msg="Loading Amazon S3 list task." />
     <taskdef name="s3list" classname="\Joinup\Phing\AwsS3ListTask" />
 
-    <echo msg="Loading Truncate Cache Tables task." />
-    <taskdef name="truncatecachetables" classname="\Joinup\Phing\TruncateCacheTablesTask" />
+    <echo msg="Loading Drush task." />
+    <taskdef name="drush" classname="\Phing\Drush\Task" />
 
-    <echo msg="Loading Empty MySQL Database task." />
-    <taskdef name="emptymysqldatabase" classname="\Joinup\Phing\MySqlEmptyDatabaseTask" />
+    <echo msg="Loading PHP Codesniffer Configuration task." />
+    <taskdef name="phpcodesnifferconfiguration" classname="\Joinup\Phing\PhpCodeSnifferConfigurationTask" />
+
+    <echo msg="Loading PHPUnit Configuration task." />
+    <taskdef name="phpunitconfiguration" classname="\Joinup\Phing\PhpUnitConfigurationTask" />
+
+    <target name="help" description="Phing target list">
+        <exec executable="${phing.bin}"
+              passthru="true">
+            <arg value="-l"/>
+        </exec>
+    </target>
+
+    <!-- Make the settings folder writeable so that the installer can copy settings.php. -->
+    <target name="writable-settings-folder">
+        <chmod mode="0755" failonerror="true" verbose="true" quiet="false" file="${website.settings.dir}" />
+    </target>
+
+    <!-- Make settings.php writeable so that the installer can write to it. -->
+    <target name="writable-settings-php">
+        <if>
+            <available file="${website.settings.php}" type="file" property="website.settings.php.available" />
+            <then>
+                <chmod mode="0644" failonerror="false" verbose="true" quiet="false" file="${website.settings.php}" />
+            </then>
+        </if>
+    </target>
+
+    <!-- Make settings.local.php writable. -->
+    <target name="writable-settings-local-php">
+        <if>
+            <available file="${website.settings.local.php}" type="file" property="website.settings.local.php.available" />
+            <then>
+                <chmod mode="0644" failonerror="false" verbose="true" quiet="false" file="${website.settings.local.php}" />
+            </then>
+        </if>
+    </target>
+
+    <!-- Set up PHP CodeSniffer. -->
+    <target name="setup-php-codesniffer" description="Generate the configuration file for PHP CodeSniffer.">
+        <echo message="Generating PHP Codesniffer configuration files." />
+        <phpcodesnifferconfiguration
+                configFile="${phpcs.config}"
+                extensions="${phpcs.extensions}"
+                files="${phpcs.files}"
+                globalConfig="${phpcs.global.config}"
+                ignorePatterns="${phpcs.ignore}"
+                report="${phpcs.report}"
+                showProgress="${phpcs.progress}"
+                showSniffCodes="${phpcs.sniffcodes}"
+                standard="${phpcs.standard}" />
+
+        <!-- Set up the git pre-push hook. -->
+        <phingcall target="disable-pre-push" />
+        <if>
+            <equals arg1="${phpcs.prepush.enable}" arg2="1" />
+            <then>
+                <symlink link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true" />
+            </then>
+        </if>
+    </target>
+
+    <!-- Disable the PHP CodeSniffer pre-push hook. -->
+    <target name="disable-pre-push" description="Disable the coding standards check when pushing to a git repository.">
+        <delete file="${phpcs.prepush.destination}" failonerror="false" />
+    </target>
+
+    <!-- Set up Behat. -->
+    <target name="setup-behat" description="Generate the configuration file for Behat.">
+        <echo message="Creating behat.yml configuration file" />
+        <loadfile property="behat.yml.content" file="${behat.yml.template}" />
+        <echo message="${behat.yml.content}" file="${behat.yml.path}" />
+    </target>
+
+    <!-- Set up Drush. -->
+    <target name="setup-drush" description="Generate the configuration file for Drush.">
+        <!-- Allow to override from environment variable, if exist. This is
+        useful on environments where we cannot configure local properties. -->
+        <if>
+            <isset property="env.DRUPAL_BASE_URL"/>
+            <then>
+                <property name="drupal.base_url" value="${env.DRUPAL_BASE_URL}" override="true"/>
+                <echo message="The 'drupal.base_url' Phing property has been overridden by the DRUPAL_BASE_URL environment variable."/>
+            </then>
+        </if>
+        <echo message="Creating drush.yml configuration file" />
+        <loadfile property="drush.yml.content" file="${drush.yml.template}" />
+        <echo message="${drush.yml.content}" file="${drush.yml.path}" />
+    </target>
+
+    <!-- Set up development configuration, including on-screen error logging and debugging options. -->
+    <target name="enable-dev-settings">
+        <phingcall target="include-local-settings" />
+
+        <if>
+            <not>
+                <available file="${website.settings.local.php}"/>
+            </not>
+            <then>
+                <!-- Copy settings file containing development values, but preserve any existing local settings. -->
+                <copy file="${website.settings.local.php.example}" tofile="${website.settings.local.php}"/>
+                <!-- Let the site config decide the verbosity or error messages -->
+                <replaceregexp file="${website.settings.local.php}" pattern="(\$config\['system.logging'\]\['error_level'\].*)" replace="# $1"/>
+            </then>
+        </if>
+    </target>
+
+    <!-- Create an empty local settings file, if it doesn't exist yet. -->
+    <target name="create-local-settings">
+        <if>
+            <not>
+                <available file="${website.settings.local.php}" type="file" property="website.settings.local.php.available" />
+            </not>
+            <then>
+                <phingcall target="writable-settings-folder" />
+                <echo
+                        message="&lt;?php${line.separator}"
+                        file="${website.settings.local.php}" />
+            </then>
+        </if>
+    </target>
+
+    <!-- Uncomment the inclusion of the local settings file in settings.php. -->
+    <target name="include-local-settings">
+        <phingcall target="writable-settings-folder" />
+        <phingcall target="writable-settings-php" />
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                            pattern="^# (if \(file_exists\(\$app_root \. '\/' \. \$site_path \. '\/settings\.local\.php'\)\) \{\n)# (  include \$app_root \. '\/' \. \$site_path \. '\/settings\.local\.php';\n)# (\})"
+                            replace="\1\2\3"
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+    </target>
+
+    <!-- Enable development modules. -->
+    <target name="enable-dev-modules">
+        <drush
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>${drupal.modules.dev}</param>
+        </drush>
+    </target>
+
+    <!-- Enable a module. -->
+    <target name="enable-module">
+        <drush
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>${module}</param>
+        </drush>
+    </target>
+
+    <!-- Install Composer dependencies for the build system. -->
+    <target name="install-composer-dependencies">
+        <composer command="install" composer="${composer.bin}">
+            <arg value="--working-dir=${project.basedir}" />
+        </composer>
+    </target>
+
+    <!-- Install Composer dependencies for a production environment. -->
+    <target name="install-composer-dependencies-dist">
+        <composer command="install" composer="${composer.bin}">
+            <arg value="--working-dir=${project.basedir}" />
+            <arg value="--no-dev" />
+        </composer>
+    </target>
+
+    <target name="redirect-outgoing-email">
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                            pattern="(\n)?\$config\['system.mail'\]\['interface'\]\['default'\] = 'devel_mail_log';(\n)?"
+                            replace="" />
+                    <regexp
+                            pattern="(\n)?\$config\['mailsystem.settings'\]\['defaults'\]\['sender'\] = 'devel_mail_log';(\n)?"
+                            replace="${line.separator}"
+                            modifiers="" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <if>
+            <equals arg1="${drupal.redirect.email}" arg2="yes" />
+            <then>
+                <phingcall target="enable-module">
+                    <property name="module" value="devel" />
+                </phingcall>
+                <append
+                        destFile="${website.settings.local.php}"
+                        text="${line.separator}$config['system.mail']['interface']['default'] = 'devel_mail_log';${line.separator}" />
+                <append
+                        destFile="${website.settings.local.php}"
+                        text="$config['mailsystem.settings']['defaults']['sender'] = 'devel_mail_log';${line.separator}" />
+            </then>
+            <else>
+                <echo message="Skipping redirection of outgoing e-mail. Set 'drupal.redirect.email = yes' to enable." />
+            </else>
+        </if>
+    </target>
+
+    <!-- Create services.yml by copying the default file. -->
+    <target name="create-services-yml">
+        <if>
+            <not>
+                <available file="${website.services.yml}" type="file" property="website.services.yml.available" />
+            </not>
+            <then>
+                <copy file="${website.services.yml.default}" tofile="${website.services.yml}" />
+            </then>
+        </if>
+    </target>
+
+    <!-- Make services.yml writeable. -->
+    <target
+            name="writable-services-yml"
+            depends="create-services-yml">
+        <if>
+            <available file="${website.services.yml}" type="file" property="website.services.yml.available" />
+            <then>
+                <chmod mode="0644" failonerror="false" verbose="true" quiet="false" file="${website.services.yml}" />
+            </then>
+        </if>
+    </target>
+
+    <target
+            name="setup-dev"
+            description="Set up 'development mode' for an installed website."
+            depends="enable-dev-settings, setup-config-exclude, redirect-outgoing-email, enable-dev-modules" />
 
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">
@@ -154,50 +394,6 @@
                 <include name="virtuoso_dump/" />
             </fileset>
         </delete>
-    </target>
-
-    <!-- Downloads a backup of the SQL database from the ASDA server. -->
-    <target name="download-sql-database">
-        <echo msg="Downloading SQL database dump from ASDA." />
-        <!-- Temporarily increase the memory limit so the download doesn't run out of memory. -->
-        <php expression="ini_get('memory_limit');" returnproperty="memory_limit.original" />
-        <php expression="ini_set('memory_limit', '1G');" />
-        <httpget
-                url="${exports.sql.source}"
-                authUser="${asda.username}"
-                authPassword="${asda.password}"
-                authScheme="basic"
-                dir="${tmp.dir}"
-        />
-        <copy file="${tmp.dir}/JOINUP_PRD_LATEST.sql.gz" tofile="${exports.sql.destination}" overwrite="true"/>
-        <delete file="${tmp.dir}/dump.sql" failonerror="false" />
-        <exec command="gunzip -f ${exports.sql.destination}" dir="${tmp.dir}" />
-        <!-- Remove the MySQL trigger definer -->
-        <exec command="perl -i -pe 's/DEFINER=&quot;[^&quot;]+&quot;@&quot;[^&quot;]+&quot;//g' ${tmp.dir}/dump.sql" passthru="true" checkreturn="true"/>
-        <!-- Restore the original memory limit. -->
-        <php expression="ini_set('memory_limit', '${memory_limit.original}');" />
-    </target>
-
-    <target name="restore-mysql-dump" depends="disable-webtools-geocoding-cache, empty-mysql-database">
-        <drush
-                command="sql-query"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}">
-            <option name="file" value="${tmp.dir}/dump.sql" />
-        </drush>
-        <!-- Make sure to truncate the cache tables immediately after importing.
-             The dump might contain stale data since we use Redis on production
-             for caching. -->
-        <phingcall target="truncate-cache-tables" />
-    </target>
-
-    <target name="empty-mysql-database">
-        <echo message="Drop all MySQL tables from the database." />
-        <emptymysqldatabase
-                url="${drupal.db.dsn}"
-                userId="${drupal.db.user}"
-                password="${drupal.db.password}" />
     </target>
 
     <target name="truncate-cache-tables">
