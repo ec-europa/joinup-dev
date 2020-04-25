@@ -783,11 +783,6 @@
         depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, setup-drush, compile-scss" />
 
     <target
-        name="rebuild-dev"
-        description="Build a development environment based on the production database."
-        depends="build-dev, rebuild-environment, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, verbose-error-logging, start-cas-mock-server" />
-
-    <target
         name="install-dev"
         description="Install the website and set up the development environment."
         depends="setup-virtuoso-permissions, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, setup-config-sync-dir">
