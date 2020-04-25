@@ -29,6 +29,9 @@
 /tests/behat.yml
 /phpunit.xml
 /web/sites/default/services.yml
+/grumphp.yml
+/runner.yml
+/local.env
 
 # Ignore compiled CSS.
 /web/themes/joinup/css
