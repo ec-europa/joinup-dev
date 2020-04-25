@@ -15,10 +15,10 @@
     <taskdef name="drush" classname="\Phing\Drush\Task" />
 
     <echo msg="Loading PHP Codesniffer Configuration task." />
-    <taskdef name="phpcodesnifferconfiguration" classname="\DrupalProject\Phing\PhpCodeSnifferConfigurationTask" />
+    <taskdef name="phpcodesnifferconfiguration" classname="\Joinup\Phing\PhpCodeSnifferConfigurationTask" />
 
     <echo msg="Loading PHPUnit Configuration task." />
-    <taskdef name="phpunitconfiguration" classname="\DrupalProject\Phing\PhpUnitConfigurationTask" />
+    <taskdef name="phpunitconfiguration" classname="\Joinup\Phing\PhpUnitConfigurationTask" />
 
     <!-- Make the settings folder writeable so that the installer can copy settings.php. -->
     <target name="writable-settings-folder">

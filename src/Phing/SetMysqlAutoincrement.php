@@ -1,6 +1,6 @@
 <?php
 
-namespace DrupalProject\Phing;
+namespace Joinup\Phing;
 
 require_once 'phing/Task.php';
 

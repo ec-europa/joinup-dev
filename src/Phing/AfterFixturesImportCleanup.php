@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \DrupalProject\build\Phing\AfterFixturesImportCleanup.
+ * Contains \Joinup\build\Phing\AfterFixturesImportCleanup.
  */
 
-namespace DrupalProject\Phing;
+namespace Joinup\Phing;
 
 use Virtuoso\Task\VirtuosoTaskBase;
 

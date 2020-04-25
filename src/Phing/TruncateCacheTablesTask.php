@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace DrupalProject\Phing;
+namespace Joinup\Phing;
 
 require_once 'phing/tasks/ext/pdo/PDOTask.php';
 

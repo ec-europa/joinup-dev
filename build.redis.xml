@@ -2,7 +2,7 @@
 
 <project name="Redis" default="help">
 
-    <taskdef name="redisflush" classname="\DrupalProject\Phing\RedisFlush" />
+    <taskdef name="redisflush" classname="\Joinup\Phing\RedisFlush" />
 
     <target
             name="clean-redis-settings"

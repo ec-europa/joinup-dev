@@ -148,12 +148,9 @@
     },
     "autoload": {
         "psr-4": {
-            "DrupalProject\\": "src"
+            "Joinup\\": "src"
         },
         "classmap": [
-            "scripts/composer/CaptureGitReleaseTag.php",
-            "scripts/composer/RemoveWrongPatchedObjects.php",
-            "scripts/composer/ScriptHandler.php",
             "web/modules/contrib/error_page/src/ErrorPageErrorHandler.php",
             "web/modules/contrib/sparql_entity_storage/src/Database/Driver/sparql/ConnectionInterface.php",
             "web/modules/custom/adms_validator/adms_validator.behat.inc",
@@ -201,14 +198,14 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "DrupalProject\\composer\\CaptureGitReleaseTag::capture",
-            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
-            "DrupalProject\\composer\\RemoveWrongPatchedObjects::remove"
+            "Joinup\\Composer\\CaptureGitReleaseTag::capture",
+            "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
+            "Joinup\\Composer\\RemoveWrongPatchedObjects::remove"
         ],
         "post-update-cmd": [
-            "DrupalProject\\composer\\CaptureGitReleaseTag::capture",
-            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
-            "DrupalProject\\composer\\RemoveWrongPatchedObjects::remove"
+            "Joinup\\Composer\\CaptureGitReleaseTag::capture",
+            "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
+            "Joinup\\Composer\\RemoveWrongPatchedObjects::remove"
         ]
     },
     "extra": {

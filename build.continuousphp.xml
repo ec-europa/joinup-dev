@@ -7,7 +7,7 @@
     <property name="aws.profile" value="" />
 
     <echo msg="Turn environment variable into a phing property" />
-    <taskdef name="env2property" classname="\DrupalProject\Phing\EnvironmentVarAsProperty" />
+    <taskdef name="env2property" classname="\Joinup\Phing\EnvironmentVarAsProperty" />
 
     <echo msg="Loading infra additional tasks." />
     <import file="./vendor/ec-europa/infra/infra.xml" />

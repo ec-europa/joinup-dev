@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \DrupalProject\build\Phing\PhpCodeSnifferConfigurationTask.
+ * Contains \Joinup\build\Phing\PhpCodeSnifferConfigurationTask.
  */
 
-namespace DrupalProject\Phing;
+namespace Joinup\Phing;
 
 require_once 'phing/Task.php';
 
