@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cb95a79d287cdd219c2260e9949dfb8",
+    "content-hash": "19a281cef5e27886b9d4d5810bfea172",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2012,48 +2012,6 @@
             "homepage": "https://github.com/container-interop/container-interop",
             "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
-        },
-        {
-            "name": "continuousphp/aws-sdk-phing",
-            "version": "0.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/continuousphp/aws-sdk-phing.git",
-                "reference": "ed4399d5a7f2a1a602b285726db594ce3c538a44"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/continuousphp/aws-sdk-phing/zipball/ed4399d5a7f2a1a602b285726db594ce3c538a44",
-                "reference": "ed4399d5a7f2a1a602b285726db594ce3c538a44",
-                "shasum": ""
-            },
-            "require": {
-                "aws/aws-sdk-php": "~3.0",
-                "phing/phing": "~2.7",
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "psy/psysh": "@stable"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Aws\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Frederic Dewinne",
-                    "email": "frederic@continuousphp.com"
-                }
-            ],
-            "description": "phing tasks for Amazon AWS",
-            "homepage": "https://github.com/continuousphp/aws-sdk-phing",
-            "time": "2017-10-13T13:25:42+00:00"
         },
         {
             "name": "cpliakas/git-wrapper",
@@ -8147,44 +8105,6 @@
             "time": "2015-11-01T12:15:43+00:00"
         },
         {
-            "name": "ec-europa/infra",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ec-europa/infra.git",
-                "reference": "e05207c2a1f05468f0df063d1095ef03e376e548"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/e05207c2a1f05468f0df063d1095ef03e376e548",
-                "reference": "e05207c2a1f05468f0df063d1095ef03e376e548",
-                "shasum": ""
-            },
-            "require": {
-                "continuousphp/aws-sdk-phing": "~0.2",
-                "pear/archive_tar": "^1.4",
-                "pear/versioncontrol_git": "dev-master",
-                "phing/phing": "2.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Aws\\": "src/Aws"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Gregory Boddin",
-                    "email": "gregory@siwhine.net"
-                }
-            ],
-            "time": "2018-08-01T11:20:25+00:00"
-        },
-        {
             "name": "ec-europa/joinup-tallinn-dashboard",
             "version": "dev-master",
             "source": {
@@ -10649,50 +10569,6 @@
                 "exception"
             ],
             "time": "2019-12-10T10:24:42+00:00"
-        },
-        {
-            "name": "pear/versioncontrol_git",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/pear/VersionControl_Git.git",
-                "reference": "6308acdf0ef5c57d1545e6a720fbddf755813753"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/pear/VersionControl_Git/zipball/6308acdf0ef5c57d1545e6a720fbddf755813753",
-                "reference": "6308acdf0ef5c57d1545e6a720fbddf755813753",
-                "shasum": ""
-            },
-            "require": {
-                "pear/pear-core-minimal": "^1.9",
-                "pear/pear_exception": "~1.0.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "VersionControl": "./"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "include-path": [
-                "./"
-            ],
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Kousuke Ebihara",
-                    "email": "ebihara@php.net",
-                    "role": "Lead"
-                }
-            ],
-            "description": "VersionControl_Git is a library that provides OO interface to handle Git repository.",
-            "time": "2018-01-29T21:14:27+00:00"
         },
         {
             "name": "pfrenssen/matomo-reporting-api",
@@ -18061,7 +17937,6 @@
         "drupal/simple_sitemap": 20,
         "drupal/swiftmailer": 20,
         "drupal/view_unpublished": 15,
-        "ec-europa/infra": 20,
         "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
