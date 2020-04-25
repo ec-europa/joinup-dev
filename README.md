@@ -73,7 +73,7 @@ run the Behat test, please refer directly to the documention of
   folder `./vendor/apache/solr`.
 
     ```
-    $ ./vendor/bin/phing setup-apache-solr
+    $ ./vendor/bin/run solr:setup
     ```
 
 * Install Virtuoso. For basic instructions, see [setting up
@@ -124,22 +124,10 @@ Example `build.properties.local`:
 # The location of the Composer binary.
 composer.bin = /usr/bin/composer
 
-# The location of the Virtuoso console (Debian / Ubuntu).
-isql.bin = /usr/bin/virtuoso-isql
-# The location of the Virtuoso console (Arch Linux).
-isql.bin = /usr/bin/virtuoso-isql
-# The location of the Virtuoso console (Redhat / Fedora / OSX with Homebrew).
-isql.bin = /usr/local/bin/isql
-
 # SQL database settings.
 drupal.db.name = my_database
 drupal.db.user = root
 drupal.db.password = hunter2
-
-# SPARQL database settings.
-sparql.dsn = localhost
-sparql.user = my_username
-sparql.password = qwerty123
 
 # Admin user.
 drupal.admin.username = admin
@@ -152,6 +140,19 @@ drupal.base_url = http://joinup.local
 drush.verbose = yes
 ```
 
+#### Create a local task runner configuration file
+
+In order to override any configuration of the task runner (`./vendor/bin/run`),
+create a `runner.yml` file in the project's top directory. You can override
+there any default runner configuration, or any other declared in `./runner`
+files or in `runner.yml.dist`. Note that the `runner.yml` file is not under VCS
+control.
+
+#### Setup environment variables
+
+Sensitive data will be stored in [environment variables](
+https://en.wikipedia.org/wiki/Environment_variable). See `local.env.dist` for
+details.
 
 #### Build the project
 
