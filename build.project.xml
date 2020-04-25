@@ -365,37 +365,6 @@
     <!-- Download database backups from the ASDA server. -->
     <target name="download-databases" depends="download-virtuoso-database, download-sql-database, download-apache-solr-snapshot" />
 
-    <!-- Downloads a backup of the Virtuoso database from the ASDA server. -->
-    <target name="download-virtuoso-database">
-        <mkdir dir="${exports.virtuoso.destination.folder}" />
-        <echo msg="Fetching list of files to download." />
-        <!-- Temporarily increase the memory limit so the download doesn't run out of memory. -->
-        <php expression="ini_get('memory_limit');" returnproperty="memory_limit.original" />
-        <php expression="ini_set('memory_limit', '1G');" />
-        <httpget
-                url="${exports.virtuoso.source}"
-                authUser="${asda.username}"
-                authPassword="${asda.password}"
-                authScheme="basic"
-                dir="${exports.virtuoso.destination.folder}"
-        />
-        <!-- Restore the original memory limit. -->
-        <php expression="ini_set('memory_limit', '${memory_limit.original}');" />
-        <untar file="${exports.virtuoso.destination.folder}JOINUP_VIRTUOSO_PRD_LATEST.tar.gz" todir="${exports.virtuoso.destination.folder}" />
-
-        <copy todir="${exports.virtuoso.destination.folder}">
-            <fileset dir="${exports.virtuoso.destination.folder}virtuoso_dump/">
-                <include name="*.bp"/>
-            </fileset>
-        </copy>
-        <delete>
-            <fileset dir="${exports.virtuoso.destination.folder}">
-                <include name="*.tar.gz" />
-                <include name="virtuoso_dump/" />
-            </fileset>
-        </delete>
-    </target>
-
     <target name="truncate-cache-tables">
         <echo message="Truncating cache tables." />
         <truncatecachetables
