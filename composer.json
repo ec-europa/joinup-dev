@@ -56,7 +56,7 @@
         "drupal/phingdrushtask": "dev-7.x-2.x",
         "drupal/pipeline": "^1.0",
         "drupal/publication_date": "^2.0-beta1",
-        "drupal/rdf_entity": "^1.0-alpha20",
+        "drupal/rdf_entity": "^1.0-alpha21",
         "drupal/redirect": "^1.4",
         "drupal/redis": "^1.2",
         "drupal/schema_metatag": "^1.4",
@@ -80,6 +80,7 @@
         "ec-europa/infra": "dev-master",
         "ec-europa/joinup-tallinn-dashboard": "dev-master",
         "ec-europa/material-design-lite": "dev-joinup",
+        "ec-europa/toolkit": "^4.0",
         "ec-europa/virtuoso": "^2.1",
         "jacklmoore/autosize": "dev-master",
         "masterminds/html5": "^2.7",
@@ -293,8 +294,7 @@
                 "Provide computed properties that return the publication date or the created/updated date @see https://www.drupal.org/project/publication_date/issues/3066317": "https://www.drupal.org/files/issues/2019-07-07/3066317-3.patch"
             },
             "drupal/rdf_entity": {
-                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff",
-                "Add entity cacheable metadata to view access result @see https://github.com/ec-europa/rdf_entity/pull/120": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/120.diff"
+                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff"
             },
             "drupal/schema_metatag": {
                 "Split SchemaArticle and SchemaSocialMediaPosting @see https://www.drupal.org/project/schema_metatag/issues/3117434": "https://www.drupal.org/files/issues/2020-03-13/3117434-D8-8.patch",
@@ -324,10 +324,19 @@
                 "Do not throw an exception when valid JSON data evaluates to empty PHP data @see https://github.com/drush-ops/drush/pull/4342": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4342.diff",
                 "Output correct data for machine readable formats in config:status @see https://github.com/drush-ops/drush/pull/4340": "resources/patch/drush-4340.patch"
             },
+            "ec-europa/toolkit": {
+                "Variables in 'sequence-file' are not resolved @see https://github.com/ec-europa/toolkit/issues/273": "https://patch-diff.githubusercontent.com/raw/ec-europa/toolkit/pull/274.diff"
+            },
             "openeuropa/oe_webtools": {
                 "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                 "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
                 "Add the possibility to display a marker in the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff"
+            },
+            "openeuropa/task-runner": {
+                "Allow dynamic commands to override also annotated commands @see https://github.com/openeuropa/task-runner/pull/119": "resources/patch/task-runner-119.patch",
+                "Arguments & options @see https://github.com/openeuropa/task-runner/issues/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/120.diff",
+                "Allow altering the config @see https://github.com/openeuropa/task-runner/issues/122": "https://github.com/openeuropa/task-runner/compare/dd4a4c770e121f2d7ab032a08dd48480bac36696...a1d8eaafcababed097817e78d701b3707c96d2e7.diff",
+                "New 'exec' task for dynamic commands @see https://github.com/openeuropa/task-runner/pull/124": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/124.diff"
             }
         }
     },
