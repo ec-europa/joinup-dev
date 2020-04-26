@@ -8,7 +8,7 @@ dependencies:
     - field.field.rdf_entity.owner.field_owner_type
     - rdf_entity.rdfentity.owner
   module:
-    - joinup_core
+    - joinup_workflow
 id: rdf_entity.owner.default
 targetEntityType: rdf_entity
 bundle: owner

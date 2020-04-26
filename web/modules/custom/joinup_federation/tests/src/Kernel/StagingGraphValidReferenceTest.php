@@ -36,9 +36,16 @@ class StagingGraphValidReferenceTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
+    $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp(): void {
     parent::setUp();
-    $this->setUpSparql();
     $this->installConfig([
       'joinup_federation',
       'joinup_federation_staging_graph_test',

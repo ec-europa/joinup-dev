@@ -7,6 +7,3 @@ access uri converter:
 administer matomo integration:
   title: 'Administer Matomo integration'
   description: 'Grants access to the Matomo Integration settings form.'
-
-permission_callbacks:
-  - \Drupal\joinup_core\JoinupPermissions::groupOwnershipPermissions

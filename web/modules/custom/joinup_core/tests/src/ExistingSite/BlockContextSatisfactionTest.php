@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Drupal\Core\Extension\Extension;
+use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
 
 /**
  * Tests that our custom blocks satisfy at least one of the available contexts.

@@ -579,3 +579,48 @@ function joinup_user_get_display_name(AccountInterface $account) {
 
   return $name;
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Changes the label text on the login form submit button to "Sign in".
+ */
+function joinup_user_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  $form['actions']['submit']['#value'] = t('Sign in');
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ *
+ * Change instances of 'Log in/out' to 'Sign in/out'.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3659
+ */
+function joinup_user_menu_links_discovered_alter(&$links) {
+  if (isset($links['user.logout'])) {
+    $links['user.logout']['class'] = '\Drupal\joinup_user\Plugin\Menu\LoginLogoutMenuLink';
+  }
+}
+
+/**
+ * Implements hook_local_tasks_alter().
+ *
+ * Change instances of 'Log in' to 'Sign in'.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3659
+ */
+function joinup_user_local_tasks_alter(&$local_tasks) {
+  if (isset($local_tasks['user.login'])) {
+    $local_tasks['user.login']['title'] = t('Sign in');
+  }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Adds a destination parameter to the 'Sign in' menu item on every page towards
+ * the current page.
+ */
+function joinup_user_preprocess_page(&$variables) {
+  $variables['#attached']['library'][] = 'joinup_user/sign_in_destination';
+}
