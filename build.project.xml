@@ -332,20 +332,6 @@
 
     <!-- Set up PHP CodeSniffer. -->
     <target name="setup-php-codesniffer" description="Generate the configuration file for PHP CodeSniffer.">
-        <if>
-            <available file="${phpcs.config}" type="file" property="phpcs.config.available" />
-            <then>
-                <echo message="Deleting existing PHP Codesniffer default configuration file." />
-                <delete file="${phpcs.config}" failonerror="false" />
-            </then>
-        </if>
-        <if>
-            <available file="${phpcs.global.config}" type="file" property="phpcs.global.config.available" />
-            <then>
-                <echo message="Deleting existing PHP Codesniffer global configuration file." />
-                <delete file="${phpcs.global.config}" failonerror="false" />
-            </then>
-        </if>
         <echo message="Generating PHP Codesniffer configuration files." />
         <phpcodesnifferconfiguration
                 configFile="${phpcs.config}"
@@ -1035,7 +1021,7 @@
     </target>
 
     <target name="check-deprecated-code">
-        <exec command="${project.basedir}/vendor/bin/phpstan --no-progress --ansi -n -vvv analyse web/modules/custom web/profiles web/themes src scripts/composer tests/src" passthru="true" checkreturn="true"/>
+        <exec command="${project.basedir}/vendor/bin/phpstan --no-progress --ansi -n -vvv analyse web/modules/custom web/profiles web/themes src tests/src" passthru="true" checkreturn="true"/>
     </target>
 
 </project>
