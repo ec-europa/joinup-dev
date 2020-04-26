@@ -375,13 +375,6 @@
 
     <!-- Set up Behat. -->
     <target name="setup-behat" description="Generate the configuration file for Behat.">
-        <if>
-            <available file="${behat.yml.path}" type="file" property="behat.yml.available" />
-            <then>
-                <echo message="Deleting existing behat.yml configuration file" />
-                <delete file="${behat.yml.path}" failonerror="false" />
-            </then>
-        </if>
         <echo message="Creating behat.yml configuration file" />
         <loadfile property="behat.yml.content" file="${behat.yml.template}" />
         <echo message="${behat.yml.content}" file="${behat.yml.path}" />
