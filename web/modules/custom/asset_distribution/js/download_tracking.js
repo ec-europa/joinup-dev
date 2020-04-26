@@ -30,8 +30,16 @@
           dialogType: 'modal'
         });
 
-        $this.on('click.joinup', function () {
+        $this.on('click', function (event) {
           $(this).trigger('track_download.joinup');
+          // IE11 miss behaves when clicking the link and the default behaviour
+          // is not working.
+          // For IE11, force the click. The following check ensures that this is
+          // IE and fails for Edge (where the click event behaves properly).
+          // @see https://stackoverflow.com/a/21825207.
+          if (!!window.MSInputMethodContext && !!document.documentMode) {
+            window.location.href = $(this).prop('href');
+          }
         });
       });
     }
