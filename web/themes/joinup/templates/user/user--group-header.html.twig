@@ -41,6 +41,12 @@
             {% if content.field_social_media|render %}
               {{ content.field_social_media }}
             {% endif %}
+            {% if member_for|render %}
+              <div class="stats__wrapper center">
+                <span class="stats__text bold">{{ 'Member for'|t }}:</span>
+                <span class="stats__text">{{ member_for }}</span>
+              </div>
+            {% endif %}
           </div>
 
           <div class="mdl-cell mdl-cell--8-col mdl-cell--9-col-wide">
@@ -49,42 +55,34 @@
               {% if content.field_user_business_title|render %}
                 <div class="featured__text-small bold">{{ content.field_user_business_title }}</div>
               {% endif %}
+             
+                <div class="stats__wrapper">
+                  <span class="stats__text">{{ 'Country of origin'|t }}:</span>
+                  <span class="stats__text">{{ content.field_user_nationality }}</span>
+                </div>
+             
             </div>
 
-            <div class="mdl-grid mdl-grid--no-spacing">
-
+            <div class="mdl-grid mdl-grid--no-spacing{% if content.field_user_organisation|render %} mdl-grid--with-organisation{% endif %}">
+            
+              {% if content.field_user_organisation|render %}
               <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-wide">
-                {% if content.field_user_organisation|render %}
-                  <div class="stats__wrapper stats__wrapper-organisation">
-                    <span class="stats__text bold">{{ 'Organisation'|t }}:</span>
-                    <span class="stats__text">{{ content.field_user_organisation }}</span>
-                  </div>
-                {% endif %}
-              </div>
-
-              <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-wide">
-                {% if content.field_user_professional_domain|render %}
-                  <div class="stats__wrapper stats__wrapper-domain">
-                    <span class="stats__text bold">{{ 'Domains'|t }}:</span>
-                    <span class="stats__text">{{ content.field_user_professional_domain }}</span>
-                  </div>
-                {% endif %}
-                <div class="stats__wrapper stats__wrapper-domain">
-                  <span class="stats__text bold">Domains:</span>
-                  <span class="stats__col--double">
-                    <div>
-                        <div>Free and open source software</div>
-                        <div>ICT</div>
-                        <div>Science and technology</div>
-                        <div>Collaboration</div>
-                        <div>Free and open source software in Public Administrations</div>
-                        <div>ICT standardisation in eGovernment</div>
-                        <div>Open government</div>
-                        <div>eGovernmentttt</div>
-                    </div>
-                  </span>
+                <div class="stats__wrapper stats__wrapper-organisation">
+                  <span class="stats__text bold">{{ 'Organisation'|t }}:</span>
+                  <span class="stats__text">{{ content.field_user_organisation }}</span>
                 </div>
               </div>
+              {% endif %}
+
+              {% if content.field_user_professional_domain|render %}
+              <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-wide">
+                <div class="stats__wrapper stats__wrapper-domain">
+                  <span class="stats__text bold">{{ 'Domains'|t }}:</span>
+                  <span class="stats__col--double">{{ content.field_user_professional_domain }}</span>
+                </div>
+              </div>
+              {% endif %}
+
             </div>
           </div>
         </div>

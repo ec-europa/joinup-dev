@@ -297,7 +297,6 @@
       background-color: $color-grey-bg;
     }
 
-
     @include breakpoint(lg-desktop) {
       right: 0;
     }
@@ -358,11 +357,15 @@
       @include breakpoint(tablet) {
         text-align: left;
       }
+      .stats__wrapper {
+        font-size: 14px;
+        letter-spacing: normal;
+      }
     }
       
     .inline-social-media {
       text-align: center;
-      margin-top: 20px;
+      margin: 20px 0 15px 0;
     }
       
     .stats__wrapper {
@@ -381,12 +384,6 @@
         }
       }
 
-      &.stats__wrapper-domain {
-        @include breakpoint(lg-desktop) {
-          padding-left: 5px;
-        }
-      }
-
       .stats__col--double > div {
         @include breakpoint(lg-desktop) {
           -webkit-columns: 2;
@@ -394,7 +391,25 @@
           columns: 2;
           column-gap: 20px;
         }
-        @include breakpoint(xxs, desktop) {
+      }
+    }
+
+    .mdl-grid--with-organisation {
+
+      .stats__wrapper-domain {
+        @include breakpoint(lg-desktop) {
+          padding-left: 5px;
+        }
+      };
+
+      .stats__col--double > div {
+        @include breakpoint(xs) {
+          -webkit-columns: 2;
+          -moz-columns: 2;
+          columns: 2;
+          column-gap: 20px;
+        }
+        @include breakpoint(sm, desktop) {
           > div {
             &:nth-of-type(1n+6) {
               display: none;
@@ -402,7 +417,6 @@
           }
         }
       }
-
     }
   }
 }
