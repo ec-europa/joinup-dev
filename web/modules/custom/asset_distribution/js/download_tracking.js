@@ -32,7 +32,7 @@
 
         $this.on('click', function (event) {
           $(this).trigger('track_download.joinup');
-          // IE11 miss behaves when clicking the link and the default behaviour
+          // IE11 misbehaves when clicking the link and the default behaviour
           // is not working.
           // For IE11, force the click. The following check ensures that this is
           // IE and fails for Edge (where the click event behaves properly).
