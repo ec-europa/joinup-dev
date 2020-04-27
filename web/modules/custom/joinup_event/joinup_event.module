@@ -28,10 +28,10 @@ function joinup_event_entity_bundle_field_info_alter(array &$fields, EntityTypeI
 }
 
 /**
- * Implements hook_joinup_community_content_node_bundle_classes_alter().
+ * Implements hook_entity_bundle_info_alter().
  */
-function joinup_event_joinup_bundle_class_alter(array &$bundle_classes) {
-  $bundle_classes['event'] = Event::class;
+function joinup_event_entity_bundle_info_alter(&$bundles) {
+  $bundles['node']['event']['class'] = Event::class;
 }
 
 /**

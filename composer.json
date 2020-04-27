@@ -252,7 +252,7 @@
                 "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2020-01-29/2320877-35.patch",
                 "Allow sorting of actions @see https://www.drupal.org/project/drupal/issues/2381293": "https://www.drupal.org/files/issues/2019-12-04/2381293-134.patch",
                 "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2020-01-29/2556069-56.patch",
-                "Allow entities to be subclassed more easily @see https://www.drupal.org/project/drupal/issues/2570593": "https://www.drupal.org/files/issues/2020-01-28/core-2570593-57.patch",
+                "Allow entities to be subclassed using bundle classes @see https://www.drupal.org/project/drupal/issues/2570593": "https://www.drupal.org/files/issues/2020-04-27/2570593-80.patch",
                 "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-30.patch",
                 "Menu link plugins should provide a way for the link to be conditionally hidden @see https://www.drupal.org/project/drupal/issues/2719609": "https://www.drupal.org/files/issues/2719609-2.patch",
                 "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-65.patch",
