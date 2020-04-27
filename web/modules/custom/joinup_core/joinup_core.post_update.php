@@ -1136,3 +1136,86 @@ function joinup_core_post_update_delete_orphaned_solutions() {
     $solution->delete();
   }
 }
+
+/**
+ * Fixes the publication date of items that have been updated since publication.
+ */
+function joinup_core_post_update_0001_fix_news_publication_date(array &$sandbox): string {
+  // When the _publication_date_populate_database_field ran, the entities that
+  // retrieved a publication date, the value they received was either the
+  // created or changed value. However, up until October of 2019, we had in
+  // place the visit count as part of the entity, so when the cached field
+  // event subscriber was refreshing the values, the changed value of the
+  // revision was taking a different date.
+  // The issue existed for entities that had more than one revision and before
+  // we install the publication_date module and move the visit count storage to
+  // a separate storage, the revision timestamp was prone to change.
+  // Update the publication date of these entities by setting it to the creation
+  // date of the revision instead of the changed date of the entity.
+  $connection = \Drupal::database();
+  if (empty($sandbox['nids'])) {
+    $query = <<<QUERY
+SELECT MIN(nfr.vid), nfr.nid, nfr.published_at, nr.revision_timestamp
+FROM node_field_revision as nfr
+LEFT JOIN node_revision as nr ON nfr.vid = nr.vid
+WHERE nfr.status = 1 AND nr.revision_timestamp < nfr.published_at
+GROUP BY nfr.nid, nr.vid, nr.revision_timestamp, nfr.published_at
+QUERY;
+    $results = $connection->query($query);
+    foreach ($results as $result) {
+      $sandbox['data'][$result->nid] = [
+        'revision_timestamp' => $result->revision_timestamp,
+        'published_at' => $result->published_at,
+      ];
+    }
+    $sandbox['nids'] = array_keys($sandbox['data']);
+    $sandbox['count'] = 0;
+    $sandbox['max'] = count($sandbox['data']);
+  }
+
+  $nids = array_splice($sandbox['nids'], 0, 50);
+  foreach ($nids as $nid) {
+    // The queries are based on the original queries from
+    // _publication_date_populate_database_field.
+    // @see: _publication_date_populate_database_field().
+    $queries = [
+      [
+        'query' => <<<SQL
+UPDATE {node_field_revision} r
+SET r.published_at = {$sandbox['data'][$nid]['revision_timestamp']}
+WHERE r.published_at = {$sandbox['data'][$nid]['published_at']}
+AND r.nid = {$nid};
+SQL
+      ],
+      [
+        'query' => <<<SQL
+UPDATE {node_field_data} d, {node_field_revision} r
+SET d.published_at = r.published_at
+WHERE r.nid = {$nid}
+AND d.vid = r.vid;
+SQL
+      ],
+    ];
+
+    // Perform the operations in a single atomic transaction.
+    $transaction = $connection->startTransaction();
+    try {
+      foreach ($queries as $query_data) {
+        \Drupal::database()->query($query_data['query']);
+      }
+    }
+    catch (Exception $e) {
+      $transaction->rollBack();
+      throw new Exception('Database error', 0, $e);
+    }
+    $sandbox['count']++;
+  }
+
+  foreach (['published', 'unpublished'] as $index_name) {
+    Index::load($index_name)->trackItemsUpdated('entity:node', $nids);
+  }
+  \Drupal::entityTypeManager()->getStorage('node')->resetCache($nids);
+
+  $sandbox['#finished'] = (float) $sandbox['count'] / (float) $sandbox['max'];
+  return "Processed {$sandbox['count']} out of {$sandbox['max']} entities.";
+}
