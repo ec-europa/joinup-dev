@@ -13,10 +13,10 @@ Feature:
       | name                 | type    |
       | Organisation example | Company |
 
-    When I am logged in as an authenticated
+    When I am logged in as an "authenticated user"
     And I go to the propose collection form
 
-    # Assert the Short ID description.
+    # Assert the Short ID description is present.
     Then I should see the following lines of text:
       | Short URL is an abbreviated reference (It serves as a "nickname") for the collection, like an acronym. E.g. for a collection named "European Commission" it can be "EuCo". This value will be displayed in your browser's address bar. |
       | This is not editable after the collection's initial publication.                                                                                                                                                                       |
