@@ -586,14 +586,6 @@
                 Port="${sparql.port}" />
     </target>
 
-    <target name="truncate-cache-tables">
-        <echo message="Truncating cache tables." />
-        <truncatecachetables
-                url="${drupal.db.dsn}"
-                userId="${drupal.db.user}"
-                password="${drupal.db.password}" />
-    </target>
-
     <!-- Set up PHPUnit. -->
     <target name="setup-phpunit" description="Generate the configuration file for PHPUnit.">
         <phpunitconfiguration
