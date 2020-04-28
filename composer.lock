@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c878e5ca91f9d7c78a7262c4f808760",
+    "content-hash": "df055a1d1072c7c1d34a7e95b16cd9f9",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.135.4",
+            "version": "3.135.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "fb6f4a12d9ad1b8fc1481aef61ed1f8a9fe2164b"
+                "reference": "a721de5e39eb584aa74611b07564bedba166893c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fb6f4a12d9ad1b8fc1481aef61ed1f8a9fe2164b",
-                "reference": "fb6f4a12d9ad1b8fc1481aef61ed1f8a9fe2164b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a721de5e39eb584aa74611b07564bedba166893c",
+                "reference": "a721de5e39eb584aa74611b07564bedba166893c",
                 "shasum": ""
             },
             "require": {
@@ -151,7 +151,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2020-04-24T18:14:04+00:00"
+            "time": "2020-04-27T18:11:22+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -5969,17 +5969,17 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "1.0.0-alpha20",
+            "version": "1.0.0-alpha21",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/rdf_entity.git",
-                "reference": "8.x-1.0-alpha20"
+                "reference": "8.x-1.0-alpha21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha20.zip",
-                "reference": "8.x-1.0-alpha20",
-                "shasum": "22b61aa1b94f35a0a2f5c787a32fc10495918c99"
+                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha21.zip",
+                "reference": "8.x-1.0-alpha21",
+                "shasum": "b911948f800f64d0c28cc96a2236f1f24a3e345a"
             },
             "require": {
                 "drupal/core": "~8.8",
@@ -5993,21 +5993,16 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.0-alpha20",
-                    "datestamp": "1582640151",
+                    "version": "8.x-1.0-alpha21",
+                    "datestamp": "1588058573",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
                 },
                 "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff",
-                    "Add entity cacheable metadata to view access result @see https://github.com/ec-europa/rdf_entity/pull/120": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/120.diff",
-                    "Rdf::hasGraph breaks if the entity is new @see https://github.com/ec-europa/rdf_entity/pull/121": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/121.diff"
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -16299,16 +16294,16 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "6.3.2",
+            "version": "6.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "6de1e23a949c4b026f6d92584d2f47841f740868"
+                "reference": "b905a82255749de847fd4de607c7a4c8163f058d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/6de1e23a949c4b026f6d92584d2f47841f740868",
-                "reference": "6de1e23a949c4b026f6d92584d2f47841f740868",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/b905a82255749de847fd4de607c7a4c8163f058d",
+                "reference": "b905a82255749de847fd4de607c7a4c8163f058d",
                 "shasum": ""
             },
             "require": {
@@ -16352,7 +16347,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-04-20T12:29:46+00:00"
+            "time": "2020-04-28T07:15:08+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
