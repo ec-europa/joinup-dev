@@ -19,7 +19,7 @@ widget:
   type: dropdown
   config:
     show_numbers: true
-    default_option_label: 'Any Collection or Solution'
+    default_option_label: 'Any Challenge or Solution'
     arbitrary_facet_plugin: _none
 query_operator: or
 use_hierarchy: false

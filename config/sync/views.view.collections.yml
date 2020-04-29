@@ -9,7 +9,7 @@ dependencies:
     - joinup_core
     - search_api
 id: collections
-label: Collections
+label: Challenges
 module: views
 description: ''
 tag: ''
@@ -499,7 +499,7 @@ display:
           expose:
             label: ''
           plugin_id: search_api
-      title: Collections
+      title: Challenges
       header: {  }
       footer: {  }
       empty: {  }
@@ -523,10 +523,10 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: collections
+      path: challenges
       menu:
         type: normal
-        title: Collections
+        title: Challenges
         description: ''
         expanded: false
         parent: ''
