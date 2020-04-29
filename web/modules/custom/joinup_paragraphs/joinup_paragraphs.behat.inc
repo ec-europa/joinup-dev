@@ -82,8 +82,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    * @Given I should see the :button button in the :field field at row :position
    */
   public function assertButtonInParagraphsItem(string $button, string $field, int $position): void {
-    $position--;
-    $paragraph_item = $this->getParagraphsElement($field, $position);
+    $paragraph_item = $this->getParagraphsElement($field, --$position);
     Assert::assertNotEmpty($paragraph_item->findButton($button));
   }
 
@@ -100,8 +99,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    * @Given I should not see the :button button in the :field field at row :position
    */
   public function assertButtonNotInParagraphsItem(string $button, string $field, int $position): void {
-    $position--;
-    $paragraph_item = $this->getParagraphsElement($field, $position);
+    $paragraph_item = $this->getParagraphsElement($field, --$position);
     Assert::assertEmpty($paragraph_item->findButton($button));
   }
 
@@ -122,8 +120,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    * @Given I press :button in the :field paragraphs field
    */
   public function clickButtonInParagraphsField(string $button, string $field, ?int $position = NULL): void {
-    $position--;
-    $paragraph_item = $this->getParagraphsElement($field, $position);
+    $paragraph_item = $this->getParagraphsElement($field, --$position);
     $button = $paragraph_item->findButton($button);
     $button->click();
   }
