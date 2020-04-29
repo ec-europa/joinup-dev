@@ -168,7 +168,7 @@ function custom_page_post_update_default_global_search(array &$sandbox): string 
 }
 
 /**
- * Implements hook_post_update_NAME().
+ * Migrate the custom page body field to the new paragraphs field.
  */
 function custom_page_post_update_0000_copy_body_to_paragraphs(&$sandbox) {
   if (!isset($sandbox['nids'])) {

@@ -2016,17 +2016,6 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Cleans up the paragraphs entities created when nodes where created.
-   *
-   * @AfterScenario
-   */
-  public function paragraphsCleanup(): void {
-    foreach ($this->paragraphs as $paragraph) {
-      $paragraph->delete();
-    }
-  }
-
-  /**
    * Assert that a given attribute is not set for a given element in a region.
    *
    * @Then I( should) not see the :tag element with the :attribute attribute set to :value in the :region( region)

@@ -12,7 +12,6 @@ dependencies:
   module:
     - field_group
     - file
-    - joinup
     - link
     - search_api_field
     - template_suggestion

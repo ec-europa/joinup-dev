@@ -210,13 +210,20 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
   }
 
   /**
-   * Clears up any manually created remaining paragraphs in the database.
+   * Cleans up the paragraphs entities created when nodes where created.
+   *
+   * This uses the orphan paragraphs purger queue worker.
    *
    * @AfterScenario @paragraphs_cleanup
    */
   public function paragraphsCleanup(): void {
-    foreach (\Drupal::entityTypeManager()->getStorage('paragraph')->loadMultiple() as $paragraph) {
-      $paragraph->delete();
+    /** @var \Drupal\Core\Queue\QueueWorkerInterface $worker */
+    $worker = \Drupal::service('plugin.manager.queue_worker')->createInstance('og_orphaned_group_content_cron');
+    $queue = \Drupal::queue('entity_reference_revisions_orphan_purger');
+
+    while ($item = $queue->claimItem()) {
+      $worker->processItem($item->data);
+      $queue->deleteItem($item);
     }
   }
 

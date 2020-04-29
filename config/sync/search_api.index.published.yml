@@ -284,7 +284,6 @@ field_settings:
     dependencies:
       module:
         - meta_entity
-        - meta_entity
       config:
         - field.storage.meta_entity.count
   id:
