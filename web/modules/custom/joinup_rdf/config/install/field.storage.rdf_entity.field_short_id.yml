@@ -15,13 +15,13 @@ field_name: field_short_id
 entity_type: rdf_entity
 type: string
 settings:
-  max_length: 255
-  is_ascii: false
+  max_length: 26
+  is_ascii: true
   case_sensitive: false
 module: core
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

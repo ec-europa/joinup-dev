@@ -6,9 +6,8 @@ Feature:
 
   Scenario: Short IDs are unique in collections.
     Given the following collections:
-      | title                     | short ID | state     |
-      | Scientific Studies        | SSt-2020 | validated |
-      | Scientific Sustainability | SST-2020 | validated |
+      | title              | short ID | state     |
+      | Scientific Studies | SSt-2020 | validated |
     And owner:
       | name                 | type    |
       | Organisation example | Company |

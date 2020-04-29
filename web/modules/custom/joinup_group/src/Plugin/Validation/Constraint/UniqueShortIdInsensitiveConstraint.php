@@ -9,7 +9,8 @@ use Symfony\Component\Validator\Constraint;
 /**
  * Checks if an entity field has a unique value within its bundle.
  *
- * The check is case insensitive. Works only for RDF entities.
+ * The validation is case insensitive. Works only for RDF entities. This
+ * constraint was created explicitly for the RDF entity "Short ID" field.
  *
  * @Constraint(
  *   id = "UniqueShortIdInsensitive",

@@ -52,7 +52,6 @@ config_devel:
     - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
-    - field.field.rdf_entity.collection.field_short_id
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
@@ -85,3 +84,4 @@ config_devel:
     - core.entity_view_display.rdf_entity.collection.rdf_draft
     - core.entity_view_display.rdf_entity.collection.view_mode_featured
     - core.entity_view_display.rdf_entity.collection.view_mode_tile
+    - field.field.rdf_entity.collection.field_short_id

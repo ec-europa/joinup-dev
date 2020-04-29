@@ -100,8 +100,10 @@ function joinup_group_form_rdf_entity_form_alter(&$form, FormStateInterface $for
     $form['actions']['submit']['#submit'][] = 'joinup_group_propose_message_submit';
   }
 
-  if (in_array($entity->bundle(), ['collection', 'solution'])) {
-    if (isset($form['field_short_id']) && $entity->hasGraph('default') && !\Drupal::currentUser()->hasPermission('edit short id after publication')) {
+  if (JoinupGroupHelper::isGroup($entity)) {
+    $has_published_version = $entity->hasGraph('default');
+    // If the entity has been published, only moderators can edit the short ID.
+    if (isset($form['field_short_id']) && $has_published_version && !\Drupal::currentUser()->hasPermission('edit short id after publication')) {
       $form['field_short_id']['widget'][0]['value']['#attributes']['disabled'] = 'disabled';
     }
   }
