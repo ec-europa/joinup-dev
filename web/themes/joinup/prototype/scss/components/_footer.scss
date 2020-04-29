@@ -6,7 +6,7 @@
 
 .footer__first {
   h3 {
-    font-size: $font-size-medium - 2;
+    font-size: $font-size-medium - 4;
     font-weight: $font-weight-bold;
     color: $color-grey-white;
     border-bottom: 2px solid $color-blue-eu-lighter;
@@ -14,6 +14,9 @@
     margin-bottom: 0;
     white-space: nowrap;
     margin-right: 10px;
+    @include breakpoint(mobile) {
+
+    }
   }
 
   ul.menu.vertical-menu {
