@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types = 1);
 
 namespace Drupal\joinup_community_content\Entity;
 
-
-class CommunityContentInterface {
-
+/**
+ * Interface for community content entities.
+ */
+interface CommunityContentInterface {
 }
