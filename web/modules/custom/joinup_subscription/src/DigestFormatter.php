@@ -12,7 +12,7 @@ use Drupal\user\UserInterface;
 /**
  * Extends the message formatter from the message_digest module.
  *
- * The design for digest messages that are sent for collection community content
+ * The design for digest messages that are sent for collection content
  * subscriptions requires that the messages are grouped by collection and have a
  * small section inbetween each group that introduces the collection. This class
  * allows to inject these collection introductions in between the messages.
