@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8282a2cbab81ea83f8d91483ced6d8b1",
+    "content-hash": "f86844aafe77277859530e402c585f72",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5732,9 +5732,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-3.x": "3.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-3.0-alpha5",
                     "datestamp": "1559916365",
@@ -5807,7 +5804,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.7",
-                    "datestamp": "1588002767",
+                    "datestamp": "1587898105",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7138,70 +7135,6 @@
             "homepage": "https://www.drupal.org/project/token",
             "support": {
                 "source": "https://git.drupalcode.org/project/token"
-            }
-        },
-        {
-            "name": "drupal/typed_link",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/typed_link.git",
-                "reference": "8.x-1.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/typed_link-8.x-1.0.zip",
-                "reference": "8.x-1.0",
-                "shasum": "e32fc49d3c8036211045671cdf660800a0cd5743"
-            },
-            "require": {
-                "drupal/core": "*"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1569855789",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                },
-                "patches_applied": {
-                    "https://www.drupal.org/project/typed_link/issues/3085826": "https://www.drupal.org/files/issues/2019-10-04/typed_link-3085826-2.patch",
-                    "https://www.drupal.org/project/typed_link/issues/3085817": "https://www.drupal.org/files/issues/2019-10-07/typed_link-3085817-3.patch"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Bryan Heisler (geekygnr)",
-                    "homepage": "https://www.drupal.org/u/geekygnr",
-                    "role": "Maintainer"
-                },
-                {
-                    "name": "geekygnr",
-                    "homepage": "https://www.drupal.org/user/2775199"
-                },
-                {
-                    "name": "juanolalla",
-                    "homepage": "https://www.drupal.org/user/913844"
-                }
-            ],
-            "description": "This module provides a link field with a drop down.",
-            "homepage": "https://www.drupal.org/project/typed_link",
-            "keywords": [
-                "Drupal"
-            ],
-            "support": {
-                "source": "http://cgit.drupalcode.org/typed_link",
-                "issues": "https://www.drupal.org/project/issues/typed_link"
             }
         },
         {
@@ -9167,80 +9100,6 @@
             "time": "2020-04-10T16:34:50+00:00"
         },
         {
-            "name": "openeuropa/oe_paragraphs",
-            "version": "1.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/openeuropa/oe_paragraphs.git",
-                "reference": "fda6a9f4d47d4a742771d5214931918fe8952ded"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_paragraphs/zipball/fda6a9f4d47d4a742771d5214931918fe8952ded",
-                "reference": "fda6a9f4d47d4a742771d5214931918fe8952ded",
-                "shasum": ""
-            },
-            "require": {
-                "drupal/allowed_formats": "^1.1",
-                "drupal/core": "^8.7",
-                "drupal/paragraphs": "^1.8",
-                "drupal/typed_link": "~1.0",
-                "php": "^7.1"
-            },
-            "require-dev": {
-                "composer/installers": "~1.5",
-                "consolidation/annotated-command": "^2.8.2",
-                "consolidation/robo": "~1.4",
-                "drupal-composer/drupal-scaffold": "~2.5.2",
-                "drupal/config_devel": "~1.2",
-                "drupal/drupal-extension": "~4.0",
-                "drush/drush": "~9.0",
-                "nikic/php-parser": "~3.0",
-                "openeuropa/behat-transformation-context": "~0.1",
-                "openeuropa/code-review": "~1.0@beta",
-                "openeuropa/drupal-core-require-dev": "^8.7",
-                "openeuropa/oe_media": "~1.1",
-                "openeuropa/task-runner": "~1.0-beta5",
-                "symfony/dom-crawler": "~3.4"
-            },
-            "suggest": {
-                "openeuropa/oe_media": "Allows usage of paragraphs with different media attached to it."
-            },
-            "type": "drupal-module",
-            "extra": {
-                "composer-exit-on-patch-failure": true,
-                "enable-patching": true,
-                "installer-paths": {
-                    "build/core": [
-                        "type:drupal-core"
-                    ],
-                    "build/modules/contrib/{$name}": [
-                        "type:drupal-module"
-                    ],
-                    "build/themes/contrib/{$name}": [
-                        "type:drupal-theme"
-                    ]
-                },
-                "patches": {
-                    "drupal/typed_link": {
-                        "https://www.drupal.org/project/typed_link/issues/3085826": "https://www.drupal.org/files/issues/2019-10-04/typed_link-3085826-2.patch",
-                        "https://www.drupal.org/project/typed_link/issues/3085817": "https://www.drupal.org/files/issues/2019-10-07/typed_link-3085817-3.patch"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Drupal\\oe_paragraphs\\": "./src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "EUPL-1.2"
-            ],
-            "description": "Drupal module providing a collection of Paragraph types based on ECL components.",
-            "time": "2019-12-16T13:50:15+00:00"
-        },
-        {
             "name": "openeuropa/oe_webtools",
             "version": "1.5.0",
             "source": {
@@ -10773,7 +10632,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-03-02T18:32:28+00:00"
+            "time": "2020-02-13T14:54:04+00:00"
         },
         {
             "name": "stack/builder",

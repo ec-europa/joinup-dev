@@ -5,7 +5,7 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - oe_paragraphs:oe_paragraphs
+  - paragraphs:paragraphs
 
 config_devel:
   optional:
