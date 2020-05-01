@@ -8,6 +8,7 @@ dependencies:
   - paragraphs:paragraphs
 
 config_devel:
+  install: { }
   optional:
     - core.entity_form_display.paragraph.simple_paragraph.default
     - core.entity_view_display.paragraph.simple_paragraph.default
