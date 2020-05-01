@@ -218,7 +218,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    */
   public function paragraphsCleanup(): void {
     /** @var \Drupal\Core\Queue\QueueWorkerInterface $worker */
-    $worker = \Drupal::service('plugin.manager.queue_worker')->createInstance('og_orphaned_group_content_cron');
+    $worker = \Drupal::service('plugin.manager.queue_worker')->createInstance('entity_reference_revisions_orphan_purger');
     $queue = \Drupal::queue('entity_reference_revisions_orphan_purger');
 
     while ($item = $queue->claimItem()) {
