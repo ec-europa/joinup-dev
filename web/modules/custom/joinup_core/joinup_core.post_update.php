@@ -1138,9 +1138,60 @@ function joinup_core_post_update_delete_orphaned_solutions() {
 }
 
 /**
+ * Fix all needed timestamps and created dates for content.
+ */
+function joinup_core_post_update_0001_set_migrated_content_timestamp(&$sandbox) {
+  $connection = \Drupal::database();
+
+  // Set the oldest revision timestamp to the created date for content.
+  // The created time was retained throughout the migration but the revision
+  // timestamp was set anew during the migration.
+  $query = <<<QUERY
+UPDATE {node_revision} nr
+INNER JOIN (
+    SELECT nid, MIN(created) AS created_timestamp
+    FROM node_field_revision
+    GROUP BY nid, vid
+    ORDER BY vid ASC
+  ) nfr
+  ON nr.nid = nfr.nid
+SET nr.revision_timestamp = nfr.created_timestamp
+WHERE nr.nid < 700000;
+QUERY;
+  $connection->query($query)->execute();
+
+  // Set the created timestamp all content revisions to the earliest revision
+  // timestamp of that node. This will undo our workaround change the created
+  // time upon initial publication.
+  $query = <<<QUERY
+UPDATE {node_field_revision} nfr
+ INNER JOIN (
+    SELECT nid, MIN(revision_timestamp) as revision_timestamp
+    FROM node_revision
+    GROUP BY nid
+) nr ON nfr.nid = nr.nid
+SET nfr.created = nr.revision_timestamp
+WHERE nfr.nid = nr.nid AND nfr.nid >= 700000
+QUERY;
+  $connection->query($query)->execute();
+
+  // Update also the node_field_data table.
+  $query = <<<QUERY
+UPDATE {node_field_data} nfd
+  INNER JOIN (
+    SELECT nid, vid, created
+    FROM node_field_revision
+) nfr ON nfd.vid = nfr.vid
+SET nfd.created = nfr.created
+WHERE nfd.vid = nfr.vid
+QUERY;
+  $connection->query($query)->execute();
+}
+
+/**
  * Fixes the publication date of items that have been updated since publication.
  */
-function joinup_core_post_update_0001_fix_news_publication_date(array &$sandbox): string {
+function joinup_core_post_update_0002_fix_news_publication_date(array &$sandbox): string {
   // When the _publication_date_populate_database_field ran, the entities that
   // retrieved a publication date, the value they received was either the
   // created or changed value. However, up until October of 2019, we had in
@@ -1155,11 +1206,17 @@ function joinup_core_post_update_0001_fix_news_publication_date(array &$sandbox)
   $connection = \Drupal::database();
   if (empty($sandbox['nids'])) {
     $query = <<<QUERY
-SELECT MIN(nfr.vid), nfr.nid, nfr.published_at, nr.revision_timestamp
-FROM node_field_revision as nfr
-LEFT JOIN node_revision as nr ON nfr.vid = nr.vid
-WHERE nfr.status = 1 AND nr.revision_timestamp < nfr.published_at
-GROUP BY nfr.nid, nr.vid, nr.revision_timestamp, nfr.published_at
+SELECT nfr.nid, nfr.vid, nfr.published_at, nr.revision_timestamp
+FROM {node_field_revision} nfr
+INNER JOIN {node_revision} nr
+  ON nfr.vid = nr.vid
+WHERE nfr.vid = (
+  SELECT MIN(subnfr.vid)
+  FROM {node_field_revision} subnfr
+  WHERE subnfr.status = 1 AND subnfr.nid = nfr.nid
+  GROUP BY subnfr.nid
+)
+AND nfr.published_at <> nr.revision_timestamp
 QUERY;
     $results = $connection->query($query);
     foreach ($results as $result) {
@@ -1173,7 +1230,7 @@ QUERY;
     $sandbox['max'] = count($sandbox['data']);
   }
 
-  $nids = array_splice($sandbox['nids'], 0, 50);
+  $nids = array_splice($sandbox['nids'], 0, 500);
   foreach ($nids as $nid) {
     // The queries are based on the original queries from
     // _publication_date_populate_database_field.
@@ -1210,11 +1267,6 @@ SQL
     }
     $sandbox['count']++;
   }
-
-  foreach (['published', 'unpublished'] as $index_name) {
-    Index::load($index_name)->trackItemsUpdated('entity:node', $nids);
-  }
-  \Drupal::entityTypeManager()->getStorage('node')->resetCache($nids);
 
   $sandbox['#finished'] = (float) $sandbox['count'] / (float) $sandbox['max'];
   return "Processed {$sandbox['count']} out of {$sandbox['max']} entities.";
