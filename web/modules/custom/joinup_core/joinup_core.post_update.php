@@ -1186,88 +1186,31 @@ SET nfd.created = nfr.created
 WHERE nfd.vid = nfr.vid
 QUERY;
   $connection->query($query)->execute();
-}
 
-/**
- * Fixes the publication date of items that have been updated since publication.
- */
-function joinup_core_post_update_0002_fix_news_publication_date(array &$sandbox): string {
-  // When the _publication_date_populate_database_field ran, the entities that
-  // retrieved a publication date, the value they received was either the
-  // created or changed value. However, up until October of 2019, we had in
-  // place the visit count as part of the entity, so when the cached field
-  // event subscriber was refreshing the values, the changed value of the
-  // revision was taking a different date.
-  // The issue existed for entities that had more than one revision and before
-  // we install the publication_date module and move the visit count storage to
-  // a separate storage, the revision timestamp was prone to change.
-  // Update the publication date of these entities by setting it to the creation
-  // date of the revision instead of the changed date of the entity.
-  $connection = \Drupal::database();
-  if (empty($sandbox['nids'])) {
-    $query = <<<QUERY
-SELECT nfr.nid, nfr.vid, nfr.published_at, nr.revision_timestamp
-FROM {node_field_revision} nfr
-INNER JOIN {node_revision} nr
-  ON nfr.vid = nr.vid
-WHERE nfr.vid = (
-  SELECT MIN(subnfr.vid)
+  // Update all publication dates according to the minimum possible revision
+  // timestamp.
+  $query = <<<QUERY
+UPDATE {node_field_revision} r, (
+  SELECT
+    subnfr.nid,
+    MIN(subnfr.vid) as vid,
+    MIN(subnr.revision_timestamp) as revision_timestamp
   FROM {node_field_revision} subnfr
-  WHERE subnfr.status = 1 AND subnfr.nid = nfr.nid
-  GROUP BY subnfr.nid
-)
-AND nfr.published_at <> nr.revision_timestamp
+  INNER JOIN {node_revision} subnr ON subnfr.vid = subnr.vid
+  WHERE status = 1
+  GROUP BY nid
+  ORDER BY vid
+) s
+SET r.published_at = s.revision_timestamp
+WHERE r.nid = s.nid AND r.vid >= s.vid;
 QUERY;
-    $results = $connection->query($query);
-    foreach ($results as $result) {
-      $sandbox['data'][$result->nid] = [
-        'revision_timestamp' => $result->revision_timestamp,
-        'published_at' => $result->published_at,
-      ];
-    }
-    $sandbox['nids'] = array_keys($sandbox['data']);
-    $sandbox['count'] = 0;
-    $sandbox['max'] = count($sandbox['data']);
-  }
+  $connection->query($query)->execute();
 
-  $nids = array_splice($sandbox['nids'], 0, 500);
-  foreach ($nids as $nid) {
-    // The queries are based on the original queries from
-    // _publication_date_populate_database_field.
-    // @see: _publication_date_populate_database_field().
-    $queries = [
-      [
-        'query' => <<<SQL
-UPDATE {node_field_revision} r
-SET r.published_at = {$sandbox['data'][$nid]['revision_timestamp']}
-WHERE r.published_at = {$sandbox['data'][$nid]['published_at']}
-AND r.nid = {$nid};
-SQL
-      ],
-      [
-        'query' => <<<SQL
+  // Copy the publication date from the revisions table to the node table.
+  $query = <<<QUERY
 UPDATE {node_field_data} d, {node_field_revision} r
 SET d.published_at = r.published_at
-WHERE r.nid = {$nid}
-AND d.vid = r.vid;
-SQL
-      ],
-    ];
-
-    // Perform the operations in a single atomic transaction.
-    $transaction = $connection->startTransaction();
-    try {
-      foreach ($queries as $query_data) {
-        \Drupal::database()->query($query_data['query']);
-      }
-    }
-    catch (Exception $e) {
-      $transaction->rollBack();
-      throw new Exception('Database error', 0, $e);
-    }
-    $sandbox['count']++;
-  }
-
-  $sandbox['#finished'] = (float) $sandbox['count'] / (float) $sandbox['max'];
-  return "Processed {$sandbox['count']} out of {$sandbox['max']} entities.";
+WHERE d.vid = r.vid;
+QUERY;
+  $connection->query($query)->execute();
 }
