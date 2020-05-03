@@ -76,7 +76,7 @@ class TcaForm extends FormBase {
    *   The form state object.
    */
   public function cancelSubmit(array &$form, FormStateInterface $form_state) {
-    $form_state->setRedirect(Url::fromUri('internal:/collections')
+    $form_state->setRedirect(Url::fromUri('internal:/challenges')
       ->getRouteName());
   }
 
