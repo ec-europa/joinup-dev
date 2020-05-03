@@ -11,7 +11,7 @@ field_name: title
 entity_type: node
 bundle: news
 label: 'Short title'
-description: 'Add a short title for the news tile, which will be shown on other Joinup pages.'
+description: 'Add a short title for the news tile, which will be shown on other pages.'
 required: true
 translatable: true
 default_value: {  }
