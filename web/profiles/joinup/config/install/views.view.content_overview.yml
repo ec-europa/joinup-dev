@@ -650,7 +650,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: keep-up-to-date
+      path: latest
       menu:
         type: normal
         title: 'Latest'
