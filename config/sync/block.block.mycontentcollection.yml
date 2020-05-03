@@ -16,7 +16,7 @@ provider: null
 plugin: 'facet_block:collection_my_content'
 settings:
   id: 'facet_block:collection_my_content'
-  label: 'Collections - My content'
+  label: 'Challenges - My content'
   provider: facets
   label_display: '0'
   block_id: mycontentcollection
