@@ -8,6 +8,7 @@
 // .icon--asset_release       - Asset release icon
 // .icon--business-case       - Business case icon
 // .icon--collections         - Collection icon
+// .icon--challenge           - Challenge icon
 // .icon--custom_page         - Custom page icon
 // .icon--discussion          - Discussion icon
 // .icon--document            - Document icon
@@ -110,6 +111,12 @@ $waat-icons-font-path: "../fonts/waat-icons/waat-icons";
   color: $color-orange;
 }
 
+.icon--challenge:before,
+.icon--challenges:before {
+   content: "";
+   color: $color-green-new;
+}
+
 .icon--collection:before,
 .icon--collections:before {
   content: "";
@@ -127,6 +134,7 @@ $waat-icons-font-path: "../fonts/waat-icons/waat-icons";
 }
 
 .icon--content:before,
+.icon--latest:before,
 .icon--keep-up-to-date:before {
   content: "";
 }
