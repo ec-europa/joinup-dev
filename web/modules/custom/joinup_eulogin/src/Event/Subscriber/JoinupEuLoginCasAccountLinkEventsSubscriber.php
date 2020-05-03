@@ -114,7 +114,7 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
       ]));
     }
     else {
-      $event->setSuccessMessage($this->t('Fill in the fields below to let the Joinup community learn more about you!'));
+      $event->setSuccessMessage($this->t('Fill in the fields below to let the community learn more about you!'));
       $event->setRedirectUrl($event->getAccount()->toUrl('edit-form'));
     }
   }

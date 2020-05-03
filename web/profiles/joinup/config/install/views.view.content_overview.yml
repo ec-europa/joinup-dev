@@ -622,7 +622,7 @@ display:
           expose:
             label: ''
           plugin_id: search_api
-      title: 'Keep up to date'
+      title: 'Latest'
       header: {  }
       footer: {  }
       empty: {  }
@@ -653,7 +653,7 @@ display:
       path: keep-up-to-date
       menu:
         type: normal
-        title: 'Keep up to date'
+        title: 'Latest'
         description: ''
         expanded: false
         parent: ''
