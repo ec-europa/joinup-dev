@@ -29,4 +29,4 @@ Feature: Edit a comment
     Then the email sent to "Comment edit moderator" with subject "Joinup: A comment has been updated." contains the following lines of text:
       | text                                                                               |
       | Sons Anarchy updated the comment in "Paying with cash".                            |
-      | If you think this action is not clear or not due, please contact Joinup Support at |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at |

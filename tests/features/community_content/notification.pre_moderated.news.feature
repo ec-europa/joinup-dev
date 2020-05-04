@@ -46,7 +46,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     Then the email sent to "CC owner" with subject "Joinup: Content has been proposed" contains the following lines of text:
       | text                                                                                                              |
       | CC Member has submitted a new news - "CCN create propose" for publication in the collection: "CC pre collection". |
-      | If you think this action is not clear or not due, please contact Joinup Support at                                |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                |
 
     # Regression test for proposing an item with a published version.
     When I am logged in as "CC facilitator"
@@ -67,7 +67,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And the email sent to "CC owner" with subject "Joinup: Content has been proposed" contains the following lines of text:
       | text                                                                                                                         |
       | CC Member has submitted an update of the news - "CCN create propose" for publication in the collection: "CC pre collection". |
-      | If you think this action is not clear or not due, please contact Joinup Support at                                           |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                           |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -91,7 +91,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     Then the email sent to "CC owner" with subject "Joinup: Content has been proposed" contains the following lines of text:
       | text                                                                                                           |
       | CC Member has submitted a new news - "CCN pre propose" for publication in the collection: "CC pre collection". |
-      | If you think this action is not clear or not due, please contact Joinup Support at                             |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at                             |
 
     When all e-mails have been sent
     And I go to the "CCN pre propose from reported" news
@@ -100,7 +100,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     Then the email sent to "CC owner" with subject "Joinup: Content has been updated" contains the following lines of text:
       | text                                                                                                                                                                  |
       | CC Member has updated the content of the news - "CCN pre propose from reported" as advised and requests again its publication in the collection: "CC pre collection". |
-      | If you think this action is not clear or not due, please contact Joinup Support at                                                                                    |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                                    |
 
     When all e-mails have been sent
     And I go to the "CCN pre request deletion" news
@@ -112,7 +112,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     Then the email sent to "CC owner" with subject "Joinup: Content has been updated" contains the following lines of text:
       | text                                                                                                                                                                        |
       | CC Member has requested to delete the news - "CCN pre request deletion" in the collection: "CC pre collection", with the following motivation: "I just want to delete it.". |
-      | If you think this action is not clear or not due, please contact Joinup Support at                                                                                          |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                                          |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -135,7 +135,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     Then the email sent to "CC member" with subject "Joinup: Content has been updated" contains the following lines of text:
       | text                                                                                                                                                                                                |
       | the Facilitator, CC Facilitator has requested you to modify the news - "CCN pre request changes" in the collection: "CC pre collection", with the following motivation: "Can you do some changes?". |
-      | If you think this action is not clear or not due, please contact Joinup Support at                                                                                                                  |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                                                                  |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -148,7 +148,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     Then the email sent to "CC member" with subject "Joinup: Content has been updated" contains the following lines of text:
       | text                                                                                                                                                                                       |
       | the Facilitator, CC Facilitator has requested you to modify the news - "CCN pre report" in the collection: "CC pre collection", with the following motivation: "Your content is reported". |
-      | If you think this action is not clear or not due, please contact Joinup Support at                                                                                                         |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                                                         |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"

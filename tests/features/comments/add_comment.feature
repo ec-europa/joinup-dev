@@ -41,7 +41,7 @@ Feature: Add comments
       | text                                                                                    |
       | Miss Tales posted a comment in collection "Gossip collection".                          |
       | To view the comment click                                                               |
-      | If you think this action is not clear or not due, please contact Joinup Support at http |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at http |
 
     # Verify the anchored link works properly.
     When I am logged in as "Comment moderator"
