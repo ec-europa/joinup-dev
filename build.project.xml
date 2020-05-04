@@ -34,9 +34,6 @@
     <echo msg="Loading After Import RDF fixtures task." />
     <taskdef name="afterrdffixturesimport" classname="\Joinup\Phing\AfterFixturesImportCleanup" />
 
-    <echo msg="Setting-up MySQL auto-increment values for {comment}, {file_managed}, {node} and {users}." />
-    <taskdef name="setmysqlautoincrement" classname="\Joinup\Phing\SetMysqlAutoincrement" />
-
     <echo msg="Loading Amazon S3 download task." />
     <taskdef name="s3dl" classname="\Joinup\Phing\AwsS3GetTask" />
 
@@ -556,9 +553,6 @@
             <param>install_settings_form.sparql.port=${sparql.port}</param>
             <param>install_settings_form.sparql.namespace=${sparql.namespace}</param>
         </drush>
-
-        <!-- Set the auto-increment default values for some tables. -->
-        <setmysqlautoincrement />
 
         <!-- Set the transaction type to READ-COMMITTED. -->
         <phingcall target="set-mysql-transaction-type" />
