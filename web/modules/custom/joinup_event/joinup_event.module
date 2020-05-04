@@ -9,8 +9,8 @@ declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Render\BubbleableMetadata;
-use Drupal\joinup_event\Event;
-use Drupal\joinup_event\EventInterface;
+use Drupal\joinup_event\Entity\Event;
+use Drupal\joinup_event\Entity\EventInterface;
 use Drupal\joinup_event\Plugin\Field\FieldFormatter\WebtoolsMapFormatter;
 
 /**
