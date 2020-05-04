@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_event;
+namespace Drupal\joinup_event\Entity;
 
 use Drupal\Core\Url;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;

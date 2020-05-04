@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_event\Plugin\Validation\Constraint;
 
-use Drupal\joinup_event\EventInterface;
+use Drupal\joinup_event\Entity\EventInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
