@@ -10,4 +10,16 @@ namespace Drupal\collection\Entity;
  * This comprises community content entities and solutions.
  */
 interface CollectionContentInterface {
+
+  /**
+   * Returns the collection to which this entity belongs.
+   *
+   * @return \Drupal\collection\Entity\CollectionInterface
+   *   The collection.
+   *
+   * @throws \Drupal\collection\Exception\MissingCollectionException
+   *   Thrown when the collection has not been set on the entity.
+   */
+  public function getCollection(): CollectionInterface;
+
 }

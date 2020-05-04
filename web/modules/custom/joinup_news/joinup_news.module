@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\joinup_news\Entity\News;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -40,4 +41,11 @@ function joinup_news_form_alter(&$form, FormStateInterface $form_state, $form_id
   if (isset($form['title']['widget'][0]['value'])) {
     $form['title']['widget'][0]['value']['#maxlength'] = 66;
   }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function joinup_news_entity_bundle_info_alter(&$bundles) {
+  $bundles['node']['news']['class'] = News::class;
 }

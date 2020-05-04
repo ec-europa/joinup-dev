@@ -9,7 +9,6 @@ dependencies:
   - flag:flag
   - joinup:joinup_core
   - joinup:joinup_group
-  - joinup:solution
   - message_digest:message_digest
 
 config_devel:
