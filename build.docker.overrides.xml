@@ -5,13 +5,6 @@
     <!-- Overrides the default target to remove the call to the `compile-scss`
          target. SCSS is compiled automatically when the container starts. -->
     <target
-        name="build-dist"
-        description="Build a distribution package."
-        depends="install-composer-dependencies-dist" />
-
-    <!-- Overrides the default target to remove the call to the `compile-scss`
-         target. SCSS is compiled automatically when the container starts. -->
-    <target
         name="build-dev"
         description="Build a development environment."
         depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, setup-drush" />
