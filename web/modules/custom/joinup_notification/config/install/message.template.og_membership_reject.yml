@@ -6,7 +6,7 @@ label: 'Group membership rejection'
 description: 'Group privileged user decides on a membership request.'
 text:
   -
-    value: "<p>Joinup: Your request to join the @entity:bundle @entity:title was rejected</p>"
+    value: "<p>COVID-19 Challenge: Your request to join the @entity:bundle @entity:title was rejected</p>"
     format: full_html
   -
     value: "<p>@actor:full_name has rejected your request to join the \"@entity:title\" @entity:bundle.</p>"

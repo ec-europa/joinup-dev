@@ -9,7 +9,7 @@ label: 'Solution distribution update'
 description: 'Template 21: Distribution update'
 text:
   -
-    value: 'Joinup: A distribution has been updated'
+    value: 'COVID-19 Challenge: A distribution has been updated'
     format: full_html
   -
     value: 'The distribution @entity:title @release:info:with_version of the solution @group:title was successfully updated.'

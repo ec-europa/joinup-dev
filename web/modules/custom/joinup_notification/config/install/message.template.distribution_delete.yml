@@ -6,7 +6,7 @@ label: 'Solution distribution delete'
 description: 'Template 22: Distribution delete'
 text:
   -
-    value: 'Joinup: A distribution has been deleted'
+    value: 'COVID-19 Challenge: A distribution has been deleted'
     format: full_html
   -
     value: 'The distribution @entity:title @release:info:with_version of the solution @group:title was successfully deleted.'
