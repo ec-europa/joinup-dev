@@ -206,13 +206,6 @@
         </drush>
     </target>
 
-    <!-- Install Composer dependencies for the build system. -->
-    <target name="install-composer-dependencies">
-        <composer command="install" composer="${composer.bin}">
-            <arg value="--working-dir=${project.basedir}" />
-        </composer>
-    </target>
-
     <target name="redirect-outgoing-email">
         <reflexive>
             <fileset dir="${website.settings.dir}">
@@ -442,13 +435,6 @@
                 bin="${drush.bin}">
             <param>${module}</param>
         </drush>
-    </target>
-
-    <!-- Install Composer dependencies for the build system. -->
-    <target name="install-composer-dependencies">
-        <composer command="install" composer="${composer.bin}">
-            <arg value="--working-dir=${project.basedir}" />
-        </composer>
     </target>
 
     <target name="redirect-outgoing-email">
@@ -967,7 +953,7 @@
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, setup-drush, compile-scss" />
+        depends="setup-behat, setup-php-codesniffer, setup-phpunit, setup-drush, compile-scss" />
 
     <target
         name="install-dev"
