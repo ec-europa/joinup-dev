@@ -88,11 +88,11 @@ Feature: As a group (collection or solution) owner or site moderator
 
     Examples:
       | user  | option exists | type       | type capitalized | title                       | full name               |
-      | happy | contain       | collection | Collection       | Intensive Language Learning | The Joinup Support Team |
-      | light | contain       | collection | Collection       | Intensive Language Learning | The Joinup Support Team |
+      | happy | contain       | collection | Collection       | Intensive Language Learning | The COVID-19 Challenge Support Team |
+      | light | contain       | collection | Collection       | Intensive Language Learning | The COVID-19 Challenge Support Team |
       | cruel | not contain   | collection | Collection       | Intensive Language Learning | Finnur Robertsson       |
-      | happy | contain       | solution   | Solution         | Learn German in 1 Month     | The Joinup Support Team |
-      | light | contain       | solution   | Solution         | Learn German in 1 Month     | The Joinup Support Team |
+      | happy | contain       | solution   | Solution         | Learn German in 1 Month     | The COVID-19 Challenge Support Team |
+      | light | contain       | solution   | Solution         | Learn German in 1 Month     | The COVID-19 Challenge Support Team |
       | cruel | not contain   | solution   | Solution         | Learn German in 1 Month     | Finnur Robertsson       |
 
   Scenario Outline: Group facilitators do not have access to transfer ownership.

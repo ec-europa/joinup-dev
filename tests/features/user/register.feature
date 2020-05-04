@@ -26,5 +26,5 @@ Feature: User registration
     Then the following email should have been sent:
       | recipient | SuperUser                                                                                                                       |
       | subject   | Your Joinup account was created successfully.                                                                                   |
-      | body      | The Joinup Support Team created your account on Joinup. Please log in through the following link in order to set your password. |
+      | body      | The COVID-19 Challenge Support Team created your account on Joinup. Please log in through the following link in order to set your password. |
     And the account for SuperUser should be active

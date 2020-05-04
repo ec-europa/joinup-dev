@@ -168,7 +168,7 @@ function contact_form_mail($key, &$message, $params) {
   }
 
   $message['body'][] = t('Kind regards,');
-  $message['body'][] = t('The Joinup Support Team');
+  $message['body'][] = t('The COVID-19 Challenge Support Team');
 
   // Send as HTML.
   $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;

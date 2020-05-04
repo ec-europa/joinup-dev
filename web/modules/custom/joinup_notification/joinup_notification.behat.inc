@@ -146,7 +146,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
       }
 
       // Check the existence or absence of the signature.
-      $signature_present = preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body);
+      $signature_present = preg_match('/Kind regards,\s{0,2}The COVID-19 Challenge Support Team/', $mail_body);
       if ($signature_required && !$signature_present) {
         throw new \Exception('The signature of the email was not found or is not correct.');
       }
