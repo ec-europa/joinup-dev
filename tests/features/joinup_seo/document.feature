@@ -7,7 +7,7 @@ Feature: SEO for document content.
   Background:
     Given collections:
       | title                          | state     |
-      | Joinup SEO document collection | validated |
+      | Joinup SEO document challenge | validated |
     And licence:
       | uri   | https://example.com/license1 |
       | title | Some license                 |
@@ -19,7 +19,7 @@ Feature: SEO for document content.
   Scenario: Basic metatags are attached as JSON schema on the page.
     Given document content:
       | title        | author            | document type | document publication date       | changed                         | keywords         | short title | file type | file     | body               | licence      | state     | collection                     |
-      | SEO document | Joinup SEO author | document      | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | key1, key2, key3 | SEO         | upload    | test.zip | Document test1.zip | Some license | validated | Joinup SEO document collection |
+      | SEO document | Joinup SEO author | document      | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | key1, key2, key3 | SEO         | upload    | test.zip | Document test1.zip | Some license | validated | Joinup SEO document challenge |
 
     When I visit the "SEO document" document
     Then the metatag JSON should be attached in the page
@@ -61,7 +61,7 @@ Feature: SEO for document content.
     And the following meta tags should available in the html:
       | identifier     | value                                                                        |
       | description    | Document test1.zip                                                           |
-      | og:url         | __base_url__/collection/joinup-seo-document-collection/document/seo-document |
+      | og:url         | __base_url__/challenge/joinup-seo-document-challenge/document/seo-document |
       | og:site_name   | Joinup                                                                       |
       | og:title       | SEO document                                                                 |
       | og:description | Document test1.zip                                                           |
@@ -76,7 +76,7 @@ Feature: SEO for document content.
   Scenario: Metatags for remote URL in documents.
     Given document content:
       | title        | author            | document publication date       | changed                         | file type | file                                       | body               | state     | collection                     |
-      | SEO document | Joinup SEO author | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | remote    | http://example.com/some-file-url.extension | Remote url example | validated | Joinup SEO document collection |
+      | SEO document | Joinup SEO author | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | remote    | http://example.com/some-file-url.extension | Remote url example | validated | Joinup SEO document challenge |
 
     When I visit the "SEO document" document
     Then the metatag JSON should be attached in the page

@@ -181,9 +181,9 @@ Feature: Pinning content to the front page
       | <pinned>   |
 
     Examples:
-      | header link | pinned      | unpinned         | label      |
-      | Collections | Risky Sound | Tuna Moving      | Collection |
-      | Solutions   | D minor     | Migration routes | Solution   |
+      | header link | pinned      | unpinned         | label     |
+      | Challenges  | Risky Sound | Tuna Moving      | Challenge |
+      | Solutions   | D minor     | Migration routes | Solution  |
 
   Scenario: Front page menu access.
     Given I am logged in as a user with the "authenticated" role

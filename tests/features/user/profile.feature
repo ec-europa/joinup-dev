@@ -223,7 +223,7 @@ Feature: User profile
     # cleared and the collection that was joined should show up.
     Given I am logged in as "Korben Dallas"
     And I go to the homepage of the "Federated Army Veterans" collection
-    And I press the "Join this collection" button
+    And I press the "Join this challenge" button
 
     When I am an anonymous user
     And I go to the public profile of "Korben Dallas"
@@ -238,7 +238,7 @@ Feature: User profile
     # cleared and the collection that was left should no longer show up.
     Given I am logged in as "Korben Dallas"
     And I go to the homepage of the "Federated Army Veterans" collection
-    And I click "Leave this collection"
+    And I click "Leave this challenge"
     And I press the "Confirm" button
 
     When I am an anonymous user

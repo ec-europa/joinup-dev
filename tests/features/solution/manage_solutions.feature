@@ -46,16 +46,16 @@ Feature: As a moderator I want to be able to move solutions to other collection.
     When I press "Apply to selected items"
     Then I should see the heading "Select a destination collection"
     And I should see the following lines of text:
-      | The following solutions from Source collection will be moved to a new collection: |
+      | The following solutions from Source challenge will be moved to a new challenge: |
       | Solution 1                                                                        |
       | Solution 4                                                                        |
 
     # Trying to move solutions to the same collection should result in an error.
-    When I fill in "Select the destination collection" with "Source"
+    When I fill in "Select the destination challenge" with "Source"
     And I press "Move solutions"
-    Then I should see the error message "The destination collection cannot be the same as the source collection."
+    Then I should see the error message "The destination challenge cannot be the same as the source challenge."
 
-    When I fill in "Select the destination collection" with "Destination"
+    When I fill in "Select the destination challenge" with "Destination"
     And I press "Move solutions"
     Then I should see the following success messages:
       | success messages                                   |

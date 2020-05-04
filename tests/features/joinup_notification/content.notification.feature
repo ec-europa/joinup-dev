@@ -40,10 +40,10 @@ Feature: Content notification system
     And I press "Save new draft"
     Then 1 e-mail should have been sent
     And the following email should have been sent:
-      | template  | Message to collection facilitators when a community content is updated by a moderator                         |
+      | template  | Message to challenge facilitators when a community content is updated by a moderator                         |
       | recipient | Devyn Queshire                                                                                                |
-      | subject   | Joinup: user Jerrard Verity updated a News of your collection                                                 |
-      | body      | Devyn Queshire, Jerrard Verity updated the News "Communication tools" in your Communication tools collection. |
+      | subject   | Joinup: user Jerrard Verity updated a News of your challenge                                                 |
+      | body      | Devyn Queshire, Jerrard Verity updated the News "Communication tools" in your Communication tools challenge. |
 
     Given all the e-mails have been sent
     When I go to the "Smoke signals pre-conference party" event
@@ -64,7 +64,7 @@ Feature: Content notification system
     And I press "Delete"
     Then 1 e-mail should have been sent
     And the following email should have been sent:
-      | template  | Message to collection facilitators when a community content is deleted by a moderator                                                    |
+      | template  | Message to challenge facilitators when a community content is deleted by a moderator                                                    |
       | recipient | Devyn Queshire                                                                                                                           |
       | subject   | Joinup: your news "Infrared long-range communications" was deleted                                                                       |
       | body      | Dear Devyn Queshire, your news "Infrared long-range communications" was successfully deleted. Kinds regards, The COVID-19 Challenge Support Team. |

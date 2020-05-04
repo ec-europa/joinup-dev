@@ -44,8 +44,8 @@ Feature:
     But I should see the following lines of text:
       | User Hazel Olson cannot be deleted as they are currently the sole owner of these groups:   |
       | User Amelia Barker cannot be deleted as they are currently the sole owner of these groups: |
-      | Collection                                                                                 |
-      | Collections                                                                                |
+      | Challenge                                                                                 |
+      | Challenges                                                                                |
       | Solution                                                                                   |
     And I should see the following links:
       | Lugia was just released      |

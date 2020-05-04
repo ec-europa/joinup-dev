@@ -137,6 +137,6 @@ Feature: Featuring content site-wide
     And the "<unfeatured>" <content type> tile should not be marked as featured
 
     Examples:
-      | header link | featured                      | unfeatured                  | label      | content type |
-      | Collections | Tidy Neutron                  | Reborn Eternal Gamma        | Collection | collection   |
-      | Solutions   | Opensource neutron generators | Gamma-sensible spectroscopy | Solution   | solution     |
+      | header link | featured                      | unfeatured                  | label     | content type |
+      | Challenges  | Tidy Neutron                  | Reborn Eternal Gamma        | challenge | challenge    |
+      | Solutions   | Opensource neutron generators | Gamma-sensible spectroscopy | Solution  | solution     |

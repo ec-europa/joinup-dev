@@ -49,7 +49,7 @@ Feature: Content Overview
     And the page should be cacheable
     And I should see the following facet items "Discussion, Document, News, Events" in this order
     And the "Events" content tab is displayed
-    And I should not see the following facet items "Collection"
+    And I should not see the following facet items "Challenges"
     And I should see the following tiles in the correct order:
       | The Playful Tale     |
       | Seventh Windows      |

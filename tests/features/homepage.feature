@@ -10,9 +10,9 @@ Feature: Homepage
     And I am on the homepage
     # At the very start of the test there is no content yet.
     Then I should see the following statistics:
-      | Solutions   | 0 |
-      | Collections | 0 |
-      | Content     | 0 |
+      | Solutions  | 0 |
+      | Challenges | 0 |
+      | Content    | 0 |
     # Test that the page is successfully cached.
     When I reload the page
     Then the page should be cached
@@ -65,9 +65,9 @@ Feature: Homepage
     # Only statistics of publicly visible content should be counted.
     When I reload the page
     Then I should see the following statistics:
-      | Solutions   | 2 |
-      | Collections | 4 |
-      | Content     | 5 |
+      | Solutions  | 2 |
+      | Challenges | 4 |
+      | Content    | 5 |
     # The cache should have been cleared when new content is created.
     And the page should not be cached
     # The page should still be cacheable.
@@ -122,8 +122,8 @@ Feature: Homepage
     # 'archival request', and 'archived'.
     When I go to the homepage
     Then I should see the text "Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions."
-    When I click "Collections" in the "Header" region
-    Then I should see the heading "Collections"
+    When I click "Challenges" in the "Header" region
+    Then I should see the heading "Challenges"
     And I should see the following lines of text:
       | Social classes  |
       | Parliament      |
@@ -202,7 +202,7 @@ Feature: Homepage
     But I should see the link "Sign in"
 
     # The header should still be shown in the other pages.
-    When I click "Collections"
+    When I click "Challenges"
     Then I should see the small header
 
     When I am logged in as a user with the "authenticated" role
@@ -214,7 +214,7 @@ Feature: Homepage
     And the page should be cacheable
 
     # The header should still be shown in the other pages.
-    When I click "Collections"
+    When I click "Challenges"
     Then I should see the small header
 
   Scenario: Only specific social network links are available in the footer.

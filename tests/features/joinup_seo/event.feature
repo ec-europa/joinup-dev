@@ -7,13 +7,13 @@ Feature: SEO for news articles.
   Scenario Outline: Basic metatags are attached as JSON schema on the page.
     Given collections:
       | title                       | state     |
-      | Joinup SEO event collection | validated |
+      | Joinup SEO event challenge | validated |
     And users:
       | Username          | E-mail                 | First name | Family name |
       | Joinup SEO author | joinup.seo@example.com | Patrick    | Stewart     |
     And "event" content:
       | title            | short title   | web url   | start date                      | end date                        | body                                               | logo     | agenda        | location   | online location                                          | organisation        | scope         | keywords | collection                  | state     |
-      | Joinup SEO event | JOINUPSEO2020 | <web url> | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | summary: Summary of event. - value: Body of event. | logo.png | Event agenda. | <location> | 0: Some title - 1: http://example.com/some-online-meetup | European Commission | International | Alphabet | Joinup SEO event collection | validated |
+      | Joinup SEO event | JOINUPSEO2020 | <web url> | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | summary: Summary of event. - value: Body of event. | logo.png | Event agenda. | <location> | 0: Some title - 1: http://example.com/some-online-meetup | European Commission | International | Alphabet | Joinup SEO event challenge | validated |
 
     When I visit the "Joinup SEO event" event
     Then the metatag JSON should be attached in the page
@@ -65,7 +65,7 @@ Feature: SEO for news articles.
     And the following meta tags should available in the html:
       | identifier      | value                                                                      |
       | description     | Summary of event.                                                          |
-      | og:url          | __base_url__/collection/joinup-seo-event-collection/event/joinup-seo-event |
+      | og:url          | __base_url__/challenge/joinup-seo-event-challenge/event/joinup-seo-event |
       | og:site_name    | Joinup                                                                     |
       | og:title        | Joinup SEO event                                                           |
       | og:description  | Summary of event.                                                          |
@@ -83,7 +83,7 @@ Feature: SEO for news articles.
 
     Examples:
       | web url                                       | expected url                                                               | location                           | expected location |
-      |                                               | __base_url__/collection/joinup-seo-event-collection/event/joinup-seo-event | Rue Belliard 28, Brussels, Belgium | Rue Belliard 28   |
+      |                                               | __base_url__/challenge/joinup-seo-event-challenge/event/joinup-seo-event | Rue Belliard 28, Brussels, Belgium | Rue Belliard 28   |
       # Urls need a title value in the 0 index and a url in the 1 index of the
       # value to work, otherwise it is parsed wrongly.
       # @see: \Drupal\Driver\Fields\Drupal8\LinkHandler::expand
@@ -92,13 +92,13 @@ Feature: SEO for news articles.
   Scenario: Events without physical address but with online location should still show the online location.
     Given collections:
       | title                       | state     |
-      | Joinup SEO event collection | validated |
+      | Joinup SEO event challenge | validated |
     And users:
       | Username          | E-mail                 | First name | Family name |
       | Joinup SEO author | joinup.seo@example.com | Patrick    | Stewart     |
     And "event" content:
       | title            | short title   | online location                                          | collection                  | state     |
-      | Joinup SEO event | JOINUPSEO2021 | 0: Some title - 1: http://example.com/some-online-meetup | Joinup SEO event collection | validated |
+      | Joinup SEO event | JOINUPSEO2021 | 0: Some title - 1: http://example.com/some-online-meetup | Joinup SEO event challenge | validated |
 
     When I visit the "Joinup SEO event" event
     Then the metatag JSON should be attached in the page

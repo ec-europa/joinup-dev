@@ -6,7 +6,7 @@ Feature: Site sections
 
   Background:
     Given the following collection:
-      | uri   | http://joinup.eu/collection/the-polygone-project |
+      | uri   | http://joinup.eu/challenge/the-polygone-project |
       | title | The Polygone Project                             |
       | state | validated                                        |
     And the following solution:
@@ -33,10 +33,10 @@ Feature: Site sections
     # Now do a sample check of a collection and solution overview page, as well
     # as some community content belonging to these groups.
     Given I visit the "The Polygone Project" collection
-    Then the analytics report should include the site section "http://joinup.eu/collection/the-polygone-project"
+    Then the analytics report should include the site section "http://joinup.eu/challenge/the-polygone-project"
     Given I visit the "Miss Fashionista" solution
-    Then the analytics report should include the site section "http://joinup.eu/collection/the-polygone-project"
+    Then the analytics report should include the site section "http://joinup.eu/challenge/the-polygone-project"
     Given I visit the "Deep Carnival" discussion
-    Then the analytics report should include the site section "http://joinup.eu/collection/the-polygone-project"
+    Then the analytics report should include the site section "http://joinup.eu/challenge/the-polygone-project"
     Given I visit the "Flat Beat 20th Anniversary" event
-    Then the analytics report should include the site section "http://joinup.eu/collection/the-polygone-project"
+    Then the analytics report should include the site section "http://joinup.eu/challenge/the-polygone-project"

@@ -159,19 +159,19 @@ Feature: Following discussions
     Then the following email should not have been sent:
       | recipient_mail | dale@example.com                                                                                     |
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" challenge. |
     And the following email should not have been sent:
       | recipient_mail | flash@example.com                                                                                    |
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" challenge. |
     And the following email should not have been sent:
       | recipient_mail | hans@example.com                                                                                     |
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" challenge. |
     And the following email should not have been sent:
       | recipient_mail | ming@example.com                                                                                     |
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" challenge. |
 
     # Now try to delete a published discussion. The notifications should be sent
     # in this case.
@@ -191,21 +191,21 @@ Feature: Following discussions
     Then the following email should have been sent:
       | recipient_mail | dale@example.com                                                                                   |
       | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" challenge. |
     # Discussion author is receiving the notifications too.
     And the following email should have been sent:
       | recipient_mail | hans@example.com                                                                                   |
       | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" challenge. |
     # The user 'facilitator' is also a discussion subscriber but because she's
     # the person who has deleted the comment, she will not receive the
     # notification.
     But the following email should not have been sent:
       | recipient_mail | ming@example.com                                                                                   |
       | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" challenge. |
     # Flash Gordon is not subscribed. He should not retrieve the message.
     And the following email should not have been sent:
       | recipient_mail | flash@example.com                                                                                  |
       | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" challenge. |

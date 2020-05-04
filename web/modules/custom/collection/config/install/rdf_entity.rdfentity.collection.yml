@@ -7,4 +7,4 @@ description: 'An Asset Repository stores descriptions of Assets and Asset Distri
 label_singular: challenge
 label_plural: challenges
 label_count:
-  no_count_capitalize: "Collection\x03Collections"
+  no_count_capitalize: "Challenge\x03Challenges"
