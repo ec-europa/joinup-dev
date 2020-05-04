@@ -316,7 +316,7 @@ abstract class NotificationSubscriberBase {
     $arguments = [];
 
     $arguments['@entity:title'] = $entity->label();
-    $arguments['@entity:bundle'] = $entity->bundle();
+    $arguments['@entity:bundle'] = $entity->{$entity->getEntityType()->getKey('bundle')}->entity->getSingularLabel();
     $arguments['@entity:url'] = $entity->toUrl('canonical')->setAbsolute()->toString();
     $arguments['@user:my_subscriptions'] = Url::fromRoute('joinup_subscription.my_subscriptions')->setAbsolute()->toString();
 
