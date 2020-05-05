@@ -30,7 +30,7 @@ commands:
     - task: exec
       command: ${solr.bin} restart
 
-  # Downloads and unpacks the Sole snapshot.
+  # Downloads and unpacks the Solr snapshot.
   solr:download-snapshot:
     # Cleanup any stale data.
     - task: remove
