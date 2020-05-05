@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\joinup_core\ExistingSite;
+namespace Drupal\Tests\joinup_group\ExistingSite;
 
 use Drupal\Core\Validation\Plugin\Validation\Constraint\RegexConstraint;
 use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
