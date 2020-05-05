@@ -227,7 +227,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $assert->statusCodeEquals(403);
     $assert->pageTextContains("Dear {$this->account->getDisplayName()}");
     $assert->pageTextContains('Your account access is limited.');
-    $assert->pageTextContains('Starting from 02/03/2020, signing in to Joinup is handled by EU Login, the European Commission Authentication Service. After you sign-in using EU Login, you will be able to synchronise your existing Joinup account to restore your access.');
+    $assert->pageTextContains('Starting from 02/03/2020, signing in to COVID-19 Challenge is handled by EU Login, the European Commission Authentication Service. After you sign-in using EU Login, you will be able to synchronise your existing COVID-19 Challenge account to restore your access.');
     $assert->linkExists('EU Login');
     $assert->linkByHrefExists('/user/logout?destination=/caslogin');
   }

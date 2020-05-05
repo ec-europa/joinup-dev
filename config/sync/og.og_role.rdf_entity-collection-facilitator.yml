@@ -5,7 +5,7 @@ dependencies:
   config:
     - rdf_entity.rdfentity.collection
 id: rdf_entity-collection-facilitator
-label: 'Collection facilitator'
+label: 'Challenge facilitator'
 weight: 2
 is_admin: null
 group_type: rdf_entity

@@ -50,7 +50,7 @@ Feature: Navigation menu for custom pages
     And I disable "Members" in the navigation menu of the "Rainbow tables" <group>
     And I disable "About" in the navigation menu of the "Rainbow tables" <group>
     And I go to the homepage of the "Rainbow tables" <group>
-    Then I should see the text "All the pages have been disabled for this <group>. You can edit the menu configuration or add a new page."
+    Then I should see the text "All the pages have been disabled for this <singular label>. You can edit the menu configuration or add a new page."
     And I should see the contextual link "Edit menu" in the "Left sidebar" region
 
     # The contextual menu can be used to navigate to the menu edit page.
@@ -127,9 +127,9 @@ Feature: Navigation menu for custom pages
     But I should not see the link "About us" in the "Navigation menu"
 
     Examples:
-      | group      |
-      | collection |
-      | solution   |
+      | group      | singular label |
+      | collection | challenge      |
+      | solution   | solution       |
 
   @javascript
   Scenario Outline: The contextual links button in the navigation menu should be always visible

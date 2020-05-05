@@ -30,7 +30,7 @@ class CollectionOwnerCacheContext extends GroupOwnerCacheContext {
    * {@inheritdoc}
    */
   public static function getLabel() {
-    return t('Collection owner');
+    return t('Challenge owner');
   }
 
   /**

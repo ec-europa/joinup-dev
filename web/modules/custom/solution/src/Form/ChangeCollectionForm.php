@@ -110,7 +110,7 @@ class ChangeCollectionForm extends FormBase {
     ];
 
     $form['destination_collection'] = [
-      '#title' => $this->t('Select the destination collection'),
+      '#title' => $this->t('Select the destination challenge'),
       '#type' => 'entity_autocomplete',
       '#target_type' => 'rdf_entity',
       '#selection_handler' => 'default:rdf_entity',

@@ -24,11 +24,11 @@ Feature: Log in through EU Login
     And I press the "Log in" button
 
     # The user gets redirected back to Drupal.
-    Then I should see the heading "Already a Joinup user?"
+    Then I should see the heading "Almost There"
     And I should see "Since you have signed in for the first time using EU Login, you need to take one extra step."
     And I should see "Before you make your selection below, please note this important information:"
-    And I should see "If you are an existing user on Joinup, and would like to keep all your account data (challenge/solution memberships, published events, news, documents, discussions etc.), we suggest you select the first option to pair your existing account with your EU Login account;"
-    And I should see "If you are a new user on Joinup, the second option is the right one for you."
+    And I should see "If you are an existing user on COVID-19 Challenge, and would like to keep all your account data (challenge/solution memberships, published events, news, documents, discussions etc.), we suggest you select the first option to pair your existing account with your EU Login account;"
+    And I should see "If you are a new user on COVID-19 Challenge, the second option is the right one for you."
     And I should see "Please make your selection:"
     And I should see "I am an existing user (pair my existing account with my EU Login account)"
     And I should see "You will be asked to login with your site credentials."
@@ -37,7 +37,7 @@ Feature: Log in through EU Login
 
     Given I select the radio button "I am a new user (create a new account)"
     When I press "Next"
-    Then I should see the success message "Fill in the fields below to let the Joinup community learn more about you!"
+    Then I should see the success message "Fill in the fields below to let the community learn more about you!"
 
     # The user has been redirected to its user account edit form.
     Then the following fields should be present "Email, First name, Family name, Photo, Country of origin, Professional domain, Business title"
@@ -70,7 +70,7 @@ Feature: Log in through EU Login
     And I press the "Log in" button
 
     # The user gets redirected back to Drupal.
-    Then I should see the heading "Already a Joinup user?"
+    Then I should see the heading "Almost There"
     Given I select the radio button "I am an existing user (pair my existing account with my EU Login account)"
 
     # Try post the form with incomplete data.
@@ -111,7 +111,7 @@ Feature: Log in through EU Login
     And I fill in "E-mail address" with "texasranger@chucknorris.com.eu"
     And I fill in "Password" with "Qwerty098"
     When I press the "Log in" button
-    Then I should see the heading "Already a Joinup user?"
+    Then I should see the heading "Almost There"
     Given I select the radio button "I am an existing user (pair my existing account with my EU Login account)"
 
     And I fill in "Email or username" with "chuck_the_local_hero@example.com"
@@ -180,7 +180,7 @@ Feature: Log in through EU Login
     When I fill in "E-mail address" with "007.changed@mi6.eu"
     And I fill in "Password" with "shaken_not_stirred"
     When I press the "Log in" button
-    Then I should see the error message "You've recently changed your EU Login account email but that email is already used in Joinup by another user. You cannot login until, either you change your EU Login email or you contact support to fix the issue."
+    Then I should see the error message "You've recently changed your EU Login account email but that email is already used in COVID-19 Challenge by another user. You cannot login until, either you change your EU Login email or you contact support to fix the issue."
     And I should see the link "contact support"
 
     # Change the EU Login account email to a unique value.
@@ -281,10 +281,10 @@ Feature: Log in through EU Login
     And I should not see "full_cas_profile"
     And I should see the following lines of text:
       | Account information                                                                                                                                                                                                       |
-      | Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup. |
-      | Your e-mail address is not made public. We will only send you necessary system notifications and you can opt in later if you wish to receive additional notifications about content you are subscribed to.                         |
-      | Your first name is publicly visible.                                                                                                                                                                                               |
-      | Your last name is publicly visible.                                                                                                                                                                                                |
+      | Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login. |
+      | Your e-mail address is not made public. We will only send you necessary system notifications and you can opt in later if you wish to receive additional notifications about content you are subscribed to.                |
+      | Your first name is publicly visible.                                                                                                                                                                                      |
+      | Your last name is publicly visible.                                                                                                                                                                                       |
 
     When I press "Save"
     Then I should see the success message "The changes have been saved."
@@ -306,7 +306,7 @@ Feature: Log in through EU Login
     And the following fields should be disabled "Family name"
     But I should not see "Username"
     And I should not see "partial_cas_profile"
-    And I should see "Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup."
+    And I should see "Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login."
     But I should not see "Fail - Password length must be at least 8 characters."
     And I should not see "Password character length of at least 8"
     And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
@@ -333,7 +333,7 @@ Feature: Log in through EU Login
     But I should not see "Username"
     # The username appears in the page header because this use has no first and
     # last name. But we check the absence of "Username" and this is enough.
-    And I should see "Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup."
+    And I should see "Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login."
     But I should not see "Fail - Password length must be at least 8 characters."
     And I should not see "Password character length of at least 8"
     And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
@@ -365,7 +365,7 @@ Feature: Log in through EU Login
 
   Scenario: The Drupal login form shows a warning message.
     When I visit "/user/login"
-    Then I should see the warning message "Starting from 02/03/2020, signing in to Joinup is handled by EU Login, the European Commission Authentication Service."
+    Then I should see the warning message "Starting from 02/03/2020, signing in to COVID-19 Challenge is handled by EU Login, the European Commission Authentication Service."
     And I should see the link "EU Login"
     But the following fields should not be present "Email or username, Password"
     And I should not see the "Sign in" button
@@ -390,9 +390,9 @@ Feature: Log in through EU Login
     When I press "Next"
 
     Then I should see the following error messages:
-      | error messages                                                                                             |
-      | The email address joe@example.com is already taken.                                                        |
-      | If you are the owner of this account please select the first option, otherwise contact the Joinup support. |
+      | error messages                                                                                                         |
+      | The email address joe@example.com is already taken.                                                                    |
+      | If you are the owner of this account please select the first option, otherwise contact the COVID-19 Challenge support. |
 
   Scenario: A new user tries to register with an existing username.
     Given users:
@@ -413,7 +413,7 @@ Feature: Log in through EU Login
     When I select the radio button "I am a new user (create a new account)"
     When I press "Next"
 
-    Then I should see the success message "Fill in the fields below to let the Joinup community learn more about you!"
+    Then I should see the success message "Fill in the fields below to let the community learn more about you!"
 
   Scenario: The Drupal registration tab has been removed and the /user/register
   route redirects to EU Login registration form.
@@ -470,7 +470,7 @@ Feature: Log in through EU Login
     Then I should see the success message "You have been logged in."
     # The email ends up getting the upstream email so that correct character casing is applied.
     And the user joe should have the following data in their user profile:
-      | E-mail      | Joe_Case_Insensitive@example.com |
+      | E-mail | Joe_Case_Insensitive@example.com |
 
   Scenario: Anonymous user is asked to log in when accessing a protected page
     Given users:

@@ -158,7 +158,7 @@ class JoinCollectionForm extends FormBase {
       }
       else {
         $form['leave']['#confirm'] = [
-          '#markup' => $this->t('You cannot leave the %collection collection', ['%collection' => $collection->label()]),
+          '#markup' => $this->t('You cannot leave the %collection challenge', ['%collection' => $collection->label()]),
         ];
       }
       $form['#attached']['library'][] = 'core/drupal.ajax';

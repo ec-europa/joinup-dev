@@ -22,7 +22,7 @@ Feature: Solutions message overview
   Scenario: Contact form messages are available in the message overview.
     And I am not logged in
     When I am on the homepage
-    And I click "Contact Joinup Support" in the "Footer" region
+    And I click "Contact Us" in the "Footer" region
     Then I should see the heading "Contact"
 
     When I fill in the following:

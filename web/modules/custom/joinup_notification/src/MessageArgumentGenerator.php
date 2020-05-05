@@ -96,7 +96,7 @@ class MessageArgumentGenerator {
   public static function getGroupArguments(EntityInterface $group): array {
     $arguments = [
       '@group:title' => $group->label(),
-      '@group:bundle' => $group->bundle(),
+      '@group:bundle' => $group->rid->entity->getSingularLabel(),
     ];
 
     try {

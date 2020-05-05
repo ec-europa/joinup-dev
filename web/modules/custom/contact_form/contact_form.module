@@ -147,10 +147,10 @@ function contact_form_mail($key, &$message, $params) {
   $entity = $params['message'];
   $name = "{$entity->field_contact_first_name->value} {$entity->field_contact_last_name->value}";
 
-  $message['subject'] = t('Joinup: Contact form notification');
+  $message['subject'] = t('COVID-19 Challenge: Contact form notification');
 
   $message['body'][] = t('Dear @name', ['@name' => $name]);
-  $message['body'][] = t('Thank you for submitting your message to the Joinup Support.');
+  $message['body'][] = t('Thank you for submitting your message to the COVID-19 Challenge Support.');
 
   if ($entity->field_contact_copy->value) {
     $message['body'][] = t('This is the message you submitted through the online form:');

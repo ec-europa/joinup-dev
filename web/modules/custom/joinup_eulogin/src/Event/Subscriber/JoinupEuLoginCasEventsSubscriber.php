@@ -115,7 +115,7 @@ class JoinupEuLoginCasEventsSubscriber implements EventSubscriberInterface {
     // the correct case sensitivity email.
     if (strtolower($account->getEmail()) !== strtolower($eulogin_email)) {
       if (user_load_by_mail($eulogin_email)) {
-        $event->cancelLogin($this->t("You've recently changed your EU Login account email but that email is already used in Joinup by another user. You cannot login until, either you change your EU Login email or you <a href=':url'>contact support</a> to fix the issue.", [
+        $event->cancelLogin($this->t("You've recently changed your EU Login account email but that email is already used in COVID-19 Challenge by another user. You cannot login until, either you change your EU Login email or you <a href=':url'>contact support</a> to fix the issue.", [
           ':url' => Url::fromRoute('contact_form.contact_page')->setAbsolute()->toString(),
         ]));
       }

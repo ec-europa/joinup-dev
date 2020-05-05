@@ -15,8 +15,8 @@ Feature:
       | /admin/reporting                                            | moderator     | 200  |
       | /admin/reporting/legal-notice-report                        | authenticated | 403  |
       | /admin/reporting/legal-notice-report                        | moderator     | 200  |
-      | /admin/reporting/group-administrators/rdf_entity/challenge | authenticated | 403  |
-      | /admin/reporting/group-administrators/rdf_entity/challenge | moderator     | 200  |
+      | /admin/reporting/group-administrators/rdf_entity/collection | authenticated | 403  |
+      | /admin/reporting/group-administrators/rdf_entity/collection | moderator     | 200  |
       | /admin/reporting/export-user-list                           | authenticated | 403  |
       | /admin/reporting/export-user-list                           | moderator     | 200  |
       | /admin/reporting/solutions-by-type                          | authenticated | 403  |
@@ -28,7 +28,7 @@ Feature:
     Given I am logged in as a user with the moderator role
     And I am on "/admin/reporting"
     Then I should see the following links:
-      | Challenge administrators  |
+      | Challenge administrators   |
       | Export user list           |
       | Solutions by solution type |
       | Solutions by licences      |
