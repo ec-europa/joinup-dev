@@ -1,0 +1,6 @@
+name: External links in the fotter
+type: module
+description: Shows the external links in the footer menu.
+core: 8.x
+package: Joinup
+

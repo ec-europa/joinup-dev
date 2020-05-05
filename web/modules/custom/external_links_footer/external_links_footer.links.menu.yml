@@ -1,0 +1,10 @@
+contact_form.EU.EU_Institutions:
+  title: 'EU institutions'
+  weight: 0
+  url: 'https://europa.eu/european-union/about-eu_en'
+  menu_name: footer
+contact_form.EU.EuropeanUnion:
+  title: 'European Union'
+  weight: 0
+  url: 'https://europa.eu/'
+  menu_name: footer
