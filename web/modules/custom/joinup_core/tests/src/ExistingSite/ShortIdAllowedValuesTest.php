@@ -48,8 +48,9 @@ class ShortIdAllowedValuesTest extends JoinupExistingSiteTestBase {
    * Data provider for ::testShortIdAllowedValues().
    *
    * @return array
-   *   The test cases. Each test case contains the possible string and TRUE or
-   *   FALSE depending on whether the string is expected to be valid or not.
+   *   The test cases. Each test case contains the possible string and TRUE if
+   *   the string triggers a validation error, or FALSE if the string does not
+   *   cause a validation error.
    */
   public function shortIdAllowedValuesProvider(): array {
     return [

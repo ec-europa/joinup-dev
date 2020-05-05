@@ -56,7 +56,8 @@ Feature:
     When I click "Edit" in the "Entity actions" region
     Then the following fields should not be disabled "Short ID"
 
-    # Check that the field is not editable for facilitators.
+    # Check that the field is not editable any more for facilitators once the
+    # collection is published.
     When I am logged in as a facilitator of the "Structural Solar Traces" collection
     And I go to the "Structural Solar Traces" collection edit form
     Then the following fields should be disabled "Short ID"
