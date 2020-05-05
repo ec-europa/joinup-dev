@@ -105,5 +105,7 @@ function joinup_discussion_node_predelete(EntityInterface $entity): void {
  * Implements hook_entity_bundle_info_alter().
  */
 function joinup_discussion_entity_bundle_info_alter(&$bundles) {
-  $bundles['node']['discussion']['class'] = Discussion::class;
+  if (!empty($bundles['node']['discussion'])) {
+    $bundles['node']['discussion']['class'] = Discussion::class;
+  }
 }

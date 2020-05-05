@@ -47,5 +47,7 @@ function joinup_news_form_alter(&$form, FormStateInterface $form_state, $form_id
  * Implements hook_entity_bundle_info_alter().
  */
 function joinup_news_entity_bundle_info_alter(&$bundles) {
-  $bundles['node']['news']['class'] = News::class;
+  if (!empty($bundles['node']['news'])) {
+    $bundles['node']['news']['class'] = News::class;
+  }
 }

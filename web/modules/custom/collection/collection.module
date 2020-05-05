@@ -78,7 +78,9 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
  * Implements hook_entity_bundle_info_alter().
  */
 function collection_entity_bundle_info_alter(&$bundles) {
-  $bundles['rdf_entity']['collection']['class'] = Collection::class;
+  if (!empty($bundles['rdf_entity']['collection'])) {
+    $bundles['rdf_entity']['collection']['class'] = Collection::class;
+  }
 }
 
 /**
