@@ -356,15 +356,6 @@
         </if>
     </target>
 
-    <target name="clear-cache">
-        <drush
-                command="cr"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}">
-        </drush>
-    </target>
-
     <!-- Compile SCSS to CSS. -->
     <target name="compile-scss"
             description="Compile the SCSS to CSS.">
