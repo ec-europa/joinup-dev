@@ -17,9 +17,9 @@ Feature:
 
     # Assert the Short ID description is present.
     Then I should see the following lines of text:
-      | Short URL is an abbreviated reference (It serves as a "nickname") for the collection, like an acronym. E.g. for a collection named "European Commission" it can be "EuCo". This value will be displayed in your browser's address bar. |
-      | This is not editable after the collection's initial publication.                                                                                                                                                                       |
-      | The value must be between 4 and 26 characters and can contain only alphanumeric characters and the dash(-) symbol.                                                                                                                     |
+      | Used as the web address (URL). Example: a collection named 'European Commission' could use 'eu-commission'. |
+      | Cannot be changed once the collection is published.                                                         |
+      | The ID is between 4-26 characters and consists of lowercase letters, numbers and the dash symbol (-).       |
 
     When I press "Add existing" at the "Owner" field
     And I fill in the following:
@@ -82,9 +82,9 @@ Feature:
 
     # Assert the Short ID description.
     Then I should see the following lines of text:
-      | Short URL is an abbreviated reference (It serves as a "nickname") for the solution, like an acronym. E.g. for a solution named "European Commission" it can be "EuCo". This value will be displayed in your browser's address bar. |
-      | This is not editable after the solution's initial publication.                                                                                                                                                                     |
-      | The value must be between 4 and 26 characters and can contain only alphanumeric characters and the dash(-) symbol.                                                                                                                 |
+      | Used as the web address (URL). Example: a solution named 'European Standards for Internet Of Things' could use 'es-iot'. |
+      | Cannot be changed once the solution is published.                                                                        |
+      | The ID is between 4-26 characters and consists of lowercase letters, numbers and the dash symbol (-).                    |
 
     When I press "Add existing" at the "Owner" field
     And I fill in the following:
