@@ -7,7 +7,7 @@ Feature:
   Scenario: Short IDs are unique in collections.
     Given the following collections:
       | title              | short ID | state     |
-      | Scientific Studies | SSt-2020 | validated |
+      | Scientific Studies | sst-2020 | validated |
     And owner:
       | name                 | type    |
       | Organisation example | Company |
@@ -30,16 +30,16 @@ Feature:
       | Name        | Contact person             |
       | E-mail      | contact_person@example.com |
     And I select "HR" from "Policy domain"
-    And I fill in "Short ID" with "SST-2020"
+    And I fill in "Short ID" with "sst-2020"
     And I press "Propose"
-    Then I should see the error message "Content with Short ID SST-2020 already exists. Please choose a different Short ID."
+    Then I should see the error message "Content with Short ID sst-2020 already exists. Please choose a different Short ID."
 
-    And I fill in "Short ID" with "Sst-2020"
+    # The short ID should be lowercase.
+    And I fill in "Short ID" with "SSTR-2020"
     And I press "Propose"
-    # The short ID is case insensitive.
-    Then I should see the error message "Content with Short ID Sst-2020 already exists. Please choose a different Short ID."
+    Then I should see the error message "This value is not valid."
 
-    And I fill in "Short ID" with "SsTr-2020"
+    And I fill in "Short ID" with "sstr-2020"
     And I press "Propose"
     And I should see the heading "Structural Solar Traces"
 
@@ -68,10 +68,10 @@ Feature:
   Scenario: Short IDs are unique in solutions.
     Given the following collections:
       | title              | short ID | state     |
-      | Scientific Studies | SST-2020 | validated |
+      | Scientific Studies | sst-2020 | validated |
     And solutions:
       | title                         | short ID | state     | collection         |
-      | Who knows what a solution is? | WKWaSi   | validated | Scientific Studies |
+      | Who knows what a solution is? | wkwasi   | validated | Scientific Studies |
     And owner:
       | name                 | type    |
       | Organisation example | Company |
@@ -99,12 +99,18 @@ Feature:
     And I select "Demography" from "Policy domain"
 
     # Short ID is case insensitive.
-    And I fill in "Short ID" with "WKWASI"
+    And I fill in "Short ID" with "wkwasi"
     And I press "Propose"
-    Then I should see the error message "Content with Short ID WKWASI already exists. Please choose a different Short ID."
+    Then I should see the error message "Content with Short ID wkwasi already exists. Please choose a different Short ID."
 
-    # The short ID is only unique among solutions.
+    # The short ID should be lowercase.
     And I fill in "Short ID" with "SST-2020"
+    And I press "Propose"
+    Then I should see the error message "This value is not valid."
+
+    # The short ID is only unique among solutions, it is OK to reuse an existing
+    # short ID from a collection.
+    And I fill in "Short ID" with "sst-2020"
     And I press "Propose"
     Then I should see the heading "I know what a solution is"
 
