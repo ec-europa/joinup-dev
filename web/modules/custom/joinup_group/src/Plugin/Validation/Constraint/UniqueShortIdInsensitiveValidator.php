@@ -61,7 +61,7 @@ QUERY;
       $this->context->addViolation($constraint->message, [
         '%value' => $item->value,
         '@entity_type' => $entity->getEntityType()->getSingularLabel(),
-        '@field_name' => mb_strtolower($items->getFieldDefinition()->getLabel()),
+        '@field_name' => $items->getFieldDefinition()->getLabel(),
       ]);
     }
   }

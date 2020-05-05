@@ -32,12 +32,12 @@ Feature:
     And I select "HR" from "Policy domain"
     And I fill in "Short ID" with "SST-2020"
     And I press "Propose"
-    Then I should see the error message "Content with short id SST-2020 already exists. Please choose a different short id."
+    Then I should see the error message "Content with Short ID SST-2020 already exists. Please choose a different Short ID."
 
     And I fill in "Short ID" with "Sst-2020"
     And I press "Propose"
-    # The short id is case insensitive.
-    Then I should see the error message "Content with short id Sst-2020 already exists. Please choose a different short id."
+    # The short ID is case insensitive.
+    Then I should see the error message "Content with Short ID Sst-2020 already exists. Please choose a different Short ID."
 
     And I fill in "Short ID" with "SsTr-2020"
     And I press "Propose"
@@ -101,7 +101,7 @@ Feature:
     # Short ID is case insensitive.
     And I fill in "Short ID" with "WKWASI"
     And I press "Propose"
-    Then I should see the error message "Content with short id WKWASI already exists. Please choose a different short id."
+    Then I should see the error message "Content with Short ID WKWASI already exists. Please choose a different Short ID."
 
     # The short ID is only unique among solutions.
     And I fill in "Short ID" with "SST-2020"
