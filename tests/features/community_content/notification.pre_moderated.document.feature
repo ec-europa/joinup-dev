@@ -45,7 +45,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I press "Propose"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                    |
-      | subject   | Joinup: Content has been proposed                                                                                           |
+      | subject   | COVID-19 Challenge: Content has been proposed                                                                                           |
       | body      | CC Member has submitted a new document - "CC notify create propose" for publication in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -58,7 +58,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                     |
-      | subject   | Joinup: Content has been published                                                                                                                                           |
+      | subject   | COVID-19 Challenge: Content has been published                                                                                                                                           |
       | body      | CC Facilitator has published the new document - "CC notify create publish" in the collection: "CC pre collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
@@ -69,7 +69,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I press "Propose"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                 |
-      | subject   | Joinup: Content has been proposed                                                                                        |
+      | subject   | COVID-19 Challenge: Content has been proposed                                                                                        |
       | body      | CC Member has submitted a new document - "CC notify pre propose" for publication in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -78,7 +78,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I press "Propose"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                        |
-      | subject   | Joinup: Content has been updated                                                                                                                                                |
+      | subject   | COVID-19 Challenge: Content has been updated                                                                                                                                                |
       | body      | CC Member has updated the content of the document - "CC notify pre propose from reported" as advised and requests again its publication in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -90,7 +90,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I press "Request deletion"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                              |
-      | subject   | Joinup: Content has been updated                                                                                                                                                      |
+      | subject   | COVID-19 Challenge: Content has been updated                                                                                                                                                      |
       | body      | CC Member has requested to delete the document - "CC notify pre request deletion" in the collection: "CC pre collection", with the following motivation: "I just want to delete it.". |
 
     When all e-mails have been sent
@@ -100,7 +100,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                        |
-      | subject   | Joinup: Content has been published                                                                              |
+      | subject   | COVID-19 Challenge: Content has been published                                                                              |
       | body      | CC Facilitator has published the new document - "CC notify pre publish" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -113,7 +113,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I press "Request changes"
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                                                                     |
-      | subject   | Joinup: Content has been updated                                                                                                                                                                              |
+      | subject   | COVID-19 Challenge: Content has been updated                                                                                                                                                                              |
       | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify pre request changes" in the collection: "CC pre collection", with the following motivation: "Can you do some changes?". |
 
     When all e-mails have been sent
@@ -126,7 +126,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I press "Request changes"
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                                                            |
-      | subject   | Joinup: Content has been updated                                                                                                                                                                     |
+      | subject   | COVID-19 Challenge: Content has been updated                                                                                                                                                                     |
       | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify pre report" in the collection: "CC pre collection", with the following motivation: "Your content is reported". |
 
     When all e-mails have been sent
@@ -136,7 +136,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                           |
-      | subject   | Joinup: Content has been updated                                                                                                                                    |
+      | subject   | COVID-19 Challenge: Content has been updated                                                                                                                                    |
       | body      | the Facilitator, CC Facilitator has approved your request of publication of the document - "CC notify pre approve proposed" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -149,7 +149,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I press "Reject deletion"
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                                                                        |
-      | subject   | Joinup: Content has been updated                                                                                                                                                                                 |
+      | subject   | COVID-19 Challenge: Content has been updated                                                                                                                                                                                 |
       | body      | the Facilitator, CC Facilitator has not approved your request to delete the document - "CC notify pre reject deletion" in the collection: "CC pre collection", with the following motivation: "I still like it". |
 
     # Test 'delete' operation on an entity in 'deletion_request' state.
@@ -161,7 +161,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I press "Delete"
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                          |
-      | subject   | Joinup: Content has been deleted                                                                                                                   |
+      | subject   | COVID-19 Challenge: Content has been deleted                                                                                                                   |
       | body      | Facilitator CC Facilitator has approved your request of deletion for the document - "CC notify pre delete" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -172,7 +172,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I press "Delete"
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                    |
-      | subject   | Joinup: Content has been deleted                                                                                                                             |
+      | subject   | COVID-19 Challenge: Content has been deleted                                                                                                                             |
       | body      | Facilitator CC Facilitator has approved your request of deletion for the document - "CC notify pre request deletion" in the collection: "CC pre collection". |
 
     # Test 'delete' operation on an entity in 'validated' state.
@@ -184,5 +184,5 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I press "Delete"
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                     |
-      | subject   | Joinup: Content has been deleted                                                                                              |
+      | subject   | COVID-19 Challenge: Content has been deleted                                                                                              |
       | body      | Facilitator CC Facilitator has deleted the document - "CC notify validated to delete" in the collection: "CC pre collection". |

@@ -43,7 +43,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I fill in "Headline" with "CCN create propose"
     And I fill in "Content" with "CCN create propose"
     And I press "Propose"
-    Then the email sent to "CC owner" with subject "Joinup: Content has been proposed" contains the following lines of text:
+    Then the email sent to "CC owner" with subject "COVID-19 Challenge: Content has been proposed" contains the following lines of text:
       | text                                                                                                              |
       | CC Member has submitted a new news - "CCN create propose" for publication in the collection: "CC pre collection". |
       | If you think this action is not clear or not due, please contact Covid Challenge Support at                                |
@@ -62,9 +62,9 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I press "Propose"
     Then the following email should have been sent:
       | recipient | Notify moderator                                                                                                             |
-      | subject   | Joinup: Content has been proposed                                                                                            |
+      | subject   | COVID-19 Challenge: Content has been proposed                                                                                            |
       | body      | CC Member has submitted an update of the news - "CCN create propose" for publication in the collection: "CC pre collection". |
-    And the email sent to "CC owner" with subject "Joinup: Content has been proposed" contains the following lines of text:
+    And the email sent to "CC owner" with subject "COVID-19 Challenge: Content has been proposed" contains the following lines of text:
       | text                                                                                                                         |
       | CC Member has submitted an update of the news - "CCN create propose" for publication in the collection: "CC pre collection". |
       | If you think this action is not clear or not due, please contact Covid Challenge Support at                                           |
@@ -79,7 +79,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                           |
-      | subject   | Joinup: Content has been published                                                                                                                                 |
+      | subject   | COVID-19 Challenge: Content has been published                                                                                                                                 |
       | body      | CC Facilitator has published the new news - "CCN create publish" in the collection: "CC pre collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
@@ -88,7 +88,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I go to the "CCN pre propose" news
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
-    Then the email sent to "CC owner" with subject "Joinup: Content has been proposed" contains the following lines of text:
+    Then the email sent to "CC owner" with subject "COVID-19 Challenge: Content has been proposed" contains the following lines of text:
       | text                                                                                                           |
       | CC Member has submitted a new news - "CCN pre propose" for publication in the collection: "CC pre collection". |
       | If you think this action is not clear or not due, please contact Covid Challenge Support at                             |
@@ -97,7 +97,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I go to the "CCN pre propose from reported" news
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
-    Then the email sent to "CC owner" with subject "Joinup: Content has been updated" contains the following lines of text:
+    Then the email sent to "CC owner" with subject "COVID-19 Challenge: Content has been updated" contains the following lines of text:
       | text                                                                                                                                                                  |
       | CC Member has updated the content of the news - "CCN pre propose from reported" as advised and requests again its publication in the collection: "CC pre collection". |
       | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                                    |
@@ -109,7 +109,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "I just want to delete it."
     And I press "Request deletion"
-    Then the email sent to "CC owner" with subject "Joinup: Content has been updated" contains the following lines of text:
+    Then the email sent to "CC owner" with subject "COVID-19 Challenge: Content has been updated" contains the following lines of text:
       | text                                                                                                                                                                        |
       | CC Member has requested to delete the news - "CCN pre request deletion" in the collection: "CC pre collection", with the following motivation: "I just want to delete it.". |
       | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                                          |
@@ -121,7 +121,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                              |
-      | subject   | Joinup: Content has been published                                                                    |
+      | subject   | COVID-19 Challenge: Content has been published                                                                    |
       | body      | CC Facilitator has published the new news - "CCN pre publish" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -132,7 +132,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "Can you do some changes?"
     And I press "Request changes"
-    Then the email sent to "CC member" with subject "Joinup: Content has been updated" contains the following lines of text:
+    Then the email sent to "CC member" with subject "COVID-19 Challenge: Content has been updated" contains the following lines of text:
       | text                                                                                                                                                                                                |
       | the Facilitator, CC Facilitator has requested you to modify the news - "CCN pre request changes" in the collection: "CC pre collection", with the following motivation: "Can you do some changes?". |
       | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                                                                  |
@@ -145,7 +145,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "Your content is reported"
     And I press "Request changes"
-    Then the email sent to "CC member" with subject "Joinup: Content has been updated" contains the following lines of text:
+    Then the email sent to "CC member" with subject "COVID-19 Challenge: Content has been updated" contains the following lines of text:
       | text                                                                                                                                                                                       |
       | the Facilitator, CC Facilitator has requested you to modify the news - "CCN pre report" in the collection: "CC pre collection", with the following motivation: "Your content is reported". |
       | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                                                         |
@@ -157,7 +157,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                 |
-      | subject   | Joinup: Content has been updated                                                                                                                          |
+      | subject   | COVID-19 Challenge: Content has been updated                                                                                                                          |
       | body      | the Facilitator, CC Facilitator has approved your request of publication of the news - "CCN pre approve proposed" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -170,7 +170,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I press "Reject deletion"
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                                                              |
-      | subject   | Joinup: Content has been updated                                                                                                                                                                       |
+      | subject   | COVID-19 Challenge: Content has been updated                                                                                                                                                                       |
       | body      | the Facilitator, CC Facilitator has not approved your request to delete the news - "CCN pre reject deletion" in the collection: "CC pre collection", with the following motivation: "I still like it". |
 
     # Test 'delete' operation.
@@ -182,7 +182,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I press "Delete"
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                |
-      | subject   | Joinup: Content has been deleted                                                                                                         |
+      | subject   | COVID-19 Challenge: Content has been deleted                                                                                                         |
       | body      | Facilitator CC Facilitator has approved your request of deletion for the news - "CCN pre delete" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -193,7 +193,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I press "Delete"
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                          |
-      | subject   | Joinup: Content has been deleted                                                                                                                   |
+      | subject   | COVID-19 Challenge: Content has been deleted                                                                                                                   |
       | body      | Facilitator CC Facilitator has approved your request of deletion for the news - "CCN pre request deletion" in the collection: "CC pre collection". |
 
     # Test 'delete' operation for a validated entity.
@@ -205,5 +205,5 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I press "Delete"
     Then the following email should have been sent:
       | recipient | CC member                                                                                                           |
-      | subject   | Joinup: Content has been deleted                                                                                    |
+      | subject   | COVID-19 Challenge: Content has been deleted                                                                                    |
       | body      | Facilitator CC Facilitator has deleted the news - "CCN validated to delete" in the collection: "CC pre collection". |

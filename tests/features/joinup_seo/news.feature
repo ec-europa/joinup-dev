@@ -65,9 +65,9 @@ Feature: SEO for news articles.
       | article:published_time | 2019-12-25T13:00:00+0100                                                |
       | article:modified_time  | 2020-01-01T13:00:00+0100                                                |
 
-    When I click "Keep up to date"
+    When I click "Latest"
     Then I should see the "Joinup SEO news" tile
-    # No metatags are defined for the keep up to date page.
+    # No metatags are defined for the Latest page.
     # No metatags JSON in general means also that the entity metatags of the news item
     # is also not attached when the tile is present.
     And the metatag JSON should not be attached in the page

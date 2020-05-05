@@ -74,9 +74,9 @@ Feature: SEO for news articles.
       | og:image:width  | 377                                                                        |
       | og:image:height | 139                                                                        |
 
-    When I click "Keep up to date"
+    When I click "Latest"
     Then I should see the "Joinup SEO event" tile
-    # No metatags are defined for the keep up to date page.
+    # No metatags are defined for the Latest page.
     # No metatags JSON in general means also that the entity metatags of the
     # news item is also not attached when the tile is present.
     And the metatag JSON should not be attached in the page
