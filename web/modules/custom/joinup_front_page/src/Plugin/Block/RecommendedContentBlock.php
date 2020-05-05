@@ -126,7 +126,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
         '#type' => 'inline_template',
         // Warning: when changing this text, also update the metatags to match.
         // See `metatag.metatag_defaults.front.yml`.
-        '#template' => '<p>{% trans %}Joinup is a collaborative platform created by the European Commission and funded by the European Union via the <a href="https://ec.europa.eu/isa2/">Interoperability solutions for public administrations, businesses and citizens</a> (ISA<sup>2</sup>) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions.{% endtrans %}</p>',
+        '#template' => '<p>{% trans %}EIC Covid19 is a collaborative platform created by the European Commission as a follow up mechanism to the Covid19 challenges presented at the EUvsVIRUS Hackathon, but also able to include other challenges in the future. Funded by the European Union via <a href="https://ec.europa.eu/isa2/">Interoperability solutions for public administrations, businesses and citizens</a> (ISA<sup>2</sup>) Programme. It offers several services that aim at helping all relevant actors from the hackathon to continue and expand their collaboration with each other, reaching innovative and fast solutions to all relevant challenges. {% endtrans %}</p>',
       ],
     ];
 

@@ -16,7 +16,8 @@ RUN sed -ri -e 's!/var/www/!${DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/a
 RUN set -ex; \
 	apt-get update; \
     apt-get install -y --no-install-recommends ssh libjpeg-dev libpng-dev libpq-dev mysql-client gnupg \
-    wget curl nano unzip patch git rsync make ssmtp; \
+    wget curl nano unzip patch git rsync make ssmtp \
+    virtuoso-opensource-6.1-bin; \
 	docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
 	docker-php-ext-install -j "$(nproc)" gd opcache pdo_mysql pdo_pgsql zip
 

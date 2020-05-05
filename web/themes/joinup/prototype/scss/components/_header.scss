@@ -1,3 +1,43 @@
 // Header
 //
 // Styleguide 2.7
+
+
+// Component
+// --------------------------------------------------
+header.section--header {
+  .eu-header {
+    padding-left:0px;
+    background-color: $color-grey-white;
+    padding-top: 50px;
+    height:140px !important;
+    .site-name-slogan {
+      min-width: 380px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      line-height: 32px;
+      border-bottom: 3px solid #4073af;
+      margin: 0;
+    }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: table-row;
+      font-family: Arial, sans-serif;
+      line-height: 28px;
+    }
+    img.logo_eu {
+      max-width: 105px;
+      margin-right: 20px;
+      height:70px;
+    }
+  }
+}
+
+// Elements
+// --------------------------------------------------
+
+// Modifiers
+// --------------------------------------------------

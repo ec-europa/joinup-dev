@@ -6,8 +6,8 @@ _core:
   default_config_hash: MMqUO29XmXa_FwBvKFUq21Rwk_9gUsarOZdp1W-Iok8
 name: Challenge
 rid: collection
-description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
+description: ''
 label_singular: challenge
 label_plural: challenges
 label_count:
-  no_count_capitalize: !!binary Q29sbGVjdGlvbgNDb2xsZWN0aW9ucw==
+  no_count_capitalize: Challenge\x03Challenges

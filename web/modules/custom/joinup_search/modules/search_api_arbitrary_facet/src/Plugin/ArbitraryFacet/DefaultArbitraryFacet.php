@@ -74,7 +74,7 @@ class DefaultArbitraryFacet extends ArbitraryFacetBase implements ContainerFacto
       'collections' => [
         'field_name' => 'entity_bundle',
         'field_condition' => 'collection',
-        'label' => $this->t("Collections"),
+        'label' => $this->t("Challenges"),
       ],
     ];
   }

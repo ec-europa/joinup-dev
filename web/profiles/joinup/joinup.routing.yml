@@ -15,10 +15,10 @@ rdf_entity.propose_form:
         type: entity:rdf_type
 
 joinup.collection_tca_form:
-  path: '/joinup/tca/collection'
+  path: '/covid19-challenge/tca/challenge'
   defaults:
     _form: '\Drupal\joinup\Form\TcaForm'
-    _title: 'Why create a Collection?'
+    _title: 'Why create a Challenge?'
   requirements:
     _permission: 'propose collection rdf entity'
 

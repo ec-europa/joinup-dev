@@ -3,4 +3,4 @@ adms_validator.validator:
   weight: 0
   description: 'Validate an RDF file for model errors.'
   url: 'internal:/adms-validator'
-  menu_name: footer
+#  menu_name: footer

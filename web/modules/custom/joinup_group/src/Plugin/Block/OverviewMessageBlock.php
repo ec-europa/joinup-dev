@@ -71,7 +71,7 @@ class OverviewMessageBlock extends BlockBase implements ContainerFactoryPluginIn
     elseif ($route_name === 'view.collections.page_1') {
       $build['header_description'] = [
         '#type' => 'inline_template',
-        '#template' => '<p>Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community.</p>',
+        '#template' => '<p>Challenges are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community.</p>',
       ];
     }
 

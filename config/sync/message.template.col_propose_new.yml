@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 template: col_propose_new
-label: 'Collection propose new'
+label: 'Challenge propose new'
 description: 'Template id 1'
 text:
   -

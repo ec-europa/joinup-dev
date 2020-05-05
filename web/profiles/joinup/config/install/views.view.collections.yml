@@ -524,10 +524,10 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: collections
+      path: challenge
       menu:
         type: normal
-        title: Collections
+        title: Challenge
         description: ''
         expanded: false
         parent: ''

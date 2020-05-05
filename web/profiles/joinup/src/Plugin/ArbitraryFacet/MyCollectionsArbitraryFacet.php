@@ -73,7 +73,7 @@ class MyCollectionsArbitraryFacet extends ArbitraryFacetBase implements Containe
       $definition['mine'] = [
         'field_name' => 'entity_author',
         'field_condition' => $this->currentUser->id(),
-        'label' => $this->t('My collections'),
+        'label' => $this->t('My challenges'),
       ];
     }
 

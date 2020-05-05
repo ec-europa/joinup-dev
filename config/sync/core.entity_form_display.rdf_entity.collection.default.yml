@@ -65,7 +65,7 @@ third_party_settings:
       format_settings:
         label: 'Main fields'
         formatter: open
-        description: 'Contains all the fields to be mandatorily filled to create a collection'
+        description: 'Contains all the fields to be mandatorily filled to create a challenge'
         required_fields: true
         id: ''
         classes: ''
@@ -88,7 +88,7 @@ third_party_settings:
       format_settings:
         label: 'Additional fields'
         formatter: open
-        description: 'Contains all optional fields providing additional information on the collection'
+        description: 'Contains all optional fields providing additional information on the challenge'
         required_fields: true
         id: ''
         classes: ''
