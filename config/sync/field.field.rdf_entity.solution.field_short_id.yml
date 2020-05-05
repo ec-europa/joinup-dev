@@ -10,7 +10,7 @@ field_name: field_short_id
 entity_type: rdf_entity
 bundle: solution
 label: 'Short ID'
-description: "Short URL is an abbreviated reference (It serves as a \"nickname\") for the solution, like an acronym. E.g. for a solution named \"European Commission\" it can be \"EuCo\". This value will be displayed in your browser's address bar.\r\n<br />This is not editable after the solution's initial publication.\r\n<br />The value must be between <strong>4 and 26 characters</strong> and can contain only <strong>alphanumeric characters and the dash(-) symbol</strong>. "
+description: "Used as the web address (URL). Example: a solution named 'European Standards for Internet Of Things' could use 'es-iot'.\r\nCannot be changed once the solution is published.\r\nThe ID is between 4-26 characters and consists of lowercase letters, numbers and the dash symbol (-)."
 required: false
 translatable: false
 default_value: {  }
