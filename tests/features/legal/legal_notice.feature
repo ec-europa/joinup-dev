@@ -43,7 +43,7 @@ Feature:
     # After accepting the agreement the user can continue.
     Given I check "I have read and accept the Legal notice"
     And I press "Sign in"
-    Then I should see the success message "Fill in the fields below to let the Joinup community learn more about you!"
+    Then I should see the success message "Fill in the fields below to let the community learn more about you!"
 
     # The user has been redirected to its user account edit form.
     And the following fields should be present "Email, First name, Family name, Photo, Country of origin, Professional domain, Business title"

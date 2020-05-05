@@ -103,10 +103,10 @@ Feature: "Add solution" visibility options.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3342
     And I select "Completed" from "Status"
     And I press "Propose"
-    Then the email sent to "Ruth Lee" with subject "Joinup: A new solution has been proposed" contains the following lines of text:
-      | text                                                                                              |
-      | Wendell Silva has proposed a new Interoperability solution: "Espresso is the solution" on Joinup. |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at                |
+    Then the email sent to "Ruth Lee" with subject "COVID-19 Challenge: A new solution has been proposed" contains the following lines of text:
+      | text                                                                                                          |
+      | Wendell Silva has proposed a new Interoperability solution: "Espresso is the solution" on COVID-19 Challenge. |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at                   |
     And I should see "Thank you for proposing a solution. Your request is currently pending approval by the site administrator."
 
     # Regression test for non required fields 'Banner' and 'Logo'.
@@ -133,7 +133,7 @@ Feature: "Add solution" visibility options.
     And I should not see the link "Flemish"
     And the following email should have been sent:
       | recipient | Wendell Silva                                                                                               |
-      | subject   | Joinup: Your solution has been accepted                                                                     |
+      | subject   | COVID-19 Challenge: Your solution has been accepted                                                         |
       | body      | Your proposed interoperability solution: "Espresso is the solution" has been validated as per your request. |
 
     When I am logged in as a facilitator of the "Belgian barista's" collection
@@ -231,7 +231,7 @@ Feature: "Add solution" visibility options.
     And I click "Add solution" in the plus button menu
     And I fill in "Title" with "Climate change tracker"
     And I press "Propose"
-    Then I should see the error message "A solution titled Climate change tracker already exists in this collection. Please choose a different title."
+    Then I should see the error message "A solution titled Climate change tracker already exists in this challenge. Please choose a different title."
 
     # If a solution with a duplicate name is created in a different collection
     # then this is allowed to be submitted but a warning should be shown to the

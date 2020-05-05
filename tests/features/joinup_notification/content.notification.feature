@@ -42,7 +42,7 @@ Feature: Content notification system
     And the following email should have been sent:
       | template  | Message to challenge facilitators when a community content is updated by a moderator                         |
       | recipient | Devyn Queshire                                                                                                |
-      | subject   | Joinup: user Jerrard Verity updated a News of your challenge                                                 |
+      | subject   | COVID-19 Challenge: user Jerrard Verity updated a News of your challenge                                                 |
       | body      | Devyn Queshire, Jerrard Verity updated the News "Communication tools" in your Communication tools challenge. |
 
     Given all the e-mails have been sent
@@ -54,7 +54,7 @@ Feature: Content notification system
     And the following email should have been sent:
       | template  | Message to solution facilitators when a community content is updated by a moderator                                           |
       | recipient | Reed Mondy                                                                                                                    |
-      | subject   | Joinup: user Jerrard Verity updated a Event of your solution                                                                  |
+      | subject   | COVID-19 Challenge: user Jerrard Verity updated a Event of your solution                                                                  |
       | body      | Dear Reed Mondy, Jerrard Verity updated the Event "Smoke signals code standard" in your Smoke signals code standard solution. |
 
   Scenario: Send emails on content delete:
@@ -66,7 +66,7 @@ Feature: Content notification system
     And the following email should have been sent:
       | template  | Message to challenge facilitators when a community content is deleted by a moderator                                                    |
       | recipient | Devyn Queshire                                                                                                                           |
-      | subject   | Joinup: your news "Infrared long-range communications" was deleted                                                                       |
+      | subject   | COVID-19 Challenge: your news "Infrared long-range communications" was deleted                                                                       |
       | body      | Dear Devyn Queshire, your news "Infrared long-range communications" was successfully deleted. Kinds regards, The COVID-19 Challenge Support Team. |
 
     When I am logged in as "Jerrard Verity"
@@ -78,5 +78,5 @@ Feature: Content notification system
     And the following email should have been sent:
       | template  | Message to solution facilitators when a community content is deleted by a moderator                                                   |
       | recipient | Reed Mondy                                                                                                                            |
-      | subject   | Joinup: your event "Smoke signals pre-conference party" was deleted                                                                   |
+      | subject   | COVID-19 Challenge: your event "Smoke signals pre-conference party" was deleted                                                                   |
       | body      | Dear Reed Mondy, your event "Smoke signals pre-conference party" was successfully deleted. Kinds regards, The COVID-19 Challenge Support Team. |

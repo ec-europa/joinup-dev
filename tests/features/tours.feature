@@ -12,13 +12,13 @@ Feature: Tours
     Examples:
       | path             | expectation   |
       | /                | should be     |
-      | /keep-up-to-date | should be     |
+      | /latest | should be     |
       | /challenges     | should not be |
       | /solutions       | should not be |
       # Recheck some URLs to ensure that cache contexts are working.
       | /                | should be     |
       | /solutions       | should not be |
-      | /keep-up-to-date | should be     |
+      | /latest | should be     |
 
   Scenario Outline: Various user roles can access tours
     Given I am logged in as an "authenticated user"
@@ -29,10 +29,10 @@ Feature: Tours
     Examples:
       | path             | expectation   |
       | /                | should be     |
-      | /keep-up-to-date | should be     |
+      | /latest | should be     |
       | /challenges     | should not be |
       | /solutions       | should not be |
       # Recheck some URLs to ensure that cache contexts are working.
       | /                | should be     |
       | /solutions       | should not be |
-      | /keep-up-to-date | should be     |
+      | /latest | should be     |

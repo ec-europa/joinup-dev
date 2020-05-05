@@ -1,9 +1,9 @@
 @api
 Feature:
   - As a moderator, in order to maintain the support dropdown, I am able to
-    administer the 'support' menu.
+  administer the 'support' menu.
   - As a user, I should see the the 'Take a tour' menu item only on pages that
-    are implementing tours.
+  are implementing tours.
   - As a moderator I can add custom menu items and disable default menu items.
 
   Scenario Outline: Moderators are not able to admin menus except support menu.
@@ -48,7 +48,7 @@ Feature:
     Then I should not see the link "Take a tour"
     But I should see the link "Contact support"
 
-    When I go to "/keep-up-to-date"
+    When I go to "/latest"
     Then I should see the link "Take a tour"
     And I should see the link "Contact support"
 

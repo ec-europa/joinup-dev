@@ -41,9 +41,9 @@ Feature: Collection membership administration
     When I am logged in as "Donald Duck"
     And all e-mails have been sent
     And I go to the "Medical diagnosis" collection
-    And I press the "Join this collection" button
+    And I press the "Join this challenge" button
     Then I should see the success message "Your membership to the Medical diagnosis collection is under approval."
-    And the email sent to "Lisa Cuddy" with subject "Joinup: A user has requested to join your collection" contains the following lines of text:
+    And the email sent to "Lisa Cuddy" with subject "COVID-19 Challenge: A user has requested to join your collection" contains the following lines of text:
       | text                                                                               |
       | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
       | To approve or reject this request, click on                                        |
@@ -51,7 +51,7 @@ Feature: Collection membership administration
       | /collection/medical-diagnosis/members                                              |
     And the following email should have been sent:
       | recipient | Turkey Ham                                                                         |
-      | subject   | Joinup: A user has requested to join your collection                               |
+      | subject   | COVID-19 Challenge: A user has requested to join your collection                               |
       | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
 
   Scenario: Approve a membership
@@ -88,10 +88,10 @@ Feature: Collection membership administration
     Then I should see the following success messages:
       | success messages                                         |
       | Approve the pending membership(s) was applied to 1 item. |
-    And the email sent to "Kathie Cumbershot" with subject "Joinup: Your request to join the collection Medical diagnosis was approved" contains the following lines of text:
+    And the email sent to "Kathie Cumbershot" with subject "COVID-19 Challenge: Your request to join the collection Medical diagnosis was approved" contains the following lines of text:
       | text                                                                            |
       | Lisa Cuddy has approved your request to join the "Medical diagnosis" collection |
-    But the email sent to "Kathie Cumbershot" with subject "Joinup: Your request to join the collection Medical diagnosis was approved" should not contain the following lines of text:
+    But the email sent to "Kathie Cumbershot" with subject "COVID-19 Challenge: Your request to join the collection Medical diagnosis was approved" should not contain the following lines of text:
       | text                                                                                |
       | You will receive weekly notifications for newly created content on this collection. |
       | To manage your notifications go to "My subscriptions" in the user menu.             |
@@ -109,7 +109,7 @@ Feature: Collection membership administration
     When I am logged in as "Cam Bridge"
     And all e-mails have been sent
     And I go to the "Medical diagnosis" collection
-    And I press the "Join this collection" button
+    And I press the "Join this challenge" button
     Then a modal should open
     And I should see the text "Want to receive notifications, too?"
 
@@ -130,7 +130,7 @@ Feature: Collection membership administration
     Then I should see the following success messages:
       | success messages                                         |
       | Approve the pending membership(s) was applied to 1 item. |
-    And the email sent to "Cam Bridge" with subject "Joinup: Your request to join the collection Medical diagnosis was approved" contains the following lines of text:
+    And the email sent to "Cam Bridge" with subject "COVID-19 Challenge: Your request to join the collection Medical diagnosis was approved" contains the following lines of text:
       | text                                                                                             |
       | Lisa Cuddy has approved your request to join and subscribe to the "Medical diagnosis" collection |
       | You will receive weekly notifications for newly created content on this collection.              |
@@ -172,7 +172,7 @@ Feature: Collection membership administration
       | The member Kathie Cumbershot has been deleted from the 'Medical diagnosis' collection. |
     And the following email should have been sent:
       | recipient | Kathie Cumbershot                                                               |
-      | subject   | Joinup: Your request to join the collection Medical diagnosis was rejected      |
+      | subject   | COVID-19 Challenge: Your request to join the collection Medical diagnosis was rejected      |
       | body      | Lisa Cuddy has rejected your request to join the "Medical diagnosis" collection |
 
     # Delete multiple members from collection.
@@ -197,7 +197,7 @@ Feature: Collection membership administration
     And I go to the "Medical diagnosis" collection
     # Check that I see one of the random links that requires an active membership.
     Then I should not see the plus button menu
-    And I should see the button "Join this collection"
+    And I should see the button "Join this challenge"
 
   @email
   Scenario: Assign a new role to a member

@@ -81,14 +81,14 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t('Unsubscribe from all collections');
+    return $this->t('Unsubscribe from all challenges');
   }
 
   /**
    * {@inheritdoc}
    */
   public function getDescription() {
-    return $this->t('Are you sure you want to unsubscribe from all collections?<br />You will stop receiving news and updates from all collections (including the pending memberships).<br />In the future you will not be notified for the following collections:');
+    return $this->t('Are you sure you want to unsubscribe from all challenges?<br />You will stop receiving news and updates from all challenges (including the pending memberships).<br />In the future you will not be notified for the following challenges:');
   }
 
   /**
@@ -195,7 +195,7 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
         '@count' => $count,
         '@items' => $this->renderer->render($list),
       ];
-      $message = $this->formatPlural($count, 'You will no longer receive notifications for the following collection:<br />@items', 'You will no longer receive notifications for the following @count collections:<br />@items', $arguments);
+      $message = $this->formatPlural($count, 'You will no longer receive notifications for the following challenge:<br />@items', 'You will no longer receive notifications for the following @count challenges:<br />@items', $arguments);
       $this->messenger()->addStatus($message);
     }
     else {

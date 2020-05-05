@@ -62,7 +62,7 @@ Feature: Subscribing to a collection after joining
 
     # Navigate to a closed collection and accept the subscription.
     When I go to the homepage of the "Swamp dragons" collection
-    And I press the "Join this collection" button
+    And I press the "Join this challenge" button
     Then a modal should open
     When I press "Subscribe" in the "Modal buttons" region
     Then the modal should be closed

@@ -104,7 +104,7 @@ Feature: Content Overview
 
   Scenario: Content overview active trail should persist on urls with arguments.
     Given I am an anonymous user
-    And I visit "/keep-up-to-date?a=1"
+    And I visit "/latest?a=1"
     Then "Latest" should be the active item in the "Header menu" menu
     And the page should be cacheable
 

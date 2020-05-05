@@ -1,4 +1,4 @@
-uuid: 11ca0641-d34f-4710-acfc-c54c0adae1bf
+uuid: af523775-9bf4-4746-8839-154eaef04484
 langcode: en
 status: true
 dependencies:
@@ -7,20 +7,19 @@ dependencies:
     - rdf_entity
 _core:
   default_config_hash: duUo88aLwAi3Anenpl0D7C2yMh2EYpPx2WA7ZDp8nXY
-id: rdf_entities_generic
-label: 'Rdf entities - generic'
+id: rdf_entities_challenge
+label: 'Rdf entities - challenge'
 type: rdf_entity
-pattern: '[rdf_entity:rid:target_id]/[rdf_entity:label]'
+pattern: 'challenge/[rdf_entity:label]'
 selection_criteria:
-  16827eca-4b7d-4767-b5fd-94929e300832:
+  b5ee0d7b-e3fe-4130-b587-e11028be3872:
     id: 'entity_bundle:rdf_entity'
     bundles:
-      licence: licence
-      solution: solution
+      collection: collection
     negate: false
     context_mapping:
       rdf_entity: rdf_entity
-    uuid: 16827eca-4b7d-4767-b5fd-94929e300832
+    uuid: b5ee0d7b-e3fe-4130-b587-e11028be3872
 selection_logic: and
 weight: -5
 relationships: {  }

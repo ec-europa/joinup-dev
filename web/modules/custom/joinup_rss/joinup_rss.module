@@ -24,7 +24,7 @@ function joinup_rss_preprocess_views_view_rss__group_feed__rss_feed(&$variables)
 
   $replacements = [
     '@label' => $group->label(),
-    '@bundle' => $group->bundle(),
+    '@bundle' => $group->{$group->getEntityType()->getKey('bundle')}->entity->getSingularLabel(),
   ];
 
   $variables['title'] = t('Latest updates from the @label @bundle', $replacements);
@@ -66,7 +66,7 @@ function joinup_rss_page_attachments(array &$attachments): void {
       $url->toString(),
       t('Latest updates from the @label @bundle', [
         '@label' => $entity->label(),
-        '@bundle' => $entity->bundle(),
+        '@bundle' => $entity->{$entity->getEntityType()->getKey('bundle')}->entity->getSingularLabel(),
       ]),
     ];
   }

@@ -37,7 +37,7 @@ Feature: Add comments
     # The author's full name should be shown, not the username.
     And I should see the link "Miss Tales"
     But I should not see the link "Miss tell tales"
-    And the email sent to "Comment moderator" with subject "Joinup: A new comment has been created." contains the following lines of text:
+    And the email sent to "Comment moderator" with subject "COVID-19 Challenge: A new comment has been created." contains the following lines of text:
       | text                                                                                    |
       | Miss Tales posted a comment in collection "Gossip collection".                          |
       | To view the comment click                                                               |

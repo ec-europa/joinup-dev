@@ -122,7 +122,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $this->assertLimitedAccess('<front>');
     $this->assertLimitedAccess('/collections');
     $this->assertLimitedAccess('/solutions');
-    $this->assertLimitedAccess('/keep-up-to-date');
+    $this->assertLimitedAccess('/latest');
     $this->assertLimitedAccess('/search');
 
     // Check that the link to EU Login works. By clicking this link the user
@@ -136,7 +136,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $this->assertAccess('<front>');
     $this->assertAccess('/collections');
     $this->assertAccess('/solutions');
-    $this->assertAccess('/keep-up-to-date');
+    $this->assertAccess('/latest');
     $this->assertAccess('/search');
 
     // Log in as an special user with 'bypass limited access' permission. These
@@ -154,7 +154,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $this->assertAccess('<front>');
     $this->assertAccess('/collections');
     $this->assertAccess('/solutions');
-    $this->assertAccess('/keep-up-to-date');
+    $this->assertAccess('/latest');
     $this->assertAccess('/search');
 
     // Remove the role from account.
@@ -171,7 +171,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $this->assertAccess('<front>');
     $this->assertAccess('/collections');
     $this->assertAccess('/solutions');
-    $this->assertAccess('/keep-up-to-date');
+    $this->assertAccess('/latest');
     $this->assertAccess('/search');
     $this->assertAccess('/contact', 'Contact');
     $this->assertAccess('/user', $this->account->getDisplayName());

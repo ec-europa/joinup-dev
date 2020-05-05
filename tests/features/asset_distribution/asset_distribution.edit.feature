@@ -73,9 +73,9 @@ Feature: Asset distribution editing.
     Then I should see the heading "Asset distribution example revised"
     And the following email should have been sent:
       | recipient | Gregg Hill                                                                                                                                          |
-      | subject   | Joinup: A distribution has been updated                                                                                                             |
+      | subject   | COVID-19 Challenge: A distribution has been updated                                                                                                             |
       | body      | The distribution Asset distribution example revised of the release Asset release example, C3PO of the solution Solution A was successfully updated. |
     And the following email should have been sent:
       | recipient | Pedro Torres                                                                                                                                        |
-      | subject   | Joinup: A distribution has been updated                                                                                                             |
+      | subject   | COVID-19 Challenge: A distribution has been updated                                                                                                             |
       | body      | The distribution Asset distribution example revised of the release Asset release example, C3PO of the solution Solution A was successfully updated. |
