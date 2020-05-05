@@ -40,14 +40,6 @@ abstract class JoinupKernelTestBase extends RdfKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function bootEnvironment() {
-    parent::bootEnvironment();
-    $this->setUpSparql();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
     $this->installEntitySchema('user');
