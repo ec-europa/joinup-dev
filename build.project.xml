@@ -356,19 +356,6 @@
         </if>
     </target>
 
-    <!-- Enable modules for user acceptance testing. These are different from the
-      ones in enable-dev-modules as it can contain modules not needed for development
-      like demo content modules. -->
-    <target name="enable-uat-modules">
-        <drush
-                command="pm-enable"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}">
-            <param>${drupal.modules.uat}</param>
-        </drush>
-    </target>
-
     <target name="clear-cache">
         <drush
                 command="cr"
