@@ -35,8 +35,7 @@ use Drupal\views\Views;
  * Implements hook_entity_bundle_field_info_alter().
  */
 function joinup_group_entity_bundle_field_info_alter(array &$fields, EntityTypeInterface $entity_type, string $bundle): void {
-  $bundles = ['collection', 'solution'];
-  if ($entity_type->id() === 'rdf_entity' && in_array($bundle, $bundles)) {
+  if ($entity_type->id() === 'rdf_entity' && in_array($bundle, JoinupGroupHelper::GROUP_BUNDLES)) {
     if (!empty($fields['field_short_id'])) {
       /** @var \Drupal\field\Entity\FieldConfig[] $fields */
       $fields['field_short_id']->addPropertyConstraints('value', [
