@@ -100,8 +100,10 @@ function joinup_group_form_rdf_entity_form_alter(&$form, FormStateInterface $for
   }
 
   if (JoinupGroupHelper::isGroup($entity)) {
-    $has_published_version = $entity->hasGraph('default');
     // If the entity has been published, only moderators can edit the short ID.
+    // @todo Implement the EntityPublishedInterface for collections and
+    //   solutions once we have the bundle classes in.
+    $has_published_version = $entity->hasGraph('default');
     if (isset($form['field_short_id']) && $has_published_version && !\Drupal::currentUser()->hasPermission('edit short id after publication')) {
       $form['field_short_id']['widget'][0]['value']['#attributes']['disabled'] = 'disabled';
     }
