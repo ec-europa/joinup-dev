@@ -56,7 +56,11 @@ Feature:
       | Legal notice | 2.0   | no        | Accept Version 2.0! | Version 2.0 content |
     And the version "2.0" of "Legal notice" legal document is published
 
-    When I go to homepage
+    # There is a cacheability issue with the front page caused by
+    # \Drupal\joinup_cas_mock_server\Config\JoinupCasMockServerConfigOverrider::getCacheableMetadata and after the
+    # config metadata was removed and replaced, this issue started happening.
+    When the cache has been cleared
+    And I go to homepage
     Then I should see the warning message "You must accept this agreement before continuing."
     And I should see the heading "Legal notice"
     And I should see "Version 2.0 content"
