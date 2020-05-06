@@ -55,7 +55,7 @@ Feature: Navigation menu for custom pages
 
     # The contextual menu can be used to navigate to the menu edit page.
     When I click the contextual link "Edit menu" in the "Left sidebar" region
-    Then I should see the heading "Edit navigation menu of the Rainbow tables <group>"
+    Then I should see the heading "Edit navigation menu of the Rainbow tables <singular label>"
 
     # The form to add a new menu link should not be accessible by anyone. This
     # is functionality provided by Drupal which is intended for webmasters. We

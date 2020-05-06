@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\joinup_eulogin\ExistingSite;
+namespace Drupal\Tests\joinup_eulogin_account_link\ExistingSite;
 
 use Drupal\Tests\cas\Traits\CasTestTrait;
 use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
@@ -11,8 +11,6 @@ use weitzman\LoginTrait\LoginTrait;
 
 /**
  * Tests the EU Login.
- *
- * @group joinup_eulogin
  */
 class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
 
