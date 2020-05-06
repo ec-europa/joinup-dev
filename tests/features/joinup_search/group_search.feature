@@ -231,7 +231,7 @@ Feature: Search inside groups
   @javascript
   Scenario: Group filter chips appear in search bar after selecting them in facets
     When I visit the search page
-    Then the option with text "Any challenge or Solution" from select facet "challenge/solution" is selected
+    Then the option with text "Any Challenge or Solution" from select facet "challenge/solution" is selected
     And I should see 12 tiles
 
     When I open the search bar by clicking on the search icon

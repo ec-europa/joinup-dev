@@ -334,7 +334,7 @@ trait TraversingTrait {
     $mappings = [
       'collection type' => 'collection_type',
       'collection policy domain' => 'collection_policy_domain',
-      'collection/solution' => 'group',
+      'challenge/solution' => 'group',
       'policy domain' => 'policy_domain',
       'solution policy domain' => 'solution_policy_domain',
       'solution spatial coverage' => 'solution_spatial_coverage',

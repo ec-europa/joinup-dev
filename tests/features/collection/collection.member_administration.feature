@@ -43,16 +43,16 @@ Feature: Collection membership administration
     And I go to the "Medical diagnosis" collection
     And I press the "Join this challenge" button
     Then I should see the success message "Your membership to the Medical diagnosis collection is under approval."
-    And the email sent to "Lisa Cuddy" with subject "COVID-19 Challenge: A user has requested to join your collection" contains the following lines of text:
-      | text                                                                               |
-      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
-      | To approve or reject this request, click on                                        |
+    And the email sent to "Lisa Cuddy" with subject "COVID-19 Challenge: A user has requested to join your challenge" contains the following lines of text:
+      | text                                                                                        |
+      | Donald Duck has requested to join your challenge "Medical diagnosis" as a member.           |
+      | To approve or reject this request, click on                                                 |
       | If you think this action is not clear or not due, please contact Covid Challenge Support at |
-      | /collection/medical-diagnosis/members                                              |
+      | /challenge/medical-diagnosis/members                                                        |
     And the following email should have been sent:
-      | recipient | Turkey Ham                                                                         |
-      | subject   | COVID-19 Challenge: A user has requested to join your collection                               |
-      | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
+      | recipient | Turkey Ham                                                                        |
+      | subject   | COVID-19 Challenge: A user has requested to join your challenge                   |
+      | body      | Donald Duck has requested to join your challenge "Medical diagnosis" as a member. |
 
   Scenario: Approve a membership
     # Check that a member with pending state does not have access to add new content.
@@ -73,13 +73,13 @@ Feature: Collection membership administration
     And I go to the "Medical diagnosis" collection
     And I click "Members" in the "Left sidebar"
     Then the "Action" select should contain the following options:
-      | Approve the pending membership(s)                               |
-      | Block the selected membership(s)                                |
-      | Unblock the selected membership(s)                              |
-      | Delete the selected membership(s)                               |
-      | Add the facilitator role to the selected members                |
-      | Transfer the ownership of the collection to the selected member |
-      | Remove the facilitator role from the selected members           |
+      | Approve the pending membership(s)                              |
+      | Block the selected membership(s)                               |
+      | Unblock the selected membership(s)                             |
+      | Delete the selected membership(s)                              |
+      | Add the facilitator role to the selected members               |
+      | Transfer the ownership of the challenge to the selected member |
+      | Remove the facilitator role from the selected members          |
     # Assert that the user does not see the default OG tab.
     Then I should not see the link "Group"
     And I check the box "Update the member Kathie Cumbershot"
@@ -88,14 +88,14 @@ Feature: Collection membership administration
     Then I should see the following success messages:
       | success messages                                         |
       | Approve the pending membership(s) was applied to 1 item. |
-    And the email sent to "Kathie Cumbershot" with subject "COVID-19 Challenge: Your request to join the collection Medical diagnosis was approved" contains the following lines of text:
-      | text                                                                            |
-      | Lisa Cuddy has approved your request to join the "Medical diagnosis" collection |
-    But the email sent to "Kathie Cumbershot" with subject "COVID-19 Challenge: Your request to join the collection Medical diagnosis was approved" should not contain the following lines of text:
-      | text                                                                                |
-      | You will receive weekly notifications for newly created content on this collection. |
-      | To manage your notifications go to "My subscriptions" in the user menu.             |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at  |
+    And the email sent to "Kathie Cumbershot" with subject "COVID-19 Challenge: Your request to join the challenge Medical diagnosis was approved" contains the following lines of text:
+      | text                                                                           |
+      | Lisa Cuddy has approved your request to join the "Medical diagnosis" challenge |
+    But the email sent to "Kathie Cumbershot" with subject "COVID-19 Challenge: Your request to join the challenge Medical diagnosis was approved" should not contain the following lines of text:
+      | text                                                                                        |
+      | You will receive weekly notifications for newly created content on this challenge.          |
+      | To manage your notifications go to "My subscriptions" in the user menu.                     |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at |
 
     # Check new privileges.
     When I am logged in as "Kathie Cumbershot"
@@ -130,12 +130,12 @@ Feature: Collection membership administration
     Then I should see the following success messages:
       | success messages                                         |
       | Approve the pending membership(s) was applied to 1 item. |
-    And the email sent to "Cam Bridge" with subject "COVID-19 Challenge: Your request to join the collection Medical diagnosis was approved" contains the following lines of text:
-      | text                                                                                             |
-      | Lisa Cuddy has approved your request to join and subscribe to the "Medical diagnosis" collection |
-      | You will receive weekly notifications for newly created content on this collection.              |
-      | To manage your notifications go to "My subscriptions" in the user menu.                          |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at               |
+    And the email sent to "Cam Bridge" with subject "COVID-19 Challenge: Your request to join the challenge Medical diagnosis was approved" contains the following lines of text:
+      | text                                                                                            |
+      | Lisa Cuddy has approved your request to join and subscribe to the "Medical diagnosis" challenge |
+      | You will receive weekly notifications for newly created content on this challenge.              |
+      | To manage your notifications go to "My subscriptions" in the user menu.                         |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at     |
 
     When I am logged in as "Cam Bridge"
     When I click the "My subscriptions" link from the email sent to "Cam Bridge"
@@ -153,8 +153,8 @@ Feature: Collection membership administration
     Then I select "Delete the selected membership(s)" from "Action"
 
     When I press the "Apply to selected items" button
-    Then I should see the heading "Are you sure you want to delete the selected membership from the 'Medical diagnosis' collection?"
-    And I should see "The member Kathie Cumbershot will be deleted from the 'Medical diagnosis' collection."
+    Then I should see the heading "Are you sure you want to delete the selected membership from the 'Medical diagnosis' challenge?"
+    And I should see "The member Kathie Cumbershot will be deleted from the 'Medical diagnosis' challenge."
     And I should see "This action cannot be undone."
 
     Given I click "Cancel"
@@ -164,16 +164,16 @@ Feature: Collection membership administration
     Then I select "Delete the selected membership(s)" from "Action"
 
     When I press the "Apply to selected items" button
-    Then I should see the heading "Are you sure you want to delete the selected membership from the 'Medical diagnosis' collection?"
+    Then I should see the heading "Are you sure you want to delete the selected membership from the 'Medical diagnosis' challenge?"
 
     When I press "Confirm"
     Then I should see the following success messages:
-      | success messages                                                                       |
-      | The member Kathie Cumbershot has been deleted from the 'Medical diagnosis' collection. |
+      | success messages                                                                      |
+      | The member Kathie Cumbershot has been deleted from the 'Medical diagnosis' challenge. |
     And the following email should have been sent:
-      | recipient | Kathie Cumbershot                                                               |
-      | subject   | COVID-19 Challenge: Your request to join the collection Medical diagnosis was rejected      |
-      | body      | Lisa Cuddy has rejected your request to join the "Medical diagnosis" collection |
+      | recipient | Kathie Cumbershot                                                                     |
+      | subject   | COVID-19 Challenge: Your request to join the challenge Medical diagnosis was rejected |
+      | body      | Lisa Cuddy has rejected your request to join the "Medical diagnosis" challenge        |
 
     # Delete multiple members from collection.
     Given I check the box "Update the member Gregory House"
@@ -181,15 +181,15 @@ Feature: Collection membership administration
 
     When I select "Delete the selected membership(s)" from "Action"
     And I press the "Apply to selected items" button
-    Then I should see the heading "Are you sure you want to delete the selected memberships from the 'Medical diagnosis' collection?"
+    Then I should see the heading "Are you sure you want to delete the selected memberships from the 'Medical diagnosis' challenge?"
     And I should see "The following members:"
     And I should see "Gregory House"
     And I should see "Turkey Ham"
-    And I should see "will be deleted from the 'Medical diagnosis' collection."
+    And I should see "will be deleted from the 'Medical diagnosis' challenge."
     And I should see "This action cannot be undone."
 
     Given I press "Confirm"
-    Then I should see the success message "The following members were removed from the 'Medical diagnosis' collection: Gregory House, Turkey Ham"
+    Then I should see the success message "The following members were removed from the 'Medical diagnosis' challenge: Gregory House, Turkey Ham"
     And I should see "Lisa Cuddy" in the "Lisa Cuddy" row
 
     # Check new privileges.
@@ -221,9 +221,9 @@ Feature: Collection membership administration
       | success messages                                                        |
       | Add the facilitator role to the selected members was applied to 1 item. |
     And the following email should have been sent:
-      | recipient | Gregory House                                                                      |
-      | subject   | Your role has been changed to facilitator                                          |
-      | body      | Lisa Cuddy has changed your role in collection "Medical diagnosis" to facilitator. |
+      | recipient | Gregory House                                                                     |
+      | subject   | Your role has been changed to facilitator                                         |
+      | body      | Lisa Cuddy has changed your role in challenge "Medical diagnosis" to facilitator. |
 
     # Dr House can now edit the collection.
     When I am logged in as "Gregory House"
@@ -312,7 +312,7 @@ Feature: Collection membership administration
       | Christian Dwight |
     When I select "Facilitator" from "Role"
     And I press "Add members"
-    Then I should see the success message "Successfully added the role Collection facilitator to the selected users."
+    Then I should see the success message "Successfully added the role Challenge facilitator to the selected users."
     And I should see the link "Christian Dwight"
 
     # Try new privileges.

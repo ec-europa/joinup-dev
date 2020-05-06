@@ -138,5 +138,5 @@ Feature: Featuring content site-wide
 
     Examples:
       | header link | featured                      | unfeatured                  | label     | content type |
-      | Challenges  | Tidy Neutron                  | Reborn Eternal Gamma        | challenge | challenge    |
+      | Challenges  | Tidy Neutron                  | Reborn Eternal Gamma        | Challenge | collection   |
       | Solutions   | Opensource neutron generators | Gamma-sensible spectroscopy | Solution  | solution     |
