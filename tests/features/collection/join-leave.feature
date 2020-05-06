@@ -122,10 +122,10 @@ Feature: Joining and leaving collections through the web interface
     When I go to the homepage of the "Insectarium" collection
     And I click "Members"
     And I select the "newcomer researcher" row
-    And I select "Transfer the ownership of the collection to the selected member" from "Action"
+    And I select "Transfer the ownership of the challenge to the selected member" from "Action"
     And I press "Apply to selected items"
     And I press "Confirm"
-    Then I should see "Ownership of Insectarium collection transferred from user insect researcher to newcomer researcher."
+    Then I should see "Ownership of Insectarium challenge transferred from user insect researcher to newcomer researcher."
 
     When I go to the homepage of the "Insectarium" collection
     And I click "Leave this challenge"

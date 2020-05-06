@@ -91,7 +91,7 @@ class ChangeCollectionForm extends FormBase {
 
     $form['solutions'] = [
       '#theme' => 'item_list',
-      '#title' => $this->t('The following solutions from %source collection will be moved to a new collection:', [
+      '#title' => $this->t('The following solutions from %source challenge will be moved to a new challenge:', [
         '%source' => $source_collection->label(),
       ]),
       '#items' => array_map(function (RdfInterface $solution): string {
@@ -136,7 +136,7 @@ class ChangeCollectionForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state): void {
     parent::validateForm($form, $form_state);
     if ($form_state->getValue('source_collection')->id() === $form_state->getValue('destination_collection')) {
-      $form_state->setErrorByName('destination_collection', $this->t('The destination collection cannot be the same as the source collection.'));
+      $form_state->setErrorByName('destination_collection', $this->t('The destination challenge cannot be the same as the source challenge.'));
     }
   }
 

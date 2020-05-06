@@ -50,10 +50,10 @@ class MessageArgumentGenerator {
 
     if ($actor->isAnonymous()) {
       // If an anonymous is creating content, set the first name to also be 'the
-      // Joinup Moderation Team' because some emails use only the first name
-      // instead of the full name.
+      // COVID-19 Challenge moderation team' because some emails use only the
+      // first name instead of the full name.
       $arguments['@actor:role'] = 'moderator';
-      $arguments['@actor:full_name'] = $arguments['@actor:field_user_first_name'] = 'the Joinup Moderation Team';
+      $arguments['@actor:full_name'] = $arguments['@actor:field_user_first_name'] = 'the COVID-19 Challenge moderation team';
     }
     elseif ($actor->hasRole('moderator')) {
       /** @var \Drupal\user\RoleInterface $role */

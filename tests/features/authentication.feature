@@ -9,11 +9,11 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path                |
-      | challenges         |
-      | user/login          |
-      | user/password       |
-      | user/register       |
+      | path          |
+      | challenges    |
+      | user/login    |
+      | user/password |
+      | user/register |
 
   Scenario Outline: Anonymous user cannot access restricted pages
     Given I am not logged in
@@ -32,8 +32,8 @@ Feature: User authentication
       | admin/people                                                   |
       | admin/reporting/distribution-downloads                         |
       | admin/reporting/export-user-list                               |
-      | admin/reporting/group-administrators/rdf_entity/challenge     |
-      | admin/reporting/group-administrators/rdf_entity/challenge/csv |
+      | admin/reporting/group-administrators/rdf_entity/collection     |
+      | admin/reporting/group-administrators/rdf_entity/collection/csv |
       | admin/reporting/solutions-by-licences                          |
       | admin/reporting/solutions-by-type                              |
       | admin/structure                                                |
@@ -48,12 +48,12 @@ Feature: User authentication
       | node/add/document                                              |
       | node/add/event                                                 |
       | node/add/news                                                  |
-      | propose/challenge                                             |
+      | propose/collection                                             |
       | propose/solution                                               |
       | rdf_entity/add                                                 |
       | rdf_entity/add/asset_distribution                              |
       | rdf_entity/add/asset_release                                   |
-      | rdf_entity/add/challenge                                      |
+      | rdf_entity/add/collection                                      |
       | rdf_entity/add/contact_information                             |
       | rdf_entity/add/licence                                         |
       | rdf_entity/add/owner                                           |
@@ -76,8 +76,8 @@ Feature: User authentication
 
     Examples:
       | path               |
-      | challenges        |
-      | propose/challenge |
+      | challenges         |
+      | propose/collection |
       | user               |
       | user/subscriptions |
 
@@ -98,8 +98,8 @@ Feature: User authentication
       | admin/people                                                   |
       | admin/reporting/distribution-downloads                         |
       | admin/reporting/export-user-list                               |
-      | admin/reporting/group-administrators/rdf_entity/challenge     |
-      | admin/reporting/group-administrators/rdf_entity/challenge/csv |
+      | admin/reporting/group-administrators/rdf_entity/collection     |
+      | admin/reporting/group-administrators/rdf_entity/collection/csv |
       | admin/reporting/solutions-by-licences                          |
       | admin/reporting/solutions-by-type                              |
       | admin/structure                                                |
@@ -118,7 +118,7 @@ Feature: User authentication
       | rdf_entity/add                                                 |
       | rdf_entity/add/asset_distribution                              |
       | rdf_entity/add/asset_release                                   |
-      | rdf_entity/add/challenge                                      |
+      | rdf_entity/add/collection                                      |
       | rdf_entity/add/contact_information                             |
       | rdf_entity/add/licence                                         |
       | rdf_entity/add/owner                                           |
@@ -148,14 +148,14 @@ Feature: User authentication
       | admin/reporting/distribution-downloads                         |
       | admin/reporting/distribution-downloads/csv                     |
       | admin/reporting/export-user-list                               |
-      | admin/reporting/group-administrators/rdf_entity/challenge     |
-      | admin/reporting/group-administrators/rdf_entity/challenge/csv |
+      | admin/reporting/group-administrators/rdf_entity/collection     |
+      | admin/reporting/group-administrators/rdf_entity/collection/csv |
       | admin/reporting/solutions-by-licences                          |
       | admin/reporting/solutions-by-type                              |
       | dashboard                                                      |
       | licence                                                        |
       | licence/add                                                    |
-      | propose/challenge                                             |
+      | propose/collection                                             |
 
   @api
   Scenario Outline: Moderator cannot access restricted pages
@@ -182,7 +182,7 @@ Feature: User authentication
       | rdf_entity/add                     |
       | rdf_entity/add/asset_distribution  |
       | rdf_entity/add/asset_release       |
-      | rdf_entity/add/challenge          |
+      | rdf_entity/add/collection          |
       | rdf_entity/add/contact_information |
       | rdf_entity/add/licence             |
       | rdf_entity/add/owner               |
@@ -198,7 +198,7 @@ Feature: User authentication
       | admin/config/search/redirect               |
       | admin/reporting/distribution-downloads     |
       | admin/reporting/distribution-downloads/csv |
-      | challenges                                |
+      | challenges                                 |
 
   @api
   Scenario Outline: Administrator cannot access pages intended for site building and development
@@ -226,7 +226,7 @@ Feature: User authentication
       | rdf_entity/add                     |
       | rdf_entity/add/asset_distribution  |
       | rdf_entity/add/asset_release       |
-      | rdf_entity/add/challenge          |
+      | rdf_entity/add/collection          |
       | rdf_entity/add/contact_information |
       | rdf_entity/add/licence             |
       | rdf_entity/add/owner               |

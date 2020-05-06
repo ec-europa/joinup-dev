@@ -164,7 +164,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @When I visit the collection overview( page)
    */
   public function visitCollectionOverviewPage(): void {
-    $this->visitPath('/collections');
+    $this->visitPath('/challenges');
   }
 
   /**

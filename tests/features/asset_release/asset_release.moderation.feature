@@ -66,11 +66,11 @@ Feature: Asset release moderation
     Then I should see the heading "Release of the dark ship v1"
     And the following email should have been sent:
       | recipient | Felix Russell                                                                   |
-      | subject   | COVID-19 Challenge: A release has been updated                                              |
+      | subject   | COVID-19 Challenge: A release has been updated                                  |
       | body      | The release Release of the dark ship, v1 of the solution Dark Ship was updated. |
     And the following email should have been sent:
       | recipient | Wilson Mendoza                                                                  |
-      | subject   | COVID-19 Challenge: A release has been updated                                              |
+      | subject   | COVID-19 Challenge: A release has been updated                                  |
       | body      | The release Release of the dark ship, v1 of the solution Dark Ship was updated. |
 
     # Request changes as a moderator.
@@ -108,13 +108,13 @@ Feature: Asset release moderation
       | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
     And the email sent to "Bonnie Holloway" with subject "COVID-19 Challenge: Modification of a release of your solution has been requested" contains the following lines of text:
-      | text                                                                                                                  |
-      | the Joinup moderation team requires editing the release Release, v1 of the solution Dark Ship due to I don't like it. |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                    |
+      | text                                                                                                                              |
+      | the COVID-19 Challenge moderation team requires editing the release Release, v1 of the solution Dark Ship due to I don't like it. |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                       |
     And the following email should have been sent:
-      | recipient | Felix Russell                                                                                                         |
+      | recipient | Felix Russell                                                                                                                     |
       | subject   | COVID-19 Challenge: Modification of a release of your solution has been requested                                                 |
-      | body      | the Joinup moderation team requires editing the release Release, v1 of the solution Dark Ship due to I don't like it. |
+      | body      | the COVID-19 Challenge moderation team requires editing the release Release, v1 of the solution Dark Ship due to I don't like it. |
 
     # We do not show the created time in the UI so another visit to the edit screen is required.
     When I go to the "Release of the dark ship" release
@@ -148,7 +148,7 @@ Feature: Asset release moderation
       | You are viewing the published version. To view the latest draft version, click here. |
     And the following email should have been sent:
       | recipient | Bonnie Holloway                                                                                    |
-      | subject   | COVID-19 Challenge: Your release was accepted                                                                  |
+      | subject   | COVID-19 Challenge: Your release was accepted                                                      |
       | body      | Your proposed Release fix, v1 for the solution "Dark Ship" has been validated as per your request. |
 
     # Delete a release as a moderator.
@@ -158,13 +158,13 @@ Feature: Asset release moderation
     And I press "Delete"
     And the following email should have been sent:
       | recipient | Bonnie Holloway                                            |
-      | subject   | COVID-19 Challenge: A release has been deleted                         |
+      | subject   | COVID-19 Challenge: A release has been deleted             |
       | body      | release Release fix, v1 of Dark Ship solution was deleted. |
     And the following email should have been sent:
       | recipient | Felix Russell                                              |
-      | subject   | COVID-19 Challenge: A release has been deleted                         |
+      | subject   | COVID-19 Challenge: A release has been deleted             |
       | body      | release Release fix, v1 of Dark Ship solution was deleted. |
     And the following email should have been sent:
       | recipient | Patric Sereira                                             |
-      | subject   | COVID-19 Challenge: A release has been deleted                         |
+      | subject   | COVID-19 Challenge: A release has been deleted             |
       | body      | release Release fix, v1 of Dark Ship solution was deleted. |
