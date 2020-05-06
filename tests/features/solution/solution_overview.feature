@@ -91,7 +91,7 @@ Feature: Solutions Overview
     And I am on the homepage
     Then I should see the link "Solutions"
     And I click "Solutions"
-    Then I should see the text "A solution on Joinup is a framework, tool, or service"
+    Then I should see the text "A solution is a framework, tool, or service that is offered as a solution to one of the COVID-19 challenges."
     And the page should be cacheable
 
     # Access the page as a moderator to ensure proper caching.
