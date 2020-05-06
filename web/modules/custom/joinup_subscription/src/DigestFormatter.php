@@ -20,9 +20,9 @@ use Drupal\user\UserInterface;
 class DigestFormatter extends OriginalFormatter {
 
   /**
-   * The ID of the message template for community content subscription messages.
+   * The ID of the message template for collection content subscription messages.
    *
-   * This is used to identify if we are sending a digest for community content
+   * This is used to identify if we are sending a digest for collection content
    * subscriptions.
    */
   const TEMPLATE_ID = 'collection_content_subscription';
@@ -31,9 +31,9 @@ class DigestFormatter extends OriginalFormatter {
    * {@inheritdoc}
    */
   public function format(array $digest, array $view_modes, UserInterface $recipient) {
-    // This digest formatter is customized for the community content
+    // This digest formatter is customized for the collection content
     // subscription digest. Handle any other digest with the original formatter.
-    if (!$this->isCommunityContentSubscriptionDigest($digest)) {
+    if (!$this->isCollectionContentSubscriptionDigest($digest)) {
       return parent::format($digest, $view_modes, $recipient);
     }
 
@@ -43,7 +43,7 @@ class DigestFormatter extends OriginalFormatter {
     ];
     $current_collection_id = NULL;
     foreach ($digest as $message) {
-      // Output a collection header if the community content we're rendering
+      // Output a collection header if the collection content we're rendering
       // belongs to a new collection.
       $collection = $this->getCollection($message);
       if ($collection->id() !== $current_collection_id) {
@@ -70,16 +70,16 @@ class DigestFormatter extends OriginalFormatter {
   }
 
   /**
-   * Checks whether the digest is a community content subscription digest.
+   * Checks whether the digest is a collection content subscription digest.
    *
    * @param array $digest
    *   The array of digest messages.
    *
    * @return bool
-   *   TRUE if all of the messages in the digest are community content
+   *   TRUE if all of the messages in the digest are collection content
    *   subscription messages.
    */
-  protected function isCommunityContentSubscriptionDigest(array $digest): bool {
+  protected function isCollectionContentSubscriptionDigest(array $digest): bool {
     /** @var \Drupal\message\MessageInterface $message */
     foreach ($digest as $message) {
       if ($message->getTemplate()->id() !== self::TEMPLATE_ID) {
@@ -90,10 +90,10 @@ class DigestFormatter extends OriginalFormatter {
   }
 
   /**
-   * Returns the collection related to the community content in the message.
+   * Returns the collection from the collection content in the message.
    *
    * @param \Drupal\message\MessageInterface $message
-   *   The message that contains the community content for which to return the
+   *   The message that contains the collection content for which to return the
    *   collection.
    *
    * @return \Drupal\rdf_entity\RdfInterface
@@ -101,9 +101,10 @@ class DigestFormatter extends OriginalFormatter {
    */
   protected function getCollection(MessageInterface $message): RdfInterface {
     // Find the collections by resolving the entity references from the message
-    // to the community content to the collection.
-    $content = $message->field_collection_content->first()->entity;
-    return $content->og_audience->first()->entity;
+    // to the collection content to the collection.
+    /** @var \Drupal\collection\Entity\CollectionContentInterface $entity */
+    $entity = $message->field_collection_content->first()->entity;
+    return $entity->getCollection();
   }
 
 }
