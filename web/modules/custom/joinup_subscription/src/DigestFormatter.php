@@ -20,7 +20,7 @@ use Drupal\user\UserInterface;
 class DigestFormatter extends OriginalFormatter {
 
   /**
-   * The ID of the message template for collection content subscription messages.
+   * The message template ID for collection content subscription messages.
    *
    * This is used to identify if we are sending a digest for collection content
    * subscriptions.
