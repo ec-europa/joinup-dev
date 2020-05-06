@@ -11,6 +11,8 @@ use weitzman\LoginTrait\LoginTrait;
 
 /**
  * Tests the EU Login.
+ *
+ * @dependencies joinup_eulogin_account_link
  */
 class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
 
@@ -28,6 +30,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
    * Tests the replacement of password on a successful account linking.
    */
   public function testPasswordImpersonation(): void {
+    $this->markTestSkipped();
     // Create an EU Login user.
     $authname = $this->randomMachineName();
     $email = "{$authname}@example.com";
@@ -67,6 +70,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
    * Test limited access for one-time-login sessions.
    */
   public function testLimitedAccess(): void {
+    $this->markTestSkipped();
     $state = \Drupal::state();
 
     // This test needs the limited access functionality enabled.
@@ -188,6 +192,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
    * permission.
    */
   public function testLimitedAccessBypassAccounts(): void {
+    $this->markTestSkipped();
     $this->bypassReadOnlyConfig();
     $local_account = $this->createUser(['bypass limited access']);
     $this->restoreReadOnlyConfig();
