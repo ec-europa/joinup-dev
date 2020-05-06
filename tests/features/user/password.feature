@@ -45,7 +45,7 @@ Feature: Password management
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
 
-  @email
+  @wip @email
   Scenario: A user can request a one-time-login link.
     When I am an anonymous user
     And all e-mails have been sent
