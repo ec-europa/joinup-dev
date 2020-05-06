@@ -6,12 +6,15 @@ namespace Drupal\solution\Entity;
 
 use Drupal\collection\Entity\CollectionInterface;
 use Drupal\collection\Exception\MissingCollectionException;
+use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Entity subclass for the 'solution' bundle.
  */
 class Solution extends Rdf implements SolutionInterface {
+
+  use JoinupBundleClassFieldAccessTrait;
 
   /**
    * {@inheritdoc}
