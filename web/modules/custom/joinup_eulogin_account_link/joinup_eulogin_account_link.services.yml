@@ -1,6 +1,6 @@
 services:
   joinup_eulogin.cas_account_link.subscriber:
-    class: Drupal\joinup_eulogin\Event\Subscriber\JoinupEuLoginCasAccountLinkEventsSubscriber
+    class: Drupal\joinup_eulogin_account_link\Event\Subscriber\JoinupEuLoginCasAccountLinkEventsSubscriber
     arguments: ['@entity_type.manager']
     tags:
       - { name: 'event_subscriber' }

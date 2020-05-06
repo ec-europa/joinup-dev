@@ -48,8 +48,7 @@ Feature: User authentication
       | node/add/document                                              |
       | node/add/event                                                 |
       | node/add/news                                                  |
-      | propose/collection                                             |
-      | propose/solution                                               |
+      | propose/challenge                                              |
       | rdf_entity/add                                                 |
       | rdf_entity/add/asset_distribution                              |
       | rdf_entity/add/asset_release                                   |
@@ -77,7 +76,7 @@ Feature: User authentication
     Examples:
       | path               |
       | challenges         |
-      | propose/collection |
+      | propose/challenge  |
       | user               |
       | user/subscriptions |
 
@@ -105,7 +104,6 @@ Feature: User authentication
       | admin/structure                                                |
       | admin/structure/views                                          |
       | dashboard                                                      |
-      | propose/solution                                               |
       | licence                                                        |
       | licence/add                                                    |
       | node                                                           |
@@ -155,7 +153,7 @@ Feature: User authentication
       | dashboard                                                      |
       | licence                                                        |
       | licence/add                                                    |
-      | propose/collection                                             |
+      | propose/challenge                                              |
 
   @api
   Scenario Outline: Moderator cannot access restricted pages
@@ -171,7 +169,6 @@ Feature: User authentication
       | admin/content                      |
       | admin/structure                    |
       | admin/structure/views              |
-      | propose/solution                   |
       | node                               |
       | node/add                           |
       | node/add/custom_page               |

@@ -89,7 +89,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @When I visit the propose collection form
    */
   public function visitProposeCollectionForm(): void {
-    $this->visitPath('propose/collection');
+    $this->visitPath('/propose/challenge');
   }
 
   /**

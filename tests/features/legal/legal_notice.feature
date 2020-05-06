@@ -27,33 +27,21 @@ Feature:
       | Rick     | rick@example.com | secretz  |
 
     And I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     And I fill in "E-mail address" with "rick@example.com"
     And I fill in "Password" with "secretz"
     And I press "Log in"
-
-    And I select the radio button "I am a new user (create a new account)"
-    Then I should see "I have read and accept the Legal notice"
-
-    # Submit without accepting the 'Legal notice'.
-    When I press "Next"
-    Then I should see the error message "You must accept the Legal notice in order to use our platform."
+    Then I should see the warning message "You must accept this agreement before continuing."
 
     # After accepting the agreement the user can continue.
-    Given I check "I have read and accept the Legal notice"
-    And I press "Sign in"
-    Then I should see the success message "Fill in the fields below to let the community learn more about you!"
-
-    # The user has been redirected to its user account edit form.
-    And the following fields should be present "Email, First name, Family name, Photo, Country of origin, Professional domain, Business title"
-    And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, SlideShare, Youtube, Vimeo"
+    When I check "I have read and accept the Legal notice"
+    And I press "Submit"
+    Then I should not see the warning message "You must accept this agreement before continuing."
 
     # Login again to check that the acceptance enforcement has gone.
     Given I click "Sign out"
     And I go to homepage
-    And I click "Sign in"
-    And I click "EU Login"
+    And I click "Sign in with EU Login"
 
     When I fill in "E-mail address" with "rick@example.com"
     And I fill in "Password" with "secretz"
@@ -83,8 +71,7 @@ Feature:
     Then I should not see the warning message "You must accept this agreement before continuing."
     And I should see the link "Sign in"
 
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     And I fill in "E-mail address" with "rick@example.com"
     And I fill in "Password" with "secretz"
 

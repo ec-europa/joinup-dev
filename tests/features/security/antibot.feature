@@ -2,15 +2,10 @@
 Feature: As a visitor or logged-in user, when I want to post content, the form
   should be protected by Antibot.
 
-  Scenario Outline: Anonymous forms.
+  Scenario: Anonymous forms.
     Given I am an anonymous user
-    And I visit "<path>"
+    And I visit "/contact"
     Then the form is protected by Antibot
-
-    Examples:
-      | path           |
-      | /user/password |
-      | /contact       |
 
   Scenario: Authenticated users.
     Given users:
