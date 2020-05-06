@@ -1510,7 +1510,7 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
   if (!empty($route_name) && in_array($route_name, $form_routes)) {
     $is_admin_page = TRUE;
   }
-  
+
   if (!empty($variables['element']['#type'])) {
     // Array contains form elements, which are displayed with floating label.
     $floating_label_types = [
