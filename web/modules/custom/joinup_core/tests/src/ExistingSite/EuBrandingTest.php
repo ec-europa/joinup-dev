@@ -22,7 +22,7 @@ class EuBrandingTest extends JoinupExistingSiteTestBase {
       '<front>',
       '/contact',
       '/search',
-      '/collections',
+      '/challenges',
       '/solutions',
       '/latest',
     ];

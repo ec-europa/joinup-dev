@@ -120,7 +120,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
 
     // Try to navigate to pages that are not accessible.
     $this->assertLimitedAccess('<front>');
-    $this->assertLimitedAccess('/collections');
+    $this->assertLimitedAccess('/challenges');
     $this->assertLimitedAccess('/solutions');
     $this->assertLimitedAccess('/latest');
     $this->assertLimitedAccess('/search');
@@ -134,7 +134,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     // Check that the redirect to limited access page has not been cached. The
     // user is now anonymous, so should be again able to access all pages.
     $this->assertAccess('<front>');
-    $this->assertAccess('/collections');
+    $this->assertAccess('/challenges');
     $this->assertAccess('/solutions');
     $this->assertAccess('/latest');
     $this->assertAccess('/search');
@@ -152,7 +152,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     // Try to navigate to pages that are not accessible to non-linked users. The
     // users who can bypass limited access should be able to access these pages.
     $this->assertAccess('<front>');
-    $this->assertAccess('/collections');
+    $this->assertAccess('/challenges');
     $this->assertAccess('/solutions');
     $this->assertAccess('/latest');
     $this->assertAccess('/search');
@@ -169,7 +169,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     // The access is allowed.
     $this->casLogin("{$authname}@example.com", $eulogin_pass);
     $this->assertAccess('<front>');
-    $this->assertAccess('/collections');
+    $this->assertAccess('/challenges');
     $this->assertAccess('/solutions');
     $this->assertAccess('/latest');
     $this->assertAccess('/search');
