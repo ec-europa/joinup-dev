@@ -1493,6 +1493,24 @@ function joinup_theme_theme_suggestions_details_alter(array &$suggestions, array
  * Implements hook_theme_suggestions_alter().
  */
 function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+
+  $form_routes = [
+    'node.add',
+    'rdf_entity.propose_form',
+    'rdf_entity.rdf_add',
+    'entity.node.edit_form',
+    'collection.propose_form',
+    'entity.rdf_entity.edit_form',
+    'solution.collection_solution.add',
+  ];
+
+  // Check if container is field element - it has only one parent.
+  if (!empty($route_name) && in_array($route_name, $form_routes)) {
+    $is_admin_page = TRUE;
+  }
+  
   if (!empty($variables['element']['#type'])) {
     // Array contains form elements, which are displayed with floating label.
     $floating_label_types = [
@@ -1505,7 +1523,9 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
 
     if (in_array($variables['element']['#type'], $floating_label_types)) {
       if ($hook == 'form_element') {
-        $suggestions[] = 'form_element__floating';
+        if (empty($is_admin_page)) {
+          $suggestions[] = 'form_element__floating';
+        }
 
         // Floating form element with label.
         if (!empty($variables['element']['#array_parents']) && in_array('field_social_media', $variables['element']['#array_parents'], TRUE)) {

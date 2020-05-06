@@ -220,6 +220,58 @@
 .form__description--checkbox {
   margin-left: 25px;
 }
+.node-form, 
+.rdf-entity-form {
+  .form__label {
+    font-size: 18px;
+    color: #2875cf;
+    margin-bottom: 10px;
+  }
+  input.form-text,
+  input.form-url {
+    border: 1px solid #ccc;
+    height: auto;
+    padding: 10px;
+    background-color: white;
+    @include box-sizing(border-box);
+  }
+  input[type=text],
+  input[type=url],
+  textarea,
+  select {
+    outline: none;
+    border: 1px solid #ccc;
+
+    &:focus {
+      box-shadow: 0;
+      border: 1px solid #4f93e3;
+    }
+  }
+  input.form-autocomplete {
+    background-position: 99% center;
+  }
+  select[multiple]:focus option:checked {
+    background: #2875cf linear-gradient(0deg, #2875cf 0%, #2875cf 100%);
+  }
+  .field-multiple-table {
+    tbody tr:nth-child(odd) {
+      background-color: #e9edee;
+    }
+    & + .description {
+      text-align: right;
+    }
+  }
+  .tabledrag-changed-warning {
+    margin-bottom: 10px;
+  }
+  .form-table__button {
+    margin: 10px 0 0 0;
+    text-align: right;
+  }
+  .field--type-current-workflow-state {
+    margin-top: 25px;
+  }
+}
 
 // Dependencies
 // --------------------------------------------------
