@@ -12,7 +12,7 @@ tips:
   collection_content:
     id: collection_content
     plugin: text
-    body: 'The content area displays items that have been created or shared within a collection. This is the default view when entering a collection.'
+    body: 'The content area displays items that have been created or shared within a challenge. This is the default view when entering a challenge.'
     weight: 1
     location: left
     attributes:
@@ -28,7 +28,7 @@ tips:
   collection_menu:
     id: collection_menu
     plugin: text
-    body: 'The navigation menu provides access to a collection''s main sections, such as the members list, its description, etc.'
+    body: 'The navigation menu provides access to a challenge''s main sections, such as the members list, its description, etc.'
     weight: 3
     location: right
     attributes:
@@ -52,7 +52,7 @@ tips:
   join:
     id: join
     plugin: text
-    body: 'By joining a collection you become a member, with the ability to create content for it.'
+    body: 'By joining a challenge you become a member, with the ability to create content for it.'
     weight: 6
     location: right
     attributes:
@@ -68,7 +68,7 @@ tips:
   search:
     id: search
     plugin: text
-    body: 'Search through the entire Joinup platform and its supported content items.'
+    body: 'Search through the entire COVID-19 Challenge platform and its supported content items.'
     weight: 8
     location: left
     attributes:
