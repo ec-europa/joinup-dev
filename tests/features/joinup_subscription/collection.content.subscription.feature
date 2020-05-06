@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Subscribing to community content in collections
   As a member of a collection
   I want to receive a periodic digest listing newly published content
