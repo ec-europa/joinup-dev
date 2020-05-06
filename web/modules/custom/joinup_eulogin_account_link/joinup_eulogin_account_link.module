@@ -8,7 +8,6 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Form\SubformState;
 use Drupal\Core\Url;
 
 /**
@@ -36,27 +35,4 @@ function joinup_eulogin_account_link_form_cas_account_link_form_alter(array &$fo
     ];
     $form['login']['pass']['#description'] = t('Enter the password that accompanies your email address. Lost your COVID-19 Challenge password? You can still <a href=":passreset-url">reset your password</a>.', $arguments);
   }
-}
-
-/**
- * Wraps the email_registration_user_login_validate() validator.
- *
- * As the login form is a sub-form, we cannot just use the validator callback
- * provided by the 'email_registration' module as that expects that the user
- * values are root-level values. But in this case we're one level below, so we
- * need to pass a (sub)form state object on that has the user values on the root
- * level to the 'email_registration' module validator.
- *
- * @param array $element
- *   The Form API form element render array.
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   The Form API form state object.
- * @param array $form
- *   The Form API form render array.
- *
- * @see email_registration_user_login_validate()
- */
-function joinup_eulogin_email_registration_validation(array $element, FormStateInterface $form_state, array $form): void {
-  $subform_state = SubformState::createForSubform($form['login'], $form, $form_state);
-  email_registration_user_login_validate($element, $subform_state);
 }
