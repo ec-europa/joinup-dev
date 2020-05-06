@@ -4,11 +4,6 @@ services:
     arguments: ['@config.factory', '@user.data']
     tags:
       - { name: 'event_subscriber' }
-  joinup_eulogin.cas_account_link.subscriber:
-    class: Drupal\joinup_eulogin\Event\Subscriber\JoinupEuLoginCasAccountLinkEventsSubscriber
-    arguments: ['@entity_type.manager']
-    tags:
-      - { name: 'event_subscriber' }
   joinup_eulogin.route.subscriber:
     class: Drupal\joinup_eulogin\Routing\JoinupEuLoginRouteSubscriber
     tags:

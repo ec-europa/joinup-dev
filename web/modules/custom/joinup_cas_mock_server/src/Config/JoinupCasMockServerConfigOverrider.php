@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_cas_mock_server\Config;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ConfigFactoryOverrideInterface;
@@ -75,7 +76,7 @@ class JoinupCasMockServerConfigOverrider implements ConfigFactoryOverrideInterfa
   public function getCacheableMetadata($name) {
     $metadata = new CacheableMetadata();
     if (in_array($name, ['cas_mock_server.settings', 'joinup_eulogin.settings'])) {
-      $metadata->addCacheableDependency($this->configFactory->get($name));
+      $metadata->setCacheTags(Cache::mergeTags($metadata->getCacheTags(), ["config:{$name}"]));
     }
     return $metadata;
   }

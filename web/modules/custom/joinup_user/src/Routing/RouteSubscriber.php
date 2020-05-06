@@ -31,6 +31,7 @@ class RouteSubscriber extends RouteSubscriberBase {
       $route->addDefaults([
         '_title' => 'Sign in',
       ]);
+      $route->setRequirement('_access', 'FALSE');
     }
   }
 

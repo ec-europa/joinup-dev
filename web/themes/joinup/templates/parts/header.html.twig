@@ -6,16 +6,19 @@
           <div class="mdl-cell mdl-cell--8-col">
             <div class="row">
               <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--2-col">
-                  <img class="logo_eu" src="{{ base_path ~ directory }}/images/logo_eu.png">
-                </div>
-                <div class="mdl-cell mdl-cell--4-col">
-                  <div class="site-name-slogan">
-                    <h1>European Innovation Council </h1>
-                    <h2>COVID-19 Challenge Platform</h2>
+                  <div class="mdl-cell mdl-cell--2-col">
+                    <a href="/">
+                      <img class="logo_eu" src="{{ base_path ~ directory }}/images/logo_eu.png">
+                    </a>
                   </div>
-                </div>
+                  <div class="mdl-cell mdl-cell--4-col">
+                    <div class="site-name-slogan">
+                      <h1>European Innovation Council </h1>
+                      <h2>COVID-19 Challenge Platform</h2>
+                    </div>
+                  </div>
               </div>
+              </a>
             </div>
           </div>
         </div>
@@ -32,7 +35,7 @@
     {{ page.header }}
     {{ page.header_profile_menu }}
 
-</div>
+  </div>
 </header>
 <div class="mdl-layout__drawer">
   {{ page.header_central_menu.joinup_theme_main_menu_mobile }}
