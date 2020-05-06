@@ -40,7 +40,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                       |
       | subject   | COVID-19 Challenge: Content has been published                                                                                                                             |
-      | body      | CC Member has published the new news - "CCN create publish" in the collection: "CC post collection".You can access the new content at the following link: http |
+      | body      | CC Member has published the new news - "CCN create publish" in the challenge: "CC post collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
     When all e-mails have been sent
@@ -51,7 +51,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
     Then the following email should have been sent:
       | recipient | CC owner                                                                                           |
       | subject   | COVID-19 Challenge: Content has been published                                                                 |
-      | body      | CC Member has published the new news - "CCN post publish" in the collection: "CC post collection". |
+      | body      | CC Member has published the new news - "CCN post publish" in the challenge: "CC post collection". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -63,7 +63,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
     And I press "Request changes"
     Then the email sent to "CC member" with subject "COVID-19 Challenge: Content has been updated" contains the following lines of text:
       | text                                                                                                                                                                                                  |
-      | the Facilitator, CC Facilitator has requested you to modify the news - "CCN post request changes" in the collection: "CC post collection", with the following motivation: "Can you do some changes?". |
+      | the Facilitator, CC Facilitator has requested you to modify the news - "CCN post request changes" in the challenge: "CC post collection", with the following motivation: "Can you do some changes?". |
       | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                                                                    |
 
     When all e-mails have been sent
@@ -76,7 +76,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
     And I press "Request changes"
     Then the email sent to "CC member" with subject "COVID-19 Challenge: Content has been updated" contains the following lines of text:
       | text                                                                                                                                                                                         |
-      | the Facilitator, CC Facilitator has requested you to modify the news - "CCN post report" in the collection: "CC post collection", with the following motivation: "Your content is reported". |
+      | the Facilitator, CC Facilitator has requested you to modify the news - "CCN post report" in the challenge: "CC post collection", with the following motivation: "Your content is reported". |
       | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                                                           |
 
     When all e-mails have been sent
@@ -87,7 +87,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                   |
       | subject   | COVID-19 Challenge: Content has been updated                                                                                                                            |
-      | body      | the Facilitator, CC Facilitator has approved your request of publication of the news - "CCN post approve proposed" in the collection: "CC post collection". |
+      | body      | the Facilitator, CC Facilitator has approved your request of publication of the news - "CCN post approve proposed" in the challenge: "CC post collection". |
 
     # Test 'delete' operation.
     When all e-mails have been sent
@@ -99,4 +99,4 @@ Feature: Notification test for the news transitions on a post moderated parent.
     Then the following email should have been sent:
       | recipient | CC member                                                                                                    |
       | subject   | COVID-19 Challenge: Content has been deleted                                                                             |
-      | body      | Facilitator CC Facilitator has deleted the news - "CCN post delete" in the collection: "CC post collection". |
+      | body      | Facilitator CC Facilitator has deleted the news - "CCN post delete" in the challenge: "CC post collection". |

@@ -24,9 +24,9 @@ register_pending_approval_admin:
   subject: 'Account details for [user:display-name] at [site:name] (pending admin approval)'
 status_activated:
   body: "Dear [user:field_user_first_name],\n\nYour account at [site:name] has been activated.\n\nYou may now log in by clicking this link or copying and pasting it into your browser:\n\n<a href=\"[user:one-time-login-url]\">[user:one-time-login-url]</a>\n\nThis link can only be used once to log in and will lead you to a page where you can set your password.\n\nAfter setting your password, you will be able to log in at <a href=\"[site:login-url]\">[site:login-url]</a> in the future using:\n\nusername: [user:account-name]\npassword: Your password\n\nKind regards,\n\nThe COVID-19 Challenge Support Team."
-  subject: 'Your Joinup account has been activated.'
+  subject: 'Your [site:name] account has been activated.'
 status_blocked:
-  body: "Dear [user:field_user_first_name],\n\nYour Joinup account was recently blocked by our moderators. \nFor more information about blocked accounts, please visit our FAQ section.\n\nKind regards,\n\nThe COVID-19 Challenge Support Team."
+  body: "Dear [user:field_user_first_name],\n\nYour [site:name] account was recently blocked by our moderators. \nFor more information about blocked accounts, please visit our FAQ section.\n\nKind regards,\n\nThe COVID-19 Challenge Support Team."
   subject: 'Your account was just blocked.'
 status_canceled:
   body: "Dear Joinup user,\n\nYour account [user:account-name] has been deleted.@joinup_user:moderation_text If you believe that this action has been performed by mistake, please contact The COVID-19 Challenge Support Team at <a href=\"[site:contact-form]\">[site:contact-form]</a>.\n\nKind regards,\n\nThe COVID-19 Challenge Support Team"

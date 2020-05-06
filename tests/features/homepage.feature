@@ -207,7 +207,7 @@ Feature: Homepage
 
     When I am logged in as a user with the "authenticated" role
     And I go to the homepage
-    Then I should see the text "Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions."
+    Then I should see the text "EIC Covid19 is a collaborative platform created by the European Commission as a follow up mechanism to the Covid19 challenges presented at the EUvsVIRUS Hackathon, but also able to include other challenges in the future. Funded by the European Union via Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. It offers several services that aim at helping all relevant actors from the hackathon to continue and expand their collaboration with each other, reaching innovative and fast solutions to all relevant challenges."
     And I should see the small header
 
     # Homepage should also be cacheable for logged in users.
@@ -220,7 +220,7 @@ Feature: Homepage
   Scenario: Only specific social network links are available in the footer.
     When I am on the homepage
     Then I should see the link "LinkedIn" in the Footer region
-    And the "LinkedIn" link should point to "https://www.linkedin.com/groups/2600644/"
+    And the "LinkedIn" link should point to "https://www.linkedin.com/groups/8294580"
     And I should see the link "Twitter" in the Footer region
     But I should not see the link "Facebook" in the Footer region
 

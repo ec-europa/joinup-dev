@@ -32,9 +32,9 @@ Feature: User role management
     Then I should see the success message "Add the Moderator role to the selected user(s) was applied to 1 item."
     And I should see the success message "An e-mail has been sent to the user to notify him on the change to his account."
     And the following email should have been sent:
-      | recipient | Nibby Noob                                                                                                |
-      | subject   | The COVID-19 Challenge Support Team updated your account for you at Joinup                                            |
-      | body      | A moderator has edited your user profile on Joinup. Please check your profile to verify the changes done. |
+      | recipient | Nibby Noob                                                                                                            |
+      | subject   | The COVID-19 Challenge Support Team updated your account for you at COVID-19 Challenge                                |
+      | body      | A moderator has edited your user profile on COVID-19 Challenge. Please check your profile to verify the changes done. |
 
     Given I am on the homepage
     When all e-mails have been sent
@@ -68,8 +68,8 @@ Feature: User role management
     And I should see the success message "An e-mail has been sent to the user to notify him on the change to his account."
     And the following email should have been sent:
       | recipient | Nibby Noob                                                                                                |
-      | subject   | The COVID-19 Challenge Support Team updated your account for you at Joinup                                            |
-      | body      | A moderator has edited your user profile on Joinup. Please check your profile to verify the changes done. |
+      | subject   | The COVID-19 Challenge Support Team updated your account for you at COVID-19 Challenge                    |
+      | body      | A moderator has edited your user profile on COVID-19 Challenge. Please check your profile to verify the changes done. |
 
     When I am logged in as "Nibby Noob"
     And I go to the "Open licence" licence

@@ -44,8 +44,8 @@ Feature:
     But I should see the following lines of text:
       | User Hazel Olson cannot be deleted as they are currently the sole owner of these groups:   |
       | User Amelia Barker cannot be deleted as they are currently the sole owner of these groups: |
-      | Challenge                                                                                 |
-      | Challenges                                                                                |
+      | Challenge                                                                                  |
+      | Challenges                                                                                 |
       | Solution                                                                                   |
     And I should see the following links:
       | Lugia was just released      |
@@ -85,9 +85,9 @@ Feature:
     When I press "Cancel account"
     And I wait for the batch job to finish
     And the following email should have been sent:
-      | recipient_mail | AliciaPotter@example.com                                                                                                                                                                                                                                            |
-      | subject        | Your account has been deleted.                                                                                                                                                                                                                                      |
-      | body           | Your account alicia__1997 has been deleted.This action has been done in the framework of moderation activities regularly conducted on the Joinup platform. If you believe that this action has been performed by mistake, please contact The COVID-19 Challenge Support Team at |
+      | recipient_mail | AliciaPotter@example.com                                                                                                                                                                                                                                                                    |
+      | subject        | Your account has been deleted.                                                                                                                                                                                                                                                              |
+      | body           | Your account alicia__1997 has been deleted.This action has been done in the framework of moderation activities regularly conducted on the COVID-19 Challenge platform. If you believe that this action has been performed by mistake, please contact The COVID-19 Challenge Support Team at |
 
   @javascript
   Scenario: Delete own account.
@@ -99,13 +99,13 @@ Feature:
     And I press "Cancel account"
     And I press "Cancel account"
     Then the following email should have been sent:
-      | recipient_mail | AliciaPotter@example.com                                           |
-      | subject        | Account cancellation request for alicia__1997 at Joinup            |
-      | body           | by clicking this link or copying and pasting it into your browser: |
+      | recipient_mail | AliciaPotter@example.com                                            |
+      | subject        | Account cancellation request for alicia__1997 at COVID-19 Challenge |
+      | body           | by clicking this link or copying and pasting it into your browser:  |
     # Click the confirmation link in the email.
     When I click the delete confirmation link for the user "alicia__1997" from the last email
     And I wait for the batch job to finish
     Then the following email should have been sent:
-      | recipient_mail | AliciaPotter@example.com                                                                                 |
-      | subject        | Your account has been deleted.                                                                           |
+      | recipient_mail | AliciaPotter@example.com                                                                                             |
+      | subject        | Your account has been deleted.                                                                                       |
       | body           | If you believe that this action has been performed by mistake, please contact The COVID-19 Challenge Support Team at |

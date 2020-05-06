@@ -137,9 +137,9 @@ Feature: Navigation menu for custom pages
     # As a group facilitator
     # I should see a button in the navigation menu that displays options when clicked
     Given the following <group>:
-      | title | Prism Gazers |
-      | logo  | logo.png     |
-      | state | validated    |
+  | title | Prism Gazers |
+  | logo  | logo.png     |
+  | state | validated    |
     And custom_page content:
       | title           | body                   | <group>      |
       | Mists of dreams | This is a sample body. | Prism Gazers |
@@ -165,8 +165,8 @@ Feature: Navigation menu for custom pages
 
   Scenario Outline: Synchronize titles of custom pages and menu links
     Given the following <group>:
-      | title | Ravenous wood-munching alphabeavers |
-      | state | validated                           |
+  | title | Ravenous wood-munching alphabeavers |
+  | state | validated                           |
     And custom_page content:
       | title       | body                                                                | <group>                             |
       | Tree eaters | Given time, they will most likely strip the entire region of trees. | Ravenous wood-munching alphabeavers |
@@ -289,8 +289,8 @@ Feature: Navigation menu for custom pages
   @javascript
   Scenario Outline: Only custom page entries can be nested in the navigation menu.
     Given the following <group>:
-      | title | Ergonomic backpacks |
-      | state | validated           |
+  | title | Ergonomic backpacks |
+  | state | validated           |
     And custom_page content:
       | title              | <group>             | status    |
       | Types of backpacks | Ergonomic backpacks | published |
@@ -556,6 +556,6 @@ Feature: Navigation menu for custom pages
     Then I should see the heading "Edit <label> About edit link"
 
     Examples:
-      | group      | label      |
-      | collection | Collection |
-      | solution   | Solution   |
+      | group      | label     |
+      | collection | Challenge |
+      | solution   | Solution  |

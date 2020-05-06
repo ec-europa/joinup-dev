@@ -91,7 +91,7 @@ Feature: Collection homepage
     # The collection fields are shown in the about page.
     Then I should not see the text "Only members can create new content"
     And I should not see the text "Moderated"
-    And I should not see the text "Open collection"
+    And I should not see the text "Open challenge"
     And I should not see the text "Bilbo Baggins"
     And I should not see the text "Employment and Support Allowance"
     # The collection content is shown here in the correct order.
@@ -155,7 +155,7 @@ Feature: Collection homepage
     And I press "Save as draft"
     And I click "View draft" in the "Entity actions" region
     Then I should see the text "Moderated"
-    And I should see the text "Open collection"
+    And I should see the text "Open challenge"
     And I should see the text "Only members can create content."
     And I should see the text "Bilbo Baggins"
     And I should see the text "Employment and Support Allowance"

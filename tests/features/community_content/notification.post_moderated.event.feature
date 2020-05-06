@@ -40,7 +40,7 @@ Feature: Notification test for the event transitions on a post moderated parent.
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                              |
       | subject   | COVID-19 Challenge: Content has been published                                                                                                                                    |
-      | body      | CC Member has published the new event - "CC notify create publish" in the collection: "CC post collection".You can access the new content at the following link: http |
+      | body      | CC Member has published the new event - "CC notify create publish" in the challenge: "CC post collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
     When all e-mails have been sent
@@ -51,7 +51,7 @@ Feature: Notification test for the event transitions on a post moderated parent.
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                  |
       | subject   | COVID-19 Challenge: Content has been published                                                                        |
-      | body      | CC Member has published the new event - "CC notify post publish" in the collection: "CC post collection". |
+      | body      | CC Member has published the new event - "CC notify post publish" in the challenge: "CC post collection". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -64,7 +64,7 @@ Feature: Notification test for the event transitions on a post moderated parent.
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                                                                    |
       | subject   | COVID-19 Challenge: Content has been updated                                                                                                                                                                             |
-      | body      | the Facilitator, CC Facilitator has requested you to modify the event - "CC notify post request changes" in the collection: "CC post collection", with the following motivation: "Can you do some changes?". |
+      | body      | the Facilitator, CC Facilitator has requested you to modify the event - "CC notify post request changes" in the challenge: "CC post collection", with the following motivation: "Can you do some changes?". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -77,7 +77,7 @@ Feature: Notification test for the event transitions on a post moderated parent.
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                                                           |
       | subject   | COVID-19 Challenge: Content has been updated                                                                                                                                                                    |
-      | body      | the Facilitator, CC Facilitator has requested you to modify the event - "CC notify post report" in the collection: "CC post collection", with the following motivation: "Your content is reported". |
+      | body      | the Facilitator, CC Facilitator has requested you to modify the event - "CC notify post report" in the challenge: "CC post collection", with the following motivation: "Your content is reported". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -87,7 +87,7 @@ Feature: Notification test for the event transitions on a post moderated parent.
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                          |
       | subject   | COVID-19 Challenge: Content has been updated                                                                                                                                   |
-      | body      | the Facilitator, CC Facilitator has approved your request of publication of the event - "CC notify post approve proposed" in the collection: "CC post collection". |
+      | body      | the Facilitator, CC Facilitator has approved your request of publication of the event - "CC notify post approve proposed" in the challenge: "CC post collection". |
 
     # Test 'delete' operation.
     When all e-mails have been sent
@@ -99,4 +99,4 @@ Feature: Notification test for the event transitions on a post moderated parent.
     Then the following email should have been sent:
       | recipient | CC member                                                                                                           |
       | subject   | COVID-19 Challenge: Content has been deleted                                                                                    |
-      | body      | Facilitator CC Facilitator has deleted the event - "CC notify post delete" in the collection: "CC post collection". |
+      | body      | Facilitator CC Facilitator has deleted the event - "CC notify post delete" in the challenge: "CC post collection". |

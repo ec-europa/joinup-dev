@@ -63,7 +63,7 @@ Feature: Collection membership overview
     Then I should see the heading "Members"
 
     # Check that clean URLs are being applied to the "members" subpage.
-    And I should be on "/collection/jubilant-robots/members"
+    And I should be on "/challenge/jubilant-robots/members"
 
     And I should see the following tiles in the correct order:
       | Aali Dalton           |

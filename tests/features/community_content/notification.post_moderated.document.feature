@@ -38,9 +38,9 @@ Feature: Notification test for the document transitions on a post moderated pare
     And I select "Document" from "Type"
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                                                                                 |
-      | subject   | COVID-19 Challenge: Content has been published                                                                                                                           |
-      | body      | CC Member has published the new document - "CC notify create publish" in the collection: "CC post collection".You can access the new content at the following link: http |
+      | recipient | CC owner                                                                                                                                                                |
+      | subject   | COVID-19 Challenge: Content has been published                                                                                                                          |
+      | body      | CC Member has published the new document - "CC notify create publish" in the challenge: "CC post collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
     When all e-mails have been sent
@@ -49,9 +49,9 @@ Feature: Notification test for the document transitions on a post moderated pare
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                     |
-      | subject   | COVID-19 Challenge: Content has been published                                                               |
-      | body      | CC Member has published the new document - "CC notify post publish" in the collection: "CC post collection". |
+      | recipient | CC owner                                                                                                    |
+      | subject   | COVID-19 Challenge: Content has been published                                                              |
+      | body      | CC Member has published the new document - "CC notify post publish" in the challenge: "CC post collection". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -62,9 +62,9 @@ Feature: Notification test for the document transitions on a post moderated pare
     When I fill in "Motivation" with "Can you do some changes?"
     And I press "Request changes"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                                                                       |
-      | subject   | COVID-19 Challenge: Content has been updated                                                                                                                                                                    |
-      | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify post request changes" in the collection: "CC post collection", with the following motivation: "Can you do some changes?". |
+      | recipient | CC member                                                                                                                                                                                                      |
+      | subject   | COVID-19 Challenge: Content has been updated                                                                                                                                                                   |
+      | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify post request changes" in the challenge: "CC post collection", with the following motivation: "Can you do some changes?". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -75,9 +75,9 @@ Feature: Notification test for the document transitions on a post moderated pare
     When I fill in "Motivation" with "Your content is reported"
     And I press "Request changes"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                                                              |
-      | subject   | COVID-19 Challenge: Content has been updated                                                                                                                                                           |
-      | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify post report" in the collection: "CC post collection", with the following motivation: "Your content is reported". |
+      | recipient | CC member                                                                                                                                                                                             |
+      | subject   | COVID-19 Challenge: Content has been updated                                                                                                                                                          |
+      | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify post report" in the challenge: "CC post collection", with the following motivation: "Your content is reported". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -85,9 +85,9 @@ Feature: Notification test for the document transitions on a post moderated pare
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                             |
-      | subject   | COVID-19 Challenge: Content has been updated                                                                                                                          |
-      | body      | the Facilitator, CC Facilitator has approved your request of publication of the document - "CC notify post approve proposed" in the collection: "CC post collection". |
+      | recipient | CC member                                                                                                                                                            |
+      | subject   | COVID-19 Challenge: Content has been updated                                                                                                                         |
+      | body      | the Facilitator, CC Facilitator has approved your request of publication of the document - "CC notify post approve proposed" in the challenge: "CC post collection". |
 
     # Test 'delete' operation.
     When all e-mails have been sent
@@ -97,6 +97,6 @@ Feature: Notification test for the document transitions on a post moderated pare
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                              |
-      | subject   | COVID-19 Challenge: Content has been deleted                                                                           |
-      | body      | Facilitator CC Facilitator has deleted the document - "CC notify post delete" in the collection: "CC post collection". |
+      | recipient | CC member                                                                                                             |
+      | subject   | COVID-19 Challenge: Content has been deleted                                                                          |
+      | body      | Facilitator CC Facilitator has deleted the document - "CC notify post delete" in the challenge: "CC post collection". |

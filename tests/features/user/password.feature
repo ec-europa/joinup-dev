@@ -66,6 +66,6 @@ Feature: Password management
     And I fill in "Confirm password" with "1qazxsw@"
     And I press "Save"
     Then the following email should have been sent:
-      | recipient | Charlie Change                                      |
-      | subject   | Your password has been changed                      |
-      | body      | Your Joinup password has been successfully changed. |
+      | recipient | Charlie Change                                                  |
+      | subject   | Your password has been changed                                  |
+      | body      | Your COVID-19 Challenge password has been successfully changed. |
