@@ -1,0 +1,37 @@
+# The workflow of the pledges.
+#
+# In the following workflow we have added one 'virtual' state called __new__.
+# This state will be used when the entity is being created.
+easme_pledge_workflow:
+  id: easme_pledge_workflow
+  label: "Default"
+  group: easme_pledge
+  states:
+    __new__:
+      label: New
+    draft:
+      label: Draft
+    proposed:
+      label: Submitted
+    under_validation:
+      label: 'Under validation'
+    validated:
+      label: Validated
+      published: true
+  transitions:
+    draft:
+      label: Save as draft
+      from: [__new__]
+      to: draft
+    submit:
+      label: Submit for approval
+      from: [__new__, draft]
+      to: proposed
+    assign_for_validation:
+      label: Check for approval
+      from: [__new__, draft, proposed]
+      to: under_validation
+    validate:
+      label: Validate
+      from: [under_validation]
+      to: validated

@@ -1,0 +1,23 @@
+uuid: b097f5b9-649e-4a3f-a042-cca65e617f07
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_state
+    - node.type.pledge
+  module:
+    - state_machine
+id: node.pledge.field_state
+field_name: field_state
+entity_type: node
+bundle: pledge
+label: State
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  workflow: ''
+  workflow_callback: ''
+field_type: state

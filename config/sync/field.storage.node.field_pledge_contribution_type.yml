@@ -1,0 +1,33 @@
+uuid: 8b2117a1-ba8e-4e1d-a8ed-127aa58994e6
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_pledge_contribution_type
+field_name: field_pledge_contribution_type
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: Monetary
+      label: Monetary
+    -
+      value: Loan
+      label: Loan
+    -
+      value: Resources
+      label: Resources
+    -
+      value: Other
+      label: Other
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

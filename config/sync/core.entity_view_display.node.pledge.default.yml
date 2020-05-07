@@ -4,9 +4,12 @@ status: true
 dependencies:
   config:
     - field.field.node.pledge.body
+    - field.field.node.pledge.field_pledge_contribution_type
+    - field.field.node.pledge.field_state
     - node.type.pledge
   module:
     - link
+    - options
     - text
     - user
 id: node.pledge.default
@@ -20,6 +23,20 @@ content:
     weight: 101
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_pledge_contribution_type:
+    weight: 102
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_state:
+    weight: 103
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
     region: content
   links:
     weight: 100

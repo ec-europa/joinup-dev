@@ -1,0 +1,21 @@
+uuid: 8b3b686d-9c4f-423e-8a6b-4d00df533243
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pledge_contribution_type
+    - node.type.pledge
+  module:
+    - options
+id: node.pledge.field_pledge_contribution_type
+field_name: field_pledge_contribution_type
+entity_type: node
+bundle: pledge
+label: 'Type of contribution'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

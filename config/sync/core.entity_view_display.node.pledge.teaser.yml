@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.pledge.body
+    - field.field.node.pledge.field_pledge_contribution_type
+    - field.field.node.pledge.field_state
     - node.type.pledge
   module:
     - link
@@ -41,5 +43,7 @@ content:
     third_party_settings: {  }
     type: link
 hidden:
+  field_pledge_contribution_type: true
+  field_state: true
   langcode: true
   published_at: true

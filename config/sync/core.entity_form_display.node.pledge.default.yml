@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.pledge.body
+    - field.field.node.pledge.field_pledge_contribution_type
+    - field.field.node.pledge.field_state
     - node.type.pledge
   module:
     - path
@@ -30,6 +32,18 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_pledge_contribution_type:
+    weight: 122
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_state:
+    weight: 123
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   langcode:
     type: language_select
     weight: 2
