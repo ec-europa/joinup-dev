@@ -54,6 +54,13 @@ function joinup_workflow_entity_create(EntityInterface $entity) {
     $workflow_helper = \Drupal::service('joinup_workflow.workflow_helper');
     if ($workflow_helper->hasEntityStateField($entity->getEntityTypeId(), $entity->bundle())) {
       $state_field = $workflow_helper->getEntityStateField($entity);
+      // When entities are new and default values are not assigned (e.g. when
+      // adding the state field in a new content type), the value of ::first()
+      // of the StateItem field item will be null. Return early for this rare
+      // case.
+      if (empty($state_field)) {
+        return;
+      }
       $workflow = $state_field->getWorkflow();
       $state_id = $state_field->getValue()['value'];
       if ($workflow_helper->isWorkflowStatePublished($state_id, $workflow)) {
