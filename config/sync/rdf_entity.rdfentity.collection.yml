@@ -10,4 +10,4 @@ description: ''
 label_singular: challenge
 label_plural: challenges
 label_count:
-  no_count_capitalize: "Challenge\x03Challenges"
+  no_count_capitalize: !!binary Q2hhbGxlbmdlA0NoYWxsZW5nZXM=
