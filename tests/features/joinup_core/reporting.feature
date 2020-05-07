@@ -28,7 +28,7 @@ Feature:
     Given I am logged in as a user with the moderator role
     And I am on "/admin/reporting"
     Then I should see the following links:
-      | Collection administrators  |
+      | Challenge administrators   |
       | Export user list           |
       | Solutions by solution type |
       | Solutions by licences      |

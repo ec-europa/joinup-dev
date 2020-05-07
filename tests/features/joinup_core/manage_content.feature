@@ -71,9 +71,9 @@ Feature:
     And the response should contain "News;\"Exports Leap Despite Currency Gain\";"
     And the response should contain "/news/exports-leap-despite-currency-gain"
     And the response should contain "\"Custom page\";HOWTOs;"
-    And the response should contain "/collection/vintage-art/howtos"
+    And the response should contain "/challenge/vintage-art/howtos"
     And the response should contain "\"Custom page\";\"Looking for Support?\";"
-    And the response should contain "/collection/vintage-art/looking-support"
+    And the response should contain "/challenge/vintage-art/looking-support"
 
     When I go to the homepage of the "Vintage Art" collection
     Then I should see the link "Manage content"
@@ -91,7 +91,7 @@ Feature:
     Given I select "Move to other group" from "Action"
     And I press "Apply to selected items"
 
-    And I fill in "Select the destination collection or solution" with "Decadent Art"
+    And I fill in "Select the destination challenge or solution" with "Decadent Art"
 
     # Run the batch process.
     When I press "Apply"
@@ -146,7 +146,7 @@ Feature:
     And I select the "Looking for Support?" row
     And I select "Move to other group" from "Action"
     And I press "Apply to selected items"
-    And I fill in "Select the destination collection or solution" with "Vintage Art"
+    And I fill in "Select the destination challenge or solution" with "Vintage Art"
     And I press "Apply"
     And I wait for the batch process to finish
     Then I should see "Custom page Looking for Support? group was changed to Vintage Art."

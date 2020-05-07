@@ -50,12 +50,12 @@ Feature: Navigation menu for custom pages
     And I disable "Members" in the navigation menu of the "Rainbow tables" <group>
     And I disable "About" in the navigation menu of the "Rainbow tables" <group>
     And I go to the homepage of the "Rainbow tables" <group>
-    Then I should see the text "All the pages have been disabled for this <group>. You can edit the menu configuration or add a new page."
+    Then I should see the text "All the pages have been disabled for this <singular label>. You can edit the menu configuration or add a new page."
     And I should see the contextual link "Edit menu" in the "Left sidebar" region
 
     # The contextual menu can be used to navigate to the menu edit page.
     When I click the contextual link "Edit menu" in the "Left sidebar" region
-    Then I should see the heading "Edit navigation menu of the Rainbow tables <group>"
+    Then I should see the heading "Edit navigation menu of the Rainbow tables <singular label>"
 
     # The form to add a new menu link should not be accessible by anyone. This
     # is functionality provided by Drupal which is intended for webmasters. We
@@ -127,9 +127,9 @@ Feature: Navigation menu for custom pages
     But I should not see the link "About us" in the "Navigation menu"
 
     Examples:
-      | group      |
-      | collection |
-      | solution   |
+      | group      | singular label |
+      | collection | challenge      |
+      | solution   | solution       |
 
   @javascript
   Scenario Outline: The contextual links button in the navigation menu should be always visible
@@ -137,9 +137,9 @@ Feature: Navigation menu for custom pages
     # As a group facilitator
     # I should see a button in the navigation menu that displays options when clicked
     Given the following <group>:
-      | title | Prism Gazers |
-      | logo  | logo.png     |
-      | state | validated    |
+  | title | Prism Gazers |
+  | logo  | logo.png     |
+  | state | validated    |
     And custom_page content:
       | title           | body                   | <group>      |
       | Mists of dreams | This is a sample body. | Prism Gazers |
@@ -165,8 +165,8 @@ Feature: Navigation menu for custom pages
 
   Scenario Outline: Synchronize titles of custom pages and menu links
     Given the following <group>:
-      | title | Ravenous wood-munching alphabeavers |
-      | state | validated                           |
+  | title | Ravenous wood-munching alphabeavers |
+  | state | validated                           |
     And custom_page content:
       | title       | body                                                                | <group>                             |
       | Tree eaters | Given time, they will most likely strip the entire region of trees. | Ravenous wood-munching alphabeavers |
@@ -289,8 +289,8 @@ Feature: Navigation menu for custom pages
   @javascript
   Scenario Outline: Only custom page entries can be nested in the navigation menu.
     Given the following <group>:
-      | title | Ergonomic backpacks |
-      | state | validated           |
+  | title | Ergonomic backpacks |
+  | state | validated           |
     And custom_page content:
       | title              | <group>             | status    |
       | Types of backpacks | Ergonomic backpacks | published |
@@ -556,6 +556,6 @@ Feature: Navigation menu for custom pages
     Then I should see the heading "Edit <label> About edit link"
 
     Examples:
-      | group      | label      |
-      | collection | Collection |
-      | solution   | Solution   |
+      | group      | label     |
+      | collection | Challenge |
+      | solution   | Solution  |

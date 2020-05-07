@@ -21,7 +21,7 @@ Feature: Proposing a collection
       | E-mail address | clapman@ec.example.eu |
       | Password       | abc123!#$             |
     And I press "Log in"
-    Then I should see the heading "Propose collection"
+    Then I should see the heading "Propose challenge"
 
   @terms
   Scenario: Propose a collection
@@ -30,7 +30,7 @@ Feature: Proposing a collection
       | Organisation example | Company |
     And I am logged in as an "authenticated user"
     When I go to the propose collection form
-    Then I should see the heading "Propose collection"
+    Then I should see the heading "Propose challenge"
     And the following fields should not be present "Current workflow state, Langcode, Translation, Motivation"
     And the following field widgets should be present "Contact information, Owner"
     # Ensure that the description for the "Access url" is shown.
@@ -75,7 +75,7 @@ Feature: Proposing a collection
     And I should see the heading "Ancient and Classical Mythology"
     And I should see a logo on the header
     And I should see a banner on the header
-    And I should see "Thank you for proposing a collection. Your request is currently pending approval by the site administrator."
+    And I should see "Thank you for proposing a challenge. Your request is currently pending approval by the site administrator."
 
     # The user that proposed the collection should be auto-subscribed.
     And the "Ancient and Classical Mythology" collection should have 1 active member

@@ -28,7 +28,7 @@ Feature: Collection API
       | Prayfish | Private Individual(s) |
     And I am logged in as an "authenticated user"
     When I go to the propose collection form
-    Then I should see the heading "Propose collection"
+    Then I should see the heading "Propose challenge"
     When I fill in the following:
       | Title       | Collection API example                       |
       | Description | We do not care that much about descriptions. |

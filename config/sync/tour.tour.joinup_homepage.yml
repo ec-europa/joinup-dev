@@ -5,7 +5,7 @@ dependencies:
   module:
     - joinup_front_page
 id: joinup_homepage
-label: 'Joinup homepage tour.'
+label: 'COVID-19 Challenge homepage tour.'
 module: joinup_front_page
 routes:
   -
@@ -14,8 +14,8 @@ tips:
   welcome:
     id: welcome
     plugin: text
-    label: 'Welcome to Joinup'
-    body: 'On this page you can find all the content published on the platform such as news, documents, collections, etc.'
+    label: 'Welcome to COVID-19 Challenge'
+    body: 'On this page you can find all the content published on the platform such as news, documents, challenges, etc.'
     weight: 1
     location: left
     attributes:
@@ -23,7 +23,7 @@ tips:
   anonymous_collections:
     id: anonymous_collections
     plugin: text
-    body: 'Lists all Joinup collections, which are the main collaborative spaces organised around a common topic.'
+    body: 'Lists all COVID-19 Challenges, which are the main collaborative spaces organised around a common topic.'
     weight: 2
     location: left
     attributes:
@@ -31,7 +31,7 @@ tips:
   authenticated_collections:
     id: authenticated_collections
     plugin: text
-    body: 'Lists all Joinup collections, which are the main collaborative spaces organised around a common topic.'
+    body: 'Lists all COVID-19 Challenges, which are the main collaborative spaces organised around a common topic.'
     weight: 3
     location: left
     attributes:
@@ -39,7 +39,7 @@ tips:
   anonymous_solutions:
     id: anonymous_solutions
     plugin: text
-    body: 'Lists all Joinup solutions, which are the main collaborative spaces organised around a collection''s sub-topic.'
+    body: 'Lists all COVID-19 Challenge solutions, which are the main collaborative spaces organised around a challenge''s sub-topic.'
     weight: 4
     location: left
     attributes:
@@ -47,7 +47,7 @@ tips:
   authenticated_solutions:
     id: authenticated_solutions
     plugin: text
-    body: 'Lists all Joinup solutions, which are the main collaborative spaces organised around a collection''s sub-topic.'
+    body: 'Lists all COVID-19 Challenge solutions, which are the main collaborative spaces organised around a challenge''s sub-topic.'
     weight: 5
     location: left
     attributes:
@@ -55,7 +55,7 @@ tips:
   anonymous_content:
     id: anonymous_content
     plugin: text
-    body: 'Find all the latest Joinup updates concerning events, documents, news, and discussions.'
+    body: 'Find all the latest COVID-19 Challenge updates concerning events, documents, news, and discussions.'
     weight: 6
     location: right
     attributes:
@@ -63,7 +63,7 @@ tips:
   authenticated_content:
     id: authenticated_content
     plugin: text
-    body: 'Find all the latest Joinup updates concerning events, documents, news, and discussions.'
+    body: 'Find all the latest COVID-19 Challenge updates concerning events, documents, news, and discussions.'
     weight: 7
     location: right
     attributes:
@@ -71,7 +71,7 @@ tips:
   anonymous_search:
     id: anonymous_search
     plugin: text
-    body: 'Search through the entire Joinup platform and its supported content items.'
+    body: 'Search through the entire COVID-19 Challenge platform and its supported content items.'
     weight: 9
     location: left
     attributes:
@@ -79,7 +79,7 @@ tips:
   authenticated_search:
     id: authenticated_search
     plugin: text
-    body: 'Search through the entire Joinup platform and its supported content items.'
+    body: 'Search through the entire COVID-19 Challenge platform and its supported content items.'
     weight: 10
     location: left
     attributes:
@@ -103,7 +103,7 @@ tips:
   contact:
     id: contact
     plugin: text
-    body: 'If you have any questions or suggestions regarding the Joinup platform, you can contact us through this link.'
+    body: 'If you have any questions or suggestions regarding the COVID-19 Challenge platform, you can contact us through this link.'
     weight: 13
     location: top
     attributes:

@@ -16,9 +16,9 @@ Feature: SEO for RDF entities.
     Then the rdf metadata of the "SEO entity" rdf entity should not be attached in the page
 
     Examples:
-      | type       | link        |
-      | collection | Collections |
-      | solution   | Solutions   |
+      | type       | link       |
+      | collection | Challenges |
+      | solution   | Solutions  |
 
   Scenario: Basic JSON meta information for releases and distributions.
     Given the following solution:

@@ -7,7 +7,7 @@ label: 'Notify discussion subscribers on discussion update'
 description: 'Message sent to subscribers of a discussion when a discussion is updated'
 text:
   -
-    value: 'Joinup: The discussion "@entity:title" was updated in the space of "@group:title"'
+    value: 'COVID-19 Challenge: The discussion "@entity:title" was updated in the space of "@group:title"'
     format: full_html
   -
     value: '<p>The discussion "@entity:title" was updated in the "@group:title" @group:bundle.</p><p>To view the discussion, click @entity:url.</p>'

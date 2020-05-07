@@ -533,7 +533,7 @@ display:
           expose:
             label: ''
           plugin_id: standard
-      title: 'Collection members'
+      title: 'Challenge members'
       header: {  }
       footer: {  }
       empty: {  }

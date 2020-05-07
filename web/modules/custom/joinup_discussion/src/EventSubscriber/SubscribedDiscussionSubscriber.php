@@ -187,7 +187,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
     $actor_family_name = !empty($actor->get('field_user_family_name')->value) ? $actor->get('field_user_family_name')->value : '';
 
     if ($actor->hasRole('moderator')) {
-      $arguments['@actor:full_name'] = 'The Joinup Support Team';
+      $arguments['@actor:full_name'] = 'The COVID-19 Challenge Support Team';
     }
     else {
       $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ? $actor_first_name . ' ' . $actor_family_name : $actor->get('full_name')->value;

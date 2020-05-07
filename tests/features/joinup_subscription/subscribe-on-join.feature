@@ -19,15 +19,15 @@ Feature: Subscribing to a collection after joining
     # Join an open collection.
     Given I am logged in as "Echinoid Blacksly"
     And I go to the homepage of the "Sapient Pearwood" collection
-    When I press the "Join this collection" button
+    When I press the "Join this challenge" button
     Then I should see the success message "You are now a member of Sapient Pearwood."
 
     # A modal dialog opens proposing the user to subscribe to the collection.
     And a modal should open
     And I should see the text "Welcome to Sapient Pearwood" in the "Modal title"
-    And I should see the text "You have joined the collection and you are now able to publish content in it." in the "Modal content"
+    And I should see the text "You have joined the challenge and you are now able to publish content in it." in the "Modal content"
     And I should see the text "Want to receive notifications, too?" in the "Modal content"
-    And I should see the text "You can receive weekly notifications for this collection, by selecting the subscribe button below" in the "Modal content"
+    And I should see the text "You can receive weekly notifications for this challenge, by selecting the subscribe button below" in the "Modal content"
     And I should see the button "No thanks" in the "Modal buttons" region
     And I should see the button "Subscribe" in the "Modal buttons" region
 
@@ -38,7 +38,7 @@ Feature: Subscribing to a collection after joining
 
     # Navigate to another open collection, this time subscribing.
     When I go to the homepage of the "Drop bears" collection
-    And I press the "Join this collection" button
+    And I press the "Join this challenge" button
     Then a modal should open
     When I press "Subscribe" in the "Modal buttons" region
     Then the modal should be closed
@@ -48,12 +48,12 @@ Feature: Subscribing to a collection after joining
 
     # Navigate to a closed collection and deny the subscription.
     When I go to the homepage of the "Troll ducks" collection
-    And I press the "Join this collection" button
+    And I press the "Join this challenge" button
     Then a modal should open
     And I should see the text "Welcome to Troll ducks" in the "Modal title"
     And I should see the text "When your membership is approved you will be able to publish content in it." in the "Modal content"
     And I should see the text "Want to receive notifications, too?" in the "Modal content"
-    And I should see the text "You can receive weekly notifications for this collection, by selecting the subscribe button below" in the "Modal content"
+    And I should see the text "You can receive weekly notifications for this challenge, by selecting the subscribe button below" in the "Modal content"
     And I should see the button "No thanks" in the "Modal buttons" region
     And I should see the button "Subscribe" in the "Modal buttons" region
     When I press "No thanks" in the "Modal buttons" region
@@ -62,7 +62,7 @@ Feature: Subscribing to a collection after joining
 
     # Navigate to a closed collection and accept the subscription.
     When I go to the homepage of the "Swamp dragons" collection
-    And I press the "Join this collection" button
+    And I press the "Join this challenge" button
     Then a modal should open
     When I press "Subscribe" in the "Modal buttons" region
     Then the modal should be closed

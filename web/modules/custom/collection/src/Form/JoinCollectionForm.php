@@ -131,7 +131,7 @@ class JoinCollectionForm extends FormBase {
           'callback' => '::showSubscribeDialog',
         ],
         '#type' => 'submit',
-        '#value' => $this->t('Join this collection'),
+        '#value' => $this->t('Join this challenge'),
       ];
     }
 
@@ -147,7 +147,7 @@ class JoinCollectionForm extends FormBase {
       if ($this->accessManager->checkNamedRoute('collection.leave_confirm_form', $parameters)) {
         $form['leave']['#confirm'] = [
           '#type' => 'link',
-          '#title' => $this->t('Leave this collection'),
+          '#title' => $this->t('Leave this challenge'),
           '#url' => Url::fromRoute('collection.leave_confirm_form', $parameters),
           '#attributes' => [
             'class' => ['use-ajax'],
@@ -158,7 +158,7 @@ class JoinCollectionForm extends FormBase {
       }
       else {
         $form['leave']['#confirm'] = [
-          '#markup' => $this->t('You cannot leave the %collection collection', ['%collection' => $collection->label()]),
+          '#markup' => $this->t('You cannot leave the %collection challenge', ['%collection' => $collection->label()]),
         ];
       }
       $form['#attached']['library'][] = 'core/drupal.ajax';

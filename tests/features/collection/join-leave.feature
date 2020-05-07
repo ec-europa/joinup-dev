@@ -25,61 +25,61 @@ Feature: Joining and leaving collections through the web interface
     # Anonymous users should not be able to join or leave a collection.
     Given I am an anonymous user
     When I go to the homepage of the "Überwaldean Land Eels" collection
-    Then I should not see the "Join this collection" button
-    And I should not see the link "Leave this collection"
+    Then I should not see the "Join this challenge" button
+    And I should not see the link "Leave this challenge"
 
     # Authenticated users can join. The Join button should be hidden if the user
     # already is a member of the collection.
     Given I am logged in as "Madame Sharn"
     When I go to the homepage of the "Überwaldean Land Eels" collection
-    Then I should see the "Join this collection" button
-    When I press the "Join this collection" button
+    Then I should see the "Join this challenge" button
+    When I press the "Join this challenge" button
     Then I should see the success message "You are now a member of Überwaldean Land Eels."
     And the "Überwaldean Land Eels" collection should have 1 active member
     When I go to the homepage of the "Überwaldean Land Eels" collection
-    Then I should not see the "Join this collection" button
+    Then I should not see the "Join this challenge" button
     And I should not see the link "Edit"
-    But I should see the link "Leave this collection"
+    But I should see the link "Leave this challenge"
 
     # Check that it is possible to join a closed collection.
     When I go to the homepage of the "Folk Dance and Song Society" collection
-    Then I should see the "Join this collection" button
-    When I press the "Join this collection" button
+    Then I should see the "Join this challenge" button
+    When I press the "Join this challenge" button
     Then I should see the success message "Your membership to the Folk Dance and Song Society collection is under approval."
     And the "Folk Dance and Song Society" collection should have 0 active members
     And the "Folk Dance and Song Society" collection should have 1 pending member
     When I go to the homepage of the "Folk Dance and Song Society" collection
-    Then I should not see the "Join this collection" button
-    And I should not see the "Leave this collection" button
+    Then I should not see the "Join this challenge" button
+    And I should not see the "Leave this challenge" button
     But I should see the link "Membership is pending"
 
     # Check that a second authenticated user can join, the form should not be
     # cached.
     Given I am logged in as "Goodie Whemper"
     When I go to the homepage of the "Überwaldean Land Eels" collection
-    And I press the "Join this collection" button
+    And I press the "Join this challenge" button
     Then I should see the success message "You are now a member of Überwaldean Land Eels."
     And the "Überwaldean Land Eels" collection should have 2 active members
 
     # Check that both users can leave their respective collections.
-    When I click "Leave this collection"
+    When I click "Leave this challenge"
     Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels collection?"
     And I should see the text "By leaving the collection you will be no longer able to publish content in it or receive notifications from it."
     And I should see the link "Cancel"
-    But I should not see the link "Leave this collection"
+    But I should not see the link "Leave this challenge"
 
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Überwaldean Land Eels."
-    And I should see the "Join this collection" button
+    And I should see the "Join this challenge" button
     And the "Überwaldean Land Eels" collection should have 1 active member
 
     When I am logged in as "Madame Sharn"
     And I go to the homepage of the "Überwaldean Land Eels" collection
-    And I click "Leave this collection"
+    And I click "Leave this challenge"
     Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels collection?"
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Überwaldean Land Eels."
-    And I should see the "Join this collection" button
+    And I should see the "Join this challenge" button
     And the "Überwaldean Land Eels" collection should have 0 active members
 
     # @todo It currently is not possible to cancel a pending membership, so for
@@ -89,11 +89,11 @@ Feature: Joining and leaving collections through the web interface
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3658
     Given my membership state in the "Folk Dance and Song Society" collection changes to "active"
     And I go to the homepage of the "Folk Dance and Song Society" collection
-    And I click "Leave this collection"
+    And I click "Leave this challenge"
     Then I should see the text "Are you sure you want to leave the Folk Dance and Song Society collection?"
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Folk Dance and Song Society."
-    And I should see the "Join this collection" button
+    And I should see the "Join this challenge" button
     And the "Folk Dance and Song Society" collection should have 0 active members
     And the "Folk Dance and Song Society" collection should have 0 pending members
 
@@ -113,22 +113,22 @@ Feature: Joining and leaving collections through the web interface
 
     Given I am logged in as "insect researcher"
     When I go to the homepage of the "Insectarium" collection
-    And I click "Leave this collection"
+    And I click "Leave this challenge"
 
     # The collection owner cannot leave the collection before transferring the rights to another owner.
-    Then I should see the text "You are owner of this collection. Before you leave this collection, you should transfer the ownership to another member."
+    Then I should see the text "You are owner of this collection. Before you leave this challenge, you should transfer the ownership to another member."
     And I should not see the button "Confirm"
 
     When I go to the homepage of the "Insectarium" collection
     And I click "Members"
     And I select the "newcomer researcher" row
-    And I select "Transfer the ownership of the collection to the selected member" from "Action"
+    And I select "Transfer the ownership of the challenge to the selected member" from "Action"
     And I press "Apply to selected items"
     And I press "Confirm"
-    Then I should see "Ownership of Insectarium collection transferred from user insect researcher to newcomer researcher."
+    Then I should see "Ownership of Insectarium challenge transferred from user insect researcher to newcomer researcher."
 
     When I go to the homepage of the "Insectarium" collection
-    And I click "Leave this collection"
+    And I click "Leave this challenge"
     And I press "Confirm"
     When I click "Members"
     Then I should not see the link "Add members"
@@ -152,7 +152,7 @@ Feature: Joining and leaving collections through the web interface
 
     And I press "You're a member"
     And I wait for animations to finish
-    And I click "Leave this collection"
+    And I click "Leave this challenge"
     And a modal should open
 
     When I press "Cancel" in the "Modal buttons" region

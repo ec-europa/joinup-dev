@@ -126,7 +126,7 @@ function owner_form_alter_validate(&$form, FormStateInterface $form_state) {
       return '"' . $collection->label() . '"';
     }, owner_get_references($entity));
 
-    $form_state->setError($element, new TranslatableMarkup('The owner cannot be deleted since it owns the following collections: @collections. Please set a different owner for these collections before requesting deletion.', [
+    $form_state->setError($element, new TranslatableMarkup('The owner cannot be deleted since it owns the following challenges: @collections. Please set a different owner for these challenges before requesting deletion.', [
       '@collections' => implode(', ', $collection_labels),
     ]));
   }

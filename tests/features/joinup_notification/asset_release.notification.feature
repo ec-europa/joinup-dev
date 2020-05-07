@@ -40,8 +40,8 @@ Feature: Asset release notification system
     And the following email should have been sent:
       | template  | Message to solution facilitators when a release is updated                                                                                       |
       | recipient | Copernicus                                                                                                                                       |
-      | subject   | Joinup: The release "1" of your solution "My awesome solution abc" was successfully updated                                                      |
-      | body      | Dear Copernicus, Your release "1" for the "My awesome solution abc" solution was uploaded succesfully. Kind regards, The Joinup Support Team. |
+      | subject   | COVID-19 Challenge: The release "1" of your solution "My awesome solution abc" was successfully updated                                                      |
+      | body      | Dear Copernicus, Your release "1" for the "My awesome solution abc" solution was uploaded succesfully. Kind regards, The COVID-19 Challenge Support Team. |
 
     # Update an existing release.
     When all e-mails have been sent
@@ -53,8 +53,8 @@ Feature: Asset release notification system
     And the following email should have been sent:
       | template  | Message to solution facilitators when a release is updated                                                                                        |
       | recipient | Copernicus                                                                                                                                        |
-      | subject   | Joinup: The release "v2" of your solution "My awesome solution abc" was successfully updated                                                      |
-      | body      | Dear Copernicus, Your release "v2" for the "My awesome solution abc" solution was uploaded succesfully. Kind regards, The Joinup Support Team. |
+      | subject   | COVID-19 Challenge: The release "v2" of your solution "My awesome solution abc" was successfully updated                                                      |
+      | body      | Dear Copernicus, Your release "v2" for the "My awesome solution abc" solution was uploaded succesfully. Kind regards, The COVID-19 Challenge Support Team. |
 
     # Debug step.
     And I delete the "My awesome release abc" release

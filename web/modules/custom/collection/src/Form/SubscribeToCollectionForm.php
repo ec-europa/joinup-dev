@@ -105,7 +105,7 @@ class SubscribeToCollectionForm extends FormBase {
 
     $intro_message = $is_pending ?
       $this->t('When your membership is approved you will be able to publish content in it.') :
-      $this->t('You have joined the collection and you are now able to publish content in it.');
+      $this->t('You have joined the challenge and you are now able to publish content in it.');
 
     $form['intro'] = [
       '#type' => 'html_tag',
@@ -120,7 +120,7 @@ class SubscribeToCollectionForm extends FormBase {
     $form['description'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => $this->t('You can receive weekly notifications for this collection, by selecting the subscribe button below:'),
+      '#value' => $this->t('You can receive weekly notifications for this challenge, by selecting the subscribe button below:'),
     ];
     $form['actions'] = [
       '#type' => 'actions',

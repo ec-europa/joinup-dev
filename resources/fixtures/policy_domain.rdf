@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:skos="http://www.w3.org/2004/02/skos/core#" >
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#business-and-competition">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Business and competition</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#defence">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Defence</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#economics">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Economics</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#education">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Education</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#egovernment">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">eGovernment</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#energy">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Energy</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#environment">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Environment</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#geospatial">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Geospatial</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#health">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Health</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#human-resources">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Human resources</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#ict">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">ICT</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#industry-and-production">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Industry and production</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#information">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Information</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#law">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Law</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#politics">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Politics</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#science-and-technology">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Science and technology</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#social">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Social</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain/category#transport">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Transport</skos:prefLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#business-and-competition">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Business and competition</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#business-and-competition" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#defence">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Defence</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#defence" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#banking-and-financial-services">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Banking and financial services</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#economics" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#economic-analysis">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Economic analysis</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#economics" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#eu-finance">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">EU finance</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#economics" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#taxation">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Taxation</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#economics" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#trade">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Trade</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#economics" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#culture">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Culture</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#education" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#education">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Education</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#education" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#languages-and-translation">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Languages and translation</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#education" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#sport">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Sport</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#education" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#collaboration">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Collaboration</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#egovernment" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#egovernment">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">eGovernment</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#egovernment" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#ict-standardisation-in-egovernment">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">ICT standardisation in eGovernment</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#egovernment" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#eidentity-and-esignature">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">eIdentity and eSignature</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#egovernment" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#free-and-open-source-software-in-public-administrations">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Free and open source software in Public Administrations</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#egovernment" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#open-government">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Open government</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#egovernment" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#eprocurement">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">eProcurement</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#egovernment" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#edelivery-and-einvoicing">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">eDelivery and eInvoicing</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#egovernment" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#energy">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Energy</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#energy" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#environment">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Environment</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#environment" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#geospatial">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Geospatial</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#geospatial" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#ehealth">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">eHealth</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#health" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#food">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Food</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#health" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#employment">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Employment</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#human-resources" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#human-resources">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Human resources</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#human-resources" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#ict">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">ICT</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#ict" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#ict-standardisation">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">ICT standardisation</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#ict" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#ict-security">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">ICT security</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#ict" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#licensing">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Licensing</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#ict" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#free-and-open-source-software">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Free and open source software</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#ict" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#industry-and-production">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Industry and production</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#industry-and-production" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#content-and-knowledge-management">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Content and knowledge management</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#information" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#information">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Information</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#information" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#statistics">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Statistics</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#information" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#law">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Law</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#law" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#ejustice">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">eJustice</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#law" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#security">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Security</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#law" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#european-policies">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">European Policies</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#law" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#eparticipation-and-evoting">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">eParticipation and eVoting</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#politics" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#science-and-technology">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Science and technology</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#science-and-technology" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#demography-and-population">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Demography and population</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#social" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#einclusion">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">eInclusion</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#social" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#social">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Social</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#social" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#air-and-space-transport">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Air and space transport</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#transport" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#land-transport">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Land transport</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#transport" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#maritime-and-inland-waterway-transport">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Maritime and inland waterway transport</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#transport" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#integrated-logistics">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Integrated logistics</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#transport" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#authorisation-and-authentication">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Authorisation and authentication</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#ict" />
+  </rdf:Description>
+  <rdf:Description rdf:about="http://joinup.eu/ontology/policy-domain#politics">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept" />
+    <skos:inScheme rdf:resource="http://joinup.eu/policy-domain" />
+    <skos:prefLabel xml:lang="en">Politics</skos:prefLabel>
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/ontology/policy-domain/category#politics" />
+  </rdf:Description>
+</rdf:RDF>

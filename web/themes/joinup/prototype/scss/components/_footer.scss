@@ -1,3 +1,53 @@
 // Footer
 //
 // Styleguide 2.14
+
+// modification - to be verified
+
+.footer__first {
+  h3 {
+    font-size: $font-size-medium - 4;
+    font-weight: $font-weight-bold;
+    color: $color-grey-white;
+    border-bottom: 2px solid $color-blue-eu-lighter;
+    margin-top: 0;
+    margin-bottom: 0;
+    white-space: nowrap;
+    margin-right: 10px;
+    @include breakpoint(mobile) {
+
+    }
+  }
+
+  ul.menu.vertical-menu {
+    margin-top: 10px;
+    padding-left: 5px;
+    li.vertical-menu__item {
+      margin-top: 5px;
+      margin-bottom: 5px;
+
+    }
+  }
+  .social-media {
+    display: block;
+  }
+}
+
+.footer__second{
+  .footer__powered_by {
+    margin: 0;
+    color: whitesmoke;
+    span {
+      font-size: $font-size-xsmall;
+    }
+    img {
+      height: 20px;
+    }
+    .footer__version {
+      font-size: $font-size-xxsmall;
+      margin:0;
+      line-height: normal;
+    }
+  }
+}
+

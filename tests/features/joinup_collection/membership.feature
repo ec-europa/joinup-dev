@@ -7,23 +7,23 @@ Feature: Tests membership to Joinup collection.
       | An arbitrary collection | validated |
 
   Scenario: As a newly registered user I'm automatically member of the 'Joinup'
-    collection and I cannot leave.
+  challenge and I cannot leave.
 
     Given I am logged in as a user with the member role of the "An arbitrary collection" collection
     Then I am member of "Joinup" collection
 
     And I go to the homepage of the "An arbitrary collection" collection
-    Then I should see the link "Leave this collection"
+    Then I should see the link "Leave this challenge"
 
     When I go to the homepage of the "Joinup" collection
-    Then I should not see the link "Leave this collection"
-    But I should see "You cannot leave the Joinup collection"
+    Then I should not see the link "Leave this challenge"
+    But I should see "You cannot leave the Joinup challenge"
 
     When I am about to leave the "Joinup" collection
     Then I should get an access denied error
 
   Scenario: As a moderator I am able to revoke the membership of a user to any
-    arbitrary collection except 'Joinup'.
+  arbitrary challenge except 'Joinup'.
 
     Given users:
       | Username | E-mail           |
@@ -42,12 +42,12 @@ Feature: Tests membership to Joinup collection.
     And I select "Delete the selected membership(s)" from "Action"
 
     When I press "Apply to selected items"
-    Then I should see the heading "Are you sure you want to delete the selected membership from the 'An arbitrary collection' collection?"
-    And I should see "The member joe will be deleted from the 'An arbitrary collection' collection."
+    Then I should see the heading "Are you sure you want to delete the selected membership from the 'An arbitrary collection' challenge?"
+    And I should see "The member joe will be deleted from the 'An arbitrary collection' challenge."
     And I should see "This action cannot be undone."
 
     When I press "Confirm"
-    Then I should see the success message "The member joe has been deleted from the 'An arbitrary collection' collection."
+    Then I should see the success message "The member joe has been deleted from the 'An arbitrary collection' challenge."
 
     Given I go to the homepage of the "Joinup" collection
     And I click "Members"

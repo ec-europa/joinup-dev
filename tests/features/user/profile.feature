@@ -223,7 +223,7 @@ Feature: User profile
     # cleared and the collection that was joined should show up.
     Given I am logged in as "Korben Dallas"
     And I go to the homepage of the "Federated Army Veterans" collection
-    And I press the "Join this collection" button
+    And I press the "Join this challenge" button
 
     When I am an anonymous user
     And I go to the public profile of "Korben Dallas"
@@ -238,7 +238,7 @@ Feature: User profile
     # cleared and the collection that was left should no longer show up.
     Given I am logged in as "Korben Dallas"
     And I go to the homepage of the "Federated Army Veterans" collection
-    And I click "Leave this collection"
+    And I click "Leave this challenge"
     And I press the "Confirm" button
 
     When I am an anonymous user
@@ -279,12 +279,12 @@ Feature: User profile
       | Your updated email address needs to be validated. Further instructions have been sent to your new email address. |
     And the following email should have been sent:
       | recipient_mail | he@example.com                                                                                                          |
-      | subject        | Joinup: Email change information for Caitlyn Jenner                                                                     |
+      | subject        | COVID-19 Challenge: Email change information for Caitlyn Jenner                                                         |
       | body           | In order to complete the change you will need to follow the instructions sent to your new email address within one day. |
     And the following email should have been sent:
-      | recipient_mail | she@example.com                                                                                                                   |
-      | subject        | Joinup: Email change information for Caitlyn Jenner                                                                               |
-      | body           | A request to change your email address has been made in your Joinup profile. To confirm the request, please click the link below: |
+      | recipient_mail | she@example.com                                                                                                                               |
+      | subject        | COVID-19 Challenge: Email change information for Caitlyn Jenner                                                                               |
+      | body           | A request to change your email address has been made in your COVID-19 Challenge profile. To confirm the request, please click the link below: |
 
     But I click the mail change link from the email sent to "she@example.com"
     Then I should see the following success messages:

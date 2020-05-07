@@ -76,7 +76,10 @@
 .mdl-grid--center {
   justify-content: center;
 }
-
+.mdl-grid--left-offset {
+  justify-content: left;
+  margin: 0 33%;
+}
 .join-collection-form,
 #block-joinup-theme-local-tasks {
   .mdl-menu__item a {

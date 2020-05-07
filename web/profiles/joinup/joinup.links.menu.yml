@@ -6,7 +6,7 @@ joinup.export_user_list:
   weight: 0
 
 joinup.group_administrators_report:
-  title: 'Collection administrators'
+  title: 'Challenge administrators'
   route_name: joinup.group_administrators_report
   route_parameters:
     entity_type_id: 'rdf_entity'

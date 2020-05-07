@@ -9,7 +9,7 @@ label: 'Comment delete'
 description: 'Sent when a comment is deleted.'
 text:
   -
-    value: '<p>Joinup: Your comment has been deleted.</p>'
+    value: '<p>COVID-19 Challenge: Your comment has been deleted.</p>'
     format: full_html
   -
     value: '<p>@actor:full_name deleted your comment in "@parent:title".</p><p>To avoid comment moderation in the future, please read our community guidelines at <a href="@site:legal_notice_url">@site:legal_notice_url</a>.</p>'

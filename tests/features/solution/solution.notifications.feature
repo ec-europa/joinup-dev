@@ -45,10 +45,10 @@ Feature: Solution notifications
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "Please, check my updates"
     And I press "Propose"
-    Then the email sent to "Ramiro Myers" with subject "Joinup: Changes have been proposed for your solution" contains the following lines of text:
-      | text                                                                                                                                                                                   |
-      | The Joinup Support Team has requested you to modify the interoperability solution "Solution notification to propose changes", with the following motivation: Please, check my updates. |
-      | If you think this action is not clear or not due, please contact Joinup Support at                                                                                                     |
+    Then the email sent to "Ramiro Myers" with subject "COVID-19 Challenge: Changes have been proposed for your solution" contains the following lines of text:
+      | text                                                                                                                                                                                               |
+      | The COVID-19 Challenge Support Team has requested you to modify the interoperability solution "Solution notification to propose changes", with the following motivation: Please, check my updates. |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                                                        |
 
     # Template 11. The moderation team approves a deletion request.
     When all e-mails have been sent
@@ -57,9 +57,9 @@ Feature: Solution notifications
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | Ramiro Myers                                                                                                                                                          |
-      | subject   | Joinup: Your deletion request has been approved                                                                                                                       |
-      | body      | You recently requested that the interoperability solution Solution notification to approve deletion be deleted. Your request was accepted by The Joinup Support Team. |
+      | recipient | Ramiro Myers                                                                                                                                                                      |
+      | subject   | COVID-19 Challenge: Your deletion request has been approved                                                                                                                       |
+      | body      | You recently requested that the interoperability solution Solution notification to approve deletion be deleted. Your request was accepted by The COVID-19 Challenge Support Team. |
 
     # Template 12. The moderation team rejects the deletion.
     And all e-mails have been sent
@@ -71,9 +71,9 @@ Feature: Solution notifications
     When I fill in "Motivation" with "I don't feel like deleting this solution"
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | Ramiro Myers                                                                                                                                                                                                          |
-      | subject   | Joinup: Your request to delete your solution has been rejected                                                                                                                                                        |
-      | body      | You recently requested that the interoperability solution Solution notification to reject deletion be deleted. Your request was rejected by The Joinup Support Team, due to I don't feel like deleting this solution. |
+      | recipient | Ramiro Myers                                                                                                                                                                                                                      |
+      | subject   | COVID-19 Challenge: Your request to delete your solution has been rejected                                                                                                                                                        |
+      | body      | You recently requested that the interoperability solution Solution notification to reject deletion be deleted. Your request was rejected by The COVID-19 Challenge Support Team, due to I don't feel like deleting this solution. |
 
     # Template 13. The moderation team blacklists a solution.
     When all e-mails have been sent
@@ -82,7 +82,7 @@ Feature: Solution notifications
     And I press "Blacklist"
     Then the following email should have been sent:
       | recipient | Ramiro Myers                                                                                                                                                 |
-      | subject   | Joinup: Your interoperability solution is blacklisted                                                                                                        |
+      | subject   | COVID-19 Challenge: Your interoperability solution is blacklisted                                                                                            |
       | body      | the moderator has blacklisted your interoperability solution - Solution notification to blacklist, you can contact the moderation team to resolve the issue. |
 
     # Template 14. The moderation team restores a solution from blacklisted.
@@ -92,7 +92,7 @@ Feature: Solution notifications
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | Ramiro Myers                                                                                                                              |
-      | subject   | Joinup: Your interoperability solution is published again                                                                                 |
+      | subject   | COVID-19 Challenge: Your interoperability solution is published again                                                                     |
       | body      | the moderator has published back your interoperability solution - Solution notification to publish from blacklisted that was blacklisted. |
 
     # Template 15. The moderation team requests changes.
@@ -106,13 +106,13 @@ Feature: Solution notifications
     And I press "Request changes"
     Then the following email should have been sent:
       | recipient | Ramiro Myers                                                                                                                                                              |
-      | subject   | Joinup: You are requested to update your solution                                                                                                                         |
+      | subject   | COVID-19 Challenge: You are requested to update your solution                                                                                                             |
       | body      | the moderator has requested you to modify the interoperability solution - Solution notification to request changes following the following advises: Can you change this?. |
       | bcc       | pat.harper@example.com                                                                                                                                                    |
-    And the email sent to "Ramiro Myers" with subject "Joinup: You are requested to update your solution" contains the following lines of text:
+    And the email sent to "Ramiro Myers" with subject "COVID-19 Challenge: You are requested to update your solution" contains the following lines of text:
       | text                                                                                                                                                                      |
       | the moderator has requested you to modify the interoperability solution - Solution notification to request changes following the following advises: Can you change this?. |
-      | If you think this action is not clear or not due, please contact Joinup Support at                                                                                        |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                               |
 
     # Template 18. The moderation team deletes a solution without prior request.
     When all e-mails have been sent
@@ -121,9 +121,9 @@ Feature: Solution notifications
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | Ramiro Myers                                                                                      |
-      | subject   | Joinup: Your solution has been deleted by the moderation team                                     |
-      | body      | The Joinup moderation team deleted the interoperability solution Solution notification to delete. |
+      | recipient | Ramiro Myers                                                                                                  |
+      | subject   | COVID-19 Challenge: Your solution has been deleted by the moderation team                                     |
+      | body      | The COVID-19 Challenge moderation team deleted the interoperability solution Solution notification to delete. |
 
     When I am logged in as "Ramiro Myers"
 
@@ -132,17 +132,17 @@ Feature: Solution notifications
     And I go to the homepage of the "Solution notification to propose from request changes" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
-    Then the email sent to "Pat Harper" with subject "Joinup: An update of a solution has been proposed" contains the following lines of text:
-      | text                                                                                                                                     |
-      | Ramiro Myers has proposed an update of the Interoperability solution: "Solution notification to propose from request changes" on Joinup. |
-      | If you think this action is not clear or not due, please contact Joinup Support at                                                       |
+    Then the email sent to "Pat Harper" with subject "COVID-19 Challenge: An update of a solution has been proposed" contains the following lines of text:
+      | text                                                                                                                                                 |
+      | Ramiro Myers has proposed an update of the Interoperability solution: "Solution notification to propose from request changes" on COVID-19 Challenge. |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                          |
 
     # Template 10. The owner requests a deletion.
     When all e-mails have been sent
     And I go to the homepage of the "Solution notification to request deletion" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Request deletion"
-    Then the email sent to "Pat Harper" with subject "Joinup: A solution deletion has been requested" contains the following lines of text:
+    Then the email sent to "Pat Harper" with subject "COVID-19 Challenge: A solution deletion has been requested" contains the following lines of text:
       | text                                                                                                                                                    |
       | Ramiro Myers requested that the Solution notification to request deletion interoperability solution, part of Collection of random solutions be deleted. |
-      | If you think this action is not clear or not due, please contact Joinup Support at                                                                      |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                             |

@@ -2,15 +2,10 @@
 Feature: As a visitor or logged-in user, when I want to post content, the form
   should be protected by Antibot.
 
-  Scenario Outline: Anonymous forms.
+  Scenario: Anonymous forms.
     Given I am an anonymous user
-    And I visit "<path>"
+    And I visit "/contact"
     Then the form is protected by Antibot
-
-    Examples:
-      | path           |
-      | /user/password |
-      | /contact       |
 
   Scenario: Authenticated users.
     Given users:
@@ -33,7 +28,7 @@ Feature: As a visitor or logged-in user, when I want to post content, the form
     And I go to the homepage of the "Family photos" collection
     Then the form is protected by Antibot
 
-    When I press "Join this collection"
+    When I press "Join this challenge"
     Then I should see the success message "You are now a member of Family photos."
     And a modal should open
     Then the form is protected by Antibot

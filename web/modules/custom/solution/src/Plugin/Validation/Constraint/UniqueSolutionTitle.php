@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraint;
  *
  * @Constraint(
  *   id = "UniqueSolutionTitle",
- *   label = @Translation("Unique solution title within collections", context = "Validation"),
+ *   label = @Translation("Unique solution title within challenges", context = "Validation"),
  * )
  */
 class UniqueSolutionTitle extends Constraint {
@@ -21,6 +21,6 @@ class UniqueSolutionTitle extends Constraint {
    *
    * @var string
    */
-  public $message = 'A solution titled %value already exists in this collection. Please choose a different title.';
+  public $message = 'A solution titled %value already exists in this challenge. Please choose a different title.';
 
 }

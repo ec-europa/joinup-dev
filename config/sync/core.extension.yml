@@ -8,7 +8,6 @@ module:
   breakpoint: 0
   cached_computed_field: 0
   cas: 0
-  cas_account_link: 0
   cas_attributes: 0
   changed_fields: 0
   ckeditor: 0
@@ -40,6 +39,7 @@ module:
   error_page: 0
   eu_sic: 0
   eupl: 0
+  external_links_footer: 0
   facets: 0
   field: 0
   field_group: 0

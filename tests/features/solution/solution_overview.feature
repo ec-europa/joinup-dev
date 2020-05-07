@@ -10,7 +10,7 @@ Feature: Solutions Overview
     Then I should see the link "Solutions"
     When I click "Solutions"
     Then I should see the heading "Solutions"
-    And I should see the text "A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories."
+    And I should see the text "A solution is a framework, tool, or service that is offered as a solution to one of the COVID-19 challenges."
     # Check that all logged in users can see and access the link as well.
     Given I am logged in as a user with the "authenticated user" role
     Then I should see the link "Solutions"
@@ -91,7 +91,7 @@ Feature: Solutions Overview
     And I am on the homepage
     Then I should see the link "Solutions"
     And I click "Solutions"
-    Then I should see the text "A solution on Joinup is a framework, tool, or service"
+    Then I should see the text "A solution is a framework, tool, or service that is offered as a solution to one of the COVID-19 challenges."
     And the page should be cacheable
 
     # Access the page as a moderator to ensure proper caching.

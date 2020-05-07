@@ -10,15 +10,15 @@ Feature: Tours
     Then a tour <expectation> available
 
     Examples:
-      | path             | expectation   |
-      | /                | should be     |
-      | /keep-up-to-date | should be     |
-      | /collections     | should not be |
-      | /solutions       | should not be |
+      | path        | expectation   |
+      | /           | should be     |
+      | /latest     | should be     |
+      | /challenges | should not be |
+      | /solutions  | should not be |
       # Recheck some URLs to ensure that cache contexts are working.
-      | /                | should be     |
-      | /solutions       | should not be |
-      | /keep-up-to-date | should be     |
+      | /           | should be     |
+      | /solutions  | should not be |
+      | /latest     | should be     |
 
   Scenario Outline: Various user roles can access tours
     Given I am logged in as an "authenticated user"
@@ -27,12 +27,12 @@ Feature: Tours
     Then a tour <expectation> available
 
     Examples:
-      | path             | expectation   |
-      | /                | should be     |
-      | /keep-up-to-date | should be     |
-      | /collections     | should not be |
-      | /solutions       | should not be |
+      | path        | expectation   |
+      | /           | should be     |
+      | /latest     | should be     |
+      | /challenges | should not be |
+      | /solutions  | should not be |
       # Recheck some URLs to ensure that cache contexts are working.
-      | /                | should be     |
-      | /solutions       | should not be |
-      | /keep-up-to-date | should be     |
+      | /           | should be     |
+      | /solutions  | should not be |
+      | /latest     | should be     |

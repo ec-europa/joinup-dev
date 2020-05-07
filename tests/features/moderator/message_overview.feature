@@ -22,7 +22,7 @@ Feature: Solutions message overview
   Scenario: Contact form messages are available in the message overview.
     And I am not logged in
     When I am on the homepage
-    And I click "Contact Joinup Support" in the "Footer" region
+    And I click "Contact Us" in the "Footer" region
     Then I should see the heading "Contact"
 
     When I fill in the following:
@@ -72,12 +72,12 @@ Feature: Solutions message overview
     And I click "Reporting" in the "Administration toolbar" region
     And I click "Messages overview"
     Then I should see the following lines of text:
-      | User proposed collection Message overview proposal                                 |
-      | has proposed collection "Message overview proposal".                               |
+      | User proposed challenge Message overview proposal                                 |
+      | has proposed challenge "Message overview proposal".                               |
       | To approve or reject this proposal, please go to                                   |
       | You'll be able to provide feedback.                                                |
       | The requestor will be notified of your decision and feedback.                      |
-      | If you think this action is not clear or not due, please contact Joinup Support at |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at |
 
     # Clean up the collection that was created.
     Then I delete the "Message overview proposal" collection

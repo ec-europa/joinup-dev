@@ -1,7 +1,7 @@
 @api @email @group-a
-Feature: Pinning entities inside collections
-  As a facilitator of a collection
-  I want to pin entities at the top of the collection homepage
+Feature: Pinning entities inside challenges
+  As a facilitator of a challenge
+  I want to pin entities at the top of the challenge homepage
   So that important entities has more visibility
 
   Background:
@@ -26,7 +26,7 @@ Feature: Pinning entities inside collections
       | Cloudy Beam   | Andy Cross      | facilitator |
       | Cloudy Beam   | Xanthia Gilbert |             |
 
-  Scenario Outline: Facilitators can pin and unpin community content inside their collections.
+  Scenario Outline: Facilitators can pin and unpin community content inside their challenges.
     Given discussion content:
       | title                       | collection    | state     |
       | What is the HEX for orange? | Orange Wrench | validated |
@@ -203,7 +203,7 @@ Feature: Pinning entities inside collections
     And I should not see the contextual links "Pin, Unpin" in the "Orange estimator" tile
 
   @javascript
-  Scenario Outline: Pinned content tiles should show a visual cue only in their collection homepage.
+  Scenario Outline: Pinned content tiles should show a visual cue only in their challenge homepage.
     Given <content type> content:
       | title         | collection    | state     | pinned | shared on   |
       | Lantern FAQs  | Orange Wrench | validated | yes    | Cloudy Beam |

@@ -513,7 +513,7 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
     $emails = [];
 
     foreach (self::MESSAGE_INTERVALS as $interval) {
-      $emails = array_merge($emails, $this->getEmailsBySubjectAndMail("Joinup: $interval digest message", $email_address, FALSE));
+      $emails = array_merge($emails, $this->getEmailsBySubjectAndMail("COVID-19 Challenge: $interval digest message", $email_address, FALSE));
     }
 
     return $emails;

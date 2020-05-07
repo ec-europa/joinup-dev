@@ -77,11 +77,11 @@ Feature: Notification test for the collection transitions.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "NC for all"
     And I press "Propose"
-    Then the email sent to "NC moderator" with subject "User NC proposed collection NC proposed new" contains the following lines of text:
-      | text                                                                               |
-      | NC User has proposed collection "NC proposed new".                                 |
-      | To approve or reject this proposal, please go to                                   |
-      | If you think this action is not clear or not due, please contact Joinup Support at |
+    Then the email sent to "NC moderator" with subject "User NC proposed challenge NC proposed new" contains the following lines of text:
+      | text                                                                                        |
+      | NC User has proposed challenge "NC proposed new".                                           |
+      | To approve or reject this proposal, please go to                                            |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at |
 
     # Clean up the manually created entities.
     Then I delete the "NC proposed new" collection
@@ -93,33 +93,33 @@ Feature: Notification test for the collection transitions.
     And I go to the homepage of the "NC to propose" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
-    Then the email sent to "NC moderator" with subject "User NC proposed collection NC to propose" contains the following lines of text:
-      | text                                                                               |
-      | NC Owner has proposed collection "NC to propose".                                  |
-      | To approve or reject this proposal, please go to                                   |
-      | If you think this action is not clear or not due, please contact Joinup Support at |
+    Then the email sent to "NC moderator" with subject "User NC proposed challenge NC to propose" contains the following lines of text:
+      | text                                                                                        |
+      | NC Owner has proposed challenge "NC to propose".                                            |
+      | To approve or reject this proposal, please go to                                            |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at |
 
     # Test 'request archival' operation.
     When all e-mails have been sent
     And I go to the homepage of the "NC to request archival" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Request archival"
-    Then the email sent to "NC moderator" with subject "User NC requested to archive collection NC to request archival" contains the following lines of text:
-      | text                                                                               |
-      | NC Owner has requested to archive the collection "NC to request archival".         |
-      | To approve or reject this request, please go to                                    |
-      | If you think this action is not clear or not due, please contact Joinup Support at |
+    Then the email sent to "NC moderator" with subject "User NC requested to archive challenge NC to request archival" contains the following lines of text:
+      | text                                                                                        |
+      | NC Owner has requested to archive the challenge "NC to request archival".                   |
+      | To approve or reject this request, please go to                                             |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at |
 
     # Test 'request deletion' operation.
     When all e-mails have been sent
     And I go to the homepage of the "NC to request deletion" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Request deletion"
-    Then the email sent to "NC moderator" with subject "User NC requested to delete collection NC to request deletion" contains the following lines of text:
-      | text                                                                               |
-      | NC Owner has requested to delete the collection "NC to request deletion".          |
-      | To approve or reject this request, please go to                                    |
-      | If you think this action is not clear or not due, please contact Joinup Support at |
+    Then the email sent to "NC moderator" with subject "User NC requested to delete challenge NC to request deletion" contains the following lines of text:
+      | text                                                                                        |
+      | NC Owner has requested to delete the challenge "NC to request deletion".                    |
+      | To approve or reject this request, please go to                                             |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at |
 
     # Test 'propose edit' operation.
     When all e-mails have been sent
@@ -128,14 +128,14 @@ Feature: Notification test for the collection transitions.
     And I click "Edit" in the "Entity actions" region
     And I fill in "Title" with "NC to propose edit proposed"
     And I press "Propose"
-    Then the email sent to "NC moderator" with subject "User NC proposed to edit collection NC to propose edit proposed" contains the following lines of text:
-      | text                                                                          |
-      | NC Facilitator has proposed to edit collection "NC to propose edit proposed". |
-      | To approve or reject this proposal, please go to                              |
-    And the email sent to "NC owner" with subject "User NC proposed to edit collection NC to propose edit proposed" contains the following lines of text:
-      | text                                                                          |
-      | NC Facilitator has proposed to edit collection "NC to propose edit proposed". |
-      | To modify your collection, please go to                                       |
+    Then the email sent to "NC moderator" with subject "User NC proposed to edit challenge NC to propose edit proposed" contains the following lines of text:
+      | text                                                                         |
+      | NC Facilitator has proposed to edit challenge "NC to propose edit proposed". |
+      | To approve or reject this proposal, please go to                             |
+    And the email sent to "NC owner" with subject "User NC proposed to edit challenge NC to propose edit proposed" contains the following lines of text:
+      | text                                                                         |
+      | NC Facilitator has proposed to edit challenge "NC to propose edit proposed". |
+      | To modify your challenge, please go to                                       |
 
     # Test the 'approve new' operation.
     When all e-mails have been sent
@@ -144,19 +144,19 @@ Feature: Notification test for the collection transitions.
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | NC owner                                                                          |
-      | subject   | Your proposal of collection NC to validate has been approved                      |
-      | body      | Your proposed collection "NC to validate" has been validated as per your request. |
+      | recipient | NC owner                                                                         |
+      | subject   | Your proposal of challenge NC to validate has been approved                      |
+      | body      | Your proposed challenge "NC to validate" has been validated as per your request. |
 
     # Test the 'approve proposed' that was proposed through the 'propose edit' operation.
     When all e-mails have been sent
     And I go to the homepage of the "NC to propose edit proposed" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
-    Then the email sent to "NC owner" with subject "Your request to edit collection NC to propose edit proposed has been approved." contains the following lines of text:
-      | text                                                                                  |
-      | Your proposal to edit the collection "NC to propose edit proposed" has been accepted. |
-      | You can verify the edited version of the collection at                                |
+    Then the email sent to "NC owner" with subject "Your request to edit challenge NC to propose edit proposed has been approved." contains the following lines of text:
+      | text                                                                                 |
+      | Your proposal to edit the challenge "NC to propose edit proposed" has been accepted. |
+      | You can verify the edited version of the challenge at                                |
 
     # Test the 'reject archival' operation.
     When all e-mails have been sent
@@ -167,10 +167,10 @@ Feature: Notification test for the collection transitions.
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "It will not be archived."
     And I press "Publish"
-    Then the email sent to "NC owner" with subject "Your request to archive collection NC to reject archival has been rejected" contains the following lines of text:
-      | text                                                                                      |
-      | NC Moderator has rejected your request to archive the collection "NC to reject archival". |
-      | The reason for rejection is: It will not be archived.                                     |
+    Then the email sent to "NC owner" with subject "Your request to archive challenge NC to reject archival has been rejected" contains the following lines of text:
+      | text                                                                                     |
+      | NC Moderator has rejected your request to archive the challenge "NC to reject archival". |
+      | The reason for rejection is: It will not be archived.                                    |
 
     # Test the 'reject deletion' operation.
     When all e-mails have been sent
@@ -181,10 +181,10 @@ Feature: Notification test for the collection transitions.
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "It will not be deleted."
     And I press "Publish"
-    Then the email sent to "NC owner" with subject "Your request to delete collection NC to reject deletion has been rejected" contains the following lines of text:
-      | text                                                                                     |
-      | NC Moderator has rejected your request to delete the collection "NC to reject deletion". |
-      | The reason for rejection is: It will not be deleted.                                     |
+    Then the email sent to "NC owner" with subject "Your request to delete challenge NC to reject deletion has been rejected" contains the following lines of text:
+      | text                                                                                    |
+      | NC Moderator has rejected your request to delete the challenge "NC to reject deletion". |
+      | The reason for rejection is: It will not be deleted.                                    |
 
     # Test the 'archive' operation.
     When all e-mails have been sent
@@ -195,25 +195,25 @@ Feature: Notification test for the collection transitions.
     When I fill in "Motivation" with "As you wish."
     And I press "Archive"
     Then the following email should have been sent:
-      | recipient | NC owner                                                              |
-      | subject   | Your request to archive collection NC to archive has been approved.   |
-      | body      | The collection "NC to archive" has been archived as per your request. |
+      | recipient | NC owner                                                             |
+      | subject   | Your request to archive challenge NC to archive has been approved.   |
+      | body      | The challenge "NC to archive" has been archived as per your request. |
     And the following email should have been sent:
-      | recipient | NCS owner                                                                                                                                                                                                                                         |
-      | subject   | The collection NC to archive was archived. Your solution was affiliated only to the collection NC to archive, and as a consequence, your solution is not currently affiliated to any other collection. Please verify and take appropriate action. |
-      | body      | Since your solution "NC Solution1" was affiliated only with this archived collection, your solution is currently no longer affiliated to any other collection.                                                                                    |
+      | recipient | NCS owner                                                                                                                                                                                                                                      |
+      | subject   | The challenge NC to archive was archived. Your solution was affiliated only to the challenge NC to archive, and as a consequence, your solution is not currently affiliated to any other challenge. Please verify and take appropriate action. |
+      | body      | Since your solution "NC Solution1" was affiliated only with this archived challenge, your solution is currently no longer affiliated to any other challenge.                                                                                   |
     And the following email should have been sent:
-      | recipient | NCS owner                                                                                                                                                       |
-      | subject   | The collection NC to archive was archived                                                                                                                       |
-      | body      | The "NC to archive" collection, to which your "NC Solution2" solution was affiliated, was recently archived. Please verify the updated details of your solution |
+      | recipient | NCS owner                                                                                                                                                      |
+      | subject   | The challenge NC to archive was archived                                                                                                                       |
+      | body      | The "NC to archive" challenge, to which your "NC Solution2" solution was affiliated, was recently archived. Please verify the updated details of your solution |
     And the following email should have been sent:
-      | recipient | NC member1                                                                                                                   |
-      | subject   | The collection NC to archive was archived.                                                                                   |
-      | body      | The collection "NC to archive", of which you are a member, has been archived. The reason for being archived is: As you wish. |
+      | recipient | NC member1                                                                                                                  |
+      | subject   | The challenge NC to archive was archived.                                                                                   |
+      | body      | The challenge "NC to archive", of which you are a member, has been archived. The reason for being archived is: As you wish. |
     And the following email should have been sent:
-      | recipient | NC member2                                                                                                                   |
-      | subject   | The collection NC to archive was archived.                                                                                   |
-      | body      | The collection "NC to archive", of which you are a member, has been archived. The reason for being archived is: As you wish. |
+      | recipient | NC member2                                                                                                                  |
+      | subject   | The challenge NC to archive was archived.                                                                                   |
+      | body      | The challenge "NC to archive", of which you are a member, has been archived. The reason for being archived is: As you wish. |
 
     # Test the 'delete' operation.
     When all e-mails have been sent
@@ -222,14 +222,14 @@ Feature: Notification test for the collection transitions.
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | NC owner                                                            |
-      | subject   | Your request to delete collection NC to delete has been approved.   |
-      | body      | The collection "NC to delete" has been deleted as per your request. |
+      | recipient | NC owner                                                           |
+      | subject   | Your request to delete challenge NC to delete has been approved.   |
+      | body      | The challenge "NC to delete" has been deleted as per your request. |
     And the following email should have been sent:
-      | recipient | NC member1                                                                  |
-      | subject   | The collection NC to delete was deleted.                                    |
-      | body      | The collection "NC to delete", of which you are a member, has been deleted. |
+      | recipient | NC member1                                                                 |
+      | subject   | The challenge NC to delete was deleted.                                    |
+      | body      | The challenge "NC to delete", of which you are a member, has been deleted. |
     And the following email should have been sent:
-      | recipient | NC member2                                                                  |
-      | subject   | The collection NC to delete was deleted.                                    |
-      | body      | The collection "NC to delete", of which you are a member, has been deleted. |
+      | recipient | NC member2                                                                 |
+      | subject   | The challenge NC to delete was deleted.                                    |
+      | body      | The challenge "NC to delete", of which you are a member, has been deleted. |
