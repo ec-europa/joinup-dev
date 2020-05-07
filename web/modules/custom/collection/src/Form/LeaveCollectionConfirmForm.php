@@ -114,7 +114,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
       if ($membership->hasRole($admin_role_id)) {
         $administrators = $this->membershipManager->getGroupMembershipsByRoleNames($this->collection, ['administrator']);
         if (count($administrators) === 1 && $user->id() === $membership->getOwnerId()) {
-          $form['description']['#markup'] = $this->t('You are owner of this collection. Before you leave this challenge, you should transfer the ownership to another member.');
+          $form['description']['#markup'] = $this->t('You are owner of this challenge. Before you leave this challenge, you should transfer the ownership to another member.');
           $form['actions']['submit']['#access'] = FALSE;
         }
       }
@@ -157,7 +157,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
     }
 
     if (!$this->membershipManager->isMember($this->collection, $user->id())) {
-      $form_state->setErrorByName('collection', $this->t('You are not a member of this collection. You cannot leave it.'));
+        $form_state->setErrorByName('collection', $this->t('You are not a member of this challenge. You cannot leave it.'));
     }
   }
 
