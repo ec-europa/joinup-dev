@@ -40,9 +40,10 @@ function custom_page_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
  *   the content of the new custom page.
  */
 function custom_page_node_insert(EntityInterface $entity) {
-  if ($entity->bundle() === 'custom_page') {
-    \Drupal::service('custom_page.og_menu_links_manager')->addLink($entity);
+  if ($entity->bundle() !== 'custom_page') {
+    return;
   }
+  \Drupal::service('custom_page.og_menu_links_manager')->addLink($entity);
 
   // The content of custom pages is included in the search index of their
   // collections and solutions, so that the parent group can be found when
