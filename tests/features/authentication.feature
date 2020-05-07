@@ -9,11 +9,11 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path                |
-      | collections         |
-      | user/login          |
-      | user/password       |
-      | user/register       |
+      | path          |
+      | challenges    |
+      | user/login    |
+      | user/password |
+      | user/register |
 
   Scenario Outline: Anonymous user cannot access restricted pages
     Given I am not logged in
@@ -48,8 +48,7 @@ Feature: User authentication
       | node/add/document                                              |
       | node/add/event                                                 |
       | node/add/news                                                  |
-      | propose/collection                                             |
-      | propose/solution                                               |
+      | propose/challenge                                              |
       | rdf_entity/add                                                 |
       | rdf_entity/add/asset_distribution                              |
       | rdf_entity/add/asset_release                                   |
@@ -76,8 +75,8 @@ Feature: User authentication
 
     Examples:
       | path               |
-      | collections        |
-      | propose/collection |
+      | challenges         |
+      | propose/challenge  |
       | user               |
       | user/subscriptions |
 
@@ -105,7 +104,6 @@ Feature: User authentication
       | admin/structure                                                |
       | admin/structure/views                                          |
       | dashboard                                                      |
-      | propose/solution                                               |
       | licence                                                        |
       | licence/add                                                    |
       | node                                                           |
@@ -155,7 +153,7 @@ Feature: User authentication
       | dashboard                                                      |
       | licence                                                        |
       | licence/add                                                    |
-      | propose/collection                                             |
+      | propose/challenge                                              |
 
   @api
   Scenario Outline: Moderator cannot access restricted pages
@@ -171,7 +169,6 @@ Feature: User authentication
       | admin/content                      |
       | admin/structure                    |
       | admin/structure/views              |
-      | propose/solution                   |
       | node                               |
       | node/add                           |
       | node/add/custom_page               |
@@ -198,7 +195,7 @@ Feature: User authentication
       | admin/config/search/redirect               |
       | admin/reporting/distribution-downloads     |
       | admin/reporting/distribution-downloads/csv |
-      | collections                                |
+      | challenges                                 |
 
   @api
   Scenario Outline: Administrator cannot access pages intended for site building and development

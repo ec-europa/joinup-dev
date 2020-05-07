@@ -39,6 +39,12 @@ function joinup_group_tokens(string $type, array $tokens, array $data, array $op
 
   /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
   $rdf_entity = $data['rdf_entity'];
+  if (isset($tokens['bundle_singular'])) {
+    $original = $tokens['bundle_singular'];
+    $bubbleable_metadata->addCacheableDependency($rdf_entity);
+    $replacements[$original] = $rdf_entity->{$rdf_entity->getEntityType()->getKey('bundle')}->entity->getSingularLabel();
+  }
+
   $bundles = ['solution', 'asset_release', 'asset_distribution'];
   if (!in_array($rdf_entity->bundle(), $bundles)) {
     return $replacements;

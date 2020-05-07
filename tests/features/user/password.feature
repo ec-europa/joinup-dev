@@ -45,7 +45,7 @@ Feature: Password management
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
 
-  @email
+  @wip @email
   Scenario: A user can request a one-time-login link.
     When I am an anonymous user
     And all e-mails have been sent
@@ -66,6 +66,6 @@ Feature: Password management
     And I fill in "Confirm password" with "1qazxsw@"
     And I press "Save"
     Then the following email should have been sent:
-      | recipient | Charlie Change                                      |
-      | subject   | Your password has been changed                      |
-      | body      | Your Joinup password has been successfully changed. |
+      | recipient | Charlie Change                                                  |
+      | subject   | Your password has been changed                                  |
+      | body      | Your COVID-19 Challenge password has been successfully changed. |

@@ -74,7 +74,7 @@ Feature: Featuring content site-wide
     # Content should be marked as featured only in "global" pages.
     But the "Ionizing radiation types" <content type> tile should not be marked as featured
 
-    When I click "Keep up to date" in the "Header menu" region
+    When I click "Latest" in the "Header menu" region
     Then the "Ionizing radiation types" tile should be marked as featured
 
     When I click the contextual link "Remove from featured" in the "Ionizing radiation types" tile
@@ -137,6 +137,6 @@ Feature: Featuring content site-wide
     And the "<unfeatured>" <content type> tile should not be marked as featured
 
     Examples:
-      | header link | featured                      | unfeatured                  | label      | content type |
-      | Collections | Tidy Neutron                  | Reborn Eternal Gamma        | Collection | collection   |
-      | Solutions   | Opensource neutron generators | Gamma-sensible spectroscopy | Solution   | solution     |
+      | header link | featured                      | unfeatured                  | label     | content type |
+      | Challenges  | Tidy Neutron                  | Reborn Eternal Gamma        | Challenge | collection   |
+      | Solutions   | Opensource neutron generators | Gamma-sensible spectroscopy | Solution  | solution     |

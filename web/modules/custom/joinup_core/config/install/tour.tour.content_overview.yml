@@ -10,7 +10,7 @@ tips:
   content:
     id: content
     plugin: text
-    body: 'The content area displays Joinup events, documents, news, and discussions that have been created or updated recently.'
+    body: 'The content area displays COVID-19 Challenge events, documents, news, and discussions that have been created or updated recently.'
     weight: 1
     location: left
     attributes:
@@ -26,7 +26,7 @@ tips:
   search:
     id: search
     plugin: text
-    body: 'Search through the entire Joinup platform and its supported content items.'
+    body: 'Search through the entire COVID-19 Challenge platform and its supported content items.'
     weight: 3
     location: left
     attributes:

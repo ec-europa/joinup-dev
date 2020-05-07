@@ -35,14 +35,14 @@ Feature: Collection homepage
     Then I see the text "3 Members" in the "Header" region
     When I am logged in as "Some goblin"
     And I go to the homepage of the "Under the mountain" collection
-    And I press the "Join this collection" button
+    And I press the "Join this challenge" button
     And I go to the homepage of the "Under the mountain" collection
     Then I see the text "4 Members" in the "Header" region
     And I click "Members" in the "Left sidebar"
     Then the "Roles" field should contain the "- Any - (4)" option
 
     # Ensure that leaving a collection, updates the counters.
-    When I click "Leave this collection"
+    When I click "Leave this challenge"
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Under the mountain."
     Then I see the text "3 Members" in the "Header" region
@@ -54,7 +54,7 @@ Feature: Collection homepage
     Then I see the text "3 Members" in the "Header" region
     When I am logged in as "Some goblin"
     And I go to the homepage of the "Exactly the same collection, but closed" collection
-    And I press the "Join this collection" button
+    And I press the "Join this challenge" button
     And I go to the homepage of the "Exactly the same collection, but closed" collection
     Then I see the text "3 Members" in the "Header" region
     And I click "Members" in the "Left sidebar"

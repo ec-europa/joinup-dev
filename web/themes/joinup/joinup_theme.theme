@@ -1658,8 +1658,10 @@ function joinup_theme_preprocess_rdf_entity(&$variables) {
 
   // Add bundle class in listing templates.
   if ($variables['view_mode'] == 'view_mode_tile' || $variables['view_mode'] == 'view_mode_featured') {
-    $bundle_class = 'listing__card--' . str_replace('_', '-', $variables['rdf_entity']->bundle());
+    $rdf_entity = $variables['rdf_entity'];
+    $bundle_class = 'listing__card--' . str_replace('_', '-', $rdf_entity->bundle());
     $variables['attributes']['class'][] = $bundle_class;
+    $variables['bundle_singular_label'] = $rdf_entity->rid->entity->getSingularLabel();
   }
 }
 

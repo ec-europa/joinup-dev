@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_eulogin\Event\Subscriber;
+namespace Drupal\joinup_eulogin_account_link\Event\Subscriber;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -67,7 +67,7 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
         '#suffix' => '</p>',
       ],
       [
-        '#markup' => $this->t('If you are the owner of this account please select the first option, otherwise contact the <a href=":contact">Joinup support</a>.', [
+        '#markup' => $this->t('If you are the owner of this account please select the first option, otherwise contact the <a href=":contact">COVID-19 Challenge support</a>.', [
           ':contact' => Url::fromRoute('contact_form.contact_page')->toString(),
         ]),
         '#prefix' => '<p>',

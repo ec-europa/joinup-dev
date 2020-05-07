@@ -34,11 +34,11 @@ Feature: Unsubscribe from collections
       | Koon's hideout       | discussion, document, event, news |
 
     When I click "Unsubscribe from all"
-    Then I should see the heading "Unsubscribe from all collections"
+    Then I should see the heading "Unsubscribe from all challenges"
     And I should see the following lines of text:
-      | Are you sure you want to unsubscribe from all collections?                                         |
-      | You will stop receiving news and updates from all collections (including the pending memberships). |
-      | In the future you will not be notified for the following collections:                              |
+      | Are you sure you want to unsubscribe from all challenges?                                         |
+      | You will stop receiving news and updates from all challenges (including the pending memberships). |
+      | In the future you will not be notified for the following challenges:                              |
       | Southpark elementary                                                                               |
       | Kenny's house                                                                                      |
       | Koon's hideout                                                                                     |
@@ -49,7 +49,7 @@ Feature: Unsubscribe from collections
     # Checks partially the success messages so it can work like the step that asserts 'lines of text' above.
     Then I should see the following success messages:
       | Success messages                                                          |
-      | You will no longer receive notifications for the following 3 collections: |
+      | You will no longer receive notifications for the following 3 challenges: |
       | Southpark elementary                                                      |
       | Kenny's house                                                             |
       | Koon's hideout                                                            |

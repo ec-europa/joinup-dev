@@ -120,7 +120,7 @@ class MySubscriptionsForm extends FormBase {
 
     // Return early if there are no memberships to display.
     if (!(bool) count($memberships)) {
-      $empty_message = $this->t('No collection memberships yet. Join one or more collections to subscribe to their content!');
+      $empty_message = $this->t('No challenge memberships yet. Join one or more challenges to subscribe to their content!');
       $form['empty_text'] = [
         '#theme' => 'status_messages',
         '#message_list' => ['status' => [$empty_message]],

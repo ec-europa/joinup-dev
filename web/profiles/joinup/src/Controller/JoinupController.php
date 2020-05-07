@@ -6,7 +6,6 @@ namespace Drupal\joinup\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\rdf_entity\RdfEntityTypeInterface;
 
 /**
  * Provides route responses for Joinup.
@@ -18,20 +17,17 @@ class JoinupController extends ControllerBase {
    *
    * This is used for the propose form of collections.
    *
-   * @param \Drupal\rdf_entity\RdfEntityTypeInterface $rdf_type
-   *   The RDF bundle entity for which to generate the propose form.
-   *
    * @return array
    *   A render array for the propose form.
    */
-  public function proposeRdfEntity(RdfEntityTypeInterface $rdf_type) {
+  public function proposeRdfEntity() {
     $rdf_entity = $this->entityTypeManager()->getStorage('rdf_entity')->create([
-      'rid' => $rdf_type->id(),
+      'rid' => 'collection',
     ]);
 
     $form = $this->entityFormBuilder()->getForm($rdf_entity, 'propose');
     $form['#title'] = $this->t('Propose @type', [
-      '@type' => mb_strtolower($rdf_type->label()),
+      '@type' => mb_strtolower($rdf_entity->rid->entity->getSingularLabel()),
     ]);
     return $form;
   }
@@ -39,17 +35,11 @@ class JoinupController extends ControllerBase {
   /**
    * Handles access to the rdf_entity proposal form.
    *
-   * @param \Drupal\rdf_entity\RdfEntityTypeInterface $rdf_type
-   *   The RDF entity type for which the proposal form is built.
-   *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createAssetReleaseAccess(RdfEntityTypeInterface $rdf_type) {
-    if ($rdf_type->id() !== 'collection') {
-      return AccessResult::forbidden();
-    }
-    return AccessResult::allowedIf($this->currentUser()->hasPermission("propose {$rdf_type->id()} rdf entity"));
+  public function createAccess() {
+    return AccessResult::allowedIf($this->currentUser()->hasPermission("propose collection rdf entity"));
   }
 
   /**

@@ -29,30 +29,30 @@ Feature: Deletion of collection and solution owners
     And I select "Delete the selected membership(s)" from "Action"
     When I press "Apply to selected items"
 
-    Then I should see the error message "You cannot delete the owner of a <type>."
+    Then I should see the error message "You cannot delete the owner of a <singular label>."
 
     # Deleting owners when at least one remains is still possible.
     Given I deselect the "Group owner 1" row
     When I press "Apply to selected items"
     And I press "Confirm"
 
-    Then I should see the success message "The member Group owner 2 has been deleted from the 'An owned group' <type>."
+    Then I should see the success message "The member Group owner 2 has been deleted from the 'An owned group' <singular label>."
 
     # Action is properly interrupted even if other memberships are about to be deleted.
     Given I select the "Group owner 1" row
     And I select the "Group member" row
     And I select "Delete the selected membership(s)" from "Action"
     When I press "Apply to selected items"
-    Then I should see the error message "You cannot delete the owner of a <type>."
+    Then I should see the error message "You cannot delete the owner of a <singular label>."
 
     # Normal memberships can be deleted without an issue.
     Given I deselect the "Group owner 1" row
     And I select "Delete the selected membership(s)" from "Action"
     When I press "Apply to selected items"
     And I press "Confirm"
-    Then I should see the success message "The member Group member has been deleted from the 'An owned group' <type>."
+    Then I should see the success message "The member Group member has been deleted from the 'An owned group' <singular label>."
 
     Examples:
-      | type       |
-      | collection |
-      | solution   |
+      | type       | singular label |
+      | collection | challenge      |
+      | solution   | solution       |

@@ -28,21 +28,21 @@ Feature: Site menus
       | Firecrakers list | Check the list first. | Hungry Firecracker | validated |
 
     When I am on the homepage
-    And I click "Contact Joinup Support" in the Footer region
+    And I click "Contact Us" in the Footer region
     Then no menu items should be active in the "Header menu" menu
 
     # Collections menu item should be active when visiting a collection homepage.
-    When I click "Collections" in the "Header menu" region
-    Then "Collections" should be the active item in the "Header menu" menu
+    When I click "Challenges" in the "Header menu" region
+    Then "Challenges" should be the active item in the "Header menu" menu
     When I click "Hungry Firecracker"
-    Then "Collections" should be the active item in the "Header menu" menu
+    Then "Challenges" should be the active item in the "Header menu" menu
     # Collections menu item stays active inside collection content.
     When I click "Firecrakers list"
-    Then "Collections" should be the active item in the "Header menu" menu
+    Then "Challenges" should be the active item in the "Header menu" menu
     # Go back to the homepage of the collection to check another content.
     When I click "Hungry Firecracker" in the "Header" region
     And I click "Purple firecraker powder price raise"
-    Then "Collections" should be the active item in the "Header menu" menu
+    Then "Challenges" should be the active item in the "Header menu" menu
 
     # Go back again to the collection homepage and click the solution tile.
     When I click "Hungry Firecracker" in the "Header" region

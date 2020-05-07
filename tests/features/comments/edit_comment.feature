@@ -26,7 +26,7 @@ Feature: Edit a comment
     And I fill in "Create comment" with "Cracking the web."
     And I wait for the spam protection time limit to pass
     And I press "Post comment"
-    Then the email sent to "Comment edit moderator" with subject "Joinup: A comment has been updated." contains the following lines of text:
+    Then the email sent to "Comment edit moderator" with subject "COVID-19 Challenge: A comment has been updated." contains the following lines of text:
       | text                                                                               |
       | Sons Anarchy updated the comment in "Paying with cash".                            |
-      | If you think this action is not clear or not due, please contact Joinup Support at |
+      | If you think this action is not clear or not due, please contact Covid Challenge Support at |

@@ -114,7 +114,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
       if ($membership->hasRole($admin_role_id)) {
         $administrators = $this->membershipManager->getGroupMembershipsByRoleNames($this->collection, ['administrator']);
         if (count($administrators) === 1 && $user->id() === $membership->getOwnerId()) {
-          $form['description']['#markup'] = $this->t('You are owner of this collection. Before you leave this collection, you should transfer the ownership to another member.');
+          $form['description']['#markup'] = $this->t('You are owner of this collection. Before you leave this challenge, you should transfer the ownership to another member.');
           $form['actions']['submit']['#access'] = FALSE;
         }
       }

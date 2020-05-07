@@ -48,5 +48,5 @@ Feature: Delete comments
     Then I press "Delete"
     Then the following email should have been sent:
       | recipient | Tim Berners Lee                                                                                                                                                  |
-      | subject   | Joinup: Your comment has been deleted.                                                                                                                            |
+      | subject   | COVID-19 Challenge: Your comment has been deleted.                                                                                                                            |
       | body      | Do Re Mi Facilitator deleted your comment in "RDF Schemas for government use".To avoid comment moderation in the future, please read our community guidelines at |

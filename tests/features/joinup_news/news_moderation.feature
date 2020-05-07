@@ -189,7 +189,7 @@ Feature: News moderation.
     Then I should not see the success message "News <em>Cheetah kills WonderWoman</em> has been created."
     And I should see the heading "Cheetah kills WonderWoman"
     And the "Cheetah kills WonderWoman" news content should not be published
-    And I should see the text "Collection"
+    And I should see the text "Challenge"
     And I should see the text "Legion of Doom"
     When I go to the "Cheetah kills WonderWoman" news
     Then I should see the link "Edit"

@@ -32,7 +32,7 @@ Feature: Group administrators report
 
     And I am logged in as a moderator
     And I click "Reporting" in the "Administration toolbar" region
-    And I click "Collection administrators"
+    And I click "Challenge administrators"
 
     Then the "collection administrator report" table should be:
       | Collection         | User name         | E-mail                       | Role          |

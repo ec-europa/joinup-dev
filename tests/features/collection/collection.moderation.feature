@@ -151,11 +151,11 @@ Feature: Collection moderation
       | policy domain       | Supplier exchange  |
       | state               | proposed           |
     When I am on the homepage
-    And I click "Collections"
+    And I click "Challenges"
     Then I should not see the heading "Some berry pie"
     When I am logged in as a moderator
     And I am on the homepage
-    And I click "Collections"
+    And I click "Challenges"
     Then I should not see the text "Some berry pie"
 
     When I go to my dashboard
@@ -167,7 +167,7 @@ Feature: Collection moderation
     Then I should see the heading "No berry pie"
 
     When I am on the homepage
-    And I click "Collections"
+    And I click "Challenges"
     Then I should see the text "No berry pie"
     And I should not see the text "Some berry pie"
 

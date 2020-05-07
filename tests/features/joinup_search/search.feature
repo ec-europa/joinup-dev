@@ -92,12 +92,12 @@ Feature: Global search
 
     When I check the "News (1)" checkbox from the "Content types" facet
     Then the "News" content checkbox item should be selected
-    And the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
+    And the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Challenge (1), News (1)"
 
     When I check the "Solutions (2)" checkbox from the "Content types" facet
     Then the "Solutions" content checkbox item should be selected
     And the "News" content checkbox item should be selected
-    Then the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
+    Then the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Challenge (1), News (1)"
     And the "policy domain" select facet should contain the following options:
       | Any policy domain             |
       | Demography   (1)              |

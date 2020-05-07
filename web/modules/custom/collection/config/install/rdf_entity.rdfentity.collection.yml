@@ -1,8 +1,7 @@
 langcode: en
 status: true
 dependencies: {  }
-third_party_settings: {  }
-name: Collection
+name: Challenge
 rid: collection
 description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
 label_singular: challenge

@@ -65,7 +65,7 @@ class MyCollectionsArbitraryFacet extends ArbitraryFacetBase implements Containe
       'featured' => [
         'field_name' => 'site_featured',
         'field_condition' => 'true',
-        'label' => $this->t('Featured collections'),
+        'label' => $this->t('Featured challenges'),
       ],
     ];
 

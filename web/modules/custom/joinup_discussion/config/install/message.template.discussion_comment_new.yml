@@ -7,7 +7,7 @@ template: discussion_comment_new
 label: 'Notify discussion subscribers on new comment'
 description: 'Message sent to subscribers of a discussion when a new comment is posted'
 text:
-  - value: 'Joinup: User @comment:author:username posted a comment in discussion "@entity:title"'
+  - value: 'COVID-19 Challenge: User @comment:author:username posted a comment in discussion "@entity:title"'
     format: full_html
   - value: '<p>@comment:author:username has posted a comment on discussion "@entity:title" in "@group:title" @group:bundle.</p><p>To view the comment, click <a href="@entity:url">@entity:url</a>.</p>'
     format: full_html

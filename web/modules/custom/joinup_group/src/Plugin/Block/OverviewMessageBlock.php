@@ -65,7 +65,7 @@ class OverviewMessageBlock extends BlockBase implements ContainerFactoryPluginIn
     if ($route_name === 'view.solutions.page_1') {
       $build['header_description'] = [
         '#type' => 'inline_template',
-        '#template' => '<p>A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories.</p>',
+        '#template' => '<p>A solution is a framework, tool, or service that is offered as a solution to one of the COVID-19 challenges.</p>',
       ];
     }
     elseif ($route_name === 'view.collections.page_1') {

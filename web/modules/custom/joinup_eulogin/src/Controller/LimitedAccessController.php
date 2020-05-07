@@ -25,7 +25,7 @@ class LimitedAccessController extends ControllerBase {
         '#theme' => 'status_messages',
         '#message_list' => [
           'warning' => [
-            $this->t('<p>Dear @name</p><p>Your account access is limited.<br />Starting from 02/03/2020, signing in to Joinup is handled by <a href=":eulogin_url">EU Login</a>, the European Commission Authentication Service. After you sign-in using EU Login, you will be able to synchronise your existing Joinup account to restore your access.</p>', [
+            $this->t('<p>Dear @name</p><p>Your account access is limited.<br />Starting from 02/03/2020, signing in to COVID-19 Challenge is handled by <a href=":eulogin_url">EU Login</a>, the European Commission Authentication Service. After you sign-in using EU Login, you will be able to synchronise your existing COVID-19 Challenge account to restore your access.</p>', [
               '@name' => $this->currentUser()->getDisplayName(),
               ':eulogin_url' => Url::fromRoute('user.logout', [], ['query' => $this->getRedirectDestination()->getAsArray()])->toString(),
             ]),

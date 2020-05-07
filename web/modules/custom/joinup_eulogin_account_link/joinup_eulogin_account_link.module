@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the Joinup EU Login module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_eulogin_account_link_form_cas_account_link_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if (\Drupal::moduleHandler()->moduleExists('email_registration')) {
+    // Apply the email_registration form alter on sub-form.
+    email_registration_form_user_login_form_alter($form['login'], $form_state);
+
+    // As the login form is a sub-form, we cannot use the validator callback
+    // provided by the 'email_registration' module. Replace the module validator
+    // with our own.
+    $index = array_search('email_registration_user_login_validate', $form['login']['name']['#element_validate']);
+    if ($index !== FALSE) {
+      unset($form['login']['name']['#element_validate']);
+    }
+    $form['login']['name']['#element_validate'][] = 'joinup_eulogin_email_registration_validation';
+
+    // Provide a link to the Drupal password reset form so that users that have
+    // not yet moved to EU Login can still reset their password if they forgot
+    // it.
+    $arguments = [
+      ':passreset-url' => Url::fromRoute('user.pass')->toString(),
+    ];
+    $form['login']['pass']['#description'] = t('Enter the password that accompanies your email address. Lost your COVID-19 Challenge password? You can still <a href=":passreset-url">reset your password</a>.', $arguments);
+  }
+}

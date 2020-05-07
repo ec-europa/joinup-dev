@@ -73,7 +73,7 @@ class CustomPageController extends CommunityContentController {
     return [
       '#markup' => $this->t('Edit navigation menu of the %group @type', [
         '%group' => $ogmenu_instance->label(),
-        '@type' => $group->bundle(),
+        '@type' => $group->rid->entity->getSingularLabel(),
       ]),
       '#allowed_tags' => Xss::getHtmlTagList(),
     ];

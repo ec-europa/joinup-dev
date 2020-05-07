@@ -73,7 +73,7 @@ Feature: My subscriptions
     And I open the account menu
     And I click "My subscriptions"
     Then I should see the heading "My subscriptions"
-    And I should see the text "No collection memberships yet. Join one or more collections to subscribe to their content!"
+    And I should see the text "No challenge memberships yet. Join one or more challenges to subscribe to their content!"
     But I should not see the link "Unsubscribe from all"
     And I should not see the text "Alpha Centauri"
 
@@ -87,7 +87,7 @@ Feature: My subscriptions
     When I go to my subscriptions
 
     # The empty text should not be shown now.
-    Then I should not see the text "No collection memberships yet."
+    Then I should not see the text "No challenge memberships yet."
     And I should not see the link "Unsubscribe from all"
 
     And the following collection content subscriptions should be selected:

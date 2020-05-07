@@ -28,7 +28,8 @@ class RdfDeleteForm extends OriginalForm {
       ]);
     }
 
-    return $this->t('The collection %collection cannot be deleted because it contains the following solutions:', [
+    return $this->t('The :bundle %collection cannot be deleted because it contains the following solutions:', [
+      ':bundle' => $entity->{$entity->getEntityType()->getKey('bundle')}->entity->getSingularLabel(),
       '%collection' => $entity->label(),
     ]);
   }
@@ -42,7 +43,9 @@ class RdfDeleteForm extends OriginalForm {
       return parent::getDescription();
     }
 
-    return $this->t('You can delete your solutions or transfer them to another collection.');
+    return $this->t('You can delete your solutions or transfer them to another :bundle.', [
+      ':bundle' => $entity->{$entity->getEntityType()->getKey('bundle')}->entity->getSingularLabel(),
+    ]);
   }
 
   /**

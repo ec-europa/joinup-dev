@@ -38,7 +38,7 @@ Feature: Homepage feature
 
     # Show new list of content when I join a collection.
     When I go to the homepage of the "Boy of Courage" collection
-    And I press the "Join this collection" button
+    And I press the "Join this challenge" button
     # Navigate to the homepage.
     When I am on the homepage
     Then I should see the "The Danger of the Bridges" tile
@@ -46,7 +46,7 @@ Feature: Homepage feature
 
     # Show new list of content when I leave a collection.
     When I go to the homepage of the "Boy of Courage" collection
-    And I click "Leave this collection"
+    And I click "Leave this challenge"
     And I press the "Confirm" button
     # Navigate to the homepage.
     When I am on the homepage

@@ -4,7 +4,7 @@ dependencies:
   config:
     - rdf_entity.rdfentity.collection
 id: rdf_entity-collection-administrator
-label: 'Collection owner'
+label: 'Challenge owner'
 weight: 2
 # In Joinup the collection owner is not a typical 'group administrator', i.e.
 # they do not have the full set of permissions, so the `is_admin` flag is
