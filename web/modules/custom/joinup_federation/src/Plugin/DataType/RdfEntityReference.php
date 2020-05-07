@@ -10,6 +10,7 @@ use Drupal\Core\TypedData\TraversableTypedDataInterface;
 use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\joinup_federation\StagingCandidateGraphsInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Replacement class for the core 'entity_reference' data type.
@@ -69,10 +70,10 @@ class RdfEntityReference extends EntityReference {
     if (
       // Has a non-empty root.
       !$root->isEmpty()
-      // And the root object is an entity adapter.
-      && $root->getPluginDefinition()['id'] === 'entity'
       // And points to a non-empty entity.
-      && ($host_entity = $root->getValue())
+      && ($host_entity = $root->getEntity())
+      // And the referred entity is an rdf entity.
+      && ($root->getEntity() instanceof RdfInterface)
       // And the entity type is 'rdf_entity'.
       && $host_entity->getEntityTypeId() === 'rdf_entity'
       // And the RDF entity is in 'staging' graph.
