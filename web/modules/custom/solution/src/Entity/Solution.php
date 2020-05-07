@@ -20,12 +20,11 @@ class Solution extends Rdf implements SolutionInterface {
    * {@inheritdoc}
    */
   public function getCollection(): CollectionInterface {
-    /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $audience_field */
-    $audience_field = $this->getFirstItem('collection');
-    if ($audience_field->isEmpty()) {
+    $field_item = $this->getFirstItem('collection');
+    if ($field_item->isEmpty()) {
       throw new MissingCollectionException();
     }
-    return $audience_field->entity;
+    return $field_item->entity;
   }
 
 }
