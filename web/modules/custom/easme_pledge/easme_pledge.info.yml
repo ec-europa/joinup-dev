@@ -1,0 +1,5 @@
+name: EASME Pledge
+type: module
+description: Functionality related to the EASME pledging system.
+core: 8.x
+package: EASME

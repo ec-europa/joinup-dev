@@ -1,0 +1,35 @@
+uuid: a111ef44-1394-43e1-8baa-01e6fb430fee
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.pledge
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    content_editor: content_editor
+    basic_html: '0'
+    eira_format: '0'
+    licence: '0'
+    restricted_html: '0'
+    simple_html: '0'
+    simple_text: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.pledge.body
+field_name: body
+entity_type: node
+bundle: pledge
+label: Description
+description: '(Optional) Provide a description of the offer.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+  required_summary: false
+field_type: text_with_summary

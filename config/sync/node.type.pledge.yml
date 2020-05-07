@@ -1,0 +1,20 @@
+uuid: b820702f-4e2b-401c-b9fd-536da89cab15
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Pledge
+type: pledge
+description: 'A pledge is an offer of assistance, whether that be monetary, collaborative or any other kind.'
+help: ''
+new_revision: true
+preview_mode: 0
+display_submitted: false
+label_singular: null
+label_plural: null
+label_count: null

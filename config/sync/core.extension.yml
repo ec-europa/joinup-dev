@@ -30,6 +30,7 @@ module:
   digital_size_formatter: 0
   dynamic_entity_reference: 0
   dynamic_page_cache: 0
+  easme_pledge: 0
   editor: 0
   editor_file: 0
   eira: 0

@@ -1,0 +1,45 @@
+uuid: 15df9ca0-1507-4e2f-9558-aad40e763043
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.pledge.body
+    - node.type.pledge
+  module:
+    - link
+    - text
+    - user
+id: node.pledge.teaser
+targetEntityType: node
+bundle: pledge
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  report:
+    label: hidden
+    weight: 50
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    region: content
+    third_party_settings: {  }
+    type: link
+hidden:
+  langcode: true
+  published_at: true

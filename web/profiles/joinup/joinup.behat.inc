@@ -748,6 +748,11 @@ class JoinupSubContext extends DrupalSubContextBase {
         'state' => 'field_state',
         'publication date' => 'published_at',
       ],
+      'pledge' => [
+        'description' => 'body',
+        'state' => 'field_state',
+        'type of contribution' => 'field_pledge_contribution_type',
+      ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,

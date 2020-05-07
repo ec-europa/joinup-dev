@@ -1,0 +1,43 @@
+uuid: a712909a-7a5c-43e0-a958-cf9e7fc4482d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.pledge.body
+    - node.type.pledge
+  module:
+    - link
+    - text
+    - user
+id: node.pledge.default
+targetEntityType: node
+bundle: pledge
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  report:
+    label: hidden
+    weight: 50
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    region: content
+    third_party_settings: {  }
+    type: link
+hidden:
+  langcode: true
+  published_at: true

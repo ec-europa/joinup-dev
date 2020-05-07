@@ -1,0 +1,11 @@
+uuid: 4b229fa9-a2eb-43a6-ad4a-8954544f8c5d
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.pledge
+id: node.pledge
+target_entity_type_id: node
+target_bundle: pledge
+default_langcode: site_default
+language_alterable: false

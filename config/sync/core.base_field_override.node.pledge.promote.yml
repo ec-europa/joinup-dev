@@ -1,0 +1,22 @@
+uuid: 5be4f72a-1f57-4a63-ba9f-79cae7e1400d
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.pledge
+id: node.pledge.promote
+field_name: promote
+entity_type: node
+bundle: pledge
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
