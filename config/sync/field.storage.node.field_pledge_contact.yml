@@ -1,0 +1,20 @@
+uuid: b410b0e4-ed0c-4e6f-b918-198a82f3bd54
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - rdf_entity
+id: node.field_pledge_contact
+field_name: field_pledge_contact
+entity_type: node
+type: entity_reference
+settings:
+  target_type: rdf_entity
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

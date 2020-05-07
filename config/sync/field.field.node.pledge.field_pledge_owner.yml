@@ -1,0 +1,28 @@
+uuid: 47ac9dd7-4160-4ce0-9bb1-6b0445bb73b5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pledge_owner
+    - node.type.pledge
+    - rdf_entity.rdfentity.owner
+id: node.pledge.field_pledge_owner
+field_name: field_pledge_owner
+entity_type: node
+bundle: pledge
+label: 'Pledge owner'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      owner: owner
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

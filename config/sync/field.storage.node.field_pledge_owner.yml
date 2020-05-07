@@ -1,0 +1,20 @@
+uuid: 79455c66-cf84-422a-b07a-8672c3baa0d9
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - rdf_entity
+id: node.field_pledge_owner
+field_name: field_pledge_owner
+entity_type: node
+type: entity_reference
+settings:
+  target_type: rdf_entity
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

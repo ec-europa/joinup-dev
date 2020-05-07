@@ -1,8 +1,9 @@
-uuid: a712909a-7a5c-43e0-a958-cf9e7fc4482d
+uuid: 221f1234-8ae6-4031-a1a3-32d92894b3dc
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.view_mode_tile
     - field.field.node.pledge.body
     - field.field.node.pledge.field_pledge_contact
     - field.field.node.pledge.field_pledge_contribution_type
@@ -14,33 +15,33 @@ dependencies:
     - options
     - text
     - user
-id: node.pledge.default
+id: node.pledge.view_mode_tile
 targetEntityType: node
 bundle: pledge
-mode: default
+mode: view_mode_tile
 content:
   body:
     label: hidden
     type: text_default
-    weight: 2
+    weight: 3
     settings: {  }
     third_party_settings: {  }
     region: content
   field_pledge_contribution_type:
-    weight: 4
+    weight: 2
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   field_pledge_owner:
-    weight: 3
+    type: entity_reference_label
+    weight: 4
+    region: content
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   field_state:
     weight: 5
     label: above

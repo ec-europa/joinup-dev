@@ -4,11 +4,14 @@ status: true
 dependencies:
   config:
     - field.field.node.pledge.body
+    - field.field.node.pledge.field_pledge_contact
     - field.field.node.pledge.field_pledge_contribution_type
+    - field.field.node.pledge.field_pledge_owner
     - field.field.node.pledge.field_state
     - node.type.pledge
   module:
-    - path
+    - inline_entity_form
+    - joinup_workflow
     - publication_date
     - text
 id: node.pledge.default
@@ -18,7 +21,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 121
+    weight: 2
     settings:
       rows: 9
       summary_rows: 3
@@ -28,65 +31,67 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 10
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
+  current_workflow_state:
+    type: current_workflow_state_widget
+    weight: 8
+    region: content
+    settings:
+      title: 'Current workflow state'
+      title_display: before
+      show_for_new_entities: false
+    third_party_settings: {  }
+  field_pledge_contact:
+    weight: 3
+    settings:
+      form_mode: default
+      label_singular: ''
+      label_plural: ''
+      collapsible: true
+      revision: false
+      override_labels: false
+      collapsed: false
+    third_party_settings: {  }
+    type: inline_entity_form_simple
+    region: content
   field_pledge_contribution_type:
-    weight: 122
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
+  field_pledge_owner:
+    weight: 4
+    settings:
+      form_mode: default
+      label_singular: ''
+      label_plural: ''
+      collapsible: true
+      revision: false
+      override_labels: false
+      collapsed: false
+    third_party_settings: {  }
+    type: inline_entity_form_simple
     region: content
   field_state:
-    weight: 123
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  langcode:
-    type: language_select
-    weight: 2
-    region: content
+    weight: 9
     settings:
-      include_locked: true
+      use_transition_label: 1
     third_party_settings: {  }
-  path:
-    type: path
-    weight: 30
+    type: state_machine_buttons
     region: content
-    settings: {  }
-    third_party_settings: {  }
-  promote:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 15
-    region: content
-    third_party_settings: {  }
   published_at:
     type: publication_date_timestamp
-    weight: 10
+    weight: 6
     region: content
     settings: {  }
-    third_party_settings: {  }
-  status:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 120
-    region: content
-    third_party_settings: {  }
-  sticky:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 16
-    region: content
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
@@ -94,7 +99,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 7
     settings:
       match_operator: CONTAINS
       size: 60
@@ -102,10 +107,10 @@ content:
       match_limit: 10
     region: content
     third_party_settings: {  }
-  url_redirects:
-    weight: 50
-    settings: {  }
-    third_party_settings: {  }
-    region: content
 hidden:
-  current_workflow_state: true
+  langcode: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  url_redirects: true

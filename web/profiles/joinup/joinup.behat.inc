@@ -749,7 +749,9 @@ class JoinupSubContext extends DrupalSubContextBase {
         'publication date' => 'published_at',
       ],
       'pledge' => [
+        'contact' => 'field_pledge_contact',
         'description' => 'body',
+        'owner' => 'field_pledge_owner',
         'state' => 'field_state',
         'type of contribution' => 'field_pledge_contribution_type',
       ],

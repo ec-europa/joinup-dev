@@ -13,11 +13,13 @@ entity_type: node
 bundle: pledge
 label: State
 description: ''
-required: false
-translatable: true
-default_value: {  }
+required: true
+translatable: false
+default_value:
+  -
+    value: __new__
 default_value_callback: ''
 settings:
-  workflow: ''
+  workflow: easme_pledge_workflow
   workflow_callback: ''
 field_type: state
