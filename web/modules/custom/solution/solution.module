@@ -249,21 +249,6 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
         '#url' => Url::fromRoute('asset_release.solution_asset_release.overview', [
           'rdf_entity' => $solution->id(),
         ]),
-        '#attributes' => [
-          'role' => 'button',
-          'class' => [
-            // @todo Move the Material Design classes in the theme layer.
-            // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5731
-            'featured__form-button',
-            'button',
-            'button--blue-light',
-            'mdl-button',
-            'mdl-js-button',
-            'mdl-button--raised',
-            'mdl-js-ripple-effect',
-            'mdl-button--accent',
-          ],
-        ],
         '#cache' => [
           // The 'group_header_block' block cache will have different versions
           // for the 'asset_release.solution_asset_release.overview' route
