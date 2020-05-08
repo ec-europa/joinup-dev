@@ -116,7 +116,7 @@ Feature: Joining and leaving collections through the web interface
     And I click "Leave this challenge"
 
     # The collection owner cannot leave the collection before transferring the rights to another owner.
-    Then I should see the text "You are owner of this collection. Before you leave this challenge, you should transfer the ownership to another member."
+    Then I should see the text "You are owner of this challenge. Before you leave this challenge, you should transfer the ownership to another member."
     And I should not see the button "Confirm"
 
     When I go to the homepage of the "Insectarium" collection

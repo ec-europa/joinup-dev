@@ -107,7 +107,7 @@ class MySubscriptionsForm extends FormBase {
     $form['description'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => $this->t('Set your preferences to receive notifications on a per collection basis.'),
+      '#value' => $this->t('Set your preferences to receive notifications on a per challenge basis.'),
     ];
 
     $this->loadUserSubscriptionFrequencyWidget($form, $form_state, $user);
