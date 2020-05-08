@@ -33,9 +33,16 @@ class JoinupSparqlDefaultGraphsTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
+    $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp(): void {
     parent::setUp();
-    $this->setUpSparql();
     $this->installConfig([
       'joinup_sparql_test',
       'rdf_draft',

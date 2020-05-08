@@ -11,8 +11,8 @@ dependencies:
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
-    - joinup
     - smart_trim
+    - template_suggestion
     - user
 _core:
   default_config_hash: DWb669UswawqVOlf5T9Ak9DOZ7EQRFXjnmhJMA9YpH4
@@ -38,7 +38,7 @@ content:
       wrap_output: false
       wrap_class: trimmed
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
 hidden:

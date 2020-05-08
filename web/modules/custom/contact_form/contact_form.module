@@ -67,6 +67,8 @@ function contact_form_form_message_contact_form_submission_form_alter(&$form, Fo
   // success message informing the user that their message has been successfully
   // sent.
   $form['actions']['submit']['#submit'][] = 'contact_form_form_message_contact_form_submission_submit';
+
+  $form['actions']['#suffix'] = '<span>' . (string) t('Submissions of this form are processed by a contractor of the European Commission.') . '</span>';
 }
 
 /**

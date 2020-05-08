@@ -11,8 +11,8 @@ dependencies:
     - field.field.rdf_entity.licence.field_licence_type
     - rdf_entity.rdfentity.licence
   module:
-    - joinup
     - smart_trim
+    - template_suggestion
     - user
 _core:
   default_config_hash: dUUds8JuHKNe_Ty02jUEcyT-VjmQGe9ddodFFQ2wp0Q
@@ -38,7 +38,7 @@ content:
       more_link: false
       summary_handler: full
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: smart_trim
     region: content
@@ -49,7 +49,7 @@ content:
     settings:
       link_to_entity: true
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
 hidden:

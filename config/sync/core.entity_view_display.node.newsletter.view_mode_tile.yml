@@ -9,8 +9,8 @@ dependencies:
     - field.field.node.newsletter.simplenews_issue
     - node.type.newsletter
   module:
-    - joinup
     - smart_trim
+    - template_suggestion
     - user
 _core:
   default_config_hash: TdvyXaOgNnIz1TlFL7qQShe41YwtsdbopcnLL0KXWno
@@ -37,7 +37,7 @@ content:
       wrap_output: false
       more_link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
   links:

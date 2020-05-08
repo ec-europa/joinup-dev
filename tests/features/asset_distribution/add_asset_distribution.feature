@@ -36,6 +36,12 @@ Feature: Add distribution through the UI
     And the "Licence" field should contain the "WTFPL" options
     But the "Licence" field should not contain the "Deprecated licence" options
 
+    When I press "Save"
+    Then I should see the following error messages:
+      | error messages             |
+      | Title field is required.   |
+      | Licence field is required. |
+
     # @todo: The link has to be changed to the legal contact form.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
     And I should see the link "contacting us"
@@ -44,11 +50,7 @@ Feature: Add distribution through the UI
     And I upload the file "test.zip" to "Access URL"
     And I select "GNU zip" from "Format"
     And I select "Web Ontology Language Full/DL/Lite" from "Representation technique"
-    And I press "Save"
-    # Regression test for required field.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3064
-    Then I should see the error message "Licence field is required."
-    When I select "WTFPL" from "Licence"
+    And I select "WTFPL" from "Licence"
     And I press "Save"
     Then I should have 1 distribution
     And the "Linux x86-64 SDK" distribution should have the link of the "test.zip" in the access URL field
