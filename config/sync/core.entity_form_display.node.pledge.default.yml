@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.pledge.field_pledge_contribution_type
     - field.field.node.pledge.field_pledge_owner
     - field.field.node.pledge.field_state
+    - field.field.node.pledge.og_audience
     - node.type.pledge
   module:
     - inline_entity_form
@@ -109,6 +110,7 @@ content:
     third_party_settings: {  }
 hidden:
   langcode: true
+  og_audience: true
   path: true
   promote: true
   status: true

@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.pledge.field_pledge_contribution_type
     - field.field.node.pledge.field_pledge_owner
     - field.field.node.pledge.field_state
+    - field.field.node.pledge.og_audience
     - node.type.pledge
   module:
     - link
@@ -50,4 +51,5 @@ hidden:
   field_pledge_owner: true
   field_state: true
   langcode: true
+  og_audience: true
   published_at: true
