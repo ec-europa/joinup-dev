@@ -23,7 +23,7 @@ easme_pledge_workflow:
       label: Save as draft
       from: [__new__]
       to: draft
-    submit:
+    propose:
       label: Submit for approval
       from: [__new__, draft]
       to: proposed

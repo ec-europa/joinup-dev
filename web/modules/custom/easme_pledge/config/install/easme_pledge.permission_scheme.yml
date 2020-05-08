@@ -1,0 +1,114 @@
+view:
+  default:
+    draft:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+    proposed:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    under_validation:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    validated:
+      any:
+        roles:
+          - anonymous
+          - authenticated
+create: { }
+update:
+  default:
+    draft:
+      draft:
+        own:
+          roles:
+            - authenticated
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+    proposed:
+      draft:
+        own:
+          roles:
+            - authenticated
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+    under_validation:
+      draft:
+        own:
+          roles:
+            - authenticated
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+      proposed:
+        own:
+          roles:
+            - authenticated
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+    validated:
+      draft:
+        any:
+          roles:
+            - moderator
+      proposed:
+        any:
+          roles:
+            - moderator
+      under_validation:
+        any:
+          roles:
+            - moderator
+delete:
+  default:
+    draft:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+    proposed:
+      any:
+        roles:
+          - moderator
+    under_validation:
+      any:
+        roles:
+          - moderator
+    validated:
+      any:
+        roles:
+          - moderator
