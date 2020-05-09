@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_event\Plugin\Validation\Constraint;
 
+use Drupal\joinup_event\Entity\EventInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -16,11 +17,11 @@ class EventLocationConstraintValidator extends ConstraintValidator {
    * {@inheritdoc}
    */
   public function validate($entity, Constraint $constraint) {
-    if ($entity->bundle() !== 'event') {
+    if (!$entity instanceof EventInterface) {
       return;
     }
 
-    if ($entity->get('field_location')->isEmpty() && $entity->get('field_event_online_location')->isEmpty()) {
+    if (empty($entity->getLocation()) && empty($entity->getOnlineLocation())) {
       $this->context->addViolation($constraint->message);
     }
   }
