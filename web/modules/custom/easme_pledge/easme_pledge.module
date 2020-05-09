@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks and functions for the easme_pledge module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
+use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfInterface;
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function easme_pledge_entity_extra_field_info() {
+  $fields = [];
+
+  $solution = RdfEntityType::load('solution');
+  if ($solution) {
+    $display = &$fields['rdf_entity'][$solution->id()]['display'];
+    $display['pledge'] = [
+      'label' => t('Pledge'),
+      'description' => t('A link to the pledge creation page.'),
+      'visible' => FALSE,
+    ];
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function easme_pledge_rdf_entity_view(array &$build, RdfInterface $entity, EntityViewDisplayInterface $display, string $view_mode): void {
+  if ($entity->bundle() != 'solution') {
+    return;
+  }
+
+  /** @var \Drupal\rdf_entity\RdfInterface $entity */
+  if ($display->getComponent('pledge')) {
+    $build['pledge'] = [
+      '#type' => 'link',
+      '#title' => t('Pledge'),
+      '#url' => Url::fromRoute('easme_pledge.rdf_entity_pledge.add', [
+        'rdf_entity' => $entity->id(),
+      ]),
+    ];
+  }
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function easme_pledge_node_access(NodeInterface $entity, string $operation, AccountInterface $account): AccessResult {
+  if ($entity->bundle() !== 'pledge') {
+    return AccessResult::neutral();
+  }
+  // Even though the community content workflow access handler is designed for
+  // community content, for this case, it serves our purpose.
+  return \Drupal::service('easme_pledge.access_handler')->entityAccess($entity, $operation, $account);
+}

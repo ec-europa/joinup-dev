@@ -2,12 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_community_content\Guard;
+namespace Drupal\easme_pledge\Guard;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
@@ -80,33 +79,6 @@ class EasmePledgeGuard implements GuardInterface {
    * {@inheritdoc}
    */
   public function allowed(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
-    if ($entity->isNew()) {
-      return $this->allowedCreate($transition, $workflow, $entity);
-    }
-    else {
-      return $this->allowedUpdate($transition, $workflow, $entity);
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function allowedCreate(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
-    $permission_scheme = $this->permissionScheme->get('create');
-    $workflow_id = $workflow->getId();
-    $parent = JoinupGroupHelper::getGroup($entity);
-    $content_creation = JoinupGroupHelper::getContentCreation($parent);
-
-    if (!isset($permission_scheme[$workflow_id][$content_creation][$transition->getId()])) {
-      return FALSE;
-    }
-    return $this->workflowHelper->userHasRoles($entity, $this->currentUser, $permission_scheme[$workflow_id][$content_creation][$transition->getId()]);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function allowedUpdate(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
     $from_state = $this->getState($entity);
     $to_state = $transition->getToState()->getId();
     return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $from_state, $to_state);

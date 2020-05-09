@@ -2,14 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_community_content\Plugin\WorkflowStatePermission;
+namespace Drupal\easme_pledge\Plugin\WorkflowStatePermission;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
 use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\og\MembershipManagerInterface;
@@ -19,15 +18,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Checks whether changing workflow states is permitted for a given user.
  *
- * Depending on the user role some workflow states are not available. For
- * example only the author of a community content can request deletion, and only
- * a moderator or facilitator can archive a discussion.
- *
  * @WorkflowStatePermission(
- *   id = "community_content",
+ *   id = "easme_pledge",
  * )
- *
- * @see joinup_community_content.permission_scheme.yml
  */
 class EasmePledgeWorkflowStatePermission extends PluginBase implements WorkflowStatePermissionPluginInterface, ContainerFactoryPluginInterface {
 
@@ -93,7 +86,7 @@ class EasmePledgeWorkflowStatePermission extends PluginBase implements WorkflowS
    * {@inheritdoc}
    */
   public function applies(EntityInterface $entity): bool {
-    return CommunityContentHelper::isCommunityContent($entity);
+    return $entity->bundle() === 'pledge';
   }
 
   /**

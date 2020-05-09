@@ -1,9 +1,14 @@
 services:
   easme_pledge.fulfillment_guard:
-    class: Drupal\easme_pledge\Guard\CommunityContentGuard
+    class: Drupal\easme_pledge\Guard\EasmePledgeGuard
     arguments: ['@config.factory', '@current_user', '@joinup_workflow.workflow_helper', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: easme_pledge }
-  easme_pledge.community_content_workflow_access:
-    class: Drupal\easme_pledge\CommunityContentWorkflowAccessControlHandler
+  easme_pledge.event_subscriber:
+    class: Drupal\easme_pledge\EventSubscriber\EventSubscriber
+    arguments: ['@entity_type.bundle.info', '@current_user', '@workflow_state_permission.workflow_state_permission']
+    tags:
+      - { name: 'event_subscriber' }
+  easme_pledge.access_handler:
+    class: Drupal\easme_pledge\PledgeAccessHandler
     arguments: ['@entity_type.manager', '@og.membership_manager', '@current_user', '@config.factory', '@joinup_workflow.workflow_helper']
