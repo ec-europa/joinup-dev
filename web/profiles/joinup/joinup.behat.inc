@@ -458,6 +458,25 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
+   * Navigates to the delete form of a node entity.
+   *
+   * @param string $bundle
+   *   The type of the node entity.
+   * @param string $title
+   *   The title of the node.
+   *
+   * @When I go to the :bundle (content ) :title delete screen
+   * @When I visit the :bundle (content ) :title delete screen
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   */
+  public function visitNodeDeleteForm($bundle, $title) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title, $bundle);
+    $this->visitPath($node->toUrl('delete-form')->toString());
+  }
+
+  /**
    * Navigates to the canonical page display of a node page.
    *
    * This step is only to be used in scenario outlines.
