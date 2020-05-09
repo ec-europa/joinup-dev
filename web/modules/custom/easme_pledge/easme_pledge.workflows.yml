@@ -28,10 +28,10 @@ easme_pledge_workflow:
       from: [__new__, draft]
       to: proposed
     assign_for_validation:
-      label: Check for approval
+      label: Set as under approval
       from: [__new__, draft, proposed]
       to: under_validation
     validate:
       label: Validate
-      from: [under_validation]
+      from: [under_validation, validated]
       to: validated

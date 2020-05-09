@@ -104,3 +104,5 @@ delete:
       any:
         roles:
           - moderator
+_core:
+  easme_pledge_workflow_config_hash: V-dBnyDJV_M7BXyHMfv1A4d9t0Wkn4bhirNr83hZPP8
