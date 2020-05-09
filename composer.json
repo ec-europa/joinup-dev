@@ -163,6 +163,7 @@
             "web/modules/custom/contact_form/contact_form.behat.inc",
             "web/modules/custom/contact_information/contact_information.behat.inc",
             "web/modules/custom/custom_page/custom_page.behat.inc",
+            "web/modules/custom/easme_pledge/easme_pledge.behat.inc",
             "web/modules/custom/isa2_analytics/isa2_analytics.behat.inc",
             "web/modules/custom/joinup_communities/eupl/eupl.behat.inc",
             "web/modules/custom/joinup_communities/tallinn/tallinn.behat.inc",
