@@ -1,4 +1,4 @@
-# Joinup website
+# EASME website
 
 This is the source code for https://joinup.ec.europa.eu/
 
