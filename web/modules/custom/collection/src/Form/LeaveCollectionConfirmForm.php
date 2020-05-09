@@ -157,7 +157,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
     }
 
     if (!$this->membershipManager->isMember($this->collection, $user->id())) {
-        $form_state->setErrorByName('collection', $this->t('You are not a member of this challenge. You cannot leave it.'));
+      $form_state->setErrorByName('collection', $this->t('You are not a member of this challenge. You cannot leave it.'));
     }
   }
 
