@@ -1,0 +1,12 @@
+# Route to create a pledge entity that belongs to a solution.
+easme_pledge.rdf_entity_pledge.add:
+  path: 'rdf_entity/{rdf_entity}/pledge/add'
+  defaults:
+    _controller: '\Drupal\easme_pledge\Controller\PledgeController::add'
+    _title: 'Create a pledge'
+  requirements:
+    _custom_access: '\Drupal\easme_pledge\Controller\PledgeController::createAccess'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
