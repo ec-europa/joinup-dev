@@ -43,6 +43,8 @@
 <div class="mdl-layout__container">
   <div class="mdl-layout mdl-js-layout" {{ attributes|without('class') }}>
 
+    {% include directory ~ '/templates/parts/header-eu.html.twig' %}
+
     {% if not is_front or logged_in %}
       {% include directory ~ '/templates/parts/header.html.twig' %}
     {% endif %}

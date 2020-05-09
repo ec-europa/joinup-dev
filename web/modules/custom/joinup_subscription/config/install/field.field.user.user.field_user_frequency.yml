@@ -11,7 +11,7 @@ field_name: field_user_frequency
 entity_type: user
 bundle: user
 label: 'Notification frequency'
-description: 'How often do you prefer to receive status updates on new and/or updated content on Joinup?'
+description: 'How often do you prefer to receive status updates on new and/or updated content?'
 required: true
 translatable: false
 default_value:
