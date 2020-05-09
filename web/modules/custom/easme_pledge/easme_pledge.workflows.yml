@@ -33,5 +33,5 @@ easme_pledge_workflow:
       to: under_validation
     validate:
       label: Validate
-      from: [under_validation, validated]
+      from: [under_validation]
       to: validated
