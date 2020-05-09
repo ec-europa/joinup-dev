@@ -178,5 +178,6 @@ hidden:
   label: true
   langcode: true
   og_group: true
+  pledge: true
   releases_overview: true
   share_link: true

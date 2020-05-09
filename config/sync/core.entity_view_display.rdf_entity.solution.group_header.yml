@@ -49,6 +49,7 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - image
+    - joinup_core
     - template_suggestion
     - user
 id: rdf_entity.solution.group_header
@@ -57,12 +58,12 @@ bundle: solution
 mode: group_header
 content:
   collections:
-    weight: 7
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   download_total:
-    weight: 5
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -95,8 +96,13 @@ content:
       template_suggestion:
         template_suggestion: ''
     region: content
+  pledge:
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   releases_overview:
-    weight: 6
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }

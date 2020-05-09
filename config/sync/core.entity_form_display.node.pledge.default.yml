@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.rdf_entity.inline
     - field.field.node.pledge.body
     - field.field.node.pledge.field_pledge_contact
     - field.field.node.pledge.field_pledge_contribution_type
@@ -48,15 +49,19 @@ content:
   field_pledge_contact:
     weight: 3
     settings:
-      form_mode: default
+      form_mode: inline
       label_singular: ''
       label_plural: ''
-      collapsible: true
+      allow_new: true
+      match_operator: CONTAINS
       revision: false
       override_labels: false
+      collapsible: false
       collapsed: false
+      allow_existing: false
+      allow_duplicate: false
     third_party_settings: {  }
-    type: inline_entity_form_simple
+    type: inline_entity_form_complex
     region: content
   field_pledge_contribution_type:
     weight: 1
@@ -67,15 +72,19 @@ content:
   field_pledge_owner:
     weight: 4
     settings:
-      form_mode: default
+      form_mode: inline
       label_singular: ''
       label_plural: ''
-      collapsible: true
+      allow_new: true
+      match_operator: CONTAINS
       revision: false
       override_labels: false
+      collapsible: false
       collapsed: false
+      allow_existing: false
+      allow_duplicate: false
     third_party_settings: {  }
-    type: inline_entity_form_simple
+    type: inline_entity_form_complex
     region: content
   field_state:
     weight: 9

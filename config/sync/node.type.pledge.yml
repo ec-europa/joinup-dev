@@ -15,6 +15,7 @@ help: ''
 new_revision: true
 preview_mode: 0
 display_submitted: false
-label_singular: null
-label_plural: null
-label_count: null
+label_singular: pledge
+label_plural: pledges
+label_count:
+  no_count_capitalize: !!binary UGxlZGdlA1BsZWRnZXM=
