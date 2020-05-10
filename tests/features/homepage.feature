@@ -197,7 +197,7 @@ Feature: Homepage
   Scenario: the small homepage header should be shown only to logged in users.
     When I am an anonymous user
     And I go to the homepage
-    Then I should not see the small header
+    Then I should see the small header
     And the response should not contain "user-profile-icon.png"
     But I should see the link "Sign in"
 
