@@ -1,0 +1,17 @@
+uuid: b2ff036a-2181-4cb6-8d44-f0ca0c000777
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.pledge_propose
+id: message.pledge_propose.mail_subject
+targetEntityType: message
+bundle: pledge_propose
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+hidden:
+  partial_1: true

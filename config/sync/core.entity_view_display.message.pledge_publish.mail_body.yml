@@ -1,0 +1,17 @@
+uuid: d9d6c200-449c-42bc-9806-f2e7cb711ff0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.pledge_publish
+id: message.pledge_publish.mail_body
+targetEntityType: message
+bundle: pledge_publish
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+hidden:
+  partial_0: true

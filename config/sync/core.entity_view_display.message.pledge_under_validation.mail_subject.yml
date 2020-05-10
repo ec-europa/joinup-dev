@@ -1,0 +1,17 @@
+uuid: de670539-2449-43b6-8c3c-65297f9b0be1
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.pledge_under_validation
+id: message.pledge_under_validation.mail_subject
+targetEntityType: message
+bundle: pledge_under_validation
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+hidden:
+  partial_1: true

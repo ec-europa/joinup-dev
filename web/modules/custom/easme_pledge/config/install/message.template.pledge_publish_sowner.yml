@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: pledge_sowner
+label: 'Notify the solution owner that a pledge has been published in their solution'
+description: ''
+text:
+  -
+    value: 'COVID-19 Challenge: A new pledge has been published in your @group:bundle "@group:title"'
+    format: full_html
+  -
+    value: '<p>We are pleased to inform you that a pledge has been published in your @group:bundle "@group:title". To view the pledge, click <a href="@entity:url">@entity:url</a>.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

@@ -12,3 +12,9 @@ services:
   easme_pledge.access_handler:
     class: Drupal\easme_pledge\PledgeAccessHandler
     arguments: ['@entity_type.manager', '@og.membership_manager', '@current_user', '@config.factory', '@joinup_workflow.workflow_helper']
+  easme_pledge.notification_subscriber:
+    class: Drupal\easme_pledge\EventSubscriber\NotificationSubscriber
+    parent: joinup_notification.notification_subscriber_base
+    arguments: ['@state_machine_revisions.revision_manager', '@config.factory', '@current_user', '@og.group_type_manager', '@og.membership_manager', '@?', '@?', '@?']
+    tags:
+    - { name: event_subscriber }

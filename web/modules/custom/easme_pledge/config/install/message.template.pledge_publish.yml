@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: pledge_publish
+label: 'Notify owner that the pledge has been published'
+description: ''
+text:
+  -
+    value: 'COVID-19 Challenge: Your pledge in "@group:title" @group:bundle has been published'
+    format: full_html
+  -
+    value: '<p>We are pleased to inform you that your pledge in "@group:title" @group:bundle has been checked by our staff and was found valid, thus has been published. To view your pledge, click <a href="@entity:url">@entity:url</a>.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

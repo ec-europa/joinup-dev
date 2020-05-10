@@ -1,0 +1,22 @@
+create:
+  easme_pledge_workflow:
+    propose:
+      roles:
+        moderator:
+          - pledge_propose
+update:
+  easme_pledge_workflow:
+    propose:
+      roles:
+        moderator:
+          - pledge_propose
+    assign_for_validation:
+      owner:
+        - pledge_under_validation
+    validate:
+      owner:
+        - pledge_publish
+      og_roles:
+        rdf_entity-solution-administrator:
+          - pledge_publish_sowner
+delete: { }

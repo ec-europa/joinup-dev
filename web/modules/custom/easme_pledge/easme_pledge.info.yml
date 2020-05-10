@@ -4,11 +4,19 @@ description: Functionality related to the EASME pledging system.
 core: 8.x
 package: EASME
 dependencies:
-  - joinup_community_content:joinup_community_content
-  - joinup_workflow:joinup_workflow
   - contact_information:contact_information
-  - owner:owner
+  - joinup:joinup_community_content
+  - joinup:joinup_workflow
+  - joinup:state_machine_revisions
+  - message:message
+  - message_digest:message_digest
+  - message_notify:message_notify
 
 config_devel:
   install:
+    - easme_pledge.notifications.community_content
     - easme_pledge.permission_scheme
+    - message.template.pledge_propose
+    - message.template.pledge_publish
+    - message.template.pledge_publish_sowner
+    - message.template.pledge_under_vaidation

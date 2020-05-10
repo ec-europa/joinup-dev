@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: pledge_propose
+label: 'Notify moderators that a pledge has been proposed'
+description: 'Message sent to the moderators that a pledge has been submitted for validation'
+text:
+  -
+    value: 'COVID-19 Challenge: A new pledge requires validation in the "@group:title" @group:bundle'
+    format: full_html
+  -
+    value: '<p>A pledge has been submitted for validation in the "@group:title" @group:bundle.</p><p>To view the pledge and take action, click <a href="@entity:url">@entity:url</a>.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

@@ -1,0 +1,17 @@
+uuid: edc4114b-36b8-42d6-b7c5-433ef88bf955
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.pledge_publish_sowner
+id: message.pledge_publish_sowner.mail_subject
+targetEntityType: message
+bundle: pledge_publish_sowner
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+hidden:
+  partial_1: true
