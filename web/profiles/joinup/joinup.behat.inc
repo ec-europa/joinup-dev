@@ -122,8 +122,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @throws \Exception
    *   Thrown when a collection or solution with the given label doesn't exist.
    *
-   * @Given I am logged in as a user with the :role role(s) of the :rdf_entity
-   *   :rdf_entity_bundle
+   * @Given I am logged in as a user with the :role role(s) of the :rdf_entity :rdf_entity_bundle
    * @Given I am logged in as a/an :role of the :rdf_entity :rdf_entity_bundle
    *
    * @see \Drupal\DrupalExtension\Context\DrupalContext::assertAuthenticatedByRole()
@@ -203,8 +202,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @throws \Exception
    *   Thrown when a collection or solution with the given label doesn't exist.
    *
-   * @Given my membership state in the :rdf_entity :rdf_entity_bundle changes
-   *   to :state
+   * @Given my membership state in the :rdf_entity :rdf_entity_bundle changes to :state
    */
   public function updateGroupState($rdf_entity, $rdf_entity_bundle, $state) {
     $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bundle);
@@ -236,8 +234,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @see \Drupal\DrupalExtension\Context\RawDrupalContext::loggedInWithRole
    */
   protected function loggedInWithOgRoles(array $roles, EntityInterface $group) {
-    if ($this->getUserManager()
-      ->currentUserIsAnonymous() || !$this->loggedIn()) {
+    if ($this->getUserManager()->currentUserIsAnonymous() || !$this->loggedIn()) {
       return FALSE;
     }
     $current_user = $this->getUserManager()->getCurrentUser();
@@ -392,8 +389,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @param string $options
    *   A comma separated list of items to check.
    *
-   * @Then the available options in the :select select should not include the
-   *   :options( options)
+   * @Then the available options in the :select select should not include the :options( options)
    */
   public function assertSelectOptionNotAvailable($select, $options) {
     $field = $this->findSelect($select);
@@ -593,8 +589,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @param string $state
    *   The expected publication state, either 'published' or 'unpublished'.
    *
-   * @Then the community content with title :title should have the publication
-   *   state :state
+   * @Then the community content with title :title should have the publication state :state
    */
   public function assertPublicationState($title, $state) {
     /** @var \Drupal\node\NodeInterface $node */
@@ -844,9 +839,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   public function printMessages() {
     $selector = $this->getDrupalSelector('message_selector');
     /** @var \Behat\Mink\Element\NodeElement $message */
-    foreach ($this->getSession()
-      ->getPage()
-      ->findAll("css", $selector) as $message) {
+    foreach ($this->getSession()->getPage()->findAll("css", $selector) as $message) {
       echo $message->getText() . "\n\n";
     }
   }
@@ -944,9 +937,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    *   Thrown when the field was not found.
    */
   public function findDateFields($field) {
-    $field_selectors = $this->getSession()
-      ->getPage()
-      ->findAll('css', '.field--widget-datetime-timestamp');
+    $field_selectors = $this->getSession()->getPage()->findAll('css', '.field--widget-datetime-timestamp');
     $field_selectors = array_filter($field_selectors, function ($field_selector) use ($field) {
       return $field_selector->has('named', ['content', $field]);
     });
@@ -1069,9 +1060,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @Then I (should )see the :heading tile
    */
   public function assertTilePresent($heading) {
-    $results = $this->getSession()
-      ->getPage()
-      ->findAll('css', '.listing__item--tile .listing__title');
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
     foreach ($results as $result) {
       /** @var \Behat\Mink\Element\Element $result */
       if ($result->getText() === $heading) {
@@ -1094,9 +1083,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @Then I (should )see :number tile(s)
    */
   public function assertTileCount($number) {
-    $results = $this->getSession()
-      ->getPage()
-      ->findAll('css', '.listing__item--tile .listing__title');
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
     $nr_found = count($results);
     if ($nr_found != $number) {
       throw new \Exception("Found $nr_found tiles, expected $number");
@@ -1117,9 +1104,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   public function assertTileNotPresent($heading) {
     // We target the heading with "h2" instead of ".listing__title" because both
     // unstyled and styled tiles use h2 as element for their titles.
-    $results = $this->getSession()
-      ->getPage()
-      ->findAll('css', '.listing__item--tile h2');
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile h2');
     foreach ($results as $result) {
       /** @var \Behat\Mink\Element\Element $result */
       if ($result->getText() === $heading) {
@@ -1352,9 +1337,7 @@ class JoinupSubContext extends DrupalSubContextBase {
       // Only check the actual form submit buttons, ignore other buttons that
       // might be present in wysiwygs or are used to add multiple values to a
       // field.
-      $actual = count($this->getSession()
-        ->getPage()
-        ->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " form-actions ")]//input[@type = "submit"]'));
+      $actual = count($this->getSession()->getPage()->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " form-actions ")]//input[@type = "submit"]'));
       Assert::assertEquals($count, $actual);
     }
   }
@@ -1392,9 +1375,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @Then I should see the plus button menu
    */
   public function assertPlusButtonMenuPresent() {
-    $element = $this->getSession()
-      ->getPage()
-      ->find('css', 'div.add-content-menu ul');
+    $element = $this->getSession()->getPage()->find('css', 'div.add-content-menu ul');
     Assert::assertNotEmpty($element);
   }
 
@@ -1404,9 +1385,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @Then I should not see the plus button menu
    */
   public function assertPlusButtonMenuNotPresent() {
-    $element = $this->getSession()
-      ->getPage()
-      ->find('css', 'div.add-content-menu ul');
+    $element = $this->getSession()->getPage()->find('css', 'div.add-content-menu ul');
     Assert::assertEmpty($element);
   }
 
@@ -1435,9 +1414,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @When I open the plus button menu
    */
   public function openPlusButtonMenu() {
-    $this->openMaterialDesignMenu($this->getSession()
-      ->getPage()
-      ->find('css', '.add-content-menu'));
+    $this->openMaterialDesignMenu($this->getSession()->getPage()->find('css', '.add-content-menu'));
   }
 
   /**
@@ -1446,9 +1423,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @When I open the group sidebar menu
    */
   public function openGroupMenu() {
-    $this->openMaterialDesignMenu($this->getSession()
-      ->getPage()
-      ->find('css', '.sidebar-menu'));
+    $this->openMaterialDesignMenu($this->getSession()->getPage()->find('css', '.sidebar-menu'));
   }
 
   /**
@@ -1457,9 +1432,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @When I open the header local tasks menu
    */
   public function iOpenTheMdlDropdown() {
-    $element = $this->getSession()
-      ->getPage()
-      ->findById('block-joinup-theme-local-tasks');
+    $element = $this->getSession()->getPage()->findById('block-joinup-theme-local-tasks');
     $this->openMaterialDesignMenu($element);
   }
 
@@ -1469,9 +1442,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @When I open the account menu
    */
   public function iOpenTheAccountMenu() {
-    $this->openMaterialDesignMenu($this->getSession()
-      ->getPage()
-      ->find('css', '.login-menu'));
+    $this->openMaterialDesignMenu($this->getSession()->getPage()->find('css', '.login-menu'));
   }
 
   /**
@@ -1502,9 +1473,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function assertEmptyPlusButtonMenu() {
     if ($this->browserSupportsJavaScript()) {
-      if ($this->getSession()
-        ->getPage()
-        ->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[last()]')) {
+      if ($this->getSession()->getPage()->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[last()]')) {
         throw new \Exception("The plus button menu is not empty.");
       }
     }
@@ -1675,9 +1644,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @Then the current workflow state should be :state
    */
   public function assertCurrentWorkflowState($state) {
-    $element = $this->getSession()
-      ->getPage()
-      ->find('css', 'div.current-workflow-state');
+    $element = $this->getSession()->getPage()->find('css', 'div.current-workflow-state');
     if (empty($element)) {
       throw new \Exception('The current workflow state field is not present on the page.');
     }
@@ -1742,8 +1709,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @throws \Exception
    *   Thrown when the field does not have a description.
    *
-   * @Then I should not see the description :description for (the ):label(
-   *   field)
+   * @Then I should not see the description :description for (the ):label( field)
    */
   public function assertNoFieldDescription($label, $description) {
     $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]//div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
@@ -1997,8 +1963,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @throws \Exception
    *   Thrown when the link is not in the page.
    *
-   * @Then /^the share link "(?P<link>[^"]+)" should point to the
-   *   "(?P<title>[^"]+)" (?P<type>[^" ]+)(?:| entity)$/
+   * @Then /^the share link "(?P<link>[^"]+)" should point to the "(?P<title>[^"]+)" (?P<type>[^" ]+)(?:| entity)$/
    */
   public function assertLinkContainsEntityUrl(string $link, string $title, string $type): void {
     if (!in_array($type, ['content', 'rdf'])) {
@@ -2067,8 +2032,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   /**
    * Assert that a given attribute is not set for a given element in a region.
    *
-   * @Then I( should) not see the :tag element with the :attribute attribute
-   *   set to :value in the :region( region)
+   * @Then I( should) not see the :tag element with the :attribute attribute set to :value in the :region( region)
    */
   public function assertRegionElementAttribute($tag, $attribute, $value, $region) {
     $regionObj = $this->getRegion($region);
@@ -2120,9 +2084,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @Given I wait for the pipeline batch job to finish
    */
   public function iWaitForThePipelineBatchJobToFinish() {
-    while ($this->getSession()
-      ->getPage()
-      ->find('css', 'meta[http-equiv=\'Refresh\']')) {
+    while ($this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
       $this->getSession()->reload();
     }
   }
@@ -2413,8 +2375,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @see \Drupal\DrupalExtension\Context\MarkupContext::assertNotRegionElementText()
    *
-   * @Then I( should) see a(n) :tag element with the text :text in the :region(
-   *   region)
+   * @Then I( should) see a(n) :tag element with the text :text in the :region( region)
    */
   public function assertRegionElementText($tag, $text, $region) {
     $regionObj = $this->getRegion($region);
@@ -2445,8 +2406,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @throws \Exception
    *   Thrown when the formats were found in the format list.
    *
-   * @Then the paragraph formats in the :field field should not contain the
-   *   :format_tags format(s)
+   * @Then the paragraph formats in the :field field should not contain the :format_tags format(s)
    */
   public function assertNotFormatInCkeditorExists($field, $format_tags) {
     if (!$this->browserSupportsJavaScript()) {
@@ -2476,9 +2436,7 @@ JS;
    * @Then a tour should be available
    */
   public function assertTourAvailable() {
-    if (!$this->getSession()
-      ->getPage()
-      ->find('css', 'a.js-tour-start-button')) {
+    if (!$this->getSession()->getPage()->find('css', 'a.js-tour-start-button')) {
       throw new \Exception("No tour is available on the page.");
     }
   }
@@ -2589,9 +2547,7 @@ JS;
     self::assertJavaScriptEnabledBrowser();
 
     /** @var \Behat\Mink\Element\NodeElement[] $rows */
-    $rows = $this->getSession()
-      ->getPage()
-      ->findAll('css', '#menu-overview tbody tr.draggable');
+    $rows = $this->getSession()->getPage()->findAll('css', '#menu-overview tbody tr.draggable');
     $expected = $table->getColumnsHash();
     Assert::assertSameSize($expected, $rows);
 
@@ -2785,9 +2741,7 @@ JS;
         throw new \InvalidArgumentException('Missing URL column in link table.');
       }
       $xpath = "//input[@id=(//label[text()='$label'])[$i]/@for]";
-      $url_input_element = $this->getSession()
-        ->getPage()
-        ->find('xpath', $xpath);
+      $url_input_element = $this->getSession()->getPage()->find('xpath', $xpath);
       if (!$url_input_element) {
         throw new \Exception("URL input field $i not found for link field with label '$label'.'");
       }
@@ -2805,9 +2759,7 @@ JS;
         throw new \Exception("Malformed HTML ID for URL input field $i for link field with label '$label'.");
       }
 
-      $title_input_element = $this->getSession()
-        ->getPage()
-        ->findById($title_input_id);
+      $title_input_element = $this->getSession()->getPage()->findById($title_input_id);
       if (!$title_input_element) {
         throw new \Exception("Title input field $i not found for link field with label '$label'.'");
       }
@@ -2927,9 +2879,7 @@ JS;
 
     foreach ($this->getSelectorsMatchingElementAlias($alias) as $selector_tuple) {
       [$selector, $locator] = $selector_tuple;
-      $elements = array_merge($elements, $this->getSession()
-        ->getPage()
-        ->findAll($selector, $locator));
+      $elements = array_merge($elements, $this->getSession()->getPage()->findAll($selector, $locator));
     }
 
     return $elements;
@@ -2944,9 +2894,7 @@ JS;
    * @Then I should see a paragraph containing the text :text
    */
   public function assertParagraphText(string $text): void {
-    $element = $this->getSession()
-      ->getPage()
-      ->find('xpath', '//p[text() = "' . $text . '"]');
+    $element = $this->getSession()->getPage()->find('xpath', '//p[text() = "' . $text . '"]');
     Assert::assertNotEmpty($element);
   }
 
@@ -2993,8 +2941,7 @@ JS;
    * @throws \Exception
    *   Thrown if at least a link exists in the page.
    *
-   * @Given I should not see the absolute urls of the following content
-   *   entities:
+   * @Given I should not see the absolute urls of the following content entities:
    */
   public function assertNotContentAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
     foreach ($titles->getRows() as $title) {
@@ -3017,8 +2964,7 @@ JS;
    * @throws \InvalidArgumentException
    *   Thrown when one of the parameters is not correct.
    *
-   * @Given the publication date of the :title :bundle :entity_type_id is
-   *   changed to :new_value
+   * @Given the publication date of the :title :bundle :entity_type_id is changed to :new_value
    */
   public function givenPublicationDateChanged(string $title, string $bundle, string $entity_type_id, string $new_publication_date): void {
     if (!in_array($entity_type_id, ['content', 'rdf entity'])) {
