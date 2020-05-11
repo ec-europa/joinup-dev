@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: solution_policy_domain
-name: 'Policy domain'
+name: 'Domains'
 url_alias: solution_policy_domain
 weight: 0
 min_count: 1
@@ -14,7 +14,7 @@ widget:
   type: links_inline
   config:
     show_numbers: true
-    all_text: 'all policy domains'
+    all_text: 'all domains'
     prefix_text: 'About:'
     suffix_text: ''
 query_operator: or
