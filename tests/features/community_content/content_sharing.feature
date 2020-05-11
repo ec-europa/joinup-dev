@@ -318,7 +318,7 @@ Feature: Sharing content between collections
       | Facebook                    |
       | Twitter                     |
       | Linkedin                    |
-      | Other collections on Joinup |
+      | Other challenges            |
     When I check "Gossip"
     And I press "Share" in the "Modal buttons" region
     And I wait for AJAX to finish
