@@ -479,8 +479,10 @@ function joinup_user_invalidate_user_cache_tags(OgMembershipInterface $entity) {
  *
  * Disallow access to the cancellation method.
  */
-function joinup_user_form_user_multiple_cancel_confirm_alter(&$form, FormStateInterface $form_state, $form_id) {
-  joinup_user_form_user_cancel_form_alter($form, $form_state, $form_id);
+function joinup_user_form_user_multiple_cancel_confirm_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  // Cancelling an account with deletion is permitted in the administrative UI.
+  $form['user_cancel_method']['#default_value'] = 'user_cancel_delete';
+  joinup_user_alter_account_cancel_form($form);
 }
 
 /**
@@ -504,6 +506,16 @@ function joinup_user_form_user_cancel_form_alter(array &$form, FormStateInterfac
     ];
   }
   $form['user_cancel_method']['#default_value'] = 'user_cancel_block';
+  joinup_user_alter_account_cancel_form($form);
+}
+
+/**
+ * Alters some user account cancel form elements.
+ *
+ * @param array $form
+ *   The form API render array.
+ */
+function joinup_user_alter_account_cancel_form(array &$form): void {
   $form['user_cancel_method']['#access'] = FALSE;
   $form['user_cancel_confirm']['#access'] = FALSE;
   $form['user_cancel_notify']['#default_value'] = TRUE;
