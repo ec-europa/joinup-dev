@@ -13,7 +13,7 @@ widget:
   type: links_inline
   config:
     show_numbers: true
-    all_text: 'all policy domains'
+    all_text: 'all domains'
     prefix_text: 'About:'
     suffix_text: ''
 query_operator: or
