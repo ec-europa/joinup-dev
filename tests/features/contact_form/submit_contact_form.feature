@@ -27,6 +27,7 @@ Feature: Submit the contact form
       | Other                          |
     # The honeypot field that needs to be empty on submission.
     Then the following fields should be present "user_homepage"
+    And I should see the text "Submissions of this form are processed by a contractor of the European Commission."
 
     When I fill in the following:
       | First name     | Oswine                      |

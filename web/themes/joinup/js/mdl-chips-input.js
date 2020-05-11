@@ -18,18 +18,18 @@
     window['MaterialChipInput'] = MaterialChipInput;
 
     MaterialChipInput.prototype.addChip_ = function (id, text) {
-        var currentChipIds = this.getChipIds();
+        let currentChipIds = this.getChipIds();
         if (currentChipIds.indexOf(id) > -1) {
             // Ignore duplicates.
             return;
         }
-        var chip = document.createElement('span');
-        chip.classList = 'mdl-chip mdl-chip--deletable';
+        let chip = document.createElement('span');
+        chip.setAttribute('class', 'mdl-chip mdl-chip--deletable');
         chip.innerHTML =
             '<span class="mdl-chip__text" data-id="' + id + '">' + text + '</span>' +
             '<button type="button" class="mdl-chip__action">' +
             '<i class="material-icons">close</i></button>';
-        var update = this.updateTargets_.bind(this);
+        let update = this.updateTargets_.bind(this);
         chip.getElementsByClassName('mdl-chip__action')[0].onclick = function () {
             chip.remove();
             update();
