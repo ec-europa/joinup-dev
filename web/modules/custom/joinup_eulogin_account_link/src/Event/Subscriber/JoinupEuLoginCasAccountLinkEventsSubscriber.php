@@ -67,7 +67,7 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
         '#suffix' => '</p>',
       ],
       [
-        '#markup' => $this->t('If you are the owner of this account please select the first option, otherwise contact the <a href=":contact">COVID-19 Challenge support</a>.', [
+        '#markup' => $this->t('If you are the owner of this account please select the first option, otherwise contact the <a href=":contact">Joinup support</a>.', [
           ':contact' => Url::fromRoute('contact_form.contact_page')->toString(),
         ]),
         '#prefix' => '<p>',

@@ -122,7 +122,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
 
     // Try to navigate to pages that are not accessible.
     $this->assertLimitedAccess('<front>');
-    $this->assertLimitedAccess('/challenges');
+    $this->assertLimitedAccess('/collections');
     $this->assertLimitedAccess('/solutions');
     $this->assertLimitedAccess('/latest');
     $this->assertLimitedAccess('/search');
@@ -136,7 +136,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     // Check that the redirect to limited access page has not been cached. The
     // user is now anonymous, so should be again able to access all pages.
     $this->assertAccess('<front>');
-    $this->assertAccess('/challenges');
+    $this->assertAccess('/collections ');
     $this->assertAccess('/solutions');
     $this->assertAccess('/latest');
     $this->assertAccess('/search');
@@ -154,7 +154,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     // Try to navigate to pages that are not accessible to non-linked users. The
     // users who can bypass limited access should be able to access these pages.
     $this->assertAccess('<front>');
-    $this->assertAccess('/challenges');
+    $this->assertAccess('/collections');
     $this->assertAccess('/solutions');
     $this->assertAccess('/latest');
     $this->assertAccess('/search');
@@ -171,7 +171,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     // The access is allowed.
     $this->casLogin("{$authname}@example.com", $eulogin_pass);
     $this->assertAccess('<front>');
-    $this->assertAccess('/challenges');
+    $this->assertAccess('/collections');
     $this->assertAccess('/solutions');
     $this->assertAccess('/latest');
     $this->assertAccess('/search');
@@ -230,7 +230,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $assert->statusCodeEquals(403);
     $assert->pageTextContains("Dear {$this->account->getDisplayName()}");
     $assert->pageTextContains('Your account access is limited.');
-    $assert->pageTextContains('Starting from 02/03/2020, signing in to COVID-19 Challenge is handled by EU Login, the European Commission Authentication Service. After you sign-in using EU Login, you will be able to synchronise your existing COVID-19 Challenge account to restore your access.');
+    $assert->pageTextContains('Starting from 02/03/2020, signing in to Joinup is handled by EU Login, the European Commission Authentication Service. After you sign-in using EU Login, you will be able to synchronise your existing Joinup account to restore your access.');
     $assert->linkExists('EU Login');
     $assert->linkByHrefExists('/user/logout?destination=/caslogin');
   }

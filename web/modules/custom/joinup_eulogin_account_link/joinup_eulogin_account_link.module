@@ -33,6 +33,6 @@ function joinup_eulogin_account_link_form_cas_account_link_form_alter(array &$fo
     $arguments = [
       ':passreset-url' => Url::fromRoute('user.pass')->toString(),
     ];
-    $form['login']['pass']['#description'] = t('Enter the password that accompanies your email address. Lost your COVID-19 Challenge password? You can still <a href=":passreset-url">reset your password</a>.', $arguments);
+    $form['login']['pass']['#description'] = t('Enter the password that accompanies your email address. Lost your Joinup password? You can still <a href=":passreset-url">reset your password</a>.', $arguments);
   }
 }
