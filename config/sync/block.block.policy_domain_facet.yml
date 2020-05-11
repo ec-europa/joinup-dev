@@ -17,7 +17,7 @@ provider: null
 plugin: 'facet_block:policy_domain'
 settings:
   id: 'facet_block:policy_domain'
-  label: 'Search page - Domains facet'
+  label: 'Search page - Policy domain facet'
   provider: facets
   label_display: '0'
 visibility:
