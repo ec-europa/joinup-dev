@@ -568,6 +568,8 @@ function joinup_user_user_format_name_alter(&$name, $account) {
  *   The display name.
  *
  * @see joinup_user_user_format_name_alter()
+ *
+ * @internal
  */
 function joinup_user_get_display_name(AccountInterface $account) {
   // Load the full user object if needed.
