@@ -498,6 +498,15 @@ function joinup_user_form_user_cancel_form_alter(&$form, FormStateInterface $for
 }
 
 /**
+ * Implements hook_user_cancel().
+ */
+function joinup_user_user_cancel(array $edit, UserInterface $account, string $method): void {
+  if ($method === 'user_cancel_block') {
+    \Drupal::service('joinup_user.profile_anonymizer')->anonymize($account);
+  }
+}
+
+/**
  * Implements hook_user_format_name_alter().
  *
  * Replaces the username with a concatenation of the user's first and last name.
