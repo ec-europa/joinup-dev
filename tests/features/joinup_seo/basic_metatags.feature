@@ -9,8 +9,8 @@ Feature:
     When I am on the homepage
     Then the following meta tags should available in the html:
       | identifier    | value                                                                                                                                                                                                                      |
-      | abstract      | EIC Covid19 is funded by the European Union via Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. |
-      | description   | EIC Covid19 is a collaborative platform created by the European Commission as a follow up mechanism to the Covid19 challenges presented at the EUvsVIRUS Hackathon, but also able to include other challenges in the future.   |
+      | abstract      | The EIC COVID-19 platform is a collaborative space where public and private procurers, local / regional / national organisations and agencies can setup challenges. |
+      | description   | EIC COVID-19 is a collaborative platform created by the European Commission as a follow up mechanism to the COVID-19 challenges presented at the EUvsVIRUS Hackathon, but also able to include other challenges in the future.   |
       | og:url        | __base_url__/                                                                                                                                                                                                              |
       | og:site_name  | COVID-19 Challenge                                                                                                                                                                                                                     |
       | og:title      | COVID-19 Challenge                                                                                                                                                                                                                     |

@@ -1,6 +1,6 @@
 name: Joinup
 type: profile
-description: 'EIC Covid19 is a collaborative platform created by the European Commission as a follow up mechanism to the Covid19 challenges presented at the EUvsVIRUS Hackathon, but also able to include other challenges in the future.'
+description: 'EIC COVID-19 is a collaborative platform created by the European Commission as a follow up mechanism to the COVID-19 challenges presented at the EUvsVIRUS Hackathon, but also able to include other challenges in the future.'
 core: 8.x
 
 distribution:

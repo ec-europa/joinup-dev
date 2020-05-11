@@ -126,7 +126,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
         '#type' => 'inline_template',
         // Warning: when changing this text, also update the metatags to match.
         // See `metatag.metatag_defaults.front.yml`.
-        '#template' => '<p>{% trans %}EIC Covid19 is a collaborative platform created by the European Commission as a follow up mechanism to the Covid19 challenges presented at the EUvsVIRUS Hackathon, but also able to include other challenges in the future. Funded by the European Union via <a href="https://ec.europa.eu/isa2/">Interoperability solutions for public administrations, businesses and citizens</a> (ISA<sup>2</sup>) Programme. It offers several services that aim at helping all relevant actors from the hackathon to continue and expand their collaboration with each other, reaching innovative and fast solutions to all relevant challenges. {% endtrans %}</p>',
+        '#template' => '<p>{% trans %}EIC COVID-19 is a platform created by the European Commission as a follow up to the COVID-19 challenges presented at the <a href="https://euvsvirus.org/">EUvsVIRUS Hackathon</a>. The platform is a collaborative space where public and private procurers, local / regional / national organisations and agencies can setup challenges. Here innovators, companies, researchers can forward their solutions. Sponsors have the possibility to pledge their support. Funded by the European Union via the European Innovation Council (EIC) programme. It offers several services that aim at helping all relevant actors from the hackathon to continue and expand their collaboration with each other, reaching innovative and fast solutions to all relevant challenges. {% endtrans %}</p>',
       ],
     ];
 
