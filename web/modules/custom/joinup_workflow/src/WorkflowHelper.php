@@ -139,7 +139,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEntityStateField(FieldableEntityInterface $entity): StateItemInterface {
+  public function getEntityStateField(FieldableEntityInterface $entity): ?StateItemInterface {
     $field_definition = $this->getEntityStateFieldDefinition($entity->getEntityTypeId(), $entity->bundle());
     if ($field_definition === NULL) {
       throw new \Exception('No state fields were found in the entity.');
