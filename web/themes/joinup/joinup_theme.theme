@@ -1165,6 +1165,19 @@ function joinup_theme_preprocess_user(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_user__inline().
+ */
+function joinup_theme_preprocess_user__inline(array &$variables): void {
+  $variables['full_name'] = [
+    '#theme' => 'username',
+    '#account' => $variables['user'],
+    '#attributes' => [
+      'class' => ['value', 'gray'],
+    ],
+  ];
+}
+
+/**
  * Implements hook_preprocess_user__group_header().
  */
 function joinup_theme_preprocess_user__group_header(&$variables) {
