@@ -122,7 +122,6 @@ Feature: Homepage
     # 'archival request', and 'archived'.
     When I go to the homepage
     Then I should see the text "EIC COVID-19 is a platform created by the European Commission as a follow up to the COVID-19 challenges presented at the EUvsVIRUS Hackathon. The platform is a collaborative space where public and private procurers, local / regional / national organisations and agencies can setup challenges. Here innovators, companies, researchers can forward their solutions. Sponsors have the possibility to pledge their support. Funded by the European Union via the European Innovation Council (EIC) programme. It offers several services that aim at helping all relevant actors from the hackathon to continue and expand their collaboration with each other, reaching innovative and fast solutions to all relevant challenges."
-
     When I click "Challenges" in the "Header" region
     Then I should see the heading "Challenges"
     And I should see the following lines of text:
