@@ -71,7 +71,7 @@ field_settings:
         - 'entity:node/uid'
         - 'entity:rdf_entity/uid'
   policy_domain:
-    label: 'Policy domain'
+    label: 'Domains'
     property_path: aggregated_field
     type: string
     configuration:
