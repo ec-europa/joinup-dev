@@ -182,7 +182,6 @@ class GroupAdministratorsController extends ControllerBase {
           }
 
           $user = $membership->getOwner();
-          $username = joinup_user_get_display_name($user);
           $email = $user->getEmail();
 
           try {
@@ -196,7 +195,7 @@ class GroupAdministratorsController extends ControllerBase {
           $rows[] = array_combine($headers, [
             $group->label(),
             $group_url,
-            $username,
+            $user->getDisplayName(),
             $email,
             $user_url,
             $role->getName(),
@@ -233,7 +232,7 @@ class GroupAdministratorsController extends ControllerBase {
         if (in_array($role->getName(), self::ADMINISTRATIVE_ROLES)) {
           $group = $membership->getGroup();
           $user = $membership->getOwner();
-          $username = joinup_user_get_display_name($user);
+          $username = $user->getDisplayName();
           try {
             $group_cell = [
               '#type' => 'link',

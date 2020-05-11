@@ -1157,7 +1157,7 @@ function joinup_theme_preprocess_file_link(&$variables) {
  * Implements hook_preprocess_user().
  */
 function joinup_theme_preprocess_user(&$variables) {
-  $variables['full_name'] = $variables['user']->get('full_name')->value;
+  $variables['full_name'] = $variables['user']->getDisplayName();
 
   // Truncate business title.
   $business_title = $variables['user']->get('field_user_business_title')->value;
@@ -1171,7 +1171,7 @@ function joinup_theme_preprocess_user__group_header(&$variables) {
   // Create customizable 'member for' field.
   // It creates a timespan without label and with lower granularity.
   $variables['member_for'] = \Drupal::service('date.formatter')->formatTimeDiffSince($variables['user']->getCreatedTime(), ['granularity' => 1]);
-  $variables['full_name'] = $variables['user']->get('full_name')->value;
+  $variables['full_name'] = $variables['user']->getDisplayName();
 }
 
 /**
