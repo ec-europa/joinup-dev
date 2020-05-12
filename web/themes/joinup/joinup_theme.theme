@@ -9,7 +9,7 @@ declare(strict_types = 1);
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Unicode;
-use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -1092,21 +1092,19 @@ function joinup_theme_preprocess_comment(&$variables) {
     '#account' => $user,
   ];
 
+  $cache_metadata = (new CacheableMetadata())->addCacheableDependency($user);
+  $cache_metadata->applyTo($variables['author']);
+
   if ($photo_target) {
     $photo_target = $photo_target[0]['target_id'];
     /** @var \Drupal\file\Entity\File $file */
     if ($file = File::load($photo_target)) {
       $uri = $file->getFileUri();
       $url = ImageStyle::load('profile_icon_big')->buildUrl($uri);
-      $variables['profile_icon'] = [
-        '#markup' => $url,
-        '#cache' => [
-          'tags' => Cache::mergeTags($user->getCacheTags(), $user->getEntityType()
-            ->getListCacheTags()),
-          'contexts' => $user->getCacheContexts(),
-          'max-age' => $user->getCacheMaxAge(),
-        ],
-      ];
+      $variables['profile_icon'] = ['#markup' => $url];
+      $cache_metadata
+        ->addCacheTags($user->getEntityType()->getListCacheTags())
+        ->applyTo($variables['profile_icon']);
     }
   }
 }
