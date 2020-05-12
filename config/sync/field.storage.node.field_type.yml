@@ -11,30 +11,98 @@ entity_type: node
 type: list_string
 settings:
   allowed_values:
-    -
-      value: document
-      label: Document
-    -
-      value: case_general
-      label: 'General case study'
-    -
-      value: case_guideline
-      label: Guideline
-    -
-      value: case_open_source
-      label: 'Open source case study'
-    -
-      value: factsheet
-      label: Factsheet
-    -
-      value: legal
-      label: 'Legal Document'
-    -
-      value: presentation
-      label: Presentation
-    -
-      value: newsletter
-      label: Newsletter
+    - value: study
+      label: 'Study'
+
+    - value: research_paper
+      label: 'Research Paper'
+
+    - value: policy_report_or_briefing
+      label: 'Policy report / Briefing'
+
+    - value: background_material
+      label: 'Background material'
+
+    - value: strategies_and_action plans
+      label: 'Strategies & Action plans'
+
+    - value: evaluation_report
+      label: 'Evaluation report'
+
+    - value: monitorting_report
+      label: 'Monitorting report'
+
+    - value: action_document_or_project_fiche
+      label: 'Action document / Project fiche'
+
+    - value: contractual_documentation
+      label: 'Contractual documentation'
+
+    - value: contract
+      label: 'Contract'
+
+    - value: terms_of_reference
+      label: 'Terms of Reference'
+
+    - value: technical_administrative_provisions
+      label: 'Technical Administrative Provisions'
+
+    - value: budget
+      label: 'Budget'
+
+    - value: logical_framework
+      label: 'Logical framework'
+
+    - value: learning_material
+      label: 'Learning material'
+
+    - value: e-learning_and_mooc
+      label: 'E-learning & MOOC'
+
+    - value: training_agenda_and_outlines
+      label: 'Training agenda & outlines'
+
+    - value: training_presentations
+      label: 'Training presentations'
+
+    - value: guidelines
+      label: 'Guidelines'
+
+    - value: toolkits_and_manuals
+      label: 'Toolkits & manuals'
+
+    - value: case_study_and_lessons_learned
+      label: 'Case study & Lessons learned'
+
+    - value: communication_material
+      label: 'Communication material'
+
+    - value: newsletter
+      label: 'Newsletter'
+
+    - value: leaflets
+      label: 'Leaflets'
+
+    - value: press_release
+      label: 'Press release'
+
+    - value: articles_and_interviews
+      label: 'Articles & Interviews'
+
+    - value: publications_and_factsheets
+      label: 'Publications & Factsheets'
+
+    - value: picture
+      label: 'Picture'
+
+    - value: video
+      label: 'Video'
+
+    - value: eu_official_document
+      label: 'EU official document'
+
+    - value: other
+      label: 'Other'
   allowed_values_function: ''
 module: options
 locked: false
