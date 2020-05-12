@@ -16,6 +16,7 @@ use Drupal\joinup\Traits\MailCollectorTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Behat step definitions for testing users.
@@ -177,6 +178,49 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
       'blocked' => 0,
       'active' => 1,
     ]);
+  }
+
+  /**
+   * Asserts that a user with a given status exists.
+   *
+   * @param string $status
+   *   The user status: 'active' or 'blocked'.
+   * @param string $name
+   *   The user name.
+   *
+   * @throws \Exception
+   *   If an invalid status has been passed ot the use doesn't exist.
+   *
+   * @Then the :status :name user exists
+   */
+  public function userExists(string $status, string $name): void {
+    $statuses = ['blocked', 'active'];
+    if (!in_array($status, $statuses)) {
+      throw new \Exception("Invalid status '$status'. Allowed values: 'active' or 'blocked'.");
+    }
+
+    $uids = \Drupal::entityQuery('user')
+      ->condition('name', $name)
+      ->condition('status', array_flip($statuses)[$status])
+      ->execute();
+
+    if (!$uids) {
+      throw new ExpectationFailedException("User '$name' doesn't exist or is not $status.");
+    }
+  }
+
+  /**
+   * Asserts that the user with the given name doesn't exist.
+   *
+   * @param string $name
+   *   The user name.
+   *
+   * @Then the :name user doesn't exist
+   */
+  public function userNotExists(string $name): void {
+    if (\Drupal::entityQuery('user')->condition('name', $name)->execute()) {
+      throw new ExpectationFailedException("The user $name exists but it should not.");
+    }
   }
 
 }

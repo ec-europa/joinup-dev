@@ -146,6 +146,14 @@ function joinup_user_mail_tokens(array &$replacements, array $data, array $optio
  * Implements hook_mail_alter().
  */
 function joinup_user_mail_alter(&$message) {
+  if ($message['key'] === 'status_blocked' && empty($message['to'])) {
+    // Don't send email for an anonymized blocked user. In this phase we don't
+    // have a recipient as the user's email address has just been removed.
+    // @see joinup_user_user_cancel()
+    // @see \Drupal\joinup_user\ProfileAnonymizer::anonymize()
+    $message['send'] = FALSE;
+  }
+
   if ($message['key'] !== 'status_canceled') {
     return;
   }
