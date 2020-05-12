@@ -8,6 +8,7 @@ use Drupal\collection\Entity\CollectionInterface;
 use Drupal\collection\Exception\MissingCollectionException;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\node\Entity\Node;
+use Drupal\solution\Entity\SolutionInterface;
 
 /**
  * Base class for community content entities.
@@ -25,7 +26,10 @@ class CommunityContentBase extends Node implements CommunityContentInterface {
     if ($audience_field->isEmpty()) {
       throw new MissingCollectionException();
     }
-    return $audience_field->entity;
+    /** @var \Drupal\collection\Entity\CollectionInterface|\Drupal\solution\Entity\SolutionInterface $group */
+    $group = $audience_field->entity;
+
+    return $group instanceof SolutionInterface ? $group->getCollection() : $group;
   }
 
 }

@@ -15,7 +15,8 @@ interface CollectionContentInterface {
    * Returns the collection to which this entity belongs.
    *
    * @return \Drupal\collection\Entity\CollectionInterface
-   *   The collection.
+   *   The collection. It could be the parent collection or a collection
+   *   ancestor.
    *
    * @throws \Drupal\collection\Exception\MissingCollectionException
    *   Thrown when the collection has not been set on the entity.
