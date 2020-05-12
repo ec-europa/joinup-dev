@@ -475,6 +475,16 @@ function joinup_user_invalidate_user_cache_tags(OgMembershipInterface $entity) {
 }
 
 /**
+ * Implements hook_user_cancel_methods_alter().
+ */
+function joinup_user_user_cancel_methods_alter(array &$methods): void {
+  $methods['joinup_user_cancel'] = [
+    'title' => t("Block the user and keep it's content."),
+    'description' => t('A slightly changed version of the core block method.'),
+  ];
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  *
  * Disallow access to the cancellation method.
@@ -505,7 +515,7 @@ function joinup_user_form_user_cancel_form_alter(array &$form, FormStateInterfac
       ],
     ];
   }
-  $form['user_cancel_method']['#default_value'] = 'user_cancel_block';
+  $form['user_cancel_method']['#default_value'] = 'joinup_user_cancel';
   joinup_user_alter_account_cancel_form($form);
 }
 
@@ -527,8 +537,17 @@ function joinup_user_alter_account_cancel_form(array &$form): void {
  * Implements hook_user_cancel().
  */
 function joinup_user_user_cancel(array $edit, UserInterface $account, string $method): void {
-  if ($method === 'user_cancel_block') {
-    \Drupal::service('joinup_user.profile_anonymizer')->anonymize($account);
+  if ($method === 'joinup_user_cancel') {
+    // Send the email and do the logging before anonymizing, so that we still
+    // have the field values.
+    if (!empty($edit['user_cancel_notify'])) {
+      _user_mail_notify('status_canceled', $account);
+    }
+    \Drupal::messenger()->addStatus(t('%name has been deleted.', ['%name' => $account->getDisplayName()]));
+    \Drupal::logger('user')->notice('Deleted user: %name %email.', ['%name' => $account->getAccountName(), '%email' => '<' . $account->getEmail() . '>']);
+
+    // Block and anonymize the user account.
+    \Drupal::service('joinup_user.profile_anonymizer')->anonymize($account->block());
   }
 }
 
