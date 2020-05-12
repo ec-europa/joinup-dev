@@ -9,7 +9,7 @@ id: node.news.field_policy_domain
 field_name: field_policy_domain
 entity_type: node
 bundle: news
-label: 'Policy domain'
+label: 'Domains'
 description: ''
 required: false
 translatable: false

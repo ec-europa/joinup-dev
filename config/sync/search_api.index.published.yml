@@ -362,7 +362,7 @@ field_settings:
       module:
         - node
   policy_domain:
-    label: 'Policy domain'
+    label: Domains
     property_path: aggregated_field
     type: string
     configuration:

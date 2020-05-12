@@ -5,7 +5,7 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_is_solution_type
     - rdf_entity.rdfentity.solution
-    - taxonomy.vocabulary.eira
+    - taxonomy.vocabulary.solution_category
 _core:
   default_config_hash: O7-ZnKBED7vrmG3RIkqIovXeskRJtkBB7-4dWlIIwUI
 id: rdf_entity.solution.field_is_solution_type
@@ -19,10 +19,10 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'grouped_rdf_taxonomy_term_selection:default'
+  handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      eira: eira
+      solution_category: solution_category
     sort:
       field: _none
     auto_create: false

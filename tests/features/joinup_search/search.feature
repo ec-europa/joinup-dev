@@ -35,9 +35,9 @@ Feature: Global search
     And I should see the "Spherification" tile
     And I should see the "Foam" tile
     # Facets should be in place.
-    And the option with text "Any policy domain" from select facet "policy domain" is selected
+    And the option with text "Any domain" from select facet "policy domain" is selected
     And the "policy domain" select facet should contain the following options:
-      | Any policy domain             |
+      | Any domain                    |
       | Demography   (2)              |
       | Statistics and Analysis   (1) |
     And the option with text "Any location" from select facet "spatial coverage" is selected
@@ -55,7 +55,7 @@ Feature: Global search
     Then the option with text "Demography   (2)" from select facet "policy domain" is selected
     # The selected option moves to the last position by default.
     And the "policy domain" select facet should contain the following options:
-      | Any policy domain             |
+      | Any domain                    |
       | Statistics and Analysis   (1) |
       | Demography   (2)              |
     Then the option with text "Any location" from select facet "spatial coverage" is selected
@@ -77,7 +77,7 @@ Feature: Global search
       | Belgium   (1)        |
     Then the option with text "Demography   (1)" from select facet "policy domain" is selected
     And the "policy domain" select facet should contain the following options:
-      | Any policy domain |
+      | Any domain |
       | Demography   (1)  |
     And I should see the "Molecular cooking collection" tile
     But I should not see the "El Celler de Can Roca" tile
@@ -99,7 +99,7 @@ Feature: Global search
     And the "News" content checkbox item should be selected
     Then the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Challenge (1), News (1)"
     And the "policy domain" select facet should contain the following options:
-      | Any policy domain             |
+      | Any domain                    |
       | Demography   (1)              |
       | Statistics and Analysis   (1) |
     And the "spatial coverage" select facet should contain the following options:
