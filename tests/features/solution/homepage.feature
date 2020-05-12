@@ -6,11 +6,11 @@ Feature: Solution homepage
 
   Scenario: The solution homepage shows basic information about the solution
     Given the following solution:
-      | title       | Petri net  |
+      | title       | Petri net                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
       | description | "<p>A <b>Petri net</b>, also known as a <b>place/transition (PT) net</b>, is one of several <a href=\"#mathematical\">mathematical</a> modeling languages for the description of distributed systems. It is a class of discrete event dynamic system. A Petri net is a directed bipartite graph, in which the nodes represent transitions (i.e. events that may occur, represented by bars) and places (i.e. conditions, represented by circles). The directed arcs describe which places are pre- and/or postconditions for which transitions (signified by arrows). Some sources state that Petri nets were invented in August 1939 by Carl Adam Petri — at the age of 13 — for the purpose of describing chemical processes.</p>" |
-      | logo        | logo.png   |
-      | banner      | banner.jpg |
-      | state       | validated  |
+      | logo        | logo.png                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+      | banner      | banner.jpg                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+      | state       | validated                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
     When I go to the homepage of the "Petri net" solution
     # Checking for HTML text ensures that any HTML elements in the abstract are correctly stripped.
     Then the page should contain the html text "A Petri net, also known as a place/transition (PT) net, is one of several mathematical modeling languages for the description of distributed systems."
@@ -53,8 +53,8 @@ Feature: Solution homepage
       | wiki             | http://example.wiki/foobar/wiki      |
       | state            | validated                            |
     And news content:
-      | title                             | body                             | solution        | policy domain           | spatial coverage | state     |
-      | Jira will be down for maintenance | As always, during business hours | Jira restarters | Statistics and Analysis | Luxembourg       | validated |
+      | title                             | body                            | solution        | policy domain           | spatial coverage | state     |
+      | Jira will be down for maintenance | As always, during Product hours | Jira restarters | Statistics and Analysis | Luxembourg       | validated |
     And custom_page content:
       | title            | body                                       | solution        |
       | Maintenance page | Jira is re-indexing. Go and drink a coffee | Jira restarters |
@@ -89,8 +89,8 @@ Feature: Solution homepage
       | name  | Geronimo             |
       | email | geronimo@example.com |
     And the following solutions:
-      | title             | description     | logo     | banner     | state     | owner                 | contact information | solution type     | policy domain |
-      | Chiricahua Server | Serving the web | logo.png | banner.jpg | validated | Chiricahua Foundation | Geronimo            | Business | E-inclusion   |
+      | title             | description     | logo     | banner     | state     | owner                 | contact information | solution type | policy domain |
+      | Chiricahua Server | Serving the web | logo.png | banner.jpg | validated | Chiricahua Foundation | Geronimo            | Product       | E-inclusion   |
     # There should not be a pager when the solution is empty.
     When I go to the homepage of the "Chiricahua Server" solution
     Then I should not see the "Pager" region

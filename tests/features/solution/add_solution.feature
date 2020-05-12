@@ -21,7 +21,7 @@ Feature: "Add solution" visibility options.
       | Description field is required.    |
       | Name field is required.           |
       | E-mail address field is required. |
-      | Policy domain field is required.  |
+      | Domains field is required.        |
       | Owner field is required.          |
       | Solution type field is required.  |
 
@@ -57,8 +57,8 @@ Feature: "Add solution" visibility options.
       | logo  | logo.png          |
       | state | validated         |
     And the following owner:
-      | name                 | type                         |
-      | Organisation example | Company, Industry consortium |
+      | name                 | type                        |
+      | Organisation example | Company, Regional authority |
     Given users:
       | Username      | Roles     | E-mail                 | First name | Family name |
       | Ruth Lee      | moderator | Ruth.Lee@test.com      | Ruth       | Lee         |
@@ -81,7 +81,6 @@ Feature: "Add solution" visibility options.
     # Regression test to endure that the language terms "Multilingual Code" are not present.
     And the available options in the "Language" select should not include the "Multilingual Code"
     And I should see the description "For best result the image must be larger than 2400x345 pixels." for the "Banner" field
-    And the "Solution type" field should contain the "IOP specification underpinning View, Legal View, Organisational View, deprecated" option groups
     When I fill in the following:
       | Title                 | Espresso is the solution                                      |
       | Description           | This is a test text                                           |
@@ -89,8 +88,8 @@ Feature: "Add solution" visibility options.
       | Language              | http://publications.europa.eu/resource/authority/language/VLS |
       | Name                  | Ernst Brice                                                   |
       | E-mail address        | ernsy1999@gmail.com                                           |
-    Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
-    And I select "Demography" from "Policy domain"
+    Then I select "Product" from "Solution type"
+    And I select "Demography" from "Domains"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
     # The owner field should have a help text.
@@ -104,9 +103,9 @@ Feature: "Add solution" visibility options.
     And I select "Completed" from "Status"
     And I press "Propose"
     Then the email sent to "Ruth Lee" with subject "COVID-19 Challenge: A new solution has been proposed" contains the following lines of text:
-      | text                                                                                                          |
+      | text                                                                                         |
       | Wendell Silva has proposed a new solution: "Espresso is the solution" on COVID-19 Challenge. |
-      | If you think this action is not clear or not due, please contact us at                   |
+      | If you think this action is not clear or not due, please contact us at                       |
     And I should see "Thank you for proposing a solution. Your request is currently pending approval by the site administrator."
 
     # Regression test for non required fields 'Banner' and 'Logo'.
@@ -147,8 +146,8 @@ Feature: "Add solution" visibility options.
       | Language              | http://publications.europa.eu/resource/authority/language/VLS          |
       | Name                  | Ajit Tamboli                                                           |
       | E-mail address        | tambotamboli@gocloud.in                                                |
-    Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
-    And I select "E-inclusion" from "Policy domain"
+    Then I select "Product" from "Solution type"
+    And I select "E-inclusion" from "Domains"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
     And I attach the file "logo.png" to "Logo"
@@ -187,8 +186,8 @@ Feature: "Add solution" visibility options.
     And I fill in the following:
       | Title       | PHP comments parser                             |
       | Description | A simple parser that goes through PHP comments. |
-    And I select "Data gathering, data processing" from "Policy domain"
-    And I select "Implementing Guideline" from "Solution type"
+    And I select "Data gathering, data processing" from "Domains"
+    And I select "Product" from "Solution type"
 
     # Submit the incomplete form, so error messages about missing fields will
     # be shown.
@@ -245,8 +244,8 @@ Feature: "Add solution" visibility options.
       | Geographical coverage | Switzerland                                 |
       | Name                  | Angela Crespi                               |
       | E-mail address        | angela_crespi@glacmon.basel-uni.ch          |
-    And I select "Data gathering, data processing" from "Policy domain"
-    And I select "Logging Service" from "Solution type"
+    And I select "Data gathering, data processing" from "Domains"
+    And I select "Service" from "Solution type"
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "University of Basel"
     And I press "Add owner"

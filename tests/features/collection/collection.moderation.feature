@@ -188,7 +188,7 @@ Feature: Collection moderation
       | Name   | A secretary in the fog |
       | E-mail | fog@example.com        |
     And I enter "The samurai are attacking the railroads" in the "Description" wysiwyg editor
-    And I select "Employment and Support Allowance" from "Policy domain"
+    And I select "Employment and Support Allowance" from "Domains"
     And I press "Add new" at the "Owner" field
     And I wait for AJAX to finish
     And I fill in "Name" with "Katsumoto"
@@ -247,7 +247,7 @@ Feature: Collection moderation
       | Name   | Domestic secretary |
       | E-mail | ds@example.com     |
     And I enter "Yaks and goats are friendly pets." in the "Description" wysiwyg editor
-    And I select "Statistics and Analysis" from "Policy domain"
+    And I select "Statistics and Analysis" from "Domains"
     # An ajax callback is executed now.
     And I press "Add new" at the "Owner" field
     And I wait for AJAX to finish
@@ -289,7 +289,7 @@ Feature: Collection moderation
       | Name   | Secretary of thieves |
       | E-mail | st@example.com       |
     And I enter "Kleptomaniac to the bone." in the "Description" wysiwyg editor
-    And I select "Supplier exchange" from "Policy domain"
+    And I select "Supplier exchange" from "Domains"
     # An ajax callback is executed now.
     And I press "Add new" at the "Owner" field
     And I wait for AJAX to finish
@@ -332,7 +332,7 @@ Feature: Collection moderation
       | Name   | Secretary of Silk |
       | E-mail | ss@example.com    |
     And I enter "So smooth." in the "Description" wysiwyg editor
-    And I select "Data gathering, data processing" from "Policy domain"
+    And I select "Data gathering, data processing" from "Domains"
     # An ajax callback is executed now.
     And I press "Add new" at the "Owner" field
     And I wait for AJAX to finish
@@ -376,7 +376,7 @@ Feature: Collection moderation
       | Name   | Secretary of the harbor |
       | E-mail | sh@example.com          |
     And I enter "Invisible ships on deep sea." in the "Description" wysiwyg editor
-    And I select "Employment and Support Allowance" from "Policy domain"
+    And I select "Employment and Support Allowance" from "Domains"
     # An ajax callback is executed now.
     And I press "Add new" at the "Owner" field
     And I wait for AJAX to finish

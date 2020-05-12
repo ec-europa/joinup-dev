@@ -13,8 +13,8 @@ Feature: Solution homepage
       | email | Placebo@example.com |
     And the following solutions:
       | title                        | description                           | logo     | banner     | state     | owner         | contact information | solution type | policy domain |
-      | Information sharing protocol | Handling information sharing securely | logo.png | banner.jpg | validated | Kostas Agathe | Placebo             | Business      | E-inclusion   |
-      | Security audit tools         | Automated test of security            | logo.png | banner.jpg | validated | Kostas Agathe | Placebo             | Business      | E-inclusion   |
+      | Information sharing protocol | Handling information sharing securely | logo.png | banner.jpg | validated | Kostas Agathe | Placebo             | Product       | E-inclusion   |
+      | Security audit tools         | Automated test of security            | logo.png | banner.jpg | validated | Kostas Agathe | Placebo             | Product       | E-inclusion   |
     And the following releases:
       | title             | release number | creation date     | release notes                               | is version of                | state     | spatial coverage |
       | IS protocol paper | 1              | 2018-10-04 8:01am | First stable version.                       | Information sharing protocol | validated | Belgium          |
@@ -89,7 +89,7 @@ Feature: Solution homepage
     # Reset the content type facet by clicking it again.
     When I click the Distribution content tab
     # Test the policy domain and spatial coverage inline facets.
-    Then "all policy domains" should be selected in the "solution policy domain" inline facet
+    Then "all domains" should be selected in the "solution policy domain" inline facet
     And the "solution policy domain" inline facet should allow selecting the following values "E-inclusion (2), Statistics and Analysis (1)"
     And "everywhere" should be selected in the "solution spatial coverage" inline facet
     And the "solution spatial coverage" inline facet should allow selecting the following values "European Union (2), Belgium (1)"

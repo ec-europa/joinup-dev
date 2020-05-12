@@ -223,16 +223,3 @@ Feature: Homepage
     And the "LinkedIn" link should point to "https://www.linkedin.com/groups/8294580"
     And I should see the link "Twitter" in the Footer region
     But I should not see the link "Facebook" in the Footer region
-
-  @version
-  Scenario Outline: The current version of the Joinup platform is shown in the footer.
-    Given the Joinup version is set to "<version>"
-    When I am on the homepage
-    Then I should see the link "<version>" in the Footer region
-    When I click "<version>"
-    Then the url should match "<url>"
-
-    Examples:
-      | version                    | url                                        |
-      | v1.57.0                    | /ec-europa/joinup-dev/releases/tag/v1.57.0 |
-      | v1.57.0-177-g0123456abcdef | /ec-europa/joinup-dev/commit/0123456abcdef |

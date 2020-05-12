@@ -73,7 +73,7 @@ Feature: Notification test for the collection transitions.
       # Contact information data.
       | Name                  | Super Sayan Academy |
       | E-mail                | ssa@example.com     |
-    When I select "HR" from "Policy domain"
+    When I select "HR" from "Domains"
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "NC for all"
     And I press "Propose"

@@ -84,7 +84,7 @@ Feature: Add community content
     When I am logged in as "Publisher"
     And I go to the "Sample <content type>" <content type>
     Then the "Sample <content type>" <content type> should not have a publication date
-    And I should see the text "Published on: 01/01/2010"
+#    And I should see the text "Published on: 01/01/2010"
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
@@ -131,7 +131,7 @@ Feature: Add community content
     And I fill in the following:
       | Title       | Published community document |
       | Short title | Published community document |
-    And I select "Document" from "Type"
+    And I select "Study" from "Type"
     And I enter "Published community document." in the "Description" wysiwyg editor
     And I press "Publish"
     Then I should see the heading "Published community document"

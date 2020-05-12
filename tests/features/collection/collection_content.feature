@@ -51,8 +51,8 @@ Feature: Collection content
       | Geographical coverage | Switzerland                                                         |
       | Name                  | Costas Papazoglou                                                   |
       | E-mail address        | CostasPapazoglou@example.com                                        |
-    And I select "Data gathering, data processing" from "Policy domain"
-    And I select "Logging Service" from "Solution type"
+    And I select "Data gathering, data processing" from "Domains"
+    And I select "Service" from "Solution type"
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Particle sweeper"
     And I press "Add owner"

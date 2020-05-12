@@ -35,7 +35,7 @@ Feature: Collection API
       # Contact information data.
       | Name        | BasicCollectionAPI Contact                   |
       | E-mail      | basic.collection.api@example.com             |
-    When I select "Data gathering, data processing" from "Policy domain"
+    When I select "Data gathering, data processing" from "Domains"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I press "Add existing" at the "Owner" field

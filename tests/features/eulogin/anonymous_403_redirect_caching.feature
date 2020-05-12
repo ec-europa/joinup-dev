@@ -20,7 +20,7 @@ Feature: Ensure that redirect cache invalidation is working properly.
       | Geographical coverage | Belgium                     |
       | Name                  | Cache manager               |
       | E-mail                | cache_manager@example.com   |
-    And I select "HR" from "Policy domain"
+    And I select "HR" from "Domains"
     And I select the radio button "Only members can create content."
     And I check "Moderated"
     And I press "Add existing" at the "Owner" field

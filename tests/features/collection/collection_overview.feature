@@ -71,7 +71,7 @@ Feature: Collections Overview
       # Contact information data.
       | Name        | Overviewer contact                  |
       | E-mail      | overviewer@example.com              |
-    And I select "Employment and Support Allowance" from "Policy domain"
+    And I select "Employment and Support Allowance" from "Domains"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing owner.

@@ -18,7 +18,7 @@ Feature: Creation of owners through UI
       # Contact information data.
       | Name        | Larry Joe                                                                                            |
       | E-mail      | larry.joe@example.com                                                                                |
-    When I select "EU and European Policies" from "Policy domain"
+    When I select "EU and European Policies" from "Domains"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
 
@@ -35,17 +35,17 @@ Feature: Creation of owners through UI
 
     # Edit.
     When I press "Edit" at the "Owner" field
-    And I set the Owner type to "Industry consortium,Company"
+    And I set the Owner type to "Regional authority,Company"
     And I fill in "Name" with "Acme Inc."
     Then I press "Update owner"
     Then I should see "Acme Inc."
-    And I should see the link "Industry consortium"
+    And I should see the link "Regional authority"
     And I should see the link "Company"
 
     When I press "Remove" at the "Owner" field
     And I press "Remove" at the "Owner" field
     Then I should not see "Acme Inc."
-    And I should not see the link "Industry consortium"
+    And I should not see the link "Regional authority"
 
     # Create a person owner as well.
     And I press "Add new" at the "Owner" field

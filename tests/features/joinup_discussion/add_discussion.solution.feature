@@ -48,7 +48,7 @@ Feature: "Add discussion" visibility options.
     When I go to the homepage of the "Emerald in the Luck" solution
     And I click "Add discussion" in the plus button menu
     Then I should see the heading "Add discussion"
-    And the following fields should be present "Title, Content, Policy domain, Add a new file"
+    And the following fields should be present "Title, Content, Domains, Add a new file"
     And the following fields should not be present "Motivation"
 
     # Check required fields.

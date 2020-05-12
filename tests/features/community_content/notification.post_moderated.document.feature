@@ -21,12 +21,12 @@ Feature: Notification test for the document transitions on a post moderated pare
       | CC post collection | CC member      |             |
     And document content:
       | title                                | author    | body | document type | collection         | field_state  |
-      | CC notify post publish               | CC member | body | Document      | CC post collection | draft        |
-      | CC notify post request changes       | CC member | body | Document      | CC post collection | validated    |
-      | CC notify post report                | CC member | body | Document      | CC post collection | validated    |
-      | CC notify post propose from reported | CC member | body | Document      | CC post collection | needs_update |
-      | CC notify post approve proposed      | CC member | body | Document      | CC post collection | proposed     |
-      | CC notify post delete                | CC member | body | Document      | CC post collection | validated    |
+      | CC notify post publish               | CC member | body | Study         | CC post collection | draft        |
+      | CC notify post request changes       | CC member | body | Study         | CC post collection | validated    |
+      | CC notify post report                | CC member | body | Study         | CC post collection | validated    |
+      | CC notify post propose from reported | CC member | body | Study         | CC post collection | needs_update |
+      | CC notify post approve proposed      | CC member | body | Study         | CC post collection | proposed     |
+      | CC notify post delete                | CC member | body | Study         | CC post collection | validated    |
 
     # Test 'create' operation.
     When all e-mails have been sent
@@ -35,7 +35,7 @@ Feature: Notification test for the document transitions on a post moderated pare
     And I click "Add document" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Description" with "Sample body."
-    And I select "Document" from "Type"
+    And I select "Study" from "Type"
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                |

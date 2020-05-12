@@ -48,13 +48,13 @@ Feature: "Add document" visibility options.
     When I go to the homepage of the "Winter of Beginning" solution
     And I click "Add document" in the plus button menu
     Then I should see the heading "Add document"
-    And the following fields should be present "Title, Short title, Type, Policy domain, Keywords, Geographical coverage, Licence, Description, Upload a new file or enter a URL"
+    And the following fields should be present "Title, Short title, Type of document, Domain, Keywords, Geographical coverage, Licence, Description, Upload a new file or enter a URL"
     And the following fields should not be present "Shared on, Motivation"
 
     When I fill in the following:
       | Title       | The Sparks of the Butterfly              |
       | Short title | Amazing document                         |
-    And I select "Document" from "Type"
+    And I select "Study" from "Type"
     Then I upload the file "test1.zip" to "Upload a new file or enter a URL"
     And I press "Save as draft"
     Then I should see the error message "Description field is required."

@@ -8,7 +8,7 @@ Feature: About page
   Scenario: View collection detailed information in the About page
     Given the following owner:
       | name         | type                |
-      | Tamsin Irwin | Industry consortium |
+      | Tamsin Irwin | Regional authority |
     And the following contact:
       | email       | irwinbvba@example.com        |
       | name        | Irwin BVBA made-up company   |

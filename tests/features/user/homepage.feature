@@ -62,7 +62,7 @@ Feature: Homepage feature
       | Title       | The Sacred Future documentation |
       | Short title | The Sacred Future documentation |
     And I enter "The Sacred Future documentation." in the "Description" wysiwyg editor
-    And I select "Document" from "Type"
+    And I select "Study" from "Type"
     Then I upload the file "test.zip" to "Upload a new file or enter a URL"
     And I press "Publish"
     Then I should see the heading "The Sacred Future documentation"

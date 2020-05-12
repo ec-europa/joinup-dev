@@ -222,7 +222,7 @@ Feature: As a site moderator I am able to import RDF files.
     And the "Description" field should contain "This solution has a standalone distribution."
 
     # Verify the user can edit non federated values.
-    And I select "E-health" from "Policy domain"
+    And I select "E-health" from "Domains"
     And I press "Publish"
     Then I should see the heading "Solution 2"
 
@@ -293,7 +293,7 @@ Feature: As a site moderator I am able to import RDF files.
     # Check that the Policy domain value was not overridden.
     Given I go to the "Solution 2" solution edit form
     # The text is '-E-health' because of the '-' prepended to children options.
-    And the option with text "-E-health" from select "Policy domain" is selected
+    And the option with text "-E-health" from select "Domains" is selected
     And I press "Publish"
     Then I should see the heading "Solution 2"
 
