@@ -29,6 +29,13 @@ Feature:
     And the blocked "alicia__1997" user exists
 
   Scenario: A moderator deletes a user using the administrative UI.
+    Given the following collection:
+      | title | Test collection      |
+      | state | validated |
+    And news content:
+      | title     | author       | collection      | state     |
+      | News item | alicia__1997 | Test collection | validated |
+
     Given I am logged in as a moderator
     And I click "People"
 
@@ -48,10 +55,46 @@ Feature:
       | recipient_mail | AliciaPotter@example.com                                                                                                                                                                                                                                            |
       | subject        | Your account has been deleted.                                                                                                                                                                                                                                      |
       | body           | Your account alicia__1997 has been deleted.This action has been done in the framework of moderation activities regularly conducted on the Joinup platform. If you believe that this action has been performed by mistake, please contact The Joinup Support Team at |
-    And 1 e-mail should have been sent
+    # We cannot assert the number of emails because of created content that
+    # sends messages to administrators and moderators. Depending on environment
+    # the list of recipients might differ. That's why we're only asserting that
+    # a "status blocked" message has not been sent.
+    And the following email should not have been sent:
+      | template       | status_blocked                 |
+      | recipient_mail | AliciaPotter@example.com       |
+      | subject        | Your account was just blocked. |
     And the "Alicia Potter" user doesn't exist
 
+    # The content created by an account deleted via adm UI is deleted.
+    When I go to "/collection/test-collection/news/news-item"
+    Then the response status code should be 404
+
   Scenario: Delete own account.
+    Given the following collection:
+      | title | Test collection      |
+      | state | validated |
+    And news content:
+      | title     | author       | collection      | state     |
+      | News item | alicia__1997 | Test collection | validated |
+    And document content:
+      | title | author       | collection      | state     |
+      | Docky | alicia__1997 | Test collection | validated |
+    And discussion content:
+      | title  | collection      | state     |
+      | Disqus | Test collection | validated |
+    And comments:
+      | subject  | field_body   | author       | parent |
+      | Awesome! | Let's use it | alicia__1997 | Disqus |
+
+    # The content author is clickable.
+    When I visit the "News item" news
+    Then I should see the link "Alicia Potter"
+    When I visit the "Docky" document
+    Then I should see the link "Alicia Potter"
+    # Check also the comment's author.
+    When I visit the "Disqus" discussion
+    Then I should see the link "Alicia Potter"
+
     Given I am logged in as "alicia__1997"
     And I visit "/user"
     And I open the header local tasks menu
@@ -69,5 +112,23 @@ Feature:
       | recipient_mail | AliciaPotter@example.com                                                                                 |
       | subject        | Your account has been deleted.                                                                           |
       | body           | If you believe that this action has been performed by mistake, please contact The Joinup Support Team at |
-    And 2 e-mails should have been sent
+    # We cannot assert the number of emails because of created content that
+    # sends messages to administrators and moderators. Depending on environment
+    # the list of recipients might differ. That's why we're only asserting that
+    # a "status blocked" message has not been sent.
+    And the following email should not have been sent:
+      | template       | status_blocked                 |
+      | recipient_mail | AliciaPotter@example.com       |
+      | subject        | Your account was just blocked. |
     And the blocked "alicia__1997" user exists
+
+    # The content author is no more clickable.
+    When I visit the "News item" news
+    Then I should see "Alicia Potter"
+    Then I should not see the link "Alicia Potter"
+    When I visit the "Docky" document
+    Then I should see "Alicia Potter"
+    Then I should not see the link "Alicia Potter"
+    When I visit the "Disqus" discussion
+    Then I should see "Alicia Potter"
+    Then I should not see the link "Alicia Potter"
