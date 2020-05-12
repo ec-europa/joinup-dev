@@ -21,7 +21,7 @@ class JoinupController extends ControllerBase {
    *   A render array for the propose form.
    */
   public function proposeRdfEntity() {
-    $rdf_entity = $this->entityTypeManager()->getStorage('rdf_entity')->create([
+    $rdf_entity = $this->entityTypeManager()->fffffgetStorage('rdf_entity')->create([
       'rid' => 'collection',
     ]);
 

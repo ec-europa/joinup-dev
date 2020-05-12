@@ -8,7 +8,7 @@ rdf_entity.propose_form:
     _controller: '\Drupal\joinup\Controller\JoinupController::proposeRdfEntity'
     _title: 'Propose challenge'
   requirements:
-    _custom_access: '\Drupal\joinup\Controller\JoinupController::createAccess'
+    _access: 'TRUE'
 
 joinup.collection_tca_form:
   path: '/covid19-challenge/tca/challenge'

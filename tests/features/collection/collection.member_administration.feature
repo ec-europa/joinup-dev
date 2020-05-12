@@ -47,7 +47,7 @@ Feature: Collection membership administration
       | text                                                                                        |
       | Donald Duck has requested to join your challenge "Medical diagnosis" as a member.           |
       | To approve or reject this request, click on                                                 |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at |
+      | If you think this action is not clear or not due, please contact us at |
       | /challenge/medical-diagnosis/members                                                        |
     And the following email should have been sent:
       | recipient | Turkey Ham                                                                        |
@@ -95,7 +95,7 @@ Feature: Collection membership administration
       | text                                                                                        |
       | You will receive weekly notifications for newly created content on this challenge.          |
       | To manage your notifications go to "My subscriptions" in the user menu.                     |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at |
+      | If you think this action is not clear or not due, please contact us at |
 
     # Check new privileges.
     When I am logged in as "Kathie Cumbershot"
@@ -135,7 +135,7 @@ Feature: Collection membership administration
       | Lisa Cuddy has approved your request to join and subscribe to the "Medical diagnosis" challenge |
       | You will receive weekly notifications for newly created content on this challenge.              |
       | To manage your notifications go to "My subscriptions" in the user menu.                         |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at     |
+      | If you think this action is not clear or not due, please contact us at     |
 
     When I am logged in as "Cam Bridge"
     When I click the "My subscriptions" link from the email sent to "Cam Bridge"

@@ -77,7 +77,7 @@ Feature: Solutions message overview
       | To approve or reject this proposal, please go to                                   |
       | You'll be able to provide feedback.                                                |
       | The requestor will be notified of your decision and feedback.                      |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at |
+      | If you think this action is not clear or not due, please contact us at |
 
     # Clean up the collection that was created.
     Then I delete the "Message overview proposal" collection

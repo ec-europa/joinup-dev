@@ -48,7 +48,7 @@ Feature: Solution notifications
     Then the email sent to "Ramiro Myers" with subject "COVID-19 Challenge: Changes have been proposed for your solution" contains the following lines of text:
       | text                                                                                                                                                                                               |
       | The COVID-19 Challenge Support Team has requested you to modify the interoperability solution "Solution notification to propose changes", with the following motivation: Please, check my updates. |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                                                        |
+      | If you think this action is not clear or not due, please contact us at                                                                                                        |
 
     # Template 11. The moderation team approves a deletion request.
     When all e-mails have been sent
@@ -112,7 +112,7 @@ Feature: Solution notifications
     And the email sent to "Ramiro Myers" with subject "COVID-19 Challenge: You are requested to update your solution" contains the following lines of text:
       | text                                                                                                                                                                      |
       | the moderator has requested you to modify the interoperability solution - Solution notification to request changes following the following advises: Can you change this?. |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                               |
+      | If you think this action is not clear or not due, please contact us at                                                                               |
 
     # Template 18. The moderation team deletes a solution without prior request.
     When all e-mails have been sent
@@ -135,7 +135,7 @@ Feature: Solution notifications
     Then the email sent to "Pat Harper" with subject "COVID-19 Challenge: An update of a solution has been proposed" contains the following lines of text:
       | text                                                                                                                                                 |
       | Ramiro Myers has proposed an update of the Interoperability solution: "Solution notification to propose from request changes" on COVID-19 Challenge. |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                          |
+      | If you think this action is not clear or not due, please contact us at                                                          |
 
     # Template 10. The owner requests a deletion.
     When all e-mails have been sent
@@ -145,4 +145,4 @@ Feature: Solution notifications
     Then the email sent to "Pat Harper" with subject "COVID-19 Challenge: A solution deletion has been requested" contains the following lines of text:
       | text                                                                                                                                                    |
       | Ramiro Myers requested that the Solution notification to request deletion interoperability solution, part of Collection of random solutions be deleted. |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                             |
+      | If you think this action is not clear or not due, please contact us at                                                             |

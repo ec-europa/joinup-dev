@@ -106,7 +106,7 @@ Feature: "Add solution" visibility options.
     Then the email sent to "Ruth Lee" with subject "COVID-19 Challenge: A new solution has been proposed" contains the following lines of text:
       | text                                                                                                          |
       | Wendell Silva has proposed a new Interoperability solution: "Espresso is the solution" on COVID-19 Challenge. |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at                   |
+      | If you think this action is not clear or not due, please contact us at                   |
     And I should see "Thank you for proposing a solution. Your request is currently pending approval by the site administrator."
 
     # Regression test for non required fields 'Banner' and 'Logo'.

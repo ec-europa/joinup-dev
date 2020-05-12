@@ -81,7 +81,7 @@ Feature: Notification test for the collection transitions.
       | text                                                                                        |
       | NC User has proposed challenge "NC proposed new".                                           |
       | To approve or reject this proposal, please go to                                            |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at |
+      | If you think this action is not clear or not due, please contact us at |
 
     # Clean up the manually created entities.
     Then I delete the "NC proposed new" collection
@@ -97,7 +97,7 @@ Feature: Notification test for the collection transitions.
       | text                                                                                        |
       | NC Owner has proposed challenge "NC to propose".                                            |
       | To approve or reject this proposal, please go to                                            |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at |
+      | If you think this action is not clear or not due, please contact us at |
 
     # Test 'request archival' operation.
     When all e-mails have been sent
@@ -108,7 +108,7 @@ Feature: Notification test for the collection transitions.
       | text                                                                                        |
       | NC Owner has requested to archive the challenge "NC to request archival".                   |
       | To approve or reject this request, please go to                                             |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at |
+      | If you think this action is not clear or not due, please contact us at |
 
     # Test 'request deletion' operation.
     When all e-mails have been sent
@@ -119,7 +119,7 @@ Feature: Notification test for the collection transitions.
       | text                                                                                        |
       | NC Owner has requested to delete the challenge "NC to request deletion".                    |
       | To approve or reject this request, please go to                                             |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at |
+      | If you think this action is not clear or not due, please contact us at |
 
     # Test 'propose edit' operation.
     When all e-mails have been sent

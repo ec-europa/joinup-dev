@@ -64,7 +64,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
     Then the email sent to "CC member" with subject "COVID-19 Challenge: Content has been updated" contains the following lines of text:
       | text                                                                                                                                                                                                  |
       | the Facilitator, CC Facilitator has requested you to modify the news - "CCN post request changes" in the challenge: "CC post collection", with the following motivation: "Can you do some changes?". |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                                                                    |
+      | If you think this action is not clear or not due, please contact us at                                                                                                                    |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -77,7 +77,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
     Then the email sent to "CC member" with subject "COVID-19 Challenge: Content has been updated" contains the following lines of text:
       | text                                                                                                                                                                                         |
       | the Facilitator, CC Facilitator has requested you to modify the news - "CCN post report" in the challenge: "CC post collection", with the following motivation: "Your content is reported". |
-      | If you think this action is not clear or not due, please contact Covid Challenge Support at                                                                                                           |
+      | If you think this action is not clear or not due, please contact us at                                                                                                           |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
