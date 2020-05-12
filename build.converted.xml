@@ -3,7 +3,7 @@
 <project name="Joinup deprecated" default="help">
 
     <target name="runner-converted" hidden="true">
-        <fail message="Removed target. Run './vendor/bin/run ${runner.replacement}'"/>
+        <fail message="Target has been deprecated. Run './vendor/bin/run ${runner.replacement}'"/>
     </target>
 
     <!-- Download & restore -->
