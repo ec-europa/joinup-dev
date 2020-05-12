@@ -19,6 +19,6 @@ update:
       og_roles:
         rdf_entity-solution-administrator:
           - pledge_publish_sowner
-delete: { }
+delete: {  }
 _core:
   default_config_hash: 7uNWtMze0O9N9YTtSi7q93v1U_lizKPkyMmGLOrSscM

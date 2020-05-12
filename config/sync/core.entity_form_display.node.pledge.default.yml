@@ -50,12 +50,12 @@ content:
     weight: 3
     settings:
       form_mode: inline
-      label_singular: ''
-      label_plural: ''
+      override_labels: true
+      label_singular: 'contact information'
+      label_plural: 'contact information'
       allow_new: true
       match_operator: CONTAINS
       revision: false
-      override_labels: false
       collapsible: false
       collapsed: false
       allow_existing: false
@@ -73,15 +73,15 @@ content:
     weight: 4
     settings:
       form_mode: inline
-      label_singular: ''
-      label_plural: ''
+      override_labels: true
+      label_singular: owner
+      label_plural: owners
       allow_new: true
+      allow_existing: true
       match_operator: CONTAINS
       revision: false
-      override_labels: false
       collapsible: false
       collapsed: false
-      allow_existing: false
       allow_duplicate: false
     third_party_settings: {  }
     type: inline_entity_form_complex

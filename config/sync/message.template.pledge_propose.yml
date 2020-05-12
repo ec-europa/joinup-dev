@@ -18,4 +18,3 @@ settings:
     'token replace': false
   purge_override: false
   purge_methods: {  }
-
