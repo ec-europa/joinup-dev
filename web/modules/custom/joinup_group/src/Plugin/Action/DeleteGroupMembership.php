@@ -4,10 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group\Plugin\Action;
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
-use Drupal\joinup_collection\JoinupCollectionHelper;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\OgAccessInterface;
 use Drupal\og\Plugin\Action\DeleteOgMembership;
@@ -76,18 +73,6 @@ class DeleteGroupMembership extends DeleteOgMembership {
    */
   public function execute(?OgMembership $membership = NULL): void {
     $this->executeMultiple([$membership]);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function access($membership, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
-    /** @var \Drupal\og\Entity\OgMembership $membership */
-    // 'Joinup' collection membership cannot be revoked.
-    if ($membership->getGroupId() === JoinupCollectionHelper::getCollectionId()) {
-      return $return_as_object ? AccessResult::forbidden() : FALSE;
-    }
-    return parent::access($membership, $account, $return_as_object);
   }
 
 }

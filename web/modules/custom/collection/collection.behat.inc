@@ -21,7 +21,6 @@ use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
-use Drupal\joinup_collection\JoinupCollectionHelper;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
@@ -700,21 +699,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function updateCollectionName(string $collection, string $name): void {
     $entity = $this->getCollectionByName($collection);
     $entity->setName($name)->save();
-  }
-
-  /**
-   * Creates the standard 'Joinup' collection.
-   *
-   * @beforeScenario @joinup_collection
-   *
-   * @see joinup_collection.module
-   */
-  public function createJoinupCollection(): void {
-    $this->createCollection([
-      'id' => JoinupCollectionHelper::getCollectionId(),
-      'label' => 'Joinup',
-      'field_ar_state' => 'validated',
-    ]);
   }
 
 }

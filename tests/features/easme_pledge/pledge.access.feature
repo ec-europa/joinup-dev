@@ -49,7 +49,7 @@ Feature:
     # Authenticated users can directly create a pledge.
     When I press "Pledge" in the "Header" region
     Then I should see the heading "Create a pledge"
-    And the following fields should be present "Title, Type of contribution, Description, Contact information, Owner"
+    And the following fields should be present "Title, Type of contribution, Description, Contact information, Pledge owner"
 
     # The authenticated users can only save as draft and submit for approval.
     And the following buttons should be present "<buttons present>"

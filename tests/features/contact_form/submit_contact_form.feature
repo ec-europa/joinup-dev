@@ -45,7 +45,7 @@ Feature: Submit the contact form
     # Both moderators should have received the notification e-mail.
     Then the following email should have been sent:
       | template           | Contact form submission                       |
-      | from               | digit-joinup@ec.europa.eu                     |
+      | from               | easme-sme-helpdesk@ec.europa.eu                    |
       | recipient_mail     | easme-sme-helpdesk@ec.europa.eu               |
       | subject            | COVID-19 Challenge - Contact form submission  |
       | body               | Dear sir, madam, ...                          |

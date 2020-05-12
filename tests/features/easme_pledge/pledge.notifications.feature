@@ -35,10 +35,10 @@ Feature:
     And I fill in the following:
       | Title | Web server resources |
     And I fill in the following in the "Contact information" field:
-      # Contact information data.
       | Name   | John Smith       |
       | E-mail | test@example.com |
-      # Owner data.
+    # Click 'Add new' in the owner field.
+    And I press "Add new"
     And I fill in the following in the "Owner" field:
       | Name | John Smith |
     And I select "Resources" from "Type of contribution"

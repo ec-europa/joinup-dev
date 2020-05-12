@@ -1,4 +1,4 @@
-@api
+@api @wip
 Feature: As a site moderator I am able to import RDF files.
 
   Background:
@@ -329,48 +329,24 @@ Feature: As a site moderator I am able to import RDF files.
     # Solution 2 is deleted automatically by Behat.
     And I delete the "Solution 3" solution
 
-  @joinup_collection
   Scenario: Test that solutions cannot be re-federated in a different collection.
-    Given I click "ADMS-AP importer" in the "Administration toolbar" region
+    Given collection:
+      | uri   | http://nio.gov.si/nio/ |
+      | title | NIO                    |
+      | state | validated              |
+    And solution:
+      | title      | Single solution |
+      | state      | validated       |
+      | collection | NIO             |
+    And provenance activities:
+      | entity          | enabled | associated with | started          | hash                             |
+      | Single solution | yes     | NIO             | 2012-07-07 23:01 | 958c1834800217af62253353d0d4bdef |
+    When I click "ADMS-AP importer" in the "Administration toolbar" region
     And I select "Spain - Center for Technology Transfer" from "Data pipeline"
     And I press "Execute"
     When I attach the file "single_solution_valid_adms.rdf" to "File"
     And I press "Upload"
 
     When I press "Next"
-    And I wait for the pipeline batch job to finish
-
-    Then I should see "Spain - Center for Technology Transfer: User selection"
-    And the row "Single solution [http://example.com/solution/single]" is checked
-
-    Given I press "Next"
-    And I wait for the pipeline batch job to finish
-
-    Then I should see the following success messages:
-      | success messages                                                                |
-      | The Spain - Center for Technology Transfer execution has finished with success. |
-    And I should see the heading "Successfully executed Spain - Center for Technology Transfer import pipeline"
-
-    # Try to federate in a different collection.
-    Given I visit "/admin/content/pipeline/joinup_collection/execute"
-    And I attach the file "single_solution_valid_adms.rdf" to "File"
-    And I press "Upload"
-
-    When I press "Next"
-    And I wait for the pipeline batch job to finish
-
-    Then I should see "Joinup collection: User selection"
     # The url of the entity is not included as the alias with the base url is included.
     And I should see the text "Federation record exists with "
-
-    # The federation was incomplete. Reset the pipeline to conclude the test.
-    Then I visit "/admin/content/pipeline/joinup_collection/reset"
-    # We manually delete the imported entities as they are not tracked by Behat
-    # and, as a consequence, will not be automatically deleted after test. Also
-    # this is a good test to check that the entities were imported and exist.
-    And I delete the provenance activity of "http://example.com/solution/single" entity
-    And I delete the provenance activity of "http://example.com/owner/single" entity
-    And I delete the provenance activity of "http://example.com/contact/single" entity
-    And I delete the "Contact" contact information
-    And I delete the "The Publisher" owner
-    And I delete the "Single solution" solution
