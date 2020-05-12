@@ -8,9 +8,9 @@ dependencies:
 id: taxonomy_term.owner_type
 entity_type_id: taxonomy_term
 bundle: owner_type
-rdf_type: 'http://purl.org/adms/publishertype/1.0'
+rdf_type: 'http://joinup.eu/ontology/owner-type'
 graph:
-  default: 'http://adms_skos_v1.00'
+  default: 'http://owner_type'
 base_fields_mapping:
   uuid:
     value:

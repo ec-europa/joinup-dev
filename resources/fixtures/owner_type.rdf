@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+  <skos:ConceptScheme rdf:about="http://joinup.eu/ontology/owner-type">
+  </skos:ConceptScheme>
+
+  <skos:Concept rdf:about="http://joinup.eu/ontology/owner-type/category#scientific-organisation">
+    <skos:prefLabel xml:lang="en">Academia/Scientific organisation</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/ontology/owner-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/ontology/owner-type"/>
+    <skos:definition xml:lang="en">Academia/Scientific organisation</skos:definition>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/ontology/owner-type/category#company">
+    <skos:prefLabel xml:lang="en">Company</skos:prefLabel>
+    <skos:definition xml:lang="en">Company</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/ontology/owner-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/ontology/owner-type"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://joinup.eu/ontology/owner-type/category#industry-corporate">
+    <skos:prefLabel xml:lang="en">Industry/Corporate</skos:prefLabel>
+    <skos:definition xml:lang="en">Industry/Corporate</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/ontology/owner-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/ontology/owner-type"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://joinup.eu/ontology/owner-type/category#local-authority">
+    <skos:prefLabel xml:lang="en">Local Authority</skos:prefLabel>
+    <skos:definition xml:lang="en">Local Authority</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/ontology/owner-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/ontology/owner-type"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://joinup.eu/ontology/owner-type/category#national-authority">
+    <skos:prefLabel xml:lang="en">National authority</skos:prefLabel>
+    <skos:definition xml:lang="en">National authority</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/ontology/owner-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/ontology/owner-type"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://joinup.eu/ontology/owner-type/category#non-governmental-organisation">
+    <skos:prefLabel xml:lang="en">Non-Governmental Organisation</skos:prefLabel>
+    <skos:definition xml:lang="en">Non-Governmental Organisation</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/ontology/owner-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/ontology/owner-type"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://joinup.eu/ontology/owner-type/category#non-profit-organisation">
+    <skos:prefLabel xml:lang="en">Non-Profit Organisation</skos:prefLabel>
+    <skos:definition xml:lang="en">Non-Profit Organisation</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/ontology/owner-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/ontology/owner-type"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://joinup.eu/ontology/owner-type/category#private-individual(s)">
+    <skos:prefLabel xml:lang="en">Private Individual(s)</skos:prefLabel>
+    <skos:definition xml:lang="en">Private Individual(s)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/ontology/owner-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/ontology/owner-type"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://joinup.eu/ontology/owner-type/category#regional-authority">
+    <skos:prefLabel xml:lang="en">Regional authority</skos:prefLabel>
+    <skos:definition xml:lang="en">Regional authority</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/ontology/owner-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/ontology/owner-type"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://joinup.eu/ontology/owner-type/category#supra-national-authority">
+    <skos:prefLabel xml:lang="en">Supra-national authority</skos:prefLabel>
+    <skos:definition xml:lang="en">Supra-national authority</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/ontology/owner-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/ontology/owner-type"/>
+  </skos:Concept>
+
+</rdf:RDF>

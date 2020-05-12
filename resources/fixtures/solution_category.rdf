@@ -5,13 +5,13 @@
   <skos:ConceptScheme rdf:about="http://joinup.eu/taxonomy/solutionCategory#">
   </skos:ConceptScheme>
 
-  <skos:Concept rdf:about="http://joinup.eu/taxonomy/solutionCategory#1">
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/solutionCategory#Product">
     <skos:prefLabel xml:lang="en">Product</skos:prefLabel>
     <skos:definition xml:lang="en">Product</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/solutionCategory#"/>
   </skos:Concept>
 
-  <skos:Concept rdf:about="http://joinup.eu/taxonomy/solutionCategory#2">
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/solutionCategory#Service">
     <skos:prefLabel xml:lang="en">Service</skos:prefLabel>
     <skos:definition xml:lang="en">Service</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/solutionCategory#"/>
