@@ -51,7 +51,7 @@ class IndexDistributionData extends ProcessorPluginBase {
   }
 
   /**
-   * Appends the distribution data to the paremts Search API description field.
+   * Appends the distribution data to the parent's Search API description field.
    *
    * @param \Drupal\search_api\Item\ItemInterface $item
    *   The Search API item.

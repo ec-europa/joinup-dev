@@ -16,8 +16,8 @@ dependencies:
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
-    - joinup
     - smart_trim
+    - template_suggestion
     - user
 _core:
   default_config_hash: cizZmiLASa4LC9pPsT-05UiASc3zruNIGHWh2P8NfZc
@@ -42,7 +42,7 @@ content:
       wrap_output: false
       wrap_class: trimmed
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: smart_trim
     region: content
@@ -54,7 +54,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: comma_separated
   field_policy_domain:
     type: entity_reference_label
@@ -64,7 +64,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
 hidden:
   field_attachment: true

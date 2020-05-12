@@ -42,6 +42,7 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
     'og_ui',
     'rdf_entity',
     'rdf_schema_field_validation',
+    'search_api',
     'sparql_entity_storage',
     'system',
     'user',
@@ -50,10 +51,17 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
+    $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
 
-    $this->setUpSparql();
     $this->installConfig([
       'language',
       'og',

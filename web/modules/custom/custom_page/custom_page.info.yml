@@ -10,8 +10,10 @@ dependencies:
   - 'drupal:user'
   - 'joinup:joinup_community_content'
   - 'joinup:joinup_group'
+  - 'joinup:joinup_validation'
   - 'joinup:search_api_field'
   - 'og:og'
+  - 'search_api:search_api'
   - 'smart_trim:smart_trim'
 
 config_devel:

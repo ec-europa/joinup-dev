@@ -74,6 +74,7 @@ Feature: My subscriptions
     And I click "My subscriptions"
     Then I should see the heading "My subscriptions"
     And I should see the text "No collection memberships yet. Join one or more collections to subscribe to their content!"
+    But I should not see the link "Unsubscribe from all"
     And I should not see the text "Alpha Centauri"
 
     # Log in as a user that is a member of 3 collections. The subscriptions for
@@ -87,6 +88,7 @@ Feature: My subscriptions
 
     # The empty text should not be shown now.
     Then I should not see the text "No collection memberships yet."
+    And I should not see the link "Unsubscribe from all"
 
     And the following collection content subscriptions should be selected:
       | Alpha Centauri |  |
@@ -129,6 +131,8 @@ Feature: My subscriptions
     And I wait for AJAX to finish
     Then I should not see the "Save changes" button on the "Alpha Centauri" subscription card
     But I should see the "Saved!" button on the "Alpha Centauri" subscription card
+    # The button "Unsubscribe from all" is now visible.
+    And I should see the link "Unsubscribe from all"
 
     And the "Saved!" button on the "Alpha Centauri" subscription card should be disabled
     And the "Save changes" button on the "Barnard's Star" subscription card should be disabled
@@ -153,6 +157,8 @@ Feature: My subscriptions
     And the "Save changes" button on the "Wolf 359" subscription card should be enabled
     Given I press "Save changes" on the "Alpha Centauri" subscription card
     And I wait for AJAX to finish
+    # No subscriptions actually exist even though one is selected.
+    And I should not see the link "Unsubscribe from all"
     Then I should not see the "Save changes" button on the "Alpha Centauri" subscription card
     But I should see the "Saved!" button on the "Alpha Centauri" subscription card
 

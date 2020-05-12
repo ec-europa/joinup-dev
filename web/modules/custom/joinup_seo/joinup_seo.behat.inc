@@ -10,12 +10,16 @@ declare(strict_types = 1);
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\rdf_entity\RdfInterface;
 use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing SEO.
  */
 class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+
+  use RdfEntityTrait;
 
   /**
    * Asserts that a list of meta tags are presented in the page.
@@ -345,6 +349,57 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
       }
     }
     return $graphs_found;
+  }
+
+  /**
+   * Asserts that the full metadata of the entity are attached in the page.
+   *
+   * @param string $title
+   *   The rdf entity title.
+   *
+   * @throws \Exception
+   *   Thrown when the entity is not found or the metadata are not displayed in
+   *   the page.
+   *
+   * @Then the rdf metadata of the :title rdf entity should be attached in the page
+   */
+  public function assertSerializedRdfMetadataInPage(string $title): void {
+    $rdf_entity = $this->getRdfEntityByLabel($title);
+    $json_output = $this->generateSerializedData($rdf_entity);
+    $this->assertSession()->responseContains($json_output);
+  }
+
+  /**
+   * Asserts that the full metadata of the entity are not attached in the page.
+   *
+   * @param string $title
+   *   The rdf entity title.
+   *
+   * @throws \Exception
+   *   Thrown when the entity is not found or the metadata are not displayed in
+   *   the page.
+   *
+   * @Then the rdf metadata of the :title rdf entity should not be attached in the page
+   */
+  public function assertSerializedRdfMetadataNotInPage(string $title): void {
+    $rdf_entity = $this->getRdfEntityByLabel($title);
+    $json_output = $this->generateSerializedData($rdf_entity);
+    $this->assertSession()->responseNotContains($json_output);
+  }
+
+  /**
+   * Generates the serialized metadata for the RDF entity.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The RDF entity.
+   *
+   * @return string
+   *   The serialized metadata.
+   */
+  protected function generateSerializedData(RdfInterface $rdf_entity): string {
+    /** @var \Drupal\joinup_seo\JoinupSeoExportHelperInterface $serializer */
+    $serializer = \Drupal::service('joinup_seo.export_helper');
+    return $serializer->exportRdfEntityMetadata($rdf_entity);
   }
 
 }

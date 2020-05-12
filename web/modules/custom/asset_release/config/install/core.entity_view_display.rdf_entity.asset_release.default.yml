@@ -26,6 +26,7 @@ dependencies:
   module:
     - file_url
     - state_machine
+    - template_suggestion
     - text
     - user
 id: rdf_entity.asset_release.default
@@ -41,7 +42,7 @@ content:
       past_format: '@interval ago'
       granularity: 1
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: timestamp_ago
     region: content
@@ -76,7 +77,7 @@ content:
       view_mode: view_mode_tile
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: entity_reference__listing_tile
     type: entity_reference_entity_view
     region: content
@@ -88,7 +89,7 @@ content:
     settings:
       mode: link
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
   field_isr_issue_tracker:
     weight: 19
@@ -150,7 +151,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
   field_isr_source_code_repository:
@@ -213,7 +214,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     region: content
 hidden:

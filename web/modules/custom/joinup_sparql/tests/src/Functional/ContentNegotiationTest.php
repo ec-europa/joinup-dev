@@ -61,8 +61,15 @@ class ContentNegotiationTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
     $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp() {
     parent::setUp();
     user_role_grant_permissions(AccountInterface::ANONYMOUS_ROLE, ['view rdf entity']);
   }

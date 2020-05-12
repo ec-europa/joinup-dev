@@ -9,6 +9,7 @@ dependencies:
     - node.type.newsletter
   module:
     - smart_trim
+    - template_suggestion
     - user
 id: node.newsletter.view_mode_tile
 targetEntityType: node
@@ -33,7 +34,7 @@ content:
       wrap_output: false
       more_link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
   links:

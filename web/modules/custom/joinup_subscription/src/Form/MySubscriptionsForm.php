@@ -6,6 +6,8 @@ namespace Drupal\joinup_subscription\Form;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
@@ -136,10 +138,9 @@ class MySubscriptionsForm extends FormBase {
     $form['collections']['#tree'] = TRUE;
     $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
 
-    // Keep track if the user has any memberships with active subscriptions. If
-    // this is the case we will show the 'Unsubscribe from all' button at the
-    // bottom of the form.
-    $memberships_with_subscription = FALSE;
+    // Keep track of the collections with subscriptions in order to properly
+    // show or hide the 'Unsubscribe from all' button in the end of the page.
+    $collections_with_subscription = $form_state->has('collections_with_subscription') ? $form_state->get('collections_with_subscription') : [];
     foreach ($memberships as $membership) {
       $collection = $membership->getGroup();
       if ($collection === NULL) {
@@ -177,14 +178,13 @@ class MySubscriptionsForm extends FormBase {
 
       $subscription_status = [];
 
+      $subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
+      $membership_has_subscription = FALSE;
       foreach (CommunityContentHelper::BUNDLES as $key => $bundle_id) {
-        $subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
         $value = array_reduce($subscription_bundles, function (bool $carry, EntityBundlePairItem $entity_bundle_pair) use ($bundle_id): bool {
           return $carry || $entity_bundle_pair->getBundleId() === $bundle_id;
         }, FALSE);
-        if (!$memberships_with_subscription && $value) {
-          $memberships_with_subscription = TRUE;
-        }
+        $membership_has_subscription = $membership_has_subscription || $value;
         $form['collections'][$collection->id()]['bundles'][$bundle_id] = [
           '#type' => 'checkbox',
           '#title' => $bundle_info[$bundle_id]['label'],
@@ -199,10 +199,13 @@ class MySubscriptionsForm extends FormBase {
         $subscription_status[$key] = $value;
       }
 
+      if ($membership_has_subscription) {
+        $collections_with_subscription[$collection->id()] = $collection->id();
+      }
+
       $form['collections'][$collection->id()]['bundles']['submit'] = [
         '#ajax' => [
           'callback' => '::reloadCollection',
-          'wrapper' => 'collection-' . $clean_collection_id,
         ],
         '#name' => 'submit-' . $clean_collection_id,
         '#submit' => ['::submitForm'],
@@ -225,6 +228,7 @@ class MySubscriptionsForm extends FormBase {
 
     $form['edit-actions'] = [
       '#type' => 'container',
+      '#id' => 'edit-actions',
       '#attributes' => ['class' => 'form__subscribe-actions'],
     ];
 
@@ -234,9 +238,12 @@ class MySubscriptionsForm extends FormBase {
       '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
         'user' => $user->id(),
       ]),
-      '#access' => $memberships_with_subscription,
+      '#access' => !empty($collections_with_subscription),
     ];
 
+    // Store the information for the AJAX submit handlers to properly update the
+    // form.
+    $form_state->set('collections_with_subscription', $collections_with_subscription);
     return $form;
   }
 
@@ -247,7 +254,7 @@ class MySubscriptionsForm extends FormBase {
     $collection_id = $this->getTriggeringElementCollectionId($form_state);
     $collection = $this->entityTypeManager->getStorage('rdf_entity')->load($collection_id);
     $user = $form_state->getBuildInfo()['args'][0];
-    $membership = $this->membershipManager->getMembership($collection, $user);
+    $membership = $this->membershipManager->getMembership($collection, $user->id());
 
     // Check if the subscriptions have changed. This allows us to skip saving
     // the membership entity if nothing changed.
@@ -311,11 +318,12 @@ class MySubscriptionsForm extends FormBase {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state.
    *
-   * @return array
-   *   The render array containing the updated collection to refresh.
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   An AJAX response.
    */
-  public function reloadCollection(array &$form, FormStateInterface $form_state): array {
+  public function reloadCollection(array &$form, FormStateInterface $form_state): AjaxResponse {
     $submitted_collection_id = $this->getTriggeringElementCollectionId($form_state);
+    $collections_with_subscription = $form_state->get('collections_with_subscription');
     $form['collections'][$submitted_collection_id]['bundles']['submit']['#value'] = $this->t('Saved!');
 
     // Change status of checkboxes.
@@ -325,7 +333,21 @@ class MySubscriptionsForm extends FormBase {
     }
     $form['collections'][$submitted_collection_id]['bundles']['submit']['#attributes']['data-drupal-subscriptions'] = Json::encode($subscription_status);
 
-    return $form['collections'][$submitted_collection_id];
+    // Add or remove the collection to the list of collections with a
+    // subscription to properly handle the 'Unsubscribe from all' button.
+    if (empty(array_filter($subscription_status)) && isset($collections_with_subscription[$submitted_collection_id])) {
+      unset($collections_with_subscription[$submitted_collection_id]);
+    }
+    else {
+      $collections_with_subscription[$submitted_collection_id] = $submitted_collection_id;
+    }
+
+    $form_state->set('collections_with_subscription', $collections_with_subscription);
+    $form['edit-actions']['unsubscribe_all']['#access'] = !empty($collections_with_subscription);
+
+    return (new AjaxResponse())
+      ->addCommand(new ReplaceCommand("#{$form['collections'][$submitted_collection_id]['#id']}", $form['collections'][$submitted_collection_id]))
+      ->addCommand(new ReplaceCommand('#edit-actions', $form['edit-actions']));
   }
 
   /**

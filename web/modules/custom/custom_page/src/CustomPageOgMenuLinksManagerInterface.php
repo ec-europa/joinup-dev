@@ -66,4 +66,15 @@ interface CustomPageOgMenuLinksManagerInterface {
    */
   public function getOgMenuInstanceByCustomPage(NodeInterface $custom_page): ?OgMenuInstanceInterface;
 
+  /**
+   * Returns the OG menu instance, given a group ID.
+   *
+   * @param string $group_id
+   *   The ID of the group to which OG menu instance is attached.
+   *
+   * @return \Drupal\og_menu\OgMenuInstanceInterface|null
+   *   The OG menu instance or NULL if none can be determined.
+   */
+  public function getOgMenuInstanceByGroupId(string $group_id): ?OgMenuInstanceInterface;
+
 }

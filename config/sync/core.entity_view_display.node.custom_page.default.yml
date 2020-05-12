@@ -12,9 +12,9 @@ dependencies:
   module:
     - field_group
     - file
-    - joinup
     - link
     - search_api_field
+    - template_suggestion
     - text
     - user
 third_party_settings:
@@ -56,7 +56,7 @@ content:
     settings:
       use_description_as_link_text: true
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset__show_more
     type: file_default
     region: content
