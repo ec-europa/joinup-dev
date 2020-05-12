@@ -8,7 +8,7 @@ dependencies:
   module:
     - search_api
 id: policy_domain
-name: 'Domains'
+name: Domains
 url_alias: policy_domain
 weight: 0
 min_count: 1

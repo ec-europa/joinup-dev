@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: collection_policy_domain
-name: 'Domains'
+name: Domains
 url_alias: collection_policy_domain
 weight: -1
 min_count: 1
