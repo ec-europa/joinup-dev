@@ -114,7 +114,6 @@ commands:
         - ${toolkit.tmp_folder}/solr-${solr.version}.tgz
       options:
         directory: ${solr.vendor_dir}
-        keep-old-files: null
     - task: remove
       file: ${solr.bin}
     - task: symlink
@@ -129,26 +128,3 @@ commands:
       command: test -d ${solr.core.published.dir} || ${solr.bin} create_core -c ${env.SOLR_CORE_PUBLISHED_NAME} -d ${solr.config_dir}
     - task: exec
       command: test -d ${solr.core.unpublished.dir} || ${solr.bin} create_core -c ${env.SOLR_CORE_UNPUBLISHED_NAME} -d ${solr.config_dir}
-
-  # TODO: What's the value of this command? Consider removing it.
-  solr:setup:
-    - task: run
-      command: solr:download-bin
-    - task: run
-      command: solr:config
-
-  # TODO: What's the value of this command? Consider removing it.
-  solr:reindex:
-    - task: exec
-      command: ${drush.bin}
-      arguments:
-        - search-api:clear
-      options:
-        yes: null
-    - task: exec
-      command: ${drush.bin}
-      arguments:
-        - search-api:index
-      options:
-        yes: null
-        batch-size: 250

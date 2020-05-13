@@ -1,8 +1,8 @@
 # Any task runner configuration, regardless if it's a default configuration,
-# declared in `./runner` or in this file, can be overridden. In order to do so,
-# create a `runner.yml` file in the project's top directory an override there
-# any configuration that needs to be adapted for the local environment. Note
-# that the `runner.yml` file is not under VCS control.
+# declared in `./resources//runner` or in this file, can be overridden. In order
+# to do so, create a `runner.yml` file in the project's top directory an
+# override there any configuration that needs to be adapted for the local
+# environment. Note that the `runner.yml` file is not under VCS control.
 
 # Override some toolkit configurations.
 toolkit:

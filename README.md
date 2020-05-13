@@ -144,9 +144,9 @@ drush.verbose = yes
 
 In order to override any configuration of the task runner (`./vendor/bin/run`),
 create a `runner.yml` file in the project's top directory. You can override
-there any default runner configuration, or any other declared in `./runner`
-files or in `runner.yml.dist`. Note that the `runner.yml` file is not under VCS
-control.
+there any default runner configuration, or any other declared in
+`./resources/runner` files or in `runner.yml.dist`. Note that the `runner.yml`
+file is not under VCS control.
 
 #### Setup environment variables
 
