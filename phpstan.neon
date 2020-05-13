@@ -5,6 +5,12 @@ parameters:
     ignoreErrors:
         # TODO: Remove un-ignore this rule in ISAICP-5899.
         - '#\Drupal calls should be avoided in classes, use dependency injection instead#'
+    excludes_analyse:
+        # For some reasons, ContinuousPHP reports:
+        # > Class Drupal\Sniffs\NamingConventions\ValidFunctionNameSniff not
+        # > found and could not be autoloaded.
+        # TODO: Investigate and re-add the PHPCS sniff file to static analysis.
+        - src/CodingStandards/Sniffs/NamingConventions/ValidUpdateNameSniff.php
 includes:
     - vendor/mglaman/phpstan-drupal/extension.neon
     - vendor/phpstan/phpstan-deprecation-rules/rules.neon
