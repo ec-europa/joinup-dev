@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Joinup\build\Phing\AfterFixturesImportCleanup.
- */
-
 namespace Joinup\Phing;
 
 use Virtuoso\Task\VirtuosoTaskBase;

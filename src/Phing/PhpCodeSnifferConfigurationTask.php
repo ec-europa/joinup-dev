@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Joinup\build\Phing\PhpCodeSnifferConfigurationTask.
- */
-
 namespace Joinup\Phing;
 
 require_once 'phing/Task.php';

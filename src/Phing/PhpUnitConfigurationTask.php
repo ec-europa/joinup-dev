@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Joinup\build\Phing\PhpUnitConfigurationTask.
- */
-
 namespace Joinup\Phing;
 
 require_once 'phing/Task.php';
