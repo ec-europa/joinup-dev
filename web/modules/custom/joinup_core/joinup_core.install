@@ -518,3 +518,17 @@ function joinup_core_update_8115(&$sandbox) {
     ->condition('mid', $mids_rejected, 'IN')
     ->execute();
 }
+
+/**
+ * Implements hook_update_N().
+ */
+function joinup_core_update_015401(&$sandbox) {
+  //
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function joinup_core_update_015902(&$sandbox) {
+  //
+}
