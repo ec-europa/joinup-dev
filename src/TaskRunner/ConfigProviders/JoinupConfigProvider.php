@@ -28,7 +28,7 @@ class JoinupConfigProvider implements ConfigProviderInterface {
     }
     $config->set('joinup.dir', $drupalFinder->getComposerRoot());
 
-    // Import configurations from ./runner/config/.
+    // Import configurations from ./runner/.
     static::importFromFiles($config, glob('runner/*.yml'));
   }
 

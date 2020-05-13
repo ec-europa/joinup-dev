@@ -71,7 +71,7 @@ commands:
       arguments:
         - ${env.SOLR_CORE_UNPUBLISHED_URL}/${env.SOLR_CORE_UNPUBLISHED_NAME}/update?stream.body=<delete><query>*:*</query></delete>&commit=true
 
-  # Restores the Sole index from a snapshot.
+  # Restores the Solr index from a snapshot.
   solr:restore:
     - task: run
       command: solr:empty
