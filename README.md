@@ -199,6 +199,32 @@ $ ../vendor/bin/phpunit
 See the [readme](web/themes/joinup/README.md) in the theme folder.
 
 
+### Upgrade process
+
+Joinup offers only _contiguous upgrades_. For instance, if you project is
+currently on Joinup `v1.39.2`, and the latest stable version is `v1.42.0`, then
+you cannot upgrade directly to the latest version. Instead, you should upgrade
+first to `v1.40.0`, `v1.40.1` (if exists) and, finally, `v1.42.0`.
+
+The Joinup update and post-update scripts naming is following this pattern:
+
+`function joinup_update_016002() {...}`
+
+or
+
+`function joinup_post_update_016002() {...}`
+
+The variable part consists in six digits with the following meaning:
+
+* The first two digits (`01`) are the Joinup major version.
+* The following two digits (`06`) are the Joinup minor version.
+* The last two digits (`02`) are the Joinup patch version.
+
+In the above example the update, and the post-update were applied in Joinup
+release `v1.60.2` against the latest version. Note that you can have the same
+update and post-update number and even the same (post)update number on different
+extensions (modules or profile).
+
 ### Technical details
 
 * In [Rdf draft module](web/modules/custom/rdf_entity/rdf_draft/README.md)
