@@ -23,9 +23,14 @@ class SolrCommands extends AbstractCommands {
   const MAX_EXECUTION_TIME = 120;
 
   /**
-   * Command map.
+   * Command map. Used to determine the right Solr command to execute.
    *
    * @var string[][]
+   *   An associative array of command data, keyed by the operation (either
+   *   'backup' or 'restore'. Each data array has two possible commands, keyed
+   *   by a boolean value that indicates whether we are performing a status
+   *   check or executing the actual command. This value will be TRUE if we are
+   *   performing a status check, and FALSE otherwise.
    */
   const COMMAND_MAP = [
     'backup' => [

@@ -21,7 +21,7 @@ commands:
     - task: run
       command: toolkit:install-dump
 
-  # Rebuilds the dev environment.
+  # Rebuilds the dev environment by restoring backups and applying updates.
   dev:rebuild-environment:
     - task: run
       command: dev:restore-databases
