@@ -42,6 +42,7 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     'image',
     'inline_entity_form',
     'joinup_core',
+    'joinup_group',
     'joinup_rdf',
     'joinup_workflow',
     'link',
@@ -91,6 +92,7 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     $this->installEntitySchema('rdf_entity');
     $this->installConfig([
       'joinup_core',
+      'joinup_group',
       'joinup_rdf',
       'rdf_draft',
       'rdf_entity',

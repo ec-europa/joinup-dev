@@ -12,4 +12,5 @@ config_devel:
   install:
     - system.action.joinup_og_membership_delete_action
     - system.action.joinup_transfer_group_ownership
+  optional:
     - views.view.members_overview
