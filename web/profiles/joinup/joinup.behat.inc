@@ -73,13 +73,6 @@ class JoinupSubContext extends DrupalSubContextBase {
   use WysiwygTrait;
 
   /**
-   * An array of created paragraphs to delete in the end of the scenario.
-   *
-   * @var \Drupal\paragraphs\Entity\ParagraphInterface[]
-   */
-  protected $paragraphs = [];
-
-  /**
    * Creates a user with data provided in a table.
    *
    * Table format:
@@ -693,7 +686,6 @@ class JoinupSubContext extends DrupalSubContextBase {
       $node->{"field_paragraphs_body:target_id"} = $paragraph->id();
       $node->{"field_paragraphs_body:target_revision_id"} = $paragraph->getRevisionId();
       unset($node->field_paragraphs_body);
-      $this->paragraphs[$paragraph->id()] = $paragraph;
     }
 
     // Replace the human-readable values for multiple fields.
