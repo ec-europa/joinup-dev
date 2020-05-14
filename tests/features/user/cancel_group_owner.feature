@@ -67,3 +67,19 @@ Feature:
       | Random chat machine learning |
     And I should see the link "Go back"
     And I should not see the button "Cancel account"
+
+    # User tries to delete its own account.
+    Given I am logged in as "Hazel Olson"
+    And I visit "/user"
+    And I click "Edit" in the "Header" region
+    And I press "Cancel account"
+    Then I should see the heading "Cancel account"
+    Then I should see the following lines of text:
+      | Dear Hazel,                                                                                                    |
+      | when processing your request to delete your account, we noticed that you are the sole owner of these groups:   |
+      | Before removing this account, please verify and take action to modify the owner of the groups mentioned above. |
+    And I should see the following links:
+      | Lugia was just released      |
+      | Random chat machine learning |
+    And I should see the link "Go back"
+    And I should not see the button "Cancel account"
