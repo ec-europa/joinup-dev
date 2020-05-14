@@ -1,2 +1,6 @@
+edit short id after publication:
+  title: 'Edit Short ID after initial group publication'
+  descriptions: 'Allows a user to edit the Short ID of the collection or solution after the initial publication of the entity.'
+
 permission_callbacks:
   - \Drupal\joinup_group\JoinupGroupPermissions::groupOwnershipPermissions
