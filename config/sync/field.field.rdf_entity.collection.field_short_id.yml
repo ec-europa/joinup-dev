@@ -1,0 +1,19 @@
+uuid: a1d453cd-d8cb-4018-80b2-0aeb6c3c28bf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_short_id
+    - rdf_entity.rdfentity.collection
+id: rdf_entity.collection.field_short_id
+field_name: field_short_id
+entity_type: rdf_entity
+bundle: collection
+label: 'Short ID'
+description: "Used as the web address (URL). Example: a collection named 'European Commission' could use 'eu-commission'.\r\nCannot be changed once the collection is published.\r\nThe ID is between 4-26 characters and consists of lowercase letters, numbers and the dash symbol (-)."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
