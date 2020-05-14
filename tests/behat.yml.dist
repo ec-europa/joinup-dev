@@ -37,7 +37,6 @@ default:
       table_map:
         'group menu edit table': '#menu-overview'
         'member administration': '.og-members-overview table'
-        'collection administrator report': 'table.collection-administrator-report'
         'licence comparer': 'table[data-drupal-selector="licence-comparer"]'
     Drupal\DrupalExtension:
       api_driver: 'drupal'
