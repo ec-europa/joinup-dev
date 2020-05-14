@@ -119,6 +119,7 @@
   font-size: $font-size-xsmall;
   text-transform: none;
   word-wrap: break-word;
+  margin-bottom: 5px;
 }
 
 .featured__text--double {
@@ -365,12 +366,16 @@
       
     .inline-social-media {
       text-align: center;
-      margin: 20px 0 15px 0;
+      margin: 20px 0 0 0;
     }
       
     .stats__wrapper {
       color: white;
       margin-bottom: 10px;
+
+      &.stat__wrapper-member {
+        margin-top: 15px;
+      }
 
       &.stats__wrapper-domain,
       &.stats__wrapper-organisation {

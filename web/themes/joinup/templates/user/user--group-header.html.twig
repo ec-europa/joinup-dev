@@ -42,7 +42,7 @@
               {{ content.field_social_media }}
             {% endif %}
             {% if member_for|render %}
-              <div class="stats__wrapper center">
+              <div class="stats__wrapper stat__wrapper-member center">
                 <span class="stats__text bold">{{ 'Member for'|t }}:</span>
                 <span class="stats__text">{{ member_for }}</span>
               </div>
@@ -55,12 +55,12 @@
               {% if content.field_user_business_title|render %}
                 <div class="featured__text-small bold">{{ content.field_user_business_title }}</div>
               {% endif %}
-             
+              {% if content.field_user_nationality|render %}
                 <div class="stats__wrapper">
-                  <span class="stats__text">{{ 'Country of origin'|t }}:</span>
+                  <span class="stats__text bold">{{ 'Country of origin'|t }}:</span>
                   <span class="stats__text">{{ content.field_user_nationality }}</span>
                 </div>
-             
+              {% endif %}
             </div>
 
             <div class="mdl-grid mdl-grid--no-spacing{% if content.field_user_organisation|render %} mdl-grid--with-organisation{% endif %}">
