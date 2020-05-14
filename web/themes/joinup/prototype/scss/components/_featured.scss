@@ -361,6 +361,10 @@
       .stats__wrapper {
         font-size: 14px;
         letter-spacing: normal;
+
+        div {
+          display: inline-block;
+        }
       }
     }
       
