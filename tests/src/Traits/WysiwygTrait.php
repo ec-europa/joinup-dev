@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup\Traits;
 
 use Behat\Mink\Element\TraversableElement;
+use Drupal\joinup\Exception\AmbiguousWysiwygEditorException;
 use Drupal\joinup\Exception\WysiwygEditorNotFoundException;
 
 /**
@@ -76,6 +77,9 @@ trait WysiwygTrait {
    *
    * @return bool
    *   TRUE if the editor is present, FALSE otherwise.
+   *
+   * @throws \Drupal\joinup\Exception\AmbiguousWysiwygEditorException
+   *   Thrown when the field label or editor is present more than once.
    */
   public function hasWysiwyg(string $field, ?TraversableElement $region = NULL): bool {
     try {
@@ -103,29 +107,38 @@ trait WysiwygTrait {
    * @return \Behat\Mink\Element\TraversableElement
    *   The WYSIWYG editor.
    *
-   * @throws \Exception
-   *   When the field label can not be found, or the field label or editor is
-   *   present more than once in the page.
+   * @throws \Drupal\joinup\Exception\AmbiguousWysiwygEditorException
+   *   Thrown when the field label or editor is present more than once.
    * @throws \Drupal\joinup\Exception\WysiwygEditorNotFoundException
-   *   Thrown when the wysiwyg editor can not be found in the page.
+   *   Thrown when the field label or wysiwyg editor is not found.
    */
   protected function getWysiwyg(string $field, ?TraversableElement $region = NULL): TraversableElement {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }
 
-    $label_element = $region->find('xpath', '//label[text()="' . $field . '"]');
-    if (empty($label_element)) {
-      throw new \Exception("Could not find the '$field' field label.");
+    $label_elements = $region->findAll('xpath', '//label[text()="' . $field . '"]');
+    if (empty($label_elements)) {
+      throw new WysiwygEditorNotFoundException("Could not find the '$field' field label.");
     }
 
+    if (count($label_elements) > 1) {
+      throw new AmbiguousWysiwygEditorException("Found multiple instances of the '$field' field label.");
+    }
+
+    $label_element = reset($label_elements);
     $wysiwyg_id = 'cke_' . $label_element->getAttribute('for');
-    $wysiwyg_element = $region->find('xpath', '//div[@id="' . $wysiwyg_id . '"]');
-    if (empty($wysiwyg_element)) {
+
+    $wysiwyg_elements = $region->findAll('xpath', '//div[@id="' . $wysiwyg_id . '"]');
+    if (empty($wysiwyg_elements)) {
       throw new WysiwygEditorNotFoundException("Could not find the '$field' wysiwyg editor.");
     }
 
-    return $wysiwyg_element;
+    if (count($wysiwyg_elements) > 1) {
+      throw new AmbiguousWysiwygEditorException("Found multiple wysiwyg editors with the '$field' field label.");
+    }
+
+    return reset($wysiwyg_elements);
   }
 
 }
