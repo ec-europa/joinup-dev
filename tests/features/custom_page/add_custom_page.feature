@@ -1,4 +1,4 @@
-@api @group-b @paragraphs_cleanup
+@api @group-b
 Feature: "Add custom page" visibility options.
   In order to manage custom pages
   As a group facilitator

@@ -1,4 +1,4 @@
-@api @group-b @paragraphs_cleanup
+@api @group-b
 Feature: Prefill contact form fields
   In order to simplify the gathering of feedback from the users
   As a moderator

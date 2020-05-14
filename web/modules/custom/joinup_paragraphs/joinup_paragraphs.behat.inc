@@ -214,7 +214,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    *
    * This uses the orphan paragraphs purger queue worker.
    *
-   * @AfterScenario @paragraphs_cleanup
+   * @AfterScenario
    */
   public function paragraphsCleanup(): void {
     /** @var \Drupal\Core\Queue\QueueWorkerInterface $worker */
