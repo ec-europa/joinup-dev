@@ -1138,6 +1138,22 @@ function joinup_core_post_update_delete_orphaned_solutions() {
 }
 
 /**
+ * Fix an entity that has two triples as changed date.
+ */
+function joinup_core_post_update_double_changed_time(): void {
+  $query = <<<Query
+WITH <http://joinup.eu/asset_release/published>
+DELETE {
+  <http://data.europa.eu/w21/0d441e6f-a4a0-4b3b-ba2e-eb31bce43938> <http://purl.org/dc/terms/modified> "2020-02-18T18:27:41Z"^^xsd:dateTime
+}
+WHERE {
+   <http://data.europa.eu/w21/0d441e6f-a4a0-4b3b-ba2e-eb31bce43938> <http://purl.org/dc/terms/modified> "2020-02-18T18:27:41Z"^^xsd:dateTime
+}
+Query;
+  \Drupal::service('sparql.endpoint')->query($query);
+}
+
+/**
  * Fix all needed timestamps and created dates for content.
  */
 function joinup_core_post_update_0001_set_migrated_content_timestamp(&$sandbox) {

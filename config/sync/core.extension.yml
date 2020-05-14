@@ -56,6 +56,7 @@ module:
   image: 0
   inline_entity_form: 0
   isa2_analytics: 0
+  joinup_bundle_class: 0
   joinup_collection: 0
   joinup_comment: 0
   joinup_community_content: 0

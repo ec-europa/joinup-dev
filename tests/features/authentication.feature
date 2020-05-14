@@ -9,11 +9,11 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path                |
-      | collections         |
-      | user/login          |
-      | user/password       |
-      | user/register       |
+      | path          |
+      | collections   |
+      | user/login    |
+      | user/password |
+      | user/register |
 
   Scenario Outline: Anonymous user cannot access restricted pages
     Given I am not logged in
@@ -21,44 +21,43 @@ Feature: User authentication
     Then I should see the heading "Sign in to continue"
 
     Examples:
-      | path                                                           |
-      | admin                                                          |
-      | admin/config                                                   |
-      | admin/config/search/redirect                                   |
-      | admin/content                                                  |
-      | admin/content/rdf                                              |
-      | admin/legal-notice                                             |
-      | admin/legal-notice/add                                         |
-      | admin/people                                                   |
-      | admin/reporting/distribution-downloads                         |
-      | admin/reporting/export-user-list                               |
-      | admin/reporting/group-administrators/rdf_entity/collection     |
-      | admin/reporting/group-administrators/rdf_entity/collection/csv |
-      | admin/reporting/solutions-by-licences                          |
-      | admin/reporting/solutions-by-type                              |
-      | admin/structure                                                |
-      | admin/structure/views                                          |
-      | dashboard                                                      |
-      | licence                                                        |
-      | licence/add                                                    |
-      | node                                                           |
-      | node/add                                                       |
-      | node/add/custom_page                                           |
-      | node/add/discussion                                            |
-      | node/add/document                                              |
-      | node/add/event                                                 |
-      | node/add/news                                                  |
-      | propose/collection                                             |
-      | propose/solution                                               |
-      | rdf_entity/add                                                 |
-      | rdf_entity/add/asset_distribution                              |
-      | rdf_entity/add/asset_release                                   |
-      | rdf_entity/add/collection                                      |
-      | rdf_entity/add/contact_information                             |
-      | rdf_entity/add/licence                                         |
-      | rdf_entity/add/owner                                           |
-      | rdf_entity/add/solution                                        |
-      | user/subscriptions                                             |
+      | path                                        |
+      | admin                                       |
+      | admin/config                                |
+      | admin/config/search/redirect                |
+      | admin/content                               |
+      | admin/content/rdf                           |
+      | admin/legal-notice                          |
+      | admin/legal-notice/add                      |
+      | admin/people                                |
+      | admin/reporting/distribution-downloads      |
+      | admin/reporting/export-user-list            |
+      | admin/reporting/group-administrators/export |
+      | admin/reporting/solutions-by-licences       |
+      | admin/reporting/solutions-by-type           |
+      | admin/structure                             |
+      | admin/structure/views                       |
+      | dashboard                                   |
+      | licence                                     |
+      | licence/add                                 |
+      | node                                        |
+      | node/add                                    |
+      | node/add/custom_page                        |
+      | node/add/discussion                         |
+      | node/add/document                           |
+      | node/add/event                              |
+      | node/add/news                               |
+      | propose/collection                          |
+      | propose/solution                            |
+      | rdf_entity/add                              |
+      | rdf_entity/add/asset_distribution           |
+      | rdf_entity/add/asset_release                |
+      | rdf_entity/add/collection                   |
+      | rdf_entity/add/contact_information          |
+      | rdf_entity/add/licence                      |
+      | rdf_entity/add/owner                        |
+      | rdf_entity/add/solution                     |
+      | user/subscriptions                          |
 
   Scenario Outline: Anonymous user cannot access restricted non-HTML URLs.
     Given I am not logged in
@@ -88,41 +87,40 @@ Feature: User authentication
     Then I should get an access denied error
 
     Examples:
-      | path                                                           |
-      | admin                                                          |
-      | admin/config                                                   |
-      | admin/content                                                  |
-      | admin/content/rdf                                              |
-      | admin/legal-notice                                             |
-      | admin/legal-notice/add                                         |
-      | admin/people                                                   |
-      | admin/reporting/distribution-downloads                         |
-      | admin/reporting/export-user-list                               |
-      | admin/reporting/group-administrators/rdf_entity/collection     |
-      | admin/reporting/group-administrators/rdf_entity/collection/csv |
-      | admin/reporting/solutions-by-licences                          |
-      | admin/reporting/solutions-by-type                              |
-      | admin/structure                                                |
-      | admin/structure/views                                          |
-      | dashboard                                                      |
-      | propose/solution                                               |
-      | licence                                                        |
-      | licence/add                                                    |
-      | node                                                           |
-      | node/add                                                       |
-      | node/add/custom_page                                           |
-      | node/add/discussion                                            |
-      | node/add/document                                              |
-      | node/add/event                                                 |
-      | node/add/news                                                  |
-      | rdf_entity/add                                                 |
-      | rdf_entity/add/asset_distribution                              |
-      | rdf_entity/add/asset_release                                   |
-      | rdf_entity/add/collection                                      |
-      | rdf_entity/add/contact_information                             |
-      | rdf_entity/add/licence                                         |
-      | rdf_entity/add/owner                                           |
-      | rdf_entity/add/solution                                        |
+      | path                                        |
+      | admin                                       |
+      | admin/config                                |
+      | admin/content                               |
+      | admin/content/rdf                           |
+      | admin/legal-notice                          |
+      | admin/legal-notice/add                      |
+      | admin/people                                |
+      | admin/reporting/distribution-downloads      |
+      | admin/reporting/export-user-list            |
+      | admin/reporting/group-administrators/export |
+      | admin/reporting/solutions-by-licences       |
+      | admin/reporting/solutions-by-type           |
+      | admin/structure                             |
+      | admin/structure/views                       |
+      | dashboard                                   |
+      | propose/solution                            |
+      | licence                                     |
+      | licence/add                                 |
+      | node                                        |
+      | node/add                                    |
+      | node/add/custom_page                        |
+      | node/add/discussion                         |
+      | node/add/document                           |
+      | node/add/event                              |
+      | node/add/news                               |
+      | rdf_entity/add                              |
+      | rdf_entity/add/asset_distribution           |
+      | rdf_entity/add/asset_release                |
+      | rdf_entity/add/collection                   |
+      | rdf_entity/add/contact_information          |
+      | rdf_entity/add/licence                      |
+      | rdf_entity/add/owner                        |
+      | rdf_entity/add/solution                     |
 
   @api
   Scenario Outline: Authenticated user cannot access restricted non-HTML URLs.
@@ -140,22 +138,21 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path                                                           |
-      | admin/people                                                   |
-      | admin/content/rdf                                              |
-      | admin/legal-notice                                             |
-      | admin/legal-notice/add                                         |
-      | admin/reporting/distribution-downloads                         |
-      | admin/reporting/distribution-downloads/csv                     |
-      | admin/reporting/export-user-list                               |
-      | admin/reporting/group-administrators/rdf_entity/collection     |
-      | admin/reporting/group-administrators/rdf_entity/collection/csv |
-      | admin/reporting/solutions-by-licences                          |
-      | admin/reporting/solutions-by-type                              |
-      | dashboard                                                      |
-      | licence                                                        |
-      | licence/add                                                    |
-      | propose/collection                                             |
+      | path                                        |
+      | admin/people                                |
+      | admin/content/rdf                           |
+      | admin/legal-notice                          |
+      | admin/legal-notice/add                      |
+      | admin/reporting/distribution-downloads      |
+      | admin/reporting/distribution-downloads/csv  |
+      | admin/reporting/export-user-list            |
+      | admin/reporting/group-administrators/export |
+      | admin/reporting/solutions-by-licences       |
+      | admin/reporting/solutions-by-type           |
+      | dashboard                                   |
+      | licence                                     |
+      | licence/add                                 |
+      | propose/collection                          |
 
   @api
   Scenario Outline: Moderator cannot access restricted pages
