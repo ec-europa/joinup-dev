@@ -509,6 +509,16 @@ function joinup_user_form_user_multiple_cancel_confirm_alter(array &$form, FormS
  * Disallow access to the cancellation method.
  */
 function joinup_user_form_user_cancel_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  joinup_user_alter_account_cancel_form($form);
+
+  if (!isset($form['uid'])) {
+    // If the 'uid' is not set the form cannot be submitted, most probably
+    // because the user is the sole owner of a group and the standard user
+    // cancel form was not loaded.
+    // @see \Drupal\joinup_group\Form\UserCancelForm::buildForm()
+    return;
+  }
+
   if (\Drupal::currentUser()->id() === $form['uid']['#value']) {
     $form['description'] = [
       [
@@ -524,7 +534,6 @@ function joinup_user_form_user_cancel_form_alter(array &$form, FormStateInterfac
     ];
   }
   $form['user_cancel_method']['#default_value'] = 'joinup_user_cancel';
-  joinup_user_alter_account_cancel_form($form);
 }
 
 /**
