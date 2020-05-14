@@ -21,18 +21,14 @@ trait WysiwygTrait {
    * @param string $button
    *   The title of the button to click.
    * @param \Behat\Mink\Element\TraversableElement|null $region
-   *   (optional) Limit the region to the specific element. Defaults to the full
-   *   page.
+   *   Optional region where the editor is expected to be located. Defaults to
+   *   the entire page.
    *
    * @throws \Exception
    *   Thrown when the button is not found, or if there are multiple buttons
    *   with the same title.
    */
   public function pressWysiwygButton(string $field, string $button, ?TraversableElement $region = NULL): void {
-    if (empty($region)) {
-      $region = $this->getSession()->getPage();
-    }
-
     $wysiwyg = $this->getWysiwyg($field, $region);
     $button_element = $wysiwyg->find('xpath', '//a[@title="' . $button . '"]');
     if (empty($button_element)) {
@@ -53,18 +49,14 @@ trait WysiwygTrait {
    * @param string $text
    *   The text to enter in the textarea.
    * @param \Behat\Mink\Element\TraversableElement|null $region
-   *   (optional) Limit the region to the specific element. Defaults to the full
-   *   page.
+   *   Optional region where the editor is expected to be located. Defaults to
+   *   the entire page.
    *
    * @throws \Exception
    *   Thrown when the textarea could not be found or if there are multiple
    *   textareas.
    */
   public function setWysiwygText(string $field, string $text, ?TraversableElement $region = NULL): void {
-    if (empty($region)) {
-      $region = $this->getSession()->getPage();
-    }
-
     $wysiwyg = $this->getWysiwyg($field, $region);
     $textarea_element = $wysiwyg->find('xpath', '//textarea');
     if (empty($textarea_element)) {
@@ -78,13 +70,16 @@ trait WysiwygTrait {
    *
    * @param string $field
    *   The label of the field to which the WYSIWYG editor is attached.
+   * @param \Behat\Mink\Element\TraversableElement|null $region
+   *   Optional region where the editor is expected to be located. Defaults to
+   *   the entire page.
    *
    * @return bool
    *   TRUE if the editor is present, FALSE otherwise.
    */
-  public function hasWysiwyg(string $field): bool {
+  public function hasWysiwyg(string $field, ?TraversableElement $region = NULL): bool {
     try {
-      $this->getWysiwyg($field, $this->getSession()->getPage());
+      $this->getWysiwyg($field, $region);
       return TRUE;
     }
     // Only catch the specific exception that is thrown when the WYSIWYG editor
@@ -102,8 +97,8 @@ trait WysiwygTrait {
    * @param string $field
    *   The label of the field to which the WYSIWYG editor is attached.
    * @param \Behat\Mink\Element\TraversableElement|null $region
-   *   (optional) Limit the region to the specific element. Defaults to the full
-   *   page.
+   *   Optional region where the editor is expected to be located. Defaults to
+   *   the entire page.
    *
    * @return \Behat\Mink\Element\TraversableElement
    *   The WYSIWYG editor.
@@ -114,7 +109,11 @@ trait WysiwygTrait {
    * @throws \Drupal\joinup\Exception\WysiwygEditorNotFoundException
    *   Thrown when the wysiwyg editor can not be found in the page.
    */
-  protected function getWysiwyg(string $field, TraversableElement $region): TraversableElement {
+  protected function getWysiwyg(string $field, ?TraversableElement $region = NULL): TraversableElement {
+    if (empty($region)) {
+      $region = $this->getSession()->getPage();
+    }
+
     $label_element = $region->find('xpath', '//label[text()="' . $field . '"]');
     if (empty($label_element)) {
       throw new \Exception("Could not find the '$field' field label.");
