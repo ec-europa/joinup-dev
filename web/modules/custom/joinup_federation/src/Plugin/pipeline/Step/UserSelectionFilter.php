@@ -125,7 +125,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     // If no solution was selected, exit the pipeline here.
     if (!$selected_solution_ids = array_keys(array_filter($user_selection))) {
       throw (new PipelineStepExecutionLogicException())->setError([
-        '#markup' => "You didn't select any solution. As a consequence, no entity has been imported.",
+        '#markup' => $this->t("You didn't select any solution. As a consequence, no entity has been imported."),
       ]);
     }
 
