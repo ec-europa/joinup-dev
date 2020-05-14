@@ -7,8 +7,8 @@ dependencies:
     - field.field.paragraph.simple_paragraph.field_body
     - paragraphs.paragraphs_type.simple_paragraph
   module:
-    - joinup
     - smart_trim
+    - template_suggestion
 id: paragraph.simple_paragraph.preview
 targetEntityType: paragraph
 bundle: simple_paragraph
@@ -31,7 +31,7 @@ content:
         trim_zero: false
       summary_handler: full
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: smart_trim
     region: content
