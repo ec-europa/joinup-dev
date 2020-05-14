@@ -91,7 +91,7 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
     // have to abandon this pipeline.
     if (!$this->pipeline->lock()) {
       throw (new PipelineStepPrepareLogicException())->setError([
-        '#markup' => $this->t("This import has timed-out. In the meantime another user has started a new import. Please come back later and retry."),
+        '#markup' => "This import has timed-out. In the meantime another user has started a new import. Please come back later and retry.",
       ]);
     }
 

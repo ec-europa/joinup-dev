@@ -74,9 +74,7 @@ class ManualUpload extends JoinupFederationStepPluginBase implements PipelineSte
       // an exit mechanism in batch processes.
       $this->setBatchValue('graph_array', []);
       throw (new PipelineStepExecutionLogicException())->setError([
-        '#markup' => $this->t('Could not store triples in triple store. Reason: @message', [
-          '@message' => $exception->getMessage(),
-        ]),
+        '#markup' => sprintf('Could not store triples in triple store. Reason: %s', $exception->getMessage()),
       ]);
     }
   }
