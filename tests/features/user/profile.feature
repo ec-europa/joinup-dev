@@ -17,7 +17,7 @@ Feature: User profile
     Then I should see the heading "Leonardo Da Vinci"
     And I should see the avatar "user_icon.png"
 
-    But I should see the text "Country of origin:" in the "Header" region
+    But I should not see the text "Country of origin:" in the "Header" region
 
     When I click "Edit"
     Then the following fields should be present "Current password, Email, Password, Confirm password, First name"
