@@ -221,8 +221,8 @@ Feature: My subscriptions
     # rendered.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5723
     And the cache has been cleared
-    Then the <frequency> digest for "Auric Goldfinger" should contain the following message:
-      | mail_body | Water supply |
+    Then the <frequency> collection content subscription digest for "Auric Goldfinger" should match the following message:
+      | Water supply |
 
     Examples:
       | option  | frequency |

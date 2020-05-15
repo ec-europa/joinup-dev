@@ -22,6 +22,8 @@ trait JoinupBundleClassFieldAccessTrait {
    *   The field item.
    */
   protected function getFirstItem(string $field_name): ?FieldItemInterface {
+    assert($this->get($field_name), sprintf('Field name %s is not defined.', $field_name));
+
     try {
       $item = $this->get($field_name)->first();
       if (!empty($item) && $item instanceof FieldItemInterface && !$item->isEmpty()) {
