@@ -31,12 +31,15 @@ trait WysiwygTrait {
    */
   public function pressWysiwygButton(string $field, string $button, ?TraversableElement $region = NULL): void {
     $wysiwyg = $this->getWysiwyg($field, $region);
-    $button_element = $wysiwyg->find('xpath', '//a[@title="' . $button . '"]');
-    if (empty($button_element)) {
+    $button_elements = $wysiwyg->findAll('xpath', '//a[@title="' . $button . '"]');
+    if (empty($button_elements)) {
       throw new \Exception("Could not find the '$button' button.");
     }
-
-    $button_element->click();
+    if (count($button_elements) > 1) {
+      throw new \Exception("Multiple '$button' buttons found in the editor.");
+    }
+    $button = reset($button_elements);
+    $button->click();
   }
 
   /**
@@ -59,11 +62,15 @@ trait WysiwygTrait {
    */
   public function setWysiwygText(string $field, string $text, ?TraversableElement $region = NULL): void {
     $wysiwyg = $this->getWysiwyg($field, $region);
-    $textarea_element = $wysiwyg->find('xpath', '//textarea');
-    if (empty($textarea_element)) {
+    $textarea_elements = $wysiwyg->findAll('xpath', '//textarea');
+    if (empty($textarea_elements)) {
       throw new \Exception("Could not find the textarea for the '$field' field.");
     }
-    $textarea_element->setValue($text);
+    if (count($textarea_elements) > 1) {
+      throw new \Exception("Multiple textareas found for '$field'.");
+    }
+    $textarea = reset($textarea_elements);
+    $textarea->setValue($text);
   }
 
   /**
