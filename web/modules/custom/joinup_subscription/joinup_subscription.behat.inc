@@ -24,6 +24,8 @@ use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
+use Drupal\joinup_subscription\JoinupSubscriptionsInterface;
+use Drupal\message_digest\Traits\MessageDigestTrait;
 use Drupal\og\OgMembershipInterface;
 use Drupal\user\Entity\User;
 use PHPUnit\Framework\Assert;
@@ -37,6 +39,7 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
   use EntityTrait;
   use MaterialDesignTrait;
   use MailCollectorTrait;
+  use MessageDigestTrait;
   use OgTrait;
   use RdfEntityTrait;
   use UserTrait;
@@ -121,9 +124,16 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
       $membership = $this->getMembershipByGroupAndUser($collection, $user, OgMembershipInterface::ALL_STATES);
       $subscriptions = [];
       foreach ($this->explodeCommaSeparatedStepArgument(strtolower($values['subscriptions'])) as $bundle) {
-        Assert::assertTrue(in_array($bundle, CommunityContentHelper::BUNDLES), "Unknown bundle $bundle.");
+        $entity_type = NULL;
+        foreach (JoinupSubscriptionsInterface::BUNDLES as $entity_type_id => $bundles) {
+          if (in_array($bundle, $bundles)) {
+            $entity_type = $entity_type_id;
+            break 1;
+          }
+        }
+        Assert::assertNotEmpty($entity_type, "Unknown bundle $bundle.");
         $subscriptions[] = [
-          'entity_type' => 'node',
+          'entity_type' => $entity_type,
           'bundle' => $bundle,
         ];
       }
@@ -302,8 +312,8 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
    * navigated to the my subscription form before performing this step.
    *
    * Table format:
-   * | Collection A | Discussion, Document, Event, News |
-   * | Collection B | Discussion, Event                 |
+   * | Collection A | Solution, Discussion, Document, Event, News |
+   * | Collection B | Discussion, Event                           |
    *
    * @param \Behat\Gherkin\Node\TableNode $subscription_options
    *   The Behat table node containing the subscription options.
@@ -315,16 +325,20 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
    * @Then the following collection content subscriptions should be selected:
    */
   public function assertSubscriptionOptionsInMySubscriptions(TableNode $subscription_options): void {
-    foreach ($subscription_options->getRowsHash() as $collection_label => $bundle_ids) {
-      $bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($bundle_ids));
+    foreach ($subscription_options->getRowsHash() as $collection_label => $expected_bundle_ids) {
+      $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
       $collection = self::getRdfEntityByLabel($collection_label, 'collection');
-      foreach (CommunityContentHelper::BUNDLES as $bundle_id) {
-        $locator = 'collections[' . $collection->id() . '][bundles][' . $bundle_id . ']';
-        if (in_array($bundle_id, $bundle_ids)) {
-          $this->assertSession()->checkboxChecked($locator);
-        }
-        else {
-          $this->assertSession()->checkboxNotChecked($locator);
+      foreach (JoinupSubscriptionsInterface::BUNDLES as $entity_type_id => $bundle_ids) {
+        foreach ($bundle_ids as $bundle_id) {
+          $key = implode('|', [$entity_type_id, $bundle_id]);
+          $locator = 'collections[' . $collection->id() . '][bundles][' . $key . ']';
+          if (in_array($bundle_id, $expected_bundle_ids)) {
+            $this->assertSession()->checkboxChecked($locator);
+          }
+          else {
+            $this->assertSession()->checkboxNotChecked($locator);
+          }
+
         }
       }
     }
@@ -334,8 +348,8 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
    * Checks that the given collection content subscriptions are present.
    *
    * Table format:
-   * | Collection A | Discussion, Document, Event, News |
-   * | Collection B | Discussion, Event                 |
+   * | Collection A | Discussion, Document, Event, News, Solution |
+   * | Collection B | Discussion, Event                           |
    *
    * @param \Behat\Gherkin\Node\TableNode $subscriptions
    *   The Behat table node containing the expected subscriptions. The first
@@ -350,17 +364,21 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
    */
   public function assertCollectionContentSubscriptions(TableNode $subscriptions): void {
     $user = $this->getUserManager()->getCurrentUser();
+    /** @var \Drupal\Core\Session\AccountInterface $account */
     $account = User::load($user->uid);
+
     foreach ($subscriptions->getRowsHash() as $collection_label => $expected_bundle_ids) {
       $collection = self::getRdfEntityByLabel($collection_label);
-      $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
       $membership = $this->getMembershipByGroupAndUser($collection, $account, OgMembershipInterface::ALL_STATES);
+      $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
+
       $actual_bundle_ids = array_map(function (array $item): string {
         return $item['bundle'];
       }, $membership->get('subscription_bundles')->getValue());
 
       sort($expected_bundle_ids);
       sort($actual_bundle_ids);
+
       Assert::assertEquals($expected_bundle_ids, $actual_bundle_ids);
     }
   }
@@ -382,6 +400,126 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
     $collection = self::getRdfEntityByLabel($label);
     $membership = $this->getMembershipByGroupAndUser($collection, $account, OgMembershipInterface::ALL_STATES);
     Assert::assertEmpty($membership->get('subscription_bundles')->getValue());
+  }
+
+  /**
+   * Checks that the digest for a user contains a certain message.
+   *
+   * This is based on \MessageDigestSubContext::assertDigestContains() and
+   * adapted for the collection content subscription digest.
+   *
+   * Example table:
+   * @codingStandardsIgnoreStart
+   *   | The content titled "My content" has been deleted       |
+   *   | The "My content" page was deleted by an administrator. |
+   * @codingStandardsIgnoreEnd
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   A table containing the expected content of the different view modes for
+   *   the message.
+   * @param string $interval
+   *   The digest interval, e.g. 'daily' or 'weekly'.
+   * @param string $username
+   *   The name of the user for which the message is intended.
+   * @param string $scope
+   *   The assertion scope. Can be one of the following values:
+   *   - 'match': the expected messages should all be present. If there are
+   *     any non-expected messages included in the digest the assertion fails.
+   *   - 'include': the expected messages should be included in the digest, but
+   *     the test does not fail if there are more messages present.
+   * @param string $label
+   *   Optional label of an entity that is related to the message.
+   * @param string $entity_type
+   *   Optional entity type of an entity that is related to the message.
+   *
+   * @Then the :interval collection content subscription digest for :username should :scope the following message(s) for the :label :entity_type:
+   * @Then the :interval collection content subscription digest for :username should :scope the following message(s):
+   */
+  public function assertDigestContains(TableNode $table, $interval, $username, $scope, $label = NULL, $entity_type = NULL) {
+    Assert::assertContains($scope, ['match', 'include'], sprintf('Unknown scope %s.', $scope));
+
+    // Check that the notifier for the requested interval includes the view
+    // mode that contains the message content.
+    $notifier = $this->getMessageDigestNotifierForInterval($interval);
+    $this->assertNotifierViewModes($notifier, ['mail_body']);
+
+    $expected_messages = $table->getColumn(0);
+    $user = user_load_by_name($username);
+    $actual_messages = $this->getUserMessagesByNotifier($notifier, $user->id(), $entity_type, $label);
+    if ($scope !== 'include') {
+      Assert::assertEquals(count($expected_messages), count($actual_messages), sprintf('Expected %d messages in the %s digest for user %s, found %d messages.', count($expected_messages), $interval, $username, count($actual_messages)));
+    }
+
+    $found_messages = [];
+    foreach ($actual_messages as $actual_message) {
+      $actual_message_content = $this->getRenderedMessage($actual_message, 'mail_body');
+      foreach ($expected_messages as $expected_message) {
+        if (strpos($actual_message_content, $expected_message) !== FALSE) {
+          $found_messages[] = $expected_message;
+          break 1;
+        }
+      }
+    }
+
+    $missing_messages = array_diff($expected_messages, $found_messages);
+    if (!empty($missing_messages)) {
+      $missing_messages = implode(', ', $missing_messages);
+      $exception_message = !empty($entity_type) && !empty($label) ? "The expected messages '$missing_messages' for the '$label' $entity_type were not found in the $interval digest for $username." : "The expected messages '$missing_messages' were not found in the $interval digest for $username.";
+      throw new \RuntimeException($exception_message);
+    }
+  }
+
+  /**
+   * Checks that the digest for a user does not contain a certain message.
+   *
+   * Example table:
+   * @codingStandardsIgnoreStart
+   *   | mail_subject | The content titled "My content" has been deleted       |
+   *   | mail_body    | The "My content" page was deleted by an administrator. |
+   * @codingStandardsIgnoreEnd
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   A table containing the expected content of the different view modes for
+   *   the message that should not be present.
+   * @param string $interval
+   *   The digest interval, e.g. 'daily' or 'weekly'.
+   * @param string $username
+   *   The name of the user for which the message is intended.
+   * @param string $label
+   *   Optional label of an entity that is related to the message.
+   * @param string $entity_type
+   *   Optional entity type of an entity that is related to the message.
+   *
+   * @Then the :interval collection content subscription digest for :username should not contain the following message(s) for the :label :entity_type:
+   * @Then the :interval collection content subscription digest for :username should not contain the following message(s):
+   */
+  public function assertDigestNotContains(TableNode $table, $interval, $username, $label = NULL, $entity_type = NULL) {
+    // Check that the notifier for the requested interval includes the view
+    // mode that contains the message content.
+    $notifier = $this->getMessageDigestNotifierForInterval($interval);
+    $this->assertNotifierViewModes($notifier, ['mail_body']);
+
+    $expected_messages = $table->getColumn(0);
+
+    $user = user_load_by_name($username);
+    $actual_messages = $this->getUserMessagesByNotifier($notifier, $user->id(), $entity_type, $label);
+
+    $found_messages = [];
+    foreach ($actual_messages as $actual_message) {
+      $actual_message_content = $this->getRenderedMessage($actual_message, 'mail_body');
+      foreach ($expected_messages as $expected_message) {
+        if (strpos($actual_message_content, $expected_message) !== FALSE) {
+          $found_messages[] = $expected_message;
+          break 1;
+        }
+      }
+    }
+
+    if (!empty($found_messages)) {
+      $found_messages = implode(', ', $found_messages);
+      $exception_message = !empty($entity_type) && !empty($label) ? "The expected messages '$found_messages' for the '$label' $entity_type were not expected to be found in the $interval digest for $username." : "The expected messages '$found_messages' were not expected to be found in the $interval digest for $username.";
+      throw new \RuntimeException($exception_message);
+    }
   }
 
   /**
@@ -430,7 +568,7 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
    * @throws \Exception
    *   Throws an exception when a parameter is not the expected one.
    *
-   * @Then the collection content subscription digest email sent to :username contains the following sections:
+   * @Then the collection content subscription digest sent to :username contains the following sections:
    */
   public function assertCollectionContentSubscriptionEmailSections(string $username, TableNode $table): void {
     $this->assertEmailTagPresent();
@@ -482,7 +620,7 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
    *   Throws an exception when the user doesn't exist, has no digest message or
    *   the message subject is incorrect.
    *
-   * @Then the collection content subscription digest email sent to :username should have the subject :subject
+   * @Then the collection content subscription digest sent to :username should have the subject :subject
    */
   public function assertCollectionContentSubscriptionEmailSubject(string $username, string $subject): void {
     $this->assertEmailTagPresent();
