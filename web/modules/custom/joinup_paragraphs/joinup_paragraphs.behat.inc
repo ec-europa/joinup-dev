@@ -180,19 +180,27 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    *
    * @return \Behat\Mink\Element\TraversableElement
    *   The field element.
+   *
+   * @throws \Exception
+   *   When an element that matches the given data is not found, or multiple
+   *   elements match the data.
    */
   protected function getParagraphsElement(string $field, ?int $position = NULL): TraversableElement {
     if (!isset(self::FIELD_MAP[$field])) {
-      throw new \InvalidArgumentException("The '{$field}' field is not mapped. Check \JoinupParagraphsSubContext::fieldMapping for the mapped fields and add your field and your selector to it.");
+      throw new \InvalidArgumentException("The '$field' field is not mapped. Check \JoinupParagraphsSubContext::fieldMapping for the mapped fields and add your field and your selector to it.");
     }
 
     $mapping = self::FIELD_MAP[$field];
-    $xpath = "//div[contains(@class, 'field--name-{$mapping}')]";
-    $element = $this->getSession()->getPage()->find('xpath', $xpath);
-    if (empty($element)) {
-      throw new \InvalidArgumentException("The {$field} field was not found anywhere in the page.");
+    $xpath = "//div[contains(@class, 'field--name-$mapping')]";
+    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    if (empty($elements)) {
+      throw new \Exception("The $field field was not found anywhere in the page.");
+    }
+    if (count($elements) > 1) {
+      throw new \Exception("Multiple instances of the $field field were found in the page.");
     }
 
+    $element = reset($elements);
     if ($position === NULL) {
       return $element;
     }
@@ -201,12 +209,15 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
     // '{field-name}-{delta}-item-wrapper'. However, when submitting the remove
     // button for example, it receives a small hash for a suffix and receives
     // the form of '{field-name}-{delta}-item-wrapper--{hash}'.
-    $xpath = "//div[starts-with(@id, '{$mapping}-{$position}-item-wrapper')]";
-    $element = $element->find('xpath', $xpath);
-    if (empty($element)) {
-      throw new \InvalidArgumentException("The {$field} field does not have an item at row {$position}.");
+    $xpath = "//div[starts-with(@id, '$mapping-$position-item-wrapper')]";
+    $elements = $element->findAll('xpath', $xpath);
+    if (empty($elements)) {
+      throw new \Exception("The $field field does not have an item at row $position.");
     }
-    return $element;
+    if (count($elements) > 1) {
+      throw new \Exception("Multiple instances of the $field field were found in the page at row $position.");
+    }
+    return reset($elements);
   }
 
   /**
