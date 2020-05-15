@@ -52,7 +52,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    * @param int $position
    *   The delta of the paragraph entry.
    *
-   * @When I enter :text in the :label wysiwyg editor in the :field field at position :position
+   * @When I enter :text in the :label wysiwyg editor in the :field field for paragraph :position
    */
   public function enterTextInWysiwyg(string $text, string $label, string $field, int $position): void {
     $field = $this->getParagraphsElement($field, $position);
@@ -79,7 +79,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    * @param int $position
    *   The paragraphs row number. Starts at 1 for readability.
    *
-   * @Given I should see the :button button in the :field field at row :position
+   * @Given I should see the :button button in the :field field for paragraph :position
    */
   public function assertButtonInParagraphsItem(string $button, string $field, int $position): void {
     $paragraph_item = $this->getParagraphsElement($field, --$position);
@@ -96,7 +96,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    * @param int $position
    *   The paragraphs row number. Starts at 1 for readability.
    *
-   * @Given I should not see the :button button in the :field field at row :position
+   * @Given I should not see the :button button in the :field field for paragraph :position
    */
   public function assertButtonNotInParagraphsItem(string $button, string $field, int $position): void {
     $paragraph_item = $this->getParagraphsElement($field, --$position);
@@ -116,7 +116,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    *   readability. If left empty, the button will be searched in the entire
    *   field.
    *
-   * @Given I press :button in the :field field at row :position
+   * @Given I press :button in the :field field for paragraph :position
    * @Given I press :button in the :field paragraphs field
    */
   public function clickButtonInParagraphsField(string $button, string $field, ?int $position = NULL): void {
@@ -133,7 +133,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    * @param string $field
    *   The field name.
    *
-   * @Given there should be :expected row(s) in the :field field
+   * @Given there should be :expected paragraph(s) in the :field field
    */
   public function assertRowsInParagraphsField(int $expected_rows, string $field): void {
     $field = $this->getParagraphsElement($field);
