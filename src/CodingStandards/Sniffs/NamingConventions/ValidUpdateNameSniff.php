@@ -87,6 +87,7 @@ class ValidUpdateNameSniff extends ValidFunctionNameSniff {
         $match = TRUE;
         $name = $found[2];
         $updateType = empty($found[1]) ? 'update' : 'post update';
+        break;
       }
     }
 
