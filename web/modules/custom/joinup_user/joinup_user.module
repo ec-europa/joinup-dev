@@ -565,18 +565,18 @@ function joinup_user_alter_account_cancel_form(array &$form): void {
 /**
  * Implements hook_user_cancel().
  */
-function joinup_user_user_cancel(array $edit, UserInterface $account, string $method): void {
+function joinup_user_user_cancel(array $edit, JoinupUserInterface $account, string $method): void {
   if ($method === 'joinup_user_cancel') {
     // Send the email and do the logging before anonymizing, so that we still
-    // have the field values.
+    // have the field values in place.
     if (!empty($edit['user_cancel_notify'])) {
       _user_mail_notify('status_canceled', $account);
     }
     \Drupal::messenger()->addStatus(t('%name has been deleted.', ['%name' => $account->getDisplayName()]));
     \Drupal::logger('user')->notice('Deleted user: %name %email.', ['%name' => $account->getAccountName(), '%email' => '<' . $account->getEmail() . '>']);
 
-    // Block and anonymize the user account.
-    \Drupal::service('joinup_user.profile_anonymizer')->anonymize($account->block());
+    // Actually cancel the user account.
+    $account->cancel()->save();
   }
 }
 
