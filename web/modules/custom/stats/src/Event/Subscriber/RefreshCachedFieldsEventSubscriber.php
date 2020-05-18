@@ -105,7 +105,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       $response_item = $response[$index];
       // If an error occurs, the response for the expired item is an object
       // rather than an array of objects.
-      if (is_object($response_item) && isset($response_item->result) && $response_item->result === 'error') {
+      if (is_object($response_item)) {
         $message = $response_item->message ?? '[unknown]';
         $errors[$message][] = $expired_item->getEntityId();
         continue;
