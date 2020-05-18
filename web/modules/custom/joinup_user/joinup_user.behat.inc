@@ -183,31 +183,35 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Asserts that a user with a given status exists.
+   * Asserts that a user account is cancelled.
    *
-   * @param string $status
-   *   The user status: 'active' or 'blocked'.
    * @param string $name
    *   The user name.
+   * @param string $status
+   *   The user status: 'active', 'blocked' or 'cancelled'.
    *
    * @throws \Exception
-   *   If an invalid status has been passed ot the use doesn't exist.
+   *   If an invalid status has been passed.
    *
-   * @Then the :status :name user exists
+   * @Then the :name (user )account is :status
    */
-  public function userExists(string $status, string $name): void {
-    $statuses = ['blocked', 'active'];
-    if (!in_array($status, $statuses)) {
-      throw new \Exception("Invalid status '$status'. Allowed values: 'active' or 'blocked'.");
-    }
+  public function assertAccountCancelled(string $name, string $status): void {
+    $allowed_statuses = [
+      'active' => 1,
+      'blocked' => 0,
+      'cancelled' => -1,
+    ];
 
+    if (!isset($allowed_statuses[$status])) {
+      throw new \Exception("Invalid '$status' status. Allowed values are 'active', 'blocked' or 'cancelled'.");
+    }
     $uids = \Drupal::entityQuery('user')
       ->condition('name', $name)
-      ->condition('status', array_flip($statuses)[$status])
+      ->condition('status', $allowed_statuses[$status])
       ->execute();
 
     if (!$uids) {
-      throw new ExpectationFailedException("User '$name' doesn't exist or is not $status.");
+      throw new ExpectationFailedException("The user '$name' doesn't exist or is not $status.");
     }
   }
 

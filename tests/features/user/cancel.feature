@@ -11,7 +11,7 @@ Feature:
       | alicia__1997  |           | AliciaPotter@example.com | Alicia     | Potter      |
     And all e-mails have been sent
 
-  Scenario: A moderator deletes a user.
+  Scenario: A moderator cancels a user account.
     Given I am logged in as a moderator
     And I click "People"
     And I click "Alicia Potter"
@@ -26,7 +26,12 @@ Feature:
       | subject        | Your account has been deleted.                                                                                                                                                                                                                                      |
       | body           | Your account alicia__1997 has been deleted.This action has been done in the framework of moderation activities regularly conducted on the Joinup platform. If you believe that this action has been performed by mistake, please contact The Joinup Support Team at |
     And 1 e-mail should have been sent
-    And the blocked "alicia__1997" user exists
+    And the "alicia__1997" user account is cancelled
+
+    When I click "Edit" in the "Alicia Potter" row
+    Then I should see the warning message "This user account is cancelled. Edit is disabled."
+    # On a cancelled account edit form all fields are disabled.
+    And the following fields should be disabled "First name,Family name,Allow user to log in via CAS,CAS Username,Email,Username,Password,Confirm password,Photo,Country of origin,Professional domain,Business title,Organisation,Enable the search field,Facebook,GitHub,LinkedIn,SlideShare,Twitter,Vimeo,Youtube,Save"
 
   Scenario: A moderator deletes a user using the administrative UI.
     Given the following collection:
@@ -69,7 +74,7 @@ Feature:
     When I go to "/collection/test-collection/news/news-item"
     Then the response status code should be 404
 
-  Scenario: Delete own account.
+  Scenario: Cancel own account.
     Given the following collection:
       | title | Test collection      |
       | state | validated |
@@ -120,7 +125,7 @@ Feature:
       | template       | status_blocked                 |
       | recipient_mail | AliciaPotter@example.com       |
       | subject        | Your account was just blocked. |
-    And the blocked "alicia__1997" user exists
+    And the "alicia__1997" user account is cancelled
 
     # The content author is no more clickable.
     When I visit the "News item" news
