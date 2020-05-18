@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Drupal\Component\Render\PlainTextOutput;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
@@ -662,4 +663,38 @@ function joinup_user_entity_type_alter(array &$entity_types) {
   $entity_type
     ->setClass(JoinupUser::class)
     ->setHandlerClass('views_data', JoinupUserViewsData::class);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Removed the check boxes from the cancelled users in the administrative UI.
+ */
+function joinup_user_form_views_form_user_admin_people_page_1_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if (empty($form['user_bulk_form'])) {
+    return;
+  }
+
+  $user_storage = \Drupal::entityTypeManager()->getStorage('user');
+
+  // Unfortunately we cannot access BulkForm::loadEntityFromBulkFormKey(), so we
+  // fork a copy tailored for the 'user' entity type.
+  // @see \Drupal\views\Plugin\views\field\BulkForm::loadEntityFromBulkFormKey()
+  $get_account = function (string $bulk_form_key) use ($user_storage): JoinupUserInterface {
+    $key = base64_decode($bulk_form_key);
+    $key_parts = json_decode($key);
+    // The first item is always the user ID.
+    $uid = array_pop($key_parts);
+    /** @var \Drupal\joinup_user\Entity\JoinupUserInterface $account */
+    $account = $user_storage->load($uid);
+    return $account;
+  };
+
+  foreach (Element::children($form['user_bulk_form']) as $delta) {
+    $account = $get_account($form['user_bulk_form'][$delta]['#return_value']);
+    if ($account->isCancelled()) {
+      // Cancelled users cannot be deleted, not even from the admin UI.
+      unset($form['user_bulk_form'][$delta]);
+    }
+  }
 }
