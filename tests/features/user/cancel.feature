@@ -40,7 +40,7 @@ Feature:
     And I click "People"
 
     When I select the "Alicia Potter" row
-    And I select "Cancel the selected user account(s)" from "Action"
+    And I select "Delete selected account(s) and their content" from "Action"
     And I press "Apply to selected items"
 
     Then I should see the heading "Are you sure you want to cancel these user accounts?"

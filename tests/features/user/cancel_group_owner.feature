@@ -31,7 +31,7 @@ Feature:
     When I click "People"
     And I check "Hazel Olson"
     And I check "Amelia Barker"
-    And I select "Cancel the selected user account(s)" from "Action"
+    And I select "Delete selected account(s) and their content" from "Action"
     And I press the "Apply to selected items" button
     Then I should not see the following lines of text:
       | This action cannot be undone.                |
