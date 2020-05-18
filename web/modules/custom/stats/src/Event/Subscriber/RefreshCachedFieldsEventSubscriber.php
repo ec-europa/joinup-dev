@@ -110,6 +110,15 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
         $errors[$message][] = $expired_item->getEntityId();
         continue;
       }
+
+      // Failsafe, if anything other than an array is returned then this is
+      // unexpected data which we cannot process.
+      if (!is_array($response_item)) {
+        $message = sprintf('Unknown data type %s', gettype($response_item));
+        $errors[$message][] = $expired_item->getEntityId();
+        continue;
+      }
+
       /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
       $meta_entity = $this->getEntity($expired_item);
       $type = $this->getSettingsForMetaEntity($meta_entity)['type'];
