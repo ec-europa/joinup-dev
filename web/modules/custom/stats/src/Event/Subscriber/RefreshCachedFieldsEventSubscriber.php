@@ -93,6 +93,13 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       return;
     }
 
+    // In some cases, like when a brute force attack is detected, Matomo returns
+    // empty responses until a grace period has passed.
+    if (empty($response)) {
+      $this->loggerFactory->get('joinup_stats')->error('Matomo returned empty response.');
+      return;
+    }
+
     $errors = [];
     foreach ($items as $index => $expired_item) {
       $response_item = $response[$index];
