@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\joinup\Traits;
 
 use Behat\Mink\Element\TraversableElement;
-use Drupal\joinup\Exception\AmbiguousWysiwygEditorException;
 use Drupal\joinup\Exception\WysiwygEditorNotFoundException;
 
 /**
@@ -85,7 +84,7 @@ trait WysiwygTrait {
    * @return bool
    *   TRUE if the editor is present, FALSE otherwise.
    *
-   * @throws \Drupal\joinup\Exception\AmbiguousWysiwygEditorException
+   * @throws \Exception
    *   Thrown when the field label or editor is present more than once.
    */
   public function hasWysiwyg(string $field, ?TraversableElement $region = NULL): bool {
@@ -114,8 +113,6 @@ trait WysiwygTrait {
    * @return \Behat\Mink\Element\TraversableElement
    *   The WYSIWYG editor.
    *
-   * @throws \Drupal\joinup\Exception\AmbiguousWysiwygEditorException
-   *   Thrown when the field label or editor is present more than once.
    * @throws \Drupal\joinup\Exception\WysiwygEditorNotFoundException
    *   Thrown when the field label or wysiwyg editor is not found.
    */
@@ -130,7 +127,7 @@ trait WysiwygTrait {
     }
 
     if (count($label_elements) > 1) {
-      throw new AmbiguousWysiwygEditorException("Found multiple instances of the '$field' field label.");
+      throw new \Exception("Found multiple instances of the '$field' field label.");
     }
 
     $label_element = reset($label_elements);
@@ -142,7 +139,7 @@ trait WysiwygTrait {
     }
 
     if (count($wysiwyg_elements) > 1) {
-      throw new AmbiguousWysiwygEditorException("Found multiple wysiwyg editors with the '$field' field label.");
+      throw new \Exception("Found multiple wysiwyg editors with the '$field' field label.");
     }
 
     return reset($wysiwyg_elements);
