@@ -42,39 +42,35 @@ function joinup_group_tokens(string $type, array $tokens, array $data, array $op
   if ($type !== 'rdf_entity' || empty($data['rdf_entity'])) {
     return $replacements;
   }
+  $token_service = \Drupal::token();
+  $rdf_entity = $data['rdf_entity'];
+  $check_for_parent_collection = isset($tokens['parent_collection']) || $token_service->findWithPrefix($tokens, 'parent_collection');
+  $bundles_with_parent_collection = [
+    'solution',
+    'asset_release',
+    'asset_distribution',
+  ];
+  $has_parent_collection = in_array($rdf_entity->bundle(), $bundles_with_parent_collection);
+  $parent_collection = NULL;
+
+  if ($check_for_parent_collection && $has_parent_collection) {
+    $parent_solution = $rdf_entity->bundle() === 'solution' ? $rdf_entity : JoinupGroupHelper::getGroup($rdf_entity);
+    if (!empty($parent_solution) && !$parent_solution->collection->isEmpty()) {
+      $parent_collection = $parent_solution->collection->first()->entity;
+    }
+  }
 
   if ($type == 'rdf_entity' && !empty($data['rdf_entity'])) {
-    $rdf_entity = $data['rdf_entity'];
-
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'parent_collection':
-          $bundles = ['solution', 'asset_release', 'asset_distribution'];
-          if (!in_array($rdf_entity->bundle(), $bundles)) {
-            break;
-          }
-
-          $token_service = \Drupal::token();
-          $original = $tokens[$name];
-          $parent_solution = $rdf_entity;
-          if ($rdf_entity->bundle() !== 'solution') {
-            $parent_solution = JoinupGroupHelper::getGroup($rdf_entity);
-          }
-
-          if (empty($parent_solution) || $parent_solution->collection->isEmpty()) {
-            return $replacements;
-          }
           $bubbleable_metadata->addCacheableDependency($parent_solution);
-          /** @var \Drupal\rdf_entity\RdfInterface $collection */
-          if ($collection = $parent_solution->collection->first()->entity) {
-            $bubbleable_metadata->addCacheableDependency($collection);
-            $replacements[$original] = $collection->label();
-            // Allow to descend further into the solution's parent collection.
-            if ($collection_tokens = $token_service->findwithPrefix($tokens, 'parent_collection')) {
-              $replacements += $token_service->generate('rdf_entity', $collection_tokens, ['rdf_entity' => $collection], $options, $bubbleable_metadata);
-            }
-            $bubbleable_metadata->addCacheableDependency($collection);
+          if (empty($parent_collection)) {
+            continue 2;
           }
+          $bubbleable_metadata->addCacheableDependency($parent_collection);
+          $replacements[$original] = $parent_collection->label();
+          $bubbleable_metadata->addCacheableDependency($parent_collection);
           break;
 
         case 'short_id_or_title':
@@ -85,6 +81,11 @@ function joinup_group_tokens(string $type, array $tokens, array $data, array $op
           break;
       }
     }
+  }
+
+  // Allow to descend further into the solution's parent collection.
+  if (($collection_tokens = $token_service->findWithPrefix($tokens, 'parent_collection')) && $has_parent_collection) {
+    $replacements += $token_service->generate('rdf_entity', $collection_tokens, ['rdf_entity' => $parent_collection], $options, $bubbleable_metadata);
   }
 
   return $replacements;
