@@ -13,6 +13,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
+use Drupal\joinup_user\Entity\JoinupUser;
+use Drupal\joinup_user\Entity\JoinupUserInterface;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\search_api\Query\QueryInterface;
@@ -648,4 +650,14 @@ function joinup_user_local_tasks_alter(&$local_tasks) {
  */
 function joinup_user_preprocess_page(&$variables) {
   $variables['#attached']['library'][] = 'joinup_user/sign_in_destination';
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_user_entity_type_alter(array &$entity_types) {
+  /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $entity_type */
+  $entity_type = $entity_types['user'];
+  $entity_type
+    ->setClass(JoinupUser::class);
 }
