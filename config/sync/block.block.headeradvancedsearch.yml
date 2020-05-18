@@ -1,0 +1,30 @@
+uuid: db4cf006-fbe7-4c46-99e0-cbe0767c8a61
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.header-advanced-search
+  module:
+    - system
+  theme:
+    - joinup_theme
+id: headeradvancedsearch
+theme: joinup_theme
+region: header
+weight: -20
+provider: null
+plugin: 'system_menu_block:header-advanced-search'
+settings:
+  id: 'system_menu_block:header-advanced-search'
+  label: 'Advanced search'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  request_path:
+    id: request_path
+    pages: "/search\r\n/search*"
+    negate: true
+    context_mapping: {  }

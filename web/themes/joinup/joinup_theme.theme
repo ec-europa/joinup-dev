@@ -321,6 +321,11 @@ function joinup_theme_preprocess_html(&$variables) {
     $variables['entity_type'] = $entity->getEntityTypeId();
     $variables['bundle'] = $entity->bundle();
   }
+
+  // Set a variable that identifies the search page.
+  if ($route_name == 'view.search.page_1') {
+    $variables['is_search_page'] = TRUE;
+  }
 }
 
 /**

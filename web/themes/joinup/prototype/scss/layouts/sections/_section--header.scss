@@ -24,5 +24,28 @@
     &.block--small-nav {
       @include z-index(header);
     }
+
+    &#block-headeradvancedsearch {
+      display: none;
+
+      @include breakpoint(desktop) {
+        display: inline-block;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0 6px;
+  
+        li {
+          a { 
+            color: white;
+            text-decoration: none;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
   }
 }
