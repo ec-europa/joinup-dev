@@ -100,9 +100,23 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       return;
     }
 
+    // Failsafe, if anything other than an array is returned then this is
+    // unexpected data which we cannot process.
+    if (!is_array($response)) {
+      $this->loggerFactory->get('joinup_stats')->error(sprintf('Matomo responded with unexpected data type %s.', gettype($response)));
+      return;
+    }
+
     $errors = [];
     foreach ($items as $index => $expired_item) {
+      // Skip if the data we need is not present.
+      if (!isset($response[$index])) {
+        $errors['[no data]'][] = $expired_item->getEntityId();
+        continue;
+      }
+
       $response_item = $response[$index];
+
       // If an error occurs, the response for the expired item is an object
       // rather than an array of objects.
       if (is_object($response_item)) {
@@ -114,7 +128,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       // Failsafe, if anything other than an array is returned then this is
       // unexpected data which we cannot process.
       if (!is_array($response_item)) {
-        $message = sprintf('Unknown data type %s', gettype($response_item));
+        $message = sprintf('[unknown data type %s]', gettype($response_item));
         $errors[$message][] = $expired_item->getEntityId();
         continue;
       }
