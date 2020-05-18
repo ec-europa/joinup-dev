@@ -499,8 +499,8 @@ function joinup_user_invalidate_user_cache_tags(OgMembershipInterface $entity) {
  */
 function joinup_user_user_cancel_methods_alter(array &$methods): void {
   $methods['joinup_user_cancel'] = [
-    'title' => t("Block the user and keep it's content."),
-    'description' => t('A slightly changed version of the core block method.'),
+    'title' => t("Cancels the user account"),
+    'description' => t("Cancels the account but keep user's content and authorship."),
   ];
 }
 
