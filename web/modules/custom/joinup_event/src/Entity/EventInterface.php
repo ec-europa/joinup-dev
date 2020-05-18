@@ -5,12 +5,13 @@ declare(strict_types = 1);
 namespace Drupal\joinup_event\Entity;
 
 use Drupal\Core\Url;
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\node\NodeInterface;
 
 /**
  * Interface for event entities in Joinup.
  */
-interface EventInterface extends NodeInterface {
+interface EventInterface extends NodeInterface, CommunityContentInterface {
 
   /**
    * Returns the event location.

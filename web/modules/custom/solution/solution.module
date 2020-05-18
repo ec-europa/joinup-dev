@@ -26,6 +26,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\solution\Entity\Solution;
 use Drupal\solution\SolutionAffiliationFieldItemList;
 use Drupal\solution\SolutionReleasesAndDistributionsFieldItemList;
 use Drupal\sparql_entity_storage\SparqlGraphInterface;
@@ -93,6 +94,15 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
   // A distribution can be referenced only by a single parent.
   if (!empty($fields['field_is_distribution'])) {
     $fields['field_is_distribution']->addConstraint('DistributionSingleParent');
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function solution_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['rdf_entity']['solution'])) {
+    $bundles['rdf_entity']['solution']['class'] = Solution::class;
   }
 }
 
