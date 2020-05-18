@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_community_content\ExistingSite;
 
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
 use Drupal\Tests\token\Functional\TokenTestTrait;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Tests the community content parent URL tokens.
@@ -49,18 +49,21 @@ class TokenTest extends JoinupExistingSiteTestBase {
       'og_audience' => $solution->id(),
     ]);
 
-    // The mechanism to retrieve the parent collection is different for the
-    // three bundles below, so test for all three of them.
-    foreach (['solution', 'asset_release', 'asset_distribution'] as $bundle) {
-      // Check both the token itself and one of the recursively generated
-      // tokens.
-      $tokens = [
-        'parent_collection' => $collection->label(),
-        'parent_collection:rid:target_id' => 'collection',
-      ];
-      $data = ['rdf_entity' => $$bundle];
-      $this->assertTokens('rdf_entity', $data, $tokens);
-    }
+    // Check both the token itself and one of the recursively generated
+    // tokens.
+    $tokens = [
+      'parent_collection' => $collection->label(),
+      'parent_collection:rid:target_id' => 'collection',
+    ];
+
+    $data = ['rdf_entity' => $solution];
+    $this->assertTokens('rdf_entity', $data, $tokens);
+
+    $data = ['rdf_entity' => $asset_release];
+    $this->assertTokens('rdf_entity', $data, $tokens);
+
+    $data = ['rdf_entity' => $asset_distribution];
+    $this->assertTokens('rdf_entity', $data, $tokens);
   }
 
   /**
@@ -73,7 +76,7 @@ class TokenTest extends JoinupExistingSiteTestBase {
    * @param string $title
    *   The title of the entity.
    * @param string $expected_token
-   *   The expected token replacement for the 'short_id_or_title'
+   *   The expected token replacement for the 'short_id_or_title'.
    *
    * @dataProvider shortIdOrTitleDataProvider
    */
