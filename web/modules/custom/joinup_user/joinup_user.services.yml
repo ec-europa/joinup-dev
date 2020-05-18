@@ -21,3 +21,7 @@ services:
   joinup_user.profile_anonymizer:
     class: Drupal\joinup_user\ProfileAnonymizer
     arguments: ['@entity_type.manager', '@externalauth.authmap', '@og.membership_manager', '@user.data']
+  joinup_user.user_cancelled.access_checker:
+    class: Drupal\joinup_user\Access\UserStatusAccessCheck
+    tags:
+      - { name: access_check, applies_to: _user_status }
