@@ -18,9 +18,6 @@ services:
     class: Drupal\joinup_user\Routing\RouteSubscriber
     tags:
      - { name: event_subscriber }
-  joinup_user.profile_anonymizer:
-    class: Drupal\joinup_user\ProfileAnonymizer
-    arguments: ['@entity_type.manager', '@externalauth.authmap', '@og.membership_manager', '@user.data']
   joinup_user.user_cancelled.access_checker:
     class: Drupal\joinup_user\Access\UserStatusAccessCheck
     tags:
