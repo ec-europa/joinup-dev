@@ -295,15 +295,23 @@ function joinup_user_form_alter(&$form, FormStateInterface $form_state, $form_id
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
- *
- * Adds a submit callback to redirect to the canonical user page after updating
- * the user profile.
  */
-function joinup_user_form_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // This hook gets called as base form id hook for forms like the user register
-  // one, so we need to double check the form id.
-  if ($form_id === 'user_form') {
-    $form['actions']['submit']['#submit'][] = 'joinup_user_user_form_submit';
+function joinup_user_form_user_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  // This hook gets called as base form ID hook for forms like the user register
+  // one, so we need to double check the form ID.
+  if ($form_id !== 'user_form') {
+    return;
+  }
+
+  // Add a submit callback to redirect to the canonical user page after updating
+  // the user profile.
+  $form['actions']['submit']['#submit'][] = 'joinup_user_user_form_submit';
+
+  /** @var \Drupal\joinup_user\Entity\JoinupUserInterface $account */
+  $account = $form_state->getFormObject()->getEntity();
+  if ($account->isCancelled()) {
+    $form['#disabled'] = TRUE;
+    \Drupal::messenger()->addWarning(t('This user account is cancelled. Edit is disabled.'));
   }
 }
 
