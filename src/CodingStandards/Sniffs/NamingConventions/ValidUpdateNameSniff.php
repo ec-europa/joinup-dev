@@ -37,8 +37,8 @@ use PHP_CodeSniffer\Files\File;
  *
  * Given the above example:
  *
- * `function joinup_update_0106100() {...}`: Was applied in Joinup `v1.61.x` as
- * the first update of the `mymodule` module (`01` major version, `061` minor
+ * `function mymodule_update_0106100() {...}`: Was applied in Joinup `v1.61.x`
+ * as the first update of the `mymodule` module (`01` major version, `061` minor
  * version, `00` update weight within the module).
  * `function mymodule_post_update_0207503() {...}`: Was applied in Joinup
  * `v2.75.x` as the fourth post update of the `mymodule` module (`02` major
