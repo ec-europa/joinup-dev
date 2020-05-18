@@ -15,6 +15,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_user\Entity\JoinupUser;
 use Drupal\joinup_user\Entity\JoinupUserInterface;
+use Drupal\joinup_user\JoinupUserViewsData;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\search_api\Query\QueryInterface;
@@ -659,5 +660,6 @@ function joinup_user_entity_type_alter(array &$entity_types) {
   /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $entity_type */
   $entity_type = $entity_types['user'];
   $entity_type
-    ->setClass(JoinupUser::class);
+    ->setClass(JoinupUser::class)
+    ->setHandlerClass('views_data', JoinupUserViewsData::class);
 }
