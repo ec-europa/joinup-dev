@@ -13,18 +13,18 @@ use Drupal\og\OgMembershipInterface;
 use Drupal\user\Entity\User;
 
 /**
- * Tests profile anonymization.
+ * Tests user cancellation.
  *
  * @group joinup_user
  */
-class ProfileAnonymizeTest extends JoinupExistingSiteTestBase {
+class UserCancelTest extends JoinupExistingSiteTestBase {
 
   use RdfEntityCreationTrait;
 
   /**
-   * Tests profile anonymization.
+   * Tests user cancellation.
    */
-  public function testProfileAnonymize(): void {
+  public function testUserCancellation(): void {
     /** @var \Drupal\externalauth\AuthmapInterface $authmap */
     $authmap = \Drupal::service('externalauth.authmap');
     /** @var \Drupal\og\MembershipManagerInterface $og_membership */
@@ -53,7 +53,7 @@ class ProfileAnonymizeTest extends JoinupExistingSiteTestBase {
     $this->assertFileExists($photo_file->getFileUri());
 
     $username = strtolower($this->randomMachineName());
-    /** @var \Drupal\user\UserInterface $account */
+    /** @var \Drupal\joinup_user\Entity\JoinupUserInterface $account */
     $account = $this->createUser([], $username, FALSE, [
       'mail' => "{$username}.init@example.com",
       'pass' => 'plain',
@@ -113,8 +113,8 @@ class ProfileAnonymizeTest extends JoinupExistingSiteTestBase {
     // Store the hashed password for later comparision.
     $password_hash = $account->getEmail();
 
-    // Anonymize the account.
-    \Drupal::service('joinup_user.profile_anonymizer')->anonymize($account);
+    // Cancel the account.
+    $account->cancel()->save();
 
     $account = User::load($account->id());
 
