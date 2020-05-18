@@ -21,8 +21,8 @@ trait WysiwygTrait {
    * @param string $button
    *   The title of the button to click.
    * @param \Behat\Mink\Element\TraversableElement|null $region
-   *   Optional region where the editor is expected to be located. Defaults to
-   *   the entire page.
+   *   (optional) The region where the editor is expected to be located.
+   *   Defaults to the entire page.
    *
    * @throws \Exception
    *   Thrown when the button is not found, or if there are multiple buttons
@@ -52,8 +52,8 @@ trait WysiwygTrait {
    * @param string $text
    *   The text to enter in the textarea.
    * @param \Behat\Mink\Element\TraversableElement|null $region
-   *   Optional region where the editor is expected to be located. Defaults to
-   *   the entire page.
+   *   (optional) The region where the editor is expected to be located.
+   *   Defaults to the entire page.
    *
    * @throws \Exception
    *   Thrown when the textarea could not be found or if there are multiple
@@ -78,8 +78,8 @@ trait WysiwygTrait {
    * @param string $field
    *   The label of the field to which the WYSIWYG editor is attached.
    * @param \Behat\Mink\Element\TraversableElement|null $region
-   *   Optional region where the editor is expected to be located. Defaults to
-   *   the entire page.
+   *   (optional) The region where the editor is expected to be located.
+   *   Defaults to the entire page.
    *
    * @return bool
    *   TRUE if the editor is present, FALSE otherwise.
@@ -107,8 +107,8 @@ trait WysiwygTrait {
    * @param string $field
    *   The label of the field to which the WYSIWYG editor is attached.
    * @param \Behat\Mink\Element\TraversableElement|null $region
-   *   Optional region where the editor is expected to be located. Defaults to
-   *   the entire page.
+   *   (optional) The region where the editor is expected to be located.
+   *   Defaults to the entire page.
    *
    * @return \Behat\Mink\Element\TraversableElement
    *   The WYSIWYG editor.
