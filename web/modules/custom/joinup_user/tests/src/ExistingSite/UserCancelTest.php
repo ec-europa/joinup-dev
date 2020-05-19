@@ -11,6 +11,7 @@ use Drupal\file\Entity\File;
 use Drupal\image\Plugin\Field\FieldType\ImageItem;
 use Drupal\og\OgMembershipInterface;
 use Drupal\user\Entity\User;
+use weitzman\LoginTrait\LoginTrait;
 
 /**
  * Tests user cancellation.
@@ -19,6 +20,7 @@ use Drupal\user\Entity\User;
  */
 class UserCancelTest extends JoinupExistingSiteTestBase {
 
+  use LoginTrait;
   use RdfEntityCreationTrait;
 
   /**
@@ -144,6 +146,12 @@ class UserCancelTest extends JoinupExistingSiteTestBase {
     $this->assertFalse($authmap->get($account->id(), 'cas'));
     $this->assertEmpty($og_membership->getMemberships($account->id(), OgMembershipInterface::ALL_STATES));
     $this->assertNull($user_data->get('joinup_user', $account->id(), 'foo'));
+
+    // Cancelling again is not possible.
+    $moderator = $this->createUser([], NULL, FALSE, ['roles' => ['moderator']]);
+    $this->drupalLogin($moderator);
+    $this->drupalGet("/user/{$account->id()}/cancel");
+    $this->assertSession()->statusCodeEquals(403);
   }
 
 }
