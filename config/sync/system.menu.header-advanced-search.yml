@@ -1,8 +1,0 @@
-uuid: aaea0d6e-5f07-4c3a-829a-5d43b8451659
-langcode: en
-status: true
-dependencies: {  }
-id: header-advanced-search
-label: 'Advanced search'
-description: 'Header advanced search link'
-locked: false
