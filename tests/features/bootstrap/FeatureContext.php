@@ -1374,6 +1374,41 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Asserts that a checkbox/radio exists in a row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox or radio button.
+   *
+   * @Then the :text table row contains a checkbox/radio
+   */
+  public function assertCheckboxOrRadioExistsInRow(string $text): void {
+    $this->getCheckboxOrRadioByRowText($text);
+  }
+
+  /**
+   * Asserts that a checkbox/radio doesn't exists in a row with given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox or radio button.
+   *
+   * @Then the :text table row doesn't contain a checkbox/radio
+   */
+  public function assertCheckboxOrRadioNotExistsInRow(string $text): void {
+    $row = $this->getRowByRowText($text);
+    if ($row->find('css', 'input[type="checkbox"],input[type="radio"]')) {
+      throw new ExpectationFailedException("The row '$text' contains a checkbox/radio but it should not.");
+    }
+  }
+
+  /**
    * Finds a checkbox or a radio button in a table row containing a given text.
    *
    * @param string $text
