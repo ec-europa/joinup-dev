@@ -1,8 +1,9 @@
 uuid: 4dac9935-99ab-42a3-9faf-bcc872931911
 langcode: en
-status: true
+status: false
 dependencies:
   module:
+    - joinup_user
     - user
 _core:
   default_config_hash: o_8fSWHZOVIbydZACGsSX09DtuJhqkRmNOzcVj-4bQI

@@ -1,6 +1,6 @@
 uuid: 8ec9fac2-4762-4f4f-805e-0749d201649a
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - field.storage.simplenews_subscriber.subscriptions

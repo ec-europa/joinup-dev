@@ -1,6 +1,6 @@
 uuid: c97723da-1f4e-4d80-bf0d-01f41a673d12
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - field.storage.node.simplenews_issue
