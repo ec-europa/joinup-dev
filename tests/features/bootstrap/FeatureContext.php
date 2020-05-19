@@ -608,33 +608,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Checks the status of the given user.
-   *
-   * @param string $username
-   *   The name of the user to statusilize.
-   * @param string $status
-   *   The expected status, can be either 'active' or 'blocked'.
-   *
-   * @throws \Exception
-   *   Thrown when the user does not exist or doesn't have the expected status.
-   *
-   * @Then the account for :username should be :status
-   */
-  public function assertUserStatus(string $username, string $status): void {
-    /** @var \Drupal\user\UserInterface $user */
-    $user = $this->getUserByName($username);
-    $expected_status = $status === 'active';
-
-    if (empty($user)) {
-      throw new \Exception("Unable to load expected user $username.");
-    }
-
-    if ($user->isActive() !== $expected_status) {
-      throw new \Exception("The user does not have the $status status.");
-    }
-  }
-
-  /**
    * Deletes the user account with the given name.
    *
    * This intended to be used for user accounts that are created through the UI
