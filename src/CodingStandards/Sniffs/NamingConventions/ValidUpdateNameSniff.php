@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace DrupalProject\CodingStandards\Sniffs\NamingConventions;
+namespace Joinup\CodingStandards\Sniffs\NamingConventions;
 
 use Composer\Semver\Comparator;
 use Drupal\Component\Serialization\Yaml;
