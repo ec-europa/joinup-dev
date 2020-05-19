@@ -54,6 +54,15 @@ class Anonymous403RedirectCacheTest extends JoinupExistingSiteTestBase {
     $collection->save();
     $entities['field_ar_state'] = $collection;
 
+    $solution = $this->createRdfEntity([
+      'rid' => 'solution',
+      'field_is_state' => 'draft',
+      'title' => $this->randomString(),
+      'collection' => $collection,
+    ]);
+    $solution->save();
+    $entities['field_is_state'] = $solution;
+
     $custom_page = $this->createNode([
       'type' => 'custom_page',
       'status' => FALSE,
