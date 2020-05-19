@@ -10,7 +10,16 @@ use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
 /**
  * Tests the 403 redirection cache.
  *
+ * After an unpublished entity is saved, an anonymous, trying to access the
+ * entity's canonical URL should receive am access denied (403) response. But,
+ * the 'joinup_eulogin.anonymous_403.subscriber' subscriber redirects all
+ * anonymous access denied pages pages to EU Login login page. This redirect
+ * response is cached. This test makes sure that the redirect cache is correctly
+ * invalidated when the entity visibility changes.
+ *
  * @group joinup_eulogin
+ *
+ * @see \Drupal\joinup_eulogin\Event\Subscriber\JoinupEuLoginAnonymous403Subscriber
  */
 class Anonymous403RedirectCacheTest extends JoinupExistingSiteTestBase {
 
