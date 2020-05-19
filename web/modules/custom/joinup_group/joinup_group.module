@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains the main functionality of Joinup Group module.
+ * Hook implementations for the Joinup Group module.
  */
 
 declare(strict_types = 1);
