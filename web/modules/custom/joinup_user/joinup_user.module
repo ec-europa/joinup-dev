@@ -59,7 +59,7 @@ function joinup_user_user_update(UserInterface $account) {
   $active_form_id = $active_form->getFormId();
   // Only run when either submitting the user edit form, or the bulk operation
   // on admin/people.
-  if (!$active_form_id || !in_array($active_form_id, ['views_form_user_admin_people_page_1', 'user_form'])) {
+  if (!$active_form_id || !in_array($active_form_id, ['views_form_user_admin_people_page', 'user_form'])) {
     return;
   }
 
@@ -678,7 +678,7 @@ function joinup_user_entity_type_alter(array &$entity_types) {
  *
  * Removed the check boxes from the cancelled users in the administrative UI.
  */
-function joinup_user_form_views_form_user_admin_people_page_1_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+function joinup_user_form_views_form_user_admin_people_page_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
   if (empty($form['user_bulk_form'])) {
     return;
   }
