@@ -1,0 +1,130 @@
+# Solr configs and commands.
+
+solr:
+  version: '6.6.6'
+  vendor_dir: ${joinup.dir}/vendor/apache
+  dir: ${solr.vendor_dir}/solr-${solr.version}
+  bin: ${joinup.dir}/vendor/bin/solr
+  download_url: http://archive.apache.org/dist/lucene/solr/${solr.version}/solr-${solr.version}.tgz
+  config_dir: ${joinup.dir}/web/modules/contrib/search_api_solr/solr-conf/6.x
+  core:
+    published:
+      dir: ${solr.dir}/server/solr/${env.SOLR_CORE_PUBLISHED_NAME}
+    unpublished:
+      dir: ${solr.dir}/server/solr/${env.SOLR_CORE_UNPUBLISHED_NAME}
+
+commands:
+
+  # Starts Solr.
+  solr:start:
+    - task: exec
+      command: ${solr.bin} status ; test $? == 0 || ${solr.bin} start
+
+  # Stops Solr.
+  solr:stop:
+    - task: exec
+      command: ${solr.bin} status ; test $? != 0 || ${solr.bin} stop
+
+  # Restarts Solr.
+  solr:restart:
+    - task: exec
+      command: ${solr.bin} restart
+
+  # Downloads and unpacks the Solr snapshot.
+  solr:download-snapshot:
+    # Cleanup any stale data.
+    - task: remove
+      file: ${toolkit.tmp_folder}/solr.tar
+    - task: remove
+      file: ${toolkit.tmp_folder}/solr
+    # Download and unpack the archive.
+    - task: run
+      command: toolkit:download-dump
+      options:
+        asda-url: ${env.ASDA_URL}/solr
+        dumpfile: ${toolkit.tmp_folder}/solr.tar
+    # Unpack and organize.
+    - task: mkdir
+      dir: ${toolkit.tmp_folder}/solr
+    - task: exec
+      command: tar -xvf ${toolkit.tmp_folder}/solr.tar -C ${toolkit.tmp_folder}/solr
+    - task: rename
+      from: ${toolkit.tmp_folder}/solr/snapshot.joinup
+      to: ${toolkit.tmp_folder}/solr/snapshot.published
+    - task: rename
+      from: ${toolkit.tmp_folder}/solr/snapshot.joinup-unpublished
+      to: ${toolkit.tmp_folder}/solr/snapshot.unpublished
+    # Cleanup.
+    - task: remove
+      file: ${toolkit.tmp_folder}/solr.tar
+
+  # Empties the Solr backed.
+  solr:empty:
+    - task: run
+      command: solr:start
+    - task: exec
+      command: curl
+      arguments:
+        - ${env.SOLR_CORE_PUBLISHED_URL}/${env.SOLR_CORE_PUBLISHED_NAME}/update?stream.body=<delete><query>*:*</query></delete>&commit=true
+    - task: exec
+      command: curl
+      arguments:
+        - ${env.SOLR_CORE_UNPUBLISHED_URL}/${env.SOLR_CORE_UNPUBLISHED_NAME}/update?stream.body=<delete><query>*:*</query></delete>&commit=true
+
+  # Restores the Solr index from a snapshot.
+  solr:restore:
+    - task: run
+      command: solr:empty
+    - task: run
+      command: solr:restore-core
+      arguments:
+        - published
+    - task: run
+      command: solr:restore-core
+      arguments:
+        - unpublished
+
+  # Takes a snapshot of the Solr index.
+  solr:backup:
+    - task: run
+      command: solr:backup-core
+      arguments:
+        - published
+    - task: run
+      command: solr:backup-core
+      arguments:
+        - unpublished
+
+  # Downloads and installs the Solr binary.
+  solr:download-bin:
+    - task: exec
+      command: wget
+      arguments:
+        - ${solr.download_url}
+      options:
+        no-host-directories: null
+        directory-prefix: ${toolkit.tmp_folder}
+        timestamping: null
+    - task: mkdir
+      dir: ${solr.dir}
+    - task: exec
+      command: tar
+      arguments:
+        - xzf
+        - ${toolkit.tmp_folder}/solr-${solr.version}.tgz
+      options:
+        directory: ${solr.vendor_dir}
+    - task: remove
+      file: ${solr.bin}
+    - task: symlink
+      from: ${solr.dir}/bin/solr
+      to: ${solr.bin}
+
+  # Configures the Solr core.
+  solr:config:
+    - task: run
+      command: solr:start
+    - task: exec
+      command: test -d ${solr.core.published.dir} || ${solr.bin} create_core -c ${env.SOLR_CORE_PUBLISHED_NAME} -d ${solr.config_dir}
+    - task: exec
+      command: test -d ${solr.core.unpublished.dir} || ${solr.bin} create_core -c ${env.SOLR_CORE_UNPUBLISHED_NAME} -d ${solr.config_dir}

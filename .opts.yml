@@ -1,0 +1,10 @@
+upgrade_commands:
+  default:
+    - ${drush.bin} state:set system.maintenance_mode 1 --input-format=integer --yes
+    - ${phing.bin} disable-config-read-only
+    - ${phing.bin} redis-flush
+    - ${drush.bin} updatedb --no-post-updates --yes
+    - ${drush.bin} config:import --yes
+    - ${drush.bin} updatedb --yes
+    - ${phing.bin} enable-config-read-only
+    - ${drush.bin} state:set system.maintenance_mode 0 --input-format=integer --yes
