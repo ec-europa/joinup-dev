@@ -195,7 +195,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Then the :name (user )account is :status
    */
-  public function assertAccountCancelled(string $name, string $status): void {
+  public function assertUserStatus(string $name, string $status): void {
     $allowed_statuses = [
       'active' => 1,
       'blocked' => 0,
