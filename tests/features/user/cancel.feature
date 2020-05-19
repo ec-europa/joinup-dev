@@ -70,7 +70,7 @@ Feature:
       | subject        | Your account was just blocked. |
     And the "Alicia Potter" user doesn't exist
 
-    # The content created by an account deleted via adm UI is deleted.
+    # The content created by an account deleted via admin UI has been deleted.
     When I go to "/collection/test-collection/news/news-item"
     Then the response status code should be 404
 
