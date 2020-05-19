@@ -164,7 +164,7 @@ class CommunityContentWorkflowAccessControlHandler {
       && $this->getEntityState($entity) === 'draft'
       && $entity->getOwnerId() !== $account->id()
     ) {
-      return AccessResult::forbidden();
+      return AccessResult::forbidden()->addCacheableDependency($entity);
     }
 
     switch ($operation) {
