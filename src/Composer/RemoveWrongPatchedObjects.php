@@ -1,6 +1,8 @@
 <?php
 
-namespace DrupalProject\composer;
+declare(strict_types = 1);
+
+namespace Joinup\Composer;
 
 use Composer\EventDispatcher\Event;
 use DrupalFinder\DrupalFinder;

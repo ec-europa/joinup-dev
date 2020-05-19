@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace DrupalProject\composer;
+namespace Joinup\Composer;
 
 use Composer\EventDispatcher\Event;
 use GitWrapper\GitWrapper;

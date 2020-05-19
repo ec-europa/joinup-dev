@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace DrupalProject\PhpUnit;
+namespace Joinup\PhpUnit;
 
 /**
  * Discovers tests for the Joinup functional test suite.
