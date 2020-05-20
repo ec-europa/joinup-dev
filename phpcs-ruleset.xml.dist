@@ -33,6 +33,9 @@
         <exclude-pattern>web/modules/custom/joinup_subscription/README.md</exclude-pattern>
     </rule>
 
+    <!-- Validate the (post)update identifiers. -->
+    <rule ref="./src/CodingStandards"/>
+
     <!-- Require the strict types declaration in every PHP file. -->
     <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
         <properties>
