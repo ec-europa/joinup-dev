@@ -26,7 +26,7 @@ function joinup_core_requirements($phase) {
     // damage on production.
     /** @var \Drupal\user\UserInterface $uid1 */
     $uid1 = User::load(1);
-    if (!$uid1->isBlocked()) {
+    if ($uid1->isActive()) {
       $requirements['joinup_core_root_user_blocked'] = [
         'title' => t('Root user access'),
         'description' => t('Allowing to log in as the root user on production is a security risk.'),

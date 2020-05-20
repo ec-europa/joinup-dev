@@ -265,12 +265,11 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    */
   protected function generateArguments(EntityInterface $entity): array {
     $arguments = parent::generateArguments($entity);
+    /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = $arguments['@actor:field_user_first_name'];
-    $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
 
-    $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
+    $arguments['@actor:full_name'] = $actor->getDisplayName();
     $arguments['@transition:motivation'] = $motivation;
     $arguments['@entity:hasPublished:status'] = $this->hasPublished ? 'an update of the' : 'a new';
 

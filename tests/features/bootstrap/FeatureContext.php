@@ -608,33 +608,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Checks the status of the given user.
-   *
-   * @param string $username
-   *   The name of the user to statusilize.
-   * @param string $status
-   *   The expected status, can be either 'active' or 'blocked'.
-   *
-   * @throws \Exception
-   *   Thrown when the user does not exist or doesn't have the expected status.
-   *
-   * @Then the account for :username should be :status
-   */
-  public function assertUserStatus(string $username, string $status): void {
-    /** @var \Drupal\user\UserInterface $user */
-    $user = $this->getUserByName($username);
-    $expected_status = $status === 'active';
-
-    if (empty($user)) {
-      throw new \Exception("Unable to load expected user $username.");
-    }
-
-    if ($user->isActive() !== $expected_status) {
-      throw new \Exception("The user does not have the $status status.");
-    }
-  }
-
-  /**
    * Deletes the user account with the given name.
    *
    * This intended to be used for user accounts that are created through the UI
@@ -1398,6 +1371,41 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
 
     return $row;
+  }
+
+  /**
+   * Asserts that a checkbox/radio exists in a row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox or radio button.
+   *
+   * @Then the :text table row contains a checkbox/radio
+   */
+  public function assertCheckboxOrRadioExistsInRow(string $text): void {
+    $this->getCheckboxOrRadioByRowText($text);
+  }
+
+  /**
+   * Asserts that a checkbox/radio doesn't exists in a row with given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox or radio button.
+   *
+   * @Then the :text table row doesn't contain a checkbox/radio
+   */
+  public function assertCheckboxOrRadioNotExistsInRow(string $text): void {
+    $row = $this->getRowByRowText($text);
+    if ($row->find('css', 'input[type="checkbox"],input[type="radio"]')) {
+      throw new ExpectationFailedException("The row '$text' contains a checkbox/radio but it should not.");
+    }
   }
 
   /**
