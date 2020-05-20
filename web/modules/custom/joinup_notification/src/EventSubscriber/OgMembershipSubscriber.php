@@ -217,7 +217,9 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
       $arguments['@actor:full_name'] = 'A Joinup user';
     }
     else {
-      $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
+      /** @var \Drupal\user\UserInterface $actor */
+      $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
+      $arguments['@actor:full_name'] = $actor->getDisplayName();
     }
 
     if ($this->operation === 'create') {
