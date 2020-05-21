@@ -137,8 +137,17 @@ drupal.admin.password = admin
 # The base URL to use in tests.
 drupal.base_url = http://joinup.local
 
+## Development settings.
+
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = yes
+
+# Disable config readonly for local development.
+config_readonly.enabled = FALSE
+
+# Do not redirect emails to disk.
+# Set this to false when you are grabbing the emails using e.g. mailcatcher.
+drupal.redirect.email = no
 ```
 
 #### Create a local task runner configuration file
