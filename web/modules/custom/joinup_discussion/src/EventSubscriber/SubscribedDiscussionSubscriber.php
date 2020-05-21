@@ -183,14 +183,12 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
     $arguments['@entity:url'] = $entity_url;
 
     $actor = $this->getCurrentUser();
-    $actor_first_name = !empty($actor->get('field_user_first_name')->value) ? $actor->get('field_user_first_name')->value : '';
-    $actor_family_name = !empty($actor->get('field_user_family_name')->value) ? $actor->get('field_user_family_name')->value : '';
 
     if ($actor->hasRole('moderator')) {
       $arguments['@actor:full_name'] = 'The Joinup Support Team';
     }
     else {
-      $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ? $actor_first_name . ' ' . $actor_family_name : $actor->get('full_name')->value;
+      $arguments['@actor:full_name'] = $actor->getDisplayName();
     }
 
     $group = $this->getDiscussionGroup($discussion);

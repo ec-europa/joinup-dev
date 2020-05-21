@@ -63,7 +63,7 @@
         "drupal/schema_metatag": "^1.4",
         "drupal/search_api": "1.13",
         "drupal/search_api_solr": "2.2",
-        "drupal/simple_sitemap": "3.x-dev#75017cd102811de8af5eb7faeaa6fc019403fc73",
+        "drupal/simple_sitemap": "~3.6",
         "drupal/simplenews": "^1.0-beta1",
         "drupal/smart_trim": "~1.2",
         "drupal/social_media_links": "^2.6",
@@ -266,7 +266,8 @@
                 "Node grant access check missing cacheable dependency on node @see https://www.drupal.org/project/drupal/issues/2946073": "https://www.drupal.org/files/issues/2020-04-27/2946073-24.patch",
                 "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2019-12-03/3008254-19-8.8.x.patch",
                 "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch",
-                "EntityConstraintValidationList::findByCode is inconsistent @see https://www.drupal.org/project/drupal/issues/3126654": "https://www.drupal.org/files/issues/2020-04-10/find_by_code_override-3126654-D8-4.patch"
+                "EntityConstraintValidationList::findByCode is inconsistent @see https://www.drupal.org/project/drupal/issues/3126654": "https://www.drupal.org/files/issues/2020-04-10/find_by_code_override-3126654-D8-4.patch",
+                "Cannot implement a custom user cancellation method @see https://www.drupal.org/project/drupal/issues/3135592": "https://www.drupal.org/files/issues/2020-05-11/3135592-3.patch"
             },
             "drupal/drupal-extension": {
               "Add space arround the keywords to avoid wrongly matching @see https://github.com/jhedstrom/drupalextension/pull/561": "https://patch-diff.githubusercontent.com/raw/jhedstrom/drupalextension/pull/561.patch"
@@ -311,9 +312,6 @@
                 "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
                 "Add a static method that knows to index a given entity @see https://www.drupal.org/project/search_api/issues/3106342": "https://www.drupal.org/files/issues/2020-01-14/3106342-6.patch",
                 "Bulk Form field for SAPI @see https://www.drupal.org/project/search_api/issues/3117171": "https://www.drupal.org/files/issues/2020-04-01/3117171-13.patch"
-            },
-            "drupal/simple_sitemap": {
-                "Incorrect XSL links for different language domains @see https://www.drupal.org/node/3082387": "https://git.drupalcode.org/project/simple_sitemap/commit/178a232.diff"
             },
             "drupal/social_media_links": {
                 "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-6.patch",

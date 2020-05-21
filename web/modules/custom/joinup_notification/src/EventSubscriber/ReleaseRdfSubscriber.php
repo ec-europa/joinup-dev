@@ -301,9 +301,8 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
    */
   protected function generateArguments(EntityInterface $entity): array {
     $arguments = parent::generateArguments($entity);
+    /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = $arguments['@actor:field_user_first_name'];
-    $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
     $arguments['@transition:motivation'] = $motivation;
     $arguments['@entity:field_isr_release_number'] = !empty($entity->get('field_isr_release_number')->first()->value) ? $entity->get('field_isr_release_number')->first()->value : '';
@@ -326,7 +325,7 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
             $arguments['@actor:role'] = $this->t('Facilitator');
           }
         }
-        $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
+        $arguments['@actor:full_name'] = $actor->getDisplayName();
       }
     }
 

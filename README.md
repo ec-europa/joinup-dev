@@ -68,12 +68,13 @@ run the Behat test, please refer directly to the documention of
 * Install Solr. If you already have Solr installed you can configure it manually
   by [following the installation
   instructions](http://cgit.drupalcode.org/search_api_solr/plain/INSTALL.txt?h=8.x-1.x)
-  from the Search API Solr module. Or you can execute the following command to
+  from the Search API Solr module. Or you can execute the following commands to
   download and configure a local instance of Solr. It will be installed in the
   folder `./vendor/apache/solr`.
 
     ```
-    $ ./vendor/bin/run solr:setup
+    $ ./vendor/bin/run solr:download-bin
+    $ ./vendor/bin/run solr:config
     ```
 
 * Install Virtuoso. For basic instructions, see [setting up
@@ -136,8 +137,17 @@ drupal.admin.password = admin
 # The base URL to use in tests.
 drupal.base_url = http://joinup.local
 
+## Development settings.
+
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = yes
+
+# Disable config readonly for local development.
+config_readonly.enabled = FALSE
+
+# Do not redirect emails to disk.
+# Set this to false when you are grabbing the emails using e.g. mailcatcher.
+drupal.redirect.email = no
 ```
 
 #### Create a local task runner configuration file
