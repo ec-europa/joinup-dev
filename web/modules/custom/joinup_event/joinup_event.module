@@ -51,7 +51,7 @@ function joinup_event_entity_type_alter(array &$entity_types): void {
  */
 function joinup_event_preprocess_fieldset(array &$variables): void {
   // Add an "asterisk" to the Event Location Field Group.
-  if ($variables['element']['#id'] == 'group-event-location') {
+  if (isset($variables['element']['#id']) && $variables['element']['#id'] === 'group-event-location') {
     $variables['legend_span']['attributes']->addClass('js-form-required form-required');
   }
 }

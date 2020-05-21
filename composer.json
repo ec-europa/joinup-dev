@@ -50,6 +50,7 @@
         "drupal/meta_entity": "^1.0",
         "drupal/og": "^1.0",
         "drupal/og_menu": "^1.0-alpha4",
+        "drupal/paragraphs": "^1.11",
         "drupal/password_policy": "3.0-alpha5",
         "drupal/pathauto": "~1.5",
         "drupal/persistent_login": "~1.1",
@@ -109,7 +110,7 @@
         "drupal/admin_toolbar": "^1.27",
         "drupal/cas_mock_server": "^1.0",
         "drupal/coder": "8.3.8",
-        "drupal/config_devel": "~1.5",
+        "drupal/config_devel": "~1.6",
         "drupal/config_inspector": "^1.0",
         "drupal/default_content": "^1.0-alpha8",
         "drupal/devel": "~2.1",
@@ -177,6 +178,7 @@
             "web/modules/custom/joinup_news/joinup_news.behat.inc",
             "web/modules/custom/joinup_newsletter/joinup_newsletter.behat.inc",
             "web/modules/custom/joinup_notification/joinup_notification.behat.inc",
+            "web/modules/custom/joinup_paragraphs/joinup_paragraphs.behat.inc",
             "web/modules/custom/joinup_search/joinup_search.behat.inc",
             "web/modules/custom/joinup_seo/joinup_seo.behat.inc",
             "web/modules/custom/joinup_sparql/driver/joinup_sparql/Connection.php",
@@ -241,7 +243,8 @@
                 "Allow a pre-login subscriber to set the reason for cancelling the login @see https://www.drupal.org/project/cas/issues/3111073": "https://www.drupal.org/files/issues/2020-02-04/3111073-2.patch"
             },
             "drupal/config_devel": {
-                "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2019-12-17/2392929-2.patch"
+                "Allow only optional as an entry in config_devel section @see https://www.drupal.org/project/config_devel/issues/2823786": "https://www.drupal.org/files/issues/2020-05-14/2823786-4.patch",
+                "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2020-05-15/2392929-11.patch"
             },
             "drupal/core": {
                 "Use email verification when changing user email addresses @see https://www.drupal.org/project/drupal/issues/85494": "https://www.drupal.org/files/issues/2019-12-03/85494-287-8.8.x.patch",
