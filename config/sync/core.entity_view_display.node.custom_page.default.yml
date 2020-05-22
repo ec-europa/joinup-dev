@@ -16,7 +16,6 @@ dependencies:
     - link
     - search_api_field
     - template_suggestion
-    - text
     - user
 third_party_settings:
   field_group:

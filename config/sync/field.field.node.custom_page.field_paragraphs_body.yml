@@ -6,6 +6,7 @@ dependencies:
     - field.storage.node.field_paragraphs_body
     - node.type.custom_page
     - paragraphs.paragraphs_type.simple_paragraph
+    - paragraphs.paragraphs_type.story_map
   module:
     - entity_reference_revisions
 id: node.custom_page.field_paragraphs_body
@@ -24,8 +25,12 @@ settings:
     negate: 0
     target_bundles:
       simple_paragraph: simple_paragraph
+      story_map: story_map
     target_bundles_drag_drop:
       simple_paragraph:
         enabled: true
         weight: 2
+      story_map:
+        enabled: true
+        weight: 4
 field_type: entity_reference_revisions
