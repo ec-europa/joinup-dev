@@ -6,7 +6,7 @@ package: Joinup
 
 dependencies:
   - json_field:json_field
-  - paragraphs:paragraphs
+  - paragraphs:paragraphs_type_permissions
 
 config_devel:
   optional:

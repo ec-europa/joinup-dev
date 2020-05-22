@@ -38,5 +38,6 @@ permissions:
   - 'use text format content_editor'
   - 'use text format simple_html'
   - 'view own unpublished content'
+  - 'view paragraph content story_map'
   - 'view published og menu instance entities'
   - 'view rdf entity'
