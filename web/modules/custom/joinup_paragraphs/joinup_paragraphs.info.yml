@@ -5,6 +5,7 @@ core: 8.x
 package: Joinup
 
 dependencies:
+  - json_field:json_field
   - paragraphs:paragraphs
 
 config_devel:
