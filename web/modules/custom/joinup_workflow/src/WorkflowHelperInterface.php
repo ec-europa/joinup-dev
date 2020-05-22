@@ -108,13 +108,13 @@ interface WorkflowHelperInterface {
    * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
    *   The entity for which to return the state field.
    *
-   * @return \Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface
-   *   The state field.
+   * @return \Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface|null
+   *   The state field first item or null if the field does not have a value.
    *
    * @throws \Exception
    *   Thrown when the entity does not have a state field.
    */
-  public function getEntityStateField(FieldableEntityInterface $entity): StateItemInterface;
+  public function getEntityStateField(FieldableEntityInterface $entity): ?StateItemInterface;
 
   /**
    * Returns whether the entity has a state field and supports workflow.

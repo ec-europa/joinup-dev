@@ -1,0 +1,9 @@
+name: 'Joinup EU login account link'
+description: 'Provides integration with cas_account_link module.'
+package: Joinup
+core: 8.x
+type: module
+
+dependencies:
+  - 'cas_account_link:cas_account_link'
+  - 'joinup_eulogin:joinup_eulogin'

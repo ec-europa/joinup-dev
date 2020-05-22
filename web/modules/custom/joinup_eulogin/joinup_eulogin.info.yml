@@ -6,7 +6,6 @@ type: module
 
 dependencies:
   - 'cas:cas'
-  - 'cas_account_link:cas_account_link'
   - 'cas_attributes:cas_attributes'
 
 config_devel:

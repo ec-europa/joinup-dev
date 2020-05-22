@@ -2584,6 +2584,33 @@ JS;
   }
 
   /**
+   * Fills in form fields with provided table within a multi property field.
+   *
+   * Example: When I fill in the following in the "Contact information" field
+   *  | Name  | bruceWayne |
+   *  | Email | test@example.com |
+   *
+   * @When I fill in the following in the :field field:
+   */
+  public function fillFieldsWithinField(string $field, TableNode $fields): void {
+    $page = $this->getSession()->getPage();
+    $element = $page->findField($field);
+    if (empty($element)) {
+      // If the field was not found with the default selector, try to find a
+      // fieldset as most of the times, if a field contains multiple properties,
+      // it is displayed as a fieldset of fields.
+      $xpath = "//fieldset[contains(@class, 'form-item') and ./legend[contains(normalize-space(), '{$field}')]]";
+      $element = $page->find('xpath', $xpath);
+      if (empty($element)) {
+        throw new \InvalidArgumentException("Field '{$field}' was not found in the page.");
+      }
+    }
+    foreach ($fields->getRowsHash() as $field => $value) {
+      $element->fillField($field, $value);
+    }
+  }
+
+  /**
    * Fills the last form field matching the selector with a value.
    *
    * Useful for dynamic parts of a form where a field can be added multiple

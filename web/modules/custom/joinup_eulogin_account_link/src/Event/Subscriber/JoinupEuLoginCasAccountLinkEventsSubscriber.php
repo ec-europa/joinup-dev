@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_eulogin\Event\Subscriber;
+namespace Drupal\joinup_eulogin_account_link\Event\Subscriber;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -114,7 +114,7 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
       ]));
     }
     else {
-      $event->setSuccessMessage($this->t('Fill in the fields below to let the Joinup community learn more about you!'));
+      $event->setSuccessMessage($this->t('Fill in the fields below to let the community learn more about you!'));
       $event->setRedirectUrl($event->getAccount()->toUrl('edit-form'));
     }
   }
