@@ -27,7 +27,7 @@ class Solution extends Rdf implements SolutionInterface {
       $group = $this->getGroup();
     }
     catch (MissingGroupException $exception) {
-      throw new MissingCollectionException("Solution {$exception->getEntity()->id()} missing a parent collection.", 0, $exception);
+      throw new MissingCollectionException($exception->getMessage(), 0, $exception);
     }
     return $group;
   }
@@ -37,8 +37,8 @@ class Solution extends Rdf implements SolutionInterface {
    */
   public function getGroup(): RdfInterface {
     $field_item = $this->getFirstItem('collection');
-    if ($field_item->isEmpty()) {
-      throw (new MissingGroupException())->setEntity($this);
+    if (!$field_item || $field_item->isEmpty()) {
+      throw new MissingGroupException();
     }
     return $field_item->entity;
   }
