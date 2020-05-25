@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace DrupalProject\Phing;
+namespace Joinup\Phing;
 
 use Drupal\Core\Site\Settings;
 use Drupal\redis\ClientFactory;

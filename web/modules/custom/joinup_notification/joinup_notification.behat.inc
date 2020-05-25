@@ -336,7 +336,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     $this->assertEmailTagPresent();
 
     $mails = $this->getMails();
-
     if (count($mails) != $count) {
       throw new \Exception("Invalid number of e-mail sent. Expected $count, sent " . count($mails));
     }

@@ -206,14 +206,13 @@ class ExportGroupAdministratorsForm extends FormBase {
       return;
     }
 
-    $user_name = joinup_user_get_display_name($user);
     $user_url = $user->toUrl()->setAbsolute()->toString();
     $group_label = $group->label();
     $group_url = $group->toUrl()->setAbsolute()->toString();
     $is_administrator = (string) ($membership->hasRole("rdf_entity-{$group->bundle()}-administrator") ? $this->t('Yes') : $this->t('No'));
 
     $context['results']['data'][$membership->id()] = [
-      'User name' => $user_name,
+      'User name' => $user->getDisplayName(),
       'User url' => $user_url,
       'User email' => $user->getEmail(),
       'Group bundle' => $group->bundle(),
