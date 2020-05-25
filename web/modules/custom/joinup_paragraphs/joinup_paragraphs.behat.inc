@@ -106,7 +106,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
   /**
    * Clicks the remove button in the given paragraphs item.
    *
-   * @param string $button
+   * @param string $label
    *   The button label.
    * @param string $field
    *   The field identifier. One of the keys in the
@@ -119,9 +119,26 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    * @Given I press :button in the :field field for paragraph :position
    * @Given I press :button in the :field paragraphs field
    */
-  public function clickButtonInParagraphsField(string $button, string $field, ?int $position = NULL): void {
+  public function clickButtonInParagraphsField(string $label, string $field, ?int $position = NULL): void {
+    if ($position === NULL) {
+      // This is field button, not linked to any paragraph item, such as the
+      // button that adds a new paragraph item.
+      $this->getParagraphsElement($field)->findButton($label)->press();
+      return;
+    }
+
     $paragraph_item = $this->getParagraphsElement($field, --$position);
-    $button = $paragraph_item->findButton($button);
+
+    if (!$button = $paragraph_item->findButton($label)) {
+      throw new ElementNotFoundException($this->getSession()->getDriver(), 'button', 'label');
+    }
+
+    // It might be a button beneath the three dots dropdown.
+    if (!$button->isVisible()) {
+      $dropdown = $paragraph_item->find('css', 'button.paragraphs-dropdown-toggle');
+      $dropdown->click();
+    }
+
     $button->click();
   }
 
