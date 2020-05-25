@@ -1,15 +1,17 @@
-@api
+@api @group-b
 Feature:
   As a site builder of the site
   In order to be able to better control the structure of my content
   I need to be able to place paragraphs for content.
 
-  @javascript
-  Scenario: Paragraph sections are multivalue and sort-able.
+  Background:
     Given the following collection:
       | title | Paragraphs collection |
       | state | validated             |
-    When I am logged in as a facilitator of the "Paragraphs collection" collection
+
+  @javascript
+  Scenario: Paragraph sections are multivalue and sort-able.
+    Given I am logged in as a facilitator of the "Paragraphs collection" collection
     And I go to the "Paragraphs collection" collection
     And I open the plus button menu
     And I click "Add custom page"
@@ -46,3 +48,31 @@ Feature:
     And I should see the following paragraphs in the given order:
       | BBBBBBBBBB |
       | AAAAAAAAAA |
+
+  Scenario: Moderators can add a Story map (SMAP) value.
+    Given custom_page content:
+      | title                     | body        | collection            |
+      | Don't Mess with the Zohan | Wanna mess? | Paragraphs collection |
+
+    Given I am logged in as a facilitator of the "Paragraphs collection" collection
+    And I go to the custom_page "Don't Mess with the Zohan" edit screen
+    Then I should see the button "Add Simple paragraph"
+    Then I should not see the button "Add Story map"
+
+    When I fill in "Body" with "I'm half Australian, half Mt. Everest"
+    And I press "Save"
+    Then I should see the success message "Custom page Don't Mess with the Zohan has been updated."
+    And I should see "I'm half Australian, half Mt. Everest"
+
+    Given I am logged in as a moderator
+    And I go to the custom_page "Don't Mess with the Zohan" edit screen
+    Then I should see the button "Add Simple paragraph"
+    Then I should see the button "Add Story map"
+
+    When I press "Add Story map"
+    # As the Story map (SMAP) is a webservice, we only test a fake JSON.
+    And I fill in "JSON" with "{\"foo\":\"bar\"}"
+    And I press "Save"
+    Then I should see the success message "Custom page Don't Mess with the Zohan has been updated."
+    And I should see "I'm half Australian, half Mt. Everest"
+    And the response should contain "{\"foo\":\"bar\"}"
