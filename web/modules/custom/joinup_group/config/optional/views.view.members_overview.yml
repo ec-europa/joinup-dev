@@ -5,7 +5,8 @@ dependencies:
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_first_name
   module:
-    - joinup_group
+    - joinup_core
+    - joinup_user
     - og
     - user
 id: members_overview
@@ -474,8 +475,9 @@ display:
           relationship: uid
           group_type: group
           admin_label: ''
-          operator: '='
-          value: '1'
+          operator: in
+          value:
+            1: '1'
           group: 1
           exposed: false
           expose:
@@ -484,14 +486,15 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -506,7 +509,7 @@ display:
             group_items: {  }
           entity_type: user
           entity_field: status
-          plugin_id: boolean
+          plugin_id: user_tristate_status
       sorts:
         field_user_first_name_value:
           id: field_user_first_name_value

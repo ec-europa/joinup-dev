@@ -7,14 +7,40 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\file\Entity\File;
+use Drupal\joinup_user\Entity\JoinupUser;
+use Drupal\joinup_user\JoinupUserViewsData;
 
 /**
  * Implements hook_install().
  */
 function joinup_user_install() {
   joinup_user_setup_default_avatar();
+
+  // Update some classes for the 'user' entity type.
+  $manager = \Drupal::entityDefinitionUpdateManager();
+  $entity_type = $manager->getEntityType('user');
+  $entity_type
+    ->setClass(JoinupUser::class)
+    ->setHandlerClass('views_data', JoinupUserViewsData::class);
+  $manager->updateEntityType($entity_type);
+
+  // Uninstall and recreate the field definition.
+  $definition = $manager->getFieldStorageDefinition('status', 'user');
+  $manager->uninstallFieldStorageDefinition($definition);
+  $definition = BaseFieldDefinition::create('integer')
+    ->setLabel(t('User status'))
+    ->setDescription(t('Whether the user is active, blocked or cancelled.'))
+    ->setSetting('size', 'tiny')
+    ->setDefaultValue(0);
+  $manager->installFieldStorageDefinition('status', 'user', 'user', $definition);
+  // The anonymous account was created before.
+  \Drupal::database()->update('users_field_data')
+    ->fields(['status' => 0])
+    ->condition('uid', 0)
+    ->execute();
 }
 
 /**
@@ -39,4 +65,47 @@ function joinup_user_setup_default_avatar() {
   $file->set('uuid', '2e24bbc5-dedf-42b0-85cf-35940274c2f8');
   $file->setPermanent();
   $file->save();
+}
+
+/**
+ * Extend the 'user' entity type.
+ */
+function joinup_user_update_0106000(): void {
+  $db = \Drupal::database();
+  $manager = \Drupal::entityDefinitionUpdateManager();
+
+  // Update some classes for the 'user' entity type.
+  $entity_type = $manager->getEntityType('user');
+  $entity_type
+    ->setClass(JoinupUser::class)
+    ->setHandlerClass('views_data', JoinupUserViewsData::class);
+  $manager->updateEntityType($entity_type);
+
+  // Store the current 'status' values. We need to recreate the field.
+  $active_uids = $db->select('users_field_data')
+    ->fields('users_field_data', ['uid'])
+    ->condition('status', 1)
+    ->execute()
+    ->fetchCol();
+
+  // Uninstall and recreate the field definition.
+  $definition = $manager->getFieldStorageDefinition('status', 'user');
+  $manager->uninstallFieldStorageDefinition($definition);
+  $definition = BaseFieldDefinition::create('integer')
+    ->setLabel(t('User status'))
+    ->setDescription(t('Whether the user is active, blocked or cancelled.'))
+    ->setSetting('size', 'tiny')
+    ->setDefaultValue(0);
+  $manager->installFieldStorageDefinition('status', 'user', 'user', $definition);
+
+  // Restore the 'status' field.
+  $db->update('users_field_data')
+    ->fields(['status' => 1])
+    // @todo: Split in chunks.
+    ->condition('uid', $active_uids, 'IN')
+    ->execute();
+  $db->update('users_field_data')
+    ->fields(['status' => 0])
+    ->isNull('status')
+    ->execute();
 }

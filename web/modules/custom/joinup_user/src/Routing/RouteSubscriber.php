@@ -32,6 +32,11 @@ class RouteSubscriber extends RouteSubscriberBase {
         '_title' => 'Sign in',
       ]);
     }
+
+    $collection->get('entity.user.cancel_form')->addRequirements([
+      // Only active and blocked accounts can be cancelled.
+      '_user_status' => 'active,blocked',
+    ]);
   }
 
 }

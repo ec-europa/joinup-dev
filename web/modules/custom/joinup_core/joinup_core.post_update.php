@@ -35,14 +35,13 @@ function joinup_core_post_update_0106001(&$sandbox) {
   $query = <<<QUERY
 UPDATE {node_revision} nr
 INNER JOIN (
-    SELECT nid, MIN(created) AS created_timestamp
+    SELECT nid, MIN(vid) as min_vid, MIN(created) AS created_timestamp
     FROM node_field_revision
-    GROUP BY nid, vid
-    ORDER BY vid ASC
+    GROUP BY nid
   ) nfr
   ON nr.nid = nfr.nid
 SET nr.revision_timestamp = nfr.created_timestamp
-WHERE nr.nid < 700000;
+WHERE nr.nid < 700000 AND nr.vid = min_vid;
 QUERY;
   $connection->query($query)->execute();
 

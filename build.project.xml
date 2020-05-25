@@ -206,23 +206,26 @@
         </drush>
     </target>
 
-    <target name="redirect-outgoing-email">
-        <reflexive>
-            <fileset dir="${website.settings.dir}">
-                <include pattern="settings.local.php" />
-            </fileset>
-            <filterchain>
-                <replaceregexp>
-                    <regexp
-                            pattern="(\n)?\$config\['system.mail'\]\['interface'\]\['default'\] = 'devel_mail_log';(\n)?"
-                            replace="" />
-                    <regexp
-                            pattern="(\n)?\$config\['mailsystem.settings'\]\['defaults'\]\['sender'\] = 'devel_mail_log';(\n)?"
-                            replace="${line.separator}"
-                            modifiers="" />
-                </replaceregexp>
-            </filterchain>
-        </reflexive>
+    <target name="clean-email-redirect-settings">
+      <reflexive>
+        <fileset dir="${website.settings.dir}">
+          <include pattern="settings.local.php" />
+        </fileset>
+        <filterchain>
+          <replaceregexp>
+            <regexp
+              pattern="(\n)?\$config\['system.mail'\]\['interface'\]\['default'\] = 'devel_mail_log';(\n)?"
+              replace="" />
+            <regexp
+              pattern="(\n)?\$config\['mailsystem.settings'\]\['defaults'\]\['sender'\] = 'devel_mail_log';(\n)?"
+              replace="${line.separator}"
+              modifiers="" />
+          </replaceregexp>
+        </filterchain>
+      </reflexive>
+    </target>
+
+    <target name="redirect-outgoing-email" depends="clean-email-redirect-settings">
         <if>
             <equals arg1="${drupal.redirect.email}" arg2="yes" />
             <then>
@@ -673,7 +676,7 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, setup-config-sync-dir">
+        depends="setup-virtuoso-permissions, purge-virtuoso-backend, clean-redis-settings, clean-email-redirect-settings, disable-webtools-geocoding-cache, setup-config-sync-dir">
         <exec command="./vendor/bin/run solr:empty" checkreturn="true" passthru="true"/>
         <phingcall target="install"/>
         <phingcall target="ensure-search-api-solr-site-hash"/>
