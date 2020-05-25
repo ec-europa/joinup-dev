@@ -40,7 +40,6 @@ Feature: User authentication
       | dashboard                                   |
       | licence                                     |
       | licence/add                                 |
-      | node                                        |
       | node/add                                    |
       | node/add/custom_page                        |
       | node/add/discussion                         |
@@ -106,7 +105,6 @@ Feature: User authentication
       | propose/solution                            |
       | licence                                     |
       | licence/add                                 |
-      | node                                        |
       | node/add                                    |
       | node/add/custom_page                        |
       | node/add/discussion                         |
@@ -169,7 +167,6 @@ Feature: User authentication
       | admin/structure                    |
       | admin/structure/views              |
       | propose/solution                   |
-      | node                               |
       | node/add                           |
       | node/add/custom_page               |
       | node/add/discussion                |
@@ -213,7 +210,6 @@ Feature: User authentication
       | admin/legal-notice/add             |
       | admin/people                       |
       | admin/structure                    |
-      | node                               |
       | node/add                           |
       | node/add/custom_page               |
       | node/add/discussion                |

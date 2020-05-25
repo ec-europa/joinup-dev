@@ -18,12 +18,12 @@ commands:
   # Starts Solr.
   solr:start:
     - task: exec
-      command: ${solr.bin} status ; test $? == 0 || ${solr.bin} start
+      command: ${solr.bin} status ; test $? -eq 0 || ${solr.bin} start
 
   # Stops Solr.
   solr:stop:
     - task: exec
-      command: ${solr.bin} status ; test $? != 0 || ${solr.bin} stop
+      command: ${solr.bin} status ; test $? -ne 0 || ${solr.bin} stop
 
   # Restarts Solr.
   solr:restart:
