@@ -23,8 +23,8 @@
         "drupal/config_ignore": "dev-3.x",
         "drupal/config_readonly": "^1.0",
         "drupal/config_update": "dev-1.x",
-        "drupal/core": "^8.8.5",
-        "drupal/core-composer-scaffold": "^8.8.4",
+        "drupal/core": "^8.8.6",
+        "drupal/core-composer-scaffold": "^8.8.6",
         "drupal/diff": "~1.0",
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/editor_file": "~1.4",
@@ -243,7 +243,6 @@
                 "Allow a pre-login subscriber to set the reason for cancelling the login @see https://www.drupal.org/project/cas/issues/3111073": "https://www.drupal.org/files/issues/2020-02-04/3111073-2.patch"
             },
             "drupal/config_devel": {
-                "Allow only optional as an entry in config_devel section @see https://www.drupal.org/project/config_devel/issues/2823786": "https://www.drupal.org/files/issues/2020-05-14/2823786-4.patch",
                 "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2020-05-15/2392929-11.patch"
             },
             "drupal/core": {
