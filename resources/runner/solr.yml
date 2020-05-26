@@ -4,6 +4,7 @@ solr:
   version: '6.6.6'
   vendor_dir: ${joinup.dir}/vendor/apache
   dir: ${solr.vendor_dir}/solr-${solr.version}
+  symlink_dest: ../apache/solr-${solr.version}/bin/solr
   bin: ${joinup.dir}/vendor/bin/solr
   download_url: http://archive.apache.org/dist/lucene/solr/${solr.version}/solr-${solr.version}.tgz
   config_dir: ${joinup.dir}/web/modules/contrib/search_api_solr/solr-conf/6.x
@@ -117,7 +118,7 @@ commands:
     - task: remove
       file: ${solr.bin}
     - task: symlink
-      from: ${solr.dir}/bin/solr
+      from: ${solr.symlink_dest}
       to: ${solr.bin}
 
   # Configures the Solr core.
