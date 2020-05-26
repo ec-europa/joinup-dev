@@ -7,7 +7,7 @@ dependencies:
 id: community_content
 label: 'Community content'
 type: 'canonical_entities:node'
-pattern: '[node:og_audience:entity:url]/[node:content-type]/[node:title]'
+pattern: '[node:og_audience:entity:url:path]/[node:content-type]/[node:title]'
 selection_criteria:
   e81cba7c-6aff-40f9-a77f-ce6bf5fc9e25:
     id: node_type

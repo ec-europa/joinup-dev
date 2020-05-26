@@ -10,7 +10,7 @@ _core:
 id: rdf_entities_solution
 label: 'Rdf entities - solution'
 type: rdf_entity
-pattern: '[rdf_entity:parent_collection:url]/[rdf_entity:rid:target_id]/[rdf_entity:short_id_or_title]'
+pattern: '[rdf_entity:parent_collection:url:path]/[rdf_entity:rid:target_id]/[rdf_entity:short_id_or_title]'
 selection_criteria:
   179b128e-5a0b-4c39-8da7-9f3c6de55956:
     id: 'entity_bundle:rdf_entity'
