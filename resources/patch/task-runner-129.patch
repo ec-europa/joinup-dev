@@ -1,0 +1,339 @@
+diff --git a/composer.json b/composer.json
+index ea6d59b..14eff1f 100644
+--- a/composer.json
++++ b/composer.json
+@@ -8,7 +8,7 @@
+     "prefer-stable": true,
+     "require": {
+         "php": ">=7.1",
+-        "consolidation/robo": "^1.4.7",
++        "consolidation/robo": "^1.4.11",
+         "gitonomy/gitlib": "^1.0",
+         "jakeasmith/http_build_url": "^1.0.1",
+         "nuvoleweb/robo-config": "^0.2.1",
+@@ -16,7 +16,11 @@
+     },
+     "require-dev": {
+         "openeuropa/code-review": "~1.0.0-beta3",
+-        "phpunit/phpunit": "~6.0||~7.0"
++        "phpunit/phpunit": "~6.0||~7.0",
++        "scssphp/scssphp": "^1.1"
++    },
++    "suggest": {
++        "scssphp/scssphp": "Adds task for compiling SCSS to CSS."
+     },
+     "autoload": {
+         "psr-4": {
+diff --git a/src/CommandInfoAlterer.php b/src/CommandInfoAlterer.php
+new file mode 100644
+index 0000000..49c3ec7
+--- /dev/null
++++ b/src/CommandInfoAlterer.php
+@@ -0,0 +1,37 @@
++<?php
++
++declare(strict_types=1);
++
++namespace OpenEuropa\TaskRunner;
++
++use Consolidation\AnnotatedCommand\Parser\CommandInfo;
++use ScssPhp\ScssPhp\Compiler;
++
++/**
++ * Hides optional commands if the packages they depend on are not installed.
++ *
++ * Certain commands can only be used when an optional Composer package is
++ * installed. This alters the command info by adding the '@hidden' annotation to
++ * commands for which a dependency is missing.
++ */
++class CommandInfoAlterer implements \Consolidation\AnnotatedCommand\CommandInfoAltererInterface
++{
++    /**
++     * List of optional commands mapped to the class they depend on.
++     */
++    const OPTIONAL_COMMAND_DEPENDENCIES = [
++        // The compile-scss command depends on the "scssphp/scssphp" package.
++        'assets:compile-scss' => Compiler::class
++    ];
++
++    public function alterCommandInfo(CommandInfo $commandInfo, $commandFileInstance)
++    {
++        // Hide optional commands if a package they depend on is not installed.
++        $name = $commandInfo->getName();
++        if (array_key_exists($name, self::OPTIONAL_COMMAND_DEPENDENCIES)) {
++            if (!class_exists(self::OPTIONAL_COMMAND_DEPENDENCIES[$name])) {
++                $commandInfo->addAnnotation('hidden', true);
++            }
++        }
++    }
++}
+diff --git a/src/Commands/AbstractCommands.php b/src/Commands/AbstractCommands.php
+index 123c7d6..f8a6323 100644
+--- a/src/Commands/AbstractCommands.php
++++ b/src/Commands/AbstractCommands.php
+@@ -15,9 +15,7 @@ use Symfony\Component\Console\Event\ConsoleCommandEvent;
+ use Symfony\Component\Console\Input\InputInterface;
+ 
+ /**
+- * Class AbstractCommands
+- *
+- * @package OpenEuropa\TaskRunner\Commands
++ * Base class for task runner commands.
+  */
+ abstract class AbstractCommands implements BuilderAwareInterface, IOAwareInterface, ConfigAwareInterface
+ {
+diff --git a/src/TaskRunner.php b/src/TaskRunner.php
+index 5c23d2b..80b596d 100644
+--- a/src/TaskRunner.php
++++ b/src/TaskRunner.php
+@@ -72,6 +72,9 @@ class TaskRunner
+ 
+     /**
+      * @var array
++     * @deprecated in 1.0.0, will be removed in 2.0.0. New command classes
++     *   should be placed in the OpenEuropa\TaskRunner\TaskRunner\Commands
++     *   namespaces where they will be automatically discovered.
+      */
+     private $defaultCommandClasses = [
+         ChangelogCommands::class,
+@@ -259,7 +262,9 @@ class TaskRunner
+     private function createContainer(InputInterface $input, OutputInterface $output, Application $application, Config $config, ClassLoader $classLoader)
+     {
+         $container = Robo::createDefaultContainer($input, $output, $application, $config, $classLoader);
+-        $container->get('commandFactory')->setIncludeAllPublicMethods(false);
++        $container->get('commandFactory')
++            ->setIncludeAllPublicMethods(false)
++            ->addCommandInfoAlterer(new CommandInfoAlterer());
+         $container->share('task_runner.composer', Composer::class)->withArgument($this->workingDir);
+         $container->share('task_runner.time', Time::class);
+         $container->share('repository', Repository::class)->withArgument($this->workingDir);
+diff --git a/src/TaskRunner/Commands/RoboAssetsCommands.php b/src/TaskRunner/Commands/RoboAssetsCommands.php
+new file mode 100644
+index 0000000..853398c
+--- /dev/null
++++ b/src/TaskRunner/Commands/RoboAssetsCommands.php
+@@ -0,0 +1,95 @@
++<?php
++
++declare(strict_types = 1);
++
++namespace OpenEuropa\TaskRunner\TaskRunner\Commands;
++
++use Consolidation\AnnotatedCommand\CommandData;
++use OpenEuropa\TaskRunner\Commands\AbstractCommands;
++use Symfony\Component\Console\Input\InputOption;
++
++/**
++ * Command wrappers for the "Assets" tasks that are included in Robo.
++ *
++ * @see \Robo\Task\Assets\loadTasks
++ */
++class RoboAssetsCommands extends AbstractCommands
++{
++    use \Robo\Task\Assets\loadTasks;
++
++    /**
++     * List of formatters that is offered by the ScssPhp compiler.
++     *
++     * @see \ScssPhp\ScssPhp\Formatter
++     */
++    const SCSS_FORMATTERS = ['compact', 'compressed', 'crunched', 'expanded', 'nested'];
++
++    /**
++     * Compiles SCSS.
++     *
++     * @command assets:compile-scss
++     *
++     * @param string $input_file The path to the SCSS file to process
++     * @param string $output_file The path where to store the compiled CSS file
++     * @option style Set the output format (compact, compressed, crunched, expanded, or nested)
++     * @option import-dir Set an import path
++     *
++     * @param array $options
++     *
++     * @return \Robo\Collection\CollectionBuilder
++     */
++    public function compileScss(string $input_file, string $output_file, array $options = [
++        'style' => InputOption::VALUE_REQUIRED,
++        'import-dir' => [],
++    ])
++    {
++        $scss = $this->taskScss([$input_file => $output_file]);
++
++        if ($options['style']) {
++            $scss->setFormatter('ScssPhp\\ScssPhp\\Formatter\\' . ucfirst($options['style']));
++        }
++
++        foreach ($options['import-dir'] as $import_dir) {
++            $scss->addImportPath($import_dir);
++        }
++
++        return $this->collectionBuilder()->addTask($scss);
++    }
++
++    /**
++     * @hook pre-validate assets:compile-scss
++     */
++    public function preValidateCompileScss(CommandData $commandData)
++    {
++        $input = $commandData->input();
++        $style = $input->getOption('style');
++        if ($style) {
++            // Ensure case insensitive matching for the style option.
++            $input->setOption('style', strtolower($style));
++        }
++    }
++
++    /**
++     * @hook validate assets:compile-scss
++     */
++    public function validateCompileScss(CommandData $commandData)
++    {
++        $input = $commandData->input();
++        $input_file = $input->getArgument('input_file');
++        if (!is_file($input_file) || !is_readable($input_file)) {
++            throw new \Exception(sprintf('Input file "%s" does not exist or is not readable', $input_file));
++        }
++
++        $style = $input->getOption('style');
++        if ($style && !in_array($style, self::SCSS_FORMATTERS)) {
++            throw new \Exception(sprintf('Unknown style "%s"', $style));
++        }
++
++        $import_dirs = $input->getOption('import-dir');
++        foreach ($import_dirs as $import_dir) {
++            if (!is_dir($import_dir) || !is_readable($import_dir)) {
++                throw new \Exception(sprintf('Import dir "%s" does not exist or is not readable', $import_dir));
++            }
++        }
++    }
++}
+diff --git a/tests/Commands/RoboAssetsCommandsTest.php b/tests/Commands/RoboAssetsCommandsTest.php
+new file mode 100644
+index 0000000..cb9306d
+--- /dev/null
++++ b/tests/Commands/RoboAssetsCommandsTest.php
+@@ -0,0 +1,107 @@
++<?php
++
++declare(strict_types=1);
++
++namespace OpenEuropa\TaskRunner\Tests\Commands;
++
++use OpenEuropa\TaskRunner\Commands\ChangelogCommands;
++use OpenEuropa\TaskRunner\TaskRunner;
++use OpenEuropa\TaskRunner\Tests\AbstractTest;
++use Symfony\Component\Console\Input\StringInput;
++use Symfony\Component\Console\Output\BufferedOutput;
++use Symfony\Component\Console\Output\NullOutput;
++use Symfony\Component\Yaml\Yaml;
++
++/**
++ * Tests the command wrappers for Robo "assets" tasks.
++ *
++ * @coversDefaultClass \OpenEuropa\TaskRunner\TaskRunner\Commands\RoboAssetsCommands
++ */
++class RoboAssetsCommandsTest extends AbstractTest
++{
++
++    /**
++     * @param string $style
++     *   The CSS style to be generated.
++     * @param string $expected
++     *   The expected compiled CSS.
++     *
++     * @covers ::compileScss
++     * @dataProvider compileScssDataProvider
++     */
++    public function testCompileScss(string $style, string $expected): void
++    {
++        $command = sprintf(
++            'assets:compile-scss --working-dir=%s --style=%s %s %s',
++            $this->getSandboxRoot(),
++            $style,
++            '../fixtures/example.scss',
++            'output.css'
++        );
++        $input = new StringInput($command);
++        $output = new BufferedOutput();
++        $runner = new TaskRunner($input, $output, $this->getClassLoader());
++        $runner->run();
++
++        $actual = file_get_contents($this->getSandboxFilepath('output.css'));
++        $this->assertEquals($expected, $actual);
++    }
++
++    /**
++     * Data provider for ::testCompileScss().
++     *
++     * @return array[]
++     *   An array of test cases, each test case an array with two elements:
++     *   - A string containing the CSS style to be generated.
++     *   - A string containing the expected compiled CSS.
++     */
++    public function compileScssDataProvider(): array
++    {
++        return [
++            [
++                'compact',
++                <<<CSS
++ nav ul { margin:0; }
++
++ nav ul li { color:#111; }
++
++
++CSS
++            ],
++            [
++                'compressed',
++                <<<CSS
++nav ul{margin:0}nav ul li{color:#111}
++CSS
++            ],
++            [
++                'crunched',
++                <<<CSS
++nav ul{margin:0}nav ul li{color:#111}
++CSS
++            ],
++            [
++                'expanded',
++                <<<CSS
++nav ul {
++  margin: 0;
++}
++nav ul li {
++  color: #111;
++}
++
++CSS
++            ],
++            [
++                'nested',
++                <<<CSS
++nav ul {
++  margin: 0; }
++  nav ul li {
++    color: #111; }
++
++CSS
++            ],
++        ];
++    }
++}
+diff --git a/tests/fixtures/example.scss b/tests/fixtures/example.scss
+new file mode 100644
+index 0000000..083d9d8
+--- /dev/null
++++ b/tests/fixtures/example.scss
+@@ -0,0 +1,10 @@
++// Example SCSS file to test the `assets:compile-scss` command.
++$dark: #111;
++nav {
++  ul {
++    margin: 0;
++    li {
++      color: $dark;
++    }
++  }
++}
