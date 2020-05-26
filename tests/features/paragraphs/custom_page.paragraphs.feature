@@ -24,14 +24,9 @@ Feature:
     # The first paragraphs item is open by default.
     Then there should be 1 paragraph in the "Custom page body" field
     Then I should see the "Remove" button in the "Custom page body" field for paragraph 1
-
     Given I press "Remove" in the "Custom page body" field for paragraph 1
-    Then I should see the "Confirm removal" button in the "Custom page body" field for paragraph 1
-    And I should see the "Restore" button in the "Custom page body" field for paragraph 1
-    But I should not see the "Remove" button in the "Custom page body" field for paragraph 1
 
-    Given I press "Confirm removal" in the "Custom page body" field for paragraph 1
-    Then there should be 0 paragraphs in the "Custom page body" field
+    Then the page should contain no paragraphs
 
     Given I press "Add Simple paragraph" in the "Custom page body" paragraphs field
     Then there should be 1 paragraph in the "Custom page body" field
