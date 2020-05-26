@@ -1,6 +1,22 @@
 # Development configs and commands
 
+scss:
+  import-dir: ${joinup.theme_dir}/prototype/scss
+  input: ${scss.import-dir}/app.scss
+  output: ${joinup.theme_dir}/css/style.min.css
+  style: compressed
+
 commands:
+  # Compiles SCSS to CSS.
+  dev:compile-scss:
+    - task: run
+      command: assets:compile-scss
+      arguments:
+        - ${scss.input}
+        - ${scss.output}
+      options:
+        style: ${scss.style}
+        import-dir: ${scss.import-dir}
 
   # Downloads all backends backups.
   dev:download-databases:

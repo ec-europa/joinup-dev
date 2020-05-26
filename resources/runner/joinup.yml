@@ -1,0 +1,5 @@
+# Configuration and commands specific for Joinup.
+
+joinup:
+  site_dir: ${joinup.dir}/web
+  theme_dir: ${joinup.site_dir}/themes/joinup
