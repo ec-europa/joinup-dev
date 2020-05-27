@@ -18,11 +18,6 @@ touch disable-config-readonly
 ./vendor/bin/drush updatedb --yes
 ./vendor/bin/drush pm:enable stage_file_proxy --yes
 
-# @todo: Remove this after ISAICP-5593 is deployed.
-echo "Resetting all aliases." &&
-./vendor/bin/drush pathauto:aliases-delete all &&
-./vendor/bin/drush pathauto:aliases-generate all all &&
-
 echo "Rebuilding node access records."
 ./vendor/bin/drush php:eval "if(node_access_needs_rebuild()) { node_access_rebuild(); }"
 
