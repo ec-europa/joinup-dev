@@ -185,10 +185,31 @@
 }
 
 .licence-comparer__dialog {
+  /* hack to correctly center jquery ui-dialog. */
   left: 50% !important;
   top: 50% !important;
   transform: translate(-50%, -50%);
   margin: 0 !important;
+
+  .ui-dialog-content {
+    margin-top: 20px;
+  }
+  .ui-dialog-buttonset {
+    margin-top: 0 !important;
+  }
+  .ui-button {
+    background: white;
+    border: 3px solid #227BD9;
+    padding: 12px 25px;
+    font-size: 16px;
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+      background: #227BD9;
+      color:white;
+    }
+  }
 }
 
 // Modifiers
@@ -381,7 +402,6 @@
     table-layout: fixed;
   }
 
-
   td {
     padding: 5px;
   }
@@ -423,9 +443,9 @@
     span {
       display: inline-block;
       vertical-align: middle;
+      padding: 0 5px;
 
       &.icon--info {
-        margin-left: 10px;
         cursor: pointer;
       }
     }
