@@ -184,6 +184,13 @@
   }
 }
 
+.licence-comparer__dialog {
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%);
+  margin: 0 !important;
+}
+
 // Modifiers
 // --------------------------------------------------
 .licence-filter--can {
@@ -387,6 +394,13 @@
     padding: 5px;
   }
 
+  .icon--info {
+    font-size: $font-size-medium;
+    color: #000;
+    background: transparent;
+    border-radius: initial;
+  }
+
   &__wrapper {
     overflow-x: auto;
   }
@@ -404,7 +418,17 @@
 
   &__header {
     font-weight: $font-weight-bold;
-    padding: 10px;
+    padding: 7px;
+
+    span {
+      display: inline-block;
+      vertical-align: middle;
+
+      &.icon--info {
+        margin-left: 10px;
+        cursor: pointer;
+      }
+    }
   }
 
   &__sidebar-header {
