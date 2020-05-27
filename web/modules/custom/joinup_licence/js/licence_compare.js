@@ -21,7 +21,7 @@
       modal: true,
       title: content['title'],
       buttons: {
-        "Licence text": function () {window.location.href = content['spdxUrl'];} 
+        "Licence text": function () {window.location.href = content['spdxUrl'];}
       },
       width: 'auto',
       resizable: false,
