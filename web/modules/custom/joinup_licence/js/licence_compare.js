@@ -17,16 +17,16 @@
 
   function showComparerModal(content) {
     $('.comparer-modal').html(content['description']);
-    $(".comparer-modal").dialog({ 
+    $(".comparer-modal").dialog({
       modal: true,
-      title: content['title'], 
-      buttons: { 
-        "Licence text": function() {window.location.href = content['spdxUrl'];} 
+      title: content['title'],
+      buttons: {
+        "Licence text": function () {window.location.href = content['spdxUrl'];} 
       },
       width: 'auto',
       resizable: false,
       draggable: false,
-      create: function(event, ui) {
+      create: function (event, ui) {
         $(event.target).parent().css('position', 'fixed');
       },
       classes: {
