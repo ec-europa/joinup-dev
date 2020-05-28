@@ -20,9 +20,9 @@ function joinup_core_post_update_0106100(array &$sandbox): string {
     $sandbox['entity_ids']['rdf_entity'] += \Drupal::entityQuery('rdf_entity')->condition('rid', 'asset_release')->execute();
     // Finally, generate the distribution aliases.
     $sandbox['entity_ids']['rdf_entity'] += \Drupal::entityQuery('rdf_entity')->condition('rid', 'asset_distribution')->execute();
-    $cc_bundles = ['custom_page', 'discussion', 'document', 'event', 'news'];
+    $gc_bundles = ['custom_page', 'discussion', 'document', 'event', 'news'];
     $sandbox['entity_ids']['node'] = \Drupal::entityQuery('node')
-      ->condition('type', $cc_bundles, 'IN')
+      ->condition('type', $gc_bundles, 'IN')
       ->execute();
     $sandbox['current'] = 0;
     $sandbox['max'] = count($sandbox['entity_ids']['rdf_entity']) + count($sandbox['entity_ids']['node']);
