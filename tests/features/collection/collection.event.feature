@@ -13,12 +13,12 @@ Feature: As a user of the website
       | state | validated  |
     And event content:
       | title                     | collection | start date   | end date            | created    | state     | author         |
-      | Sweet Palm                | Fairy Tail | now -1 years | now -1 years +1 day | now -4 day | validated | katerpillar    |
-      | Melted Hairdresser        | Fairy Tail | now -1 day   | now +1 day          | now -3 day | validated | katerpillar    |
-      | Hot Air                   | Fairy Tail | now +2 day   | now +4 day          | now -2 day | validated | katerpillar    |
-      | Walking Unofficial Humans | Fairy Tail | now -3 day   | now -1 day          | now        | validated | trustysidekick |
+      | Sweet Palm                | Fairy Tail | now -1 years | now -1 years +1 day | now -5 day | validated | katerpillar    |
+      | Melted Hairdresser        | Fairy Tail | now -2 day   | now +2 day          | now -4 day | validated | katerpillar    |
+      | Hot Air                   | Fairy Tail | now +3 day   | now +5 day          | now -3 day | validated | katerpillar    |
+      | Walking Unofficial Humans | Fairy Tail | now -4 day   | now -2 day          | now        | validated | trustysidekick |
       # The "Spring Freezing" event is associated with the anonymous user.
-      | Spring Freezing           | Fairy Tail | now +1 week  | now +1 week         | now -5 day | validated |                |
+      | Spring Freezing           | Fairy Tail | now +1 week  | now +1 week         | now -6 day | validated |                |
     And discussion content:
       | title       | collection | state     | created   |
       | Yellow Zeus | Fairy Tail | validated | yesterday |
