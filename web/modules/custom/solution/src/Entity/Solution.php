@@ -7,6 +7,7 @@ namespace Drupal\solution\Entity;
 use Drupal\collection\Entity\CollectionInterface;
 use Drupal\collection\Exception\MissingCollectionException;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
+use Drupal\joinup_bundle_class\ShortIdTrait;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
@@ -17,6 +18,7 @@ use Drupal\rdf_entity\RdfInterface;
 class Solution extends Rdf implements SolutionInterface {
 
   use JoinupBundleClassFieldAccessTrait;
+  use ShortIdTrait;
 
   /**
    * {@inheritdoc}
