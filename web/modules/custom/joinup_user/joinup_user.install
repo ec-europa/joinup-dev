@@ -114,3 +114,15 @@ function joinup_user_update_0106100(): void {
     ->isNull('status')
     ->execute();
 }
+
+/**
+ * Fix the user 'status' field storage definition once for ever.
+ */
+function joinup_user_update_0106101(): void {
+  $definition = BaseFieldDefinition::create('integer')
+    ->setLabel(t('User status'))
+    ->setDescription(t('Whether the user is active, blocked or cancelled.'))
+    ->setSetting('size', 'tiny')
+    ->setDefaultValue(0);
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('status', 'user', 'user', $definition);
+}
