@@ -68,23 +68,21 @@ function joinup_user_setup_default_avatar() {
 }
 
 /**
- * Extend the 'user' entity type.
+ * Extend the account status field functionality.
  */
-function joinup_user_update_0106000(): void {
+function joinup_user_update_0106100(): void {
   $db = \Drupal::database();
   $manager = \Drupal::entityDefinitionUpdateManager();
-
-  // Update some classes for the 'user' entity type.
-  $entity_type = $manager->getEntityType('user');
-  $entity_type
-    ->setClass(JoinupUser::class)
-    ->setHandlerClass('views_data', JoinupUserViewsData::class);
-  $manager->updateEntityType($entity_type);
 
   // Store the current 'status' values. We need to recreate the field.
   $active_uids = $db->select('users_field_data')
     ->fields('users_field_data', ['uid'])
     ->condition('status', 1)
+    ->execute()
+    ->fetchCol();
+  $cancelled_uids = $db->select('users_field_data')
+    ->fields('users_field_data', ['uid'])
+    ->condition('status', 2)
     ->execute()
     ->fetchCol();
 
@@ -99,11 +97,18 @@ function joinup_user_update_0106000(): void {
   $manager->installFieldStorageDefinition('status', 'user', 'user', $definition);
 
   // Restore the 'status' field.
-  $db->update('users_field_data')
-    ->fields(['status' => 1])
-    // @todo: Split in chunks.
-    ->condition('uid', $active_uids, 'IN')
-    ->execute();
+  if ($active_uids) {
+    $db->update('users_field_data')
+      ->fields(['status' => 1])
+      ->condition('uid', $active_uids, 'IN')
+      ->execute();
+  }
+  if ($cancelled_uids) {
+    $db->update('users_field_data')
+      ->fields(['status' => 2])
+      ->condition('uid', $cancelled_uids, 'IN')
+      ->execute();
+  }
   $db->update('users_field_data')
     ->fields(['status' => 0])
     ->isNull('status')
