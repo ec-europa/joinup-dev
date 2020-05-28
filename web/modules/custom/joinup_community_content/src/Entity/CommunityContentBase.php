@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\joinup_community_content\Entity;
 
 use Drupal\collection\Entity\NodeCollectionContentTrait;
-use Drupal\joinup_group\Entity\NodeGroupContentTrait;
 use Drupal\node\Entity\Node;
 
 /**
@@ -14,6 +13,5 @@ use Drupal\node\Entity\Node;
 class CommunityContentBase extends Node implements CommunityContentInterface {
 
   use NodeCollectionContentTrait;
-  use NodeGroupContentTrait;
 
 }
