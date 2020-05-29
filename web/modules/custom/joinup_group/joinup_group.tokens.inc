@@ -59,6 +59,7 @@ function joinup_group_tokens(string $type, array $tokens, array $data, array $op
       // error but this is not fatal so allow the token generation to continue.
       \Drupal::logger('joinup_group')->error('Failed to generate token for RDF entity with ID @id due to missing parent collection', ['@id' => $rdf_entity->id()]);
     }
+    return NULL;
   };
 
   if ($type == 'rdf_entity' && !empty($data['rdf_entity'])) {
