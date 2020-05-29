@@ -310,6 +310,9 @@
                 "Add a static method that knows to index a given entity @see https://www.drupal.org/project/search_api/issues/3106342": "https://www.drupal.org/files/issues/2020-01-14/3106342-6.patch",
                 "Bulk Form field for SAPI @see https://www.drupal.org/project/search_api/issues/3117171": "https://www.drupal.org/files/issues/2020-04-01/3117171-13.patch"
             },
+            "drupal/smart_trim": {
+                "Maximum function nesting when reading the dom @see https://www.drupal.org/project/smart_trim/issues/301362": "https://www.drupal.org/files/issues/2020-05-28/maximum_function_nesting-3013628-D8-7.patch"
+            },
             "drupal/social_media_links": {
                 "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-6.patch",
                 "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
@@ -330,9 +333,6 @@
             },
             "ec-europa/toolkit": {
                 "Variables in 'sequence-file' are not resolved @see https://github.com/ec-europa/toolkit/issues/273": "https://patch-diff.githubusercontent.com/raw/ec-europa/toolkit/pull/274.diff"
-            },
-            "drupal/smart_trim": {
-                "Maximum function nesting when reading the dom @see https://www.drupal.org/project/smart_trim/issues/301362": "https://www.drupal.org/files/issues/2020-05-28/maximum_function_nesting-3013628-D8-7.patch"
             },
             "openeuropa/oe_webtools": {
                 "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
