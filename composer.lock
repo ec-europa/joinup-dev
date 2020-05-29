@@ -7149,6 +7149,9 @@
                     "services": {
                         "drush.services.yml": "^9"
                     }
+                },
+                "patches_applied": {
+                    "Maximum function nesting when reading the dom @see https://www.drupal.org/project/smart_trim/issues/301362": "https://www.drupal.org/files/issues/2020-05-28/maximum_function_nesting-3013628-D8-7.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
