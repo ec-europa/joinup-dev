@@ -14,7 +14,7 @@ mode: default
 content:
   field_json:
     weight: 0
-    label: inline
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: webtools_snippet
