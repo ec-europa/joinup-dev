@@ -18,5 +18,5 @@ permissions:
   - 'use text format basic_html'
   - 'use text format simple_text'
   - 'view paragraph content simple_paragraph'
-  - 'view paragraph content story_map'
+  - 'view paragraph content json_map'
   - 'view rdf entity'

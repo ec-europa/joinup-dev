@@ -4,15 +4,15 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_json
-    - paragraphs.paragraphs_type.story_map
+    - paragraphs.paragraphs_type.json_map
   module:
     - json_field
-id: paragraph.story_map.field_json
+id: paragraph.json_map.field_json
 field_name: field_json
 entity_type: paragraph
-bundle: story_map
+bundle: json_map
 label: JSON
-description: 'Enter a JSON serialized string representing the Story map (SMAP). Use the <a href="https://europa.eu/webtools/mgmt/wizard/ui.php?uec=smap" target="_blank">Story map (SMAP) wizard</a> to generate the JSON.'
+description: 'Enter a JSON serialized string representing the map.'
 required: true
 translatable: false
 default_value: {  }

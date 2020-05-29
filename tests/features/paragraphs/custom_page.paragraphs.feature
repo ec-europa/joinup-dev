@@ -44,7 +44,7 @@ Feature:
       | BBBBBBBBBB |
       | AAAAAAAAAA |
 
-  Scenario: Moderators can add a Story map (SMAP) value.
+  Scenario: Moderators can add a map value.
     Given custom_page content:
       | title                     | body        | collection            |
       | Don't Mess with the Zohan | Wanna mess? | Paragraphs collection |
@@ -52,7 +52,7 @@ Feature:
     Given I am logged in as a facilitator of the "Paragraphs collection" collection
     And I go to the custom_page "Don't Mess with the Zohan" edit screen
     Then I should see the button "Add Simple paragraph"
-    Then I should not see the button "Add Story map"
+    Then I should not see the button "Add Map"
 
     When I fill in "Body" with "I'm half Australian, half Mt. Everest"
     And I press "Save"
@@ -62,10 +62,10 @@ Feature:
     Given I am logged in as a moderator
     And I go to the custom_page "Don't Mess with the Zohan" edit screen
     Then I should see the button "Add Simple paragraph"
-    Then I should see the button "Add Story map"
+    Then I should see the button "Add Map"
 
-    When I press "Add Story map"
-    # As the Story map (SMAP) is a webservice, we only test a fake JSON.
+    When I press "Add Map"
+    # As the Webtools Map a webservice, we only test a fake JSON.
     And I fill in "JSON" with "{\"foo\":\"bar\"}"
     And I press "Save"
     Then I should see the success message "Custom page Don't Mess with the Zohan has been updated."

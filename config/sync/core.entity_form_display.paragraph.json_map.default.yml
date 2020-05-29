@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.story_map.field_json
-    - paragraphs.paragraphs_type.story_map
+    - field.field.paragraph.json_map.field_json
+    - paragraphs.paragraphs_type.json_map
   module:
     - json_field
-id: paragraph.story_map.default
+id: paragraph.json_map.default
 targetEntityType: paragraph
-bundle: story_map
+bundle: json_map
 mode: default
 content:
   field_json:
