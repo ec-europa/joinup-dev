@@ -10,7 +10,7 @@ use Drupal\Core\TypedData\ComputedItemListTrait;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Defines a field item list class for the solution 'collections' field.
+ * Defines a field item list class for the solution's 'collection' field.
  *
  * In ADMS-AP collections point to solutions. The reverse relation would have
  * been more logical, and this is quite inconvenient, especially for the search

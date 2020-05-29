@@ -27,4 +27,4 @@ Feature: User registration
       | recipient | SuperUser                                                                                                                       |
       | subject   | Your Joinup account was created successfully.                                                                                   |
       | body      | The Joinup Support Team created your account on Joinup. Please log in through the following link in order to set your password. |
-    And the account for SuperUser should be active
+    And the SuperUser user account is active
