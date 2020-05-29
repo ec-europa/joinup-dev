@@ -16,6 +16,7 @@ use Drupal\joinup\Traits\MailCollectorTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Behat step definitions for testing users.
@@ -179,6 +180,53 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
       'blocked' => 0,
       'active' => 1,
     ]);
+  }
+
+  /**
+   * Asserts that a user account is cancelled.
+   *
+   * @param string $name
+   *   The user name.
+   * @param string $status
+   *   The user status: 'active', 'blocked' or 'cancelled'.
+   *
+   * @throws \Exception
+   *   If an invalid status has been passed.
+   *
+   * @Then the :name (user )account is :status
+   */
+  public function assertUserStatus(string $name, string $status): void {
+    $allowed_statuses = [
+      'active' => 1,
+      'blocked' => 0,
+      'cancelled' => -1,
+    ];
+
+    if (!isset($allowed_statuses[$status])) {
+      throw new \Exception("Invalid '$status' status. Allowed values are 'active', 'blocked' or 'cancelled'.");
+    }
+    $uids = \Drupal::entityQuery('user')
+      ->condition('name', $name)
+      ->condition('status', $allowed_statuses[$status])
+      ->execute();
+
+    if (!$uids) {
+      throw new ExpectationFailedException("The user '$name' doesn't exist or is not $status.");
+    }
+  }
+
+  /**
+   * Asserts that the user with the given name doesn't exist.
+   *
+   * @param string $name
+   *   The user name.
+   *
+   * @Then the :name user doesn't exist
+   */
+  public function userNotExists(string $name): void {
+    if (\Drupal::entityQuery('user')->condition('name', $name)->execute()) {
+      throw new ExpectationFailedException("The user $name exists but it should not.");
+    }
   }
 
 }

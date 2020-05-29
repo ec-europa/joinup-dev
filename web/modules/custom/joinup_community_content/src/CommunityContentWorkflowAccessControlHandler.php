@@ -5,27 +5,25 @@ declare(strict_types = 1);
 namespace Drupal\joinup_community_content;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_workflow\WorkflowHelperInterface;
-use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgGroupAudienceHelperInterface;
-use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Access handler for entities with a workflow.
  *
  * @todo: More information should be inserted here.
  * @todo: If we are going with a unified way, a readme should include the
- *  workflow creation process.
- * @todo: Add cacheability to all access.
+ *   workflow creation process.
  *
  * All parameters for the permissions are described in the permission scheme.
  *
@@ -47,27 +45,6 @@ class CommunityContentWorkflowAccessControlHandler {
    * Flag for post-moderated groups.
    */
   const POST_MODERATION = 0;
-
-  /**
-   * The machine name of the default workflow for groups.
-   *
-   * @todo: Change the group workflows to 'default'.
-   */
-  const WORKFLOW_DEFAULT = 'default';
-
-  /**
-   * The machine name of the pre moderated workflow for group content.
-   *
-   * @todo: Backport this to entity types other than document.
-   */
-  const WORKFLOW_PRE_MODERATED = 'pre_moderated';
-
-  /**
-   * The machine name of the post moderated workflow for group content.
-   *
-   * @todo: Backport this to entity types other than document.
-   */
-  const WORKFLOW_POST_MODERATED = 'post_moderated';
 
   /**
    * The entity type manager service.
@@ -129,29 +106,22 @@ class CommunityContentWorkflowAccessControlHandler {
   /**
    * Main handler for access checks for group content in Joinup.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
    *   The group content entity object.
    * @param string $operation
    *   The CRUD operation.
    * @param \Drupal\Core\Session\AccountInterface|null $account
    *   The user account.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The result of the access check.
    */
-  public function entityAccess(EntityInterface $entity, $operation, ?AccountInterface $account = NULL): AccessResult {
-    if ($account === NULL) {
-      $account = $this->currentUser;
-    }
+  public function entityAccess(CommunityContentInterface $content, $operation, ?AccountInterface $account = NULL): AccessResultInterface {
+    $account = $account ?: $this->currentUser;
 
-    if (!$entity instanceof NodeInterface) {
-      return AccessResult::neutral();
-    }
-
-    // In case of neutral (no parent) or forbidden (no access), return the
-    // result.
-    $access = $this->hasParentViewAccess($entity, $account);
-    if (!$access->isAllowed()) {
+    // On access is forbidden return the result.
+    $access = $this->hasParentViewAccess($content, $account);
+    if ($access->isForbidden()) {
       return $access;
     }
 
@@ -160,30 +130,30 @@ class CommunityContentWorkflowAccessControlHandler {
     // moderators.
     if (
       !$account->hasPermission('access draft community content')
-      && !$this->hasPublishedVersion($entity)
-      && $this->getEntityState($entity) === 'draft'
-      && $entity->getOwnerId() !== $account->id()
+      && !$this->hasPublishedVersion($content)
+      && $this->getEntityState($content) === 'draft'
+      && $content->getOwnerId() !== $account->id()
     ) {
-      return AccessResult::forbidden();
+      return AccessResult::forbidden()->addCacheableDependency($content);
     }
 
     switch ($operation) {
       case 'view':
-        return $this->entityViewAccess($entity, $account);
+        return $this->entityViewAccess($content, $account);
 
       case 'create':
-        return $this->entityCreateAccess($entity, $account);
+        return $this->entityCreateAccess($content, $account);
 
       case 'update':
-        return $this->entityUpdateAccess($entity, $account);
+        return $this->entityUpdateAccess($content, $account);
 
       case 'delete':
-        return $this->entityDeleteAccess($entity, $account);
+        return $this->entityDeleteAccess($content, $account);
 
       case 'post comments':
-        $parent = $entity->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->entity;
+        $parent = $content->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->entity;
         $parent_state = JoinupGroupHelper::getState($parent);
-        $entity_state = $this->getEntityState($entity);
+        $entity_state = $this->getEntityState($content);
 
         // Commenting on content of an archived group is not allowed.
         if ($parent_state === 'archived' || $entity_state === 'archived') {
@@ -202,189 +172,181 @@ class CommunityContentWorkflowAccessControlHandler {
   /**
    * Returns whether the user has view permissions to the parent of the entity.
    *
-   * @param \Drupal\node\NodeInterface $entity
+   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
    *   The group content entity.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user that the permission access is checked.
    *
-   * @return \Drupal\Core\Access\AccessResult|\Drupal\Core\Access\AccessResultInterface
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  protected function hasParentViewAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
-    $parent = $this->getEntityParent($entity);
-    // Let parent-less nodes (e.g. newsletters) be handled by the core access.
-    if (empty($parent)) {
-      return AccessResult::neutral();
-    }
-
+  protected function hasParentViewAccess(CommunityContentInterface $content, AccountInterface $account): AccessResultInterface {
     $access_handler = $this->entityTypeManager->getAccessControlHandler('rdf_entity');
-    $access = $access_handler->access($parent, 'view', $account);
-    return $access ? AccessResult::allowed() : AccessResult::forbidden();
+    return $access_handler->access($content->getGroup(), 'view', $account, TRUE);
   }
 
   /**
    * Access check for the 'view' operation.
    *
-   * @param \Drupal\node\NodeInterface $entity
+   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
    *   The group content entity.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result check.
    */
-  protected function entityViewAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
+  protected function entityViewAccess(CommunityContentInterface $content, AccountInterface $account): AccessResultInterface {
     $view_scheme = $this->getPermissionScheme('view');
-    $workflow_id = $this->getEntityWorkflowId($entity);
-    $state = $this->getEntityState($entity);
-    return $this->workflowHelper->userHasOwnAnyRoles($entity, $account, $view_scheme[$workflow_id][$state]) ? AccessResult::allowed() : AccessResult::forbidden();
+    $workflow_id = $this->getEntityWorkflowId($content);
+    $state = $this->getEntityState($content);
+    // @todo: Shouldn't we return AccessResult::neutral() instead of
+    // AccessResult::allowed() and only AccessResult::forbidden() should have
+    // cacheable metadata? Neutral means we don't make any opinion but the
+    // default view access on node is to allow.
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6007
+    $result = $this->workflowHelper->userHasOwnAnyRoles($content, $account, $view_scheme[$workflow_id][$state]) ? AccessResult::allowed() : AccessResult::forbidden();
+    return $result->addCacheableDependency($content);
   }
 
   /**
    * Access check for the 'create' operation.
    *
-   * @param \Drupal\node\NodeInterface $entity
+   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
    *   The group content entity.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result check.
    */
-  protected function entityCreateAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
+  protected function entityCreateAccess(CommunityContentInterface $content, AccountInterface $account): AccessResultInterface {
     $create_scheme = $this->getPermissionScheme('create');
-    $workflow_id = $this->getEntityWorkflowId($entity);
-    $content_creation = $this->getParentContentCreationOption($entity);
+    $workflow_id = $this->getEntityWorkflowId($content);
+    $content_creation = $this->getParentContentCreationOption($content);
 
     foreach ($create_scheme[$workflow_id][$content_creation] as $ownership_data) {
       // There is no check whether the transition is allowed as only allowed
       // transitions are mapped in the permission scheme configuration object.
-      if ($this->workflowHelper->userHasRoles($entity, $account, $ownership_data)) {
+      if ($this->workflowHelper->userHasRoles($content, $account, $ownership_data)) {
+        // @todo: Shouldn't we return AccessResult::neutral() instead of
+        // AccessResult::allowed()? Neutral means we don't make any opinion but
+        // the default access rules will apply.
+        // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6007
         return AccessResult::allowed();
       }
     }
-    return AccessResult::forbidden();
+    return AccessResult::forbidden()->addCacheTags($content->getEntityType()->getListCacheTags());
   }
 
   /**
    * Access check for the 'update' operation.
    *
-   * @param \Drupal\node\NodeInterface $entity
+   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
    *   The group content entity.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result check.
    */
-  protected function entityUpdateAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
-    $allowed_states = $this->workflowHelper->getAvailableTargetStates($entity, $account);
+  protected function entityUpdateAccess(CommunityContentInterface $content, AccountInterface $account): AccessResultInterface {
+    $allowed_states = $this->workflowHelper->getAvailableTargetStates($content, $account);
     if (empty($allowed_states)) {
-      return AccessResult::forbidden();
+      return AccessResult::forbidden()->addCacheableDependency($content);
     }
+    // @todo: Shouldn't we return AccessResult::neutral() instead of
+    // AccessResult::allowed()? Neutral means we don't make any opinion but the
+    // the default access rules will apply.
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6007
     return AccessResult::allowed();
   }
 
   /**
    * Access check for 'delete' operation.
    *
-   * @param \Drupal\node\NodeInterface $entity
+   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
    *   The entity object.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  protected function entityDeleteAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
+  protected function entityDeleteAccess(CommunityContentInterface $content, AccountInterface $account): AccessResultInterface {
     $delete_scheme = $this->getPermissionScheme('delete');
-    $workflow_id = $this->getEntityWorkflowId($entity);
-    $state = $this->getEntityState($entity);
+    $workflow_id = $this->getEntityWorkflowId($content);
+    $state = $this->getEntityState($content);
 
-    if (isset($delete_scheme[$workflow_id][$state]) && $this->workflowHelper->userHasOwnAnyRoles($entity, $account, $delete_scheme[$workflow_id][$state])) {
+    if (isset($delete_scheme[$workflow_id][$state]) && $this->workflowHelper->userHasOwnAnyRoles($content, $account, $delete_scheme[$workflow_id][$state])) {
+      // @todo: Shouldn't we return AccessResult::neutral() instead of
+      // AccessResult::allowed()? Neutral means we don't make any opinion but
+      // the default access rules will apply.
+      // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6007
       return AccessResult::allowed();
     }
 
-    return AccessResult::forbidden();
-  }
-
-  /**
-   * Helper method to retrieve the parent of the entity.
-   *
-   * @param \Drupal\node\NodeInterface $entity
-   *   The group content entity.
-   *
-   * @return \Drupal\rdf_entity\RdfInterface|null
-   *   The rdf entity the entity belongs to, or NULL when no group is found.
-   */
-  protected function getEntityParent(NodeInterface $entity): ?RdfInterface {
-    $groups = $this->membershipManager->getGroups($entity);
-
-    if (empty($groups['rdf_entity'])) {
-      return NULL;
-    }
-
-    return reset($groups['rdf_entity']);
+    return AccessResult::forbidden()->addCacheableDependency($content);
   }
 
   /**
    * Returns the appropriate workflow to use for the passed entity.
    *
-   * @param \Drupal\node\NodeInterface $entity
+   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
    *   The group content entity.
    *
    * @return string
    *   The id of the workflow to use.
    */
-  protected function getEntityWorkflowId(NodeInterface $entity): string {
-    $workflow = $entity->{self::STATE_FIELD}->first()->getWorkflow();
+  protected function getEntityWorkflowId(CommunityContentInterface $content): string {
+    $workflow = $content->{self::STATE_FIELD}->first()->getWorkflow();
     return $workflow->getId();
   }
 
   /**
    * Returns the appropriate workflow to use for the passed entity.
    *
-   * @param \Drupal\node\NodeInterface $entity
+   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
    *   The group content entity.
    *
    * @return string
    *   The id of the workflow to use.
    */
-  protected function getEntityState(NodeInterface $entity): string {
-    return $entity->{self::STATE_FIELD}->first()->value;
+  protected function getEntityState(CommunityContentInterface $content): string {
+    return $content->{self::STATE_FIELD}->first()->value;
   }
 
   /**
    * Returns the content creation option value of the parent of an entity.
    *
-   * @param \Drupal\node\NodeInterface $entity
+   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
    *   The group content entity.
    *
-   * @return array
+   * @return string
    *   The content creation option value.
    */
-  protected function getParentContentCreationOption(NodeInterface $entity): string {
-    $parent = JoinupGroupHelper::getGroup($entity);
+  protected function getParentContentCreationOption(CommunityContentInterface $content): string {
+    $parent = JoinupGroupHelper::getGroup($content);
     return JoinupGroupHelper::getContentCreation($parent);
   }
 
   /**
    * Checks whether the entity has a published version.
    *
-   * @param \Drupal\node\NodeInterface $entity
+   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
    *   The entity object.
    *
    * @return bool
    *   Whether the entity has a published version.
    */
-  protected function hasPublishedVersion(NodeInterface $entity): bool {
-    if ($entity->isNew()) {
+  protected function hasPublishedVersion(CommunityContentInterface $content): bool {
+    if ($content->isNew()) {
       return FALSE;
     }
-    if ($entity->isPublished()) {
+    if ($content->isPublished()) {
       return TRUE;
     }
-    $published = $this->getNodeStorage()->load($entity->id());
+    $published = $this->getNodeStorage()->load($content->id());
     if (!empty($published) && $published instanceof EntityPublishedInterface) {
       return $published->isPublished();
     }
@@ -411,9 +373,16 @@ class CommunityContentWorkflowAccessControlHandler {
    *
    * @return \Drupal\node\NodeStorageInterface
    *   The storage handler.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown if the entity type doesn't exist.
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *   Thrown when an entity with a non-existing storage is passed.
    */
   protected function getNodeStorage(): NodeStorageInterface {
-    return $this->entityTypeManager->getStorage('node');
+    /** @var \Drupal\node\NodeStorageInterface $storage */
+    $storage = $this->entityTypeManager->getStorage('node');
+    return $storage;
   }
 
 }
