@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.custom_page.body
     - field.field.node.custom_page.field_attachment
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.field_custom_page_logo
@@ -83,7 +82,6 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  body: true
   created: true
   current_workflow_state: true
   og_audience: true
