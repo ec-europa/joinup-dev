@@ -17,6 +17,7 @@ use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\Entity\Rdf;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
@@ -32,6 +33,7 @@ class EuplSubContext extends DrupalSubContextBase {
   use EntityTrait;
   use MaterialDesignTrait;
   use RdfEntityTrait;
+  use UtilityTrait;
 
   /**
    * Creates the standard 'EUPL' collection and several dependencies.
@@ -75,6 +77,43 @@ class EuplSubContext extends DrupalSubContextBase {
       'title' => 'JLA',
       'og_audience' => Eupl::JLA_SOLUTION,
     ])->save();
+  }
+
+  /**
+   * Clicks the info icon next to the SPDX licence header.
+   *
+   * @param string $spdx
+   *   The SPDX licence ID.
+   *
+   * @throws \Exception
+   *   Thrown if the info icon could not be found.
+   *
+   * @Given I click the info icon of the :spdx licence( table cell)
+   */
+  public function clickLicenceInfoIcon(string $spdx): void {
+    $xpath = '//td[' . $this->xpathHasClassSelector('licence-comparer__header', FALSE) . ' and contains(., "' . $spdx . '")]//span[' . $this->xpathHasClassSelector('icon--info', FALSE) . ']';
+    $icon = $this->getSession()->getPage()->find('xpath', $xpath);
+    if (empty($icon)) {
+      throw new \Exception("Could not locate a table cell with the text {$spdx}.");
+    }
+    $icon->click();
+  }
+
+  /**
+   * Closes the licence modal dialog.
+   *
+   * @throws \Exception
+   *   Thrown if the dialog is not open or the x button is not found.
+   *
+   * @Given I close the licence modal dialog
+   */
+  public function closeLicenceModalDialog(): void {
+    $xpath = '//div' . $this->xpathHasClassSelector('licence-comparer__dialog') . '//button[@title="Close"]';
+    $icon = $this->getSession()->getPage()->find('xpath', $xpath);
+    if (empty($icon)) {
+      throw new \Exception("Either the dialog is not available or the 'Close' button could not be located.");
+    }
+    $icon->click();
   }
 
   /**
