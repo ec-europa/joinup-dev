@@ -18,6 +18,7 @@ dependencies:
   - 'joinup:joinup_user'
   - 'joinup:joinup_workflow'
   - 'joinup:owner'
+  - 'joinup:solution'
   - 'joinup:workflow_state_permission'
   - 'og:og'
   - 'rdf_entity:rdf_entity'
