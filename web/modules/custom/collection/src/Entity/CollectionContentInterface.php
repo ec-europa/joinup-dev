@@ -4,12 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\collection\Entity;
 
+use Drupal\joinup_group\Entity\GroupContentInterface;
+
 /**
  * Interface for entities that are collection content.
  *
  * This comprises community content, custom pages, and solutions.
  */
-interface CollectionContentInterface {
+interface CollectionContentInterface extends GroupContentInterface {
 
   /**
    * Returns the collection to which this entity belongs.
