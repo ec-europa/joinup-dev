@@ -1,0 +1,25 @@
+uuid: 78a1254f-ac9a-4919-8e69-57f203305283
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - rdf_entity
+_core:
+  default_config_hash: duUo88aLwAi3Anenpl0D7C2yMh2EYpPx2WA7ZDp8nXY
+id: rdf_entities_collection
+label: 'Rdf entities - collection'
+type: rdf_entity
+pattern: '[rdf_entity:rid:target_id]/[rdf_entity:short_id_or_title]'
+selection_criteria:
+  3685b7f3-9d5a-4be2-b8b9-255f3fbcfaec:
+    id: 'entity_bundle:rdf_entity'
+    bundles:
+      collection: collection
+    negate: false
+    context_mapping:
+      rdf_entity: rdf_entity
+    uuid: 3685b7f3-9d5a-4be2-b8b9-255f3fbcfaec
+selection_logic: and
+weight: -5
+relationships: {  }
