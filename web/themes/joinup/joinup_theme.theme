@@ -1537,29 +1537,29 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
   ];
   $enable_floating_labels = empty($route_name) || !in_array($route_name, $non_floating_form_routes);
 
-  if (!empty($variables['element']['#type'])) {
-    // Array contains form elements, which are displayed with floating label.
-    $floating_label_types = [
-      'email',
-      'entity_autocomplete',
-      'password',
-      'textfield',
-      'url',
-    ];
+  if ($enable_floating_labels) {
+    if (!empty($variables['element']['#type'])) {
+      // Array contains form elements, which are displayed with floating label.
+      $floating_label_types = [
+        'email',
+        'entity_autocomplete',
+        'password',
+        'textfield',
+        'url',
+      ];
 
-    if (in_array($variables['element']['#type'], $floating_label_types)) {
-      if ($hook == 'form_element') {
-        if ($enable_floating_labels) {
+      if (in_array($variables['element']['#type'], $floating_label_types)) {
+        if ($hook == 'form_element') {
           $suggestions[] = 'form_element__floating';
+          
+          // Floating form element with label.
+          if (!empty($variables['element']['#array_parents']) && in_array('field_social_media', $variables['element']['#array_parents'], TRUE)) {
+            $suggestions[] = 'form_element__floating__with_prefix';
+          }
         }
-
-        // Floating form element with label.
-        if (!empty($variables['element']['#array_parents']) && in_array('field_social_media', $variables['element']['#array_parents'], TRUE)) {
-          $suggestions[] = 'form_element__floating__with_prefix';
+        elseif ($hook == 'input') {
+          $suggestions[] = 'input__floating';
         }
-      }
-      elseif ($hook == 'input') {
-        $suggestions[] = 'input__floating';
       }
     }
 

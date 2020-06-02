@@ -220,16 +220,28 @@
 .form__description--checkbox {
   margin-left: 25px;
 }
-.node-form, 
+.node-form,
+.user-form,
 .rdf-entity-form {
+  .form-item-current-pass,
+  .form-item-cas-enabled,
+  .form-item-cas-username,
+  .form-item-mail,
+  .form-item-name {
+    margin-bottom: 25px;
+  }
+
   .form__label:not(.mdl-checkbox__label) {
     font-size: 18px;
     color: #2875cf;
     margin-bottom: 10px;
   }
+
   input[type=text],
   input[type=url],
   input[type=email],
+  input[type=password],
+  input[type=number],
   textarea,
   select {
     height: auto;
@@ -238,12 +250,24 @@
     @include box-sizing(border-box);
     outline: none;
     border: 1px solid #ccc;
-
+    font-size: 16px;
+    font-family: "Helvetica","Arial",sans-serif;
+    width: 100%;
+      
     &:focus {
       box-shadow: 0;
       border: 1px solid #4f93e3;
     }
+    &:disabled {
+      background: #f3f3f3;
+    }
   }
+  input[type=number],
+  textarea,
+  select {
+    width: auto;
+  }
+
   input.form-autocomplete {
     background-position: 99% center;
   }
@@ -258,7 +282,6 @@
       text-align: right;
     }
   }
-  
   .field--type-entity-reference {
     .ief-entity-table {
       border: 1px solid #ccc;
@@ -281,6 +304,21 @@
   }
   .field--type-current-workflow-state {
     margin-top: 25px;
+  }
+
+  div[class*="form-item-field-social"] {
+    @include breakpoint(tablet) {
+      margin-top: 15px;
+      .field-prefix {
+        display: inline-block;
+        width: 29%;
+      }
+      input {
+        float: right;
+        width: 60%;
+        margin-top: -10px;
+      }
+    }
   }
 }
 
