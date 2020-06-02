@@ -91,7 +91,7 @@ class EuplSubContext extends DrupalSubContextBase {
    * @Given I click the info icon of the :spdx licence( table cell)
    */
   public function clickLicenceInfoIcon(string $spdx): void {
-    $xpath = '//td[' . $this->xpathHasClassSelector('licence-comparer__header', FALSE) . ' and contains(., "' . $spdx . '")]//span[' . $this->xpathHasClassSelector('icon--info', FALSE) . ']';
+    $xpath = '//td[@class and contains(concat(" ", normalize-space(@class), " "), " licence-comparer__header ") and contains(., "' . $spdx . '")]//span[@class and contains(concat(" ", normalize-space(@class), " "), " icon--info ")]';
     $icon = $this->getSession()->getPage()->find('xpath', $xpath);
     if (empty($icon)) {
       throw new \Exception("Could not locate a table cell with the text {$spdx}.");
@@ -108,7 +108,7 @@ class EuplSubContext extends DrupalSubContextBase {
    * @Given I close the licence modal dialog
    */
   public function closeLicenceModalDialog(): void {
-    $xpath = '//div' . $this->xpathHasClassSelector('licence-comparer__dialog') . '//button[@title="Close"]';
+    $xpath = '//div[@class and contains(concat(" ", normalize-space(@class), " "), " licence-comparer__dialog ")]//button[@title="Close"]';
     $icon = $this->getSession()->getPage()->find('xpath', $xpath);
     if (empty($icon)) {
       throw new \Exception("Either the dialog is not available or the 'Close' button could not be located.");
