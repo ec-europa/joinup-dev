@@ -25,10 +25,14 @@ Feature: Solution membership overview
       | Glædwine Ruskin     | Glædwine   | Ruskin      | linus.jpeg   | Comptroller                     |
       | Pocahontas Mathieu  | Pocahontas | Mathieu     | blaise.jpg   | Chief Communications Officer    |
       | Callista Wronski    | Callista   | Wronski     | richard.jpg  | Founder                         |
+    And collection:
+      | title | Growing collection |
+      | state | validated          |
     And the following solution:
-      | title       | Growing zone    |
-      | description | Soil and gravel |
-      | state       | validated       |
+      | title       | Growing zone       |
+      | description | Soil and gravel    |
+      | state       | validated          |
+      | collection  | Growing collection |
     And the following solution user memberships:
       | solution     | user                | roles       | state   |
       | Growing zone | Ariadna Astrauskas  | owner       |         |
@@ -58,7 +62,7 @@ Feature: Solution membership overview
     Then I should see the heading "Members"
 
     # Check that clean URLs are being applied to the "members" subpage.
-    And I should be on "/solution/growing-zone/members"
+    And I should be on "/collection/growing-collection/solution/growing-zone/members"
 
     And I should see the following tiles in the correct order:
       | Ariadna Astrauskas |
@@ -107,7 +111,7 @@ Feature: Solution membership overview
     When I fill in "Type something to filter the list" with "buhr"
     And I press "Apply"
     Then I should see the following tiles in the correct order:
-      | Aušra Buhr  |
+      | Aušra Buhr |
 
     # Clicking the user name should lead to the user profile page.
     When I click "Aušra Buhr"

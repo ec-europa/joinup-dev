@@ -14,6 +14,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\asset_release\Entity\AssetRelease;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\SparqlGraphInterface;
@@ -26,6 +27,15 @@ use Drupal\sparql_entity_storage\SparqlGraphInterface;
  */
 function asset_release_entity_type_alter(array &$entity_types) {
   $entity_types['rdf_entity']->setLinkTemplate('solution-releases', '/rdf_entity/{rdf_entity}/releases');
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function asset_release_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['rdf_entity']['asset_release'])) {
+    $bundles['rdf_entity']['asset_release']['class'] = AssetRelease::class;
+  }
 }
 
 /**

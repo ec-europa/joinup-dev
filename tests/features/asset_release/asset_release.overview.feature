@@ -15,7 +15,7 @@ Feature: Asset distribution overview on solution.
     # A solution with no releases or standalone distributions has no button.
     When I go to the homepage of the "Lovely Butterfly" solution
     Then I should not see the link "Download releases"
-    When I go to "/solution/lovely-butterfly/releases"
+    When I go to "/collection/end-of-past/solution/lovely-butterfly/releases"
     Then the response status code should be 404
 
     # The release numbers do not follow the creation date to ensure proper
@@ -40,7 +40,7 @@ Feature: Asset distribution overview on solution.
     And the page should be cacheable
 
     # Check that clean URLs are being applied to the "releases" subpage.
-    And I should be on "/solution/lovely-butterfly/releases"
+    And I should be on "/collection/end-past/solution/lovely-butterfly/releases"
 
     And I should see the heading "Lovely Butterfly" in the Header region
     # The general link "Download releases" should not be shown on the releases
@@ -129,5 +129,5 @@ Feature: Asset distribution overview on solution.
     And I delete the "The Deep Doors" release
     When I go to the homepage of the "Lovely Butterfly" solution
     Then I should not see the link "Download releases"
-    When I go to "/solution/lovely-butterfly/releases"
+    When I go to "/collection/end-past/solution/lovely-butterfly/releases"
     Then the response status code should be 404
