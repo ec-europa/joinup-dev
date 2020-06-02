@@ -644,7 +644,7 @@
     <target
         name="build-dist"
         description="Build a distribution package.">
-        <exec command="./vendor/bin/run dev:compile-scss" checkreturn="true" passthru="true" />
+        <exec command="./vendor/bin/run joinup:compile-scss" checkreturn="true" passthru="true" />
         <phingcall target="setup-drush" />
     </target>
 
@@ -655,7 +655,7 @@
         <phingcall target="setup-php-codesniffer" />
         <phingcall target="setup-phpunit" />
         <phingcall target="setup-drush" />
-        <exec command="./vendor/bin/run dev:compile-scss" checkreturn="true" passthru="true" />
+        <exec command="./vendor/bin/run joinup:compile-scss" checkreturn="true" passthru="true" />
     </target>
 
     <target
