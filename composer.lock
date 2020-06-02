@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d650f5813c76f61016dcbdde3c4c5dba",
+    "content-hash": "34c441f94cb34277468c5ed93e97e029",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -10111,10 +10111,7 @@
             "type": "library",
             "extra": {
                 "enable-patching": true,
-                "composer-exit-on-patch-failure": true,
-                "patches_applied": {
-                    "Provide a command to compile SCSS @see https://github.com/openeuropa/task-runner/pull/129": "resources/patch/task-runner-129.patch"
-                }
+                "composer-exit-on-patch-failure": true
             },
             "autoload": {
                 "psr-4": {
@@ -11068,6 +11065,53 @@
                 "promise"
             ],
             "time": "2016-01-26T13:27:02+00:00"
+        },
+        {
+            "name": "php-task-runner/scss",
+            "version": "dev-initial-implementation",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-task-runner/scss.git",
+                "reference": "899c9a964293d9c0377ad9f1d7dc0ad617f586e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-task-runner/scss/zipball/899c9a964293d9c0377ad9f1d7dc0ad617f586e3",
+                "reference": "899c9a964293d9c0377ad9f1d7dc0ad617f586e3",
+                "shasum": ""
+            },
+            "require": {
+                "consolidation/robo": "^1.4.11",
+                "openeuropa/task-runner": "^1.0.0-beta6",
+                "php": "~7.1",
+                "scssphp/scssphp": "~1.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~7 || ~8 || ~9",
+                "slevomat/coding-standard": "~6",
+                "squizlabs/php_codesniffer": "~3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TaskRunner\\Scss\\": "./src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "EUPL-1.2"
+            ],
+            "authors": [
+                {
+                    "name": "Pieter Frenssen",
+                    "email": "pieter@frenssen.be"
+                }
+            ],
+            "description": "Provides a task runner command to compile SCSS to CSS.",
+            "keywords": [
+                "task-runner"
+            ],
+            "time": "2020-06-02T12:42:00+00:00"
         },
         {
             "name": "phpcompatibility/php-compatibility",
@@ -17936,6 +17980,7 @@
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
         "openeuropa/task-runner": 20,
+        "php-task-runner/scss": 20,
         "semiceu/adms-ap_validator": 20,
         "jcalderonzumba/gastonjs": 20
     },
