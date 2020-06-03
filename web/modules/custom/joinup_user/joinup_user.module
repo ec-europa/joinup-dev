@@ -9,12 +9,14 @@ declare(strict_types = 1);
 
 use Drupal\Component\Render\PlainTextOutput;
 use Drupal\Component\Utility\Xss;
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
+use Drupal\joinup_user\Entity\JoinupUser;
+use Drupal\joinup_user\Entity\JoinupUserInterface;
+use Drupal\joinup_user\JoinupUserViewsData;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\search_api\Query\QueryInterface;
@@ -57,7 +59,7 @@ function joinup_user_user_update(UserInterface $account) {
   $active_form_id = $active_form->getFormId();
   // Only run when either submitting the user edit form, or the bulk operation
   // on admin/people.
-  if (!$active_form_id || !in_array($active_form_id, ['views_form_user_admin_people_page_1', 'user_form'])) {
+  if (!$active_form_id || !in_array($active_form_id, ['views_form_user_admin_people_page', 'user_form'])) {
     return;
   }
 
@@ -148,6 +150,11 @@ function joinup_user_mail_tokens(array &$replacements, array $data, array $optio
  * Implements hook_mail_alter().
  */
 function joinup_user_mail_alter(&$message) {
+  if (isset($message['params']['account']) && $message['params']['account']->isCancelled()) {
+    // Don't send email for a cancelled user account.
+    $message['send'] = FALSE;
+  }
+
   if ($message['key'] !== 'status_canceled') {
     return;
   }
@@ -285,15 +292,23 @@ function joinup_user_form_alter(&$form, FormStateInterface $form_state, $form_id
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
- *
- * Adds a submit callback to redirect to the canonical user page after updating
- * the user profile.
  */
-function joinup_user_form_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // This hook gets called as base form id hook for forms like the user register
-  // one, so we need to double check the form id.
-  if ($form_id === 'user_form') {
-    $form['actions']['submit']['#submit'][] = 'joinup_user_user_form_submit';
+function joinup_user_form_user_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  // This hook gets called as base form ID hook for forms like the user register
+  // one, so we need to double check the form ID.
+  if ($form_id !== 'user_form') {
+    return;
+  }
+
+  // Add a submit callback to redirect to the canonical user page after updating
+  // the user profile.
+  $form['actions']['submit']['#submit'][] = 'joinup_user_user_form_submit';
+
+  /** @var \Drupal\joinup_user\Entity\JoinupUserInterface $account */
+  $account = $form_state->getFormObject()->getEntity();
+  if ($account->isCancelled()) {
+    $form['#disabled'] = TRUE;
+    \Drupal::messenger()->addWarning(t('This user account is cancelled. Edit is disabled.'));
   }
 }
 
@@ -396,28 +411,7 @@ function joinup_user_search_api_query_search_api_field_field_user_content_alter(
  * @see \Drupal\user\Controller\UserController::userTitle()
  */
 function joinup_user_canonical_title(?UserInterface $user = NULL) {
-  return $user ? ['#markup' => $user->get('full_name')->value, '#allowed_tags' => Xss::getHtmlTagList()] : '';
-}
-
-/**
- * Implements hook_entity_base_field_info().
- *
- * Adds a computed field to easily retrieve the full name of a user.
- */
-function joinup_user_entity_base_field_info(EntityTypeInterface $entity_type) {
-  $fields = [];
-
-  if ($entity_type->id() === 'user') {
-    $fields['full_name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Full name'))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('display', FALSE)
-      ->setComputed(TRUE)
-      ->setCardinality(1)
-      ->setClass('\Drupal\joinup_user\UserFullNameFieldItemList');
-  }
-
-  return $fields;
+  return $user ? ['#markup' => $user->getDisplayName(), '#allowed_tags' => Xss::getHtmlTagList()] : '';
 }
 
 /**
@@ -498,12 +492,13 @@ function joinup_user_invalidate_user_cache_tags(OgMembershipInterface $entity) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
- *
- * Disallow access to the cancellation method.
+ * Implements hook_user_cancel_methods_alter().
  */
-function joinup_user_form_user_multiple_cancel_confirm_alter(&$form, FormStateInterface $form_state, $form_id) {
-  joinup_user_form_user_cancel_form_alter($form, $form_state, $form_id);
+function joinup_user_user_cancel_methods_alter(array &$methods): void {
+  $methods['joinup_user_cancel'] = [
+    'title' => t("Cancels the user account"),
+    'description' => t("Cancels the account but keep user's content and authorship."),
+  ];
 }
 
 /**
@@ -511,8 +506,52 @@ function joinup_user_form_user_multiple_cancel_confirm_alter(&$form, FormStateIn
  *
  * Disallow access to the cancellation method.
  */
-function joinup_user_form_user_cancel_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function joinup_user_form_user_multiple_cancel_confirm_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  // Cancelling an account with deletion is permitted in the administrative UI.
   $form['user_cancel_method']['#default_value'] = 'user_cancel_delete';
+  joinup_user_alter_account_cancel_form($form);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Disallow access to the cancellation method.
+ */
+function joinup_user_form_user_cancel_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  joinup_user_alter_account_cancel_form($form);
+
+  if (!isset($form['uid'])) {
+    // If the 'uid' is not set the form cannot be submitted, most probably
+    // because the user is the sole owner of a group and the standard user
+    // cancel form was not loaded.
+    // @see \Drupal\joinup_group\Form\UserCancelForm::buildForm()
+    return;
+  }
+
+  if (\Drupal::currentUser()->id() === $form['uid']['#value']) {
+    $form['description'] = [
+      [
+        '#markup' => t('By cancelling your account all personal account information will be deleted.'),
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ],
+      [
+        '#markup' => t('This action cannot be undone.'),
+        '#prefix' => '<p><strong>',
+        '#suffix' => '</strong></p>',
+      ],
+    ];
+  }
+  $form['user_cancel_method']['#default_value'] = 'joinup_user_cancel';
+}
+
+/**
+ * Alters some user account cancel form elements.
+ *
+ * @param array $form
+ *   The form API render array.
+ */
+function joinup_user_alter_account_cancel_form(array &$form): void {
   $form['user_cancel_method']['#access'] = FALSE;
   $form['user_cancel_confirm']['#access'] = FALSE;
   $form['user_cancel_notify']['#default_value'] = TRUE;
@@ -521,9 +560,33 @@ function joinup_user_form_user_cancel_form_alter(&$form, FormStateInterface $for
 }
 
 /**
+ * Implements hook_user_cancel().
+ */
+function joinup_user_user_cancel(array $edit, JoinupUserInterface $account, string $method): void {
+  if ($method === 'joinup_user_cancel') {
+    // Send the email and do the logging before anonymizing, so that we still
+    // have the field values in place.
+    if (!empty($edit['user_cancel_notify'])) {
+      _user_mail_notify('status_canceled', $account);
+    }
+    \Drupal::messenger()->addStatus(t('%name has been deleted.', ['%name' => $account->getDisplayName()]));
+    \Drupal::logger('user')->notice('Deleted user: %name %email.', ['%name' => $account->getAccountName(), '%email' => '<' . $account->getEmail() . '>']);
+
+    // Actually cancel the user account.
+    $account->cancel()->save();
+  }
+}
+
+/**
  * Implements hook_user_format_name_alter().
  *
  * Replaces the username with a concatenation of the user's first and last name.
+ * If either the first name or last name is known then this will be returned. If
+ * neither are known this will fall back to the username.
+ *
+ * The first name and last name are both required during user registration so in
+ * normal usage the combination of first name and last name will always be
+ * returned. Incomplete data may be present in migrated legacy accounts.
  */
 function joinup_user_user_format_name_alter(&$name, $account) {
   // Skip if the user is anonymous.
@@ -531,33 +594,6 @@ function joinup_user_user_format_name_alter(&$name, $account) {
     return;
   }
 
-  $name = joinup_user_get_display_name($account);
-}
-
-/**
- * Returns a string with user's name to display in the user interface.
- *
- * This will return the first name and last name if both are known. If either
- * the first name or last name is known then this will be returned. If neither
- * are known this will fall back to the username.
- *
- * The first name and last name are both required during user registration so in
- * normal usage the combination of first name and last name will always be
- * returned. Incomplete data may be present in migrated legacy accounts.
- *
- * This is an internal function used by joinup_user_user_format_name_alter() and
- * it should not be used directly. If you need the user's full name, given the
- * $account user account entity, just use $account->getDisplayName().
- *
- * @param \Drupal\Core\Session\AccountInterface $account
- *   The user object.
- *
- * @return string
- *   The display name.
- *
- * @see joinup_user_user_format_name_alter()
- */
-function joinup_user_get_display_name(AccountInterface $account) {
   // Load the full user object if needed.
   if (!$account instanceof UserInterface) {
     $account = User::load($account->id());
@@ -576,6 +612,94 @@ function joinup_user_get_display_name(AccountInterface $account) {
   if (!empty($name_components)) {
     $name = implode(' ', $name_components);
   }
+}
 
-  return $name;
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Changes the label text on the login form submit button to "Sign in".
+ */
+function joinup_user_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  $form['actions']['submit']['#value'] = t('Sign in');
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ *
+ * Change instances of 'Log in/out' to 'Sign in/out'.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3659
+ */
+function joinup_user_menu_links_discovered_alter(&$links) {
+  if (isset($links['user.logout'])) {
+    $links['user.logout']['class'] = '\Drupal\joinup_user\Plugin\Menu\LoginLogoutMenuLink';
+  }
+}
+
+/**
+ * Implements hook_local_tasks_alter().
+ *
+ * Change instances of 'Log in' to 'Sign in'.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3659
+ */
+function joinup_user_local_tasks_alter(&$local_tasks) {
+  if (isset($local_tasks['user.login'])) {
+    $local_tasks['user.login']['title'] = t('Sign in');
+  }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Adds a destination parameter to the 'Sign in' menu item on every page towards
+ * the current page.
+ */
+function joinup_user_preprocess_page(&$variables) {
+  $variables['#attached']['library'][] = 'joinup_user/sign_in_destination';
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_user_entity_type_alter(array &$entity_types) {
+  /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $entity_type */
+  $entity_type = $entity_types['user'];
+  $entity_type
+    ->setClass(JoinupUser::class)
+    ->setHandlerClass('views_data', JoinupUserViewsData::class);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Removed the check boxes from the cancelled users in the administrative UI.
+ */
+function joinup_user_form_views_form_user_admin_people_page_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if (empty($form['user_bulk_form'])) {
+    return;
+  }
+
+  $user_storage = \Drupal::entityTypeManager()->getStorage('user');
+
+  // Unfortunately we cannot access BulkForm::loadEntityFromBulkFormKey(), so we
+  // fork a copy tailored for the 'user' entity type.
+  // @see \Drupal\views\Plugin\views\field\BulkForm::loadEntityFromBulkFormKey()
+  $get_account = function (string $bulk_form_key) use ($user_storage): JoinupUserInterface {
+    $key = base64_decode($bulk_form_key);
+    $key_parts = json_decode($key);
+    // The first item is always the user ID.
+    $uid = array_pop($key_parts);
+    /** @var \Drupal\joinup_user\Entity\JoinupUserInterface $account */
+    $account = $user_storage->load($uid);
+    return $account;
+  };
+
+  foreach (Element::children($form['user_bulk_form']) as $delta) {
+    $account = $get_account($form['user_bulk_form'][$delta]['#return_value']);
+    if ($account->isCancelled()) {
+      // Cancelled users cannot be deleted, not even from the admin UI.
+      unset($form['user_bulk_form'][$delta]);
+    }
+  }
 }

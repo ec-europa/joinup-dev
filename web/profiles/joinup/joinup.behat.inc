@@ -1952,6 +1952,26 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
+   * Asserts that a certain link points to the given URL.
+   *
+   * @param string $title
+   *   The link title.
+   * @param string $link
+   *   The link href attribute link.
+   *
+   * @throws \Exception
+   *   Thrown when the link is not in the page or the target href is not exactly
+   *   the expected one.
+   *
+   * @Then the :title link should point to :link
+   */
+  public function assertLinkPointsToUrl(string $title, string $link): void {
+    $link_element = $this->getSession()->getPage()->findLink($title);
+    $href = $link_element->getAttribute('href');
+    Assert::assertEquals($href, $link);
+  }
+
+  /**
    * Forces a cleanup to run for og queue worker.
    *
    * Og enqueues items to be deleted instead of deleting them directly in order
@@ -2366,9 +2386,7 @@ JS;
     $found_tags_array = explode(';', $found_tags);
     $invalid_tags = array_intersect($format_tags, $found_tags_array);
     if (!empty($invalid_tags)) {
-      throw new \Exception($this->t('The following elements were found in the format list but should not: @found.', [
-        '@found' => implode(', ', $invalid_tags),
-      ]));
+      throw new \Exception(sprintf('The following elements were found in the format list but should not: %s.', implode(', ', $invalid_tags)));
     }
   }
 

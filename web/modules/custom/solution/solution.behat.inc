@@ -131,9 +131,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | title        | description            | state                                                              | documentation | closed | creation date    | content creation | featured | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
-   * | Foo solution | This is a foo solution | draft|proposed|validated|deletion request|needs update|blacklisted | text.pdf      | yes    | 28-01-1995 12:05 | no               | yes      | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
-   * | Bar solution | This is a bar solution | validated                                                          | text.pdf      | no     | 28-01-1995 12:06 | yes              | no       | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
+   * | title        | description            | state                                                              | collection      | documentation | closed | creation date    | content creation | featured | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
+   * | Foo solution | This is a foo solution | draft|proposed|validated|deletion request|needs update|blacklisted | Some collection | text.pdf      | yes    | 28-01-1995 12:05 | no               | yes      | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
+   * | Bar solution | This is a bar solution | validated                                                          |                 | text.pdf      | no     | 28-01-1995 12:06 | yes              | no       | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
    * @codingStandardsIgnoreEnd
    *
    * Fields title, description, state and content creation are mandatory.
@@ -527,6 +527,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'author' => 'uid',
       'uri' => 'id',
       'title' => 'label',
+      'short ID' => 'field_short_id',
       'affiliations requests' => 'field_is_affiliations_requests',
       'banner' => 'field_is_banner',
       'contact information' => 'field_is_contact_information',

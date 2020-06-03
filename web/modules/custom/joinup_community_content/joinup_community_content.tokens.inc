@@ -9,7 +9,6 @@ declare(strict_types = 1);
 
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Url;
-use Drupal\joinup_group\JoinupGroupHelper;
 
 /**
  * Implements hook_token_info_alter().
@@ -18,12 +17,6 @@ function joinup_community_content_token_info_alter(&$info) {
   $info['tokens']['node']['diff-url-latest'] = [
     'name' => t('Diff from previous revision'),
     'description' => t('A link to the revision comparison page between the last two revisions of the content.'),
-  ];
-
-  // Token to generate a path tracking back to the parent collection.
-  $info['tokens']['node']['path-to-community-content'] = [
-    'name' => t('Path to community content'),
-    'description' => t('An aliased URL containing all parents of the community content.'),
   ];
 }
 
@@ -55,22 +48,6 @@ function joinup_community_content_tokens($type, array $tokens, array $data = [],
               'filter' => \Drupal::service('plugin.manager.diff.layout')->getDefaultLayout(),
             ])->setAbsolute()->toString();
           }
-          break;
-
-        case 'path-to-community-content':
-          $path_parts = [];
-
-          if ($parent = JoinupGroupHelper::getGroup($node)) {
-            $bubbleable_metadata->addCacheableDependency($parent);
-            /** @var \Drupal\rdf_entity\RdfInterface $collection */
-            if ($parent->bundle() === 'solution' && $collection = $parent->collection->first()->entity) {
-              $bubbleable_metadata->addCacheableDependency($collection);
-              $path_parts[] = $collection->toUrl()->toString();
-            }
-            $path_parts[] = $parent->toUrl()->toString();
-          }
-
-          $replacements[$original] = implode('', $path_parts);
           break;
 
       }

@@ -9,7 +9,7 @@ declare(strict_types = 1);
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Unicode;
-use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -1087,21 +1087,24 @@ function joinup_theme_preprocess_comment(&$variables) {
   $user = $variables['user_picture']['#user'];
   $photo_target = $user->get('field_user_photo')->getValue();
 
+  $variables['author'] = [
+    '#theme' => 'username',
+    '#account' => $user,
+  ];
+
+  $cache_metadata = (new CacheableMetadata())->addCacheableDependency($user);
+  $cache_metadata->applyTo($variables['author']);
+
   if ($photo_target) {
     $photo_target = $photo_target[0]['target_id'];
     /** @var \Drupal\file\Entity\File $file */
     if ($file = File::load($photo_target)) {
       $uri = $file->getFileUri();
       $url = ImageStyle::load('profile_icon_big')->buildUrl($uri);
-      $variables['profile_icon'] = [
-        '#markup' => $url,
-        '#cache' => [
-          'tags' => Cache::mergeTags($user->getCacheTags(), $user->getEntityType()
-            ->getListCacheTags()),
-          'contexts' => $user->getCacheContexts(),
-          'max-age' => $user->getCacheMaxAge(),
-        ],
-      ];
+      $variables['profile_icon'] = ['#markup' => $url];
+      $cache_metadata
+        ->addCacheTags($user->getEntityType()->getListCacheTags())
+        ->applyTo($variables['profile_icon']);
     }
   }
 }
@@ -1157,11 +1160,24 @@ function joinup_theme_preprocess_file_link(&$variables) {
  * Implements hook_preprocess_user().
  */
 function joinup_theme_preprocess_user(&$variables) {
-  $variables['full_name'] = $variables['user']->get('full_name')->value;
+  $variables['full_name'] = $variables['user']->getDisplayName();
 
   // Truncate business title.
   $business_title = $variables['user']->get('field_user_business_title')->value;
   $variables['short_business_title'] = !empty($business_title) ? substr($business_title, 0, 30) : '';
+}
+
+/**
+ * Implements hook_preprocess_user__inline().
+ */
+function joinup_theme_preprocess_user__inline(array &$variables): void {
+  $variables['full_name'] = [
+    '#theme' => 'username',
+    '#account' => $variables['user'],
+    '#attributes' => [
+      'class' => ['value', 'gray'],
+    ],
+  ];
 }
 
 /**
@@ -1171,7 +1187,10 @@ function joinup_theme_preprocess_user__group_header(&$variables) {
   // Create customizable 'member for' field.
   // It creates a timespan without label and with lower granularity.
   $variables['member_for'] = \Drupal::service('date.formatter')->formatTimeDiffSince($variables['user']->getCreatedTime(), ['granularity' => 1]);
-  $variables['full_name'] = $variables['user']->get('full_name')->value;
+  $variables['full_name'] = $variables['user']->getDisplayName();
+  $variables['field_user_photo_url'] = !empty($variables['content']['field_user_photo'][0]['#item']->entity->uri->value) ?
+    file_create_url($variables['content']['field_user_photo'][0]['#item']->entity->uri->value)
+    : '';
 }
 
 /**

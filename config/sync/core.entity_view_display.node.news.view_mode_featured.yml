@@ -21,8 +21,8 @@ dependencies:
     - field.field.node.news.og_audience
     - node.type.news
   module:
-    - joinup
     - smart_trim
+    - template_suggestion
     - user
 _core:
   default_config_hash: zB_g9fFRAkNl7WVU2yHNDomDoXIgABpLs-e30eu_uOw
@@ -48,7 +48,7 @@ content:
       wrap_output: false
       wrap_class: trimmed
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
   field_keywords:
@@ -59,7 +59,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: comma_separated
 hidden:
   field_attachment: true

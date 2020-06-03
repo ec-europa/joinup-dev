@@ -16,6 +16,7 @@ dependencies:
     - node.type.discussion
   module:
     - smart_trim
+    - template_suggestion
     - user
 id: node.discussion.view_mode_tile
 targetEntityType: node
@@ -39,7 +40,7 @@ content:
       wrap_output: false
       more_link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: smart_trim
     region: content
@@ -51,7 +52,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: comma_separated
   field_policy_domain:
     type: entity_reference_label
@@ -61,7 +62,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: comma_separated
 hidden:
   field_attachment: true

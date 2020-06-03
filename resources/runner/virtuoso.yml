@@ -1,0 +1,72 @@
+# Virtuoso configs and commands.
+
+virtuoso:
+  bin: /opt/virtuoso-7/bin/virtuoso-t
+  root: ${runner.working_dir}/vendor/ec-europa/virtuoso
+  db: ${virtuoso.root}/db
+  backup_prefix: JOINUP_FULL_DUMP_
+
+isql:
+  bin: /usr/bin/isql-vt
+
+commands:
+
+  # Downloads and unpacks the Virtuoso snapshot.
+  virtuoso:download-snapshot:
+    # Cleanup any stale data.
+    - task: remove
+      file: ${toolkit.tmp_folder}/virtuoso.tar
+    # Download and unpack the archive.
+    - task: run
+      command: toolkit:download-dump
+      options:
+        asda-url: ${env.ASDA_URL}/virtuoso
+        dumpfile: ${toolkit.tmp_folder}/virtuoso.tar
+    - task: remove
+      file: ${toolkit.tmp_folder}/virtuoso
+    # Unpack and organize.
+    - task: exec
+      command: tar
+      arguments:
+        - xvf
+        - ${toolkit.tmp_folder}/virtuoso.tar
+      options:
+        directory: ${toolkit.tmp_folder}
+    - task: rename
+      from: ${toolkit.tmp_folder}/virtuoso_dump
+      to: ${toolkit.tmp_folder}/virtuoso
+    # Cleanup.
+    - task: remove
+      file: ${toolkit.tmp_folder}/virtuoso.tar
+
+  # Restores the Virtuoso database from a snapshot.
+  virtuoso:restore:
+    - task: run
+      command: virtuoso:stop
+    - task: run
+      command: virtuoso:setup
+    - task: exec
+      command: ${virtuoso.bin} +configfile ${virtuoso.db}/virtuoso.ini +restore-backup ${virtuoso.backup_prefix}
+      dir: ${toolkit.tmp_folder}/virtuoso
+    - task: run
+      command: virtuoso:start
+
+  # Setups an empty Virtuoso database.
+  virtuoso:setup:
+    - task: remove
+      file: ${virtuoso.db}
+    - task: mkdir
+      dir: ${virtuoso.db}
+    - task: touch
+      file: ${virtuoso.db}/.gitkeep
+    - task: process
+      source: ${virtuoso.root}/virtuoso.ini.template
+      destination: ${virtuoso.db}/virtuoso.ini
+
+  # Starts the Virtuoso server.
+  virtuoso:start:
+    - test -f ${virtuoso.root}/db/virtuoso.lck || ${virtuoso.bin} +configfile ${virtuoso.db}/virtuoso.ini +wait
+
+  # Stops the Virtuoso server.
+  virtuoso:stop:
+    - echo "shutdown();" | ${isql.bin} ${env.SPARQL_HOST} ${env.SPARQL_USER} ${env.SPARQL_PASSWORD} || true

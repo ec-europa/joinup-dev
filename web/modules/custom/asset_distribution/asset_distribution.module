@@ -12,11 +12,21 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\asset_distribution\DistributionParentFieldItemList;
+use Drupal\asset_distribution\Entity\AssetDistribution;
 use Drupal\file_url\FileUrlHandler;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function asset_distribution_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['rdf_entity']['asset_distribution'])) {
+    $bundles['rdf_entity']['asset_distribution']['class'] = AssetDistribution::class;
+  }
+}
 
 /**
  * Implements hook_entity_bundle_field_info().

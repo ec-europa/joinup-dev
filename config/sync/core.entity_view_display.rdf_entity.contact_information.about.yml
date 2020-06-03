@@ -10,8 +10,8 @@ dependencies:
     - field.field.rdf_entity.contact_information.field_ci_webpage
     - rdf_entity.rdfentity.contact_information
   module:
-    - joinup
     - link
+    - template_suggestion
     - user
 _core:
   default_config_hash: gkCgApcsS7igYwrsuIC6lLWt_k2YWMFEVo2GikHpKig
@@ -25,7 +25,7 @@ content:
     label: above
     settings: {  }
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
     type: email_mailto
     region: content
@@ -36,7 +36,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
     region: content
   field_ci_webpage:
@@ -49,7 +49,7 @@ content:
       url_plain: false
       rel: '0'
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
     type: link
     region: content

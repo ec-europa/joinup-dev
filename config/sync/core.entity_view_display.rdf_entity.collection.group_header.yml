@@ -17,8 +17,10 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
+    - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_short_id
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
@@ -27,8 +29,8 @@ dependencies:
     - rdf_entity.rdfentity.collection
   module:
     - image
-    - joinup
     - joinup_core
+    - template_suggestion
     - user
 id: rdf_entity.collection.group_header
 targetEntityType: rdf_entity
@@ -51,7 +53,7 @@ content:
       image_style: image_style_collection_logo
       image_link: ''
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
   join_collection:
@@ -66,7 +68,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
   last_update:
@@ -108,8 +110,10 @@ hidden:
   field_ar_owner: true
   field_ar_state: true
   field_collection_content: true
+  field_keywords: true
   field_newsletter: true
   field_policy_domain: true
+  field_short_id: true
   field_site_featured: true
   field_site_pinned: true
   field_spatial_coverage: true

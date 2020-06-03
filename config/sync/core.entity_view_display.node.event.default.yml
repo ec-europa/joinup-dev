@@ -33,10 +33,9 @@ dependencies:
     - comment
     - file
     - image
-    - joinup
-    - joinup_core
     - link
     - oe_webtools_maps
+    - template_suggestion
     - text
     - user
 id: node.event.default
@@ -59,7 +58,7 @@ content:
     settings:
       use_description_as_link_text: true
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: with_label
   field_comments:
     weight: 9
@@ -75,7 +74,7 @@ content:
     label: above
     settings: {  }
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
     type: text_default
     region: content
@@ -84,7 +83,7 @@ content:
     label: above
     settings: {  }
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
     type: basic_string
     region: content
@@ -95,7 +94,7 @@ content:
       show_marker: true
       zoom_level: 16
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: oe_webtools_maps_map
     region: content
@@ -110,7 +109,7 @@ content:
       month_diff_format: d/m
       year_diff_format: d/m/Y
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: daterange_condensed
     region: content
@@ -145,7 +144,7 @@ content:
       rel: '0'
       target: '0'
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
     type: link
     region: content
@@ -154,7 +153,7 @@ content:
     label: above
     settings: {  }
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
     type: basic_string
     region: content
@@ -167,7 +166,7 @@ content:
       view_mode: view_mode_tile
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: entity_reference__listing_tile
   links:
     weight: 0
@@ -185,7 +184,7 @@ content:
       rel: '0'
       target: '0'
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: link
   share_link:

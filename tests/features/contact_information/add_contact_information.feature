@@ -9,6 +9,13 @@ Feature: Creation of contact information
     And I go to the propose collection form
     # Check that the help text for the website field is visible.
     Then I should see the description "This must be an external URL such as http://example.com." for the "Website URL" field
+
+    When I press "Create contact information"
+    Then I should see the following error messages:
+      | error messages                    |
+      | Name field is required.           |
+      | E-mail address field is required. |
+
     When I fill in the following:
       | E-mail | foo@bar                     |
       | Name   | Contact information example |

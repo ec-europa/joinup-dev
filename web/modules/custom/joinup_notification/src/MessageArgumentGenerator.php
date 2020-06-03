@@ -39,6 +39,7 @@ class MessageArgumentGenerator {
 
     // Default to the current user.
     if (empty($actor)) {
+      /** @var \Drupal\user\UserInterface $actor */
       $actor = User::load(\Drupal::currentUser()->id());
     }
 
@@ -62,7 +63,7 @@ class MessageArgumentGenerator {
       $arguments['@actor:full_name'] = 'The Joinup Support Team';
     }
     elseif (!$actor->isAnonymous()) {
-      $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ? $actor_first_name . ' ' . $actor_family_name : $actor->get('full_name')->value;
+      $arguments['@actor:full_name'] = $actor->getDisplayName();
     }
 
     return $arguments;
