@@ -21,12 +21,12 @@
 /web/sites/simpletest/
 
 # Ignore environment specific settings
+/.env
 /build.common.xml
 /build.local.xml
 /build.properties.local
 /drush/drush.yml
 /grumphp.yml
-/local.env
 /phpcs.xml
 /phpunit.xml
 /runner.yml

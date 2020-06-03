@@ -93,6 +93,7 @@
         "scssphp/scssphp": "^1.0",
         "semiceu/adms-ap_validator": "dev-master",
         "typhonius/behattask": "1.0",
+        "vlucas/phpdotenv": "^4.1",
         "webflo/drupal-finder": "~1.2",
         "webmozart/path-util": "~2.3",
         "zaporylie/composer-drupal-optimizations": "^1.1"
@@ -148,9 +149,6 @@
         }
     },
     "autoload": {
-        "psr-4": {
-            "Joinup\\": "src"
-        },
         "classmap": [
             "web/modules/contrib/error_page/src/ErrorPageErrorHandler.php",
             "web/modules/contrib/sparql_entity_storage/src/Database/Driver/sparql/ConnectionInterface.php",
@@ -189,7 +187,13 @@
             "web/modules/custom/rdf_entity_provenance/rdf_entity_provenance.behat.inc",
             "web/modules/custom/solution/solution.behat.inc",
             "web/profiles/joinup/joinup.behat.inc"
-        ]
+        ],
+        "files": [
+            "src/Composer/load.environment.php"
+        ],
+        "psr-4": {
+            "Joinup\\": "src"
+        }
     },
     "autoload-dev": {
         "psr-4": {
