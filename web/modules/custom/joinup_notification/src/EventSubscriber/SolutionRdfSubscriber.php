@@ -461,9 +461,8 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    */
   protected function generateArguments(EntityInterface $entity): array {
     $arguments = parent::generateArguments($entity);
+    /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = $arguments['@actor:field_user_first_name'];
-    $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
     $arguments['@transition:motivation'] = $motivation;
 
@@ -481,7 +480,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
           $arguments['@actor:role'] = $this->t('Facilitator');
         }
       }
-      $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
+      $arguments['@actor:full_name'] = $actor->getDisplayName();
     }
 
     // For deletion requests, the titles of the affiliated collections are

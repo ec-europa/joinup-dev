@@ -1,0 +1,88 @@
+{#
+/**
+ * @file
+ * Theme override to display a solution in a digest message.
+ *
+ * This reuses the theming of the community content in digest messages, hence
+ * the abundance of classes prefixed with "node--".
+ *
+ * @see template_preprocess_node()
+ *
+ */
+#}
+{% if content.field_news_logo|render|striptags|trim %}
+  {% set image_url = site_url ~ content.field_news_logo|render|striptags|trim %}
+{% elseif content.field_event_logo|render|striptags|trim %}
+  {% set image_url = site_url ~ content.field_event_logo|render|striptags|trim %}
+{% else %}
+  {% set image_url = site_url ~ '/' ~ directory ~ '/images/digest-message/' ~ rdf_entity.bundle ~ '_icon.png'%}
+{% endif %}
+
+{% if content.field_document_publication_date|render %}
+  {% set publication_date = content.field_document_publication_date|render %}
+{% elseif content.field_event_date|render %}
+  {% set publication_date = content.field_event_date|render %}
+{% else %}
+  {% set publication_date = rdf_entity.getCreatedTime()|format_date('date_only') %}
+{% endif %}
+
+{% if content.field_short_title|render %}
+  {% set solution_title = content.field_short_title|render %}
+{% else %}
+  {% set solution_title = label %}
+{% endif %}
+<!-- NODE-->
+<tr>
+  <td align="left" valign="top" bgcolor="#E9EDEE" class="node--container"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="node">
+      <tbody>
+      <tr>
+        <td align="left" valign="top" class="node--date"><span>{{ publication_date }}</span></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top" class="node--separator-small">&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="left" valign="top" class="node--title"><a href="{{ url }}">{{ solution_title }}</a></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top" class="node--separator">&nbsp;</td>
+      </tr>
+
+      <tr>
+        <td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+              {% if image_url %}
+                <td width="200" align="left" valign="top" class="node--img hidden"><a href="{{ url }}"><img src="{{ image_url }}" width="200" height="200" alt=""/></a></td>
+                <td width="20" align="left" valign="top" class="hidden">&nbsp;</td>
+              {% endif %}
+              <td align="left" valign="top">{{ content.field_is_description }}</td>
+            </tr>
+            </tbody>
+          </table></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top" class="node--separator">&nbsp;</td>
+      </tr>
+
+      <tr>
+        <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="node--end-separator">
+            <tbody>
+            <tr>
+              <td width="35%" align="left" valign="top" class="hidden">&nbsp;</td>
+              <td align="left" valign="top" class="node--button-container"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                  <tbody>
+                  <tr>
+                    <td align="center" valign="middle" class="node--button-link"><a href="{{ url }}">{{ 'Read more'|t }}</a></td>
+                  </tr>
+                  </tbody>
+                </table></td>
+              <td width="35%" align="left" valign="top" class="hidden">&nbsp;</td>
+            </tr>
+            </tbody>
+          </table></td>
+      </tr>
+      </tbody>
+    </table></td>
+</tr>
+<!-- NODE END-->

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\rdf_schema_field_validation\Kernel;
 
-use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
+use Drupal\Tests\joinup_test\Kernel\JoinupKernelTestBase;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 use EasyRdf\Graph;
 

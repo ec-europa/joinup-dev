@@ -51,10 +51,17 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
+    $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
 
-    $this->setUpSparql();
     $this->installConfig([
       'language',
       'og',

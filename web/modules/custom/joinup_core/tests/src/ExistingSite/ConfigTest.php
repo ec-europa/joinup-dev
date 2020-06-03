@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_core\ExistingSite;
 
+use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
 use Drush\TestTraits\DrushTestTrait;
 
 /**
@@ -30,7 +31,7 @@ class ConfigTest extends JoinupExistingSiteTestBase {
     // sending emails outside and catch messages for test assertion purpose. As
     // this setup creates a difference between the active and the sync store, we
     // restore the active store mail configuration for the purpose of this test.
-    // @see \Drupal\Tests\joinup_core\ExistingSite\JoinupExistingSiteTestBase::setUp()
+    // @see \Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase::setUp()
     $this->restoreMailSettings();
   }
 
