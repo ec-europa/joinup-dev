@@ -1,0 +1,10 @@
+uuid: cfdebe53-3c55-4d28-9de1-6fdf35dc3b2a
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: taxonomy_term.expansion_panel
+label: 'Expansion panel'
+targetEntityType: taxonomy_term
+cache: true

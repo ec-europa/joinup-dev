@@ -1,0 +1,36 @@
+uuid: 2eb504d4-eb74-4a62-8d2b-b8ddc8651804
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.expansion_panel
+    - field.field.taxonomy_term.eira.field_taxonomy_deprecated
+    - field.field.taxonomy_term.eira.field_taxonomy_related_term
+    - field.field.taxonomy_term.eira.field_taxonomy_replaces
+    - taxonomy.vocabulary.eira
+  module:
+    - text
+id: taxonomy_term.eira.expansion_panel
+targetEntityType: taxonomy_term
+bundle: eira
+mode: expansion_panel
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_taxonomy_related_term:
+    type: entity_reference_label
+    weight: 1
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+hidden:
+  field_taxonomy_deprecated: true
+  field_taxonomy_replaces: true
+  langcode: true
