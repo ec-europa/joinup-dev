@@ -1,7 +1,6 @@
 # Development configs and commands
 
 commands:
-
   # Downloads all backends backups.
   dev:download-databases:
     - { task: "run", command: "mysql:download-dump" }

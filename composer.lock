@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f9317acb1cbedb6dc32c2030d4140f8",
+    "content-hash": "716794dd931f825dec820cbfed95918d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6204,6 +6204,9 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-3.x": "3.x-dev"
+                },
                 "drupal": {
                     "version": "8.x-3.0-alpha5",
                     "datestamp": "1559916365",
@@ -7505,8 +7508,20 @@
             ],
             "authors": [
                 {
+                    "name": "AdamPS",
+                    "homepage": "https://www.drupal.org/user/2650563"
+                },
+                {
+                    "name": "Anybody",
+                    "homepage": "https://www.drupal.org/user/291091"
+                },
+                {
                     "name": "B-Prod",
                     "homepage": "https://www.drupal.org/user/407852"
+                },
+                {
+                    "name": "geek-merlin",
+                    "homepage": "https://www.drupal.org/user/229048"
                 },
                 {
                     "name": "sbrattla",
@@ -11067,6 +11082,53 @@
             "time": "2016-01-26T13:27:02+00:00"
         },
         {
+            "name": "php-task-runner/scss",
+            "version": "dev-initial-implementation",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-task-runner/scss.git",
+                "reference": "899c9a964293d9c0377ad9f1d7dc0ad617f586e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-task-runner/scss/zipball/899c9a964293d9c0377ad9f1d7dc0ad617f586e3",
+                "reference": "899c9a964293d9c0377ad9f1d7dc0ad617f586e3",
+                "shasum": ""
+            },
+            "require": {
+                "consolidation/robo": "^1.4.11",
+                "openeuropa/task-runner": "^1.0.0-beta6",
+                "php": "~7.1",
+                "scssphp/scssphp": "~1.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~7 || ~8 || ~9",
+                "slevomat/coding-standard": "~6",
+                "squizlabs/php_codesniffer": "~3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TaskRunner\\Scss\\": "./src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "EUPL-1.2"
+            ],
+            "authors": [
+                {
+                    "name": "Pieter Frenssen",
+                    "email": "pieter@frenssen.be"
+                }
+            ],
+            "description": "Provides a task runner command to compile SCSS to CSS.",
+            "keywords": [
+                "task-runner"
+            ],
+            "time": "2020-06-02T12:42:00+00:00"
+        },
+        {
             "name": "phpcompatibility/php-compatibility",
             "version": "9.3.5",
             "source": {
@@ -11894,7 +11956,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-02-13T14:54:04+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -18062,6 +18124,7 @@
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
         "openeuropa/task-runner": 20,
+        "php-task-runner/scss": 20,
         "semiceu/adms-ap_validator": 20,
         "jcalderonzumba/gastonjs": 20
     },

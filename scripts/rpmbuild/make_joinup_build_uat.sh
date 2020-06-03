@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script will build an RPM package intended for deploying on production.
+# This script will build an RPM package intended for deploying on UAT.
 
 # Define paths.
 if [ -z ${COMPOSER_PATH} ]; then
@@ -34,7 +34,7 @@ mkdir -p ${JOINUP_DIR} || exit 1
 # Build the site.
 sudo ${COMPOSER_PATH} self-update || exit 1
 COMPOSER_DISCARD_CHANGES=true ${COMPOSER_PATH} install --no-interaction --prefer-dist || exit 1
-./vendor/bin/phing compile-scss || exit 1
+./vendor/bin/run joinup:compile-scss || exit 1
 ./vendor/bin/phing setup-drush || exit 1
 
 
