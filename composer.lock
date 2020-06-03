@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b4a979345a466869c7e093277e0fc15e",
+    "content-hash": "4f99994840d77f42b39f2f5da8150d61",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -11091,16 +11091,16 @@
         },
         {
             "name": "php-task-runner/scss",
-            "version": "dev-initial-implementation",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-task-runner/scss.git",
-                "reference": "31eb898a837a545ec98910ba78991bf78e2d01bb"
+                "reference": "7c9b72feb504ab52246ff653edfa89b09964252e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-task-runner/scss/zipball/31eb898a837a545ec98910ba78991bf78e2d01bb",
-                "reference": "31eb898a837a545ec98910ba78991bf78e2d01bb",
+                "url": "https://api.github.com/repos/php-task-runner/scss/zipball/7c9b72feb504ab52246ff653edfa89b09964252e",
+                "reference": "7c9b72feb504ab52246ff653edfa89b09964252e",
                 "shasum": ""
             },
             "require": {
@@ -11134,7 +11134,7 @@
             "keywords": [
                 "task-runner"
             ],
-            "time": "2020-06-03T05:32:11+00:00"
+            "time": "2020-06-03T05:35:49+00:00"
         },
         {
             "name": "phpcompatibility/php-compatibility",
@@ -18224,7 +18224,6 @@
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
         "openeuropa/task-runner": 20,
-        "php-task-runner/scss": 20,
         "semiceu/adms-ap_validator": 20,
         "jcalderonzumba/gastonjs": 20
     },
