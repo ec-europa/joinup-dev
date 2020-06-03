@@ -17,7 +17,6 @@ use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\Entity\Rdf;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
@@ -33,7 +32,6 @@ class EuplSubContext extends DrupalSubContextBase {
   use EntityTrait;
   use MaterialDesignTrait;
   use RdfEntityTrait;
-  use UtilityTrait;
 
   /**
    * Creates the standard 'EUPL' collection and several dependencies.
