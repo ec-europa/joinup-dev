@@ -1,0 +1,6 @@
+name: Expansion Panel
+type: module
+description: Provides a field formatter to display an entity reference as a Material Design 'expansion panel'.
+package: Custom
+core: 8.x
+core_version_requirement: ^8 || ^9

@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the Expansion Panel module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_theme().
+ */
+function expansion_panel_theme($existing, $type, $theme, $path): array {
+  return [
+    'expansion_panel_group' => [
+      'variables' => [
+        'title' => NULL,
+        'children' => NULL,
+      ],
+    ],
+    'expansion_panel' => ['variables' => ['header' => NULL, 'content' => NULL]],
+  ];
+}
