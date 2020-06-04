@@ -321,6 +321,11 @@ function joinup_theme_preprocess_html(&$variables) {
     $variables['entity_type'] = $entity->getEntityTypeId();
     $variables['bundle'] = $entity->bundle();
   }
+
+  // Set a variable that identifies the search page.
+  if ($route_name == 'view.search.page_1') {
+    $variables['is_search_page'] = TRUE;
+  }
 }
 
 /**
@@ -1512,27 +1517,54 @@ function joinup_theme_theme_suggestions_details_alter(array &$suggestions, array
  * Implements hook_theme_suggestions_alter().
  */
 function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
-  if (!empty($variables['element']['#type'])) {
-    // Array contains form elements, which are displayed with floating label.
-    $floating_label_types = [
-      'email',
-      'entity_autocomplete',
-      'password',
-      'textfield',
-      'url',
-    ];
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
 
-    if (in_array($variables['element']['#type'], $floating_label_types)) {
-      if ($hook == 'form_element') {
-        $suggestions[] = 'form_element__floating';
+  // By default Material Design moves field labels inside the input fields as
+  // placeholders and then moves them back above the fields as soon as something
+  // is typed in them. This behaviour is not wanted for our big forms since they
+  // should have nicely aligned and uniformly styled field labels. We will
+  // disable the "floating label" behaviour in these forms:
+  $non_floating_form_routes = [
+    'collection.propose_form',
+    'custom_page.group_custom_page.add',
+    'entity.node.edit_form',
+    'entity.rdf_entity.edit_form',
+    'entity.user.edit_form',
+    'joinup_discussion.rdf_entity_discussion.add',
+    'joinup_document.rdf_entity_document.add',
+    'joinup_licence.add',
+    'joinup_news.rdf_entity_news.add',
+    'node.add',
+    'rdf_entity.propose_form',
+    'rdf_entity.rdf_add',
+    'solution.collection_solution.add',
+  ];
+  $enable_floating_labels = empty($route_name) || !in_array($route_name, $non_floating_form_routes);
 
-        // Floating form element with label.
-        if (!empty($variables['element']['#array_parents']) && in_array('field_social_media', $variables['element']['#array_parents'], TRUE)) {
-          $suggestions[] = 'form_element__floating__with_prefix';
+  if ($enable_floating_labels) {
+    if (!empty($variables['element']['#type'])) {
+      // Array contains form elements, which are displayed with floating label.
+      $floating_label_types = [
+        'email',
+        'entity_autocomplete',
+        'password',
+        'textfield',
+        'url',
+      ];
+
+      if (in_array($variables['element']['#type'], $floating_label_types)) {
+        if ($hook == 'form_element') {
+          $suggestions[] = 'form_element__floating';
+
+          // Floating form element with label.
+          if (!empty($variables['element']['#array_parents']) && in_array('field_social_media', $variables['element']['#array_parents'], TRUE)) {
+            $suggestions[] = 'form_element__floating__with_prefix';
+          }
         }
-      }
-      elseif ($hook == 'input') {
-        $suggestions[] = 'input__floating';
+        elseif ($hook == 'input') {
+          $suggestions[] = 'input__floating';
+        }
       }
     }
 

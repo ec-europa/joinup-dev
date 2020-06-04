@@ -86,6 +86,9 @@ class LicenceComparerController extends ControllerBase {
             'licence_comparer_data',
           ],
         ],
+        'library' => [
+          'joinup_licence/licence-compare',
+        ],
       ],
     ];
 
@@ -215,7 +218,9 @@ class LicenceComparerController extends ControllerBase {
 
     foreach (array_keys($this->licences) as $spdx_id) {
       $row[] = [
-        'data' => $spdx_id,
+        'data' => [
+          '#markup' => '<span>' . $spdx_id . '</span><span class="icon icon--info"></span>',
+        ],
         'class' => [
           'licence-comparer__header',
         ],
