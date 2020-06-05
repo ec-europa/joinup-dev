@@ -40,6 +40,3 @@ config_devel:
     - joinup_user.mail
     - message.template.og_membership_role_change
     - og.og_membership_type.og_membership_type
-    - user.role.administrator
-    - user.role.licence_manager
-    - user.role.moderator
