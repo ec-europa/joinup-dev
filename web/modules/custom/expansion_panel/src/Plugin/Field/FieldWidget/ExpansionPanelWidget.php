@@ -221,6 +221,11 @@ class ExpansionPanelWidget extends OptionsWidgetBase {
         }
       }
     }
+
+    if ($element['#required'] && empty($values)) {
+      $form_state->setError($element, t('@name field is required.', ['@name' => $element['#title']]));
+    }
+
     $form_state->setValueForElement($element, $values);
   }
 
