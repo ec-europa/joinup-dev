@@ -25,7 +25,7 @@ function eira_taxonomy_term_view(array &$build, EntityInterface $entity, EntityV
   // here.
   // @todo Remove once bug #2892361 is fixed.
   // @see https://www.drupal.org/project/rdf_entity/issues/2892361
-  if (empty($build['description'][0]['#text']) || $view_mode !== 'full') {
+  if (empty($build['description'][0]['#text']) || !in_array($view_mode, ['full', 'expansion_panel'])) {
     return;
   }
   $build['description'][0]['#format'] = 'eira_format';

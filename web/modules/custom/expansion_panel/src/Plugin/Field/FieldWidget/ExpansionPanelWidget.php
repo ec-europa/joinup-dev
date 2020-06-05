@@ -10,6 +10,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -41,7 +42,7 @@ class ExpansionPanelWidget extends OptionsWidgetBase {
   protected $entityDisplayRepository;
 
   /**
-   * Constructs an InlineEntityFormBase object.
+   * Constructs an ExpansionPanelWidget.
    *
    * @param string $plugin_id
    *   The plugin_id for the widget.
@@ -151,32 +152,45 @@ class ExpansionPanelWidget extends OptionsWidgetBase {
       '#type' => 'container',
       '#theme_wrappers' => ['form_element'],
       '#options' => [],
+      '#key_column' => $this->column,
+      '#tree' => TRUE,
     ];
+    $element['#element_validate'][] = [get_class($this), 'validateElement'];
 
     $groups = [];
+    $weight = 0;
+    $selected = $this->getSelectedOptions($items);
     foreach ($options as $group_title => $references) {
       $referenced_entities = $target_entity_storage->loadMultiple(array_keys($references));
       if (!empty($referenced_entities)) {
         $children = [];
         foreach ($referenced_entities as $referenced_entity) {
+          $weight += 0.001;
+          $key = $referenced_entity->id();
           $header = [
             '#type' => 'checkbox',
             '#title' => $referenced_entity->label(),
-            '#default_value' => TRUE,
+            '#return_value' => $key,
+            '#default_value' => in_array($key, $selected) ? $key : NULL,
+            // Errors should only be shown on the parent element.
+            '#error_no_message' => TRUE,
             '#disabled' => FALSE,
+            '#weight' => $weight,
           ];
           $content = $target_entity_view_builder->view($referenced_entity, $view_mode);
           $children[] = [
             '#theme' => 'expansion_panel',
-            '#header' => $header,
-            '#content' => $content,
+            'header' => $header,
+            'content' => $content,
           ];
         }
-        $groups[] = [
-          '#theme' => 'expansion_panel_group',
+        $group = [
           '#title' => $group_title,
-          '#children' => $children,
+          '#type' => 'container',
+          '#theme_wrappers' => ['container__expansion_panel_group'],
         ];
+        $group += $children;
+        $groups[] = $group;
       }
     }
 
@@ -195,8 +209,19 @@ class ExpansionPanelWidget extends OptionsWidgetBase {
   /**
    * {@inheritdoc}
    */
-  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
-    return $values;
+  public static function validateElement(array $element, FormStateInterface $form_state) {
+    $values = [];
+    foreach (Element::children($element) as $group_key) {
+      $group_element = $element[$group_key];
+      foreach (Element::children($group_element) as $option_key) {
+        $option_element = $group_element[$option_key];
+        $value = $option_element['header']['#value'] ?? NULL;
+        if (!empty($value)) {
+          $values[] = [$element['#key_column'] => $value];
+        }
+      }
+    }
+    $form_state->setValueForElement($element, $values);
   }
 
 }

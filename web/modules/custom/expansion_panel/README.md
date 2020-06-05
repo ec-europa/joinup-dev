@@ -2,13 +2,10 @@ Expansion Panel
 ===============
 
 Provides integration with the Material Design [Expansion panel][1] surface. The
-module offers the following:
-
-  - A template to render generic expansion panels.
-  - A field widget for entity reference fields. The information which is shown
-    in the expansion panel "details" (the expanded area) is configurable through
-    a view mode in the form settings. The "summary" (the title which is shown
-    even when the panel is collapsed) is the title of the referenced entity.
+module offers a field widget for entity reference fields. The information which
+is shown in the expansion panel "content" (the expanded area) is configurable
+through a view mode in the form settings. The "header" (the title which is shown
+even when the panel is collapsed) is the title of the referenced entity.
 
 This has been developed as a custom module because this depends heavily on the
 current Joinup theme which is based on a customized legacy implementation of the

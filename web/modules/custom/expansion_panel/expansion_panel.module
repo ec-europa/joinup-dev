@@ -12,12 +12,33 @@ declare(strict_types = 1);
  */
 function expansion_panel_theme($existing, $type, $theme, $path): array {
   return [
-    'expansion_panel_group' => [
-      'variables' => [
-        'title' => NULL,
-        'children' => NULL,
-      ],
+    'container__expansion_panel_group' => [
+      'template' => 'container--expansion-panel-group',
+      'base hook' => 'container',
     ],
-    'expansion_panel' => ['variables' => ['header' => NULL, 'content' => NULL]],
+    'expansion_panel' => ['render element' => 'element'],
   ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function expansion_panel_theme_suggestions_container_alter(array &$suggestions, array $variables): array {
+  // Add a theme suggestion for the expansion panel container.
+  return ['container__expansion_panel_group'];
+}
+
+/**
+ * Prepares variables for taxonomy term templates.
+ *
+ * Default template: expansion-panel.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: The render element.
+ */
+function template_preprocess_expansion_panel(array &$variables): void {
+  $element = $variables['element'];
+  $variables['content'] = $element['content'] ?? NULL;
+  $variables['header'] = $element['header'] ?? NULL;
 }
