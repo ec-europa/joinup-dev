@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5545680f8be64d7c09a6faf58fc7b915",
+    "content-hash": "1b2e87c35fe8a6aa01585b728c22b73c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5505,6 +5505,66 @@
             }
         },
         {
+            "name": "drupal/json_field",
+            "version": "1.0.0-rc3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/json_field.git",
+                "reference": "8.x-1.0-rc3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/json_field-8.x-1.0-rc3.zip",
+                "reference": "8.x-1.0-rc3",
+                "shasum": "4f2ccd9ded9cf2fe88b1946c239de4505d4c18c2"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-rc3",
+                    "datestamp": "1551708484",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "See contributors",
+                    "homepage": "https://www.drupal.org/node/2653746/committers",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Jaesin",
+                    "homepage": "https://www.drupal.org/user/841054"
+                },
+                {
+                    "name": "dawehner",
+                    "homepage": "https://www.drupal.org/user/99340"
+                }
+            ],
+            "description": "Provides a JSON field, formatter and views integration",
+            "homepage": "https://www.drupal.org/project/json_field",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/json_field",
+                "issues": "https://www.drupal.org/project/issues/json_field"
+            }
+        },
+        {
             "name": "drupal/linkit",
             "version": "5.0.0-beta10",
             "source": {
@@ -6248,20 +6308,20 @@
         },
         {
             "name": "drupal/paragraphs",
-            "version": "1.11.0",
+            "version": "1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/paragraphs.git",
-                "reference": "8.x-1.11"
+                "reference": "8.x-1.12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/paragraphs-8.x-1.11.zip",
-                "reference": "8.x-1.11",
-                "shasum": "4fa849a249fbc689ca0c83523a967c08767e91af"
+                "url": "https://ftp.drupal.org/files/projects/paragraphs-8.x-1.12.zip",
+                "reference": "8.x-1.12",
+                "shasum": "3b67d8af1160af42d93a4610be1e02869e428965"
             },
             "require": {
-                "drupal/core": "^8.7.7 || ^9",
+                "drupal/core": "^8.8 || ^9",
                 "drupal/entity_reference_revisions": "~1.3"
             },
             "require-dev": {
@@ -6283,8 +6343,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.11",
-                    "datestamp": "1581850829",
+                    "version": "8.x-1.12",
+                    "datestamp": "1590066861",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6293,7 +6353,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6347,6 +6407,9 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-3.x": "3.x-dev"
+                },
                 "drupal": {
                     "version": "8.x-3.0-alpha5",
                     "datestamp": "1559916365",
@@ -7648,8 +7711,20 @@
             ],
             "authors": [
                 {
+                    "name": "AdamPS",
+                    "homepage": "https://www.drupal.org/user/2650563"
+                },
+                {
+                    "name": "Anybody",
+                    "homepage": "https://www.drupal.org/user/291091"
+                },
+                {
                     "name": "B-Prod",
                     "homepage": "https://www.drupal.org/user/407852"
+                },
+                {
+                    "name": "geek-merlin",
+                    "homepage": "https://www.drupal.org/user/229048"
                 },
                 {
                     "name": "sbrattla",
@@ -10144,20 +10219,20 @@
         },
         {
             "name": "openeuropa/oe_webtools",
-            "version": "1.6.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/oe_webtools.git",
-                "reference": "2949e5be79325e5993d7c410fd09dc98b98045d9"
+                "reference": "a6c2fc44081c712ee5f7754ad311db09cf1b89b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_webtools/zipball/2949e5be79325e5993d7c410fd09dc98b98045d9",
-                "reference": "2949e5be79325e5993d7c410fd09dc98b98045d9",
+                "url": "https://api.github.com/repos/openeuropa/oe_webtools/zipball/a6c2fc44081c712ee5f7754ad311db09cf1b89b4",
+                "reference": "a6c2fc44081c712ee5f7754ad311db09cf1b89b4",
                 "shasum": ""
             },
             "require": {
-                "drupal/core": "^8.7.7",
+                "drupal/core": "^8.8",
                 "ext-json": "*",
                 "php": "^7.1"
             },
@@ -10169,6 +10244,7 @@
                 "consolidation/annotated-command": "^2.8.2",
                 "consolidation/robo": "~1.4",
                 "drupal-composer/drupal-scaffold": "^2.5.2",
+                "drupal/coder": "8.3.8",
                 "drupal/config_devel": "~1.2",
                 "drupal/drupal-extension": "^4.0",
                 "drupal/geocoder": "^3.0",
@@ -10207,7 +10283,8 @@
                 "patches_applied": {
                     "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                     "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
-                    "Add the possibility to display a marker in the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff"
+                    "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff",
+                    "Move 'webtools_snippet' formatter in 'oe_webtools' module @see https://github.com/openeuropa/oe_webtools/pull/129": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/129.diff"
                 }
             },
             "autoload": {
@@ -10220,7 +10297,7 @@
                 "EUPL-1.2"
             ],
             "description": "OpenEuropa Webtools integration.",
-            "time": "2020-04-29T09:10:55+00:00"
+            "time": "2020-05-11T09:55:39+00:00"
         },
         {
             "name": "openeuropa/task-runner",
@@ -11982,7 +12059,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-02-13T14:54:04+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -15105,7 +15182,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2019-12-17/2392929-2.patch"
+                    "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2020-05-15/2392929-11.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -18075,6 +18152,7 @@
         "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
+        "openeuropa/oe_webtools": 20,
         "openeuropa/task-runner": 20,
         "semiceu/adms-ap_validator": 20,
         "jcalderonzumba/gastonjs": 20

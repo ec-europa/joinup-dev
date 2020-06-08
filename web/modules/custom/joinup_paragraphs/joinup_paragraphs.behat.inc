@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\TraversableElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
@@ -24,7 +25,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
   use WysiwygTrait;
 
   /**
-   * A copycat of behat's internal region mapping.
+   * A copycat of Behat's internal region mapping.
    *
    * This will be used to determine the selector of each paragraph field name.
    * This is because in some cases, the title of the field is not visible as the
@@ -36,6 +37,13 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
   const FIELD_MAP = [
     'Custom page body' => 'field-paragraphs-body',
   ];
+
+  /**
+   * Reusable xpath pattern.
+   *
+   * @var string
+   */
+  const PARAGRAPH_ITEM_XPATH = "//div[contains(concat(' ', @class, ' '), ' paragraph ')]";
 
   /**
    * Enters the given text in the given WYSIWYG editor.
@@ -106,7 +114,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
   /**
    * Clicks the remove button in the given paragraphs item.
    *
-   * @param string $button
+   * @param string $label
    *   The button label.
    * @param string $field
    *   The field identifier. One of the keys in the
@@ -116,12 +124,29 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    *   readability. If left empty, the button will be searched in the entire
    *   field.
    *
-   * @Given I press :button in the :field field for paragraph :position
-   * @Given I press :button in the :field paragraphs field
+   * @Given I press :label in the :field field for paragraph :position
+   * @Given I press :label in the :field paragraphs field
    */
-  public function clickButtonInParagraphsField(string $button, string $field, ?int $position = NULL): void {
+  public function clickButtonInParagraphsField(string $label, string $field, ?int $position = NULL): void {
+    if ($position === NULL) {
+      // This is a field button, not linked to any paragraph item, such as the
+      // button that adds a new paragraph item.
+      $this->getParagraphsElement($field)->findButton($label)->press();
+      return;
+    }
+
     $paragraph_item = $this->getParagraphsElement($field, --$position);
-    $button = $paragraph_item->findButton($button);
+
+    if (!$button = $paragraph_item->findButton($label)) {
+      throw new ElementNotFoundException($this->getSession()->getDriver(), 'button', 'label');
+    }
+
+    // It might be a button beneath the three dots dropdown.
+    if (!$button->isVisible()) {
+      $dropdown = $paragraph_item->find('css', 'button.paragraphs-dropdown-toggle');
+      $dropdown->click();
+    }
+
     $button->click();
   }
 
@@ -137,19 +162,20 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    */
   public function assertRowsInParagraphsField(int $expected_rows, string $field): void {
     $field = $this->getParagraphsElement($field);
-    Assert::assertCount($expected_rows, $field->findAll('xpath', '//tr[contains(@class, "form-table__row")]'));
+    Assert::assertCount($expected_rows, $field->findAll('xpath', "//tr[contains(concat(' ', @class, ' '), 'form-table__row')]"));
   }
 
   /**
    * Asserts the number of paragraphs in the page.
    *
    * @param int $expected_rows
-   *   The expected number of paragraphs.
+   *   (optional) The expected number of paragraphs. Defaults to 0.
    *
-   * @Given there should be :expected_rows paragraph(s) in the page
+   * @Then there should be :expected_rows paragraph(s) in the page
+   * @Then the page should contain no paragraphs
    */
-  public function assertParagraphsCountInPage(int $expected_rows): void {
-    Assert::assertCount($expected_rows, $this->getSession()->getPage()->findAll('xpath', '//div[contains(@class, "paragraph")]'));
+  public function assertParagraphsCountInPage(int $expected_rows = 0): void {
+    Assert::assertCount($expected_rows, $this->getSession()->getPage()->findAll('xpath', static::PARAGRAPH_ITEM_XPATH));
   }
 
   /**
@@ -162,7 +188,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
    */
   public function assertExactParagraphsContentInPage(TableNode $table): void {
     $expected = $table->getColumn(0);
-    $paragraphs = $this->getSession()->getPage()->findAll('xpath', '//div[contains(@class, "paragraph")]');
+    $paragraphs = $this->getSession()->getPage()->findAll('xpath', static::PARAGRAPH_ITEM_XPATH);
     $actual = array_map(function (TraversableElement $paragraph): string {
       return $paragraph->getText();
     }, $paragraphs);
@@ -191,7 +217,7 @@ class JoinupParagraphsSubContext extends DrupalSubContextBase implements DrupalS
     }
 
     $mapping = self::FIELD_MAP[$field];
-    $xpath = "//div[contains(@class, 'field--name-$mapping')]";
+    $xpath = "//div[contains(concat(' ', @class, ' '), ' field--name-$mapping ')]";
     $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
     if (empty($elements)) {
       throw new \Exception("The $field field was not found anywhere in the page.");

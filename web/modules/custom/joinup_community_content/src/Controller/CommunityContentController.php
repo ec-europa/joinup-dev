@@ -97,6 +97,10 @@ abstract class CommunityContentController extends ControllerBase {
       return AccessResult::forbidden();
     }
 
+    // @todo This is probably related to ISAICP-6007. The 'create aceess' check
+    // shouldn't require an entity. The entity is created only after the 'create
+    // access' is checked. Refactor this in ISAICP-6007.
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6007
     $content = $this->createContentEntity($rdf_entity);
     return $this->workflowAccessControlHandler->entityAccess($content, 'create', $account);
   }
