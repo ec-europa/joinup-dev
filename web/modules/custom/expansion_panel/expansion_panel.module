@@ -16,6 +16,10 @@ function expansion_panel_theme($existing, $type, $theme, $path): array {
       'template' => 'container--expansion-panel-group',
       'base hook' => 'container',
     ],
+    'container__expansion_panel_groups' => [
+      'template' => 'container--expansion-panel-groups',
+      'base hook' => 'container',
+    ],
     'expansion_panel' => ['render element' => 'element'],
   ];
 }
@@ -24,8 +28,12 @@ function expansion_panel_theme($existing, $type, $theme, $path): array {
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function expansion_panel_theme_suggestions_container_alter(array &$suggestions, array $variables): array {
-  // Add a theme suggestion for the expansion panel container.
-  return ['container__expansion_panel_group'];
+  // Add theme suggestions for a group of expansion panels and the container
+  // around the groups.
+  return [
+    'container__expansion_panel_group',
+    'container__expansion_panel_groups',
+  ];
 }
 
 /**
@@ -41,4 +49,22 @@ function template_preprocess_expansion_panel(array &$variables): void {
   $element = $variables['element'];
   $variables['content'] = $element['content'] ?? NULL;
   $variables['header'] = $element['header'] ?? NULL;
+}
+
+/**
+ * Prepares variables for the expansion panel group container.
+ *
+ * Default template: container--expansion-panel-groups.html.twig.
+ *
+ * Since this is nothing more than a fancy group of checkboxes, we are simply
+ * reusing the "checkboxes" template preprocessor.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: An associative array containing the properties of the element.
+ *
+ * @see template_preprocess_checkboxes()
+ */
+function template_preprocess_container__expansion_panel_groups(array &$variables) {
+  template_preprocess_checkboxes($variables);
 }

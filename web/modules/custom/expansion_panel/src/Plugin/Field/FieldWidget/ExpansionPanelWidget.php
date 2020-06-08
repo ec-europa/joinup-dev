@@ -11,6 +11,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Render\Element\CompositeFormElementTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -26,6 +27,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class ExpansionPanelWidget extends OptionsWidgetBase {
+
+  use CompositeFormElementTrait;
 
   /**
    * The entity type manager.
@@ -150,12 +153,13 @@ class ExpansionPanelWidget extends OptionsWidgetBase {
     // the standard field elements such as the field title, required flag etc.
     $element += [
       '#type' => 'container',
-      '#theme_wrappers' => ['form_element'],
+      '#theme_wrappers' => ['container__expansion_panel_groups'],
       '#options' => [],
       '#key_column' => $this->column,
       '#tree' => TRUE,
     ];
     $element['#element_validate'][] = [get_class($this), 'validateElement'];
+    $element['#pre_render'][] = [get_class($this), 'preRenderCompositeFormElement'];
 
     $groups = [];
     $weight = 0;
