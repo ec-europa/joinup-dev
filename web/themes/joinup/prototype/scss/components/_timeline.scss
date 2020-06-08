@@ -213,6 +213,23 @@
 
 // Modifiers
 // --------------------------------------------------
+.listing-item__compact {
+  display: flex;
+  align-items: center;
+
+  .timeline__listing-content {
+    width: 100%;
+  }
+
+  .action-link__wrapper {
+    a.button {
+      @include breakpoint(sm-mobile, tablet) {
+        margin-left: 15px;
+        padding: 8px 10px;
+      }
+    }
+  }
+}
 
 // Dependencies
 // --------------------------------------------------
