@@ -16,10 +16,6 @@ base_fields_mapping:
     value:
       predicate: ''
       format: ''
-  revision_id:
-    value:
-      predicate: ''
-      format: ''
   langcode:
     value:
       predicate: ''
@@ -28,10 +24,6 @@ base_fields_mapping:
     target_id:
       predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
       format: resource
-  status:
-    value:
-      predicate: ''
-      format: ''
   name:
     value:
       predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
@@ -40,6 +32,10 @@ base_fields_mapping:
     value:
       predicate: 'http://www.w3.org/2004/02/skos/core#definition'
       format: t_literal
+  format:
+    value:
+      predicate: ''
+      format: ''
   weight:
     value:
       predicate: ''
