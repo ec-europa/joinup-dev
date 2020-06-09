@@ -68,3 +68,4 @@ base_fields_mapping:
     target_id:
       predicate: ''
       format: ''
+entity_id_plugin: null

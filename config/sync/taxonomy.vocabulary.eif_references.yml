@@ -2,10 +2,10 @@ uuid: 33e1581e-52ba-40dc-a9dc-ba55050903cc
 langcode: en
 status: true
 dependencies: {  }
-name: 'EIF References'
-vid: eif_references
 third_party_settings:
   rdf_taxonomy:
     locked: false
+name: 'EIF References'
+vid: eif_references
 description: 'Reference terms for the EIF Toolbox.'
 weight: 0
