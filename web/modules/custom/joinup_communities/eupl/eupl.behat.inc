@@ -78,6 +78,43 @@ class EuplSubContext extends DrupalSubContextBase {
   }
 
   /**
+   * Clicks the info icon next to the SPDX licence header.
+   *
+   * @param string $spdx
+   *   The SPDX licence ID.
+   *
+   * @throws \Exception
+   *   Thrown if the info icon could not be found.
+   *
+   * @Given I click the info icon of the :spdx licence( table cell)
+   */
+  public function clickLicenceInfoIcon(string $spdx): void {
+    $xpath = '//td[@class and contains(concat(" ", normalize-space(@class), " "), " licence-comparer__header ") and contains(., "' . $spdx . '")]//span[@class and contains(concat(" ", normalize-space(@class), " "), " icon--info ")]';
+    $icon = $this->getSession()->getPage()->find('xpath', $xpath);
+    if (empty($icon)) {
+      throw new \Exception("Could not locate a table cell with the text {$spdx}.");
+    }
+    $icon->click();
+  }
+
+  /**
+   * Closes the licence modal dialog.
+   *
+   * @throws \Exception
+   *   Thrown if the dialog is not open or the x button is not found.
+   *
+   * @Given I close the licence modal dialog
+   */
+  public function closeLicenceModalDialog(): void {
+    $xpath = '//div[@class and contains(concat(" ", normalize-space(@class), " "), " licence-comparer__dialog ")]//button[@title="Close"]';
+    $icon = $this->getSession()->getPage()->find('xpath', $xpath);
+    if (empty($icon)) {
+      throw new \Exception("Either the dialog is not available or the 'Close' button could not be located.");
+    }
+    $icon->click();
+  }
+
+  /**
    * Asserts the legal type categories order in the JLA licence listing item.
    *
    * @param string $spdx
