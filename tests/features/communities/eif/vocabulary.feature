@@ -1,3 +1,4 @@
+@api
 Feature:
   In order to be able to have the solutions categorized properly through the EIF Toolbox
   As the collection owner
@@ -8,3 +9,20 @@ Feature:
     When I visit "/taxonomy/term/http_e_f_fdata_ceuropa_ceu_fBC1"
     Then I should see the heading "Basic Component 1: Coordination function"
     And I should see the text "The coordination function ensures that needs are identified and appropriate services are invoked and orchestrated to provide a European public service."
+
+  Scenario: EIF References field is accessible to moderators only.
+    Given collection:
+      | title | EIF Toolbox |
+      | state | validated   |
+    And solution:
+      | title      | Some EIF solution |
+      | state      | validated         |
+      | collection | EIF Toolbox       |
+
+    Given I am logged in as a facilitator of the "Some EIF solution" solution
+    When I go to the "Some EIF solution" solution edit form
+    Then the following fields should not be present "EIF Reference"
+
+    Given I am logged in as a moderator
+    When I go to the "Some EIF solution" solution edit form
+    Then the following fields should be present "EIF Reference"
