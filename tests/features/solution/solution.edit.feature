@@ -47,7 +47,7 @@ Feature: Solution editing.
     And I attach the file "banner.jpg" to "Banner"
     And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
     And I select "EU and European Policies" from "Policy domain"
-    And I select "Citizen" from "Solution type"
+    And I check "Citizen"
 
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
