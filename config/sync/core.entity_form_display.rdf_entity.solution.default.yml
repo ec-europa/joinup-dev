@@ -14,6 +14,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
+    - field.field.rdf_entity.solution.field_is_eif_reference
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
     - field.field.rdf_entity.solution.field_is_issue_tracker
@@ -53,7 +54,6 @@ dependencies:
     - file_url
     - image
     - inline_entity_form
-    - joinup_core
     - joinup_workflow
     - link
     - text
@@ -114,6 +114,7 @@ third_party_settings:
         - field_is_language
         - field_is_landing_page
         - field_is_metrics_page
+        - field_is_eif_reference
       parent_name: group_general
       weight: 21
       format_type: tab
@@ -205,8 +206,14 @@ content:
     third_party_settings: {  }
     type: file_url_generic
     region: content
+  field_is_eif_reference:
+    weight: 15
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_is_landing_page:
-    weight: 14
+    weight: 13
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -215,7 +222,7 @@ content:
     region: content
   field_is_language:
     type: options_select
-    weight: 13
+    weight: 12
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -228,7 +235,7 @@ content:
     type: image_image
     region: content
   field_is_metrics_page:
-    weight: 15
+    weight: 14
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -270,7 +277,7 @@ content:
       match_limit: 10
     third_party_settings: {  }
   field_is_related_solutions:
-    weight: 10
+    weight: 9
     settings:
       match_operator: CONTAINS
       size: 60
@@ -280,7 +287,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_is_show_eira_related:
-    weight: 11
+    weight: 10
     settings:
       display_label: true
     third_party_settings: {  }
@@ -313,7 +320,7 @@ content:
     third_party_settings: {  }
   field_keywords:
     type: string_textfield
-    weight: 9
+    weight: 8
     region: content
     settings:
       size: 60
@@ -335,7 +342,7 @@ content:
     region: content
   field_spatial_coverage:
     type: entity_reference_autocomplete
-    weight: 8
+    weight: 7
     settings:
       match_operator: CONTAINS
       size: 60
@@ -345,7 +352,7 @@ content:
     region: content
   field_status:
     type: options_select
-    weight: 12
+    weight: 11
     settings: {  }
     third_party_settings: {  }
     region: content
