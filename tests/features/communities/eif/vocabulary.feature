@@ -45,3 +45,25 @@ Feature:
     When I go to "/solutions"
     Then I should see the "Some EIF solution" tile
     But I should not see the text "EIF reference"
+
+  Scenario: Solutions referencing an EIF term should appear in the corresponding page.
+    Given collection:
+      | title | EIF Toolbox |
+      | state | validated   |
+    And solutions:
+      | title    | state     | collection  | eif reference                                                                             |
+      | Balker   | validated | EIF Toolbox | Underlying Principle 1: subsidiarity and proportionality, Underlying Principle 2: openess |
+      | Corridor | validated | EIF Toolbox | Underlying Principle 1: subsidiarity and proportionality                                  |
+      | Lager    | validated | EIF Toolbox |                                                                                           |
+
+    # Underlying Principle 1.
+    When I go to "/taxonomy/term/http_e_f_fdata_ceuropa_ceu_fUP1"
+    Then I should see the "Balker" tile
+    And I should see the "Corridor" tile
+    But I should not see the "Lager" tile
+
+    # Underlying Principle 2
+    When I go to "/taxonomy/term/http_e_f_fdata_ceuropa_ceu_fUP2"
+    Then I should see the "Balker" tile
+    But I should not see the "Corridor" tile
+    And I should not see the "Lager" tile
