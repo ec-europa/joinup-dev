@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac33eab690200eb10f44b54117c32500",
+    "content-hash": "8af3c95ad128b47d0a0a1374a9d47fc1",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -7141,26 +7141,29 @@
         },
         {
             "name": "drupal/site_alert",
-            "version": "dev-1.x",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/site_alert.git",
-                "reference": "d3700174bdddeca1f33c6995fde86e436b034270"
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/site_alert-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "a2220fc0b98eb9ab6cdcfd3268d562db668f37d9"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.0+16-dev",
-                    "datestamp": "1585553695",
+                    "version": "8.x-1.1",
+                    "datestamp": "1591771239",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -7186,8 +7189,7 @@
             "homepage": "https://www.drupal.org/project/site_alert",
             "support": {
                 "source": "https://git.drupalcode.org/project/site_alert"
-            },
-            "time": "2020-04-02T17:11:23+00:00"
+            }
         },
         {
             "name": "drupal/smart_trim",
@@ -8066,12 +8068,12 @@
             "version": "0.10.0-alpha.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/njh/easyrdf.git",
+                "url": "https://github.com/easyrdf/easyrdf.git",
                 "reference": "1371c8af2abd3a948c50962b2212fce1912000e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/njh/easyrdf/zipball/1371c8af2abd3a948c50962b2212fce1912000e7",
+                "url": "https://api.github.com/repos/easyrdf/easyrdf/zipball/1371c8af2abd3a948c50962b2212fce1912000e7",
                 "reference": "1371c8af2abd3a948c50962b2212fce1912000e7",
                 "shasum": ""
             },
@@ -18268,7 +18270,6 @@
         "drupal/config_update": 20,
         "drupal/matomo_reporting_api": 20,
         "drupal/phingdrushtask": 20,
-        "drupal/site_alert": 20,
         "drupal/swiftmailer": 20,
         "drupal/view_unpublished": 15,
         "ec-europa/joinup-tallinn-dashboard": 20,
