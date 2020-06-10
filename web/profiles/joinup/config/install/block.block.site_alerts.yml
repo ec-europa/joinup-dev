@@ -2,18 +2,19 @@ langcode: en
 status: true
 dependencies:
   module:
-    - system
+    - site_alert
   theme:
     - joinup_theme
-id: joinup_theme_messages
+id: site_alerts
 theme: joinup_theme
 region: content_top
-weight: -20
+weight: -21
 provider: null
-plugin: system_messages_block
+plugin: site_alert_block
 settings:
-  id: system_messages_block
-  label: 'Status messages'
-  provider: system
+  id: site_alert_block
+  label: 'Site alerts'
+  provider: site_alert
   label_display: '0'
+  timeout: 0
 visibility: {  }

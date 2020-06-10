@@ -245,4 +245,7 @@ settings:
   paragraphs_type:
     handler: 'default:paragraphs_type'
     handler_settings: {  }
+  site_alert:
+    handler: 'default:site_alert'
+    handler_settings: {  }
 field_type: dynamic_entity_reference
