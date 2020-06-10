@@ -1,0 +1,10 @@
+uuid: 5bc8a16f-e415-436f-873e-ab3569e946e3
+langcode: en
+status: true
+dependencies: {  }
+id: json_map
+label: 'Map'
+icon_uuid: null
+icon_default: null
+description: 'Displays a Webtools map widget. See https://webgate.ec.europa.eu/fpfis/wikis/display/webtools/Map'
+behavior_plugins: {  }

@@ -74,9 +74,9 @@
   {% set block_class = 'block--separated' %}
 {% endif %}
 <article{{ attributes }}>
-  {% if content.body|render %}
+  {% if content.field_paragraphs_body|render %}
     <div class="page__content">
-      {{ content.body }}
+      {{ content.field_paragraphs_body }}
       {{ content.group_attachment }}
       <div class="action-link__wrapper right">
         {{ content.report }}

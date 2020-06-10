@@ -3,40 +3,43 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.body
-    - field.storage.rdf_entity.field_ad_description
-    - field.storage.rdf_entity.field_ar_abstract
-    - field.storage.rdf_entity.field_ar_description
     - field.storage.node.field_event_agenda
+    - field.storage.node.field_paragraphs_body
+    - field.storage.paragraph.field_body
+    - field.storage.node.body
     - field.storage.node.field_event_date
-    - field.storage.rdf_entity.field_is_description
-    - field.storage.rdf_entity.field_is_pinned_in
-    - field.storage.rdf_entity.field_is_solution_type
-    - field.storage.rdf_entity.field_isr_description
-    - field.storage.rdf_entity.field_isr_release_notes
-    - field.storage.rdf_entity.field_licence_description
-    - field.storage.rdf_entity.field_licence_spdx_licence
-    - field.storage.node.field_location
     - field.storage.node.field_news_headline
+    - field.storage.node.field_location
     - field.storage.node.field_organisation
     - field.storage.node.field_scope
     - field.storage.node.field_short_title
+    - field.storage.meta_entity.count
+    - field.storage.rdf_entity.field_ar_abstract
+    - field.storage.rdf_entity.field_isr_contact_information
+    - field.storage.rdf_entity.field_ci_name
+    - field.storage.rdf_entity.field_is_contact_information
+    - field.storage.rdf_entity.field_licence_spdx_licence
+    - field.storage.rdf_entity.field_licence_description
+    - field.storage.rdf_entity.field_ad_description
+    - field.storage.rdf_entity.field_is_description
+    - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_ar_description
+    - field.storage.rdf_entity.field_is_owner
+    - field.storage.rdf_entity.field_owner_name
+    - field.storage.rdf_entity.field_isr_owner
+    - field.storage.rdf_entity.field_is_pinned_in
+    - field.storage.rdf_entity.field_isr_release_notes
+    - field.storage.rdf_entity.field_is_solution_type
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_organisation
-    - field.storage.meta_entity.count
-    - field.storage.rdf_entity.field_is_contact_information
-    - field.storage.rdf_entity.field_ci_name
-    - field.storage.rdf_entity.field_is_owner
-    - field.storage.rdf_entity.field_owner_name
-    - field.storage.rdf_entity.field_isr_contact_information
-    - field.storage.rdf_entity.field_isr_owner
     - search_api.server.solr_published
   module:
     - node
+    - paragraphs
+    - publication_date
     - meta_entity
     - rdf_entity
-    - publication_date
     - user
     - search_api
     - asset_distribution
@@ -370,6 +373,17 @@ field_settings:
       fields:
         - 'entity:node/field_policy_domain'
         - 'entity:rdf_entity/field_policy_domain'
+  processed:
+    label: 'Body » Paragraph » Body » Processed text'
+    datasource_id: 'entity:node'
+    property_path: 'field_paragraphs_body:entity:field_body:processed'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_paragraphs_body
+        - field.storage.paragraph.field_body
+      module:
+        - paragraphs
   published_at:
     label: 'Published on'
     datasource_id: 'entity:node'

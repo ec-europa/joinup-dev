@@ -98,9 +98,26 @@ class IncludeCustomPageContent extends ProcessorPluginBase {
 
         $body_field_name = $entity->bundle() === 'collection' ? 'field_ar_description' : 'field_is_description';
         $body_field = $item->getField($body_field_name);
-        $body_field_item_list = $custom_page->get('body');
-        if (!$body_field_item_list->isEmpty()) {
-          $body_field->addValue(check_markup($body_field_item_list->value, $body_field_item_list->format));
+
+        // The search_api indexes fields for each entity (there is an HTML
+        // output but it is used differently). For paragraphs, since this is a
+        // reference field, we are indexing the field_body field. The paragraph
+        // itself is referenced by the custom page through the
+        // field_paragraphs_body field. Iterate through all items in the field
+        // and add the markup to the group description.
+        //
+        // @todo: Automatically add the entries needed.
+        // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5962
+        if (!$custom_page->get('field_paragraphs_body')->isEmpty()) {
+          /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+          foreach ($custom_page->get('field_paragraphs_body')->referencedEntities() as $paragraph) {
+            $custom_page_paragraph_body_list = $paragraph->get('field_body');
+            foreach ($custom_page_paragraph_body_list as $list_item) {
+              if (!$list_item->isEmpty()) {
+                $body_field->addValue(check_markup($list_item->value, $list_item->format));
+              }
+            }
+          }
         }
       }
     }
