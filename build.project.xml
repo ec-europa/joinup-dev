@@ -359,28 +359,6 @@
         </if>
     </target>
 
-    <!-- Compile SCSS to CSS. -->
-    <target name="compile-scss"
-            description="Compile the SCSS to CSS.">
-        <mkdir dir="${scssphp.css.output.dir}" />
-        <if>
-            <istrue value="${scssphp.sourcemap}"/>
-            <then>
-                <property name="scss.sourcemap.arg" value="--sourcemap"/>
-            </then>
-            <else>
-                <property name="scss.sourcemap.arg" value=""/>
-            </else>
-        </if>
-
-        <exec executable="${scssphp.bin}"
-              output="${scssphp.css.output.file}">
-            <arg value="--style=${scssphp.style}"/>
-            <arg value="${scss.sourcemap.arg}"/>
-            <arg value="${scssphp.input.file}"/>
-        </exec>
-    </target>
-
     <!-- Set the transaction type to READ-COMMITTED. -->
     <target name="set-mysql-transaction-type"
             description="Sets the MySQL transaction to READ-COMMITTED"
@@ -665,13 +643,20 @@
 
     <target
         name="build-dist"
-        description="Build a distribution package."
-        depends="compile-scss, setup-drush" />
+        description="Build a distribution package.">
+        <exec command="./vendor/bin/run joinup:compile-scss" checkreturn="true" passthru="true" />
+        <phingcall target="setup-drush" />
+    </target>
 
     <target
         name="build-dev"
-        description="Build a development environment."
-        depends="setup-behat, setup-php-codesniffer, setup-phpunit, setup-drush, compile-scss" />
+        description="Build a development environment.">
+        <phingcall target="setup-behat" />
+        <phingcall target="setup-php-codesniffer" />
+        <phingcall target="setup-phpunit" />
+        <phingcall target="setup-drush" />
+        <exec command="./vendor/bin/run joinup:compile-scss" checkreturn="true" passthru="true" />
+    </target>
 
     <target
         name="install-dev"

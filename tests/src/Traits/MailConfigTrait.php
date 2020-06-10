@@ -29,7 +29,7 @@ trait MailConfigTrait {
     $config_factory = \Drupal::configFactory();
     foreach (static::$mailOverridableConfigurations as $config_name => $config_path) {
       if ($config_factory->get($config_name)->hasOverrides($config_path)) {
-        throw new \Exception("Cannot inspect emails since the '{$config_name}:{$config_path}' is overridden in settings.php or settings.local.php.");
+        throw new \Exception("Cannot inspect emails since '{$config_name}:{$config_path}' is overridden in settings.php or settings.local.php.");
       }
     }
   }

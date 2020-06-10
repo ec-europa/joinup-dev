@@ -403,3 +403,29 @@ Feature:
     And I add the "GPL-2.0+" licence to the compare list
     And I click "Compare"
     Then the url should match "/licence/compare/Apache-2.0;GPL-2.0\+"
+
+  @javascript
+  Scenario: A user can view the comment details of a licence through the info icon.
+    Given SPDX licences:
+      | uri                       | title            | ID       |
+      | http://joinup.eu/spdx/foo | SPDX licence foo | SPDX-FOO |
+      | http://joinup.eu/spdx/bar | SPDX licence bar | SPDX-BAR |
+    And licences:
+      | uri                             | title          | description                             | spdx licence     | legal type                                                            |
+      | http://joinup.eu/licence/foo    | Foo Licence    | Licence details for the foo licence.    | SPDX licence foo | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce |
+      | http://joinup.eu/licence/bar    | Bar Licence    | Licence details for the bar licence.    | SPDX licence bar | Distribute                                                            |
+
+    When I visit "/licence/compare/SPDX-FOO;SPDX-BAR"
+    Then I should not see the text "Licence details for the foo licence."
+    And I should not see the text "Licence details for the bar licence."
+
+    When I click the info icon of the "SPDX-FOO" licence table cell
+    And I should see the text "Licence details for the foo licence."
+    And I should see the button "Licence text"
+    But I should not see the text "Licence details for the bar licence."
+
+    Given I close the licence modal dialog
+    When I click the info icon of the "SPDX-BAR" licence table cell
+    And I should see the text "Licence details for the bar licence."
+    And I should see the button "Licence text"
+    But I should not see the text "Licence details for the foo licence."

@@ -146,4 +146,12 @@
         </phingcall>
     </target>
 
+    <!-- Compile SCSS to CSS. -->
+
+    <target name="compile-scss">
+        <phingcall target="runner-converted">
+            <property name="runner.replacement" value="assets:compile-scss"/>
+        </phingcall>
+    </target>
+
 </project>
