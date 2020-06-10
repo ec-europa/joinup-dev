@@ -25,4 +25,28 @@
       @include z-index(header);
     }
   }
+  .advanced-search--header {
+    display: none;
+
+    @include breakpoint(desktop) {
+      display: inline-block;
+    }
+
+    padding: 0 3px;
+    color: white;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+body.search-page {
+  .section--header {
+    .advanced-search--header {
+      @include breakpoint(desktop) {
+        display: none;
+      }
+    }
+  }
 }

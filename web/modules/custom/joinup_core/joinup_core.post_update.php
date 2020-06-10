@@ -69,3 +69,19 @@ function joinup_core_post_update_0106100(array &$sandbox): string {
   $sandbox['#finished'] = $sandbox['current'] > $sandbox['max'] ? 1 : (float) $sandbox['current'] / (float) $sandbox['max'];
   return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
 }
+
+/**
+ * Fix the value predicates of the policy domain values.
+ */
+function joinup_core_post_update_0106101(): string {
+  $query = <<<QUERY
+DELETE { GRAPH ?g { ?s <http://joinup.eu/voc/policy-domain> ?o } }
+INSERT { GRAPH ?g { ?s <http://policy_domain> ?o } }
+WHERE { GRAPH ?g { ?s <http://joinup.eu/voc/policy-domain> ?o } }
+QUERY;
+
+  $results = \Drupal::getContainer()->get('sparql.endpoint')->query($query);
+  $current_result = $results->current();
+  $current_result = reset($current_result);
+  return $current_result->getValue();
+}
