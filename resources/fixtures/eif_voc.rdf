@@ -1,0 +1,896 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:dc="http://purl.org/dc/terms/">
+
+  <skos:ConceptScheme rdf:about="http://data.europa.eu/eif">
+    <rdfs:label>The European Interoperability Framework (EIF)</rdfs:label>
+    <dc:creator>Natasa Sofou</dc:creator>
+    <dc:description>Linked data representation of the EIF</dc:description>
+    <skos:prefLabel xml:lang="en">The European Interoperability Framework (EIF)</skos:prefLabel>
+    <skos:definition xml:lang="en">A set of principles intended to establish general behaviors on interoperability;
+    </skos:definition>
+    <skos:scopeNote xml:lang="en">The EIF is meant to be a generic framework applicable to all public administrations in
+      the EU. It lays out the basic conditions for achieving interoperability, acting as the common denominator for
+      relevant initiatives at all levels including European, national, regional and local, embracing public
+      administrations, citizens and businesses. This document is addressed to all those involved in defining, designing,
+      developing and delivering European public services.
+    </skos:scopeNote>
+    <skos:hasTopConcept rdf:resource="http://data.europa.eu/Principle"/>
+    <skos:hasTopConcept rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:hasTopConcept rdf:resource="http://data.europa.eu/Layer"/>
+    <skos:hasTopCOncept rdf:resource="http://data.europa.eu/Model"/>
+  </skos:ConceptScheme>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP1">
+    <skos:prefLabel xml:lang="en">Underlying Principle 1: subsidiarity and proportionality</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP1</skos:altLabel>
+    <skos:definition xml:lang="en">The subsidiarity principle requires EU decisions to be taken as closely as possible
+      to the citizen. The EU does not take action unless this is more effective than the same action taken at national
+      level. The proportionality principle limits EU actions to what is necessary to achieve the objectives of the
+      Treaties.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP2">
+    <skos:prefLabel xml:lang="en">Underlying Principle 2: openess</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP2</skos:altLabel>
+    <skos:definition xml:lang="en">The concept of openness mainly relates to data, specifications and software. Open
+      government data (here simply referred ‘open data’) refers to the idea that all public data should be freely
+      available for use and reuse by others, unless restrictions apply e.g. for protection of personal data,
+      confidentiality, or intellectual property rights. Public administrations collect and generate huge amounts of
+      data. The Directive on the reuse of public sector information (PSI)7 encourages Member States to make public
+      information available for access and reuse as open data. The INSPIRE Directive8 requires, in addition, sharing of
+      spatial datasets and services between public authorities with no restrictions or practical obstacles to its reuse.
+      This data should be published with as few restrictions as possible and clear licences for its use to allow better
+      scrutiny of administrations’ decision-making processes and realise transparency in practice.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP3">
+    <skos:prefLabel xml:lang="en">Underlying Principle 3: transparency</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP3</skos:altLabel>
+    <skos:definition xml:lang="en">(1). Enabling visibility inside the administrative environment of a public
+      administration. This is about allowing other public administrations, citizens and businesses to view and
+      understand administrative rules, processes11, data, services and decision-making (2). Ensuring availability of
+      interfaces with internal information systems. Public administrations operate a large number of what are often
+      heterogeneous and disparate information systems in support of their internal processes. Interoperability depends
+      on ensuring the availability of interfaces to these systems and the data they handle. In turn, interoperability
+      facilitates reuse of systems and data, and enables these to be integrated into larger systems. (3). Securing the
+      right to the protection of personal data, by respecting the applicable legal framework for the large volumes of
+      personal data of citizens, held and managed by Public administrations.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP4">
+    <skos:prefLabel xml:lang="en">Underlying Principle 4: reusability</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP4</skos:altLabel>
+    <skos:definition xml:lang="en">Interfaces, standards), information and data, is an enabler of interoperability and
+      improves quality because it extends operational use, as well as saving money and time. This makes it a major
+      contributor to the development of a digital single market in the EU. Some EU standards and specifications also
+      exist in the DIFs and should be applied more widely. For example, the INSPIRE Directive sets out interoperability
+      standards for addresses, cadastres, roads and many other data topics of relevance to many public administrations.
+      These existing standards and specifications can and should be used more widely beyond the domain for which they
+      were originally developed.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP5">
+    <skos:prefLabel xml:lang="en">Underlying Principle 5: technological neutrality and data portability</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP5</skos:altLabel>
+    <skos:definition>When establishing European public services, public administrations should focus on functional needs
+      and defer decisions on technology as long as possible in order to minimise technological dependencies, to avoid
+      imposing specific technical implementations or products on their constituents. Public administrations should
+      provide for access and reuse of their public services and data irrespective of specific technologies or
+      products.The functioning of the digital single market requires data to be easily transferable among different
+      systems to avoid lock-in, support the free movement of data. This requirement relates to data portability - the
+      ability to move and reuse data easily among different applications and systems, which becomes even more
+      challenging in cross-border scenarios.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP6">
+    <skos:prefLabel xml:lang="en">Underlying Principle 6: user centricity</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP6</skos:altLabel>
+    <skos:definition xml:lang="en">Users’ needs should be considered when determining which public services should be
+      provided and how they should be delivered., n accordance with the following expectations: (1). A multi-channel
+      service delivery approach, meaning the availability of alternative channels, physical and digital, to access a
+      service, is an important part of public service design, as users may prefer different channels depending on the
+      circumstances and their needs; (2). A single point of contact should be made available to users, to hide internal
+      administrative complexity and facilitate access to public services, e.g. when multiple bodies have to work
+      together to provide a public service; (3). Users’ feedback should be systematically collected, assessed and used
+      to design new public services and to further improve existing ones; (4). As far as possible, under the legislation
+      in force, users should be able to provide data once only, and administrations should be able to retrieve and share
+      this data to serve the user, in accordance with data protection rule (5). Users should be asked to provide only
+      the information that is absolutely necessary to obtain a given public service.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP7">
+    <skos:prefLabel xml:lang="en">Underlying Principle 7: inclusion and accessibility</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP7</skos:altLabel>
+    <skos:definition xml:lang="en">Inclusion is about enabling everyone to take full advantage of the opportunities
+      offered by new technologies to access and make use of European public services, overcoming social and economic
+      divides and exclusion. Accessibility ensures that people with disabilities, the elderly and other disadvantaged
+      groups can use public services at service levels comparable to those provided to other citizens.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP8">
+    <skos:prefLabel xml:lang="en">Underlying Principle 8: security and privacy</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP8</skos:altLabel>
+    <skos:definition xml:lang="en">Citizens and businesses must be confident that when they interact with public
+      authorities they are doing so in a secure and trustworthy environment and in full compliance with relevant
+      regulations, e.g. the Regulation and Directive on data protection16, and the Regulation on electronic
+      identification and trust services17. Public administrations must guarantee the citizens’ privacy, and the
+      confidentiality, authenticity, integrity and non-repudiation of information provided by citizens and businesses.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP9">
+    <skos:prefLabel xml:lang="en">Underlying Principle 9: multilingualism</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP9</skos:altLabel>
+    <skos:definition xml:lang="en">European public services can potentially be used by anyone in any Member State. So
+      multilingualism needs to be carefully considered when designing them. Citizens across Europe often have problems
+      in accessing and using digital public services if these are not available in the languages they speak. A balance
+      needs to be found between the expectations of citizens and businesses to be served in their own language(s) or
+      their preferred language(s) and the ability of Member States’ public administrations to offer services in all
+      official EU languages. A suitable balance could be that European public services are available in the languages of
+      the expected end-users, i.e. the number of languages is decided on the basis of users’ needs, such as the level to
+      which the service is critical for the implementation of the digital single market or national policies, or the
+      size of the relevant audience. Multilingualism comes into play not just in the user interface, but at all levels
+      in the design of European public services. For example, the choices made on data representation in an electronic
+      database should not limit its ability to support different languages.he multilingual aspect of interoperability
+      becomes also relevant when a public service requires exchanges between information systems across language
+      boundaries, as the meaning of the information exchanged must be preserved.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP10">
+    <skos:prefLabel xml:lang="en">Underlying Principle 10: administrative simplification</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP10</skos:altLabel>
+    <skos:definition xml:lang="en">Where possible, public administrations should seek to streamline and simplify their
+      administrative processes by improving them or eliminating any that does not provide public value. Administrative
+      simplification can help businesses and citizens to reduce the administrative burden of complying with EU
+      legislation or national obligations. Likewise, public administrations should introduce European public services
+      supported by electronic means, including their interactions with other public administrations, citizens and
+      businesses. Digitisation of public services should take place in accordance with the following concepts: (1).
+      digital-by-default, whenever appropriate, so that there is at least one digital channel available for accessing
+      and using a given European public service; (2). igital-first, which means that priority is given to using public
+      services via digital channels while applying the multi-channel delivery concept and the no-wrong-door policy, i.e.
+      physical and digital channels co-exist.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP11">
+    <skos:prefLabel xml:lang="en">Underlying Principle 11: preservation of information</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP11</skos:altLabel>
+    <skos:definition xml:lang="en">Legislation requires that decisions and data are stored and can be accessed for a
+      specified time. This means that records18 and information in electronic form held by public administrations for
+      the purpose of documenting procedures and decisions must be preserved and be converted, where necessary, to new
+      media when old media become obsolete. The goal is to ensure that records and other forms of information keep their
+      legibility, reliability and integrity and can be accessed as long as needed subject to security and privacy
+      provisions. o guarantee the long-term preservation of electronic records and other kinds of information, formats
+      should be chosen to ensure long-term accessibility, including preservation of associated electronic signatures or
+      seals. In this regard, the use of qualified preservation services, in line with Regulation (EU) 910/2014, can
+      ensure the long-term preservation of information. For information sources owned and managed by national
+      administrations, preservation is a purely national matter. For information that is not strictly national,
+      preservation becomes a European issue. In that case, an appropriate ‘preservation policy’ should be applied by the
+      Member States concerned, to cope with any difficulties arising if the relevant information is used under different
+      jurisdictions.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP12">
+    <skos:prefLabel xml:lang="en">Underlying Principle 12: assessment of effectiveness and efficiency</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP12</skos:altLabel>
+    <skos:definition xml:lang="en">There are many ways to take stock of the value of interoperable European public
+      services, including considerations such as return on investment, total cost of ownership, level of flexibility and
+      adaptability, reduced administrative burden, efficiency, reduced risk, transparency, simplification, improved
+      working methods, and level of user satisfaction. Various technological solutions should be evaluated when striving
+      to ensure the effectiveness and efficiency of a European public service.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/IL1">
+    <skos:prefLabel xml:lang="en">Interoperability Layer 1: Interoperability governance</skos:prefLabel>
+    <skos:altLabel xml:lang="en">IL1</skos:altLabel>
+    <skos:definition xml:lang="en">Interoperability governance refers to decisions on interoperability frameworks,
+      institutional arrangements, organisational structures, roles and responsibilities, policies, agreements and other
+      aspects of ensuring and monitoring interoperability at national and EU levels.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Layer"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/IL2">
+    <skos:prefLabel xml:lang="en">Interoperability Layer 2: Integrated public service governance</skos:prefLabel>
+    <skos:altLabel xml:lang="en">IL2</skos:altLabel>
+    <skos:definition xml:lang="en">European public services should be governed to ensure: integration, seamless
+      execution, reuse of services and data, and development of new services and ‘building blocks’
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Layer"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/IL3">
+    <skos:prefLabel xml:lang="en">Interoperability Layer 3: Legal interoperability</skos:prefLabel>
+    <skos:altLabel xml:lang="en">IL3</skos:altLabel>
+    <skos:definition xml:lang="en">Legal interoperability is about ensuring that organisations operating under different
+      legal frameworks, policies and strategies are able to work together.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Layer"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/IL4">
+    <skos:prefLabel xml:lang="en">Interoperability Layer 4: Organisational interoperability</skos:prefLabel>
+    <skos:altLabel xml:lang="en">IL4</skos:altLabel>
+    <skos:definition xml:lang="en">This refers to the way in which public administrations align their business
+      processes, responsibilities and expectations to achieve commonly agreed and mutually beneficial goals.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Layer"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/IL5">
+    <skos:prefLabel xml:lang="en">Interoperability Layer 5: Semantic interoperability</skos:prefLabel>
+    <skos:altLabel xml:lang="en">IL5</skos:altLabel>
+    <skos:definition xml:lang="en">Semantic interoperability ensures that the precise format and meaning of exchanged
+      data and information is preserved and understood throughout exchanges between parties, in other words ‘what is
+      sent is what is understood.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Layer"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/IL6">
+    <skos:prefLabel xml:lang="en">Interoperability Layer 6: Technical interoperability</skos:prefLabel>
+    <skos:altLabel xml:lang="en">IL6</skos:altLabel>
+    <skos:definition xml:lang="en">This covers the applications and infrastructures linking systems and services.
+      Aspects of technical interoperability include interface specifications, interconnection services, data integration
+      services, data presentation and exchange, and secure communication protocols.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Layer"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/BC1">
+    <skos:prefLabel xml:lang="en">Basic Component 1: Coordination function</skos:prefLabel>
+    <skos:altLabel xml:lang="en">BC1</skos:altLabel>
+    <skos:definition xml:lang="en">The coordination function ensures that needs are identified and appropriate services
+      are invoked and orchestrated to provide a European public service.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Model"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/BC2">
+    <skos:prefLabel xml:lang="en">Basic Component 2: Internal information sources and services</skos:prefLabel>
+    <skos:altLabel xml:lang="en">BC2</skos:altLabel>
+    <skos:definition xml:lang="en">Information sources (base registries, open data portals, and other authoritative
+      sources of information) and services available not only inside the administrative system but also in the external
+      environment can be used to create integrated public services as building blocks. Building blocks (information
+      sources and services) should make their data or functionality accessible using service-oriented approaches.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Model"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/BC3">
+    <skos:prefLabel xml:lang="en">Basic Component 3: Base registries</skos:prefLabel>
+    <skos:altLabel xml:lang="en">BC3</skos:altLabel>
+    <skos:definition xml:lang="en">Base registries are the cornerstone of European public service delivery. A base
+      registry is a trusted and authoritative source of information which can and should be digitally reused by others,
+      where one organisation is responsible and accountable for the collection, use, updating and preservation of
+      information.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Model"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/BC4">
+    <skos:prefLabel xml:lang="en">Basic Component 4: Open data</skos:prefLabel>
+    <skos:altLabel xml:lang="en">BC4</skos:altLabel>
+    <skos:definition xml:lang="en">The Directive on the reuse of public sector information provides a common legal
+      framework for reuse of public sector data. The focus is on releasing machine-readable data for use by others to
+      stimulate transparency, fair competition, innovation and a data-driven economy. To ensure a level playing field,
+      the opening and reuse of data must be non-discriminatory, meaning that data must be interoperable so that can be
+      found, discovered and processed.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Model"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/BC5">
+    <skos:prefLabel xml:lang="en">Basic Component 5: Catalogues</skos:prefLabel>
+    <skos:altLabel xml:lang="en">BC5</skos:altLabel>
+    <skos:definition xml:lang="en">Catalogues help others to find reusable resources (e.g. services, data, software,
+      data models). Various types of catalogue exist, e.g. directories of services, libraries of software components,
+      open data portals, registries of base registries, metadata catalogues, catalogues of standards, specifications and
+      guidelines. Commonly agreed descriptions of the services, data, registries and interoperable solutions published
+      in catalogues are needed to enable interoperability between catalogues.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Model"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/BC6">
+    <skos:prefLabel xml:lang="en">Basic Component 6: External information sources and services</skos:prefLabel>
+    <skos:altLabel xml:lang="en">BC6</skos:altLabel>
+    <skos:definition xml:lang="en">Public administrations need to exploit services delivered outside their
+      organisational boundaries by third parties, such as payment services provided by financial institutions or
+      connectivity services provided by telecommunications providers. They need also to exploit external information
+      sources such as open data and data from international organisations, chambers of commerce, etc. Moreover, useful
+      data can be collected through the Internet of Things (e.g. sensors) and social web applications.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Model"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/BC7">
+    <skos:prefLabel xml:lang="en">Basic Component 7: Security and privacy</skos:prefLabel>
+    <skos:altLabel xml:lang="en">BC7</skos:altLabel>
+    <skos:definition xml:lang="en">Security and privacy are primary concerns in the provision of public services.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Model"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec1">
+    <skos:prefLabel xml:lang="en">Recommendation 1</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec1</skos:altLabel>
+    <skos:definition xml:lang="en">Ensure that national interoperability frameworks and interoperability strategies are
+      aligned with the EIF and, if needed, tailor and extend them to address the national context and needs.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP1"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec2">
+    <skos:prefLabel xml:lang="en">Recommendation 2</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec2</skos:altLabel>
+    <skos:definition xml:lang="en">Publish the data you own as open data unless certain restrictions apply.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP2"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec3">
+    <skos:prefLabel xml:lang="en">Recommendation 3</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec3</skos:altLabel>
+    <skos:definition xml:lang="en">Ensure a level playing field for open source software and demonstrate active and fair
+      consideration of using open source software, taking into account the total cost of ownership of the solution.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP2"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec4">
+    <skos:prefLabel xml:lang="en">Recommendation 4</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec4</skos:altLabel>
+    <skos:definition xml:lang="en">Give preference to open specifications, taking due account of the coverage of
+      functional needs, maturity and market support and innovation.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP2"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec5">
+    <skos:prefLabel xml:lang="en">Recommendation 5</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec5</skos:altLabel>
+    <skos:definition xml:lang="en">Ensure internal visibility and provide external interfaces for European public
+      services.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP3"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec6">
+    <skos:prefLabel xml:lang="en">Recommendation 6</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec6</skos:altLabel>
+    <skos:definition xml:lang="en">Reuse and share solutions, and cooperate in the development of joint solutions when
+      implementing European public services.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP4"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec7">
+    <skos:prefLabel xml:lang="en">Recommendation 7</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec7</skos:altLabel>
+    <skos:definition xml:lang="en">Reuse and share information and data when implementing European public services,
+      unless certain privacy or confidentiality restrictions apply.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP4"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec8">
+    <skos:prefLabel xml:lang="en">Recommendation 8</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec8</skos:altLabel>
+    <skos:definition xml:lang="en">Do not impose any technological solutions on citizens, businesses and other
+      administrations that are technology-specific or disproportionate to their real needs..
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP5"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec9">
+    <skos:prefLabel xml:lang="en">Recommendation 9</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec9</skos:altLabel>
+    <skos:definition xml:lang="en">Ensure data portability, namely that data is easily transferable between systems and
+      applications supporting the implementation and evolution of European public services without unjustified
+      restrictions, if legally possible.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP5"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec10">
+    <skos:prefLabel xml:lang="en">Recommendation 10</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec10</skos:altLabel>
+    <skos:definition xml:lang="en">Use multiple channels to provide the European public service, to ensure that users
+      can select the channel that best suits their needs.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP6"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec11">
+    <skos:prefLabel xml:lang="en">Recommendation 11</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec11</skos:altLabel>
+    <skos:definition xml:lang="en">Provide a single point of contact in order to hide internal administrative complexity
+      and facilitate users’ access to European public services.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP6"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec12">
+    <skos:prefLabel xml:lang="en">Recommendation 12</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec12</skos:altLabel>
+    <skos:definition xml:lang="en">Put in place mechanisms to involve users in analysis, design, assessment and further
+      development of European public services.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP6"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec13">
+    <skos:prefLabel xml:lang="en">Recommendation 13</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec13</skos:altLabel>
+    <skos:definition xml:lang="en">As far as possible under the legislation in force, ask users of European public
+      services once-only and relevant-only information.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP6"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec14">
+    <skos:prefLabel xml:lang="en">Recommendation 14</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec14</skos:altLabel>
+    <skos:definition xml:lang="en">Ensure that all European public services are accessible to all citizens, including
+      persons with disabilities, the elderly and other disadvantaged groups. For digital public services, public
+      administrations should comply with e-accessibility specifications that are widely recognised at European or
+      international level.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP7"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec15">
+    <skos:prefLabel xml:lang="en">Recommendation 15</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec15</skos:altLabel>
+    <skos:definition xml:lang="en">Define a common security and privacy framework and establish processes for public
+      services to ensure secure and trustworthy data exchange between public administrations and in interactions with
+      citizens and businesses
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP8"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec16">
+    <skos:prefLabel xml:lang="en">Recommendation 16</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec16</skos:altLabel>
+    <skos:definition xml:lang="en">Use information systems and technical architectures that cater for multilingualism
+      when establishing a European public service. Decide on the level of multilingualism support based on the needs of
+      the expected users.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP9"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec17">
+    <skos:prefLabel xml:lang="en">Recommendation 17</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec17</skos:altLabel>
+    <skos:definition xml:lang="en">Simplify processes and use digital channels whenever appropriate for the delivery of
+      European public services, to respond promptly and with high quality to users’ requests and reduce the
+      administrative burden on public administrations, businesses and citizens.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP10"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec18">
+    <skos:prefLabel xml:lang="en">Recommendation 18</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec18</skos:altLabel>
+    <skos:definition xml:lang="en">Formulate a long-term preservation policy for information related to European public
+      services and especially for information that is exchanged across borders.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP11"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec19">
+    <skos:prefLabel xml:lang="en">Recommendation 19</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec19</skos:altLabel>
+    <skos:definition xml:lang="en">Evaluate the effectiveness and efficiency of different interoperability solutions and
+      technological options considering user needs, proportionality and balance between costs and benefits.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP12"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec20">
+    <skos:prefLabel xml:lang="en">Recommendation 20</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec20</skos:altLabel>
+    <skos:definition xml:lang="en">Ensure holistic governance of interoperability activities across administrative
+      levels and sectors.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec21">
+    <skos:prefLabel xml:lang="en">Recommendation 21</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec21</skos:altLabel>
+    <skos:definition xml:lang="en">Put in place processes to select relevant standards and specifications, evaluate
+      them, monitor their implementation, check compliance and test their interoperability.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec22">
+    <skos:prefLabel xml:lang="en">Recommendation 22</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec22</skos:altLabel>
+    <skos:definition xml:lang="en">Use a structured, transparent, objective and common approach to assessing and
+      selecting standards and specifications. Take into account relevant EU recommendations and seek to make the
+      approach consistent across borders.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec23">
+    <skos:prefLabel xml:lang="en">Recommendation 23</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec23</skos:altLabel>
+    <skos:definition xml:lang="en">Consult relevant catalogues of standards, specifications and guidelines at national
+      and EU level, in accordance with your NIF and relevant DIFs, when procuring and developing ICT solutions.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec24">
+    <skos:prefLabel xml:lang="en">Recommendation 24</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec24</skos:altLabel>
+    <skos:definition xml:lang="en">Actively participate in standardisation work relevant to your needs to ensure your
+      requirements are met.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec25">
+    <skos:prefLabel xml:lang="en">Recommendation 25</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec25</skos:altLabel>
+    <skos:definition xml:lang="en">Ensure interoperability and coordination over time when operating and delivering
+      integrated public services by putting in place the necessary governance structure.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL2"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec26">
+    <skos:prefLabel xml:lang="en">Recommendation 26</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec26</skos:altLabel>
+    <skos:definition xml:lang="en">Establish interoperability agreements in all layers, complemented by operational
+      agreements and change management procedures.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL2"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec27">
+    <skos:prefLabel xml:lang="en">Recommendation 27</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec27</skos:altLabel>
+    <skos:definition xml:lang="en">Ensure that legislation is screened by means of ‘interoperability checks’, to
+      identify any barriers to interoperability. When drafting legislation to establish a European public service, seek
+      to make it consistent with relevant legislation, perform a ‘digital check’ and consider data protection
+      requirementss.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL3"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec28">
+    <skos:prefLabel xml:lang="en">Recommendation 28</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec28</skos:altLabel>
+    <skos:definition xml:lang="en">Document your business processes using commonly accepted modelling techniques and
+      agree on how these processes should be aligned to deliver a European public service.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL4"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec29">
+    <skos:prefLabel xml:lang="en">Recommendation 29</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec29</skos:altLabel>
+    <skos:definition xml:lang="en">Clarify and formalise your organisational relationships for establishing and
+      operating European public services.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL4"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec30">
+    <skos:prefLabel xml:lang="en">Recommendation 30</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec30</skos:altLabel>
+    <skos:definition xml:lang="en">Perceive data and information as a public asset that should be appropriately
+      generated, collected, managed, shared, protected and preserved.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL5"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec31">
+    <skos:prefLabel xml:lang="en">Recommendation 31</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec31</skos:altLabel>
+    <skos:definition xml:lang="en">Put in place an information management strategy at the highest possible level to
+      avoid fragmentation and duplication. Management of metadata, master data and reference data should be prioritised.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL5"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec32">
+    <skos:prefLabel xml:lang="en">Recommendation 32</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec32</skos:altLabel>
+    <skos:definition xml:lang="en">Support the establishment of sector-specific and cross-sectoral communities that aim
+      to create open information specifications and encourage relevant communities to share their results on national
+      and European platforms.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL5"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec33">
+    <skos:prefLabel xml:lang="en">Recommendation 33</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec33</skos:altLabel>
+    <skos:definition xml:lang="en">Use open specifications, where available, to ensure technical interoperability when
+      establishing European public services.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL6"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec34">
+    <skos:prefLabel xml:lang="en">Recommendation 34</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec34</skos:altLabel>
+    <skos:definition xml:lang="en">Use the conceptual model for European public services to design new services or
+      reengineer existing ones and reuse, whenever possible, existing service and data components.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/Model"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec35">
+    <skos:prefLabel xml:lang="en">Recommendation 35</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec35</skos:altLabel>
+    <skos:definition xml:lang="en">Decide on a common scheme for interconnecting loosely coupled service components and
+      put in place and maintain the necessary infrastructure for establishing and maintaining European public services.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/Model"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec36">
+    <skos:prefLabel xml:lang="en">Recommendation 36</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec36</skos:altLabel>
+    <skos:definition xml:lang="en">Develop a shared infrastructure of reusable services and information sources that can
+      be used by all public administrations.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC2"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec37">
+    <skos:prefLabel xml:lang="en">Recommendation 37</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec37</skos:altLabel>
+    <skos:definition xml:lang="en">Make authoritative sources of information available to others while implementing
+      access and control mechanisms to ensure security and privacy in accordance with the relevant legislation.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC3"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec38">
+    <skos:prefLabel xml:lang="en">Recommendation 38</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec38</skos:altLabel>
+    <skos:definition xml:lang="en">Develop interfaces with base registries and authoritative sources of information,
+      publish the semantic and technical means and documentation needed for others to connect and reuse available
+      information.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC3"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec39">
+    <skos:prefLabel xml:lang="en">Recommendation 39</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec39</skos:altLabel>
+    <skos:definition xml:lang="en">Match each base registry with appropriate metadata including the description of its
+      content, service assurance and responsibilities, the type of master data it keeps, conditions of access and the
+      relevant licences, terminology, a glossary, and information about any master data it uses from other base
+      registries.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC3"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec40">
+    <skos:prefLabel xml:lang="en">Recommendation 40</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec40</skos:altLabel>
+    <skos:definition xml:lang="en">Create and follow data quality assurance plans for base registries and related master
+      data.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC3"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec41">
+    <skos:prefLabel xml:lang="en">Recommendation 41</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec41</skos:altLabel>
+    <skos:definition xml:lang="en">Establish procedures and processes to integrate the opening of data in your common
+      business processes, working routines, and in the development of new information systems.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC4"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec42">
+    <skos:prefLabel xml:lang="en">Recommendation 42</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec42</skos:altLabel>
+    <skos:definition xml:lang="en">Publish open data in machine-readable, non-proprietary formats. Ensure that open data
+      is accompanied by high quality, machine-readable metadata in non-proprietary formats, including a description of
+      their content, the way data is collected and its level of quality and the licence terms under which it is made
+      available. The use of common vocabularies for expressing metadata is recommended.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC4"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec43">
+    <skos:prefLabel xml:lang="en">Recommendation 43</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec43</skos:altLabel>
+    <skos:definition xml:lang="en">Communicate clearly the right to access and reuse open data. The legal regimes for
+      facilitating access and reuse, such as licences, should be standardised as much as possible.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC4"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec44">
+    <skos:prefLabel xml:lang="en">Recommendation 44</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec44</skos:altLabel>
+    <skos:definition xml:lang="en">Put in place catalogues of public services, public data, and interoperability
+      solutions and use common models for describing them.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC5"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec45">
+    <skos:prefLabel xml:lang="en">Recommendation 45</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec45</skos:altLabel>
+    <skos:definition xml:lang="en">Where useful and feasible to do so, use external information sources and services
+      while developing European public services.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC6"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec46">
+    <skos:prefLabel xml:lang="en">Recommendation 46</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec46</skos:altLabel>
+    <skos:definition xml:lang="en">Consider the specific security and privacy requirements and identify measures for the
+      provision of each public service according to risk management plans.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC7"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/Rec47">
+    <skos:prefLabel xml:lang="en">Recommendation 47</skos:prefLabel>
+    <skos:altLabel xml:lang="en">Rec47</skos:altLabel>
+    <skos:definition xml:lang="en">Use trust services according to the Regulation on eID and Trust Services as
+      mechanisms that ensure secure and protected data exchange in public services.
+    </skos:definition>
+    <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC7"/>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif"/>
+  </skos:Concept>
+
+</rdf:RDF>
