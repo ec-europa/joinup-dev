@@ -5,10 +5,11 @@ dependencies:
   config:
     - search_api.index.published
   module:
+    - joinup_core
     - search_api
     - taxonomy
-id: taxonomy_related_entities
-label: 'Taxonomy related entities'
+id: eif_related_entities
+label: 'EIF related entities'
 module: views
 description: ''
 tag: ''
@@ -65,7 +66,11 @@ display:
             last: 'Last »'
           quantity: 9
       style:
-        type: default
+        type: tiles
+        options:
+          row_class: ''
+          default_row_class: true
+          uses_fields: false
       row:
         type: search_api
         options:
