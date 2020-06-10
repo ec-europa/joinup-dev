@@ -4,13 +4,14 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.view_mode_featured
-    - field.field.node.custom_page.body
     - field.field.node.custom_page.field_attachment
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.field_custom_page_logo
+    - field.field.node.custom_page.field_paragraphs_body
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
+    - entity_reference_revisions
     - smart_trim
     - template_suggestion
     - user
@@ -21,26 +22,17 @@ targetEntityType: node
 bundle: custom_page
 mode: view_mode_featured
 content:
-  body:
-    label: hidden
-    type: smart_trim
+  field_paragraphs_body:
+    type: entity_reference_revisions_entity_view
     weight: 0
+    region: content
+    label: hidden
     settings:
-      trim_length: 200
-      trim_type: chars
-      trim_suffix: …
-      more_link: false
-      more_text: More
-      summary_handler: trim
-      trim_options:
-        text: false
-      more_class: more-link
-      wrap_output: false
-      wrap_class: trimmed
+      view_mode: preview
+      link: ''
     third_party_settings:
       template_suggestion:
         template_suggestion: ''
-    region: content
 hidden:
   field_attachment: true
   field_cp_content_listing: true

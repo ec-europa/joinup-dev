@@ -1,10 +1,10 @@
-uuid: 3f4c513b-f3d9-4d37-919a-375b5f8d8cb6
+uuid: dba0ba68-64b9-40e0-85ce-19e540df8384
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.body
-    - node.type.custom_page
+    - field.storage.paragraph.field_body
+    - paragraphs.paragraphs_type.simple_paragraph
   module:
     - allowed_formats
     - text
@@ -19,19 +19,15 @@ third_party_settings:
     simple_text: '0'
     full_html: '0'
     plain_text: '0'
-_core:
-  default_config_hash: MYE4qG23Xk8I6KYd15pk0PKdvWfDFQ0PNzZbw7m8UFk
-id: node.custom_page.body
-field_name: body
-entity_type: node
-bundle: custom_page
+id: paragraph.simple_paragraph.field_body
+field_name: field_body
+entity_type: paragraph
+bundle: simple_paragraph
 label: Body
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings:
-  display_summary: false
-  required_summary: false
-field_type: text_with_summary
+settings: {  }
+field_type: text_long

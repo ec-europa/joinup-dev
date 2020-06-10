@@ -37,6 +37,7 @@ module:
   email_registration: 0
   embed_block: 0
   entity_legal: 0
+  entity_reference_revisions: 0
   error_page: 0
   eu_sic: 0
   eupl: 0
@@ -77,6 +78,7 @@ module:
   joinup_news: 0
   joinup_newsletter: 0
   joinup_notification: 0
+  joinup_paragraphs: 0
   joinup_rdf: 0
   joinup_rss: 0
   joinup_search: 0
@@ -88,6 +90,7 @@ module:
   joinup_validation: 0
   joinup_video: 0
   joinup_workflow: 0
+  json_field: 0
   language: 0
   layout_discovery: 0
   link: 0
@@ -118,6 +121,7 @@ module:
   options: 0
   owner: 0
   page_cache: 0
+  paragraphs_type_permissions: 0
   password_policy: 0
   password_policy_character_types: 0
   password_policy_characters: 0
@@ -148,6 +152,7 @@ module:
   serialization: 0
   simple_sitemap: 0
   simplenews: 0
+  site_alert: 0
   smart_trim: 0
   social_media_links: 0
   social_media_links_field: 0
@@ -182,6 +187,7 @@ module:
   content_translation: 10
   externalauth: 10
   views: 10
+  paragraphs: 11
   publication_date: 99
   joinup: 1000
   joinup_debug: 1001

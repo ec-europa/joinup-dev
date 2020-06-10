@@ -1,0 +1,21 @@
+uuid: 0b97349d-89b9-4537-9496-639a0d3e769d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_json
+    - paragraphs.paragraphs_type.json_map
+  module:
+    - json_field
+id: paragraph.json_map.field_json
+field_name: field_json
+entity_type: paragraph
+bundle: json_map
+label: JSON
+description: 'Enter a JSON serialized string representing the map.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json
