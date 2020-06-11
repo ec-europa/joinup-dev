@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7fe25c868e82f2a05094d9a3ffd97c8b",
+    "content-hash": "314dd1bb4531862f7cd11fda670eefe5",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -7294,33 +7294,29 @@
         },
         {
             "name": "drupal/simplenews",
-            "version": "1.0.0-beta1",
+            "version": "2.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/simplenews.git",
-                "reference": "8.x-1.0-beta1"
+                "reference": "8.x-2.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/simplenews-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "510f567945e0923b0c487d453fc646ae8e7f459e"
+                "url": "https://ftp.drupal.org/files/projects/simplenews-8.x-2.0-beta1.zip",
+                "reference": "8.x-2.0-beta1",
+                "shasum": "9c4587b32e99bf885590c54f53ab1a4aa70b92bb"
             },
             "require": {
-                "drupal/core": "*"
+                "drupal/core": "^8.8 || ^9"
             },
             "require-dev": {
-                "drupal/monitoring": "*",
-                "drupal/simplenews_scheduler": "*"
+                "drupal/monitoring": "*"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1556010481",
+                    "version": "8.x-2.0-beta1",
+                    "datestamp": "1580749447",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
