@@ -52,6 +52,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Moderation
+      region: content
     group_owner_contact_information:
       children:
         - field_ar_owner
@@ -69,6 +70,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Owner/Contact Information'
+      region: content
 id: rdf_entity.collection.about
 targetEntityType: rdf_entity
 bundle: collection

@@ -35,7 +35,7 @@ dependencies:
     - field_group
     - file
     - image
-    - joinup_core
+    - joinup_workflow
     - link
     - text
 third_party_settings:
@@ -54,6 +54,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Event Location'
+      region: content
 id: node.event.default
 targetEntityType: node
 bundle: event
