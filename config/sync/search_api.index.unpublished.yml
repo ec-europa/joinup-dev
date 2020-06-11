@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_event_agenda
+    - field.storage.node.field_paragraphs_body
+    - field.storage.paragraph.field_body
     - field.storage.node.body
     - field.storage.node.field_event_date
     - field.storage.node.field_news_headline
@@ -34,6 +36,7 @@ dependencies:
     - search_api.server.solr_unpublished
   module:
     - node
+    - paragraphs
     - rdf_entity
     - user
     - search_api
@@ -356,6 +359,17 @@ field_settings:
       fields:
         - 'entity:node/field_policy_domain'
         - 'entity:rdf_entity/field_policy_domain'
+  processed:
+    label: 'Body » Paragraph » Body » Processed text'
+    datasource_id: 'entity:node'
+    property_path: 'field_paragraphs_body:entity:field_body:processed'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_paragraphs_body
+        - field.storage.paragraph.field_body
+      module:
+        - paragraphs
   rdf_changed:
     label: Changed
     datasource_id: 'entity:rdf_entity'
