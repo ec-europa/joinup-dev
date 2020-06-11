@@ -2,8 +2,7 @@ uuid: 6c159588-ab44-442f-9538-e3eb731ad411
 langcode: en
 status: true
 dependencies:
-  config:
-    - field.field.simplenews_subscriber.simplenews_subscriber.subscriptions
+  config: {  }
   module:
     - simplenews
 _core:
