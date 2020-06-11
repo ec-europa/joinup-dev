@@ -65,14 +65,4 @@
         <exec command="./vendor/bin/run dev:check-deprecated-code" checkreturn="true" passthru="true" />
     </target>
 
-    <!-- Non-blocking test to check for deprecated code warnings in contributed modules. -->
-    <target name="check-deprecated-code-contrib">
-        <!--
-            A failure in a non-blocking test on CPHP causes the commit in Github to be marked as failed.
-            Do not check the return value so this will be always green. We will have to manually check
-            the result.
-        -->
-        <exec command="./vendor/bin/run dev:check-deprecated-code-contrib" checkreturn="false" passthru="true" />
-    </target>
-
 </project>
