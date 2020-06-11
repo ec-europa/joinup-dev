@@ -1,0 +1,17 @@
+name: 'Joinup paragraphs'
+type: module
+description: 'Contains settings, installation config and functionality related to paragraphs needed in Joinup.'
+core: 8.x
+package: Joinup
+
+dependencies:
+  - json_field:json_field
+  - paragraphs:paragraphs_type_permissions
+
+config_devel:
+  optional:
+    - core.entity_form_display.paragraph.simple_paragraph.default
+    - core.entity_view_display.paragraph.simple_paragraph.default
+    - field.field.paragraph.simple_paragraph.field_body
+    - field.storage.paragraph.field_body
+    - paragraphs.paragraphs_type.simple_paragraph

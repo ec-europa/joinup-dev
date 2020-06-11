@@ -2,13 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.custom_page.body
     - field.field.node.custom_page.field_attachment
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.field_custom_page_logo
+    - field.field.node.custom_page.field_paragraphs_body
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
+    - entity_reference_revisions
     - field_group
     - file
     - link
@@ -40,13 +41,6 @@ targetEntityType: node
 bundle: custom_page
 mode: default
 content:
-  body:
-    label: hidden
-    type: text_default
-    weight: 1
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_attachment:
     weight: 51
     label: hidden
@@ -63,6 +57,15 @@ content:
     region: content
     label: hidden
     settings: {  }
+    third_party_settings: {  }
+  field_paragraphs_body:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
     third_party_settings: {  }
   links:
     weight: 0
@@ -90,3 +93,4 @@ hidden:
   field_custom_page_logo: true
   langcode: true
   og_audience: true
+  published_at: true
