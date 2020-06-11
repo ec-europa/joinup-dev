@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_event_agenda
+    - field.storage.node.field_paragraphs_body
+    - field.storage.paragraph.field_body
     - field.storage.node.body
     - field.storage.node.field_event_date
     - field.storage.node.field_news_headline
@@ -13,7 +15,15 @@ dependencies:
     - field.storage.node.field_short_title
     - field.storage.meta_entity.count
     - field.storage.rdf_entity.field_ar_abstract
+    - field.storage.rdf_entity.field_isr_contact_information
+    - field.storage.rdf_entity.field_ci_name
     - field.storage.rdf_entity.field_is_contact_information
+    - field.storage.rdf_entity.field_licence_spdx_licence
+    - field.storage.rdf_entity.field_licence_description
+    - field.storage.rdf_entity.field_ad_description
+    - field.storage.rdf_entity.field_is_description
+    - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_ar_description
     - field.storage.rdf_entity.field_ci_name
     - field.storage.rdf_entity.field_isr_contact_information
     - field.storage.rdf_entity.field_licence_spdx_licence
@@ -35,6 +45,7 @@ dependencies:
     - search_api.server.solr_published
   module:
     - node
+    - paragraphs
     - publication_date
     - meta_entity
     - rdf_entity
@@ -380,6 +391,17 @@ field_settings:
       fields:
         - 'entity:node/field_policy_domain'
         - 'entity:rdf_entity/field_policy_domain'
+  processed:
+    label: 'Body » Paragraph » Body » Processed text'
+    datasource_id: 'entity:node'
+    property_path: 'field_paragraphs_body:entity:field_body:processed'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_paragraphs_body
+        - field.storage.paragraph.field_body
+      module:
+        - paragraphs
   published_at:
     label: 'Published on'
     datasource_id: 'entity:node'

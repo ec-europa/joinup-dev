@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 third_party_settings:
   rdf_taxonomy:
-    locked: false
+    locked: true
 name: 'EIF References'
 vid: eif_references
 description: 'Reference terms for the EIF Toolbox.'

@@ -4,3 +4,4 @@ display_eu_institutions_links: true
 override_page_lang: ''
 _core:
   default_config_hash: HJKRLZYv8UUsI3vEcFMfo1ySREdFv1ERM1kjHptDhdI
+sticky: false

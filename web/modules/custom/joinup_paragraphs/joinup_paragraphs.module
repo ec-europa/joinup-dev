@@ -1,0 +1,110 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for Joinup Paragraphs module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\og\Og;
+use Drupal\paragraphs\ParagraphInterface;
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function joinup_paragraphs_module_implements_alter(array &$implementations, string $hook): void {
+  if (in_array($hook, ['paragraph_access', 'paragraph_create_access'], TRUE)) {
+    // The default paragraphs_type_permissions_paragraph_access() and
+    // paragraphs_type_permissions_paragraph_create_access() are too strict,
+    // preventing us to add logic for OG roles, when the access is forbidden. We
+    // replace the 'paragraphs_type_permissions' access hook with ours, to allow
+    // group facilitators to create, update or delete paragraphs that are,
+    // normally, not editable considering their site-wide roles.
+    // @see paragraphs_type_permissions_paragraph_access()
+    // @see paragraphs_type_permissions_paragraph_create_access()
+    // @see joinup_paragraphs_paragraph_access()
+    // @see joinup_paragraphs_paragraph_create_access()
+    unset($implementations['paragraphs_type_permissions']);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function joinup_paragraphs_paragraph_access(ParagraphInterface $paragraph, string $operation, AccountInterface $account): AccessResultInterface {
+  // Call the 'paragraphs_type_permissions' module access hook.
+  $access_result = paragraphs_type_permissions_paragraph_access($paragraph, $operation, $account);
+  $permission = "{$operation} paragraph content {$paragraph->bundle()}";
+  return joinup_paragraphs_get_access($access_result, $permission, $account, $paragraph);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_create_access().
+ */
+function joinup_paragraphs_paragraph_create_access(AccountInterface $account, array $context, string $bundle): AccessResultInterface {
+  // Call the 'paragraphs_type_permissions' module create access hook.
+  $access_result = paragraphs_type_permissions_paragraph_create_access($account, $context, $bundle);
+  return joinup_paragraphs_get_access($access_result, "create paragraph content {$bundle}", $account);
+}
+
+/**
+ * Provides a helpers function to allow a OG aware access check for paragraphs.
+ *
+ * @param \Drupal\Core\Access\AccessResultInterface $access_result
+ *   The access result computed by the 'paragraphs_type_permissions' module,
+ *   which we've just replaced.
+ * @param string $permission
+ *   The paragraphs permission.
+ * @param \Drupal\Core\Session\AccountInterface $account
+ *   The account for which the acees is checked.
+ * @param \Drupal\paragraphs\ParagraphInterface|null $paragraph
+ *   The paragraph entity, if already exists.
+ *
+ * @return \Drupal\Core\Access\AccessResultInterface
+ *   An access result that is OG aware.
+ *
+ * @throws \Drupal\joinup_group\Exception\MissingGroupException
+ *   When the paragraph parent entity is missing a group.
+ */
+function joinup_paragraphs_get_access(AccessResultInterface $access_result, string $permission, AccountInterface $account, ?ParagraphInterface $paragraph = NULL) {
+  // We only act if the access has been explicitly forbidden by the hook
+  // implementation of the 'paragraphs_type_permissions' module.
+  if (!$access_result->isForbidden()) {
+    return $access_result;
+  }
+
+  // Try to determine the group of the parent entity.
+  $group = NULL;
+  /** @var \Drupal\joinup_group\Entity\GroupContentInterface $parent_entity */
+  if ($paragraph && ($parent_entity = $paragraph->getParentEntity())) {
+    // If there is a saved parent entity, we try to determine the group.
+    if (Og::isGroupContent($parent_entity->getEntityTypeId(), $parent_entity->bundle())) {
+      $group = $parent_entity->getGroup();
+    }
+  }
+
+  // A group could not be determined, most likely because the parent entity
+  // doesn't exist yet. Try to determine a group from the OG context.
+  if (!$group) {
+    /** @var \Drupal\og\OgContextInterface $og_context */
+    $og_context = \Drupal::service('og.context');
+    $group = $og_context->getGroup();
+  }
+
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+
+  if ($membership = $membership_manager->getMembership($group, $account->id())) {
+    if ($membership->hasPermission($permission)) {
+      $access_result = AccessResult::neutral()
+        ->addCacheableDependency($membership)
+        ->cachePerPermissions();
+    }
+  }
+
+  return $access_result;
+}
