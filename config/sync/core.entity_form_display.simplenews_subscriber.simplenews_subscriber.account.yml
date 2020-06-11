@@ -12,13 +12,7 @@ id: simplenews_subscriber.simplenews_subscriber.account
 targetEntityType: simplenews_subscriber
 bundle: simplenews_subscriber
 mode: account
-content:
-  subscriptions:
-    type: simplenews_subscription_select
-    weight: 0
-    settings: {  }
-    third_party_settings: {  }
-    region: content
+content: {  }
 hidden:
   mail: true
   uid: true

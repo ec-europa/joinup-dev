@@ -12,6 +12,7 @@ from_name: Joinup
 subject: '[[simplenews-newsletter:name]] [node:title]'
 from_address: admin@example.com
 hyperlinks: true
+allowed_handlers: {  }
 new_account: none
 opt_inout: double
 weight: 0
