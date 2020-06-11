@@ -61,5 +61,13 @@
     </target>
 
     <!-- Checks to execute during build phase to exit early in case of easily preventable errors. -->
-    <target name="sanity-check" depends="check-deprecated-code"/>
+    <target name="sanity-check">
+        <exec command="./vendor/bin/run dev:check-deprecated-code" checkreturn="true" passthru="true" />
+    </target>
+
+    <!-- Non-blocking test to check for deprecated code warnings in contributed modules. -->
+    <target name="check-deprecated-code-contrib">
+        <exec command="./vendor/bin/run dev:check-deprecated-code-contrib" checkreturn="true" passthru="true" />
+    </target>
+
 </project>
