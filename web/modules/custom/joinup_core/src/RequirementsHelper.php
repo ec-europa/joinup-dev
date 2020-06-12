@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_core;
 
 use Drupal\Core\Database\Connection;
-use Drupal\Driver\Database\joinup_sparql\Connection as SparqlConnection;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 
 /**
  * Implements helper methods related to the requirements.
@@ -27,14 +27,14 @@ class RequirementsHelper {
   protected $sparqlConnection;
 
   /**
-   * RequirementsHelper constructor.
+   * Constructs a new RequirementsHelper.
    *
    * @param \Drupal\Core\Database\Connection $connection
    *   The SQL connection class for the primary database storage.
-   * @param \Drupal\Driver\Database\joinup_sparql\Connection $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL connection class.
    */
-  public function __construct(Connection $connection, SparqlConnection $sparql) {
+  public function __construct(Connection $connection, ConnectionInterface $sparql) {
     $this->sqlConnection = $connection;
     $this->sparqlConnection = $sparql;
   }

@@ -10,14 +10,14 @@ declare(strict_types = 1);
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
-use Drupal\comment\CommentInterface;
-use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
+use Drupal\User\Entity\User;
+use Drupal\comment\CommentInterface;
+use Drupal\comment\Entity\Comment;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
@@ -41,8 +41,8 @@ use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\search_api\Entity\Server;
-use Drupal\User\Entity\User;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -677,6 +677,17 @@ class JoinupSubContext extends DrupalSubContextBase {
       }
     }
 
+    if (isset($node->field_paragraphs_body)) {
+      $paragraph = Paragraph::create([
+        'type' => 'simple_paragraph',
+        'field_body' => $node->field_paragraphs_body,
+      ]);
+      $paragraph->save();
+      $node->{"field_paragraphs_body:target_id"} = $paragraph->id();
+      $node->{"field_paragraphs_body:target_revision_id"} = $paragraph->getRevisionId();
+      unset($node->field_paragraphs_body);
+    }
+
     // Replace the human-readable values for multiple fields.
     self::convertObjectPropertyValues($node, 'pinned', [
       'yes' => 1,
@@ -708,6 +719,7 @@ class JoinupSubContext extends DrupalSubContextBase {
       'custom_page' => [
         'attachments' => 'field_attachment',
         'logo' => 'field_custom_page_logo',
+        'body' => 'field_paragraphs_body',
       ],
       'discussion' => [
         'attachments' => 'field_attachment',
@@ -725,7 +737,6 @@ class JoinupSubContext extends DrupalSubContextBase {
         'short title' => 'field_short_title',
         'spatial coverage' => 'field_document_spatial_coverage',
         'state' => 'field_state',
-        'document publication date' => 'field_document_publication_date',
         'publication date' => 'published_at',
       ],
       'event' => [
@@ -988,9 +999,12 @@ class JoinupSubContext extends DrupalSubContextBase {
     $entity_type = self::translateEntityTypeAlias($entity_type);
     $entity = $this->getEntityByLabel($entity_type, $title);
     $this->getEntityStateField($entity)->set('value', $state);
-    if ($entity instanceof RevisionableInterface) {
+
+    // Only create a new revision if the entity type supports it.
+    if ($entity->getEntityType()->isRevisionable()) {
       $entity->setNewRevision(TRUE);
     }
+
     $entity->save();
   }
 
@@ -1951,6 +1965,26 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
+   * Asserts that a certain link points to the given URL.
+   *
+   * @param string $title
+   *   The link title.
+   * @param string $link
+   *   The link href attribute link.
+   *
+   * @throws \Exception
+   *   Thrown when the link is not in the page or the target href is not exactly
+   *   the expected one.
+   *
+   * @Then the :title link should point to :link
+   */
+  public function assertLinkPointsToUrl(string $title, string $link): void {
+    $link_element = $this->getSession()->getPage()->findLink($title);
+    $href = $link_element->getAttribute('href');
+    Assert::assertEquals($href, $link);
+  }
+
+  /**
    * Forces a cleanup to run for og queue worker.
    *
    * Og enqueues items to be deleted instead of deleting them directly in order
@@ -2365,9 +2399,7 @@ JS;
     $found_tags_array = explode(';', $found_tags);
     $invalid_tags = array_intersect($format_tags, $found_tags_array);
     if (!empty($invalid_tags)) {
-      throw new \Exception($this->t('The following elements were found in the format list but should not: @found.', [
-        '@found' => implode(', ', $invalid_tags),
-      ]));
+      throw new \Exception(sprintf('The following elements were found in the format list but should not: %s.', implode(', ', $invalid_tags)));
     }
   }
 
@@ -2550,17 +2582,22 @@ JS;
    *   The position of the row in the table. First position starts at 1.
    * @param string $direction
    *   The direction to move the row to. One of "up", "down", "left", "right".
+   * @param string|null $region
+   *   (optional) Only search within a certain region for the given drag icon.
+   *   Default to the whole page.
    *
    * @throws \Exception
    *   Thrown when the table row with the given position cannot be found in the
    *   page.
    *
    * @Then I drag the table row at position :position( to the) :direction
+   * @Then I drag the table row in the :region region at position :position( to the) :direction
    */
-  public function findTableRowByPositionAndDragTowardsDirection(string $position, string $direction): void {
+  public function findTableRowByPositionAndDragTowardsDirection(string $position, string $direction, ?string $region = NULL): void {
     self::assertJavaScriptEnabledBrowser();
 
-    $row = $this->findDraggableTableRowByPosition((int) $position);
+    $region = empty($region) ? $this->getSession()->getPage() : $this->getRegion($region);
+    $row = $this->findDraggableTableRowByPosition((int) $position, $region);
     $this->dragTableRowTowardsDirection($row, $direction);
   }
 
@@ -2687,7 +2724,7 @@ JS;
    *   The button label.
    * @param string $status
    *   The expected status. Possible values are 'enabled' and 'disabled'.
-   * @param string $region
+   * @param string|null $region
    *   (optional) The region name. If left empty, the whole page will be used.
    *
    * @throws \InvalidArgumentException
@@ -2700,7 +2737,7 @@ JS;
    * @Then the :button button on the :region region should be :status
    * @Then the :button button should be :status
    */
-  public function assertButtonStatus(string $button, string $status, string $region = NULL): void {
+  public function assertButtonStatus(string $button, string $status, ?string $region = NULL): void {
     if (!in_array($status, ['enabled', 'disabled'])) {
       throw new InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
     }
@@ -2791,7 +2828,7 @@ JS;
     $elements = [];
 
     foreach ($this->getSelectorsMatchingElementAlias($alias) as $selector_tuple) {
-      list ($selector, $locator) = $selector_tuple;
+      [$selector, $locator] = $selector_tuple;
       $elements = array_merge($elements, $this->getSession()->getPage()->findAll($selector, $locator));
     }
 

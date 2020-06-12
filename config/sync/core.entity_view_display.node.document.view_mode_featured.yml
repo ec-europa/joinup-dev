@@ -22,9 +22,9 @@ dependencies:
     - node.type.document
   module:
     - file_url
-    - joinup
     - options
     - smart_trim
+    - template_suggestion
     - user
 _core:
   default_config_hash: KhChNXOH45ERRneGRlPr6AZmdrB2ScUM5d6GqtQLD4Y
@@ -50,7 +50,7 @@ content:
       wrap_output: false
       wrap_class: trimmed
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     region: content
   field_file:
@@ -69,7 +69,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: comma_separated
   field_type:
     type: list_default
@@ -78,7 +78,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
 hidden:
   field_comments: true

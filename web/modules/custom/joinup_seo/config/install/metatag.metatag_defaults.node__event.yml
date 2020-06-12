@@ -4,12 +4,16 @@ dependencies: {  }
 id: node__event
 label: 'Content: Event'
 tags:
-  schema_event_end_date: '[node:field_event_date:end_date:html_datetime]'
-  schema_event_url: '[node:event_url]'
-  schema_event_image: 'a:5:{s:5:"@type";s:11:"ImageObject";s:20:"representativeOfPage";s:4:"True";s:3:"url";s:34:"[node:field_event_logo:entity:url]";s:5:"width";s:29:"[node:field_event_logo:width]";s:6:"height";s:30:"[node:field_event_logo:height]";}'
-  schema_event_location: 'a:5:{s:5:"@type";s:5:"Place";s:4:"name";s:21:"[node:field_location]";s:3:"url";s:40:"[node:field_event_online_location:0:uri]";s:7:"address";a:2:{s:5:"@type";s:13:"PostalAddress";s:13:"streetAddress";s:21:"[node:field_location]";}s:3:"geo";a:3:{s:5:"@type";s:14:"GeoCoordinates";s:8:"latitude";s:34:"[node:field_event_coordinates:lat]";s:9:"longitude";s:34:"[node:field_event_coordinates:lon]";}}'
+  og_image_height: '[node:field_event_logo:height]'
+  og_image_width: '[node:field_event_logo:width]'
+  og_image: '[node:field_event_logo:entity:url]'
+  og_image_type: '[node:field_event_logo:entity:mime]'
   schema_event_id: '[node:event_url]'
-  schema_event_type: Event
+  schema_event_end_date: '[node:field_event_date:end_date:html_datetime]'
   schema_event_description: '[node:summary]'
-  schema_event_name: '[node:title]'
+  schema_event_url: '[node:event_url]'
+  schema_event_location: 'a:5:{s:5:"@type";s:5:"Place";s:4:"name";s:21:"[node:field_location]";s:3:"url";s:40:"[node:field_event_online_location:0:uri]";s:7:"address";a:2:{s:5:"@type";s:13:"PostalAddress";s:13:"streetAddress";s:21:"[node:field_location]";}s:3:"geo";a:3:{s:5:"@type";s:14:"GeoCoordinates";s:8:"latitude";s:34:"[node:field_event_coordinates:lat]";s:9:"longitude";s:34:"[node:field_event_coordinates:lon]";}}'
+  schema_event_image: 'a:5:{s:5:"@type";s:11:"ImageObject";s:20:"representativeOfPage";s:4:"True";s:3:"url";s:34:"[node:field_event_logo:entity:url]";s:5:"width";s:29:"[node:field_event_logo:width]";s:6:"height";s:30:"[node:field_event_logo:height]";}'
+  schema_event_type: Event
   schema_event_start_date: '[node:field_event_date:start_date:html_datetime]'
+  schema_event_name: '[node:title]'

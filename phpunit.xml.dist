@@ -5,7 +5,7 @@
  or your current system user. See core/tests/README.md and
  https://www.drupal.org/node/2116263 for details.
 -->
-<phpunit bootstrap="../vendor/weitzman/drupal-test-traits/src/bootstrap.php"
+<phpunit bootstrap="vendor/weitzman/drupal-test-traits/src/bootstrap.php"
          colors="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
@@ -24,8 +24,6 @@
     <env name="SIMPLETEST_DB" value=""/>
     <!-- Example SIMPLETEST_SPARQL_DB value: sparql://127.0.0.1:8890/ -->
     <env name="SIMPLETEST_SPARQL_DB" value=""/>
-    <!-- Example SIMPLETEST_LEGACY_DB value: mysql://username:password@localhost/d6_databasename -->
-    <env name="SIMPLETEST_LEGACY_DB" value=""/>
     <!-- Example BROWSERTEST_OUTPUT_DIRECTORY value: /path/to/webroot/sites/simpletest/browser_output -->
     <env name="BROWSERTEST_OUTPUT_DIRECTORY" value=""/>
     <!-- To have browsertest output use an alternative base URL. For example if
@@ -34,7 +32,7 @@
     -->
     <env name="BROWSERTEST_OUTPUT_BASE_URL" value=""/>
     <!-- To disable deprecation testing completely uncomment the next line. -->
-    <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
+    <!-- env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/ -->
     <!-- Example for changing the driver class for mink tests MINK_DRIVER_CLASS value: 'Drupal\FunctionalJavascriptTests\DrupalSelenium2Driver' -->
     <env name="MINK_DRIVER_CLASS" value=''/>
     <!-- Example for changing the driver args to mink tests MINK_DRIVER_ARGS value: '["http://127.0.0.1:8510"]' -->
@@ -50,26 +48,38 @@
     <env name="DTT_MINK_DRIVER_ARGS" value='["firefox", null, "http://localhost:4444/wd/hub"]'/>
   </php>
   <testsuites>
+    <testsuite name="unit">
+      <file>src/PhpUnit/JoinupUnitTestSuite.php</file>
+    </testsuite>
+    <testsuite name="kernel">
+      <file>src/PhpUnit/JoinupKernelTestSuite.php</file>
+    </testsuite>
+    <testsuite name="functional">
+      <file>src/PhpUnit/JoinupFunctionalTestSuite.php</file>
+    </testsuite>
+    <testsuite name="functional-javascript">
+      <file>src/PhpUnit/JoinupFunctionalJavascriptTestSuite.php</file>
+    </testsuite>
+    <testsuite name="existing-site">
+      <file>src/PhpUnit/JoinupExistingSiteTestSuite.php</file>
+    </testsuite>
+    <testsuite name="existing-site-javascript">
+      <file>src/PhpUnit/JoinupExistingSiteJavascriptTestSuite.php</file>
+    </testsuite>
   </testsuites>
   <listeners>
     <listener class="\Drupal\Tests\Listeners\DrupalListener">
     </listener>
     <!-- The Symfony deprecation listener has to come after the Drupal listener -->
-    <!--
-      This has been disabled until we have decided on an approach to tackle deprecated code.
-      Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5208
-      <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
-      </listener>
-    -->
+    <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
+    </listener>
   </listeners>
   <!-- Filter for coverage reports. -->
   <filter>
     <whitelist>
-      <directory>./core/includes</directory>
-      <directory>./core/lib</directory>
-      <directory>./core/modules</directory>
-      <directory>./modules</directory>
-      <directory>./sites</directory>
+      <directory>web/modules/custom</directory>
+      <directory>web/profiles</directory>
+      <directory>web/themes</directory>
       <!-- Exclude all test modules, tests etc -->
       <exclude-pattern>*/tests/*</exclude-pattern>
      </whitelist>

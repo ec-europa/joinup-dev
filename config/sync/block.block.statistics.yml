@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - joinup_core
+    - joinup_front_page
     - system
     - user
   theme:
@@ -17,7 +17,7 @@ plugin: statistics
 settings:
   id: broken
   label: 'Statistics block'
-  provider: joinup_core
+  provider: joinup_front_page
   label_display: '0'
 visibility:
   request_path:

@@ -37,7 +37,6 @@ default:
       table_map:
         'group menu edit table': '#menu-overview'
         'member administration': '.og-members-overview table'
-        'collection administrator report': 'table.collection-administrator-report'
         'licence comparer': 'table[data-drupal-selector="licence-comparer"]'
     Drupal\DrupalExtension:
       api_driver: 'drupal'
@@ -45,6 +44,7 @@ default:
       region_map:
         Administration toolbar: '#toolbar-administration'
         Comment: '.comments-section'
+        Content listing field filter form: '.field--name-field-cp-content-listing'
         Contact information inline form: '#edit-field-ar-contact-information-wrapper'
         Content: '.section--content-middle'
         Cookie consent banner: '#cookie-consent-banner'

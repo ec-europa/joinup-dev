@@ -7,9 +7,9 @@ namespace Drupal\joinup_licence\Controller;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\rdf_entity\Entity\Rdf;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Entity\EntityTypeManager;
 
 /**
  * Displays an overview of the licence entities to the user.
@@ -71,7 +71,7 @@ class LicenceOverviewController extends ControllerBase {
     $cacheable_metadata = (new CacheableMetadata())
       // Tag the response cache with rdf_entity_list:licence so that this page
       // cache is invalidated when a new licence is added.
-      // @see joinup_core_rdf_entity_insert()
+      // @see joinup_group_rdf_entity_insert()
       ->addCacheTags(['rdf_entity_list:licence']);
 
     $rows = [];

@@ -9,9 +9,9 @@ declare(strict_types = 1);
 
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Drupal\Core\Site\Settings;
-use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\joinup\Traits\NodeTrait;
 
 /**

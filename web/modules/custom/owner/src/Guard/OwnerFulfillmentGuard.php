@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\owner\Guard;
 
 use Drupal\Core\Entity\EntityInterface;

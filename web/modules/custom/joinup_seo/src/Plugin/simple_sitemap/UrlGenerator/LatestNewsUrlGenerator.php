@@ -7,7 +7,7 @@ namespace Drupal\joinup_seo\Plugin\simple_sitemap\UrlGenerator;
 use Drupal\Core\Entity\Query\QueryInterface;
 
 /**
- * Class LatestNewsUrlGenerator.
+ * Generates URL for recently created news to include in the sitemap.
  *
  * @UrlGenerator(
  *   id = "latest_news",

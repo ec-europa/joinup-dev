@@ -31,7 +31,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The table containing the expected chip labels.
-   * @param string $region
+   * @param string|null $region
    *   Optional region in which to locate the chips to check. If omitted all
    *   chips found in the entire page will be checked.
    *
@@ -41,7 +41,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    * @Then the page should show( only) the( following) chip(s):
    * @Then the page should show( only) the( following) chip(s) in the :region region:
    */
-  public function assertChipElements(TableNode $table, string $region = NULL): void {
+  public function assertChipElements(TableNode $table, ?string $region = NULL): void {
     $chips = $this->getChips($region);
     $found = array_map(function (Chip $element) {
       return $element->getText();
@@ -54,10 +54,10 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
   /**
    * Asserts that the expected number of chips are shown.
    *
-   * @param string $number
+   * @param string|null $number
    *   The expected number of chips. This is a string rather than an integer
    *   because step definitions are represented in text.
-   * @param string $region
+   * @param string|null $region
    *   Optional region in which to locate the chips to check. If omitted all
    *   chips found in the entire page will be checked.
    *
@@ -69,7 +69,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    * @Then the :region region should contain :number chip(s)
    * @Then the :region region should not contain any chips
    */
-  public function assertChipCount(string $number = NULL, string $region = NULL): void {
+  public function assertChipCount(?string $number = NULL, ?string $region = NULL): void {
     $number = (int) $number;
     Assert::assertCount($number, $this->getChips($region));
   }
@@ -104,7 +104,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
   /**
    * Returns the chips that are present in the given region.
    *
-   * @param string $region
+   * @param string|null $region
    *   Optional region in which to locate the chips to return. If omitted all
    *   chips found in the entire page will be returned.
    *
@@ -114,7 +114,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    * @throws \Exception
    *    Thrown when the region is not found.
    */
-  protected function getChips(string $region = NULL): array {
+  protected function getChips(?string $region = NULL): array {
     // Default to the entire page if the region is omitted.
     $base_element = $region ? $this->getRegion($region) : $this->getSession()->getPage();
 
@@ -149,7 +149,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    *
    * @param string $text
    *   The text that should be present in the chip.
-   * @param string $region
+   * @param string|null $region
    *   Optional region in which to locate the chips to return. If omitted all
    *   chips found in the entire page will be returned.
    *
@@ -159,7 +159,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    * @return \Drupal\joinup\Chip|null
    *   The chip, or NULL if no chip with the given text is present in the page.
    */
-  protected function getChipByText(string $text, string $region = NULL): ?Chip {
+  protected function getChipByText(string $text, ?string $region = NULL): ?Chip {
     foreach ($this->getChips($region) as $chip) {
       if ($chip->getText() === $text) {
         return $chip;

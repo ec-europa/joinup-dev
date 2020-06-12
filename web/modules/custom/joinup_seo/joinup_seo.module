@@ -62,3 +62,35 @@ function joinup_seo_metatags_alter(array &$metatags, array &$context) {
   }
   $metatags['schema_social_media_posting_shared_content'] = serialize($tags);
 }
+
+/**
+ * Implements hook_page_attachments().
+ */
+function joinup_seo_page_attachments(array &$attachments) {
+  /** @var \Drupal\Core\Routing\RouteMatchInterface $route_match */
+  $route_match = \Drupal::service('current_route_match');
+  if ($route_match->getRouteName() !== 'entity.rdf_entity.canonical') {
+    return;
+  }
+
+  if (!$entity = $route_match->getParameter('rdf_entity')) {
+    return;
+  }
+
+  /** @var \Drupal\joinup_seo\JoinupSeoExportHelperInterface $serializer */
+  $serializer = \Drupal::service('joinup_seo.export_helper');
+  if (!$output = $serializer->exportRdfEntityMetadata($entity)) {
+    return;
+  }
+
+  $attachments['#attached']['html_head'][] = [
+    [
+      '#tag' => 'script',
+      '#attributes' => [
+        'type' => 'application/json',
+      ],
+      '#value' => $output,
+    ],
+    'rdf_entity_ld_json',
+  ];
+}

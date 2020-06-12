@@ -37,6 +37,7 @@ module:
   email_registration: 0
   embed_block: 0
   entity_legal: 0
+  entity_reference_revisions: 0
   error_page: 0
   eu_sic: 0
   eupl: 0
@@ -56,6 +57,7 @@ module:
   image: 0
   inline_entity_form: 0
   isa2_analytics: 0
+  joinup_bundle_class: 0
   joinup_collection: 0
   joinup_comment: 0
   joinup_community_content: 0
@@ -67,12 +69,16 @@ module:
   joinup_federation: 0
   joinup_front_page: 0
   joinup_group: 0
+  joinup_group_content_management: 0
   joinup_invite: 0
   joinup_legal: 0
   joinup_licence: 0
+  joinup_menu: 0
   joinup_news: 0
   joinup_newsletter: 0
   joinup_notification: 0
+  joinup_paragraphs: 0
+  joinup_rdf: 0
   joinup_rss: 0
   joinup_search: 0
   joinup_seo: 0
@@ -80,7 +86,10 @@ module:
   joinup_stats: 0
   joinup_subscription: 0
   joinup_user: 0
+  joinup_validation: 0
   joinup_video: 0
+  joinup_workflow: 0
+  json_field: 0
   language: 0
   layout_discovery: 0
   link: 0
@@ -94,6 +103,7 @@ module:
   message_notify: 0
   meta_entity: 0
   metatag: 0
+  metatag_open_graph: 0
   moderation: 0
   nio: 0
   node: 0
@@ -102,6 +112,7 @@ module:
   oe_webtools_analytics: 0
   oe_webtools_cookie_consent: 0
   oe_webtools_geocoding: 0
+  oe_webtools_globan: 0
   oe_webtools_maps: 0
   og: 0
   og_comment: 0
@@ -109,6 +120,7 @@ module:
   options: 0
   owner: 0
   page_cache: 0
+  paragraphs_type_permissions: 0
   password_policy: 0
   password_policy_character_types: 0
   password_policy_characters: 0
@@ -116,7 +128,6 @@ module:
   path: 0
   path_alias: 0
   pipeline: 0
-  r4032login: 0
   rdf_draft: 0
   rdf_entity: 0
   rdf_entity_provenance: 0
@@ -140,6 +151,7 @@ module:
   serialization: 0
   simple_sitemap: 0
   simplenews: 0
+  site_alert: 0
   smart_trim: 0
   social_media_links: 0
   social_media_links_field: 0
@@ -155,6 +167,7 @@ module:
   system: 0
   tallinn: 0
   taxonomy: 0
+  template_suggestion: 0
   text: 0
   token: 0
   toolbar: 0
@@ -173,6 +186,7 @@ module:
   content_translation: 10
   externalauth: 10
   views: 10
+  paragraphs: 11
   publication_date: 99
   joinup: 1000
   joinup_debug: 1001

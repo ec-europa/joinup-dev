@@ -8,10 +8,13 @@ Feature: Solution RSS feed.
     Given users:
       | Username | First name | Family name |
       | scorlan  | Sartin     | Corlan      |
+    And collection:
+      | title | Unrandomed collection |
+      | state | validated             |
     And solutions:
-      | title             | state     | author  | creation date          |
-      | Lantern Domestic  | validated | scorlan | 2018-12-18 08:00 +0100 |
-      | Deuteron Lonesome | draft     | scorlan | 2019-01-05 10:00 +0100 |
+      | title             | state     | author  | creation date          | collection            |
+      | Lantern Domestic  | validated | scorlan | 2018-12-18 08:00 +0100 | Unrandomed collection |
+      | Deuteron Lonesome | draft     | scorlan | 2019-01-05 10:00 +0100 | Unrandomed collection |
     And solution user memberships:
       | solution          | user    | role        |
       | Lantern Domestic  | scorlan | facilitator |
@@ -34,21 +37,21 @@ Feature: Solution RSS feed.
 
     When I am an anonymous user
     And I go to the homepage of the "Lantern Domestic" solution
-    Then the page should contain an RSS autodiscovery link with title "Latest updates from the Lantern Domestic solution" pointing to "/solution/lantern-domestic/feed.xml"
+    Then the page should contain an RSS autodiscovery link with title "Latest updates from the Lantern Domestic solution" pointing to "/collection/unrandomed-collection/solution/lantern-domestic/feed.xml"
     And the page should contain 1 RSS autodiscovery link
     When I click "RSS feed" in the "Entity actions" region
     Then I should see a valid RSS feed
     And the RSS feed channel elements should be:
       | title       | Latest updates from the Lantern Domestic solution                                   |
       | description | This feed contains the latest published content from the Lantern Domestic solution. |
-      | link        | /solution/lantern-domestic                                                          |
+      | link        | /collection/unrandomed-collection/solution/lantern-domestic                         |
     And the RSS feed should have 4 items
     And the RSS feed items should be:
-      | title                                     | link                                                                | description                                                                                                                                                                                            | publication date                | author        |
-      | News: Monkeys worst indigo amongst colors | /solution/lantern-domestic/news/monkeys-worst-indigo-amongst-colors | <p>Research results are out.</p>                                                                                                                                                                       | Mon, 21 Jan 2019 12:36:00 +0100 | Sartin Corlan |
-      | News: Old metal alloy improves scissors   | /solution/lantern-domestic/news/old-metal-alloy-improves-scissors   | <p>It improves sharpness but they are more subject to rust.</p>                                                                                                                                        | Wed, 11 Apr 2018 10:00:00 +0200 | Sartin Corlan |
-      | Event: Scissor sharpening funeral         | /solution/lantern-domestic/event/scissor-sharpening-funeral         | The place where to be if you want to keep cutting the paper at the best of your scissors possibilities. Lorem ipsum dolor sit amet consectetur adipiscing elit. Etiam sed consectetur turpis. In porta | Sun, 26 Nov 2017 14:18:00 +0100 | Sartin Corlan |
-      | Custom page: Indigo variations            | /solution/lantern-domestic/indigo-variations                        | <p>The four major tones of indigo are listed here.</p>                                                                                                                                                 | Sun, 15 Oct 2017 19:30:00 +0200 | Sartin Corlan |
+      | title                                     | link                                                                                                 | description                                                                                                                                                                                            | publication date                | author        |
+      | News: Monkeys worst indigo amongst colors | /collection/unrandomed-collection/solution/lantern-domestic/news/monkeys-worst-indigo-amongst-colors | <p>Research results are out.</p>                                                                                                                                                                       | Mon, 21 Jan 2019 12:36:00 +0100 | Sartin Corlan |
+      | News: Old metal alloy improves scissors   | /collection/unrandomed-collection/solution/lantern-domestic/news/old-metal-alloy-improves-scissors   | <p>It improves sharpness but they are more subject to rust.</p>                                                                                                                                        | Wed, 11 Apr 2018 10:00:00 +0200 | Sartin Corlan |
+      | Event: Scissor sharpening funeral         | /collection/unrandomed-collection/solution/lantern-domestic/event/scissor-sharpening-funeral         | The place where to be if you want to keep cutting the paper at the best of your scissors possibilities. Lorem ipsum dolor sit amet consectetur adipiscing elit. Etiam sed consectetur turpis. In porta | Sun, 26 Nov 2017 14:18:00 +0100 | Sartin Corlan |
+      | Custom page: Indigo variations            | /collection/unrandomed-collection/solution/lantern-domestic/indigo-variations                        | <p>The four major tones of indigo are listed here.</p>                                                                                                                                                 | Sun, 15 Oct 2017 19:30:00 +0200 | Sartin Corlan |
 
     When I am logged in as a facilitator of the "Deuteron Lonesome" solution
     And I go to the homepage of the "Deuteron Lonesome" solution

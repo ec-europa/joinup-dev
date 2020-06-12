@@ -5,9 +5,11 @@
  * Contains helper functions related to duplicates of the CTT community.
  */
 
+declare(strict_types = 1);
+
 use Drupal\og\OgGroupAudienceHelperInterface;
-use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 
 /**
  * Create original entities for CTT.

@@ -4,6 +4,27 @@ Feature: "Add solution" visibility options.
   As a moderator
   I need to be able to add "Solution" rdf entities through UI.
 
+  Scenario: Required fields should be filled in
+    Given the following collection:
+      | title | Language parsers |
+      | state | validated        |
+    And I am logged in as a facilitator of the "Language parsers" collection
+    And I go to the homepage of the "Language parsers" collection
+    And I click "Add solution"
+
+    # Submit the incomplete form, so error messages about missing fields will
+    # be shown.
+    When I press "Propose"
+    Then I should see the following error messages:
+      | error messages                    |
+      | Title field is required.          |
+      | Description field is required.    |
+      | Name field is required.           |
+      | E-mail address field is required. |
+      | Policy domain field is required.  |
+      | Owner field is required.          |
+      | Solution type field is required.  |
+
   Scenario: "Add solution" button should only be shown to moderators and facilitators.
     Given the following collection:
       | title | Collection solution test |

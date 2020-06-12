@@ -109,7 +109,7 @@ class JoinCollectionForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, AccountInterface $user = NULL, RdfInterface $collection = NULL): array {
+  public function buildForm(array $form, FormStateInterface $form_state, ?AccountInterface $user = NULL, ?RdfInterface $collection = NULL): array {
     $form['#access'] = $this->access();
 
     $user = $this->loadUser((int) $user->id());

@@ -1,0 +1,36 @@
+uuid: e6153b91-b568-4049-8065-32b7b1c6c3ce
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_paragraphs_body
+    - node.type.custom_page
+    - paragraphs.paragraphs_type.simple_paragraph
+    - paragraphs.paragraphs_type.json_map
+  module:
+    - entity_reference_revisions
+id: node.custom_page.field_paragraphs_body
+field_name: field_paragraphs_body
+entity_type: node
+bundle: custom_page
+label: Body
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      simple_paragraph: simple_paragraph
+      json_map: json_map
+    target_bundles_drag_drop:
+      json_map:
+        enabled: true
+        weight: 4
+      simple_paragraph:
+        enabled: true
+        weight: 2
+field_type: entity_reference_revisions

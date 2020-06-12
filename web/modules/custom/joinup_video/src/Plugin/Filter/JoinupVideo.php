@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_video\Plugin\Filter;
 
 use Drupal\Component\Utility\Html;
@@ -57,7 +59,7 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
   protected $currentUser;
 
   /**
-   * VideoEmbedWysiwyg constructor.
+   * Constructs a new JoinupVideo filter.
    *
    * @param array $configuration
    *   Plugin configuration.

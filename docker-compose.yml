@@ -8,6 +8,8 @@ services:
     volumes:
       - .:/var/www/html
       - ./build.docker.main.xml:/var/www/html/build.xml
+    env_file:
+      - .env.dist
     environment:
       DOCUMENT_ROOT: "/var/www/html/web"
       PHP_XDEBUG_ENABLED: "1"

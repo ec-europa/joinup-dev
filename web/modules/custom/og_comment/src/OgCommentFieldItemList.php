@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\og_comment;
 
-use Drupal\comment\CommentFieldItemList;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\comment\CommentFieldItemList;
 
 /**
  * Defines a item list class for comment fields.
@@ -29,7 +31,7 @@ class OgCommentFieldItemList extends CommentFieldItemList {
   /**
    * {@inheritdoc}
    */
-  public function access($operation = 'view', AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($operation = 'view', ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     $host_entity = $this->getEntity();
     // We cannot inject services in this plugin as it extends TypedData and it
     // does not support dependency injection.

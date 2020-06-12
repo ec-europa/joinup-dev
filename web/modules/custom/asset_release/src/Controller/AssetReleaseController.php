@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Class AssetReleaseController.
+ * Controller for asset release forms.
  *
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.
@@ -72,13 +72,13 @@ class AssetReleaseController extends ControllerBase {
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the custom page is created.
-   * @param \Drupal\Core\Session\AccountInterface $account
+   * @param \Drupal\Core\Session\AccountInterface|null $account
    *   The RDF entity for which the custom page is created.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result object.
    */
-  public function createAssetReleaseAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL): AccessResultInterface {
+  public function createAssetReleaseAccess(RdfInterface $rdf_entity, ?AccountInterface $account = NULL): AccessResultInterface {
     if ($rdf_entity->bundle() !== 'solution') {
       throw new NotFoundHttpException();
     }
