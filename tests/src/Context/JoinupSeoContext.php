@@ -74,7 +74,7 @@ class JoinupSeoContext extends RawDrupalContext {
     }
 
     if (!empty($error_messages)) {
-      throw new Exception(implode("\n", $error_messages));
+      throw new \Exception(implode("\n", $error_messages));
     }
   }
 
@@ -94,7 +94,7 @@ class JoinupSeoContext extends RawDrupalContext {
   public function assertMetatagInPage(string $meta_name, string $meta_value): void {
     $xpath = "//head/meta[@name=\"{$meta_name}\" and @content=\"{$meta_value}\"]";
     if (empty($this->getSession()->getPage()->find('xpath', $xpath))) {
-      throw new Exception("The meta property '{$meta_name}' was either not found or the value is not set to '{$meta_value}'");
+      throw new \Exception("The meta property '{$meta_name}' was either not found or the value is not set to '{$meta_value}'");
     }
   }
 
@@ -223,7 +223,7 @@ class JoinupSeoContext extends RawDrupalContext {
         }
       }
     }
-    throw new Exception(implode("\n", $error_messages));
+    throw new \Exception(implode("\n", $error_messages));
   }
 
   /**

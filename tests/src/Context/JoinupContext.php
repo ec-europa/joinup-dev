@@ -284,7 +284,7 @@ class JoinupContext extends RawDrupalContext {
       ]);
     }
     else {
-      throw new Exception('User not registered.');
+      throw new \Exception('User not registered.');
     }
   }
 
@@ -1440,7 +1440,7 @@ class JoinupContext extends RawDrupalContext {
         '@current' => $current_url,
         '@expected' => $url,
       ]);
-      throw new Exception((string) $message);
+      throw new \Exception((string) $message);
     }
   }
 
@@ -1943,7 +1943,7 @@ class JoinupContext extends RawDrupalContext {
    */
   public function assertLinkContainsEntityUrl(string $link, string $title, string $type): void {
     if (!in_array($type, ['content', 'rdf'])) {
-      throw new InvalidArgumentException('Type can only be one of "content" and "rdf".');
+      throw new \InvalidArgumentException('Type can only be one of "content" and "rdf".');
     }
     $function = $type === 'content' ? 'getNodeByTitle' : 'getRdfEntityByLabel';
 
@@ -2647,7 +2647,7 @@ JS;
     $expected_content = trim(file_get_contents($file_path));
     $browser_content = trim($this->getSession()->getPage()->getContent());
     if ($expected_content !== $browser_content) {
-      throw new Exception(sprintf("The output didn't match the fixture. Expected %s, got %s.", $expected_content, $browser_content));
+      throw new \Exception(sprintf("The output didn't match the fixture. Expected %s, got %s.", $expected_content, $browser_content));
     }
   }
 
@@ -2736,7 +2736,7 @@ JS;
    */
   public function assertButtonStatus(string $button, string $status, ?string $region = NULL): void {
     if (!in_array($status, ['enabled', 'disabled'])) {
-      throw new InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
+      throw new \InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
     }
 
     if (!empty($region)) {
@@ -2990,7 +2990,7 @@ JS;
     $current_url = $this->getSession()->getCurrentUrl();
     $url_parts = UrlHelper::parse($current_url);
     if (empty($url_parts['fragment'])) {
-      throw new Exception("The {$current_url} does not contain an anchor.");
+      throw new \Exception("The {$current_url} does not contain an anchor.");
     }
     $this->assertHtmlText("id=\"{$url_parts['fragment']}\"");
   }

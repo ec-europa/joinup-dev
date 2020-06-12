@@ -75,7 +75,7 @@ class JoinupDocumentContext extends RawDrupalContext {
       if (!is_numeric($time)) {
         $time = strtotime($time);
         if (empty($time)) {
-          throw new Exception("{$node->{'document publication date'}} could not be converted to timestamp.");
+          throw new \Exception("{$node->{'document publication date'}} could not be converted to timestamp.");
         }
       }
 

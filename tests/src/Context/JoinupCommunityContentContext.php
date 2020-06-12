@@ -139,7 +139,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    */
   public function assertEqualRevisionsPublicationTime(string $title, string $type, string $published): void {
     if (!in_array($published, ['published', 'unpublished'])) {
-      throw new InvalidArgumentException("Only 'published' and 'unpublished' values are allowed for the 'published' flag.");
+      throw new \InvalidArgumentException("Only 'published' and 'unpublished' values are allowed for the 'published' flag.");
     }
     $published = $published === 'published';
 
@@ -153,7 +153,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
     }
 
     if (empty($revision_id)) {
-      throw new Exception("There was no revision found with the given criteria.");
+      throw new \Exception("There was no revision found with the given criteria.");
     }
     $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
     Assert::assertEquals($node->published_at->value, $revision->published_at->value);

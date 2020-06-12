@@ -30,7 +30,7 @@ class JoinupFrontPageContext extends RawDrupalContext {
    */
   public function givenPinnedEntities(string $type, TableNode $table): void {
     if (!in_array($type, ['rdf', 'content'])) {
-      throw new InvalidArgumentException('Only "rdf" and "content" are allowed as type.');
+      throw new \InvalidArgumentException('Only "rdf" and "content" are allowed as type.');
     }
 
     /** @var \Drupal\joinup_front_page\FrontPageMenuHelperInterface $front_page_helper */

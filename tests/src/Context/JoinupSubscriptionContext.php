@@ -158,7 +158,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    */
   public function assertSubscriptionButtonStatus(string $button, string $collection, string $status): void {
     if (!in_array($status, ['enabled', 'disabled'])) {
-      throw new InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
+      throw new \InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
     }
 
     $expected_status = $status === 'enabled';
@@ -203,7 +203,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
   public function assertButtonExistsOnSubscriptionCard(string $button, string $collection): void {
     $card = $this->getCollectionSubscriptionCardByHeading($collection);
     if (empty($card->findButton($button))) {
-      throw new Exception("The '$button' button was not found in the '$collection' subscription card but should.");
+      throw new \Exception("The '$button' button was not found in the '$collection' subscription card but should.");
     }
   }
 
@@ -223,7 +223,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
   public function assertButtonNotExistsOnSubscriptionCard(string $button, string $collection): void {
     $card = $this->getCollectionSubscriptionCardByHeading($collection);
     if ($card->findButton($button)) {
-      throw new Exception("The '$button' button was found in the '$collection' subscription card but should not.");
+      throw new \Exception("The '$button' button was found in the '$collection' subscription card but should not.");
     }
   }
 

@@ -91,7 +91,7 @@ class JoinupUserContext extends RawDrupalContext {
 
     if (empty($matches)) {
       $message = "No link with named {$title} was found in any of the emails sent to {$user}";
-      throw new Exception($message);
+      throw new \Exception($message);
     }
     $url = reset($matches[1]);
     $this->visitPath($url);

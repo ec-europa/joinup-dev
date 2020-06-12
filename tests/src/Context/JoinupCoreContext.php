@@ -86,7 +86,7 @@ class JoinupCoreContext extends RawDrupalContext {
     // Find the element that contains the given text.
     $chip = $this->getChipByText($text);
     if (!$chip) {
-      throw new Exception("The chip containing the label '$text' was not found on the page.");
+      throw new \Exception("The chip containing the label '$text' was not found on the page.");
     }
 
     // Find the related button.
@@ -205,7 +205,7 @@ class JoinupCoreContext extends RawDrupalContext {
     }
 
     if (!empty($found)) {
-      throw new Exception('The following fields were not found or were enabled: ' . implode(', ', $found));
+      throw new \Exception('The following fields were not found or were enabled: ' . implode(', ', $found));
     }
   }
 
@@ -231,7 +231,7 @@ class JoinupCoreContext extends RawDrupalContext {
     }
 
     if (!empty($found)) {
-      throw new Exception('The following fields were disabled: ' . implode(', ', $found));
+      throw new \Exception('The following fields were disabled: ' . implode(', ', $found));
     }
   }
 
