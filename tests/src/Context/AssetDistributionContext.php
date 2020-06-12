@@ -188,7 +188,7 @@ class AssetDistributionContext extends RawDrupalContext {
       else {
         throw new \InvalidArgumentException("Unknown key '$key' in asset distribution table.");
       }
-    };
+    }
 
     if (isset($values['parent'])) {
       $values['parent'] = [$values['parent']];

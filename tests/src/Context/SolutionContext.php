@@ -155,7 +155,7 @@ class SolutionContext extends RawDrupalContext {
         else {
           throw new \Exception("Unknown column '$key' in solution table.");
         }
-      };
+      }
 
       $this->ensureParentCollection($values);
       $values = $this->convertValueAliases($values);
@@ -217,7 +217,7 @@ class SolutionContext extends RawDrupalContext {
       else {
         throw new \Exception("Unknown column '$key' in solution table.");
       }
-    };
+    }
 
     $this->ensureParentCollection($values);
     $values = $this->convertValueAliases($values);

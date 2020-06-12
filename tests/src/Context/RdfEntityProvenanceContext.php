@@ -67,7 +67,7 @@ class RdfEntityProvenanceContext extends RawDrupalContext {
         else {
           throw new \Exception("Unknown column '$key' in table.");
         }
-      };
+      }
 
       // Convert entity label to ID, if case.
       if (!UrlHelper::isValid($values['provenance_entity'], TRUE)) {

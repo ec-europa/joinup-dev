@@ -97,7 +97,7 @@ class JoinupLicenceContext extends RawDrupalContext {
         else {
           throw new \Exception("Unknown column '$key' in licence table.");
         }
-      };
+      }
 
       $values = $this->convertValueAliases($values);
       $this->createLicence($values);
@@ -135,7 +135,7 @@ class JoinupLicenceContext extends RawDrupalContext {
       else {
         throw new \Exception("Unknown column '$key' in solution table.");
       }
-    };
+    }
 
     $values = $this->convertValueAliases($values);
     $this->createLicence($values);

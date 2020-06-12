@@ -69,7 +69,7 @@ class JoinupLegalContext extends RawDrupalContext {
         else {
           throw new \Exception("Unknown column '$key' in collection table.");
         }
-      };
+      }
 
       foreach (['document_name', 'label', 'acceptance_label'] as $required) {
         if (!isset($required)) {

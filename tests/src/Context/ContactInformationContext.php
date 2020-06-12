@@ -67,7 +67,7 @@ class ContactInformationContext extends RawDrupalContext {
       // Replace the column aliases with the actual field names.
       $key = self::translateFieldNameAlias($key);
       $values[$key] = $value;
-    };
+    }
 
     $this->createContactInformation($values);
   }

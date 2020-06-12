@@ -168,7 +168,7 @@ class JoinupNotificationContext extends RawDrupalContext {
         $message_template = MessageTemplate::load($mail['key']);
         if ($template !== $message_template->getDescription() && $template !== $message_template->getLabel()) {
           continue;
-        };
+        }
       }
 
       if (isset($bcc)) {

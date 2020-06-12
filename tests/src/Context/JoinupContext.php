@@ -262,7 +262,7 @@ class JoinupContext extends RawDrupalContext {
       if ($field == 'Username') {
         $username = $value;
       }
-    };
+    }
 
     // Submit form, waiting for Honeypot protection delay to pass.
     /** @var \HoneypotSubContext $honeypot */
@@ -1717,7 +1717,7 @@ class JoinupContext extends RawDrupalContext {
     $results = $this->getSession()->getPage()->find('xpath', $xpath);
     // If the preg_match get a match, it means that the background image is
     // empty.
-    $match = preg_match('/background\-image\: url\([\'"][\'"]\)/', $results->getText());
+    $match = preg_match('/background-image: url\([\'"][\'"]\)/', $results->getText());
     if ($match !== 0) {
       throw new \Exception("The banner is empty.");
     }

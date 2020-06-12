@@ -96,7 +96,7 @@ class AssetReleaseContext extends RawDrupalContext {
         else {
           throw new \Exception("Unknown column '$key' in asset_release table.");
         }
-      };
+      }
 
       $values = $this->convertValueAliases($values);
 
@@ -138,7 +138,7 @@ class AssetReleaseContext extends RawDrupalContext {
       else {
         throw new \Exception("Unknown column '$key' in asset_release table.");
       }
-    };
+    }
 
     $values = $this->convertValueAliases($values);
 
@@ -317,10 +317,11 @@ class AssetReleaseContext extends RawDrupalContext {
    */
   public function assertReleasesAndOrder(TableNode $asset_release_table): void {
     $releases = [];
+
     // Replace the column aliases with the actual field names.
     foreach ($asset_release_table->getColumnsHash() as $title) {
       $releases[] = $title['release'];
-    };
+    }
 
     $release_titles = $this->getSession()->getPage()->findAll('css', '.timeline__release > .timeline__release-content > .timeline__meta > h2.timeline__release-title');
     if (count($release_titles) != count($releases)) {

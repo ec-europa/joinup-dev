@@ -90,7 +90,7 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   protected function findContentTab(string $type): ?NodeElement {
     $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' tab__container ')]//span[@class='tab__text--lower'][normalize-space(string(.)) = '$type']" .
-      "/ancestor-or-self::a[@class and contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]";;
+      "/ancestor-or-self::a[@class and contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]";
     return $this->getSession()->getPage()->find('xpath', $xpath);
   }
 

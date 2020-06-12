@@ -122,8 +122,7 @@ class CollectionContext extends RawDrupalContext {
    *   Thrown when a collection with the given title does not exist.
    */
   protected function getCollectionByName(string $title): RdfInterface {
-    $collection = $this->getRdfEntityByLabel($title, 'collection');
-    return $collection;
+    return $this->getRdfEntityByLabel($title, 'collection');
   }
 
   /**
@@ -197,7 +196,7 @@ class CollectionContext extends RawDrupalContext {
         else {
           throw new \Exception("Unknown column '$key' in collection table.");
         }
-      };
+      }
 
       // Convert user friendly values to machine values.
       $values = $this->convertValueAliases($values);
@@ -358,7 +357,7 @@ class CollectionContext extends RawDrupalContext {
       else {
         throw new \Exception("Unknown column '$key' in collection table.");
       }
-    };
+    }
 
     // Convert user friendly values to machine values.
     $values = $this->convertValueAliases($values);
