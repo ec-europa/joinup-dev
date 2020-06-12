@@ -175,6 +175,9 @@ class AssetDistributionContext extends RawDrupalContext {
    *
    * @throws \InvalidArgumentException
    *   Thrown when an unknown key alias is present in the list of values.
+   * @throws \Exception
+   *   Thrown when the passed values cannot be converted, or when the asset
+   *   distribution cannot be created.
    */
   protected function createAssetDistributionFromAliasedTableValues(array $aliased_values): void {
     $aliases = self::assetDistributionFieldAliases();
@@ -205,6 +208,9 @@ class AssetDistributionContext extends RawDrupalContext {
    *   The title of the asset distribution.
    *
    * @When I delete the :asset_distribution asset distribution
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when the entity could not be deleted.
    */
   public function deleteAssetDistribution(string $asset_distribution): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
@@ -272,6 +278,9 @@ class AssetDistributionContext extends RawDrupalContext {
    * Remove any created test entities.
    *
    * @AfterScenario
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when any of the test entities could not be deleted.
    */
   public function cleanTestingEntities(): void {
     if (empty($this->entities)) {
@@ -492,6 +501,7 @@ class AssetDistributionContext extends RawDrupalContext {
    * Creates distribution download events.
    *
    * Table format:
+   *
    * @codingStandardsIgnoreStart
    * | user               | distribution |
    * | Anonymous          | Distro one   |
@@ -503,6 +513,9 @@ class AssetDistributionContext extends RawDrupalContext {
    *   The entries list.
    *
    * @Given the following distribution download events:
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when the download event entity could not be saved.
    */
   public function downloadEvents(TableNode $table): void {
     foreach ($table->getColumnsHash() as $row) {
@@ -526,6 +539,7 @@ class AssetDistributionContext extends RawDrupalContext {
    * Asserts the entries in the download event table.
    *
    * Table format:
+   *
    * @codingStandardsIgnoreStart
    * | user                     | e-mail                | distribution |
    * | Anonymous (not verified) | mail1@example.com     | Distro one   |
@@ -534,6 +548,9 @@ class AssetDistributionContext extends RawDrupalContext {
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The entries list.
+   *
+   * @throws \Behat\Mink\Exception\ElementTextException
+   *   Thrown when one or more of the download events was not present.
    *
    * @Then I should see the following download entries:
    */
