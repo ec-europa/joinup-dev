@@ -5,6 +5,11 @@ default:
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
+        # Todo: Restore alphabetical ordering for TallinnContext once it is
+        # possible to determine the execution order of Behat hooks.
+        # Ref. https://github.com/Behat/Behat/issues/62
+        # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6060
+        - Drupal\joinup\Context\TallinnContext
         - Drupal\joinup\Context\AdmsValidatorContext
         - Drupal\joinup\Context\AssetDistributionContext
         - Drupal\joinup\Context\AssetReleaseContext
@@ -49,7 +54,6 @@ default:
             s3Key: '${exports.s3.key}'
             s3Secret: '${exports.s3.secret}'
         - Drupal\joinup\Context\SolutionContext
-        - Drupal\joinup\Context\TallinnContext
         - Drupal\Tests\cas_mock_server\Context\CasMockServerContext:
             attributes_map:
               firstName: First name
