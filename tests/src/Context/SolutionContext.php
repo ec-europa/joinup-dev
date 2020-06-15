@@ -502,7 +502,7 @@ class SolutionContext extends RawDrupalContext {
         $entity->skip_notification = TRUE;
         $entity->delete();
       }
-      catch (Throwable $e) {
+      catch (\Throwable $e) {
         // Throw a more helpful error if something goes wrong during cleanup.
         throw new \Exception(sprintf('Error while cleaning up solution "%s" after completing scenario "%s" of feature "%s": "%s"', $name, $event->getFeature()->getTitle(), $event->getScenario()->getTitle(), $e->getMessage()));
       }

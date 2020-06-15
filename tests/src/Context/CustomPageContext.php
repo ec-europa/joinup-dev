@@ -58,7 +58,7 @@ class CustomPageContext extends RawDrupalContext {
       // from inside this static callback.
       /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
       $environment = $scope->getEnvironment();
-      /** @var \CustomPageSubContext $context */
+      /** @var \Drupal\joinup\Context\CustomPageContext $context */
       $context = $environment->getContext(self::class);
 
       /** @var \Drupal\file\FileInterface $file */

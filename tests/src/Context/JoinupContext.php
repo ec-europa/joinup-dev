@@ -316,7 +316,7 @@ class JoinupContext extends RawDrupalContext {
    * @param string $options
    *   The options to be checked separated by comma.
    *
-   * @throws Exception
+   * @throws \Exception
    *    Throws an exception when a value exists.
    *
    * @Then (the ):select field should not contain the :options option(s)
@@ -341,7 +341,7 @@ class JoinupContext extends RawDrupalContext {
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The available list of options.
    *
-   * @throws Exception
+   * @throws \Exception
    *    Throws an exception when the select is not found or options are not
    *    identical.
    *
@@ -1140,7 +1140,7 @@ class JoinupContext extends RawDrupalContext {
       // if there is no content rendered inside.
       $headings_in_page = array_keys($this->getTiles($region));
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       return;
     }
 

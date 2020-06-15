@@ -271,7 +271,7 @@ class JoinupSearchContext extends RawDrupalContext {
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The available list of options.
    *
-   * @throws Exception
+   * @throws \Exception
    *    Throws an exception when the select is not found or options are not
    *    identical.
    */
@@ -288,7 +288,7 @@ class JoinupSearchContext extends RawDrupalContext {
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The available list of options.
    *
-   * @throws Exception
+   * @throws \Exception
    *    Throws an exception when the select is not found or options are not
    *    identical.
    *
