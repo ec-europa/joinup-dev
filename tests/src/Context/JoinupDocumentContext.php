@@ -45,15 +45,19 @@ class JoinupDocumentContext extends RawDrupalContext {
    *   for creating the node as properties on the object.
    *
    * @BeforeNodeCreate
+   *
+   * @throws \Exception
+   *   Thrown when an attached file cannot be found or cannot be saved in the
+   *   Drupal public files folder.
    */
-  public static function massageDocumentFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
+  public static function massageDocumentFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope): void {
     $node = $scope->getEntity();
 
     if ($node->type !== 'document') {
       return;
     }
 
-    if (!empty($node->file)) {
+    if (!empty($node->field_file)) {
       $type = isset($node->{'file type'}) ? $node->{'file type'} : 'remote';
       if ($type !== 'remote') {
         // If the file is local we want to copy it from the fixtures into the
@@ -62,16 +66,16 @@ class JoinupDocumentContext extends RawDrupalContext {
         // access to the context class from inside this static callback.
         /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
         $environment = $scope->getEnvironment();
-        /** @var \DocumentSubContext $context */
+        /** @var \Drupal\joinup\Context\JoinupDocumentContext $context */
         $context = $environment->getContext(self::class);
-        $node->file = $context->createFile($node->file)->id();
+        $node->field_file = $context->createFile($node->field_file)->id();
       }
 
       unset($node->{'file type'});
     }
 
-    if (isset($node->{'document publication date'})) {
-      $time = $node->{'document publication date'};
+    if (isset($node->field_document_publication_date)) {
+      $time = $node->field_document_publication_date;
       if (!is_numeric($time)) {
         $time = strtotime($time);
         if (empty($time)) {
@@ -81,7 +85,7 @@ class JoinupDocumentContext extends RawDrupalContext {
 
       /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
       $date_formatter = \Drupal::service('date.formatter');
-      $node->{'document publication date'} = $date_formatter->format($time, 'custom', 'Y-m-d H:i:s');
+      $node->field_document_publication_date = $date_formatter->format($time, 'custom', 'Y-m-d H:i:s');
     }
   }
 

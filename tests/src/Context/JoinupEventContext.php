@@ -63,7 +63,7 @@ class JoinupEventContext extends RawDrupalContext {
       return;
     }
 
-    foreach (['start date', 'end date'] as $field) {
+    foreach (['field_event_date:value', 'field_event_date:end_value'] as $field) {
       if (isset($node->$field)) {
         $date = strtotime($node->$field);
 

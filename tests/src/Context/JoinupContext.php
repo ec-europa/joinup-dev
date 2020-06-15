@@ -609,12 +609,12 @@ class JoinupContext extends RawDrupalContext {
 
     if (!empty($node->field_attachment)) {
       // We want to copy it from the fixtures into the file system and register
-      // it in the CustomPageSubContext so it can be cleaned up after the
-      // scenario ends. Perform a small dance to get access to the context class
-      // from inside this static callback.
+      // it in the CustomPageContext so it can be cleaned up after the scenario
+      // ends. Perform a small dance to get access to the context class from
+      // inside this static callback.
       /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
       $environment = $scope->getEnvironment();
-      /** @var \CustomPageSubContext $context */
+      /** @var \Drupal\joinup\Context\CustomPageContext $context */
       $context = $environment->getContext(self::class);
       foreach ($context->explodeCommaSeparatedStepArgument($node->field_attachment) as $filename) {
         // The file is tracked by its filename so the value still remains to be
