@@ -2,7 +2,8 @@ uuid: 6c159588-ab44-442f-9538-e3eb731ad411
 langcode: en
 status: true
 dependencies:
-  config: {  }
+  config:
+    - field.field.simplenews_subscriber.simplenews_subscriber.subscriptions
   module:
     - simplenews
 _core:
@@ -17,6 +18,12 @@ content:
     weight: 5
     settings:
       placeholder: ''
+    third_party_settings: {  }
+    region: content
+  subscriptions:
+    type: simplenews_subscription_select
+    weight: 0
+    settings: {  }
     third_party_settings: {  }
     region: content
 hidden:
