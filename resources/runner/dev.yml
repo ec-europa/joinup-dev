@@ -1,6 +1,17 @@
 # Development configs and commands
 
+phpstan:
+  bin: ${joinup.dir}/vendor/bin/phpstan
+
 commands:
+  # Scans the code base for deprecated code.
+  dev:check-deprecated-code:
+    - task: exec
+      command: ${phpstan.bin} --no-progress analyse src tests/src web/modules/custom web/profiles web/themes
+  dev:check-deprecated-code-contrib:
+    - task: exec
+      command: ${phpstan.bin} --no-progress analyse web/modules/contrib
+
   # Downloads all backends backups.
   dev:download-databases:
     - { task: "run", command: "mysql:download-dump" }
