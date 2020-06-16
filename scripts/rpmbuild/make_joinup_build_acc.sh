@@ -48,7 +48,6 @@ rm -r ${SOURCES_DIR}/template || exit 1
 
 # Remove unneeded files.
 rm -rf ${JOINUP_DIR}/build.*local*
-rm -rf ${JOINUP_DIR}/web/sites/default/settings.local.php
 rm -rf ${JOINUP_DIR}/web/themes/joinup/prototype
 
 # Output the version number in a file that will be appended to the HTTP headers.
