@@ -220,7 +220,7 @@
 
     .search-bar__input {
       width: calc(100% - 56px);
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid #888;
     }
 
     .search-bar__submit {
@@ -236,7 +236,7 @@
       height: 40px;
       overflow: hidden;
       cursor: pointer;
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid #888;
 
       &::before {
         @extend .icon;
