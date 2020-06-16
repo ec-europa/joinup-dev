@@ -2,7 +2,7 @@ upgrade_commands:
   default:
     - ${drush.bin} state:set system.maintenance_mode 1 --input-format=integer --yes
     - ${runner.bin_dir}/run config-readonly:disable
-    - ${phing.bin} redis-flush
+    - ${runner.bin_dir}/run redis:flush
     - ${drush.bin} updatedb --no-post-updates --yes
     - ${drush.bin} config:import --yes
     - ${drush.bin} updatedb --yes
