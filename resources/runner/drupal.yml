@@ -45,6 +45,7 @@ drupal:
         - Development
         - OpenEuropa Newsroom Newsletter
         - OpenEuropa Webtools Geocoding Cache
+        - Error logging
         - Mail catch
       cphp:
         - Development
@@ -166,6 +167,7 @@ drupal:
         $config['oe_newsroom_newsletter.subscriber']['class'] = 'Drupal\oe_newsroom_newsletter\NewsletterSubscriber\MockNewsletterSubscriber';
       Development: |
         $settings['extension_discovery_scan_tests'] = TRUE;
+      Error logging:
         $config['system.logging']['error_level'] = 'verbose';
       OpenEuropa Webtools Geocoding Cache: |
         $settings['cache']['bins']['geocoder'] = 'cache.backend.file_system';
