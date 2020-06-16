@@ -49,6 +49,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Categorisation
+      region: content
     group_attachment:
       children:
         - field_file
@@ -65,6 +66,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Attachment
+      region: content
 _core:
   default_config_hash: IBVftmfYLkfapLokxuyLrv1me4toJj5yidZu0ixGxQM
 id: node.document.default
