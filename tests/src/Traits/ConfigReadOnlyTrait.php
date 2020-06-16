@@ -70,14 +70,9 @@ trait ConfigReadOnlyTrait {
     $kernel = \Drupal::service('kernel');
     $site_path = $kernel->getSitePath();
     $needle = "\$settings['config_readonly'] = !file_exists(getcwd() . '/../disable-config-readonly');";
-    // Check first settings.php.
     $settings_php = file_get_contents("{$site_path}/settings.php");
     if (strpos($settings_php, $needle) === FALSE) {
-      // Fallback to settings.local.php.
-      $settings_local_php = file_get_contents("{$site_path}/settings.local.php");
-      if (strpos($settings_local_php, $needle) === FALSE) {
-        throw new \Exception("The following line is missing from web/sites/default/settings.php\n$needle");
-      }
+      throw new \Exception("The following line is missing from web/sites/default/settings.php\n$needle");
     }
   }
 

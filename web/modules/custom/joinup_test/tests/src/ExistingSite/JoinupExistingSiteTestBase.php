@@ -102,11 +102,11 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
    * Overrides the trait method by bypassing config read-only.
    *
    * @throws \Exception
-   *   If mail config is overwritten in settings.php or settings.local.php.
+   *   If mail config is overwritten in settings.php or settings.override.php.
    */
   protected function startMailCollection(): void {
     // Check if the mail system configuration has been overridden in
-    // settings.php or settings.local.php.
+    // settings.php or settings.override.php.
     $this->checkMailConfigOverride();
 
     static::bypassReadOnlyConfig();
