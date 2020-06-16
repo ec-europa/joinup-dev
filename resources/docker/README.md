@@ -47,8 +47,8 @@ docker-compose exec --user www-data web composer install
 From the project root, run:
 
 ```bash
-docker-compose exec --user www-data web ./vendor/bin/phing build-dev
-docker-compose exec --user www-data web ./vendor/bin/phing install-dev
+docker-compose exec --user www-data web ./vendor/bin/run toolkit:build-dev
+docker-compose exec --user www-data web ./vendor/bin/run toolkit:install-clean
 ```
 
 You can now access the website at `http://localhost:8080` or the corresponding endpoint if you have overridden the
