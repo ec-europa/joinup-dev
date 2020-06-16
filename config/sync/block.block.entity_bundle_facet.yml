@@ -12,7 +12,7 @@ dependencies:
 id: entity_bundle_facet
 theme: joinup_theme
 region: sidebar_left
-weight: -12
+weight: -18
 provider: null
 plugin: 'facet_block:type'
 settings:

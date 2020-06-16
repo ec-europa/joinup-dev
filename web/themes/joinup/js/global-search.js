@@ -12,11 +12,11 @@
       new window['MaterialChipInput'](jQuery('.search-bar.mdl-chipfield')[0]);
 
       // Position input cursor if chip is available.
-      $('.search-bar--header').each(function () {
+      $('.search-bar__block').each(function () {
         var $searchBar = $(this);
         var chipWidth = $(this).find('.mdl-chip').width();
         if (chipWidth !== 0) {
-          chipWidth = chipWidth + 30;
+          chipWidth = chipWidth + 25;
           $(this).find('.search-bar__input').css('padding-left', chipWidth + 'px');
         }
 
@@ -28,7 +28,7 @@
         $('.mdl-chip__action').on('click', function () {
           var chipWidth = $searchBar.find('.mdl-chip').width();
           if (chipWidth === 0 || chipWidth === undefined) {
-            $('.search-bar--header').find('.search-bar__input').css('padding-left', '0px');
+            $('.search-bar__block').find('.search-bar__input').css('padding-left', '0px');
           }
         });
 
@@ -36,9 +36,14 @@
           if (event.which === 8) {
             var chipWidth = $searchBar.find('.mdl-chip').width();
             if (chipWidth === 0 || chipWidth === undefined) {
-              $('.search-bar--header').find('.search-bar__input').css('padding-left', '0px');
+              $('.search-bar__block').find('.search-bar__input').css('padding-left', '0px');
             }
           }
+        });
+
+        $('.search-bar__submit').on('click', function () {
+          event.preventDefault();
+          $(this).parent().submit();
         });
       });
     }
