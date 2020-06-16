@@ -28,6 +28,13 @@ class JoinupConfigProvider implements ConfigProviderInterface {
     }
     $config->set('joinup.dir', $drupalFinder->getComposerRoot());
 
+    // Create all missed env.* configs from environment variables. The task
+    // runner config only resolves the environment variables used as tokens in
+    // other configs.
+    foreach ($_ENV as $name => $value) {
+      $config->set("env.{$name}", $value);
+    }
+
     // Import configurations from ./resources/runner/.
     static::importFromFiles($config, glob('resources/runner/*.yml'));
   }
