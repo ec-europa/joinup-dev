@@ -71,6 +71,7 @@ third_party_settings:
         classes: ''
         direction: vertical
       label: General
+      region: content
     group_main:
       children:
         - label
@@ -101,6 +102,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Main fields'
+      region: content
     group_management:
       children:
         - field_is_logo
@@ -125,6 +127,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Additional fields'
+      region: content
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
 bundle: solution
