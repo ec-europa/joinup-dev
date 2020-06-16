@@ -1,19 +1,6 @@
 # Configuration override for the docker container.
 # ------------------------------------------------
 
-# SQL database settings.
-drupal.db.host = mysql
-
-# SPARQL database settings.
-sparql.host = virtuoso
-sparql.dsn = virtuoso
-
-# Solr connection.
-solr.core.published.host = solr_published
-solr.core.unpublished.host = solr_unpublished
-
-# The base URL. This is used for doing functional tests in Behat and PHPUnit.
-drupal.base_url = http://web
 
 # The URL of the webdriver host (e.g. Selenium or PhantomJS).
 behat.webdriver_url = http://selenium:${behat.webdriver_port}/wd/hub
