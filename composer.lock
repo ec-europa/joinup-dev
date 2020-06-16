@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b0c7f9dff36db7e0e6230f201c1f954c",
+    "content-hash": "80c19c524c7a39ca75b37fe475a5fc81",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -630,6 +630,50 @@
                 "transliterator"
             ],
             "time": "2020-01-14T16:39:13+00:00"
+        },
+        {
+            "name": "boedah/robo-drush",
+            "version": "4.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/boedah/robo-drush.git",
+                "reference": "1ce48694a5bd794bdc6fa006ee32e0a9bf693d52"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/boedah/robo-drush/zipball/1ce48694a5bd794bdc6fa006ee32e0a9bf693d52",
+                "reference": "1ce48694a5bd794bdc6fa006ee32e0a9bf693d52",
+                "shasum": ""
+            },
+            "require": {
+                "consolidation/robo": "~1",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "drush/drush": "^8.0 | ^9.0",
+                "phpunit/phpunit": "~4.4"
+            },
+            "suggest": {
+                "drush/drush": "robo-drush needs a global or local Drush to use."
+            },
+            "type": "robo-tasks",
+            "autoload": {
+                "psr-4": {
+                    "Boedah\\Robo\\Task\\Drush\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Peter Gasser",
+                    "email": "dev@boedah.de"
+                }
+            ],
+            "description": "Drush CommandStack for Robo Task Runner",
+            "time": "2018-12-11T14:42:40+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -6555,54 +6599,6 @@
             }
         },
         {
-            "name": "drupal/persistent_login",
-            "version": "1.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/persistent_login.git",
-                "reference": "8.x-1.3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/persistent_login-8.x-1.3.zip",
-                "reference": "8.x-1.3",
-                "shasum": "dfff4cb76d6b3888073dd992bcf4d51b1bb47696"
-            },
-            "require": {
-                "drupal/core": "^8.3 || ^9.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-1.3",
-                    "datestamp": "1591597823",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "gapple",
-                    "homepage": "https://www.drupal.org/user/490940"
-                }
-            ],
-            "description": "Provides a \"Remember Me\" feature on the login form.",
-            "homepage": "https://www.drupal.org/project/persistent_login",
-            "keywords": [
-                "Drupal"
-            ],
-            "support": {
-                "source": "https://git.drupalcode.org/project/persistent_login",
-                "issues": "https://www.drupal.org/project/issues/persistent_login"
-            }
-        },
-        {
             "name": "drupal/phingdrushtask",
             "version": "dev-7.x-2.x",
             "source": {
@@ -8468,7 +8464,7 @@
                 "enable-patching": true,
                 "composer-exit-on-patch-failure": true,
                 "patches_applied": {
-                    "Variables in 'sequence-file' are not resolved @see https://github.com/ec-europa/toolkit/issues/273": "https://patch-diff.githubusercontent.com/raw/ec-europa/toolkit/pull/274.diff"
+                    "MULTISITE-23617: Resolve variables in 'sequence-file'": "https://patch-diff.githubusercontent.com/raw/ec-europa/toolkit/pull/281.diff"
                 }
             },
             "autoload": {
@@ -10412,7 +10408,10 @@
             "type": "library",
             "extra": {
                 "enable-patching": true,
-                "composer-exit-on-patch-failure": true
+                "composer-exit-on-patch-failure": true,
+                "patches_applied": {
+                    "Allow to pass array options to 'run' & 'exec' tasks @see https://github.com/openeuropa/task-runner/pull/137": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/137.diff"
+                }
             },
             "autoload": {
                 "psr-4": {
@@ -11368,6 +11367,109 @@
             "time": "2016-01-26T13:27:02+00:00"
         },
         {
+            "name": "php-task-runner/composer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-task-runner/composer.git",
+                "reference": "35b0ddcb2b45f6b4ad44e8cbc6d32011bdb5effb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-task-runner/composer/zipball/35b0ddcb2b45f6b4ad44e8cbc6d32011bdb5effb",
+                "reference": "35b0ddcb2b45f6b4ad44e8cbc6d32011bdb5effb",
+                "shasum": ""
+            },
+            "require": {
+                "consolidation/robo": "^1.4.11",
+                "ext-json": "*",
+                "openeuropa/task-runner": "^1.0.0-beta6",
+                "php": "~7.1"
+            },
+            "require-dev": {
+                "composer/composer": "^1",
+                "phpunit/phpunit": "~7 || ~8 || ~9",
+                "slevomat/coding-standard": "~6",
+                "squizlabs/php_codesniffer": "~3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TaskRunner\\Composer\\": "./src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "EUPL-1.2"
+            ],
+            "authors": [
+                {
+                    "name": "Claudiu Cristea",
+                    "email": "clau.cristea@gmail.com"
+                }
+            ],
+            "description": "Provides Composer commands for OpenEuropa Task Runner",
+            "keywords": [
+                "task-runner"
+            ],
+            "time": "2020-06-16T19:37:23+00:00"
+        },
+        {
+            "name": "php-task-runner/redis",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-task-runner/redis.git",
+                "reference": "318c31cad2e5c806b8c7070ed5549416e98392be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-task-runner/redis/zipball/318c31cad2e5c806b8c7070ed5549416e98392be",
+                "reference": "318c31cad2e5c806b8c7070ed5549416e98392be",
+                "shasum": ""
+            },
+            "require": {
+                "consolidation/robo": "^1.4.11",
+                "openeuropa/task-runner": "^1.0.0-beta6",
+                "php": "~7.1",
+                "predis/predis": "^1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~7 || ~8 || ~9",
+                "slevomat/coding-standard": "~6",
+                "squizlabs/php_codesniffer": "~3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TaskRunner\\Redis\\": "./src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "TaskRunner\\Redis\\Tests\\": "./tests/src/"
+                }
+            },
+            "license": [
+                "EUPL-1.2"
+            ],
+            "authors": [
+                {
+                    "name": "Claudiu Cristea",
+                    "email": "clau.cristea@gmail.com"
+                }
+            ],
+            "description": "Provides Redis commands for OpenEuropa Task Runner",
+            "keywords": [
+                "task-runner"
+            ],
+            "support": {
+                "source": "https://github.com/php-task-runner/redis/tree/master",
+                "issues": "https://github.com/php-task-runner/redis/issues"
+            },
+            "time": "2020-06-16T16:22:10+00:00"
+        },
+        {
             "name": "php-task-runner/scss",
             "version": "1.0.0",
             "source": {
@@ -12252,7 +12354,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-02-13T14:54:04+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -17268,40 +17370,40 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "5.3.2",
+            "version": "6.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "c89677919c5dd6d3b3852f230a663118762218ac"
+                "reference": "807e6013b00af69b6c5d9ceb4282d0393dbb9d8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/c89677919c5dd6d3b3852f230a663118762218ac",
-                "reference": "c89677919c5dd6d3b3852f230a663118762218ac",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/807e6013b00af69b6c5d9ceb4282d0393dbb9d8d",
+                "reference": "807e6013b00af69b6c5d9ceb4282d0393dbb9d8d",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-xmlwriter": "*",
-                "php": "^7.0",
-                "phpunit/php-file-iterator": "^1.4.2",
+                "php": "^7.1",
+                "phpunit/php-file-iterator": "^2.0",
                 "phpunit/php-text-template": "^1.2.1",
-                "phpunit/php-token-stream": "^2.0.1",
+                "phpunit/php-token-stream": "^3.0",
                 "sebastian/code-unit-reverse-lookup": "^1.0.1",
-                "sebastian/environment": "^3.0",
+                "sebastian/environment": "^3.1 || ^4.0",
                 "sebastian/version": "^2.0.1",
                 "theseer/tokenizer": "^1.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.0"
+                "phpunit/phpunit": "^7.0"
             },
             "suggest": {
-                "ext-xdebug": "^2.5.5"
+                "ext-xdebug": "^2.6.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.3.x-dev"
+                    "dev-master": "6.1-dev"
                 }
             },
             "autoload": {
@@ -17327,29 +17429,32 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-04-06T15:36:58+00:00"
+            "time": "2018-10-31T16:06:48+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
-            "version": "1.4.5",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
-                "reference": "730b01bc3e867237eaac355e06a36b85dd93a8b4"
+                "reference": "050bedf145a257b1ff02746c31894800e5122946"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/730b01bc3e867237eaac355e06a36b85dd93a8b4",
-                "reference": "730b01bc3e867237eaac355e06a36b85dd93a8b4",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/050bedf145a257b1ff02746c31894800e5122946",
+                "reference": "050bedf145a257b1ff02746c31894800e5122946",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -17364,7 +17469,7 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sb@sebastian-bergmann.de",
+                    "email": "sebastian@phpunit.de",
                     "role": "lead"
                 }
             ],
@@ -17374,7 +17479,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2017-11-27T13:52:08+00:00"
+            "time": "2018-09-13T20:33:42+00:00"
         },
         {
             "name": "phpunit/php-text-template",
@@ -17419,28 +17524,28 @@
         },
         {
             "name": "phpunit/php-timer",
-            "version": "1.0.9",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-timer.git",
-                "reference": "3dcf38ca72b158baf0bc245e9184d3fdffa9c46f"
+                "reference": "1038454804406b0b5f5f520358e78c1c2f71501e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/3dcf38ca72b158baf0bc245e9184d3fdffa9c46f",
-                "reference": "3dcf38ca72b158baf0bc245e9184d3fdffa9c46f",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/1038454804406b0b5f5f520358e78c1c2f71501e",
+                "reference": "1038454804406b0b5f5f520358e78c1c2f71501e",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.3 || ^7.0"
+                "php": "^7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
+                "phpunit/phpunit": "^7.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "2.1-dev"
                 }
             },
             "autoload": {
@@ -17455,7 +17560,7 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sb@sebastian-bergmann.de",
+                    "email": "sebastian@phpunit.de",
                     "role": "lead"
                 }
             ],
@@ -17464,33 +17569,33 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2017-02-26T11:10:40+00:00"
+            "time": "2019-06-07T04:22:29+00:00"
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "2.0.2",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "791198a2c6254db10131eecfe8c06670700904db"
+                "reference": "995192df77f63a59e47f025390d2d1fdf8f425ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/791198a2c6254db10131eecfe8c06670700904db",
-                "reference": "791198a2c6254db10131eecfe8c06670700904db",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/995192df77f63a59e47f025390d2d1fdf8f425ff",
+                "reference": "995192df77f63a59e47f025390d2d1fdf8f425ff",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
-                "php": "^7.0"
+                "php": "^7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.2.4"
+                "phpunit/phpunit": "^7.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "3.1-dev"
                 }
             },
             "autoload": {
@@ -17513,40 +17618,40 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-11-27T05:48:46+00:00"
+            "time": "2019-09-17T06:23:10+00:00"
         },
         {
             "name": "phpunit/phpunit",
-            "version": "6.5.14",
+            "version": "7.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "bac23fe7ff13dbdb461481f706f0e9fe746334b7"
+                "reference": "400a3836ee549ae6f665323ac3f21e27eac7155f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/bac23fe7ff13dbdb461481f706f0e9fe746334b7",
-                "reference": "bac23fe7ff13dbdb461481f706f0e9fe746334b7",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/400a3836ee549ae6f665323ac3f21e27eac7155f",
+                "reference": "400a3836ee549ae6f665323ac3f21e27eac7155f",
                 "shasum": ""
             },
             "require": {
+                "doctrine/instantiator": "^1.1",
                 "ext-dom": "*",
                 "ext-json": "*",
                 "ext-libxml": "*",
                 "ext-mbstring": "*",
                 "ext-xml": "*",
-                "myclabs/deep-copy": "^1.6.1",
+                "myclabs/deep-copy": "^1.7",
                 "phar-io/manifest": "^1.0.1",
                 "phar-io/version": "^1.0",
-                "php": "^7.0",
+                "php": "^7.1",
                 "phpspec/prophecy": "^1.7",
-                "phpunit/php-code-coverage": "^5.3",
-                "phpunit/php-file-iterator": "^1.4.3",
+                "phpunit/php-code-coverage": "^6.0.7",
+                "phpunit/php-file-iterator": "^2.0.1",
                 "phpunit/php-text-template": "^1.2.1",
-                "phpunit/php-timer": "^1.0.9",
-                "phpunit/phpunit-mock-objects": "^5.0.9",
-                "sebastian/comparator": "^2.1",
-                "sebastian/diff": "^2.0",
+                "phpunit/php-timer": "^2.0",
+                "sebastian/comparator": "^3.0",
+                "sebastian/diff": "^3.0",
                 "sebastian/environment": "^3.1",
                 "sebastian/exporter": "^3.1",
                 "sebastian/global-state": "^2.0",
@@ -17555,15 +17660,15 @@
                 "sebastian/version": "^2.0.1"
             },
             "conflict": {
-                "phpdocumentor/reflection-docblock": "3.0.2",
-                "phpunit/dbunit": "<3.0"
+                "phpunit/phpunit-mock-objects": "*"
             },
             "require-dev": {
                 "ext-pdo": "*"
             },
             "suggest": {
+                "ext-soap": "*",
                 "ext-xdebug": "*",
-                "phpunit/php-invoker": "^1.1"
+                "phpunit/php-invoker": "^2.0"
             },
             "bin": [
                 "phpunit"
@@ -17571,7 +17676,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "6.5.x-dev"
+                    "dev-master": "7.2-dev"
                 }
             },
             "autoload": {
@@ -17597,67 +17702,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-02-01T05:22:47+00:00"
-        },
-        {
-            "name": "phpunit/phpunit-mock-objects",
-            "version": "5.0.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "cd1cf05c553ecfec36b170070573e540b67d3f1f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/cd1cf05c553ecfec36b170070573e540b67d3f1f",
-                "reference": "cd1cf05c553ecfec36b170070573e540b67d3f1f",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/instantiator": "^1.0.5",
-                "php": "^7.0",
-                "phpunit/php-text-template": "^1.2.1",
-                "sebastian/exporter": "^3.1"
-            },
-            "conflict": {
-                "phpunit/phpunit": "<6.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6.5.11"
-            },
-            "suggest": {
-                "ext-soap": "*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.0.x-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
-                }
-            ],
-            "description": "Mock Object library for PHPUnit",
-            "homepage": "https://github.com/sebastianbergmann/phpunit-mock-objects/",
-            "keywords": [
-                "mock",
-                "xunit"
-            ],
-            "abandoned": true,
-            "time": "2018-08-09T05:50:03+00:00"
+            "time": "2018-06-21T13:13:39+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -17706,30 +17751,30 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "2.1.3",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "34369daee48eafb2651bea869b4b15d75ccc35f9"
+                "reference": "5de4fc177adf9bce8df98d8d141a7559d7ccf6da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/34369daee48eafb2651bea869b4b15d75ccc35f9",
-                "reference": "34369daee48eafb2651bea869b4b15d75ccc35f9",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/5de4fc177adf9bce8df98d8d141a7559d7ccf6da",
+                "reference": "5de4fc177adf9bce8df98d8d141a7559d7ccf6da",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0",
-                "sebastian/diff": "^2.0 || ^3.0",
+                "php": "^7.1",
+                "sebastian/diff": "^3.0",
                 "sebastian/exporter": "^3.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.4"
+                "phpunit/phpunit": "^7.1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1.x-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -17766,32 +17811,33 @@
                 "compare",
                 "equality"
             ],
-            "time": "2018-02-01T13:46:46+00:00"
+            "time": "2018-07-12T15:12:46+00:00"
         },
         {
             "name": "sebastian/diff",
-            "version": "2.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "347c1d8b49c5c3ee30c7040ea6fc446790e6bddd"
+                "reference": "720fcc7e9b5cf384ea68d9d930d480907a0c1a29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/347c1d8b49c5c3ee30c7040ea6fc446790e6bddd",
-                "reference": "347c1d8b49c5c3ee30c7040ea6fc446790e6bddd",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/720fcc7e9b5cf384ea68d9d930d480907a0c1a29",
+                "reference": "720fcc7e9b5cf384ea68d9d930d480907a0c1a29",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0"
+                "php": "^7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.2"
+                "phpunit/phpunit": "^7.5 || ^8.0",
+                "symfony/process": "^2 || ^3.3 || ^4"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -17816,9 +17862,12 @@
             "description": "Diff implementation",
             "homepage": "https://github.com/sebastianbergmann/diff",
             "keywords": [
-                "diff"
+                "diff",
+                "udiff",
+                "unidiff",
+                "unified diff"
             ],
-            "time": "2017-08-03T08:09:46+00:00"
+            "time": "2019-02-04T06:01:07+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -18396,23 +18445,23 @@
         },
         {
             "name": "weitzman/drupal-test-traits",
-            "version": "1.3.1",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://gitlab.com/weitzman/drupal-test-traits.git",
-                "reference": "d3d69f8822d609e2953fbef47f5c04ce1f3c3ba6"
+                "reference": "5992285e54e98e22cf1071242dea3c1da81d2b78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/weitzman%2Fdrupal-test-traits/repository/archive.zip?sha=d3d69f8822d609e2953fbef47f5c04ce1f3c3ba6",
-                "reference": "d3d69f8822d609e2953fbef47f5c04ce1f3c3ba6",
+                "url": "https://gitlab.com/api/v4/projects/weitzman%2Fdrupal-test-traits/repository/archive.zip?sha=5992285e54e98e22cf1071242dea3c1da81d2b78",
+                "reference": "5992285e54e98e22cf1071242dea3c1da81d2b78",
                 "shasum": ""
             },
             "require": {
-                "behat/mink": "1.8.0 | 1.7.1 | 1.7.x-dev",
+                "behat/mink": "^1.8 | 1.7.1 | 1.7.x-dev",
                 "behat/mink-goutte-driver": "^1.2",
                 "php": ">=7.0.8",
-                "phpunit/phpunit": "^6.5 || ^7",
+                "phpunit/phpunit": ">=6.5",
                 "webflo/drupal-finder": "^1.1"
             },
             "require-dev": {
@@ -18421,6 +18470,7 @@
                 "dmore/chrome-mink-driver": "^2.6",
                 "drupal-composer/drupal-scaffold": "2.3.0",
                 "drupal/core": "^8.8@alpha",
+                "drupal/core-dev": "^8.8",
                 "drush/drush": "^9",
                 "jakub-onderka/php-parallel-lint": "^1.0",
                 "squizlabs/php_codesniffer": "^3.2",
@@ -18450,7 +18500,7 @@
                 }
             ],
             "description": "Traits for testing Drupal sites that have user content (versus unpopulated sites).",
-            "time": "2019-11-29T09:34:00+00:00"
+            "time": "2020-04-29T23:52:16+00:00"
         },
         {
             "name": "weitzman/logintrait",
@@ -18520,6 +18570,8 @@
         "jacklmoore/autosize": 20,
         "openeuropa/oe_webtools": 20,
         "openeuropa/task-runner": 20,
+        "php-task-runner/composer": 20,
+        "php-task-runner/redis": 20,
         "semiceu/adms-ap_validator": 20,
         "jcalderonzumba/gastonjs": 20
     },
