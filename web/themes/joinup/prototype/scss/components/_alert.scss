@@ -90,3 +90,42 @@
     }
   }
 }
+
+// Moderator site alerts
+// --------------------------------------------------
+.site-alert {
+  & > div {
+    @extend .alert;
+
+    &:before {
+      @extend .icon;
+      content: "";
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      @include icon-size(30px);
+    }
+
+    &.severity-high {
+      background-color: $color-error;
+    }
+    &.severity-medium {
+      background-color: $color-warning;
+    }
+    &.severity-low {
+      background-color: $color-info;
+    }
+
+    .text {
+      color: #fff;
+      a {
+        color: #fff;
+      }
+      p:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

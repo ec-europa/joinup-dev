@@ -70,6 +70,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Abstract wrapper'
+      region: content
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
 bundle: solution

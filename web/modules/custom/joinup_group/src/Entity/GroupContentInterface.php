@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group\Entity;
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -13,7 +14,7 @@ use Drupal\rdf_entity\RdfInterface;
  * - collections: community content, custom pages, and solutions.
  * - solutions: asset releases and asset distributions.
  */
-interface GroupContentInterface {
+interface GroupContentInterface extends ContentEntityInterface {
 
   /**
    * Returns the group to which this entity belongs.
