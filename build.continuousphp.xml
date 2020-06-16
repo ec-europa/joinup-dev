@@ -48,15 +48,6 @@
 
     </target>
 
-    <!-- Sleeps to allow services to get up and be ready -->
-    <target name="sleep">
-        <echo message="Sleeping ${sleep.hours} hours, ${sleep.minutes} minutes, ${sleep.seconds} seconds, ${sleep.milliseconds} milliseconds"/>
-        <sleep hours="${sleep.hours}"
-               minutes="${sleep.minutes}"
-               seconds="${sleep.seconds}"
-               milliseconds="${sleep.milliseconds}"/>
-    </target>
-
     <!-- Checks to execute during build phase to exit early in case of easily preventable errors. -->
     <target name="sanity-check">
         <exec command="./vendor/bin/run dev:check-deprecated-code" checkreturn="true" passthru="true" />
