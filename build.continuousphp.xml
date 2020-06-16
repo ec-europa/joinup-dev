@@ -3,10 +3,7 @@
 <project name="ContinuousPHP" default="help">
 
     <target name="setup-continuousphp" depends="check-continuousphp">
-        <echo msg="Set the virtuoso checkpoint to -1. Do not use a checkpoint for CPHP testing."/>
-        <phingcall target="set-virtuoso-checkpoint">
-            <property name="interval" value="-1"/>
-        </phingcall>
+        <exec command="./vendor/bin/run virtuoso:checkpoint-set -- -1" checkreturn="true" passthru="true"/>
 
         <echo message="Create Solr index" />
         <exec dir="${project.basedir}"
