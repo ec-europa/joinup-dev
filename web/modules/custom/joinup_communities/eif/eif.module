@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks and functions for the eif module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Session\AccountInterface;
+
+/**
+ * Implements hook_entity_field_access().
+ */
+function eif_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, ?FieldItemListInterface $items = NULL): AccessResultInterface {
+  if ($field_definition->getName() !== 'field_is_eif_reference' || $operation !== 'edit') {
+    return AccessResult::neutral();
+  }
+
+  // If the user does not have the permission, the result will be forbidden. If
+  // the user has access, the result will be neutral and the default access
+  // result for fields will be enforced, which is the allowed.
+  return AccessResult::forbiddenIf(!$account->hasPermission('edit eif references'));
+}

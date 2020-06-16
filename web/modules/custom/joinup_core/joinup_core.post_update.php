@@ -198,7 +198,7 @@ QUERY;
 /**
  * Insert the new EIF vocabulary into the database.
  */
-function joinup_core_post_update_0106102(): void {
+function joinup_core_post_update_0106103(): void {
   $sparql_connection = Database::getConnection('default', 'sparql_default');
   $connection_options = $sparql_connection->getConnectionOptions();
   $connect_string = "http://{$connection_options['host']}:{$connection_options['port']}/sparql-graph-crud";

@@ -23,6 +23,7 @@ dependencies:
     - field.storage.rdf_entity.field_is_description
     - field.storage.rdf_entity.field_isr_description
     - field.storage.rdf_entity.field_licence_description
+    - field.storage.rdf_entity.field_is_eif_reference
     - field.storage.rdf_entity.field_is_owner
     - field.storage.rdf_entity.field_owner_name
     - field.storage.rdf_entity.field_isr_owner
@@ -150,6 +151,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_is_description
+  field_is_eif_reference:
+    label: 'EIF reference'
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_is_eif_reference
+    type: string
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_is_eif_reference
   field_is_pinned_in:
     label: 'Pinned in'
     datasource_id: 'entity:rdf_entity'
