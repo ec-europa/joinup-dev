@@ -36,6 +36,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: Attachments
+      region: content
 _core:
   default_config_hash: ZZ0APhON-5FpA-vKXTwx_A1Bz6FHZzw2XG7t7MvvXO8
 id: node.custom_page.default

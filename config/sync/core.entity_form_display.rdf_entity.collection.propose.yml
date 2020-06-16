@@ -50,6 +50,7 @@ third_party_settings:
         id: ''
         classes: ''
         direction: vertical
+      region: content
     group_main:
       children:
         - label
@@ -70,6 +71,7 @@ third_party_settings:
         required_fields: true
         id: ''
         classes: ''
+      region: content
     group_description:
       children:
         - field_ar_abstract
@@ -92,6 +94,7 @@ third_party_settings:
         required_fields: true
         id: ''
         classes: ''
+      region: content
 _core:
   default_config_hash: sZ7uqiT2tsjscaEeNtBA28aEOnVEi4XiH_rJHHWbIWA
 id: rdf_entity.collection.propose
