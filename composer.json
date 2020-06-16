@@ -92,6 +92,7 @@
         "openeuropa/webtools-geocoding-provider": "~0.1",
         "pear/console_table": "~1.3",
         "phing/phing": "^2.16",
+        "php-task-runner/redis": "dev-master",
         "php-task-runner/scss": "~1.0",
         "predis/predis": "~1.1",
         "semiceu/adms-ap_validator": "dev-master",
@@ -364,6 +365,10 @@
                     "reference": "master"
                 }
             }
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/php-task-runner/redis.git"
         },
         {
             "type": "vcs",
