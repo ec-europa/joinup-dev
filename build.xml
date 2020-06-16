@@ -5,9 +5,6 @@
     <!-- Import local Phing targets. -->
     <import file="${project.basedir}/build.local.xml" optional="true" />
 
-    <!-- Import Phing converted targets. -->
-    <import file="${project.basedir}/build.converted.xml" optional="true" />
-
     <!-- Import project specific Phing targets. -->
     <import file="${project.basedir}/build.project.xml" optional="true" />
 
