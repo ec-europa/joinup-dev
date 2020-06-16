@@ -119,36 +119,9 @@ All options you can use can be found in the `build.properties` file. Just copy
 the lines you want to override and change their values. Do not copy the entire
 `build.properties` file, since this would override all options.
 
-Example `build.properties.local`:
-
-```
-# The location of the Composer binary.
-composer.bin = /usr/bin/composer
-
-# SQL database settings.
-drupal.db.name = my_database
-drupal.db.user = root
-drupal.db.password = hunter2
-
-# Admin user.
-drupal.admin.username = admin
-drupal.admin.password = admin
-
-# The base URL to use in tests.
-drupal.base_url = http://joinup.local
-
-## Development settings.
-
-# Verbosity of Drush commands. Set to 'yes' for verbose output.
-drush.verbose = yes
-
 # Disable config readonly for local development.
 config_readonly.enabled = FALSE
 
-# Do not redirect emails to disk.
-# Set this to false when you are grabbing the emails using e.g. mailcatcher.
-drupal.redirect.email = no
-```
 
 #### Create a local task runner configuration file
 

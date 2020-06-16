@@ -48,8 +48,8 @@ trait ConfigReadOnlyTrait {
   public static function restoreReadOnlyConfig(): void {
     // Restore as enabled only if initially has been enabled. This allows to
     // keep config_readonly disabled on a local development environment (i.e.
-    // where the Phing property `config_readonly.enabled` was set to `FALSE`),
-    // after the tests had finished.
+    // where the Task Runner config `config_readonly` was set to `false`), after
+    // the tests had finished.
     if (static::$isConfigReadonlyEnabled) {
       /** @var \Drupal\Core\File\FileSystemInterface $file_system */
       $file_system = \Drupal::service('file_system');
