@@ -30,6 +30,26 @@ drupal:
       uri: ${drupal.base_url}
       verbose: no
   settings:
+    presets:
+      main:
+        - Main settings
+        - Databases
+        - Configuration
+        - Search API
+        - Matomo & OpenEuropa Webtools Analytics
+        - Custom error handler
+        - Permissions
+      redis:
+        - Redis
+      dev:
+        - Development
+        - OpenEuropa Newsroom Newsletter
+        - OpenEuropa Webtools Geocoding Cache
+        - Mail catch
+      cphp:
+        - Development
+        - OpenEuropa Newsroom Newsletter
+        - OpenEuropa Webtools Geocoding Cache
     header: |
       <?php
 
@@ -53,22 +73,6 @@ drupal:
       if (file_exists("$app_root/$site_path/settings.override.php")) {
         include "$app_root/$site_path/settings.override.php";
       }
-    presets:
-      main:
-        - Main settings
-        - Databases
-        - Configuration
-        - Search API
-        - Matomo & OpenEuropa Webtools Analytics
-        - Custom error handler
-        - Permissions
-      redis:
-        - Redis
-      dev:
-        - Development
-        - OpenEuropa Newsroom Newsletter
-        - OpenEuropa Webtools Geocoding Cache
-        - Mail catch
     sections:
       Main settings: |
         $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT');
