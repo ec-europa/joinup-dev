@@ -77,3 +77,7 @@ commands:
   # Stops the Virtuoso server.
   virtuoso:stop:
     - echo "shutdown();" | ${isql.bin} ${sparql.host} ${sparql.user} ${sparql.password} || true
+
+  # Executes a Virtuoso checkpoint.
+  virtuoso:checkpoint-execute:
+    - echo 'checkpoint;' | ${isql.bin} ${sparql.host} ${sparql.user} ${sparql.password}
