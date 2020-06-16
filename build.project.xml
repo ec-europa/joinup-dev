@@ -85,23 +85,6 @@
 
     </target>
 
-    <target name="create-phpunit-mysql-database">
-        <php expression="explode('://', '${phpunit.db_url}', 2)[0]" returnProperty="phpunit.db.type"/>
-        <if>
-            <equals arg1="${phpunit.db.type}" arg2="mysql"/>
-            <then>
-                <drush
-                        command="sql:create"
-                        assume="yes"
-                        root="${website.drupal.dir}"
-                        bin="${drush.bin}"
-                        verbose="${drush.verbose}">
-                    <option name="db-url" value="${phpunit.db_url}"/>
-                </drush>
-            </then>
-        </if>
-    </target>
-
     <target name="build-dist"
         description="Build a distribution package.">
         <exec command="./vendor/bin/run joinup:compile-scss" checkreturn="true" passthru="true" />
