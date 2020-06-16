@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "adeaf42e0bda5c0a67f1e5e45680e2f0",
+    "content-hash": "40de74f05a7578ec16d0ce62926c1f4b",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6847,7 +6847,8 @@
                 },
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff",
-                    "The connection with the Sparql database should be set up in ::bootEnvironment() @see https://github.com/ec-europa/rdf_entity/pull/123": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/123.patch"
+                    "The connection with the Sparql database should be set up in ::bootEnvironment() @see https://github.com/ec-europa/rdf_entity/pull/123": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/123.patch",
+                    "Remove duplicated term title from taxonomy page. @see https://github.com/ec-europa/rdf_entity/pull/125": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/125.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7786,20 +7787,8 @@
             ],
             "authors": [
                 {
-                    "name": "AdamPS",
-                    "homepage": "https://www.drupal.org/user/2650563"
-                },
-                {
-                    "name": "Anybody",
-                    "homepage": "https://www.drupal.org/user/291091"
-                },
-                {
                     "name": "B-Prod",
                     "homepage": "https://www.drupal.org/user/407852"
-                },
-                {
-                    "name": "geek-merlin",
-                    "homepage": "https://www.drupal.org/user/229048"
                 },
                 {
                     "name": "sbrattla",
@@ -12235,7 +12224,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2020-03-02T18:32:28+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
