@@ -341,6 +341,9 @@
                 "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                 "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
                 "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff"
+            },
+            "openeuropa/task-runner": {
+                "Allow to pass array options to 'run' & 'exec' tasks @see https://github.com/openeuropa/task-runner/pull/137": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/137.diff"
             }
         }
     },
