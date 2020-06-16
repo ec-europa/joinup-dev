@@ -1,0 +1,14 @@
+# Drush configs and commands
+
+drush:
+  # Drush binary location.
+  bin: ${joinup.dir}/vendor/bin/drush
+
+commands:
+
+  # Overrides the Task Runner drupal:drush-setup command.
+  # See https://github.com/openeuropa/task-runner/pull/135
+  drupal:drush-setup:
+    - task: process
+      source: ${joinup.dir}/drush/drush.yml.dist
+      destination: ${joinup.dir}/drush/drush.yml
