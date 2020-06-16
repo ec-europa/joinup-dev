@@ -7,6 +7,7 @@
         "php": ">=7.1.0",
         "ext-json": "*",
         "aws/aws-sdk-php": "~3.0",
+        "boedah/robo-drush": "^4.2",
         "composer/composer": "^1.9.1",
         "composer/installers": "^1.7",
         "cpliakas/git-wrapper": "~1.7",
