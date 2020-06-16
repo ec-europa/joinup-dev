@@ -119,9 +119,6 @@ All options you can use can be found in the `build.properties` file. Just copy
 the lines you want to override and change their values. Do not copy the entire
 `build.properties` file, since this would override all options.
 
-# Disable config readonly for local development.
-config_readonly.enabled = FALSE
-
 
 #### Create a local task runner configuration file
 
@@ -139,12 +136,12 @@ details.
 
 #### Build the project
 
-Execute the [Phing](https://www.phing.info/) target `build-dev` to build a
-development instance, then install the site with `install-dev`:
+Execute the Task Runner command `toolkit:build-dev` to build a development
+instance, then install the site with `toolkit:install-clean`:
 
 ```
-$ ./vendor/bin/phing build-dev
-$ ./vendor/bin/phing install-dev
+$ ./vendor/bin/run toolkit:build-dev
+$ ./vendor/bin/run toolkit:install-clean
 ```
 
 
