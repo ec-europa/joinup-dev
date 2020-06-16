@@ -1,0 +1,8 @@
+# File-system configurations and commands.
+
+commands:
+
+  # Creates the Drupal private file-system directory.
+  fs:private-create:
+    - task: mkdir
+      dir: ${joinup.site_dir}/${env.DRUPAL_PRIVATE_FILE_SYSTEM}

@@ -3,7 +3,20 @@
 phpstan:
   bin: ${joinup.dir}/vendor/bin/phpstan
 
+dev:
+  modules:
+    - admin_toolbar
+    - cas_mock_server
+    - config_devel
+    - config_update
+    - devel
+    - field_ui
+    - filecache
+    - joinup_cas_mock_server
+    - views_ui
+
 commands:
+
   # Scans the code base for deprecated code.
   dev:check-deprecated-code:
     - task: exec
@@ -24,10 +37,11 @@ commands:
       command: solr:restore
     - task: run
       command: virtuoso:restore
-    - task: exec
-      command: ${phing.bin}
+    - task: run
+      command: drupal:settings
       arguments:
-        - disable-webtools-geocoding-cache
+        - main
+        - redis
     - task: run
       command: toolkit:install-dump
 
@@ -37,3 +51,115 @@ commands:
       command: dev:restore-databases
     - task: run
       command: toolkit:run-deploy
+
+  dev:install-modules:
+    - task: run
+      command: drush:module-install
+      arguments: ${dev.modules}
+
+  dev:demo-users:
+    - task: exec
+      command: ${drush.bin}
+      arguments:
+        - user:create
+        - administrator
+      options:
+        mail: administrator@example.com
+        password: administrator
+        yes: null
+        root: ${joinup.site_dir}
+    - task: exec
+      command: ${drush.bin}
+      arguments:
+        - user:role:add
+        - administrator
+        - administrator
+      options:
+        yes: null
+        root: ${joinup.site_dir}
+    - task: exec
+      command: ${drush.bin}
+      arguments:
+        - cas-mock-server:user-create
+        - administrator
+      options:
+        email: administrator@example.com
+        password: administrator
+        yes: null
+        root: ${joinup.site_dir}
+    - task: exec
+      command: ${drush.bin}
+      arguments:
+        - cas:set-cas-username
+        - administrator
+        - administrator
+      options:
+        yes: null
+        root: ${joinup.site_dir}
+    - task: exec
+      command: ${drush.bin}
+      arguments:
+        - user:create
+        - moderator
+      options:
+        mail: moderator@example.com
+        password: moderator
+        yes: null
+        root: ${joinup.site_dir}
+    - task: exec
+      command: ${drush.bin}
+      arguments:
+        - user:role:add
+        - moderator
+        - moderator
+      options:
+        yes: null
+        root: ${joinup.site_dir}
+    - task: exec
+      command: ${drush.bin}
+      arguments:
+        - cas-mock-server:user-create
+        - moderator
+      options:
+        email: moderator@example.com
+        password: moderator
+        yes: null
+        root: ${joinup.site_dir}
+    - task: exec
+      command: ${drush.bin}
+      arguments:
+        - cas:set-cas-username
+        - moderator
+        - moderator
+      options:
+        yes: null
+        root: ${joinup.site_dir}
+    - task: exec
+      command: ${drush.bin}
+      arguments:
+        - user:create
+        - user
+      options:
+        mail: user@example.com
+        password: user
+        yes: null
+        root: ${joinup.site_dir}
+    - task: exec
+      command: ${drush.bin}
+      arguments:
+        - cas-mock-server:user-create
+        - user
+      options:
+        email: user@example.com
+        password: user
+        yes: null
+        root: ${joinup.site_dir}
+    - task: exec
+      command: ${drush.bin}
+      arguments:
+        - cas:set-cas-username
+        - user
+        - user
+      options:
+        yes: null
+        root: ${joinup.site_dir}
