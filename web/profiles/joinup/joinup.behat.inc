@@ -412,7 +412,7 @@ class JoinupSubContext extends DrupalSubContextBase {
     $options = $this->explodeCommaSeparatedStepArgument($optgroups);
 
     foreach ($options as $option) {
-      Assert::assertContains($option, $available_optgroups, TRUE, "The '{$select}' select doesn't contain the option '{$option}''.");
+      Assert::assertContains($option, $available_optgroups, "The '{$select}' select doesn't contain the option '{$option}''.", TRUE);
     }
   }
 

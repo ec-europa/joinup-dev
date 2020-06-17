@@ -172,7 +172,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
         sort($actual_target_states);
         sort($expected_target_states);
 
-        $this->assertEquals($expected_target_states, $actual_target_states, $this->t('Allowed transitions match with settings.'));
+        $this->assertEquals($expected_target_states, $actual_target_states, 'Allowed transitions match with settings.');
       }
     }
   }
