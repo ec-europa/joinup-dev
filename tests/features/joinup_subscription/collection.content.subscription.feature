@@ -161,3 +161,14 @@ Feature: Subscribing to community content in collections
       | Ruse |
     And the monthly collection content subscription digest for kalin should not contain the following message:
       | Ruse |
+
+    # Test publication of a solution.
+    When the workflow state of the "Double seaming" solution is changed to "validated"
+    Then the daily collection content subscription digest for hristo should include the following messages:
+      | Double seaming |
+
+    # Check that the messages are formatted correctly.
+    Given all message digests have been delivered
+    Then the collection content subscription digest sent to hristo contains the following sections:
+      | title          |
+      | Double seaming |
