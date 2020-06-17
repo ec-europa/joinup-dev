@@ -10,7 +10,7 @@ id: rdf_entity.solution.field_is_eif_reference
 field_name: field_is_eif_reference
 entity_type: rdf_entity
 bundle: solution
-label: 'EIF Reference'
+label: 'EIF reference'
 description: ''
 required: false
 translatable: false

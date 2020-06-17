@@ -75,6 +75,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Categorisation
+      region: content
     group_moderation:
       children:
         - field_is_content_creation
@@ -92,6 +93,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Moderation
+      region: content
     group_owner_contact_information:
       children:
         - field_is_owner
@@ -109,6 +111,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Owner/Contact Information'
+      region: content
     group_documentation:
       children:
         - field_is_documentation
@@ -125,6 +128,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Documentation
+      region: content
     group_trr_information:
       children:
         - field_is_test_resource_type
@@ -145,6 +149,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'TRR Information'
+      region: content
     group_solution_external_links:
       children:
         - field_is_landing_page
@@ -162,6 +167,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Solution external reference information'
+      region: content
 id: rdf_entity.solution.about
 targetEntityType: rdf_entity
 bundle: solution

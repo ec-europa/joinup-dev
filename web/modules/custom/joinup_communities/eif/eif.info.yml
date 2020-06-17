@@ -1,5 +1,5 @@
-name: EU SIC
+name: European Interoperability Framework
 type: module
-description: EU Schemantic Interoperability Catalogue community.
+description: Custom functionality for the European Interoperability Framework community.
 core: 8.x
 package: Joinup communities

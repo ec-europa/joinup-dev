@@ -173,7 +173,7 @@ field_settings:
       config:
         - field.storage.rdf_entity.field_is_description
   field_is_eif_reference:
-    label: 'EIF Reference'
+    label: 'EIF reference'
     datasource_id: 'entity:rdf_entity'
     property_path: field_is_eif_reference
     type: string

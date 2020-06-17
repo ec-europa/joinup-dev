@@ -40,6 +40,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Categorisation
+      region: content
 _core:
   default_config_hash: yuBnsBjApVTopV3xSPFpHg406x-7OVMswqbIvjnhFlU
 id: rdf_entity.asset_distribution.default

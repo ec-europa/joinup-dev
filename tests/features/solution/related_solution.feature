@@ -35,7 +35,7 @@ Feature: Related solution
     When I am logged in as a facilitator of the "Java" solution
     And I visit the "Java" solution
     And I click "Edit" in the "Entity actions" region
-    And I fill in "Related Solutions" with values "C, Python"
+    And I fill in "Related solutions" with values "C, Python"
     And I uncheck "Show solutions related by EIRA terms"
     And I press "Propose"
     Then I should see the heading "Java"
