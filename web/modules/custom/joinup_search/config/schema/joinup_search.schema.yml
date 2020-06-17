@@ -1,3 +1,11 @@
+facet.widget.config.type:
+  type: facet.widget.default_config
+  label: 'Search API content listing'
+  mapping:
+    tabs:
+      type: integer
+      label: 'Number of tabs'
+
 joinup_search_filter_plugin_entity_autocomplete:
   type: search_api_field_plugin_filter
   mapping:

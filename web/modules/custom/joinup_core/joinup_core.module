@@ -7,7 +7,6 @@
 
 declare(strict_types = 1);
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -16,7 +15,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\StreamWrapper\StreamWrapperManager;
-use Drupal\Core\Template\Attribute;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\JoinupSiteAlertListBuilder;
 use Drupal\node\NodeInterface;
@@ -28,15 +26,6 @@ function joinup_core_theme($existing, $type, $theme, $path) {
   return [
     'joinup_tiles' => [
       'path' => drupal_get_path('module', 'joinup_core') . '/templates',
-    ],
-    'facet_widget_links_inline' => [
-      'variables' => [
-        'active' => [],
-        'items' => [],
-        'attributes' => [],
-        'prefix_text' => '',
-        'suffix_text' => '',
-      ],
     ],
     '404_not_found' => [
       'variables' => [
@@ -65,24 +54,6 @@ function joinup_core_theme($existing, $type, $theme, $path) {
  */
 function template_preprocess_joinup_tiles(array &$variables) {
   template_preprocess_views_view_unformatted($variables);
-}
-
-/**
- * Prepares variables for the facet widget "links inline" template.
- *
- * Default template: facet-widget-links-inline.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - active: an array of active facet items.
- *   - items: an array of inactive facet items.
- *   - attributes: HTML attributes for the main facet wrapper.
- */
-function template_preprocess_facet_widget_links_inline(array &$variables) {
-  $variables['button_attributes'] = new Attribute([
-    'id' => Html::getUniqueId('filter-button'),
-    'class' => ['filter__icon', 'icon', 'icon--arrow-down'],
-  ]);
 }
 
 /**
