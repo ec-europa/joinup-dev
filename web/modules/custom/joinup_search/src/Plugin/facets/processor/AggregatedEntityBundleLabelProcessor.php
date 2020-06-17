@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\facets\processor;
+namespace Drupal\joinup_search\Plugin\facets\processor;
 
 use Drupal\Core\Config\Entity\EntityBundleWithPluralLabelsInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -167,6 +167,8 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    *   If the bundle entity type did not specify a storage handler.
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *   Thrown when the module defining the entity type is not enabled.
    */
   protected function getBundlesWithLabelPluralCount(string $entity_type_id): array {
     // Are plural labels requested by plugin configuration?

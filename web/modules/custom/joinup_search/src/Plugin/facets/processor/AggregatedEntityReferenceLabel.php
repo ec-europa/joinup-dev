@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\facets\processor;
+namespace Drupal\joinup_search\Plugin\facets\processor;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -107,7 +107,6 @@ class AggregatedEntityReferenceLabel extends ProcessorPluginBase implements Buil
       list($datasource_id, $property_path) = Utility::splitCombinedId($combined_id);
       $properties = $index->getPropertyDefinitions($datasource_id);
       if (isset($properties[$property_path])) {
-        /** @var \Drupal\Core\TypedData\DataDefinitionInterface $property */
         $property = $properties[$property_path];
 
         // When the field is a entity reference or an OG group audience field,

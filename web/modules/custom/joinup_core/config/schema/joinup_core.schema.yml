@@ -59,15 +59,6 @@ condition.plugin.request_route:
     routes:
       type: string
 
-plugin.plugin_configuration.search_api_processor.joinup_entity_status:
-  type: search_api.default_processor_configuration
-  label: 'Joinup entity status processor'
-  mapping:
-    inverse:
-      type: boolean
-      label: 'Inverse'
-    roles:
-
 # Schema for 'joinup_timestamp_timeago' formatter settings.
 field.formatter.settings.joinup_timestamp_timeago:
   type: field.formatter.settings.timestamp
