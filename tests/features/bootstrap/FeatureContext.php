@@ -66,6 +66,13 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   protected $version;
 
   /**
+   * The latest file ID.
+   *
+   * @var int
+   */
+  protected static $lastFileId;
+
+  /**
    * Checks that a 200 OK response occurred.
    *
    * @Then I should get a valid web page
@@ -1871,6 +1878,40 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     if ($not_found) {
       throw new ExpectationFailedException("Following strings were not found in the downloaded file:\n- " . implode("\n- ", $not_found));
+    }
+  }
+
+  /**
+   * Stores the ID of the latest file entity created before the scenario.
+   *
+   * @beforeFeature
+   */
+  public static function storeLastFileId(): void {
+    static::$lastFileId = \Drupal::database()->query("SELECT MAX(fid) FROM {file_managed}")->fetchField() ?: 0;
+  }
+
+  /**
+   * Removes files created during test scenarios.
+   *
+   * Since Drupal 8.4.0, files that have no remaining usages are no longer
+   * deleted by default, see https://www.drupal.org/node/2891902. Even the host
+   * entities are deleted after test, the files attached via UI are not cleared
+   * at the end of the test scenario. This might cause some scenarios, creating
+   * the same file, to fail because the file will get a different, incremental,
+   * file base name. Note that files created via API are handled in
+   * FileTrait::cleanFiles().
+   *
+   * @see https://www.drupal.org/node/2891902
+   * @see \Drupal\joinup\Traits\FileTrait::cleanFiles()
+   *
+   * @afterFeature
+   */
+  public static function staleFilesCleanup(): void {
+    $fids = \Drupal::database()->query("SELECT fid FROM {file_managed} WHERE fid > :fid", [':fid' => static::$lastFileId])->fetchCol();
+    if ($fids) {
+      /** @var \Drupal\file\FileStorageInterface $storage */
+      $storage = \Drupal::entityTypeManager()->getStorage('file');
+      $storage->delete($storage->loadMultiple($fids));
     }
   }
 
