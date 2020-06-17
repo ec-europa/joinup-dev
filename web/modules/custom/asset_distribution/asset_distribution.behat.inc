@@ -290,7 +290,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       if (!empty($entities)) {
         foreach ($entities as $entity) {
           $entity->skip_notification = TRUE;
-          $entity->delete();
+          @$entity->delete();
         }
       }
     }
