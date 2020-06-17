@@ -88,9 +88,6 @@ config_devel:
     - taxonomy.vocabulary.status
     - taxonomy.vocabulary.test_resource_type
     - taxonomy.vocabulary.themes
-    - tour.tour.account
-    - tour.tour.content_overview
-    - tour.tour.rdf_entity_canonical
   optional:
     - core.entity_form_display.comment.comment.default
     - field.field.comment.comment.field_body
