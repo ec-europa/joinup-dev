@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides a block showing information about deprecated EIRA building blocks.
  *
  * @Block(
- *  id = "eira_derprecated_term_block",
+ *  id = "eira_deprecated_term_block",
  *  admin_label = @Translation("Eira deprecated term message"),
  * )
  */
