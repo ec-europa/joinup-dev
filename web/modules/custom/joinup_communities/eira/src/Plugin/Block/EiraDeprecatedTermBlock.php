@@ -105,7 +105,7 @@ class EiraDeprecatedTermBlock extends BlockBase implements ContainerFactoryPlugi
       ]);
     }
 
-    $build = [
+    return [
       '#theme' => 'status_messages',
       '#message_list' => [
         'warning' => [$message],
@@ -114,8 +114,6 @@ class EiraDeprecatedTermBlock extends BlockBase implements ContainerFactoryPlugi
         'warning' => $this->t('Warning message'),
       ],
     ];
-
-    return $build;
   }
 
   /**
