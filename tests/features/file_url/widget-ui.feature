@@ -18,6 +18,8 @@ Feature: User interface for the File URL field
 
     # Initially, only the radio button selector should be visible, but no option
     # is selected.
+    Then I should see the heading "Add Solution"
+    And I should see the text "Additional fields"
     When I click the "Additional fields" tab
     Then the "Upload file" radio button should not be selected
     And the "Remote file URL" radio button should not be selected
