@@ -72,4 +72,7 @@
     <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
     </listener>
   </listeners>
+  <extensions>
+    <extension class="Joinup\PhpUnit\Hooks\DrupalSettingsHook"/>
+  </extensions>
 </phpunit>

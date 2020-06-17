@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Joinup\TaskRunner\Commands;
 
-use Consolidation\AnnotatedCommand\CommandData;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
 use Robo\Collection\CollectionBuilder;
 use Robo\Exception\AbortTasksException;
@@ -16,76 +15,67 @@ use Symfony\Component\Console\Input\InputOption;
 class DrupalSettingsCommands extends AbstractCommands {
 
   /**
-   * Builds the settings.php file from scratch.
+   * Build the settings.php file from scratch.
    *
-   * This command (re)creates a compact settings.php file by using the following
-   * configurations defined under `drupal.settings`:
-   * - drupal.settings.header: A block of code containing the `settings.php`
-   *   header part. Example:
-   *   @code
-   *   drupal:
-   *     settings:
-   *       header: |
-   *         <?php
-   *         // @file settings.php
-   *   @endcode
-   * - drupal.settings.footer: A block of code containing the `settings.php`
-   *   footer part. Example:
-   *   @code
-   *   drupal:
-   *     settings:
-   *       footer: |
-   *         if (file_exists("$app_root/$site_path/settings.override.php")) {
-   *           include "$app_root/$site_path/settings.override.php";
-   *         }
-   *   @endcode
-   * - drupal.settings.sections: An associative array of settings sections. Each
-   *   section is a block of code. The key should be descriptive as it's used as
-   *   section title/comment. Example:
-   *   @code
-   *   drupal:
-   *     settings:
-   *       sections:
-   *         Main settings: |
-   *           $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT');
-   *           $settings['container_yamls'][] = "$app_root/$site_path/services.yml";
-   *           ...
-   *         Database: |
-   *           $databases['default']['default'] = [
-   *             'database' => getenv('DRUPAL_DATABASE_NAME'),
-   *             ...
-   *           ];
-   *           ...
-   *   @endcode
-   * - drupal.settings.presets: An associative array, keyed by the preset ID.
-   *   Each preset is an indexed array of sections. The sections will be placed
-   *   following this order in the settings file. This helps build various
-   *   structures of the settings file depending on the environment where the
-   *   settings file is used. Example:
-   *   @code
-   *   drupal:
-   *     settings:
-   *       presets:
-   *         base:
-   *           - Main settings
-   *           - Database
-   *           - ...
-   *         dev:
-   *           - Main settings
-   *           - Database
-   *           - Development settings
-   *           - ...
-   *   @endcode
+   * This command (re)creates a compact settings.php file by using one of the
+   * presets defined in the `drupal.settings.presets` config. A preset consist
+   * in an ordered list of settings sections. Sections are defined under the
+   * `drupal.settings.sections` config.
    *
-   * @param string[] $presets
-   *   A space separated list of preset IDs. A preset is an identifier
-   *   representing a set of sections, defined in `drupal.settings.presets`
-   *   configuration.
+   * The following configurations are defined under `drupal.settings` and are
+   * affecting the way settings.php is built:
+   * drupal.settings.presets: Each preset is a list of sections:
+   * > drupal:
+   * >   settings:
+   * >     presets:
+   * >       base:
+   * >         - Main settings
+   * >         - Database
+   * >         - ...
+   * >       dev:
+   * >         - Main settings
+   * >         - Database
+   * >         - Development settings
+   * >         - ...
+   * drupal.settings.sections: Settings sections:
+   * > drupal:
+   * >   settings:
+   * >     sections:
+   * >       Main settings: |
+   * >         $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT');
+   * >         $settings['container_yamls'][] =
+   * "$app_root/$site_path/services.yml";
+   * >         ...
+   * >       Database: |
+   * >         $databases['default']['default'] = [
+   * >           'database' => getenv('DRUPAL_DATABASE_NAME'),
+   * >           ...
+   * >         ];
+   * >         ...
+   * drupal.settings.header: The `settings.php` header:
+   * > drupal:
+   * >   settings:
+   * >     header: |
+   * >        <?php
+   * >        // @file settings.php
+   * drupal.settings.footer: The `settings.php` footer:
+   * > drupal:
+   * >   settings:
+   * >     footer: |
+   * >       if (file_exists("$app_root/$site_path/settings.override.php")) {
+   * >         include "$app_root/$site_path/settings.override.php";
+   * >       }
+   *
+   * @param string $preset
+   *   The preset to be used when building the settings file.
    * @param array $options
    *   The command options.
    *
    * @return \Robo\Collection\CollectionBuilder
    *   Collection builder.
+   *
+   * @throws \Robo\Exception\AbortTasksException
+   *   The passed preset is invalid or contains invalid sections.
    *
    * @command drupal:settings
    *
@@ -93,14 +83,13 @@ class DrupalSettingsCommands extends AbstractCommands {
    * @option root Drupal root.
    * @option sites-subdir Drupal site subdirectory.
    */
-  public function settings(array $presets, array $options = [
+  public function settings(string $preset, array $options = [
     'filename' => 'settings.php',
     'root' => InputOption::VALUE_REQUIRED,
     'sites-subdir' => InputOption::VALUE_REQUIRED,
   ]): CollectionBuilder {
     $settingsFile = $this->getSettingsFilePath($options);
-    $sections = $this->getSections((array) $presets);
-    $availableSections = $this->getConfig()->get('drupal.settings.sections', []);
+    $sections = $this->getSections($preset);
 
     $taskWriteToFile = $this->taskWriteToFile($settingsFile);
 
@@ -108,10 +97,10 @@ class DrupalSettingsCommands extends AbstractCommands {
       $taskWriteToFile->line(trim($settingsHeader));
     }
 
-    foreach ($sections as $section) {
+    foreach ($sections as $section => $content) {
       $taskWriteToFile
         ->lines(['', '', sprintf('// %s.', $section), ''])
-        ->line(trim($availableSections[$section]));
+        ->line(trim($content));
     }
 
     if ($settingsFooter = $this->getConfig()->get('drupal.settings.footer')) {
@@ -119,35 +108,6 @@ class DrupalSettingsCommands extends AbstractCommands {
     }
 
     return $this->collectionBuilder()->addTask($taskWriteToFile);
-  }
-
-  /**
-   * Validates the `drupal:settings` command.
-   *
-   * @param \Consolidation\AnnotatedCommand\CommandData $commandData
-   *   The command data object.
-   *
-   * @throws \Robo\Exception\AbortTasksException
-   *   If no preset has been passed or some passed presets are invalid or they
-   *   contain invalid sections.
-   *
-   * @hook validate drupal:settings
-   */
-  public function validateSettings(CommandData $commandData): void {
-    $presets = $commandData->arguments()['presets'];
-
-    $availablePresets = array_keys($this->getConfig()->get('drupal.settings.presets', []));
-    $invalidPresets = array_diff($presets, $availablePresets);
-    if ($invalidPresets) {
-      throw new AbortTasksException("Invalid presets: '" . implode("', '", $invalidPresets) . "'. Check the 'drupal.settings.presets' configuration.");
-    }
-
-    $sections = $this->getSections($presets);
-    $availableSections = array_keys($this->getConfig()->get('drupal.settings.sections', []));
-    $invalidSections = array_diff($sections, $availableSections);
-    if ($invalidSections) {
-      throw new AbortTasksException("Passed presets contain invalid sections: '" . implode("', '", $invalidSections) . "'. Check the 'drupal.settings' config.");
-    }
   }
 
   /**
@@ -164,21 +124,31 @@ class DrupalSettingsCommands extends AbstractCommands {
   }
 
   /**
-   * Returns a list of sections belonging to the passed parameters.
+   * Returns a list of sections belonging to a given preset.
    *
-   * @param array $presets
-   *   A list of section presets.
+   * @param string $preset
+   *   The settings preset.
    *
    * @return array
-   *   A list of sections belonging to the passed parameters.
+   *   Associative array with sections belonging to the given preset.
+   *
+   * @throws \Robo\Exception\AbortTasksException
+   *   The passed preset is invalid or contains invalid sections.
    */
-  protected function getSections(array $presets): array {
+  protected function getSections(string $preset): array {
     $allPresets = $this->getConfig()->get('drupal.settings.presets');
-    $passedPresets = array_intersect_key($allPresets, array_flip($presets));
-    if (count($passedPresets) < 2) {
-      $passedPresets[] = [];
+    if (!isset($allPresets[$preset])) {
+      throw new AbortTasksException("Invalid preset: '{$preset}'.  Check the 'drupal.settings.presets' configuration.");
     }
-    return array_values(array_unique(call_user_func_array('array_merge', $passedPresets)));
+
+    $sections = array_flip($allPresets[$preset]);
+    $allSections = $this->getConfig()->get('drupal.settings.sections', []);
+    $invalidSections = array_diff_key($sections, $allSections);
+    if ($invalidSections) {
+      throw new AbortTasksException("The '{$preset}' preset contains invalid sections: '" . implode("', '", array_keys($invalidSections)) . "'. Check the 'drupal.settings' configuration.");
+    }
+
+    return array_intersect_key($allSections, $sections);
   }
 
 }

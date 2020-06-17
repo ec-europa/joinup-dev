@@ -12,11 +12,6 @@ commands:
   toolkit:build-dev:
     - task: run
       command: composer:install
-    - task: run
-      command: drupal:settings
-      arguments:
-        - main
-        - redis
     - task: copy
       from: ${joinup.site_dir}/sites/default/default.services.yml
       to: ${joinup.site_dir}/sites/default/services.yml
@@ -42,14 +37,11 @@ commands:
     - task: run
       command: drupal:settings
       arguments:
-        - main
+        - install
     - task: run
       command: config-readonly:disable
     - task: run
       command: drupal:site-install
-    # TODO: Remove this in ISAICP-5271. Newer versions of Search API module are
-    # storing the site hash into a state variable, rather than a config.
-    # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5271.
     - task: run
       command: virtuoso:import-fixtures
       arguments:
@@ -118,6 +110,9 @@ commands:
         - WITH <http://licence-legal-type> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };
         - WITH <http://licence-legal-type> INSERT { ?subject skos:topConceptOf <http://joinup.eu/legal-type#> } WHERE { ?subject a skos:Concept . FILTER NOT EXISTS { ?subject skos:topConceptOf <http://joinup.eu/legal-type#> } };
         - WITH <http://licence-legal-type> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };
+    # TODO: Remove this in ISAICP-5271. Newer versions of Search API module are
+    # storing the site hash into a state variable, rather than a config.
+    # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5271.
     - task: exec
       command: ${drush.bin}
       arguments:
@@ -131,9 +126,7 @@ commands:
     - task: run
       command: drupal:settings
       arguments:
-        - main
-        - redis
-        - dev
+        - site-clean
     - task: run
       command: dev:demo-users
     - task: exec
