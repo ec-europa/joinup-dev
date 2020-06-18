@@ -10,7 +10,6 @@ dependencies:
   - 'drupal:link'
   - 'drupal:tour'
   - 'joinup:oe_newsroom_newsletter'
-  - 'joinup:workflow_state_permission'
   - 'matomo_reporting_api:matomo_reporting_api'
   - 'menu_admin_per_menu:menu_admin_per_menu'
   - 'message:message'

@@ -28,11 +28,9 @@ class RequestRouteConditionTest extends KernelTestBase {
    */
   protected static $modules = [
     'joinup_core',
-    'og',
     'rdf_entity',
     'sparql_entity_storage',
     'system',
-    'workflow_state_permission',
   ];
 
   /**
