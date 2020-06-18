@@ -1,6 +1,6 @@
 name: 'Joinup core'
 type: module
-description: 'Contains field storage configuration.'
+description: 'Contains shared code for Joinup.'
 core: 8.x
 package: Joinup
 
@@ -33,7 +33,6 @@ config_devel:
     - core.entity_view_display.taxonomy_term.eira.default
     - core.entity_view_mode.node.moderation
     - core.entity_view_mode.node.view_mode_featured
-    - core.entity_view_mode.node.view_mode_tile
     - field.field.taxonomy_term.eira.field_taxonomy_deprecated
     - field.field.taxonomy_term.eira.field_taxonomy_related_term
     - field.field.taxonomy_term.eira.field_taxonomy_replaces

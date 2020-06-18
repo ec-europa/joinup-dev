@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\views\style;
+namespace Drupal\joinup_material_design\Plugin\views\style;
 
 use Drupal\views\Plugin\views\style\StylePluginBase;
 

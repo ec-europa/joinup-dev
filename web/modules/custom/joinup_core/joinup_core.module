@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Main functions and hook implementations of the Joinup core module.
+ * Hook implementations for the Joinup core module.
  */
 
 declare(strict_types = 1);
@@ -21,49 +21,13 @@ use Drupal\node\NodeInterface;
  */
 function joinup_core_theme($existing, $type, $theme, $path) {
   return [
-    'joinup_tiles' => [
-      'path' => drupal_get_path('module', 'joinup_core') . '/templates',
-    ],
     '404_not_found' => [
       'variables' => [
         'search' => [],
         'front' => [],
       ],
     ],
-    'chip' => [
-      'render element' => 'element',
-    ],
-    'input__chip_button' => [
-      'render element' => 'element',
-    ],
   ];
-}
-
-/**
- * Prepares variables for views joinup_tiles template.
- *
- * Template: joinup-tiles.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - view: The view object.
- *   - rows: An array of row items. Each row is an array of content.
- */
-function template_preprocess_joinup_tiles(array &$variables) {
-  template_preprocess_views_view_unformatted($variables);
-}
-
-/**
- * Prepares variables for the "chip" template.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
- *     Properties used: #text.
- */
-function template_preprocess_chip(array &$variables) {
-  $element = $variables['element'];
-  $variables['text'] = $element['#text'];
 }
 
 /**
@@ -150,7 +114,8 @@ function joinup_core_field_formatter_info_alter(array &$info) {
 /**
  * Implements hook_element_info_alter().
  *
- * Override the validate handler for the datetime widget.
+ * Override the validate handler for the datetime widget in order to show a
+ * custom validation message when part of the widget is not filled in.
  */
 function joinup_core_element_info_alter(array &$info) {
   if (isset($info['datetime'])) {
