@@ -238,6 +238,9 @@
             "file-mapping": {
                 "[web-root]/robots.txt": {
                     "append": "resources/drupal-scaffold/robots.txt.append"
+                },
+                "[project-root]/.gitattributes": {
+                    "append": "resources/drupal-scaffold/.gitattributes.append"
                 }
             }
         },
