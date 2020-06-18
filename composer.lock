@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b0c7f9dff36db7e0e6230f201c1f954c",
+    "content-hash": "dfd410b099f346dff323530a0c3ad778",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3148,9 +3148,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.6",
                     "datestamp": "1578260883",
@@ -4552,9 +4549,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.0",
                     "datestamp": "1580243964",
@@ -12252,7 +12246,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2020-02-13T14:54:04+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
