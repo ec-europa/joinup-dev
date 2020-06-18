@@ -23,7 +23,15 @@ class JoinupConfigProvider implements ConfigProviderInterface {
   public static function provide(Config $config): void {
     // Get the Joinup project full-qualified directory.
     $drupalFinder = new DrupalFinder();
-    if (!$drupalFinder->locateRoot(getcwd())) {
+
+    $startPath = getcwd();
+    if (!is_dir("{$startPath}/tests")) {
+      // If the top /tests directory doesn't exist, we're probably running
+      // inside /dist, when building a new distribution.
+      $startPath .= DIRECTORY_SEPARATOR . '..';
+    }
+
+    if (!$drupalFinder->locateRoot($startPath)) {
       throw new AbortTasksException('Cannot locate Drupal path.');
     }
     $config->set('joinup.dir', $drupalFinder->getComposerRoot());
