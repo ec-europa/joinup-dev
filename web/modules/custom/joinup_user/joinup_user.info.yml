@@ -9,6 +9,7 @@ dependencies:
   - 'message:message'
   - 'og:og'
   - 'social_media_links:social_media_links_field'
+  - 'state_machine_revisions:state_machine_revisions'
 config_devel:
   install:
     - core.entity_form_display.message.og_membership_role_change.default

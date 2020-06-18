@@ -49,7 +49,6 @@ config_devel:
     - block.block.table_of_contents
     - block.block.toc_outline
     - block.block.unpublished_content_of_group
-    - block.block.unpublished_content_of_user
     - block.block.userheader
     - block.block.views_block__licence_list_licence_list_block
     - core.date_format.date_only
