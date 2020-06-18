@@ -6,4 +6,4 @@ services:
     arguments: ['joinup_core']
   joinup_core.requirements_helper:
     class: Drupal\joinup_core\RequirementsHelper
-    arguments: ['@database', '@sparql_endpoint']
+    arguments: ['@database']
