@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\Menu;
+namespace Drupal\joinup_tour\Plugin\Menu;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -69,7 +69,7 @@ class TourMenuLink extends MenuLinkDefault {
   /**
    * {@inheritdoc}
    */
-  public function isEnabled() {
+  public function isEnabled(): bool {
     // If we're administering menus, fallback to the default behaviour.
     $route_path = ltrim($this->currentRouteMatch->getRouteObject()->getPath(), '/');
     if (strpos($route_path, 'admin/structure/menu/') === 0) {
@@ -101,7 +101,7 @@ class TourMenuLink extends MenuLinkDefault {
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return Cache::mergeContexts(['route.name'], parent::getCacheContexts());
   }
 

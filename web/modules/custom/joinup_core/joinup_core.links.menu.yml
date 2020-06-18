@@ -29,16 +29,6 @@ joinup_core.site_alerts:
   parent: system.admin
   weight: 3
 
-joinup_core.support.tour:
-  title: 'Take a tour'
-  menu_name: support
-  url: 'internal:#'
-  class: Drupal\joinup_core\Plugin\Menu\TourMenuLink
-  options:
-    attributes:
-      data-drupal-tour-link: true
-  weight: -200
-
 joinup_core.support.contact:
   title: 'Contact support'
   menu_name: support

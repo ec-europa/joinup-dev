@@ -87,6 +87,7 @@ module:
   joinup_sparql: 0
   joinup_stats: 0
   joinup_subscription: 0
+  joinup_tour: 0
   joinup_user: 0
   joinup_validation: 0
   joinup_video: 0
