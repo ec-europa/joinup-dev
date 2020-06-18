@@ -22,8 +22,6 @@ commands:
         - setup-php-codesniffer
         - setup-phpunit
     - task: run
-      command: drupal:drush-setup
-    - task: run
       command: joinup:compile-scss
     - task: run
       command: fs:private-create

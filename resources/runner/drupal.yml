@@ -25,10 +25,6 @@ drupal:
     name: ${env.DRUPAL_DATABASE_NAME}
     user: ${env.DRUPAL_DATABASE_USERNAME}
     password: ${env.DRUPAL_DATABASE_PASSWORD}
-  drush:
-    options:
-      uri: ${drupal.base_url}
-      verbose: no
   settings:
     presets:
       install:
