@@ -82,6 +82,14 @@ drupal:
         - OpenEuropa Newsroom Newsletter
         - OpenEuropa Webtools Geocoding Cache
         - Error logging
+      prod:
+        - Main settings
+        - Databases
+        - Configuration
+        - Search API
+        - Matomo & OpenEuropa Webtools Analytics
+        - Custom error handler
+        - Redis
     header: |
       <?php
 
@@ -196,11 +204,11 @@ drupal:
         set_exception_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleException']);
       OpenEuropa Newsroom Newsletter: |
         $config['oe_newsroom_newsletter.subscriber']['class'] = 'Drupal\oe_newsroom_newsletter\NewsletterSubscriber\MockNewsletterSubscriber';
-      Development: |
-        $settings['extension_discovery_scan_tests'] = TRUE;
-      Error logging:
-        $config['system.logging']['error_level'] = 'verbose';
       OpenEuropa Webtools Geocoding Cache: |
         $settings['cache']['bins']['geocoder'] = 'cache.backend.file_system';
         $settings['filecache']['directory']['bins']['geocoder'] = '../tests/fixtures/webtools_geocoding_cache';
         $settings['filecache']['strategy']['bins']['geocoder'] = 'persist';
+      Development: |
+        $settings['extension_discovery_scan_tests'] = TRUE;
+      Error logging:
+        $config['system.logging']['error_level'] = 'verbose';

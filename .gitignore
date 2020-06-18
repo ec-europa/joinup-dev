@@ -8,6 +8,9 @@
 /web/profiles/contrib/
 /web/themes/contrib/
 
+# Ignore dist build location
+/dist/
+
 # Ignore sensitive information
 /web/sites/sites.php
 /web/sites/*/settings.php
