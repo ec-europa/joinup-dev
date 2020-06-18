@@ -6,7 +6,6 @@
     "require": {
         "php": ">=7.1.0",
         "ext-json": "*",
-        "aws/aws-sdk-php": "~3.0",
         "boedah/robo-drush": "^4.2",
         "composer/composer": "^1.9.1",
         "composer/installers": "^1.7",
@@ -107,6 +106,7 @@
         "ext-dom": "*",
         "ext-iconv": "*",
         "ext-libxml": "*",
+        "aws/aws-sdk-php": "~3.0",
         "behat/behat": "~3.4",
         "behat/gherkin": "^4.6.1",
         "behat/mink": "~1.7",
