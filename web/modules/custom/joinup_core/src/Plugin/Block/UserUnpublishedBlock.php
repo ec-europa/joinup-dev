@@ -130,8 +130,15 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
    *
    * @return array
    *   An array of rows to render.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown if the Search API Index entity storage definition is invalid.
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *   Thrown if the Search API Index entity storage definition is not found.
+   * @throws \Drupal\search_api\SearchApiException
+   *   Thrown if an error occurs during the execution of the search query.
    */
-  protected function getRows() {
+  protected function getRows(): array {
     $index = $this->entityTypeManager->getStorage('search_api_index')->load('unpublished');
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $index->query();
@@ -153,20 +160,19 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
   }
 
   /**
-   * Builds a renderable array for the search results.
+   * Returns the entities listed in the given query result set.
    *
    * @param \Drupal\search_api\Query\ResultSetInterface $result
    *   The query results object.
    *
-   * @return array
+   * @return \Drupal\Core\Entity\EntityInterface[]
    *   The render array for the search results.
    *
    * @throws \Exception
    *    Thrown if the item loaded is not a node or an rdf entity.
    */
-  protected function getResultEntities(ResultSetInterface $result) {
+  protected function getResultEntities(ResultSetInterface $result): array {
     $results = [];
-    /* @var $item \Drupal\search_api\Item\ItemInterface */
     foreach ($result->getResultItems() as $item) {
       try {
         $entity = $item->getOriginalObject()->getValue();
@@ -204,9 +210,9 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The content id.
    *
    * @return \Drupal\rdf_entity\RdfInterface
-   *   The loaded node.
+   *   The loaded RDF entity.
    */
-  protected function getDraftRdf($entity_id) {
+  protected function getDraftRdf($entity_id): RdfInterface {
     /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $sparql_storage */
     $sparql_storage = $this->entityTypeManager->getStorage('rdf_entity');
     return $sparql_storage->load($entity_id, ['draft']);
@@ -214,17 +220,16 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
 
   /**
    * {@inheritdoc}
-   *
-   * The page should be dependent on the user's groups.
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
+    // The page should be dependent on the user's groups.
     return Cache::mergeContexts(parent::getCacheContexts(), ['og_role']);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     $cache_tags = parent::getCacheTags();
     foreach (['node', 'rdf_entity'] as $type) {
       $entity_type = $this->entityTypeManager->getStorage($type)->getEntityType();
@@ -235,10 +240,9 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
 
   /**
    * {@inheritdoc}
-   *
-   * Only allow access if the user is viewing their own profile.
    */
-  protected function blockAccess(AccountInterface $account) {
+  protected function blockAccess(AccountInterface $account): AccessResult {
+    // Only allow access if the user is viewing their own profile.
     if ($user = $this->currentRouteMatch->getParameter('user')) {
       if ($user && ($user instanceof UserInterface) && $user->id() === $this->currentUser->id()) {
         return parent::blockAccess($account);
