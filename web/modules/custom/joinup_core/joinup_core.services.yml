@@ -1,9 +1,6 @@
 services:
   joinup_core.joinup_version:
     class: Drupal\joinup_core\JoinupVersion
-  joinup_core.vocabulary_fixtures.helper:
-    class: Drupal\joinup_core\VocabularyFixturesHelper
-    arguments: ['@sparql_endpoint']
   logger.channel.joinup_core:
     parent: logger.channel_base
     arguments: ['joinup_core']

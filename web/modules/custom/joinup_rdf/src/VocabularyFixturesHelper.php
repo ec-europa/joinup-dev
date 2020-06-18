@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core;
+namespace Drupal\joinup_rdf;
 
 use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use EasyRdf\Graph;

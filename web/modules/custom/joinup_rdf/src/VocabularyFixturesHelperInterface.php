@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core;
+namespace Drupal\joinup_rdf;
 
 /**
  * Interface for services that provide fixtures import related helper methods.
@@ -10,10 +10,10 @@ namespace Drupal\joinup_core;
 interface VocabularyFixturesHelperInterface {
 
   /**
-   * Clears the given graph uri.
+   * Clears the given graph URI.
    *
    * @param string $graph_uri
-   *   The graph uri to clear.
+   *   The graph URI to clear.
    */
   public function clearFixturesGraph(string $graph_uri): void;
 
@@ -24,7 +24,7 @@ interface VocabularyFixturesHelperInterface {
    *   A key identifying the fixture to import. The key is mainly the filename
    *   without the extension.
    * @param bool $clear_graph
-   *   Whether to clear the graph before importing. Defaults to true.
+   *   Whether to clear the graph before importing. Defaults to TRUE.
    */
   public function importFixtures(string $fixture_key, bool $clear_graph = TRUE): void;
 
