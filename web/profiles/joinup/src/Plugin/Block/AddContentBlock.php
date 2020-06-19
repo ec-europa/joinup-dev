@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
@@ -216,7 +218,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
   public function getCacheTags() {
     // We need to invalidate the cache whenever the parent group changes since
     // the available options in the add content block depend on certain settings
-    // of the parent collection, such as the workflow status and the eLibrary
+    // of the parent collection, such as the workflow status and the content
     // creation option.
     /** @var \Drupal\rdf_entity\RdfInterface $group */
     $group = $this->getContext('og')->getContextValue();

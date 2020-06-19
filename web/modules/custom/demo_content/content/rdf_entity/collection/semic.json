@@ -266,9 +266,9 @@
             "format": "content_editor"
         }
     ],
-    "field_ar_elibrary_creation": [
+    "field_ar_content_creation": [
         {
-            "value": "1"
+            "value": "only_members"
         }
     ],
     "field_ar_moderation": [

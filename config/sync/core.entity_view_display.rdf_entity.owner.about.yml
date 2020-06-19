@@ -9,7 +9,7 @@ dependencies:
     - field.field.rdf_entity.owner.field_owner_type
     - rdf_entity.rdfentity.owner
   module:
-    - joinup
+    - template_suggestion
     - user
 _core:
   default_config_hash: SqgaSRHpxV7Qxwu4xwu942GJ1xSmi2DCLfXUxJ-j3N0
@@ -26,7 +26,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_owner_type:
     type: entity_reference_label
@@ -36,7 +36,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
 hidden:
   changed: true

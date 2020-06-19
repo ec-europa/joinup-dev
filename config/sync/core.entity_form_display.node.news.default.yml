@@ -27,7 +27,6 @@ dependencies:
     - image
     - joinup_core
     - link
-    - publication_date
     - text
 id: node.news.default
 targetEntityType: node
@@ -41,6 +40,7 @@ content:
       rows: 9
       placeholder: ''
       summary_rows: 3
+      show_summary: false
     third_party_settings:
       allowed_formats:
         hide_help: '0'

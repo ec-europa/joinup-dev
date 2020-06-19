@@ -40,11 +40,4 @@ abstract class FilterPluginBase extends PluginBase implements FilterPluginInterf
     return [];
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function calculateDependencies(): array {
-    return [];
-  }
-
 }

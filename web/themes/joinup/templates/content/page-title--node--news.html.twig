@@ -29,6 +29,11 @@
         <div class="details__element">
           <div class="value gray">{{ 'Published on'|t }}: {{ additional_content.published }}</div>
         </div>
+        {% if additional_content.published != additional_content.updated %}
+        <div class="details__element">
+          <div class="value gray">{{ 'Last update'|t }}: {{ additional_content.updated }}</div>
+        </div>
+       {% endif %}
       </div>
   </div>
 {% endif %}

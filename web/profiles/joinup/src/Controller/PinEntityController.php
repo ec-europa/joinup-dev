@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Drupal\joinup\Controller;
 
@@ -11,7 +11,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup\PinServiceInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -37,24 +36,14 @@ class PinEntityController extends ControllerBase {
   protected $pinService;
 
   /**
-   * The Joinup relation manager.
-   *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
-   */
-  protected $relationManager;
-
-  /**
    * Instantiates a new PinEntityController object.
    *
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
-   *   The Joinup relation manager.
    * @param \Drupal\og\OgAccessInterface $ogAccess
    *   The OG access service.
    * @param \Drupal\joinup\PinServiceInterface $pinService
    *   The pin service.
    */
-  public function __construct(JoinupRelationManagerInterface $relationManager, OgAccessInterface $ogAccess, PinServiceInterface $pinService) {
-    $this->relationManager = $relationManager;
+  public function __construct(OgAccessInterface $ogAccess, PinServiceInterface $pinService) {
     $this->ogAccess = $ogAccess;
     $this->pinService = $pinService;
   }
@@ -64,7 +53,6 @@ class PinEntityController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('joinup_core.relations_manager'),
       $container->get('og.access'),
       $container->get('joinup.pin_service')
     );
@@ -84,7 +72,7 @@ class PinEntityController extends ControllerBase {
   public function pin(ContentEntityInterface $entity, RdfInterface $group) {
     $this->pinService->setEntityPinned($entity, $group, TRUE);
 
-    drupal_set_message($this->t('@bundle %title has been pinned in the @group_bundle %group.', [
+    $this->messenger()->addMessage($this->t('@bundle %title has been pinned in the @group_bundle %group.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
       '%title' => $entity->label(),
       '@group_bundle' => $group->bundle(),
@@ -108,7 +96,7 @@ class PinEntityController extends ControllerBase {
   public function unpin(ContentEntityInterface $entity, RdfInterface $group) {
     $this->pinService->setEntityPinned($entity, $group, FALSE);
 
-    drupal_set_message($this->t('@bundle %title has been unpinned in the @group_bundle %group.', [
+    $this->messenger()->addMessage($this->t('@bundle %title has been unpinned in the @group_bundle %group.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
       '%title' => $entity->label(),
       '@group_bundle' => $group->bundle(),
@@ -190,7 +178,7 @@ class PinEntityController extends ControllerBase {
       $groups = $entity->get('collection')->referencedEntities();
     }
     elseif (CommunityContentHelper::isCommunityContent($entity)) {
-      $groups = [$this->relationManager->getParent($entity)];
+      $groups = [JoinupGroupHelper::getGroup($entity)];
     }
 
     $list = [];
@@ -220,7 +208,7 @@ class PinEntityController extends ControllerBase {
       return JoinupGroupHelper::isCollection($group);
     }
     elseif (CommunityContentHelper::isCommunityContent($entity)) {
-      return JoinupGroupHelper::isCollection($group) || JoinupGroupHelper::isSolution($group);
+      return JoinupGroupHelper::isGroup($group);
     }
     return FALSE;
   }

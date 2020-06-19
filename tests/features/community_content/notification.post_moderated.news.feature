@@ -12,8 +12,8 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator |
       | CC member        |           | notify_member@test.com      | CC         | Member      |
     And collections:
-      | title              | state     | elibrary creation | moderation |
-      | CC post collection | validated | members           | no         |
+      | title              | state     | content creation | moderation |
+      | CC post collection | validated | members          | no         |
     And the following collection user memberships:
       | collection         | user           | roles       |
       | CC post collection | CC owner       | owner       |

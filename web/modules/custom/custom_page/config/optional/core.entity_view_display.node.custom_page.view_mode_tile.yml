@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.view_mode_tile
+    - field.field.node.custom_page.field_attachment
+    - field.field.node.custom_page.field_cp_content_listing
+    - field.field.node.custom_page.field_custom_page_logo
+    - field.field.node.custom_page.field_paragraphs_body
+    - field.field.node.custom_page.og_audience
+    - image.style.horizontal_medium_image
+    - node.type.custom_page
+  module:
+    - image
+    - template_suggestion
+    - user
+id: node.custom_page.view_mode_tile
+targetEntityType: node
+bundle: custom_page
+mode: view_mode_tile
+content:
+  field_custom_page_logo:
+    type: image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      image_style: horizontal_medium_image
+      image_link: ''
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+hidden:
+  field_attachment: true
+  field_cp_content_listing: true
+  field_paragraphs_body: true
+  langcode: true
+  links: true
+  node_field_cp_content_listing_top: true
+  og_audience: true
+  published_at: true
+  report: true

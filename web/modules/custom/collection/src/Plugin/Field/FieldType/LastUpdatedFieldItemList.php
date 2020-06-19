@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\collection\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemList;
@@ -27,6 +29,10 @@ class LastUpdatedFieldItemList extends FieldItemList {
    * - The highest timestamp of the collection solutions.
    * - The highest timestamp of the collection community content and custom
    *   pages.
+   *
+   * @todo This causes a circular dependency on the joinup_community_content and
+   *   solution modules.
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5983
    *
    * @return int
    *   Last updated timestamp.

@@ -18,9 +18,9 @@ dependencies:
   module:
     - comment
     - file
-    - joinup
     - link
     - options
+    - template_suggestion
     - text
     - user
 _core:
@@ -45,7 +45,7 @@ content:
     settings:
       use_description_as_link_text: true
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: with_label
   field_policy_domain:
     weight: 0
@@ -53,7 +53,7 @@ content:
     settings:
       link: true
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: comma_separated
     type: entity_reference_label
     region: content
@@ -75,7 +75,7 @@ content:
       view_mode: view_mode_tile
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: entity_reference__listing_tile
   field_state:
     weight: 5
@@ -118,7 +118,7 @@ content:
       rel: '0'
       target: '0'
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: link
   share_link:

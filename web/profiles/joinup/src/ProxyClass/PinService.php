@@ -12,7 +12,7 @@ namespace Drupal\joinup\ProxyClass {
      *
      * @see \Drupal\Component\ProxyBuilder
      */
-    class PinService implements \Drupal\joinup\PinServiceInterface, \Drupal\Core\DependencyInjection\ContainerInjectionInterface
+    class PinService implements \Drupal\joinup\PinServiceInterface
     {
 
         use \Drupal\Core\DependencyInjection\DependencySerializationTrait;
@@ -65,14 +65,6 @@ namespace Drupal\joinup\ProxyClass {
             }
 
             return $this->service;
-        }
-
-        /**
-         * {@inheritdoc}
-         */
-        public static function create(\Symfony\Component\DependencyInjection\ContainerInterface $container)
-        {
-            \Drupal\joinup\PinService::create($container);
         }
 
         /**

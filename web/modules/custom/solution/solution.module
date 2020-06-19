@@ -26,6 +26,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\solution\Entity\Solution;
 use Drupal\solution\SolutionAffiliationFieldItemList;
 use Drupal\solution\SolutionReleasesAndDistributionsFieldItemList;
 use Drupal\sparql_entity_storage\SparqlGraphInterface;
@@ -97,6 +98,15 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
 }
 
 /**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function solution_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['rdf_entity']['solution'])) {
+    $bundles['rdf_entity']['solution']['class'] = Solution::class;
+  }
+}
+
+/**
  * Implements hook_ENTITY_TYPE_insert().
  *
  * This function grants the 'owner' and 'facilitator' roles to the user that
@@ -148,7 +158,7 @@ function solution_form_rdf_entity_solution_edit_form_alter(array &$form, FormSta
   }
 
   if (!\Drupal::service('solution.title_duplicate_helper')->titleIsUnique($form_state->getFormObject()->getEntity())) {
-    drupal_set_message(t('A solution with the same name exists in a different collection.'), 'warning');
+    \Drupal::messenger()->addMessage(t('A solution with the same name exists in a different collection.'), 'warning');
   }
 }
 
@@ -168,7 +178,9 @@ function solution_rdf_entity_access(EntityInterface $entity, $operation, Account
   }
 
   if ($operation == 'edit') {
-    $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
+    /** @var \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper */
+    $workflow_helper = \Drupal::service('joinup_workflow.workflow_helper');
+    $allowed_transitions = $workflow_helper->getAvailableTransitions($entity, $account);
     if (empty($allowed_transitions)) {
       return AccessResult::forbidden();
     }

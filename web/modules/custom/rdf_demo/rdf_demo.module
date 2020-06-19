@@ -5,6 +5,8 @@
  * Main functions and hook implementation of the RDF demo module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Routing\RouteMatchInterface;
 
 /**

@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Controller;
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\rdf_entity\RdfEntityTypeInterface;
@@ -30,7 +31,7 @@ class JoinupController extends ControllerBase {
 
     $form = $this->entityFormBuilder()->getForm($rdf_entity, 'propose');
     $form['#title'] = $this->t('Propose @type', [
-      '@type' => Unicode::strtolower($rdf_type->label()),
+      '@type' => mb_strtolower($rdf_type->label()),
     ]);
     return $form;
   }

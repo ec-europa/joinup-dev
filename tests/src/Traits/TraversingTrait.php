@@ -20,14 +20,14 @@ trait TraversingTrait {
    *
    * @param string $field
    *   The field label.
-   * @param \Behat\Mink\Element\TraversableElement $region
+   * @param \Behat\Mink\Element\TraversableElement|null $region
    *   (Optional) The region to search in. If a region is not provided, the
    *   whole page will be used.
    *
    * @return \Behat\Mink\Element\TraversableElement|null
    *   The field element or NULL if not found.
    */
-  protected function findAnyFormField(string $field, TraversableElement $region = NULL): ?TraversableElement {
+  protected function findAnyFormField(string $field, ?TraversableElement $region = NULL): ?TraversableElement {
     if (!$region) {
       $region = $this->getSession()->getPage();
     }
@@ -50,7 +50,7 @@ trait TraversingTrait {
    *
    * @param string $select
    *   The name of the select element.
-   * @param \Behat\Mink\Element\TraversableElement $region
+   * @param \Behat\Mink\Element\TraversableElement|null $region
    *   (optional) The region in which to search for the select. Defaults to the
    *   whole page.
    *
@@ -60,7 +60,7 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when no select field is found.
    */
-  protected function findSelect(string $select, TraversableElement $region = NULL): TraversableElement {
+  protected function findSelect(string $select, ?TraversableElement $region = NULL): TraversableElement {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }
@@ -287,7 +287,7 @@ trait TraversingTrait {
    *
    * @param string $alias
    *   The facet alias.
-   * @param \Behat\Mink\Element\NodeElement $region
+   * @param \Behat\Mink\Element\NodeElement|null $region
    *   (optional) Limit the search to a specific region. If empty, the whole
    *   page will be used. Defaults to NULL.
    * @param string $html_tag
@@ -302,7 +302,7 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when the facet is not found in the designated area.
    */
-  protected function findFacetByAlias(string $alias, NodeElement $region = NULL, string $html_tag = '*'): NodeElement {
+  protected function findFacetByAlias(string $alias, ?NodeElement $region = NULL, string $html_tag = '*'): NodeElement {
     if ($region === NULL) {
       $region = $this->getSession()->getPage();
     }
@@ -359,10 +359,12 @@ trait TraversingTrait {
    *
    * @param string $field
    *   The date range field name.
-   * @param string $date
-   *   The sub-field name. Either "start" or "end".
    * @param string $component
    *   The sub-field component. Either "date" or "time".
+   * @param string|null $date
+   *   (optional) The sub-field name. Either "start" or "end". If left empty, it
+   *   is assumed that the field is a simple datetime field and not a range,
+   *   thus, the date or time components are looked in the whole field.
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The date or time component element.
@@ -370,7 +372,7 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when the date range field is not found.
    */
-  protected function findDateRangeComponent(string $field, string $date, string $component): NodeElement {
+  protected function findDateRangeComponent(string $field, string $component, ?string $date = NULL): NodeElement {
     /** @var \Behat\Mink\Element\NodeElement $fieldset */
     $fieldset = $this->getSession()->getPage()->find('named', ['fieldset', $field]);
 
@@ -378,16 +380,19 @@ trait TraversingTrait {
       throw new \Exception("The '$field' field was not found.");
     }
 
-    $date = ucfirst($date) . ' date';
-    /** @var \Behat\Mink\Element\NodeElement $element */
-    $element = $fieldset->find('xpath', '//h4[text()="' . $date . '"]//following-sibling::div[1]');
-
-    if (!$element) {
-      throw new \Exception("The '$date' sub-field of the '$field' field was not found.");
+    if ($date !== NULL) {
+      $date = ucfirst($date) . ' date';
+      /** @var \Behat\Mink\Element\NodeElement $element */
+      $element = $fieldset->find('xpath', '//h4[text()="' . $date . '"]//following-sibling::div[1]');
+      if (!$element) {
+        throw new \Exception("The '$date' sub-field of the '$field' field was not found.");
+      }
+    }
+    else {
+      $element = $fieldset;
     }
 
     $component_node = $element->findField(ucfirst($component));
-
     if (!$component_node) {
       throw new \Exception("The '$component' component for the '$field' '$element' was not found.");
     }
@@ -405,6 +410,7 @@ trait TraversingTrait {
    *   The date or time component element.
    */
   protected function findDisabledField(string $label): ?NodeElement {
+    /** @var \Behat\Mink\Element\DocumentElement $page */
     $page = $this->getSession()->getPage();
     // The *[self::div|self::fieldset] is because ief sets the class 'form-item'
     // in a fieldset rather than a div.
@@ -414,6 +420,10 @@ trait TraversingTrait {
       // by setting the class 'form-disabled' to the wrapper div and not in the
       // input.
       $element = $page->find('xpath', "//div[contains(normalize-space(@class), 'form-disabled') and contains(., '{$label}')]");
+    }
+    if (!$element) {
+      // Try again to find a button.
+      $element = $page->findButton($label);
     }
     return $element;
   }
@@ -459,7 +469,7 @@ trait TraversingTrait {
    * @param string $element
    *   The element name, e.g. 'fieldset', 'field', 'link', 'button', 'content',
    *   'select', 'checkbox', 'radio', 'file', 'optgroup', 'option', 'table', ...
-   * @param \Behat\Mink\Element\TraversableElement $region
+   * @param \Behat\Mink\Element\TraversableElement|null $region
    *   (optional) The region to check in.
    *
    * @return \Behat\Mink\Element\NodeElement
@@ -470,7 +480,7 @@ trait TraversingTrait {
    *
    * @see \Behat\Mink\Selector\NamedSelector
    */
-  protected function findNamedElementInRegion(string $locator, string $element, TraversableElement $region = NULL): TraversableElement {
+  protected function findNamedElementInRegion(string $locator, string $element, ?TraversableElement $region = NULL): TraversableElement {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }
@@ -553,13 +563,13 @@ trait TraversingTrait {
    *
    * @param string $filename
    *   The file name.
-   * @param \Behat\Mink\Element\NodeElement $region
+   * @param \Behat\Mink\Element\NodeElement|null $region
    *   (optional) The region to check in.
    *
    * @return bool
    *   Whether the element exists or not in the given region.
    */
-  protected function findImageInRegion(string $filename, NodeElement $region = NULL): bool {
+  protected function findImageInRegion(string $filename, ?NodeElement $region = NULL): bool {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }

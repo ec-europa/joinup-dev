@@ -10,15 +10,17 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
+    - field.field.rdf_entity.collection.field_ar_content_creation
     - field.field.rdf_entity.collection.field_ar_description
-    - field.field.rdf_entity.collection.field_ar_elibrary_creation
     - field.field.rdf_entity.collection.field_ar_logo
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
+    - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_short_id
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
@@ -34,7 +36,7 @@ bundle: collection
 mode: rdf_draft
 content:
   field_ar_abstract:
-    weight: 9
+    weight: 8
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -53,23 +55,30 @@ content:
     type: link
     region: content
   field_ar_closed:
-    weight: 10
+    type: boolean
+    weight: 9
+    region: content
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
-    region: content
   field_ar_contact_information:
-    weight: 4
+    weight: 3
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_ar_content_creation:
+    type: list_default
+    weight: 10
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   field_ar_description:
     weight: 1
     label: above
@@ -77,15 +86,8 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
-  field_ar_elibrary_creation:
-    weight: 11
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
   field_ar_moderation:
-    weight: 12
+    weight: 11
     label: above
     settings:
       format: default
@@ -95,6 +97,22 @@ content:
     type: boolean
     region: content
   field_ar_owner:
+    weight: 4
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_keywords:
+    type: string
+    weight: 7
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_policy_domain:
     weight: 5
     label: above
     settings:
@@ -102,16 +120,8 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
-  field_policy_domain:
-    weight: 6
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   field_spatial_coverage:
-    weight: 7
+    weight: 6
     label: above
     settings:
       link: true
@@ -135,6 +145,7 @@ hidden:
   field_ar_state: true
   field_collection_content: true
   field_newsletter: true
+  field_short_id: true
   field_site_featured: true
   field_site_pinned: true
   join_collection: true

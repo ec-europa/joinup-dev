@@ -88,7 +88,7 @@ class SubscribeToCollectionForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL): array {
+  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL): array {
     // This form should only be accessible if the user is already a member of
     // the collection.
     $membership = $this->getUserNonBlockedMembership($rdf_entity);

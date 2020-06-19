@@ -31,6 +31,11 @@
       <div class="details__element">
         <div class="value gray">{{ 'Published on'|t }}: {{ additional_content.field_document_publication_date }}</div>
       </div>
+      {% if additional_content.field_document_publication_date_raw != additional_content.updated %}
+        <div class="details__element">
+          <div class="value gray">{{ 'Last update'|t }}: {{ additional_content.updated }}</div>
+        </div>
+      {% endif %}
     </div>
   </div>
 {% endif %}

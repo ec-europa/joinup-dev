@@ -5,13 +5,13 @@ declare(strict_types = 1);
 namespace Drupal\Tests\solution\Kernel;
 
 use Drupal\Core\Serialization\Yaml;
+use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
-use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Tests solution affiliation.
@@ -26,40 +26,17 @@ class SolutionAffiliationTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'allowed_formats',
-    'cached_computed_field',
-    'comment',
-    'contact_information',
-    'facets',
     'field',
-    'field_group',
-    'file',
-    'file_url',
-    'image',
-    'inline_entity_form',
-    'joinup_core',
-    'joinup_sparql',
-    'link',
-    'matomo_reporting_api',
-    'node',
-    'oe_newsroom_newsletter',
+    'joinup_rdf',
     'og',
-    'options',
-    'owner',
     'rdf_schema_field_validation',
     'rdf_draft',
     'rdf_entity',
-    'rdf_taxonomy',
-    'search_api',
-    'search_api_field',
-    'smart_trim',
     'solution',
     'sparql_entity_storage',
     'state_machine',
     'system',
     'taxonomy',
-    'text',
-    'tour',
     'user',
     'workflow_state_permission',
   ];
@@ -67,23 +44,25 @@ class SolutionAffiliationTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
+    $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
-    $this->setUpSparql();
 
     RdfEntityType::create(['rid' => 'collection'])->save();
 
     $this->installEntitySchema('user');
-    $this->installEntitySchema('file');
-    $this->installSchema('file', ['file_usage']);
     $this->installEntitySchema('rdf_entity');
     $this->installConfig([
-      'joinup_core',
+      'joinup_rdf',
       'rdf_draft',
-      'rdf_entity',
       'solution',
-      'contact_information',
-      'owner',
       'sparql_entity_storage',
     ]);
 

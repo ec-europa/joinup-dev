@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.newsletter.simplenews_issue
     - node.type.newsletter
   module:
+    - template_suggestion
     - text
     - user
 id: node.newsletter.default
@@ -34,7 +35,7 @@ content:
     settings:
       link: true
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
 hidden:
   langcode: true

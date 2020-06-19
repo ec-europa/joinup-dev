@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\Plugin\Field\FieldWidget\StringTextfieldWidget;

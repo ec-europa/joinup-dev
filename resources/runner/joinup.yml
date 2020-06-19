@@ -1,0 +1,26 @@
+# Configuration and commands specific for Joinup.
+
+joinup:
+  site_dir: ${joinup.dir}/web
+  theme_dir: ${joinup.site_dir}/themes/joinup
+
+scss:
+  import_dir: ${joinup.theme_dir}/prototype/scss
+  input: ${scss.import_dir}/app.scss
+  output_dir: ${joinup.theme_dir}/css
+  output: ${scss.output_dir}/style.min.css
+  style: compressed
+
+commands:
+  # Compiles SCSS to CSS.
+  joinup:compile-scss:
+    - task: mkdir
+      dir: ${scss.output_dir}
+    - task: run
+      command: assets:compile-scss
+      arguments:
+        - ${scss.input}
+        - ${scss.output}
+      options:
+        style: ${scss.style}
+        import-dir: ${scss.import_dir}

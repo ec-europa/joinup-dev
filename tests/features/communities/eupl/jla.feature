@@ -138,9 +138,9 @@ Feature:
       | http://joinup.eu/spdx/UPL-1.0    | UPL-1.0    | UPL-1.0    |
       | http://joinup.eu/spdx/LGPL-2.1   | LGPL-2.1   | LGPL-2.1   |
     And licences:
-      | uri                               | title                                    | spdx licence | legal type                                                            |
-      | http://joinup.eu/licence/apache20 | Apache License, Version 2.0              | Apache-2.0   | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce |
-      | http://joinup.eu/licence/gpl2plus | GNU General Public License v2.0 or later | GPL-2.0+     | Distribute                                                            |
+      | uri                               | title                                    | spdx licence | legal type                                                            | description      |
+      | http://joinup.eu/licence/apache20 | Apache License, Version 2.0              | Apache-2.0   | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce | Apache-2.0 descr |
+      | http://joinup.eu/licence/gpl2plus | GNU General Public License v2.0 or later | GPL-2.0+     | Distribute                                                            | GPL-2.0+ descr   |
 
     # Test the page when the comparision list is missed.
     When I am on "/licence/compare"
@@ -184,6 +184,7 @@ Feature:
 
     When I visit "/licence/compare/Apache-2.0;GPL-2.0+"
     Then I should see the "licence comparer" table
+    And the response should contain "<script type=\"application/json\" data-drupal-selector=\"licence-comparer-data\">{\"Apache-2.0\":{\"title\":\"Apache License, Version 2.0\",\"description\":\"Apache-2.0 descr\",\"spdxUrl\":\"http:\/\/joinup.eu\/spdx\/Apache-2.0\"},\"GPL-2.0+\":{\"title\":\"GNU General Public License v2.0 or later\",\"description\":\"GPL-2.0+ descr\",\"spdxUrl\":\"http:\/\/joinup.eu\/spdx\/GPL-2.0+\"}}</script>"
     And the "licence comparer" table should be:
       | Can               | Apache-2.0 | GPL-2.0+ |  |  |  |
       | Use/reproduce     | x          |          |  |  |  |
@@ -358,3 +359,73 @@ Feature:
       | Governments/EU    |          | x          |  |  |  |
       | OSI approved      |          |            |  |  |  |
       | FSF Free/Libre    |          |            |  |  |  |
+
+  @javascript
+  Scenario: The reset button should change everything to the default state.
+    Given SPDX licences:
+      | uri                              | title      | ID         |
+      | http://joinup.eu/spdx/Apache-2.0 | Apache-2.0 | Apache-2.0 |
+      | http://joinup.eu/spdx/GPL-2.0+   | GPL-2.0+   | GPL-2.0+   |
+      | http://joinup.eu/spdx/BSL-1.0    | BSL-1.0    | BSL-1.0    |
+    And licences:
+      | uri                               | title             | spdx licence | legal type                                                            |
+      | http://joinup.eu/licence/apache20 | Joinup Apache-2.0 | Apache-2.0   | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce |
+      | http://joinup.eu/licence/gpl2plus | Joinup GPL-2.0+   | GPL-2.0+     | Distribute                                                            |
+      | http://joinup.eu/licence/bsl1     | Joinup BSL-1.0    | BSL-1.0      | Distribute, Modify                                                    |
+
+    Given I am an anonymous user
+    When I visit the "JLA" custom page
+
+    When I click "Distribute" in the "Content" region
+    # The licence was hidden.
+    Then I should not see the text "Apache-2.0"
+    When I press "Reset"
+    Then I should see the text "Apache-2.0"
+
+    When I fill in "SPDX id" with "GPL"
+    # The licence was hidden.
+    Then I should not see the text "Apache-2.0"
+    When I press "Reset"
+    Then I should see the text "Apache-2.0"
+
+    When I add the "Apache-2.0" licence to the compare list
+    And I add the "GPL-2.0+" licence to the compare list
+    And I add the "BSL-1.0" licence to the compare list
+    Then the Compare buttons are enabled
+
+    When I press "Reset"
+    Then the "Apache-2.0" licence should be unchecked
+    Then the "GPL-2.0+" licence should be unchecked
+    And the "BSL-1.0" licence should be unchecked
+
+    # Test that the list is also cleared since it is stored in a different property.
+    When I add the "Apache-2.0" licence to the compare list
+    And I add the "GPL-2.0+" licence to the compare list
+    And I click "Compare"
+    Then the url should match "/licence/compare/Apache-2.0;GPL-2.0\+"
+
+  @javascript
+  Scenario: A user can view the comment details of a licence through the info icon.
+    Given SPDX licences:
+      | uri                       | title            | ID       |
+      | http://joinup.eu/spdx/foo | SPDX licence foo | SPDX-FOO |
+      | http://joinup.eu/spdx/bar | SPDX licence bar | SPDX-BAR |
+    And licences:
+      | uri                             | title          | description                             | spdx licence     | legal type                                                            |
+      | http://joinup.eu/licence/foo    | Foo Licence    | Licence details for the foo licence.    | SPDX licence foo | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce |
+      | http://joinup.eu/licence/bar    | Bar Licence    | Licence details for the bar licence.    | SPDX licence bar | Distribute                                                            |
+
+    When I visit "/licence/compare/SPDX-FOO;SPDX-BAR"
+    Then I should not see the text "Licence details for the foo licence."
+    And I should not see the text "Licence details for the bar licence."
+
+    When I click the info icon of the "SPDX-FOO" licence table cell
+    And I should see the text "Licence details for the foo licence."
+    And I should see the button "Licence text"
+    But I should not see the text "Licence details for the bar licence."
+
+    Given I close the licence modal dialog
+    When I click the info icon of the "SPDX-BAR" licence table cell
+    And I should see the text "Licence details for the bar licence."
+    And I should see the button "Licence text"
+    But I should not see the text "Licence details for the foo licence."

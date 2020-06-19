@@ -5,6 +5,8 @@
  * Contains \ModerationSubContext.
  */
 
+declare(strict_types = 1);
+
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityTrait;

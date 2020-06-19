@@ -105,3 +105,39 @@ Feature: Asset distribution editing.
       | Marianne Sherburne       | marianne.herburne@example.com | Changelog      |
       | Marianne Sherburne       | marianne.herburne@example.com | OpenBSD images |
       | Anonymous (not verified) | trackme@example.com           | OpenBSD images |
+
+  Scenario: Tests the CSV download.
+    Given users:
+      | Username | E-mail            |
+      | user1    | user1@example.com |
+      | user2    | user2@example.com |
+    And the following solution:
+      | title | Solution  |
+      | state | validated |
+    And the following distributions:
+      | title          | parent   | access url |
+      | Distribution 1 | Solution | text.pdf   |
+      | Distribution 2 | Solution | test.zip   |
+      | Distribution 3 | Solution | test1.zip  |
+    And the following distribution download events:
+      | distribution   | user                |
+      | Distribution 1 | visitor@example.com |
+      | Distribution 1 | user1               |
+      | Distribution 2 | user2               |
+      | Distribution 3 | anon@example.com    |
+      | Distribution 3 | user1               |
+
+    Given I am logged in as a moderator
+    And I go to the distribution downloads page
+
+    When I click "Download CSV"
+    And I wait for the batch process to finish
+    Then I should see the success message "Export complete. Download the file here if file is not automatically downloaded."
+    And I should see the link "here"
+    And the file downloaded from the "here" link contains the following strings:
+      | ID,User,Email,"File name",Distribution,Created                             |
+      | ,"Anonymous (not verified)",visitor@example.com,text.pdf,"Distribution 1", |
+      | ,user1,user1@example.com,text.pdf,"Distribution 1",                        |
+      | ,user2,user2@example.com,test.zip,"Distribution 2",                        |
+      | ,"Anonymous (not verified)",anon@example.com,test1.zip,"Distribution 3",   |
+      | ,user1,user1@example.com,test1.zip,"Distribution 3",                       |

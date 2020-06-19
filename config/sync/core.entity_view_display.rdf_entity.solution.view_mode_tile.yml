@@ -10,10 +10,10 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_content
+    - field.field.rdf_entity.solution.field_is_content_creation
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
-    - field.field.rdf_entity.solution.field_is_elibrary_creation
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
     - field.field.rdf_entity.solution.field_is_issue_tracker
@@ -40,6 +40,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_wiki
     - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_policy_domain
+    - field.field.rdf_entity.solution.field_short_id
     - field.field.rdf_entity.solution.field_site_featured
     - field.field.rdf_entity.solution.field_site_pinned
     - field.field.rdf_entity.solution.field_spatial_coverage
@@ -48,8 +49,8 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - image
-    - joinup
     - smart_trim
+    - template_suggestion
     - user
 id: rdf_entity.solution.view_mode_tile
 targetEntityType: rdf_entity
@@ -77,7 +78,7 @@ content:
       wrap_output: false
       wrap_class: trimmed
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: smart_trim
     region: content
@@ -108,9 +109,9 @@ hidden:
   field_is_business_process: true
   field_is_contact_information: true
   field_is_content: true
+  field_is_content_creation: true
   field_is_distribution: true
   field_is_documentation: true
-  field_is_elibrary_creation: true
   field_is_has_version: true
   field_is_included_asset: true
   field_is_issue_tracker: true
@@ -136,6 +137,7 @@ hidden:
   field_is_wiki: true
   field_keywords: true
   field_policy_domain: true
+  field_short_id: true
   field_site_featured: true
   field_site_pinned: true
   field_spatial_coverage: true

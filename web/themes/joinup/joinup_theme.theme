@@ -5,9 +5,11 @@
  * Functions to support theming in the Joinup theme.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Unicode;
-use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -20,6 +22,7 @@ use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup_core\Controller\IdRedirect;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\message\MessageInterface;
 use Drupal\node\NodeInterface;
 use Drupal\oe_newsroom_newsletter\Form\NewsletterSubscribeForm;
@@ -230,10 +233,10 @@ function _joinup_is_create_form_route($route_name) {
  *   Renderable array contains the author.
  */
 function _joinup_theme_get_author(NodeInterface $node) {
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('user');
   $author = $node->get('uid')->entity;
-  $author_inline = $viewBuilder->view($author, 'inline');
+  $author_inline = $view_builder->view($author, 'inline');
 
   return $author_inline;
 }
@@ -318,6 +321,11 @@ function joinup_theme_preprocess_html(&$variables) {
     $variables['entity_type'] = $entity->getEntityTypeId();
     $variables['bundle'] = $entity->bundle();
   }
+
+  // Set a variable that identifies the search page.
+  if ($route_name == 'view.search.page_1') {
+    $variables['is_search_page'] = TRUE;
+  }
 }
 
 /**
@@ -379,6 +387,12 @@ function joinup_theme_preprocess_page(&$variables) {
     $title = $variables['page']['content']['pagetitle'];
     unset($variables['page']['content']['pagetitle']);
   }
+
+  // Retrieve the Joinup version and link to display in the footer.
+  /** @var \Drupal\joinup_core\JoinupVersionInterface $joinup_version */
+  $joinup_version = \Drupal::service('joinup_core.joinup_version');
+  $variables['version'] = $joinup_version->getVersion();
+  $variables['version_url'] = $joinup_version->getUrl();
 
   // Remove title on pages, where title is already in the header.
   if ($route_name == 'entity.rdf_entity.canonical') {
@@ -534,11 +548,12 @@ function joinup_theme_preprocess_menu(&$variables) {
  * Implements hook_preprocess_block().
  */
 function joinup_theme_preprocess_block(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+
   $block_id = $variables['elements']['#id'] ?? NULL;
 
   if (isset($block_id) && $block_id == 'joinup_theme_content') {
-    $route_match = \Drupal::routeMatch();
-    $route_name = $route_match->getRouteName();
     // Indicate if page contains listing
     // and should not have white background.
     $is_listing = FALSE;
@@ -605,7 +620,9 @@ function joinup_theme_preprocess_block(&$variables) {
     // Add classes to identify the search bars.
     case 'global_search':
     case 'exposed_form_search_page':
-      $variables['attributes']['class'][] = 'search-bar search-bar--header search-bar--white mdl-textfield mdl-js-textfield mdl-chipfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right';
+      $variables['attributes']['class'][] = 'search-bar search-bar--header search-bar--white mdl-textfield mdl-chipfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right ';
+      // Set special classes to let the search bar open on search pages.
+      $variables['attributes']['class'][] .= ($route_name == 'view.search.page_1' ? 'search-bar-advanced is-focused' : 'mdl-js-textfield');
       break;
 
     // Add special classes for dropdown menus in header.
@@ -831,7 +848,7 @@ function joinup_theme_preprocess_field(&$variables) {
 function joinup_theme_preprocess_field__comment(&$variables) {
   // Get entity url needed for login and register routes.
   $entity = $variables['element']['#object'];
-  $variables['entity_bundle'] = Unicode::strtolower($entity->type->entity->label());
+  $variables['entity_bundle'] = mb_strtolower($entity->type->entity->label());
 
   // Get the comment status from the entity itself.
   $comments_status = $variables['element']['#items']->status;
@@ -869,21 +886,7 @@ function joinup_theme_preprocess_field__comment(&$variables) {
  * Implements hook_preprocess_HOOK() for form.html.twig.
  */
 function joinup_theme_preprocess_form(&$variables) {
-  // Exclude collection and solution forms.
-  $form_ids = [
-    'rdf_entity_collection_edit_form',
-    'rdf_entity_collection_propose_form',
-    'rdf_entity_collection_add_form',
-    'rdf_entity_solution_edit_form',
-    'rdf_entity_solution_form',
-    'rdf_entity_solution_add_form',
-  ];
-
-  // Display asterisk for required fields.
-  if (!in_array($variables['element']['#form_id'], $form_ids)) {
-    $variables['attributes']['class'][] = 'form__with-asterisk';
-  }
-
+  $variables['attributes']['class'][] = 'form__with-asterisk';
   // Additional classes for members overview.
   if (strpos($variables['element']['#form_id'], 'views_form_og_members_overview_default_rdf_entity') !== FALSE) {
     $variables['attributes']['class'][] = 'form__content';
@@ -974,11 +977,11 @@ function joinup_theme_preprocess_page_title__rdf_entity__asset_release(&$variabl
   }
 
   // Get the view builder service from the entity type manager.
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
   // Get the creation date field.
   $creation_date = $entity->get('created');
-  $creation_date = $viewBuilder->viewField($creation_date, 'default');
+  $creation_date = $view_builder->viewField($creation_date, 'default');
   $variables['additional_content']['created'] = $creation_date;
 }
 
@@ -990,13 +993,13 @@ function joinup_theme_preprocess_page_title__rdf_entity__asset_distribution(&$va
   $entity = $variables['entity'];
 
   // Get the view builder service from the entity type manager.
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
   // Get the file size and licence fields.
   $field_ad_file_size = $entity->field_ad_file_size;
   $field_ad_licence = $entity->field_ad_licence;
-  $field_ad_file_size = $viewBuilder->viewField($field_ad_file_size, 'default');
-  $field_ad_licence = $viewBuilder->viewField($field_ad_licence, 'default');
+  $field_ad_file_size = $view_builder->viewField($field_ad_file_size, 'default');
+  $field_ad_licence = $view_builder->viewField($field_ad_licence, 'default');
 
   $variables['additional_content']['field_ad_file_size'] = $field_ad_file_size;
   $variables['additional_content']['field_ad_licence'] = $field_ad_licence;
@@ -1009,13 +1012,16 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['entity'];
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
-  $field_news_headline = $viewBuilder->viewField($node->field_news_headline, 'default');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+  $field_news_headline = $view_builder->viewField($node->field_news_headline, 'default');
   $variables['additional_content']['field_news_headline'] = $field_news_headline;
 
   $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
   $variables['additional_content']['published'] = $published;
+
+  $update_date = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
+  $variables['additional_content']['updated'] = $update_date;
 
   $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
@@ -1030,6 +1036,9 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
 
   $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
   $variables['additional_content']['published'] = $published;
+
+  $update_date = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
+  $variables['additional_content']['updated'] = $update_date;
 
   $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
@@ -1056,13 +1065,22 @@ function joinup_theme_preprocess_page_title__node__document(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['entity'];
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
-  $field_document_publication_date = $viewBuilder->viewField($node->field_document_publication_date, 'default');
+  /** @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+  /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
+  $date_formatter = \Drupal::service('date.formatter');
+  $field_document_publication_date = $view_builder->viewField($node->field_document_publication_date, 'default');
   $variables['additional_content']['field_document_publication_date'] = $field_document_publication_date;
+  $publication_date_value = $node->field_document_publication_date->value;
+  // The raw value allowed to properly display the field above with any class
+  // or configuration applied but still have the value to compare to the changed
+  // date in the Twig template.
+  $variables['additional_content']['field_document_publication_date_raw'] = empty($publication_date_value) ? '' : $date_formatter->format(strtotime($publication_date_value), 'custom', 'd/m/Y');
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $field_short_title = $viewBuilder->viewField($node->field_short_title, 'default');
+  $update_date = $date_formatter->format($node->getChangedTime(), 'custom', 'd/m/Y');
+  $variables['additional_content']['updated'] = $update_date;
+
+  $field_short_title = $view_builder->viewField($node->field_short_title, 'default');
   $variables['additional_content']['field_short_title'] = $field_short_title;
 
   $author_inline = _joinup_theme_get_author($node);
@@ -1077,21 +1095,24 @@ function joinup_theme_preprocess_comment(&$variables) {
   $user = $variables['user_picture']['#user'];
   $photo_target = $user->get('field_user_photo')->getValue();
 
+  $variables['author'] = [
+    '#theme' => 'username',
+    '#account' => $user,
+  ];
+
+  $cache_metadata = (new CacheableMetadata())->addCacheableDependency($user);
+  $cache_metadata->applyTo($variables['author']);
+
   if ($photo_target) {
     $photo_target = $photo_target[0]['target_id'];
     /** @var \Drupal\file\Entity\File $file */
     if ($file = File::load($photo_target)) {
       $uri = $file->getFileUri();
       $url = ImageStyle::load('profile_icon_big')->buildUrl($uri);
-      $variables['profile_icon'] = [
-        '#markup' => $url,
-        '#cache' => [
-          'tags' => Cache::mergeTags($user->getCacheTags(), $user->getEntityType()
-            ->getListCacheTags()),
-          'contexts' => $user->getCacheContexts(),
-          'max-age' => $user->getCacheMaxAge(),
-        ],
-      ];
+      $variables['profile_icon'] = ['#markup' => $url];
+      $cache_metadata
+        ->addCacheTags($user->getEntityType()->getListCacheTags())
+        ->applyTo($variables['profile_icon']);
     }
   }
 }
@@ -1147,11 +1168,24 @@ function joinup_theme_preprocess_file_link(&$variables) {
  * Implements hook_preprocess_user().
  */
 function joinup_theme_preprocess_user(&$variables) {
-  $variables['full_name'] = $variables['user']->get('full_name')->value;
+  $variables['full_name'] = $variables['user']->getDisplayName();
 
   // Truncate business title.
   $business_title = $variables['user']->get('field_user_business_title')->value;
-  $variables['short_business_title'] = substr($business_title, 0, 30);
+  $variables['short_business_title'] = !empty($business_title) ? substr($business_title, 0, 30) : '';
+}
+
+/**
+ * Implements hook_preprocess_user__inline().
+ */
+function joinup_theme_preprocess_user__inline(array &$variables): void {
+  $variables['full_name'] = [
+    '#theme' => 'username',
+    '#account' => $variables['user'],
+    '#attributes' => [
+      'class' => ['value', 'gray'],
+    ],
+  ];
 }
 
 /**
@@ -1161,7 +1195,10 @@ function joinup_theme_preprocess_user__group_header(&$variables) {
   // Create customizable 'member for' field.
   // It creates a timespan without label and with lower granularity.
   $variables['member_for'] = \Drupal::service('date.formatter')->formatTimeDiffSince($variables['user']->getCreatedTime(), ['granularity' => 1]);
-  $variables['full_name'] = $variables['user']->get('full_name')->value;
+  $variables['full_name'] = $variables['user']->getDisplayName();
+  $variables['field_user_photo_url'] = !empty($variables['content']['field_user_photo'][0]['#item']->entity->uri->value) ?
+    file_create_url($variables['content']['field_user_photo'][0]['#item']->entity->uri->value)
+    : '';
 }
 
 /**
@@ -1171,12 +1208,12 @@ function joinup_theme_preprocess_page_title__node__event(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['entity'];
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
 
   // Get dates and location fields.
-  $field_event_date = $viewBuilder->viewField($node->get('field_event_date'), 'default');
-  $field_event_location = $viewBuilder->viewField($node->get('field_location'), 'default');
+  $field_event_date = $view_builder->viewField($node->get('field_event_date'), 'default');
+  $field_event_location = $view_builder->viewField($node->get('field_location'), 'default');
 
   $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
 
@@ -1483,27 +1520,54 @@ function joinup_theme_theme_suggestions_details_alter(array &$suggestions, array
  * Implements hook_theme_suggestions_alter().
  */
 function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
-  if (!empty($variables['element']['#type'])) {
-    // Array contains form elements, which are displayed with floating label.
-    $floating_label_types = [
-      'email',
-      'entity_autocomplete',
-      'password',
-      'textfield',
-      'url',
-    ];
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
 
-    if (in_array($variables['element']['#type'], $floating_label_types)) {
-      if ($hook == 'form_element') {
-        $suggestions[] = 'form_element__floating';
+  // By default Material Design moves field labels inside the input fields as
+  // placeholders and then moves them back above the fields as soon as something
+  // is typed in them. This behaviour is not wanted for our big forms since they
+  // should have nicely aligned and uniformly styled field labels. We will
+  // disable the "floating label" behaviour in these forms:
+  $non_floating_form_routes = [
+    'collection.propose_form',
+    'custom_page.group_custom_page.add',
+    'entity.node.edit_form',
+    'entity.rdf_entity.edit_form',
+    'entity.user.edit_form',
+    'joinup_discussion.rdf_entity_discussion.add',
+    'joinup_document.rdf_entity_document.add',
+    'joinup_licence.add',
+    'joinup_news.rdf_entity_news.add',
+    'node.add',
+    'rdf_entity.propose_form',
+    'rdf_entity.rdf_add',
+    'solution.collection_solution.add',
+  ];
+  $enable_floating_labels = empty($route_name) || !in_array($route_name, $non_floating_form_routes);
 
-        // Floating form element with label.
-        if (!empty($variables['element']['#array_parents']) && in_array('field_social_media', $variables['element']['#array_parents'], TRUE)) {
-          $suggestions[] = 'form_element__floating__with_prefix';
+  if ($enable_floating_labels) {
+    if (!empty($variables['element']['#type'])) {
+      // Array contains form elements, which are displayed with floating label.
+      $floating_label_types = [
+        'email',
+        'entity_autocomplete',
+        'password',
+        'textfield',
+        'url',
+      ];
+
+      if (in_array($variables['element']['#type'], $floating_label_types)) {
+        if ($hook == 'form_element') {
+          $suggestions[] = 'form_element__floating';
+
+          // Floating form element with label.
+          if (!empty($variables['element']['#array_parents']) && in_array('field_social_media', $variables['element']['#array_parents'], TRUE)) {
+            $suggestions[] = 'form_element__floating__with_prefix';
+          }
         }
-      }
-      elseif ($hook == 'input') {
-        $suggestions[] = 'input__floating';
+        elseif ($hook == 'input') {
+          $suggestions[] = 'input__floating';
+        }
       }
     }
 
@@ -1918,8 +1982,12 @@ function joinup_theme_preprocess_filter_caption(&$variables) {
     $variables['classes'] = 'image-caption';
   }
 
+  // The image node element may be a \Drupal\filter\Render\FilteredMarkup
+  // instance. Cast it to a string to be compatible with `strpos()` as strict
+  // typing is enforced.
+  $node = (string) $variables['node'];
   foreach ($width_array as $width) {
-    if (strpos($variables['node'], $width) !== FALSE) {
+    if (strpos($node, $width) !== FALSE) {
       $variables['classes'] .= ' ' . str_replace('_', '-', $width);
     }
   }
@@ -1965,27 +2033,60 @@ function joinup_theme_preprocess_message_digest(&$variables) {
  *
  * - Adds the site URL to use in nodes.
  * - Adds the group ID and label as data attributes in tiles.
+ * - Adds bundle class in listing templates for bundle specific theming.
+ * - Adds the created date to news articles.
+ * - Adds a variable indicating the attachment file type on documents.
  */
 function joinup_theme_preprocess_node(&$variables) {
-  $variables['site_url'] = \Drupal::request()->getSchemeAndHttpHost();
-
-  if ($variables['view_mode'] !== 'view_mode_tile') {
-    return;
-  }
-
-  /** @var \Drupal\node\Entity\Node $node */
+  /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['node'];
 
-  /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
-  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
-  if ($parent) {
-    $variables['attributes']['data-drupal-parent-id'] = $parent->id();
-    $variables['attributes']['data-drupal-parent-label'] = $parent->label();
+  // Add the site URL to use in nodes.
+  $variables['site_url'] = \Drupal::request()->getSchemeAndHttpHost();
+
+  // Add the group ID and label as data attributes in tiles.
+  if ($variables['view_mode'] === 'view_mode_tile') {
+    /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
+    $parent = JoinupGroupHelper::getGroup($node);
+    if ($parent) {
+      $variables['attributes']['data-drupal-parent-id'] = $parent->id();
+      $variables['attributes']['data-drupal-parent-label'] = $parent->label();
+    }
+
+    // If the node is shared somewhere, attach the related library.
+    if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
+      $variables['#attached']['library'][] = 'joinup_theme/shared_entity';
+    }
   }
 
-  // If the node is shared somewhere, attach the related library.
-  if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
-    $variables['#attached']['library'][] = 'joinup_theme/shared_entity';
+  // Add bundle class in listing templates.
+  if ($variables['view_mode'] === 'view_mode_tile' || $variables['view_mode'] === 'view_mode_featured') {
+    $bundle_class = 'listing__card--' . str_replace('_', '-', $node->bundle());
+    $variables['attributes']['class'][] = $bundle_class;
+  }
+
+  // Add the created date to news articles.
+  if ($node->bundle() === 'news') {
+    $variables['created'] = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
+  }
+
+  // Add a variable indicating the attachment file type on documents.
+  if ($node->bundle() === 'document' && !$node->get('field_file')->isEmpty()) {
+    /** @var \Drupal\file\FileInterface $file */
+    $file = $node->get('field_file')->first()->entity;
+
+    // The document could reference an orphaned file entity, so only proceed if
+    // we actually have a file.
+    if (!empty($file)) {
+      $is_remote = \Drupal::service('file_url.handler')->isRemote($file);
+
+      if (!$is_remote) {
+        $variables['extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+      }
+      else {
+        $variables['extension'] = t('External');
+      }
+    }
   }
 }
 
