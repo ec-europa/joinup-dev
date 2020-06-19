@@ -179,7 +179,8 @@ function asset_distribution_invalidate_solution_cache(RdfInterface $distribution
  * because there is only one 'Download' button displayed.
  *
  * @todo: The behavior of the multi value file field is recorded and will be
- * implemented in https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2925.
+ * implemented in
+ * https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2925.
  */
 function asset_distribution_preprocess_rdf_entity(&$variables) {
   /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
