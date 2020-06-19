@@ -1,10 +1,10 @@
 upgrade_commands:
   default:
-    - ${drush.bin} state:set system.maintenance_mode 1 --input-format=integer --yes
-    - ${runner.bin_dir}/run config-readonly:disable
-    - ${runner.bin_dir}/run redis:flush-all
-    - ${drush.bin} updatedb --no-post-updates --yes
-    - ${drush.bin} config:import --yes
-    - ${drush.bin} updatedb --yes
-    - ${runner.bin_dir}/run config-readonly:enable
-    - ${drush.bin} state:set system.maintenance_mode 0 --input-format=integer --yes
+    - ./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer --yes
+    - touch disable-config-readonly
+    - ./vendor/bin/run redis:flush-all
+    - ./vendor/bin/drush updatedb --no-post-updates --yes
+    - ./vendor/bin/drush config:import --yes
+    - ./vendor/bin/drush updatedb --yes
+    - rm disable-config-readonly
+    - ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer --yes

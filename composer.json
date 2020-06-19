@@ -339,9 +339,6 @@
                 "Do not throw an exception when valid JSON data evaluates to empty PHP data @see https://github.com/drush-ops/drush/pull/4342": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4342.diff",
                 "Output correct data for machine readable formats in config:status @see https://github.com/drush-ops/drush/pull/4340": "resources/patch/drush-4340.patch"
             },
-            "ec-europa/toolkit": {
-                "MULTISITE-23617: Resolve variables in 'sequence-file'": "https://patch-diff.githubusercontent.com/raw/ec-europa/toolkit/pull/281.diff"
-            },
             "openeuropa/oe_webtools": {
                 "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                 "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
