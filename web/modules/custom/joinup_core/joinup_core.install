@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Install, uninstall, requirements and hook implementations for Joinup.
+ * Install, update, and uninstall functions for the Joinup core module.
  */
 
 declare(strict_types = 1);
