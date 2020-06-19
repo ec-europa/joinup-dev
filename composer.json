@@ -90,7 +90,6 @@
         "phing/phing": "^2.16",
         "predis/predis": "~1.1",
         "semiceu/adms-ap_validator": "dev-master",
-        "typhonius/behattask": "1.0",
         "vlucas/phpdotenv": "^4.1",
         "webflo/drupal-finder": "~1.2",
         "webmozart/path-util": "~2.3",
@@ -393,20 +392,6 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "typhonius/behattask",
-                "version": "1.0",
-                "source": {
-                    "url": "https://gist.github.com/5719e15be9687ff7c138.git",
-                    "type": "git",
-                    "reference": "0ea666882cba3099dfa4feeb02e1bb85b2c0bde9"
-                },
-                "autoload": { "classmap": [ "BehatTask.php" ] },
-                "include-path": [ "." ]
-            }
         },
         {
             "type": "package",
