@@ -7,7 +7,9 @@ namespace Drupal\joinup_material_design\Plugin\views\style;
 use Drupal\views\Plugin\views\style\StylePluginBase;
 
 /**
- * A Views style that renders markup for Bootstrap tabs.
+ * A Views style that renders markup for "Tiles".
+ *
+ * A "tile" is Joinup terminology for a Material Design "card".
  *
  * How to use this:
  * 1. Create a view that uses the 'Tiles' style (called 'format' in the UI).
