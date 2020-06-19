@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Element;
 
 use Drupal\Core\Render\Element\FormElement;

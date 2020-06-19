@@ -30,10 +30,9 @@ dependencies:
     - image.style.digest_image
     - node.type.event
   module:
-    - ds
     - image
-    - joinup_core
     - smart_trim
+    - template_suggestion
     - user
 id: node.event.digest_message
 targetEntityType: node
@@ -58,14 +57,7 @@ content:
       wrap_output: false
       more_link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     region: content
   field_event_date:
@@ -79,14 +71,7 @@ content:
       month_diff_format: 'd F'
       year_diff_format: 'd F Y'
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: daterange_condensed
     region: content
@@ -96,14 +81,7 @@ content:
     settings:
       image_style: digest_image
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: image_url
     region: content

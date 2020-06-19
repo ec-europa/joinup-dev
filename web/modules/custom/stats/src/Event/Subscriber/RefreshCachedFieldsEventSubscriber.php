@@ -4,16 +4,16 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_stats\Event\Subscriber;
 
-use Drupal\cached_computed_field\Event\RefreshExpiredFieldsEventInterface;
-use Drupal\cached_computed_field\EventSubscriber\RefreshExpiredFieldsSubscriberBase;
-use Drupal\cached_computed_field\ExpiredItemCollection;
-use Drupal\cached_computed_field\ExpiredItemInterface;
 use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Url;
+use Drupal\cached_computed_field\Event\RefreshExpiredFieldsEventInterface;
+use Drupal\cached_computed_field\EventSubscriber\RefreshExpiredFieldsSubscriberBase;
+use Drupal\cached_computed_field\ExpiredItemCollection;
+use Drupal\cached_computed_field\ExpiredItemInterface;
 use Drupal\file_url\Entity\RemoteFile;
 use Drupal\matomo_reporting_api\MatomoQueryFactoryInterface;
 use Drupal\meta_entity\Entity\MetaEntityInterface;
@@ -93,16 +93,46 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       return;
     }
 
+    // In some cases, like when a brute force attack is detected, Matomo returns
+    // empty responses until a grace period has passed.
+    if (empty($response)) {
+      $this->loggerFactory->get('joinup_stats')->error('Matomo returned empty response.');
+      return;
+    }
+
+    // Failsafe, if anything other than an array is returned then this is
+    // unexpected data which we cannot process.
+    if (!is_array($response)) {
+      $this->loggerFactory->get('joinup_stats')->error(sprintf('Matomo responded with unexpected data type %s.', gettype($response)));
+      return;
+    }
+
     $errors = [];
     foreach ($items as $index => $expired_item) {
+      // Skip if the data we need is not present.
+      if (!isset($response[$index])) {
+        $errors['[no data]'][] = $expired_item->getEntityId();
+        continue;
+      }
+
       $response_item = $response[$index];
+
       // If an error occurs, the response for the expired item is an object
       // rather than an array of objects.
-      if (is_object($response_item) && isset($response_item->result) && $response_item->result === 'error') {
+      if (is_object($response_item)) {
         $message = $response_item->message ?? '[unknown]';
         $errors[$message][] = $expired_item->getEntityId();
         continue;
       }
+
+      // Failsafe, if anything other than an array is returned then this is
+      // unexpected data which we cannot process.
+      if (!is_array($response_item)) {
+        $message = sprintf('[unknown data type %s]', gettype($response_item));
+        $errors[$message][] = $expired_item->getEntityId();
+        continue;
+      }
+
       /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
       $meta_entity = $this->getEntity($expired_item);
       $type = $this->getSettingsForMetaEntity($meta_entity)['type'];

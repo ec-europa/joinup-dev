@@ -9,7 +9,7 @@ Feature: Collection homepage
       | Username | Status | Roles     |
       | Frodo    | active |           |
       | Boromir  | active |           |
-      | Legoloas | active |           |
+      | Legolas  | active |           |
       | Gimli    | active |           |
       | Samwise  | active | moderator |
     And the following owner:
@@ -25,21 +25,21 @@ Feature: Collection homepage
       | contact information | Kalikatoura                      |
       | logo                | logo.png                         |
       | moderation          | yes                              |
-      | elibrary creation   | members                          |
+      | content creation    | members                          |
       | state               | validated                        |
       | policy domain       | Employment and Support Allowance |
     And the following solution:
-      | title             | Bilbo's book          |
-      | collection        | Middle earth daily    |
-      | description       | Bilbo's autobiography |
-      | elibrary creation | members               |
-      | creation date     | 2014-10-17 8:32am     |
-      | state             | validated             |
+      | title            | Bilbo's book          |
+      | collection       | Middle earth daily    |
+      | description      | Bilbo's autobiography |
+      | content creation | members               |
+      | creation date    | 2014-10-17 8:32am     |
+      | state            | validated             |
     And the following collection user memberships:
-      | collection         | user     | roles       |
-      | Middle earth daily | Frodo    | facilitator |
-      | Middle earth daily | Boromir  |             |
-      | Middle earth daily | Legoloas |             |
+      | collection         | user    | roles       |
+      | Middle earth daily | Frodo   | facilitator |
+      | Middle earth daily | Boromir |             |
+      | Middle earth daily | Legolas |             |
     And news content:
       | title                                             | body                | policy domain     | collection         | state     | created           | changed  |
       | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated | 2014-10-17 8:34am | 2017-7-5 |
@@ -156,6 +156,7 @@ Feature: Collection homepage
     And I click "View draft" in the "Entity actions" region
     Then I should see the text "Moderated"
     And I should see the text "Open collection"
+    And I should see the text "Only members can create content."
     And I should see the text "Bilbo Baggins"
     And I should see the text "Employment and Support Allowance"
     And I should see the heading "Middle earth nightly"

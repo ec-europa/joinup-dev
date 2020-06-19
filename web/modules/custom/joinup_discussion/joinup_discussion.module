@@ -5,11 +5,14 @@
  * Hook implementations for the Joinup Discussion module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
 use Drupal\changed_fields\EntitySubject;
 use Drupal\joinup_discussion\DiscussionObserver;
+use Drupal\joinup_discussion\Entity\Discussion;
 use Drupal\joinup_discussion\Event\DiscussionDeleteEvent;
 use Drupal\joinup_discussion\Event\DiscussionEvents;
 use Drupal\node\NodeInterface;
@@ -79,7 +82,7 @@ function joinup_discussion_node_view(array &$build, EntityInterface $entity, Ent
 /**
  * Implements hook_ENTITY_TYPE_predelete().
  */
-function joinup_discussion_node_predelete(EntityInterface $entity) : void {
+function joinup_discussion_node_predelete(EntityInterface $entity): void {
   if (!$entity instanceof NodeInterface || $entity->bundle() !== 'discussion') {
     return;
   }
@@ -96,4 +99,13 @@ function joinup_discussion_node_predelete(EntityInterface $entity) : void {
   $event = new DiscussionDeleteEvent($entity);
   $event_dispatcher = \Drupal::service('event_dispatcher');
   $event_dispatcher->dispatch(DiscussionEvents::DELETE, $event);
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function joinup_discussion_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['node']['discussion'])) {
+    $bundles['node']['discussion']['class'] = Discussion::class;
+  }
 }

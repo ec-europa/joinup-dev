@@ -5,6 +5,8 @@
  * Contains hooks regarding the asset_release rdf entity bundle.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
@@ -12,6 +14,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\asset_release\Entity\AssetRelease;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\SparqlGraphInterface;
@@ -24,6 +27,15 @@ use Drupal\sparql_entity_storage\SparqlGraphInterface;
  */
 function asset_release_entity_type_alter(array &$entity_types) {
   $entity_types['rdf_entity']->setLinkTemplate('solution-releases', '/rdf_entity/{rdf_entity}/releases');
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function asset_release_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['rdf_entity']['asset_release'])) {
+    $bundles['rdf_entity']['asset_release']['class'] = AssetRelease::class;
+  }
 }
 
 /**
@@ -200,8 +212,8 @@ function asset_release_rdf_entity_access(EntityInterface $entity, $operation, Ac
       break;
 
     case 'edit':
-      /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
-      $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+      /** @var \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper */
+      $workflow_helper = \Drupal::service('joinup_workflow.workflow_helper');
       $allowed_states = $workflow_helper->getAvailableTargetStates($entity, $account);
       return AccessResult::forbiddenIf(empty($allowed_states));
   }

@@ -45,7 +45,7 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
    * The search page currently doesn't have a title so our common practice of
    * checking the page title falls short here.
    *
-   * @Then I should be on the search page
+   * @Then I should be on the (advanced )search page
    */
   public function assertSearchPage(): void {
     $this->assertSession()->addressEquals($this->locatePath('/search'));

@@ -224,9 +224,9 @@
             "lang": "en"
         }
     ],
-    "field_is_elibrary_creation": [
+    "field_is_content_creation": [
         {
-            "value": 2
+            "value": "any_user"
         }
     ],
     "field_is_landing_page": [

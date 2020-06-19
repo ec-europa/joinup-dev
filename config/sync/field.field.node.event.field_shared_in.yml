@@ -12,7 +12,7 @@ id: node.event.field_shared_in
 field_name: field_shared_in
 entity_type: node
 bundle: event
-label: 'Shared in'
+label: 'Shared on'
 description: ''
 required: false
 translatable: false

@@ -48,7 +48,7 @@ Feature: "Add event" visibility options.
     And I click "Add event" in the plus button menu
     Then I should see the heading "Add event"
     And the following fields should be present "Title, Short title, Description, Agenda, Logo, Contact email, Website, Policy domain, Add a new file, Scope, Geographical coverage"
-    And the following fields should not be present "Shared in, Motivation"
+    And the following fields should not be present "Shared on, Motivation"
 
     # Check required fields.
     And I attach the file "test.zip" to "Add a new file"

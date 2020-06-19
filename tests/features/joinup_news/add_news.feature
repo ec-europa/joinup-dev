@@ -26,7 +26,7 @@ Feature: Creation of news through the UI.
 
     When I am logged in as a "facilitator" of the "Metal fans" collection
     And I go to the homepage of the "Metal fans" collection
-    Then the following fields should not be present "Shared in, Motivation"
+    Then the following fields should not be present "Shared on, Motivation"
 
     # Log in as a facilitator of the "Density catalogue project" solution
     When I am logged in as isotopedancer
@@ -68,7 +68,7 @@ Feature: Creation of news through the UI.
     And I should see the link "Milana Laninga" in the "Content" region
     But I should not see the link "isotopedancer" in the "Content" region
 
-    # Edit again and try to share into the same solution.
+    # Edit again and try to share onto the same solution.
     When I click "Edit" in the "Entity actions" region
     And I fill in "Referenced solution" with values "Dig do's and don'ts, Dig do's and don'ts"
     And I press "Update"

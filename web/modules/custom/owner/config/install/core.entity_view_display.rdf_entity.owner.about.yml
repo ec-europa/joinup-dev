@@ -8,7 +8,7 @@ dependencies:
     - field.field.rdf_entity.owner.field_owner_type
     - rdf_entity.rdfentity.owner
   module:
-    - ds
+    - template_suggestion
     - user
 id: rdf_entity.owner.about
 targetEntityType: rdf_entity
@@ -23,14 +23,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_owner_type:
     type: entity_reference_label
@@ -40,15 +33,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
 hidden:
   field_owner_state: true

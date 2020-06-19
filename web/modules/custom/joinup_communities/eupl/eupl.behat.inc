@@ -78,6 +78,43 @@ class EuplSubContext extends DrupalSubContextBase {
   }
 
   /**
+   * Clicks the info icon next to the SPDX licence header.
+   *
+   * @param string $spdx
+   *   The SPDX licence ID.
+   *
+   * @throws \Exception
+   *   Thrown if the info icon could not be found.
+   *
+   * @Given I click the info icon of the :spdx licence( table cell)
+   */
+  public function clickLicenceInfoIcon(string $spdx): void {
+    $xpath = '//td[@class and contains(concat(" ", normalize-space(@class), " "), " licence-comparer__header ") and contains(., "' . $spdx . '")]//span[@class and contains(concat(" ", normalize-space(@class), " "), " icon--info ")]';
+    $icon = $this->getSession()->getPage()->find('xpath', $xpath);
+    if (empty($icon)) {
+      throw new \Exception("Could not locate a table cell with the text {$spdx}.");
+    }
+    $icon->click();
+  }
+
+  /**
+   * Closes the licence modal dialog.
+   *
+   * @throws \Exception
+   *   Thrown if the dialog is not open or the x button is not found.
+   *
+   * @Given I close the licence modal dialog
+   */
+  public function closeLicenceModalDialog(): void {
+    $xpath = '//div[@class and contains(concat(" ", normalize-space(@class), " "), " licence-comparer__dialog ")]//button[@title="Close"]';
+    $icon = $this->getSession()->getPage()->find('xpath', $xpath);
+    if (empty($icon)) {
+      throw new \Exception("Either the dialog is not available or the 'Close' button could not be located.");
+    }
+    $icon->click();
+  }
+
+  /**
    * Asserts the legal type categories order in the JLA licence listing item.
    *
    * @param string $spdx
@@ -231,6 +268,33 @@ class EuplSubContext extends DrupalSubContextBase {
     }
     elseif ($can === 'cannot' && !$checkbox->hasClass('is-disabled')) {
       throw new \Exception("The licence '$spdx_id' shouldn't be allowed to be compared but it is.");
+    }
+  }
+
+  /**
+   * Asserts that the given licence is/is not selected.
+   *
+   * @param string $spdx_id
+   *   The licence SPDX ID.
+   * @param string $checked
+   *   Either 'checked' or 'unchecked'.
+   *
+   * @throws \Exception
+   *   When the licence tile is not found on the page.
+   *
+   * @Then the :spdx_id licence should be :checked
+   */
+  public function assertLicenceChecked(string $spdx_id, string $checked) {
+    \assert(in_array($checked, ['checked', 'unchecked']), 'The $checked parameter should take one of the values "checked" or "unchecked" but "' . $checked . '" was given.');
+
+    $licence = $this->findLicenceTile($spdx_id);
+    $checkbox = $licence->find('xpath', '//label[text()="Add to compare list"]/../..');
+
+    if ($checked === 'checked' && !$checkbox->hasClass('is-checked')) {
+      throw new \Exception("The licence '$spdx_id' should be checked but is not.");
+    }
+    elseif ($checked === 'unchecked' && $checkbox->hasClass('is-checked')) {
+      throw new \Exception("The licence '$spdx_id' should not be checked but it is.");
     }
   }
 

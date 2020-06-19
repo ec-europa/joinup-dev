@@ -4,6 +4,27 @@ Feature: "Add solution" visibility options.
   As a moderator
   I need to be able to add "Solution" rdf entities through UI.
 
+  Scenario: Required fields should be filled in
+    Given the following collection:
+      | title | Language parsers |
+      | state | validated        |
+    And I am logged in as a facilitator of the "Language parsers" collection
+    And I go to the homepage of the "Language parsers" collection
+    And I click "Add solution"
+
+    # Submit the incomplete form, so error messages about missing fields will
+    # be shown.
+    When I press "Propose"
+    Then I should see the following error messages:
+      | error messages                    |
+      | Title field is required.          |
+      | Description field is required.    |
+      | Name field is required.           |
+      | E-mail address field is required. |
+      | Policy domain field is required.  |
+      | Owner field is required.          |
+      | Solution type field is required.  |
+
   Scenario: "Add solution" button should only be shown to moderators and facilitators.
     Given the following collection:
       | title | Collection solution test |
@@ -53,10 +74,10 @@ Feature: "Add solution" visibility options.
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner, Name, E-mail address, Website URL"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation, Motivation"
-    # Regression test for ensuring that obsolete eLibrary value is removed.
+    # Regression test for ensuring that obsolete content creation value is removed.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3567
-    And I should not see the text "Only members can create new content"
-    And I should see the text "Only solution facilitators can create new content"
+    And I should not see the text "Only members can create content"
+    And I should see the text "Only facilitators can create content"
     # Regression test to endure that the language terms "Multilingual Code" are not present.
     And the available options in the "Language" select should not include the "Multilingual Code"
     And I should see the description "For best result the image must be larger than 2400x345 pixels." for the "Banner" field

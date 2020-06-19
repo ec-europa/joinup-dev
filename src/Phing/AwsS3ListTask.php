@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace DrupalProject\Phing;
+namespace Joinup\Phing;
 
 /**
  * Phing task to output a list of files from an AWS S3 bucket in a property.

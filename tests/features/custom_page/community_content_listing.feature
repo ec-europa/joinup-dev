@@ -86,7 +86,7 @@ Feature:
     And I click "Share"
     And I check "Nintendo64"
     And I press "Share"
-    Then I should see the success message "Item was shared in the following collections: Nintendo64"
+    Then I should see the success message "Item was shared on the following collections: Nintendo64"
 
     When I go to the "Latest news" custom page
     Then I should see the "Rare Nintendo64 disk drive discovered" tile
@@ -149,8 +149,8 @@ Feature:
     And I select "Event" from "Available filters"
     And I press "Add and configure filter"
     And I fill in "Event" with "20 year anniversary"
-    And I drag the table row at position 3 up
-    And I drag the table row at position 2 up
+    And I drag the table row in the "Content listing field filter form" region at position 3 up
+    And I drag the table row in the "Content listing field filter form" region at position 2 up
     And I press "Save"
     And I should see the following tiles in the correct order:
       | 20 year anniversary                   |
@@ -170,12 +170,12 @@ Feature:
       | What's your favourite N64 game?       |
       | Rare Nintendo64 disk drive discovered |
 
-    # Content shared in the collection will be shown.
+    # Content shared on the collection will be shown.
     When I go to the "NEC VR4300 CPU" news
     And I click "Share"
     And I check "Nintendo64"
     And I press "Share" in the "Modal buttons" region
-    Then I should see the success message "Item was shared in the following collections: Nintendo64"
+    Then I should see the success message "Item was shared on the following collections: Nintendo64"
     When I go to the "Chosen content" custom page
     Then I should see the following tiles in the correct order:
       | 20 year anniversary                   |
@@ -201,9 +201,9 @@ Feature:
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     # Simulate reordering and removal of rows.
-    And I drag the table row at position 4 up
-    And I drag the table row at position 3 up
-    And I drag the table row at position 1 down
+    And I drag the table row in the "Content listing field filter form" region at position 4 up
+    And I drag the table row in the "Content listing field filter form" region at position 3 up
+    And I drag the table row in the "Content listing field filter form" region at position 1 down
     # Remove the first two rows.
     And I press "Remove filter"
     And I wait for AJAX to finish

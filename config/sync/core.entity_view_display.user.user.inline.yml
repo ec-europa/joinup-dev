@@ -18,9 +18,8 @@ dependencies:
     - field.field.user.user.field_user_professional_domain
     - image.style.profile_icon
   module:
-    - ds
     - image
-    - joinup
+    - template_suggestion
     - user
 id: user.user.inline
 targetEntityType: user
@@ -33,14 +32,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: string
     region: content
@@ -51,14 +43,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     region: content
   field_user_photo:
@@ -68,14 +53,7 @@ content:
       image_style: profile_icon
       image_link: ''
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: image
     region: content

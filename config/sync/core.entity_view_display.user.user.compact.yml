@@ -18,9 +18,8 @@ dependencies:
     - field.field.user.user.field_user_professional_domain
     - image.style.thumbnail
   module:
-    - ds
     - image
-    - joinup
+    - template_suggestion
     - user
 id: user.user.compact
 targetEntityType: user
@@ -34,14 +33,7 @@ content:
       image_style: thumbnail
       image_link: content
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: image
     region: content

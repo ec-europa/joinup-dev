@@ -15,8 +15,6 @@ use Drupal\og\OgMembershipInterface;
 
 /**
  * Helper methods related to the Joinup groups.
- *
- * @package Drupal\joinup_group
  */
 class JoinupGroupManager implements JoinupGroupManagerInterface {
 

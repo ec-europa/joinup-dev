@@ -2,10 +2,13 @@
 
 /**
  * @file
- * Contains joinup_document.module.
+ * Hook implementations for the Joinup Document module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\joinup_document\Entity\Document;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -20,5 +23,14 @@ function joinup_document_entity_bundle_field_info_alter(&$fields, EntityTypeInte
     if (!empty($fields['title'])) {
       $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['document']]);
     }
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function joinup_document_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['node']['document'])) {
+    $bundles['node']['document']['class'] = Document::class;
   }
 }

@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - rdf_entity
+    - sparql_entity_storage
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      value:
+        predicate: 'http://joinup.eu/collection/content_creation'
+        format: literal
+id: rdf_entity.field_ar_content_creation
+field_name: field_ar_content_creation
+entity_type: rdf_entity
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: any_user
+      label: '<strong>Any user</strong> can create content.'
+    -
+      value: only_members
+      label: '<strong>Only members</strong> can create content.'
+    -
+      value: only_facilitators
+      label: '<strong>Only facilitators</strong> can create content.'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

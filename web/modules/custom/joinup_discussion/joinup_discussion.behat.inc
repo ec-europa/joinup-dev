@@ -28,11 +28,13 @@ class JoinupDiscussionSubContext extends DrupalSubContextBase implements DrupalS
    *
    * @When I go to the :title discussion
    * @When I visit the :title discussion
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitDiscussion(string $title): void {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->getNodeByTitle($title, 'discussion');
-    $this->visitPath($node->url());
+    $this->visitPath($node->toUrl()->toString());
   }
 
   /**
@@ -57,7 +59,7 @@ class JoinupDiscussionSubContext extends DrupalSubContextBase implements DrupalS
    * @return \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface
    *   The subscription service.
    */
-  protected function getDiscussionSubscriptionService() : JoinupDiscussionSubscriptionInterface {
+  protected function getDiscussionSubscriptionService(): JoinupDiscussionSubscriptionInterface {
     return \Drupal::service('joinup_subscription.discussion_subscription');
   }
 

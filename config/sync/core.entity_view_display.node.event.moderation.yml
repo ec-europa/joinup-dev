@@ -29,10 +29,9 @@ dependencies:
     - field.field.node.event.og_audience
     - node.type.event
   module:
-    - ds
-    - joinup
     - options
     - smart_trim
+    - template_suggestion
     - user
 id: node.event.moderation
 targetEntityType: node
@@ -53,15 +52,10 @@ content:
       trim_options:
         text: false
       more_class: more-link
+      wrap_output: false
+      wrap_class: trimmed
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
   field_state:

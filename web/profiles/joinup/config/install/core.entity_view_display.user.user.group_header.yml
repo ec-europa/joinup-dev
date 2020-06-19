@@ -17,10 +17,9 @@ dependencies:
     - field.field.user.user.field_user_professional_domain
     - image.style.image_style_collection_logo
   module:
-    - ds
     - image
-    - joinup
     - social_media_links_field
+    - template_suggestion
     - user
 id: user.user.group_header
 targetEntityType: user
@@ -40,14 +39,7 @@ content:
         target: _blank
         rel: '<none>'
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
   field_user_business_title:
     weight: 5
@@ -63,14 +55,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: string
     region: content
@@ -80,14 +65,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: string
     region: content
@@ -97,14 +75,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: entity_reference_label
     region: content
@@ -123,14 +94,7 @@ content:
       image_style: image_style_collection_logo
       image_link: ''
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: image
     region: content
@@ -140,15 +104,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: entity_reference_label
     region: content

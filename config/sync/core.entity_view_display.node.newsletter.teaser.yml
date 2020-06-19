@@ -9,9 +9,8 @@ dependencies:
     - field.field.node.newsletter.simplenews_issue
     - node.type.newsletter
   module:
-    - ds
-    - joinup
     - smart_trim
+    - template_suggestion
     - user
 _core:
   default_config_hash: 2YmH3he08N0IOEF4QvVRqyj24jBe8MwwRFBVQ_X7WzU
@@ -33,15 +32,10 @@ content:
       trim_options:
         text: false
       more_class: more-link
+      wrap_output: false
+      wrap_class: trimmed
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     label: hidden
     region: content

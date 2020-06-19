@@ -16,10 +16,10 @@ dependencies:
     - node.type.discussion
   module:
     - comment
-    - ds
     - file
     - link
     - options
+    - template_suggestion
     - text
     - user
 id: node.discussion.default
@@ -41,15 +41,7 @@ content:
     label: above
     settings: {  }
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: with_label
   field_policy_domain:
     weight: 0
@@ -57,15 +49,7 @@ content:
     settings:
       link: true
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: comma_separated
     type: entity_reference_label
     region: content
@@ -87,15 +71,7 @@ content:
       view_mode: view_mode_tile
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: entity_reference__listing_tile
   field_state:
     weight: 5
@@ -138,14 +114,7 @@ content:
       rel: '0'
       target: '0'
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: link
   share_link:

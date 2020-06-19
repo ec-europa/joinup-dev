@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\asset_distribution\Controller;
 
 use Drupal\Core\Access\AccessResult;
@@ -10,7 +12,7 @@ use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class AssetDistributionController.
+ * Controller for asset distribution forms.
  *
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.

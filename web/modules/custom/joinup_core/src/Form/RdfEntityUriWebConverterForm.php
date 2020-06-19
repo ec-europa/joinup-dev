@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Form;
 
 use Drupal\Component\Utility\UrlHelper;
@@ -95,7 +97,7 @@ class RdfEntityUriWebConverterForm extends FormBase {
     elseif ($passed_as === 'url') {
       // We display only the ID, so it can be easily selected with a mouse
       // double/triple click and then copied.
-      drupal_set_message($id);
+      $this->messenger()->addMessage($id);
     }
   }
 

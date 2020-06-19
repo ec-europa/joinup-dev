@@ -53,9 +53,8 @@ function joinup_news_workflow_selector(EntityInterface $entity) {
   if ($entity->bundle() != 'news') {
     throw new Exception('This method can only be called for document entities');
   }
-  /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
-  $relation_manager = \Drupal::service('joinup_core.relations_manager');
-  $moderation = $relation_manager->getParentModeration($entity);
+  $parent = Drupal\joinup_group\JoinupGroupHelper::getGroup($entity);
+  $moderation = Drupal\joinup_group\JoinupGroupHelper::getModeration($parent);
   $moderation_type = $moderation == 1 ? 'pre_moderated' : 'post_moderated';
   return "node:news:$moderation_type";
 }
@@ -134,7 +133,7 @@ settings](../joinup_news/config/install/joinup_news.settings) file.
 ### The guard class
 The `Guard class` will take care of the allowed transitions. This class
 is now centralized and the base class exists in joinup_core. This class is
-`Drupal\joinup_core\Guard\NodeGuard`. The guard classes of the community content
+`Drupal\joinup_community_content\Guard\CommunityContentGuard`. The guard classes of the community content
 should extend this class and make use of the `allowed()` method -if possible-
 without overriding it.
 The only thing needed to be done in the guard class, is to load the
@@ -144,14 +143,14 @@ into the class. For example, in the joinup_news module, this is the constructor:
 ```
 public function __construct(
   EntityTypeManagerInterface $entityTypeManager,
-  JoinupRelationManager $relationManager,
+  JoinupGroupRelationInfoInterface $relationInfo,
   MembershipManagerInterface $ogMembershipManager,
   ConfigFactoryInterface $configFactory,
   AccountInterface $currentUser
   ) {
     parent::__construct(
       $entityTypeManager,
-      $relationManager,
+      $relationInfo,
       $ogMembershipManager,
       $configFactory,
       $currentUser
@@ -160,11 +159,11 @@ public function __construct(
       ->get('joinup_news.settings')->get('transitions');
 }
 ```
-The `$this->transitions` is the array defined in the `NodeGuard` class and is
+The `$this->transitions` is the array defined in the `CommunityContentGuard` class and is
 used in the `allowed()` method so it needs to be populated otherwise the
 functionality will break.
 
-By default the checks taking place in the `NodeGuard` class are (by sequence):
+By default the checks taking place in the `CommunityContentGuard` class are (by sequence):
 * if the transition array is not populated (as described above), no transitions
 are allowed;
 * if the passed user has the admin permission on the entity type, all
@@ -176,18 +175,18 @@ perform the transition and the user is one of them, the transition is allowed;
 * if there are Og roles that are allowed to perform the transition and the user
 is one of them, the transition is allowed;
 
-Note that in the above cases, the parent's eLibrary settings, in the case of a
-new entity created, are already taken into account. The allowed roles are a
-combination of the roles allowed by the workflow, the parent's moderation and
-the parent's eLibrary settings.
+Note that in the above cases, the parent's content creation settings, in the
+case of a new entity created, are already taken into account. The allowed roles
+are a combination of the roles allowed by the workflow, the parent's moderation
+and the parent's content creation settings.
 
 ### The access handler
 
 The community content share a base access handler. The idea behind this is that
 joinup is a highly complex system when it comes to moderation. Access to
 transitions have a multi layered access system including the og membership
-permissions, the global permissions, the group's settings regarding eLibrary and
-moderation and workflow specific needs.
+permissions, the global permissions, the group's settings regarding content
+creation and moderation and workflow specific needs.
 
 The idea here is that there has to be a base for all the access control and this
 base will integrate with the rest.
@@ -195,7 +194,7 @@ base will integrate with the rest.
 The way this is achieved is by creating a handler that will invoke all other
 handlers and finally approve or reject the operation access.
 
-The handler is `Drupal\joinup_core\NodeWorkflowAccessControlHandler` and is also
+The handler is `Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler` and is also
 hosted in joinup_core. joinup_core also handles the invocation of this class
 using the `hook_node_access`.
 
@@ -226,9 +225,9 @@ The access is given to the user if there are allowed transitions from the
 default one (`__new__`).
 
 **Important:**
-A non saved entity must be passed as an argument as the eLibrary creation is
-only taken into account for entities that have the `->isNew()` handle returning
-`TRUE`.
+A non saved entity must be passed as an argument as the content creation setting
+is only taken into account for entities that have the `->isNew()` handle
+returning `TRUE`.
 Note that the workflow guard class will take into account the Og membership
 and the parent's settings.
 
@@ -296,7 +295,7 @@ The structure of the array is:
 ```
 $access_array = [
   'parent_bundle' => [
-    'elibrary_status' => [
+    'content_creation_option' => [
       'user variable 1',
       'user variable 2',
      ],
@@ -339,7 +338,7 @@ Tests the transitions available for each case. The structure of the array is:
 ```
 $workflow_array = [
   'parent_bundle' => [
-    'parent_e_library' => [
+    'parent_content_creation_option' => [
       'parent_moderation' => [
         'entity_state' => [
           'user variable' => [

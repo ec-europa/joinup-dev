@@ -110,8 +110,12 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): ?string {
-    return NULL;
+  public function getCollection(): string {
+    // Allow also to set the pipeline collection ID from pipeline annotation.
+    if (!empty($this->getPluginDefinition()['collection'])) {
+      return $this->getPluginDefinition()['collection'];
+    }
+    return '';
   }
 
   /**
@@ -137,6 +141,12 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    * {@inheritdoc}
    */
   public function prepare() {
+    if (empty($this->getCollection())) {
+      return $this->t('The %pipeline import pipeline is not linked to any collection. Contact the site administrator.', [
+        '%pipeline' => $this->getPluginDefinition()['label'],
+      ]);
+    }
+
     if (!$this->lock()) {
       $arguments = ['@pipeline' => $this->getPluginDefinition()['label']];
       return $this->t("There's another ongoing import process run by other user. You cannot run '@pipeline' right now.", $arguments);

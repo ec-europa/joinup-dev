@@ -23,12 +23,11 @@ dependencies:
   module:
     - comment
     - datetime
-    - ds
     - field_group
     - file_url
-    - joinup
     - link
     - options
+    - template_suggestion
     - text
     - user
 third_party_settings:
@@ -50,6 +49,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Categorisation
+      region: content
     group_attachment:
       children:
         - field_file
@@ -66,6 +66,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Attachment
+      region: content
 _core:
   default_config_hash: IBVftmfYLkfapLokxuyLrv1me4toJj5yidZu0ixGxQM
 id: node.document.default
@@ -96,14 +97,7 @@ content:
       timezone_override: ''
       format_type: date_only
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: datetime_default
     region: content
@@ -113,15 +107,7 @@ content:
     settings:
       mode: link
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
     type: file_url_default
     region: content
@@ -133,14 +119,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_shared_in:
     type: entity_reference_entity_view
@@ -151,15 +130,7 @@ content:
       view_mode: view_mode_tile
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: entity_reference__listing_tile
   field_short_title:
     weight: 0
@@ -167,14 +138,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: string
     region: content
@@ -185,14 +149,7 @@ content:
     label: above
     settings: {  }
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   report:
     label: hidden
@@ -205,14 +162,7 @@ content:
       rel: '0'
       target: '0'
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: link
   share_link:

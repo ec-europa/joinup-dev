@@ -7,69 +7,17 @@ namespace Drupal\joinup_group\Form;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
-use Drupal\og\MembershipManagerInterface;
-use Drupal\og\OgRoleManagerInterface;
-use Drupal\sparql_entity_storage\SparqlEntityStorage;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\rdf_entity\RdfInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Form to share a community content inside collections.
  */
 abstract class ShareForm extends ShareFormBase {
-
-  /**
-   * The Joinup relation manager.
-   *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
-   */
-  protected $relationManager;
-
-  /**
-   * Constructs a new ShareContentFormBase object.
-   *
-   * @param \Drupal\sparql_entity_storage\SparqlEntityStorage $sparql_storage
-   *   The RDF entity storage.
-   * @param \Drupal\Core\Entity\EntityViewBuilderInterface $rdf_builder
-   *   The RDF view builder.
-   * @param \Drupal\og\MembershipManagerInterface $membership_manager
-   *   The OG membership manager.
-   * @param \Drupal\og\OgRoleManagerInterface $role_manager
-   *   The OG role manager service.
-   * @param \Drupal\Core\Session\AccountInterface $current_user
-   *   The current user account.
-   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   The messenger service.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
-   *   The Joinup relation manager.
-   */
-  public function __construct(SparqlEntityStorage $sparql_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, OgRoleManagerInterface $role_manager, AccountInterface $current_user, MessengerInterface $messenger, JoinupRelationManagerInterface $relation_manager) {
-    parent::__construct($sparql_storage, $rdf_builder, $membership_manager, $role_manager, $current_user, $messenger);
-    $this->relationManager = $relation_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('entity_type.manager')->getStorage('rdf_entity'),
-      $container->get('entity_type.manager')->getViewBuilder('rdf_entity'),
-      $container->get('og.membership_manager'),
-      $container->get('og.role_manager'),
-      $container->get('current_user'),
-      $container->get('messenger'),
-      $container->get('joinup_core.relations_manager')
-    );
-  }
 
   /**
    * {@inheritdoc}
@@ -79,13 +27,13 @@ abstract class ShareForm extends ShareFormBase {
   }
 
   /**
-   * Form constructor.
+   * Form builder for the share form.
    *
    * @param array $form
    *   An associative array containing the structure of the form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface|null $entity
    *   The entity being shared.
    *
    * @return array
@@ -94,7 +42,7 @@ abstract class ShareForm extends ShareFormBase {
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    *   Thrown when the group reference is not populated.
    */
-  public function doBuildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL): array {
+  public function doBuildForm(array $form, FormStateInterface $form_state, ?EntityInterface $entity = NULL): array {
     $this->entity = $entity;
 
     $form['share'] = [
@@ -162,13 +110,13 @@ abstract class ShareForm extends ShareFormBase {
     // already by Drupal.
     foreach ($collections as $id => $value) {
       $collection = $this->sparqlStorage->load($id);
-      $this->shareInCollection($collection);
+      $this->shareOnCollection($collection);
       $collection_labels[] = $collection->label();
     }
 
-    // Show a message if the content was shared in at least one collection.
+    // Show a message if the content was shared on at least one collection.
     if (!empty($collections)) {
-      $this->messenger->addStatus('Item was shared in the following collections: ' . implode(', ', $collection_labels) . '.');
+      $this->messenger->addStatus('Item was shared on the following collections: ' . implode(', ', $collection_labels) . '.');
     }
 
     $form_state->setRedirectUrl($this->entity->toUrl());
@@ -206,18 +154,18 @@ abstract class ShareForm extends ShareFormBase {
    */
   public function buildTitle(EntityInterface $entity): TranslatableMarkup {
     if ($this->isModal() || $this->isAjaxForm()) {
-      return $this->t('Share in');
+      return $this->t('Share on');
     }
     else {
-      return $this->t('Share %title in', ['%title' => $entity->label()]);
+      return $this->t('Share %title on', ['%title' => $entity->label()]);
     }
   }
 
   /**
-   * Retrieves a list of collections where the entity can be shared in.
+   * Retrieves a list of collections where the entity can be shared on.
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collections where the current entity can be shared in.
+   *   A list of collections where the current entity can be shared on.
    *
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    *   Thrown when the group reference is not populated.
@@ -226,7 +174,7 @@ abstract class ShareForm extends ShareFormBase {
     // Being part also for the access check, do not allow the user to access
     // this page for entities without a field to store collections it is shared
     // in.
-    if (!$this->entity->hasField($this->getSharedInFieldName())) {
+    if (!$this->entity->hasField($this->getSharedOnFieldName())) {
       return [];
     }
 
@@ -239,7 +187,7 @@ abstract class ShareForm extends ShareFormBase {
   }
 
   /**
-   * Returns a list of groups that the entity cannot be shared in.
+   * Returns a list of groups that the entity cannot be shared on.
    *
    * For nodes, this is the parent group. For rdf entities, it is the affiliated
    * collections of the solution.
@@ -252,7 +200,7 @@ abstract class ShareForm extends ShareFormBase {
    */
   protected function getExcludedParent(): ?RdfInterface {
     if ($this->entity->getEntityTypeId() === 'node') {
-      return $this->relationManager->getParent($this->entity);
+      return JoinupGroupHelper::getGroup($this->entity);
     }
     else {
       return $this->entity->get('collection')->isEmpty() ? NULL : $this->entity->get('collection')->first()->entity;
@@ -263,21 +211,21 @@ abstract class ShareForm extends ShareFormBase {
    * Shares the current entity inside a collection.
    *
    * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The collection where to share the entity in.
+   *   The collection where to share the entity on.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    *   Thrown when the current entity cannot be retrieved from the database.
    * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
    *   Thrown when the entity storage is read only.
    */
-  protected function shareInCollection(RdfInterface $collection): void {
+  protected function shareOnCollection(RdfInterface $collection): void {
     $current_ids = $this->getAlreadySharedCollectionIds();
     $current_ids[] = $collection->id();
 
     // Entity references do not ensure uniqueness.
     $current_ids = array_unique($current_ids);
 
-    $this->entity->get($this->getSharedInFieldName())->setValue($current_ids);
+    $this->entity->get($this->getSharedOnFieldName())->setValue($current_ids);
     $this->entity->save();
   }
 

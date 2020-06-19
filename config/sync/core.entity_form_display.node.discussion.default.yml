@@ -19,7 +19,6 @@ dependencies:
     - comment
     - file
     - joinup_core
-    - publication_date
     - text
 id: node.discussion.default
 targetEntityType: node
@@ -33,6 +32,7 @@ content:
       rows: 5
       placeholder: ''
       summary_rows: 3
+      show_summary: false
     third_party_settings:
       allowed_formats:
         hide_help: '0'

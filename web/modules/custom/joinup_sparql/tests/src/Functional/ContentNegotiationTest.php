@@ -6,10 +6,10 @@ namespace Drupal\Tests\joinup_sparql\Functional;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_taxonomy\Entity\RdfTerm;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_taxonomy\Entity\RdfTerm;
 use EasyRdf\Format;
 
 /**
@@ -61,8 +61,15 @@ class ContentNegotiationTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
     $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp() {
     parent::setUp();
     user_role_grant_permissions(AccountInterface::ANONYMOUS_ROLE, ['view rdf entity']);
   }
