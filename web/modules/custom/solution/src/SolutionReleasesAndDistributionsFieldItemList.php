@@ -18,7 +18,7 @@ use Drupal\Core\TypedData\ComputedItemListTrait;
  *   published, only the unpublished releases and distributions will be
  *   returned.
  *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5736
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5736
  */
 class SolutionReleasesAndDistributionsFieldItemList extends EntityReferenceFieldItemList {
 

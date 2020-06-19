@@ -19,7 +19,7 @@ use Drupal\Core\Link;
  * Implements hook_form_BASE_FORM_ID_alter().
  *
  * @todo Remove this hack as part of ISAICP-3021.
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3021
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3021
  *
  * Hide the table drag handlers on multivalue fields for RDF entities. These are
  * useless since weights are currently not stored and the ordering of the values

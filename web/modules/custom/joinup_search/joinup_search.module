@@ -251,7 +251,7 @@ function joinup_search_search_api_solr_query_alter(SolariumQueryInterface $solar
 function _joinup_search_apply_global_search_api_solr_settings(SolariumQueryInterface $solarium_query, QueryInterface $query): void {
   // Keep the edismax parser to allow document boosting to work properly.
   // @todo remove when document boosting is reimplemented by search_api_solr
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4907
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4907
   $solarium_query->addParam('defType', 'edismax');
 
   /** @var \Drupal\search_api_field\Plugin\Field\FieldType\SearchItem $item */

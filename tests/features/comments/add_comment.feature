@@ -14,7 +14,7 @@ Feature: Add comments
 
   # This scenario uses javascript to work as regression test for a bug that
   # makes CKEditor unusable upon a page load.
-  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3612
+  # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3612
   @javascript
   Scenario Outline: Make an authenticated comment, skips moderation.
     Given <content type> content:

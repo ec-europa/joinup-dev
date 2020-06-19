@@ -2312,8 +2312,8 @@ class JoinupSubContext extends DrupalSubContextBase {
    * Revert back the check that a tile is not featured by checking the DOM, in
    * ISAICP-4849.
    *
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4849
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4352
+   * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4849
+   * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4352
    */
   public function assertTileNotMarkedAsFeatured($heading, $type) {
     if (in_array($type, ['collection', 'solution'])) {

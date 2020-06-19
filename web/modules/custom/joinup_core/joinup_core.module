@@ -159,7 +159,7 @@ function joinup_core_file_delete(EntityInterface $entity) {
  * Strip off the h1, h5, h6 tag format options from the 'Format' dropdown.
  * This does not remove the ability of the user to enter or render these tags.
  *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3682
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3682
  */
 function joinup_core_editor_js_settings_alter(array &$settings) {
   if (isset($settings['editor']['formats']['content_editor']) && $settings['editor']['formats']['content_editor']['format'] === 'content_editor') {
