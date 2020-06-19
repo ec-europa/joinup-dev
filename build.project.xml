@@ -85,10 +85,4 @@
 
     </target>
 
-    <target name="build-dist"
-        description="Build a distribution package.">
-        <exec command="./vendor/bin/run joinup:compile-scss" checkreturn="true" passthru="true" />
-        <exec command="./vendor/bin/run drupal:setup-drush" checkreturn="true" passthru="true" />
-    </target>
-
 </project>

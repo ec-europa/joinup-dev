@@ -35,7 +35,6 @@ mkdir -p ${JOINUP_DIR} || exit 1
 sudo ${COMPOSER_PATH} self-update || exit 1
 COMPOSER_DISCARD_CHANGES=true ${COMPOSER_PATH} install --no-interaction --prefer-dist || exit 1
 ./vendor/bin/run joinup:compile-scss || exit 1
-./vendor/bin/run drupal:setup-drush || exit 1
 
 
 # Collect the source files for the package.

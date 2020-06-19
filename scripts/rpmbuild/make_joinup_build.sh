@@ -40,7 +40,7 @@ mkdir -p ${JOINUP_DIR} || exit 1
 ${COMPOSER_PATH} install --no-dev || exit 1
 
 # Build the site.
-./vendor/bin/phing build-dist || exit 1
+./vendor/bin/run joinup:compile-scss || exit 1
 
 # Collect the source files for the package.
 cp -r build* composer.* VERSION config/ drush/ resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
