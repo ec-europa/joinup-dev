@@ -56,7 +56,7 @@ Feature: Subscribing to community content in collections
     And solutions:
       | title          | description                      | collection           | state     | author |
       | Double seaming | The rolls roll around the chuck  | Products of Bulgaria | proposed  | kalin  |
-      | Belt conveyors | As throughed belts gently slope  | Products of Bulgaria | validated | bisera |
+      | Belt conveyors | As troughed belts gently slope   | Products of Bulgaria | validated | bisera |
       | New urbanism   | Context-appropriate architecture | Cities of Bulgaria   | validated | hristo |
 
     Then the daily collection content subscription digest for hristo should match the following messages:
