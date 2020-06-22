@@ -131,6 +131,7 @@
         "php-task-runner/composer": "dev-master",
         "php-task-runner/redis": "dev-master",
         "php-task-runner/scss": "~1.0",
+        "php-task-runner/sparql": "dev-master",
         "phpstan/phpstan-deprecation-rules": "~0.12",
         "phpunit/phpunit": "^7",
         "slevomat/coding-standard": "~6.1",

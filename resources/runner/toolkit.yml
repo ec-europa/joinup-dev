@@ -29,7 +29,7 @@ commands:
   # Overrides toolkit:install-clean.
   toolkit:install-clean:
     - task: run
-      command: virtuoso:empty
+      command: sparql:empty
     - task: run
       command: solr:empty
     - task: run
@@ -59,7 +59,7 @@ commands:
         - resources/fixtures/standardization_level.rdf
         - resources/fixtures/test_resource_type.rdf
     - task: run
-      command: virtuoso:query
+      command: sparql:query
       arguments:
         # We get our languages from the Metadata Registry. The Metadata Registry
         # maintains two authority tables, one for individual languages and one
