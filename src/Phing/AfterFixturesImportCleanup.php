@@ -21,7 +21,7 @@ class AfterFixturesImportCleanup extends VirtuosoTaskBase {
     // filter them out to avoid having the language lists polluted with entries
     // labeled 'Multilingual Code'.
     // @see http://publications.europa.eu/mdr/resource//documentation/schema/cat.html#element_languages
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2764
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2764
     $this->query('DELETE FROM <http://languages-skos> { ?entity ?field ?value. } WHERE { ?entity ?field ?value . FILTER(str(?value) = "Multilingual Code") };');
 
     // @see ISAICP-3084
@@ -31,7 +31,7 @@ class AfterFixturesImportCleanup extends VirtuosoTaskBase {
     // In adms-sw the version 1.1 is included while the adms-skos has the
     // version 1.0. As a bundle can have only one uri mapped, the 1.0 version
     // has to be removed.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2503
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2503
     $this->query('DELETE FROM <http://adms_skos_v1.00> { ?entity ?field ?value. } WHERE { ?entity ?field ?value . ?entity <http://www.w3.org/2004/02/skos/core#inScheme> <http://purl.org/adms/licencetype/1.0>};');
 
     // Remove any non english version of the taxonomy terms since we are only
@@ -58,7 +58,7 @@ class AfterFixturesImportCleanup extends VirtuosoTaskBase {
     // also correct. Add the entry
     // { ?subject a <http://purl.org/dc/terms/Location> } for each language in
     // the <http://countries-skos> graph.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4566
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4566
     $this->query('WITH <http://countries-skos> INSERT { ?entity <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/dc/terms/Location> } WHERE { ?entity a <http://www.w3.org/2004/02/skos/core#Concept> };');
 
     // As with the EIRA vocabulary, for elements of type skos:Collection, add

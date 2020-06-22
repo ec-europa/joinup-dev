@@ -53,7 +53,7 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
 
     $this->fileSystem = $this->container->get('file_system');
     // @todo This will no longer be needed once ISAICP-3392 is fixed.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
     $this->sparqlStorage = $this->container->get('entity_type.manager')->getStorage('rdf_entity');
   }
 
@@ -121,7 +121,7 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
 
     // @todo We should not need cache clearing here. The cache should have been
     //   wiped out at this point. Fix this regression in ISAICP-3392.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
     $this->sparqlStorage->resetCache([$distribution->id()]);
 
     // Check that the file has been uploaded to the file URL field.
@@ -150,7 +150,7 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
 
     // @todo We should not need cache clearing here. The cache should have been
     //   wiped out at this point. Fix this regression in ISAICP-3392.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
     $this->sparqlStorage->resetCache([$distribution->id()]);
 
     // Check that the remote URL replaced the uploaded file.

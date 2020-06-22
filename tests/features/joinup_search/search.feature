@@ -5,7 +5,7 @@ Feature: Global search
   # Todo: This test runs with javascript enabled because in a non-javascript
   # environment, the dropdown facet is simply a list of links. Remove the
   # `@javascript` tag when the upstream issue in the Facets module is fixed.
-  # Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5739
+  # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5739
   # Ref. https://www.drupal.org/project/facets/issues/2937191
   @javascript
   Scenario: Anonymous user can find items
@@ -26,7 +26,7 @@ Feature: Global search
 
     Given I am logged in as a user with the "authenticated" role
     # @todo The search page cache should be cleared when new content is added.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
     And the cache has been cleared
     When I visit the search page
     # All content is visible.
@@ -156,7 +156,7 @@ Feature: Global search
       | Discussion omega | <p>Does anybody has idea why this <em>epsilon</em> is everywhere? | Solution alpha | validated |
     # Currently no UI path allows the creation of newsletters. Search for migrated D6 newsletters instead.
     # Ignore all steps related to newsletters in this test in UAT.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2256
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2256
     And newsletter content:
       | title            | body                                  | status    |
       | Newsletter omega | Talking about these epsilon contents. | published |

@@ -321,7 +321,7 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
   // @todo Collections are not depending on solutions so they are not supposed
   //   to handle functionality related to solutions. This should be moved to the
   //   solution module.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5985
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5985
   if ($display->getComponent('solutions')) {
     $solution_count = collection_solution_count($entity);
     $tags = Cache::buildTags('og-group-content', $entity->getCacheTagsToInvalidate());
@@ -473,7 +473,7 @@ function collection_node_delete(NodeInterface $node) {
  * Implements hook_ENTITY_TYPE_delete().
  *
  * @todo This introduces a circular dependency on the solution module.
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5984
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5984
  */
 function collection_rdf_entity_delete(RdfInterface $solution) {
   if (($solution->bundle() !== 'solution') || ($solution->field_is_state->value !== 'validated')) {
