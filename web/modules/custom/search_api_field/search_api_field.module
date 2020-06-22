@@ -179,7 +179,7 @@ function search_api_field_theme() {
 /**
  * Implements hook_theme_suggestions_HOOK().
  *
- * Adds suggestions to the search_api_field theme hook.
+ * Adds suggestions to the Search API Field theme hook.
  * Loosely based on the field theme suggestions.
  *
  * @see system_theme_suggestions_field()
@@ -197,7 +197,7 @@ function search_api_field_theme_suggestions_search_api_field(array $variables) {
 /**
  * Implements hook_search_api_query_alter().
  *
- * Adds the search_api_field facets to the facet query.
+ * Adds the Search API Field facets to the facet query.
  *
  * @see facets_search_api_query_alter()
  */

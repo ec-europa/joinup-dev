@@ -9,7 +9,7 @@ use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\search_api\Query\ConditionSetInterface;
 
 /**
- * Interface definition for search api field filters plugins.
+ * Interface for Search API Field filters plugins.
  */
 interface FilterPluginInterface extends PluginFormInterface, ConfigurableInterface {
 

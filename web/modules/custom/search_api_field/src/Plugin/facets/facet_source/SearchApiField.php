@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Represents a facet source which represents search_api_page pages.
+ * Represents a facet source which represents Search API Field pages.
  *
  * Most of the work of actually getting a page is done in the deriver.
  *
@@ -70,7 +70,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
     $this->requestStack = $request_stack;
 
     // Load facet plugin definition and depending on those settings; load the
-    // corresponding search api page and load its index.
+    // corresponding Search API page and load its index.
     $field_id = $plugin_definition['search_api_field'];
     $field = FieldStorageConfig::load($field_id);
     $index = $field->getSetting('index');

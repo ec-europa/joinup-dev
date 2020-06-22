@@ -1,12 +1,12 @@
-# Schema for the configuration files of the search_api_field module.
+# Schema for the configuration files of the Search API Field module.
 
 field.storage_settings.search_api_field:
   type: mapping
-  label: 'Community content listing field settings'
+  label: 'Search API field settings'
   mapping:
     index:
       type: string
-      label: 'The search api index'
+      label: 'The search API index'
     facet_regions:
       type: sequence
       label: 'Region'

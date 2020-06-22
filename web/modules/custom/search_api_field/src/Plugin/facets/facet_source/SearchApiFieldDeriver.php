@@ -13,7 +13,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Derives a facet source plugin definition for every search api page.
+ * Derives a facet source plugin definition for every Search API page.
  *
  * The definition of this plugin happens in facet_source\SearchApiPage, in this
  * deriver class we're actually getting all possible pages and creating plugins
@@ -81,7 +81,7 @@ class SearchApiFieldDeriver extends FacetSourceDeriverBase {
         // in the plugin class.
         $plugin_derivatives[$id] = [
           'id' => $base_plugin_id . PluginBase::DERIVATIVE_SEPARATOR . $id,
-          'label' => $this->t('Search api field: %label (%id)', [
+          'label' => $this->t('Search API field: %label (%id)', [
             '%label' => $field_config->label(),
             '%id' => $id,
           ]),
