@@ -114,7 +114,7 @@ class SolutionContext extends RawDrupalContext {
    *   since the view providing this overview page is exported in the profile.
    *   Remove this todo when ISAICP-5176 is fixed.
    *
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5176
+   * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5176
    *
    * @When I visit the solution overview( page)
    */
@@ -255,7 +255,7 @@ class SolutionContext extends RawDrupalContext {
       // name collisions with the solution. E.g. the left sidebar link 'About'.
       // @todo Remove this workaround in ISAICP-5597.
       // @see tests/features/custom_page/navigation_menu.feature
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5597
+      // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5597
       $entity_type_manager = \Drupal::entityTypeManager();
       $storage = $entity_type_manager->getStorage('ogmenu_instance');
       $og_menu_instance_ids = $storage->getQuery()

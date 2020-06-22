@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\joinup_core;
 
 use Drupal\Core\Database\Connection;
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 
 /**
  * Implements helper methods related to the requirements.
@@ -20,23 +19,13 @@ class RequirementsHelper {
   protected $sqlConnection;
 
   /**
-   * The SPARQL connection class.
-   *
-   * @var \Drupal\Driver\Database\joinup_sparql\Connection
-   */
-  protected $sparqlConnection;
-
-  /**
    * Constructs a new RequirementsHelper.
    *
    * @param \Drupal\Core\Database\Connection $connection
    *   The SQL connection class for the primary database storage.
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
-   *   The SPARQL connection class.
    */
-  public function __construct(Connection $connection, ConnectionInterface $sparql) {
+  public function __construct(Connection $connection) {
     $this->sqlConnection = $connection;
-    $this->sparqlConnection = $sparql;
   }
 
   /**
@@ -86,41 +75,6 @@ WHERE nr.vid > n.vid
 GROUP BY nid, latest_vid
 QUERY;
     return $this->sqlConnection->query($query)->fetchAllAssoc('nid');
-  }
-
-  /**
-   * Returns solutions without an affiliated collection.
-   *
-   * As no solution should exist without a collection, the following method is
-   * used to query if any of them exists.
-   *
-   * @return array
-   *   An array of solution label keyed by their IDs.
-   */
-  public function getOrphanedSolutions(): array {
-    $query = <<<QUERY
-SELECT ?solution_id
-FROM <http://joinup.eu/collection/published>
-FROM <http://joinup.eu/collection/draft>
-FROM <http://joinup.eu/solution/published>
-FROM <http://joinup.eu/solution/draft>
-WHERE {
-  ?solution_id a <http://www.w3.org/ns/dcat#Dataset> .
-  FILTER NOT EXISTS {
-    ?collection a <http://www.w3.org/ns/dcat#Catalog> ;
-    <http://www.w3.org/ns/dcat#dataset> ?solution_id
-  }
-}
-QUERY;
-
-    $return = [];
-    $results = $this->sparqlConnection->query($query);
-    if (!empty($results)) {
-      foreach ($results as $result) {
-        $return[$result->solution_id->getUri()] = $result->solution_id->getUri();
-      }
-    }
-    return $return;
   }
 
 }

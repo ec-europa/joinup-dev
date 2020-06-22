@@ -1,0 +1,6 @@
+name: Joinup Material Design
+type: module
+description: Material Design components for Joinup
+package: Joinup
+core: 8.x
+core_version_requirement: ^8 || ^9

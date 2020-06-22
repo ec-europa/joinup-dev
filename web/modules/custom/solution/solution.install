@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Install, uninstall and requirements hook implementations for solutions.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_requirements().
+ *
+ * Adds some additional security related warnings to the status report:
+ * - All solutions should have a collection.
+ */
+function solution_requirements($phase) {
+  $requirements = [];
+
+  if ($phase === 'runtime') {
+    /** @var \Drupal\solution\RequirementsHelper $requirements_helper */
+    $requirements_helper = \Drupal::service('solution.requirements_helper');
+
+    // Ensure that no solutions are orphaned.
+    $results = $requirements_helper->getOrphanedSolutions();
+    if (!empty($results)) {
+      $value = t('The following solutions were found without an affiliation: :errors', [
+        ':errors' => implode("\n", array_values($results)),
+      ]);
+      $severity = REQUIREMENT_ERROR;
+    }
+    else {
+      $value = t('All solutions have an affiliated collection.');
+      $severity = REQUIREMENT_OK;
+    }
+    $requirements['joinup_core_no_orphaned_solutions'] = [
+      'title' => t('Orphaned solutions'),
+      'description' => t('All solutions should have an affiliated collection.'),
+      'severity' => $severity,
+      'value' => $value,
+    ];
+  }
+
+  return $requirements;
+}

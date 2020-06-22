@@ -51,6 +51,7 @@ third_party_settings:
         classes: ''
         direction: vertical
       label: General
+      region: content
     group_main:
       children:
         - label
@@ -72,6 +73,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Main fields'
+      region: content
     group_description:
       children:
         - field_ar_abstract
@@ -95,6 +97,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Additional fields'
+      region: content
 id: rdf_entity.collection.default
 targetEntityType: rdf_entity
 bundle: collection

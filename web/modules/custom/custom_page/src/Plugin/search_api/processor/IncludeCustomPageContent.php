@@ -107,7 +107,7 @@ class IncludeCustomPageContent extends ProcessorPluginBase {
         // and add the markup to the group description.
         //
         // @todo: Automatically add the entries needed.
-        // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5962
+        // @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5962
         if (!$custom_page->get('field_paragraphs_body')->isEmpty()) {
           /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
           foreach ($custom_page->get('field_paragraphs_body')->referencedEntities() as $paragraph) {

@@ -51,6 +51,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Abstract wrapper'
+      region: content
 id: rdf_entity.collection.default
 targetEntityType: rdf_entity
 bundle: collection

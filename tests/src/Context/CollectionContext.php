@@ -155,7 +155,7 @@ class CollectionContext extends RawDrupalContext {
    *   since the view providing this overview page is exported in the profile.
    *   Remove this todo when ISAICP-5176 is fixed.
    *
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5176
+   * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5176
    *
    * @When I visit the collection overview( page)
    */

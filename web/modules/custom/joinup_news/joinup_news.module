@@ -16,7 +16,7 @@ use Drupal\joinup_news\Entity\News;
  */
 function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle): void {
   // @todo Add test coverage for these constraints.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2500
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2500
   if ($entity_type->id() == 'node' && $bundle == 'news') {
     if (!empty($fields['field_news_headline'])) {
       $fields['field_news_headline']->addConstraint('UniqueFieldInBundle', ['bundles' => ['news']]);
