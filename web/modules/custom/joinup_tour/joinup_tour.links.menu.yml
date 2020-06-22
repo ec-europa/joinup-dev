@@ -1,0 +1,9 @@
+joinup_tour.support.tour:
+  title: 'Take a tour'
+  menu_name: support
+  url: 'internal:#'
+  class: Drupal\joinup_tour\Plugin\Menu\TourMenuLink
+  options:
+    attributes:
+      data-drupal-tour-link: true
+  weight: -200

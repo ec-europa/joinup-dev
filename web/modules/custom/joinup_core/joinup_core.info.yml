@@ -1,6 +1,6 @@
 name: 'Joinup core'
 type: module
-description: 'Contains field storage configuration.'
+description: 'Contains shared code for Joinup.'
 core: 8.x
 package: Joinup
 
@@ -8,24 +8,15 @@ dependencies:
   - 'drupal:comment'
   - 'drupal:image'
   - 'drupal:link'
-  - 'drupal:tour'
-  - 'facets:facets'
-  - 'joinup:oe_newsroom_newsletter'
-  - 'joinup:workflow_state_permission'
   - 'matomo_reporting_api:matomo_reporting_api'
-  - 'menu_admin_per_menu:menu_admin_per_menu'
   - 'message:message'
   - 'message_notify:message_notify'
   - 'og:og'
-  - 'publication_date:publication_date'
   - 'rdf_entity:rdf_draft'
   - 'rdf_entity:rdf_entity'
   - 'rdf_entity:rdf_taxonomy'
   - 'redirect:redirect'
-  - 'search_api:search_api'
-  - 'search_api_solr:search_api_solr'
   - 'site_alert:site_alert'
-  - 'state_machine:state_machine'
 
 config_devel:
   install:
@@ -34,7 +25,6 @@ config_devel:
     - core.entity_view_display.taxonomy_term.eira.default
     - core.entity_view_mode.node.moderation
     - core.entity_view_mode.node.view_mode_featured
-    - core.entity_view_mode.node.view_mode_tile
     - field.field.taxonomy_term.eira.field_taxonomy_deprecated
     - field.field.taxonomy_term.eira.field_taxonomy_related_term
     - field.field.taxonomy_term.eira.field_taxonomy_replaces
@@ -88,9 +78,6 @@ config_devel:
     - taxonomy.vocabulary.status
     - taxonomy.vocabulary.test_resource_type
     - taxonomy.vocabulary.themes
-    - tour.tour.account
-    - tour.tour.content_overview
-    - tour.tour.rdf_entity_canonical
   optional:
     - core.entity_form_display.comment.comment.default
     - field.field.comment.comment.field_body

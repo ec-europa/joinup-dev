@@ -80,7 +80,7 @@ Feature: "Add document" visibility options.
 
   # Regression test to ensure that no critical errors are thrown when a new
   # revision is created for a document that has a remote file attached.
-  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3670
+  # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3670
   Scenario: Remote URLs can be used in documents.
     Given the following collection:
       | title | Strong Lasers |

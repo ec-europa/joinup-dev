@@ -98,7 +98,7 @@ Feature: Asset distribution overview on solution.
 
     # Publish the release as a solution facilitator.
     # @todo Unpublished releases are no longer visible for facilitators.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5736
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5736
     When I am logged in as a facilitator of the "Lovely Butterfly" solution
     And I go to the homepage of the "The Deep Doors" release
     When I click "Edit" in the "Entity actions" region

@@ -33,13 +33,13 @@ class AdmsValidationResult {
    *   The SPARQL endpoint.
    *
    * @todo Remove $graph_uri, $sparql params in ISAICP-4296.
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
+   * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
    */
   public function __construct(Result $result, $graph_uri, ConnectionInterface $sparql) {
     $skipped_rules = [100, 101, 102, 103];
     foreach ($result as $error) {
       // @todo Remove this hack in ISAICP-4296.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
+      // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
       if (!in_array($error->Rule_ID->getValue(), $skipped_rules)) {
         $this->errors[] = new SchemaError($error);
       }
@@ -112,7 +112,7 @@ class AdmsValidationResult {
    *   The SPARQL endpoint.
    *
    * @todo Remove this hack in ISAICP-4296.
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
+   * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
    */
   protected function applyRules100To103($graph_uri, ConnectionInterface $sparql) {
     $rules = [

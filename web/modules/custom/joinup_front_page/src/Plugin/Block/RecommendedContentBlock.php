@@ -134,7 +134,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
 
     // @todo Provide tailored content for authenticated users that are not a
     //   member of any group, according to their past browsing behaviour.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3427
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3427
     $this->entities = $this->getPinnedEntities($count);
 
     // If the user is a member of one or more collections or solutions, show

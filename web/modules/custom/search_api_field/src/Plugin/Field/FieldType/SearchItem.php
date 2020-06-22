@@ -42,7 +42,7 @@ class SearchItem extends FieldItemBase implements SearchItemInterface {
     // @todo: We should define the individual properties 'fields', 'enabled',
     // 'query_presets', 'limit' and 'query_builder' instead of wrapping them all
     // in a 'value' array.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4872
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4872
     $properties['value'] = DataDefinition::create('any')
       ->setLabel(t('Data'));
     return $properties;
