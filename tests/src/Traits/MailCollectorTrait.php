@@ -129,7 +129,7 @@ trait MailCollectorTrait {
   protected function assertEmailTagPresent(): void {
     \assert(method_exists($this, 'getTags'), __METHOD__ . ' depends on TagTrait. Please include it in your class.');
     $tags = $this->getTags();
-    Assert::assertTrue(in_array('email', $tags));
+    Assert::assertTrue(in_array('email', $tags), '@email tag is missing, it should be added to the scenario or feature');
   }
 
   /**
