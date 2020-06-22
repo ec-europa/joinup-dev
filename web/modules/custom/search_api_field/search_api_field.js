@@ -1,6 +1,6 @@
 /**
  * @file
- * Attaches the behaviors for the Field UI module.
+ * Attaches the JS behaviors for the Search API Field module.
  */
 
 (function ($, Drupal, drupalSettings) {
