@@ -36,7 +36,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   dependency. The action can then be moved inside `joinup_group` and this
  *   module is no longer needed.
  *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5969
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5969
  *
  * @Action(
  *   id = "joinup_change_group",

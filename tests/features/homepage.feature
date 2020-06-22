@@ -77,7 +77,7 @@ Feature: Homepage
     # The search page cache is not invalidated correctly and shows stale
     # results. This will be fixed in ISAICP-3428. Remove this workaround when
     # working on that issue.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
     Given the cache has been cleared
 
     # Check if the "Solutions" link leads to the pre-filtered search results.

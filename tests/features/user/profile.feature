@@ -56,7 +56,7 @@ Feature: User profile
     And I should not see the link "Youtube" in the "Header" region
     And I should not see the link "Vimeo" in the "Header" region
     # @todo The nationality will be rendered as flag image.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3175
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3175
     # And I should see the link "Italy"
     # A user should not be able to edit the profile page of another user.
     When I go to the public profile of "Domenico Ghirlandaio"

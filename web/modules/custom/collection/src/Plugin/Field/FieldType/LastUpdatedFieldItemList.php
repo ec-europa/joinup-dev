@@ -32,7 +32,7 @@ class LastUpdatedFieldItemList extends FieldItemList {
    *
    * @todo This causes a circular dependency on the joinup_community_content and
    *   solution modules.
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5983
+   * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5983
    *
    * @return int
    *   Last updated timestamp.

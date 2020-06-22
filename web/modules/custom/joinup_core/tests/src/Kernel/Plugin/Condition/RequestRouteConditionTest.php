@@ -15,6 +15,11 @@ use Symfony\Component\Routing\Route;
  * Tests that the Request Route condition plugin works as expected.
  *
  * @group Plugin
+ *
+ * @todo Replace this with the Route Condition module.
+ *
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6062
+ * @see https://www.drupal.org/project/route_condition
  */
 class RequestRouteConditionTest extends KernelTestBase {
 
@@ -23,11 +28,9 @@ class RequestRouteConditionTest extends KernelTestBase {
    */
   protected static $modules = [
     'joinup_core',
-    'og',
     'rdf_entity',
     'sparql_entity_storage',
     'system',
-    'workflow_state_permission',
   ];
 
   /**

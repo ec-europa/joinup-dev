@@ -66,7 +66,7 @@ Feature: Content Overview
 
     # The tiles for discussion and news entities should not display the author
     # of the entity.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4454
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4454
     And I should not see the text "Simba Hobson" in the "The Playful Tale" tile
     And I should not see the text "Korinna Morin" in the "The Men's Female" tile
 
@@ -142,7 +142,7 @@ Feature: Content Overview
     # Regression test to ensure that the facets are cached by user.
     # Subsequent page loads of the content page would lead to cached facets
     # to be leaked to other users.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
     When I click "All content" in the "My content" inline facet
     Then the "My content" inline facet should allow selecting the following values "Featured content (2), My content (2)"
     And the page should be cacheable
@@ -158,7 +158,7 @@ Feature: Content Overview
     # Regression test to ensure that the facets are cached by user.
     # Subsequent page loads of the content page would lead to cached facets
     # to be leaked to other users.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
     When I click "All content" in the "My content" inline facet
     Then the "My content" inline facet should allow selecting the following values "Featured content (2), My content (1)"
     And the page should be cacheable
@@ -224,7 +224,7 @@ Feature: Content Overview
     And the "Event date" inline facet should allow selecting the following values "My events (3), Past events (3), Upcoming events (2)"
 
     # @todo The 'Frozen Barbershop' is a current event and should also be shown here.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
     When I click "Upcoming events" in the "Event date" inline facet
     Then I should see the following tiles in the correct order:
       | Frozen Breeze  |
@@ -239,7 +239,7 @@ Feature: Content Overview
     And the "Event date" inline facet should allow selecting the following values "Past events (3), Upcoming events (2), All events"
 
     # @todo The 'Frozen Barbershop' is a current event and should not be shown here.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
     When I click "Past events" in the "Event date" inline facet
     Then I should see the following tiles in the correct order:
       | Frozen Barbershop    |
