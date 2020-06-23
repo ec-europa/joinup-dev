@@ -18,6 +18,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Defines a step plugin that imports data from a local or remote file.
  *
+ * The 'resource' configuration should be provided, to point to a local file or
+ * URL If a URL is provided, data will be fetched via an HTTP GET request.
+ *
  * @PipelineStep(
  *   id = "file_import",
  *   label = @Translation("Import from file"),
@@ -72,9 +75,19 @@ class ImportFromFileStep extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
+  public function defaultConfiguration() {
+    return [
+      // The resource from where to load the data to be imported. It could be a
+      // local file or a URL. In the case of an URL, a HTTP GET will be issued.
+      'resource' => NULL,
+    ] + parent::defaultConfiguration();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function execute() {
-    $resource = $this->getConfiguration()['resource'] ?? NULL;
-    if (!$resource) {
+    if (!$resource = $this->getConfiguration()['resource']) {
       throw new \Exception("Step 'file_import' called without configuring a file or URL.");
     }
     $graph = new Graph($this->getGraphUri('sink'));
