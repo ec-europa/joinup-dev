@@ -65,7 +65,7 @@ class ImportFromFileStep extends JoinupFederationStepPluginBase {
       $plugin_definition,
       $container->get('sparql_endpoint'),
       $container->get('entity_type.manager'),
-      $container->get('http_client'),
+      $container->get('http_client')
     );
   }
 
