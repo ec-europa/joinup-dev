@@ -26,13 +26,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetSourceInterface {
 
   /**
-   * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface|null
-   */
-  protected $configFactory;
-
-  /**
    * The current path stack.
    *
    * @var \Drupal\Core\Path\CurrentPathStack
@@ -40,25 +33,11 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
   protected $currentPathStack;
 
   /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManager|null
-   */
-  protected $entityTypeManager;
-
-  /**
    * The request stack.
    *
    * @var \Symfony\Component\HttpFoundation\RequestStack
    */
   protected $requestStack;
-
-  /**
-   * The typed data manager.
-   *
-   * @var \Drupal\Core\TypedData\TypedDataManager|null
-   */
-  protected $typedDataManager;
 
   /**
    * {@inheritdoc}
