@@ -5,9 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\search_api_field\Plugin\facets\facet_source;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\PluginBase;
-use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\facets\FacetSource\FacetSourceDeriverBase;
 use Drupal\field\Entity\FieldStorageConfig;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -33,17 +31,11 @@ class SearchApiFieldDeriver extends FacetSourceDeriverBase {
   /**
    * Constructs a new SearchApiFieldDeriver.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   The entity field manager.
-   * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
-   *   The string translation manager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, TranslationInterface $string_translation) {
+  public function __construct(EntityFieldManagerInterface $entity_field_manager) {
     $this->entityFieldManager = $entity_field_manager;
-    $this->entityTypeManager = $entity_type_manager;
-    $this->stringTranslation = $string_translation;
   }
 
   /**
@@ -51,9 +43,7 @@ class SearchApiFieldDeriver extends FacetSourceDeriverBase {
    */
   public static function create(ContainerInterface $container, $base_plugin_id) {
     return new static(
-      $container->get('entity_type.manager'),
-      $container->get('entity_field.manager'),
-      $container->get('string_translation')
+      $container->get('entity_field.manager')
     );
   }
 
