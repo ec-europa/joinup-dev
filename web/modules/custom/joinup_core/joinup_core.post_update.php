@@ -34,13 +34,4 @@ function joinup_core_post_update_0106200(&$sandbox) {
   $sparql_connection->query('WITH <http://eira_skos> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
   $sparql_connection->query('WITH <http://eira_skos> INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { ?subject a skos:Concept .};');
   $sparql_connection->query('WITH <http://eira_skos> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
-
-  // Update existing solutions.
-  $query = <<<QUERY
-DELETE { GRAPH ?g { ?s <http://purl.org/dc/terms/type> <http://data.europa.eu/dr8/PublicPolicyImplementationApproach> } }
-INSERT { GRAPH ?g { ?s <http://purl.org/dc/terms/type> <http://data.europa.eu/dr8/InteroperableDigitalPublicServicesImplementationOrientation> } }
-WHERE { GRAPH ?g { ?s <http://purl.org/dc/terms/type> <http://data.europa.eu/dr8/PublicPolicyImplementationApproach> } }
-QUERY;
-
-  $sparql_connection->query($query);
 }

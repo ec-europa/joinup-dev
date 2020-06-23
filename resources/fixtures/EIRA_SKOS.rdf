@@ -5784,6 +5784,7 @@ Attributes:
         	<skos:member rdf:resource="http://data.europa.eu/dr8/PublicPolicyDevelopmentEnabler"/>
         	<skos:member rdf:resource="http://data.europa.eu/dr8/DefinitionOfPublicPolicyObjectives"/>
         	<skos:member rdf:resource="http://data.europa.eu/dr8/FormulationOfPublicPolicyScenarios"/>
+			<skos:member rdf:resource="http://data.europa.eu/dr8/PublicPolicyImplementationApproach"/>
         	<skos:member rdf:resource="http://data.europa.eu/dr8/ImpactAssessment"/>
         	<skos:member rdf:resource="http://data.europa.eu/dr8/PublicPolicyEvaluation"/>
         	<skos:member rdf:resource="http://data.europa.eu/dr8/PublicPolicyImplementation"/>
@@ -5840,6 +5841,55 @@ Attributes:
         	<skos:member rdf:resource="http://data.europa.eu/dr8/ConfigurationAndSolutionCartographyService"/>
         	<skos:member rdf:resource="http://data.europa.eu/dr8/ConfigurationAndSolutionCartographyServiceComponent"/>
     	</skos:Collection>
+			<skos:Concept rdf:about="http://data.europa.eu/dr8/PublicPolicyImplementationApproach">
+        		<skos:notation>PublicPolicyImplementationApproach</skos:notation>
+        		<skos:prefLabel xml:lang="en">Public Policy Implementation Approach</skos:prefLabel>
+        		<skos:definition xml:lang="en"><![CDATA[DESCRIPTION:
+It is the specific set of decision making rules/criteria/principles followed at implementing a digital public services through organisations, persons, objects or events (Hill &amp; Hupe, 2002). In the MIS literature it is considered as the focus selected for the implementation (Hill &amp; Hupe, 2002; Marchand et al., 2000; Santosuosso &amp; Malerba, 2014).  The following implementation orientations are identified in the literature: integration, technology, governance and legal.
+
+•	The INTEGRATION ORIENTATION (Marchand et al., 2000) is characterized by a focus on data resources and on information management capabilities to manage information resources over their life cycle (i.e. scanning, collecting, organising, processing, maintaining, etc.) to understand societal needs, to embed data throughout the policy cycle, and to develop a culture of data analytics (OECD, 2018). The integration orientation will be based on semantic interoperability aiming for the design of a shared knowledge base of usable data, information and knowledge resources that enables:
+i)	structural interoperability by using and/or sharing of data, organisational information and organisational knowledge (i.e. data set catalogue, base registries, catalogue of ontologies); 
+ii)	behavioural interoperability by exchanging capabilities of data, organisational information and organisational knowledge with the environment (i.e. representation, data mappings); and
+iii)	governance interoperability by semantic interoperability agreements (i.e. ontologies).  
+
+•	The TECHNOLOGY ORIENTATION (Marchand et al., 2000) is characterized by a focus on ICT resources like solutions and infrastructure and on ICT management capabilities to manage the provision of services (i.e. business operations, decision making, internal support, etc.) to users and the consumption of services by ministries and agencies (OECD, 2018). The technology orientation will be based on technical interoperability aiming for the design of a shared platform of ICT resources (i.e. the platform) that enables:
+i) structural interoperability by reusing and/or sharing of software components (i.e. service registry service, networks, reusable building blocks, common [back office] services);
+ii) behavioural interoperability with ICT exchanging capabilities of data, information or knowledge with internal/external peers (i.e. intermediation services, interfaces); an
+iii) governance interoperability with technical interoperability agreements (i.e. protocols, choreography rules).
+
+•	The GOVERNANCE ORIENTATION (Marchand et al., 2000) is characterized by a focus on the governance resources (Grant et al., 2007) and on governance management capabilities/archetypes to manage the effective use of information (i.e. sharing, security, privacy, etc.) for the effective use of information (i.e. sharing, security, privacy, etc.) to achieve a more agile, effective, and digitally inclusive public engagement, to increase trust in government, and to enhance government transparency (OECD, 2018; Weill &amp; Woodham, 2002). The governance orientation will be based on organisational interoperability aiming for the design of a shared governance framework of [re]usable organisational resources that enables:
+i)	structural interoperability by reusing and/or sharing of digital public services (i.e. public services catalogue);
+ii)	behavioural interoperability with organisational exchanging capabilities of data, information or knowledge with internal/external peers (i.e. service delivery model); and
+iii)	governance interoperability with organisational interoperability agreements (i.e. service level agreements, governance structures).
+
+•	The LEGAL ORIENTATION (Santosuossa and Malerba, 2014) is characterized by a focus on legal and regulatory frameworks based in displayed leadership and political commitment to ensure adaptation to rapidly changing technological and diverse social environments with high-level requirements to achieve coherence and effective support to digital public services implementation (OECD, 2018). The legal orientation will be based in legal interoperability aiming for the design of a shared legal framework of [re]usable legal resources that enables:
+i)	structural interoperability by legislation on reusing and/or sharing orientation and guidelines (i.e. legislation catalogue, interoperability reference architectures);
+ii)	behavioural interoperability by legislation on exchanging capabilities of data, information or knowledge with internal/external peers (i.e. interoperability frameworks); and
+iii)	governance interoperability by legislation on governance agreements (i.e. GDPR).
+
+INTEROPERABILITY SALIENCY:
+IoP Dimension: Behavioural IoP
+The Interoperable Digital Public Service Implementation Orientation ABB is salient for organizational interoperability because the extent of support to the public policy goals by a digital interoperable public service might be influenced by the selected implementation orientation.
+
+The following implementation is an example on how this specific Architecture Building Block (ABB) can be instantiated as a Solution Building Block (SBB):
+
+Next Generation Digital Government Architecture v1.0 by Republic of Estonia (2020) 
+https://docs.google.com/document/d/1UJ-5wi9wavWzA2n4LhsbONJqdxjUSIgMxKJNaZZslas/edit?fbclid=IwAR2rrBNjwHFagHIvi-9Pv6uvKI0IZH_m4IdAfaq7hbjALlIjRH8nEuUVuic
+Customs 2020 is an EU cooperation programme providing national customs administrations with the possibility to create and exchange information and expertise. It allows developing and operating major trans-European IT systems in partnership and establishing various human networks by bringing together national officials from across Europe. The programme has a budget of € 547.3 million and will run for 7 years from January 1 2014.
+https://ec.europa.eu/taxation_customs/business/customs-cooperation-programmes/customs-2020-programme_en
+
+Attributes: 
+- ID: Internal key used to identify an architecture building block
+- dct:type: The type of the architecture building block
+- dct:publisher: The name of the individual or organisation that is documenting the current building block
+- dct:modified: The date that the information documented for this building block was last modified
+- eira:synonym: An alternative name for the building block/solution
+- eira:view]]></skos:definition>
+        		<dcterms:identifier>ABB111</dcterms:identifier> 
+        			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
+        			<skos:broader rdf:resource="http://data.europa.eu/dr8/"/>
+	    			<owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
+	    	</skos:Concept>
     		<skos:Concept rdf:about="http://data.europa.eu/dr8/PublicPolicyDevelopmentEnabler">
         		<skos:notation>PublicPolicyDevelopmentEnabler</skos:notation>
         		<skos:prefLabel xml:lang="en">Public Policy Development Enabler</skos:prefLabel>
