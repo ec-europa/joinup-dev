@@ -1,0 +1,10 @@
+uuid: 6b567407-b983-420e-8b89-d7e8892baf19
+langcode: en
+status: true
+dependencies: {  }
+id: community_content_listing
+label: 'Community content listing'
+icon_uuid: null
+icon_default: null
+description: 'Shows a listing of community content using a configurable search query.'
+behavior_plugins: {  }

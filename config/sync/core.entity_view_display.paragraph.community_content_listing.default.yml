@@ -1,0 +1,22 @@
+uuid: 3a271d38-b2c8-49b2-8201-c4ad16acd551
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.community_content_listing.field_search_query
+    - paragraphs.paragraphs_type.community_content_listing
+  module:
+    - search_api_field
+id: paragraph.community_content_listing.default
+targetEntityType: paragraph
+bundle: community_content_listing
+mode: default
+content:
+  field_search_query:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: search_api_field
+    region: content
+hidden: {  }

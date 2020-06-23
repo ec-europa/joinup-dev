@@ -1,0 +1,26 @@
+uuid: 65e46a64-ddd1-4cf3-99d1-04ad34e4acaa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_search_query
+    - paragraphs.paragraphs_type.community_content_listing
+  module:
+    - search_api_field
+id: paragraph.community_content_listing.field_search_query
+field_name: field_search_query
+entity_type: paragraph
+bundle: community_content_listing
+label: 'Search query'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value:
+      enabled: 1
+      query_presets: ''
+      limit: 12
+default_value_callback: ''
+settings: {  }
+field_type: search_api_field
