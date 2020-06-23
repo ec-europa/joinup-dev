@@ -76,7 +76,7 @@ Redis](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-
    composer.bin = /usr/local/bin/composer
 
    # Database settings.
-   drupal.db.name = Joinup
+   drupal.db.name = joinup
    drupal.db.user = root
    drupal.db.password =
 
@@ -100,23 +100,6 @@ Redis](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-
    piwik.website_id = 1
    piwik.url.http = http://piwik.test/
 
-   # The credentials of the S3 bucket containing the databases.
-   # Production db dumps.
-   #exports.sql.source = joinupv2.0/dumps/prod/Joinup-full-20180220.sql
-
-   # Virtuoso
-   virtuoso.binary = /usr/local/bin/virtuoso-t
-
-   # Solr
-   solr.download.url = https://archive.apache.org/dist/lucene/solr/7.7.1/solr-7.7.1.tgz
-
-   # ASDA settings
-   asda.username = ''
-   asda.password = ''
-   exports.virtuoso.source = ''
-   exports.sql.source = ''
-   exports.solr.filename = ''
-   exports.solr.source = ''
    exports.s3.bucket = ''
    exports.s3.key = ''
    exports.s3.secret = ''
@@ -149,8 +132,8 @@ Redis](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-
 6. Setup Virtuoso
 
    ```bash
-   $ ./vendor/bin/phing virtuoso-setup
-   $ ./vendor/bin/phing virtuoso-start
+   $ ./vendor/bin/run virtuoso:setup
+   $ ./vendor/bin/run virtuoso:start
    $ ./vendor/bin/phing setup-virtuoso-permissions
    ```
 
@@ -165,7 +148,7 @@ Redis](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-
 8. Setup Solr and check if it's running
 
    ```bash
-    $ ./vendor/bin/phing setup-apache-solr
+    $ ./vendor/bin/run solr:setup
     ```
 
    [Check Solr](http://localhost:8983/solr/#/)
@@ -173,13 +156,13 @@ Redis](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-
 9. Download production Databases
 
    ```bash
-   $ ./vendor/bin/phing download-databases
+   $ ./vendor/bin/run dev:download-databases
    ```
 
 10. Rebuild environment
 
    ```bash
-   $ ./vendor/bin/phing rebuild-environment
+   $ ./vendor/bin/run toolkit:install-clone
    ```
 
 11. Enable developers settings
@@ -213,5 +196,5 @@ date:
 
 ```bash
 $ ./vendor/bin/phing build-dev
-$ ./vendor/bin/phing rebuild-environment
+$ ./vendor/bin/run toolkit:install-clone
 ```

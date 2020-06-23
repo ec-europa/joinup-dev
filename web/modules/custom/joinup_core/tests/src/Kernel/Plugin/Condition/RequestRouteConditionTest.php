@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\joinup_core\Kernel\Plugin\Condition;
 
 use Drupal\Core\Routing\CurrentRouteMatch;
@@ -13,20 +15,22 @@ use Symfony\Component\Routing\Route;
  * Tests that the Request Route condition plugin works as expected.
  *
  * @group Plugin
+ *
+ * @todo Replace this with the Route Condition module.
+ *
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6062
+ * @see https://www.drupal.org/project/route_condition
  */
 class RequestRouteConditionTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'joinup_core',
-    'matomo_reporting_api',
-    'og',
     'rdf_entity',
     'sparql_entity_storage',
     'system',
-    'workflow_state_permission',
   ];
 
   /**

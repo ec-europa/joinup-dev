@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_event\Controller;
 
-use Drupal\joinup_core\Controller\CommunityContentController;
+use Drupal\joinup_community_content\Controller\CommunityContentController;
 
 /**
  * Controller that handles the form to add event to a collection.

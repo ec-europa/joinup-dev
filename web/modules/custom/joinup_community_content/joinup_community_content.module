@@ -7,13 +7,17 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_core\NodeWorkflowAccessControlHandler;
+use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
+use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -46,6 +50,16 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
       'og_role',
     ],
   ];
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function joinup_community_content_node_access(NodeInterface $entity, string $operation, AccountInterface $account): AccessResult {
+  if (!CommunityContentHelper::isCommunityContent($entity)) {
+    return AccessResult::neutral();
+  }
+  return \Drupal::service('joinup_community_content.community_content_workflow_access')->entityAccess($entity, $operation, $account);
 }
 
 /**
@@ -97,23 +111,30 @@ function joinup_community_content_attachment_file_process($element, FormStateInt
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The community content entity.
  *
- * @return string
- *   The id of the workflow to use.
+ * @return string|null
+ *   The id of the workflow to use, or NULL if the workflow cannot be
+ *   determined.
  *
- * @throws Exception
+ * @throws \InvalidArgumentException
  *    Thrown when the function is called for bundles that do not refer to
  *    community content.
  */
-function joinup_community_content_workflow_selector(EntityInterface $entity) {
+function joinup_community_content_workflow_selector(EntityInterface $entity): ?string {
   $bundles = ['document', 'event', 'news'];
   if ($entity->getEntityTypeId() !== 'node' || !in_array($entity->bundle(), $bundles)) {
-    throw new Exception('This function can only be called for community content apart from discussion.');
+    throw new \InvalidArgumentException('This function can only be called for community content apart from discussion.');
   }
 
-  /** @var \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager */
-  $relation_manager = \Drupal::service('joinup_core.relations_manager');
-  $moderation = $relation_manager->getParentModeration($entity);
-  return $moderation == NodeWorkflowAccessControlHandler::PRE_MODERATION ? 'node:pre_moderated' : 'node:post_moderated';
+  $parent_entity = JoinupGroupHelper::getGroup($entity);
+
+  // If the entity doesn't have a parent group we cannot determine the workflow.
+  // This can happen e.g. when deleting orphaned group content.
+  if (empty($parent_entity)) {
+    return NULL;
+  }
+
+  $moderation = JoinupGroupHelper::getModeration($parent_entity);
+  return $moderation == CommunityContentWorkflowAccessControlHandler::PRE_MODERATION ? 'node:pre_moderated' : 'node:post_moderated';
 }
 
 /**
@@ -206,7 +227,7 @@ function joinup_community_content_translate_facet_arguments(array $arguments) {
   ];
 
   foreach ($arguments as &$argument) {
-    list($facet_id, $value) = explode(':', $argument, 2);
+    [$facet_id, $value] = explode(':', $argument, 2);
     if (array_key_exists($facet_id, $mapping)) {
       $argument = implode(':', [$mapping[$facet_id], $value]);
     }

@@ -7,9 +7,9 @@ namespace Drupal\isa2_analytics\EventSubscriber;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\oe_webtools_analytics\AnalyticsEventInterface;
+use Drupal\oe_webtools_analytics\Event\AnalyticsEvent;
 use Drupal\og\OgContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\oe_webtools_analytics\Event\AnalyticsEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
 
   /**
-   * The entity type manager interface.
+   * The entity type manager service.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
@@ -122,6 +122,9 @@ class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
     if ($keys = $this->currentRequest->get('keys')) {
       $search_data = $event->getSearch();
       $search_data->setKeyword($keys);
+      if ($total_rows = $this->currentRequest->attributes->get('total_rows')) {
+        $search_data->setCount($total_rows);
+      }
     }
   }
 

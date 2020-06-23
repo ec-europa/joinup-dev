@@ -16,17 +16,19 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
+    - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_short_id
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
     - rdf_entity.rdfentity.collection
   module:
     - field_group
-    - joinup
     - search_api_field
     - smart_trim
+    - template_suggestion
     - user
 third_party_settings:
   field_group:
@@ -49,6 +51,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Abstract wrapper'
+      region: content
 id: rdf_entity.collection.default
 targetEntityType: rdf_entity
 bundle: collection
@@ -73,7 +76,7 @@ content:
       more_link: false
       summary_handler: full
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: p_wrapper
   field_ar_description:
     type: smart_trim
@@ -94,7 +97,7 @@ content:
       more_link: false
       summary_handler: full
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: p_wrapper
   field_collection_content:
     weight: 4
@@ -102,6 +105,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: search_api_field
+    region: content
+  field_keywords:
+    weight: 5
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
   label:
     label: hidden
@@ -141,6 +152,7 @@ hidden:
   field_ar_state: true
   field_newsletter: true
   field_policy_domain: true
+  field_short_id: true
   field_site_featured: true
   field_site_pinned: true
   field_spatial_coverage: true

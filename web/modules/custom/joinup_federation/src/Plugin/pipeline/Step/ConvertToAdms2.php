@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;

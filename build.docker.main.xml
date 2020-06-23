@@ -9,13 +9,9 @@
     <property file="build.properties.local" />
     <property file="build.properties.docker" />
     <property file="build.properties" />
-    <property file="build.properties.dist" />
 
     <!-- Import local Phing targets. -->
     <import file="${project.basedir}/build.local.xml" optional="true" />
-
-    <!-- Import Phing targets that are overridden for use in Docker containers. -->
-    <import file="${project.basedir}/build.docker.overrides.xml" optional="true" />
 
     <!-- Import project specific Phing targets. -->
     <import file="${project.basedir}/build.project.xml" optional="true" />

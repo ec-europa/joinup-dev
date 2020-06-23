@@ -1,0 +1,52 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the Joinup Material Design module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_theme().
+ */
+function joinup_material_design_theme($existing, $type, $theme, $path): array {
+  return [
+    'joinup_tiles' => [
+      'path' => drupal_get_path('module', 'joinup_material_design') . '/templates',
+    ],
+    'chip' => [
+      'render element' => 'element',
+    ],
+    'input__chip_button' => [
+      'render element' => 'element',
+    ],
+  ];
+}
+
+/**
+ * Prepares variables for views joinup_tiles template.
+ *
+ * Template: joinup-tiles.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - view: The view object.
+ *   - rows: An array of row items. Each row is an array of content.
+ */
+function template_preprocess_joinup_tiles(array &$variables): void {
+  template_preprocess_views_view_unformatted($variables);
+}
+
+/**
+ * Prepares variables for the "chip" template.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: An associative array containing the properties of the element.
+ *     Properties used: #text.
+ */
+function template_preprocess_chip(array &$variables): void {
+  $element = $variables['element'];
+  $variables['text'] = $element['#text'];
+}

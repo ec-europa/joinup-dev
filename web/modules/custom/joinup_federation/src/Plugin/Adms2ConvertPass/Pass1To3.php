@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation\Plugin\Adms2ConvertPass;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
 use Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginBase;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
-use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
 
 /**
  * Conversion Passes #1, #2 and #3.
@@ -136,7 +136,7 @@ RDF;
    *   otherwise an associative array of ADMS v2 type URIs keyed by ADMSv1 type
    *   URIs.
    */
-  protected static function getAdms1To2TypeConversionMap(string $adms1_uri = NULL) {
+  protected static function getAdms1To2TypeConversionMap(?string $adms1_uri = NULL) {
     $conversion_map = [
       'http://www.w3.org/ns/adms#Asset' => static::ASSET,
       'http://www.w3.org/ns/adms#AssetRepository' => static::ASSET_CATALOG,

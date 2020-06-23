@@ -13,12 +13,12 @@ Feature: As a user of the website
       | state | validated  |
     And event content:
       | title                     | collection | start date   | end date            | created    | state     | author         |
-      | Sweet Palm                | Fairy Tail | now -1 years | now -1 years +1 day | now -4 day | validated | katerpillar    |
-      | Melted Hairdresser        | Fairy Tail | now -1 day   | now +1 day          | now -3 day | validated | katerpillar    |
-      | Hot Air                   | Fairy Tail | now +2 day   | now +4 day          | now -2 day | validated | katerpillar    |
-      | Walking Unofficial Humans | Fairy Tail | now -3 day   | now -1 day          | now        | validated | trustysidekick |
+      | Sweet Palm                | Fairy Tail | now -1 years | now -1 years +1 day | now -5 day | validated | katerpillar    |
+      | Melted Hairdresser        | Fairy Tail | now -2 day   | now +2 day          | now -4 day | validated | katerpillar    |
+      | Hot Air                   | Fairy Tail | now +3 day   | now +5 day          | now -3 day | validated | katerpillar    |
+      | Walking Unofficial Humans | Fairy Tail | now -4 day   | now -2 day          | now        | validated | trustysidekick |
       # The "Spring Freezing" event is associated with the anonymous user.
-      | Spring Freezing           | Fairy Tail | now +1 week  | now +1 week         | now -5 day | validated |                |
+      | Spring Freezing           | Fairy Tail | now +1 week  | now +1 week         | now -6 day | validated |                |
     And discussion content:
       | title       | collection | state     | created   |
       | Yellow Zeus | Fairy Tail | validated | yesterday |
@@ -43,7 +43,7 @@ Feature: As a user of the website
     And the "Collection event date" inline facet should allow selecting the following values "My events (3), Past events (3), Upcoming events (2)"
 
     # @todo 'Sweet Palm' and 'Melted Hairdresser' are current events and should also be shown here.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
     When I click "Upcoming events" in the "Collection event date" inline facet
     # The upcoming events, unlike the rest, are sorted in an 'ASC' order based on the field_event_date field value.
     Then I should see the following tiles in the correct order:
@@ -59,7 +59,7 @@ Feature: As a user of the website
     And the "Collection event date" inline facet should allow selecting the following values "Past events (3), Upcoming events (2), All events"
 
     # @todo 'Sweet Palm' and 'Melted Hairdresser' are current events and should not be shown here.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
     When I click "Past events" in the "Collection event date" inline facet
     Then I should see the following tiles in the correct order:
       | Melted Hairdresser        |

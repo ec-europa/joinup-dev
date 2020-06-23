@@ -23,6 +23,7 @@ dependencies:
   module:
     - image
     - smart_trim
+    - template_suggestion
     - user
 id: node.news.view_mode_tile
 targetEntityType: node
@@ -47,7 +48,7 @@ content:
       wrap_output: false
       more_link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
   field_keywords:
@@ -58,7 +59,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: comma_separated
   field_news_logo:
     type: image
@@ -69,7 +70,7 @@ content:
       image_style: horizontal_medium_image
       image_link: content
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
 hidden:
   field_attachment: true

@@ -8,10 +8,10 @@ use Aws\S3\S3Client;
 use Aws\S3\S3ClientInterface;
 use Behat\Behat\Context\Environment\InitializedContextEnvironment;
 use Behat\Behat\Hook\Scope\AfterStepScope;
-use Behat\Mink\Exception\ExpectationException;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\DriverException;
+use Behat\Mink\Exception\ExpectationException;
+use Behat\MinkExtension\Context\RawMinkContext;
 
 /**
  * Provides step definitions for taking screenshots.
@@ -67,28 +67,28 @@ class ScreenshotContext extends RawMinkContext {
   /**
    * Constructs a new ScreenshotContext context.
    *
-   * @param string $localDir
+   * @param string|null $localDir
    *   Optional directory where the screenshots are saved. If omitted the
    *   screenshots will not be saved.
-   * @param string $s3Dir
+   * @param string|null $s3Dir
    *   Optional folder on an Amazon S3 bucket where screenshots will be uploaded
    *   to. If omitted, the screenshots will not be uploaded to AWS S3.
-   * @param string $s3Region
+   * @param string|null $s3Region
    *   Optional AWS region where the Amazon S3 bucket is located. If omitted,
    *   the screenshots will not be uploaded to AWS S3.
-   * @param string $s3Bucket
+   * @param string|null $s3Bucket
    *   Optional name of the Amazon S3 bucket where screenshots will be uploaded.
    *   If omitted, the screenshots will not be uploaded to AWS S3.
-   * @param string $s3Key
+   * @param string|null $s3Key
    *   The key to use to authenticate with Amazon S3. If omitted, the key will
    *   be taken from the environment variables.
-   * @param string $s3Secret
+   * @param string|null $s3Secret
    *   The secret to use to authenticate with Amazon S3. If omitted, the secret
    *   will be taken from the environment variables.
    *
    * @see tests/behat.yml.dist
    */
-  public function __construct(string $localDir = NULL, string $s3Dir = NULL, string $s3Region = NULL, string $s3Bucket = NULL, string $s3Key = NULL, string $s3Secret = NULL) {
+  public function __construct(?string $localDir = NULL, ?string $s3Dir = NULL, ?string $s3Region = NULL, ?string $s3Bucket = NULL, ?string $s3Key = NULL, ?string $s3Secret = NULL) {
     $this->localDir = $localDir;
     $this->s3Dir = $s3Dir;
     $this->s3Region = $s3Region;
@@ -100,12 +100,12 @@ class ScreenshotContext extends RawMinkContext {
   /**
    * Saves a screenshot under a given name.
    *
-   * @param string $name
+   * @param string|null $name
    *   The file name.
    *
    * @Then I take a screenshot :name
    */
-  public function takeScreenshot(string $name = NULL) : void {
+  public function takeScreenshot(?string $name = NULL): void {
     $message = "Screenshot created in @file_name";
     $this->createScreenshot($name, $message);
   }
@@ -115,7 +115,7 @@ class ScreenshotContext extends RawMinkContext {
    *
    * @Then I take a screenshot
    */
-  public function takeScreenshotUnnamed() : void {
+  public function takeScreenshotUnnamed(): void {
     $file_name = 'behat-screenshot-' . user_password();
     $message = "Screenshot created in @file_name";
     $this->createScreenshot($file_name, $message);
@@ -129,7 +129,7 @@ class ScreenshotContext extends RawMinkContext {
    *
    * @AfterStep
    */
-  public function screenshotForPhpNotices(AfterStepScope $event) : void {
+  public function screenshotForPhpNotices(AfterStepScope $event): void {
     $environment = $event->getEnvironment();
     // Make sure the environment has the MessageContext.
     $class = 'Drupal\DrupalExtension\Context\MessageContext';
@@ -170,7 +170,7 @@ class ScreenshotContext extends RawMinkContext {
    *
    * @AfterStep
    */
-  public function takeScreenshotAfterFailedStep(AfterStepScope $event) : void {
+  public function takeScreenshotAfterFailedStep(AfterStepScope $event): void {
     if ($event->getTestResult()->isPassed()) {
       // Not a failed step.
       return;
@@ -192,7 +192,7 @@ class ScreenshotContext extends RawMinkContext {
    * @param string $message
    *   The message to be printed. '@file_name' will be replaced with $file_name.
    */
-  public function createScreenshot(string $file_name, string $message) : void {
+  public function createScreenshot(string $file_name, string $message): void {
     try {
       if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
         $file_name .= '.png';
@@ -239,7 +239,7 @@ class ScreenshotContext extends RawMinkContext {
    * @throws \Exception
    *   Thrown if the destination folder doesn't exist and couldn't be created.
    */
-  protected function save(string $screenshot, string $file_name) : ?string {
+  protected function save(string $screenshot, string $file_name): ?string {
     // Don't attempt to save the screenshot if no folder name has been
     // configured.
     if (empty($this->localDir)) {
@@ -270,7 +270,7 @@ class ScreenshotContext extends RawMinkContext {
    * @throws \Exception
    *   Thrown if the destination folder doesn't exist and couldn't be created.
    */
-  protected function upload(string $screenshot, string $file_name) : void {
+  protected function upload(string $screenshot, string $file_name): void {
     // Don't attempt to upload the screenshot if any of the required parameters
     // are missing.
     $required_parameters = ['s3Dir', 's3Region', 's3Bucket'];
@@ -295,7 +295,7 @@ class ScreenshotContext extends RawMinkContext {
    * @return \Aws\S3\S3ClientInterface
    *   The client.
    */
-  protected function getS3Client() : S3ClientInterface {
+  protected function getS3Client(): S3ClientInterface {
     $options = [
       'version' => 'latest',
       'region' => $this->s3Region,

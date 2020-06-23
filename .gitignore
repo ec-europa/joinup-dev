@@ -21,18 +21,22 @@
 /web/sites/simpletest/
 
 # Ignore environment specific settings
+/.env
 /build.common.xml
 /build.local.xml
 /build.properties.local
 /drush/drush.yml
+/grumphp.yml
 /phpcs.xml
+/phpunit.xml
+/runner.yml
 /tests/behat.yml
-/web/phpunit.xml
 /web/sites/default/services.yml
 
 # Ignore compiled CSS.
 /web/themes/joinup/css
 /web/themes/joinup/prototype/css/*.css
+
 # Ignore theme libraries
 /web/themes/joinup/vendor
 

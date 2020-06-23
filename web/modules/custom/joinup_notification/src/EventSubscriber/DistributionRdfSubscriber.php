@@ -6,6 +6,7 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
@@ -186,13 +187,12 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
   protected function generateArguments(EntityInterface $entity): array {
     $arguments = parent::generateArguments($entity);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = $arguments['@actor:field_user_first_name'];
-    $actor_last_name = $arguments['@actor:field_user_family_name'];
+    /** @var \Drupal\user\UserInterface $actor */
     $arguments['@release:info:with_version'] = '';
 
     // Add arguments related to the parent collection or solution.
     $parent = $entity->parent->entity;
-    $solution = (!empty($parent) && $parent->bundle() === 'solution') ? $parent : $this->relationManager->getParent($entity);
+    $solution = (!empty($parent) && $parent->bundle() === 'solution') ? $parent : JoinupGroupHelper::getGroup($entity);
     if (!empty($parent) && $parent->bundle() === 'asset_release') {
       // Some legacy releases exist without a version. Thus, a check for
       // existence is needed.
@@ -218,7 +218,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
             $arguments['@actor:role'] = $this->t('Facilitator');
           }
         }
-        $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
+        $arguments['@actor:full_name'] = $actor->getDisplayName();
       }
     }
 

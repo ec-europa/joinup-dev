@@ -77,7 +77,7 @@ Feature: Homepage
     # The search page cache is not invalidated correctly and shows stale
     # results. This will be fixed in ISAICP-3428. Remove this workaround when
     # working on that issue.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
     Given the cache has been cleared
 
     # Check if the "Solutions" link leads to the pre-filtered search results.
@@ -220,6 +220,7 @@ Feature: Homepage
   Scenario: Only specific social network links are available in the footer.
     When I am on the homepage
     Then I should see the link "LinkedIn" in the Footer region
+    And the "LinkedIn" link should point to "https://www.linkedin.com/groups/2600644/"
     And I should see the link "Twitter" in the Footer region
     But I should not see the link "Facebook" in the Footer region
 

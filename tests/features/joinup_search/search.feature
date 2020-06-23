@@ -1,11 +1,11 @@
-@api @terms
+@api @terms @group-b
 Feature: Global search
   As a user of the site I can find content through the global search.
 
   # Todo: This test runs with javascript enabled because in a non-javascript
   # environment, the dropdown facet is simply a list of links. Remove the
   # `@javascript` tag when the upstream issue in the Facets module is fixed.
-  # Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5739
+  # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5739
   # Ref. https://www.drupal.org/project/facets/issues/2937191
   @javascript
   Scenario: Anonymous user can find items
@@ -26,7 +26,7 @@ Feature: Global search
 
     Given I am logged in as a user with the "authenticated" role
     # @todo The search page cache should be cleared when new content is added.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
     And the cache has been cleared
     When I visit the search page
     # All content is visible.
@@ -156,7 +156,7 @@ Feature: Global search
       | Discussion omega | <p>Does anybody has idea why this <em>epsilon</em> is everywhere? | Solution alpha | validated |
     # Currently no UI path allows the creation of newsletters. Search for migrated D6 newsletters instead.
     # Ignore all steps related to newsletters in this test in UAT.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2256
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2256
     And newsletter content:
       | title            | body                                  | status    |
       | Newsletter omega | Talking about these epsilon contents. | published |
@@ -173,9 +173,10 @@ Feature: Global search
     Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
-    # "Omega" is used in all the node entities titles.
+    # "Omega" is used in all the node entities titles. Since the content of
+    # custom pages is added to their collection, we also match the collection.
     When I enter "omega" in the search bar and press enter
-    Then the page should show the tiles "News omega, Event Omega, Document omega, Discussion omega, Page omega"
+    Then the page should show the tiles "Collection alpha, News omega, Event Omega, Document omega, Discussion omega, Page omega"
     # Orphaned entities are not indexed.
     # And I should see the text "Newsletter omega"
 
@@ -186,7 +187,7 @@ Feature: Global search
 
     # "Epsilon" is used in all the node entities body fields.
     When I enter "epsilon" in the search bar and press enter
-    Then the page should show the tiles "News omega, Event Omega, Document omega, Discussion omega, Page omega"
+    Then the page should show the tiles "Collection alpha, News omega, Event Omega, Document omega, Discussion omega, Page omega"
     # Orphaned entities are not indexed.
     # And I should see the text "Newsletter omega"
 
@@ -234,6 +235,17 @@ Feature: Global search
     Then the page should show the tiles "Jenessa Carlyle"
     When I enter "Omero+snc" in the search bar and press enter
     Then the page should show the tiles "Ulysses Freeman"
+
+  Scenario: Advanced search
+    # An advanced search link is shown in the header, except on the home page
+    # and the search page.
+    Given I am on the homepage
+    Then I should not see the link "Advanced search"
+    Given I visit the collection overview
+    Then I should see the link "Advanced search"
+    When I click "Advanced search"
+    Then I should be on the advanced search page
+    But I should not see the link "Advanced search"
 
   Scenario: Collections and solutions are shown first in search results with the same relevance.
     Given collections:
@@ -458,3 +470,15 @@ Feature: Global search
     Then I should see "No content found for your search."
     When I enter "Human Language" in the search bar and press enter
     Then I should see "No content found for your search."
+
+  Scenario: Collections are found by their keywords.
+    Given the following collection:
+      | title    | Collection sample       |
+      | keywords | unique, key-definitions |
+      | state    | validated               |
+
+    When I enter "key-definitions" in the search bar and press enter
+    Then the page should show only the tiles "Collection sample"
+
+    When I enter "unique" in the search bar and press enter
+    Then the page should show only the tiles "Collection sample"

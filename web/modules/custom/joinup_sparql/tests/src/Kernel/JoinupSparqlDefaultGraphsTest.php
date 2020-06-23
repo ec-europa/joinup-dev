@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_sparql\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlQueryInterface;
-use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Tests the default graphs event subscriber.
@@ -33,9 +33,16 @@ class JoinupSparqlDefaultGraphsTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
+    $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp(): void {
     parent::setUp();
-    $this->setUpSparql();
     $this->installConfig([
       'joinup_sparql_test',
       'rdf_draft',

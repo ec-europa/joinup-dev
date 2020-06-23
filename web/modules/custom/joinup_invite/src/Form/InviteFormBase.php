@@ -279,7 +279,7 @@ abstract class InviteFormBase extends FormBase {
    *   A string version of user's full name.
    */
   protected function getAccountName(UserInterface $user): string {
-    return $user->get('full_name')->value;
+    return $user->getDisplayName();
   }
 
   /**

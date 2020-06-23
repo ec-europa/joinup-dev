@@ -91,22 +91,6 @@ namespace Drupal\joinup_front_page\ProxyClass {
             $this->lazyLoadItself()->unpinFromFrontPage($entity);
         }
 
-        /**
-         * {@inheritdoc}
-         */
-        public function updateSearchApiEntry(\Drupal\Core\Entity\EntityInterface $entity) : void
-        {
-            $this->lazyLoadItself()->updateSearchApiEntry($entity);
-        }
-
-        /**
-         * {@inheritdoc}
-         */
-        public function loadEntitiesFromMenuItems(array $menu_items) : array
-        {
-            return $this->lazyLoadItself()->loadEntitiesFromMenuItems($menu_items);
-        }
-
     }
 
 }

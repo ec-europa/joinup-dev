@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\joinup_federation\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Tests referencing RDF entities when the host entity is in the staging graph.
@@ -34,9 +36,16 @@ class StagingGraphValidReferenceTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
+    $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp(): void {
     parent::setUp();
-    $this->setUpSparql();
     $this->installConfig([
       'joinup_federation',
       'joinup_federation_staging_graph_test',

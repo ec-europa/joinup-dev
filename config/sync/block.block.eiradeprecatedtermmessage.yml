@@ -10,11 +10,11 @@ dependencies:
 id: eiradeprecatedtermmessage
 theme: joinup_theme
 region: content_top
-weight: -20
+weight: -19
 provider: null
-plugin: eira_derprecated_term_block
+plugin: eira_deprecated_term_block
 settings:
-  id: eira_derprecated_term_block
+  id: eira_deprecated_term_block
   label: 'Eira deprecated term message'
   provider: eira
   label_display: '0'

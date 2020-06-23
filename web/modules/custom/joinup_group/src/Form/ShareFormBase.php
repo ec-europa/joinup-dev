@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgRoleManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -193,7 +194,7 @@ abstract class ShareFormBase extends FormBase {
    */
   protected function getExcludedParent(): ?RdfInterface {
     if ($this->entity->getEntityTypeId() === 'node') {
-      return $this->relationManager->getParent($this->entity);
+      return JoinupGroupHelper::getGroup($this->entity);
     }
     else {
       return $this->entity->get('collection')->isEmpty() ? NULL : $this->entity->get('collection')->first()->entity;

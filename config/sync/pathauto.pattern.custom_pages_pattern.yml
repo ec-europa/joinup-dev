@@ -1,0 +1,22 @@
+uuid: f23ca6b8-fdfd-4734-b887-a5a941dcd23e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: custom_pages_pattern
+label: 'Custom pages pattern'
+type: 'canonical_entities:node'
+pattern: '[node:og_audience:entity:url:path]/[node:title]'
+selection_criteria:
+  52c869c9-1196-4960-84d9-063aaec721dd:
+    id: node_type
+    bundles:
+      custom_page: custom_page
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 52c869c9-1196-4960-84d9-063aaec721dd
+selection_logic: and
+weight: -5
+relationships: {  }
