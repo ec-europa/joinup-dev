@@ -196,7 +196,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
     if ($field) {
       return $field->getDataDefinition();
     }
-    throw new Exception("Field with name {$field_name} does not have a definition");
+    throw new \Exception("Field with name {$field_name} does not have a definition");
   }
 
 }
