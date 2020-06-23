@@ -40,6 +40,13 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
   protected $requestStack;
 
   /**
+   * The search index.
+   *
+   * @var \Drupal\search_api\IndexInterface
+   */
+  protected $index;
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, $query_type_plugin_manager, $search_results_cache, RequestStack $request_stack, CurrentPathStack $current_path_stack) {
@@ -47,13 +54,6 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
 
     $this->currentPathStack = $current_path_stack;
     $this->requestStack = $request_stack;
-
-    // Load facet plugin definition and depending on those settings; load the
-    // corresponding Search API page and load its index.
-    $field_id = $plugin_definition['search_api_field'];
-    $field = FieldStorageConfig::load($field_id);
-    $index = $field->getSetting('index');
-    $this->index = Index::load($index);
   }
 
   /**
@@ -155,6 +155,15 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
    * {@inheritdoc}
    */
   public function getIndex() {
+    if (!isset($this->index)) {
+      // Load facet plugin definition and depending on those settings; load the
+      // corresponding Search API page and load its index.
+      $field_id = $this->getPluginDefinition()['search_api_field'];
+      $field = FieldStorageConfig::load($field_id);
+      $index_id = $field->getSetting('index');
+      $this->index = Index::load($index_id);
+    }
+
     return $this->index;
   }
 
