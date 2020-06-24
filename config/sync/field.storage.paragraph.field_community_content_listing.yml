@@ -1,12 +1,12 @@
-uuid: ee990f92-3802-45d1-8158-e5258bfdb538
+uuid: 35499cfe-c590-469f-bc74-3eca558246b7
 langcode: en
 status: true
 dependencies:
   module:
     - paragraphs
     - search_api_field
-id: paragraph.field_search_query
-field_name: field_search_query
+id: paragraph.field_community_content_listing
+field_name: field_community_content_listing
 entity_type: paragraph
 type: search_api_field
 settings:
@@ -35,7 +35,7 @@ settings:
 module: search_api_field
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

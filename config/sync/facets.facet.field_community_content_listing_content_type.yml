@@ -1,15 +1,15 @@
-uuid: 0737f57c-58ba-4413-956c-dd2bd61ac47c
+uuid: e2d2eafa-166f-4369-9784-03b1facf3776
 langcode: en
 status: true
 dependencies: {  }
-id: field_cp_content_listing_content_type
+id: field_community_content_listing_content_type
 name: 'Content type'
-url_alias: field_cp_content_listing_content_type
+url_alias: field_community_content_listing_content_type
 weight: 0
 min_count: 1
 show_only_one_result: true
 field_identifier: entity_bundle
-facet_source_id: 'search_api_field:node.field_cp_content_listing'
+facet_source_id: 'search_api_field:paragraph.field_community_content_listing'
 widget:
   type: type
   config:
