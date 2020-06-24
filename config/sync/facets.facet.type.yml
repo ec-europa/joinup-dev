@@ -23,6 +23,10 @@ widget:
     soft_limit_settings:
       show_less_label: 'Show less'
       show_more_label: 'Show more'
+    show_reset_link: false
+    reset_text: 'Show all'
+    hide_reset_when_no_selection: false
+    arbitrary_facet_plugin: _none
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -34,7 +38,7 @@ processor_configs:
   aggregated_entity_bundle_label:
     processor_id: aggregated_entity_bundle_label
     weights:
-      build: 0
+      build: -10
     settings:
       plural_count_label:
         enabled: true
@@ -42,27 +46,21 @@ processor_configs:
   count_limit:
     processor_id: count_limit
     weights:
-      build: -2
+      build: 0
     settings:
       minimum_items: 1
       maximum_items: null
-  count_widget_order:
-    processor_id: count_widget_order
+  joinup_search_content_type_fixed_order:
+    processor_id: joinup_search_content_type_fixed_order
     weights:
-      sort: -1
-    settings:
-      sort: DESC
-  display_value_widget_order:
-    processor_id: display_value_widget_order
-    weights:
-      sort: 0
+      sort: 60
     settings:
       sort: ASC
   url_processor_handler:
     processor_id: url_processor_handler
     weights:
-      pre_query: -10
-      build: -1
+      pre_query: -1
+      build: 5
     settings: {  }
 empty_behavior:
   behavior: none
