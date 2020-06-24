@@ -3,9 +3,9 @@ langcode: en
 status: true
 dependencies:
   config:
-    - taxonomy.vocabulary.eif_references
-id: taxonomy_term.eif_references
+    - taxonomy.vocabulary.eif_recommendations
+id: taxonomy_term.eif_recommendations
 target_entity_type_id: taxonomy_term
-target_bundle: eif_references
+target_bundle: eif_recommendations
 default_langcode: site_default
 language_alterable: false

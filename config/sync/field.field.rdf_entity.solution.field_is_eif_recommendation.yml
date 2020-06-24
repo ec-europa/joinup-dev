@@ -3,11 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_eif_reference
+    - field.storage.rdf_entity.field_is_eif_recommendation
     - rdf_entity.rdfentity.solution
-    - taxonomy.vocabulary.eif_references
-id: rdf_entity.solution.field_is_eif_reference
-field_name: field_is_eif_reference
+    - taxonomy.vocabulary.eif_recommendations
+id: rdf_entity.solution.field_is_eif_recommendation
+field_name: field_is_eif_recommendation
 entity_type: rdf_entity
 bundle: solution
 label: 'EIF reference'
@@ -20,7 +20,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      eif_references: eif_references
+      eif_recommendations: eif_recommendations
     sort:
       field: name
       direction: asc

@@ -12,12 +12,12 @@ use Drupal\taxonomy\Entity\Term;
  * Resolves the group from the route.
  *
  * Use this to make the EIF Toolbox group available as a route context on the
- * canonical view of the EIF references taxonomy.
+ * canonical view of the EIF recommendations taxonomy.
  *
  * @OgGroupResolver(
  *   id = "eif_group",
- *   label = "Group entity for the EIF references",
- *   description = @Translation("Sets the EIF Toolbox as a context for the EIF references' canonical path.")
+ *   label = "Group entity for the EIF recommendations",
+ *   description = @Translation("Sets the EIF Toolbox as a context for the EIF recommendations' canonical path.")
  * )
  */
 class EifGroupResolver extends RouteGroupResolver {
@@ -41,7 +41,16 @@ class EifGroupResolver extends RouteGroupResolver {
     if (
       $entity
       && ($entity instanceof Term)
-      && $entity->bundle() === 'eif_references'
+      && $entity->bundle() === 'eif_recommendations'
+      && $group = $this->entityTypeManager->getStorage('rdf_entity')->load(self::EIF_ID)
+    ) {
+      $collection->addGroup($group, ['route']);
+      // Stop searching for other groups. The EIF Toolbox is the only candidate.
+      $this->stopPropagation();
+    }
+
+    if (
+      $this->routeMatch->getRouteName() === 'eif.recommendations'
       && $group = $this->entityTypeManager->getStorage('rdf_entity')->load(self::EIF_ID)
     ) {
       $collection->addGroup($group, ['route']);

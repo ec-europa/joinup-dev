@@ -5,7 +5,7 @@ dependencies: {  }
 third_party_settings:
   rdf_taxonomy:
     locked: true
-name: 'EIF references'
-vid: eif_references
-description: 'Reference terms for the EIF Toolbox.'
+name: 'EIF recommendations'
+vid: eif_recommendations
+description: 'Terms that represent a recommendation of the EIF Toolbox.'
 weight: 0
