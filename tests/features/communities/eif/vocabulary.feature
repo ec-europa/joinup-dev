@@ -45,3 +45,34 @@ Feature:
     When I go to "/solutions"
     Then I should see the "Some EIF solution" tile
     But I should not see the text "EIF reference"
+
+  @terms
+  Scenario: Solutions referencing an EIF term should appear in the corresponding page.
+    Given collection:
+      | title | EIF Toolbox |
+      | state | validated   |
+    And solutions:
+      | title    | state     | policy domain | collection  | eif reference                                                                             |
+      | Balker   | validated |               | EIF Toolbox | Underlying Principle 1: subsidiarity and proportionality, Underlying Principle 2: openess |
+      | Corridor | validated |               | EIF Toolbox | Underlying Principle 1: subsidiarity and proportionality                                  |
+      | Lager    | validated | Demography    | EIF Toolbox |                                                                                           |
+
+    # Underlying Principle 1.
+    When I go to "/taxonomy/term/http_e_f_fdata_ceuropa_ceu_fUP1"
+    Then I should see the "Balker" tile
+    And I should see the "Corridor" tile
+    But I should not see the "Lager" tile
+
+    # Underlying Principle 2
+    When I go to "/taxonomy/term/http_e_f_fdata_ceuropa_ceu_fUP2"
+    Then I should see the "Balker" tile
+    But I should not see the "Corridor" tile
+    And I should not see the "Lager" tile
+
+    # Policy domain should not list entities as well.
+    Given I am logged in as a moderator
+    When I click "RDF ID converter" in the "Administration toolbar" region
+    And I fill in "RDF entity ID or a URL" with "http://joinup.eu/ontology/policy-domain#demography"
+    And I press "Go!"
+    Then I should see the heading "Demography"
+    But I should not see the "Lager" tile
