@@ -937,6 +937,9 @@ function joinup_theme_preprocess_form_element(&$variables) {
       'field_cp_content_listing[0][enabled]',
       'field_cp_content_listing[0][wrapper][show_shared]',
       'field_cp_content_listing[0][wrapper][query_presets]',
+      'field_community_content_listing[0][enabled]',
+      'field_community_content_listing[0][wrapper][show_shared]',
+      'field_community_content_listing[0][wrapper][query_presets]',
     ];
 
     if (isset($variables['name']) && in_array($variables['name'], $additional_wrappers)) {
