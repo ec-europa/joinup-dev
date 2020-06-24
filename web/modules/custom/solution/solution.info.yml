@@ -27,7 +27,6 @@ config_devel:
   install:
     - core.base_field_override.rdf_entity.solution.label
     - og.og_role.rdf_entity-solution-administrator
-    - og.og_role.rdf_entity-solution-facilitator
     - og.og_role.rdf_entity-solution-member
     - og.og_role.rdf_entity-solution-non-member
     - rdf_entity.rdfentity.solution

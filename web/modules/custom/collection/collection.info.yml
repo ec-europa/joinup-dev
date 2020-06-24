@@ -69,7 +69,6 @@ config_devel:
     - field.storage.rdf_entity.field_collection_content
     - image.style.image_style_collection_logo
     - og.og_role.rdf_entity-collection-administrator
-    - og.og_role.rdf_entity-collection-facilitator
     - og.og_role.rdf_entity-collection-member
     - og.og_role.rdf_entity-collection-non-member
     - rdf_entity.rdfentity.collection
