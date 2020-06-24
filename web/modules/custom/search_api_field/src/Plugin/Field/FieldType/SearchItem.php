@@ -156,7 +156,7 @@ class SearchItem extends FieldItemBase implements SearchItemInterface {
    * Builds the view modes form options for the selected index datasources.
    *
    * @param string $index_id
-   *   The id of the search_api index.
+   *   The ID of the Search API index.
    *
    * @return array
    *   The form definition for the view modes element.

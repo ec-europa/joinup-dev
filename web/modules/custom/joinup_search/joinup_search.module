@@ -72,7 +72,12 @@ function joinup_search_entity_field_access($operation, FieldDefinitionInterface 
   }
 
   // Leave open access to the custom page search field.
+  // @todo Remove this
   if ($field_definition->getTargetEntityTypeId() === 'node' && $field_definition->getName() === 'field_cp_content_listing') {
+    return AccessResult::neutral();
+  }
+
+  if ($field_definition->getTargetEntityTypeId() === 'paragraph' && $field_definition->getName() === 'field_community_content_listing') {
     return AccessResult::neutral();
   }
 
@@ -129,6 +134,7 @@ function joinup_search_search_api_query_alter(QueryInterface $query) {
     'rdf_entity.field_collection_content',
     'rdf_entity.field_is_content',
     'node.field_cp_content_listing',
+    'paragraph.field_community_content_listing',
   ];
 
   if (in_array($query->getSearchId(), $search_ids)) {

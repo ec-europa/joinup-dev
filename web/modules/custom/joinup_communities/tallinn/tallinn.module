@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains functions and hook implementations for the tallinn module.
+ * Contains functions and hook implementations for the Tallinn module.
  */
 
 declare(strict_types = 1);
@@ -39,9 +39,9 @@ function tallinn_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_module_implements_alter().
  *
- * We are setting the implementations of the tallinn module to be the last one
+ * We are setting the implementations of the Tallinn module to be the last one
  * called as it should override all other implementations. Like this, we avoid
- * joinup profile hiding the authoring field we are enabling for tallinn
+ * Joinup profile hiding the authoring field we are enabling for Tallinn
  * reports.
  *
  * @see tallinn_form_node_tallinn_report_edit_form_alter()
@@ -158,7 +158,7 @@ function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account
 /**
  * Implements hook_search_api_query_TAG_alter().
  *
- * Do not show the tallinn report records as part of the collection content
+ * Do not show the Tallinn report records as part of the collection content
  * field. They will be shown in the corresponding page.
  */
 function tallinn_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
@@ -179,11 +179,11 @@ function tallinn_entity_view_alter(array &$build, EntityInterface $entity, Entit
   // Since the entities are only viewable by their authors - apart from users
   // that can view all of them - the search api field facets will display a
   // wrong amount of results as they do not respect the view access - unlike the
-  // search api field formatter. Remove the facets as the item limit is set to
+  // Search API field formatter. Remove the facets as the item limit is set to
   // the amount of the report entities.
-  // Unset the facets only if there is a facet showing a tab for tallinn
+  // Unset the facets only if there is a facet showing a tab for Tallinn
   // reports. Tallinn reports are only shown on one page and on that page, only
-  // tallinn reports are shown, so the check is straight forward.
+  // Tallinn reports are shown, so the check is straightforward.
   if (isset($build['node_field_cp_content_listing_top'][0][0]['big_icons']['#items'][0]['#title']['#type']) && $build['node_field_cp_content_listing_top'][0][0]['big_icons']['#items'][0]['#title']['#type'] === 'tallinn_report') {
     unset($build['node_field_cp_content_listing_top']);
   }

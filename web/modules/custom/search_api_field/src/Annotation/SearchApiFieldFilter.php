@@ -7,7 +7,7 @@ namespace Drupal\search_api_field\Annotation;
 use Drupal\Component\Annotation\Plugin;
 
 /**
- * Defines the search api field filter plugin annotation.
+ * Defines the Search API Field filter plugin annotation.
  *
  * Filters can be created to support a list of Search API data types or
  * specific fields. Only one support at the time can be declared.

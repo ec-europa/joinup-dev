@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Plugin implementation of the 'search_api_field' formatter.
+ * Plugin implementation of the Search API Field field formatter.
  *
  * @FieldFormatter(
  *   id = "search_api_field",
@@ -53,7 +53,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
   protected $filterPluginManager;
 
   /**
-   * The search_api logger channel.
+   * The Search API logger channel.
    *
    * @var \Drupal\Core\Logger\LoggerChannelInterface
    */
@@ -106,7 +106,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
    * @param \Drupal\search_api_field\Plugin\FilterPluginManagerInterface $filter_plugin_manager
    *   The filter plugin manager.
    * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
-   *   The search_api logger channel.
+   *   The Search API logger channel.
    * @param \Drupal\Core\Pager\PagerManagerInterface $pager_manager
    *   The pager manager.
    */

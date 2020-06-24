@@ -1,12 +1,13 @@
+uuid: 35499cfe-c590-469f-bc74-3eca558246b7
 langcode: en
 status: true
 dependencies:
   module:
-    - node
+    - paragraphs
     - search_api_field
-id: node.field_cp_content_listing
-field_name: field_cp_content_listing
-entity_type: node
+id: paragraph.field_community_content_listing
+field_name: field_community_content_listing
+entity_type: paragraph
 type: search_api_field
 settings:
   index: published
@@ -21,14 +22,16 @@ settings:
       news: view_mode_tile
       newsletter: view_mode_tile
       tallinn_report: view_mode_tile
+      video: view_mode_tile
     'entity:rdf_entity':
       asset_distribution: view_mode_tile
       asset_release: view_mode_tile
       collection: view_mode_tile
-      contact_information: view_mode_tile
       licence: view_mode_tile
-      owner: ''
       solution: view_mode_tile
+      spdx_licence: view_mode_tile
+    'entity:user':
+      user: view_mode_tile
 module: search_api_field
 locked: false
 cardinality: 1

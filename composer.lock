@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b0c7f9dff36db7e0e6230f201c1f954c",
+    "content-hash": "0c2c00bceaef32cfaf5397fb0e6d2e69",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3148,9 +3148,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.6",
                     "datestamp": "1578260883",
@@ -4552,9 +4549,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.0",
                     "datestamp": "1580243964",
@@ -4928,9 +4922,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.4",
                     "datestamp": "1556645881",
@@ -4940,7 +4931,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
+                    "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
+                    "SearchApiBaseFacetSource should implement SearchApiFacetSourceInterface @see https://www.drupal.org/project/facets/issues/3154173": "https://www.drupal.org/files/issues/2020-06-23/3154173-6.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -12252,7 +12244,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2020-02-13T14:54:04+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",

@@ -1,0 +1,32 @@
+uuid: 2f8af53b-07f4-479f-b458-6603ca86a591
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_community_content_listing
+    - paragraphs.paragraphs_type.community_content_listing
+  module:
+    - search_api_field
+id: paragraph.community_content_listing.field_community_content_listing
+field_name: field_community_content_listing
+entity_type: paragraph
+bundle: community_content_listing
+label: 'Community content listing'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value:
+      fields:
+        field_community_content_listing_content_type:
+          weight: 0
+          region: top
+      enabled: 0
+      query_presets: ''
+      limit: 12
+      global_search: false
+      show_shared: false
+default_value_callback: ''
+settings: {  }
+field_type: search_api_field

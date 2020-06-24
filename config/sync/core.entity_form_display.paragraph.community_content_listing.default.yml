@@ -1,0 +1,24 @@
+uuid: 4a0de43e-04e0-4a6c-8f44-13c5711b9041
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.community_content_listing.field_community_content_listing
+    - paragraphs.paragraphs_type.community_content_listing
+  module:
+    - custom_page
+id: paragraph.community_content_listing.default
+targetEntityType: paragraph
+bundle: community_content_listing
+mode: default
+content:
+  field_community_content_listing:
+    weight: 1
+    settings:
+      query_builder: false
+    third_party_settings: {  }
+    type: search_api_field_custom_page
+    region: content
+hidden:
+  created: true
+  status: true

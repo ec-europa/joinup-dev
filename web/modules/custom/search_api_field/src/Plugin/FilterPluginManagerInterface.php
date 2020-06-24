@@ -8,7 +8,7 @@ use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\search_api\Item\FieldInterface;
 
 /**
- * Defines an interface for the search api field filter plugin manager.
+ * Defines an interface for the Search API Field filter plugin manager.
  */
 interface FilterPluginManagerInterface extends PluginManagerInterface {
 

@@ -1,0 +1,9 @@
+uuid: 8527516c-1a14-42a8-9bf3-af1b87a3ee6b
+langcode: en
+status: true
+dependencies: {  }
+id: search_api_field__paragraph.field_community_content_listing
+name: 'search_api_field:paragraph.field_community_content_listing'
+filter_key: ''
+url_processor: query_string
+breadcrumb: {  }

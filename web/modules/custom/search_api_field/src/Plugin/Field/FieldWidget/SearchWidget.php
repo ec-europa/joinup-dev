@@ -135,7 +135,6 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $element['enabled'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable the search field'),
-      '#description' => $this->t('Related content from the community will be displayed below the one that you are publishing.'),
       '#default_value' => $default_values['enabled'] ?? TRUE,
     ];
 

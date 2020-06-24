@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Represents a facet source which represents search_api_page pages.
+ * Represents a facet source which represents Search API Field pages.
  *
  * Most of the work of actually getting a page is done in the deriver.
  *
@@ -26,25 +26,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetSourceInterface {
 
   /**
-   * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface|null
-   */
-  protected $configFactory;
-
-  /**
    * The current path stack.
    *
    * @var \Drupal\Core\Path\CurrentPathStack
    */
   protected $currentPathStack;
-
-  /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManager|null
-   */
-  protected $entityTypeManager;
 
   /**
    * The request stack.
@@ -54,11 +40,11 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
   protected $requestStack;
 
   /**
-   * The typed data manager.
+   * The search index.
    *
-   * @var \Drupal\Core\TypedData\TypedDataManager|null
+   * @var \Drupal\search_api\IndexInterface
    */
-  protected $typedDataManager;
+  protected $index;
 
   /**
    * {@inheritdoc}
@@ -68,13 +54,6 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
 
     $this->currentPathStack = $current_path_stack;
     $this->requestStack = $request_stack;
-
-    // Load facet plugin definition and depending on those settings; load the
-    // corresponding search api page and load its index.
-    $field_id = $plugin_definition['search_api_field'];
-    $field = FieldStorageConfig::load($field_id);
-    $index = $field->getSetting('index');
-    $this->index = Index::load($index);
   }
 
   /**
@@ -176,6 +155,15 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
    * {@inheritdoc}
    */
   public function getIndex() {
+    if (!isset($this->index)) {
+      // Load facet plugin definition and depending on those settings; load the
+      // corresponding Search API page and load its index.
+      $field_id = $this->getPluginDefinition()['search_api_field'];
+      $field = FieldStorageConfig::load($field_id);
+      $index_id = $field->getSetting('index');
+      $this->index = Index::load($index_id);
+    }
+
     return $this->index;
   }
 
@@ -208,7 +196,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
     if ($field) {
       return $field->getDataDefinition();
     }
-    throw new Exception("Field with name {$field_name} does not have a definition");
+    throw new \Exception("Field with name {$field_name} does not have a definition");
   }
 
 }
