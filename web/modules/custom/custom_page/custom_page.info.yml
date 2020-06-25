@@ -21,7 +21,6 @@ config_devel:
     - core.base_field_override.node.custom_page.promote
     - core.base_field_override.node.custom_page.status
     - core.base_field_override.node.custom_page.title
-    - facets.facet.field_cp_content_listing_content_type
     - facets.facet_source.search_api_field__node.field_cp_content_listing
     - field.field.node.custom_page.field_attachment
     - field.field.node.custom_page.field_cp_content_listing

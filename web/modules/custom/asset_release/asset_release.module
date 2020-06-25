@@ -135,7 +135,7 @@ function asset_release_preprocess_rdf_entity(&$variables) {
   elseif ($parent_solution) {
     // @todo Find a better way of marking the latest release that doesn't
     //   involve performing a database query in the theme layer.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
     $latest_release = solution_get_latest_release($parent_solution);
     if ($latest_release && $latest_release->id() === $rdf_entity->id()) {
       $is_latest_release = TRUE;

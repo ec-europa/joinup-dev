@@ -108,9 +108,9 @@ class AdmsValidator implements AdmsValidatorInterface {
     $query = str_replace('@@@TOKEN-GRAPH@@@', $uri, $query);
 
     // Workaround for the disputed rule 41.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4350
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4350
     // @see https://github.com/SEMICeu/adms-ap_validator/issues/5
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4379
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4379
     $query = preg_replace('/(FILTER\(!EXISTS {\?o a )dct\:MediaTypeOrExtent(}\)\.)/', '\1?some_class\2', $query);
 
     // @todo Workaround for bug in validations query.
@@ -118,13 +118,13 @@ class AdmsValidator implements AdmsValidatorInterface {
     $query = str_replace('FILTER(!EXISTS {?o a }).', 'FILTER(!EXISTS {?o a spdx:checksumValue}).', $query);
 
     // Workaround for the disputed rule 15.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4348
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4348
     // @see https://github.com/SEMICeu/ADMS-AP/issues/5
     // @see https://github.com/SEMICeu/adms-ap_validator/issues/4
     $query = preg_replace('/(FILTER\(!EXISTS {\?o a )dct\:LinguisticSystem(}\)\.)/', '\1?some_class\2', $query);
 
     // Workaround for rules 13 and 32.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4568
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4568
     // @see https://github.com/SEMICeu/adms-ap_validator/issues/7
     // Remove validation rule 13.
     $query = preg_replace('/# Rule_ID:13.*?(# Rule_ID:14)/s', '\1', $query);
@@ -134,7 +134,7 @@ class AdmsValidator implements AdmsValidatorInterface {
     // Workaround for a wrong definition.
     // @see https://github.com/SEMICeu/ADMS-AP/issues/2
     // @see https://github.com/SEMICeu/adms-ap_validator/issues/3
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4376
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4376
     // @todo Remove this workaround in ISAICP-4376.
     return preg_replace('/(\?s skos\:hasTopConcept \?o\.[ \n\t]+FILTER\(\!)isLiteral(\(\?o\)\)\.)/', '\1isIri\2', $query);
   }

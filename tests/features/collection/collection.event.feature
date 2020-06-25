@@ -43,7 +43,7 @@ Feature: As a user of the website
     And the "Collection event date" inline facet should allow selecting the following values "My events (3), Past events (3), Upcoming events (2)"
 
     # @todo 'Sweet Palm' and 'Melted Hairdresser' are current events and should also be shown here.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
     When I click "Upcoming events" in the "Collection event date" inline facet
     # The upcoming events, unlike the rest, are sorted in an 'ASC' order based on the field_event_date field value.
     Then I should see the following tiles in the correct order:
@@ -59,7 +59,7 @@ Feature: As a user of the website
     And the "Collection event date" inline facet should allow selecting the following values "Past events (3), Upcoming events (2), All events"
 
     # @todo 'Sweet Palm' and 'Melted Hairdresser' are current events and should not be shown here.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
     When I click "Past events" in the "Collection event date" inline facet
     Then I should see the following tiles in the correct order:
       | Melted Hairdresser        |

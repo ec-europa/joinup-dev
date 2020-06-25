@@ -43,7 +43,7 @@ Feature: Add distribution through the UI
       | Licence field is required. |
 
     # @todo: The link has to be changed to the legal contact form.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
     And I should see the link "contacting us"
     When I fill in "Title" with "Linux x86-64 SDK"
     And I enter "<p>The full software development kit for systems based on the x86-64 architecture.</p>" in the "Description" wysiwyg editor
@@ -109,7 +109,7 @@ Feature: Add distribution through the UI
     Then I should see the heading "Add Distribution"
     And the following fields should be present "Title, Description, Access URL, Licence, Format, Representation technique"
     # @todo: The link has to be changed to the legal contact form.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
     And I should see the link "contacting us"
     When I fill in "Title" with "Source tarball"
     And I enter "<p>The full source code.</p>" in the "Description" wysiwyg editor

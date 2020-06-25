@@ -55,7 +55,7 @@ class Datetime extends CoreDatetime {
           $form_state->setValueForElement($element, $date);
         }
         // If only one of the two fields are filled, set an error.
-        // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3194.
+        // @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3194.
         elseif (isset($input['date']) && isset($input['time']) && (empty($input['date']) xor empty($input['time']))) {
           $form_state->setError($element, t('The date and time should both be entered in the %field field.', ['%field' => $title]));
         }
