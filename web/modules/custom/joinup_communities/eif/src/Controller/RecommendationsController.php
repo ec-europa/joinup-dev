@@ -52,12 +52,12 @@ class RecommendationsController extends ControllerBase {
   /**
    * Checks if the user has access to the recommendations page.
    *
-   * @return AccessResultInterface
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
   public function access(): AccessResultInterface {
     $eif_solution = $this->entityTypeManager()->getStorage('rdf_entity')->load(EifGroupResolver::EIF_ID);
-    return $this->entityTypeManager()->getAccessControlHandler('rdf_entity')->access($eif_solution, 'view', NULL,TRUE);
+    return $this->entityTypeManager()->getAccessControlHandler('rdf_entity')->access($eif_solution, 'view', NULL, TRUE);
   }
 
 }
