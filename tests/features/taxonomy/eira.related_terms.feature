@@ -14,7 +14,6 @@ Feature:
       | Public Service Consumer                   |
       | Public Service Delivery Agent             |
       | Service Delivery Model                    |
-      | Public Service Agent                      |
-      | Technical Interoperability Agreement      |
       | Organisational Interoperability Agreement |
       | Semantic Interoperability Agreement       |
+      | Technical Interoperability Agreement      |

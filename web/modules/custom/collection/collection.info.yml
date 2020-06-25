@@ -33,7 +33,6 @@ config_devel:
   install:
     - collection.settings
     - core.base_field_override.rdf_entity.collection.label
-    - facets.facet.collection_policy_domain
     - facets.facet.collection_type
     - facets.facet_source.search_api_field__rdf_entity.field_collection_content
     - field.field.rdf_entity.collection.field_ar_abstract
