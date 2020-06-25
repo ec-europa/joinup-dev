@@ -4,4 +4,4 @@ eif.recommendations:
     _controller: 'Drupal\eif\Controller\RecommendationsController::build'
     _title: 'Recommendations'
   requirements:
-    _permission: 'access content'
+    _custom_access: 'Drupal\eif\Controller\RecommendationsController::access'
