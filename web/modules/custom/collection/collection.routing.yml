@@ -10,6 +10,8 @@ collection.leave_confirm_form:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
+        bundle:
+          - collection
 collection.subscribe_to_collection_form:
   path: '/ajax/collection/{rdf_entity}/subscribe'
   defaults:
@@ -20,3 +22,5 @@ collection.subscribe_to_collection_form:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
+        bundle:
+          - collection

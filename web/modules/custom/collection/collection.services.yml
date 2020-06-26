@@ -22,3 +22,11 @@ services:
   collection.lazy_builders:
     class: Drupal\collection\CollectionLazyBuilders
     arguments: ['@entity_type.manager', '@form_builder', '@current_user']
+  collection.achived_collection.route_subscriber:
+    class: Drupal\collection\Routing\ArchivedCollectionRouteSubscriber
+    tags:
+      - { name: 'event_subscriber' }
+  collection.achived_collection.access_check:
+    class: Drupal\collection\Access\ArchivedCollectionAccessCheck
+    tags:
+      - { name: access_check, applies_to: _archived_collection }

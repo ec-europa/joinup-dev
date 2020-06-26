@@ -28,7 +28,7 @@ use Drupal\search_api\Query\QueryInterface;
 function custom_page_entity_type_alter(array &$entity_types) {
   /** @var \Drupal\Core\Entity\ContentEntityTypeInterface[] $entity_types */
   // Add a link template allow adding custom pages.
-  $entity_types['rdf_entity']->setLinkTemplate('add-custom-page', '/rdf_entity/{rdf_entity}/custom_page/add');
+  $entity_types['rdf_entity']->setLinkTemplate('add-custom-page', '/rdf_entity/{rdf_entity}/{node_type}/add');
 
   // Replaces the standard OG Menu Instance form with a customized one that is
   // suitable for use in the front end.

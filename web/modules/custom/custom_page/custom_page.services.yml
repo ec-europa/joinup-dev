@@ -10,3 +10,8 @@ services:
     class: Drupal\custom_page\Routing\RouteSubscriber
     tags:
       - { name: event_subscriber }
+  custom_page.group_add_content.subscriber:
+    class: Drupal\custom_page\EventSubscriber\CustomPageGroupSubscriber
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: event_subscriber }
