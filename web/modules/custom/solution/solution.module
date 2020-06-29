@@ -263,7 +263,7 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
           'role' => 'button',
           'class' => [
             // @todo Move the Material Design classes in the theme layer.
-            // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5731
+            // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5731
             'featured__form-button',
             'button',
             'button--blue-light',
@@ -293,7 +293,7 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
   // Attach the download total of all distributions in this solution.
   // @todo Add the `og-group-content` cache tag because the downloads are
   //   contained in the distribution entities which is group content.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5200
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5200
   if ($display->getComponent('download_total')) {
     $total = 0;
     if (!$solution->isNew()) {
@@ -332,7 +332,7 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
 
   // Show the collection the solution belongs to. A solution can be affiliated
   // to multiple collections, but for now we show only the first one.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3635
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3635
   if ($display->getComponent('collections') && !$solution->get('collection')->isEmpty()) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
     $collection = $solution->get('collection')->first()->entity;
@@ -610,7 +610,7 @@ function solution_get_latest_release(RdfInterface $solution) {
       // @todo: Sorting is not yet working in SPARQL, we're fetching all results
       // and doing the sorting in PHP right now. Once sorting is working we
       // should limit the result set to 1 item.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
+      // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
       $releases = Rdf::loadMultiple($ids);
       usort($releases, function ($release1, $release2) {
         $ct1 = $release1->getCreatedTime();

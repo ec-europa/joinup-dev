@@ -19,7 +19,7 @@ use Drupal\node\NodeInterface;
  * The following debug function, as well as the hook_entity_update below, will
  * give us more clues on which part of the code is causing this.
  *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5740
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5740
  */
 function joinup_debug_node_presave(NodeInterface $node) {
   // At this point, if the entity is not new, the original is already loaded and
