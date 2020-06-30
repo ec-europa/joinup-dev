@@ -9,8 +9,8 @@ dependencies:
     - joinup_theme
 id: overviewmessage
 theme: joinup_theme
-region: filters
-weight: -16
+region: content_top
+weight: -23
 provider: null
 plugin: overview_message_block
 settings:

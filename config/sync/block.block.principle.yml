@@ -1,26 +1,26 @@
-uuid: 26cb2af3-6fbb-4c92-b2c4-c48456a8bccd
+uuid: 2433d6e7-84bc-4d3c-8233-e5b838f44f37
 langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.category
+    - facets.facet.principle
   module:
     - facets
     - joinup_core
   theme:
     - joinup_theme
-id: category
+id: principle
 theme: joinup_theme
-region: content
-weight: -19
+region: filters
+weight: -17
 provider: null
-plugin: 'facet_block:category'
+plugin: 'facet_block:principle'
 settings:
-  id: 'facet_block:category'
-  label: Category
+  id: 'facet_block:principle'
+  label: 'EIF Principle filter'
   provider: facets
   label_display: '0'
-  block_id: category
+  block_id: principle
 visibility:
   request_route:
     id: request_route

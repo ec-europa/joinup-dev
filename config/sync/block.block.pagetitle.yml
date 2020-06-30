@@ -8,8 +8,8 @@ dependencies:
     - joinup_theme
 id: pagetitle
 theme: joinup_theme
-region: content
-weight: -22
+region: filters
+weight: -18
 provider: null
 plugin: page_title_block
 settings:

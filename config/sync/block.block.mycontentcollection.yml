@@ -11,7 +11,7 @@ dependencies:
 id: mycontentcollection
 theme: joinup_theme
 region: filters
-weight: 0
+weight: -18
 provider: null
 plugin: 'facet_block:collection_my_content'
 settings:

@@ -13,8 +13,8 @@ _core:
   default_config_hash: maOU9192SGD0AVcjVb1fN8OjC-1lemKXWALBgJR0JCk
 id: contentbundle
 theme: joinup_theme
-region: filters
-weight: -11
+region: content_top
+weight: -22
 provider: null
 plugin: 'facet_block:content_bundle'
 settings:

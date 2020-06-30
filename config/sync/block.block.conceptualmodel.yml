@@ -1,0 +1,29 @@
+uuid: 93692e9b-070e-46c7-8508-aac04d7697e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.conceptual_model
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - joinup_theme
+id: conceptualmodel
+theme: joinup_theme
+region: filters
+weight: -15
+provider: null
+plugin: 'facet_block:conceptual_model'
+settings:
+  id: 'facet_block:conceptual_model'
+  label: 'EIF Conceptual model filter'
+  provider: facets
+  label_display: '0'
+  block_id: conceptualmodel
+visibility:
+  request_route:
+    id: request_route
+    routes: view.eif_recommendations.page_1
+    negate: false
+    context_mapping: {  }

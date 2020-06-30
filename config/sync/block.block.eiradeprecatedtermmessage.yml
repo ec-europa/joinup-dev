@@ -9,8 +9,8 @@ dependencies:
     - joinup_theme
 id: eiradeprecatedtermmessage
 theme: joinup_theme
-region: content_top
-weight: -19
+region: sidebar_left
+weight: -15
 provider: null
 plugin: eira_deprecated_term_block
 settings:

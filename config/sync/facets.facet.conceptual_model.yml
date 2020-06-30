@@ -1,0 +1,81 @@
+uuid: b14422c8-826c-4bfe-895a-eedb667dec7e
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.published
+    - views.view.eif_recommendations
+  module:
+    - search_api
+id: conceptual_model
+name: 'Conceptual model'
+url_alias: conceptual_model
+weight: 0
+min_count: 1
+show_only_one_result: true
+field_identifier: field_eif_related_term
+facet_source_id: 'search_api:views_page__eif_recommendations__page_1'
+widget:
+  type: links_inline
+  config:
+    show_numbers: false
+    all_text: '- All -'
+    prefix_text: 'Conceptual model:'
+    suffix_text: ''
+    cache_contexts: {  }
+    arbitrary_facet_plugin: _none
+query_operator: or
+use_hierarchy: false
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: true
+hard_limit: 0
+exclude: false
+only_visible_when_facet_source_is_visible: true
+processor_configs:
+  dependent_processor:
+    processor_id: dependent_processor
+    weights:
+      build: 5
+    settings:
+      interoperability_layer:
+        enable: true
+        condition: not_empty
+        values: ''
+        negate: true
+      principle:
+        enable: true
+        condition: not_empty
+        values: ''
+        negate: true
+  exclude_specified_items:
+    processor_id: exclude_specified_items
+    weights:
+      build: 50
+    settings:
+      exclude: 'http://data.europa.eu/Rec1, http://data.europa.eu/Rec10, http://data.europa.eu/Rec11, http://data.europa.eu/Rec12, http://data.europa.eu/Rec13, http://data.europa.eu/Rec14, http://data.europa.eu/Rec15, http://data.europa.eu/Rec16, http://data.europa.eu/Rec17, http://data.europa.eu/Rec18, http://data.europa.eu/Rec19, http://data.europa.eu/Rec2, http://data.europa.eu/Rec20, http://data.europa.eu/Rec21, http://data.europa.eu/Rec22, http://data.europa.eu/Rec23, http://data.europa.eu/Rec24, http://data.europa.eu/Rec25, http://data.europa.eu/Rec26, http://data.europa.eu/Rec27, http://data.europa.eu/Rec28, http://data.europa.eu/Rec29, http://data.europa.eu/Rec3, http://data.europa.eu/Rec30, http://data.europa.eu/Rec31, http://data.europa.eu/Rec32, http://data.europa.eu/Rec33, http://data.europa.eu/Rec34, http://data.europa.eu/Rec35, http://data.europa.eu/Rec36, http://data.europa.eu/Rec37, http://data.europa.eu/Rec38, http://data.europa.eu/Rec39, http://data.europa.eu/Rec4, http://data.europa.eu/Rec40, http://data.europa.eu/Rec41, http://data.europa.eu/Rec42, http://data.europa.eu/Rec43, http://data.europa.eu/Rec44, http://data.europa.eu/Rec45, http://data.europa.eu/Rec46, http://data.europa.eu/Rec47, http://data.europa.eu/Rec5, http://data.europa.eu/Rec6, http://data.europa.eu/Rec7, http://data.europa.eu/Rec8, http://data.europa.eu/Rec9, http://data.europa.eu/Recommendation, http://data.europa.eu/Principle, http://data.europa.eu/UP1, http://data.europa.eu/UP10, http://data.europa.eu/UP11, http://data.europa.eu/UP12, http://data.europa.eu/UP2, http://data.europa.eu/UP3, http://data.europa.eu/UP4, http://data.europa.eu/UP5, http://data.europa.eu/UP6, http://data.europa.eu/UP7, http://data.europa.eu/UP8, http://data.europa.eu/UP9, http://data.europa.eu/Layer, http://data.europa.eu/IL1, http://data.europa.eu/IL2, http://data.europa.eu/IL3, http://data.europa.eu/IL4, http://data.europa.eu/IL5, http://data.europa.eu/IL6'
+      regex: false
+  hide_non_narrowing_result_processor:
+    processor_id: hide_non_narrowing_result_processor
+    weights:
+      build: 40
+    settings: {  }
+  term_weight_widget_order:
+    processor_id: term_weight_widget_order
+    weights:
+      sort: 60
+    settings:
+      sort: ASC
+  translate_entity:
+    processor_id: translate_entity
+    weights:
+      build: 5
+    settings: {  }
+  url_processor_handler:
+    processor_id: url_processor_handler
+    weights:
+      pre_query: 50
+      build: 15
+    settings: {  }
+empty_behavior:
+  behavior: none
+show_title: false

@@ -14,7 +14,7 @@ _core:
 id: mycontent
 theme: joinup_theme
 region: filters
-weight: -6
+weight: -19
 provider: null
 plugin: 'facet_block:content_my_content'
 settings:

@@ -8,8 +8,8 @@ dependencies:
     - joinup_theme
 id: joinup_user_local_tasks
 theme: joinup_theme
-region: content
-weight: -21
+region: filters
+weight: -17
 provider: null
 plugin: local_tasks_block
 settings:
