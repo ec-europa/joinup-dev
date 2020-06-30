@@ -1,0 +1,28 @@
+uuid: 643eb6b6-42b8-4fca-8238-fec8846c18a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_eif_related_term
+    - taxonomy.vocabulary.eif_recommendations
+id: taxonomy_term.eif_recommendations.field_eif_related_term
+field_name: field_eif_related_term
+entity_type: taxonomy_term
+bundle: eif_recommendations
+label: 'Related term'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      eif_recommendations: eif_recommendations
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
