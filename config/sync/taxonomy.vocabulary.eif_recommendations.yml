@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 third_party_settings:
   rdf_taxonomy:
-    locked: true
+    locked: false
 name: 'EIF recommendations'
 vid: eif_recommendations
 description: 'Terms that represent a recommendation of the EIF Toolbox.'

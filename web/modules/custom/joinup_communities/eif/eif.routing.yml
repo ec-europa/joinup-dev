@@ -1,7 +1,0 @@
-eif.recommendations:
-  path: '/collection/nifo-national-interoperability-framework-observatory/solution/eif-toolbox/recommendations'
-  defaults:
-    _controller: 'Drupal\eif\Controller\RecommendationsController::build'
-    _title: 'Recommendations'
-  requirements:
-    _custom_access: 'Drupal\eif\Controller\RecommendationsController::access'
