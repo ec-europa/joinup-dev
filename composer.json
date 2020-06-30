@@ -27,6 +27,7 @@
         "drupal/core-composer-scaffold": "~8.9",
         "drupal/diff": "~1.0",
         "drupal/digital_size_formatter": "~2.0",
+        "drupal/dynamic_entity_reference": "~2.0",
         "drupal/editor_file": "~1.4",
         "drupal/email_registration": "^1.0",
         "drupal/embed_block": "^1.0",
@@ -244,6 +245,9 @@
             },
             "drupal/drupal-extension": {
               "Add space arround the keywords to avoid wrongly matching @see https://github.com/jhedstrom/drupalextension/pull/561": "https://patch-diff.githubusercontent.com/raw/jhedstrom/drupalextension/pull/561.patch"
+            },
+            "drupal/dynamic_entity_reference": {
+                "Backport improvements in infinite recursion protection from the entity_reference field formatter @see https://www.drupal.org/project/dynamic_entity_reference/issues/3152105#comment-13701599": "https://www.drupal.org/files/issues/2020-06-16/3152105-2.patch"
             },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"

@@ -20,7 +20,6 @@ dependencies:
 
 config_devel:
   - facets.facet.content_bundle
-  - field.storage.message.field_community_content
   - field.storage.node.field_attachment
   - field.storage.node.field_comments
   - field.storage.node.field_keywords
