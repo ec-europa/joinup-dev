@@ -14,6 +14,8 @@ use Drupal\joinup\Traits\SearchTrait;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_taxonomy\Entity\RdfTerm;
+use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Drupal\taxonomy\Entity\Term;
 
 /**
@@ -81,7 +83,7 @@ class EifContext extends RawDrupalContext {
     ]);
     $instance = reset($instances);
     $menu_name = "ogmenu-{$instance->id()}";
-    $internal_path = Url::fromRoute('eif.recommendations')->toUriString();
+    $internal_path = Url::fromRoute('view.eif_recommendations.page_1')->toUriString();
     $link = MenuLinkContent::create([
       'title' => $this->t('Recommendations'),
       'menu_name' => $menu_name,
@@ -89,6 +91,16 @@ class EifContext extends RawDrupalContext {
       'weight' => 4,
     ]);
     $link->save();
+
+    // Ensure the taxonomy terms are indexed.
+    $properties = ['vid' => 'eif_recommendations'];
+    $recommendations = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties($properties);
+    foreach ($recommendations as $term) {
+      ContentEntity::indexEntity($term);
+    }
+
+    $index = \Drupal::entityTypeManager()->getStorage('search_api_index')->load('published');
+    $index->indexItems(-1, 'entity:taxonomy_term');
   }
 
   /**
