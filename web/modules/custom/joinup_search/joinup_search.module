@@ -170,7 +170,7 @@ function _joinup_search_search_api_has_condition($conditions, $field, $value, $o
  *
  * Do not index any content not written in English.
  */
-function joinup_core_search_api_index_items_alter(IndexInterface $index, array &$items): void {
+function joinup_search_search_api_index_items_alter(IndexInterface $index, array &$items): void {
   foreach ($items as $item_id => $item) {
     list(, $raw_id) = Utility::splitCombinedId($item_id);
     list(, $langcode) = Utility::splitPropertyPath($raw_id);
