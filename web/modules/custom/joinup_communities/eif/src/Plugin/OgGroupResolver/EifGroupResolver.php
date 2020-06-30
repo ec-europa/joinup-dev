@@ -50,7 +50,7 @@ class EifGroupResolver extends RouteGroupResolver {
     }
 
     if (
-      $this->routeMatch->getRouteName() === 'eif.recommendations'
+      $this->routeMatch->getRouteName() === 'view.eif_recommendations.page_1'
       && $group = $this->entityTypeManager->getStorage('rdf_entity')->load(self::EIF_ID)
     ) {
       $collection->addGroup($group, ['route']);
