@@ -245,10 +245,10 @@ display:
           error_message: true
           plugin_id: search_api_term
       sorts:
-        name:
-          id: name
+        weight:
+          id: weight
           table: search_api_index_published
-          field: name
+          field: weight
           relationship: none
           group_type: group
           admin_label: ''
@@ -294,6 +294,10 @@ display:
       display_extenders: {  }
       path: collection/nifo-national-interoperability-framework-observatory/solution/eif-toolbox/recommendations
       always_use_admin_theme: false
+      cache:
+        type: none
+      defaults:
+        cache: false
     cache_metadata:
       max-age: -1
       contexts:
