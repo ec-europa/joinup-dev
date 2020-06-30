@@ -14,7 +14,6 @@ use Drupal\joinup\Traits\SearchTrait;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_taxonomy\Entity\RdfTerm;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Drupal\taxonomy\Entity\Term;
 
