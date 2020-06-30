@@ -38,8 +38,8 @@ base_fields_mapping:
       format: ''
   weight:
     value:
-      predicate: ''
-      format: ''
+      predicate: 'http://www.w3.org/ns/adms#identifier'
+      format: 'xsd:integer'
   parent:
     target_id:
       predicate: 'http://www.w3.org/2004/02/skos/core#broader'
