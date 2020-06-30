@@ -207,7 +207,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '<strong>{{ name }}</strong> {{ field_eif_related_term }}'
+            text: '<strong>{{ name }}</strong> | {{ field_eif_related_term }}'
             make_link: false
             path: ''
             absolute: false
@@ -403,6 +403,18 @@ display:
           error_message: true
           plugin_id: search_api_term
       sorts:
+        weight:
+          id: weight
+          table: search_api_index_published
+          field: weight
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: search_api
         name:
           id: name
           table: search_api_index_published
