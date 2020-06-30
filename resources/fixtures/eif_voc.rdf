@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:adms="http://www.w3.org/ns/adms#"
          xmlns:skos="http://www.w3.org/2004/02/skos/core#"
          xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
          xmlns:dc="http://purl.org/dc/terms/">
@@ -33,6 +34,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>4</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/UP2">
@@ -50,6 +52,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>5</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/UP3">
@@ -67,6 +70,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>6</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/UP4">
@@ -82,6 +86,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>7</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/UP5">
@@ -98,6 +103,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>8</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/UP6">
@@ -117,6 +123,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>9</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/UP7">
@@ -129,6 +136,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>10</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/UP8">
@@ -142,6 +150,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>11</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/UP9">
@@ -163,6 +172,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>12</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/UP10">
@@ -181,6 +191,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>13</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/UP11">
@@ -202,6 +213,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>14</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/UP12">
@@ -215,6 +227,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Principle"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>15</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/IL1">
@@ -226,6 +239,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Layer"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>16</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/IL2">
@@ -236,6 +250,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Layer"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>17</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/IL3">
@@ -246,6 +261,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Layer"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>18</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/IL4">
@@ -256,6 +272,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Layer"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>19</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/IL5">
@@ -267,6 +284,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Layer"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>20</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/IL6">
@@ -278,6 +296,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Layer"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>21</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/BC1">
@@ -288,6 +307,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Model"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>22</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/BC2">
@@ -300,6 +320,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Model"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>23</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/BC3">
@@ -312,6 +333,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Model"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>24</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/BC4">
@@ -325,6 +347,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Model"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>25</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/BC5">
@@ -338,6 +361,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Model"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>26</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/BC6">
@@ -351,6 +375,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Model"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>27</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/BC7">
@@ -360,6 +385,7 @@
     </skos:definition>
     <skos:broader rdf:resource="http://data.europa.eu/Model"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>28</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec1">
@@ -371,6 +397,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP1"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>29</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec2">
@@ -381,6 +408,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP2"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>30</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec3">
@@ -392,6 +420,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP2"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>31</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec4">
@@ -403,6 +432,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP2"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>32</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec5">
@@ -414,6 +444,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP3"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>33</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec6">
@@ -425,6 +456,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP4"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>34</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec7">
@@ -436,6 +468,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP4"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>35</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec8">
@@ -447,6 +480,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP5"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>36</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec9">
@@ -459,6 +493,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP5"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>37</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec10">
@@ -470,6 +505,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP6"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>38</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec11">
@@ -481,6 +517,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP6"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>39</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec12">
@@ -492,6 +529,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP6"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>40</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec13">
@@ -503,6 +541,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP6"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>41</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec14">
@@ -516,6 +555,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP7"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>42</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec15">
@@ -528,6 +568,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP8"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>43</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec16">
@@ -540,6 +581,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP9"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>44</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec17">
@@ -552,6 +594,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP10"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>45</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec18">
@@ -563,6 +606,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP11"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>46</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec19">
@@ -574,6 +618,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/UP12"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>47</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec20">
@@ -585,6 +630,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/IL1"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>48</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec21">
@@ -596,6 +642,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/IL1"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>49</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec22">
@@ -608,6 +655,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/IL1"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>50</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec23">
@@ -619,6 +667,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/IL1"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>51</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec24">
@@ -630,6 +679,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/IL1"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>52</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec25">
@@ -641,6 +691,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/IL2"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>53</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec26">
@@ -652,6 +703,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/IL2"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>54</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec27">
@@ -665,6 +717,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/IL3"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>55</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec28">
@@ -676,6 +729,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/IL4"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>56</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec29">
@@ -687,6 +741,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/IL4"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>57</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec30">
@@ -698,6 +753,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/IL5"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>58</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec31">
@@ -709,6 +765,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/IL5"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>59</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec32">
@@ -721,6 +778,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/IL5"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>60</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec33">
@@ -732,6 +790,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/IL6"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>61</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec34">
@@ -743,6 +802,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/Model"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>62</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec35">
@@ -754,6 +814,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/Model"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>63</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec36">
@@ -765,6 +826,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/BC2"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>64</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec37">
@@ -776,6 +838,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/BC3"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>65</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec38">
@@ -788,6 +851,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/BC3"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>66</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec39">
@@ -801,6 +865,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/BC3"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>67</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec40">
@@ -812,6 +877,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/BC3"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>68</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec41">
@@ -823,6 +889,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/BC4"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>69</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec42">
@@ -836,6 +903,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/BC4"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>70</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec43">
@@ -847,6 +915,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/BC4"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>71</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec44">
@@ -858,6 +927,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/BC5"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>72</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec45">
@@ -869,6 +939,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/BC6"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>73</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec46">
@@ -880,6 +951,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/BC7"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>74</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec47">
@@ -891,6 +963,7 @@
     <skos:broader rdf:resource="http://data.europa.eu/Recommendation"/>
     <skos:related rdf:resource="http://data.europa.eu/BC7"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+    <adms:identifier>75</adms:identifier>
   </skos:Concept>
 
   <!--
@@ -905,6 +978,7 @@
      <skos:altLabel xml:lang="en">Principle</skos:altLabel>
      <skos:definition xml:lang="en"> </skos:definition>
      <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+     <adms:identifier>0</adms:identifier>
    </skos:Concept>
 
    <skos:Concept rdf:about="http://data.europa.eu/Recommendation">
@@ -912,6 +986,7 @@
      <skos:altLabel xml:lang="en">Recommendation</skos:altLabel>
      <skos:definition xml:lang="en"> </skos:definition>
      <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+     <adms:identifier>1</adms:identifier>
    </skos:Concept>
 
    <skos:Concept rdf:about="http://data.europa.eu/Layer">
@@ -919,6 +994,7 @@
      <skos:altLabel xml:lang="en">Layer</skos:altLabel>
      <skos:definition xml:lang="en"> </skos:definition>
      <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+     <adms:identifier>2</adms:identifier>
    </skos:Concept>
 
    <skos:Concept rdf:about="http://data.europa.eu/Model">
@@ -926,6 +1002,7 @@
      <skos:altLabel xml:lang="en">Model</skos:altLabel>
      <skos:definition xml:lang="en"> </skos:definition>
      <skos:inScheme rdf:resource="http://data.europa.eu/eif/"/>
+     <adms:identifier>3</adms:identifier>
    </skos:Concept>
 
 </rdf:RDF>
