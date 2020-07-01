@@ -16,8 +16,10 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Form\RdfDeleteForm;
 use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -277,6 +279,40 @@ function joinup_group_rdf_entity_update(EntityInterface $entity) {
     foreach ($nodes as $node) {
       ContentEntity::indexEntity($node);
     }
+  }
+}
+
+/**
+ * Implements hook_og_user_access_alter().
+ */
+function joinup_group_og_user_access_alter(&$permissions, &$cacheable_metadata, $context) {
+  // Group owners are allowed to delete their own groups when they are in
+  // validated state.
+  // @todo Also allow groups to be deleted in any state other than 'archived'.
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6088
+  $operation = $context['operation'];
+  if ($operation !== 'delete') {
+    return;
+  }
+
+  // Only act on entities that are groups and subject to workflow.
+  $group = $context['group'];
+  if (!$group instanceof GroupInterface || !$group instanceof EntityWorkflowStateInterface) {
+    return;
+  }
+
+  // Skip if the group is not in validated state.
+  if ($group->getWorkflowState() !== 'validated') {
+    return;
+  }
+
+  /** @var \Drupal\Core\Session\AccountProxyInterface $user */
+  $user = $context['user'];
+
+  $membership = $group->getMembership((int) $user->id());
+  $role_id = implode('-', [$group->getEntityTypeId(), $group->bundle(), 'administrator']);
+  if ($membership instanceof OgMembershipInterface && $membership->hasRole($role_id)) {
+    $permissions[] = 'delete';
   }
 }
 
