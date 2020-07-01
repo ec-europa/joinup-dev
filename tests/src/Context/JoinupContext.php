@@ -1001,6 +1001,12 @@ class JoinupContext extends RawDrupalContext {
     if ($entity->getEntityType()->isRevisionable()) {
       $entity->setNewRevision(TRUE);
     }
+    else {
+      // If the entity does not support revisioning the static cache in the
+      // access control handler will become stale. Force a cache reset since the
+      // changing of the workflow state might affect entity access.
+      \Drupal::entityTypeManager()->getAccessControlHandler($entity->getEntityTypeId())->resetCache();
+    }
 
     $entity->save();
   }

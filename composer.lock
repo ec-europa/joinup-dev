@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec57b096b6b21af1a64304b2debb39d4",
+    "content-hash": "096ae281662af22938ee89165d3cbdfb",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.143.2",
+            "version": "3.144.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d44eac162f8ed1869d20c076adca9869c70a8ad9"
+                "reference": "3c6cc59be6a01f228fb53b2b5f43c1fd7d44a88c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d44eac162f8ed1869d20c076adca9869c70a8ad9",
-                "reference": "d44eac162f8ed1869d20c076adca9869c70a8ad9",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3c6cc59be6a01f228fb53b2b5f43c1fd7d44a88c",
+                "reference": "3c6cc59be6a01f228fb53b2b5f43c1fd7d44a88c",
                 "shasum": ""
             },
             "require": {
@@ -152,7 +152,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2020-06-26T18:21:03+00:00"
+            "time": "2020-06-30T18:14:11+00:00"
         },
         {
             "name": "behat/behat",
@@ -3475,16 +3475,13 @@
                 "shasum": "81210684c378dab856b3c2bce5eeaa58992d2efc"
             },
             "require": {
-                "drupal/core": "~8.0"
+                "drupal/core": "^8 || ^9"
             },
             "suggest": {
                 "drupal/config_split": "Split site configuration for different environments."
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.5",
                     "datestamp": "1572542288",
@@ -4443,6 +4440,9 @@
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Backport improvements in infinite recursion protection from the entity_reference field formatter @see https://www.drupal.org/project/dynamic_entity_reference/issues/3152105#comment-13701599": "https://www.drupal.org/files/issues/2020-06-16/3152105-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5786,17 +5786,17 @@
         },
         {
             "name": "drupal/menu_admin_per_menu",
-            "version": "1.1.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/menu_admin_per_menu.git",
-                "reference": "8.x-1.1"
+                "reference": "8.x-1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/menu_admin_per_menu-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "a9522b06654faa2d9bd23f704c93e1093f3ff6ec"
+                "url": "https://ftp.drupal.org/files/projects/menu_admin_per_menu-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "cb967bdd9ca6f5692d670d5c7c8d77587e7fd38c"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
@@ -5804,8 +5804,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1591098397",
+                    "version": "8.x-1.3",
+                    "datestamp": "1593436060",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -8142,16 +8142,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "10.3.0",
+            "version": "10.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "166dade258c1f1771354c001c0f73a37b3d214c9"
+                "reference": "aad2b17ad34801d9b55cff903e3e7db65d754b80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/166dade258c1f1771354c001c0f73a37b3d214c9",
-                "reference": "166dade258c1f1771354c001c0f73a37b3d214c9",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/aad2b17ad34801d9b55cff903e3e7db65d754b80",
+                "reference": "aad2b17ad34801d9b55cff903e3e7db65d754b80",
                 "shasum": ""
             },
             "require": {
@@ -8274,7 +8274,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-06-22T14:57:31+00:00"
+            "time": "2020-06-30T19:43:45+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -9690,6 +9690,12 @@
                 "autoloading",
                 "laminas",
                 "zf"
+            ],
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
             ],
             "time": "2020-05-20T16:45:56+00:00"
         },
@@ -12305,7 +12311,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-02-13T14:54:04+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -16563,16 +16569,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.10.0",
+            "version": "1.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "5796d127b0c4ff505b77455148ea9d5269d99758"
+                "reference": "969b211f9a51aa1f6c01d1d2aef56d3bd91598e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/5796d127b0c4ff505b77455148ea9d5269d99758",
-                "reference": "5796d127b0c4ff505b77455148ea9d5269d99758",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/969b211f9a51aa1f6c01d1d2aef56d3bd91598e5",
+                "reference": "969b211f9a51aa1f6c01d1d2aef56d3bd91598e5",
                 "shasum": ""
             },
             "require": {
@@ -16613,7 +16619,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-06-28T07:02:41+00:00"
+            "time": "2020-06-29T13:22:24+00:00"
         },
         {
             "name": "nette/finder",
