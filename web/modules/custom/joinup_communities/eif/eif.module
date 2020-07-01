@@ -44,6 +44,10 @@ function eif_views_plugins_argument_alter(array &$plugins) {
 
 /**
  * Implements hook_block_access().
+ *
+ * Workaround for facets not properly narrowing down results.
+ *
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6090
  */
 function eif_block_access(BlockInterface $block, string $operation, AccountInterface $account): AccessResultInterface {
   $data = [
