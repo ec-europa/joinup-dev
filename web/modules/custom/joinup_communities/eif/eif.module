@@ -7,6 +7,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\block\Entity\Block;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -25,4 +27,40 @@ function eif_entity_field_access($operation, FieldDefinitionInterface $field_def
   // the user has access, the result will be neutral and the default access
   // result for fields will be enforced, which is the allowed.
   return AccessResult::forbiddenIf(!$account->hasPermission('edit eif recommendations'));
+}
+
+/**
+ * Implements hook_block_access().
+ */
+function eif_block_access(Block $block, $operation, AccountInterface $account): AccessResultInterface {
+  $data = [
+    'principle' => ['conceptual_model', 'interoperability_layer'],
+    'conceptualmodel' => ['principle', 'interoperability_layer'],
+    'interoperabilitylayer' => ['principle', 'conceptual_model'],
+  ];
+
+  if (!in_array($block->id(), array_keys($data))) {
+    return AccessResult::neutral();
+  }
+
+  $route_match = \Drupal::routeMatch();
+  if ($route_match->getRouteName() !== 'view.eif_recommendations.page_1') {
+    return AccessResult::neutral();
+  }
+  $path = \Drupal::request()->getUri();
+
+  $parts = UrlHelper::parse($path);
+  if (empty($parts['query']['f'])) {
+    return AccessResult::neutral();
+  }
+
+  foreach ($parts['query']['f'] as $filter) {
+    foreach ($data[$block->id()] as $needle) {
+      if (strpos($filter, $needle . ':') === 0) {
+        return AccessResult::forbidden();
+      }
+    }
+  }
+
+  return AccessResult::neutral();
 }
