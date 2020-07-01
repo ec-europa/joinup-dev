@@ -233,7 +233,7 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function assertInlineFacetNotExists(string $facet): void {
     $facet_id = self::getFacetIdFromAlias($facet);
-    if ($element = $this->getSession()->getPage()->find('xpath', "//*[@data-drupal-facet-id='{$facet_id}']")) {
+    if ($this->getSession()->getPage()->find('xpath', "//*[@data-drupal-facet-id='{$facet_id}']")) {
       throw new \Exception("Inline facet '{$facet}' should not exist but was found.");
     }
   }
