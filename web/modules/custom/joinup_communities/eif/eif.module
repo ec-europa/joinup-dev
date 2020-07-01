@@ -31,6 +31,10 @@ function eif_entity_field_access($operation, FieldDefinitionInterface $field_def
 
 /**
  * Implements hook_block_access().
+ *
+ * Workaround for facets not properly narrowing down results.
+ *
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6090
  */
 function eif_block_access(Block $block, $operation, AccountInterface $account): AccessResultInterface {
   $data = [
