@@ -59,13 +59,20 @@ Feature:
     When I click "Recommendation 1 | Underlying Principle 1: subsidiarity and proportionality"
     Then I should see the heading "EIF Toolbox"
 
+  @javascript
+  Scenario: Searching for anything, will not return eif recommendations as results.
+    Given I am not logged in
+    And I am on the homepage
+    And I open the search bar by clicking on the search icon
+    And I enter "Underlying Principle 4" in the search bar and press enter
+    Then I should not see the text "Underlying Principle 4" in the "Content" region
+
   Scenario: The related terms are available in the page in 3 separate facets for filtering.
     Given I am not logged in
     And I go to the "EIF Toolbox" solution
     When I click "Recommendations" in the "Left sidebar" region
 
-    And the "eif principle" select facet should contain the following options:
-      | - All -                                                               |
+    And the "eif principle" inline facet should allow selecting the following values:
       | Underlying Principle 1: subsidiarity and proportionality              |
       | Underlying Principle 2: openess                                       |
       | Underlying Principle 3: transparency                                  |
@@ -79,8 +86,7 @@ Feature:
       | Underlying Principle 11: preservation of information                  |
       | Underlying Principle 12: assessment of effectiveness and efficiency   |
 
-    And the "eif interoperability layer" select facet should contain the following options:
-      | - All -                                                        |
+    And the "eif interoperability layer" inline facet should allow selecting the following values:
       | Interoperability Layer 1: Interoperability governance          |
       | Interoperability Layer 2: Integrated public service governance |
       | Interoperability Layer 3: Legal interoperability               |
@@ -88,9 +94,23 @@ Feature:
       | Interoperability Layer 5: Semantic interoperability            |
       | Interoperability Layer 6: Technical interoperability           |
 
-    And the "eif conceptual model" select facet should contain the following options:
-      | - All -                                 |
-      | Model                                   |
-      | Basic Component 3: Base registries      |
-      | Basic Component 4: Open data            |
-      | Basic Component 7: Security and privacy |
+    And the "eif conceptual model" inline facet should allow selecting the following values:
+      | Model                                                        |
+      | Basic Component 2: Internal information sources and services |
+      | Basic Component 3: Base registries                           |
+      | Basic Component 4: Open data                                 |
+      | Basic Component 5: Catalogues                                |
+      | Basic Component 6: External information sources and services |
+      | Basic Component 7: Security and privacy                      |
+
+    When I click "Underlying Principle 2: openess" in the "eif principle" inline facet
+    Then I should not see the "eif interoperability layer" inline facet
+    And I should not see the "eif conceptual model" inline facet
+
+    When I click "Underlying Principle 2: openess" in the "eif principle" inline facet
+    Then I should see the "eif interoperability layer" inline facet
+    And I should see the "eif conceptual model" inline facet
+
+    When I click "Basic Component 4: Open data" in the "eif conceptual model" inline facet
+    Then I should not see the "eif principle" inline facet
+    And I should not see the "eif interoperability layer" inline facet
