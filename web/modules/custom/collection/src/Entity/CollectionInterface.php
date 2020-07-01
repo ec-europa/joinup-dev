@@ -6,11 +6,12 @@ namespace Drupal\collection\Entity;
 
 use Drupal\joinup_bundle_class\ShortIdInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Interface for collection entities in Joinup.
  */
-interface CollectionInterface extends RdfInterface, GroupInterface, ShortIdInterface {
+interface CollectionInterface extends RdfInterface, EntityWorkflowStateInterface, GroupInterface, ShortIdInterface {
 
 }

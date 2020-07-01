@@ -10,6 +10,7 @@ use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\joinup_bundle_class\ShortIdTrait;
 use Drupal\joinup_group\Entity\GroupTrait;
 use Drupal\joinup_group\Exception\MissingGroupException;
+use Drupal\joinup_workflow\EntityWorkflowStateTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -18,6 +19,7 @@ use Drupal\rdf_entity\RdfInterface;
  */
 class Solution extends Rdf implements SolutionInterface {
 
+  use EntityWorkflowStateTrait;
   use GroupTrait;
   use JoinupBundleClassFieldAccessTrait;
   use ShortIdTrait;
@@ -45,6 +47,13 @@ class Solution extends Rdf implements SolutionInterface {
       throw new MissingGroupException();
     }
     return $field_item->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWorkflowStateFieldName(): string {
+    return 'field_is_state';
   }
 
 }
