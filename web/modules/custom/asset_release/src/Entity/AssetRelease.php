@@ -6,6 +6,7 @@ namespace Drupal\asset_release\Entity;
 
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\joinup_group\Exception\MissingGroupException;
+use Drupal\joinup_workflow\EntityWorkflowStateTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\solution\Entity\SolutionContentTrait;
@@ -15,6 +16,7 @@ use Drupal\solution\Entity\SolutionContentTrait;
  */
 class AssetRelease extends Rdf implements AssetReleaseInterface {
 
+  use EntityWorkflowStateTrait;
   use JoinupBundleClassFieldAccessTrait;
   use SolutionContentTrait;
 
@@ -27,6 +29,13 @@ class AssetRelease extends Rdf implements AssetReleaseInterface {
       throw new MissingGroupException();
     }
     return $field_item->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWorkflowStateFieldName(): string {
+    return 'field_isr_state';
   }
 
 }

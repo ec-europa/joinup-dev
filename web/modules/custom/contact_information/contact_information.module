@@ -11,6 +11,16 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\contact_information\Entity\ContactInformation;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function contact_information_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['rdf_entity']['contact_information'])) {
+    $bundles['rdf_entity']['contact_information']['class'] = ContactInformation::class;
+  }
+}
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
