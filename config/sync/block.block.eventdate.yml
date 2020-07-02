@@ -11,8 +11,8 @@ dependencies:
     - joinup_theme
 id: eventdate
 theme: joinup_theme
-region: content_top
-weight: -21
+region: filters
+weight: -9
 provider: null
 plugin: 'facet_block:event_date'
 settings:

@@ -8,8 +8,8 @@ dependencies:
     - joinup_theme
 id: site_alerts
 theme: joinup_theme
-region: content
-weight: -22
+region: content_top
+weight: -23
 provider: null
 plugin: site_alert_block
 settings:
