@@ -81,7 +81,7 @@ Feature: Collection moderation
       | Luck in the Abyss       | Erika Reid      |                                                                     |
 
       # The following collections do not follow the rule above and should be
-      # testes as shown.
+      # tested as shown.
       | Deep Past               | Carole James    | Save as draft, Propose                                              |
       | The Licking Silence     | Carole James    | Propose, Save as draft                                              |
       | Person of Wizards       | Carole James    | Publish, Save as draft, Propose                                     |
