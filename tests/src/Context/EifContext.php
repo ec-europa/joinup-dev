@@ -15,6 +15,7 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
+use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\taxonomy\Entity\Term;
 
 /**
@@ -82,7 +83,9 @@ class EifContext extends RawDrupalContext {
     ]);
     $instance = reset($instances);
     $menu_name = "ogmenu-{$instance->id()}";
-    $internal_path = Url::fromRoute('view.eif_recommendations.page')->toUriString();
+    $internal_path = Url::fromRoute('view.eif_recommendations.page', [
+      'rdf_entity' => UriEncoder::encodeUrl(Eif::EIF_ID),
+    ])->toUriString();
     $link = MenuLinkContent::create([
       'title' => $this->t('Recommendations'),
       'menu_name' => $menu_name,
