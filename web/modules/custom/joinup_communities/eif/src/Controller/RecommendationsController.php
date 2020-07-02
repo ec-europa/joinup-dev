@@ -7,7 +7,7 @@ namespace Drupal\eif\Controller;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\eif\Plugin\OgGroupResolver\EifGroupResolver;
+use Drupal\eif\Eif;
 
 /**
  * Creates a list of EIF recommendations.
@@ -56,7 +56,7 @@ class RecommendationsController extends ControllerBase {
    *   The access result.
    */
   public function access(): AccessResultInterface {
-    $eif_solution = $this->entityTypeManager()->getStorage('rdf_entity')->load(EifGroupResolver::EIF_ID);
+    $eif_solution = $this->entityTypeManager()->getStorage('rdf_entity')->load(Eif::EIF_ID);
     return $this->entityTypeManager()->getAccessControlHandler('rdf_entity')->access($eif_solution, 'view', NULL, TRUE);
   }
 

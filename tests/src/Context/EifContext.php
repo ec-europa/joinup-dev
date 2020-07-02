@@ -9,7 +9,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
-use Drupal\eif\Plugin\OgGroupResolver\EifGroupResolver;
+use Drupal\eif\Eif;
 use Drupal\joinup\Traits\SearchTrait;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -66,7 +66,7 @@ class EifContext extends RawDrupalContext {
     // Create the EIF Toolbox solution.
     $solution = Rdf::create([
       'rid' => 'solution',
-      'id' => EifGroupResolver::EIF_ID,
+      'id' => Eif::EIF_ID,
       'label' => 'EIF Toolbox',
       'collection' => 'http://nifo.collection',
       'field_is_state' => 'validated',
@@ -115,7 +115,7 @@ class EifContext extends RawDrupalContext {
     $this->disableCommitOnUpdate();
 
     $rdf_ids = [
-      EifGroupResolver::EIF_ID,
+      Eif::EIF_ID,
       'http://nifo.collection',
       'http://example.com/owner',
       'http://example.com/contact',
