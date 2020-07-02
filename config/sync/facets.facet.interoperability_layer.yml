@@ -14,7 +14,7 @@ weight: 0
 min_count: 1
 show_only_one_result: true
 field_identifier: field_eif_related_term
-facet_source_id: 'search_api:views_page__eif_recommendations__page_1'
+facet_source_id: 'search_api:views_page__eif_recommendations__page'
 widget:
   type: links_inline
   config:

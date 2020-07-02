@@ -48,7 +48,7 @@ function eif_block_access(Block $block, $operation, AccountInterface $account): 
   }
 
   $route_match = \Drupal::routeMatch();
-  if ($route_match->getRouteName() !== 'view.eif_recommendations.page_1') {
+  if ($route_match->getRouteName() !== 'view.eif_recommendations.page') {
     return AccessResult::neutral();
   }
   $path = \Drupal::request()->getUri();
