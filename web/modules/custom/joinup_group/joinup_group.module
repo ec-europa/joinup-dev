@@ -310,7 +310,7 @@ function joinup_group_og_user_access_alter(&$permissions, &$cacheable_metadata, 
   $user = $context['user'];
 
   $membership = $group->getMembership((int) $user->id());
-  $role_id = implode('-', [$group->getEntityTypeId(), $group->bundle(), 'administrator']);
+  $role_id = "{$group->getEntityTypeId()}-{$group->bundle()}-administrator";
   if ($membership instanceof OgMembershipInterface && $membership->hasRole($role_id)) {
     $permissions[] = 'delete';
   }
