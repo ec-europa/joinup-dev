@@ -33,9 +33,9 @@ function joinup_core_post_update_0106200(): void {
 /**
  * Create the references page in the EIF Toolbox menu.
  */
-function joinup_core_post_update_0106201(&$sandbox) {
+function joinup_core_post_update_0106201(array &$sandbox): void {
   $menu_name = 'ogmenu-3444';
-  $internal_path = Url::fromRoute('view.eif_recommendations.page_1')->toUriString();
+  $internal_path = Url::fromRoute('view.eif_recommendations.page')->toUriString();
   $link = MenuLinkContent::create([
     'title' => t('Recommendations'),
     'menu_name' => $menu_name,

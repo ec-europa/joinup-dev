@@ -82,7 +82,7 @@ class EifContext extends RawDrupalContext {
     ]);
     $instance = reset($instances);
     $menu_name = "ogmenu-{$instance->id()}";
-    $internal_path = Url::fromRoute('view.eif_recommendations.page_1')->toUriString();
+    $internal_path = Url::fromRoute('view.eif_recommendations.page')->toUriString();
     $link = MenuLinkContent::create([
       'title' => $this->t('Recommendations'),
       'menu_name' => $menu_name,
