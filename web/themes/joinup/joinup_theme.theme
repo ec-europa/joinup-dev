@@ -1017,7 +1017,7 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
   $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
   $variables['additional_content']['published'] = $published;
 
-  $update_date = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
+  $update_date = \Drupal::service('date.formatter')->format($node->getRevisionCreationTime(), 'custom', 'd/m/Y');
   $variables['additional_content']['updated'] = $update_date;
 
   $author_inline = _joinup_theme_get_author($node);
@@ -1034,7 +1034,7 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
   $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
   $variables['additional_content']['published'] = $published;
 
-  $update_date = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
+  $update_date = \Drupal::service('date.formatter')->format($node->getRevisionCreationTime(), 'custom', 'd/m/Y');
   $variables['additional_content']['updated'] = $update_date;
 
   $author_inline = _joinup_theme_get_author($node);
@@ -1074,7 +1074,7 @@ function joinup_theme_preprocess_page_title__node__document(&$variables) {
   // date in the Twig template.
   $variables['additional_content']['field_document_publication_date_raw'] = empty($publication_date_value) ? '' : $date_formatter->format(strtotime($publication_date_value), 'custom', 'd/m/Y');
 
-  $update_date = $date_formatter->format($node->getChangedTime(), 'custom', 'd/m/Y');
+  $update_date = $date_formatter->format($node->getRevisionCreationTime(), 'custom', 'd/m/Y');
   $variables['additional_content']['updated'] = $update_date;
 
   $field_short_title = $view_builder->viewField($node->field_short_title, 'default');
