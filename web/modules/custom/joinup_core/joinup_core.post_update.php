@@ -9,9 +9,11 @@ declare(strict_types = 1);
 
 use Drupal\Core\Database\Database;
 use Drupal\Core\Url;
+use Drupal\eif\Eif;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\rdf_taxonomy\Entity\RdfTerm;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
+use Drupal\sparql_entity_storage\UriEncoder;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
 
@@ -33,9 +35,11 @@ function joinup_core_post_update_0106200(): void {
 /**
  * Create the references page in the EIF Toolbox menu.
  */
-function joinup_core_post_update_0106201(&$sandbox) {
+function joinup_core_post_update_0106201(array &$sandbox): void {
   $menu_name = 'ogmenu-3444';
-  $internal_path = Url::fromRoute('view.eif_recommendations.page_1')->toUriString();
+  $internal_path = Url::fromRoute('view.eif_recommendations.page', [
+    'rdf_entity' => UriEncoder::encodeUrl(Eif::EIF_ID),
+  ])->toUriString();
   $link = MenuLinkContent::create([
     'title' => t('Recommendations'),
     'menu_name' => $menu_name,

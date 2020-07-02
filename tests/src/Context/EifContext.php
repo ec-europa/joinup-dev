@@ -9,12 +9,13 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
-use Drupal\eif\Plugin\OgGroupResolver\EifGroupResolver;
+use Drupal\eif\Eif;
 use Drupal\joinup\Traits\SearchTrait;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
+use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\taxonomy\Entity\Term;
 
 /**
@@ -66,7 +67,7 @@ class EifContext extends RawDrupalContext {
     // Create the EIF Toolbox solution.
     $solution = Rdf::create([
       'rid' => 'solution',
-      'id' => EifGroupResolver::EIF_ID,
+      'id' => Eif::EIF_ID,
       'label' => 'EIF Toolbox',
       'collection' => 'http://nifo.collection',
       'field_is_state' => 'validated',
@@ -82,7 +83,9 @@ class EifContext extends RawDrupalContext {
     ]);
     $instance = reset($instances);
     $menu_name = "ogmenu-{$instance->id()}";
-    $internal_path = Url::fromRoute('view.eif_recommendations.page_1')->toUriString();
+    $internal_path = Url::fromRoute('view.eif_recommendations.page', [
+      'rdf_entity' => UriEncoder::encodeUrl(Eif::EIF_ID),
+    ])->toUriString();
     $link = MenuLinkContent::create([
       'title' => $this->t('Recommendations'),
       'menu_name' => $menu_name,
@@ -115,7 +118,7 @@ class EifContext extends RawDrupalContext {
     $this->disableCommitOnUpdate();
 
     $rdf_ids = [
-      EifGroupResolver::EIF_ID,
+      Eif::EIF_ID,
       'http://nifo.collection',
       'http://example.com/owner',
       'http://example.com/contact',

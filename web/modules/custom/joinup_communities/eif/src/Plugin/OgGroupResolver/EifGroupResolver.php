@@ -4,9 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\eif\Plugin\OgGroupResolver;
 
+use Drupal\eif\Eif;
 use Drupal\og\OgResolvedGroupCollectionInterface;
 use Drupal\og\Plugin\OgGroupResolver\RouteGroupResolver;
-use Drupal\taxonomy\Entity\Term;
+use Drupal\rdf_taxonomy\Entity\RdfTerm;
 
 /**
  * Resolves the group from the route.
@@ -22,13 +23,12 @@ use Drupal\taxonomy\Entity\Term;
  */
 class EifGroupResolver extends RouteGroupResolver {
 
-  const EIF_ID = 'http://data.europa.eu/w21/405d8980-3f06-4494-b34a-46c388a38651';
-
   /**
    * {@inheritdoc}
    */
   protected function getContentEntityPaths() {
     return [
+      '/rdf_entity/{rdf_entity}/recommendations' => 'rdf_entity',
       '/taxonomy/term/{taxonomy_term}' => 'taxonomy_term',
     ];
   }
@@ -37,25 +37,14 @@ class EifGroupResolver extends RouteGroupResolver {
    * {@inheritdoc}
    */
   public function resolve(OgResolvedGroupCollectionInterface $collection) {
-    $entity = $this->getContentEntity();
-    if (
-      $entity
-      && ($entity instanceof Term)
-      && $entity->bundle() === 'eif_recommendations'
-      && $group = $this->entityTypeManager->getStorage('rdf_entity')->load(self::EIF_ID)
-    ) {
-      $collection->addGroup($group, ['route']);
-      // Stop searching for other groups. The EIF Toolbox is the only candidate.
-      $this->stopPropagation();
-    }
-
-    if (
-      $this->routeMatch->getRouteName() === 'view.eif_recommendations.page_1'
-      && $group = $this->entityTypeManager->getStorage('rdf_entity')->load(self::EIF_ID)
-    ) {
-      $collection->addGroup($group, ['route']);
-      // Stop searching for other groups. The EIF Toolbox is the only candidate.
-      $this->stopPropagation();
+    if ($entity = $this->getContentEntity()) {
+      if ($entity->id() === Eif::EIF_ID || ($entity instanceof RdfTerm && $entity->bundle() === 'eif_recommendations')) {
+        if ($solution = $this->entityTypeManager->getStorage('rdf_entity')->load(Eif::EIF_ID)) {
+          $collection->addGroup($solution, ['route']);
+          // Stop searching for other groups. EIF Toolbox is the only candidate.
+          $this->stopPropagation();
+        }
+      }
     }
   }
 
