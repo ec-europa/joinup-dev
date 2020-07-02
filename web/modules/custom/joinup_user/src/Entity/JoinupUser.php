@@ -54,10 +54,11 @@ class JoinupUser extends User implements JoinupUserInterface {
   /**
    * {@inheritdoc}
    */
-  public function id(): int {
+  public function id(): ?int {
     // According to `AccountInterface::id()` this should return an integer, but
     // we get a string back from the database. Enforce the right type.
-    return (int) parent::id();
+    $id = parent::id();
+    return is_null($id) ? NULL : (int) $id;
   }
 
 }
