@@ -24,3 +24,17 @@ collection.subscribe_to_collection_form:
         type: entity:rdf_entity
         bundle:
           - collection
+collection.glossary_page:
+  path: /rdf_entity/{rdf_entity}/glossary/{letter}
+  defaults:
+    _controller: Drupal\collection\Controller\GlossaryController::glossary
+    _title_callback: Drupal\collection\Controller\GlossaryController::title
+    letter: null
+  requirements:
+    _custom_access: Drupal\collection\Controller\GlossaryController::access
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+        bundle:
+          - collection
