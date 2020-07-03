@@ -51,14 +51,4 @@ class JoinupUser extends User implements JoinupUserInterface {
     return $this->get('status')->value == -1;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function id(): ?int {
-    // According to `AccountInterface::id()` this should return an integer, but
-    // we get a string back from the database. Enforce the right type.
-    $id = parent::id();
-    return is_null($id) ? NULL : (int) $id;
-  }
-
 }
