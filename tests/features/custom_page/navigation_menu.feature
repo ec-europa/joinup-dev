@@ -14,7 +14,7 @@ Feature: Navigation menu for custom pages
     # about page are added to the menu.
     When I am logged in as a facilitator of the "Rainbow tables" <group>
     And I go to the homepage of the "Rainbow tables" <group>
-    Then the navigation menu of the "Rainbow tables" <group> should have 3 visible items
+    Then the navigation menu of the "Rainbow tables" <group> should have <visible items 1> visible items
     And I should see the following group menu items in the specified order:
       | text     |
       | Overview |
@@ -35,14 +35,14 @@ Feature: Navigation menu for custom pages
     And I enter "A short introduction." in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the success message "Custom page About us has been created."
-    And the navigation menu of the "Rainbow tables" <group> should have 4 visible items
+    And the navigation menu of the "Rainbow tables" <group> should have <visible items 2> visible items
 
     When I click the contextual link "Edit menu" in the "Left sidebar" region
-    Then the navigation menu of the "Rainbow tables" <group> should have 4 items
+    Then the navigation menu of the "Rainbow tables" <group> should have <items> items
 
     # It should be possible to hide an item from the menu by disabling it.
     When I disable "About us" in the navigation menu of the "Rainbow tables" <group>
-    Then the navigation menu of the "Rainbow tables" <group> should have 3 visible items
+    Then the navigation menu of the "Rainbow tables" <group> should have <visible items 3> visible items
 
     # When all the pages are disabled in the navigation menu, a message should
     # be shown to the user.
@@ -127,9 +127,9 @@ Feature: Navigation menu for custom pages
     But I should not see the link "About us" in the "Navigation menu"
 
     Examples:
-      | group      |
-      | collection |
-      | solution   |
+      | group      | visible items 1 | visible items 2 | items | visible items 3 |
+      | collection | 4               | 5               | 5     | 4               |
+      | solution   | 3               | 4               | 5     | 3               |
 
   @javascript
   Scenario Outline: The contextual links button in the navigation menu should be always visible

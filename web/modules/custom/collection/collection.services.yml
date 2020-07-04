@@ -35,3 +35,7 @@ services:
     arguments: ['@entity_type.manager']
     tags:
       - { name: event_subscriber }
+  collection.group_menu_links:
+    class: Drupal\collection\EventSubscriber\CollectionGroupMenuLinksSubscriber
+    tags:
+      - { name: event_subscriber }

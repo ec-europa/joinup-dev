@@ -29,3 +29,7 @@ services:
     arguments: ['@entity_type.manager']
     tags:
       - { name: event_subscriber }
+  solution.group_menu_links:
+    class: Drupal\solution\EventSubscriber\SolutionGroupMenuLinksSubscriber
+    tags:
+      - { name: event_subscriber }
