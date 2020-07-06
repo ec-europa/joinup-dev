@@ -468,30 +468,3 @@ function collection_node_delete(NodeInterface $node) {
     $group->setChangedTime(\Drupal::time()->getRequestTime())->save();
   }
 }
-
-/**
- * Implements hook_ENTITY_TYPE_delete().
- *
- * @todo This introduces a circular dependency on the solution module.
- * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5984
- */
-function collection_rdf_entity_delete(RdfInterface $solution) {
-  if (($solution->bundle() !== 'solution') || ($solution->field_is_state->value !== 'validated')) {
-    return;
-  }
-
-  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
-  $ids = $storage->getQuery()
-    ->condition('rid', 'collection')
-    ->condition('field_ar_affiliates', $solution->id())
-    ->execute();
-  if ($ids) {
-    // Touch the parent collections in order to update their changed timestamp.
-    $request_time = \Drupal::time()->getRequestTime();
-    /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    foreach ($storage->loadMultiple($ids) as $collection) {
-      $collection->skip_notification = TRUE;
-      $collection->setChangedTime($request_time)->save();
-    }
-  }
-}
