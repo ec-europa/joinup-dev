@@ -11,6 +11,12 @@ Feature: Add comments
       | Username          | E-mail                        | Roles     | First name | Family name |
       | Miss tell tales   | tell.tales@example.com        |           | Miss       | Tales       |
       | Comment moderator | comment.moderator@example.com | moderator | Comment    | Moderator   |
+      | Layonel Sarok     | layonel.sarok@example.com     |           | Layonel    | Sarok       |
+      | Korma Salya       | korma.salya@example.com       |           | Korma      | Salya       |
+    And the following collection user memberships:
+      | collection        | user          | roles                      |
+      | Gossip collection | Layonel Sarok | administrator, facilitator |
+      | Gossip collection | Korma Salya   | facilitator                |
 
   # This scenario uses javascript to work as regression test for a bug that
   # makes CKEditor unusable upon a page load.
@@ -38,6 +44,16 @@ Feature: Add comments
     And I should see the link "Miss Tales"
     But I should not see the link "Miss tell tales"
     And the email sent to "Comment moderator" with subject "Joinup: A new comment has been created." contains the following lines of text:
+      | text                                                                                    |
+      | Miss Tales posted a comment in collection "Gossip collection".                          |
+      | To view the comment click                                                               |
+      | If you think this action is not clear or not due, please contact Joinup Support at http |
+    And the email sent to "Layonel Sarok" with subject "Joinup: A new comment has been created." contains the following lines of text:
+      | text                                                                                    |
+      | Miss Tales posted a comment in collection "Gossip collection".                          |
+      | To view the comment click                                                               |
+      | If you think this action is not clear or not due, please contact Joinup Support at http |
+    And the email sent to "Korma Salya" with subject "Joinup: A new comment has been created." contains the following lines of text:
       | text                                                                                    |
       | Miss Tales posted a comment in collection "Gossip collection".                          |
       | To view the comment click                                                               |
