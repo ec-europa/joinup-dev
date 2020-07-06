@@ -164,6 +164,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_event_date
+  field_event_date_end:
+    label: 'Event date: end'
+    datasource_id: 'entity:node'
+    property_path: 'field_event_date:end_value'
+    type: date
+    dependencies:
+      config:
+        - field.storage.node.field_event_date
   field_is_description:
     label: 'Description » Processed text'
     datasource_id: 'entity:rdf_entity'
