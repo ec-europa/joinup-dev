@@ -238,11 +238,10 @@ class SubscribeToCollectionForm extends FormBase {
    *   The membership of the user or null.
    */
   protected function getUserNonBlockedMembership(RdfInterface $collection): ?OgMembershipInterface {
-    $membership = $this->membershipManager->getMembership($collection, $this->getUser(), [
+    return $this->membershipManager->getMembership($collection, $this->getUser()->id(), [
       OgMembershipInterface::STATE_ACTIVE,
       OgMembershipInterface::STATE_PENDING,
     ]);
-    return $membership;
   }
 
   /**

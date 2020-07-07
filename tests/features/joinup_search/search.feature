@@ -89,15 +89,14 @@ Feature: Global search
     Then I should see the text "Content types" in the "Left sidebar" region
 
     # Select link in the 'type' facet.
-
     When I check the "News (1)" checkbox from the "Content types" facet
     Then the "News" content checkbox item should be selected
-    And the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
+    And the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (1)"
 
     When I check the "Solutions (2)" checkbox from the "Content types" facet
     Then the "Solutions" content checkbox item should be selected
     And the "News" content checkbox item should be selected
-    Then the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
+    Then the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (1)"
     And the "policy domain" select facet should contain the following options:
       | Any policy domain             |
       | Demography   (1)              |
@@ -127,11 +126,12 @@ Feature: Global search
       | name  | Go-to contact     |
       | email | go-to@example.com |
     And the following collections:
-      | title            | description                                                  | abstract                       | state     |
-      | Collection alpha | <p>This is the collection <strong>beta</strong> description. | The collection gamma abstract. | validated |
+      | title            | description                                          | abstract                       | state     |
+      | Collection alpha | <p>collection <strong>beta</strong> description.</p> | The collection gamma abstract. | validated |
+      | Col for Sol      | <p>collection for the solution.</p>                  | The col for sol abstract.      | validated |
     And the following solutions:
-      | title          | description                                                | keywords | owner             | contact information | state     |
-      | Solution alpha | <p>This is the solution <strong>beta</strong> description. | Alphabet | Responsible owner | Go-to contact       | validated |
+      | title          | description                                                | keywords | owner             | contact information | collection  | state     |
+      | Solution alpha | <p>This is the solution <strong>beta</strong> description. | Alphabet | Responsible owner | Go-to contact       | Col for Sol | validated |
     And the following releases:
       | title         | release number | release notes                               | keywords | is version of  | owner             | contact information | state     |
       | Release Alpha | 1              | <p>Release notes for <em>beta</em> changes. | Alphabet | Solution alpha | Responsible owner | Go-to contact       | validated |
@@ -163,14 +163,20 @@ Feature: Global search
     And custom_page content:
       | title      | body                                     | collection       |
       | Page omega | This is just an epsilon but should work. | Collection alpha |
+    And video content:
+      | title       | body          | field_video                                 | collection       |
+      | Video alpha | Slap like now | https://www.youtube.com/watch?v=JhGf8ZY0tN8 | Collection alpha |
     And users:
       | Username     | E-mail                      | First name | Family name | Organisation |
       | jenlyle      | jenessa.carlyle@example.com | Jenessa    | Carlyle     | Clyffco      |
       | ulyssesfrees | ulysses.freeman@example.com | Ulysses    | Freeman     | Omero snc    |
 
+    When I visit the search page
+    Then the "Content types" checkbox facet should allow selecting the following values "Collections (2), Solution (1), News (1), Events (2), Document (1), Discussion (1), Release (1), Custom page (1), Licence (1), Video (1)"
+
     # "Alpha" is used in all the rdf entities titles.
     When I enter "Alpha" in the search bar and press enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha"
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha, Video alpha"
     And I should not see the text "Newsletter omega"
 
     # "Omega" is used in all the node entities titles. Since the content of

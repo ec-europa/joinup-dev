@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b1a21f749765382721feedbecf2281e1",
+    "content-hash": "5bd597bb780eb0131f6b9bf9c7d12357",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3274,6 +3274,9 @@
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Backport improvements in infinite recursion protection from the entity_reference field formatter @see https://www.drupal.org/project/dynamic_entity_reference/issues/3152105#comment-13701599": "https://www.drupal.org/files/issues/2020-06-16/3152105-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -13338,7 +13341,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-2.3",
-                    "datestamp": "1592535597",
+                    "datestamp": "1592535714",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -15648,10 +15651,7 @@
             "type": "library",
             "extra": {
                 "enable-patching": true,
-                "composer-exit-on-patch-failure": true,
-                "patches_applied": {
-                    "Allow to pass array options to 'run' & 'exec' tasks @see https://github.com/openeuropa/task-runner/pull/137": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/137.diff"
-                }
+                "composer-exit-on-patch-failure": true
             },
             "autoload": {
                 "psr-4": {
@@ -16040,11 +16040,7 @@
                     "TaskRunner\\Redis\\": "./src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "TaskRunner\\Redis\\Tests\\": "./tests/src/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "EUPL-1.2"
             ],
@@ -16058,10 +16054,6 @@
             "keywords": [
                 "task-runner"
             ],
-            "support": {
-                "source": "https://github.com/php-task-runner/redis/tree/master",
-                "issues": "https://github.com/php-task-runner/redis/issues"
-            },
             "time": "2020-06-16T16:22:10+00:00"
         },
         {
