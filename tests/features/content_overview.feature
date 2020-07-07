@@ -228,7 +228,7 @@ Feature: Content Overview
    # The date second level facet appears only after filtering for events.
     And I should not see the link "Upcoming events (3)"
 
-    When I click "Event"
+    When I click "Events"
     Then I should see the tiles in the correct order:
       | Autumn Boiling       |
       | Frozen Breeze        |
@@ -237,18 +237,17 @@ Feature: Content Overview
       | Bitter Finger        |
     And the "Event date" inline facet should allow selecting the following values:
       | My events (3)       |
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
 
-    # @todo The 'Frozen Barbershop' is a current event and should also be shown here.
-    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
     When I click "Upcoming events" in the "Event date" inline facet
     Then I should see the following tiles in the correct order:
-      | Frozen Breeze  |
-      | Autumn Boiling |
+      | Frozen Barbershop |
+      | Frozen Breeze     |
+      | Autumn Boiling    |
     And the "Event date" inline facet should allow selecting the following values:
       | My events (3)   |
-      | Past events (3) |
+      | Past events (2) |
       | All events      |
 
     When I click "My events" in the "Event date" inline facet
@@ -257,20 +256,17 @@ Feature: Content Overview
       | Frozen Barbershop |
       | Bitter Finger     |
     And the "Event date" inline facet should allow selecting the following values:
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
       | All events          |
 
-    # @todo The 'Frozen Barbershop' is a current event and should not be shown here.
-    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
     When I click "Past events" in the "Event date" inline facet
     Then I should see the following tiles in the correct order:
-      | Frozen Barbershop    |
       | Flying Official Fish |
       | Bitter Finger        |
     And the "Event date" inline facet should allow selecting the following values:
       | My events (3)       |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
       | All events          |
 
     # The second level facet is deactivated together with its parent.
@@ -294,17 +290,18 @@ Feature: Content Overview
       | Flying Official Fish |
       | Bitter Finger        |
     And the "Event date" inline facet should allow selecting the following values:
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
       | My events (1)       |
 
     # Tests facets with a different user to verify that cache leaks are prevented.
     When I click "Upcoming events" in the "Event date" inline facet
     Then I should see the following tiles in the correct order:
-      | Frozen Breeze  |
-      | Autumn Boiling |
+      | Frozen Barbershop |
+      | Frozen Breeze     |
+      | Autumn Boiling    |
     And the "Event date" inline facet should allow selecting the following values:
-      | Past events (3) |
+      | Past events (2) |
       | My events (1)   |
       | All events      |
 
@@ -312,17 +309,16 @@ Feature: Content Overview
     Then I should see the following tiles in the correct order:
       | Flying Official Fish |
     And the "Event date" inline facet should allow selecting the following values:
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
       | All events          |
 
     When I click "Past events" in the "Event date" inline facet
     Then I should see the following tiles in the correct order:
-      | Frozen Barbershop    |
       | Flying Official Fish |
       | Bitter Finger        |
     And the "Event date" inline facet should allow selecting the following values:
-      | Upcoming events (2) |
+      | Upcoming events (3) |
       | My events (1)       |
       | All events          |
 
@@ -331,15 +327,15 @@ Feature: Content Overview
     And I click "Events, discussions, news ..."
     And I click "Event"
     Then the "Event date" inline facet should allow selecting the following values:
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
 
     When I click "Upcoming events" in the "Event date" inline facet
     Then the "Event date" inline facet should allow selecting the following values:
-      | Past events (3) |
+      | Past events (2) |
       | All events      |
 
     When I click "Past events" in the "Event date" inline facet
     Then the "Event date" inline facet should allow selecting the following values:
-      | Upcoming events (2) |
+      | Upcoming events (3) |
       | All events          |

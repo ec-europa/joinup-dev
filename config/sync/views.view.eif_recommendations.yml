@@ -470,14 +470,14 @@ display:
             format: default_summary
           specify_validation: true
           validate:
-            type: 'entity:rdf_entity'
+            type: eif_toolbox
             fail: 'not found'
           validate_options:
             bundles:
               solution: solution
+            access: '1'
             operation: view
-            multiple: 0
-            access: false
+            multiple: '0'
           break_phrase: false
           not: 0
           plugin_id: search_api_group

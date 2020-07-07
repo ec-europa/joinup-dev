@@ -42,19 +42,18 @@ Feature: As a user of the website
       | Sweet Palm                |
     And the "Collection event date" inline facet should allow selecting the following values:
       | My events (3)       |
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
 
-    # @todo 'Sweet Palm' and 'Melted Hairdresser' are current events and should also be shown here.
-    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
     When I click "Upcoming events" in the "Collection event date" inline facet
     # The upcoming events, unlike the rest, are sorted in an 'ASC' order based on the field_event_date field value.
     Then I should see the following tiles in the correct order:
-      | Hot Air         |
-      | Spring Freezing |
+      | Spring Freezing    |
+      | Hot Air            |
+      | Melted Hairdresser |
     And the "Collection event date" inline facet should allow selecting the following values:
       | My events (3)   |
-      | Past events (3) |
+      | Past events (2) |
       | All events      |
 
     When I click "My events" in the "Collection event date" inline facet
@@ -63,20 +62,17 @@ Feature: As a user of the website
       | Melted Hairdresser |
       | Sweet Palm         |
     And the "Collection event date" inline facet should allow selecting the following values:
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
       | All events          |
 
-    # @todo 'Sweet Palm' and 'Melted Hairdresser' are current events and should not be shown here.
-    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
     When I click "Past events" in the "Collection event date" inline facet
     Then I should see the following tiles in the correct order:
-      | Melted Hairdresser        |
       | Walking Unofficial Humans |
       | Sweet Palm                |
     And the "Collection event date" inline facet should allow selecting the following values:
       | My events (3)       |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
       | All events          |
 
     # The second level facet is deactivated together with its parent.
@@ -99,17 +95,18 @@ Feature: As a user of the website
       | Walking Unofficial Humans |
       | Sweet Palm                |
     And the "Collection event date" inline facet should allow selecting the following values:
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
       | My events (1)       |
 
     # Tests facets with a different user to verify that cache leaks are prevented.
     When I click "Upcoming events" in the "Collection event date" inline facet
     Then I should see the following tiles in the correct order:
-      | Hot Air         |
-      | Spring Freezing |
+      | Spring Freezing    |
+      | Hot Air            |
+      | Melted Hairdresser |
     And the "Collection event date" inline facet should allow selecting the following values:
-      | Past events (3) |
+      | Past events (2) |
       | My events (1)   |
       | All events      |
 
@@ -117,17 +114,16 @@ Feature: As a user of the website
     Then I should see the following tiles in the correct order:
       | Walking Unofficial Humans |
     And the "Collection event date" inline facet should allow selecting the following values:
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
       | All events          |
 
     When I click "Past events" in the "Collection event date" inline facet
     Then I should see the following tiles in the correct order:
-      | Melted Hairdresser        |
       | Walking Unofficial Humans |
       | Sweet Palm                |
     And the "Collection event date" inline facet should allow selecting the following values:
-      | Upcoming events (2) |
+      | Upcoming events (3) |
       | My events (1)       |
       | All events          |
 
@@ -135,15 +131,15 @@ Feature: As a user of the website
     And I go to the homepage of the "Fairy Tail" collection
     And I click "Event"
     Then the "Collection event date" inline facet should allow selecting the following values:
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
 
     When I click "Upcoming events" in the "Collection event date" inline facet
     Then the "Collection event date" inline facet should allow selecting the following values:
-      | Past events (3) |
+      | Past events (2) |
       | All events      |
 
     When I click "Past events" in the "Collection event date" inline facet
     Then the "Collection event date" inline facet should allow selecting the following values:
-      | Upcoming events (2) |
+      | Upcoming events (3) |
       | All events          |

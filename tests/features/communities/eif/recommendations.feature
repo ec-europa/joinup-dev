@@ -21,18 +21,18 @@ Feature:
     Then I should see the heading "Test solution"
 
     When I go to "/collection/test-collection/solution/test-solution/recommendations"
-    Then I should see the heading "Access denied"
+    Then the response status code should be 404
 
-    # Access to the recommendations page depends on the view access of the parent solution.
-    #
-    # In order to avoid having two distinct scenario tags for published and unpublished EIF Toolbox, transit the entity
-    # to the state that deletes the validated version of the entity.
+    # Visibility of recommendations page depends on the view access of the
+    # parent solution. In order to avoid having two distinct scenario tags for
+    # published and unpublished EIF Toolbox, transit the entity to the state
+    # that deletes the validated version of the entity.
     Given the workflow state of the "EIF Toolbox" solution is changed to "blacklisted"
     And I am not logged in
     When I go to "/collection/nifo-collection/solution/eif-toolbox"
     Then I should see the heading "Sign in to continue"
     When I go to "/collection/nifo-collection/solution/eif-toolbox/recommendations"
-    Then I should see the heading "Sign in to continue"
+    Then the response status code should be 404
 
   Scenario: The recommendations page lists the recommendations links.
     Given I am not logged in
