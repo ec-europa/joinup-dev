@@ -160,9 +160,6 @@
             "web/modules/contrib/sparql_entity_storage/src/Database/Driver/sparql/ConnectionInterface.php",
             "web/modules/custom/joinup_sparql/driver/joinup_sparql/Connection.php"
         ],
-        "files": [
-            "src/Composer/load.environment.php"
-        ],
         "psr-4": {
             "Joinup\\": "src"
         }
@@ -171,6 +168,9 @@
         "classmap": [
             "web/modules/contrib/message_digest/src/Traits/MessageDigestTrait.php",
             "web/modules/contrib/og_menu/src/Tests/Traits/OgMenuTrait.php"
+        ],
+        "files": [
+            "src/Composer/load.environment.php"
         ],
         "psr-4": {
             "Drupal\\joinup\\": "tests/src",
