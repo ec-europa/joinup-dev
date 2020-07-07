@@ -156,10 +156,10 @@ display:
       footer: {  }
       empty: {  }
       relationships:
-        field_is_eif_reference:
-          id: field_is_eif_reference
+        field_is_eif_recommendation:
+          id: field_is_eif_recommendation
           table: search_api_datasource_published_entity_rdf_entity
-          field: field_is_eif_reference
+          field: field_is_eif_recommendation
           relationship: none
           group_type: group
           admin_label: 'EIF Reference: Taxonomy term'
@@ -168,10 +168,10 @@ display:
           entity_type: rdf_entity
           plugin_id: search_api
       arguments:
-        field_is_eif_reference:
-          id: field_is_eif_reference
+        field_is_eif_recommendation:
+          id: field_is_eif_recommendation
           table: search_api_index_published
-          field: field_is_eif_reference
+          field: field_is_eif_recommendation
           relationship: none
           group_type: group
           admin_label: ''

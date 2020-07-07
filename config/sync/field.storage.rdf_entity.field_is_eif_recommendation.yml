@@ -12,8 +12,8 @@ third_party_settings:
       target_id:
         predicate: 'http://joinup.eu/eif/references'
         format: resource
-id: rdf_entity.field_is_eif_reference
-field_name: field_is_eif_reference
+id: rdf_entity.field_is_eif_recommendation
+field_name: field_is_eif_recommendation
 entity_type: rdf_entity
 type: entity_reference
 settings:

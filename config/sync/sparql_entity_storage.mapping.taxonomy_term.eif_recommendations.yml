@@ -4,11 +4,11 @@ status: true
 dependencies:
   config:
     - sparql_entity_storage.graph.default
-    - taxonomy.vocabulary.eif_references
-id: taxonomy_term.eif_references
+    - taxonomy.vocabulary.eif_recommendations
+id: taxonomy_term.eif_recommendations
 entity_type_id: taxonomy_term
-bundle: eif_references
-rdf_type: 'http://data.europa.eu/eif'
+bundle: eif_recommendations
+rdf_type: 'http://data.europa.eu/eif/'
 graph:
   default: 'http://eif_voc'
 base_fields_mapping:
@@ -38,11 +38,11 @@ base_fields_mapping:
       format: ''
   weight:
     value:
-      predicate: ''
-      format: ''
+      predicate: 'http://www.w3.org/ns/adms#identifier'
+      format: 'xsd:integer'
   parent:
     target_id:
-      predicate: 'http://www.w3.org/2004/02/skos/core#broaderTransitive'
+      predicate: 'http://www.w3.org/2004/02/skos/core#broader'
       format: resource
   changed:
     value:

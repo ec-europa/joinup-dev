@@ -1,16 +1,16 @@
-@api
+@api @group-a
 Feature:
   In order to be able to have the solutions categorized properly through the EIF Toolbox
   As the collection owner
-  I need to have the EIF references available.
+  I need to have the EIF recommendations available.
 
-  Scenario: EIF references are available to view.
+  Scenario: EIF recommendations are available to view.
     Given I am not logged in
     When I visit "/taxonomy/term/http_e_f_fdata_ceuropa_ceu_fBC1"
     Then I should see the heading "Basic Component 1: Coordination function"
     And I should see the text "The coordination function ensures that needs are identified and appropriate services are invoked and orchestrated to provide a European public service."
 
-  Scenario: EIF references field is accessible to moderators only.
+  Scenario: EIF recommendations field is accessible to moderators only.
     Given collection:
       | title | EIF Toolbox |
       | state | validated   |
@@ -27,7 +27,7 @@ Feature:
     When I go to the "Some EIF solution" solution edit form
     Then the following fields should be present "EIF reference"
 
-  Scenario: EIF references are not visible to the end user.
+  Scenario: EIF recommendations are not visible to the end user.
     Given collection:
       | title | EIF Toolbox |
       | state | validated   |

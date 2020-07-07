@@ -8,6 +8,12 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Url;
+use Drupal\eif\Eif;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\rdf_taxonomy\Entity\RdfTerm;
+use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
+use Drupal\sparql_entity_storage\UriEncoder;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
 
@@ -27,9 +33,26 @@ function joinup_core_post_update_0106200(): void {
 }
 
 /**
+ * Create the references page in the EIF Toolbox menu.
+ */
+function joinup_core_post_update_0106201(array &$sandbox): void {
+  $menu_name = 'ogmenu-3444';
+  $internal_path = Url::fromRoute('view.eif_recommendations.page', [
+    'rdf_entity' => UriEncoder::encodeUrl(Eif::EIF_ID),
+  ])->toUriString();
+  $link = MenuLinkContent::create([
+    'title' => t('Recommendations'),
+    'menu_name' => $menu_name,
+    'link' => ['uri' => $internal_path],
+    'weight' => 4,
+  ]);
+  $link->save();
+}
+
+/**
  * Re-import the fixtures and fix existing solutions.
  */
-function joinup_core_post_update_0106201(&$sandbox) {
+function joinup_core_post_update_0106202(&$sandbox) {
   // Clean up the existing graph.
   $sparql_connection = Database::getConnection('default', 'sparql_default');
   $sparql_connection->query('WITH <http://eira_skos> DELETE { ?s ?p ?o } WHERE { ?s ?p ?o } ');
@@ -49,4 +72,21 @@ function joinup_core_post_update_0106201(&$sandbox) {
   $sparql_connection->query('WITH <http://eira_skos> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
   $sparql_connection->query('WITH <http://eira_skos> INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { ?subject a skos:Concept .};');
   $sparql_connection->query('WITH <http://eira_skos> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
+}
+
+/**
+ * Index the EIF terms since they are now tracked.
+ */
+function joinup_core_post_update_0106203(): void {
+  $filepath = __DIR__ . '/../../../../resources/fixtures/eif_voc.rdf';
+  $graph = new Graph('http://eif_voc');
+  $graph->parse(file_get_contents($filepath));
+  foreach ($graph->resources() as $resource_id => $resource) {
+    if ($term = RdfTerm::load($resource_id)) {
+      ContentEntity::indexEntity($term);
+    }
+  }
+
+  $index = \Drupal::entityTypeManager()->getStorage('search_api_index')->load('published');
+  $index->indexItems(-1, 'entity:taxonomy_term');
 }
