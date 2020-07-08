@@ -3482,16 +3482,13 @@
                 "shasum": "81210684c378dab856b3c2bce5eeaa58992d2efc"
             },
             "require": {
-                "drupal/core": "~8.0"
+                "drupal/core": "^8 || ^9"
             },
             "suggest": {
                 "drupal/config_split": "Split site configuration for different environments."
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.5",
                     "datestamp": "1572542288",
@@ -4542,7 +4539,7 @@
                 "shasum": "f960f489f4273212b924a2d54e6cb8e43adb633e"
             },
             "require": {
-                "drupal/core": "*"
+                "drupal/core": "^8"
             },
             "conflict": {
                 "drupal/commerce": "<2.12"
