@@ -13,7 +13,7 @@ _core:
 id: mycontentsolution
 theme: joinup_theme
 region: filters
-weight: -20
+weight: -21
 provider: null
 plugin: 'facet_block:solution_my_content'
 settings:

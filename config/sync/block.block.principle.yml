@@ -11,8 +11,8 @@ dependencies:
     - joinup_theme
 id: principle
 theme: joinup_theme
-region: filters
-weight: -17
+region: content
+weight: -22
 provider: null
 plugin: 'facet_block:principle'
 settings:

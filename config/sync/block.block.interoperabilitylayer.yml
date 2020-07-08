@@ -11,8 +11,8 @@ dependencies:
     - joinup_theme
 id: interoperabilitylayer
 theme: joinup_theme
-region: filters
-weight: -16
+region: content
+weight: -21
 provider: null
 plugin: 'facet_block:interoperability_layer'
 settings:

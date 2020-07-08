@@ -11,8 +11,8 @@ dependencies:
     - joinup_theme
 id: conceptualmodel
 theme: joinup_theme
-region: filters
-weight: -15
+region: content
+weight: -20
 provider: null
 plugin: 'facet_block:conceptual_model'
 settings:

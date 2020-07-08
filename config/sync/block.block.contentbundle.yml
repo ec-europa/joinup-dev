@@ -14,7 +14,7 @@ _core:
 id: contentbundle
 theme: joinup_theme
 region: filters
-weight: -11
+weight: -23
 provider: null
 plugin: 'facet_block:content_bundle'
 settings:
