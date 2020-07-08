@@ -471,9 +471,10 @@ display:
             type: 'entity:rdf_entity'
             fail: 'not found'
           validate_options:
+            bundles:
+              solution: solution
             operation: view
             multiple: 0
-            bundles: {  }
             access: false
           break_phrase: false
           not: 0
