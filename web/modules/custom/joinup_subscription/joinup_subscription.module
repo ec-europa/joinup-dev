@@ -70,6 +70,13 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
     }
   }
 
+  // If all content in the message was deleted, prevent an empty digest from
+  // being delivered.
+  if (empty($context['messages'])) {
+    $context['deliver'] = FALSE;
+    return;
+  }
+
   // Put the messages in the right order in which they will be displayed in the
   // digest message.
   uasort($messages, function (MessageInterface $a, MessageInterface $b) {
