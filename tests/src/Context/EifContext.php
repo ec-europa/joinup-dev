@@ -57,7 +57,7 @@ class EifContext extends RawDrupalContext {
     Rdf::create([
       'rid' => 'collection',
       'id' => 'http://nifo.collection',
-      'label' => 'NIFO collection',
+      'label' => 'NIFO - National Interoperability Framework Observatory',
       'field_ar_state' => 'validated',
       'field_policy_domain' => 'http://example.com/term/1',
       'field_ar_owner' => 'http://example.com/owner',
@@ -83,9 +83,7 @@ class EifContext extends RawDrupalContext {
     ]);
     $instance = reset($instances);
     $menu_name = "ogmenu-{$instance->id()}";
-    $internal_path = Url::fromRoute('view.eif_recommendations.page', [
-      'rdf_entity' => UriEncoder::encodeUrl(Eif::EIF_ID),
-    ])->toUriString();
+    $internal_path = Url::fromRoute('view.eif_recommendations.page')->toUriString();
     $link = MenuLinkContent::create([
       'title' => $this->t('Recommendations'),
       'menu_name' => $menu_name,

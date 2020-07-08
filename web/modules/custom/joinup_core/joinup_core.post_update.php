@@ -37,9 +37,7 @@ function joinup_core_post_update_0106200(): void {
  */
 function joinup_core_post_update_0106201(array &$sandbox): void {
   $menu_name = 'ogmenu-3444';
-  $internal_path = Url::fromRoute('view.eif_recommendations.page', [
-    'rdf_entity' => UriEncoder::encodeUrl(Eif::EIF_ID),
-  ])->toUriString();
+  $internal_path = Url::fromRoute('view.eif_recommendations.page')->toUriString();
   $link = MenuLinkContent::create([
     'title' => t('Recommendations'),
     'menu_name' => $menu_name,

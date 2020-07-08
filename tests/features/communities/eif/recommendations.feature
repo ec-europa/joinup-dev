@@ -29,9 +29,9 @@ Feature:
     # that deletes the validated version of the entity.
     Given the workflow state of the "EIF Toolbox" solution is changed to "blacklisted"
     And I am not logged in
-    When I go to "/collection/nifo-collection/solution/eif-toolbox"
+    When I go to "/collection/nifo-national-interoperability-framework-observatory/solution/eif-toolbox"
     Then I should see the heading "Sign in to continue"
-    When I go to "/collection/nifo-collection/solution/eif-toolbox/recommendations"
+    When I go to "/collection/nifo-national-interoperability-framework-observatory/solution/eif-toolbox/recommendations"
     Then the response status code should be 404
 
   Scenario: The recommendations page lists the recommendations links.
