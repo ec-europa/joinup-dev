@@ -22,6 +22,19 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
   const TEMPLATE_CREATE = 'comment_create';
   const TEMPLATE_UPDATE = 'comment_update';
   const TEMPLATE_DELETE = 'comment_delete';
+  const RECIPIENTS = [
+    'create' => [
+      'roles' => ['moderator' => [self::TEMPLATE_CREATE]],
+      'og_roles' => [
+        'rdf_entity-collection-administrator' => [self::TEMPLATE_CREATE],
+        'rdf_entity-solution-administrator' => [self::TEMPLATE_CREATE],
+        'rdf_entity-collection-facilitator' => [self::TEMPLATE_CREATE],
+        'rdf_entity-solution-facilitator' => [self::TEMPLATE_CREATE],
+      ],
+    ],
+    'update' => ['roles' => ['moderator' => [self::TEMPLATE_UPDATE]]],
+    'delete' => ['owner' => [self::TEMPLATE_DELETE]],
+  ];
 
   /**
    * The entity that the comment belongs to.
@@ -83,7 +96,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
       return;
     }
 
-    $user_data = ['roles' => ['moderator' => [self::TEMPLATE_CREATE]]];
+    $user_data = self::RECIPIENTS['create'];
     $user_data = $this->getUsersMessages($user_data);
     $this->sendUserDataMessages($user_data);
   }
@@ -118,7 +131,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
       return;
     }
 
-    $user_data = ['roles' => ['moderator' => [self::TEMPLATE_UPDATE]]];
+    $user_data = self::RECIPIENTS['update'];
     $user_data = $this->getUsersMessages($user_data);
     $this->sendUserDataMessages($user_data);
   }
@@ -153,7 +166,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
       return;
     }
 
-    $user_data = ['owner' => [self::TEMPLATE_DELETE]];
+    $user_data = self::RECIPIENTS['delete'];
     $user_data = $this->getUsersMessages($user_data);
     $this->sendUserDataMessages($user_data);
   }
