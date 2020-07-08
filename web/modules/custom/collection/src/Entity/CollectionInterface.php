@@ -13,4 +13,12 @@ use Drupal\rdf_entity\RdfInterface;
  */
 interface CollectionInterface extends RdfInterface, ShortIdInterface, EntityWorkflowStateInterface {
 
+  /**
+   * Returns the solutions that are affiliated with this collection.
+   *
+   * @return \Drupal\solution\Entity\SolutionInterface[]
+   *   The solutions.
+   */
+  public function getSolutions(): array;
+
 }

@@ -32,6 +32,13 @@ class Collection extends Rdf implements CollectionInterface {
   /**
    * {@inheritdoc}
    */
+  public function getSolutions(): array {
+    return $this->getReferencedEntities('field_ar_affiliates');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getWorkflowStateFieldName(): string {
     return 'field_ar_state';
   }
