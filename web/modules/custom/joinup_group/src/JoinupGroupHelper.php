@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_group;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\comment\CommentInterface;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -92,12 +93,16 @@ class JoinupGroupHelper {
    * single group.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity for which to return the group.
+   *   The entity for which to return the group. Comment entities are also
+   *   supported.
    *
    * @return \Drupal\Core\Entity\EntityInterface|null
    *   The group entity, or NULL if the entity doesn't have a group.
    */
   public static function getGroup(EntityInterface $entity): ?EntityInterface {
+    if ($entity instanceof CommentInterface) {
+      $entity = $entity->getCommentedEntity();
+    }
     $group_field = self::getGroupField($entity);
     return $entity->get($group_field)->entity;
   }
