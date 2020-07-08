@@ -7,7 +7,7 @@ namespace Drupal\eif\Plugin\OgGroupResolver;
 use Drupal\eif\Eif;
 use Drupal\og\OgResolvedGroupCollectionInterface;
 use Drupal\og\Plugin\OgGroupResolver\RouteGroupResolver;
-use Drupal\rdf_taxonomy\Entity\RdfTerm;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Resolves the group from the route.
@@ -37,14 +37,25 @@ class EifGroupResolver extends RouteGroupResolver {
    * {@inheritdoc}
    */
   public function resolve(OgResolvedGroupCollectionInterface $collection) {
-    if ($entity = $this->getContentEntity()) {
-      if ($entity->id() === Eif::EIF_ID || ($entity instanceof RdfTerm && $entity->bundle() === 'eif_recommendations')) {
-        if ($solution = $this->entityTypeManager->getStorage('rdf_entity')->load(Eif::EIF_ID)) {
-          $collection->addGroup($solution, ['route']);
-          // Stop searching for other groups. EIF Toolbox is the only candidate.
-          $this->stopPropagation();
-        }
-      }
+    $entity = $this->getContentEntity();
+    if (
+      $entity
+      && ($entity instanceof Term)
+      && $entity->bundle() === 'eif_recommendations'
+      && $group = $this->entityTypeManager->getStorage('rdf_entity')->load(Eif::EIF_ID)
+    ) {
+      $collection->addGroup($group, ['route']);
+      // Stop searching for other groups. The EIF Toolbox is the only candidate.
+      $this->stopPropagation();
+    }
+
+    if (
+      $this->routeMatch->getRouteName() === 'view.eif_recommendations.page'
+      && $group = $this->entityTypeManager->getStorage('rdf_entity')->load(Eif::EIF_ID)
+    ) {
+      $collection->addGroup($group, ['route']);
+      // Stop searching for other groups. The EIF Toolbox is the only candidate.
+      $this->stopPropagation();
     }
   }
 

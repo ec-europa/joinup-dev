@@ -5,24 +5,6 @@ Feature:
   I need to be able to present the solutions and the recommendations in the EIF Toolbox.
 
   Scenario: Recommendations page is only accessible through the EIF Toolbox solution.
-    Given the following collection:
-      | title | Test collection |
-      | state | validated       |
-    Given the following solution:
-      | title            | Test solution                        |
-      | collection       | Test collection                      |
-      | landing page     | http://foo-example.com/landing       |
-      | webdav creation  | no                                   |
-      | webdav url       | http://joinup.eu/solution/foo/webdav |
-      | wiki             | http://example.wiki/foobar/wiki      |
-      | state            | validated                            |
-    When I am logged in as a moderator
-    And I go to "/collection/test-collection/solution/test-solution"
-    Then I should see the heading "Test solution"
-
-    When I go to "/collection/test-collection/solution/test-solution/recommendations"
-    Then I should see the heading "Access denied"
-
     # Access to the recommendations page depends on the view access of the parent solution.
     #
     # In order to avoid having two distinct scenario tags for published and unpublished EIF Toolbox, transit the entity

@@ -1,7 +1,7 @@
 services:
   eif.helper:
     class: Drupal\eif\Eif
-    arguments: ['@entity_type.manager', '@current_route_match']
+    arguments: ['@entity_type.manager']
   eif.route_subscriber:
     class: Drupal\eif\Routing\RouteSubscriber
     tags:
