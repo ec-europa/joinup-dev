@@ -10,7 +10,7 @@ use Drupal\joinup_group\EventSubscriber\AddGroupContentEventSubscriberBase;
 /**
  * Subscribes to Joinup Group events.
  */
-class CommunityConetentGroupSubscriber extends AddGroupContentEventSubscriberBase {
+class CommunityContentGroupSubscriber extends AddGroupContentEventSubscriberBase {
 
   /**
    * {@inheritdoc}
