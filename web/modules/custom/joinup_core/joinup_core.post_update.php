@@ -118,11 +118,11 @@ function joinup_core_post_update_0106204(array &$sandbox) {
     $sql = "SELECT
       ml.menu_name,
       -- This menu link should sink at the bottom of the menu.
-      MAX(weight) + 5 AS weight,
+      MAX(ml.weight) + 5 AS weight,
       og.og_audience_target_id AS gid
     FROM {menu_link_content_data} ml
     INNER JOIN {ogmenu_instance__og_audience} og ON SUBSTRING(ml.menu_name, 8) = og.entity_id
-    GROUP BY ml.menu_name, gid
+    GROUP BY ml.menu_name, gid, og.entity_id
     ORDER BY og.entity_id";
     $sandbox['data'] = $db->query($sql)->fetchAll();
     $sandbox['count'] = count($sandbox['data']);
