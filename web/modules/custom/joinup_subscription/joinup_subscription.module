@@ -61,7 +61,17 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
     return;
   }
 
+  // Filter out any messages that are referring to deleted content.
   $messages = &$context['messages'];
+  foreach ($messages as $key => $message) {
+    $content = $message->field_collection_content->first()->entity ?? NULL;
+    if (empty($content)) {
+      unset($messages[$key]);
+    }
+  }
+
+  // Put the messages in the right order in which they will be displayed in the
+  // digest message.
   uasort($messages, function (MessageInterface $a, MessageInterface $b) {
     // Find the collections by resolving the entity references from the message
     // to the community content to the collection.
