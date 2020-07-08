@@ -15,5 +15,11 @@ use Dotenv\Dotenv;
 // Load the .env.dist file in the project root, and overridden settings in .env
 // if it exists.
 $path = dirname(__DIR__, 2);
-$dotenv = Dotenv::createImmutable($path, ['.env.dist', '.env'], FALSE);
+// Joinup has been instructed by the devops team to use getenv() to import
+// environment variables in settings.php, so we need to use the unsafe method.
+// This means Joinup is not intended to be used in environments that use
+// php-fpm. Also this file should not be included on any production environment
+// for performance reasons.
+// @see https://github.com/vlucas/phpdotenv/issues/446
+$dotenv = Dotenv::createUnsafeImmutable($path, ['.env.dist', '.env'], FALSE);
 $dotenv->safeLoad();
