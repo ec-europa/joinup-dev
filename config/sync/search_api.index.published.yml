@@ -9,6 +9,10 @@ dependencies:
     - rdf_entity
     - paragraphs
     - publication_date
+    - paragraphs
+    - publication_date
+    - meta_entity
+    - taxonomy
     - user
     - search_api
     - asset_distribution
@@ -39,12 +43,26 @@ dependencies:
     - field.storage.meta_entity.count
     - field.storage.rdf_entity.field_is_contact_information
     - field.storage.rdf_entity.field_ci_name
+    - field.storage.rdf_entity.field_licence_spdx_licence
+    - field.storage.rdf_entity.field_licence_description
+    - field.storage.rdf_entity.field_ad_description
+    - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_is_description
+    - field.storage.rdf_entity.field_ar_description
+    - field.storage.rdf_entity.field_is_eif_recommendation
     - field.storage.rdf_entity.field_is_owner
     - field.storage.rdf_entity.field_owner_name
     - field.storage.rdf_entity.field_isr_contact_information
     - field.storage.rdf_entity.field_isr_owner
     - field.storage.node.field_paragraphs_body
     - field.storage.paragraph.field_body
+    - field.storage.rdf_entity.field_is_pinned_in
+    - field.storage.rdf_entity.field_isr_release_notes
+    - field.storage.rdf_entity.field_is_solution_type
+    - field.storage.taxonomy_term.field_eif_related_term
+    - field.storage.user.field_user_family_name
+    - field.storage.user.field_user_first_name
+    - field.storage.user.field_user_organisation
     - search_api.server.solr_published
 third_party_settings:
   search_api_solr:
@@ -144,6 +162,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_ar_description
+  field_eif_related_term:
+    label: 'Related term'
+    datasource_id: 'entity:taxonomy_term'
+    property_path: field_eif_related_term
+    type: string
+    dependencies:
+      config:
+        - field.storage.taxonomy_term.field_eif_related_term
   field_event_agenda:
     label: 'Agenda » Processed text'
     datasource_id: 'entity:node'
@@ -176,6 +202,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_is_description
+  field_is_eif_recommendation:
+    label: 'EIF reference'
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_is_eif_recommendation
+    type: string
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_is_eif_recommendation
   field_is_pinned_in:
     label: 'Pinned in'
     datasource_id: 'entity:rdf_entity'
@@ -370,6 +404,14 @@ field_settings:
     dependencies:
       module:
         - rdf_entity
+  name:
+    label: Name
+    datasource_id: 'entity:taxonomy_term'
+    property_path: name
+    type: text
+    dependencies:
+      module:
+        - taxonomy
   nid:
     label: ID
     datasource_id: 'entity:node'
@@ -378,6 +420,14 @@ field_settings:
     dependencies:
       module:
         - node
+  parent:
+    label: 'Term Parents'
+    datasource_id: 'entity:taxonomy_term'
+    property_path: parent
+    type: string
+    dependencies:
+      module:
+        - taxonomy
   policy_domain:
     label: 'Policy domain'
     property_path: aggregated_field
@@ -475,6 +525,14 @@ field_settings:
     dependencies:
       module:
         - node
+  tid:
+    label: 'Term ID'
+    datasource_id: 'entity:taxonomy_term'
+    property_path: tid
+    type: string
+    dependencies:
+      module:
+        - null
   title:
     label: Title
     datasource_id: 'entity:node'
@@ -492,6 +550,22 @@ field_settings:
     dependencies:
       module:
         - user
+  vid:
+    label: Vocabulary
+    datasource_id: 'entity:taxonomy_term'
+    property_path: vid
+    type: string
+    dependencies:
+      module:
+        - taxonomy
+  weight:
+    label: Weight
+    datasource_id: 'entity:taxonomy_term'
+    property_path: weight
+    type: integer
+    dependencies:
+      module:
+        - taxonomy
 datasource_settings:
   'entity:node':
     bundles:
@@ -518,6 +592,14 @@ datasource_settings:
         - licence
         - solution
         - spdx_licence
+    languages:
+      default: true
+      selected: {  }
+  'entity:taxonomy_term':
+    bundles:
+      default: false
+      selected:
+        - eif_recommendations
     languages:
       default: true
       selected: {  }

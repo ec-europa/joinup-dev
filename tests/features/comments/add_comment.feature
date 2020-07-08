@@ -7,10 +7,23 @@ Feature: Add comments
       | title             | state     | closed |
       | Gossip collection | validated | no     |
       | Shy collection    | validated | yes    |
+    And solutions:
+      | title                | collection        | state     |
+      | Gossip girl solution | Gossip collection | validated |
     And users:
       | Username          | E-mail                        | Roles     | First name | Family name |
       | Miss tell tales   | tell.tales@example.com        |           | Miss       | Tales       |
       | Comment moderator | comment.moderator@example.com | moderator | Comment    | Moderator   |
+      | Layonel Sarok     | layonel.sarok@example.com     |           | Layonel    | Sarok       |
+      | Korma Salya       | korma.salya@example.com       |           | Korma      | Salya       |
+    And the following collection user memberships:
+      | collection        | user          | roles                      |
+      | Gossip collection | Layonel Sarok | administrator, facilitator |
+      | Gossip collection | Korma Salya   | facilitator                |
+    And the following solution user memberships:
+      | solution             | user          | roles                      |
+      | Gossip girl solution | Layonel Sarok | administrator, facilitator |
+      | Gossip girl solution | Korma Salya   | facilitator                |
 
   # This scenario uses javascript to work as regression test for a bug that
   # makes CKEditor unusable upon a page load.
@@ -18,8 +31,8 @@ Feature: Add comments
   @javascript
   Scenario Outline: Make an authenticated comment, skips moderation.
     Given <content type> content:
-      | title   | body                                                | collection        | state   |
-      | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <state> |
+      | title   | body                                                | <parent>       | state   |
+      | <title> | How could this ever happen? Moral panic on its way! | <parent title> | <state> |
     Given I am logged in as "Miss tell tales"
     And all e-mails have been sent
     When I go to the content page of the type "<content type>" with the title "<title>"
@@ -39,7 +52,17 @@ Feature: Add comments
     But I should not see the link "Miss tell tales"
     And the email sent to "Comment moderator" with subject "Joinup: A new comment has been created." contains the following lines of text:
       | text                                                                                    |
-      | Miss Tales posted a comment in collection "Gossip collection".                          |
+      | Miss Tales posted a comment in <parent> "<parent title>".                               |
+      | To view the comment click                                                               |
+      | If you think this action is not clear or not due, please contact Joinup Support at http |
+    And the email sent to "Layonel Sarok" with subject "Joinup: A new comment has been created." contains the following lines of text:
+      | text                                                                                    |
+      | Miss Tales posted a comment in <parent> "<parent title>".                               |
+      | To view the comment click                                                               |
+      | If you think this action is not clear or not due, please contact Joinup Support at http |
+    And the email sent to "Korma Salya" with subject "Joinup: A new comment has been created." contains the following lines of text:
+      | text                                                                                    |
+      | Miss Tales posted a comment in <parent> "<parent title>".                               |
       | To view the comment click                                                               |
       | If you think this action is not clear or not due, please contact Joinup Support at http |
 
@@ -51,11 +74,14 @@ Feature: Add comments
     And the page should point to the anchor from the URL
 
     Examples:
-      | content type | title               | state     |
-      | news         | Scandalous news     | validated |
-      | event        | Celebrity gathering | validated |
-      | discussion   | Is gossip bad?      | validated |
-      | document     | Wikileaks           | validated |
+      | content type | title               | state     | parent     | parent title         |
+      | news         | Scandalous news     | validated | collection | Gossip collection    |
+      | event        | Celebrity gathering | validated | collection | Gossip collection    |
+      | discussion   | Is gossip bad?      | validated | collection | Gossip collection    |
+      | document     | Wikileaks           | validated | collection | Gossip collection    |
+      # Add an example also for solutions to ensure the variables are properly replaced.
+      | news         | Scandalous news     | validated | solution   | Gossip girl solution |
+
 
   Scenario Outline: Authenticated users can insert <p> and <br> tags in the comment body.
     Given <content type> content:

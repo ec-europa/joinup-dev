@@ -8,16 +8,53 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Url;
+use Drupal\eif\Eif;
+use Drupal\menu_link_content\Entity\MenuLinkContent as MenuLinkContentEntity;
 use Drupal\menu_link_content\Form\MenuLinkContentForm;
 use Drupal\menu_link_content\Plugin\Menu\MenuLinkContent;
+use Drupal\rdf_taxonomy\Entity\RdfTerm;
+use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Drupal\sparql_entity_storage\UriEncoder;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
 
 /**
+ * Insert the new EIF vocabulary into the database.
+ */
+function joinup_core_post_update_0106200(): void {
+  $sparql_connection = Database::getConnection('default', 'sparql_default');
+  $connection_options = $sparql_connection->getConnectionOptions();
+  $connect_string = "http://{$connection_options['host']}:{$connection_options['port']}/sparql-graph-crud";
+  $graph_store = new GraphStore($connect_string);
+
+  $filepath = __DIR__ . '/../../../../resources/fixtures/eif_voc.rdf';
+  $graph = new Graph('http://eif_voc');
+  $graph->parse(file_get_contents($filepath));
+  $graph_store->insert($graph);
+}
+
+/**
+ * Create the references page in the EIF Toolbox menu.
+ */
+function joinup_core_post_update_0106201(array &$sandbox): void {
+  $menu_name = 'ogmenu-3444';
+  $internal_path = Url::fromRoute('view.eif_recommendations.page', [
+    'rdf_entity' => UriEncoder::encodeUrl(Eif::EIF_ID),
+  ])->toUriString();
+  $link = MenuLinkContentEntity::create([
+    'title' => t('Recommendations'),
+    'menu_name' => $menu_name,
+    'link' => ['uri' => $internal_path],
+    'weight' => 4,
+  ]);
+  $link->save();
+}
+
+/**
  * Re-import the fixtures and fix existing solutions.
  */
-function joinup_core_post_update_0106200(&$sandbox) {
+function joinup_core_post_update_0106202(&$sandbox) {
   // Clean up the existing graph.
   $sparql_connection = Database::getConnection('default', 'sparql_default');
   $sparql_connection->query('WITH <http://eira_skos> DELETE { ?s ?p ?o } WHERE { ?s ?p ?o }');
@@ -40,9 +77,27 @@ function joinup_core_post_update_0106200(&$sandbox) {
 }
 
 /**
+ * Index the EIF terms since they are now tracked.
+ */
+function joinup_core_post_update_0106203(): void {
+  $filepath = __DIR__ . '/../../../../resources/fixtures/eif_voc.rdf';
+  $graph = new Graph('http://eif_voc');
+  $graph->parse(file_get_contents($filepath));
+  foreach ($graph->resources() as $resource_id => $resource) {
+    /** @var \Drupal\rdf_taxonomy\Entity\RdfTerm $term */
+    if ($term = RdfTerm::load($resource_id)) {
+      ContentEntity::indexEntity($term);
+    }
+  }
+
+  $index = \Drupal::entityTypeManager()->getStorage('search_api_index')->load('published');
+  $index->indexItems(-1, 'entity:taxonomy_term');
+}
+
+/**
  * Create glossary OG menu item.
  */
-function joinup_core_post_update_0106201(array &$sandbox) {
+function joinup_core_post_update_0106204(array &$sandbox) {
   $db = \Drupal::database();
   /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
   $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
