@@ -2,25 +2,23 @@
 Feature: As a moderator or group facilitator
   I want to be able to add, edit and delete glossary terms.
 
-  Scenario: Test glossary management.
+  Scenario Outline: Test glossary management.
 
     Given users:
-      | Username |
-      | nick     |
-      | wade     |
+      | Username | Roles  |
+      | <user>   | <role> |
     And the following collection:
       | title | A World of Things |
       | state | validated         |
-    And the following collection user memberships:
-      | collection        | user | roles       |
-      | A World of Things | nick |             |
-      | A World of Things | wade | facilitator |
+    And the following collection user membership:
+      | collection        | user   | roles     |
+      | A World of Things | <user> | <og role> |
     And the following solution:
       | title      | Things To Come    |
       | collection | A World of Things |
       | state      | validated         |
 
-    Given I am logged in as a moderator
+    Given I am logged in as <user>
     When I go to the "A World of Things" collection
 
     Then I should see the following group menu items in the specified order:
@@ -52,7 +50,6 @@ Feature: As a moderator or group facilitator
       | Members  |
       | About    |
       | Glossary |
-
     When I click "Glossary"
     Then I should see the heading "A World of Things glossary"
     And I should see the link "XFiles"
@@ -127,7 +124,8 @@ Feature: As a moderator or group facilitator
       | About    |
     And I should not see the link "Glossary"
 
-    When I click the contextual link "Edit menu" in the "Left sidebar" region
+
+    Given I <link visibility> the contextual link "Edit menu" in the "Left sidebar" region
     And I enable "Glossary" in the navigation menu of the "Things To Come" solution
     And I go to the "Things To Come" solution
     Then I should see the following group menu items in the specified order:
@@ -140,3 +138,8 @@ Feature: As a moderator or group facilitator
 
     When I click "Glossary"
     Then I should see the heading "A World of Things glossary"
+
+    Examples:
+      | user | role      | og role     | link visibility |
+      | nick | moderator |             | should see      |
+      | wade |           | facilitator | should not see  |
