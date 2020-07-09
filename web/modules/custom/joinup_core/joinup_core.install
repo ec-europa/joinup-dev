@@ -91,15 +91,3 @@ function joinup_core_requirements($phase): array {
 
   return $requirements;
 }
-
-/**
- * Install joinup_material_design before updates run.
- */
-function joinup_core_update_0106200(&$sandbox) {
-  // Normally, the config update would sync core.extensions and the module would
-  // be enabled. However, if an update is run before that and drush attempts to
-  // rebuild cache, the tiles plugin would not be located and an exception is
-  // thrown. Enable the module to prevent this exception as there is a system
-  // update required.
-  \Drupal::getContainer()->get('module_installer')->install(['joinup_material_design']);
-}
