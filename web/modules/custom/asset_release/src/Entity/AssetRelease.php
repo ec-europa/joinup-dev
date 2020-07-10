@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\asset_release\Entity;
 
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\solution\Entity\SolutionContentTrait;
 
 /**
@@ -23,12 +23,14 @@ class AssetRelease extends Rdf implements AssetReleaseInterface {
   /**
    * {@inheritdoc}
    */
-  public function getGroup(): RdfInterface {
-    $field_item = $this->getFirstItem('field_isr_is_version_of');
-    if (!$field_item || $field_item->isEmpty()) {
+  public function getGroup(): GroupInterface {
+    /** @var \Drupal\joinup_group\Entity\GroupInterface[] $groups */
+    $groups = $this->getReferencedEntities('field_isr_is_version_of');
+    if (empty($groups)) {
       throw new MissingGroupException();
     }
-    return $field_item->entity;
+
+    return reset($groups);
   }
 
   /**

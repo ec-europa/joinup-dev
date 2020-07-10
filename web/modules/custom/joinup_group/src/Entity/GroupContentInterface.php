@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\joinup_group\Entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Interface for entities that are group content.
@@ -19,12 +18,12 @@ interface GroupContentInterface extends ContentEntityInterface {
   /**
    * Returns the group to which this entity belongs.
    *
-   * @return \Drupal\rdf_entity\RdfInterface
+   * @return \Drupal\joinup_group\Entity\GroupInterface
    *   The parent group.
    *
    * @throws \Drupal\joinup_group\Exception\MissingGroupException
    *   The the parent group is missing.
    */
-  public function getGroup(): RdfInterface;
+  public function getGroup(): GroupInterface;
 
 }
