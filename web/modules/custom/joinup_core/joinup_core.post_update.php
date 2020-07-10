@@ -293,10 +293,28 @@ QUERY;
 /**
  * Fix data type of the access url field [ISAICP-4349].
  */
-function joinup_core_post_update_fix_access_url_datatype() {
+function joinup_core_post_update_fix_access_url_datatype(array &$sandbox) {
+  static $batch_size = 100;
+  static $update_query = <<<QUERY
+WITH <@graph>
+DELETE {
+  <@entity_id> <@predicate> "@access_url"^^<http://www.w3.org/2001/XMLSchema#string> .
+  <@entity_id> <@predicate> "@access_url" .
+}
+INSERT {
+  <@entity_id> <@predicate> "@access_url"^^<http://www.w3.org/2001/XMLSchema#anyURI>
+}
+WHERE {
+  <@entity_id> <@predicate> ?access_url .
+  VALUES ?access_url { "@access_url"^^<http://www.w3.org/2001/XMLSchema#string> "@access_url" }
+}
+QUERY;
+
   /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
-  $retrieve_query = <<<QUERY
+
+  if (!isset($sandbox['remaining_items'])) {
+    $retrieve_query = <<<QUERY
 SELECT ?graph ?entity_id ?predicate ?access_url
 WHERE {
   GRAPH ?graph {
@@ -309,37 +327,26 @@ WHERE {
   }
 }
 QUERY;
-  $results = $sparql_endpoint->query($retrieve_query);
-  $items_to_update = [];
-  foreach ($results as $result) {
-    // The above query should not have errors or duplicated values so lets keep
-    // a simple array structure.
-    $items_to_update[] = [
-      '@graph' => $result->graph->getUri(),
-      '@entity_id' => $result->entity_id->getUri(),
-      '@predicate' => $result->predicate->getUri(),
-      '@access_url' => $result->access_url->getValue(),
-    ];
+    $results = $sparql_endpoint->query($retrieve_query);
+    $sandbox['remaining_items'] = [];
+    foreach ($results as $result) {
+      $sandbox['remaining_items'][] = [
+        '@graph' => $result->graph->getUri(),
+        '@entity_id' => $result->entity_id->getUri(),
+        '@predicate' => $result->predicate->getUri(),
+        '@access_url' => $result->access_url->getValue(),
+      ];
+    }
   }
 
-  $update_query = <<<QUERY
-  WITH <@graph>
-  DELETE {
-    <@entity_id> <@predicate> "@access_url"^^<http://www.w3.org/2001/XMLSchema#string> .
-    <@entity_id> <@predicate> "@access_url" .
-  }
-  INSERT {
-    <@entity_id> <@predicate> "@access_url"^^<http://www.w3.org/2001/XMLSchema#anyURI>
-  }
-  WHERE {
-    <@entity_id> <@predicate> ?access_url .
-    VALUES ?access_url { "@access_url"^^<http://www.w3.org/2001/XMLSchema#string> "@access_url" }
-  }
-QUERY;
+  $items_to_update = array_splice($sandbox['remaining_items'], 0, $batch_size);
   foreach ($items_to_update as $data_array) {
     $query = str_replace(array_keys($data_array), array_values($data_array), $update_query);
     $sparql_endpoint->query($query);
   }
+
+  // Mark as finished when there are no more remaining items to process.
+  $sandbox['#finished'] = (int) empty($sandbox['remaining_items']);
 }
 
 /**
