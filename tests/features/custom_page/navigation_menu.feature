@@ -412,6 +412,20 @@ Feature: Navigation menu for custom pages
     And I visit the "TOCO 1-1-1" custom page
     Then I should not see the link "TOCO 1-1-2" in the "Table of contents outline"
 
+    Given the following custom page menu structure:
+      | title      | parent | weight |
+      | TOCO 1-1   |        | 1      |
+      | TOCO 2-1-1 |        | 2      |
+      | TOCO 1-1-1 |        | 3      |
+      | TOCO 2-1   |        | 4      |
+      | TOCO 2-1-2 |        | 5      |
+      | TOCO 1     |        | 6      |
+      | TOCO 1-2   |        | 7      |
+      | TOCO 2     |        | 8      |
+      | TOCO 1-1-2 |        | 9      |
+    When I visit the "TOCO 1-1" custom page
+    Then I should not see the link "Up" in the "Table of contents outline"
+
   @javascript
   Scenario: Assert cache invalidation of the TOC outline.
     Given the following collections:
