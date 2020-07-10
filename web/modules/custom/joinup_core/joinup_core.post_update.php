@@ -7,31 +7,54 @@
 
 declare(strict_types = 1);
 
-use Drupal\Core\Database\Database;
-use EasyRdf\Graph;
-use EasyRdf\GraphStore;
+use Drupal\solution\Entity\SolutionInterface;
 
 /**
- * Re-import the fixtures and fix existing solutions.
+ * Remove a selected set of solutions and 1 document from Eurostat.
  */
-function joinup_core_post_update_0106200(&$sandbox) {
-  // Clean up the existing graph.
-  $sparql_connection = Database::getConnection('default', 'sparql_default');
-  $sparql_connection->query('WITH <http://eira_skos> DELETE { ?s ?p ?o } WHERE { ?s ?p ?o } ');
+function joinup_core_post_update_0106201(): void {
+  /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $rdf_storage */
+  $rdf_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  /** @var \Drupal\collection\Entity\CollectionInterface $collection */
+  $collection = $rdf_storage->load('http://data.europa.eu/w21/01b52000-c0ba-4e64-a32c-79557a743462');
+  $solutions = array_filter($collection->getSolutions(), function (SolutionInterface $solution) {
+    // Remove all solutions starting with the word SCL.
+    if (substr($solution->label(), 0, 4) === 'SCL ') {
+      return TRUE;
+    }
 
-  // Re import the file to update the terms.
-  $connection_options = $sparql_connection->getConnectionOptions();
-  $connect_string = "http://{$connection_options['host']}:{$connection_options['port']}/sparql-graph-crud";
-  $graph_store = new GraphStore($connect_string);
+    // Additionally remove 3 specific solutions.
+    return in_array($solution->id(), [
+      // 'General information on the "Standard code lists" project'.
+      'http://ec.europa.eu/eurostat/ramon/miscellaneous/index.cfm?TargetUrl=DSP_GENINFO_SCL',
+      // 'Eurostat SDMX Converter'.
+      'http://data.europa.eu/w21/35ef35c6-a530-4821-8c52-8d796ec86a1d',
+      // 'Eurostat XBRL Reference Architecture'.
+      'http://data.europa.eu/w21/96f74e35-abda-4475-8b2d-22fed2120fc5',
+    ]);
+  });
 
-  $filepath = __DIR__ . '/../../../../resources/fixtures/EIRA_SKOS.rdf';
-  $graph = new Graph('http://eira_skos');
-  $graph->parse(file_get_contents($filepath));
-  $graph_store->insert($graph);
+  $total = count($solutions);
+  $count = 0;
 
-  // Repeat steps taken after importing the fixtures that target eira terms.
-  // @see: \Joinup\Phing\AfterFixturesImportCleanup::main
-  $sparql_connection->query('WITH <http://eira_skos> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
-  $sparql_connection->query('WITH <http://eira_skos> INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { ?subject a skos:Concept .};');
-  $sparql_connection->query('WITH <http://eira_skos> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
+  foreach ($solutions as $solution) {
+    \Drupal::logger('joinup')->notice('[%count/%total] Deleting solution %title', [
+      '%count' => ++$count,
+      '%total' => $total,
+      '%title' => $solution->label(),
+    ]);
+    $solution->delete();
+  }
+
+  // Delete the document 'XBRL_Architecture_v2_0_en.doc';
+  /** @var \Drupal\node\NodeStorageInterface $node_storage */
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  /** @var \Drupal\joinup_document\Entity\DocumentInterface $document */
+  $document = $node_storage->load(41745);
+  if (!empty($document)) {
+    \Drupal::logger('joinup')->notice('[1/1] Deleting document %title', [
+      '%title' => $document->label(),
+    ]);
+    $document->delete();
+  }
 }
