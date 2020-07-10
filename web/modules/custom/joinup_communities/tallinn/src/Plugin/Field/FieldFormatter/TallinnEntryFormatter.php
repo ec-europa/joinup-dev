@@ -4,8 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\tallinn\Plugin\Field\FieldFormatter;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\Core\Url;
 use Drupal\tallinn\Plugin\Field\FieldType\TallinnEntryItem;
@@ -22,6 +24,46 @@ use Drupal\tallinn\Plugin\Field\FieldType\TallinnEntryItem;
  * )
  */
 class TallinnEntryFormatter extends FormatterBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return [
+      'trim_length' => '80',
+    ] + parent::defaultSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $elements = parent::settingsForm($form, $form_state);
+
+    $elements['trim_length'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Trim link text length'),
+      '#field_suffix' => $this->t('characters'),
+      '#default_value' => $this->getSetting('trim_length'),
+      '#min' => 1,
+      '#description' => $this->t('Leave blank to allow unlimited link text lengths.'),
+    ];
+
+    return $elements;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = parent::settingsSummary();
+
+    if ($trim_length = $this->getSetting('trim_length')) {
+      $summary[] = $this->t('Link text trimmed to @limit characters', ['@limit' => $trim_length]);
+    }
+
+    return $summary;
+  }
 
   /**
    * {@inheritdoc}
@@ -59,10 +101,20 @@ class TallinnEntryFormatter extends FormatterBase {
     }
 
     if (!empty($value['uri'])) {
+      $link_title = $value['uri'];
+
+      // Trim the link text to the desired length.
+      if ($trim_length = $this->getSetting('trim_length')) {
+        $link_title = Unicode::truncate($value['uri'], $trim_length, FALSE, TRUE);
+      }
+
       $element['#uri'] = [
         '#type' => 'link',
         '#url' => Url::fromUri($value['uri']),
-        '#title' => $value['uri'],
+        '#title' => $link_title,
+        '#attributes' => [
+          'title' => $value['uri'],
+        ],
       ];
     }
 
