@@ -1,0 +1,7 @@
+field.widget.settings.expansion_panel:
+  type: mapping
+  label: Expansion panel widget settings
+  mapping:
+    view_mode:
+      type: string
+      label: View mode

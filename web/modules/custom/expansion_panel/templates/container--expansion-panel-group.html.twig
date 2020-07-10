@@ -1,0 +1,24 @@
+{#
+/**
+ * @file
+ * Template to render a group of expansion panels.
+ *
+ * Available variables:
+ * - title: optional title for the group.
+ *
+ * @ingroup themeable
+ */
+#}
+{%
+    set classes = [
+        'multiExpand',
+        has_parent ? 'js-form-wrapper',
+        has_parent ? 'form-wrapper',
+    ]
+%}
+<div{{ attributes.addClass(classes) }}>
+    {% if element['#title'] -%}
+    <h4>{{ element['#title'] }}</h4>
+    {% endif -%}
+    {{ children }}
+</div>

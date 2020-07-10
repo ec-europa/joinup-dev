@@ -102,7 +102,7 @@ Feature: Tests the collection last update time.
 
     # Editing the solution changes the last updated time.
     Given I go to the "Roof Hole Cover" solution edit form
-    And I select "Public Policy Cycle" from "Solution type"
+    And I check "Public Policy Cycle"
     And I select "Demography" from "Policy domain"
     And I press "Publish"
 

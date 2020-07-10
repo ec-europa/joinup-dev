@@ -73,7 +73,7 @@ Feature: "Add solution" visibility options.
     And I click "Add solution"
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner, Name, E-mail address, Website URL"
-    And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation, Motivation"
+    And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Motivation"
     # Regression test for ensuring that obsolete content creation value is removed.
     # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3567
     And I should not see the text "Only members can create content"
@@ -89,7 +89,7 @@ Feature: "Add solution" visibility options.
       | Language              | http://publications.europa.eu/resource/authority/language/VLS |
       | Name                  | Ernst Brice                                                   |
       | E-mail address        | ernsy1999@gmail.com                                           |
-    Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
+    And I check "Exchange of Business Information"
     And I select "Demography" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
@@ -147,7 +147,7 @@ Feature: "Add solution" visibility options.
       | Language              | http://publications.europa.eu/resource/authority/language/VLS          |
       | Name                  | Ajit Tamboli                                                           |
       | E-mail address        | tambotamboli@gocloud.in                                                |
-    Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
+    And I check "Data Exchange Service"
     And I select "E-inclusion" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
@@ -188,7 +188,7 @@ Feature: "Add solution" visibility options.
       | Title       | PHP comments parser                             |
       | Description | A simple parser that goes through PHP comments. |
     And I select "Data gathering, data processing" from "Policy domain"
-    And I select "Implementing Guideline" from "Solution type"
+    And I check "Implementing Guideline"
 
     # Submit the incomplete form, so error messages about missing fields will
     # be shown.
@@ -246,7 +246,7 @@ Feature: "Add solution" visibility options.
       | Name                  | Angela Crespi                               |
       | E-mail address        | angela_crespi@glacmon.basel-uni.ch          |
     And I select "Data gathering, data processing" from "Policy domain"
-    And I select "Logging Service" from "Solution type"
+    And I check "Logging Service"
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "University of Basel"
     And I press "Add owner"

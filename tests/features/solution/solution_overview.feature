@@ -140,7 +140,7 @@ Feature: Solutions Overview
       | Language              | http://publications.europa.eu/resource/authority/language/VLS          |
       | Name                  | Ambrosio Morison                                                       |
       | E-mail address        | ambrosio.morison@example.com                                           |
-    Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
+    And I check "Data Exchange Service"
     And I select "Demography" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"

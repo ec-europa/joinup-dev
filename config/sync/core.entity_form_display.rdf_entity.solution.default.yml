@@ -49,6 +49,7 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - allowed_formats
+    - expansion_panel
     - field_group
     - file_url
     - image
@@ -289,9 +290,10 @@ content:
     type: boolean_checkbox
     region: content
   field_is_solution_type:
-    type: options_select
+    type: expansion_panel
     weight: 7
-    settings: {  }
+    settings:
+      view_mode: expansion_panel
     third_party_settings: {  }
     region: content
   field_is_standardization_level:

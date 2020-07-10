@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\joinup_federation\FederationDistributionParentFieldItemList;
 use Drupal\joinup_federation\Plugin\DataType\RdfEntityReference;
 use Drupal\joinup_federation\Plugin\Validation\Constraint\FederationDistributionSingleParentConstraint;
@@ -48,7 +49,7 @@ function joinup_federation_form_rdf_entity_form_alter(&$form, FormStateInterface
     return;
   }
 
-  $added_description = '<p>This field is has a federated value and thus, cannot be changed here.</p>';
+  $added_description = '<p>This is federated data which can only be changed at the data source.</p>';
   /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $field_manager */
   $field_manager = \Drupal::service('entity_field.manager');
   /** @var \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface $schema_validator */
@@ -57,7 +58,33 @@ function joinup_federation_form_rdf_entity_form_alter(&$form, FormStateInterface
     $field_name = $field_definition->getName();
     if (isset($form[$field_name]['widget']) && $schema_validator->isDefinedInSchema($entity->getEntityTypeId(), $entity->bundle(), $field_name)) {
       $form[$field_name]['widget']['#disabled'] = TRUE;
+      $form[$field_name]['widget']['#required'] = FALSE;
       $form[$field_name]['widget']['#description'] = ($form[$field_name]['widget']['#description'] ?? '') . $added_description;
+      // If this is a composite field such as a collection of radio buttons or
+      // checkboxes, make sure to also disable all child form elements.
+      if ($form[$field_name]['widget']['#tree'] ?? FALSE) {
+        joinup_federation_disable_children($form[$field_name]['widget']);
+      }
+    }
+  }
+}
+
+/**
+ * Disables the children of the given render array.
+ *
+ * This is a recursive helper function to disable the child elements of
+ * composite form elements.
+ *
+ * @param array $array
+ *   The render array.
+ *
+ * @see joinup_federation_form_rdf_entity_form_alter()
+ */
+function joinup_federation_disable_children(array &$array): void {
+  foreach (Element::children($array) as $key) {
+    if (is_array($array[$key])) {
+      $array[$key]['#disabled'] = TRUE;
+      joinup_federation_disable_children($array[$key]);
     }
   }
 }

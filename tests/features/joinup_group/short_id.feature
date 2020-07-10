@@ -95,7 +95,7 @@ Feature:
       | E-mail address | john.smith@example.com    |
       # Existing owner.
       | Owner          | Organisation example      |
-    Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
+    And I check "Data Exchange Service"
     And I select "Demography" from "Policy domain"
 
     # Short ID is case insensitive.

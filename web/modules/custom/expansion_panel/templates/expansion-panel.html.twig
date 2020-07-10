@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Template to render an expansion panel.
+ *
+ * Available variables:
+ * - header: the panel header, shown when the panel is collapsed.
+ * - content: the panel content, shown when the panel is expanded.
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="multiExpand__item">
+    <div class="multiExpand__header">
+        {{ header }}
+        <div class="multiExpand__caret"></div>
+    </div>
+    <div class="multiExpand__content">
+        {{ content }}
+    </div>
+</div>
