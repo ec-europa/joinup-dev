@@ -13,7 +13,7 @@ _core:
 id: unpublished_content_of_group
 theme: joinup_theme
 region: content_bottom
-weight: -19
+weight: -21
 provider: null
 plugin: entity_unpublished
 settings:

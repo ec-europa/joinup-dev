@@ -12,7 +12,7 @@ dependencies:
 id: table_of_contents
 theme: joinup_theme
 region: content_bottom
-weight: -22
+weight: -23
 provider: null
 plugin: 'custom_page_toc:navigation'
 settings:

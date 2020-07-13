@@ -11,8 +11,8 @@ dependencies:
     - joinup_theme
 id: toc_outline
 theme: joinup_theme
-region: content_bottom
-weight: -14
+region: content
+weight: -12
 provider: null
 plugin: toc_outline
 settings:

@@ -12,7 +12,7 @@ dependencies:
 id: conceptualmodel
 theme: joinup_theme
 region: content
-weight: -20
+weight: -18
 provider: null
 plugin: 'facet_block:conceptual_model'
 settings:

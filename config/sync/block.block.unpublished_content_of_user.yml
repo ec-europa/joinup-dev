@@ -12,7 +12,7 @@ _core:
 id: unpublished_content_of_user
 theme: joinup_theme
 region: content_bottom
-weight: -20
+weight: -22
 provider: null
 plugin: user_unpublished
 settings:
