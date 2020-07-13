@@ -29,6 +29,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
+  legal_legal_notice:
+    weight: -4
+    settings: {  }
+    third_party_settings: {  }
+    region: content
 hidden:
   account: true
   field_last_password_reset: true

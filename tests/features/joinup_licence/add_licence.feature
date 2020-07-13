@@ -21,10 +21,18 @@ Feature: Add a licence through the UI
     And I click "Add licence"
     Then I should see the heading "Add Licence"
     And the "Licence legal type" field should contain the "Can, Must, Cannot, Compatible, Law, Support" option groups
+
+    When I press "Save"
+    Then I should see the following error messages:
+      | error messages                    |
+      | Title field is required.          |
+      | Description field is required.    |
+      | Type field is required.           |
+
     When I fill in "Title" with "MIT Licence"
     And I fill in "Description" with "The classic open source licence without copyleft."
     # Ensure that the Type field is a dropdown.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3342
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3342
     And I select "Public domain" from "Type"
     And I select "MIT License" from "Corresponding SPDX licence"
     And I select "Strong Community" from "Licence legal type"

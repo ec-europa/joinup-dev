@@ -22,9 +22,9 @@ dependencies:
     - image.style.digest_image
     - node.type.news
   module:
-    - ds
     - image
     - smart_trim
+    - template_suggestion
     - user
 id: node.news.digest_message
 targetEntityType: node
@@ -49,14 +49,7 @@ content:
       wrap_output: false
       more_link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     region: content
   field_news_headline:
@@ -65,14 +58,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: string
     region: content
@@ -84,14 +70,7 @@ content:
     settings:
       image_style: digest_image
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
 hidden:
   field_attachment: true

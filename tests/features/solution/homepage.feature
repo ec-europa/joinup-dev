@@ -27,7 +27,7 @@ Feature: Solution homepage
     Then I should see the heading "About Petri net"
 
   # This is a regression test for the entities that include a hashmark on their Uri.
-  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3225
+  # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3225
   Scenario: Regression test for Uris that include a '#'.
     Given the following solution:
       | uri         | http://solution/example1/test#        |
@@ -43,15 +43,15 @@ Feature: Solution homepage
   @terms
   Scenario: Custom pages should not be visible on the solution homepage
     Given the following solution:
-      | title             | Jira restarters                      |
-      | description       | Rebooting solves all issues          |
-      | documentation     | text.pdf                             |
-      | elibrary creation | registered users                     |
-      | landing page      | http://foo-example.com/landing       |
-      | webdav creation   | no                                   |
-      | webdav url        | http://joinup.eu/solution/foo/webdav |
-      | wiki              | http://example.wiki/foobar/wiki      |
-      | state             | validated                            |
+      | title            | Jira restarters                      |
+      | description      | Rebooting solves all issues          |
+      | documentation    | text.pdf                             |
+      | content creation | registered users                     |
+      | landing page     | http://foo-example.com/landing       |
+      | webdav creation  | no                                   |
+      | webdav url       | http://joinup.eu/solution/foo/webdav |
+      | wiki             | http://example.wiki/foobar/wiki      |
+      | state            | validated                            |
     And news content:
       | title                             | body                             | solution        | policy domain           | spatial coverage | state     |
       | Jira will be down for maintenance | As always, during business hours | Jira restarters | Statistics and Analysis | Luxembourg       | validated |
@@ -115,7 +115,7 @@ Feature: Solution homepage
     And I should not see the "Distribution 13" tile
 
     # The pager cache is not invalidated when a 13th item is added.
-    # https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4235
+    # https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4235
     Given the cache has been cleared
 
     Given the following distributions:

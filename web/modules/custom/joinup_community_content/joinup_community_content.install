@@ -5,6 +5,8 @@
  * Installation hooks for the joinup_community_content module.
  */
 
+declare(strict_types = 1);
+
 /**
  * Implements hook_install().
  */

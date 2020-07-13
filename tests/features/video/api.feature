@@ -11,12 +11,12 @@ Feature: Video API
       | name         |
       | Video editor |
     And the following <group type>:
-      | title             | Video library |
-      | owner             | Video editor  |
-      | logo              | logo.png      |
-      | moderation        | yes           |
-      | elibrary creation | facilitators  |
-      | state             | validated     |
+      | title            | Video library |
+      | owner            | Video editor  |
+      | logo             | logo.png      |
+      | moderation       | yes           |
+      | content creation | facilitators  |
+      | state            | validated     |
     And video content:
       | title       | body        | field_video                                 | og_audience   |
       | Dummy Video | Dummy text. | https://www.youtube.com/watch?v=uLcS7uIlqPo | Video library |

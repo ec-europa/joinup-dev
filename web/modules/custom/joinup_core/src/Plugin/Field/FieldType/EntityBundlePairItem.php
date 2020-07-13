@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\Field\FieldType;
 
 use Drupal\Core\Entity\EntityTypeInterface;

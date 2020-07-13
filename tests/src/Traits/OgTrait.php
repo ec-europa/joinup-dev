@@ -26,19 +26,19 @@ trait OgTrait {
    *   The organic group entity.
    * @param \Drupal\og\Entity\OgRole[] $roles
    *   An array of OgRoles to be passed to the membership.
-   * @param string $state
+   * @param string|null $state
    *   Optional state to assign to the membership. Can be one of:
    *   - OgMembershipInterface::STATE_ACTIVE
    *   - OgMembershipInterface::STATE_PENDING
    *   - OgMembershipInterface::STATE_BLOCKED.
-   * @param int $created
+   * @param int|null $created
    *   (Optional) The created time of the membership.
    *
    * @throws \Exception
    *    Throws an exception when the user is anonymous or the entity is not a
    *    group.
    */
-  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $group, array $roles = [], string $state = NULL, int $created = NULL): void {
+  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $group, array $roles = [], ?string $state = NULL, ?int $created = NULL): void {
     if (!Og::isGroup($group->getEntityTypeId(), $group->bundle())) {
       throw new \Exception("The {$group->label()} is not a group.");
     }

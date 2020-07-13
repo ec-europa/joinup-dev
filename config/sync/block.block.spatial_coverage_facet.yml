@@ -9,12 +9,10 @@ dependencies:
     - joinup_core
   theme:
     - joinup_theme
-_core:
-  default_config_hash: M2RmoCsVaifOmwYCo5ajei1bXNHAGtfB1WvylYub-ZM
 id: spatial_coverage_facet
 theme: joinup_theme
-region: filters
-weight: -13
+region: sidebar_left
+weight: -9
 provider: null
 plugin: 'facet_block:spatial_coverage'
 settings:
@@ -22,7 +20,6 @@ settings:
   label: 'Search page - Geographical coverage facet'
   provider: facets
   label_display: '0'
-  block_id: spatial_coverage_facet
 visibility:
   request_route:
     id: request_route

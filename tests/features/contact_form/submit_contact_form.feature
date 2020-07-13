@@ -27,6 +27,7 @@ Feature: Submit the contact form
       | Other                          |
     # The honeypot field that needs to be empty on submission.
     Then the following fields should be present "user_homepage"
+    And I should see the text "Submissions of this form are processed by a contractor of the European Commission."
 
     When I fill in the following:
       | First name     | Oswine                      |
@@ -66,6 +67,7 @@ Feature: Submit the contact form
 
   Scenario: Check required fields
     When I am on the contact form
+    And I wait for the spam protection time limit to pass
     And I press "Submit"
     Then I should see the following error messages:
       | error messages                    |

@@ -265,7 +265,7 @@ Feature: Collection membership administration
 
     When I fill in "E-mail" with "gregory_house@example.com"
     And I press "Add"
-    Then the page should show the chips:
+    Then the page should show the following chips in the Content region:
       | Gregory House |
     # Verify that an error message is shown when trying to add a mail not
     # present in the system.
@@ -280,18 +280,18 @@ Feature: Collection membership administration
     # Add some other users.
     When I fill in "E-mail" with "j.belanger@example.com"
     And I press "Add"
-    Then the page should show the chips:
+    Then the page should show the following chips in the Content region:
       | Jeannette Belanger |
       | Gregory House      |
     When I fill in "E-mail" with "donald_duck@example.com"
     And I press "Add"
-    Then the page should show the chips:
+    Then the page should show the following chips in the Content region:
       | Jeannette Belanger |
       | Gregory House      |
       | Donald Duck        |
     # Remove a user.
     When I press the remove button on the chip "Donald Duck"
-    Then the page should show only the chips:
+    Then the page should show the following chips in the Content region:
       | Jeannette Belanger |
       | Gregory House      |
     And I should not see the text "Donald Duck"
@@ -308,7 +308,7 @@ Feature: Collection membership administration
     When I click "Add members"
     When I fill in "E-mail" with "dwight1@example.com"
     And I press "Add"
-    Then the page should show the chips:
+    Then the page should show the following chips in the Content region:
       | Christian Dwight |
     When I select "Facilitator" from "Role"
     And I press "Add members"

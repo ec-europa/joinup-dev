@@ -6,9 +6,9 @@ Feature: Joining and leaving collections through the web interface
 
   Scenario: Joining and leaving a collection
     Given collections:
-      | title                       | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | moderation | state     |
-      | Überwaldean Land Eels       | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | no     | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        | validated |
-      | Folk Dance and Song Society | Cats are cool!                             | http://mashable.com/category/cats/     | yes    | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         | validated |
+      | title                       | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | content creation | moderation | state     |
+      | Überwaldean Land Eels       | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | no     | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators     | yes        | validated |
+      | Folk Dance and Song Society | Cats are cool!                             | http://mashable.com/category/cats/     | yes    | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members          | no         | validated |
     And users:
       | Username       |
       | Madame Sharn   |
@@ -86,7 +86,7 @@ Feature: Joining and leaving collections through the web interface
     #   the moment we approve the membership and then leave the collection as a
     #   normal member. When ISAICP-3658 is implemented this should be replaced
     #   with a test for the cancellation of a pending membership.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3658
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3658
     Given my membership state in the "Folk Dance and Song Society" collection changes to "active"
     And I go to the homepage of the "Folk Dance and Song Society" collection
     And I click "Leave this collection"

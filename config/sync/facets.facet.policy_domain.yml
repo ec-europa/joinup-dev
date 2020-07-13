@@ -16,12 +16,11 @@ show_only_one_result: true
 field_identifier: policy_domain
 facet_source_id: 'search_api:views_page__search__page_1'
 widget:
-  type: links_inline
+  type: dropdown
   config:
     show_numbers: true
-    all_text: 'all policy domains'
-    prefix_text: about
-    suffix_text: ''
+    default_option_label: 'Any policy domain'
+    arbitrary_facet_plugin: _none
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -68,4 +67,4 @@ processor_configs:
     settings: {  }
 empty_behavior:
   behavior: none
-show_title: null
+show_title: true

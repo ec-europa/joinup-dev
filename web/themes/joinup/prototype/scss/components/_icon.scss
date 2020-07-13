@@ -1,0 +1,381 @@
+// Icon
+//
+// Icons used across Joinup platform.
+//
+// Markup: html/icon.html
+//
+// .icon--asset_distribution  - Asset distribution icon
+// .icon--asset_release       - Asset release icon
+// .icon--business-case       - Business case icon
+// .icon--collections         - Collection icon
+// .icon--custom_page         - Custom page icon
+// .icon--discussion          - Discussion icon
+// .icon--document            - Document icon
+// .icon--events              - Event icon
+// .icon--content             - Generic content icon
+// .icon--licence             - Licence icon
+// .icon--news                - News icon
+// .icon--newsletter          - Newsletter icon
+// .icon--solutions           - Solution icon
+// .icon--video               - Video icon
+// .icon--followers           - Followers icon
+// .icon--user                - User icon
+// .icon--like                - Like icon
+// .icon--plus                - Plus icon
+// .icon--download            - Download icon
+// .icon--error               - Error icon used in the alert component
+// .icon--warning             - Warning icon used in the alert component
+// .icon--info                - Info icon used in the alert component
+// .icon--success             - Success icon used in the alert component
+// .icon--close               - Close icon used in the alert component
+// .icon--draggable           - Draggable icon used in the form component
+// .icon--search              - Search icon
+// .icon--menu                - Menu icon
+// .icon--arrow-down          - Arrow down icon used in the filter component
+// .icon--share               - Share icon
+// .icon--shared              - Shared icon
+// .icon--load                - Load icon used in the load more tile component
+// .icon--location            - Location icon
+// .icon--out                 - Out icon used for external link
+// .icon--pin                 - Pin icon
+// .icon--anchor              - Anchor icon
+// .icon--facebook            - Facebook icon
+// .icon--googleplus          - Google+ icon
+// .icon--twitter             - Twitter icon
+// .icon--linkedin            - LinkedIn icon
+// .icon--youtube             - YouTube icon
+// .icon--slideshare          - SlideShare icon
+// .icon--vimeo               - Vimeo icon
+// .icon--github              - GitHub icon
+// .icon--star                - Star icon used to mark featured tile
+// .icon--help                - Question mark icon used in a tour button
+//
+// Styleguide 2.8
+
+$waat-icons-font-path: "../fonts/waat-icons/waat-icons";
+
+// Component
+// --------------------------------------------------
+@font-face {
+  font-family: "WAAT Icons";
+  src: url("#{$waat-icons-font-path}.eot");
+  src: url("#{$waat-icons-font-path}.eot?#iefix") format("embedded-opentype"), url("#{$waat-icons-font-path}.woff") format("woff"), url("#{$waat-icons-font-path}.ttf") format("truetype"), url("#{$waat-icons-font-path}.svg#icomoon") format("svg");
+}
+
+.icon {
+  font-family: "WAAT Icons";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  display: inline-block;
+  line-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Modifiers
+// --------------------------------------------------
+.icon--discussion:before,
+.icon--discussions:before {
+  content: "";
+}
+
+.icon--event:before,
+.icon--events:before {
+  content: "";
+}
+
+.icon--asset_release:before {
+  content: "";
+}
+
+.icon--news:before {
+  content: "";
+}
+
+.icon--document:before,
+.icon--documents:before {
+  content: "";
+}
+
+.icon--custom_page:before {
+  content: "";
+}
+
+.icon--solution:before,
+.icon--solutions:before {
+  content: "";
+  color: $color-orange;
+}
+
+.icon--collection:before,
+.icon--collections:before {
+  content: "";
+  color: $color-green-new;
+}
+
+.icon--distribution:before,
+.icon--distributions:before,
+.icon--asset_distribution:before {
+  content: "";
+}
+
+.icon--business-case:before {
+  content: "";
+}
+
+.icon--content:before,
+.icon--keep-up-to-date:before {
+  content: "";
+}
+
+.icon--licence:before {
+  content: "";
+}
+
+.icon--newsletter:before {
+  content: "";
+}
+
+.icon--video:before {
+  content: "";
+}
+
+.icon--followers:before {
+  content: "";
+}
+
+// Statuses
+// --------------------------------------------------
+.icon--success:before {
+  content: "";
+}
+
+.icon--error:before {
+  content: "";
+}
+
+.icon--warning:before {
+  content: "";
+}
+
+.icon--info:before {
+  content: "";
+}
+
+// Social media
+// --------------------------------------------------
+.icon--facebook:before {
+  content: "";
+}
+
+.icon--gplus:before,
+.icon--googleplus:before {
+  content: "";
+}
+
+.icon--twitter:before {
+  content: "";
+}
+
+.icon--linkedin:before {
+  content: "";
+}
+
+.icon--youtube:before {
+  content: "";
+}
+
+.icon--slideshare:before {
+  content: "";
+}
+
+.icon--vimeo:before {
+  content: "";
+}
+
+.icon--github:before {
+  content: "";
+}
+
+.icon--star:before {
+  content: "";
+}
+
+// File mime icons:
+// --------------------------------------------------
+.icon--mime-default:before {
+  content: "";
+}
+
+.icon--mime-doc:before,
+.icon--mime-docx:before {
+  content: "";
+}
+
+.icon--mime-exe:before {
+  content: "";
+}
+
+.icon--mime-gif:before {
+  content: "";
+}
+
+.icon--mime-jpg:before {
+  content: "";
+}
+
+.icon--mime-pdf:before {
+  content: "";
+}
+
+.icon--mime-png:before {
+  content: "";
+}
+
+.icon--mime-ppt:before {
+  content: "";
+}
+
+.icon--mime-rar:before {
+  content: "";
+}
+
+.icon--mime-xls:before,
+.icon--mime-xlsx:before {
+  content: "";
+}
+
+.icon--mime-zip:before {
+  content: "";
+}
+
+// Navigation
+// --------------------------------------------------
+.icon--arrow-down:before {
+  content: "";
+}
+
+.icon--arrow-up:before {
+  content: "";
+}
+
+.icon--first:before {
+  content: "";
+}
+
+.icon--previous:before {
+  content: "";
+}
+
+.icon--next:before {
+  content: "";
+}
+
+.icon--last:before {
+  content: "";
+}
+
+// Other
+// --------------------------------------------------
+.icon--user:before {
+  content: "";
+}
+
+.icon--like:before {
+  content: "";
+}
+
+.icon--plus:before {
+  content: "";
+}
+
+.icon--download:before {
+  content: "";
+}
+
+.icon--check:before {
+  content: "";
+}
+
+.icon--check-2:before {
+  content: "";
+}
+
+.icon--close:before {
+  content: "";
+}
+
+.icon--draggable:before {
+  content: "";
+}
+
+.icon--search:before {
+  content: "";
+}
+
+.icon--menu:before {
+  content: "";
+}
+
+.icon--share:before {
+  content: "";
+}
+
+.icon--shared:before {
+  content: "";
+}
+
+.icon--load:before {
+  content: "";
+}
+
+.icon--location:before {
+  content: "";
+}
+
+.icon--out:before {
+  content: "";
+}
+
+.icon--remove:before {
+  content: "";
+}
+
+.icon--edit:before {
+  content: "";
+}
+
+.icon--cancel:before {
+  content: "";
+}
+
+.icon--pin:before {
+  content: "";
+}
+
+.icon--external:before {
+  content: "";
+}
+
+.icon--play:before {
+  content: "";
+}
+
+.icon--anchor:before {
+  content: "";
+}
+
+.icon--dots:before {
+  content: "";
+}
+
+.icon--help:before {
+  content: "";
+}
+
+.icon--footer-newsletter:before {
+  content: "";
+}

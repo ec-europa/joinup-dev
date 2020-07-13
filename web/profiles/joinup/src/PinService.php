@@ -1,21 +1,21 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Drupal\joinup;
 
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
+use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\rdf_entity\RdfInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\solution\Entity\SolutionInterface;
 
 /**
  * A service to handle pinned entities.
  */
-class PinService implements PinServiceInterface, ContainerInjectionInterface {
+class PinService implements PinServiceInterface {
 
   /**
    * The field that holds the collections where a solution is pinned in.
@@ -25,35 +25,9 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
   const SOLUTION_PIN_FIELD = 'field_is_pinned_in';
 
   /**
-   * The relations manager service.
-   *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
-   */
-  protected $relationManager;
-
-  /**
-   * Constructs a PinService service.
-   *
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
-   *   The relations manager service.
-   */
-  public function __construct(JoinupRelationManagerInterface $relationManager) {
-    $this->relationManager = $relationManager;
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('joinup_core.relations_manager')
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isEntityPinned(ContentEntityInterface $entity, RdfInterface $group = NULL) {
+  public function isEntityPinned(ContentEntityInterface $entity, ?RdfInterface $group = NULL) {
     if (JoinupGroupHelper::isSolution($entity)) {
       if (empty($group)) {
         return !$entity->get(self::SOLUTION_PIN_FIELD)->isEmpty();
@@ -105,11 +79,17 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
    * {@inheritdoc}
    */
   public function getGroupsWherePinned(ContentEntityInterface $entity) {
-    if (JoinupGroupHelper::isSolution($entity)) {
+    if ($entity instanceof SolutionInterface) {
       return $entity->get(self::SOLUTION_PIN_FIELD)->referencedEntities();
     }
-    elseif (CommunityContentHelper::isCommunityContent($entity) && $entity->isSticky()) {
-      return [$this->relationManager->getParent($entity)];
+    elseif ($entity instanceof CommunityContentInterface && $entity->isSticky()) {
+      try {
+        return [$entity->getGroup()];
+      }
+      catch (MissingGroupException $e) {
+        // The group the content was pinned in has been deleted.
+        return [];
+      }
     }
 
     return [];

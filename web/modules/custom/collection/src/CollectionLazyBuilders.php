@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\collection;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -12,7 +14,7 @@ use Drupal\Core\Session\AccountInterface;
 class CollectionLazyBuilders {
 
   /**
-   * The entity manager service.
+   * The entity type manager service.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */

@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\joinup_stats_test\Kernel;
+namespace Drupal\Tests\joinup_stats\Kernel;
 
-use Drupal\field\Entity\FieldConfig;
-use Drupal\file\Entity\File;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\file\Entity\File;
 
 /**
  * Tests the download & visit count refresh.
@@ -49,9 +49,16 @@ class RefreshCountersTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
+    $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp(): void {
     parent::setUp();
-    $this->setUpSparql();
 
     $this->installEntitySchema('meta_entity');
     $this->installEntitySchema('user');

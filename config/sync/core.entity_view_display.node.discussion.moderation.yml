@@ -16,8 +16,7 @@ dependencies:
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
-    - ds
-    - joinup
+    - template_suggestion
     - options
     - smart_trim
     - user
@@ -44,14 +43,7 @@ content:
       wrap_output: false
       wrap_class: trimmed
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     type: smart_trim
     region: content

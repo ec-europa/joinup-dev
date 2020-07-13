@@ -22,8 +22,8 @@ dependencies:
     - node.type.document
   module:
     - datetime
-    - ds
     - smart_trim
+    - template_suggestion
     - user
 _core:
   default_config_hash: IBVftmfYLkfapLokxuyLrv1me4toJj5yidZu0ixGxQM
@@ -50,14 +50,7 @@ content:
       wrap_output: false
       more_link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     region: content
   field_document_publication_date:
@@ -67,14 +60,7 @@ content:
       timezone_override: ''
       format_type: date_only
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: datetime_default
     region: content
@@ -84,14 +70,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
     type: string
     region: content

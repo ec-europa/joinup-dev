@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_news\ExistingSite;
 
-use Drupal\Tests\joinup_core\ExistingSite\NodeWorkflowTestBase;
+use Drupal\Tests\joinup_community_content\ExistingSite\CommunityContentWorkflowTestBase;
 
 /**
  * Tests CRUD operations and workflow transitions for the news node.
  *
  * @group workflow
  */
-class NewsWorkflowTest extends NodeWorkflowTestBase {
+class NewsWorkflowTest extends CommunityContentWorkflowTestBase {
 
   /**
    * {@inheritdoc}

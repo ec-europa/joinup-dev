@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Subscribing to community content in collections
   As a member of a collection
   I want to receive a periodic digest listing newly published content
@@ -23,13 +23,13 @@ Feature: Subscribing to community content in collections
       | Cities of Bulgaria   | bisera |             |
       | Cities of Bulgaria   | kalin  | facilitator |
     And the following collection content subscriptions:
-      | collection           | user   | subscriptions              |
-      | Products of Bulgaria | hristo | discussion, event, news    |
-      | Products of Bulgaria | bisera | discussion, document, news |
-      | Products of Bulgaria | kalin  | document, event            |
-      | Cities of Bulgaria   | hristo | document, event            |
-      | Cities of Bulgaria   | bisera | discussion, event, news    |
-      | Cities of Bulgaria   | kalin  | discussion, document, news |
+      | collection           | user   | subscriptions                        |
+      | Products of Bulgaria | hristo | discussion, event, news, solution    |
+      | Products of Bulgaria | bisera | discussion, document, news           |
+      | Products of Bulgaria | kalin  | document, event                      |
+      | Cities of Bulgaria   | hristo | document, event, solution            |
+      | Cities of Bulgaria   | bisera | discussion, event, news              |
+      | Cities of Bulgaria   | kalin  | discussion, document, news, solution |
     And all message digests have been delivered
     And the mail collector cache is empty
 
@@ -53,39 +53,34 @@ Feature: Subscribing to community content in collections
       | title    | body                        | collection           | state     | author |
       | Rose oil | A widely used essential oil | Products of Bulgaria | validated | bisera |
       | Burgas   | City of dreams              | Cities of Bulgaria   | validated | hristo |
+    And solutions:
+      | title          | description                      | collection           | state     | author |
+      | Double seaming | The rolls roll around the chuck  | Products of Bulgaria | proposed  | kalin  |
+      | Belt conveyors | As troughed belts gently slope   | Products of Bulgaria | validated | bisera |
+      | New urbanism   | Context-appropriate architecture | Cities of Bulgaria   | validated | hristo |
 
-    Then the daily digest for hristo should contain the following message:
-      | mail_body | Duck liver |
-    And the daily digest for hristo should contain the following message:
-      | mail_body | Sunflower seeds |
-    And the daily digest for hristo should contain the following message:
-      | mail_body | Rose oil |
-    And the daily digest for hristo should contain the following message:
-      | mail_body | Plovdiv |
-    And the daily digest for hristo should contain the following message:
-      | mail_body | Stara Zagora |
-    And the weekly digest for bisera should contain the following message:
-      | mail_body | Duck liver |
-    And the weekly digest for bisera should contain the following message:
-      | mail_body | Canned cherries |
-    And the weekly digest for bisera should contain the following message:
-      | mail_body | Rose oil |
-    And the weekly digest for bisera should contain the following message:
-      | mail_body | Sofia |
-    And the weekly digest for bisera should contain the following message:
-      | mail_body | Stara Zagora |
-    And the weekly digest for bisera should contain the following message:
-      | mail_body | Burgas |
-    And the monthly digest for kalin should contain the following message:
-      | mail_body | Canned cherries |
-    And the monthly digest for kalin should contain the following message:
-      | mail_body | Sunflower seeds |
-    And the monthly digest for kalin should contain the following message:
-      | mail_body | Sofia |
-    And the monthly digest for kalin should contain the following message:
-      | mail_body | Plovdiv |
-    And the monthly digest for kalin should contain the following message:
-      | mail_body | Burgas |
+    Then the daily collection content subscription digest for hristo should match the following messages:
+      | Belt conveyors  |
+      | New urbanism    |
+      | Duck liver      |
+      | Sunflower seeds |
+      | Rose oil        |
+      | Plovdiv         |
+      | Stara Zagora    |
+    And the weekly collection content subscription digest for bisera should match the following message:
+      | Duck liver      |
+      | Canned cherries |
+      | Rose oil        |
+      | Sofia           |
+      | Stara Zagora    |
+      | Burgas          |
+    And the monthly collection content subscription digest for kalin should match the following message:
+      | Canned cherries |
+      | Sunflower seeds |
+      | Sofia           |
+      | Plovdiv         |
+      | Burgas          |
+      | New urbanism    |
 
     # Check that only the user's chosen frequency is digested.
     But the weekly digest for hristo should not contain any messages
@@ -96,34 +91,39 @@ Feature: Subscribing to community content in collections
     And the weekly digest for kalin should not contain any messages
 
     # The digest should not include news about content that is not published.
-    And the weekly digest for bisera should not contain the following message:
-      | mail_body | Ruse |
-    And the monthly digest for kalin should not contain the following message:
-      | mail_body | Ruse |
+    And the daily collection content subscription digest for hristo should not contain the following messages:
+      | Double seaming |
+      | Varna          |
+    And the weekly collection content subscription digest for bisera should not contain the following message:
+      | Ruse  |
+      | Varna |
+    And the monthly collection content subscription digest for kalin should not contain the following message:
+      | Ruse |
 
     # Publish an existing unpublished community content. It should be included
     # in the next digest.
     When the workflow state of the "Ruse" content is changed to "validated"
 
-    Then the weekly digest for bisera should contain the following message:
-      | mail_body | Ruse |
-    And the monthly digest for kalin should contain the following message:
-      | mail_body | Ruse |
+    Then the weekly collection content subscription digest for bisera should include the following message:
+      | Ruse |
+    And the monthly collection content subscription digest for kalin should include the following message:
+      | Ruse |
 
     # Check that the messages are formatted correctly.
     Given all message digests have been delivered
-    Then the collection content subscription digest email sent to hristo contains the following sections:
+    Then the collection content subscription digest sent to hristo contains the following sections:
       | title                |
       | Cities of Bulgaria   |
       | Plovdiv              |
       | Stara Zagora         |
       | Products of Bulgaria |
+      | Belt conveyors       |
       | Duck liver           |
       | Rose oil             |
       | Sunflower seeds      |
-    And the collection content subscription digest email sent to hristo should have the subject "Joinup: Daily digest message"
+    And the collection content subscription digest sent to hristo should have the subject "Joinup: Daily digest message"
 
-    And the collection content subscription digest email sent to bisera contains the following sections:
+    And the collection content subscription digest sent to bisera contains the following sections:
       | title                |
       | Cities of Bulgaria   |
       | Burgas               |
@@ -132,18 +132,19 @@ Feature: Subscribing to community content in collections
       | Products of Bulgaria |
       | Canned cherries      |
       | Rose oil             |
-    And the collection content subscription digest email sent to bisera should have the subject "Joinup: Weekly digest message"
+    And the collection content subscription digest sent to bisera should have the subject "Joinup: Weekly digest message"
 
-    And the collection content subscription digest email sent to kalin contains the following sections:
+    And the collection content subscription digest sent to kalin contains the following sections:
       | title                |
       | Cities of Bulgaria   |
       | Burgas               |
+      | New urbanism         |
       | Plovdiv              |
       | Sofia                |
       | Products of Bulgaria |
       | Canned cherries      |
       | Sunflower seeds      |
-    And the collection content subscription digest email sent to kalin should have the subject "Joinup: Monthly digest message"
+    And the collection content subscription digest sent to kalin should have the subject "Joinup: Monthly digest message"
 
     # Clean out the message queue for the next test.
     And the mail collector cache is empty
@@ -151,12 +152,23 @@ Feature: Subscribing to community content in collections
     # Check that if community content is published a second time it is not
     # included in the next digest.
     When the workflow state of the "Ruse" content is changed to "draft"
-    Then the weekly digest for bisera should not contain the following message:
-      | mail_body | Ruse |
-    And the monthly digest for kalin should not contain the following message:
-      | mail_body | Ruse |
+    Then the weekly collection content subscription digest for bisera should not contain the following message:
+      | Ruse |
+    And the monthly collection content subscription digest for kalin should not contain the following message:
+      | Ruse |
     When the workflow state of the "Ruse" content is changed to "validated"
-    Then the weekly digest for bisera should not contain the following message:
-      | mail_body | Ruse |
-    And the monthly digest for kalin should not contain the following message:
-      | mail_body | Ruse |
+    Then the weekly collection content subscription digest for bisera should not contain the following message:
+      | Ruse |
+    And the monthly collection content subscription digest for kalin should not contain the following message:
+      | Ruse |
+
+    # Test publication of a solution.
+    When the workflow state of the "Double seaming" solution is changed to "validated"
+    Then the daily collection content subscription digest for hristo should include the following messages:
+      | Double seaming |
+
+    # Check that the messages are formatted correctly.
+    Given all message digests have been delivered
+    Then the collection content subscription digest sent to hristo contains the following sections:
+      | title          |
+      | Double seaming |

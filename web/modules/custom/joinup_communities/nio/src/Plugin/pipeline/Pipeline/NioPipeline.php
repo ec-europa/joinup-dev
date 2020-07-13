@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\nio\Plugin\pipeline\Pipeline;
 
 use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
@@ -31,7 +33,7 @@ class NioPipeline extends JoinupFederationPipelinePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): ?string {
+  public function getCollection(): string {
     return 'http://nio.gov.si/nio/';
   }
 

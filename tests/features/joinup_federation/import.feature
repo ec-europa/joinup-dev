@@ -2,7 +2,11 @@
 Feature: As a site moderator I am able to import RDF files.
 
   Background:
-    Given users:
+    Given collection:
+      | uri   | http://administracionelectronica.gob.es/ctt |
+      | title | Spain                                       |
+      | state | validated                                   |
+    And users:
       | Username        | Roles     |
       | Antoine Batiste | moderator |
     And I am logged in as "Antoine Batiste"
@@ -10,16 +14,14 @@ Feature: As a site moderator I am able to import RDF files.
   Scenario: Test available pipelines
     Given I click "ADMS-AP importer" in the "Administration toolbar" region
     Then the "Data pipeline" select should contain the following options:
-      | - Select -                              |
-      | Joinup collection                       |
-      | Slovenian Interoperability Portal - NIO |
-      | Spain - Center for Technology Transfer  |
+      | - Select -                               |
+      | Danish Public Sector Interoperability    |
+      | EU Schemantic Interoperability Catalogue |
+      | Joinup collection                        |
+      | Slovenian Interoperability Portal - NIO  |
+      | Spain - Center for Technology Transfer   |
 
   Scenario: Test the pipeline functionality
-    Given collection:
-      | uri   | http://administracionelectronica.gob.es/ctt |
-      | title | Spain                                       |
-      | state | validated                                   |
     And users:
       | Username         | Roles     |
       | LaDonna          | moderator |
@@ -203,7 +205,7 @@ Feature: As a site moderator I am able to import RDF files.
     And the "Licence same as Apache 2" entity should not have a related provenance activity
 
     # Regression test to ensure that solutions with complex urls still receive all menu items.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5608
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5608
     When I visit the "Solution 1" solution
     Then I should see the following group menu items in the specified order:
       | text     |
@@ -330,11 +332,6 @@ Feature: As a site moderator I am able to import RDF files.
 
   @joinup_collection
   Scenario: Test that solutions cannot be re-federated in a different collection.
-    And collection:
-      | uri   | http://administracionelectronica.gob.es/ctt |
-      | title | Spain                                       |
-      | state | validated                                   |
-
     Given I click "ADMS-AP importer" in the "Administration toolbar" region
     And I select "Spain - Center for Technology Transfer" from "Data pipeline"
     And I press "Execute"

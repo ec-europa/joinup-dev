@@ -10,25 +10,26 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
+    - field.field.rdf_entity.collection.field_ar_content_creation
     - field.field.rdf_entity.collection.field_ar_description
-    - field.field.rdf_entity.collection.field_ar_elibrary_creation
     - field.field.rdf_entity.collection.field_ar_logo
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
+    - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_short_id
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
     - image.style.horizontal_medium_image
     - rdf_entity.rdfentity.collection
   module:
-    - ds
     - image
-    - joinup
     - smart_trim
+    - template_suggestion
     - user
 id: rdf_entity.collection.view_mode_tile
 targetEntityType: rdf_entity
@@ -50,15 +51,10 @@ content:
         text: false
       more_class: more-link
       summary_handler: full
+      wrap_output: false
+      wrap_class: trimmed
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
   field_ar_logo:
     weight: 0
@@ -66,14 +62,7 @@ content:
     settings:
       image_style: horizontal_medium_image
       image_link: content
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     type: image
     region: content
   label:
@@ -82,14 +71,7 @@ content:
     weight: 1
     settings:
       link_to_entity: true
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
   members:
     weight: 2
@@ -104,14 +86,16 @@ hidden:
   field_ar_banner: true
   field_ar_closed: true
   field_ar_contact_information: true
+  field_ar_content_creation: true
   field_ar_description: true
-  field_ar_elibrary_creation: true
   field_ar_moderation: true
   field_ar_owner: true
   field_ar_state: true
   field_collection_content: true
+  field_keywords: true
   field_newsletter: true
   field_policy_domain: true
+  field_short_id: true
   field_site_featured: true
   field_site_pinned: true
   field_spatial_coverage: true

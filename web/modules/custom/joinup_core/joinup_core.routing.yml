@@ -1,16 +1,3 @@
-entity.rdf_entity.member_overview:
-  path: 'rdf_entity/{rdf_entity}/members'
-  defaults:
-    _controller: '\Drupal\joinup_core\Controller\GroupMembersController::membersList'
-    _title: 'Members'
-  requirements:
-    _permission: 'access user profiles'
-  options:
-    parameters:
-      rdf_entity:
-        type: entity:rdf_entity
-    _og_entity_type_id: rdf_entity
-
 joinup_core.not_found:
   path: '/not-found'
   defaults:

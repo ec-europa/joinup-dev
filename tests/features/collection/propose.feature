@@ -34,10 +34,22 @@ Feature: Proposing a collection
     And the following fields should not be present "Current workflow state, Langcode, Translation, Motivation"
     And the following field widgets should be present "Contact information, Owner"
     # Ensure that the description for the "Access url" is shown.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3196
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3196
     And I should see the description "Web page for the external Repository." for the "Access URL" field
     And I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
     And I should see the description "For best result the image must be larger than 2400x345 pixels." for the "Banner" field
+
+    # Check that validations errors are shown for required fields.
+    When I press "Propose"
+    Then I should see the following error messages:
+      | error messages                    |
+      | Title field is required.          |
+      | Description field is required.    |
+      | Policy domain field is required.  |
+      | Owner field is required.          |
+      | Name field is required.           |
+      | E-mail address field is required. |
+
     When I fill in the following:
       | Title                 | Ancient and Classical Mythology                                                                      |
       | Description           | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
@@ -46,8 +58,7 @@ Feature: Proposing a collection
       | Name                  | Contact person                                                                                       |
       | E-mail                | contact_person@example.com                                                                           |
     When I select "HR" from "Policy domain"
-    And I check "Closed collection"
-    And I select the radio button "Only members can create new content."
+    And I select the radio button "Only members can create content."
     And I check "Moderated"
     # The owner field should have a help text.
     And I should see the text "The Owner is the organisation that owns this entity and is the only responsible for it."
@@ -56,7 +67,7 @@ Feature: Proposing a collection
     And I fill in "Owner" with "Organisation example"
     And I press "Propose"
     # Regression test for setting the Logo and Banner fields as optional.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3215
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3215
     Then I should not see the following error messages:
       | error messages           |
       | Field Logo is required   |
@@ -106,53 +117,16 @@ Feature: Proposing a collection
   # This is a regression test for a bug in which the label texts of the options
   # vanished after performing an AJAX request in a different element on the
   # page.
-  # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
-  Scenario: E-library options should not vanish after AJAX request.
+  # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
+  Scenario: Content creation options should not vanish after AJAX request.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
     And I click the "Additional fields" tab
     And I attach the file "banner1.jpg" to "Banner"
     And I wait for AJAX to finish
     Then I should see the link "banner1.jpg"
-    And I should see the text "Only members can create new content."
-    And I should see the text "Any registered user can create new content."
-
-  @javascript
-  Scenario: eLibrary creation options should adapt to the state of the 'closed collection' option
-    Given I am logged in as a user with the "authenticated" role
-    When I go to the propose collection form
-    And I click the "Additional fields" tab
-
-    # Initially the collection is open, check if the eLibrary options are OK.
-    Then the radio button "Only members can create new content." from field "eLibrary creation" should be selected
-    And the "Any registered user can create new content." radio button should not be selected
-    And I should not see the text "Only collection facilitators can create new content."
-
-    When I select the radio button "Any registered user can create new content."
-    Then the radio button "Any registered user can create new content." from field "eLibrary creation" should be selected
-    And the "Only members can create new content." radio button should not be selected
-
-    # When toggling to closed, the option 'any registered user' should disappear
-    # and the option for facilitators should appear.
-    When I check "Closed collection"
-    And I wait for AJAX to finish
-    Then the radio button "Only members can create new content." from field "eLibrary creation" should be selected
-    And the "Only collection facilitators can create new content." radio button should not be selected
-    And I should not see the text "Any registered user can create new content."
-    When I select the radio button "Only collection facilitators can create new content."
-    Then the radio button "Only collection facilitators can create new content." from field "eLibrary creation" should be selected
-    And the "Only members can create new content." radio button should not be selected
-
-    # This is a regression test for a bug in which the both the previous option
-    # and the default option were selected after cycling the collection
-    # checkbox status open-closed-open-closed.
-    # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
-    When I uncheck "Closed collection"
-    And I wait for AJAX to finish
-    And I check "Closed collection"
-    And I wait for AJAX to finish
-    Then the radio button "Only members can create new content." from field "eLibrary creation" should be selected
-    And the "Only collection facilitators can create new content." radio button should not be selected
+    And I should see the text "Only members can create content."
+    And I should see the text "Any user can create content."
 
   @javascript
   Scenario: Propose collection form fields should be organized in tabs.
@@ -160,14 +134,14 @@ Feature: Proposing a collection
     When I go to the propose collection form
     Then the following fields should be visible "Title, Description, Policy domain"
     And the following field widgets should be visible "Owner"
-    And the following fields should not be visible "Closed collection, Moderated, Abstract, eLibrary creation, Geographical coverage"
+    And the following fields should not be visible "Moderated, Abstract, Content creation, Geographical coverage"
     And the following fields should not be present "Affiliates"
     And the following field widgets should be visible "Contact information"
 
     When I click "Additional fields" tab
     Then the following fields should not be visible "Title, Description, Policy domain"
     And the following field widgets should not be visible "Owner"
-    And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Geographical coverage"
+    And the following fields should be visible "Content creation, Moderated, Abstract, Geographical coverage"
     And the following fields should not be present "Affiliates"
     And the following field widgets should not be visible "Contact information"
 
@@ -176,7 +150,7 @@ Feature: Proposing a collection
   # submitting the collection form after not filling some of the required
   # fields. This was due the HTML5 constraint validation not being able to
   # focus the wanted element because it was hidden by css.
-  # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3057
+  # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3057
   Scenario: Browser validation errors should focus the correct field group.
     Given I am logged in as an "authenticated user"
     When I go to the propose collection form

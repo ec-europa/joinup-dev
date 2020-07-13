@@ -9,20 +9,17 @@ dependencies:
     - joinup_core
   theme:
     - joinup_theme
-_core:
-  default_config_hash: 1E3EXKXXTxO26-0FqSGyJmwhR5-3oi4_fatysrd3JfE
 id: entity_bundle_facet
 theme: joinup_theme
-region: filters
+region: sidebar_left
 weight: -12
 provider: null
 plugin: 'facet_block:type'
 settings:
   id: 'facet_block:type'
-  label: 'Collection content - Content type'
+  label: 'Content types'
   provider: facets
-  label_display: '0'
-  block_id: entity_bundle_facet
+  label_display: '1'
 visibility:
   request_route:
     id: request_route

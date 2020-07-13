@@ -56,7 +56,7 @@ Feature: User profile
     And I should not see the link "Youtube" in the "Header" region
     And I should not see the link "Vimeo" in the "Header" region
     # @todo The nationality will be rendered as flag image.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3175
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3175
     # And I should see the link "Italy"
     # A user should not be able to edit the profile page of another user.
     When I go to the public profile of "Domenico Ghirlandaio"
@@ -189,7 +189,7 @@ Feature: User profile
     # the full name as header title and in the page title tag.
     When I go to the public profile of cgarnett67
     Then I should see the heading "Callista Garnett" in the "Header" region
-    And the HTML title tag should contain the text "Callista Garnett"
+    And the HTML title of the page should be "Callista Garnett"
     # The title should not be duplicated.
     And I should not see the "Page title" region
     And I should not see the heading "cgarnett67"
@@ -197,7 +197,7 @@ Feature: User profile
     # The full name fall backs to the user name when the fields are not filled.
     When I go to the public profile of delwin999
     Then I should see the heading delwin999 in the "Header" region
-    And the HTML title tag should contain the text delwin999
+    And the HTML title of the page should be delwin999
     And I should not see the "Page title" region
 
   Scenario: The user profile page is updated when the user joins or leaves a collection

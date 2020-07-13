@@ -2,9 +2,8 @@
 
 # Restores a backup of the Solr data.
 # This script is intended to be run in the Jenkins pipelines of the acceptance
-# and UAT environments. For local development it is easier to run the Phing
-# target:
-# $ ./vendor/bin/phing restore-databases
+# and UAT environments. For local development better use the runner command:
+# $ ./vendor/bin/run toolkit:install-dump
 
 SOLR_SERVER_URL="http://localhost:8983/solr"
 TIMEOUT=300

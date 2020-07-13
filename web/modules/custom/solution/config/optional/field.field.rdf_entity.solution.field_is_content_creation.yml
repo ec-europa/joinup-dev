@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_content_creation
+    - rdf_entity.rdfentity.solution
+  module:
+    - options
+id: rdf_entity.solution.field_is_content_creation
+field_name: field_is_content_creation
+entity_type: rdf_entity
+bundle: solution
+label: 'Content creation'
+description: 'Choose which users can create content (news, events, discussions and documents) in the solution.'
+required: true
+translatable: false
+default_value:
+  -
+    value: only_facilitators
+default_value_callback: ''
+settings: {  }
+field_type: list_string

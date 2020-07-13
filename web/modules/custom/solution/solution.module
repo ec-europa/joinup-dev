@@ -26,6 +26,8 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\solution\Entity\Solution;
+use Drupal\solution\Entity\SolutionInterface;
 use Drupal\solution\SolutionAffiliationFieldItemList;
 use Drupal\solution\SolutionReleasesAndDistributionsFieldItemList;
 use Drupal\sparql_entity_storage\SparqlGraphInterface;
@@ -97,6 +99,15 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
 }
 
 /**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function solution_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['rdf_entity']['solution'])) {
+    $bundles['rdf_entity']['solution']['class'] = Solution::class;
+  }
+}
+
+/**
  * Implements hook_ENTITY_TYPE_insert().
  *
  * This function grants the 'owner' and 'facilitator' roles to the user that
@@ -148,7 +159,7 @@ function solution_form_rdf_entity_solution_edit_form_alter(array &$form, FormSta
   }
 
   if (!\Drupal::service('solution.title_duplicate_helper')->titleIsUnique($form_state->getFormObject()->getEntity())) {
-    drupal_set_message(t('A solution with the same name exists in a different collection.'), 'warning');
+    \Drupal::messenger()->addMessage(t('A solution with the same name exists in a different collection.'), 'warning');
   }
 }
 
@@ -168,7 +179,9 @@ function solution_rdf_entity_access(EntityInterface $entity, $operation, Account
   }
 
   if ($operation == 'edit') {
-    $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
+    /** @var \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper */
+    $workflow_helper = \Drupal::service('joinup_workflow.workflow_helper');
+    $allowed_transitions = $workflow_helper->getAvailableTransitions($entity, $account);
     if (empty($allowed_transitions)) {
       return AccessResult::forbidden();
     }
@@ -251,7 +264,7 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
           'role' => 'button',
           'class' => [
             // @todo Move the Material Design classes in the theme layer.
-            // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5731
+            // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5731
             'featured__form-button',
             'button',
             'button--blue-light',
@@ -281,7 +294,7 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
   // Attach the download total of all distributions in this solution.
   // @todo Add the `og-group-content` cache tag because the downloads are
   //   contained in the distribution entities which is group content.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5200
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5200
   if ($display->getComponent('download_total')) {
     $total = 0;
     if (!$solution->isNew()) {
@@ -320,7 +333,7 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
 
   // Show the collection the solution belongs to. A solution can be affiliated
   // to multiple collections, but for now we show only the first one.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3635
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3635
   if ($display->getComponent('collections') && !$solution->get('collection')->isEmpty()) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
     $collection = $solution->get('collection')->first()->entity;
@@ -572,6 +585,33 @@ function solution_rdf_entity_update(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * When a published solution is deleted, the parent collections should have
+ * their changed timestamp updated.
+ */
+function solution_rdf_entity_delete(RdfInterface $solution) {
+  if (!$solution instanceof SolutionInterface || $solution->getWorkflowState() !== 'validated') {
+    return;
+  }
+
+  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  $ids = $storage->getQuery()
+    ->condition('rid', 'collection')
+    ->condition('field_ar_affiliates', $solution->id())
+    ->execute();
+  if ($ids) {
+    // Touch the parent collections in order to update their changed timestamp.
+    $request_time = \Drupal::time()->getRequestTime();
+    /** @var \Drupal\rdf_entity\RdfInterface $collection */
+    foreach ($storage->loadMultiple($ids) as $collection) {
+      $collection->skip_notification = TRUE;
+      $collection->setChangedTime($request_time)->save();
+    }
+  }
+}
+
+/**
  * Gets the latest release of a solution.
  *
  * @param \Drupal\rdf_entity\RdfInterface $solution
@@ -598,7 +638,7 @@ function solution_get_latest_release(RdfInterface $solution) {
       // @todo: Sorting is not yet working in SPARQL, we're fetching all results
       // and doing the sorting in PHP right now. Once sorting is working we
       // should limit the result set to 1 item.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
+      // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
       $releases = Rdf::loadMultiple($ids);
       usort($releases, function ($release1, $release2) {
         $ct1 = $release1->getCreatedTime();

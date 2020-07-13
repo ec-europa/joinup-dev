@@ -60,6 +60,9 @@ Feature: "Add document" visibility options.
       | Title       | An amazing document |
       | Short title | Amazing document    |
     And I select "Document" from "Type"
+    # Regression test: Document is successfully displayed even when a publication date is not set.
+    And I clear the date of the "Publication date" widget
+    And I clear the time of the "Publication date" widget
     Then I upload the file "test.zip" to "Upload a new file or enter a URL"
     And I press "Save as draft"
     Then I should see the error message "Description field is required."
@@ -77,7 +80,7 @@ Feature: "Add document" visibility options.
 
   # Regression test to ensure that no critical errors are thrown when a new
   # revision is created for a document that has a remote file attached.
-  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3670
+  # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3670
   Scenario: Remote URLs can be used in documents.
     Given the following collection:
       | title | Strong Lasers |

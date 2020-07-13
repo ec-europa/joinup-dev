@@ -5,6 +5,8 @@
  * The SEMIC module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Render\Markup;
 use Drupal\semic\Semic;
 

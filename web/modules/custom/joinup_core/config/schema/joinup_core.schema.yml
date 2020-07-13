@@ -36,62 +36,20 @@ field.formatter.settings.daterange_condensed:
       type: date_format
       label: 'Different years format'
 
-field.widget.settings.current_workflow_state_widget:
-  type: mapping
-  label: 'Field widget format settings for the current workflow state field.'
-  mapping:
-    title:
-      type: string
-      label: 'The title to use for the field widget.'
-    title_display:
-      type: string
-      label: 'The setting that determines how the field widget title is displayed.'
-    show_for_new_entities:
-      type: boolean
-      label: 'The setting that allows to show the widget on entity creation forms.'
-
 field.widget.settings.email_legacy_multicardinality:
   type: field.widget.settings.email_default
 
 field.widget.settings.link_legacy_multicardinality:
   type: field.widget.settings.link_default
 
-field.widget.settings.state_machine_buttons:
-  type: mapping
-  label: 'Theme settings for Joinup project.'
-  mapping:
-    use_transition_label:
-      type: integer
-
 field.widget.settings.string_textfield_legacy_multicardinality:
   type: field.widget.settings.string_textfield
-
-facet.widget.config.type:
-  type: facet.widget.default_config
-  label: 'Search API content listing'
-  mapping:
-    tabs:
-      type: integer
-      label: 'Number of tabs'
 
 condition.plugin.request_route:
   type: condition.plugin
   mapping:
     routes:
       type: string
-
-plugin.plugin_configuration.search_api_processor.joinup_entity_status:
-  type: search_api.default_processor_configuration
-  label: 'Joinup entity status processor'
-  mapping:
-    inverse:
-      type: boolean
-      label: 'Inverse'
-    roles:
-
-entity_reference_selection.grouped_rdf_taxonomy_term_selection:default:
-  type: entity_reference_selection.default
-  label: 'RDF taxonomy term selection handler settings'
 
 # Schema for 'joinup_timestamp_timeago' formatter settings.
 field.formatter.settings.joinup_timestamp_timeago:
