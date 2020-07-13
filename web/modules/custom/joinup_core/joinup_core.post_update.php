@@ -27,4 +27,11 @@ WHERE nfr.changed != nr.revision_timestamp
 QUERY;
 
   \Drupal::database()->query($query);
+  $query = <<<QUERY
+UPDATE {node_field_data} nfd
+INNER JOIN {node_field_revision} nfr ON nfd.vid = nfr.vid
+SET nfd.changed = nfr.changed
+QUERY;
+
+  \Drupal::database()->query($query);
 }
