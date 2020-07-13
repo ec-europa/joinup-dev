@@ -46,7 +46,7 @@ function joinup_core_post_update_0106300(): void {
     $solution->delete();
   }
 
-  // Delete the document 'XBRL_Architecture_v2_0_en.doc';
+  // Delete the document 'XBRL_Architecture_v2_0_en.doc'.
   /** @var \Drupal\node\NodeStorageInterface $node_storage */
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
   /** @var \Drupal\joinup_document\Entity\DocumentInterface $document */
