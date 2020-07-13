@@ -56,7 +56,7 @@ function joinup_workflow_entity_create(EntityInterface $entity) {
       $state_field = $workflow_helper->getEntityStateField($entity);
       $workflow = $state_field->getWorkflow();
       $state_id = $state_field->getValue()['value'];
-      if ($workflow_helper->isWorkflowStatePublished($state_id, $workflow)) {
+      if ($workflow && $workflow_helper->isWorkflowStatePublished($state_id, $workflow)) {
         $entity->setPublished();
       }
       else {
@@ -162,13 +162,13 @@ function joinup_workflow_motivation_form_validate(array &$form, FormStateInterfa
   $required = joinup_workflow_is_motivation_required($entity->getEntityTypeId(), $workflow->getId(), $transition->getId());
   // @todo Remove this when the 'reject_deletion' and 'reject_archival' for
   //   rdf_entities are separate transitions.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3644
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3644
   if ($entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'collection' && $transition->getId() === 'validate' && !in_array($from_state, ['archival_request', 'deletion_request'])) {
     $required = FALSE;
   }
   // @todo Remove this when the 'reject_deletion' and 'proposed_from_validated'
   //   for rdf_entities are separate transitions.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3840
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3840
   if ($entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'solution') {
     $user_roles = \Drupal::currentUser()->getRoles();
     $reject_deletion = $transition->getId() === 'validate' && $from_state === 'deletion_request';

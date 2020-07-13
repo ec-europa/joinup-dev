@@ -7,14 +7,17 @@
 
 declare(strict_types = 1);
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Template\Attribute;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Query\ConditionGroupInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\search_api\Utility\Utility;
 use Solarium\Core\Query\QueryInterface as SolariumQueryInterface;
 use Solarium\QueryType\Select\Query\Query;
 
@@ -23,10 +26,37 @@ use Solarium\QueryType\Select\Query\Query;
  */
 function joinup_search_theme($existing, $type, $theme, $path) {
   return [
+    'facet_widget_links_inline' => [
+      'variables' => [
+        'active' => [],
+        'items' => [],
+        'attributes' => [],
+        'prefix_text' => '',
+        'suffix_text' => '',
+      ],
+    ],
     'joinup_search_global_search' => [
       'variables' => ['filters' => []],
     ],
   ];
+}
+
+/**
+ * Prepares variables for the facet widget "links inline" template.
+ *
+ * Default template: facet-widget-links-inline.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - active: an array of active facet items.
+ *   - items: an array of inactive facet items.
+ *   - attributes: HTML attributes for the main facet wrapper.
+ */
+function template_preprocess_facet_widget_links_inline(array &$variables) {
+  $variables['button_attributes'] = new Attribute([
+    'id' => Html::getUniqueId('filter-button'),
+    'class' => ['filter__icon', 'icon', 'icon--arrow-down'],
+  ]);
 }
 
 /**
@@ -136,6 +166,22 @@ function _joinup_search_search_api_has_condition($conditions, $field, $value, $o
 }
 
 /**
+ * Implements hook_search_api_index_items_alter().
+ *
+ * Do not index any content not written in English.
+ */
+function joinup_search_search_api_index_items_alter(IndexInterface $index, array &$items): void {
+  foreach ($items as $item_id => $item) {
+    list(, $raw_id) = Utility::splitCombinedId($item_id);
+    list(, $langcode) = Utility::splitPropertyPath($raw_id);
+    // Unset non-english content from the index.
+    if ($langcode != 'en') {
+      unset($items[$item_id]);
+    }
+  }
+}
+
+/**
  * Implements hook_search_api_solr_documents_alter().
  *
  * By default, solr server configuration has a property named sortMissingLast
@@ -205,7 +251,7 @@ function joinup_search_search_api_solr_query_alter(SolariumQueryInterface $solar
 function _joinup_search_apply_global_search_api_solr_settings(SolariumQueryInterface $solarium_query, QueryInterface $query): void {
   // Keep the edismax parser to allow document boosting to work properly.
   // @todo remove when document boosting is reimplemented by search_api_solr
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4907
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4907
   $solarium_query->addParam('defType', 'edismax');
 
   /** @var \Drupal\search_api_field\Plugin\Field\FieldType\SearchItem $item */

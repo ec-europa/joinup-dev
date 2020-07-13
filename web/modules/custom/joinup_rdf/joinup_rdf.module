@@ -1,0 +1,204 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the Joinup RDF module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * @todo Remove this hack as part of ISAICP-3021.
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3021
+ *
+ * Hide the table drag handlers on multivalue fields for RDF entities. These are
+ * useless since weights are currently not stored and the ordering of the values
+ * is not retained after submitting the form.
+ */
+function joinup_rdf_form_rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\rdf_entity\Form\RdfForm $form_object */
+  $form_object = $form_state->getFormObject();
+  /** @var \Drupal\rdf_entity\RdfInterface $rdf */
+  $rdf = $form_object->getEntity();
+
+  /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $field_definitions */
+  $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($rdf->getEntityTypeId(), $rdf->bundle());
+  // Keep only fields that are on the form.
+  $field_definitions = array_intersect_key($field_definitions, $form);
+  foreach ($field_definitions as $field_name => $field_definition) {
+    if ($field_definition->getFieldStorageDefinition()->isMultiple()) {
+      // We are questioning only multi-value fields.
+      $form[$field_name]['#attributes']['class'][] = 'joinup-nodrag';
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ *
+ * - Provides a 'path' field only for the 'rdf_entity' entities.
+ */
+function joinup_rdf_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+
+  // Allow alias features for RDF entities.
+  if (($entity_type->id() === 'rdf_entity') && \Drupal::moduleHandler()->moduleExists('path')) {
+    $fields['path'] = BaseFieldDefinition::create('path')
+      ->setLabel(t('URL alias'))
+      ->setTranslatable(TRUE)
+      ->setComputed(TRUE);
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_rdf_entity_type_alter(array &$entity_types) {
+  if (!isset($entity_types['rdf_entity'])) {
+    return;
+  }
+
+  // Add the about page and member overview as link templates, so the OG context
+  // will be automatically solved.
+  $link_templates = [
+    'about-page' => '/rdf_entity/{rdf_entity}/about',
+    'member-overview' => '/rdf_entity/{rdf_entity}/members',
+    'add-facilitator' => '/rdf_entity/{rdf_entity}/members/invite',
+  ];
+  foreach ($link_templates as $key => $path) {
+    $entity_types['rdf_entity']->setLinkTemplate($key, $path);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_storage_load().
+ *
+ * Fill $term->extension and $term->mime_type fields from 'file_type' vocabulary
+ * by a direct query as, due to their RDF representation, this cannot be done by
+ * a simple RDF field mapping. Because we do this at storage level, the values
+ * get cached in the 'cache_entity' bin, avoiding performance issues.
+ */
+function joinup_rdf_taxonomy_term_storage_load(array $terms) {
+  $sparql = \Drupal::service('sparql_endpoint');
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql */
+
+  $query = <<<QUERY
+SELECT ?extension ?mime_type
+WHERE {
+  <%s> <http://publications.europa.eu/ontology/authority/op-mapped-code> ?op_extension .
+  ?op_extension <http://purl.org/dc/elements/1.1/source> "file-extension" .
+  ?op_extension <http://publications.europa.eu/ontology/authority/legacy-code> ?extension .
+  <%s> <http://publications.europa.eu/ontology/authority/op-mapped-code> ?op_mime_type .
+  ?op_mime_type <http://purl.org/dc/elements/1.1/source> "manifestation-type-cellar" .
+  ?op_mime_type <http://publications.europa.eu/ontology/authority/legacy-code> ?mime_type .
+}
+QUERY;
+
+  /** @var \Drupal\taxonomy\TermInterface[] $terms */
+  foreach ($terms as $term) {
+    if ($term->bundle() === 'file_type') {
+      $term_id = $term->id();
+      $results = $sparql->query(sprintf($query, $term_id, $term_id));
+      if ($results->count()) {
+        $result = &$results[0];
+        // A file type might have more than one extension separated by space.
+        $extensions = array_filter(explode(' ', trim($result->extension->getValue())));
+        foreach ($extensions as $extension) {
+          $term->get('extension')->appendItem(['value' => $extension]);
+        }
+        $term->set('mime_type', trim($result->mime_type->getValue()));
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ *
+ * Shows an information message to users who have access to the draft version
+ * of the rdf entity if the user is viewing the published version.
+ */
+function joinup_rdf_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  // Show only in full mode views.
+  if ($view_mode !== 'full') {
+    return;
+  }
+  $graph = $entity->get('graph')->target_id;
+  if ($graph !== 'default' || !$entity->hasGraph('draft')) {
+    return;
+  }
+
+  // The draft link is already set in the list of the link templates of the rdf
+  // entity as 'rdf-draft-{$graph_name}'.
+  $url = $entity->toUrl('rdf-draft-draft');
+  if (!$url->access()) {
+    return;
+  }
+
+  $link = Link::fromTextAndUrl(t('here'), $url)->toString();
+  \Drupal::messenger()->addMessage(t('You are viewing the published version. To view the latest draft version, click @here.', [
+    '@here' => $link,
+  ]), 'warning');
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ *
+ * In Joinup, solutions and releases share the same bundle uri. The distinction
+ * between these two is that the releases always have the field
+ * 'field_isr_is_version_of' filled, while solutions do not have this field.
+ *
+ * This alter performs the following:
+ * 1. If there is a filter on both the release and solution bundles, do nothing.
+ * 2. If there is a filter on the solution, set the field
+ *    'field_isr_is_version_of' as a field required to be absent.
+ * 3. If there is a filter on the asset release, set the field
+ *    'field_isr_is_version_of' as a required field.
+ * 4. If there is a negative case on the bundles, perform cases 2 and 3 on
+ *    reverse.
+ * 5. If none of these exist, as a filter, ignore it.
+ */
+function joinup_rdf_query_sparql_alter(AlterableInterface $query) {
+  $conditions = $query->conditions();
+  // If only one of the following are true, then add a condition on their
+  // corresponding field. If both are set, then do not bother.
+  $solution = FALSE;
+  $release = FALSE;
+
+  $entity_type = $query->getMetaData('entity_type');
+  $bundle_key = $entity_type->getKey('bundle');
+  foreach ($conditions as $condition) {
+    if ($condition['field'] === $bundle_key) {
+      $bundles = array_intersect(['solution', 'asset_release'], $condition['value']);
+      if (empty($bundles) || count($bundles) !== 1) {
+        continue;
+      }
+      $bundle = reset($bundles);
+      if ($bundle === 'solution') {
+        $solution = TRUE;
+      }
+      elseif ($bundle === 'asset_release') {
+        $release = TRUE;
+      }
+    }
+  }
+
+  if ($solution && !$release) {
+    $query->notExists('field_isr_is_version_of');
+  }
+  elseif (!$solution && $release) {
+    $query->exists('field_isr_is_version_of');
+  }
+}

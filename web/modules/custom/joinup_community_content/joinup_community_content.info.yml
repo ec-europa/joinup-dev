@@ -15,11 +15,11 @@ dependencies:
   - joinup:joinup_group
   - joinup:joinup_workflow
   - joinup:workflow_state_permission
+  - publication_date:publication_date
   - state_machine:state_machine
 
 config_devel:
   - facets.facet.content_bundle
-  - field.storage.message.field_community_content
   - field.storage.node.field_attachment
   - field.storage.node.field_comments
   - field.storage.node.field_keywords

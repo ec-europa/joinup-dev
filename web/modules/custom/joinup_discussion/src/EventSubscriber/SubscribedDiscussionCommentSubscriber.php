@@ -96,7 +96,7 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
     //   persists on the dependency injection container and might contain stale
     //   data. Instead the Comment entity should be passed to any other methods
     //   that require it.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4253
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4253
     $this->comment = $event->getEntity();
 
     // Discussion comments are 'reply' comment types.

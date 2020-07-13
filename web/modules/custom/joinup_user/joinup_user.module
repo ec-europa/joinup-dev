@@ -33,7 +33,7 @@ use Drupal\user\UserInterface;
  * form API layer and avoid using all the confusing workarounds with the storing
  * the form ID in a service. Then we can drop also the form alter and the
  * 'joinup_user.active_form_submit' service. Fix this in ISAICP-4698.
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4698
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4698
  */
 function joinup_user_user_update(UserInterface $account) {
   if (!$account->getEmail()) {
@@ -628,7 +628,7 @@ function joinup_user_form_user_login_form_alter(&$form, FormStateInterface $form
  *
  * Change instances of 'Log in/out' to 'Sign in/out'.
  *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3659
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3659
  */
 function joinup_user_menu_links_discovered_alter(&$links) {
   if (isset($links['user.logout'])) {
@@ -641,7 +641,7 @@ function joinup_user_menu_links_discovered_alter(&$links) {
  *
  * Change instances of 'Log in' to 'Sign in'.
  *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3659
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3659
  */
 function joinup_user_local_tasks_alter(&$local_tasks) {
   if (isset($local_tasks['user.login'])) {

@@ -54,7 +54,7 @@ Feature:
     And I should see the link "Long Artificial"
     And I should see the link "Beta Frozen"
     # Verify that the dates are shown in a human readable format.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4924
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4924
     And I should see the following lines of text:
       | Fri, 31/01/2003 - 23:00 |
       | Mon, 07/12/2015 - 13:57 |
