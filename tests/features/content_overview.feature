@@ -190,9 +190,9 @@ Feature: Content Overview
     And event content:
       | title                | collection      | start date   | end date            | created    | state     | author          |
       | Bitter Finger        | Barbaric Avenue | now -1 years | now -1 years +1 day | now -4 day | validated | claricemitchell |
-      | Frozen Barbershop    | Barbaric Avenue | now -1 day   | now +1 day          | now -3 day | validated | claricemitchell |
+      | Frozen Barbershop    | Barbaric Avenue | now -2 day   | now +2 day          | now -3 day | validated | claricemitchell |
       | Frozen Breeze        | Barbaric Avenue | now +2 day   | now +4 day          | now -2 day | validated | claricemitchell |
-      | Flying Official Fish | Barbaric Avenue | now -3 day   | now -1 day          | now        | validated | jeffreypayne    |
+      | Flying Official Fish | Barbaric Avenue | now -3 day   | now -2 day          | now        | validated | jeffreypayne    |
     # Technical: use a separate step to create an event associated to the anonymous user.
     And event content:
       | title          | collection      | start date  | end date    | created    | state     |
