@@ -49,6 +49,15 @@ function collection_theme($existing, $type, $theme, $path) {
         'confirm' => '',
       ],
     ],
+
+    // The collection glossary navigation.
+    'glossary_navigator' => [
+      'variables' => [
+        'url' => NULL,
+        'letters' => [],
+        'current' => NULL,
+      ],
+    ],
   ];
 }
 

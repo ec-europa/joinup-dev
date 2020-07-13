@@ -1,0 +1,64 @@
+uuid: 9d84eb76-f4c0-4cbf-bff7-7d535c3e9124
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.glossary.field_glossary_abbreviation
+    - field.field.node.glossary.field_glossary_definition
+    - field.field.node.glossary.og_audience
+    - node.type.glossary
+  module:
+    - allowed_formats
+    - text
+id: node.glossary.default
+targetEntityType: node
+bundle: glossary
+mode: default
+content:
+  field_glossary_abbreviation:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_glossary_definition:
+    type: text_textarea_with_summary
+    weight: 2
+    region: content
+    settings:
+      rows: 9
+      placeholder: ''
+      summary_rows: 3
+      show_summary: false
+    third_party_settings:
+      allowed_formats:
+        hide_help: '1'
+        hide_guidelines: '1'
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 3
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  current_workflow_state: true
+  langcode: true
+  og_audience: true
+  path: true
+  promote: true
+  published_at: true
+  sticky: true
+  uid: true
+  url_redirects: true

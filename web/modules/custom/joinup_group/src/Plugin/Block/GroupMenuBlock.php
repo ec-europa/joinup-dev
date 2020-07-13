@@ -141,8 +141,9 @@ class GroupMenuBlock extends OgMenuBlock {
     /** @var \Drupal\rdf_entity\RdfInterface $group */
     $group = $this->getContext('og')->getContextData()->getValue();
     // Define URLs that are used in help texts.
-    $create_custom_page_url = Url::fromRoute('custom_page.group_custom_page.add', [
+    $create_custom_page_url = Url::fromRoute('joinup_group.add_content', [
       'rdf_entity' => $group->id(),
+      'node_type' => 'custom_page',
     ]);
     $edit_navigation_menu_url = Url::fromRoute('entity.ogmenu_instance.edit_form', [
       'ogmenu_instance' => $this->getOgMenuInstance()->id(),
@@ -184,6 +185,7 @@ class GroupMenuBlock extends OgMenuBlock {
     $build['#contextual_links']['group_menu_block'] = [
       'route_parameters' => [
         'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
+        'node_type' => 'custom_page',
       ],
     ];
   }
