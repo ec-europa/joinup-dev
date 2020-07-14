@@ -1,0 +1,23 @@
+uuid: 5acaac62-b87c-40dd-9f02-f2196c1361d4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ar_new_member_role
+    - rdf_entity.rdfentity.collection
+  module:
+    - options
+id: rdf_entity.collection.field_ar_new_member_role
+field_name: field_ar_new_member_role
+entity_type: rdf_entity
+bundle: collection
+label: 'New member role'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: rdf_entity-collection-author
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,0 +1,34 @@
+uuid: c961506c-e7d9-4b31-a9ca-70a8a2cbd9fb
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - rdf_entity
+    - sparql_entity_storage
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      value:
+        predicate: 'http://joinup.eu/collection/new_role'
+        format: literal
+id: rdf_entity.field_ar_new_member_role
+field_name: field_ar_new_member_role
+entity_type: rdf_entity
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: rdf_entity-collection-author
+      label: Member
+    -
+      value: rdf_entity-collection-trusted_author
+      label: 'Trusted author'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -14,7 +14,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_content_creation
     - field.field.rdf_entity.collection.field_ar_description
     - field.field.rdf_entity.collection.field_ar_logo
-    - field.field.rdf_entity.collection.field_ar_moderation
+    - field.field.rdf_entity.collection.field_ar_new_member_role
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
@@ -78,11 +78,11 @@ third_party_settings:
         - field_ar_access_url
         - field_ar_logo
         - field_ar_banner
-        - field_spatial_coverage
         - field_keywords
+        - field_spatial_coverage
+        - field_ar_new_member_role
         - field_ar_closed
         - field_ar_content_creation
-        - field_ar_moderation
       parent_name: group_general
       weight: 6
       label: 'Additional fields'
@@ -114,7 +114,7 @@ content:
     type: text_textarea
     region: content
   field_ar_access_url:
-    weight: 11
+    weight: 10
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -123,7 +123,7 @@ content:
     region: content
   field_ar_banner:
     type: image_image
-    weight: 13
+    weight: 12
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
@@ -131,7 +131,7 @@ content:
     region: content
   field_ar_closed:
     type: boolean_checkbox
-    weight: 15
+    weight: 16
     region: content
     settings:
       display_label: false
@@ -155,7 +155,7 @@ content:
     region: content
   field_ar_content_creation:
     type: options_buttons
-    weight: 16
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -171,20 +171,19 @@ content:
     type: text_textarea
     region: content
   field_ar_logo:
-    weight: 12
+    weight: 11
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
     region: content
-  field_ar_moderation:
-    weight: 17
-    settings:
-      display_label: false
-    third_party_settings: {  }
-    type: boolean_checkbox
+  field_ar_new_member_role:
+    type: options_select
+    weight: 15
     region: content
+    settings: {  }
+    third_party_settings: {  }
   field_ar_owner:
     weight: 4
     settings:
@@ -211,7 +210,7 @@ content:
     region: content
   field_keywords:
     type: string_textfield
-    weight: 14
+    weight: 13
     region: content
     settings:
       size: 60

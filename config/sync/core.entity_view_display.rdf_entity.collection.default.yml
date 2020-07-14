@@ -12,7 +12,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_content_creation
     - field.field.rdf_entity.collection.field_ar_description
     - field.field.rdf_entity.collection.field_ar_logo
-    - field.field.rdf_entity.collection.field_ar_moderation
+    - field.field.rdf_entity.collection.field_ar_new_member_role
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
@@ -26,6 +26,7 @@ dependencies:
     - rdf_entity.rdfentity.collection
   module:
     - field_group
+    - options
     - search_api_field
     - smart_trim
     - template_suggestion
@@ -99,6 +100,13 @@ content:
     third_party_settings:
       template_suggestion:
         template_suggestion: p_wrapper
+  field_ar_new_member_role:
+    weight: 6
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   field_collection_content:
     weight: 4
     label: above
@@ -147,7 +155,6 @@ hidden:
   field_ar_contact_information: true
   field_ar_content_creation: true
   field_ar_logo: true
-  field_ar_moderation: true
   field_ar_owner: true
   field_ar_state: true
   field_newsletter: true

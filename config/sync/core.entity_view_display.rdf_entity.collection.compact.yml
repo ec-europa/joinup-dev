@@ -13,7 +13,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_content_creation
     - field.field.rdf_entity.collection.field_ar_description
     - field.field.rdf_entity.collection.field_ar_logo
-    - field.field.rdf_entity.collection.field_ar_moderation
+    - field.field.rdf_entity.collection.field_ar_new_member_role
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
@@ -67,7 +67,7 @@ hidden:
   field_ar_contact_information: true
   field_ar_content_creation: true
   field_ar_description: true
-  field_ar_moderation: true
+  field_ar_new_member_role: true
   field_ar_owner: true
   field_ar_state: true
   field_collection_content: true
