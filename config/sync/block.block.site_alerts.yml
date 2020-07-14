@@ -9,7 +9,7 @@ dependencies:
 id: site_alerts
 theme: joinup_theme
 region: content_top
-weight: -21
+weight: -22
 provider: null
 plugin: site_alert_block
 settings:

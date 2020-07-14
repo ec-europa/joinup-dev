@@ -12,7 +12,7 @@ dependencies:
 id: eventdate
 theme: joinup_theme
 region: filters
-weight: -9
+weight: -22
 provider: null
 plugin: 'facet_block:event_date'
 settings:

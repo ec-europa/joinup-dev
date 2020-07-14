@@ -34,6 +34,7 @@ module:
   dynamic_page_cache: 0
   editor: 0
   editor_file: 0
+  eif: 0
   eira: 0
   email_registration: 0
   embed_block: 0

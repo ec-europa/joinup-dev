@@ -1,0 +1,29 @@
+uuid: 52d95773-9b59-4f82-b660-2876572dff94
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.interoperability_layer
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - joinup_theme
+id: interoperabilitylayer
+theme: joinup_theme
+region: content
+weight: -19
+provider: null
+plugin: 'facet_block:interoperability_layer'
+settings:
+  id: 'facet_block:interoperability_layer'
+  label: 'EIF Interoperability layer filter'
+  provider: facets
+  label_display: '0'
+  block_id: interoperabilitylayer
+visibility:
+  request_route:
+    id: request_route
+    routes: view.eif_recommendations.page
+    negate: false
+    context_mapping: {  }
