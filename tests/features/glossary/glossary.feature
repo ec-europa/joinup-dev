@@ -3,8 +3,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
   delete glossary terms. As a user I want to be able to see glossary terms as
   links to their definition page.
 
-  Scenario Outline: Test glossary management.
-
+  Scenario Outline: Manage a glossary.
     Given users:
       | Username | Roles  |
       | <user>   | <role> |
@@ -144,8 +143,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | nick | moderator |             | should see      |
       | wade |           | facilitator | should not see  |
 
-  Scenario: Test glossary filter.
-
+  Scenario: Glossary terms should be shown as links in collection content
     Given collection:
       | title       | Collection With Glossary                                                                        |
       | state       | validated                                                                                       |
