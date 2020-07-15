@@ -5,8 +5,46 @@ default:
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
+        # Todo: Restore alphabetical ordering for TallinnContext once it is
+        # possible to determine the execution order of Behat hooks.
+        # Ref. https://github.com/Behat/Behat/issues/62
+        # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6060
+        - Drupal\joinup\Context\TallinnContext
+        - Drupal\joinup\Context\AdmsValidatorContext
+        - Drupal\joinup\Context\AssetDistributionContext
+        - Drupal\joinup\Context\AssetReleaseContext
+        - Drupal\joinup\Context\CollectionContext
+        - Drupal\joinup\Context\ContactFormContext
+        - Drupal\joinup\Context\ContactInformationContext
+        - Drupal\joinup\Context\CustomPageContext
         - Drupal\joinup\Context\DrupalContext
+        - Drupal\joinup\Context\EuplContext
+        - Drupal\joinup\Context\Isa2AnalyticsContext
+        - Drupal\joinup\Context\JoinupCommunityContentContext
+        - Drupal\joinup\Context\JoinupContext
+        - Drupal\joinup\Context\JoinupCoreContext
+        - Drupal\joinup\Context\JoinupDiscussionContext
+        - Drupal\joinup\Context\JoinupDocumentContext
+        - Drupal\joinup\Context\JoinupEuLoginContext
+        - Drupal\joinup\Context\JoinupEventContext
+        - Drupal\joinup\Context\JoinupFrontPageContext
+        - Drupal\joinup\Context\JoinupGroupContext
+        - Drupal\joinup\Context\JoinupInviteContext
+        - Drupal\joinup\Context\JoinupLegalContext
+        - Drupal\joinup\Context\JoinupLicenceContext
+        - Drupal\joinup\Context\JoinupNewsContext
+        - Drupal\joinup\Context\JoinupNewsletterContext
+        - Drupal\joinup\Context\JoinupNotificationContext
+        - Drupal\joinup\Context\JoinupParagraphsContext
+        - Drupal\joinup\Context\JoinupSearchContext
+        - Drupal\joinup\Context\JoinupSeoContext
+        - Drupal\joinup\Context\JoinupSubscriptionContext
+        - Drupal\joinup\Context\JoinupUserContext
         - Drupal\joinup\Context\MinkContext
+        - Drupal\joinup\Context\ModerationContext
+        - Drupal\joinup\Context\OeNewsroomNewsletterContext
+        - Drupal\joinup\Context\OwnerContext
+        - Drupal\joinup\Context\RdfEntityProvenanceContext
         - Drupal\joinup\Context\RssContext
         - Drupal\joinup\Context\ScreenshotContext:
             localDir: '${behat.screenshots.local.dir}'
@@ -15,6 +53,7 @@ default:
             s3Bucket: '${exports.s3.bucket}'
             s3Key: '${exports.s3.key}'
             s3Secret: '${exports.s3.secret}'
+        - Drupal\joinup\Context\SolutionContext
         - Drupal\Tests\cas_mock_server\Context\CasMockServerContext:
             attributes_map:
               firstName: First name

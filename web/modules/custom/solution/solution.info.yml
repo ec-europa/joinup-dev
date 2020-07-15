@@ -18,8 +18,10 @@ dependencies:
   - 'joinup:joinup_group'
   - 'joinup:joinup_workflow'
   - 'joinup:owner'
+  - 'joinup:search_api_field'
   - 'joinup:workflow_state_permission'
   - 'rdf_entity:rdf_entity'
+  - 'search_api:search_api'
   - 'state_machine:state_machine'
   - 'token:token'
 
@@ -43,8 +45,6 @@ config_devel:
     - core.entity_view_display.rdf_entity.solution.view_mode_featured
     - core.entity_view_display.rdf_entity.solution.view_mode_tile
     - facets.facet.solution_content_bundle
-    - facets.facet.solution_policy_domain
-    - facets.facet.solution_spatial_coverage
     - facets.facet_source.search_api_field__rdf_entity.field_is_content
     - field.field.rdf_entity.solution.field_is_actor
     - field.field.rdf_entity.solution.field_is_affiliations_requests

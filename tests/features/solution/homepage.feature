@@ -27,7 +27,7 @@ Feature: Solution homepage
     Then I should see the heading "About Petri net"
 
   # This is a regression test for the entities that include a hashmark on their Uri.
-  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3225
+  # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3225
   Scenario: Regression test for Uris that include a '#'.
     Given the following solution:
       | uri         | http://solution/example1/test#        |
@@ -115,7 +115,7 @@ Feature: Solution homepage
     And I should not see the "Distribution 13" tile
 
     # The pager cache is not invalidated when a 13th item is added.
-    # https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4235
+    # https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4235
     Given the cache has been cleared
 
     Given the following distributions:

@@ -1,0 +1,4 @@
+services:
+  joinup_core.vocabulary_fixtures.helper:
+    class: Drupal\joinup_core\VocabularyFixturesHelper
+    arguments: ['@sparql_endpoint']

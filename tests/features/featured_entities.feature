@@ -127,8 +127,8 @@ Feature: Featuring content site-wide
     # require this cache clear but it fails on the Continuous PHP bot for some
     # obscure reasons that are very hard to be tracked.
     # TODO: Remove these two lines in ISAICP-4849.
-    # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4352.
-    # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4849.
+    # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4352.
+    # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4849.
     And the cache has been cleared
     And I reload the page
 

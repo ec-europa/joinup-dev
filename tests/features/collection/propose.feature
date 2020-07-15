@@ -34,7 +34,7 @@ Feature: Proposing a collection
     And the following fields should not be present "Current workflow state, Langcode, Translation, Motivation"
     And the following field widgets should be present "Contact information, Owner"
     # Ensure that the description for the "Access url" is shown.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3196
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3196
     And I should see the description "Web page for the external Repository." for the "Access URL" field
     And I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
     And I should see the description "For best result the image must be larger than 2400x345 pixels." for the "Banner" field
@@ -67,7 +67,7 @@ Feature: Proposing a collection
     And I fill in "Owner" with "Organisation example"
     And I press "Propose"
     # Regression test for setting the Logo and Banner fields as optional.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3215
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3215
     Then I should not see the following error messages:
       | error messages           |
       | Field Logo is required   |
@@ -117,7 +117,7 @@ Feature: Proposing a collection
   # This is a regression test for a bug in which the label texts of the options
   # vanished after performing an AJAX request in a different element on the
   # page.
-  # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
+  # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
   Scenario: Content creation options should not vanish after AJAX request.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
@@ -150,7 +150,7 @@ Feature: Proposing a collection
   # submitting the collection form after not filling some of the required
   # fields. This was due the HTML5 constraint validation not being able to
   # focus the wanted element because it was hidden by css.
-  # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3057
+  # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3057
   Scenario: Browser validation errors should focus the correct field group.
     Given I am logged in as an "authenticated user"
     When I go to the propose collection form

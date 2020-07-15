@@ -15,7 +15,7 @@ use Drupal\joinup_document\Entity\Document;
  */
 function joinup_document_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
   // @todo Add test coverage for these constraints.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2499
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2499
   if ($entity_type->id() == 'node' && $bundle == 'document') {
     if (!empty($fields['field_short_title'])) {
       $fields['field_short_title']->addConstraint('UniqueField');
