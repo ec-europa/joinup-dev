@@ -39,6 +39,7 @@ class EifGroupResolver extends RouteGroupResolver {
   public function resolve(OgResolvedGroupCollectionInterface $collection) {
     if ($entity = $this->getContentEntity()) {
       if ($entity->id() === Eif::EIF_ID || ($entity instanceof RdfTerm && $entity->bundle() === 'eif_recommendations')) {
+        /** @var \Drupal\solution\Entity\SolutionInterface $solution */
         if ($solution = $this->entityTypeManager->getStorage('rdf_entity')->load(Eif::EIF_ID)) {
           $collection->addGroup($solution, ['route']);
           // Stop searching for other groups. EIF Toolbox is the only candidate.
