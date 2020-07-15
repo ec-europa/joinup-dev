@@ -201,7 +201,7 @@ display:
             - user_remove_role_action.licence_manager
             - user_remove_role_action.moderator
             - user_unblock_user_action
-          plugin_id: user_bulk_form
+          plugin_id: joinup_user_bulk_form
           entity_type: user
         name:
           id: name

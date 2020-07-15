@@ -25,3 +25,7 @@ services:
     arguments: ['@entity_type.manager', '@og.membership_manager', '@user.data']
     tags:
       - { name: 'event_subscriber' }
+
+  joinup_user.notification_helper:
+    class: Drupal\joinup_user\JoinupUserNotificationHelper
+    arguments: ['@current_user', '@messenger', '@plugin.manager.mail']

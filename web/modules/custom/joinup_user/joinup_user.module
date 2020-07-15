@@ -24,28 +24,21 @@ use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
 /**
- * Submit callback for the user edit form and user bulk operation form.
+ * Submit callback for the user edit form.
  *
- * Sends a notification whenever a moderator updates a user profile.
+ * Sends a notification whenever a moderator updates a user profile. This is
+ * implemented as a submit callback rather than using hook_user_update() since
+ * we only need to send out these notifications when a moderator changes a user
+ * through the form. In other cases where a user entity is changed through the
+ * API we need to avoid sending out unnecessary notifications.
  */
 function joinup_user_notify_on_account_change(array $form, FormStateInterface $form_state) {
   $form_object = $form_state->getFormObject();
   $account = $form_object->getEntity() ?? NULL;
 
-  // If we don't get a user object for some reasons there is nothing to do.
+  // Sanity check. If we don't get a user object for some reason there is
+  // nothing to do.
   if (!$account instanceof JoinupUserInterface) {
-    return;
-  }
-
-  // Drupal allows accounts without E-mail when the account is created by an
-  // administrator. We skip them because they cannot receive notifications.
-  if (!$account->getEmail()) {
-    return;
-  }
-
-  $current_user = \Drupal::currentUser()->getAccount();
-  // Email should only fire when a user alters another user's account.
-  if ($account->isAnonymous() || $current_user->isAnonymous() || $current_user->id() == $account->id()) {
     return;
   }
 
@@ -55,24 +48,10 @@ function joinup_user_notify_on_account_change(array $form, FormStateInterface $f
     return;
   }
 
-  $active_form_id = $form_object->getFormId();
-  // Only run when either submitting the user edit form, or the bulk operation
-  // on admin/people.
-  if (!$active_form_id || !in_array($active_form_id, ['views_form_user_admin_people_page', 'user_form'])) {
-    return;
-  }
-
   // Inform the user that their profile was updated.
-  $params = ['account' => $account];
-
-  \Drupal::service('plugin.manager.mail')->mail(
-    'joinup_user',
-    'email_admin_update',
-    $account->getEmail(),
-    $account->getPreferredLangcode(),
-    $params
-  );
-  \Drupal::messenger()->addStatus('An e-mail has been sent to the user to notify him on the change to his account.');
+  /** @var \Drupal\joinup_user\JoinupUserNotificationHelperInterface $notification_helper */
+  $notification_helper = \Drupal::service('joinup_user.notification_helper');
+  $notification_helper->notifyOnAccountChange($account);
 }
 
 /**
