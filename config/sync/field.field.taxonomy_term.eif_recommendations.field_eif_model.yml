@@ -1,0 +1,29 @@
+uuid: 18efdf9b-946d-476d-891b-dbba4ab4fffe
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_eif_model
+    - taxonomy.vocabulary.eif_model
+    - taxonomy.vocabulary.eif_recommendations
+id: taxonomy_term.eif_recommendations.field_eif_model
+field_name: field_eif_model
+entity_type: taxonomy_term
+bundle: eif_recommendations
+label: 'Conceptual model'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      eif_model: eif_model
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

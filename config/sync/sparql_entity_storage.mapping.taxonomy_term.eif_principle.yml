@@ -1,16 +1,16 @@
-uuid: 43332fb2-3501-4aa2-8744-4acfa7aaf2f2
+uuid: 3097084e-4468-4bc8-9046-ab7e21ae121b
 langcode: en
 status: true
 dependencies:
   config:
     - sparql_entity_storage.graph.default
-    - taxonomy.vocabulary.eif_recommendations
-id: taxonomy_term.eif_recommendations
+    - taxonomy.vocabulary.eif_principle
+id: taxonomy_term.eif_principle
 entity_type_id: taxonomy_term
-bundle: eif_recommendations
-rdf_type: 'http://data.europa.eu/eif/Recommendation/'
+bundle: eif_principle
+rdf_type: 'http://data.europa.eu/eif/Principle/'
 graph:
-  default: 'http://eif_recommendation_voc'
+  default: 'http://eif_principle_voc'
 base_fields_mapping:
   uuid:
     value:

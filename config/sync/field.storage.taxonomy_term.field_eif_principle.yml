@@ -1,0 +1,26 @@
+uuid: 236f885c-131e-4ff4-9b00-d0fa3816fe32
+langcode: en
+status: true
+dependencies:
+  module:
+    - sparql_entity_storage
+    - taxonomy
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      target_id:
+        predicate: 'http://joinup.eu/eif/related/principle'
+        format: resource
+id: taxonomy_term.field_eif_principle
+field_name: field_eif_principle
+entity_type: taxonomy_term
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

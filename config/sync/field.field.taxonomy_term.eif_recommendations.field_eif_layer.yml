@@ -1,0 +1,29 @@
+uuid: 272f7c19-344c-4794-af19-d1e37f98c0c2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_eif_layer
+    - taxonomy.vocabulary.eif_layer
+    - taxonomy.vocabulary.eif_recommendations
+id: taxonomy_term.eif_recommendations.field_eif_layer
+field_name: field_eif_layer
+entity_type: taxonomy_term
+bundle: eif_recommendations
+label: 'Interoperability layer'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      eif_layer: eif_layer
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
