@@ -5,48 +5,49 @@ dependencies:
   module:
     - search_api_solr
     - node
+    - paragraphs
+    - publication_date
     - meta_entity
     - rdf_entity
     - taxonomy
-    - paragraphs
-    - publication_date
     - user
     - search_api
     - asset_distribution
     - custom_page
     - joinup_search
   config:
-    - field.storage.node.body
-    - field.storage.rdf_entity.field_ad_description
-    - field.storage.rdf_entity.field_ar_abstract
-    - field.storage.rdf_entity.field_ar_description
     - field.storage.node.field_event_agenda
+    - field.storage.node.field_paragraphs_body
+    - field.storage.paragraph.field_body
+    - field.storage.node.body
     - field.storage.node.field_event_date
-    - field.storage.rdf_entity.field_is_description
-    - field.storage.rdf_entity.field_is_eif_recommendation
-    - field.storage.rdf_entity.field_is_pinned_in
-    - field.storage.rdf_entity.field_is_solution_type
-    - field.storage.rdf_entity.field_isr_description
-    - field.storage.rdf_entity.field_isr_release_notes
-    - field.storage.rdf_entity.field_licence_description
-    - field.storage.rdf_entity.field_licence_spdx_licence
-    - field.storage.node.field_location
     - field.storage.node.field_news_headline
+    - field.storage.node.field_location
     - field.storage.node.field_organisation
     - field.storage.node.field_scope
     - field.storage.node.field_short_title
+    - field.storage.meta_entity.count
+    - field.storage.rdf_entity.field_ar_abstract
+    - field.storage.rdf_entity.field_isr_contact_information
+    - field.storage.rdf_entity.field_ci_name
+    - field.storage.rdf_entity.field_is_contact_information
+    - field.storage.rdf_entity.field_licence_spdx_licence
+    - field.storage.rdf_entity.field_licence_description
+    - field.storage.rdf_entity.field_ad_description
+    - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_is_description
+    - field.storage.rdf_entity.field_ar_description
+    - field.storage.rdf_entity.field_is_eif_recommendation
+    - field.storage.rdf_entity.field_is_owner
+    - field.storage.rdf_entity.field_owner_name
+    - field.storage.rdf_entity.field_isr_owner
+    - field.storage.rdf_entity.field_is_pinned_in
+    - field.storage.rdf_entity.field_isr_release_notes
+    - field.storage.rdf_entity.field_is_solution_type
+    - field.storage.taxonomy_term.field_eif_related_term
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_organisation
-    - field.storage.meta_entity.count
-    - field.storage.rdf_entity.field_is_contact_information
-    - field.storage.rdf_entity.field_ci_name
-    - field.storage.rdf_entity.field_is_owner
-    - field.storage.rdf_entity.field_owner_name
-    - field.storage.rdf_entity.field_isr_contact_information
-    - field.storage.rdf_entity.field_isr_owner
-    - field.storage.node.field_paragraphs_body
-    - field.storage.paragraph.field_body
     - search_api.server.solr_published
 third_party_settings:
   search_api_solr:
@@ -146,6 +147,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_ar_description
+  field_eif_related_term:
+    label: 'Related term'
+    datasource_id: 'entity:taxonomy_term'
+    property_path: field_eif_related_term
+    type: string
+    dependencies:
+      config:
+        - field.storage.taxonomy_term.field_eif_related_term
   field_event_agenda:
     label: 'Agenda » Processed text'
     datasource_id: 'entity:node'
@@ -575,6 +584,9 @@ datasource_settings:
     bundles:
       default: false
       selected:
+        - eif_layer
+        - eif_model
+        - eif_principle
         - eif_recommendations
     languages:
       default: true

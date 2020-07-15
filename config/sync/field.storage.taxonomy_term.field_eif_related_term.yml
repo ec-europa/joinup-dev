@@ -1,4 +1,4 @@
-uuid: 64c284f7-c35a-4d8b-b70e-91ef70b46b56
+uuid: 5c39c954-233c-44b7-9ddb-fe6f94369c57
 langcode: en
 status: true
 dependencies:
@@ -9,10 +9,10 @@ third_party_settings:
   sparql_entity_storage:
     mapping:
       target_id:
-        predicate: 'http://joinup.eu/eif/related/model'
+        predicate: 'http://joinup.eu/eif/related/references'
         format: resource
-id: taxonomy_term.field_eif_model
-field_name: field_eif_model
+id: taxonomy_term.field_eif_related_term
+field_name: field_eif_related_term
 entity_type: taxonomy_term
 type: entity_reference
 settings:

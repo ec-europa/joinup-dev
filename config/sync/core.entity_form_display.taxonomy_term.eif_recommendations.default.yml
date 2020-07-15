@@ -3,9 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.eif_recommendations.field_eif_layer
-    - field.field.taxonomy_term.eif_recommendations.field_eif_model
-    - field.field.taxonomy_term.eif_recommendations.field_eif_principle
+    - field.field.taxonomy_term.eif_recommendations.field_eif_related_term
     - taxonomy.vocabulary.eif_recommendations
   module:
     - path
@@ -23,27 +21,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_eif_layer:
-    weight: 102
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
-  field_eif_model:
-    weight: 103
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
-  field_eif_principle:
+  field_eif_related_term:
     weight: 101
     settings:
       match_operator: CONTAINS

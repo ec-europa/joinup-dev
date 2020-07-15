@@ -3,9 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.eif_recommendations.field_eif_layer
-    - field.field.taxonomy_term.eif_recommendations.field_eif_model
-    - field.field.taxonomy_term.eif_recommendations.field_eif_principle
+    - field.field.taxonomy_term.eif_recommendations.field_eif_related_term
     - taxonomy.vocabulary.eif_recommendations
   module:
     - text
@@ -21,23 +19,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_eif_layer:
-    weight: 2
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_eif_model:
-    weight: 3
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_eif_principle:
+  field_eif_related_term:
     weight: 1
     label: above
     settings:
