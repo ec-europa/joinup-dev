@@ -10,7 +10,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Routing\ResettableStackedRouteMatchInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_user\Entity\JoinupUserInterface;
 use Drupal\joinup_user\JoinupUserNotificationHelperInterface;
 use Drupal\system\ActionConfigEntityInterface;
@@ -112,6 +111,10 @@ class JoinupUserBulkForm extends UserBulkForm {
    *
    * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
    *   Thrown when the user tried to access an action without access to it.
+   *
+   * @phpcs:disable Drupal.Commenting.FunctionComment.TypeHintMissing
+   *   The 'array &$form' type hint is missing but we cannot add it since this
+   *   would make the method signature incompatible with the parent method.
    */
   public function viewsFormSubmit(&$form, FormStateInterface $form_state) {
     if ($form_state->get('step') == 'views_form_views_form') {

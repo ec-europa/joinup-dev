@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_user;
 
-
 use Drupal\joinup_user\Entity\JoinupUserInterface;
 
 /**
