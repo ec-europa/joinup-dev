@@ -23,15 +23,24 @@ use EasyRdf\GraphStore;
  * Insert the new EIF vocabulary into the database.
  */
 function joinup_core_post_update_0106300(): void {
-  $sparql_connection = Database::getConnection('default', 'sparql_default');
-  $connection_options = $sparql_connection->getConnectionOptions();
-  $connect_string = "http://{$connection_options['host']}:{$connection_options['port']}/sparql-graph-crud";
-  $graph_store = new GraphStore($connect_string);
+  $filenames = [
+    'eif_conceptual_model_voc.rdf' => 'http://eif_conceptual_model_voc',
+    'eif_interoperability_layer_voc.rdf' => 'http://eif_interoperability_layer_voc',
+    'eif_principle_voc.rdf' => 'http://eif_principle_voc',
+    'eif_recommendations_voc.rdf' => 'http://eif_recommendation_voc',
+  ];
 
-  $filepath = __DIR__ . '/../../../../resources/fixtures/eif_voc.rdf';
-  $graph = new Graph('http://eif_voc');
-  $graph->parse(file_get_contents($filepath));
-  $graph_store->insert($graph);
+  foreach ($filenames as $filename => $graph_uri) {
+    $sparql_connection = Database::getConnection('default', 'sparql_default');
+    $connection_options = $sparql_connection->getConnectionOptions();
+    $connect_string = "http://{$connection_options['host']}:{$connection_options['port']}/sparql-graph-crud";
+    $graph_store = new GraphStore($connect_string);
+
+    $filepath = __DIR__ . "/../../../../resources/fixtures/{$filename}";
+    $graph = new Graph($graph_uri);
+    $graph->parse(file_get_contents($filepath));
+    $graph_store->insert($graph);
+  }
 }
 
 /**
@@ -55,8 +64,8 @@ function joinup_core_post_update_0106301(array &$sandbox): void {
  * Index the EIF terms since they are now tracked.
  */
 function joinup_core_post_update_0106302(): void {
-  $filepath = __DIR__ . '/../../../../resources/fixtures/eif_voc.rdf';
-  $graph = new Graph('http://eif_voc');
+  $filepath = __DIR__ . '/../../../../resources/fixtures/eif_recommendations_voc.rdf';
+  $graph = new Graph('http://eif_recommendation_voc');
   $graph->parse(file_get_contents($filepath));
   foreach ($graph->resources() as $resource_id => $resource) {
     /** @var \Drupal\rdf_taxonomy\Entity\RdfTerm $term */
