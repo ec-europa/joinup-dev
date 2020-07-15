@@ -90,7 +90,7 @@ Feature: User profile
     And I fill in "Country of origin" with "Italy"
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
-    And I should see the success message "An e-mail has been sent to the user to notify him on the change to his account."
+    And I should see the success message "The user has been notified that their account has been updated."
     And the following email should have been sent:
       | recipient | Leonardo Da Vinci                                                                                         |
       | subject   | The Joinup Support Team updated your account for you at Joinup                                            |

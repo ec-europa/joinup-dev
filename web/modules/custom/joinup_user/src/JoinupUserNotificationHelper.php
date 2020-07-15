@@ -76,7 +76,7 @@ class JoinupUserNotificationHelper implements JoinupUserNotificationHelperInterf
       ['account' => $user]
     );
 
-    $this->messenger->addStatus('An e-mail has been sent to the user to notify him on the change to his account.');
+    $this->messenger->addStatus('The user has been notified that their account has been updated.');
   }
 
 }
