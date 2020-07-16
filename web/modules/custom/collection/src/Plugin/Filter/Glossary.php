@@ -194,17 +194,17 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
       ->execute();
 
     if ($nids) {
-      /** @var \Drupal\node\NodeInterface $glossary */
+      /** @var \Drupal\collection\Entity\GlossaryTermInterface $glossary */
       foreach ($node_storage->loadMultiple($nids) as $glossary) {
         $link = [
           'url' => $glossary->toUrl()->toString(),
-          'summary' => $this->getSummaryOrTrimmedDefinition($glossary),
+          'summary' => $glossary->getSummary(),
         ];
 
         $map[$glossary->label()] = $link;
         // Link also the abbreviation, if any.
-        if (!$glossary->get('field_glossary_abbreviation')->isEmpty()) {
-          $map[$glossary->get('field_glossary_abbreviation')->value] = $link;
+        if ($glossary->hasAbbreviation()) {
+          $map[$glossary->getAbbreviation()] = $link;
         }
 
         // When this glossary node is changing, invalidate the filter cache.
@@ -225,24 +225,6 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
         $this->collection = $this->collection->getCollection();
       }
     }
-  }
-
-  /**
-   * Returns either the glossary definition summary or a trimmed part of it.
-   *
-   * @param \Drupal\node\NodeInterface $glossary
-   *   The glossary term entity.
-   *
-   * @return string
-   *   The summary.
-   */
-  protected function getSummaryOrTrimmedDefinition(NodeInterface $glossary): string {
-    $definition = $glossary->get('field_glossary_definition');
-    if (!empty($definition->summary)) {
-      return trim($definition->summary);
-    }
-    $summary = text_summary($definition->value, $definition->format, 300);
-    return trim(strip_tags($summary));
   }
 
 }
