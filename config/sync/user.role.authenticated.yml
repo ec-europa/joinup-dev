@@ -10,6 +10,7 @@ permissions:
   - 'access comments'
   - 'access content'
   - 'access contextual links'
+  - 'access devel information'
   - 'access tour'
   - 'access user profiles'
   - 'cancel account'

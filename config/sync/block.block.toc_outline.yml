@@ -4,8 +4,11 @@ status: true
 dependencies:
   module:
     - custom_page
+    - joinup_core
     - node
     - og
+  theme:
+    - joinup_theme
 id: toc_outline
 theme: joinup_theme
 region: content

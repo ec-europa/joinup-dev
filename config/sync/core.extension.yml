@@ -20,7 +20,6 @@ module:
   config_readonly: 0
   contact_form: 0
   contact_information: 0
-  contextual: 0
   csv_serialization: 0
   ctools: 0
   custom_page: 0

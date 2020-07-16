@@ -9,6 +9,7 @@ is_admin: false
 permissions:
   - 'access comments'
   - 'access content'
+  - 'access devel information'
   - 'access tour'
   - 'access user profiles'
   - 'export rdf metadata'

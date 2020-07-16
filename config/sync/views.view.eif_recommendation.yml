@@ -411,6 +411,9 @@ display:
       always_use_admin_theme: false
       defaults:
         empty: true
+        cache: false
+      cache:
+        type: none
     cache_metadata:
       max-age: -1
       contexts:

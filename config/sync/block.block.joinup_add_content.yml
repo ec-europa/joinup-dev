@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - joinup
+    - joinup_group
     - og
   theme:
     - joinup_theme
