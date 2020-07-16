@@ -2,11 +2,8 @@ uuid: 76737fd1-feb3-4d21-b0b8-7e6dbc102686
 langcode: en
 status: true
 dependencies:
-  config:
-    - image.style.wysiwyg_full_width
-    - image.style.wysiwyg_half_width
-    - image.style.wysiwyg_one_third_width
   module:
+    - collection
     - editor
     - embed_block
     - image
@@ -120,4 +117,10 @@ filters:
     provider: embed_block
     status: true
     weight: -39
+    settings: {  }
+  collection_glossary:
+    id: collection_glossary
+    provider: collection
+    status: true
+    weight: 0
     settings: {  }

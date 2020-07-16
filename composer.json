@@ -5,6 +5,7 @@
     "license": "EUPL-1.2",
     "require": {
         "php": ">=7.1.0",
+        "ext-dom": "*",
         "ext-json": "*",
         "aws/aws-sdk-php": "~3.0",
         "composer/composer": "^1.9.1",
@@ -103,7 +104,6 @@
         "zaporylie/composer-drupal-optimizations": "^1.1"
     },
     "require-dev": {
-        "ext-dom": "*",
         "ext-iconv": "*",
         "ext-libxml": "*",
         "behat/behat": "~3.4",

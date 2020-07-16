@@ -19,9 +19,6 @@ services:
     arguments: ['@current_user', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: collection }
-  collection.lazy_builders:
-    class: Drupal\collection\CollectionLazyBuilders
-    arguments: ['@entity_type.manager', '@form_builder', '@current_user']
   collection.achived_collection.route_subscriber:
     class: Drupal\collection\Routing\ArchivedCollectionRouteSubscriber
     tags:
@@ -39,3 +36,9 @@ services:
     class: Drupal\collection\EventSubscriber\CollectionGroupMenuLinksSubscriber
     tags:
       - { name: event_subscriber }
+  collection.lazy_builders:
+    class: Drupal\collection\CollectionLazyBuilders
+    arguments: ['@entity_type.manager', '@form_builder', '@current_user']
+  logger.channel.collection:
+    parent: logger.channel_base
+    arguments: ['collection']
