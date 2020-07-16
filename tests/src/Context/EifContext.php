@@ -83,7 +83,7 @@ class EifContext extends RawDrupalContext {
     ]);
     $instance = reset($instances);
     $menu_name = "ogmenu-{$instance->id()}";
-    $internal_path = Url::fromRoute('view.eif_recommendations.page', [
+    $internal_path = Url::fromRoute('view.eif_recommendation.page', [
       'rdf_entity' => UriEncoder::encodeUrl(Eif::EIF_ID),
     ])->toUriString();
     $link = MenuLinkContent::create([
@@ -95,7 +95,7 @@ class EifContext extends RawDrupalContext {
     $link->save();
 
     // Ensure the taxonomy terms are indexed.
-    $properties = ['vid' => 'eif_recommendations'];
+    $properties = ['vid' => 'eif_recommendation'];
     $recommendations = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties($properties);
     foreach ($recommendations as $term) {
       ContentEntity::indexEntity($term);

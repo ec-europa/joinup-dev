@@ -6,6 +6,6 @@ third_party_settings:
   rdf_taxonomy:
     locked: false
 name: 'EIF recommendations'
-vid: eif_recommendations
+vid: eif_recommendation
 description: 'Terms that represent a recommendation of the EIF Toolbox.'
 weight: 0

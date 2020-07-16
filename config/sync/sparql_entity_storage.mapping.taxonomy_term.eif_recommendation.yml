@@ -4,10 +4,10 @@ status: true
 dependencies:
   config:
     - sparql_entity_storage.graph.default
-    - taxonomy.vocabulary.eif_recommendations
-id: taxonomy_term.eif_recommendations
+    - taxonomy.vocabulary.eif_recommendation
+id: taxonomy_term.eif_recommendation
 entity_type_id: taxonomy_term
-bundle: eif_recommendations
+bundle: eif_recommendation
 rdf_type: 'http://data.europa.eu/eif/Recommendation/'
 graph:
   default: 'http://eif_recommendation'

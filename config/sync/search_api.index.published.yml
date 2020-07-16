@@ -587,7 +587,7 @@ datasource_settings:
         - eif_layer
         - eif_model
         - eif_principle
-        - eif_recommendations
+        - eif_recommendation
     languages:
       default: true
       selected: {  }

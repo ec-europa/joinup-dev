@@ -26,7 +26,7 @@ function joinup_core_post_update_0106300(): void {
     'eif_conceptual_model.rdf' => 'http://eif_conceptual_model',
     'eif_interoperability_layer.rdf' => 'http://eif_interoperability_layer',
     'eif_principle.rdf' => 'http://eif_principle',
-    'eif_recommendations.rdf' => 'http://eif_recommendation',
+    'eif_recommendation.rdf' => 'http://eif_recommendation',
   ];
 
   foreach ($filenames as $filename => $graph_uri) {
@@ -47,7 +47,7 @@ function joinup_core_post_update_0106300(): void {
  */
 function joinup_core_post_update_0106301(array &$sandbox): void {
   $menu_name = 'ogmenu-3444';
-  $internal_path = Url::fromRoute('view.eif_recommendations.page', [
+  $internal_path = Url::fromRoute('view.eif_recommendation.page', [
     'rdf_entity' => UriEncoder::encodeUrl(Eif::EIF_ID),
   ])->toUriString();
   $link = MenuLinkContentEntity::create([
@@ -65,7 +65,7 @@ function joinup_core_post_update_0106301(array &$sandbox): void {
 function joinup_core_post_update_0106302(): void {
   $entity_type_manager = \Drupal::entityTypeManager();
   $storage = $entity_type_manager->getStorage('taxonomy_term');
-  $tids = $storage->getQuery()->condition('vid', 'eif_recommendations')->execute();
+  $tids = $storage->getQuery()->condition('vid', 'eif_recommendation')->execute();
   /** @var \Drupal\taxonomy\TermInterface $term */
   foreach ($storage->loadMultiple($tids) as $term) {
     ContentEntity::indexEntity($term);

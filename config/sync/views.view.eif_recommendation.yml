@@ -9,7 +9,7 @@ dependencies:
   module:
     - joinup_group
     - search_api
-id: eif_recommendations
+id: eif_recommendation
 label: 'EIF recommendations'
 module: views
 description: ''
@@ -164,7 +164,7 @@ display:
                 display_method: label
               eif_principle:
                 display_method: label
-              eif_recommendations:
+              eif_recommendation:
                 display_method: label
                 view_mode: default
               eira:
@@ -285,7 +285,7 @@ display:
           value:
             min: ''
             max: ''
-            value: eif_recommendations
+            value: eif_recommendation
           group: 1
           exposed: false
           expose:
@@ -439,7 +439,7 @@ display:
           group_type: group
           admin_label: ''
           empty: true
-          view_to_insert: 'eif_recommendations:block'
+          view_to_insert: 'eif_recommendation:block'
           inherit_arguments: false
           plugin_id: view
       defaults:

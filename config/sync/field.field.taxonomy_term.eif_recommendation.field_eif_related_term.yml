@@ -7,11 +7,11 @@ dependencies:
     - taxonomy.vocabulary.eif_layer
     - taxonomy.vocabulary.eif_model
     - taxonomy.vocabulary.eif_principle
-    - taxonomy.vocabulary.eif_recommendations
-id: taxonomy_term.eif_recommendations.field_eif_related_term
+    - taxonomy.vocabulary.eif_recommendation
+id: taxonomy_term.eif_recommendation.field_eif_related_term
 field_name: field_eif_related_term
 entity_type: taxonomy_term
-bundle: eif_recommendations
+bundle: eif_recommendation
 label: 'Related term'
 description: ''
 required: true
