@@ -46,13 +46,6 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
   protected $entityTypeManager;
 
   /**
-   * The cache metadata to be applied.
-   *
-   * @var \Drupal\Core\Cache\CacheableMetadata
-   */
-  protected $cacheMetadata;
-
-  /**
    * The logger.
    *
    * @var \Psr\Log\LoggerInterface
@@ -108,9 +101,11 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
       return $result;
     }
 
+    [$replacements, $cache_metadata] = $this->getReplacementsMap($collection);
+
     // This collection has no glossary term entries.
-    if (!$replacements = $this->getReplacementsMap($collection)) {
-      return $result->addCacheableDependency($this->cacheMetadata);
+    if (empty($replacements)) {
+      return $result->addCacheableDependency($cache_metadata);
     }
 
     $pattern = '/\b(' . implode('|', array_keys($replacements)) . ')\b/';
@@ -118,7 +113,7 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
     // First, do a bird-eye check for glossary terms so that we avoid a heavy
     // processing if the text contains no term.
     if (!preg_match($pattern, $text)) {
-      return $result->addCacheableDependency($this->cacheMetadata);
+      return $result->addCacheableDependency($cache_metadata);
     }
 
     $document = Html::load($text);
@@ -150,7 +145,7 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
 
     return $result
       ->setProcessedText($document->saveHTML())
-      ->addCacheableDependency($this->cacheMetadata);
+      ->addCacheableDependency($cache_metadata);
   }
 
   /**
@@ -180,15 +175,17 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
    *   The collection for which to return the replacements map.
    *
    * @return array
-   *   Associative array keyed by the glossary term or abbreviation. The values
-   *   are arrays with two keys:
-   *   - url: The glossary term URL.
-   *   - summary: A summary to be used as tooltip.
+   *   An indexed array (tuple) with two values:
+   *     0. An associative array keyed by the glossary term or abbreviation. The
+   *        values are arrays with two keys:
+   *        - url: The glossary term URL.
+   *        - summary: A summary to be used as tooltip.
+   *     1. An object containing the cacheable metadata.
    */
   protected function getReplacementsMap(CollectionInterface $collection): array {
     // Make sure the filter cache invalidates when a new glossary term is added
     // in this collection.
-    $this->cacheMetadata = (new CacheableMetadata())
+    $cache_metadata = (new CacheableMetadata())
       ->addCacheTags(
         Cache::buildTags('og-group-content', $collection->getCacheTagsToInvalidate())
       );
@@ -216,11 +213,11 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
         }
 
         // When this glossary node is changing, invalidate the filter cache.
-        $this->cacheMetadata->addCacheableDependency($glossary);
+        $cache_metadata->addCacheableDependency($glossary);
       }
     }
 
-    return $map;
+    return [$map, $cache_metadata];
   }
 
   /**
