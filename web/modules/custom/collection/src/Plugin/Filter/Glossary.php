@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\collection\Plugin\Filter;
 
 use Drupal\collection\Entity\CollectionContentInterface;
+use Drupal\collection\Entity\CollectionInterface;
 use Drupal\collection\Exception\MissingCollectionException;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
@@ -43,13 +44,6 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
-
-  /**
-   * The collection.
-   *
-   * @var \Drupal\collection\Entity\CollectionInterface
-   */
-  protected $collection;
 
   /**
    * The cache metadata to be applied.
@@ -106,17 +100,16 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public function process($text, $langcode): FilterProcessResult {
-    $this->setCollection();
-
     $result = new FilterProcessResult($text);
 
+    $collection = $this->getCollection();
     // A collection context cannot be detected.
-    if (!isset($this->collection)) {
+    if (!isset($collection)) {
       return $result;
     }
 
     // This collection has no glossary term entries.
-    if (!$replacements = $this->getReplacementsMap()) {
+    if (!$replacements = $this->getReplacementsMap($collection)) {
       return $result->addCacheableDependency($this->cacheMetadata);
     }
 
@@ -183,25 +176,28 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
   /**
    * Builds and returns a replacements map.
    *
+   * @param \Drupal\collection\Entity\CollectionInterface $collection
+   *   The collection for which to return the replacements map.
+   *
    * @return array
    *   Associative array keyed by the glossary term or abbreviation. The values
    *   are arrays with two keys:
    *   - url: The glossary term URL.
    *   - summary: A summary to be used as tooltip.
    */
-  protected function getReplacementsMap(): array {
+  protected function getReplacementsMap(CollectionInterface $collection): array {
     // Make sure the filter cache invalidates when a new glossary term is added
     // in this collection.
     $this->cacheMetadata = (new CacheableMetadata())
       ->addCacheTags(
-        Cache::buildTags('og-group-content', $this->collection->getCacheTagsToInvalidate())
+        Cache::buildTags('og-group-content', $collection->getCacheTagsToInvalidate())
       );
 
     $map = [];
     $node_storage = $this->entityTypeManager->getStorage('node');
     $nids = $node_storage->getQuery()
       ->condition('type', 'glossary')
-      ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $this->collection->id())
+      ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $collection->id())
       ->condition('status', TRUE)
       ->execute();
 
@@ -228,25 +224,42 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
   }
 
   /**
-   * Stores the collection context.
+   * Retrieves the collection from the request context.
+   *
+   * This is not ideal but text filters have no direct way to retrieve the
+   * context they belong to. We do not have access to the field that contains
+   * the text.
+   *
+   * @see https://www.drupal.org/project/drupal/issues/226963
+   *
+   * @return \Drupal\collection\Entity\CollectionInterface|null
+   *   The collection, or NULL if no collection could be derived from the
+   *   context.
    */
-  protected function setCollection(): void {
-    if ($this->collection = $this->ogContext->getGroup()) {
-      // Other kind of group?
-      if ($this->collection instanceof CollectionContentInterface) {
+  protected function getCollection(): ?CollectionInterface {
+    $group = NULL;
+    if ($group = $this->ogContext->getGroup()) {
+      // Other kind of group? Maybe a solution which is collection content?
+      if ($group instanceof CollectionContentInterface) {
         try {
-          $this->collection = $this->collection->getCollection();
+          $group = $group->getCollection();
         }
         catch (MissingCollectionException $e) {
           // The content is orphaned. Log an error but allow the request to
           // continue, this is not fatal.
           $this->logger->error('Collection could not be retrieved from entity of type %type and ID %id', [
-            '%type' => $this->collection->getEntityTypeId(),
-            '%id' => $this->collection->id(),
+            '%type' => $group->getEntityTypeId(),
+            '%id' => $group->id(),
           ]);
         }
       }
     }
+
+    if ($group instanceof CollectionInterface) {
+      return $group;
+    }
+
+    return NULL;
   }
 
 }
