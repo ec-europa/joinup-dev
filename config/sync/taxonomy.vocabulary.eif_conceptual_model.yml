@@ -5,7 +5,7 @@ dependencies: {  }
 third_party_settings:
   rdf_taxonomy:
     locked: false
-name: 'EIF model'
-vid: eif_model
+name: 'EIF Conceptual Model'
+vid: eif_conceptual_model
 description: 'Terms that represent a conceptual model of the EIF Toolbox.'
 weight: 0
