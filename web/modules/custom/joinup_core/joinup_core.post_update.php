@@ -13,7 +13,6 @@ use Drupal\eif\Eif;
 use Drupal\menu_link_content\Entity\MenuLinkContent as MenuLinkContentEntity;
 use Drupal\menu_link_content\Form\MenuLinkContentForm;
 use Drupal\menu_link_content\Plugin\Menu\MenuLinkContent;
-use Drupal\rdf_taxonomy\Entity\RdfTerm;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Drupal\sparql_entity_storage\UriEncoder;
 use EasyRdf\Graph;
@@ -64,17 +63,14 @@ function joinup_core_post_update_0106301(array &$sandbox): void {
  * Index the EIF terms since they are now tracked.
  */
 function joinup_core_post_update_0106302(): void {
-  $filepath = __DIR__ . '/../../../../resources/fixtures/eif_recommendations_voc.rdf';
-  $graph = new Graph('http://eif_recommendation_voc');
-  $graph->parse(file_get_contents($filepath));
-  foreach ($graph->resources() as $resource_id => $resource) {
-    /** @var \Drupal\rdf_taxonomy\Entity\RdfTerm $term */
-    if ($term = RdfTerm::load($resource_id)) {
-      ContentEntity::indexEntity($term);
-    }
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $storage = $entity_type_manager->getStorage('taxonomy_term');
+  $tids = $storage->getQuery()->condition('vid', 'eif_recommendations')->execute();
+  /** @var \Drupal\taxonomy\TermInterface $term */
+  foreach ($storage->loadMultiple($tids) as $term) {
+    ContentEntity::indexEntity($term);
   }
-
-  $index = \Drupal::entityTypeManager()->getStorage('search_api_index')->load('published');
+  $index = $entity_type_manager->getStorage('search_api_index')->load('published');
   $index->indexItems(-1, 'entity:taxonomy_term');
 }
 
