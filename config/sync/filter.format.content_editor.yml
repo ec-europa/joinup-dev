@@ -25,7 +25,7 @@ filters:
     status: true
     weight: -49
     settings:
-      allowed_html: '<em> <br> <strong> <cite> <blockquote cite> <code> <q> <ul type> <ol type start> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p> <h1> <pre> <img src alt data-entity-type data-entity-uuid data-align data-caption data-image-style width height> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <a hreflang href data-entity-type data-entity-uuid !href accesskey id rel target title> <iframe src allowfullscreen mozallowfullscreen webkitallowfullscreen width height frameborder> <map name> <area alt coords href hreflang rel shape>'
+      allowed_html: '<em> <br> <strong> <cite> <blockquote cite> <code> <q> <ul type> <ol type start> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p> <h1> <pre> <img src alt data-entity-type data-entity-uuid data-align data-caption data-image-style usemap width height> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <a hreflang href data-entity-type data-entity-uuid !href accesskey id rel target title> <iframe src allowfullscreen mozallowfullscreen webkitallowfullscreen width height frameborder> <map name> <area alt coords href hreflang rel shape>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
