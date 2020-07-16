@@ -584,8 +584,8 @@ datasource_settings:
     bundles:
       default: false
       selected:
-        - eif_layer
-        - eif_model
+        - eif_conceptual_model
+        - eif_interoperability_layer
         - eif_principle
         - eif_recommendation
     languages:

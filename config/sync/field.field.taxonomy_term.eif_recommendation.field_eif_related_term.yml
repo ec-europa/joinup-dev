@@ -4,8 +4,8 @@ status: true
 dependencies:
   config:
     - field.storage.taxonomy_term.field_eif_related_term
-    - taxonomy.vocabulary.eif_layer
-    - taxonomy.vocabulary.eif_model
+    - taxonomy.vocabulary.eif_interoperability_layer
+    - taxonomy.vocabulary.eif_conceptual_model
     - taxonomy.vocabulary.eif_principle
     - taxonomy.vocabulary.eif_recommendation
 id: taxonomy_term.eif_recommendation.field_eif_related_term
@@ -22,8 +22,8 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      eif_layer: eif_layer
-      eif_model: eif_model
+      eif_interoperability_layer: eif_interoperability_layer
+      eif_conceptual_model: eif_conceptual_model
       eif_principle: eif_principle
     sort:
       field: name

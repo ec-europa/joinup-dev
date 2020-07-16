@@ -158,9 +158,9 @@ display:
                 display_method: label
               business_process:
                 display_method: label
-              eif_layer:
+              eif_conceptual_model:
                 display_method: label
-              eif_model:
+              eif_interoperability_layer:
                 display_method: label
               eif_principle:
                 display_method: label

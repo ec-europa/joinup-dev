@@ -4,10 +4,10 @@ status: true
 dependencies:
   config:
     - sparql_entity_storage.graph.default
-    - taxonomy.vocabulary.eif_model
-id: taxonomy_term.eif_model
+    - taxonomy.vocabulary.eif_conceptual_model
+id: taxonomy_term.eif_conceptual_model
 entity_type_id: taxonomy_term
-bundle: eif_model
+bundle: eif_conceptual_model
 rdf_type: 'http://data.europa.eu/eif/Model/'
 graph:
   default: 'http://eif_conceptual_model'
