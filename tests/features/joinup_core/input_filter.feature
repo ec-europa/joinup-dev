@@ -44,7 +44,8 @@ Feature: Input filter
     Then the response should contain "<q>This is a famous quote.</q> ~ Joinup developer."
     When I go to the "Image map" news
     Then I see the "map" element with the "name" attribute set to "imagemap" in the "Content" region
-    Then the response should contain "<area shape=\"circle\" coords=\"50,50,25\" href=\"/\" alt=\"Homepage\" />"
+    And I see the "img" element with the "usemap" attribute set to "imagemap" in the "Content" region
+    And the response should contain "<area shape=\"circle\" coords=\"50,50,25\" href=\"/\" alt=\"Homepage\" />"
 
     Given I am logged in as an authenticated
     When I go to the "Discussion" discussion
