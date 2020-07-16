@@ -346,18 +346,7 @@ display:
       title: 'EIF recommendations'
       header: {  }
       footer: {  }
-      empty:
-        view:
-          id: view
-          table: views
-          field: view
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          view_to_insert: 'eif_recommendations:default'
-          inherit_arguments: false
-          plugin_id: view
+      empty: {  }
       relationships: {  }
       arguments:
         entity_groups:
@@ -412,6 +401,26 @@ display:
         - 'config:field.storage.taxonomy_term.field_eif_related_term'
         - 'config:search_api.index.published'
         - 'search_api_list:published'
+  block:
+    display_plugin: block
+    id: block
+    display_title: Block
+    position: 2
+    display_options:
+      display_extenders: {  }
+      arguments: {  }
+      defaults:
+        arguments: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - 'user.node_grants:view'
+      tags:
+        - 'config:field.storage.taxonomy_term.field_eif_related_term'
+        - 'config:search_api.index.published'
+        - 'search_api_list:published'
   page:
     display_plugin: page
     id: page
@@ -421,6 +430,20 @@ display:
       display_extenders: {  }
       path: rdf_entity/%rdf_entity/recommendations
       always_use_admin_theme: false
+      empty:
+        view:
+          id: view
+          table: views
+          field: view
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          view_to_insert: 'eif_recommendations:block'
+          inherit_arguments: false
+          plugin_id: view
+      defaults:
+        empty: false
     cache_metadata:
       max-age: -1
       contexts:
