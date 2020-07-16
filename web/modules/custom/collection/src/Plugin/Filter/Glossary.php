@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\collection\Plugin\Filter;
 
-use Drupal\collection\Entity\CollectionContentInterface;
-use Drupal\collection\Entity\CollectionInterface;
-use Drupal\collection\Exception\MissingCollectionException;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\collection\Entity\CollectionContentInterface;
+use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Exception\MissingCollectionException;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
 use Drupal\og\OgContextInterface;
