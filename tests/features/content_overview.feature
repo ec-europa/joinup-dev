@@ -204,9 +204,9 @@ Feature: Content Overview
     And event content:
       | title                | collection      | start date   | end date            | created    | state     | author          |
       | Bitter Finger        | Barbaric Avenue | now -1 years | now -1 years +1 day | now -4 day | validated | claricemitchell |
-      | Frozen Barbershop    | Barbaric Avenue | now -2 day   | now +2 day          | now -3 day | validated | claricemitchell |
+      | Frozen Barbershop    | Barbaric Avenue | now -1 day   | now +1 day          | now -3 day | validated | claricemitchell |
       | Frozen Breeze        | Barbaric Avenue | now +2 day   | now +4 day          | now -2 day | validated | claricemitchell |
-      | Flying Official Fish | Barbaric Avenue | now -3 day   | now -2 day          | now        | validated | jeffreypayne    |
+      | Flying Official Fish | Barbaric Avenue | now -3 day   | now -1 day          | now        | validated | jeffreypayne    |
     # Technical: use a separate step to create an event associated to the anonymous user.
     And event content:
       | title          | collection      | start date  | end date    | created    | state     |
@@ -237,16 +237,17 @@ Feature: Content Overview
       | Bitter Finger        |
     And the "Event date" inline facet should allow selecting the following values:
       | My events (3)       |
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
 
     When I click "Upcoming events" in the "Event date" inline facet
     Then I should see the following tiles in the correct order:
-      | Frozen Breeze  |
-      | Autumn Boiling |
+      | Frozen Barbershop |
+      | Frozen Breeze     |
+      | Autumn Boiling    |
     And the "Event date" inline facet should allow selecting the following values:
       | My events (3)   |
-      | Past events (3) |
+      | Past events (2) |
       | All events      |
 
     When I click "My events" in the "Event date" inline facet
@@ -255,8 +256,8 @@ Feature: Content Overview
       | Frozen Barbershop |
       | Bitter Finger     |
     And the "Event date" inline facet should allow selecting the following values:
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
       | All events          |
 
     When I click "Past events" in the "Event date" inline facet
@@ -265,7 +266,7 @@ Feature: Content Overview
       | Bitter Finger        |
     And the "Event date" inline facet should allow selecting the following values:
       | My events (3)       |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
       | All events          |
 
     # The second level facet is deactivated together with its parent.
@@ -289,17 +290,18 @@ Feature: Content Overview
       | Flying Official Fish |
       | Bitter Finger        |
     And the "Event date" inline facet should allow selecting the following values:
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
       | My events (1)       |
 
     # Tests facets with a different user to verify that cache leaks are prevented.
     When I click "Upcoming events" in the "Event date" inline facet
     Then I should see the following tiles in the correct order:
-      | Frozen Breeze  |
-      | Autumn Boiling |
+      | Frozen Barbershop |
+      | Frozen Breeze     |
+      | Autumn Boiling    |
     And the "Event date" inline facet should allow selecting the following values:
-      | Past events (3) |
+      | Past events (2) |
       | My events (1)   |
       | All events      |
 
@@ -307,8 +309,8 @@ Feature: Content Overview
     Then I should see the following tiles in the correct order:
       | Flying Official Fish |
     And the "Event date" inline facet should allow selecting the following values:
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
       | All events          |
 
     When I click "Past events" in the "Event date" inline facet
@@ -316,7 +318,7 @@ Feature: Content Overview
       | Flying Official Fish |
       | Bitter Finger        |
     And the "Event date" inline facet should allow selecting the following values:
-      | Upcoming events (2) |
+      | Upcoming events (3) |
       | My events (1)       |
       | All events          |
 
@@ -325,15 +327,15 @@ Feature: Content Overview
     And I click "Events, discussions, news ..."
     And I click "Event"
     Then the "Event date" inline facet should allow selecting the following values:
-      | Past events (3)     |
-      | Upcoming events (2) |
+      | Upcoming events (3) |
+      | Past events (2)     |
 
     When I click "Upcoming events" in the "Event date" inline facet
     Then the "Event date" inline facet should allow selecting the following values:
-      | Past events (3) |
+      | Past events (2) |
       | All events      |
 
     When I click "Past events" in the "Event date" inline facet
     Then the "Event date" inline facet should allow selecting the following values:
-      | Upcoming events (2) |
+      | Upcoming events (3) |
       | All events          |
