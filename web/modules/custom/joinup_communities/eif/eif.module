@@ -12,6 +12,7 @@ use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\eif\Plugin\views\argument\EifGroupArgument;
 
 /**
  * Implements hook_entity_field_access().
@@ -25,4 +26,17 @@ function eif_entity_field_access($operation, FieldDefinitionInterface $field_def
   // the user has access, the result will be neutral and the default access
   // result for fields will be enforced, which is the allowed.
   return AccessResult::forbiddenIf(!$account->hasPermission('edit eif recommendations'));
+}
+
+/**
+ * Implements hook_views_plugins_argument_alter().
+ */
+function eif_views_plugins_argument_alter(array &$plugins) {
+  // We don't want to apply a group contextual filter for eif_recommendation
+  // view. The contextual filter is added only for validation. Swapping the
+  // class to treat this exception.
+  // @see joinup_group_views_data_alter()
+  // @see \Drupal\joinup_group\Plugin\views\argument\SearchApiGroupArgument
+  // @see \Drupal\eif\Plugin\views\argument\EifGroupArgument
+  $plugins['search_api_group']['class'] = EifGroupArgument::class;
 }
