@@ -32,10 +32,10 @@ Feature:
       | title | EIF Toolbox |
       | state | validated   |
     And solution:
-      | title         | Some EIF solution                                        |
-      | state         | validated                                                |
-      | collection    | EIF Toolbox                                              |
-      | eif reference | Underlying Principle 1: subsidiarity and proportionality |
+      | title         | Some EIF solution |
+      | state         | validated         |
+      | collection    | EIF Toolbox       |
+      | eif reference | Recommendation 1  |
 
     When I go to the "Some EIF solution" solution
     Then I should not see the text "EIF reference"
@@ -52,19 +52,19 @@ Feature:
       | title | EIF Toolbox |
       | state | validated   |
     And solutions:
-      | title    | state     | policy domain | collection  | eif reference                                                                             |
-      | Balker   | validated |               | EIF Toolbox | Underlying Principle 1: subsidiarity and proportionality, Underlying Principle 2: openess |
-      | Corridor | validated |               | EIF Toolbox | Underlying Principle 1: subsidiarity and proportionality                                  |
-      | Lager    | validated | Demography    | EIF Toolbox |                                                                                           |
+      | title    | state     | policy domain | collection  | eif reference                      |
+      | Balker   | validated |               | EIF Toolbox | Recommendation 1, Recommendation 2 |
+      | Corridor | validated |               | EIF Toolbox | Recommendation 1                   |
+      | Lager    | validated | Demography    | EIF Toolbox |                                    |
 
     # Underlying Principle 1.
-    When I go to "/taxonomy/term/http_e_f_fdata_ceuropa_ceu_fUP1"
+    When I go to "/taxonomy/term/http_e_f_fdata_ceuropa_ceu_fRec1"
     Then I should see the "Balker" tile
     And I should see the "Corridor" tile
     But I should not see the "Lager" tile
 
     # Underlying Principle 2
-    When I go to "/taxonomy/term/http_e_f_fdata_ceuropa_ceu_fUP2"
+    When I go to "/taxonomy/term/http_e_f_fdata_ceuropa_ceu_fRec2"
     Then I should see the "Balker" tile
     But I should not see the "Corridor" tile
     And I should not see the "Lager" tile
