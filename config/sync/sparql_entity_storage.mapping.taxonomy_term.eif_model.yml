@@ -10,7 +10,7 @@ entity_type_id: taxonomy_term
 bundle: eif_model
 rdf_type: 'http://data.europa.eu/eif/Model/'
 graph:
-  default: 'http://eif_conceptual_model_voc'
+  default: 'http://eif_conceptual_model'
 base_fields_mapping:
   uuid:
     value:

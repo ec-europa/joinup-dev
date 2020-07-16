@@ -24,10 +24,10 @@ use EasyRdf\GraphStore;
  */
 function joinup_core_post_update_0106300(): void {
   $filenames = [
-    'eif_conceptual_model_voc.rdf' => 'http://eif_conceptual_model_voc',
-    'eif_interoperability_layer_voc.rdf' => 'http://eif_interoperability_layer_voc',
-    'eif_principle_voc.rdf' => 'http://eif_principle_voc',
-    'eif_recommendations_voc.rdf' => 'http://eif_recommendation_voc',
+    'eif_conceptual_model.rdf' => 'http://eif_conceptual_model',
+    'eif_interoperability_layer.rdf' => 'http://eif_interoperability_layer',
+    'eif_principle.rdf' => 'http://eif_principle',
+    'eif_recommendations.rdf' => 'http://eif_recommendation',
   ];
 
   foreach ($filenames as $filename => $graph_uri) {

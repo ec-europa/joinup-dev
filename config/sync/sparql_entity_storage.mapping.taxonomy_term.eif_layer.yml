@@ -10,7 +10,7 @@ entity_type_id: taxonomy_term
 bundle: eif_layer
 rdf_type: 'http://data.europa.eu/eif/Layer/'
 graph:
-  default: 'http://eif_interoperability_layer_voc'
+  default: 'http://eif_interoperability_layer'
 base_fields_mapping:
   uuid:
     value:

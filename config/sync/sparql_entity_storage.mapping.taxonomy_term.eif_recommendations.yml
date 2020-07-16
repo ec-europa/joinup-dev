@@ -10,7 +10,7 @@ entity_type_id: taxonomy_term
 bundle: eif_recommendations
 rdf_type: 'http://data.europa.eu/eif/Recommendation/'
 graph:
-  default: 'http://eif_recommendation_voc'
+  default: 'http://eif_recommendation'
 base_fields_mapping:
   uuid:
     value:
