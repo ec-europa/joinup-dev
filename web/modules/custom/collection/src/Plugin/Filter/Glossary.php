@@ -4,17 +4,18 @@ declare(strict_types = 1);
 
 namespace Drupal\collection\Plugin\Filter;
 
+use Drupal\collection\Entity\CollectionContentInterface;
+use Drupal\collection\Exception\MissingCollectionException;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\collection\Entity\CollectionInterface;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
-use Drupal\node\NodeInterface;
 use Drupal\og\OgContextInterface;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -58,6 +59,13 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
   protected $cacheMetadata;
 
   /**
+   * The logger.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
+
+  /**
    * Constructs a new filter plugin instance.
    *
    * @param array $configuration
@@ -70,11 +78,14 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
    *   The OG context service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger.
    */
-  public function __construct(array $configuration, string $plugin_id, $plugin_definition, OgContextInterface $og_context, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, string $plugin_id, $plugin_definition, OgContextInterface $og_context, EntityTypeManagerInterface $entity_type_manager, LoggerInterface $logger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->ogContext = $og_context;
     $this->entityTypeManager = $entity_type_manager;
+    $this->logger = $logger;
   }
 
   /**
@@ -86,7 +97,8 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
       $plugin_id,
       $plugin_definition,
       $container->get('og.context'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('logger.channel.collection')
     );
   }
 
@@ -221,8 +233,18 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
   protected function setCollection(): void {
     if ($this->collection = $this->ogContext->getGroup()) {
       // Other kind of group?
-      if (!$this->collection instanceof CollectionInterface) {
-        $this->collection = $this->collection->getCollection();
+      if ($this->collection instanceof CollectionContentInterface) {
+        try {
+          $this->collection = $this->collection->getCollection();
+        }
+        catch (MissingCollectionException $e) {
+          // The content is orphaned. Log an error but allow the request to
+          // continue, this is not fatal.
+          $this->logger->error('Collection could not be retrieved from entity of type %type and ID %id', [
+            '%type' => $this->collection->getEntityTypeId(),
+            '%id' => $this->collection->id(),
+          ]);
+        }
       }
     }
   }
