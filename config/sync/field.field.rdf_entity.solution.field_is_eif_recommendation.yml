@@ -5,7 +5,7 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_is_eif_recommendation
     - rdf_entity.rdfentity.solution
-    - taxonomy.vocabulary.eif_recommendations
+    - taxonomy.vocabulary.eif_recommendation
 id: rdf_entity.solution.field_is_eif_recommendation
 field_name: field_is_eif_recommendation
 entity_type: rdf_entity
@@ -20,7 +20,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      eif_recommendations: eif_recommendations
+      eif_recommendation: eif_recommendation
     sort:
       field: name
       direction: asc

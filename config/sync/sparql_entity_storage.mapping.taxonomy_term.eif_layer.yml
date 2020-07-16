@@ -1,16 +1,16 @@
-uuid: 43332fb2-3501-4aa2-8744-4acfa7aaf2f2
+uuid: 3d01ecad-5f7a-4396-aee6-26bff5b2af85
 langcode: en
 status: true
 dependencies:
   config:
     - sparql_entity_storage.graph.default
-    - taxonomy.vocabulary.eif_recommendations
-id: taxonomy_term.eif_recommendations
+    - taxonomy.vocabulary.eif_layer
+id: taxonomy_term.eif_layer
 entity_type_id: taxonomy_term
-bundle: eif_recommendations
-rdf_type: 'http://data.europa.eu/eif/'
+bundle: eif_layer
+rdf_type: 'http://data.europa.eu/eif/Layer/'
 graph:
-  default: 'http://eif_voc'
+  default: 'http://eif_interoperability_layer'
 base_fields_mapping:
   uuid:
     value:
@@ -42,8 +42,8 @@ base_fields_mapping:
       format: 'xsd:integer'
   parent:
     target_id:
-      predicate: 'http://www.w3.org/2004/02/skos/core#broader'
-      format: resource
+      predicate: ''
+      format: ''
   changed:
     value:
       predicate: ''

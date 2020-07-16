@@ -13,7 +13,6 @@ use Drupal\eif\Eif;
 use Drupal\menu_link_content\Entity\MenuLinkContent as MenuLinkContentEntity;
 use Drupal\menu_link_content\Form\MenuLinkContentForm;
 use Drupal\menu_link_content\Plugin\Menu\MenuLinkContent;
-use Drupal\rdf_taxonomy\Entity\RdfTerm;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Drupal\sparql_entity_storage\UriEncoder;
 use EasyRdf\Graph;
@@ -23,15 +22,24 @@ use EasyRdf\GraphStore;
  * Insert the new EIF vocabulary into the database.
  */
 function joinup_core_post_update_0106300(): void {
-  $sparql_connection = Database::getConnection('default', 'sparql_default');
-  $connection_options = $sparql_connection->getConnectionOptions();
-  $connect_string = "http://{$connection_options['host']}:{$connection_options['port']}/sparql-graph-crud";
-  $graph_store = new GraphStore($connect_string);
+  $filenames = [
+    'eif_conceptual_model.rdf' => 'http://eif_conceptual_model',
+    'eif_interoperability_layer.rdf' => 'http://eif_interoperability_layer',
+    'eif_principle.rdf' => 'http://eif_principle',
+    'eif_recommendation.rdf' => 'http://eif_recommendation',
+  ];
 
-  $filepath = __DIR__ . '/../../../../resources/fixtures/eif_voc.rdf';
-  $graph = new Graph('http://eif_voc');
-  $graph->parse(file_get_contents($filepath));
-  $graph_store->insert($graph);
+  foreach ($filenames as $filename => $graph_uri) {
+    $sparql_connection = Database::getConnection('default', 'sparql_default');
+    $connection_options = $sparql_connection->getConnectionOptions();
+    $connect_string = "http://{$connection_options['host']}:{$connection_options['port']}/sparql-graph-crud";
+    $graph_store = new GraphStore($connect_string);
+
+    $filepath = __DIR__ . "/../../../../resources/fixtures/{$filename}";
+    $graph = new Graph($graph_uri);
+    $graph->parse(file_get_contents($filepath));
+    $graph_store->insert($graph);
+  }
 }
 
 /**
@@ -39,7 +47,7 @@ function joinup_core_post_update_0106300(): void {
  */
 function joinup_core_post_update_0106301(array &$sandbox): void {
   $menu_name = 'ogmenu-3444';
-  $internal_path = Url::fromRoute('view.eif_recommendations.page', [
+  $internal_path = Url::fromRoute('view.eif_recommendation.page', [
     'rdf_entity' => UriEncoder::encodeUrl(Eif::EIF_ID),
   ])->toUriString();
   $link = MenuLinkContentEntity::create([
@@ -55,17 +63,14 @@ function joinup_core_post_update_0106301(array &$sandbox): void {
  * Index the EIF terms since they are now tracked.
  */
 function joinup_core_post_update_0106302(): void {
-  $filepath = __DIR__ . '/../../../../resources/fixtures/eif_voc.rdf';
-  $graph = new Graph('http://eif_voc');
-  $graph->parse(file_get_contents($filepath));
-  foreach ($graph->resources() as $resource_id => $resource) {
-    /** @var \Drupal\rdf_taxonomy\Entity\RdfTerm $term */
-    if ($term = RdfTerm::load($resource_id)) {
-      ContentEntity::indexEntity($term);
-    }
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $storage = $entity_type_manager->getStorage('taxonomy_term');
+  $tids = $storage->getQuery()->condition('vid', 'eif_recommendation')->execute();
+  /** @var \Drupal\taxonomy\TermInterface $term */
+  foreach ($storage->loadMultiple($tids) as $term) {
+    ContentEntity::indexEntity($term);
   }
-
-  $index = \Drupal::entityTypeManager()->getStorage('search_api_index')->load('published');
+  $index = $entity_type_manager->getStorage('search_api_index')->load('published');
   $index->indexItems(-1, 'entity:taxonomy_term');
 }
 

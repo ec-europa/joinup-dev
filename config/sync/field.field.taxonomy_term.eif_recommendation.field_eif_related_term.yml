@@ -1,17 +1,20 @@
-uuid: 643eb6b6-42b8-4fca-8238-fec8846c18a9
+uuid: 603c734f-f8a3-4277-83b9-9c73b387d090
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.taxonomy_term.field_eif_related_term
-    - taxonomy.vocabulary.eif_recommendations
-id: taxonomy_term.eif_recommendations.field_eif_related_term
+    - taxonomy.vocabulary.eif_layer
+    - taxonomy.vocabulary.eif_model
+    - taxonomy.vocabulary.eif_principle
+    - taxonomy.vocabulary.eif_recommendation
+id: taxonomy_term.eif_recommendation.field_eif_related_term
 field_name: field_eif_related_term
 entity_type: taxonomy_term
-bundle: eif_recommendations
+bundle: eif_recommendation
 label: 'Related term'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -19,7 +22,9 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      eif_recommendations: eif_recommendations
+      eif_layer: eif_layer
+      eif_model: eif_model
+      eif_principle: eif_principle
     sort:
       field: name
       direction: asc
