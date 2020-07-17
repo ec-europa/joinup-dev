@@ -4,10 +4,10 @@ status: true
 dependencies:
   config:
     - sparql_entity_storage.graph.default
-    - taxonomy.vocabulary.eif_layer
-id: taxonomy_term.eif_layer
+    - taxonomy.vocabulary.eif_interoperability_layer
+id: taxonomy_term.eif_interoperability_layer
 entity_type_id: taxonomy_term
-bundle: eif_layer
+bundle: eif_interoperability_layer
 rdf_type: 'http://data.europa.eu/eif/Layer/'
 graph:
   default: 'http://eif_interoperability_layer'

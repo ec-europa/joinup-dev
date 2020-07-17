@@ -515,9 +515,7 @@ field_settings:
     datasource_id: 'entity:taxonomy_term'
     property_path: tid
     type: string
-    dependencies:
-      module:
-        - null
+    dependencies: {  }
   title:
     label: Title
     datasource_id: 'entity:node'
@@ -584,8 +582,8 @@ datasource_settings:
     bundles:
       default: false
       selected:
-        - eif_layer
-        - eif_model
+        - eif_conceptual_model
+        - eif_interoperability_layer
         - eif_principle
         - eif_recommendation
     languages:

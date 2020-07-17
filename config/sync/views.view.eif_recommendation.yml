@@ -46,9 +46,8 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
-        type: some
+        type: none
         options:
-          items_per_page: 100
           offset: 0
       style:
         type: table
@@ -158,9 +157,9 @@ display:
                 display_method: label
               business_process:
                 display_method: label
-              eif_layer:
+              eif_conceptual_model:
                 display_method: label
-              eif_model:
+              eif_interoperability_layer:
                 display_method: label
               eif_principle:
                 display_method: label
@@ -401,26 +400,6 @@ display:
         - 'config:field.storage.taxonomy_term.field_eif_related_term'
         - 'config:search_api.index.published'
         - 'search_api_list:published'
-  block:
-    display_plugin: block
-    id: block
-    display_title: Block
-    position: 2
-    display_options:
-      display_extenders: {  }
-      arguments: {  }
-      defaults:
-        arguments: false
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - 'user.node_grants:view'
-      tags:
-        - 'config:field.storage.taxonomy_term.field_eif_related_term'
-        - 'config:search_api.index.published'
-        - 'search_api_list:published'
   page:
     display_plugin: page
     id: page
@@ -430,20 +409,11 @@ display:
       display_extenders: {  }
       path: rdf_entity/%rdf_entity/recommendations
       always_use_admin_theme: false
-      empty:
-        view:
-          id: view
-          table: views
-          field: view
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          view_to_insert: 'eif_recommendation:block'
-          inherit_arguments: false
-          plugin_id: view
       defaults:
-        empty: false
+        empty: true
+        cache: false
+      cache:
+        type: none
     cache_metadata:
       max-age: -1
       contexts:
