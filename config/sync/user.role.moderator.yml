@@ -53,7 +53,6 @@ permissions:
   - 'edit any discussion content'
   - 'edit any glossary content'
   - 'edit contact_information rdf entity'
-  - 'edit eif recommendations'
   - 'edit field_is_eif_recommendation'
   - 'edit licence rdf entity'
   - 'edit own document content'
