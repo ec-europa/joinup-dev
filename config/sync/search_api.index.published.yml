@@ -515,9 +515,7 @@ field_settings:
     datasource_id: 'entity:taxonomy_term'
     property_path: tid
     type: string
-    dependencies:
-      module:
-        - null
+    dependencies: {  }
   title:
     label: Title
     datasource_id: 'entity:node'
