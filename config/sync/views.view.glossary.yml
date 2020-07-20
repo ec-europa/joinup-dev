@@ -63,11 +63,11 @@ display:
               field: title
               rendered: true
               rendered_strip: false
-          columns: 3
+          columns: 2
           automatic_width: true
           alignment: horizontal
           col_class_default: true
-          col_class_custom: ''
+          col_class_custom: view-glossary
           row_class_default: true
           row_class_custom: ''
       row:
