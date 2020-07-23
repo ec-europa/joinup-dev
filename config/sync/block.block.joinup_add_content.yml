@@ -12,7 +12,7 @@ _core:
 id: joinup_add_content
 theme: joinup_theme
 region: featured
-weight: -15
+weight: -19
 provider: null
 plugin: add_content_block
 settings:
