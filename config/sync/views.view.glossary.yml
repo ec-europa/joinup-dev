@@ -66,9 +66,9 @@ display:
           columns: 2
           automatic_width: true
           alignment: horizontal
-          col_class_default: false
+          col_class_default: true
           col_class_custom: ''
-          row_class_default: false
+          row_class_default: true
           row_class_custom: ''
       row:
         type: fields
