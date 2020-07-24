@@ -35,8 +35,9 @@ function joinup_core_post_update_0106300(array &$sandbox): void {
       return in_array($solution_id, [
         // 'General information on the "Standard code lists" project'.
         'http://ec.europa.eu/eurostat/ramon/miscellaneous/index.cfm?TargetUrl=DSP_GENINFO_SCL',
-        // 'Eurostat SDMX Converter'.
+        // 'Eurostat SDMX Converter - 2 solutions with the same entity exist'.
         'http://data.europa.eu/w21/35ef35c6-a530-4821-8c52-8d796ec86a1d',
+        'https://circabc.europa.eu/w/browse/ea54c8ee-5fe8-431d-826e-5e1a2835d405',
         // 'Eurostat XBRL Reference Architecture'.
         'http://data.europa.eu/w21/96f74e35-abda-4475-8b2d-22fed2120fc5',
       ]);
