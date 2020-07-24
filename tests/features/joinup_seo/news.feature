@@ -12,8 +12,8 @@ Feature: SEO for news articles.
       | Username          | E-mail                 | First name | Family name |
       | Joinup SEO author | joinup.seo@example.com | Kurk       | Smith       |
     And "news" content:
-      | title           | headline                    | logo     | body                                             | created                         | publication date                | changed                         | state     | author            | collection                 |
-      | Joinup SEO news | Headline of Joinup SEO news | logo.png | summary: Summary of news. - value: Body of news. | Sun, 01 Dec 2019 13:00:00 +0100 | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | validated | Joinup SEO author | Joinup SEO news collection |
+      | title           | headline                    | logo     | body:summary     | body          | created                         | publication date                | changed                         | state     | author            | collection                 |
+      | Joinup SEO news | Headline of Joinup SEO news | logo.png | Summary of news. | Body of news. | Sun, 01 Dec 2019 13:00:00 +0100 | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | validated | Joinup SEO author | Joinup SEO news collection |
 
     When I visit the "Joinup SEO news" news
     Then the metatag JSON should be attached in the page

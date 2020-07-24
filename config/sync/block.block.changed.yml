@@ -11,7 +11,7 @@ dependencies:
 id: changed
 theme: joinup_theme
 region: sidebar_left
-weight: -15
+weight: -20
 provider: null
 plugin: 'facet_block:aggregated_changed'
 settings:

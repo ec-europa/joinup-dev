@@ -37,11 +37,6 @@
 
 .vertical-tabs__menu {
   padding-left: 0;
-  display: none;
-
-  @include breakpoint(mobile) {
-    display: block;
-  }
 }
 
 .vertical-tabs__menu-item {
