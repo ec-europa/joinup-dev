@@ -7514,20 +7514,20 @@
         },
         {
             "name": "drupal/sparql_entity_storage",
-            "version": "1.0.0-alpha3",
+            "version": "1.0.0-alpha5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/sparql_entity_storage.git",
-                "reference": "8.x-1.0-alpha3"
+                "reference": "8.x-1.0-alpha5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/sparql_entity_storage-8.x-1.0-alpha3.zip",
-                "reference": "8.x-1.0-alpha3",
-                "shasum": "58d35c4880c597b9401d8f156876868c42fb8db1"
+                "url": "https://ftp.drupal.org/files/projects/sparql_entity_storage-8.x-1.0-alpha5.zip",
+                "reference": "8.x-1.0-alpha5",
+                "shasum": "20536f2aad9b1d4513c05b94db984b6c4bc8a52d"
             },
             "require": {
-                "drupal/core": "*",
+                "drupal/core": "^8",
                 "easyrdf/easyrdf": "0.10.0-alpha.1 as 0.9.2",
                 "ml/json-ld": "^1.0",
                 "php": ">=7.1"
@@ -7537,12 +7537,9 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3",
-                    "datestamp": "1581875527",
+                    "version": "8.x-1.0-alpha5",
+                    "datestamp": "1593781886",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
