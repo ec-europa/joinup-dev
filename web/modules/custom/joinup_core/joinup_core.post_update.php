@@ -12,7 +12,7 @@ use Drupal\solution\Entity\SolutionInterface;
 /**
  * Remove a selected set of solutions and 1 document from Eurostat.
  */
-function joinup_core_post_update_0106201(array &$sandbox): void {
+function joinup_core_post_update_0106300(array &$sandbox): void {
   $entity_type_manager = \Drupal::entityTypeManager();
 
   // Gather the IDs of the solutions that need to be removed, according to
