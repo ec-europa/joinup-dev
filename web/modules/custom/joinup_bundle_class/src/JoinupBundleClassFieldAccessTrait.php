@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_bundle_class;
 
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\TypedData\Exception\MissingDataException;
@@ -52,7 +53,6 @@ trait JoinupBundleClassFieldAccessTrait {
       $item_list = $this->getEntityReferenceFieldItemList($field_name);
     }
     catch (\InvalidArgumentException $e) {
-      $this->logException($e);
       return [];
     }
 
