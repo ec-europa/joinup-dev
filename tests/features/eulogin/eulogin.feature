@@ -450,9 +450,9 @@ Feature: Log in through EU Login
     And I fill in "CAS Username" with "joe"
     When I press "Save"
     Then I should see the following success messages:
-      | success messages                                                                |
-      | An e-mail has been sent to the user to notify him on the change to his account. |
-      | The changes have been saved.                                                    |
+      | success messages                                                |
+      | The user has been notified that their account has been updated. |
+      | The changes have been saved.                                    |
 
     When I click "Edit" in the "Joe Doe" row
     Then the "Allow user to log in via CAS" checkbox should be checked

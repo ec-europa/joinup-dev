@@ -30,7 +30,7 @@ Feature: User role management
     And I select "Add the Moderator role to the selected user(s)" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the success message "Add the Moderator role to the selected user(s) was applied to 1 item."
-    And I should see the success message "An e-mail has been sent to the user to notify him on the change to his account."
+    And I should see the success message "The user has been notified that their account has been updated."
     And the following email should have been sent:
       | recipient | Nibby Noob                                                                                                |
       | subject   | The Joinup Support Team updated your account for you at Joinup                                            |
@@ -45,7 +45,7 @@ Feature: User role management
     And I fill in "Family name" with "Sus"
     And I press "Save"
     Then I should see the success message "The changes have been saved."
-    But I should not see the success message "An e-mail has been sent to the user to notify him on the change to his account."
+    But I should not see the success message "The user has been notified that their account has been updated."
     And 0 e-mails should have been sent
 
   Scenario: A moderator can assign and remove the Licence manager role.
@@ -65,7 +65,7 @@ Feature: User role management
     And I select "Add the Licence manager role to the selected user(s)" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the success message "Add the Licence manager role to the selected user(s) was applied to 1 item."
-    And I should see the success message "An e-mail has been sent to the user to notify him on the change to his account."
+    And I should see the success message "The user has been notified that their account has been updated."
     And the following email should have been sent:
       | recipient | Nibby Noob                                                                                                |
       | subject   | The Joinup Support Team updated your account for you at Joinup                                            |

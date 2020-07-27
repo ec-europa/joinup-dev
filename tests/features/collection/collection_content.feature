@@ -13,20 +13,20 @@ Feature: Collection content
       | collection | Turin Egyptian Collection   |
       | state      | validated                   |
     And discussion content:
-      | title                                 | body                                                                                                    | state     | collection                |
-      | Bigger than Egyptian Museum of Cairo? | value: <p><a href="#link">Link to the museum</a> web<strong>site</strong>.</p> - format: content_editor | validated | Turin Egyptian Collection |
+      | title                                 | body                                                                    | state     | collection                |
+      | Bigger than Egyptian Museum of Cairo? | <p><a href="#link">Link to the museum</a> web<strong>site</strong>.</p> | validated | Turin Egyptian Collection |
     And document content:
-      | title           | body                                                                             | state     | collection                |
-      | Upper Floor Map | value: <p>A sample <a href="#link">map</a> example.</p> - format: content_editor | validated | Turin Egyptian Collection |
+      | title           | body                                             | state     | collection                |
+      | Upper Floor Map | <p>A sample <a href="#link">map</a> example.</p> | validated | Turin Egyptian Collection |
     And event content:
       | title                                     | state     | collection                |
       | Opening of the Hellenistic Period Section | validated | Turin Egyptian Collection |
     And news content:
-      | title                          | body                                                                                           | state     | collection                |
-      | Turin Egyptian Museum Reopened | value: <p>After <em>more than</em> <a href="#link">two years</a>.</p> - format: content_editor | validated | Turin Egyptian Collection |
+      | title                          | body                                                           | state     | collection                |
+      | Turin Egyptian Museum Reopened | <p>After <em>more than</em> <a href="#link">two years</a>.</p> | validated | Turin Egyptian Collection |
     And newsletter content:
-      | title                                                | body                                                                                                                         | state     | collection                |
-      | Stay informed about this year events and exhibitions | value: <p><a href="#link">Subscribe to the newsletter</a> to stay <strong>up-to-date!</strong>.</p> - format: content_editor | validated | Turin Egyptian Collection |
+      | title                                                | body                                                                                         | state     | collection                |
+      | Stay informed about this year events and exhibitions | <p><a href="#link">Subscribe to the newsletter</a> to stay <strong>up-to-date!</strong>.</p> | validated | Turin Egyptian Collection |
     And video content:
       | title                                  | state     | collection                |
       | Watch the mummy conservation technique | validated | Turin Egyptian Collection |
