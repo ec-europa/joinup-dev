@@ -15,16 +15,22 @@ Feature: User registration
     Then I click "Add user"
     Then I am at "admin/people/create"
     Given the following user registration at "admin/people/create":
-      | Email                      | superuser@example.org |
-      | Username                   | SuperUser             |
-      | First name                 | Super                 |
-      | Family name                | User                  |
-      | Password                   | 98eZRhoP              |
-      | Confirm password           | 98eZRhoP              |
-      | Notify user of new account | 1                     |
-      | Active                     | 1                     |
+      | Email                      | miomio@example.org |
+      | Username                   | miomio             |
+      | First name                 | Miomir             |
+      | Family name                | Kurzmann           |
+      | Password                   | 98eZRhoP           |
+      | Confirm password           | 98eZRhoP           |
+      | Notify user of new account | 1                  |
+      | Active                     | 1                  |
     Then the following email should have been sent:
-      | recipient | SuperUser                                                                                                                       |
+      | recipient | miomio                                                                                                                          |
       | subject   | Your Joinup account was created successfully.                                                                                   |
       | body      | The Joinup Support Team created your account on Joinup. Please log in through the following link in order to set your password. |
-    And the SuperUser user account is active
+    # Only the email about the creation of the account should be sent. This
+    # check ensures that we do not accidentally trigger any other notifications.
+    And 1 e-mail should have been sent
+    And the miomio user account is active
+
+    # Clean up the account created through the UI.
+    Then I delete the miomio user

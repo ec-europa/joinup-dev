@@ -209,6 +209,58 @@
   }
 }
 
+#block-exposed-form-search-page {
+  position: relative;
+  max-width: 100%;
+  margin: 0 8px;
+  padding: 0;
+
+  .inputs {
+    margin: 0;
+
+    .search-bar__input {
+      width: calc(100% - 56px);
+      border-bottom: 1px solid #888;
+      color: #000000;
+    }
+
+    .search-bar__submit {
+      position: absolute;
+      right: 16px;
+      bottom: 10px;
+      border: none;
+      box-shadow: none;
+      font-family: inherit;
+      text-indent: -999px;
+      background: transparent;
+      width: 40px;
+      height: 40px;
+      overflow: hidden;
+      cursor: pointer;
+      border-bottom: 1px solid #888;
+
+      &::before {
+        @extend .icon;
+        content: "";
+        @include icon-size(25px);
+        text-indent: 0;
+        float: left;
+      } 
+
+      &:hover {
+        background-color:#e1e4e4;;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+  .mdl-chip {
+    top: 13px;
+    left: 0px;
+  }
+}
 // States
 // --------------------------------------------------
 .search-bar--header {
@@ -221,7 +273,6 @@
     @include breakpoint(tablet) {
       width: calc(100% - 200px);
     }
-
 
     .search-bar__input-container {
       width: calc(100% - 50px);
@@ -238,7 +289,6 @@
     @include breakpoint(tablet) {
       width: calc(100% - 280px);
     }
-
 
     .search-bar__input-container {
       width: calc(100% - 50px);

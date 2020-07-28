@@ -11,7 +11,7 @@ dependencies:
 id: solutiontype
 theme: joinup_theme
 region: sidebar_left
-weight: -14
+weight: -19
 provider: null
 plugin: 'facet_block:solution_type'
 settings:

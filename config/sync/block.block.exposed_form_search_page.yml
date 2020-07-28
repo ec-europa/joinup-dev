@@ -11,7 +11,7 @@ dependencies:
     - joinup_theme
 id: exposed_form_search_page
 theme: joinup_theme
-region: header
+region: content_top
 weight: -17
 provider: null
 plugin: 'views_exposed_filter_block:search-page_1'

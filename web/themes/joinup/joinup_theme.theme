@@ -618,8 +618,11 @@ function joinup_theme_preprocess_block(&$variables) {
 
     // Add classes to identify the search bars.
     case 'global_search':
-    case 'exposed_form_search_page':
       $variables['attributes']['class'][] = 'search-bar search-bar--header search-bar--white mdl-textfield mdl-js-textfield mdl-chipfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right';
+      break;
+
+    case 'exposed_form_search_page':
+      $variables['attributes']['class'][] = 'search-bar mdl-textfield mdl-js-textfield mdl-chipfield mdl-textfield--floating-label mdl-textfield--full-width';
       break;
 
     // Add special classes for dropdown menus in header.

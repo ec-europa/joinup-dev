@@ -9,6 +9,8 @@ use Drupal\og\OgMembershipInterface;
 
 /**
  * Interface for entities that are groups.
+ *
+ * This comprises collections and solutions.
  */
 interface GroupInterface extends ContentEntityInterface {
 
