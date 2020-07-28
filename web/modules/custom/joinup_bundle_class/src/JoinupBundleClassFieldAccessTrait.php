@@ -53,6 +53,7 @@ trait JoinupBundleClassFieldAccessTrait {
       $item_list = $this->getEntityReferenceFieldItemList($field_name);
     }
     catch (\InvalidArgumentException $e) {
+      $this->logException($e);
       return [];
     }
 
