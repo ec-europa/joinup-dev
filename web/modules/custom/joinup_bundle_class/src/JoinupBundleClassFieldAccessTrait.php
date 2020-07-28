@@ -6,7 +6,9 @@ namespace Drupal\joinup_bundle_class;
 
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemInterface;
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\TypedData\Exception\MissingDataException;
+use Drupal\dynamic_entity_reference\Plugin\Field\FieldType\DynamicEntityReferenceFieldItemList;
 
 /**
  * Reusable methods for accessing fields in entity bundle classes.
@@ -14,7 +16,7 @@ use Drupal\Core\TypedData\Exception\MissingDataException;
 trait JoinupBundleClassFieldAccessTrait {
 
   /**
-   * Returns the entities that are references by the field with the given name.
+   * Returns the entities that are referenced by the field with the given name.
    *
    * @param string $field_name
    *   The name of the field for which to return the entities.
@@ -32,6 +34,56 @@ trait JoinupBundleClassFieldAccessTrait {
     }
 
     return $item_list->referencedEntities();
+  }
+
+  /**
+   * Returns the entity IDs that are referenced by the given field.
+   *
+   * This currently only supports the basic entity reference fields from Drupal
+   * core. Support for dynamic entity reference fields still needs to be added.
+   *
+   * @param string $field_name
+   *   The name of the field for which to return the entity IDs.
+   *
+   * @return array[]
+   *   An array of entity IDs, keyed by entity type ID.
+   */
+  protected function getReferencedEntityIds(string $field_name): array {
+    try {
+      $item_list = $this->getEntityReferenceFieldItemList($field_name);
+    }
+    catch (\InvalidArgumentException $e) {
+      $this->logException($e);
+      return [];
+    }
+
+    if ($item_list->isEmpty()) {
+      return [];
+    }
+
+    $ids = [];
+
+    if ($item_list instanceof DynamicEntityReferenceFieldItemList) {
+      // @todo Add support for dynamic entity references when needed.
+      // @see \Drupal\dynamic_entity_reference\Plugin\Field\FieldType\DynamicEntityReferenceFieldItemList::referencedEntities()
+      throw new \InvalidArgumentException(__METHOD__ . ' does not support dynamic entity references yet.');
+    }
+
+    $target_type = $item_list->getFieldDefinition()->getSetting('target_type');
+
+    foreach ($item_list as $item) {
+      if ($item instanceof EntityReferenceItem) {
+        try {
+          if ($target_id = $item->get('target_id')->getValue() ?? NULL) {
+            $ids[$target_type][] = $target_id;
+          }
+        }
+        catch (MissingDataException $e) {
+        }
+      }
+    }
+
+    return $ids;
   }
 
   /**
