@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed063519d70f8020e3a71bfda20b9339",
+    "content-hash": "27d3553c9e9c20c96f0b68f6aeec99c8",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2990,13 +2990,10 @@
                 "shasum": "50f8f80cf3326382c968521d34d3a113b37e32b3"
             },
             "require": {
-                "drupal/core": "*"
+                "drupal/core": "^8"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.2",
                     "datestamp": "1573747386",
@@ -4539,7 +4536,7 @@
                 "shasum": "f960f489f4273212b924a2d54e6cb8e43adb633e"
             },
             "require": {
-                "drupal/core": "*"
+                "drupal/core": "^8"
             },
             "conflict": {
                 "drupal/commerce": "<2.12"
@@ -4922,9 +4919,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.4",
                     "datestamp": "1556645881",
@@ -6165,101 +6159,39 @@
         },
         {
             "name": "drupal/og",
-            "version": "1.0.0-alpha5",
+            "version": "dev-user-access-permissions",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/project/og.git",
-                "reference": "8.x-1.0-alpha5"
+                "url": "https://github.com/Gizra/og.git",
+                "reference": "6bc4f58bd355eccfb07c8e7e0a976bd5567adaa0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/og-8.x-1.0-alpha5.zip",
-                "reference": "8.x-1.0-alpha5",
-                "shasum": "f4a446191885c076ee97a913b09d19c3960976af"
+                "url": "https://api.github.com/repos/Gizra/og/zipball/6bc4f58bd355eccfb07c8e7e0a976bd5567adaa0",
+                "reference": "6bc4f58bd355eccfb07c8e7e0a976bd5567adaa0",
+                "shasum": ""
             },
             "require": {
-                "drupal/core": "~8.7",
-                "php": ">=7.1.0"
+                "drupal/core": "^8.8 || ^9.0",
+                "php": "^7.2"
             },
             "require-dev": {
-                "drupal/coder": "~8.2"
+                "drupal/coder": "^8.2",
+                "phpunit/phpunit": "^7 || ^8"
             },
             "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-alpha5",
-                    "datestamp": "1585733421",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Dries",
-                    "homepage": "https://www.drupal.org/user/1"
-                },
-                {
-                    "name": "Grayside",
-                    "homepage": "https://www.drupal.org/user/346868"
-                },
-                {
-                    "name": "RoySegall",
-                    "homepage": "https://www.drupal.org/user/1812910"
-                },
-                {
-                    "name": "Zen",
-                    "homepage": "https://www.drupal.org/user/21209"
-                },
-                {
-                    "name": "alesr",
-                    "homepage": "https://www.drupal.org/user/150704"
-                },
-                {
-                    "name": "amitaibu",
-                    "homepage": "https://www.drupal.org/user/57511"
-                },
-                {
-                    "name": "dww",
-                    "homepage": "https://www.drupal.org/user/46549"
-                },
-                {
-                    "name": "merlinofchaos",
-                    "homepage": "https://www.drupal.org/user/26979"
-                },
-                {
-                    "name": "moshe weitzman",
-                    "homepage": "https://www.drupal.org/user/23"
-                },
-                {
-                    "name": "mpp",
-                    "homepage": "https://www.drupal.org/user/359881"
-                },
-                {
-                    "name": "pfrenssen",
-                    "homepage": "https://www.drupal.org/user/382067"
-                },
-                {
-                    "name": "sethcohn",
-                    "homepage": "https://www.drupal.org/user/14944"
-                }
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
             "support": {
-                "source": "https://git.drupalcode.org/project/og",
                 "issues": "https://drupal.org/project/issues/og",
                 "irc": "irc://irc.freenode.org/drupal-og",
-                "slack": "https://drupal.slack.com/messages/CELR48EA0"
-            }
+                "slack": "https://drupal.slack.com/messages/CELR48EA0",
+                "source": "https://git.drupalcode.org/project/og"
+            },
+            "time": "2020-07-28T18:05:46+00:00"
         },
         {
             "name": "drupal/og_menu",
@@ -15504,15 +15436,12 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.0-alpha3",
                     "datestamp": "1575299280",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 },
                 "drush": {
@@ -18547,6 +18476,12 @@
     ],
     "aliases": [
         {
+            "alias": "1.x-dev",
+            "alias_normalized": "1.9999999.9999999.9999999-dev",
+            "version": "dev-user-access-permissions",
+            "package": "drupal/og"
+        },
+        {
             "alias": "0.9.2",
             "alias_normalized": "0.9.2.0",
             "version": "0.10.0.0-alpha1",
@@ -18567,6 +18502,7 @@
         "drupal/config_ignore": 20,
         "drupal/config_update": 20,
         "drupal/matomo_reporting_api": 20,
+        "drupal/og": 20,
         "drupal/phingdrushtask": 20,
         "drupal/swiftmailer": 20,
         "drupal/view_unpublished": 15,
