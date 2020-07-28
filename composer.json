@@ -279,7 +279,8 @@
             },
             "drupal/schema_metatag": {
                 "Split SchemaArticle and SchemaSocialMediaPosting @see https://www.drupal.org/project/schema_metatag/issues/3117434": "https://www.drupal.org/files/issues/2020-03-13/3117434-D8-8.patch",
-                "Add support for DigitalDocument @see https://www.drupal.org/project/schema_metatag/issues/3120153": "https://www.drupal.org/files/issues/2020-03-16/digital_document_group-D8-3.patch"
+                "Add support for DigitalDocument @see https://www.drupal.org/project/schema_metatag/issues/3120153": "https://www.drupal.org/files/issues/2020-03-16/digital_document_group-D8-3.patch",
+                "SchemaMetatagManager is not compatible with SchemaMetatagManagerInterface on PHP version before 7.2 @see https://www.drupal.org/project/schema_metatag/issues/3161265": "https://www.drupal.org/files/issues/2020-07-25/3161265-5-fix-interface.patch"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "resources/patch/search-api-2824640-103-8.x-1.13.patch",

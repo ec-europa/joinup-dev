@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed063519d70f8020e3a71bfda20b9339",
+    "content-hash": "d74a59936a7119fe37f554258cbed12a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -7028,7 +7028,8 @@
                 },
                 "patches_applied": {
                     "Split SchemaArticle and SchemaSocialMediaPosting @see https://www.drupal.org/project/schema_metatag/issues/3117434": "https://www.drupal.org/files/issues/2020-03-13/3117434-D8-8.patch",
-                    "Add support for DigitalDocument @see https://www.drupal.org/project/schema_metatag/issues/3120153": "https://www.drupal.org/files/issues/2020-03-16/digital_document_group-D8-3.patch"
+                    "Add support for DigitalDocument @see https://www.drupal.org/project/schema_metatag/issues/3120153": "https://www.drupal.org/files/issues/2020-03-16/digital_document_group-D8-3.patch",
+                    "SchemaMetatagManager is not compatible with SchemaMetatagManagerInterface on PHP version before 7.2 @see https://www.drupal.org/project/schema_metatag/issues/3161265": "https://www.drupal.org/files/issues/2020-07-25/3161265-5-fix-interface.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
