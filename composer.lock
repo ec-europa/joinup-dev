@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "27d3553c9e9c20c96f0b68f6aeec99c8",
+    "content-hash": "fa31a270ed9c0212f3c8c0de439ee4f3",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6159,16 +6159,16 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-user-access-permissions",
+            "version": "dev-split-up-useraccessentity",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gizra/og.git",
-                "reference": "6bc4f58bd355eccfb07c8e7e0a976bd5567adaa0"
+                "reference": "489ca3610e5f9c6faaac82b362e1c5a6d189b041"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Gizra/og/zipball/6bc4f58bd355eccfb07c8e7e0a976bd5567adaa0",
-                "reference": "6bc4f58bd355eccfb07c8e7e0a976bd5567adaa0",
+                "url": "https://api.github.com/repos/Gizra/og/zipball/489ca3610e5f9c6faaac82b362e1c5a6d189b041",
+                "reference": "489ca3610e5f9c6faaac82b362e1c5a6d189b041",
                 "shasum": ""
             },
             "require": {
@@ -6191,7 +6191,7 @@
                 "slack": "https://drupal.slack.com/messages/CELR48EA0",
                 "source": "https://git.drupalcode.org/project/og"
             },
-            "time": "2020-07-28T18:05:46+00:00"
+            "time": "2020-07-29T14:05:03+00:00"
         },
         {
             "name": "drupal/og_menu",
@@ -18478,7 +18478,7 @@
         {
             "alias": "1.x-dev",
             "alias_normalized": "1.9999999.9999999.9999999-dev",
-            "version": "dev-user-access-permissions",
+            "version": "dev-split-up-useraccessentity",
             "package": "drupal/og"
         },
         {

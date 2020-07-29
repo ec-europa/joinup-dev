@@ -116,7 +116,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
         $user_var = $test_data[0];
         $expected_result = $test_data[1];
 
-        $access = $this->ogAccess->userAccessEntity('create', $content, $this->$user_var)->isAllowed();
+        $access = $this->ogAccess->userAccessEntityOperation('create', $content, $this->$user_var)->isAllowed();
         $result = $expected_result ? $this->t('have') : $this->t('not have');
         $message = "User {$user_var} should {$result} {$operation} access for bundle 'asset_release'.";
         $this->assertEquals($expected_result, $access, $message);
