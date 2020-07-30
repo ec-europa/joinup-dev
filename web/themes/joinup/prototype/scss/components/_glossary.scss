@@ -3,6 +3,31 @@
 
 // Component
 // --------------------------------------------------
+// .page__content--glossary
+
+// Elements
+// --------------------------------------------------
+.page__content--glossary {
+    h2{
+      margin-top: 0;
+      margin-bottom: 17px;
+    }
+    .field_glossary--abbreviation {
+      margin-bottom: 2px;
+      > div {
+        div {
+          display: inline;
+
+          &:first-child {
+            font-weight: bold;
+            &::after{
+                content: ": ";
+            }
+          }
+        }
+      }
+    }
+  }
 // .glossary-navigator
 // .view-glossary
 
