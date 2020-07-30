@@ -14,6 +14,12 @@ class CommunityContentHelper {
 
   /**
    * An array of node bundles that are considered community content.
+   *
+   * @deprecated in 1.62 and is removed from 2.0. Implementing code should not
+   *   rely on a list of community content bundle IDs since this is an
+   *   implementation detail. Use `$entity instanceof CommunityContentInterface`
+   *   instead.
+   * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6106
    */
   const BUNDLES = ['discussion', 'document', 'event', 'news'];
 
@@ -25,6 +31,10 @@ class CommunityContentHelper {
    *
    * @return bool
    *   True if the entity is a community content node, false otherwise.
+   *
+   * @deprecated in 1.62 and is removed from 2.0. Use `$entity instanceof
+   *   CommunityContentInterface` instead.
+   * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6106
    */
   public static function isCommunityContent(EntityInterface $entity): bool {
     return $entity instanceof NodeInterface && \in_array($entity->bundle(), self::BUNDLES);
@@ -39,6 +49,11 @@ class CommunityContentHelper {
    *
    * @return string[]
    *   An array of workflow state IDs.
+   *
+   * @deprecated in 1.62 and is removed from 2.0. This is functionality that is
+   *   specific to a certain user interaction and is not generally reusable. It
+   *   should be moved inside the scope of the calling code instead.
+   * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6106
    */
   public static function getModeratorAttentionNeededStates($bundle = NULL): array {
     $states = [
