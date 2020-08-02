@@ -20,7 +20,7 @@ use Drupal\Core\Url;
  * support menu's links that have the flagging enabled.
  */
 function whats_new_entity_prepare_view($entity_type_id, array $entities, array $displays, $view_mode) {
-  if ($entity_type_id !== 'node' || $view_mode !== 'full') {
+  if ($entity_type_id !== 'node' || $view_mode !== 'full' || \Drupal::getContainer()->get('current_user')->isAnonymous()) {
     return;
   }
 
@@ -43,7 +43,7 @@ function whats_new_entity_prepare_view($entity_type_id, array $entities, array $
  * Implements hook_preprocess_HOOK().
  */
 function whats_new_preprocess_menu(&$variables) {
-  if ($variables['menu_name'] !== 'support') {
+  if ($variables['menu_name'] !== 'support' || \Drupal::getContainer()->get('current_user')->isAnonymous()) {
     return;
   }
 
@@ -139,7 +139,7 @@ function whats_new_menu_link_content_form_validate(&$form, FormStateInterface $f
   }
 
   $link_value = $form_state->getValue('link')[0]['uri'];
-  if (UrlHelper::isExternal($link_value)) {
+  if (!UrlHelper::isValid($link_value) || UrlHelper::isExternal($link_value)) {
     $form_state->setErrorByName('menu_link_flagging', t('Flagging is allowed only for internal URLs pointing to content entities in the website.'));
     return;
   }
