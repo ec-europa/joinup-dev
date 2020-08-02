@@ -146,7 +146,7 @@ function whats_new_menu_link_content_form_validate(&$form, FormStateInterface $f
   }
 
   $url = Url::fromUri($link_value);
-  if ($url->getRouteName() !== 'entity.node.canonical') {
+  if (!$url->isRouted() || $url->getRouteName() !== 'entity.node.canonical') {
     // This could work for all entities by dynamically creating a flag type if a
     // flag type for the requested entity type does not exist.
     // However, since the config are meant to be read-only, this is not allowed.
