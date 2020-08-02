@@ -28,11 +28,6 @@ function whats_new_entity_prepare_view($entity_type_id, array $entities, array $
   // entity's canonical page.
   /** @var \Drupal\rdf_entity\RdfInterface $entity */
   $entity = reset($entities);
-  // @todo: Currently support news entities as per request. Remove this to make
-  // generic.
-  if ($entity->bundle() !== 'news') {
-    return;
-  }
 
   $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
   if (!$whats_new_helper->hasFlagEnabledMenuLinksForEntity($entity)) {
