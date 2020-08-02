@@ -21,7 +21,6 @@ use Drupal\Core\Installer\InstallerKernel;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_group\JoinupGroupHelper;
-use Drupal\og\OgAccess;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\views\ViewExecutable;
 
