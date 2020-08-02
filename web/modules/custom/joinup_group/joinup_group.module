@@ -9,7 +9,10 @@ declare(strict_types = 1);
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultAllowed;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -22,6 +25,7 @@ use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\Og;
+use Drupal\og\OgAccess;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
@@ -285,13 +289,13 @@ function joinup_group_rdf_entity_update(EntityInterface $entity) {
 /**
  * Implements hook_og_user_access_alter().
  */
-function joinup_group_og_user_access_alter(&$permissions, &$cacheable_metadata, $context) {
+function joinup_group_og_user_access_alter(array &$permissions, CacheableMetadata &$cacheable_metadata, $context) {
   // Group owners are allowed to delete their own groups when they are in
   // validated state.
   // @todo Also allow groups to be deleted in any state other than 'archived'.
   // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6088
-  $operation = $context['operation'];
-  if ($operation !== 'delete') {
+  $permission = $context['permission'];
+  if ($permission !== OgAccess::DELETE_GROUP_PERMISSION) {
     return;
   }
 
@@ -306,14 +310,18 @@ function joinup_group_og_user_access_alter(&$permissions, &$cacheable_metadata, 
     return;
   }
 
+  // Skip if the user is not the group owner.
   /** @var \Drupal\Core\Session\AccountProxyInterface $user */
   $user = $context['user'];
 
   $membership = $group->getMembership((int) $user->id());
   $role_id = "{$group->getEntityTypeId()}-{$group->bundle()}-administrator";
   if ($membership instanceof OgMembershipInterface && $membership->hasRole($role_id)) {
-    $permissions[] = 'delete';
+    return;
   }
+
+  // All conditions are met. Grant permission to delete the group.
+  $permissions[] = OgAccess::DELETE_GROUP_PERMISSION;
 }
 
 /**
