@@ -134,7 +134,6 @@ function whats_new_form_menu_link_content_menu_link_content_form_alter(&$form, F
  * refers to a content entity.
  */
 function whats_new_menu_link_content_form_validate(&$form, FormStateInterface $form_state) {
-  global $base_url;
   if (!$form_state->getValue('menu_link_flagging')) {
     return;
   }
