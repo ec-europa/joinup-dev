@@ -6163,12 +6163,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gizra/og.git",
-                "reference": "1c04e650f743fac39d64b35b8f25c87ab8fe0f91"
+                "reference": "ccf35d42eb99e0edda1c680cab745fe6f84b5ccf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Gizra/og/zipball/1c04e650f743fac39d64b35b8f25c87ab8fe0f91",
-                "reference": "1c04e650f743fac39d64b35b8f25c87ab8fe0f91",
+                "url": "https://api.github.com/repos/Gizra/og/zipball/ccf35d42eb99e0edda1c680cab745fe6f84b5ccf",
+                "reference": "ccf35d42eb99e0edda1c680cab745fe6f84b5ccf",
                 "shasum": ""
             },
             "require": {
@@ -6191,7 +6191,7 @@
                 "slack": "https://drupal.slack.com/messages/CELR48EA0",
                 "source": "https://git.drupalcode.org/project/og"
             },
-            "time": "2020-08-02T11:59:08+00:00"
+            "time": "2020-08-02T12:34:47+00:00"
         },
         {
             "name": "drupal/og_menu",
