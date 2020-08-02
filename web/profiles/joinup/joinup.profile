@@ -8,6 +8,8 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultAllowed;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Datetime\DrupalDateTime;
@@ -144,18 +146,16 @@ function joinup_sparql_apply_default_fields_alter($type, &$values) {
 }
 
 /**
- * Implements hook_og_user_access_alter().
+ * Implements hook_og_user_access_entity_operation_alter().
  */
-function joinup_og_user_access_alter(&$permissions, &$cacheable_metadata, $context) {
+function joinup_og_user_access_entity_operation_alter(AccessResultInterface &$access_result, &$cacheable_metadata, $context) {
   // Moderators should have access to view, create, edit and delete all group
-  // content in collections.
+  // content.
   /** @var \Drupal\Core\Session\AccountProxyInterface $user */
   $user = $context['user'];
   $operation = $context['operation'];
-  $group = $context['group'];
 
   $is_moderator = in_array('moderator', $user->getRoles());
-  $is_collection = $group->bundle() === 'collection';
   $operation_allowed = in_array($operation, [
     'view',
     'create',
@@ -163,8 +163,8 @@ function joinup_og_user_access_alter(&$permissions, &$cacheable_metadata, $conte
     'delete',
   ]);
 
-  if ($is_moderator && $is_collection && $operation_allowed) {
-    $permissions[] = $operation;
+  if ($is_moderator && $operation_allowed) {
+    $access_result = new AccessResultAllowed();
   }
 }
 
