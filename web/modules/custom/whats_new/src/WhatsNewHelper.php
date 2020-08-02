@@ -61,7 +61,7 @@ class WhatsNewHelper implements WhatsNewHelperInterface {
       // Support both the alias and the internal URL. The alias can occur if the
       // user copies it from the URL and the internal URL can occur if the user
       // selects the entity from the autocomplete field.
-      $entity->toUrl()->getInternalPath(),
+      'internal:' . $entity->toUrl()->toString(),
       "entity:node/{$entity->id()}",
     ];
     $query = $this->entityTypeManager->getStorage('menu_link_content')->getQuery()

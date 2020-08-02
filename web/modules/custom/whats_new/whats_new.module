@@ -140,8 +140,8 @@ function whats_new_menu_link_content_form_validate(&$form, FormStateInterface $f
   }
 
   $link_value = $form_state->getValue('link')[0]['uri'];
-  if (UrlHelper::isExternal($link_value) && !UrlHelper::externalIsLocal($link_value, $base_url)) {
-    $form_state->setErrorByName('menu_link_flagging', t('Flagging is allowed only for URLs pointing to entities in the website.'));
+  if (UrlHelper::isExternal($link_value)) {
+    $form_state->setErrorByName('menu_link_flagging', t('Flagging is allowed only for internal URLs pointing to entities in the website.'));
     return;
   }
 
