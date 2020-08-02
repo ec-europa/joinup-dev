@@ -1,0 +1,160 @@
+<?php
+
+/**
+ * @file
+ * Contains functions and hooks for the whats_new module.
+ */
+
+declare (strict_types = 1);
+
+use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_entity_prepare_view().
+ *
+ * Flags the entity for the current user if the entity is listed in any of the
+ * support menu's links that have the flagging enabled.
+ */
+function whats_new_entity_prepare_view($entity_type_id, array $entities, array $displays, $view_mode) {
+  if ($entity_type_id !== 'node' || $view_mode !== 'full') {
+    return;
+  }
+
+  // The only case in Joinup that the entity is presented in full view is the
+  // entity's canonical page.
+  /** @var \Drupal\rdf_entity\RdfInterface $entity */
+  $entity = reset($entities);
+  // @todo: Currently support news entities as per request. Remove this to make
+  // generic.
+  if ($entity->bundle() !== 'news') {
+    return;
+  }
+
+  $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
+  if (!$whats_new_helper->hasFlagEnabledMenuLinksForEntity($entity)) {
+    return;
+  }
+
+  if (!$whats_new_helper->getFlaggingForNode($entity)) {
+    $whats_new_helper->setFlaggingForNode($entity);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function whats_new_preprocess_menu(&$variables) {
+  if ($variables['menu_name'] !== 'support') {
+    return;
+  }
+
+  // The menu should vary per the flagging list as well since when the user
+  // views the content, the menu should be rebuilt without the styling.
+  $variables['#cache']['tags'] = \Drupal::entityTypeManager()->getStorage('flagging')->getEntityType()->getListCacheTags();
+
+  $menu_link_storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
+  /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link */
+  foreach ($variables['items'] as $menu_link_id => $menu_link_data) {
+    /** @var \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent $menu_link */
+    $menu_link_definition = $menu_link_data['original_link']->getPluginDefinition();
+    if (empty($menu_link_definition['metadata']['entity_id'])) {
+      continue;
+    }
+    $menu_link = $menu_link_storage->load($menu_link_definition['metadata']['entity_id']);
+    if (empty($menu_link)) {
+      continue;
+    }
+    if (!$menu_link->get('menu_link_flagging')->first() || !$menu_link->get('menu_link_flagging')->first()->getValue()) {
+      continue;
+    }
+
+    // For each menu item that the flagging is set to TRUE, check if the user
+    // has viewed the entity (if the flag exists) and if not, add a special
+    // class to the menu item.
+    $node = $node_storage->load($menu_link->getUrlObject()->getRouteParameters()['node']);
+    if (empty($node)) {
+      // Node was deleted? This should never happen.
+      continue;
+    }
+
+    if (!$whats_new_helper->getFlaggingForNode($node)) {
+      $variables['attributes']['class'][] = 'whats_new';
+      /** @var \Drupal\Core\Template\Attribute $attributes */
+      $attributes = $variables['items'][$menu_link_id]['attributes'];
+      $attributes->addClass('whats_new');
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function whats_new_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+
+  if (($entity_type->id() === 'menu_link_content')) {
+    $fields['menu_link_flagging'] = BaseFieldDefinition::create('boolean')
+      ->setName('menu_link_flagging')
+      ->setLabel(t('Allow flagging'))
+      ->setDescription(t('If checked <strong>and</strong> the link points to a content entity, it will appear as featured as long as the user has not visited the page.'))
+      ->setDefaultValue(0)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function whats_new_form_menu_link_content_menu_link_content_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link_content */
+  $menu_link_content = $form_state->getBuildInfo()['callback_object']->getEntity();
+  if ($menu_link_content->getMenuName() === 'support') {
+    $form['#validate'][] = 'whats_new_menu_link_content_form_validate';
+  }
+  else {
+    // To avoid confusion, do not allow the flagging to be set in any link of a
+    // different menu.
+    $form['menu_link_flagging']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Validation callback for the menu_link_content page.
+ *
+ * Ensures that if the flagging field is set to TRUE, the link the user provided
+ * refers to a content entity.
+ */
+function whats_new_menu_link_content_form_validate(&$form, FormStateInterface $form_state) {
+  global $base_url;
+  if (!$form_state->getValue('menu_link_flagging')) {
+    return;
+  }
+
+  $link_value = $form_state->getValue('link')[0]['uri'];
+  if (UrlHelper::isExternal($link_value) && !UrlHelper::externalIsLocal($link_value, $base_url)) {
+    $form_state->setErrorByName('menu_link_flagging', t('Flagging is allowed only for URLs pointing to entities in the website.'));
+    return;
+  }
+
+  $url = Url::fromUri($link_value);
+  if ($url->getRouteName() !== 'entity.node.canonical') {
+    // This could work for all entities by dynamically creating a flag type if a
+    // flag type for the requested entity type does not exist.
+    // However, since the config are meant to be read-only, this is not allowed.
+    $form_state->setErrorByName('menu_link_flagging', t('Flagging is only allowed for URLs pointing to entities in the website'));
+  }
+}

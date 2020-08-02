@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Contains install hooks and requirements for the whats_new module.
+ */
+
+declare (strict_types = 1);
+
+use Drupal\Core\Field\BaseFieldDefinition;
+
+/**
+ * Implements hook_install().
+ */
+function whats_new_install($is_syncing) {
+  $field_storage_definition = BaseFieldDefinition::create('boolean')
+    ->setName('menu_link_flagging')
+    ->setLabel(t('Allow flagging'))
+    ->setDescription(t('If checked <strong>and</strong> the link points to a content entity, it will appear as featured as long as the user has not visited the page.'))
+    ->setDefaultValue(0)
+    ->setDisplayOptions('form', [
+      'type' => 'boolean_checkbox',
+      'settings' => [
+        'display_label' => TRUE,
+      ],
+    ])
+    ->setDisplayConfigurable('form', TRUE);
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('menu_link_flagging', 'menu_link_content', 'menu_link_content', $field_storage_definition);
+}

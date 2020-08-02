@@ -1,0 +1,8 @@
+name: Link redirect
+type: module
+description: Provides a way to click to a link with a redirect and .
+core: 8.x
+package: Joinup
+
+dependencies:
+  - flag:flag
