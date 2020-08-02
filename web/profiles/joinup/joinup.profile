@@ -11,6 +11,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultAllowed;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -20,6 +21,7 @@ use Drupal\Core\Installer\InstallerKernel;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\og\OgAccess;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\views\ViewExecutable;
 
@@ -146,11 +148,35 @@ function joinup_sparql_apply_default_fields_alter($type, &$values) {
 }
 
 /**
- * Implements hook_og_user_access_entity_operation_alter().
+ * Implements hook_og_user_access_alter().
+ *
+ * Gives moderators access to edit and delete all group content.
  */
-function joinup_og_user_access_entity_operation_alter(AccessResultInterface &$access_result, &$cacheable_metadata, $context) {
-  // Moderators should have access to view, create, edit and delete all group
-  // content.
+function joinup_og_user_access_alter(array &$permissions, CacheableMetadata &$cacheable_metadata, $context) {
+  $permission = $context['permission'];
+  if (!in_array($permission, OgAccess::OPERATION_GROUP_PERMISSION_MAPPING)) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Session\AccountProxyInterface $user */
+  $user = $context['user'];
+  if (!in_array('moderator', $user->getRoles())) {
+    return;
+  }
+
+  // Only add the permission if it is not already granted for some other reason
+  // (e.g. the moderator may also be the group owner).
+  if (!in_array($permission, $permissions)) {
+    $permissions[] = $context['permission'];
+  }
+}
+
+/**
+ * Implements hook_og_user_access_entity_operation_alter().
+ *
+ * Gives moderators access to view, create, edit and delete all group content.
+ */
+function joinup_og_user_access_entity_operation_alter(AccessResultInterface &$access_result, CacheableMetadata &$cacheable_metadata, $context) {
   /** @var \Drupal\Core\Session\AccountProxyInterface $user */
   $user = $context['user'];
   $operation = $context['operation'];
