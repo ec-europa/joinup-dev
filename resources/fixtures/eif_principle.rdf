@@ -33,7 +33,7 @@
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/UP2">
-    <skos:prefLabel xml:lang="en">Underlying Principle 2: openess</skos:prefLabel>
+    <skos:prefLabel xml:lang="en">Underlying Principle 2: openness</skos:prefLabel>
     <skos:altLabel xml:lang="en">UP2</skos:altLabel>
     <skos:definition xml:lang="en">The concept of openness mainly relates to data, specifications and software. Open
       government data (here simply referred ‘open data’) refers to the idea that all public data should be freely

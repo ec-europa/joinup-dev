@@ -9,13 +9,13 @@ Feature:
       | title | Test collection |
       | state | validated       |
     Given the following solution:
-      | title            | Test solution                        |
-      | collection       | Test collection                      |
-      | landing page     | http://foo-example.com/landing       |
-      | webdav creation  | no                                   |
-      | webdav url       | http://joinup.eu/solution/foo/webdav |
-      | wiki             | http://example.wiki/foobar/wiki      |
-      | state            | validated                            |
+      | title           | Test solution                        |
+      | collection      | Test collection                      |
+      | landing page    | http://foo-example.com/landing       |
+      | webdav creation | no                                   |
+      | webdav url      | http://joinup.eu/solution/foo/webdav |
+      | wiki            | http://example.wiki/foobar/wiki      |
+      | state           | validated                            |
     When I am logged in as a moderator
     And I go to "/collection/test-collection/solution/test-solution"
     Then I should see the heading "Test solution"
@@ -43,9 +43,9 @@ Feature:
     # Sample check some links.
     And I should see the following links:
       | Recommendation 1 \| Underlying Principle 1: subsidiarity and proportionality |
-      | Recommendation 2 \| Underlying Principle 2: openess                          |
-      | Recommendation 3 \| Underlying Principle 2: openess                          |
-      | Recommendation 4 \| Underlying Principle 2: openess                          |
+      | Recommendation 2 \| Underlying Principle 2: openness                         |
+      | Recommendation 3 \| Underlying Principle 2: openness                         |
+      | Recommendation 4 \| Underlying Principle 2: openness                         |
       | Recommendation 5 \| Underlying Principle 3: transparency                     |
       | Recommendation 6 \| Underlying Principle 4: reusability                      |
       | Recommendation 7 \| Underlying Principle 4: reusability                      |
@@ -74,7 +74,7 @@ Feature:
 
     And the "eif principle" inline facet should allow selecting the following values:
       | Underlying Principle 1: subsidiarity and proportionality              |
-      | Underlying Principle 2: openess                                       |
+      | Underlying Principle 2: openness                                      |
       | Underlying Principle 3: transparency                                  |
       | Underlying Principle 4: reusability                                   |
       | Underlying Principle 5: technological neutrality and data portability |
@@ -103,11 +103,11 @@ Feature:
       | Basic Component 6: External information sources and services |
       | Basic Component 7: Security and privacy                      |
 
-    When I click "Underlying Principle 2: openess" in the "eif principle" inline facet
+    When I click "Underlying Principle 2: openness" in the "eif principle" inline facet
     Then I should not see the "eif interoperability layer" inline facet
     And I should not see the "eif conceptual model" inline facet
 
-    When I click "Underlying Principle 2: openess" in the "eif principle" inline facet
+    When I click "Underlying Principle 2: openness" in the "eif principle" inline facet
     Then I should see the "eif interoperability layer" inline facet
     And I should see the "eif conceptual model" inline facet
 
