@@ -246,6 +246,9 @@
             "drupal/dynamic_entity_reference": {
                 "Backport improvements in infinite recursion protection from the entity_reference field formatter @see https://www.drupal.org/project/dynamic_entity_reference/issues/3152105#comment-13701599": "https://www.drupal.org/files/issues/2020-06-16/3152105-2.patch"
             },
+            "drupal/entity_legal": {
+                "FieldException during config import @see https://www.drupal.org/project/entity_legal/issues/2980786": "https://www.drupal.org/files/issues/2019-07-26/entity_legal-skip_field_creation_during_config_import-2980786-4.patch"
+            },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
             },

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d74a59936a7119fe37f554258cbed12a",
+    "content-hash": "213f47526606c6b24ad401f13190e360",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3476,16 +3476,13 @@
                 "shasum": "81210684c378dab856b3c2bce5eeaa58992d2efc"
             },
             "require": {
-                "drupal/core": "~8.0"
+                "drupal/core": "^8 || ^9"
             },
             "suggest": {
                 "drupal/config_split": "Split site configuration for different environments."
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.5",
                     "datestamp": "1572542288",
@@ -4658,14 +4655,11 @@
                 "shasum": "6b34291eb12439b93994c2c091b78da26d52bf8b"
             },
             "require": {
-                "drupal/core": "*",
+                "drupal/core": "^8",
                 "drupal/token": "*"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-2.x": "2.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-2.0-beta2",
                     "datestamp": "1575029887",
@@ -4673,6 +4667,9 @@
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "FieldException during config import @see https://www.drupal.org/project/entity_legal/issues/2980786": "https://www.drupal.org/files/issues/2019-07-26/entity_legal-skip_field_creation_during_config_import-2980786-4.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4697,7 +4694,7 @@
                     "homepage": "https://www.drupal.org/user/1633774"
                 },
                 {
-                    "name": "geek.merlin aka axel.rutz",
+                    "name": "geek-merlin",
                     "homepage": "https://www.drupal.org/user/229048"
                 },
                 {
@@ -4919,6 +4916,9 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
                     "version": "8.x-1.4",
                     "datestamp": "1556645881",
@@ -9692,6 +9692,12 @@
                 "laminas",
                 "zf"
             ],
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
             "time": "2020-05-20T16:45:56+00:00"
         },
         {
@@ -12300,7 +12306,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-02-13T14:54:04+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
