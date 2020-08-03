@@ -1,0 +1,11 @@
+uuid: e86c446b-7ff8-43f0-9c45-8b6141564606
+langcode: en
+status: true
+dependencies: {  }
+third_party_settings:
+  rdf_taxonomy:
+    locked: false
+name: 'EIF Interoperability Layer'
+vid: eif_interoperability_layer
+description: 'Terms that represent an interoperability layer of the EIF Toolbox.'
+weight: 0

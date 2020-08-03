@@ -6,6 +6,7 @@ namespace Drupal\joinup_group\Plugin\views\argument_default;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableDependencyInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\sparql_entity_storage\UriEncoder;
@@ -61,8 +62,31 @@ class RdfEntity extends ArgumentDefaultPluginBase implements CacheableDependency
   /**
    * {@inheritdoc}
    */
+  protected function defineOptions() {
+    return [
+      'parameter_name' => [
+        'default' => 'rdf_entity',
+      ],
+    ] + parent::defineOptions();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildOptionsForm(&$form, FormStateInterface $form_state): void {
+    parent::buildOptionsForm($form, $form_state);
+    $form['parameter_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Parameter name'),
+      '#default_value' => $this->options['parameter_name'],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getArgument() {
-    $raw = $this->routeMatch->getRawParameter('rdf_entity');
+    $raw = $this->routeMatch->getRawParameter($this->options['parameter_name']);
     $id = UriEncoder::decodeUrl($raw);
     if (Rdf::load($id)) {
       return $raw;

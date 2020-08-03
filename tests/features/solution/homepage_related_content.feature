@@ -90,9 +90,13 @@ Feature: Solution homepage
     When I click the Distribution content tab
     # Test the policy domain and spatial coverage inline facets.
     Then "all policy domains" should be selected in the "solution policy domain" inline facet
-    And the "solution policy domain" inline facet should allow selecting the following values "E-inclusion (2), Statistics and Analysis (1)"
+    And the "solution policy domain" inline facet should allow selecting the following values:
+      | E-inclusion (2)             |
+      | Statistics and Analysis (1) |
     And "everywhere" should be selected in the "solution spatial coverage" inline facet
-    And the "solution spatial coverage" inline facet should allow selecting the following values "European Union (2), Belgium (1)"
+    And the "solution spatial coverage" inline facet should allow selecting the following values:
+      | European Union (2) |
+      | Belgium (1)        |
 
     # Verify that the other solution is showing its related content.
     When I go to the homepage of the "Security audit tools" solution

@@ -1,0 +1,30 @@
+uuid: 287cfd6f-101c-4215-95b4-1e7bb79d3a3e
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.eif_related_entities
+  module:
+    - joinup_core
+    - views
+  theme:
+    - joinup_theme
+id: views_block__eif_related_entities_block_1
+theme: joinup_theme
+region: content
+weight: -11
+provider: null
+plugin: 'views_block:eif_related_entities-block_1'
+settings:
+  id: 'views_block:eif_related_entities-block_1'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_route:
+    id: request_route
+    routes: entity.taxonomy_term.canonical
+    negate: false
+    context_mapping: {  }

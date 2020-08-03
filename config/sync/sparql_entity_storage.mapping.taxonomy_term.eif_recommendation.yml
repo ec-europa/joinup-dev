@@ -1,0 +1,71 @@
+uuid: 43332fb2-3501-4aa2-8744-4acfa7aaf2f2
+langcode: en
+status: true
+dependencies:
+  config:
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.eif_recommendation
+id: taxonomy_term.eif_recommendation
+entity_type_id: taxonomy_term
+bundle: eif_recommendation
+rdf_type: 'http://data.europa.eu/eif/Recommendation/'
+graph:
+  default: 'http://eif_recommendation'
+base_fields_mapping:
+  uuid:
+    value:
+      predicate: ''
+      format: ''
+  langcode:
+    value:
+      predicate: ''
+      format: ''
+  vid:
+    target_id:
+      predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
+      format: resource
+  name:
+    value:
+      predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+      format: t_literal
+  description:
+    value:
+      predicate: 'http://www.w3.org/2004/02/skos/core#definition'
+      format: t_literal
+  format:
+    value:
+      predicate: ''
+      format: ''
+  weight:
+    value:
+      predicate: 'http://www.w3.org/ns/adms#identifier'
+      format: 'xsd:integer'
+  parent:
+    target_id:
+      predicate: ''
+      format: ''
+  changed:
+    value:
+      predicate: ''
+      format: ''
+  default_langcode:
+    value:
+      predicate: ''
+      format: ''
+  revision_default:
+    value:
+      predicate: ''
+      format: ''
+  revision_translation_affected:
+    value:
+      predicate: ''
+      format: ''
+  metatag:
+    value:
+      predicate: ''
+      format: ''
+  graph:
+    target_id:
+      predicate: ''
+      format: ''
+entity_id_plugin: null

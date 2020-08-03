@@ -1,0 +1,73 @@
+uuid: 7aee7757-acc8-4eee-8945-7ee46a4cb04e
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.published
+    - views.view.eif_recommendation
+  module:
+    - search_api
+id: principle
+name: Principle
+url_alias: principle
+weight: 0
+min_count: 1
+show_only_one_result: false
+field_identifier: field_eif_related_term
+facet_source_id: 'search_api:views_page__eif_recommendation__page'
+widget:
+  type: links_inline
+  config:
+    show_numbers: false
+    all_text: '- All -'
+    prefix_text: 'Principle:'
+    suffix_text: ''
+    cache_contexts: {  }
+    arbitrary_facet_plugin: _none
+query_operator: or
+use_hierarchy: false
+expand_hierarchy: true
+enable_parent_when_child_gets_disabled: true
+hard_limit: 0
+exclude: false
+only_visible_when_facet_source_is_visible: false
+processor_configs:
+  bundle:
+    processor_id: bundle
+    weights:
+      build: 50
+    settings:
+      mode: include
+      bundle:
+        eif_principle: eif_principle
+  bundle_limit:
+    processor_id: bundle_limit
+    weights:
+      build: 50
+    settings: {  }
+  display_value_widget_order:
+    processor_id: display_value_widget_order
+    weights:
+      sort: -7
+    settings:
+      sort: ASC
+  term_weight_widget_order:
+    processor_id: term_weight_widget_order
+    weights:
+      sort: -8
+    settings:
+      sort: ASC
+  translate_entity:
+    processor_id: translate_entity
+    weights:
+      build: 5
+    settings: {  }
+  url_processor_handler:
+    processor_id: url_processor_handler
+    weights:
+      pre_query: 50
+      build: 15
+    settings: {  }
+empty_behavior:
+  behavior: none
+show_title: false

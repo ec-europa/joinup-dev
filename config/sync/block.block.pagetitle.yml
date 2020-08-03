@@ -9,7 +9,7 @@ dependencies:
 id: pagetitle
 theme: joinup_theme
 region: content
-weight: -21
+weight: -23
 provider: null
 plugin: page_title_block
 settings:

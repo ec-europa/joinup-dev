@@ -91,3 +91,41 @@ function joinup_core_requirements($phase): array {
 
   return $requirements;
 }
+
+/**
+ * Rename the existing NIFO glossary without adding a redirect.
+ */
+function joinup_core_update_0106300(): void {
+  $db = \Drupal::database();
+  // This node should not auto-compute the path.
+  $db->update('key_value')
+    ->fields(['value' => serialize(0)])
+    ->condition('collection', 'pathauto_state.node')
+    ->condition('name', '701980')
+    ->execute();
+  // Use a direct SQL in order to avoid creating a redirect.
+  $db->update('path_alias')
+    ->fields(['alias' => '/collection/nifo-national-interoperability-framework-observatory/glossary-EIF'])
+    ->condition('id', 48824)
+    ->execute();
+  $db->update('path_alias_revision')
+    ->fields(['alias' => '/collection/nifo-national-interoperability-framework-observatory/glossary-EIF'])
+    ->condition('id', 48824)
+    ->execute();
+  // Fix references.
+  $result = $db->select('paragraph__field_body')
+    ->fields('paragraph__field_body', ['field_body_value', 'revision_id'])
+    ->condition('entity_id', 501)
+    ->execute()
+    ->fetch();
+  $body = str_replace('https://joinup.ec.europa.eu/collection/nifo-national-interoperability-framework-observatory/glossary', '/collection/nifo-national-interoperability-framework-observatory/glossary-EIF', $result->field_body_value);
+  $db->update('paragraph__field_body')
+    ->fields(['field_body_value' => $body])
+    ->condition('entity_id', 501)
+    ->execute();
+  $db->update('paragraph_revision__field_body')
+    ->fields(['field_body_value' => $body])
+    ->condition('entity_id', 501)
+    ->condition('revision_id', 4929)
+    ->execute();
+}
