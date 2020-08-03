@@ -10,7 +10,7 @@ declare(strict_types = 1);
 /**
  * Fix the last updated time of node entities.
  */
-function joinup_core_post_update_0106300(&$sandbox) {
+function joinup_core_post_update_0106301(&$sandbox) {
   // In Joinup, all node updates through the UI always create a new revision.
   // Only updates through the API can update an entity without creating a new
   // revision. However, after moving the visit_count outside the storage, there
