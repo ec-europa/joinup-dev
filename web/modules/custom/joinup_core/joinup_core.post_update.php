@@ -19,9 +19,38 @@ use EasyRdf\Graph;
 use EasyRdf\GraphStore;
 
 /**
+ * Fix the last updated time of node entities.
+ */
+function joinup_core_post_update_0106301(&$sandbox) {
+  // In Joinup, all node updates through the UI always create a new revision.
+  // Only updates through the API can update an entity without creating a new
+  // revision. However, after moving the visit_count outside the storage, there
+  // is no other functionality that can perform such a task.
+  // Thus, it is safe to assume, that the "changed" property of each revision is
+  // the same as the "revision_timestamp". The following query will fix all
+  // cases where the entity was updated by an automatic procedure that wasn't
+  // actually touching any values.
+  $query = <<<QUERY
+UPDATE {node_field_revision} nfr
+INNER JOIN {node_revision} nr ON nfr.vid = nr.vid
+SET nfr.changed = nr.revision_timestamp
+WHERE nfr.changed != nr.revision_timestamp
+QUERY;
+
+  \Drupal::database()->query($query);
+  $query = <<<QUERY
+UPDATE {node_field_data} nfd
+INNER JOIN {node_field_revision} nfr ON nfd.vid = nfr.vid
+SET nfd.changed = nfr.changed
+QUERY;
+
+  \Drupal::database()->query($query);
+}
+
+/**
  * Insert the new EIF vocabulary into the database.
  */
-function joinup_core_post_update_0106300(): void {
+function joinup_core_post_update_0106302(): void {
   $vids = [
     'eif_conceptual_model',
     'eif_interoperability_layer',
@@ -54,7 +83,7 @@ function joinup_core_post_update_0106300(): void {
 /**
  * Create the references page in the EIF Toolbox menu.
  */
-function joinup_core_post_update_0106301(array &$sandbox): void {
+function joinup_core_post_update_0106303(array &$sandbox): void {
   $menu_name = 'ogmenu-3444';
   $internal_path = Url::fromRoute('view.eif_recommendation.page', [
     'rdf_entity' => UriEncoder::encodeUrl(Eif::EIF_ID),
@@ -71,7 +100,7 @@ function joinup_core_post_update_0106301(array &$sandbox): void {
 /**
  * Create glossary OG menu item.
  */
-function joinup_core_post_update_0106302(array &$sandbox) {
+function joinup_core_post_update_0106304(array &$sandbox) {
   $db = \Drupal::database();
   /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
   $menu_link_manager = \Drupal::service('plugin.manager.menu.link');

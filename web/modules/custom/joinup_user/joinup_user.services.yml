@@ -4,8 +4,6 @@ services:
     arguments: ['@current_user', '@entity_type.manager']
     tags:
       - { name: cache.context}
-  joinup_user.active_form_submit:
-    class: Drupal\joinup_user\ActiveFormSubmit
   joinup_user.entity_authorship_helper:
     class: Drupal\joinup_user\EntityAuthorshipHelper
     arguments: ['@entity_type.manager']
@@ -27,3 +25,7 @@ services:
     arguments: ['@entity_type.manager', '@og.membership_manager', '@user.data']
     tags:
       - { name: 'event_subscriber' }
+
+  joinup_user.notification_helper:
+    class: Drupal\joinup_user\JoinupUserNotificationHelper
+    arguments: ['@current_user', '@messenger', '@plugin.manager.mail']

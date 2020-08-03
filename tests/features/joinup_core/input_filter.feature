@@ -19,6 +19,8 @@ Feature: Input filter
       | Google docs             | Sample docs.google.com iframe      | <iframe frameborder="0" height="800" marginheight="0" marginwidth="0" src="https://docs.google.com/forms/d/1dBGzMp9whY2Ibxf4pUQNadpE2C3ywxdDefSSM3BdwJ4/viewform?embedded=true" width="100%">Loading...</iframe>                                                                                                                                                                                                                               | Netflix group | validated |
       | Joinup iframe           | Sample joinup.ec.europa.eu iframe  | <iframe frameborder="0" height="800" marginheight="0" marginwidth="0" src="/homepage" width="100%"></iframe>                                                                                                                                                                                                                                                                                                                                   | Netflix group | validated |
       | Quoted texts            | Quoted texts                       | <q>This is a famous quote.</q> ~ Joinup developer.                                                                                                                                                                                                                                                                                                                                                                                             | Netflix group | validated |
+      # Since area coordinates contains commas and we don't want this to be interpreted as multiple values we need to enclose the value with double quotes and escape the quotes in the HTML.
+      | Image map               | A map encompasses 1 or more areas  | "<map name=""imagemap""><area shape=""circle"" coords=""50,50,25"" href=""/"" alt=""Homepage""/></map><img usemap=""imagemap"" src=""/images/my-image.png"" alt=""Imagemap example"" />"                                                                                                                                                                                                                                                       | Netflix group | validated |
     And discussion content:
       | title      | body             | collection    | state     |
       | Discussion | Start discussion | Netflix group | validated |
@@ -40,6 +42,10 @@ Feature: Input filter
     Then I should not see the "iframe" element with the "src" attribute set to "https://www.example.com" in the "Content" region
     When I go to the "Quoted texts" news
     Then the response should contain "<q>This is a famous quote.</q> ~ Joinup developer."
+    When I go to the "Image map" news
+    Then I see the "map" element with the "name" attribute set to "imagemap" in the "Content" region
+    And I see the "img" element with the "usemap" attribute set to "imagemap" in the "Content" region
+    And the response should contain "<area shape=\"circle\" coords=\"50,50,25\" href=\"/\" alt=\"Homepage\" />"
 
     Given I am logged in as an authenticated
     When I go to the "Discussion" discussion

@@ -24,57 +24,34 @@ use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
 /**
- * Implements hook_ENTITY_TYPE_update().
+ * Submit callback for the user edit form.
  *
- * Send a notification whenever an admin updates a user profile.
- *
- * @todo This is a very complicated, hard to follow and hard to maintain
- * implementation. Basically what we need here is to move the whole logic in the
- * form API layer and avoid using all the confusing workarounds with the storing
- * the form ID in a service. Then we can drop also the form alter and the
- * 'joinup_user.active_form_submit' service. Fix this in ISAICP-4698.
- * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4698
+ * Sends a notification whenever a moderator updates a user profile. This is
+ * implemented as a submit callback rather than using hook_user_update() since
+ * we only need to send out these notifications when a moderator changes a user
+ * through the form. In other cases where a user entity is changed through the
+ * API we need to avoid sending out unnecessary notifications.
  */
-function joinup_user_user_update(UserInterface $account) {
-  if (!$account->getEmail()) {
-    // Drupal allows accounts without E-mail when the account is created by an
-    // administrator.
+function joinup_user_notify_on_account_change(array $form, FormStateInterface $form_state) {
+  $form_object = $form_state->getFormObject();
+  $account = $form_object->getEntity() ?? NULL;
+
+  // Sanity check. If we don't get a user object for some reason there is
+  // nothing to do.
+  if (!$account instanceof JoinupUserInterface) {
     return;
   }
 
-  $current_user = \Drupal::currentUser()->getAccount();
-  // Email should only fire when a user alters another user's account.
-  if ($account->isAnonymous() || $current_user->isAnonymous() || $current_user->id() == $account->id()) {
-    return;
-  }
-
-  // Additionally, if the status of the user changed, do not send an e-mail as
-  // it is already handled.
-  if ($account->isActive() !== $account->original->isActive()) {
-    return;
-  }
-
-  /** @var \Drupal\joinup_user\ActiveFormSubmit $active_form */
-  $active_form = \Drupal::getContainer()->get('joinup_user.active_form_submit');
-  $active_form_id = $active_form->getFormId();
-  // Only run when either submitting the user edit form, or the bulk operation
-  // on admin/people.
-  if (!$active_form_id || !in_array($active_form_id, ['views_form_user_admin_people_page', 'user_form'])) {
+  // If the status of the user changed, do not send an e-mail as it is already
+  // handled. We are sending messages for account activation and blocking.
+  if ($account->isActive() !== (bool) $form_state->getValue('status')) {
     return;
   }
 
   // Inform the user that their profile was updated.
-  $params['account'] = $account;
-  $params['original'] = $account->original;
-
-  \Drupal::service('plugin.manager.mail')->mail(
-    'joinup_user',
-    'email_admin_update',
-    $account->getEmail(),
-    $account->getPreferredLangcode(),
-    $params
-  );
-  \Drupal::messenger()->addStatus('An e-mail has been sent to the user to notify him on the change to his account.');
+  /** @var \Drupal\joinup_user\JoinupUserNotificationHelperInterface $notification_helper */
+  $notification_helper = \Drupal::service('joinup_user.notification_helper');
+  $notification_helper->notifyOnAccountChange($account);
 }
 
 /**
@@ -284,25 +261,35 @@ function joinup_user_form_user_admin_settings_alter_submit(array &$form, FormSta
 }
 
 /**
- * Implements hook_form_alter().
- */
-function joinup_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#validate'][] = 'joinup_user_form_alter_validate';
-}
-
-/**
  * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * Alters the user edit form:
+ * - Adds a submit callback that sends a notification to the user after changing
+ *   their password, and redirects back to the user page after updating it.
+ * - Shows a message that a disabled account cannot be edited.
  */
 function joinup_user_form_user_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
-  // This hook gets called as base form ID hook for forms like the user register
-  // one, so we need to double check the form ID.
+  // We only need to act on the user edit form, but this base form ID also gets
+  // called for other forms, like the user register form.
   if ($form_id !== 'user_form') {
     return;
   }
 
-  // Add a submit callback to redirect to the canonical user page after updating
-  // the user profile.
-  $form['actions']['submit']['#submit'][] = 'joinup_user_user_form_submit';
+  // Add a submit callback that will send a message to the user if their account
+  // gets modified by a moderator. This needs to be placed between the ::save()
+  // and ::submitForm() callbacks.
+  // @see \Drupal\Core\Entity\EntityForm::submitForm()
+  $submit_callbacks = &$form['actions']['submit']['#submit'];
+  $save_callback_position = array_search('::save', $submit_callbacks, TRUE);
+  if ($save_callback_position !== FALSE) {
+    array_splice($submit_callbacks, $save_callback_position, 0, ['joinup_user_notify_on_account_change']);
+  }
+
+  // Add a submit callback that performs the following actions:
+  // - If the password is changed after opening a password reset link, send a
+  //   notification to the user.
+  // - Redirect to the canonical user page after updating the user profile.
+  $submit_callbacks[] = 'joinup_user_user_form_submit';
 
   /** @var \Drupal\joinup_user\Entity\JoinupUserInterface $account */
   $account = $form_state->getFormObject()->getEntity();
@@ -340,18 +327,6 @@ function joinup_user_user_form_submit(array $form, FormStateInterface $form_stat
   /** @var \Drupal\user\AccountForm $form_object */
   $form_object = $form_state->getFormObject();
   $form_state->setRedirectUrl($form_object->getEntity()->toUrl());
-}
-
-/**
- * Form validation callback: Keep track of the form being validated/submitted.
- */
-function joinup_user_form_alter_validate(&$form, FormStateInterface $form_state) {
-  $build_info = $form_state->getBuildInfo();
-  if (isset($build_info['form_id'])) {
-    /** @var \Drupal\joinup_user\ActiveFormSubmit $active_form */
-    $active_form = \Drupal::getContainer()->get('joinup_user.active_form_submit');
-    $active_form->setFormId($build_info['form_id']);
-  }
 }
 
 /**
