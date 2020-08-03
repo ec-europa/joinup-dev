@@ -1,7 +1,9 @@
 uuid: 3a39037f-b02a-4975-ba5b-3d22c1f83da1
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: discussion_delete
 label: 'Discussion deletion'
 description: 'Sent when a discussion has been deleted.'

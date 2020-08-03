@@ -1,7 +1,9 @@
 uuid: 7914f768-3ae4-46ff-838f-56a6bfbced33
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: vUY_5QcH7XiG8p6n7XcYqPQ_UJ1-J8bTgQArqHqzdcs
 template: cc_transition_approve_proposed

@@ -1,7 +1,9 @@
 uuid: f9c02bc0-bcd0-4343-bd34-3123a2fdb98d
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: col_propose_new
 label: 'Collection propose new'
 description: 'Template id 1'

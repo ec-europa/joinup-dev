@@ -1,7 +1,9 @@
 uuid: ec508bc9-578d-473b-b47f-9fe91f9d9036
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: JV8fKL9IsJAah3dSVNvM9GJ14F5y3qvuDDgW0SUuns8
 template: release_request_changes
