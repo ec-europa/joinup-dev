@@ -62,7 +62,7 @@ function whats_new_preprocess_menu(&$variables) {
       continue;
     }
     $menu_link = $menu_link_storage->load($menu_link_definition['metadata']['entity_id']);
-    if (empty($menu_link)) {
+    if (empty($menu_link) || !$menu_link->getUrlObject()->isRouted()) {
       continue;
     }
     if (!$menu_link->get('menu_link_flagging')->first() || !$menu_link->get('menu_link_flagging')->first()->getValue()) {
