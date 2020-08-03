@@ -1,0 +1,11 @@
+uuid: 5185e7f8-f703-45fd-86b6-a8745bbe4a97
+langcode: en
+status: true
+dependencies: {  }
+third_party_settings:
+  rdf_taxonomy:
+    locked: false
+name: 'EIF Conceptual Model'
+vid: eif_conceptual_model
+description: 'Terms that represent a conceptual model of the EIF Toolbox.'
+weight: 0

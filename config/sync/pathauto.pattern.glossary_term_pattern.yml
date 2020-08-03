@@ -1,0 +1,22 @@
+uuid: 2d3133bc-d083-4db5-8834-b9af94684350
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: glossary_term_pattern
+label: 'Glossary term pattern'
+type: 'canonical_entities:node'
+pattern: '[node:og_audience:entity:url:path]/glossary/term/[node:title]'
+selection_criteria:
+  abbe74da-97dd-4ff3-98a1-0fe633b618a2:
+    id: node_type
+    bundles:
+      glossary: glossary
+    negate: false
+    context_mapping:
+      node: node
+    uuid: abbe74da-97dd-4ff3-98a1-0fe633b618a2
+selection_logic: and
+weight: -5
+relationships: {  }

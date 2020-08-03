@@ -1,0 +1,28 @@
+uuid: f0c6ab52-1eb7-417f-b9c0-1d1de8c9e5ef
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.principle
+  module:
+    - facets
+  theme:
+    - joinup_theme
+id: principle
+theme: joinup_theme
+region: content
+weight: -19
+provider: null
+plugin: 'facet_block:principle'
+settings:
+  id: 'facet_block:principle'
+  label: Principle
+  provider: facets
+  label_display: '0'
+  block_id: principle
+visibility:
+  request_route:
+    id: request_route
+    routes: view.eif_recommendation.page
+    negate: false
+    context_mapping: {  }

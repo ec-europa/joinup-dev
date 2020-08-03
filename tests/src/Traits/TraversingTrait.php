@@ -345,6 +345,9 @@ trait TraversingTrait {
       'Event date' => 'event_date',
       'Collection event date' => 'collection_event_type',
       'Content types' => 'type',
+      'eif principle' => 'principle',
+      'eif interoperability layer' => 'interoperability_layer',
+      'eif conceptual model' => 'conceptual_model',
     ];
 
     if (!isset($mappings[$alias])) {
