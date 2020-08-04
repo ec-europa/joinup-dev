@@ -4,12 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\whats_new;
 
+use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\flag\FlagServiceInterface;
-use Drupal\flag\FlaggingInterface;
-use Drupal\node\NodeInterface;
+use Drupal\user\UserDataInterface;
 
 /**
  * Helper service for the whats_new module.
@@ -31,11 +30,18 @@ class WhatsNewHelper implements WhatsNewHelperInterface {
   protected $currentUser;
 
   /**
-   * The flag service.
+   * The user data service.
    *
-   * @var \Drupal\flag\FlagServiceInterface
+   * @var \Drupal\user\UserDataInterface
    */
-  protected $flagService;
+  protected $userData;
+
+  /**
+   * The cache tag invalidator service.
+   *
+   * @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface
+   */
+  protected $invalidator;
 
   /**
    * Constructs a WhatsNewHelper object.
@@ -44,13 +50,27 @@ class WhatsNewHelper implements WhatsNewHelperInterface {
    *   The entity type manager service.
    * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user object.
-   * @param \Drupal\flag\FlagServiceInterface $flag_service
-   *   The flag service.
+   * @param \Drupal\user\UserDataInterface $user_data
+   *   The user data service.
+   * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $invalidator
+   *   The cache tag invalidator service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, AccountProxyInterface $current_user, FlagServiceInterface $flag_service) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, AccountProxyInterface $current_user, UserDataInterface $user_data, CacheTagsInvalidatorInterface $invalidator) {
     $this->entityTypeManager = $entity_type_manager;
     $this->currentUser = $current_user;
-    $this->flagService = $flag_service;
+    $this->userData = $user_data;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function menuHasFeaturedLinks(string $menu_name): bool {
+    $query = $this->entityTypeManager->getStorage('menu_link_content')->getQuery()
+      ->condition('menu_name', $menu_name)
+      ->condition('enabled', 1)
+      ->condition('live_link', 1);
+
+    return (bool) $query->execute();
   }
 
   /**
@@ -68,7 +88,7 @@ class WhatsNewHelper implements WhatsNewHelperInterface {
       ->condition('menu_name', 'support')
       ->condition('link.uri', $entity_uris, 'IN')
       ->condition('enabled', 1)
-      ->condition('menu_link_flagging', 1);
+      ->condition('live_link', 1);
 
     return (bool) $query->execute();
   }
@@ -76,19 +96,17 @@ class WhatsNewHelper implements WhatsNewHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getFlaggingForNode(NodeInterface $node): ?FlaggingInterface {
-    /** @var \Drupal\flag\FlagInterface $flag */
-    $flag = $this->entityTypeManager->getStorage('flag')->load('whats_new');
-    return $this->flagService->getFlagging($flag, $node, $this->currentUser);
+  public function userHasViewedEntity(EntityInterface $entity): bool {
+    $value = $this->userData->get('whats_new', $this->currentUser->id(), 'viewed_entity');
+    return !empty($value) && $value === $entity->getEntityTypeId() . ':' . $entity->id();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setFlaggingForNode(NodeInterface $node): void {
-    /** @var \Drupal\flag\FlagInterface $flag */
-    $flag = $this->entityTypeManager->getStorage('flag')->load('whats_new');
-    $this->flagService->flag($flag, $node, $this->currentUser);
+  public function setUserHasViewedEntity(EntityInterface $entity): void {
+    $this->userData->set('whats_new', $this->currentUser->id(), 'viewed_entity', $entity->getEntityTypeId() . ':' . $entity->id());
+    $this->invalidator->invalidateTags($this->entityTypeManager->getStorage('menu')->load('support')->getCacheTagsToInvalidate());
   }
 
 }

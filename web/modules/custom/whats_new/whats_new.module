@@ -34,8 +34,8 @@ function whats_new_entity_prepare_view($entity_type_id, array $entities, array $
     return;
   }
 
-  if (!$whats_new_helper->getFlaggingForNode($entity)) {
-    $whats_new_helper->setFlaggingForNode($entity);
+  if (!$whats_new_helper->userHasViewedEntity($entity)) {
+    $whats_new_helper->setUserHasViewedEntity($entity);
   }
 }
 
@@ -46,10 +46,6 @@ function whats_new_preprocess_menu(&$variables) {
   if ($variables['menu_name'] !== 'support' || \Drupal::getContainer()->get('current_user')->isAnonymous()) {
     return;
   }
-
-  // The menu should vary per the flagging list as well since when the user
-  // views the content, the menu should be rebuilt without the styling.
-  $variables['#cache']['tags'] = \Drupal::entityTypeManager()->getStorage('flagging')->getEntityType()->getListCacheTags();
 
   $menu_link_storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
@@ -65,7 +61,7 @@ function whats_new_preprocess_menu(&$variables) {
     if (empty($menu_link) || !$menu_link->getUrlObject()->isRouted()) {
       continue;
     }
-    if (!$menu_link->get('menu_link_flagging')->first() || !$menu_link->get('menu_link_flagging')->first()->getValue()) {
+    if (!$menu_link->get('live_link')->first() || !$menu_link->get('live_link')->first()->getValue()) {
       continue;
     }
 
@@ -78,7 +74,7 @@ function whats_new_preprocess_menu(&$variables) {
       continue;
     }
 
-    if (!$whats_new_helper->getFlaggingForNode($node)) {
+    if (!$whats_new_helper->userHasViewedEntity($node)) {
       $variables['attributes']['class'][] = 'whats_new';
       /** @var \Drupal\Core\Template\Attribute $attributes */
       $attributes = $variables['items'][$menu_link_id]['attributes'];
@@ -94,9 +90,9 @@ function whats_new_entity_base_field_info(EntityTypeInterface $entity_type) {
   $fields = [];
 
   if (($entity_type->id() === 'menu_link_content')) {
-    $fields['menu_link_flagging'] = BaseFieldDefinition::create('boolean')
-      ->setName('menu_link_flagging')
-      ->setLabel(t('Allow flagging'))
+    $fields['live_link'] = BaseFieldDefinition::create('boolean')
+      ->setName('live_link')
+      ->setLabel(t('Live link'))
       ->setDescription(t('If checked <strong>and</strong> the link points to a content entity, it will appear as featured as long as the user has not visited the page.'))
       ->setDefaultValue(0)
       ->setDisplayOptions('form', [
@@ -115,15 +111,17 @@ function whats_new_entity_base_field_info(EntityTypeInterface $entity_type) {
  * Implements hook_form_FORM_ID_alter().
  */
 function whats_new_form_menu_link_content_menu_link_content_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
   /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link_content */
   $menu_link_content = $form_state->getBuildInfo()['callback_object']->getEntity();
-  if ($menu_link_content->getMenuName() === 'support') {
+  $menu_name = $menu_link_content->getMenuName();
+  if ($menu_name === 'support') {
     $form['#validate'][] = 'whats_new_menu_link_content_form_validate';
   }
-  else {
+  elseif ($menu_name !== 'support' || $whats_new_helper->menuHasFeaturedLinks($menu_name)) {
     // To avoid confusion, do not allow the flagging to be set in any link of a
     // different menu.
-    $form['menu_link_flagging']['#access'] = FALSE;
+    $form['live_link']['#access'] = FALSE;
   }
 }
 
@@ -134,13 +132,13 @@ function whats_new_form_menu_link_content_menu_link_content_form_alter(&$form, F
  * refers to a content entity.
  */
 function whats_new_menu_link_content_form_validate(&$form, FormStateInterface $form_state) {
-  if (!$form_state->getValue('menu_link_flagging')['value']) {
+  if (!$form_state->getValue('live_link')['value']) {
     return;
   }
 
   $link_value = $form_state->getValue('link')[0]['uri'];
   if (!UrlHelper::isValid($link_value) || UrlHelper::isExternal($link_value)) {
-    $form_state->setErrorByName('menu_link_flagging', t('Flagging is allowed only for internal URLs pointing to content entities in the website.'));
+    $form_state->setErrorByName('live_link', t('Flagging is allowed only for internal URLs pointing to content entities in the website.'));
     return;
   }
 
@@ -149,6 +147,6 @@ function whats_new_menu_link_content_form_validate(&$form, FormStateInterface $f
     // This could work for all entities by dynamically creating a flag type if a
     // flag type for the requested entity type does not exist.
     // However, since the config are meant to be read-only, this is not allowed.
-    $form_state->setErrorByName('menu_link_flagging', t('Flagging is allowed only for internal URLs pointing to content entities in the website.'));
+    $form_state->setErrorByName('live_link', t('Flagging is allowed only for internal URLs pointing to content entities in the website.'));
   }
 }

@@ -19,7 +19,7 @@ Feature:
     When I go to "/admin/structure/menu/manage/support"
     And I click "Add link"
     And I fill in "Menu link title" with "Check what's new"
-    And I check "Allow flagging"
+    And I check "Live link"
 
     # Absolute URLs are not allowed.
     And I fill in "Link" with "http://example.com"
@@ -63,7 +63,7 @@ Feature:
 
     When I click "Add link"
     And I fill in "Menu link title" with "What is new you say?"
-    And I check "Allow flagging"
+    And I check "Live link"
     When I type "Some t" in the "Link" autocomplete field
     Then I wait until the page contains the text "Some title"
     And I pick "Some title" from the "Link" autocomplete suggestions

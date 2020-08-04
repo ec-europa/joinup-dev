@@ -5,13 +5,22 @@ declare(strict_types = 1);
 namespace Drupal\whats_new;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\flag\FlaggingInterface;
-use Drupal\node\NodeInterface;
 
 /**
  * Interface for the WhatsNewHelper service.
  */
 interface WhatsNewHelperInterface {
+
+  /**
+   * Checks whether the given menu has at least one featured link.
+   *
+   * @param string $menu_name
+   *   The menu name.
+   *
+   * @return bool
+   *   Whether the menu has any featured link already.
+   */
+  public function menuHasFeaturedLinks(string $menu_name): bool;
 
   /**
    * Checks whether a menu item with enabled flagging exists for this entity.
@@ -26,22 +35,22 @@ interface WhatsNewHelperInterface {
   public function hasFlagEnabledMenuLinksForEntity(EntityInterface $entity): bool;
 
   /**
-   * Returns a flagging entity related to the node and the current user.
+   * Returns whether the user has viewed the entity.
    *
-   * @param \Drupal\node\NodeInterface $node
-   *   The node object.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   An entity object.
    *
-   * @return \Drupal\flag\FlaggingInterface|null
-   *   The flagging entity or null if none returned.
+   * @return bool
+   *   Whether the user has viewed the entity.
    */
-  public function getFlaggingForNode(NodeInterface $node): ?FlaggingInterface;
+  public function userHasViewedEntity(EntityInterface $entity): bool;
 
   /**
    * Adds a flag to the given entity for the current user.
    *
-   * @param \Drupal\node\NodeInterface $node
-   *   The node related to the flag.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity the user has viewed.
    */
-  public function setFlaggingForNode(NodeInterface $node): void;
+  public function setUserHasViewedEntity(EntityInterface $entity): void;
 
 }
