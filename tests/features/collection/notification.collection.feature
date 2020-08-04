@@ -28,11 +28,9 @@ Feature: Notification test for the collection transitions.
       | NC to propose edit     | validated        | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
       | NC to validate edit    | validated        | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
       | NC to request archival | validated        | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
-      | NC to request deletion | validated        | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
       | NC to reject archival  | archival request | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
-      | NC to reject deletion  | deletion request | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
       | NC to archive          | archival request | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
-      | NC to delete           | deletion request | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
+      | NC to delete           | validated        | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
     And the following solutions:
       | title        | collections                          | logo     | banner     | state     |
       # Has only one affiliate.
@@ -52,9 +50,7 @@ Feature: Notification test for the collection transitions.
       | NC to propose edit     | NC facilitator | facilitator        |
       | NC to validate edit    | NC owner       | owner, facilitator |
       | NC to request archival | NC owner       | owner, facilitator |
-      | NC to request deletion | NC owner       | owner, facilitator |
       | NC to reject archival  | NC owner       | owner, facilitator |
-      | NC to reject deletion  | NC owner       | owner, facilitator |
       | NC to archive          | NC owner       | owner, facilitator |
       | NC to archive          | NC member1     |                    |
       | NC to archive          | NC member2     |                    |
@@ -110,17 +106,6 @@ Feature: Notification test for the collection transitions.
       | To approve or reject this request, please go to                                    |
       | If you think this action is not clear or not due, please contact Joinup Support at |
 
-    # Test 'request deletion' operation.
-    When all e-mails have been sent
-    And I go to the homepage of the "NC to request deletion" collection
-    And I click "Edit" in the "Entity actions" region
-    And I press "Request deletion"
-    Then the email sent to "NC moderator" with subject "User NC requested to delete collection NC to request deletion" contains the following lines of text:
-      | text                                                                               |
-      | NC Owner has requested to delete the collection "NC to request deletion".          |
-      | To approve or reject this request, please go to                                    |
-      | If you think this action is not clear or not due, please contact Joinup Support at |
-
     # Test 'propose edit' operation.
     When all e-mails have been sent
     And I am logged in as "NC facilitator"
@@ -172,20 +157,6 @@ Feature: Notification test for the collection transitions.
       | NC Moderator has rejected your request to archive the collection "NC to reject archival". |
       | The reason for rejection is: It will not be archived.                                     |
 
-    # Test the 'reject deletion' operation.
-    When all e-mails have been sent
-    And I go to the homepage of the "NC to reject deletion" collection
-    And I click "Edit" in the "Entity actions" region
-    # @todo: This should change into a separate transition.
-    And I press "Publish"
-    Then I should see the error message "This action requires you to fill in the motivation field"
-    When I fill in "Motivation" with "It will not be deleted."
-    And I press "Publish"
-    Then the email sent to "NC owner" with subject "Your request to delete collection NC to reject deletion has been rejected" contains the following lines of text:
-      | text                                                                                     |
-      | NC Moderator has rejected your request to delete the collection "NC to reject deletion". |
-      | The reason for rejection is: It will not be deleted.                                     |
-
     # Test the 'archive' operation.
     When all e-mails have been sent
     And I go to the homepage of the "NC to archive" collection
@@ -222,10 +193,6 @@ Feature: Notification test for the collection transitions.
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | NC owner                                                            |
-      | subject   | Your request to delete collection NC to delete has been approved.   |
-      | body      | The collection "NC to delete" has been deleted as per your request. |
-    And the following email should have been sent:
       | recipient | NC member1                                                                  |
       | subject   | The collection NC to delete was deleted.                                    |
       | body      | The collection "NC to delete", of which you are a member, has been deleted. |
