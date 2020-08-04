@@ -19,14 +19,14 @@ use Drupal\Core\Url;
  * Flags the entity for the current user if the entity is listed in any of the
  * support menu's links that have the flagging enabled.
  */
-function whats_new_entity_prepare_view($entity_type_id, array $entities, array $displays, $view_mode) {
+function whats_new_entity_prepare_view(string $entity_type_id, array $entities, array $displays, string $view_mode): void {
   if ($entity_type_id !== 'node' || $view_mode !== 'full' || \Drupal::getContainer()->get('current_user')->isAnonymous()) {
     return;
   }
 
   // The only case in Joinup that the entity is presented in full view is the
   // entity's canonical page.
-  /** @var \Drupal\rdf_entity\RdfInterface $entity */
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = reset($entities);
 
   $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
@@ -42,7 +42,7 @@ function whats_new_entity_prepare_view($entity_type_id, array $entities, array $
 /**
  * Implements hook_preprocess_HOOK().
  */
-function whats_new_preprocess_menu(&$variables) {
+function whats_new_preprocess_menu(array &$variables): void {
   if ($variables['menu_name'] !== 'support' || \Drupal::getContainer()->get('current_user')->isAnonymous()) {
     return;
   }
@@ -86,7 +86,7 @@ function whats_new_preprocess_menu(&$variables) {
 /**
  * Implements hook_entity_base_field_info().
  */
-function whats_new_entity_base_field_info(EntityTypeInterface $entity_type) {
+function whats_new_entity_base_field_info(EntityTypeInterface $entity_type): array {
   $fields = [];
 
   if (($entity_type->id() === 'menu_link_content')) {
@@ -110,7 +110,7 @@ function whats_new_entity_base_field_info(EntityTypeInterface $entity_type) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function whats_new_form_menu_link_content_menu_link_content_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function whats_new_form_menu_link_content_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, $form_id): void {
   $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
   /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link_content */
   $menu_link_content = $form_state->getBuildInfo()['callback_object']->getEntity();
@@ -131,14 +131,15 @@ function whats_new_form_menu_link_content_menu_link_content_form_alter(&$form, F
  * Ensures that if the flagging field is set to TRUE, the link the user provided
  * refers to a content entity.
  */
-function whats_new_menu_link_content_form_validate(&$form, FormStateInterface $form_state) {
+function whats_new_menu_link_content_form_validate(array &$form, FormStateInterface $form_state): void {
   if (!$form_state->getValue('live_link')['value']) {
     return;
   }
 
   $link_value = $form_state->getValue('link')[0]['uri'];
+  $error_message = t('Flagging is allowed only for internal URLs pointing to content entities in the website.');
   if (!UrlHelper::isValid($link_value) || UrlHelper::isExternal($link_value)) {
-    $form_state->setErrorByName('live_link', t('Flagging is allowed only for internal URLs pointing to content entities in the website.'));
+    $form_state->setErrorByName('live_link', $error_message);
     return;
   }
 
@@ -147,6 +148,6 @@ function whats_new_menu_link_content_form_validate(&$form, FormStateInterface $f
     // This could work for all entities by dynamically creating a flag type if a
     // flag type for the requested entity type does not exist.
     // However, since the config are meant to be read-only, this is not allowed.
-    $form_state->setErrorByName('live_link', t('Flagging is allowed only for internal URLs pointing to content entities in the website.'));
+    $form_state->setErrorByName('live_link', $error_message);
   }
 }

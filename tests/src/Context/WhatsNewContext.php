@@ -6,6 +6,7 @@ namespace Drupal\joinup\Context;
 
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Behat step definitions and related methods provided by the whats_new module.
@@ -46,7 +47,7 @@ class WhatsNewContext extends RawDrupalContext {
         return;
       }
     }
-    throw new \Exception("No link with title '{$link_title}' has been found marked as featured in the support menu.");
+    throw new ExpectationFailedException("No link with title '{$link_title}' has been found marked as featured in the support menu.");
   }
 
   /**
@@ -60,7 +61,7 @@ class WhatsNewContext extends RawDrupalContext {
   public function assertSupportMenuLinkNotWhatsNewClass(string $link_title): void {
     foreach ($this->getFeaturedSupportLinks() as $element) {
       if ($element->getText() === $link_title) {
-        throw new \Exception("The link with title '{$link_title}' has been found marked as featured but should not.");
+        throw new ExpectationFailedException("The link with title '{$link_title}' has been found marked as featured but should not.");
       }
     }
   }
