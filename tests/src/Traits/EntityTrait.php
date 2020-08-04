@@ -123,8 +123,13 @@ trait EntityTrait {
     if (empty($menu_links)) {
       throw new \Exception("The menu link with title '{$title}' was not found.");
     }
+    // If there are more that one results, we pick up the newest in order to
+    // avoid leftovers produced by previous tests.
+    krsort($menu_links);
+    /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menu_link */
+    $menu_link = reset($menu_links);
 
-    return reset($menu_links);
+    return $menu_link;
   }
 
   /**

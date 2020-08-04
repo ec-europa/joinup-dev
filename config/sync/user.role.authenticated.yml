@@ -36,6 +36,7 @@ permissions:
   - 'update own document content'
   - 'use text format basic_html'
   - 'use text format content_editor'
+  - 'use text format glossary_html'
   - 'use text format simple_html'
   - 'view own unpublished content'
   - 'view paragraph content json_map'

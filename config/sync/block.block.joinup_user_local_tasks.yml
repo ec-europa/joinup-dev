@@ -9,7 +9,7 @@ dependencies:
 id: joinup_user_local_tasks
 theme: joinup_theme
 region: content
-weight: -20
+weight: -22
 provider: null
 plugin: local_tasks_block
 settings:

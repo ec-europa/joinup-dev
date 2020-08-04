@@ -25,4 +25,8 @@ services:
     class: Drupal\joinup_group\EventSubscriber\TransferGroupOwnershipSubscriber
     arguments: ['@current_user', '@tempstore.private', '@messenger']
     tags:
-    - name: event_subscriber
+      - { name: event_subscriber }
+  joinup_group.group_menu_links:
+    class: Drupal\joinup_group\EventSubscriber\GroupMenuLinksSubscriber
+    tags:
+      - { name: event_subscriber }

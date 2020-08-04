@@ -13,6 +13,7 @@ dependencies:
   - 'drupal:views'
   - 'field_group:field_group'
   - 'file_url:file_url'
+  - 'joinup:asset_release'
   - 'joinup:joinup_user'
   - 'joinup:rdf_schema_field_validation'
   - 'rdf_entity:rdf_entity'

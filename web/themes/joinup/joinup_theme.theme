@@ -1059,6 +1059,13 @@ function joinup_theme_preprocess_page_title__node__video(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for page-title--node--glossary.html.twig.
+ */
+function joinup_theme_preprocess_page_title__node__glossary(&$variables) {
+  $variables['title'] = t('Glossary');
+}
+
+/**
  * Implements hook_preprocess_HOOK() for page-title--node--document.html.twig.
  */
 function joinup_theme_preprocess_page_title__node__document(&$variables) {
@@ -1530,14 +1537,11 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
   // disable the "floating label" behaviour in these forms:
   $non_floating_form_routes = [
     'collection.propose_form',
-    'custom_page.group_custom_page.add',
     'entity.node.edit_form',
     'entity.rdf_entity.edit_form',
     'entity.user.edit_form',
-    'joinup_discussion.rdf_entity_discussion.add',
-    'joinup_document.rdf_entity_document.add',
+    'joinup_group.add_content',
     'joinup_licence.add',
-    'joinup_news.rdf_entity_news.add',
     'node.add',
     'rdf_entity.propose_form',
     'rdf_entity.rdf_add',

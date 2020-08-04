@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:adms="http://www.w3.org/ns/adms#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:dc="http://purl.org/dc/terms/">
+
+  <skos:ConceptScheme rdf:about="http://data.europa.eu/eif/Layer/">
+    <rdfs:label>The European Interoperability Framework (EIF)</rdfs:label>
+    <dc:creator>Natasa Sofou</dc:creator>
+    <dc:description>Linked data representation of the EIF</dc:description>
+    <skos:prefLabel xml:lang="en">The European Interoperability Framework (EIF)</skos:prefLabel>
+    <skos:definition xml:lang="en">A set of principles intended to establish general behaviors on interoperability;
+    </skos:definition>
+    <skos:scopeNote xml:lang="en">The EIF is meant to be a generic framework applicable to all public administrations in
+      the EU. It lays out the basic conditions for achieving interoperability, acting as the common denominator for
+      relevant initiatives at all levels including European, national, regional and local, embracing public
+      administrations, citizens and businesses. This document is addressed to all those involved in defining, designing,
+      developing and delivering European public services.
+    </skos:scopeNote>
+  </skos:ConceptScheme>
+
+  <skos:Concept rdf:about="http://data.europa.eu/IL1">
+    <skos:prefLabel xml:lang="en">Interoperability Layer 1: Interoperability governance</skos:prefLabel>
+    <skos:altLabel xml:lang="en">IL1</skos:altLabel>
+    <skos:definition xml:lang="en">Interoperability governance refers to decisions on interoperability frameworks,
+      institutional arrangements, organisational structures, roles and responsibilities, policies, agreements and other
+      aspects of ensuring and monitoring interoperability at national and EU levels.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Layer/"/>
+    <adms:identifier>16</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/IL2">
+    <skos:prefLabel xml:lang="en">Interoperability Layer 2: Integrated public service governance</skos:prefLabel>
+    <skos:altLabel xml:lang="en">IL2</skos:altLabel>
+    <skos:definition xml:lang="en">European public services should be governed to ensure: integration, seamless
+      execution, reuse of services and data, and development of new services and ‘building blocks’
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Layer/"/>
+    <adms:identifier>17</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/IL3">
+    <skos:prefLabel xml:lang="en">Interoperability Layer 3: Legal interoperability</skos:prefLabel>
+    <skos:altLabel xml:lang="en">IL3</skos:altLabel>
+    <skos:definition xml:lang="en">Legal interoperability is about ensuring that organisations operating under different
+      legal frameworks, policies and strategies are able to work together.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Layer/"/>
+    <adms:identifier>18</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/IL4">
+    <skos:prefLabel xml:lang="en">Interoperability Layer 4: Organisational interoperability</skos:prefLabel>
+    <skos:altLabel xml:lang="en">IL4</skos:altLabel>
+    <skos:definition xml:lang="en">This refers to the way in which public administrations align their business
+      processes, responsibilities and expectations to achieve commonly agreed and mutually beneficial goals.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Layer/"/>
+    <adms:identifier>19</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/IL5">
+    <skos:prefLabel xml:lang="en">Interoperability Layer 5: Semantic interoperability</skos:prefLabel>
+    <skos:altLabel xml:lang="en">IL5</skos:altLabel>
+    <skos:definition xml:lang="en">Semantic interoperability ensures that the precise format and meaning of exchanged
+      data and information is preserved and understood throughout exchanges between parties, in other words ‘what is
+      sent is what is understood.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Layer/"/>
+    <adms:identifier>20</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/IL6">
+    <skos:prefLabel xml:lang="en">Interoperability Layer 6: Technical interoperability</skos:prefLabel>
+    <skos:altLabel xml:lang="en">IL6</skos:altLabel>
+    <skos:definition xml:lang="en">This covers the applications and infrastructures linking systems and services.
+      Aspects of technical interoperability include interface specifications, interconnection services, data integration
+      services, data presentation and exchange, and secure communication protocols.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Layer/"/>
+    <adms:identifier>21</adms:identifier>
+  </skos:Concept>
+
+</rdf:RDF>

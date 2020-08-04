@@ -14,7 +14,7 @@ Feature: Navigation menu for custom pages
     # about page are added to the menu.
     When I am logged in as a facilitator of the "Rainbow tables" <group>
     And I go to the homepage of the "Rainbow tables" <group>
-    Then the navigation menu of the "Rainbow tables" <group> should have 3 visible items
+    Then the navigation menu of the "Rainbow tables" <group> should have <visible items 1> visible items
     And I should see the following group menu items in the specified order:
       | text     |
       | Overview |
@@ -35,14 +35,14 @@ Feature: Navigation menu for custom pages
     And I enter "A short introduction." in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the success message "Custom page About us has been created."
-    And the navigation menu of the "Rainbow tables" <group> should have 4 visible items
+    And the navigation menu of the "Rainbow tables" <group> should have <visible items 2> visible items
 
     When I click the contextual link "Edit menu" in the "Left sidebar" region
-    Then the navigation menu of the "Rainbow tables" <group> should have 4 items
+    Then the navigation menu of the "Rainbow tables" <group> should have 5 items
 
     # It should be possible to hide an item from the menu by disabling it.
     When I disable "About us" in the navigation menu of the "Rainbow tables" <group>
-    Then the navigation menu of the "Rainbow tables" <group> should have 3 visible items
+    Then the navigation menu of the "Rainbow tables" <group> should have <visible items 3> visible items
 
     # When all the pages are disabled in the navigation menu, a message should
     # be shown to the user.
@@ -127,9 +127,9 @@ Feature: Navigation menu for custom pages
     But I should not see the link "About us" in the "Navigation menu"
 
     Examples:
-      | group      |
-      | collection |
-      | solution   |
+      | group      | visible items 1 | visible items 2 | visible items 3 |
+      | collection | 4               | 5               | 4               |
+      | solution   | 3               | 4               | 3               |
 
   @javascript
   Scenario Outline: The contextual links button in the navigation menu should be always visible
@@ -306,7 +306,6 @@ Feature: Navigation menu for custom pages
       | Internal frame     |                    | 6      |
       # Force a reserved page to be nested. This is not possible through the UI.
       | About              | Bodypack           | 7      |
-
     When I am logged in as a facilitator of the "Ergonomic backpacks" <group>
     And I go to the "Ergonomic backpacks" <group>
     And I click the contextual link "Edit menu" in the "Left sidebar" region
@@ -315,6 +314,7 @@ Feature: Navigation menu for custom pages
       | title              | parent             |
       | Overview           |                    |
       | Members            |                    |
+      | Glossary           |                    |
       | Bodypack           |                    |
       | About              |                    |
       | Types of backpacks |                    |
@@ -326,6 +326,7 @@ Feature: Navigation menu for custom pages
       | title              | parent             |
       | Overview           |                    |
       | Members            |                    |
+      | Glossary           |                    |
       | Bodypack           |                    |
       | About              |                    |
       | Types of backpacks |                    |
@@ -337,6 +338,7 @@ Feature: Navigation menu for custom pages
       | title              | parent             |
       | Overview           |                    |
       | Members            |                    |
+      | Glossary           |                    |
       | Bodypack           |                    |
       | About              |                    |
       | Types of backpacks |                    |
@@ -346,10 +348,12 @@ Feature: Navigation menu for custom pages
     # Links that don't refer to a node cannot be nested.
     When I drag the "Members" table row to the right
     And I drag the "About" table row to the right
+    And I drag the "Glossary" table row to the right
     Then the draggable menu table should be:
       | title              | parent             |
       | Overview           |                    |
       | Members            |                    |
+      | Glossary           |                    |
       | Bodypack           |                    |
       | About              |                    |
       | Types of backpacks |                    |
@@ -362,6 +366,7 @@ Feature: Navigation menu for custom pages
       | title              | parent             |
       | Overview           |                    |
       | Members            |                    |
+      | Glossary           |                    |
       | Bodypack           |                    |
       | About              |                    |
       | Types of backpacks |                    |
@@ -371,9 +376,11 @@ Feature: Navigation menu for custom pages
     # But they can still be re-ordered up and down.
     When I drag the "Overview" table row down
     When I drag the "About" table row up
+    And I drag the "Glossary" table row up
     Then the draggable menu table should be:
       | title              | parent             |
       | Members            |                    |
+      | Glossary           |                    |
       | Overview           |                    |
       | About              |                    |
       | Bodypack           |                    |
@@ -387,6 +394,7 @@ Feature: Navigation menu for custom pages
     Then the draggable menu table should be:
       | title              | parent             |
       | Members            |                    |
+      | Glossary           |                    |
       | Overview           |                    |
       | About              |                    |
       | Types of backpacks |                    |
@@ -403,6 +411,7 @@ Feature: Navigation menu for custom pages
     Then the draggable menu table should be:
       | title              | parent             |
       | Members            |                    |
+      | Glossary           |                    |
       | Overview           |                    |
       | About              |                    |
       | Types of backpacks |                    |
@@ -527,6 +536,7 @@ Feature: Navigation menu for custom pages
       | Overview        |        |
       | Members         |        |
       | About           |        |
+      | Glossary        |        |
       | TOCO cached 1   |        |
       | TOCO cached 1-1 |        |
     When I press "Save"

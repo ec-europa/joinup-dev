@@ -1,0 +1,71 @@
+uuid: e836cc01-eed7-4613-9054-bec926c4170f
+langcode: en
+status: true
+dependencies:
+  config:
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.eif_conceptual_model
+id: taxonomy_term.eif_conceptual_model
+entity_type_id: taxonomy_term
+bundle: eif_conceptual_model
+rdf_type: 'http://data.europa.eu/eif/Model/'
+graph:
+  default: 'http://eif_conceptual_model'
+base_fields_mapping:
+  uuid:
+    value:
+      predicate: ''
+      format: ''
+  langcode:
+    value:
+      predicate: ''
+      format: ''
+  vid:
+    target_id:
+      predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
+      format: resource
+  name:
+    value:
+      predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+      format: t_literal
+  description:
+    value:
+      predicate: 'http://www.w3.org/2004/02/skos/core#definition'
+      format: t_literal
+  format:
+    value:
+      predicate: ''
+      format: ''
+  weight:
+    value:
+      predicate: 'http://www.w3.org/ns/adms#identifier'
+      format: 'xsd:integer'
+  parent:
+    target_id:
+      predicate: ''
+      format: ''
+  changed:
+    value:
+      predicate: ''
+      format: ''
+  default_langcode:
+    value:
+      predicate: ''
+      format: ''
+  revision_default:
+    value:
+      predicate: ''
+      format: ''
+  revision_translation_affected:
+    value:
+      predicate: ''
+      format: ''
+  metatag:
+    value:
+      predicate: ''
+      format: ''
+  graph:
+    target_id:
+      predicate: ''
+      format: ''
+entity_id_plugin: null
