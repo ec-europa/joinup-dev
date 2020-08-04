@@ -150,6 +150,18 @@ Feature: Collection moderation
     # The delete button is actually a link that is styled to look like a button.
     And I should see the link "Delete"
 
+    # Check that the owner can delete their own collection.
+    Given I am logged in as "Erika Reid"
+    And I go to the "Person of Wizards" collection
+    When I click "Edit"
+    And I click "Delete"
+    Then I should see the heading "Are you sure you want to delete collection Person of Wizards?"
+    And I should see "This action cannot be undone."
+    When I press "Delete"
+    # Todo: check that a success message is shown.
+    # See ISAICP-6140
+    Then I should be on the homepage
+
   @terms
   Scenario: Published collections should be shown in the collections overview page.
     # Regression test for ticket ISAICP-2889.
