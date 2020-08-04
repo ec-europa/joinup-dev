@@ -296,7 +296,7 @@ function joinup_group_og_user_access_alter(array &$permissions, CacheableMetadat
 
   $membership = $group->getMembership((int) $user->id());
   $role_id = "{$group->getEntityTypeId()}-{$group->bundle()}-administrator";
-  if ($membership instanceof OgMembershipInterface && $membership->hasRole($role_id)) {
+  if (!$membership instanceof OgMembershipInterface || !$membership->hasRole($role_id)) {
     return;
   }
 

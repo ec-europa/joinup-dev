@@ -26,6 +26,7 @@ use Drupal\og_menu\Tests\Traits\OgMenuTrait;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\user\Entity\User;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
@@ -624,6 +625,36 @@ class CollectionContext extends RawDrupalContext {
       $this->visitCollectionForm($values['collection'], 'edit');
       $buttons = $this->explodeCommaSeparatedStepArgument($values['buttons']);
       $this->assertSubmitButtonsVisible($buttons);
+    }
+  }
+
+  /**
+   * Checks that a user has access to the delete button on the collection form.
+   *
+   * Table format:
+   * | collection   | user | delete link |
+   * | Collection A | John | yes         |
+   * | Collection B | Jack | no          |
+   *
+   * @param \Behat\Gherkin\Node\TableNode $check_table
+   *   The table with the triplets collection-user-link visibility.
+   *
+   * @throws \Exception
+   *    Thrown when the user does not exist.
+   *
+   * @Then the visibility of the delete link should be as follows for these users in these collections:
+   */
+  public function verifyDeleteLinkVisibility(TableNode $check_table): void {
+    /** @var \Drupal\og\OgAccessInterface $og_access */
+    $og_access = \Drupal::service('og.access');
+    foreach ($check_table->getColumnsHash() as $values) {
+      $user_name = $values['user'];
+      $user = $this->getUserByName($user_name);
+      $collection_name = $values['collection'];
+      $collection = $this->getCollectionByName($collection_name);
+      $visible = $values['delete link'] === 'yes';
+      $message = 'The delete link should ' . ($visible ? '' : 'not ') . "be visible for $user_name in $collection_name";
+      Assert::assertEquals($visible, $og_access->userAccessEntityOperation('delete', $collection, $user)->isAllowed(), $message);
     }
   }
 
