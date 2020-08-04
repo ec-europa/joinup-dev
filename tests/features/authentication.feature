@@ -45,6 +45,7 @@ Feature: User authentication
       | node/add/discussion                         |
       | node/add/document                           |
       | node/add/event                              |
+      | node/add/glossary                           |
       | node/add/news                               |
       | propose/collection                          |
       | propose/solution                            |
@@ -110,6 +111,7 @@ Feature: User authentication
       | node/add/discussion                         |
       | node/add/document                           |
       | node/add/event                              |
+      | node/add/glossary                           |
       | node/add/news                               |
       | rdf_entity/add                              |
       | rdf_entity/add/asset_distribution           |
@@ -172,6 +174,7 @@ Feature: User authentication
       | node/add/discussion                |
       | node/add/document                  |
       | node/add/event                     |
+      | node/add/glossary                  |
       | node/add/news                      |
       | rdf_entity/add                     |
       | rdf_entity/add/asset_distribution  |

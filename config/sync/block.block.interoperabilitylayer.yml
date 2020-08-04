@@ -1,0 +1,28 @@
+uuid: 20341e1c-15ea-45fe-9466-bc23b6c0872c
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.interoperability_layer
+  module:
+    - facets
+  theme:
+    - joinup_theme
+id: interoperabilitylayer
+theme: joinup_theme
+region: content
+weight: -18
+provider: null
+plugin: 'facet_block:interoperability_layer'
+settings:
+  id: 'facet_block:interoperability_layer'
+  label: 'Interoperability layer'
+  provider: facets
+  label_display: '0'
+  block_id: interoperabilitylayer
+visibility:
+  request_route:
+    id: request_route
+    routes: view.eif_recommendation.page
+    negate: false
+    context_mapping: {  }

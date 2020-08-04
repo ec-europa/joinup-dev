@@ -209,6 +209,36 @@ class JoinupSearchContext extends RawDrupalContext {
   }
 
   /**
+   * Asserts that an inline facet widget exists in the page.
+   *
+   * @param string $facet
+   *   The facet identifier.
+   *
+   * @Then I should see the :facet inline facet
+   */
+  public function assertInlineFacetExists(string $facet): void {
+    $facet_id = self::getFacetIdFromAlias($facet);
+    if (!$this->getSession()->getPage()->find('xpath', "//*[@data-drupal-facet-id='{$facet_id}']")) {
+      throw new \Exception("Inline facet '{$facet}' should be found in the page but was not.");
+    }
+  }
+
+  /**
+   * Asserts that an inline facet widget does not exist in the page.
+   *
+   * @param string $facet
+   *   The facet identifier.
+   *
+   * @Then I should not see the :facet inline facet
+   */
+  public function assertInlineFacetNotExists(string $facet): void {
+    $facet_id = self::getFacetIdFromAlias($facet);
+    if ($this->getSession()->getPage()->find('xpath', "//*[@data-drupal-facet-id='{$facet_id}']")) {
+      throw new \Exception("Inline facet '{$facet}' should not exist but was found.");
+    }
+  }
+
+  /**
    * Clicks a facet item in an inline facet.
    *
    * @param string $link
@@ -398,23 +428,22 @@ class JoinupSearchContext extends RawDrupalContext {
    *
    * @param string $facet
    *   The facet alias.
-   * @param string $values
-   *   A comma-separated list of items to be present.
+   * @param \Behat\Gherkin\Node\TableNode $values
+   *   A list of items to be present.
    *
    * @throws \Exception
    *   Thrown when the facet is not found in the page.
    *
-   * @Then the :facet inline facet should allow selecting the following values :values
+   * @Then the :facet inline facet should allow selecting the following values:
    */
-  public function assertInlineFacetInactiveItems(string $facet, string $values): void {
+  public function assertInlineFacetInactiveItems(string $facet, TableNode $values): void {
     $element = $this->findFacetByAlias($facet);
     $found = array_map(function ($item) {
       /** @var \Behat\Mink\Element\NodeElement $item */
       return $item->getText();
     }, $element->findAll('css', 'ul.mdl-menu li.facet-item'));
 
-    $values = $this->explodeCommaSeparatedStepArgument($values);
-    Assert::assertEquals($values, $found, "The '{$facet}' values mismatch the expected ones.");
+    Assert::assertEquals($values->getColumn(0), $found, "The '{$facet}' values mismatch the expected ones.");
   }
 
   /**

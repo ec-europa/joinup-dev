@@ -14,6 +14,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\custom_page\Entity\CustomPage;
+use Drupal\custom_page\Entity\CustomPageInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\node\NodeInterface;
@@ -28,7 +29,7 @@ use Drupal\search_api\Query\QueryInterface;
 function custom_page_entity_type_alter(array &$entity_types) {
   /** @var \Drupal\Core\Entity\ContentEntityTypeInterface[] $entity_types */
   // Add a link template allow adding custom pages.
-  $entity_types['rdf_entity']->setLinkTemplate('add-custom-page', '/rdf_entity/{rdf_entity}/custom_page/add');
+  $entity_types['rdf_entity']->setLinkTemplate('add-custom-page', '/rdf_entity/{rdf_entity}/{node_type}/add');
 
   // Replaces the standard OG Menu Instance form with a customized one that is
   // suitable for use in the front end.
@@ -156,23 +157,18 @@ function custom_page_node_delete(NodeInterface $entity) {
  * or solution becomes enabled or disabled we need to reindex the group, since
  * the content of the custom menu should now be included or excluded.
  */
-function custom_page_menu_link_content_update(MenuLinkContentInterface $entity) {
+function custom_page_menu_link_content_update(MenuLinkContentInterface $menu_link) {
   // Do a quick check to see if the menu link entity's ableness has changed.
-  if ($entity->isEnabled() === $entity->original->isEnabled()) {
+  if ($menu_link->isEnabled() === $menu_link->original->isEnabled()) {
     return;
   }
 
-  /** @var \Drupal\joinup_menu\JoinupMenuHelperInterface $menu_helper */
-  $menu_helper = \Drupal::service('joinup_menu.menu_helper');
-  $linked_entities = $menu_helper->loadEntitiesFromMenuItems([$entity]);
-  $linked_entity = reset($linked_entities);
-  if ($linked_entity->getEntityTypeId() !== 'node' || $linked_entity->bundle() !== 'custom_page') {
-    return;
-  }
-
-  $group = JoinupGroupHelper::getGroup($linked_entity);
-  if (!empty($group)) {
-    ContentEntity::indexEntity($group);
+  $route_parameters = $menu_link->getUrlObject()->getRouteParameters();
+  if (isset($route_parameters['node'])) {
+    $custom_page = \Drupal::entityTypeManager()->getStorage('node')->load($route_parameters['node']);
+    if ($custom_page instanceof CustomPageInterface) {
+      ContentEntity::indexEntity($custom_page->get('og_audience')->entity);
+    }
   }
 }
 

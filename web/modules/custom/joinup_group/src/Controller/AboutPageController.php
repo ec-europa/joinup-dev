@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group\Controller;
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\rdf_entity\RdfInterface;
@@ -48,19 +46,6 @@ class AboutPageController extends ControllerBase {
    */
   public function aboutPageTitle(RdfInterface $rdf_entity): TranslatableMarkup {
     return $this->t('About @entity', ['@entity' => $rdf_entity->getName()]);
-  }
-
-  /**
-   * Additional access check for the rdf entity "about" page.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The rdf entity being checked.
-   *
-   * @return \Drupal\Core\Access\AccessResultInterface
-   *   The access result.
-   */
-  public function aboutPageAccess(RdfInterface $rdf_entity): AccessResultInterface {
-    return AccessResult::allowedIf(in_array($rdf_entity->bundle(), ['collection', 'solution']));
   }
 
 }

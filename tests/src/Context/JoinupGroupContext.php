@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup\Context;
 
+use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Behat step definitions for interacting with groups.
@@ -42,6 +44,28 @@ class JoinupGroupContext extends RawDrupalContext {
     if ($node->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->target_id !== $group->id()) {
       throw new \Exception("The node '$content_title' is not associated with collection '{$group->label()}'.");
     }
+  }
+
+  /**
+   * Asserts that a group menu link points to a resource outside the group.
+   *
+   * @param string $link_label
+   *   The link text.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   The the link is not found in page.
+   *
+   * @Then the link :link_label points outside group
+   */
+  public function assertLinkPointsOutsideGroup(string $link_label): void {
+    $session = $this->getSession();
+    $page = $session->getPage();
+    if (!$link = $page->findLink($link_label)) {
+      throw new ElementNotFoundException($session, 'link', $link_label, 'label');
+    }
+    if (!$link->hasClass('group-menu-link-external')) {
+      throw new ExpectationFailedException("Link '{$link_label}' should point to a resource outside the current group but it doesn't.");
+    };
   }
 
 }
