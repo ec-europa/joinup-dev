@@ -1,7 +1,9 @@
 uuid: 4051e0d2-ab86-4802-8baa-31bb42bbaff2
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: col_arc_del_sol_generic
 label: 'Collection archive/delete affiliates generic'
 description: 'Template 12 - This will be sent instead of template 11 if there are affiliates left in the solution'

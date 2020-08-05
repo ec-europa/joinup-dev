@@ -1,7 +1,9 @@
 uuid: 24269ba0-5331-42db-bfe0-2f4c0f0de7fd
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: collection_content_subscription
 label: 'Collection content subscription'
 description: 'Digest message sent when new content is published in a user''s subscribed collections'

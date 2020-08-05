@@ -1,7 +1,9 @@
 uuid: 4a1ff200-77e9-44ac-b3f0-5a4b372f921c
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: FEbEixhPRpKBzhu-mv4QuU51e0C1lznwHCxtmTeniQk
 template: comment_delete

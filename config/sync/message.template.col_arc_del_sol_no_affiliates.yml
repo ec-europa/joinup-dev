@@ -1,7 +1,9 @@
 uuid: a0901dab-ea8e-4e65-b61e-c4ea6baf3d52
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: col_arc_del_sol_no_affiliates
 label: 'Collection archive/delete affiliates generic'
 description: 'Template id 11 - To solution owners with no affiliation left.'

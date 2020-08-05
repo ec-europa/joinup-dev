@@ -1,7 +1,9 @@
 uuid: f7ebe0b2-3360-4fc0-8fcb-d0e8c1cf757c
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: 1EWbVlNrYLKgjh3-8FdlXyRTOoRTPcViXY4U7KXNLEg
 template: sol_deletion_no_approval
