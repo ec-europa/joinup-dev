@@ -1,7 +1,9 @@
 uuid: e1dd9657-808c-4bd0-a9e2-202176bd8d32
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: LvolMsyzWWfXcY5gwl4doOoK0tIAN5gr7kB4Ft1ep_g
 template: cc_transition_report

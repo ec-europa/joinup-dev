@@ -1,7 +1,9 @@
 uuid: a84e6340-33eb-4732-816a-d13e265915a0
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: phJepEUzcodThvjcqj1MmTPAo1BdAe9Bgd7_7ubEenc
 template: release_update

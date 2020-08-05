@@ -1,7 +1,9 @@
 uuid: 8cca1b12-7487-4a3b-bb30-7c1c461ea289
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: RJxouTzO-idtb6kXWv9WNYzEOl9aBlQAn4vIJ1xniI0
 template: cc_transition_request_deletion

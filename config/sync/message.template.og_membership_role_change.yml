@@ -1,7 +1,9 @@
 uuid: f3d47096-b1dc-489a-90d8-494d0711cb26
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: og_membership_role_change
 label: 'Group membership role change'
 description: 'Message sent when a user receives a new role inside a collection or solution.'

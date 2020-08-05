@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "132137a42d2f6f6a0ab0d407a8cc69f3",
+    "content-hash": "6cbb81dc70f5bc2628e50573e1cc4962",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4661,14 +4661,11 @@
                 "shasum": "6b34291eb12439b93994c2c091b78da26d52bf8b"
             },
             "require": {
-                "drupal/core": "*",
+                "drupal/core": "^8",
                 "drupal/token": "*"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-2.x": "2.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-2.0-beta2",
                     "datestamp": "1575029887",
@@ -4676,6 +4673,9 @@
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "FieldException during config import @see https://www.drupal.org/project/entity_legal/issues/2980786": "https://www.drupal.org/files/issues/2019-07-26/entity_legal-skip_field_creation_during_config_import-2980786-4.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4700,7 +4700,7 @@
                     "homepage": "https://www.drupal.org/user/1633774"
                 },
                 {
-                    "name": "geek.merlin aka axel.rutz",
+                    "name": "geek-merlin",
                     "homepage": "https://www.drupal.org/user/229048"
                 },
                 {
@@ -5923,16 +5923,13 @@
                 "shasum": "873b3d8030d47bd472d75472f293b7631a59eeaf"
             },
             "require": {
-                "drupal/core": "*"
+                "drupal/core": "^8"
             },
             "require-dev": {
                 "drupal/token": "*"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.0",
                     "datestamp": "1570139286",
@@ -5940,6 +5937,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Message template should depend on text(s) filter formats @see https://www.drupal.org/project/message/issues/3163049": "https://www.drupal.org/files/issues/2020-08-03/3163049-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6230,12 +6230,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gizra/og.git",
-                "reference": "48688c5775265ad3ad6ae1e2dd99b48be68df283"
+                "reference": "f8e2743135f8d12f27e2b5e5fe9f8925a698c11c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Gizra/og/zipball/48688c5775265ad3ad6ae1e2dd99b48be68df283",
-                "reference": "48688c5775265ad3ad6ae1e2dd99b48be68df283",
+                "url": "https://api.github.com/repos/Gizra/og/zipball/f8e2743135f8d12f27e2b5e5fe9f8925a698c11c",
+                "reference": "f8e2743135f8d12f27e2b5e5fe9f8925a698c11c",
                 "shasum": ""
             },
             "require": {
@@ -6258,7 +6258,7 @@
                 "slack": "https://drupal.slack.com/messages/CELR48EA0",
                 "source": "https://git.drupalcode.org/project/og"
             },
-            "time": "2020-08-04T09:59:34+00:00"
+            "time": "2020-08-04T10:59:44+00:00"
         },
         {
             "name": "drupal/og_menu",
