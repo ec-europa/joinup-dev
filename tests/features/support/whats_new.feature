@@ -9,8 +9,8 @@ Feature:
       | title               | state     |
       | Flagging collection | validated |
     And news content:
-      | title      | state     | collection          |
-      | Some title | validated | Flagging collection |
+      | title      | headline   | state     | collection          |
+      | Some title | Some title | validated | Flagging collection |
 
   Scenario: Only content entity internal URLs are allowed for flagging menu items.
     When I am logged in as a moderator

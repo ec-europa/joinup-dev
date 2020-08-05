@@ -59,6 +59,7 @@ class WhatsNewHelper implements WhatsNewHelperInterface {
     $this->entityTypeManager = $entity_type_manager;
     $this->currentUser = $current_user;
     $this->userData = $user_data;
+    $this->invalidator = $invalidator;
   }
 
   /**
