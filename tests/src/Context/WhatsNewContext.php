@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\joinup\Context;
 
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\Traits\EntityTrait;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 
@@ -12,6 +14,8 @@ use PHPUnit\Framework\ExpectationFailedException;
  * Behat step definitions and related methods provided by the whats_new module.
  */
 class WhatsNewContext extends RawDrupalContext {
+
+  use EntityTrait;
 
   /**
    * Asserts that the support menu button has the "whats_new" class attached.
@@ -64,6 +68,26 @@ class WhatsNewContext extends RawDrupalContext {
         throw new ExpectationFailedException("The link with title '{$link_title}' has been found marked as featured but should not.");
       }
     }
+  }
+
+  /**
+   * Creates a live link menu item in the support menu.
+   *
+   * @param string $link
+   *   The title of the link.
+   * @param string $content
+   *   The content entity label.
+   *
+   * @Given the live link with title :title pointing to :content
+   */
+  public function givenSupportMenuItem(string $link, string $content): void {
+    $entity = $this->getEntityByLabel('node', $content);
+    MenuLinkContent::create([
+      'title' => $link,
+      'menu_name' => 'support',
+      'link' => 'internal:' . $entity->toUrl()->toString(),
+      'live_link' => TRUE,
+    ])->save();
   }
 
   /**

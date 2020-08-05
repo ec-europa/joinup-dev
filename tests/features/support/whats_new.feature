@@ -60,6 +60,24 @@ Feature:
     Then I should not see the bell icon in the support menu
     And the "Check what's new" link should not be featured as what's new
 
+  Scenario: Only one live link is allowed at a time.
+    When I am logged in as a moderator
+    Then I should not see the bell icon in the support menu
+
+    When I go to "/admin/structure/menu/manage/support"
+    And I click "Add link"
+    And I fill in "Menu link title" with "Check what's new"
+    And I fill in "Link" with "/collection/flagging-collection/news/some-title"
+    And I check "Live link"
+
+    # Since the "Live link" field is not visible after one link is saved as live link, we are creating a
+    # menu_link_content while the moderator is already in the page to mimic that the moderator has opened two windows at
+    # once.
+    And the live link with title "Check this out" pointing to "Some title"
+
+    And I press "Save"
+    Then I should see the error message "There is already a live link. Please, disable the other one before creating a new one."
+
   @javascript
   Scenario: Manual selecting of the content also works with flagging.
     When I am logged in as a moderator
