@@ -30,7 +30,7 @@ function whats_new_entity_prepare_view(string $entity_type_id, array $entities, 
   $entity = reset($entities);
 
   $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
-  if (!empty($whats_new_helper->getFlagEnabledMenuLinks($entity))) {
+  if (empty($whats_new_helper->getFlagEnabledMenuLinks($entity))) {
     return;
   }
 
@@ -62,6 +62,9 @@ function whats_new_preprocess_menu(array &$variables): void {
       continue;
     }
     if (!$menu_link->get('live_link')->first() || !$menu_link->get('live_link')->first()->getValue()) {
+      continue;
+    }
+    if (empty($menu_link->getUrlObject()->getRouteParameters()['node'])) {
       continue;
     }
 
@@ -149,6 +152,7 @@ function whats_new_menu_link_content_form_validate(array &$form, FormStateInterf
     // flag type for the requested entity type does not exist.
     // However, since the config are meant to be read-only, this is not allowed.
     $form_state->setErrorByName('live_link', $error_message);
+    return;
   }
 
   $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');

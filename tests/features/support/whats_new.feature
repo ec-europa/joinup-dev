@@ -31,7 +31,11 @@ Feature:
     And I press "Save"
     Then I should see the error message "Flagging is allowed only for internal URLs pointing to content entities in the website."
 
-    # Content entities are allowed.
+    # Internal non-entity pages are not allowed.
+    And I fill in "Link" with "/contact"
+    And I press "Save"
+    Then I should see the error message "Flagging is allowed only for internal URLs pointing to content entities in the website."
+
     When I fill in "Link" with "/collection/flagging-collection/news/some-title"
     And I press "Save"
     Then I should see the success message "The menu link has been saved."
