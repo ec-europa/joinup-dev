@@ -26,7 +26,7 @@ function whats_new_entity_prepare_view(string $entity_type_id, array $entities, 
 
   // The only case in Joinup that the entity is presented in full view is the
   // entity's canonical page.
-  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  /** @var \Drupal\node\NodeInterface $entity */
   $entity = reset($entities);
 
   $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
@@ -110,7 +110,7 @@ function whats_new_entity_base_field_info(EntityTypeInterface $entity_type): arr
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function whats_new_form_menu_link_content_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, $form_id): void {
+function whats_new_form_menu_link_content_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
   $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
   /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link_content */
   $menu_link_content = $form_state->getBuildInfo()['callback_object']->getEntity();
