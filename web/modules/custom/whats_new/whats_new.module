@@ -114,14 +114,13 @@ function whats_new_entity_base_field_info(EntityTypeInterface $entity_type): arr
  * Implements hook_form_FORM_ID_alter().
  */
 function whats_new_form_menu_link_content_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
-  $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
   /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link_content */
   $menu_link_content = $form_state->getBuildInfo()['callback_object']->getEntity();
   $menu_name = $menu_link_content->getMenuName();
   if ($menu_name === 'support') {
     $form['#validate'][] = 'whats_new_menu_link_content_form_validate';
   }
-  elseif ($menu_name !== 'support' || $whats_new_helper->menuHasFeaturedLinks($menu_name)) {
+  else {
     // To avoid confusion, do not allow the flagging to be set in any link of a
     // different menu.
     $form['live_link']['#access'] = FALSE;
