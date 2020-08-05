@@ -77,21 +77,25 @@ class WhatsNewHelper implements WhatsNewHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function hasFlagEnabledMenuLinksForEntity(EntityInterface $entity): bool {
-    $entity_uris = [
-      // Support both the alias and the internal URL. The alias can occur if the
-      // user copies it from the URL and the internal URL can occur if the user
-      // selects the entity from the autocomplete field.
-      'internal:' . $entity->toUrl()->toString(),
-      "entity:node/{$entity->id()}",
-    ];
+  public function getFlagEnabledMenuLinks(?EntityInterface $entity = NULL): array {
     $query = $this->entityTypeManager->getStorage('menu_link_content')->getQuery()
       ->condition('menu_name', 'support')
-      ->condition('link.uri', $entity_uris, 'IN')
       ->condition('enabled', 1)
       ->condition('live_link', 1);
 
-    return (bool) $query->execute();
+    if ($entity) {
+      $entity_uris = [
+        // Support both the alias and the internal URL. The alias can occur if
+        // the user copies it from the URL and the internal URL can occur if the
+        // user selects the entity from the autocomplete field.
+        'internal:' . $entity->toUrl()->toString(),
+        "entity:node/{$entity->id()}",
+      ];
+
+      $query->condition('link.uri', $entity_uris, 'IN');
+    }
+
+    return $query->execute();
   }
 
   /**

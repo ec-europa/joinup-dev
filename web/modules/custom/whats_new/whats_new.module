@@ -26,11 +26,11 @@ function whats_new_entity_prepare_view(string $entity_type_id, array $entities, 
 
   // The only case in Joinup that the entity is presented in full view is the
   // entity's canonical page.
-  /** @var \Drupal\node\NodeInterface $entity */
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = reset($entities);
 
   $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
-  if (!$whats_new_helper->hasFlagEnabledMenuLinksForEntity($entity)) {
+  if (!empty($whats_new_helper->getFlagEnabledMenuLinks($entity))) {
     return;
   }
 
@@ -150,4 +150,14 @@ function whats_new_menu_link_content_form_validate(array &$form, FormStateInterf
     // However, since the config are meant to be read-only, this is not allowed.
     $form_state->setErrorByName('live_link', $error_message);
   }
+
+  $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
+  /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link_content */
+  $menu_link_content = $form_state->getBuildInfo()['callback_object']->getEntity();
+  $menu_link_ids = $whats_new_helper->getFlagEnabledMenuLinks();
+  $menu_link_id = reset($menu_link_ids);
+  if (!empty($menu_link_ids) && ($menu_link_content->isNew() || $menu_link_content->id() !== $menu_link_id)) {
+    $form_state->setErrorByName('live_link', t('There is already a live link. Please, disable the other one before creating a new one.'));
+  }
+
 }

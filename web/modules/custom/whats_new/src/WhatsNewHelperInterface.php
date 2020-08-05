@@ -25,14 +25,13 @@ interface WhatsNewHelperInterface {
   /**
    * Checks whether a menu item with enabled flagging exists for this entity.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity to search links for.
+   * @param \Drupal\Core\Entity\EntityInterface|null $entity
+   *   (optional) The entity to search links for.
    *
-   * @return bool
-   *   True if there is at least one link in the support menu that is enabled
-   *   and has the flagging flag set to 1.
+   * @return array
+   *   An array of menu link content IDs.
    */
-  public function hasFlagEnabledMenuLinksForEntity(EntityInterface $entity): bool;
+  public function getFlagEnabledMenuLinks(?EntityInterface $entity): array;
 
   /**
    * Returns whether the user has viewed the entity.
