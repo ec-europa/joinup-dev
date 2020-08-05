@@ -12,8 +12,10 @@ use Drupal\rdf_taxonomy\Entity\RdfTerm;
 /**
  * Resolves the group from the route.
  *
- * Use this to make the EIF Toolbox group available as a route context on the
- * canonical view of the EIF recommendations taxonomy.
+ * Use this to make the EIF Toolbox group available as a route context on the:
+ * - Canonical page of the EIF recommendations taxonomy.
+ * - Recommendations page.
+ * - Solutions page.
  *
  * @OgGroupResolver(
  *   id = "eif_group",
@@ -26,9 +28,10 @@ class EifGroupResolver extends RouteGroupResolver {
   /**
    * {@inheritdoc}
    */
-  protected function getContentEntityPaths() {
+  protected function getContentEntityPaths(): array {
     return [
       '/rdf_entity/{rdf_entity}/recommendations' => 'rdf_entity',
+      '/rdf_entity/{rdf_entity}/solutions/{arg_1}' => 'rdf_entity',
       '/taxonomy/term/{taxonomy_term}' => 'taxonomy_term',
     ];
   }
@@ -36,7 +39,7 @@ class EifGroupResolver extends RouteGroupResolver {
   /**
    * {@inheritdoc}
    */
-  public function resolve(OgResolvedGroupCollectionInterface $collection) {
+  public function resolve(OgResolvedGroupCollectionInterface $collection): void {
     if ($entity = $this->getContentEntity()) {
       if ($entity->id() === Eif::EIF_ID || ($entity instanceof RdfTerm && $entity->bundle() === 'eif_recommendation')) {
         /** @var \Drupal\solution\Entity\SolutionInterface $solution */
