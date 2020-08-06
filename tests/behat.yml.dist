@@ -55,6 +55,7 @@ default:
             s3Key: '${exports.s3.key}'
             s3Secret: '${exports.s3.secret}'
         - Drupal\joinup\Context\SolutionContext
+        - Drupal\joinup\Context\WhatsNewContext
         - Drupal\Tests\cas_mock_server\Context\CasMockServerContext:
             attributes_map:
               firstName: First name
