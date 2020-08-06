@@ -660,6 +660,31 @@ class SolutionContext extends RawDrupalContext {
   }
 
   /**
+   * Checks that a user has access to the delete button on the solution form.
+   *
+   * Table format:
+   * | solution   | user | delete link |
+   * | Solution A | John | yes         |
+   * | Solution B | Jack | no          |
+   *
+   * @param \Behat\Gherkin\Node\TableNode $check_table
+   *   The table with the triplets solution-user-link visibility.
+   *
+   * @throws \Exception
+   *    Thrown when the user does not exist.
+   *
+   * @Then the visibility of the delete link should be as follows for these users in these solutions:
+   */
+  public function verifyDeleteLinkVisibility(TableNode $check_table): void {
+    foreach ($check_table->getColumnsHash() as $values) {
+      $user = $this->getUserByName($values['user']);
+      $solution = $this->getSolutionByName($values['solution']);
+      $visible = $values['delete link'] === 'yes';
+      $this->assertGroupEntityOperation($visible, 'delete', $solution, $user);
+    }
+  }
+
+  /**
    * Enable a given language.
    *
    * @Given the language :langcode is enabled

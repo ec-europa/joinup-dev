@@ -644,16 +644,11 @@ class CollectionContext extends RawDrupalContext {
    * @Then the visibility of the delete link should be as follows for these users in these collections:
    */
   public function verifyDeleteLinkVisibility(TableNode $check_table): void {
-    /** @var \Drupal\og\OgAccessInterface $og_access */
-    $og_access = \Drupal::service('og.access');
     foreach ($check_table->getColumnsHash() as $values) {
-      $user_name = $values['user'];
-      $user = $this->getUserByName($user_name);
-      $collection_name = $values['collection'];
-      $collection = $this->getCollectionByName($collection_name);
+      $user = $this->getUserByName($values['user']);
+      $collection = $this->getCollectionByName($values['collection']);
       $visible = $values['delete link'] === 'yes';
-      $message = 'The delete link should ' . ($visible ? '' : 'not ') . "be visible for $user_name in $collection_name";
-      Assert::assertEquals($visible, $og_access->userAccessEntityOperation('delete', $collection, $user)->isAllowed(), $message);
+      $this->assertGroupEntityOperation($visible, 'delete', $collection, $user);
     }
   }
 

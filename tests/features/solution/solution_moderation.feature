@@ -76,10 +76,12 @@ Feature: Solution moderation
     Then for the following solution, the corresponding user should have the corresponding available state buttons:
       | solution                   | user             | buttons                                                     |
 
-      # The following solutions are tested as an owner. This is for debug
-      # purposed. In reality, the owner is also a facilitator so the only
-      # UATable part of the owner is that he has the ability to delete their
-      # solution when the solution is validated.
+      # The following solutions are tested as an owner. In reality, the owner is
+      # also a facilitator so the only ability that differentiates the owner
+      # from a facilitator is that they have the ability to delete their
+      # solution when the solution is validated. Note that the "Delete" option
+      # is a link to a confirmation form which is styled to look as a button.
+      # This is checked seperately below.
       | Azure Ship                 | Franklin Walker  | Save as draft, Propose                                      |
       | The Last Illusion          | Franklin Walker  | Propose, Save as draft                                      |
       | Rose of Doors              | Franklin Walker  | Publish, Save as draft, Propose                             |
@@ -103,6 +105,32 @@ Feature: Solution moderation
       | Rose of Doors              | Tyrone Underwood | Publish, Save as draft, Propose, Request changes, Blacklist |
       | The Guardian of the Stream | Tyrone Underwood | Save as draft, Propose, Publish                             |
       | Flames in the Swords       | Tyrone Underwood | Save as draft, Propose, Publish                             |
+
+    # The 'Delete' action is not a button but a link leading to a confirmation
+    # page that is styled as a button. It should only be available to the owner
+    # and a moderator on a validated solution.
+    And the visibility of the delete link should be as follows for these users in these solutions:
+      | solution                   | user             | delete link |
+      | Azure Ship                 | Franklin Walker  | no          |
+      | The Last Illusion          | Franklin Walker  | no          |
+      | Rose of Doors              | Franklin Walker  | yes         |
+      | The Guardian of the Stream | Franklin Walker  | no          |
+      | Flames in the Swords       | Franklin Walker  | no          |
+      | Azure Ship                 | William Curtis   | no          |
+      | The Last Illusion          | William Curtis   | no          |
+      | Rose of Doors              | William Curtis   | no          |
+      | The Guardian of the Stream | William Curtis   | no          |
+      | Flames in the Swords       | William Curtis   | no          |
+      | Azure Ship                 | Isabel Banks     | no          |
+      | The Last Illusion          | Isabel Banks     | no          |
+      | Rose of Doors              | Isabel Banks     | no          |
+      | The Guardian of the Stream | Isabel Banks     | no          |
+      | Flames in the Swords       | Isabel Banks     | no          |
+      | Azure Ship                 | Tyrone Underwood | no          |
+      | The Last Illusion          | Tyrone Underwood | no          |
+      | Rose of Doors              | Tyrone Underwood | yes         |
+      | The Guardian of the Stream | Tyrone Underwood | no          |
+      | Flames in the Swords       | Tyrone Underwood | no          |
 
     # Authentication sample checks.
     Given I am logged in as "William Curtis"
