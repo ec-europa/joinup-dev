@@ -1,7 +1,9 @@
 uuid: 16b0a529-2713-4a98-9c0e-2b5581915f65
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: discussion_invite
 label: 'Discussion invitation'
 description: 'Sent when a user is invited to subscribe to a discussion.'

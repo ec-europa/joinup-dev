@@ -1,7 +1,9 @@
 uuid: 6dfcaf25-eeb6-43ba-9305-1aa74fcbc47a
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: JieTS7F9P7njA8n7xkAVJffKK0rTRIHj9hRHO4QPuwA
 template: release_delete
