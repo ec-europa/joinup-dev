@@ -24,17 +24,17 @@ Feature:
     # Absolute URLs are not allowed.
     And I fill in "Link" with "http://example.com"
     And I press "Save"
-    Then I should see the error message "Flagging is allowed only for internal URLs pointing to content entities in the website."
+    Then I should see the error message "Live links are allowed only for internal URLs pointing to content within the website."
 
     # RDF entities are not allowed either.
     When I fill in "Link" with "/collection/flagging-collection"
     And I press "Save"
-    Then I should see the error message "Flagging is allowed only for internal URLs pointing to content entities in the website."
+    Then I should see the error message "Live links are allowed only for internal URLs pointing to content within the website."
 
     # Internal non-entity pages are not allowed.
     And I fill in "Link" with "/contact"
     And I press "Save"
-    Then I should see the error message "Flagging is allowed only for internal URLs pointing to content entities in the website."
+    Then I should see the error message "Live links are allowed only for internal URLs pointing to content within the website."
 
     When I fill in "Link" with "/collection/flagging-collection/news/some-title"
     And I press "Save"

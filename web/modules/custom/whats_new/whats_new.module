@@ -139,7 +139,7 @@ function whats_new_menu_link_content_form_validate(array &$form, FormStateInterf
   }
 
   $link_value = $form_state->getValue('link')[0]['uri'];
-  $error_message = t('Flagging is allowed only for internal URLs pointing to content entities in the website.');
+  $error_message = t('Live links are allowed only for internal URLs pointing to content within the website.');
   if (!UrlHelper::isValid($link_value) || UrlHelper::isExternal($link_value)) {
     $form_state->setErrorByName('live_link', $error_message);
     return;
