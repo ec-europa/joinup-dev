@@ -9,12 +9,14 @@ Feature: Collection moderation
     When I am logged in as an "authenticated user"
     And I go to the propose collection form
     Then the following buttons should be present "Save as draft, Propose"
-    And the following buttons should not be present "Publish, Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Publish, Request archival, Archive"
+    And I should not see the link "Delete"
 
     When I am logged in as a user with the "moderator" role
     And I go to the propose collection form
     Then the following buttons should be present "Save as draft, Propose, Publish"
-    And the following buttons should not be present "Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Request archival, Archive"
+    And I should not see the link "Delete"
 
   Scenario: Test the available buttons in every stage of the editorial workflow
     Given the following owner:
@@ -128,7 +130,8 @@ Feature: Collection moderation
     When I click "Edit"
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose"
-    And the following buttons should not be present "Publish, Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Publish, Request archival, Archive"
+    And I should not see the link "Delete"
 
     # Expected access.
     When I go to the "The Licking Silence" collection
@@ -136,7 +139,8 @@ Feature: Collection moderation
     When I click "Edit"
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose"
-    And the following buttons should not be present "Publish, Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Publish, Request archival, Archive"
+    And I should not see the link "Delete"
 
     # One check for the moderator.
     Given I am logged in as "Lena Richardson"
@@ -146,7 +150,7 @@ Feature: Collection moderation
     When I click "Edit"
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose, Publish"
-    And the following buttons should not be present "Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Request archival, Archive"
     # The delete button is actually a link that is styled to look like a button.
     And I should see the link "Delete"
 

@@ -15,17 +15,20 @@ Feature: Solution moderation
     And I go to the add solution form of the "Collection propose state test" collection
     Then the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request changes, Blacklist"
+    And I should not see the link "Delete"
 
     When I am logged in as a user with the "moderator" role
     And I go to the add solution form of the "Collection propose state test" collection
     Then the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request changes, Blacklist"
+    And I should not see the link "Delete"
 
     When I am logged in as a "facilitator" of the "Collection propose state test" collection
     And I go to the homepage of the "Collection propose state test" collection
     And I click "Add solution"
     Then the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request changes, Blacklist"
+    And I should not see the link "Delete"
 
   Scenario: Test the moderation workflow available states.
     Given the following owner:
@@ -142,6 +145,7 @@ Feature: Solution moderation
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request changes, Blacklist"
+    And I should not see the link "Delete"
 
     # Expected access denied.
     When I go to the "The Last Illusion" solution
@@ -150,6 +154,7 @@ Feature: Solution moderation
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request changes, Blacklist"
+    And I should not see the link "Delete"
 
     # One check for the moderator.
     Given I am logged in as "Tyrone Underwood"
@@ -160,3 +165,4 @@ Feature: Solution moderation
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request changes, Blacklist"
+    And I should not see the link "Delete"
