@@ -98,6 +98,7 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
       return AccessResult::neutral();
     }
 
+    // Map entity operations to group level permissions.
     $map = [
       'view' => 'view all revisions',
     ];
@@ -129,11 +130,11 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
     }
 
     // Check if the user has either the "all" or the type-specific permission.
-    // We cannot use orIf() to join them, as Og returns denied when the
+    // We cannot use orIf() to join them, as OG returns access denied when the
     // permission is not present for the user in a group, and orIf() returns
     // forbidden if any of the parameters is forbidden.
-    $all_access = $this->ogAccess->userAccessEntityOperation($map[$operation], $node, $account);
-    $type_access = $this->ogAccess->userAccessEntityOperation($type_map[$operation], $node, $account);
+    $all_access = $this->ogAccess->userAccessEntity($map[$operation], $node, $account);
+    $type_access = $this->ogAccess->userAccessEntity($type_map[$operation], $node, $account);
     // If neither of the access checks are allowed, check the node_access_strict
     // configuration and return either neutral or forbidden.
     // @see og_entity_access()
