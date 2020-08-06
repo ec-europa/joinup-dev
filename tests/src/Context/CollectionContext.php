@@ -260,7 +260,6 @@ class CollectionContext extends RawDrupalContext {
         'proposed' => 'proposed',
         'validated' => 'validated',
         'archival request' => 'archival_request',
-        'deletion request' => 'deletion_request',
         'archived' => 'archived',
       ],
       'field_site_featured' => ['no' => 0, 'yes' => 1],

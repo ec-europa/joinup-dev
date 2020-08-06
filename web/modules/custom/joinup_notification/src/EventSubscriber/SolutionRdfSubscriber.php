@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
+use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -37,15 +38,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *   Operation: update
  *   Transition: request_deletion
  *   Recipients: moderator
- * Template 11: sol_deletion_approved
- *   Operation: delete
- *   Source state: deletion_request
- *   Recipients: owner
- * Template 12: sol_deletion_reject
- *   Operation: update
- *   Transition: validate
- *   Source state: deletion_request
- *   Recipients: owner
  * Template 13: sol_blacklist
  *   Operation: update
  *   Transition: blacklist
@@ -347,7 +339,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   /**
    * Sends a notification for publishing a solution.
    *
-   * Notification ids handled: 2, 12, 14.
+   * Notification IDs handled: 2, 14.
    */
   protected function notificationValidate() {
     switch ($this->fromState) {
@@ -356,16 +348,6 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
           'og_roles' => [
             'rdf_entity-solution-administrator' => [
               self::TEMPLATE_APPROVE,
-            ],
-          ],
-        ];
-        break;
-
-      case 'deletion_request':
-        $user_data = [
-          'og_roles' => [
-            'rdf_entity-solution-administrator' => [
-              self::TEMPLATE_DELETION_REJECT,
             ],
           ],
         ];
@@ -402,7 +384,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
       return;
     }
 
-    $template_id = $this->entity->get($this->stateField)->first()->value === 'deletion_request' ? self::TEMPLATE_DELETION_APPROVE : self::TEMPLATE_DELETION_NO_APPROVAL;
+    $template_id = self::TEMPLATE_DELETION_NO_APPROVAL;
     $user_data = [
       'og_roles' => [
         'rdf_entity-solution-administrator' => [
@@ -541,35 +523,18 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   }
 
   /**
-   * Returns the state of the solution related to the event.
-   *
-   * @return string
-   *   The current state.
-   */
-  protected function getSolutionState() {
-    return $this->entity->get('field_is_state')->first()->value;
-  }
-
-  /**
    * Checks whether the action is requested.
    *
    * Applies only for archival and deletion request.
    *
    * @return bool
-   *   Whether the action is requested. Returns true if the current state is
-   *    deletion_request and the operation is delete or if the current state is
-   *    archival_request and the transition is archive. False otherwise.
+   *   Whether the action is requested. Returns TRUE if the transition is
+   *   caused by a moderator approving the requested archival of a solution.
    */
-  protected function isTransitionRequested() {
-    $state = $this->getSolutionState();
-    if ($this->operation === 'delete') {
-      return $state === 'deletion_request';
-    }
-    elseif ($state === 'archived') {
-      return $this->transition->getId() === 'archive';
-    }
-
-    return FALSE;
+  protected function isTransitionRequested(): bool {
+    assert($this->entity instanceof EntityWorkflowStateInterface);
+    $state = $this->entity->getWorkflowState();
+    return $state === 'archived' && $this->transition->getId() === 'archive';
   }
 
 }

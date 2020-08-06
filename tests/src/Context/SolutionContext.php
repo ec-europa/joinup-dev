@@ -588,7 +588,6 @@ class SolutionContext extends RawDrupalContext {
         'draft' => 'draft',
         'proposed' => 'proposed',
         'validated' => 'validated',
-        'deletion request' => 'deletion_request',
         'needs update' => 'needs_update',
         'blacklisted' => 'blacklisted',
       ],
