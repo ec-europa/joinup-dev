@@ -26,7 +26,6 @@ use Drupal\og_menu\Tests\Traits\OgMenuTrait;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\user\Entity\User;
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
