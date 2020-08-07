@@ -63,8 +63,8 @@ Feature: Homepage
     # Only statistics of publicly visible content should be counted.
     When I reload the page
     Then I should see the following statistics:
-      | Solutions   | 2 |
-      | Collections | 4 |
+      | Solutions   | 1 |
+      | Collections | 3 |
       | Content     | 5 |
     # The cache should have been cleared when new content is created.
     And the page should not be cached
