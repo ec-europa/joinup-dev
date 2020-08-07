@@ -29,6 +29,8 @@ Feature: Solution notifications
       | Solution notification to publish from blacklisted     | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | blacklisted      | E-inclusion   | Business      | Collection of random solutions |
       | Solution notification to request changes              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
       | Solution notification to propose from request changes | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | needs update     | E-inclusion   | Business      | Collection of random solutions |
+      | Solution notification to delete by moderator team     | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
+      | Solution notification to delete by owner              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
 
     When I am logged in as "Pat Harper"
 
@@ -87,14 +89,14 @@ Feature: Solution notifications
 
     # Template 18. The moderation team deletes a solution without prior request.
     When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to delete" solution
+    And I go to the homepage of the "Solution notification to delete by moderator team" solution
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | Ramiro Myers                                                                                      |
-      | subject   | Joinup: Your solution has been deleted by the moderation team                                     |
-      | body      | The Joinup moderation team deleted the interoperability solution Solution notification to delete. |
+      | recipient | Ramiro Myers                                                                                                        |
+      | subject   | Joinup: Your solution has been deleted by the moderation team                                                       |
+      | body      | The Joinup moderation team deleted the interoperability solution Solution notification to delete by moderator team. |
 
     When I am logged in as "Ramiro Myers"
 
@@ -107,3 +109,12 @@ Feature: Solution notifications
       | text                                                                                                                                     |
       | Ramiro Myers has proposed an update of the Interoperability solution: "Solution notification to propose from request changes" on Joinup. |
       | If you think this action is not clear or not due, please contact Joinup Support at                                                       |
+
+    # The owner deletes their own solution. No email should be sent to the owner
+    # since we do not send notifications to the actor.
+    When all e-mails have been sent
+    And I go to the homepage of the "Solution notification to delete by owner" solution
+    And I click "Edit" in the "Entity actions" region
+    And I click "Delete"
+    And I press "Delete"
+    Then 0 e-mails should have been sent

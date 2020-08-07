@@ -34,10 +34,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *   Source state: validate
  *   Actor: Moderator
  *   Recipients: owner
- * Template 10: sol_request_deletion
- *   Operation: update
- *   Transition: request_deletion
- *   Recipients: moderator
  * Template 13: sol_blacklist
  *   Operation: update
  *   Transition: blacklist
@@ -56,7 +52,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *   Transition: propose
  *   Source state: needs_update
  *   Recipients: moderator
- * Template 17: sol_deletion_no_approval
+ * Template 17: sol_deletion_by_moderator
  *   Operation: delete
  *   Source state: validated, proposed
  *   Actor: moderator
@@ -69,15 +65,12 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
 
   const TEMPLATE_APPROVE = 'sol_approve_proposed';
   const TEMPLATE_BLACKLIST = 'sol_blacklist';
-  const TEMPLATE_DELETION_APPROVE = 'sol_deletion_approved';
-  const TEMPLATE_DELETION_NO_APPROVAL = 'sol_deletion_no_approval';
-  const TEMPLATE_DELETION_REJECT = 'sol_deletion_reject';
+  const TEMPLATE_DELETION_BY_MODERATOR = 'sol_deletion_by_moderator';
   const TEMPLATE_PROPOSE_CHANGES = 'sol_propose_changes';
   const TEMPLATE_PROPOSE_NEW = 'sol_propose_new';
   const TEMPLATE_PROPOSE_FROM_REQUEST_CHANGES = 'sol_propose_requested_changes';
   const TEMPLATE_PUBLISH_BLACKLISTED = 'sol_publish_backlisted';
   const TEMPLATE_REQUEST_CHANGES = 'sol_request_changes';
-  const TEMPLATE_REQUEST_DELETION = 'sol_request_deletion';
 
   /**
    * The transition object.
@@ -224,18 +217,6 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
         $this->notificationValidate();
         break;
 
-      // Notification ids handled: 10.
-      case 'request_deletion':
-        $user_data = [
-          'roles' => [
-            'moderator' => [
-              self::TEMPLATE_REQUEST_DELETION,
-            ],
-          ],
-        ];
-        $this->getUsersAndSend($user_data);
-        break;
-
       // Notification ids handled: 13.
       case 'blacklist':
         $user_data = [
@@ -373,7 +354,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   /**
    * Sends notification when a solution is deleted.
    *
-   * Notifications handled: 11, 17.
+   * Notification handled: 17.
    *
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event.
@@ -384,7 +365,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
       return;
     }
 
-    $template_id = self::TEMPLATE_DELETION_NO_APPROVAL;
+    $template_id = self::TEMPLATE_DELETION_BY_MODERATOR;
     $user_data = [
       'og_roles' => [
         'rdf_entity-solution-administrator' => [
