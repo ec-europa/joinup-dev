@@ -25,27 +25,18 @@
   @see http://twig.sensiolabs.org/doc/tags/macro.html
 #}
 {{ menus.menu_links(items, attributes, 0) }}
-
 {% macro menu_links(items, attributes, menu_level) %}
   {% if items %}
     <div class="support-menu">
-      <div id="support-menu__button" class="support-menu__button">
+      <div id="support-menu__button" {{ attributes.addClass(['support-menu__button']) }}>
         <button aria-pressed="false" type="button" class="support-button mdl-button mdl-js-button mdl-button--icon" title="User support">
           <span class="icon icon--help"></span>
         </button>
       </div>
       <ul class="support-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="support-menu__button">
         {% for item in items %}
-          {%
-            set classes = [
-              'sidebar-menu__item',
-              item.is_expanded ? 'menu-item--expanded',
-              item.is_collapsed ? 'menu-item--collapsed',
-              item.in_active_trail ? 'menu-item--active-trail',
-            ]
-          %}
-          <li class="mdl-menu__item">
-            {{ link(item.title, item.url, { 'class':['support-menu__link']} ) }}
+          <li{{ item.attributes.addClass(['mdl-menu__item']) }}>
+            {{ link(item.title, item.url, { 'class':['support-menu__link'] } ) }}
           </li>
         {% endfor %}
       </ul>
