@@ -19,6 +19,7 @@ use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\TraversingTrait;
+use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup_group\ContentCreationOptions;
@@ -43,6 +44,7 @@ class SolutionContext extends RawDrupalContext {
   use RdfEntityTrait;
   use SearchTrait;
   use TraversingTrait;
+  use UserTrait;
   use UtilityTrait;
   use WorkflowTrait;
 

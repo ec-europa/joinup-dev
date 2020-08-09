@@ -22,6 +22,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\solution\Entity\SolutionInterface;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -185,6 +186,17 @@ function joinup_entity_access(EntityInterface $entity, $operation, AccountInterf
   if ($entity->getEntityTypeId() === 'ogmenu_instance' && $operation !== 'update') {
     return AccessResult::forbidden();
   }
+
+  // Moderators have the 'administer organic groups' permission so they can
+  // manage all group content across all groups. However since solutions are
+  // both groups and group content they would have full access on solutions.
+  // According to the functional specifications they should not be able to
+  // delete solutions unless they are published.
+  $is_moderator = in_array('moderator', $account->getRoles());
+  if ($is_moderator && $operation === 'delete' && $entity instanceof SolutionInterface && $entity->getWorkflowState() !== 'validated') {
+    return AccessResult::forbidden();
+  }
+
   return AccessResult::neutral();
 }
 

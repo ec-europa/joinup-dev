@@ -307,12 +307,10 @@ trait OgTrait {
    *   When the access to perform the operation is not as expected.
    */
   protected function assertGroupEntityOperation(bool $expected_result, string $operation, EntityInterface $group, AccountInterface $user): void {
-    /** @var \Drupal\og\OgAccessInterface $og_access */
-    $og_access = \Drupal::service('og.access');
     $user_name = $user->getAccountName();
     $group_name = $group->label();
     $message = "The $operation operation should " . ($expected_result ? '' : 'not ') . "be accessible for $user_name in $group_name";
-    Assert::assertEquals($expected_result, $og_access->userAccessEntityOperation($operation, $group, $user)->isAllowed(), $message);
+    Assert::assertEquals($expected_result, $group->access($operation, $user), $message);
   }
 
   /**

@@ -84,7 +84,7 @@ Feature: Solution moderation
       # from a facilitator is that they have the ability to delete their
       # solution when the solution is validated. Note that the "Delete" option
       # is a link to a confirmation form which is styled to look as a button.
-      # This is checked seperately below.
+      # This is checked separately below.
       | Azure Ship                 | Franklin Walker  | Save as draft, Propose                                      |
       | The Last Illusion          | Franklin Walker  | Propose, Save as draft                                      |
       | Rose of Doors              | Franklin Walker  | Publish, Save as draft, Propose                             |
