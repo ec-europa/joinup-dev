@@ -31,6 +31,7 @@ Feature: Notification test for the collection transitions.
       | NC to reject archival  | archival request | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
       | NC to archive          | archival request | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
       | NC to delete           | validated        | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
+      | NC to delete by mod    | validated        | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
     And the following solutions:
       | title        | collections                          | logo     | banner     | state     |
       # Has only one affiliate.
@@ -57,6 +58,9 @@ Feature: Notification test for the collection transitions.
       | NC to delete           | NC owner       | owner, facilitator |
       | NC to delete           | NC member1     |                    |
       | NC to delete           | NC member2     |                    |
+      | NC to delete by mod    | NC owner       | owner, facilitator |
+      | NC to delete by mod    | NC member1     |                    |
+      | NC to delete by mod    | NC member2     |                    |
 
     # Test 'create' operation.
     When all e-mails have been sent
@@ -105,6 +109,22 @@ Feature: Notification test for the collection transitions.
       | NC Owner has requested to archive the collection "NC to request archival".         |
       | To approve or reject this request, please go to                                    |
       | If you think this action is not clear or not due, please contact Joinup Support at |
+
+    # Test deletion of a collection by the owner.
+    When all e-mails have been sent
+    And I go to the homepage of the "NC to delete" collection
+    And I click "Edit" in the "Entity actions" region
+    And I click "Delete"
+    And I press "Delete"
+    Then 2 e-mails should have been sent
+    Then the following email should have been sent:
+      | recipient | NC member1                                                                  |
+      | subject   | The collection NC to delete was deleted.                                    |
+      | body      | The collection "NC to delete", of which you are a member, has been deleted. |
+    And the following email should have been sent:
+      | recipient | NC member2                                                                  |
+      | subject   | The collection NC to delete was deleted.                                    |
+      | body      | The collection "NC to delete", of which you are a member, has been deleted. |
 
     # Test 'propose edit' operation.
     When all e-mails have been sent
@@ -186,17 +206,23 @@ Feature: Notification test for the collection transitions.
       | subject   | The collection NC to archive was archived.                                                                                   |
       | body      | The collection "NC to archive", of which you are a member, has been archived. The reason for being archived is: As you wish. |
 
-    # Test the 'delete' operation.
+    # Test the deletion of a collection by a moderator. This should also inform
+    # the collection owner.
     When all e-mails have been sent
-    And I go to the homepage of the "NC to delete" collection
+    And I go to the homepage of the "NC to delete by mod" collection
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"
+    Then 3 e-mails should have been sent
     Then the following email should have been sent:
-      | recipient | NC member1                                                                  |
-      | subject   | The collection NC to delete was deleted.                                    |
-      | body      | The collection "NC to delete", of which you are a member, has been deleted. |
+      | recipient | NC member1                                                                         |
+      | subject   | The collection NC to delete by mod was deleted.                                    |
+      | body      | The collection "NC to delete by mod", of which you are a member, has been deleted. |
     And the following email should have been sent:
-      | recipient | NC member2                                                                  |
-      | subject   | The collection NC to delete was deleted.                                    |
-      | body      | The collection "NC to delete", of which you are a member, has been deleted. |
+      | recipient | NC member2                                                                         |
+      | subject   | The collection NC to delete by mod was deleted.                                    |
+      | body      | The collection "NC to delete by mod", of which you are a member, has been deleted. |
+    And the following email should have been sent:
+      | recipient | NC owner                                                              |
+      | subject   | Joinup: Your collection has been deleted by the moderation team       |
+      | body      | The Joinup moderation team deleted the collection NC to delete by mod |

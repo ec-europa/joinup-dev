@@ -4,10 +4,8 @@ status: true
 dependencies:
   config:
     - filter.format.full_html
-_core:
-  default_config_hash: 1EWbVlNrYLKgjh3-8FdlXyRTOoRTPcViXY4U7KXNLEg
 template: sol_deletion_by_moderator
-label: 'Solution deletion by moderator'
+label: 'Solution deleted by moderator'
 description: 'Template 17: Moderator deletes a solution'
 text:
   -

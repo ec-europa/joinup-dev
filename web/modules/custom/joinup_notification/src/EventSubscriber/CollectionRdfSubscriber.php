@@ -24,6 +24,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   const TEMPLATE_ARCHIVE_DELETE_REJECT = 'col_arc_del_rej';
   const TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ALL = 'col_arc_del_sol_generic';
   const TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ORPHANED = 'col_arc_del_sol_no_affiliates';
+  const TEMPLATE_DELETION_BY_MODERATOR = 'col_deletion_by_moderator';
   const TEMPLATE_PROPOSE_EDIT_MODERATORS = 'col_propose_edit_mod';
   const TEMPLATE_PROPOSE_EDIT_OWNER = 'col_propose_edit_own';
   const TEMPLATE_PROPOSE_NEW = 'col_propose_new';
@@ -367,6 +368,15 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   protected function notificationArchiveDelete() {
     // Template id 9. Notify the owner.
     $template_id = $this->isTransitionRequested() ? self::TEMPLATE_ARCHIVE_DELETE_APPROVE_OWNER : self::TEMPLATE_ARCHIVE_DELETE_NO_REQUEST;
+
+    // Send a custom notification to the owner if their collection was deleted
+    // by a moderator.
+    /** @var \Drupal\joinup_user\Entity\JoinupUser $actor */
+    $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
+    if ($actor->isModerator() && $this->operation === 'delete') {
+      $template_id = self::TEMPLATE_DELETION_BY_MODERATOR;
+    }
+
     $user_data = [
       'og_roles' => [
         'rdf_entity-collection-administrator' => [
