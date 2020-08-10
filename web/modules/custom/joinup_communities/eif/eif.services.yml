@@ -1,0 +1,5 @@
+services:
+  eif.helper:
+    class: Drupal\eif\Eif
+    arguments:
+      - '@entity_type.manager'
