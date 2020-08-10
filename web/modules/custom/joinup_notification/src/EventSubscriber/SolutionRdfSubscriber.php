@@ -10,7 +10,6 @@ use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\og\OgRoleInterface;
-use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -268,7 +267,6 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
       'propose',
       'validate',
       'needs_update',
-      'request_deletion',
       'blacklist',
     ];
     if (!in_array($this->transition->getId(), $transitions_with_notification)) {
@@ -446,16 +444,6 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
       $arguments['@actor:full_name'] = $actor->getDisplayName();
     }
 
-    // For deletion requests, the titles of the affiliated collections are
-    // provided.
-    if (!empty($this->transition) && $this->transition->getId() === 'request_deletion') {
-      $collection_ids = solution_get_collection_ids($this->entity);
-      $collections = $this->entityTypeManager->getStorage('rdf_entity')->loadMultiple($collection_ids);
-      $arguments['@solution:parents:title'] = implode(', ', array_map(function (RdfInterface $collection) {
-        return $collection->label();
-      }, $collections));
-    }
-
     return $arguments;
   }
 
@@ -506,7 +494,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   /**
    * Checks whether the action is requested.
    *
-   * Applies only for archival and deletion request.
+   * Applies only for archival request.
    *
    * @return bool
    *   Whether the action is requested. Returns TRUE if the transition is

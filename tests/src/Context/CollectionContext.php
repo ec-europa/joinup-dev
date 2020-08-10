@@ -170,9 +170,9 @@ class CollectionContext extends RawDrupalContext {
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | content creation                      | featured | logo | moderation | modification date | owner | state                                                               |
-   * | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users | yes      |      | yes        |                   |       |                                                                     |
-   * | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users | no       |      | no         |                   |       | draft|proposed|validated|archival request|deletion request|archived |
+   * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | content creation                      | featured | logo | moderation | modification date | owner | state                                              |
+   * | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users | yes      |      | yes        |                   |       |                                                    |
+   * | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users | no       |      | no         |                   |       | draft|proposed|validated|archival request|archived |
    * @codingStandardsIgnoreEnd
    *
    * Only the title field is required.
@@ -325,15 +325,15 @@ class CollectionContext extends RawDrupalContext {
    *
    * @codingStandardsIgnoreStart
    * Table format:
-   * | title            | Open Data Initiative                                                |
-   * | author           | Mightily Oats                                                       |
-   * | logo             | logo.png                                                            |
-   * | featured         | yes|no                                                              |
-   * | moderation       | yes|no                                                              |
-   * | closed           | yes|no                                                              |
-   * | content creation | facilitators|members|registered users                               |
-   * | metadata url     | https://ec.europa.eu/my/url                                         |
-   * | state            | draft|proposed|validated|archival request|deletion request|archived |
+   * | title            | Open Data Initiative                               |
+   * | author           | Mightily Oats                                      |
+   * | logo             | logo.png                                           |
+   * | featured         | yes|no                                             |
+   * | moderation       | yes|no                                             |
+   * | closed           | yes|no                                             |
+   * | content creation | facilitators|members|registered users              |
+   * | metadata url     | https://ec.europa.eu/my/url                        |
+   * | state            | draft|proposed|validated|archival request|archived |
    * @codingStandardsIgnoreEnd
    *
    * Only the title field is required.

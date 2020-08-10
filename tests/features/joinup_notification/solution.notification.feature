@@ -18,11 +18,9 @@ Feature: Solution notification system
     And the following solutions:
       | title                 | description           | logo     | banner     | owner          | contact information | state            |
       | The Time of the Child | The Time of the Child | logo.png | banner.jpg | The Red Search | Jody Buchanan       | proposed         |
-      | Some Scent            | Some Scent            | logo.png | banner.jpg | The Red Search | Jody Buchanan       | deletion request |
     And the following solution user memberships:
       | solution              | user             | roles |
       | The Time of the Child | Benjamin Stevens | owner |
-      | Some Scent            | Benjamin Stevens | owner |
 
     # Test validation email.
     Given I am logged in as "Cecelia Kim"
@@ -34,31 +32,3 @@ Feature: Solution notification system
       | recipient | Benjamin Stevens                                                             |
       | subject   | Joinup - Content has been updated                                            |
       | body      | The content "The Time of the Child" has been moved to the "Validated" state. |
-
-    # Test deletion request email.
-    Given I am logged in as "Benjamin Stevens"
-    When I go to the homepage of the "The Time of the Child" solution
-    And I click Edit
-    When I press "Request deletion"
-    Then the following email should have been sent:
-      | template  | Message to the moderator when a request for deletion is made on a solution                           |
-      | recipient | Cecelia Kim                                                                                          |
-      | subject   | Joinup - A request for deletion has been made                                                        |
-      | body      | The owner of the "The Time of the Child" solution has requested that the solution should be deleted. |
-
-    # We are about to manually delete a solution that was created through the
-    # API. Announce that this doesn't need to be cleaned up automatically any
-    # more at the end of the test.
-    Given the "Some Scent" solution will be deleted manually
-
-    # Test deletion email.
-    When I am logged in as "Cecelia Kim"
-    And I go to the homepage of the "Some Scent" solution
-    And I click Edit
-    And I click "Delete"
-    And I press "Delete"
-    Then the following email should have been sent:
-      | template  | Message to the owner when a solution is deleted        |
-      | recipient | Benjamin Stevens                                       |
-      | subject   | Joinup - Content has been deleted                      |
-      | body      | The content "Some Scent" has been deleted from Joinup. |

@@ -186,7 +186,6 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
         break;
 
       case 'request_archival':
-      case 'request_deletion':
         $this->notificationRequestArchivalDeletion();
         break;
 
@@ -220,7 +219,6 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
       'propose',
       'validate',
       'request_archival',
-      'request_deletion',
       'archive',
     ];
     if (!in_array($this->transition->getId(), $transitions_with_notification)) {
@@ -327,7 +325,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   }
 
   /**
-   * Sends a notification on archival/deletion request.
+   * Sends a notification on archival request.
    *
    * Notification id 8.
    */
@@ -338,7 +336,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   }
 
   /**
-   * Sends a notification on rejecting an archival/deletion request.
+   * Sends a notification on rejecting an archival request.
    *
    * Notification id 10.
    */
@@ -518,7 +516,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
       $arguments['@actor:full_name'] = $actor->getDisplayName();
     }
 
-    if ($this->operation === 'delete' || $this->transition->getId() === 'request_deletion') {
+    if ($this->operation === 'delete') {
       $arguments['@transition:request_action'] = 'delete';
       $arguments['@transition:request_action:past'] = 'deleted';
       $arguments['@transition:archive:extra:owner'] = '';
