@@ -148,29 +148,6 @@ function joinup_sparql_apply_default_fields_alter($type, &$values) {
 }
 
 /**
- * Implements hook_og_user_access_entity_operation_alter().
- *
- * Gives moderators access to view, create, edit and delete all group content.
- */
-function joinup_og_user_access_entity_operation_alter(AccessResultInterface &$access_result, CacheableMetadata &$cacheable_metadata, $context) {
-  /** @var \Drupal\Core\Session\AccountProxyInterface $user */
-  $user = $context['user'];
-  $operation = $context['operation'];
-
-  $is_moderator = in_array('moderator', $user->getRoles());
-  $operation_allowed = in_array($operation, [
-    'view',
-    'create',
-    'update',
-    'delete',
-  ]);
-
-  if ($is_moderator && $operation_allowed) {
-    $access_result = new AccessResultAllowed();
-  }
-}
-
-/**
  * Implements hook_entity_access().
  */
 function joinup_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
