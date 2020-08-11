@@ -20,26 +20,8 @@ field_name: field_is_eif_category
 entity_type: rdf_entity
 type: list_string
 settings:
-  allowed_values:
-    -
-      value: assessment-tools
-      label: 'Assessment tools'
-    -
-      value: common-frameworks
-      label: 'Common frameworks'
-    -
-      value: common-services
-      label: 'Common services'
-    -
-      value: generic-tools
-      label: 'Generic tools'
-    -
-      value: legal-interoperability-tools
-      label: 'Legal interoperability tools'
-    -
-      value: semantic-assets
-      label: 'Semantic assets'
-  allowed_values_function: ''
+  allowed_values: {  }
+  allowed_values_function: 'Drupal\eif\Eif::getCategories'
 module: options
 locked: false
 cardinality: -1

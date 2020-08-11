@@ -9,7 +9,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
-use Drupal\eif\Eif;
+use Drupal\eif\EifInterface;
 use Drupal\joinup\Traits\SearchTrait;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -67,7 +67,7 @@ class EifContext extends RawDrupalContext {
     // Create the EIF Toolbox solution.
     $solution = Rdf::create([
       'rid' => 'solution',
-      'id' => Eif::EIF_ID,
+      'id' => EifInterface::EIF_ID,
       'label' => 'EIF Toolbox',
       'collection' => 'http://nifo.collection',
       'field_is_state' => 'validated',
@@ -88,7 +88,7 @@ class EifContext extends RawDrupalContext {
       'menu_name' => $menu_name,
       'link' => [
         'uri' => Url::fromRoute('view.eif_recommendation.page', [
-          'rdf_entity' => UriEncoder::encodeUrl(Eif::EIF_ID),
+          'rdf_entity' => UriEncoder::encodeUrl(EifInterface::EIF_ID),
         ])->toUriString(),
       ],
       'weight' => 4,
@@ -98,7 +98,7 @@ class EifContext extends RawDrupalContext {
       'menu_name' => $menu_name,
       'link' => [
         'uri' => Url::fromRoute('view.eif_solutions.page', [
-          'rdf_entity' => UriEncoder::encodeUrl(Eif::EIF_ID),
+          'rdf_entity' => UriEncoder::encodeUrl(EifInterface::EIF_ID),
         ])->toUriString(),
       ],
       'weight' => 5,
@@ -128,7 +128,7 @@ class EifContext extends RawDrupalContext {
     $this->disableCommitOnUpdate();
 
     $rdf_ids = [
-      Eif::EIF_ID,
+      EifInterface::EIF_ID,
       'http://nifo.collection',
       'http://example.com/owner',
       'http://example.com/contact',

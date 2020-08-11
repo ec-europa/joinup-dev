@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\eif\Plugin\OgGroupResolver;
 
-use Drupal\eif\Eif;
+use Drupal\eif\EifInterface;
 use Drupal\og\OgResolvedGroupCollectionInterface;
 use Drupal\og\Plugin\OgGroupResolver\RouteGroupResolver;
 use Drupal\rdf_taxonomy\Entity\RdfTerm;
@@ -41,9 +41,9 @@ class EifGroupResolver extends RouteGroupResolver {
    */
   public function resolve(OgResolvedGroupCollectionInterface $collection): void {
     if ($entity = $this->getContentEntity()) {
-      if ($entity->id() === Eif::EIF_ID || ($entity instanceof RdfTerm && $entity->bundle() === 'eif_recommendation')) {
+      if ($entity->id() === EifInterface::EIF_ID || ($entity instanceof RdfTerm && $entity->bundle() === 'eif_recommendation')) {
         /** @var \Drupal\solution\Entity\SolutionInterface $solution */
-        if ($solution = $this->entityTypeManager->getStorage('rdf_entity')->load(Eif::EIF_ID)) {
+        if ($solution = $this->entityTypeManager->getStorage('rdf_entity')->load(EifInterface::EIF_ID)) {
           $collection->addGroup($solution, ['route']);
           // Stop searching for other groups. EIF Toolbox is the only candidate.
           $this->stopPropagation();

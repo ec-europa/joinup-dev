@@ -7,7 +7,6 @@ namespace Drupal\eif\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
-use Drupal\eif\Eif;
 use Drupal\eif\EifInterface;
 use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,13 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class EifCategoriesBlock extends BlockBase implements ContainerFactoryPluginInterface {
-
-  /**
-   * The EIF helper service.
-   *
-   * @var \Drupal\eif\EifInterface
-   */
-  protected $eifHelper;
 
   /**
    * The SPARQL connection.
@@ -46,14 +38,11 @@ class EifCategoriesBlock extends BlockBase implements ContainerFactoryPluginInte
    *   The plugin ID.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\eif\EifInterface $eif_helper
-   *   The EIF helper service.
    * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL connection.
    */
-  public function __construct(array $configuration, string $plugin_id, $plugin_definition, EifInterface $eif_helper, ConnectionInterface $sparql) {
+  public function __construct(array $configuration, string $plugin_id, $plugin_definition, ConnectionInterface $sparql) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->eifHelper = $eif_helper;
     $this->sparql = $sparql;
   }
 
@@ -65,7 +54,6 @@ class EifCategoriesBlock extends BlockBase implements ContainerFactoryPluginInte
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('eif.helper'),
       $container->get('sparql.endpoint')
     );
   }
@@ -87,13 +75,13 @@ class EifCategoriesBlock extends BlockBase implements ContainerFactoryPluginInte
     }, $results->getArrayCopy()));
 
     $category_links = [];
-    foreach ($this->eifHelper->getEifCategories() as $category => $label) {
+    foreach (EifInterface::EIF_CATEGORIES as $category => $label) {
       if (isset($categories[$category])) {
         $category_links[] = [
           '#type' => 'link',
           '#title' => $label,
           '#url' => Url::fromRoute('view.eif_solutions.page', [
-            'rdf_entity' => Eif::EIF_ID,
+            'rdf_entity' => EifInterface::EIF_ID,
             'arg_1' => $category,
           ]),
         ];
@@ -107,7 +95,7 @@ class EifCategoriesBlock extends BlockBase implements ContainerFactoryPluginInte
           '#type' => 'link',
           '#title' => $this->t('All'),
           '#url' => Url::fromRoute('view.eif_solutions.page', [
-            'rdf_entity' => Eif::EIF_ID,
+            'rdf_entity' => EifInterface::EIF_ID,
           ]),
         ],
         '#category_links' => $category_links,
