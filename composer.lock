@@ -6230,12 +6230,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gizra/og.git",
-                "reference": "f8e2743135f8d12f27e2b5e5fe9f8925a698c11c"
+                "reference": "8d03abc312f8c462e2f95df275dce3b8fc25e8c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Gizra/og/zipball/f8e2743135f8d12f27e2b5e5fe9f8925a698c11c",
-                "reference": "f8e2743135f8d12f27e2b5e5fe9f8925a698c11c",
+                "url": "https://api.github.com/repos/Gizra/og/zipball/8d03abc312f8c462e2f95df275dce3b8fc25e8c2",
+                "reference": "8d03abc312f8c462e2f95df275dce3b8fc25e8c2",
                 "shasum": ""
             },
             "require": {
@@ -6244,11 +6244,12 @@
             },
             "require-dev": {
                 "drupal/coder": "^8.2",
-                "phpunit/phpunit": "^7 || ^8"
+                "phpunit/phpunit": "^7 || ^8",
+                "slevomat/coding-standard": "~6.0"
             },
             "type": "drupal-module",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
@@ -6258,7 +6259,7 @@
                 "slack": "https://drupal.slack.com/messages/CELR48EA0",
                 "source": "https://git.drupalcode.org/project/og"
             },
-            "time": "2020-08-04T10:59:44+00:00"
+            "time": "2020-08-11T13:06:01+00:00"
         },
         {
             "name": "drupal/og_menu",
