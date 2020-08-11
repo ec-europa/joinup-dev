@@ -26,9 +26,10 @@
     <skos:definition xml:lang="en">Ensure that national interoperability frameworks and interoperability strategies are
       aligned with the EIF and, if needed, tailor and extend them to address the national context and needs.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP1"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP1"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>29</adms:identifier>
+    <adms:identifier>1</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec2">
@@ -36,9 +37,10 @@
     <skos:altLabel xml:lang="en">Rec2</skos:altLabel>
     <skos:definition xml:lang="en">Publish the data you own as open data unless certain restrictions apply.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP2"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP2"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>30</adms:identifier>
+    <adms:identifier>2</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec3">
@@ -47,9 +49,10 @@
     <skos:definition xml:lang="en">Ensure a level playing field for open source software and demonstrate active and fair
       consideration of using open source software, taking into account the total cost of ownership of the solution.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP2"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP2"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>31</adms:identifier>
+    <adms:identifier>3</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec4">
@@ -58,9 +61,10 @@
     <skos:definition xml:lang="en">Give preference to open specifications, taking due account of the coverage of
       functional needs, maturity and market support and innovation.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP2"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP2"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>32</adms:identifier>
+    <adms:identifier>4</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec5">
@@ -69,9 +73,10 @@
     <skos:definition xml:lang="en">Ensure internal visibility and provide external interfaces for European public
       services.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP3"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP3"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>33</adms:identifier>
+    <adms:identifier>5</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec6">
@@ -80,9 +85,10 @@
     <skos:definition xml:lang="en">Reuse and share solutions, and cooperate in the development of joint solutions when
       implementing European public services.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP4"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP4"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>34</adms:identifier>
+    <adms:identifier>6</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec7">
@@ -91,9 +97,10 @@
     <skos:definition xml:lang="en">Reuse and share information and data when implementing European public services,
       unless certain privacy or confidentiality restrictions apply.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP4"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP4"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>35</adms:identifier>
+    <adms:identifier>7</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec8">
@@ -102,9 +109,10 @@
     <skos:definition xml:lang="en">Do not impose any technological solutions on citizens, businesses and other
       administrations that are technology-specific or disproportionate to their real needs..
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP5"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP5"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>36</adms:identifier>
+    <adms:identifier>8</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec9">
@@ -114,9 +122,10 @@
       applications supporting the implementation and evolution of European public services without unjustified
       restrictions, if legally possible.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP5"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP5"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>37</adms:identifier>
+    <adms:identifier>9</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec10">
@@ -125,9 +134,10 @@
     <skos:definition xml:lang="en">Use multiple channels to provide the European public service, to ensure that users
       can select the channel that best suits their needs.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP6"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP6"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>38</adms:identifier>
+    <adms:identifier>10</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec11">
@@ -136,9 +146,10 @@
     <skos:definition xml:lang="en">Provide a single point of contact in order to hide internal administrative complexity
       and facilitate users’ access to European public services.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP6"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP6"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>39</adms:identifier>
+    <adms:identifier>11</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec12">
@@ -147,9 +158,10 @@
     <skos:definition xml:lang="en">Put in place mechanisms to involve users in analysis, design, assessment and further
       development of European public services.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP6"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP6"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>40</adms:identifier>
+    <adms:identifier>12</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec13">
@@ -158,9 +170,10 @@
     <skos:definition xml:lang="en">As far as possible under the legislation in force, ask users of European public
       services once-only and relevant-only information.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP6"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP6"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>41</adms:identifier>
+    <adms:identifier>13</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec14">
@@ -171,9 +184,10 @@
       administrations should comply with e-accessibility specifications that are widely recognised at European or
       international level.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP7"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP7"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>42</adms:identifier>
+    <adms:identifier>14</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec15">
@@ -183,9 +197,10 @@
       services to ensure secure and trustworthy data exchange between public administrations and in interactions with
       citizens and businesses
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP8"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP8"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>43</adms:identifier>
+    <adms:identifier>15</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec16">
@@ -195,9 +210,10 @@
       when establishing a European public service. Decide on the level of multilingualism support based on the needs of
       the expected users.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP9"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP9"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>44</adms:identifier>
+    <adms:identifier>16</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec17">
@@ -207,9 +223,10 @@
       European public services, to respond promptly and with high quality to users’ requests and reduce the
       administrative burden on public administrations, businesses and citizens.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP10"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP10"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>45</adms:identifier>
+    <adms:identifier>17</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec18">
@@ -218,9 +235,10 @@
     <skos:definition xml:lang="en">Formulate a long-term preservation policy for information related to European public
       services and especially for information that is exchanged across borders.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP11"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP11"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>46</adms:identifier>
+    <adms:identifier>18</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec19">
@@ -229,9 +247,10 @@
     <skos:definition xml:lang="en">Evaluate the effectiveness and efficiency of different interoperability solutions and
       technological options considering user needs, proportionality and balance between costs and benefits.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/UP12"/>
+    <skos:related rdf:resource="http://data.europa.eu/UP12"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Principle/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>47</adms:identifier>
+    <adms:identifier>19</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec20">
@@ -240,9 +259,10 @@
     <skos:definition xml:lang="en">Ensure holistic governance of interoperability activities across administrative
       levels and sectors.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Layer/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>48</adms:identifier>
+    <adms:identifier>20</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec21">
@@ -251,9 +271,10 @@
     <skos:definition xml:lang="en">Put in place processes to select relevant standards and specifications, evaluate
       them, monitor their implementation, check compliance and test their interoperability.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Layer/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>49</adms:identifier>
+    <adms:identifier>21</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec22">
@@ -263,9 +284,10 @@
       selecting standards and specifications. Take into account relevant EU recommendations and seek to make the
       approach consistent across borders.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Layer/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>50</adms:identifier>
+    <adms:identifier>22</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec23">
@@ -274,9 +296,10 @@
     <skos:definition xml:lang="en">Consult relevant catalogues of standards, specifications and guidelines at national
       and EU level, in accordance with your NIF and relevant DIFs, when procuring and developing ICT solutions.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Layer/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>51</adms:identifier>
+    <adms:identifier>23</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec24">
@@ -285,9 +308,10 @@
     <skos:definition xml:lang="en">Actively participate in standardisation work relevant to your needs to ensure your
       requirements are met.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL1"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Layer/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>52</adms:identifier>
+    <adms:identifier>24</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec25">
@@ -296,9 +320,10 @@
     <skos:definition xml:lang="en">Ensure interoperability and coordination over time when operating and delivering
       integrated public services by putting in place the necessary governance structure.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/IL2"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL2"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Layer/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>53</adms:identifier>
+    <adms:identifier>25</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec26">
@@ -307,9 +332,10 @@
     <skos:definition xml:lang="en">Establish interoperability agreements in all layers, complemented by operational
       agreements and change management procedures.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/IL2"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL2"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Layer/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>54</adms:identifier>
+    <adms:identifier>26</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec27">
@@ -320,9 +346,10 @@
       to make it consistent with relevant legislation, perform a ‘digital check’ and consider data protection
       requirementss.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/IL3"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL3"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Layer/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>55</adms:identifier>
+    <adms:identifier>27</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec28">
@@ -331,9 +358,10 @@
     <skos:definition xml:lang="en">Document your business processes using commonly accepted modelling techniques and
       agree on how these processes should be aligned to deliver a European public service.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/IL4"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL4"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Layer/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>56</adms:identifier>
+    <adms:identifier>28</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec29">
@@ -342,9 +370,10 @@
     <skos:definition xml:lang="en">Clarify and formalise your organisational relationships for establishing and
       operating European public services.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/IL4"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL4"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Layer/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>57</adms:identifier>
+    <adms:identifier>29</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec30">
@@ -353,9 +382,10 @@
     <skos:definition xml:lang="en">Perceive data and information as a public asset that should be appropriately
       generated, collected, managed, shared, protected and preserved.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/IL5"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL5"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Layer/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>58</adms:identifier>
+    <adms:identifier>30</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec31">
@@ -364,9 +394,10 @@
     <skos:definition xml:lang="en">Put in place an information management strategy at the highest possible level to
       avoid fragmentation and duplication. Management of metadata, master data and reference data should be prioritised.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/IL5"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL5"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Layer/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>59</adms:identifier>
+    <adms:identifier>31</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec32">
@@ -376,9 +407,10 @@
       to create open information specifications and encourage relevant communities to share their results on national
       and European platforms.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/IL5"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL5"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Layer/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>60</adms:identifier>
+    <adms:identifier>32</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec33">
@@ -387,9 +419,10 @@
     <skos:definition xml:lang="en">Use open specifications, where available, to ensure technical interoperability when
       establishing European public services.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/IL6"/>
+    <skos:related rdf:resource="http://data.europa.eu/IL6"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Layer/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>61</adms:identifier>
+    <adms:identifier>33</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec34">
@@ -398,9 +431,10 @@
     <skos:definition xml:lang="en">Use the conceptual model for European public services to design new services or
       reengineer existing ones and reuse, whenever possible, existing service and data components.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/Model"/>
+    <skos:related rdf:resource="http://data.europa.eu/Model"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Model/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>62</adms:identifier>
+    <adms:identifier>34</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec35">
@@ -409,9 +443,10 @@
     <skos:definition xml:lang="en">Decide on a common scheme for interconnecting loosely coupled service components and
       put in place and maintain the necessary infrastructure for establishing and maintaining European public services.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/Model"/>
+    <skos:related rdf:resource="http://data.europa.eu/Model"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Model/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>63</adms:identifier>
+    <adms:identifier>35</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec36">
@@ -420,9 +455,10 @@
     <skos:definition xml:lang="en">Develop a shared infrastructure of reusable services and information sources that can
       be used by all public administrations.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/BC2"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC2"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Model/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>64</adms:identifier>
+    <adms:identifier>36</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec37">
@@ -431,9 +467,10 @@
     <skos:definition xml:lang="en">Make authoritative sources of information available to others while implementing
       access and control mechanisms to ensure security and privacy in accordance with the relevant legislation.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/BC3"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC3"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Model/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>65</adms:identifier>
+    <adms:identifier>37</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec38">
@@ -443,9 +480,10 @@
       publish the semantic and technical means and documentation needed for others to connect and reuse available
       information.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/BC3"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC3"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Model/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>66</adms:identifier>
+    <adms:identifier>38</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec39">
@@ -456,9 +494,10 @@
       relevant licences, terminology, a glossary, and information about any master data it uses from other base
       registries.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/BC3"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC3"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Model/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>67</adms:identifier>
+    <adms:identifier>39</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec40">
@@ -467,9 +506,10 @@
     <skos:definition xml:lang="en">Create and follow data quality assurance plans for base registries and related master
       data.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/BC3"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC3"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Model/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>68</adms:identifier>
+    <adms:identifier>40</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec41">
@@ -478,9 +518,10 @@
     <skos:definition xml:lang="en">Establish procedures and processes to integrate the opening of data in your common
       business processes, working routines, and in the development of new information systems.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/BC4"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC4"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Model/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>69</adms:identifier>
+    <adms:identifier>41</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec42">
@@ -491,9 +532,10 @@
       their content, the way data is collected and its level of quality and the licence terms under which it is made
       available. The use of common vocabularies for expressing metadata is recommended.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/BC4"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC4"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Model/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>70</adms:identifier>
+    <adms:identifier>42</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec43">
@@ -502,9 +544,10 @@
     <skos:definition xml:lang="en">Communicate clearly the right to access and reuse open data. The legal regimes for
       facilitating access and reuse, such as licences, should be standardised as much as possible.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/BC4"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC4"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Model/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>71</adms:identifier>
+    <adms:identifier>43</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec44">
@@ -513,9 +556,10 @@
     <skos:definition xml:lang="en">Put in place catalogues of public services, public data, and interoperability
       solutions and use common models for describing them.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/BC5"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC5"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Model/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>72</adms:identifier>
+    <adms:identifier>44</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec45">
@@ -524,9 +568,10 @@
     <skos:definition xml:lang="en">Where useful and feasible to do so, use external information sources and services
       while developing European public services.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/BC6"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC6"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Model/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>73</adms:identifier>
+    <adms:identifier>45</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec46">
@@ -535,9 +580,10 @@
     <skos:definition xml:lang="en">Consider the specific security and privacy requirements and identify measures for the
       provision of each public service according to risk management plans.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/BC7"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC7"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Model/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>74</adms:identifier>
+    <adms:identifier>46</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/Rec47">
@@ -546,9 +592,10 @@
     <skos:definition xml:lang="en">Use trust services according to the Regulation on eID and Trust Services as
       mechanisms that ensure secure and protected data exchange in public services.
     </skos:definition>
-    <skos:relatedMatch rdf:resource="http://data.europa.eu/BC7"/>
+    <skos:related rdf:resource="http://data.europa.eu/BC7"/>
+    <skos:semanticRelation rdf:resource="http://data.europa.eu/eif/Model/"/>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Recommendation/"/>
-    <adms:identifier>75</adms:identifier>
+    <adms:identifier>47</adms:identifier>
   </skos:Concept>
 
 </rdf:RDF>
