@@ -15,6 +15,20 @@ use Drupal\block\BlockInterface;
 use Drupal\eif\Plugin\views\argument\EifGroupArgument;
 
 /**
+ * Implements hook_theme().
+ */
+function eif_theme(array $existing, string $type, string $theme, string $path): array {
+  return [
+    'eif_category_navigator' => [
+      'variables' => [
+        'all_link' => NULL,
+        'category_links' => [],
+      ],
+    ],
+  ];
+}
+
+/**
  * Implements hook_views_plugins_argument_alter().
  */
 function eif_views_plugins_argument_alter(array &$plugins) {
