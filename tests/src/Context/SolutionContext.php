@@ -599,11 +599,14 @@ class SolutionContext extends RawDrupalContext {
       'field_is_show_eira_related' => ['no' => 0, 'yes' => 1],
     ];
 
-    /** @var \Drupal\field\FieldStorageConfigInterface $eif_category */
-    $eif_category = FieldStorageConfig::loadByName('rdf_entity', 'field_is_eif_category');
-
-    foreach ($eif_category->getSetting('allowed_values') as $value => $label) {
-      $mapped_values['field_is_eif_category'][$label] = $value;
+    $eif_categories = array_flip(EifInterface::EIF_CATEGORIES);
+    if (isset($fields['field_is_eif_category'])) {
+      $labels = $this->explodeCommaSeparatedStepArgument($fields['field_is_eif_category']);
+      $values = [];
+      foreach ($labels as $label) {
+        $values[] = $eif_categories[$label];
+      }
+      $fields['field_is_eif_category'] = implode(',', $values);
     }
 
     foreach ($fields as $field => $value) {
