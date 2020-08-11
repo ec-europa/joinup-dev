@@ -6,12 +6,13 @@ dependencies:
     - facets.facet.principle
   module:
     - facets
+    - joinup_core
   theme:
     - joinup_theme
 id: principle
 theme: joinup_theme
 region: content
-weight: -19
+weight: -20
 provider: null
 plugin: 'facet_block:principle'
 settings:

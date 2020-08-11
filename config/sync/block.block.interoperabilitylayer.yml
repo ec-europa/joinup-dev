@@ -6,12 +6,13 @@ dependencies:
     - facets.facet.interoperability_layer
   module:
     - facets
+    - joinup_core
   theme:
     - joinup_theme
 id: interoperabilitylayer
 theme: joinup_theme
 region: content
-weight: -18
+weight: -19
 provider: null
 plugin: 'facet_block:interoperability_layer'
 settings:
