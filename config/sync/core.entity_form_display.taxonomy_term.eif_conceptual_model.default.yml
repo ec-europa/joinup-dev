@@ -1,17 +1,15 @@
-uuid: 4516f9f7-7907-4e63-8c49-7a744b16c37c
+uuid: c50a2bd0-eb0a-4af9-bebe-0828e306a091
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.eif_recommendation.field_eif_identifier
-    - field.field.taxonomy_term.eif_recommendation.field_eif_related_term
-    - taxonomy.vocabulary.eif_recommendation
+    - taxonomy.vocabulary.eif_conceptual_model
   module:
     - path
     - text
-id: taxonomy_term.eif_recommendation.default
+id: taxonomy_term.eif_conceptual_model.default
 targetEntityType: taxonomy_term
-bundle: eif_recommendation
+bundle: eif_conceptual_model
 mode: default
 content:
   description:
@@ -22,23 +20,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_eif_identifier:
-    weight: 103
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_eif_related_term:
-    weight: 101
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   langcode:
     type: language_select
     weight: 2

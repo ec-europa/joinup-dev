@@ -9,7 +9,7 @@ third_party_settings:
   sparql_entity_storage:
     mapping:
       target_id:
-        predicate: 'http://www.w3.org/2004/02/skos/core#relatedMatch'
+        predicate: 'http://www.w3.org/2004/02/skos/core#related'
         format: resource
 id: taxonomy_term.field_eif_related_term
 field_name: field_eif_related_term
