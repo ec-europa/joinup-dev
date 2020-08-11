@@ -63,3 +63,58 @@ function eif_block_access(BlockInterface $block, string $operation, AccountInter
 
   return AccessResult::neutral();
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function eif_preprocess_views_view_field(&$variables) {
+  if ($variables['view']->id() !== 'eif_recommendation') {
+    return;
+  }
+
+  if ($variables['field']->field === 'reverse_field_eif_identifier') {
+    $real_field = $variables['field']->realField;
+    $output_parts = [];
+
+    if (!isset($variables['row']->{$real_field})) {
+      return;
+    }
+    $relationship_objects = $variables['row']->_relationship_objects[$real_field];
+    $drupal_renderer = \Drupal::getContainer()->get('renderer');
+
+    foreach ($variables['row']->{$real_field} as $index => $part) {
+      $integer_item = $relationship_objects[$index];
+      /** @var \Drupal\Core\Entity\EntityInterface $entity */
+      $entity = $integer_item->getEntity();
+      $parameters = ['@part' => $part];
+      $title = $index === 0 ? t('Recommendation @part', $parameters) : $part;
+      $renderable = $entity->toLink($title)->toRenderable();
+      $output_parts[$index] = $drupal_renderer->render($renderable);
+    }
+
+    $variables['output'] = ['#markup' => implode(', ', $output_parts)];
+  }
+
+  /** @var \Drupal\search_api\Plugin\views\field\SearchApiEntityField $field */
+  $field = $variables['field'];
+  if ($field->realField === 'entity:taxonomy_term/name') {
+    // For the EIF recommendations page they asked to show the title of the
+    // category split. The first column shows half the title and the second
+    // column shows the other half as "EIF Pillar". In order to not waste
+    // unneeded properties storing the same text 3 times, calculate the text
+    // here instead.
+    $output = (string) $variables['output'];
+    if (strpos($output, ':') === FALSE) {
+      return;
+    }
+    $parts = explode(':', $output);
+
+    if ($field->options['label'] === 'Recommendation topics') {
+      $variables['output'] = ['#markup' => $parts[1]];
+    }
+    elseif ($field->options['label'] === 'EIF Pillars') {
+      $variables['output'] = ['#markup' => $parts[0]];
+    }
+  }
+
+}
