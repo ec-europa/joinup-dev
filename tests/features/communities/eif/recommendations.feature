@@ -148,7 +148,7 @@ Feature:
     When I click "Recommendations" in the "Left sidebar" region
     Then I should see the heading "EIF Toolbox"
 
-    When I click "Recommendation 1 | Underlying Principle 1: subsidiarity and proportionality"
+    When I click "Recommendation 1"
     Then I should see the heading "EIF Toolbox"
 
   @javascript
