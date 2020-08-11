@@ -557,6 +557,7 @@ display:
         groups:
           1: OR
           2: AND
+      css_class: eif-recommendations
     cache_metadata:
       max-age: -1
       contexts:
