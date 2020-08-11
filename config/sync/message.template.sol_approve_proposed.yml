@@ -1,7 +1,9 @@
 uuid: 2660536f-ad19-4bd6-aaf1-71625324f14a
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: sol_approve_proposed
 label: 'Solution approved proposed'
 description: 'Template 2: Moderator accept proposed solution'

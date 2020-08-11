@@ -250,6 +250,9 @@
             "drupal/dynamic_entity_reference": {
                 "Backport improvements in infinite recursion protection from the entity_reference field formatter @see https://www.drupal.org/project/dynamic_entity_reference/issues/3152105#comment-13701599": "https://www.drupal.org/files/issues/2020-06-16/3152105-2.patch"
             },
+            "drupal/entity_legal": {
+                "FieldException during config import @see https://www.drupal.org/project/entity_legal/issues/2980786": "https://www.drupal.org/files/issues/2019-07-26/entity_legal-skip_field_creation_during_config_import-2980786-4.patch"
+            },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
             },
@@ -264,6 +267,9 @@
             },
             "drupal/matomo_reporting_api": {
                 "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch"
+            },
+            "drupal/message": {
+                "Message template should depend on text(s) filter formats @see https://www.drupal.org/project/message/issues/3163049": "https://www.drupal.org/files/issues/2020-08-03/3163049-2.patch"
             },
             "drupal/message_digest": {
                 "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch"
@@ -306,6 +312,9 @@
             },
             "drupal/video_embed_field": {
                 "Extend support for embed URLs. Option to force privacy @see https://www.drupal.org/project/video_embed_field/issues/3060201 (originally on https://www.drupal.org/node/2899093)": "https://www.drupal.org/files/issues/2019-06-11/privacy_mode-3060201-D8-6.patch"
+            },
+            "drush/drush": {
+                "Error message from requirements check on updatedb @see https://github.com/drush-ops/drush/pull/4513": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4513.diff"
             },
             "ec-europa/toolkit": {
                 "Variables in 'sequence-file' are not resolved @see https://github.com/ec-europa/toolkit/issues/273": "https://patch-diff.githubusercontent.com/raw/ec-europa/toolkit/pull/274.diff"

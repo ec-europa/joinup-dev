@@ -1,7 +1,9 @@
 uuid: 64c348c3-2275-4b61-a051-43d497c82e74
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: tACr7gTfkmWBM_4t2A5MfNlPDxsrRRGsmquzxn2TTjA
 template: distribution_delete
