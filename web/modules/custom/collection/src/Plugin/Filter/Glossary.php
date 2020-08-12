@@ -176,11 +176,11 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
    *
    * @return array
    *   An indexed array (tuple) with two values:
-   *     0. An associative array keyed by the glossary term or abbreviation. The
+   *     0: An associative array keyed by the glossary term or abbreviation. The
    *        values are arrays with two keys:
    *        - url: The glossary term URL.
    *        - summary: A summary to be used as tooltip.
-   *     1. An object containing the cacheable metadata.
+   *     1: An object containing the cacheable metadata.
    */
   protected function getReplacementsMap(CollectionInterface $collection): array {
     // Make sure the filter cache invalidates when a new glossary term is added
@@ -227,11 +227,11 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
    * context they belong to. We do not have access to the field that contains
    * the text.
    *
-   * @see https://www.drupal.org/project/drupal/issues/226963
-   *
    * @return \Drupal\collection\Entity\CollectionInterface|null
    *   The collection, or NULL if no collection could be derived from the
    *   context.
+   *
+   * @see https://www.drupal.org/project/drupal/issues/226963
    */
   protected function getCollection(): ?CollectionInterface {
     $group = NULL;
