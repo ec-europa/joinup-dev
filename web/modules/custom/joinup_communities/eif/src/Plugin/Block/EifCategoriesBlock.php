@@ -80,9 +80,9 @@ class EifCategoriesBlock extends BlockBase implements ContainerFactoryPluginInte
         $category_links[] = [
           '#type' => 'link',
           '#title' => $label,
-          '#url' => Url::fromRoute('view.eif_solutions.page', [
-            'rdf_entity' => EifInterface::EIF_ID,
-            'arg_1' => $category,
+          '#url' => Url::fromRoute('eif.solutions', [
+            'node' => EifInterface::EIF_SOLUTIONS_NID,
+            'eif_category' => $category,
           ]),
         ];
       }
@@ -94,8 +94,8 @@ class EifCategoriesBlock extends BlockBase implements ContainerFactoryPluginInte
         '#all_link' => [
           '#type' => 'link',
           '#title' => $this->t('All'),
-          '#url' => Url::fromRoute('view.eif_solutions.page', [
-            'rdf_entity' => EifInterface::EIF_ID,
+          '#url' => Url::fromRoute('entity.node.canonical', [
+            'node' => EifInterface::EIF_SOLUTIONS_NID,
           ]),
         ],
         '#category_links' => $category_links,
