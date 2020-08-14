@@ -34,6 +34,13 @@ interface EifInterface {
   ];
 
   /**
+   * The node ID of the EIF Toolbox solutions custom page.
+   *
+   * @var int
+   */
+  public const EIF_SOLUTIONS_NID = 703013;
+
+  /**
    * Returns the EIF categories.
    *
    * This is a wrapper around static::EIF_ID, used in the
