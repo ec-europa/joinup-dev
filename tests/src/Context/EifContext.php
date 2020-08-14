@@ -12,7 +12,9 @@ use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\eif\EifInterface;
 use Drupal\joinup\Traits\SearchTrait;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\node\Entity\Node;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Drupal\sparql_entity_storage\UriEncoder;
@@ -77,6 +79,20 @@ class EifContext extends RawDrupalContext {
     ]);
     $solution->save();
 
+    Node::create([
+      'type' => 'custom_page',
+      'nid' => EifInterface::EIF_SOLUTIONS_NID,
+      'title' => 'Solutions',
+      'og_audience' => EifInterface::EIF_ID,
+      'field_paragraphs_body' => Paragraph::create([
+        'type' => 'simple_paragraph',
+        'field_body' => [
+          'value' => 'Currently available supporting solutions that can be used as added components that help build interoperability solutions.',
+          'format' => 'content_editor',
+        ],
+      ]),
+    ])->save();
+
     $instances = \Drupal::entityTypeManager()->getStorage('ogmenu_instance')->loadByProperties([
       'type' => 'navigation',
       OgGroupAudienceHelperInterface::DEFAULT_FIELD => $solution->id(),
@@ -92,16 +108,6 @@ class EifContext extends RawDrupalContext {
         ])->toUriString(),
       ],
       'weight' => 4,
-    ])->save();
-    MenuLinkContent::create([
-      'title' => $this->t('Solutions'),
-      'menu_name' => $menu_name,
-      'link' => [
-        'uri' => Url::fromRoute('view.eif_solutions.page', [
-          'rdf_entity' => UriEncoder::encodeUrl(EifInterface::EIF_ID),
-        ])->toUriString(),
-      ],
-      'weight' => 5,
     ])->save();
 
     // Ensure the taxonomy terms are indexed.
