@@ -18,9 +18,8 @@ class EifGroupArgument extends SearchApiGroupArgument {
    * {@inheritdoc}
    */
   public function query($group_by = FALSE) {
-    $views = ['eif_recommendation', 'eif_solutions'];
-    if (in_array($this->view->id(), $views, TRUE)) {
-      // Avoid any filtering on group for some views.
+    if ($this->view->id() === 'eif_recommendation') {
+      // Avoid any filtering on group for 'eif_recommendation' view.
       return;
     }
     parent::query($group_by);
