@@ -45,10 +45,18 @@ class EifGroupResolver extends RouteGroupResolver {
         /** @var \Drupal\solution\Entity\SolutionInterface $solution */
         if ($solution = $this->entityTypeManager->getStorage('rdf_entity')->load(EifInterface::EIF_ID)) {
           $collection->addGroup($solution, ['route']);
-          // Stop searching for other groups. EIF Toolbox is the only candidate.
           $this->stopPropagation();
         }
       }
+    }
+
+    // The 'Solutions' custom page.
+    if ($this->routeMatch->getRouteName() === 'eif.solutions') {
+      /** @var \Drupal\custom_page\Entity\CustomPageInterface $custom_page */
+      $custom_page = $this->routeMatch->getParameter('node');
+      $solution = $custom_page->getGroup();
+      $collection->addGroup($solution, ['route']);
+      $this->stopPropagation();
     }
   }
 
