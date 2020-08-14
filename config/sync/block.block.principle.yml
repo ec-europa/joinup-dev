@@ -12,7 +12,7 @@ dependencies:
 id: principle
 theme: joinup_theme
 region: content
-weight: -20
+weight: -21
 provider: null
 plugin: 'facet_block:principle'
 settings:

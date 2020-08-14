@@ -12,7 +12,7 @@ dependencies:
 id: interoperabilitylayer
 theme: joinup_theme
 region: content
-weight: -19
+weight: -20
 provider: null
 plugin: 'facet_block:interoperability_layer'
 settings:

@@ -6,12 +6,13 @@ dependencies:
     - facets.facet.conceptual_model
   module:
     - facets
+    - joinup_core
   theme:
     - joinup_theme
 id: conceptualmodel
 theme: joinup_theme
 region: content
-weight: -18
+weight: -19
 provider: null
 plugin: 'facet_block:conceptual_model'
 settings:
