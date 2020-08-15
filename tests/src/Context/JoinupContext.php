@@ -3017,4 +3017,26 @@ JS;
     $this->assertHtmlText("id=\"{$url_parts['fragment']}\"");
   }
 
+  /**
+   * Asserts that a menu link is in the active trail.
+   *
+   * @param string $link_label
+   *   The label of the link to be tested.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   When the link doesn't exist.
+   *
+   * @Then the( menu) link :link_label is in the active trail
+   */
+  public function assertLinkIsInActiveTrail(string $link_label): void {
+    $page = $this->getSession()->getPage();
+    if (!$menu_item = $this->getSession()->getPage()->findLink($link_label)) {
+      throw new ElementNotFoundException($this->getSession()->getDriver(), 'Link', 'label', $link_label);
+    }
+    $xpath = "//ul/li[contains(concat(' ', @class, ' '), ' menu-item--active-trail ')]/descendant::a/descendant-or-self::*[text()='{$link_label}']";
+    if (!$page->find('xpath', $xpath)) {
+      throw new ExpectationFailedException("The '{$link_label}' link is not in the active trail but it should.");
+    }
+  }
+
 }

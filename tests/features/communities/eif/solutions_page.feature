@@ -51,14 +51,18 @@ Feature: As a user, visiting the EIF Toolbox page, I want to be able to filter
     When I click "Assessment tools"
     Then I should see the following tiles in the correct order:
       | Solution 2 |
+    # The 'Solutions' left-menu link is highlighted even on a category page.
+    And the menu link "Solutions" is in the active trail
     But I click "Common services"
     Then I should see the following tiles in the correct order:
       | Solution 1 |
       | Solution 2 |
+    And the menu link "Solutions" is in the active trail
     When I click "All"
     Then I should see the following tiles in the correct order:
       | Solution 1 |
       | Solution 2 |
+    And the menu link "Solutions" is in the active trail
 
     Given I am logged in as a moderator
     When I go to the "Solution 3" solution edit form
