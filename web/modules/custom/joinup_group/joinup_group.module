@@ -269,7 +269,10 @@ function joinup_group_rdf_entity_update(EntityInterface $entity) {
 /**
  * Implements hook_og_user_access_alter().
  */
-function joinup_group_og_user_access_alter(array &$permissions, CacheableMetadata &$cacheable_metadata, $context) {
+function joinup_group_og_user_access_alter(array &$permissions, CacheableMetadata &$cacheable_metadata, array $context): void {
+  $group = $context['group'];
+  $user = $context['user'];
+
   // Group owners are allowed to delete their own groups when they are in
   // validated state.
   // @todo Also allow groups to be deleted in any state other than 'archived'.
@@ -280,7 +283,6 @@ function joinup_group_og_user_access_alter(array &$permissions, CacheableMetadat
   }
 
   // Only act on entities that are groups and subject to workflow.
-  $group = $context['group'];
   if (!$group instanceof GroupInterface || !$group instanceof EntityWorkflowStateInterface) {
     return;
   }
@@ -290,10 +292,7 @@ function joinup_group_og_user_access_alter(array &$permissions, CacheableMetadat
     return;
   }
 
-  // Skip if the user is not the group owner.
-  /** @var \Drupal\Core\Session\AccountProxyInterface $user */
-  $user = $context['user'];
-
+  // Check if the user is the group owner and bail out if this is not the case.
   $membership = $group->getMembership((int) $user->id());
   $role_id = "{$group->getEntityTypeId()}-{$group->bundle()}-administrator";
   if (!$membership instanceof OgMembershipInterface || !$membership->hasRole($role_id)) {
