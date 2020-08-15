@@ -5,50 +5,50 @@ dependencies:
   module:
     - search_api_solr
     - node
+    - paragraphs
+    - publication_date
     - meta_entity
     - rdf_entity
     - taxonomy
-    - paragraphs
-    - publication_date
     - user
     - search_api
     - asset_distribution
     - custom_page
     - joinup_search
   config:
-    - field.storage.node.body
-    - field.storage.rdf_entity.field_ad_description
-    - field.storage.rdf_entity.field_ar_abstract
-    - field.storage.rdf_entity.field_ar_description
-    - field.storage.taxonomy_term.field_eif_identifier
-    - field.storage.taxonomy_term.field_eif_related_term
     - field.storage.node.field_event_agenda
+    - field.storage.node.field_paragraphs_body
+    - field.storage.paragraph.field_body
+    - field.storage.node.body
     - field.storage.node.field_event_date
-    - field.storage.rdf_entity.field_is_description
-    - field.storage.rdf_entity.field_is_eif_recommendation
-    - field.storage.rdf_entity.field_is_pinned_in
-    - field.storage.rdf_entity.field_is_solution_type
-    - field.storage.rdf_entity.field_isr_description
-    - field.storage.rdf_entity.field_isr_release_notes
-    - field.storage.rdf_entity.field_licence_description
-    - field.storage.rdf_entity.field_licence_spdx_licence
-    - field.storage.node.field_location
     - field.storage.node.field_news_headline
+    - field.storage.node.field_location
     - field.storage.node.field_organisation
     - field.storage.node.field_scope
     - field.storage.node.field_short_title
+    - field.storage.meta_entity.count
+    - field.storage.rdf_entity.field_ar_abstract
+    - field.storage.rdf_entity.field_isr_contact_information
+    - field.storage.rdf_entity.field_ci_name
+    - field.storage.rdf_entity.field_is_contact_information
+    - field.storage.rdf_entity.field_licence_spdx_licence
+    - field.storage.rdf_entity.field_licence_description
+    - field.storage.rdf_entity.field_ad_description
+    - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_is_description
+    - field.storage.rdf_entity.field_ar_description
+    - field.storage.rdf_entity.field_is_eif_recommendation
+    - field.storage.rdf_entity.field_is_owner
+    - field.storage.rdf_entity.field_owner_name
+    - field.storage.rdf_entity.field_isr_owner
+    - field.storage.rdf_entity.field_is_pinned_in
+    - field.storage.rdf_entity.field_isr_release_notes
+    - field.storage.rdf_entity.field_is_solution_type
+    - field.storage.taxonomy_term.field_eif_identifier
+    - field.storage.taxonomy_term.field_eif_related_term
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_organisation
-    - field.storage.meta_entity.count
-    - field.storage.rdf_entity.field_is_contact_information
-    - field.storage.rdf_entity.field_ci_name
-    - field.storage.rdf_entity.field_is_owner
-    - field.storage.rdf_entity.field_owner_name
-    - field.storage.rdf_entity.field_isr_contact_information
-    - field.storage.rdf_entity.field_isr_owner
-    - field.storage.node.field_paragraphs_body
-    - field.storage.paragraph.field_body
     - search_api.server.solr_published
 third_party_settings:
   search_api_solr:
@@ -467,14 +467,14 @@ field_settings:
       module:
         - rdf_entity
   reverse_eif_related_term_tid:
-    label: 'Reverse reference: Taxonomy term using Related term » Term ID'
+    label: 'Reverse » Related term » Term ID'
     datasource_id: 'entity:taxonomy_term'
     property_path: 'search_api_reverse_entity_references_taxonomy_term__field_eif_related_term:tid'
     type: text
   reverse_field_eif_identifier:
-    label: 'Reverse reference: Taxonomy term using Related terms » Identifier'
+    label: 'Reverse » Related term » Identifier'
     datasource_id: 'entity:taxonomy_term'
-    property_path: 'search_api_reverse_entity_references_taxonomy_term__field_taxonomy_related_term:field_eif_identifier'
+    property_path: 'search_api_reverse_entity_references_taxonomy_term__field_eif_related_term:field_eif_identifier'
     type: text
   rid:
     label: 'Rdf Type'
