@@ -175,10 +175,10 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | Authentic Papyrus | Alphabet is back | Collection With Glossary | validated |
     And event content:
       | title      | body                | solution         | state     |
-      | Soho Night | Any Colors You Like | Under The Bridge | validated |
+      | Soho Night | Any cOLOrs You Like | Under The Bridge | validated |
     And news content:
       | title         | body                                       | solution         | state     |
-      | Won at Bingo! | ABC is for Alphabet what CLR is for Colors | Under The Bridge | validated |
+      | Won at Bingo! | aBC is for ALPHABET what CLR is for Colors | Under The Bridge | validated |
     And glossary content:
       | title    | abbreviation | summary             | definition                  | collection               |
       | Alphabet | ABC          | Summary of Alphabet | Long, long definition field | Collection With Glossary |
@@ -228,10 +228,13 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     Then I should see the link "Alphabet"
 
     When I go to the "Soho Night" event
-    Then I should see the link "Colors"
+    # Test that the replacement is case insensitive.
+    Then I should see the link "cOLOrs"
 
     When I go to the "Won at Bingo!" news
     Then I should see the link "Colors"
     And I should see the link "CLR"
-    And I should see the link "Alphabet"
-    And I should see the link "ABC"
+    # Test that the replacement is case insensitive.
+    And I should see the link "ALPHABET"
+    # Test that the abbreviation replacement is case insensitive.
+    And I should see the link "aBC"
