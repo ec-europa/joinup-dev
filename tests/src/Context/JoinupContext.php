@@ -3030,7 +3030,7 @@ JS;
    */
   public function assertLinkIsInActiveTrail(string $link_label): void {
     $page = $this->getSession()->getPage();
-    if (!$menu_item = $this->getSession()->getPage()->findLink($link_label)) {
+    if (!$this->getSession()->getPage()->findLink($link_label)) {
       throw new ElementNotFoundException($this->getSession()->getDriver(), 'Link', 'label', $link_label);
     }
     $xpath = "//ul/li[contains(concat(' ', @class, ' '), ' menu-item--active-trail ')]/descendant::a/descendant-or-self::*[text()='{$link_label}']";
