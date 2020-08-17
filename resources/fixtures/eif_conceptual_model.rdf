@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:adms="http://www.w3.org/ns/adms#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:dc="http://purl.org/dc/terms/">
+
+  <skos:ConceptScheme rdf:about="http://data.europa.eu/eif/Model/">
+    <rdfs:label>The European Interoperability Framework (EIF)</rdfs:label>
+    <dc:creator>Natasa Sofou</dc:creator>
+    <dc:description>Linked data representation of the EIF</dc:description>
+    <skos:prefLabel xml:lang="en">The European Interoperability Framework (EIF)</skos:prefLabel>
+    <skos:definition xml:lang="en">A set of principles intended to establish general behaviors on interoperability;
+    </skos:definition>
+    <skos:scopeNote xml:lang="en">The EIF is meant to be a generic framework applicable to all public administrations in
+      the EU. It lays out the basic conditions for achieving interoperability, acting as the common denominator for
+      relevant initiatives at all levels including European, national, regional and local, embracing public
+      administrations, citizens and businesses. This document is addressed to all those involved in defining, designing,
+      developing and delivering European public services.
+    </skos:scopeNote>
+  </skos:ConceptScheme>
+
+  <skos:Concept rdf:about="http://data.europa.eu/BC1">
+    <skos:prefLabel xml:lang="en">Basic Component 1: Coordination function</skos:prefLabel>
+    <skos:altLabel xml:lang="en">BC1</skos:altLabel>
+    <skos:definition xml:lang="en">The coordination function ensures that needs are identified and appropriate services
+      are invoked and orchestrated to provide a European public service.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
+    <adms:identifier>22</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/BC2">
+    <skos:prefLabel xml:lang="en">Basic Component 2: Internal information sources and services</skos:prefLabel>
+    <skos:altLabel xml:lang="en">BC2</skos:altLabel>
+    <skos:definition xml:lang="en">Information sources (base registries, open data portals, and other authoritative
+      sources of information) and services available not only inside the administrative system but also in the external
+      environment can be used to create integrated public services as building blocks. Building blocks (information
+      sources and services) should make their data or functionality accessible using service-oriented approaches.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
+    <adms:identifier>23</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/BC3">
+    <skos:prefLabel xml:lang="en">Basic Component 3: Base registries</skos:prefLabel>
+    <skos:altLabel xml:lang="en">BC3</skos:altLabel>
+    <skos:definition xml:lang="en">Base registries are the cornerstone of European public service delivery. A base
+      registry is a trusted and authoritative source of information which can and should be digitally reused by others,
+      where one organisation is responsible and accountable for the collection, use, updating and preservation of
+      information.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
+    <adms:identifier>24</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/BC4">
+    <skos:prefLabel xml:lang="en">Basic Component 4: Open data</skos:prefLabel>
+    <skos:altLabel xml:lang="en">BC4</skos:altLabel>
+    <skos:definition xml:lang="en">The Directive on the reuse of public sector information provides a common legal
+      framework for reuse of public sector data. The focus is on releasing machine-readable data for use by others to
+      stimulate transparency, fair competition, innovation and a data-driven economy. To ensure a level playing field,
+      the opening and reuse of data must be non-discriminatory, meaning that data must be interoperable so that can be
+      found, discovered and processed.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
+    <adms:identifier>25</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/BC5">
+    <skos:prefLabel xml:lang="en">Basic Component 5: Catalogues</skos:prefLabel>
+    <skos:altLabel xml:lang="en">BC5</skos:altLabel>
+    <skos:definition xml:lang="en">Catalogues help others to find reusable resources (e.g. services, data, software,
+      data models). Various types of catalogue exist, e.g. directories of services, libraries of software components,
+      open data portals, registries of base registries, metadata catalogues, catalogues of standards, specifications and
+      guidelines. Commonly agreed descriptions of the services, data, registries and interoperable solutions published
+      in catalogues are needed to enable interoperability between catalogues.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
+    <adms:identifier>26</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/BC6">
+    <skos:prefLabel xml:lang="en">Basic Component 6: External information sources and services</skos:prefLabel>
+    <skos:altLabel xml:lang="en">BC6</skos:altLabel>
+    <skos:definition xml:lang="en">Public administrations need to exploit services delivered outside their
+      organisational boundaries by third parties, such as payment services provided by financial institutions or
+      connectivity services provided by telecommunications providers. They need also to exploit external information
+      sources such as open data and data from international organisations, chambers of commerce, etc. Moreover, useful
+      data can be collected through the Internet of Things (e.g. sensors) and social web applications.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
+    <adms:identifier>27</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/BC7">
+    <skos:prefLabel xml:lang="en">Basic Component 7: Security and privacy</skos:prefLabel>
+    <skos:altLabel xml:lang="en">BC7</skos:altLabel>
+    <skos:definition xml:lang="en">Security and privacy are primary concerns in the provision of public services.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
+    <adms:identifier>28</adms:identifier>
+  </skos:Concept>
+
+   <skos:Concept rdf:about="http://data.europa.eu/Model">
+     <skos:prefLabel xml:lang="en">Model</skos:prefLabel>
+     <skos:altLabel xml:lang="en">Model</skos:altLabel>
+     <skos:definition xml:lang="en"> </skos:definition>
+     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
+     <adms:identifier>3</adms:identifier>
+   </skos:Concept>
+
+</rdf:RDF>

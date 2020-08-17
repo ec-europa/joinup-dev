@@ -1,0 +1,36 @@
+uuid: 32f1d261-462a-4c25-a56a-7a59c408ebbf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_glossary_definition
+    - node.type.glossary
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    glossary_html: glossary_html
+    content_editor: '0'
+    basic_html: '0'
+    eira_format: '0'
+    licence: '0'
+    restricted_html: '0'
+    simple_html: '0'
+    simple_text: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.glossary.field_glossary_definition
+field_name: field_glossary_definition
+entity_type: node
+bundle: glossary
+label: Definition
+description: 'The glossary term definition. A short summary is allowed. If not entered, a trimmed text will be shown as summary.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

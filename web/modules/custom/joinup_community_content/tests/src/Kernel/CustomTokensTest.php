@@ -23,6 +23,7 @@ class CustomTokensTest extends TokenReplaceKernelTestBase {
   public static $modules = [
     'diff',
     'joinup_community_content',
+    'joinup_workflow',
     'node',
     'og',
     'workflow_state_permission',
@@ -34,9 +35,8 @@ class CustomTokensTest extends TokenReplaceKernelTestBase {
   public function register(ContainerBuilder $container) {
     parent::register($container);
 
-    // Register a few services directly to avoid having to enable a long chain
+    // Register a this service directly to avoid having to enable a long chain
     // of module dependencies.
-    $this->container->register('joinup_workflow.workflow_helper', '\Drupal\joinup_workflow\WorkflowHelper');
     $this->container->register('joinup_notification.message_delivery', '\Drupal\joinup_notification\JoinupMessageDelivery');
   }
 

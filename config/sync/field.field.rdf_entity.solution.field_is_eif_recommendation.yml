@@ -1,0 +1,29 @@
+uuid: 6f68c402-cb86-42cd-8405-22447ed1b5a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_eif_recommendation
+    - rdf_entity.rdfentity.solution
+    - taxonomy.vocabulary.eif_recommendation
+id: rdf_entity.solution.field_is_eif_recommendation
+field_name: field_is_eif_recommendation
+entity_type: rdf_entity
+bundle: solution
+label: 'EIF reference'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      eif_recommendation: eif_recommendation
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,11 @@
+uuid: a4ea76cf-766f-4247-84fc-33c44944db6e
+langcode: en
+status: true
+dependencies: {  }
+third_party_settings:
+  rdf_taxonomy:
+    locked: false
+name: 'EIF Principle'
+vid: eif_principle
+description: 'Terms that represent a principle of the EIF Toolbox.'
+weight: 0

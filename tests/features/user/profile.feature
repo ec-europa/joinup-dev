@@ -65,8 +65,8 @@ Feature: User profile
     When I go to the public profile of "Leonardo Da Vinci"
     Then I should see the text "Country of origin: Italy" in the "Header" region
 
-  @terms
-  Scenario: A moderator can navigate to any users profile and edit it.
+  @terms @email
+  Scenario: A moderator can navigate to any user's profile and edit it.
     Given users:
       | Username          | E-mail                | Roles     |
       | Leonardo Da Vinci | leonardo@example.com  |           |
@@ -90,9 +90,11 @@ Feature: User profile
     And I fill in "Country of origin" with "Italy"
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
-    # This message is typical shown when the mail server is not responding. This is just a smoke test
-    # to see that all is fine and dandy, and mails are being delivered.
-    Then I should not see the error message "Unable to send email. Contact the site administrator if the problem persists."
+    And I should see the success message "The user has been notified that their account has been updated."
+    And the following email should have been sent:
+      | recipient | Leonardo Da Vinci                                                                                         |
+      | subject   | The Joinup Support Team updated your account for you at Joinup                                            |
+      | body      | A moderator has edited your user profile on Joinup. Please check your profile to verify the changes done. |
 
   # Regression test: the wrong profile picture was showing due to a caching problem.
   Scenario: The user's profile picture should be shown in the page header.

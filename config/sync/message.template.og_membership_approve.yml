@@ -1,7 +1,9 @@
 uuid: a950b6ff-5430-4246-b76c-60580fb0f738
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: og_membership_approve
 label: 'Group membership approval'
 description: 'Group privileged user approves a membership request.'

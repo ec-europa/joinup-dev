@@ -1,0 +1,21 @@
+uuid: 5af89a27-044a-48ba-bf9c-9291e6965296
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_glossary_abbreviation
+field_name: field_glossary_abbreviation
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

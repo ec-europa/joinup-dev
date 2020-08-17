@@ -2,8 +2,8 @@ uuid: 6d23f82a-c5ad-479a-b9b5-3a6dc19d52dc
 langcode: en
 status: true
 dependencies:
-  module:
-    - message
+  config:
+    - filter.format.full_html
 template: discussion_comment_new
 label: 'Notify discussion subscribers on new comment'
 description: 'Message sent to subscribers of a discussion when a new comment is posted'

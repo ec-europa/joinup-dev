@@ -80,6 +80,7 @@
 @import "components/navigation-bottom";
 @import "components/image-caption";
 @import "components/licence";
+@import "components/glossary";
 
 // Sections
 @import "layouts/sections/section";
@@ -92,6 +93,9 @@
 // Layouts
 @import "layouts/layout";
 @import "layouts/grid";
+
+// Pages
+@import "layouts/pages/page--search";
 
 @import "mdl-hacks";
 @import "drupal-hacks";

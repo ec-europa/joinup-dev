@@ -1,7 +1,9 @@
 uuid: 54acf25a-416b-499f-986e-a7958921c875
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: og_membership_reject
 label: 'Group membership rejection'
 description: 'Group privileged user rejects a membership request.'

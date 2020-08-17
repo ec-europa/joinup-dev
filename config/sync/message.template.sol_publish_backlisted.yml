@@ -1,7 +1,9 @@
 uuid: e33cbd1a-28ba-4841-8a8d-2cad5a5f02a1
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: 8IdkaQEe4bkM_QfdUAZUvluvJNAfHlF1tpqF_bshnQ0
 template: sol_publish_backlisted

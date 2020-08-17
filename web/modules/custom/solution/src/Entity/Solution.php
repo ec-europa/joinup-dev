@@ -8,10 +8,10 @@ use Drupal\collection\Entity\CollectionInterface;
 use Drupal\collection\Exception\MissingCollectionException;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\joinup_bundle_class\ShortIdTrait;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Entity subclass for the 'solution' bundle.
@@ -39,12 +39,18 @@ class Solution extends Rdf implements SolutionInterface {
   /**
    * {@inheritdoc}
    */
-  public function getGroup(): RdfInterface {
+  public function getGroup(): GroupInterface {
     $field_item = $this->getFirstItem('collection');
     if (!$field_item || $field_item->isEmpty()) {
       throw new MissingGroupException();
     }
-    return $field_item->entity;
+    $collection = $field_item->entity;
+    if (empty($collection)) {
+      // The collection entity can be empty in case it has been deleted and the
+      // affiliated solutions have not yet been garbage collected.
+      throw new MissingGroupException();
+    }
+    return $collection;
   }
 
   /**

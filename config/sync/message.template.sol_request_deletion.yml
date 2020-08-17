@@ -1,7 +1,9 @@
 uuid: e69b808c-e10e-4a19-b914-c60e02dde36a
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: LutvdK6B1IOF7DuulKyR2KcHcp7UTxZgFw7LsREsAno
 template: sol_request_deletion
