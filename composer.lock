@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d2d86f7c63cbea2e803630471b9f18fb",
+    "content-hash": "131172575cfcc42641c5bd7d73199712",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6998,17 +6998,17 @@
         },
         {
             "name": "drupal/sparql_entity_storage",
-            "version": "1.0.0-alpha5",
+            "version": "1.0.0-alpha3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/sparql_entity_storage.git",
-                "reference": "8.x-1.0-alpha5"
+                "reference": "8.x-1.0-alpha3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/sparql_entity_storage-8.x-1.0-alpha5.zip",
-                "reference": "8.x-1.0-alpha5",
-                "shasum": "20536f2aad9b1d4513c05b94db984b6c4bc8a52d"
+                "url": "https://ftp.drupal.org/files/projects/sparql_entity_storage-8.x-1.0-alpha3.zip",
+                "reference": "8.x-1.0-alpha3",
+                "shasum": "58d35c4880c597b9401d8f156876868c42fb8db1"
             },
             "require": {
                 "drupal/core": "^8",
@@ -7022,8 +7022,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-alpha5",
-                    "datestamp": "1593781886",
+                    "version": "8.x-1.0-alpha3",
+                    "datestamp": "1581875527",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
