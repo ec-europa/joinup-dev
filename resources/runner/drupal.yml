@@ -156,7 +156,7 @@ drupal:
           'port' => getenv('DRUPAL_DATABASE_PORT'),
           'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
           'driver' => 'mysql',
-          'init_commands' => ['isolation' => "SET SESSION tx_isolation='READ-COMMITTED'"],
+          'init_commands' => ['isolation' => "SET SESSION transaction_isolation='READ-COMMITTED'"],
         ];
         $databases['sparql_default']['default'] = [
           'prefix' => '',
