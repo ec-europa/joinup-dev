@@ -148,7 +148,9 @@ Feature: Collections Overview
 
     When I am logged in as "Yiannis Parios"
     And I click "Collections"
-    Then the "My collections content" inline facet should allow selecting the following values "My collections (3), Featured collections (2)"
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | My collections (3)       |
+      | Featured collections (2) |
     And the page should be cacheable
 
     When I click "My collections" in the "My collections content" inline facet
@@ -156,7 +158,9 @@ Feature: Collections Overview
       | Yiannis Parios collection 1 |
       | Yiannis Parios collection 2 |
       | Yiannis Parios collection 3 |
-    And the "My collections content" inline facet should allow selecting the following values "Featured collections (2), All collections"
+    And the "My collections content" inline facet should allow selecting the following values:
+      | Featured collections (2) |
+      | All collections          |
     And the page should be cacheable
 
     # Regression test to ensure that the facets are cached by user.
@@ -164,40 +168,51 @@ Feature: Collections Overview
     # to be leaked to other users.
     # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
     When I click "All collections" in the "My collections content" inline facet
-    Then the "My collections content" inline facet should allow selecting the following values "My collections (3), Featured collections (2)"
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | My collections (3)       |
+      | Featured collections (2) |
     And the page should be cacheable
 
     When I am logged in as "Carolina Mercedes"
     When I click "Collections"
-    Then the "My collections content" inline facet should allow selecting the following values "Featured collections (2), My collections (1)"
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | Featured collections (2) |
+      | My collections (1)       |
     And the page should be cacheable
 
     When I click "My collections" in the "My collections content" inline facet
     Then I should see the following tiles in the correct order:
       | Fed up meatlovers |
-    And the "My collections content" inline facet should allow selecting the following values "Featured collections (2), All collections"
+    And the "My collections content" inline facet should allow selecting the following values:
+      | Featured collections (2) |
+      | All collections          |
     And the page should be cacheable
     # Verify that the facets are cached for the correct user by visiting again
     # the collections page without any facet filter.
     When I click "All collections" in the "My collections content" inline facet
-    Then the "My collections content" inline facet should allow selecting the following values "Featured collections (2), My collections (1)"
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | Featured collections (2) |
+      | My collections (1)       |
     And the page should be cacheable
 
     When I am an anonymous user
     And I click "Collections"
     # The anonymous user has no access to the "My collections" facet entry.
-    Then the "My collections content" inline facet should allow selecting the following values "Featured collections (2)"
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | Featured collections (2) |
     And the page should be cacheable
 
     When I click "Featured collections" in the "My collections content" inline facet
     Then I should see the following tiles in the correct order:
       | Enemies of the state |
       | Ugly farmers         |
-    And the "My collections content" inline facet should allow selecting the following values "All collections"
+    And the "My collections content" inline facet should allow selecting the following values:
+      | All collections |
     And the page should be cacheable
 
     When I click "All collections" in the "My collections content" inline facet
-    Then the "My collections content" inline facet should allow selecting the following values "Featured collections (2)"
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | Featured collections (2) |
     And the page should be cacheable
 
     When I am logged in as "Carolina Mercedes"

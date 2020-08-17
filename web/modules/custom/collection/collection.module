@@ -17,6 +17,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\collection\Entity\Collection;
+use Drupal\collection\Entity\GlossaryTerm;
 use Drupal\collection\Plugin\Field\FieldType\LastUpdatedFieldItemList;
 use Drupal\node\NodeInterface;
 use Drupal\og\Entity\OgRole;
@@ -47,6 +48,15 @@ function collection_theme($existing, $type, $theme, $path) {
     'collection_leave_button' => [
       'variables' => [
         'confirm' => '',
+      ],
+    ],
+
+    // The collection glossary navigation.
+    'glossary_navigator' => [
+      'variables' => [
+        'url' => NULL,
+        'letters' => [],
+        'current' => NULL,
       ],
     ],
   ];
@@ -80,6 +90,9 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
 function collection_entity_bundle_info_alter(&$bundles) {
   if (!empty($bundles['rdf_entity']['collection'])) {
     $bundles['rdf_entity']['collection']['class'] = Collection::class;
+  }
+  if (!empty($bundles['node']['glossary'])) {
+    $bundles['node']['glossary']['class'] = GlossaryTerm::class;
   }
 }
 

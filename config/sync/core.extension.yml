@@ -34,6 +34,7 @@ module:
   dynamic_page_cache: 0
   editor: 0
   editor_file: 0
+  eif: 0
   eira: 0
   email_registration: 0
   embed_block: 0
@@ -45,6 +46,7 @@ module:
   facets: 0
   field: 0
   field_group: 0
+  field_permissions: 0
   file: 0
   file_url: 0
   filter: 0
@@ -182,6 +184,7 @@ module:
   view_unpublished: 0
   views_bulk_operations: 0
   views_data_export: 0
+  whats_new: 0
   workflow_state_permission: 0
   menu_admin_per_menu: 1
   menu_link_content: 1

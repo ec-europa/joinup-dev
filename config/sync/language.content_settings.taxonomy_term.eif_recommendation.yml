@@ -1,0 +1,11 @@
+uuid: aa91634b-7bf2-4e09-ab4f-2f03205a4a39
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.eif_recommendation
+id: taxonomy_term.eif_recommendation
+target_entity_type_id: taxonomy_term
+target_bundle: eif_recommendation
+default_langcode: site_default
+language_alterable: false

@@ -761,6 +761,11 @@ class JoinupContext extends RawDrupalContext {
         'scope' => 'field_scope',
         'state' => 'field_state',
       ],
+      'glossary' => [
+        'abbreviation' => 'field_glossary_abbreviation',
+        'definition' => 'field_glossary_definition:value',
+        'summary' => 'field_glossary_definition:summary',
+      ],
       'news' => [
         'headline' => 'field_news_headline',
         'keywords' => 'field_keywords',

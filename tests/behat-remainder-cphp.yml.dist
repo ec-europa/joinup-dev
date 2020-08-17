@@ -18,6 +18,7 @@ default:
         - Drupal\joinup\Context\ContactInformationContext
         - Drupal\joinup\Context\CustomPageContext
         - Drupal\joinup\Context\DrupalContext
+        - Drupal\joinup\Context\EifContext
         - Drupal\joinup\Context\EuplContext
         - Drupal\joinup\Context\Isa2AnalyticsContext
         - Drupal\joinup\Context\JoinupCommunityContentContext
@@ -54,6 +55,7 @@ default:
             s3Key: '${exports.s3.key}'
             s3Secret: '${exports.s3.secret}'
         - Drupal\joinup\Context\SolutionContext
+        - Drupal\joinup\Context\WhatsNewContext
         - Drupal\Tests\cas_mock_server\Context\CasMockServerContext:
             attributes_map:
               firstName: First name

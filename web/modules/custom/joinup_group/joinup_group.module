@@ -16,9 +16,9 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
+use Drupal\joinup_group\Event\GroupMenuLinksEvent;
 use Drupal\joinup_group\Form\RdfDeleteForm;
 use Drupal\joinup_group\JoinupGroupHelper;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
@@ -161,49 +161,31 @@ function joinup_group_entity_graph_access(EntityInterface $entity, string $opera
 /**
  * Implements hook_ENTITY_TYPE_insert() for RDF entities.
  */
-function joinup_group_rdf_entity_insert(RdfInterface $entity): void {
-  // When a collection or solution is created, create a new navigation menu and
-  // associate it with the new collection or solution. This menu can be used to
-  // link to custom pages, member overviews, an about page etc.
-  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && in_array($entity->bundle(), ['collection', 'solution'])) {
-    $values = [
-      'type' => 'navigation',
-      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $entity->id(),
-    ];
-    $og_menu_instance = OgMenuInstance::create($values);
-    $og_menu_instance->save();
-
-    // Automatically add a link to the overview and about pages of the
-    // collection entity.
-    $menu_name = 'ogmenu-' . $og_menu_instance->id();
-    $link = MenuLinkContent::create([
-      'title' => t('Overview'),
-      'menu_name' => $menu_name,
-      'link' => ['uri' => $entity->toUrl()->toUriString()],
-      'weight' => -10,
-    ]);
-    $link->save();
-
-    $link = MenuLinkContent::create([
-      'title' => t('Members'),
-      'menu_name' => $menu_name,
-      'link' => ['uri' => $entity->toUrl('member-overview')->toUriString()],
-      'weight' => -9,
-    ]);
-    $link->save();
-
-    $link = MenuLinkContent::create([
-      'title' => t('About'),
-      'menu_name' => $menu_name,
-      'link' => ['uri' => $entity->toUrl('about-page')->toUriString()],
-      'weight' => -8,
-    ]);
-    $link->save();
+function joinup_group_rdf_entity_insert(RdfInterface $group): void {
+  if (!JoinupGroupHelper::isGroup($group)) {
+    return;
   }
 
-  // Invalidate all list caches tagged with the affected bundle so the that
-  // they will be regenerated.
-  Cache::invalidateTags(["rdf_entity_list:{$entity->bundle()}"]);
+  // When a group is created, create a new navigation menu and associate it with
+  // the new collection or solution. This menu can be used to link to custom
+  // pages, member overviews, an about page, etc.
+  $og_menu_instance = OgMenuInstance::create([
+    'type' => 'navigation',
+    OgGroupAudienceHelperInterface::DEFAULT_FIELD => $group->id(),
+  ]);
+  $og_menu_instance->save();
+  $menu_name = 'ogmenu-' . $og_menu_instance->id();
+
+  /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher */
+  $event_dispatcher = \Drupal::service('event_dispatcher');
+
+  // Allow third-party to add group menu links.
+  $event = new GroupMenuLinksEvent($group, $menu_name, \Drupal::entityTypeManager());
+  $event_dispatcher->dispatch($event::ADD_LINKS, $event);
+
+  // Invalidate all list caches tagged with the affected bundle so the that they
+  // will be regenerated.
+  Cache::invalidateTags(["rdf_entity_list:{$group->bundle()}"]);
 }
 
 /**

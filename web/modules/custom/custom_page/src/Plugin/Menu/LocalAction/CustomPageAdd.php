@@ -33,6 +33,9 @@ class CustomPageAdd extends LocalActionDefault {
         throw new ResourceNotFoundException();
       }
     }
+    if (empty($parameters['node_type'])) {
+      $parameters['node_type'] = 'custom_page';
+    }
 
     return $parameters;
   }

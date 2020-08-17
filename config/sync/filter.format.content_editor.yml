@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - collection
     - editor
     - embed_block
     - image
@@ -116,4 +117,10 @@ filters:
     provider: embed_block
     status: true
     weight: -39
+    settings: {  }
+  collection_glossary:
+    id: collection_glossary
+    provider: collection
+    status: true
+    weight: 0
     settings: {  }

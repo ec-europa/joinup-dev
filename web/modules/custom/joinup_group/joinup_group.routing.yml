@@ -5,11 +5,13 @@ entity.rdf_entity.about_page:
     _title_callback: '\Drupal\joinup_group\Controller\AboutPageController::aboutPageTitle'
   requirements:
     _entity_access: 'rdf_entity.view'
-    _custom_access: '\Drupal\joinup_group\Controller\AboutPageController::aboutPageAccess'
   options:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
+        bundle:
+          - collection
+          - solution
 
 entity.rdf_entity.member_overview:
   path: 'rdf_entity/{rdf_entity}/members'
@@ -22,6 +24,9 @@ entity.rdf_entity.member_overview:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
+        bundle:
+          - collection
+          - solution
     _og_entity_type_id: rdf_entity
 
 joinup_group.membership_delete_action.confirm:
@@ -38,3 +43,21 @@ joinup_group.transfer_group_ownership_confirm:
     _title: Transfer
   requirements:
     _custom_access: 'Drupal\joinup_group\Form\TransferGroupOwnershipConfirmForm::access'
+
+joinup_group.add_content:
+  path: /rdf_entity/{rdf_entity}/{node_type}/add
+  defaults:
+    _controller: Drupal\joinup_group\Controller\GroupNodeController::add
+    _title_callback: Drupal\joinup_group\Controller\GroupNodeController::addTitle
+  requirements:
+    _custom_access: Drupal\joinup_group\Controller\GroupNodeController::createAccess
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+        bundle:
+          - collection
+          - solution
+      node_type:
+        type: entity:node_type
+        with_config_overrides: TRUE
