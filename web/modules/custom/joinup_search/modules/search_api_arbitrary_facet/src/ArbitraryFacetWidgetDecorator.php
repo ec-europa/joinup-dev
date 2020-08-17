@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\search_api_arbitrary_facet;
 
-use Drupal\Core\Cache\Context\CacheContextsManager;
+use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -29,7 +29,7 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface, ContainerF
   protected $original;
 
   /**
-   * The arbitratry facet plugin manager.
+   * The arbitrary facet plugin manager.
    *
    * @var \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetManager
    */
@@ -44,14 +44,21 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface, ContainerF
    *   The plugin ID for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Cache\Context\CacheContextsManager $cache_contexts_manager
-   *   The cache contexts manager service.
+   * @param \Drupal\Component\Plugin\PluginManagerInterface $arbitrary_facet_plugin_manager
+   *   The Arbitrary Facets plugin manager.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, CacheContextsManager $cache_contexts_manager) {
-    // Instantiate the decorated object.
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, PluginManagerInterface $arbitrary_facet_plugin_manager) {
+    $this->arbitraryFacetManager = $arbitrary_facet_plugin_manager;
+
+    // Instantiate the decorated object. This needs to be done directly rather
+    // than through the Facets widget plugin manager to avoid an endless loop.
     $class = $plugin_definition['decorated_class'];
-    $this->original = new $class($configuration, $plugin_id, $plugin_definition, $cache_contexts_manager);
-    $this->arbitraryFacetManager = \Drupal::getContainer()->get('plugin.manager.arbitrary_facet');
+    if (is_subclass_of($class, 'Drupal\Core\Plugin\ContainerFactoryPluginInterface')) {
+      $this->original = $class::create(\Drupal::getContainer(), $configuration, $plugin_id, $plugin_definition);
+    }
+    else {
+      $this->original = new $class($configuration, $plugin_id, $plugin_definition);
+    }
   }
 
   /**
@@ -62,7 +69,7 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface, ContainerF
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('cache_contexts_manager')
+      $container->get('plugin.manager.arbitrary_facet')
     );
   }
 
