@@ -15,12 +15,12 @@ trait GroupTrait {
   /**
    * {@inheritdoc}
    */
-  public function getMembership(int $uid): ?OgMembershipInterface {
+  public function getMembership(int $uid, array $states = [OgMembershipInterface::STATE_ACTIVE]): ?OgMembershipInterface {
     assert(is_subclass_of($this, ContentEntityBase::class), __TRAIT__ . ' is intended to be used in bundle classes for content entities.');
 
     /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
     $membership_manager = \Drupal::service('og.membership_manager');
-    return $membership_manager->getMembership($this, $uid, [OgMembershipInterface::STATE_ACTIVE]);
+    return $membership_manager->getMembership($this, $uid, $states);
   }
 
 }

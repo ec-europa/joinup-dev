@@ -19,6 +19,10 @@ interface GroupInterface extends ContentEntityInterface {
    *
    * @param int $uid
    *   The ID of the user for which to return the membership.
+   * @param array $states
+   *   (optional) Array with the states to return. Defaults to only returning
+   *   active memberships. In order to retrieve all memberships regardless of
+   *   state, pass `OgMembershipInterface::ALL_STATES`.
    *
    * @return \Drupal\og\OgMembershipInterface|null
    *   The OgMembership entity, or NULL if the user with the given ID is not a
@@ -29,6 +33,6 @@ interface GroupInterface extends ContentEntityInterface {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    *   Thrown when the OG module is not enabled.
    */
-  public function getMembership(int $uid): ?OgMembershipInterface;
+  public function getMembership(int $uid, array $states = [OgMembershipInterface::STATE_ACTIVE]): ?OgMembershipInterface;
 
 }
