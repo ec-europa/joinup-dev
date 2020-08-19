@@ -9,12 +9,14 @@ Feature: Collection moderation
     When I am logged in as an "authenticated user"
     And I go to the propose collection form
     Then the following buttons should be present "Save as draft, Propose"
-    And the following buttons should not be present "Publish, Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Publish, Request archival, Archive"
+    And I should not see the link "Delete"
 
     When I am logged in as a user with the "moderator" role
     And I go to the propose collection form
     Then the following buttons should be present "Save as draft, Propose, Publish"
-    And the following buttons should not be present "Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Request archival, Archive"
+    And I should not see the link "Delete"
 
   Scenario: Test the available buttons in every stage of the editorial workflow
     Given the following owner:
@@ -39,7 +41,6 @@ Feature: Collection moderation
       | The Licking Silence     | The Licking Silence     | logo.png | banner.jpg | Simon Sandoval | Francis             | proposed         |
       | Person of Wizards       | Person of Wizards       | logo.png | banner.jpg | Simon Sandoval | Francis             | validated        |
       | The Shard's Hunter      | The Shard's Hunter      | logo.png | banner.jpg | Simon Sandoval | Francis             | archival request |
-      | The Dreams of the Mists | The Dreams of the Mists | logo.png | banner.jpg | Simon Sandoval | Francis             | deletion request |
       | Luck in the Abyss       | Luck in the Abyss       | logo.png | banner.jpg | Simon Sandoval | Francis             | archived         |
     And the following collection user memberships:
       | collection              | user         | roles       |
@@ -47,13 +48,11 @@ Feature: Collection moderation
       | The Licking Silence     | Erika Reid   | owner       |
       | Person of Wizards       | Erika Reid   | owner       |
       | The Shard's Hunter      | Erika Reid   | owner       |
-      | The Dreams of the Mists | Erika Reid   | owner       |
       | Luck in the Abyss       | Erika Reid   | owner       |
       | Deep Past               | Carole James | facilitator |
       | The Licking Silence     | Carole James | facilitator |
       | Person of Wizards       | Carole James | facilitator |
       | The Shard's Hunter      | Carole James | facilitator |
-      | The Dreams of the Mists | Carole James | facilitator |
       | Luck in the Abyss       | Carole James | facilitator |
 
     # The following table tests the allowed transitions in a collection.
@@ -66,40 +65,61 @@ Feature: Collection moderation
     # When I click the "Edit" link
     # Then the state field should have only the given states available.
     Then for the following collection, the corresponding user should have the corresponding available state buttons:
-      | collection              | user            | buttons                                                             |
+      | collection              | user            | buttons                                           |
 
-      # The owner is also a facilitator so the only
-      # UATable part of the owner is that he has the ability to request deletion
-      # or archival when the collection is validated.
-      | Deep Past               | Erika Reid      | Save as draft, Propose                                              |
-      | The Licking Silence     | Erika Reid      | Propose, Save as draft                                              |
+      # The owner is also a facilitator so the only UATable part of the owner is that they have the ability to
+      # request archival and delete the collection when the collection is validated.
+      | Deep Past               | Erika Reid      | Save as draft, Propose                            |
+      | The Licking Silence     | Erika Reid      | Propose, Save as draft                            |
       # Person of Wizards has a published version so the facilitator can publish directly.
       # The facilitator can still save as draft or propose for internal checking between eligible users.
-      | Person of Wizards       | Erika Reid      | Publish, Save as draft, Propose, Request archival, Request deletion |
-      | The Shard's Hunter      | Erika Reid      |                                                                     |
-      | The Dreams of the Mists | Erika Reid      |                                                                     |
-      | Luck in the Abyss       | Erika Reid      |                                                                     |
+      # Note that the 'Delete' action is represented as a link rather than a button and has a dedicated test below.
+      | Person of Wizards       | Erika Reid      | Publish, Save as draft, Propose, Request archival |
+      | The Shard's Hunter      | Erika Reid      |                                                   |
+      | Luck in the Abyss       | Erika Reid      |                                                   |
 
       # The following collections do not follow the rule above and should be
-      # testes as shown.
-      | Deep Past               | Carole James    | Save as draft, Propose                                              |
-      | The Licking Silence     | Carole James    | Propose, Save as draft                                              |
-      | Person of Wizards       | Carole James    | Publish, Save as draft, Propose                                     |
-      | The Shard's Hunter      | Carole James    |                                                                     |
-      | The Dreams of the Mists | Carole James    |                                                                     |
-      | Luck in the Abyss       | Carole James    |                                                                     |
-      | Deep Past               | Velma Smith     |                                                                     |
-      | The Licking Silence     | Velma Smith     |                                                                     |
-      | Person of Wizards       | Velma Smith     |                                                                     |
-      | The Shard's Hunter      | Velma Smith     |                                                                     |
-      | The Dreams of the Mists | Velma Smith     |                                                                     |
-      | Luck in the Abyss       | Velma Smith     |                                                                     |
-      | Deep Past               | Lena Richardson | Save as draft, Propose, Publish                                     |
-      | The Licking Silence     | Lena Richardson | Propose, Save as draft, Publish                                     |
-      | Person of Wizards       | Lena Richardson | Publish, Save as draft, Propose                                     |
-      | The Shard's Hunter      | Lena Richardson | Publish, Archive                                                    |
-      | The Dreams of the Mists | Lena Richardson | Publish                                                             |
-      | Luck in the Abyss       | Lena Richardson |                                                                     |
+      # tested as shown.
+      | Deep Past               | Carole James    | Save as draft, Propose                            |
+      | The Licking Silence     | Carole James    | Propose, Save as draft                            |
+      | Person of Wizards       | Carole James    | Publish, Save as draft, Propose                   |
+      | The Shard's Hunter      | Carole James    |                                                   |
+      | Luck in the Abyss       | Carole James    |                                                   |
+      | Deep Past               | Velma Smith     |                                                   |
+      | The Licking Silence     | Velma Smith     |                                                   |
+      | Person of Wizards       | Velma Smith     |                                                   |
+      | The Shard's Hunter      | Velma Smith     |                                                   |
+      | Luck in the Abyss       | Velma Smith     |                                                   |
+      | Deep Past               | Lena Richardson | Save as draft, Propose, Publish                   |
+      | The Licking Silence     | Lena Richardson | Propose, Save as draft, Publish                   |
+      | Person of Wizards       | Lena Richardson | Publish, Save as draft, Propose                   |
+      | The Shard's Hunter      | Lena Richardson | Publish, Archive                                  |
+      | Luck in the Abyss       | Lena Richardson |                                                   |
+
+    # The 'Delete' action is not a button but a link leading to a confirmation
+    # page that is styled as a button. It should only be available to the owner
+    # of a validated collection.
+    And the visibility of the delete link should be as follows for these users in these collections:
+      | collection              | user            | delete link |
+      | Person of Wizards       | Erika Reid      | yes         |
+      | The Shard's Hunter      | Erika Reid      | no          |
+      | Luck in the Abyss       | Erika Reid      | no          |
+      | Deep Past               | Carole James    | no          |
+      | The Licking Silence     | Carole James    | no          |
+      | Person of Wizards       | Carole James    | no          |
+      | The Shard's Hunter      | Carole James    | no          |
+      | Luck in the Abyss       | Carole James    | no          |
+      | Deep Past               | Velma Smith     | no          |
+      | The Licking Silence     | Velma Smith     | no          |
+      | Person of Wizards       | Velma Smith     | no          |
+      | The Shard's Hunter      | Velma Smith     | no          |
+      | Luck in the Abyss       | Velma Smith     | no          |
+      # A moderator can also see the delete link.
+      | Deep Past               | Lena Richardson | yes         |
+      | The Licking Silence     | Lena Richardson | yes         |
+      | Person of Wizards       | Lena Richardson | yes         |
+      | The Shard's Hunter      | Lena Richardson | yes         |
+      | Luck in the Abyss       | Lena Richardson | yes         |
 
     # Authentication sample checks.
     Given I am logged in as "Carole James"
@@ -110,7 +130,8 @@ Feature: Collection moderation
     When I click "Edit"
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose"
-    And the following buttons should not be present "Publish, Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Publish, Request archival, Archive"
+    And I should not see the link "Delete"
 
     # Expected access.
     When I go to the "The Licking Silence" collection
@@ -118,7 +139,8 @@ Feature: Collection moderation
     When I click "Edit"
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose"
-    And the following buttons should not be present "Publish, Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Publish, Request archival, Archive"
+    And I should not see the link "Delete"
 
     # One check for the moderator.
     Given I am logged in as "Lena Richardson"
@@ -128,9 +150,21 @@ Feature: Collection moderation
     When I click "Edit"
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose, Publish"
-    And the following buttons should not be present "Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Request archival, Archive"
     # The delete button is actually a link that is styled to look like a button.
     And I should see the link "Delete"
+
+    # Check that the owner can delete their own collection.
+    Given I am logged in as "Erika Reid"
+    And I go to the "Person of Wizards" collection
+    When I click "Edit"
+    And I click "Delete"
+    Then I should see the heading "Are you sure you want to delete collection Person of Wizards?"
+    And I should see "This action cannot be undone."
+    When I press "Delete"
+    # @todo: check that a success message is shown.
+    # @see ISAICP-6140
+    Then I should be on the homepage
 
   @terms
   Scenario: Published collections should be shown in the collections overview page.

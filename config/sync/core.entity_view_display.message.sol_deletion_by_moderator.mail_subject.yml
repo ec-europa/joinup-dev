@@ -1,13 +1,13 @@
-uuid: d602e860-36c5-41cd-8105-265f3e53ff36
+uuid: d602e860-36c5-41cd-8105-265f3e53ff37
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.message.mail_subject
-    - message.template.sol_deletion_no_approval
-id: message.sol_deletion_no_approval.mail_subject
+    - message.template.sol_deletion_by_moderator
+id: message.sol_deletion_by_moderator.mail_subject
 targetEntityType: message
-bundle: sol_deletion_no_approval
+bundle: sol_deletion_by_moderator
 mode: mail_subject
 content:
   partial_0:

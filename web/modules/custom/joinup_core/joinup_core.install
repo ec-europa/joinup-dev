@@ -91,3 +91,23 @@ function joinup_core_requirements($phase): array {
 
   return $requirements;
 }
+
+/**
+ * Remove message history for obsolete notification types.
+ */
+function joinup_core_update_0106400(): void {
+  $removed_templates = [
+    'sol_request_deletion',
+    'sol_deletion_approved',
+    'sol_deletion_reject',
+    'sol_deletion_no_approval',
+  ];
+
+  $connection = \Drupal::database();
+  foreach (['message', 'message_field_data'] as $table) {
+    $connection
+      ->delete($table)
+      ->condition('template', $removed_templates, 'IN')
+      ->execute();
+  }
+}
