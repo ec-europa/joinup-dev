@@ -9,7 +9,7 @@ dependencies:
 id: joinup_theme_help
 theme: joinup_theme
 region: content
-weight: -20
+weight: -19
 provider: null
 plugin: help_block
 settings:

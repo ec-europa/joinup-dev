@@ -12,7 +12,7 @@ dependencies:
 id: views_block__eif_related_entities_block_1
 theme: joinup_theme
 region: content
-weight: -11
+weight: -13
 provider: null
 plugin: 'views_block:eif_related_entities-block_1'
 settings:

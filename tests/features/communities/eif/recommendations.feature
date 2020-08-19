@@ -40,15 +40,107 @@ Feature:
     When I click "Recommendations" in the "Left sidebar" region
     Then I should see the heading "EIF recommendations"
 
-    # Sample check some links.
-    And I should see the following links:
-      | Recommendation 1 \| Underlying Principle 1: subsidiarity and proportionality |
-      | Recommendation 2 \| Underlying Principle 2: openness                         |
-      | Recommendation 3 \| Underlying Principle 2: openness                         |
-      | Recommendation 4 \| Underlying Principle 2: openness                         |
-      | Recommendation 5 \| Underlying Principle 3: transparency                     |
-      | Recommendation 6 \| Underlying Principle 4: reusability                      |
-      | Recommendation 7 \| Underlying Principle 4: reusability                      |
+    # Assert the full table.
+    And the "eif recommendations" table should be:
+      | Recommendation topics                         | EIF Pillars              | Recommendations                   |
+      | Subsidiarity and proportionality              | Underlying Principle 1   | Recommendation 1                  |
+      | Openness                                      | Underlying Principle 2   | Recommendation 2, 3, 4            |
+      | Transparency                                  | Underlying Principle 3   | Recommendation 5                  |
+      | Reusability                                   | Underlying Principle 4   | Recommendation 6, 7               |
+      | Technological neutrality and data portability | Underlying Principle 5   | Recommendation 8, 9               |
+      | User centricity                               | Underlying Principle 6   | Recommendation 10, 11, 12, 13     |
+      | Inclusion and accessibility                   | Underlying Principle 7   | Recommendation 14                 |
+      | Security and privacy                          | Underlying Principle 8   | Recommendation 15                 |
+      | Multilingualism                               | Underlying Principle 9   | Recommendation 16                 |
+      | Administrative simplification                 | Underlying Principle 10  | Recommendation 17                 |
+      | Preservation of information                   | Underlying Principle 11  | Recommendation 18                 |
+      | Assessment of effectiveness and efficiency    | Underlying Principle 12  | Recommendation 19                 |
+      | Interoperability governance                   | Interoperability Layer 1 | Recommendation 20, 21, 22, 23, 24 |
+      | Integrated public service governance          | Interoperability Layer 2 | Recommendation 25, 26             |
+      | Legal interoperability                        | Interoperability Layer 3 | Recommendation 27                 |
+      | Organisational interoperability               | Interoperability Layer 4 | Recommendation 28, 29             |
+      | Semantic interoperability                     | Interoperability Layer 5 | Recommendation 30, 31, 32         |
+      | Technical interoperability                    | Interoperability Layer 6 | Recommendation 33                 |
+      | Model                                         | Model                    | Recommendation 34, 35             |
+      | Internal information sources and services     | Basic Component 2        | Recommendation 36                 |
+      | Base registries                               | Basic Component 3        | Recommendation 37, 38, 39, 40     |
+      | Open data                                     | Basic Component 4        | Recommendation 41, 42, 43         |
+      | Catalogues                                    | Basic Component 5        | Recommendation 44                 |
+      | External information sources and services     | Basic Component 6        | Recommendation 45                 |
+      | Security and privacy                          | Basic Component 7        | Recommendation 46, 47             |
+
+    # Assert that recommendations are concatenated when grouped but only the first receive the keyword "Recommendation"
+    # as part of the link.
+    And I should see the link "Recommendation 20"
+    And I should see the link "21"
+    But I should not see the link "Recommendation 21"
+
+    # Assert sub tables according to the facet.
+    When I click "Conceptual model" in the "Content" region
+    Then the "eif recommendations" table should be:
+      | Recommendation topics                         | EIF Pillars              | Recommendations                   |
+      | Model                                         | Model                    | Recommendation 34, 35             |
+      | Internal information sources and services     | Basic Component 2        | Recommendation 36                 |
+      | Base registries                               | Basic Component 3        | Recommendation 37, 38, 39, 40     |
+      | Open data                                     | Basic Component 4        | Recommendation 41, 42, 43         |
+      | Catalogues                                    | Basic Component 5        | Recommendation 44                 |
+      | External information sources and services     | Basic Component 6        | Recommendation 45                 |
+      | Security and privacy                          | Basic Component 7        | Recommendation 46, 47             |
+
+    When I click "Interoperability layer" in the "Content" region
+    Then the "eif recommendations" table should be:
+      | Recommendation topics                         | EIF Pillars              | Recommendations                   |
+      | Interoperability governance                   | Interoperability Layer 1 | Recommendation 20, 21, 22, 23, 24 |
+      | Integrated public service governance          | Interoperability Layer 2 | Recommendation 25, 26             |
+      | Legal interoperability                        | Interoperability Layer 3 | Recommendation 27                 |
+      | Organisational interoperability               | Interoperability Layer 4 | Recommendation 28, 29             |
+      | Semantic interoperability                     | Interoperability Layer 5 | Recommendation 30, 31, 32         |
+      | Technical interoperability                    | Interoperability Layer 6 | Recommendation 33                 |
+
+    When I click "Underlying principle" in the "Content" region
+    Then the "eif recommendations" table should be:
+      | Recommendation topics                         | EIF Pillars              | Recommendations                   |
+      | Subsidiarity and proportionality              | Underlying Principle 1   | Recommendation 1                  |
+      | Openness                                      | Underlying Principle 2   | Recommendation 2, 3, 4            |
+      | Transparency                                  | Underlying Principle 3   | Recommendation 5                  |
+      | Reusability                                   | Underlying Principle 4   | Recommendation 6, 7               |
+      | Technological neutrality and data portability | Underlying Principle 5   | Recommendation 8, 9               |
+      | User centricity                               | Underlying Principle 6   | Recommendation 10, 11, 12, 13     |
+      | Inclusion and accessibility                   | Underlying Principle 7   | Recommendation 14                 |
+      | Security and privacy                          | Underlying Principle 8   | Recommendation 15                 |
+      | Multilingualism                               | Underlying Principle 9   | Recommendation 16                 |
+      | Administrative simplification                 | Underlying Principle 10  | Recommendation 17                 |
+      | Preservation of information                   | Underlying Principle 11  | Recommendation 18                 |
+      | Assessment of effectiveness and efficiency    | Underlying Principle 12  | Recommendation 19                 |
+
+    When I click "All recommendations" in the "Content" region
+    Then the "eif recommendations" table should be:
+      | Recommendation topics                         | EIF Pillars              | Recommendations                   |
+      | Subsidiarity and proportionality              | Underlying Principle 1   | Recommendation 1                  |
+      | Openness                                      | Underlying Principle 2   | Recommendation 2, 3, 4            |
+      | Transparency                                  | Underlying Principle 3   | Recommendation 5                  |
+      | Reusability                                   | Underlying Principle 4   | Recommendation 6, 7               |
+      | Technological neutrality and data portability | Underlying Principle 5   | Recommendation 8, 9               |
+      | User centricity                               | Underlying Principle 6   | Recommendation 10, 11, 12, 13     |
+      | Inclusion and accessibility                   | Underlying Principle 7   | Recommendation 14                 |
+      | Security and privacy                          | Underlying Principle 8   | Recommendation 15                 |
+      | Multilingualism                               | Underlying Principle 9   | Recommendation 16                 |
+      | Administrative simplification                 | Underlying Principle 10  | Recommendation 17                 |
+      | Preservation of information                   | Underlying Principle 11  | Recommendation 18                 |
+      | Assessment of effectiveness and efficiency    | Underlying Principle 12  | Recommendation 19                 |
+      | Interoperability governance                   | Interoperability Layer 1 | Recommendation 20, 21, 22, 23, 24 |
+      | Integrated public service governance          | Interoperability Layer 2 | Recommendation 25, 26             |
+      | Legal interoperability                        | Interoperability Layer 3 | Recommendation 27                 |
+      | Organisational interoperability               | Interoperability Layer 4 | Recommendation 28, 29             |
+      | Semantic interoperability                     | Interoperability Layer 5 | Recommendation 30, 31, 32         |
+      | Technical interoperability                    | Interoperability Layer 6 | Recommendation 33                 |
+      | Model                                         | Model                    | Recommendation 34, 35             |
+      | Internal information sources and services     | Basic Component 2        | Recommendation 36                 |
+      | Base registries                               | Basic Component 3        | Recommendation 37, 38, 39, 40     |
+      | Open data                                     | Basic Component 4        | Recommendation 41, 42, 43         |
+      | Catalogues                                    | Basic Component 5        | Recommendation 44                 |
+      | External information sources and services     | Basic Component 6        | Recommendation 45                 |
+      | Security and privacy                          | Basic Component 7        | Recommendation 46, 47             |
 
   Scenario: Recommendations overview and each recommendation should show the EIF Toolbox header
     Given I am not logged in
@@ -56,7 +148,7 @@ Feature:
     When I click "Recommendations" in the "Left sidebar" region
     Then I should see the heading "EIF Toolbox"
 
-    When I click "Recommendation 1 | Underlying Principle 1: subsidiarity and proportionality"
+    When I click "Recommendation 1"
     Then I should see the heading "EIF Toolbox"
 
   @javascript
@@ -66,51 +158,3 @@ Feature:
     And I open the search bar by clicking on the search icon
     And I enter "Underlying Principle 4" in the search bar and press enter
     Then I should not see the text "Underlying Principle 4" in the "Content" region
-
-  Scenario: The related terms are available in the page in 3 separate facets for filtering.
-    Given I am not logged in
-    And I go to the "EIF Toolbox" solution
-    When I click "Recommendations" in the "Left sidebar" region
-
-    And the "eif principle" inline facet should allow selecting the following values:
-      | Underlying Principle 1: subsidiarity and proportionality              |
-      | Underlying Principle 2: openness                                      |
-      | Underlying Principle 3: transparency                                  |
-      | Underlying Principle 4: reusability                                   |
-      | Underlying Principle 5: technological neutrality and data portability |
-      | Underlying Principle 6: user centricity                               |
-      | Underlying Principle 7: inclusion and accessibility                   |
-      | Underlying Principle 8: security and privacy                          |
-      | Underlying Principle 9: multilingualism                               |
-      | Underlying Principle 10: administrative simplification                |
-      | Underlying Principle 11: preservation of information                  |
-      | Underlying Principle 12: assessment of effectiveness and efficiency   |
-
-    And the "eif interoperability layer" inline facet should allow selecting the following values:
-      | Interoperability Layer 1: Interoperability governance          |
-      | Interoperability Layer 2: Integrated public service governance |
-      | Interoperability Layer 3: Legal interoperability               |
-      | Interoperability Layer 4: Organisational interoperability      |
-      | Interoperability Layer 5: Semantic interoperability            |
-      | Interoperability Layer 6: Technical interoperability           |
-
-    And the "eif conceptual model" inline facet should allow selecting the following values:
-      | Model                                                        |
-      | Basic Component 2: Internal information sources and services |
-      | Basic Component 3: Base registries                           |
-      | Basic Component 4: Open data                                 |
-      | Basic Component 5: Catalogues                                |
-      | Basic Component 6: External information sources and services |
-      | Basic Component 7: Security and privacy                      |
-
-    When I click "Underlying Principle 2: openness" in the "eif principle" inline facet
-    Then I should not see the "eif interoperability layer" inline facet
-    And I should not see the "eif conceptual model" inline facet
-
-    When I click "Underlying Principle 2: openness" in the "eif principle" inline facet
-    Then I should see the "eif interoperability layer" inline facet
-    And I should see the "eif conceptual model" inline facet
-
-    When I click "Basic Component 4: Open data" in the "eif conceptual model" inline facet
-    Then I should not see the "eif principle" inline facet
-    And I should not see the "eif interoperability layer" inline facet

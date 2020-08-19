@@ -28,7 +28,7 @@
       aspects of ensuring and monitoring interoperability at national and EU levels.
     </skos:definition>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Layer/"/>
-    <adms:identifier>16</adms:identifier>
+    <adms:identifier>60</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/IL2">
@@ -38,7 +38,7 @@
       execution, reuse of services and data, and development of new services and ‘building blocks’
     </skos:definition>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Layer/"/>
-    <adms:identifier>17</adms:identifier>
+    <adms:identifier>61</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/IL3">
@@ -48,7 +48,7 @@
       legal frameworks, policies and strategies are able to work together.
     </skos:definition>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Layer/"/>
-    <adms:identifier>18</adms:identifier>
+    <adms:identifier>62</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/IL4">
@@ -58,7 +58,7 @@
       processes, responsibilities and expectations to achieve commonly agreed and mutually beneficial goals.
     </skos:definition>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Layer/"/>
-    <adms:identifier>19</adms:identifier>
+    <adms:identifier>63</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/IL5">
@@ -69,7 +69,7 @@
       sent is what is understood.
     </skos:definition>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Layer/"/>
-    <adms:identifier>20</adms:identifier>
+    <adms:identifier>64</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/IL6">
@@ -80,7 +80,7 @@
       services, data presentation and exchange, and secure communication protocols.
     </skos:definition>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Layer/"/>
-    <adms:identifier>21</adms:identifier>
+    <adms:identifier>65</adms:identifier>
   </skos:Concept>
 
 </rdf:RDF>

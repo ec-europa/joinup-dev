@@ -1,0 +1,22 @@
+uuid: bf8b89be-0189-4979-ba76-c70c6f731736
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.eif_conceptual_model
+  module:
+    - text
+id: taxonomy_term.eif_conceptual_model.default
+targetEntityType: taxonomy_term
+bundle: eif_conceptual_model
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

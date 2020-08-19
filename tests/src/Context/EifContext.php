@@ -95,9 +95,17 @@ class EifContext extends RawDrupalContext {
     $link->save();
 
     // Ensure the taxonomy terms are indexed.
-    $properties = ['vid' => 'eif_recommendation'];
-    $recommendations = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties($properties);
-    foreach ($recommendations as $term) {
+    $vids = [
+      'eif_conceptual_model',
+      'eif_interoperability_layer',
+      'eif_principle',
+      'eif_recommendation',
+    ];
+
+    $entity_type_manager = \Drupal::entityTypeManager();
+    $storage = $entity_type_manager->getStorage('taxonomy_term');
+    $tids = $storage->getQuery()->condition('vid', $vids, 'IN')->execute();
+    foreach ($storage->loadMultiple($tids) as $term) {
       ContentEntity::indexEntity($term);
     }
 
