@@ -3,3 +3,5 @@ type: module
 description: Custom functionality for the European Interoperability Framework community.
 core: 8.x
 package: Joinup communities
+dependencies:
+  - joinup:custom_page
