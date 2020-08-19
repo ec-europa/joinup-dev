@@ -139,7 +139,7 @@ class ContentNegotiationTest extends BrowserTestBase {
    *
    * This is a complex/composite assertion that performs a GET request to the
    * $entity canonical page, by sending $accept_header as 'Accept' header value.
-   * Three elements are checked twice, first for the non-cached page and second
+   * Three elements are checked twice, once for the non-cached page and twice
    * for the cached version:
    * - If the page has been retrieved from the backend or from cache.
    * - The response 'Content-Type' header.
@@ -178,7 +178,7 @@ class ContentNegotiationTest extends BrowserTestBase {
 
     // Check that the page was cached.
     $this->assertEquals('HIT', $session->getResponseHeader('X-Drupal-Cache'));
-    // Check that we don't get the cache from othjer format.
+    // Check that we don't get the cache from other format.
     $this->assertStringStartsWith($this->getMimeType($expected_format), $session->getResponseHeader('Content-Type'));
     // Check the response body. On 'text/html', we only check the first part
     // that always is a standard HTML.
