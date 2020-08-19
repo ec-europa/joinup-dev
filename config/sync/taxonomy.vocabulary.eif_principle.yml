@@ -5,7 +5,7 @@ dependencies: {  }
 third_party_settings:
   rdf_taxonomy:
     locked: false
-name: 'EIF Principle'
+name: 'Underlying principle'
 vid: eif_principle
 description: 'Terms that represent a principle of the EIF Toolbox.'
 weight: 0

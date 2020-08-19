@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d9e085d63f44564f8e799c6c4deb36fa",
+    "content-hash": "ec8ed319b0f958d047980084b7e174b3",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3028,16 +3028,13 @@
                 "shasum": "81210684c378dab856b3c2bce5eeaa58992d2efc"
             },
             "require": {
-                "drupal/core": "~8.0"
+                "drupal/core": "^8 || ^9"
             },
             "suggest": {
                 "drupal/config_split": "Split site configuration for different environments."
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.5",
                     "datestamp": "1572542288",
@@ -4068,27 +4065,27 @@
         },
         {
             "name": "drupal/entity_legal",
-            "version": "2.0.0-beta2",
+            "version": "3.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/entity_legal.git",
-                "reference": "8.x-2.0-beta2"
+                "reference": "3.0.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/entity_legal-8.x-2.0-beta2.zip",
-                "reference": "8.x-2.0-beta2",
-                "shasum": "6b34291eb12439b93994c2c091b78da26d52bf8b"
+                "url": "https://ftp.drupal.org/files/projects/entity_legal-3.0.0-beta1.zip",
+                "reference": "3.0.0-beta1",
+                "shasum": "20f749bcae996b0b55bb5245d4d49881282df16f"
             },
             "require": {
-                "drupal/core": "^8",
+                "drupal/core": "^8 || ^9",
                 "drupal/token": "*"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.0-beta2",
-                    "datestamp": "1575029887",
+                    "version": "3.0.0-beta1",
+                    "datestamp": "1591465086",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6268,7 +6265,8 @@
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff",
                     "The connection with the Sparql database should be set up in ::bootEnvironment() @see https://github.com/ec-europa/rdf_entity/pull/123": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/123.patch",
-                    "Remove duplicated term title from taxonomy page. @see https://github.com/ec-europa/rdf_entity/pull/125": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/125.diff"
+                    "Remove duplicated term title from taxonomy page. @see https://github.com/ec-europa/rdf_entity/pull/125": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/125.diff",
+                    "RDF taxonomy term 'tid' base field is losing some definition entries @see https://github.com/ec-europa/rdf_entity/pull/134": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/134.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9458,7 +9456,17 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2020-05-20T16:45:56+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/Seldaek",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/monolog/monolog",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-07-23T08:35:51+00:00"
         },
         {
             "name": "mtdowling/jmespath.php",

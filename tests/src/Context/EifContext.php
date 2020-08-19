@@ -9,10 +9,12 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
-use Drupal\eif\Eif;
+use Drupal\eif\EifInterface;
 use Drupal\joinup\Traits\SearchTrait;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\node\Entity\Node;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Drupal\sparql_entity_storage\UriEncoder;
@@ -67,7 +69,7 @@ class EifContext extends RawDrupalContext {
     // Create the EIF Toolbox solution.
     $solution = Rdf::create([
       'rid' => 'solution',
-      'id' => Eif::EIF_ID,
+      'id' => EifInterface::EIF_ID,
       'label' => 'EIF Toolbox',
       'collection' => 'http://nifo.collection',
       'field_is_state' => 'validated',
@@ -77,27 +79,49 @@ class EifContext extends RawDrupalContext {
     ]);
     $solution->save();
 
+    Node::create([
+      'type' => 'custom_page',
+      'nid' => EifInterface::EIF_SOLUTIONS_NID,
+      'title' => 'Solutions',
+      'og_audience' => EifInterface::EIF_ID,
+      'field_paragraphs_body' => Paragraph::create([
+        'type' => 'simple_paragraph',
+        'field_body' => [
+          'value' => 'Currently available supporting solutions that can be used as added components that help build interoperability solutions.',
+          'format' => 'content_editor',
+        ],
+      ]),
+    ])->save();
+
     $instances = \Drupal::entityTypeManager()->getStorage('ogmenu_instance')->loadByProperties([
       'type' => 'navigation',
       OgGroupAudienceHelperInterface::DEFAULT_FIELD => $solution->id(),
     ]);
     $instance = reset($instances);
     $menu_name = "ogmenu-{$instance->id()}";
-    $internal_path = Url::fromRoute('view.eif_recommendation.page', [
-      'rdf_entity' => UriEncoder::encodeUrl(Eif::EIF_ID),
-    ])->toUriString();
-    $link = MenuLinkContent::create([
+    MenuLinkContent::create([
       'title' => $this->t('Recommendations'),
       'menu_name' => $menu_name,
-      'link' => ['uri' => $internal_path],
+      'link' => [
+        'uri' => Url::fromRoute('view.eif_recommendation.page', [
+          'rdf_entity' => UriEncoder::encodeUrl(EifInterface::EIF_ID),
+        ])->toUriString(),
+      ],
       'weight' => 4,
-    ]);
-    $link->save();
+    ])->save();
 
     // Ensure the taxonomy terms are indexed.
-    $properties = ['vid' => 'eif_recommendation'];
-    $recommendations = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties($properties);
-    foreach ($recommendations as $term) {
+    $vids = [
+      'eif_conceptual_model',
+      'eif_interoperability_layer',
+      'eif_principle',
+      'eif_recommendation',
+    ];
+
+    $entity_type_manager = \Drupal::entityTypeManager();
+    $storage = $entity_type_manager->getStorage('taxonomy_term');
+    $tids = $storage->getQuery()->condition('vid', $vids, 'IN')->execute();
+    foreach ($storage->loadMultiple($tids) as $term) {
       ContentEntity::indexEntity($term);
     }
 
@@ -118,7 +142,7 @@ class EifContext extends RawDrupalContext {
     $this->disableCommitOnUpdate();
 
     $rdf_ids = [
-      Eif::EIF_ID,
+      EifInterface::EIF_ID,
       'http://nifo.collection',
       'http://example.com/owner',
       'http://example.com/contact',

@@ -101,7 +101,7 @@ class GroupMenuLinksEvent extends Event {
    * @return $this
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
-   *   Thrown if the upload's target resource could not be saved.
+   *   Thrown if the menu link entity could not be saved.
    */
   public function addMenuLink(array $link, MarkupInterface $label, int $weight = 0, array $values = []): self {
     $this->menuLinkContentStorage->create([

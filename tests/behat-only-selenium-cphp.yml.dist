@@ -77,6 +77,7 @@ default:
     LoversOfBehat\TableExtension:
       table_map:
         'group menu edit table': '#menu-overview'
+        'eif recommendations': '.eif-recommendations table'
         'member administration': '.og-members-overview table'
         'licence comparer': 'table[data-drupal-selector="licence-comparer"]'
     Drupal\DrupalExtension:
