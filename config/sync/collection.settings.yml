@@ -1,3 +1,27 @@
+# The array of allowed conditions for collection workflow transitions.
+# Format of array:
+# @code
+# [
+#   <target state> => [
+#     <source state> => [
+#       <role1>
+#       <role2>
+#       .
+#       .
+#     ]
+#   ]
+# ]
+# @endcode
+#
+# The array is a three dimensions array. The first level is the
+# target state the entity transits to. Each target
+# state is an array of allowed source states which in every check, is the
+# current state of the entity. Finally, the source states are arrays
+# of roles that are allowed to perform this action.
+#
+# The reverse indexing here (source states
+# keyed by the target state) is to follow the state_machines module logic
+# of indexing states.
 transitions:
   draft:
     __new__:
@@ -25,6 +49,8 @@ transitions:
     validated:
       - moderator
       - rdf_entity-collection-facilitator
+  # In the following to-state, the facilitator will not actually have permission to execute the transition if there is
+  # not already a published version of the collection.
   validated:
     __new__:
       - moderator
@@ -39,12 +65,7 @@ transitions:
       - rdf_entity-collection-facilitator
     archival_request:
       - moderator
-    deletion_request:
-      - moderator
   archival_request:
-    validated:
-      - rdf_entity-collection-administrator
-  deletion_request:
     validated:
       - rdf_entity-collection-administrator
   archived:

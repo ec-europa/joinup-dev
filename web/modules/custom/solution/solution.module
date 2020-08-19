@@ -483,7 +483,7 @@ function solution_rdf_entity_presave(RdfInterface $entity) {
   if (in_array($state, ['draft', 'proposed', 'needs_update', 'blacklisted'])) {
     $entity->set('graph', 'draft');
   }
-  elseif (in_array($state, ['validated', 'deletion_request'])) {
+  elseif ($state === 'validated') {
     $entity->set('graph', SparqlGraphInterface::DEFAULT);
   }
   elseif (empty($state)) {
@@ -572,10 +572,12 @@ function solution_rdf_entity_update(EntityInterface $entity) {
     return;
   }
 
+  assert($entity instanceof SolutionInterface);
+
   // @todo: Maybe we can avoid the attempt to delete from graph if there is no
   // transition made. This should move to an event subscriber.
-  $state = $entity->field_is_state->value;
-  if (in_array($state, ['validated', 'deletion_request'])) {
+  $state = $entity->getWorkflowState();
+  if ($state === 'validated') {
     \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'draft');
   }
   if ($state == 'blacklisted') {

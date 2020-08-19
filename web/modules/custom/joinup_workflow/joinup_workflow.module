@@ -13,6 +13,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\collection\Entity\CollectionInterface;
+use Drupal\solution\Entity\SolutionInterface;
 
 /**
  * Implements hook_entity_base_field_info().
@@ -163,17 +165,16 @@ function joinup_workflow_motivation_form_validate(array &$form, FormStateInterfa
   // @todo Remove this when the 'reject_deletion' and 'reject_archival' for
   //   rdf_entities are separate transitions.
   // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3644
-  if ($entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'collection' && $transition->getId() === 'validate' && !in_array($from_state, ['archival_request', 'deletion_request'])) {
+  if ($entity instanceof CollectionInterface && $transition->getId() === 'validate' && $from_state !== 'archival_request') {
     $required = FALSE;
   }
   // @todo Remove this when the 'reject_deletion' and 'proposed_from_validated'
   //   for rdf_entities are separate transitions.
   // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3840
-  if ($entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'solution') {
+  if ($entity instanceof SolutionInterface) {
     $user_roles = \Drupal::currentUser()->getRoles();
-    $reject_deletion = $transition->getId() === 'validate' && $from_state === 'deletion_request';
     $propose_changes = $transition->getId() === 'propose' && $from_state === 'validated' && in_array('moderator', $user_roles);
-    if ($reject_deletion || $propose_changes) {
+    if ($propose_changes) {
       $required = TRUE;
     }
   }

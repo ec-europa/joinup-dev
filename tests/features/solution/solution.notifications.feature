@@ -25,14 +25,12 @@ Feature: Solution notifications
     And the following solutions:
       | title                                                 | author       | description | logo     | banner     | owner              | contact information | state            | policy domain | solution type | collection                     |
       | Solution notification to propose changes              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
-      | Solution notification to request deletion             | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
-      | Solution notification to approve deletion             | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | deletion request | E-inclusion   | Business      | Collection of random solutions |
-      | Solution notification to reject deletion              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | deletion request | E-inclusion   | Business      | Collection of random solutions |
       | Solution notification to blacklist                    | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
       | Solution notification to publish from blacklisted     | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | blacklisted      | E-inclusion   | Business      | Collection of random solutions |
       | Solution notification to request changes              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
       | Solution notification to propose from request changes | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | needs update     | E-inclusion   | Business      | Collection of random solutions |
-      | Solution notification to delete                       | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
+      | Solution notification to delete by moderator team     | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
+      | Solution notification to delete by owner              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
 
     When I am logged in as "Pat Harper"
 
@@ -49,31 +47,6 @@ Feature: Solution notifications
       | text                                                                                                                                                                                   |
       | The Joinup Support Team has requested you to modify the interoperability solution "Solution notification to propose changes", with the following motivation: Please, check my updates. |
       | If you think this action is not clear or not due, please contact Joinup Support at                                                                                                     |
-
-    # Template 11. The moderation team approves a deletion request.
-    When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to approve deletion" solution
-    And I click "Edit" in the "Entity actions" region
-    And I click "Delete"
-    And I press "Delete"
-    Then the following email should have been sent:
-      | recipient | Ramiro Myers                                                                                                                                                          |
-      | subject   | Joinup: Your deletion request has been approved                                                                                                                       |
-      | body      | You recently requested that the interoperability solution Solution notification to approve deletion be deleted. Your request was accepted by The Joinup Support Team. |
-
-    # Template 12. The moderation team rejects the deletion.
-    And all e-mails have been sent
-    And I go to the homepage of the "Solution notification to reject deletion" solution
-    And I click "Edit" in the "Entity actions" region
-    And I press "Publish"
-    # Motivation required.
-    Then I should see the error message "This action requires you to fill in the motivation field"
-    When I fill in "Motivation" with "I don't feel like deleting this solution"
-    And I press "Publish"
-    Then the following email should have been sent:
-      | recipient | Ramiro Myers                                                                                                                                                                                                          |
-      | subject   | Joinup: Your request to delete your solution has been rejected                                                                                                                                                        |
-      | body      | You recently requested that the interoperability solution Solution notification to reject deletion be deleted. Your request was rejected by The Joinup Support Team, due to I don't feel like deleting this solution. |
 
     # Template 13. The moderation team blacklists a solution.
     When all e-mails have been sent
@@ -116,14 +89,14 @@ Feature: Solution notifications
 
     # Template 18. The moderation team deletes a solution without prior request.
     When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to delete" solution
+    And I go to the homepage of the "Solution notification to delete by moderator team" solution
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | Ramiro Myers                                                                                      |
-      | subject   | Joinup: Your solution has been deleted by the moderation team                                     |
-      | body      | The Joinup moderation team deleted the interoperability solution Solution notification to delete. |
+      | recipient | Ramiro Myers                                                                                                        |
+      | subject   | Joinup: Your solution has been deleted by the moderation team                                                       |
+      | body      | The Joinup moderation team deleted the interoperability solution Solution notification to delete by moderator team. |
 
     When I am logged in as "Ramiro Myers"
 
@@ -137,12 +110,11 @@ Feature: Solution notifications
       | Ramiro Myers has proposed an update of the Interoperability solution: "Solution notification to propose from request changes" on Joinup. |
       | If you think this action is not clear or not due, please contact Joinup Support at                                                       |
 
-    # Template 10. The owner requests a deletion.
+    # The owner deletes their own solution. No email should be sent to the owner
+    # since we do not send notifications to the actor.
     When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to request deletion" solution
+    And I go to the homepage of the "Solution notification to delete by owner" solution
     And I click "Edit" in the "Entity actions" region
-    And I press "Request deletion"
-    Then the email sent to "Pat Harper" with subject "Joinup: A solution deletion has been requested" contains the following lines of text:
-      | text                                                                                                                                                    |
-      | Ramiro Myers requested that the Solution notification to request deletion interoperability solution, part of Collection of random solutions be deleted. |
-      | If you think this action is not clear or not due, please contact Joinup Support at                                                                      |
+    And I click "Delete"
+    And I press "Delete"
+    Then 0 e-mails should have been sent

@@ -207,7 +207,7 @@ Feature: "Add solution" visibility options.
     Then I should see the button "Save as draft"
     And I should see the button "Propose"
     # The owner entity state buttons should not be shown.
-    But I should not see the button "Request deletion"
+    But I should not see the link "Delete"
     And I should not see the button "Update"
 
   @terms
