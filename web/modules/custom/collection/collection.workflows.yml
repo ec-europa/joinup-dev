@@ -24,8 +24,6 @@ collection_workflow:
       label: Validated
     archival_request:
       label: Request archival
-    deletion_request:
-      label: Request deletion
     archived:
       label: Archived
   transitions:
@@ -39,16 +37,12 @@ collection_workflow:
       to: proposed
     validate:
       label: Publish
-      from: [__new__, draft, proposed, archival_request, deletion_request]
+      from: [__new__, draft, proposed, archival_request]
       to: validated
     request_archival:
       label: Request archival
       from: [validated]
       to: archival_request
-    request_deletion:
-      label: Request deletion
-      from: [validated]
-      to: deletion_request
     archive:
       label: Archive
       from: [archival_request]

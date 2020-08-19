@@ -11,6 +11,7 @@ use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
+use PHPUnit\Framework\Assert;
 
 /**
  * Contains helper methods regarding the organic groups.
@@ -288,6 +289,28 @@ trait OgTrait {
     }
 
     return $membership;
+  }
+
+  /**
+   * Checks that the user has permission to perform the operation on the group.
+   *
+   * @param bool $expected_result
+   *   Whether or not the user should have permission to perform the operation.
+   * @param string $operation
+   *   The operation to perform.
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *   The group on which to perform the operation.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *   The user performing the operation.
+   *
+   * @throws \Exception
+   *   When the access to perform the operation is not as expected.
+   */
+  protected function assertGroupEntityOperation(bool $expected_result, string $operation, EntityInterface $group, AccountInterface $user): void {
+    $user_name = $user->getAccountName();
+    $group_name = $group->label();
+    $message = "The $operation operation should " . ($expected_result ? '' : 'not ') . "be accessible for $user_name in $group_name";
+    Assert::assertEquals($expected_result, $group->access($operation, $user), $message);
   }
 
   /**

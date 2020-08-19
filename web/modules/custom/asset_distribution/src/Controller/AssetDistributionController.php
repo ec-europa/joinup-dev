@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\asset_distribution\Controller;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\og\OgAccessInterface;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -66,10 +67,10 @@ class AssetDistributionController extends ControllerBase {
    *   The asset release or solution RDF entity for which the distribution
    *   is created.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result object.
    */
-  public function createAssetDistributionAccess(RdfInterface $rdf_entity) {
+  public function createAssetDistributionAccess(RdfInterface $rdf_entity): AccessResultInterface {
     // Create a new distribution entity in order to check permissions on it.
     $distribution = $this->createNewAssetDistribution($rdf_entity);
 
@@ -79,7 +80,7 @@ class AssetDistributionController extends ControllerBase {
       return AccessResult::forbidden();
     }
 
-    return $this->ogAccess->userAccessEntity('create', $distribution);
+    return $this->ogAccess->userAccessEntityOperation('create', $distribution);
   }
 
   /**

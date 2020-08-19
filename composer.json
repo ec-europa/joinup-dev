@@ -52,7 +52,7 @@
         "drupal/message_digest": "^1.0-rc3",
         "drupal/message_notify": "~1.1",
         "drupal/meta_entity": "^1.0",
-        "drupal/og": "^1.0",
+        "drupal/og": "dev-neutral-access-result as 1.x-dev",
         "drupal/og_menu": "^1.0-alpha4",
         "drupal/paragraphs": "^1.11",
         "drupal/password_policy": "3.0-alpha5",
@@ -354,6 +354,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/ec-europa/TableExtension.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/gizra/og.git"
         },
         {
             "type": "vcs",
