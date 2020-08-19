@@ -1,7 +1,8 @@
-@api @eif_community @terms @clearStaticCache @group-a
+@api @eif_community @terms @group-a
 Feature: As a user, visiting the EIF Toolbox page, I want to be able to filter
   the page by EIF category.
-  
+
+  @clearStaticCache
   Scenario: Test the EIF Toolbox solution page.
 
     Given owner:
@@ -153,3 +154,14 @@ Feature: As a user, visiting the EIF Toolbox page, I want to be able to filter
     And I should see the link "Previous page"
     And I should see the link "Page 1"
     And I should see the link "Current page 2"
+
+    When I select "Solutions implementing Recommendation 17" from "Jump to recommendation"
+    And I press "Jump"
+    Then I should see the heading "Recommendation 17"
+
+  @javascript
+  Scenario: Test the recommendation selector.
+
+    When I go to "/collection/nifo-collection/solution/eif-toolbox/solutions"
+    And I select "Solutions implementing Recommendation 17" from "Jump to recommendation"
+    Then I should see the heading "Recommendation 17"
