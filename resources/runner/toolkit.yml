@@ -5,6 +5,21 @@ toolkit:
   tmp_folder: ${joinup.dir}/tmp
   clone:
     dumpfile: ${toolkit.tmp_folder}/mysql.sql
+  build:
+    dist:
+      commands:
+        # Recursively remove .git directories.
+        - task: exec
+          command: find ${toolkit.build.dist.root} -type d -name .git -prune -exec rm -rf {} \;
+        # More cleanup.
+        - task: exec
+          command: rm
+          arguments:
+            - ${toolkit.build.dist.root}/.editorconfig
+            - ${toolkit.build.dist.root}/.gitattributes
+            - ${toolkit.build.dist.root}/.gitignore
+            - ${toolkit.build.dist.root}/composer.json
+            - ${toolkit.build.dist.root}/composer.lock
 
 commands:
 
