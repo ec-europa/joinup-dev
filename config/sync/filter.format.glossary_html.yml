@@ -1,0 +1,116 @@
+uuid: 611903a1-ed11-438b-89cc-e3a96067c83b
+langcode: en
+status: true
+dependencies:
+  module:
+    - editor
+    - embed_block
+    - image
+    - joinup_video
+    - linkit
+    - video_embed_wysiwyg
+name: 'Glossary HTML'
+format: glossary_html
+weight: 0
+filters:
+  editor_file_reference:
+    id: editor_file_reference
+    provider: editor
+    status: false
+    weight: -47
+    settings: {  }
+  embed_block:
+    id: embed_block
+    provider: embed_block
+    status: false
+    weight: -46
+    settings: {  }
+  filter_html_image_secure:
+    id: filter_html_image_secure
+    provider: filter
+    status: false
+    weight: -38
+    settings: {  }
+  filter_url:
+    id: filter_url
+    provider: filter
+    status: true
+    weight: -50
+    settings:
+      filter_url_length: 72
+  filter_html:
+    id: filter_html
+    provider: filter
+    status: true
+    weight: -49
+    settings:
+      allowed_html: '<a href hreflang> <p>'
+      filter_html_help: false
+      filter_html_nofollow: false
+  filter_autop:
+    id: filter_autop
+    provider: filter
+    status: false
+    weight: -44
+    settings: {  }
+  filter_align:
+    id: filter_align
+    provider: filter
+    status: false
+    weight: -45
+    settings: {  }
+  filter_caption:
+    id: filter_caption
+    provider: filter
+    status: false
+    weight: -43
+    settings: {  }
+  filter_htmlcorrector:
+    id: filter_htmlcorrector
+    provider: filter
+    status: true
+    weight: -37
+    settings: {  }
+  filter_html_escape:
+    id: filter_html_escape
+    provider: filter
+    status: false
+    weight: -48
+    settings: {  }
+  filter_image_style:
+    id: filter_image_style
+    provider: image
+    status: false
+    weight: -42
+    settings:
+      allowed_styles: {  }
+  joinup_video:
+    id: joinup_video
+    provider: joinup_video
+    status: false
+    weight: -41
+    settings:
+      allowed_providers:
+        joinup_ec_video: 0
+        internal_path: 0
+        google_docs: 0
+        prezi: 0
+        slideshare: 0
+        vimeo: 0
+        youtube: 0
+        youtube_playlist: 0
+      autoplay: false
+      responsive: true
+  linkit:
+    id: linkit
+    provider: linkit
+    status: false
+    weight: -40
+    settings:
+      title: true
+  video_embed_wysiwyg:
+    id: video_embed_wysiwyg
+    provider: video_embed_wysiwyg
+    status: false
+    weight: -39
+    settings: {  }

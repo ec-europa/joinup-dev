@@ -14,6 +14,7 @@ dependencies:
   - field_group:field_group
   - inline_entity_form:inline_entity_form
   - joinup:contact_information
+  - joinup:joinup_bundle_class
   - joinup:joinup_core
   - joinup:joinup_group
   - joinup:joinup_validation

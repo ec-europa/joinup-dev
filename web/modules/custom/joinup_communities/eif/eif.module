@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks and functions for the eif module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\block\BlockInterface;
+use Drupal\eif\Plugin\views\argument\EifGroupArgument;
+
+/**
+ * Implements hook_views_plugins_argument_alter().
+ */
+function eif_views_plugins_argument_alter(array &$plugins) {
+  // We don't want to apply a group contextual filter for eif_recommendation
+  // view. The contextual filter is added only for validation. Swapping the
+  // class to treat this exception.
+  // @see joinup_group_views_data_alter()
+  // @see \Drupal\joinup_group\Plugin\views\argument\SearchApiGroupArgument
+  // @see \Drupal\eif\Plugin\views\argument\EifGroupArgument
+  $plugins['search_api_group']['class'] = EifGroupArgument::class;
+}
+
+/**
+ * Implements hook_block_access().
+ *
+ * Workaround for facets not properly narrowing down results.
+ *
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6090
+ */
+function eif_block_access(BlockInterface $block, string $operation, AccountInterface $account): AccessResultInterface {
+  $data = [
+    'principle' => ['conceptual-model', 'interoperability-layer'],
+    'conceptualmodel' => ['principle', 'interoperability-layer'],
+    'interoperabilitylayer' => ['principle', 'conceptual-model'],
+  ];
+
+  if (!in_array($block->id(), array_keys($data))) {
+    return AccessResult::neutral();
+  }
+
+  $route_match = \Drupal::routeMatch();
+  if ($route_match->getRouteName() !== 'view.eif_recommendation.page') {
+    return AccessResult::neutral();
+  }
+
+  if (!$filters = \Drupal::request()->get('f')) {
+    return AccessResult::neutral();
+  }
+
+  foreach ($filters as $filter) {
+    foreach ($data[$block->id()] as $needle) {
+      if (strpos($filter, $needle . ':') === 0) {
+        return AccessResult::forbidden();
+      }
+    }
+  }
+
+  return AccessResult::neutral();
+}

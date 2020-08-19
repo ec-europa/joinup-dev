@@ -1,5 +1,5 @@
 custom_page.custom_page.add_link:
-  route_name: 'custom_page.group_custom_page.add'
+  route_name: joinup_group.add_content
   title: 'Add page'
   class: \Drupal\custom_page\Plugin\Menu\LocalAction\CustomPageAdd
   appears_on:

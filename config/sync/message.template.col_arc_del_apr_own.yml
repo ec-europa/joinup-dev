@@ -1,7 +1,9 @@
 uuid: ee81333e-013c-4290-839a-5da9694a54ab
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: col_arc_del_apr_own
 label: 'Collection archive/delete approve - Owner'
 description: 'Template id 9'

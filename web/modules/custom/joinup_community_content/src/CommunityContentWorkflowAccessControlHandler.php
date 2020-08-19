@@ -117,6 +117,10 @@ class CommunityContentWorkflowAccessControlHandler {
    *   The result of the access check.
    */
   public function entityAccess(CommunityContentInterface $content, $operation, ?AccountInterface $account = NULL): AccessResultInterface {
+    if ($account->hasPermission('bypass node access')) {
+      return AccessResult::allowed();
+    }
+
     $account = $account ?: $this->currentUser;
 
     // On access is forbidden return the result.

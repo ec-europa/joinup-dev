@@ -22,4 +22,12 @@ interface CollectionInterface extends RdfInterface, GroupInterface, EntityWorkfl
    */
   public function getSolutions(): array;
 
+  /**
+   * Returns the IDs of the solutions that are affiliated with this collection.
+   *
+   * @return string[]
+   *   The solutions.
+   */
+  public function getSolutionIds(): array;
+
 }

@@ -1,0 +1,58 @@
+// Glossary
+//
+
+// Component
+// --------------------------------------------------
+// .page__content--glossary
+
+// Elements
+// --------------------------------------------------
+.page__content--glossary {
+    h2{
+      margin-top: 0;
+      margin-bottom: 17px;
+    }
+    .field_glossary--abbreviation {
+      margin-bottom: 2px;
+      > div {
+        div {
+          display: inline;
+
+          &:first-child {
+            font-weight: bold;
+            &::after{
+                content: ": ";
+            }
+          }
+        }
+      }
+    }
+  }
+// .glossary-navigator
+// .view-glossary
+
+// Elements
+// --------------------------------------------------
+.view-glossary {
+  h3 {
+    font-size: 26px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  .views-col {
+    padding-right: 5%;
+    @include breakpoint(mobile) {
+      padding-right: 15%;
+    }
+  }
+  .views-field-title-1 {
+    a {
+      display: inline-block;
+      font-size: 20px;
+      margin-bottom: 7px;
+    }
+  }
+  .views-field-field-glossary-abbreviation {
+    color: $color-orange;
+  }
+}

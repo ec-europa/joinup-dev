@@ -582,10 +582,28 @@ article {
     }
   }
 
+  .support-menu__button.whats_new:after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    background-image: url('/themes/joinup/images/bell.png');
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    left: 20px;
+    z-index: 10;
+    position: absolute;
+    display: inline-block;
+  }
+
   a.support-menu__link {
     color: $color-blue-default;
     text-decoration: none;
     white-space: nowrap;
+  }
+
+  li.whats_new > a.support-menu__link {
+    font-weight: bold;
+    color: red;
   }
 }
 

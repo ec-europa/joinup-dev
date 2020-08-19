@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a glossay navigator.
+ *
+ * Available variables:
+ * - url: The glossary base URL.
+ * - letters: An array of upercased letters, ordered alphabetically, repesenting
+ *   the grouped list of all glossary terms first letter.
+ * - current: The currently selected letter.
+ */
+#}
+
+{% if letters|length > 1 %}
+  <div class="glossary-navigator">
+    {% for letter in letters %}
+    <span class="glossary-navigator-item">
+      {% if letter|upper == current|upper %}
+        <span class="current">{{ letter|upper }}</span>
+      {% else %}
+        <a href="{{ url }}/{{ letter|lower }}">{{ letter|upper }}</a>
+      {% endif %}
+    </span>
+    {% endfor %}
+    {% if current != null %}
+      <span class="glossary-navigator-item glossary-navigator-item-all">
+        (<a href="{{ url }}">{{ 'all'|trans }}</a>)
+      </span>
+    {% endif %}
+  </div>
+{% endif %}

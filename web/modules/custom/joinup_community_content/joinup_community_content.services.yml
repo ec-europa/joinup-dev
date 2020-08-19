@@ -12,3 +12,12 @@ services:
   joinup_community_content.community_content_workflow_access:
     class: Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler
     arguments: ['@entity_type.manager', '@og.membership_manager', '@current_user', '@config.factory', '@joinup_workflow.workflow_helper']
+  joinup_community_content.create.route_subscriber:
+    class: Drupal\joinup_community_content\Routing\CreateCommunityContentRouteSubscriber
+    tags:
+      - { name: 'event_subscriber' }
+  joinup_community_content.group_add_content.subscriber:
+    class: Drupal\joinup_community_content\EventSubscriber\CommunityContentGroupSubscriber
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: event_subscriber }

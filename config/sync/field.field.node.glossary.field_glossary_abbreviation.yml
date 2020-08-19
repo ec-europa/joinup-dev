@@ -1,0 +1,19 @@
+uuid: 948e46c5-882a-49cd-9236-b4b26f4b3fbd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_glossary_abbreviation
+    - node.type.glossary
+id: node.glossary.field_glossary_abbreviation
+field_name: field_glossary_abbreviation
+entity_type: node
+bundle: glossary
+label: Abbreviation
+description: 'An optional abbreviated form of the glossary entry title.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

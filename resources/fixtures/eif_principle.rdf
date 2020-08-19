@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:adms="http://www.w3.org/ns/adms#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:dc="http://purl.org/dc/terms/">
+
+  <skos:ConceptScheme rdf:about="http://data.europa.eu/eif/Principle/">
+    <rdfs:label>The European Interoperability Framework (EIF)</rdfs:label>
+    <dc:creator>Natasa Sofou</dc:creator>
+    <dc:description>Linked data representation of the EIF</dc:description>
+    <skos:prefLabel xml:lang="en">The European Interoperability Framework (EIF)</skos:prefLabel>
+    <skos:definition xml:lang="en">A set of principles intended to establish general behaviors on interoperability;
+    </skos:definition>
+    <skos:scopeNote xml:lang="en">The EIF is meant to be a generic framework applicable to all public administrations in
+      the EU. It lays out the basic conditions for achieving interoperability, acting as the common denominator for
+      relevant initiatives at all levels including European, national, regional and local, embracing public
+      administrations, citizens and businesses. This document is addressed to all those involved in defining, designing,
+      developing and delivering European public services.
+    </skos:scopeNote>
+  </skos:ConceptScheme>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP1">
+    <skos:prefLabel xml:lang="en">Underlying Principle 1: subsidiarity and proportionality</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP1</skos:altLabel>
+    <skos:definition xml:lang="en">The subsidiarity principle requires EU decisions to be taken as closely as possible
+      to the citizen. The EU does not take action unless this is more effective than the same action taken at national
+      level. The proportionality principle limits EU actions to what is necessary to achieve the objectives of the
+      Treaties.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Principle/"/>
+    <adms:identifier>4</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP2">
+    <skos:prefLabel xml:lang="en">Underlying Principle 2: openness</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP2</skos:altLabel>
+    <skos:definition xml:lang="en">The concept of openness mainly relates to data, specifications and software. Open
+      government data (here simply referred ‘open data’) refers to the idea that all public data should be freely
+      available for use and reuse by others, unless restrictions apply e.g. for protection of personal data,
+      confidentiality, or intellectual property rights. Public administrations collect and generate huge amounts of
+      data. The Directive on the reuse of public sector information (PSI)7 encourages Member States to make public
+      information available for access and reuse as open data. The INSPIRE Directive8 requires, in addition, sharing of
+      spatial datasets and services between public authorities with no restrictions or practical obstacles to its reuse.
+      This data should be published with as few restrictions as possible and clear licences for its use to allow better
+      scrutiny of administrations’ decision-making processes and realise transparency in practice.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Principle/"/>
+    <adms:identifier>5</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP3">
+    <skos:prefLabel xml:lang="en">Underlying Principle 3: transparency</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP3</skos:altLabel>
+    <skos:definition xml:lang="en">(1). Enabling visibility inside the administrative environment of a public
+      administration. This is about allowing other public administrations, citizens and businesses to view and
+      understand administrative rules, processes11, data, services and decision-making (2). Ensuring availability of
+      interfaces with internal information systems. Public administrations operate a large number of what are often
+      heterogeneous and disparate information systems in support of their internal processes. Interoperability depends
+      on ensuring the availability of interfaces to these systems and the data they handle. In turn, interoperability
+      facilitates reuse of systems and data, and enables these to be integrated into larger systems. (3). Securing the
+      right to the protection of personal data, by respecting the applicable legal framework for the large volumes of
+      personal data of citizens, held and managed by Public administrations.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Principle/"/>
+    <adms:identifier>6</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP4">
+    <skos:prefLabel xml:lang="en">Underlying Principle 4: reusability</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP4</skos:altLabel>
+    <skos:definition xml:lang="en">Interfaces, standards), information and data, is an enabler of interoperability and
+      improves quality because it extends operational use, as well as saving money and time. This makes it a major
+      contributor to the development of a digital single market in the EU. Some EU standards and specifications also
+      exist in the DIFs and should be applied more widely. For example, the INSPIRE Directive sets out interoperability
+      standards for addresses, cadastres, roads and many other data topics of relevance to many public administrations.
+      These existing standards and specifications can and should be used more widely beyond the domain for which they
+      were originally developed.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Principle/"/>
+    <adms:identifier>7</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP5">
+    <skos:prefLabel xml:lang="en">Underlying Principle 5: technological neutrality and data portability</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP5</skos:altLabel>
+    <skos:definition>When establishing European public services, public administrations should focus on functional needs
+      and defer decisions on technology as long as possible in order to minimise technological dependencies, to avoid
+      imposing specific technical implementations or products on their constituents. Public administrations should
+      provide for access and reuse of their public services and data irrespective of specific technologies or
+      products.The functioning of the digital single market requires data to be easily transferable among different
+      systems to avoid lock-in, support the free movement of data. This requirement relates to data portability - the
+      ability to move and reuse data easily among different applications and systems, which becomes even more
+      challenging in cross-border scenarios.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Principle/"/>
+    <adms:identifier>8</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP6">
+    <skos:prefLabel xml:lang="en">Underlying Principle 6: user centricity</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP6</skos:altLabel>
+    <skos:definition xml:lang="en">Users’ needs should be considered when determining which public services should be
+      provided and how they should be delivered., n accordance with the following expectations: (1). A multi-channel
+      service delivery approach, meaning the availability of alternative channels, physical and digital, to access a
+      service, is an important part of public service design, as users may prefer different channels depending on the
+      circumstances and their needs; (2). A single point of contact should be made available to users, to hide internal
+      administrative complexity and facilitate access to public services, e.g. when multiple bodies have to work
+      together to provide a public service; (3). Users’ feedback should be systematically collected, assessed and used
+      to design new public services and to further improve existing ones; (4). As far as possible, under the legislation
+      in force, users should be able to provide data once only, and administrations should be able to retrieve and share
+      this data to serve the user, in accordance with data protection rule (5). Users should be asked to provide only
+      the information that is absolutely necessary to obtain a given public service.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Principle/"/>
+    <adms:identifier>9</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP7">
+    <skos:prefLabel xml:lang="en">Underlying Principle 7: inclusion and accessibility</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP7</skos:altLabel>
+    <skos:definition xml:lang="en">Inclusion is about enabling everyone to take full advantage of the opportunities
+      offered by new technologies to access and make use of European public services, overcoming social and economic
+      divides and exclusion. Accessibility ensures that people with disabilities, the elderly and other disadvantaged
+      groups can use public services at service levels comparable to those provided to other citizens.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Principle/"/>
+    <adms:identifier>10</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP8">
+    <skos:prefLabel xml:lang="en">Underlying Principle 8: security and privacy</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP8</skos:altLabel>
+    <skos:definition xml:lang="en">Citizens and businesses must be confident that when they interact with public
+      authorities they are doing so in a secure and trustworthy environment and in full compliance with relevant
+      regulations, e.g. the Regulation and Directive on data protection16, and the Regulation on electronic
+      identification and trust services17. Public administrations must guarantee the citizens’ privacy, and the
+      confidentiality, authenticity, integrity and non-repudiation of information provided by citizens and businesses.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Principle/"/>
+    <adms:identifier>11</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP9">
+    <skos:prefLabel xml:lang="en">Underlying Principle 9: multilingualism</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP9</skos:altLabel>
+    <skos:definition xml:lang="en">European public services can potentially be used by anyone in any Member State. So
+      multilingualism needs to be carefully considered when designing them. Citizens across Europe often have problems
+      in accessing and using digital public services if these are not available in the languages they speak. A balance
+      needs to be found between the expectations of citizens and businesses to be served in their own language(s) or
+      their preferred language(s) and the ability of Member States’ public administrations to offer services in all
+      official EU languages. A suitable balance could be that European public services are available in the languages of
+      the expected end-users, i.e. the number of languages is decided on the basis of users’ needs, such as the level to
+      which the service is critical for the implementation of the digital single market or national policies, or the
+      size of the relevant audience. Multilingualism comes into play not just in the user interface, but at all levels
+      in the design of European public services. For example, the choices made on data representation in an electronic
+      database should not limit its ability to support different languages.he multilingual aspect of interoperability
+      becomes also relevant when a public service requires exchanges between information systems across language
+      boundaries, as the meaning of the information exchanged must be preserved.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Principle/"/>
+    <adms:identifier>12</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP10">
+    <skos:prefLabel xml:lang="en">Underlying Principle 10: administrative simplification</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP10</skos:altLabel>
+    <skos:definition xml:lang="en">Where possible, public administrations should seek to streamline and simplify their
+      administrative processes by improving them or eliminating any that does not provide public value. Administrative
+      simplification can help businesses and citizens to reduce the administrative burden of complying with EU
+      legislation or national obligations. Likewise, public administrations should introduce European public services
+      supported by electronic means, including their interactions with other public administrations, citizens and
+      businesses. Digitisation of public services should take place in accordance with the following concepts: (1).
+      digital-by-default, whenever appropriate, so that there is at least one digital channel available for accessing
+      and using a given European public service; (2). igital-first, which means that priority is given to using public
+      services via digital channels while applying the multi-channel delivery concept and the no-wrong-door policy, i.e.
+      physical and digital channels co-exist.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Principle/"/>
+    <adms:identifier>13</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP11">
+    <skos:prefLabel xml:lang="en">Underlying Principle 11: preservation of information</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP11</skos:altLabel>
+    <skos:definition xml:lang="en">Legislation requires that decisions and data are stored and can be accessed for a
+      specified time. This means that records18 and information in electronic form held by public administrations for
+      the purpose of documenting procedures and decisions must be preserved and be converted, where necessary, to new
+      media when old media become obsolete. The goal is to ensure that records and other forms of information keep their
+      legibility, reliability and integrity and can be accessed as long as needed subject to security and privacy
+      provisions. o guarantee the long-term preservation of electronic records and other kinds of information, formats
+      should be chosen to ensure long-term accessibility, including preservation of associated electronic signatures or
+      seals. In this regard, the use of qualified preservation services, in line with Regulation (EU) 910/2014, can
+      ensure the long-term preservation of information. For information sources owned and managed by national
+      administrations, preservation is a purely national matter. For information that is not strictly national,
+      preservation becomes a European issue. In that case, an appropriate ‘preservation policy’ should be applied by the
+      Member States concerned, to cope with any difficulties arising if the relevant information is used under different
+      jurisdictions.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Principle/"/>
+    <adms:identifier>14</adms:identifier>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://data.europa.eu/UP12">
+    <skos:prefLabel xml:lang="en">Underlying Principle 12: assessment of effectiveness and efficiency</skos:prefLabel>
+    <skos:altLabel xml:lang="en">UP12</skos:altLabel>
+    <skos:definition xml:lang="en">There are many ways to take stock of the value of interoperable European public
+      services, including considerations such as return on investment, total cost of ownership, level of flexibility and
+      adaptability, reduced administrative burden, efficiency, reduced risk, transparency, simplification, improved
+      working methods, and level of user satisfaction. Various technological solutions should be evaluated when striving
+      to ensure the effectiveness and efficiency of a European public service.
+    </skos:definition>
+    <skos:inScheme rdf:resource="http://data.europa.eu/eif/Principle/"/>
+    <adms:identifier>15</adms:identifier>
+  </skos:Concept>
+
+</rdf:RDF>
