@@ -1,0 +1,30 @@
+uuid: 1419c590-293c-43c9-afdc-080e29fc41e0
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.eif_solutions
+  module:
+    - system
+    - views
+  theme:
+    - joinup_theme
+id: views_block__eif_solutions_all
+theme: joinup_theme
+region: content
+weight: -16
+provider: null
+plugin: 'views_block:eif_solutions-all'
+settings:
+  id: 'views_block:eif_solutions-all'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: /node/703013
+    negate: false
+    context_mapping: {  }

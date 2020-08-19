@@ -186,10 +186,6 @@ function joinup_group_rdf_entity_insert(RdfInterface $group): void {
   // Allow third-party to add group menu links.
   $event = new GroupMenuLinksEvent($group, $menu_name, \Drupal::entityTypeManager());
   $event_dispatcher->dispatch($event::ADD_LINKS, $event);
-
-  // Invalidate all list caches tagged with the affected bundle so the that they
-  // will be regenerated.
-  Cache::invalidateTags(["rdf_entity_list:{$group->bundle()}"]);
 }
 
 /**

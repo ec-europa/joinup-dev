@@ -1,0 +1,21 @@
+uuid: bf4a7e5b-979a-45b4-9cd1-41df9b65a88c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_eif_category
+    - rdf_entity.rdfentity.solution
+  module:
+    - options
+id: rdf_entity.solution.field_is_eif_category
+field_name: field_is_eif_category
+entity_type: rdf_entity
+bundle: solution
+label: 'EIF category'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string
