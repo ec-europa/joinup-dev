@@ -1,0 +1,9 @@
+name: 'Joinup Content Negotiation  Test'
+type: module
+description: 'Provides a module for testing content negotiation.'
+core_version_requirement: ^8.8 || ^9
+package: Testing
+dependencies:
+  - drupal:rest
+  - joinup:joinup_sparql
+  - rdf_entity:rdf_taxonomy
