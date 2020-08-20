@@ -1,0 +1,22 @@
+uuid: 469e209c-37bc-48e1-a22c-2c85a4d88843
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.eif_interoperability_layer
+  module:
+    - text
+id: taxonomy_term.eif_interoperability_layer.default
+targetEntityType: taxonomy_term
+bundle: eif_interoperability_layer
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

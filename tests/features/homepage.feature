@@ -23,14 +23,12 @@ Feature: Homepage
       | Forms of government | proposed         |
       | Social classes      | validated        |
       | Elections           | archival request |
-      | Parliament          | deletion request |
       | Party structure     | archived         |
     And the following solutions:
       | title             | state            | collection     |
       | Economic theory   | draft            | Social classes |
       | Economic history  | proposed         | Social classes |
       | Laws of economics | validated        | Social classes |
-      | Econometrics      | deletion request | Social classes |
       | Planned economy   | needs update     | Social classes |
       | Economic growth   | blacklisted      | Social classes |
     And custom_page content:
@@ -65,8 +63,8 @@ Feature: Homepage
     # Only statistics of publicly visible content should be counted.
     When I reload the page
     Then I should see the following statistics:
-      | Solutions   | 2 |
-      | Collections | 4 |
+      | Solutions   | 1 |
+      | Collections | 3 |
       | Content     | 5 |
     # The cache should have been cleared when new content is created.
     And the page should not be cached
@@ -81,18 +79,16 @@ Feature: Homepage
     Given the cache has been cleared
 
     # Check if the "Solutions" link leads to the pre-filtered search results.
-    # This shows solutions in the states 'validated' and 'deletion request'.
+    # This shows solutions in the 'validated' state.
     When I click "Solutions" in the "Header" region
     Then I should see the heading "Solutions"
     And I should see the following lines of text:
       | Laws of economics |
-      | Econometrics      |
     But I should not see the following lines of text:
       | Political sciences            |
       | Forms of government           |
       | Social classes                |
       | Elections                     |
-      | Parliament                    |
       | Party structure               |
       | Economic theory               |
       | Economic history              |
@@ -118,7 +114,7 @@ Feature: Homepage
       | Labour relations              |
 
     # Check if the "Collections" link leads to the pre-filtered search results.
-    # This shows collections in the states "validated', 'deletion request',
+    # This shows collections in the "validated' state.
     # 'archival request', and 'archived'.
     When I go to the homepage
     Then I should see the text "Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions."
@@ -126,7 +122,6 @@ Feature: Homepage
     Then I should see the heading "Collections"
     And I should see the following lines of text:
       | Social classes  |
-      | Parliament      |
       | Elections       |
       | Party structure |
 
@@ -136,7 +131,6 @@ Feature: Homepage
       | Economic theory               |
       | Economic history              |
       | Laws of economics             |
-      | Econometrics                  |
       | Planned economy               |
       | Economic growth               |
       | Developing economics          |
@@ -174,12 +168,10 @@ Feature: Homepage
       | Forms of government   |
       | Social classes        |
       | Elections             |
-      | Parliament            |
       | Party structure       |
       | Economic theory       |
       | Economic history      |
       | Laws of economics     |
-      | Econometrics          |
       | Planned economy       |
       | Economic growth       |
       | Developing economics  |

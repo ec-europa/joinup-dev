@@ -9,9 +9,26 @@ declare(strict_types = 1);
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\block\BlockInterface;
+use Drupal\eif\EifInterface;
 use Drupal\eif\Plugin\views\argument\EifGroupArgument;
+use Drupal\og\OgGroupAudienceHelperInterface;
+
+/**
+ * Implements hook_theme().
+ */
+function eif_theme(array $existing, string $type, string $theme, string $path): array {
+  return [
+    'eif_category_navigator' => [
+      'variables' => [
+        'all_link' => NULL,
+        'category_links' => [],
+      ],
+    ],
+  ];
+}
 
 /**
  * Implements hook_views_plugins_argument_alter().
@@ -62,4 +79,123 @@ function eif_block_access(BlockInterface $block, string $operation, AccountInter
   }
 
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function eif_preprocess_views_view_field(&$variables) {
+  if ($variables['view']->id() !== 'eif_recommendation') {
+    return;
+  }
+
+  if ($variables['field']->field === 'reverse_field_eif_identifier') {
+    $real_field = $variables['field']->realField;
+    $output_parts = [];
+
+    if (!isset($variables['row']->{$real_field})) {
+      return;
+    }
+    $relationship_objects = $variables['row']->_relationship_objects[$real_field];
+    $drupal_renderer = \Drupal::getContainer()->get('renderer');
+
+    foreach ($variables['row']->{$real_field} as $index => $part) {
+      $integer_item = $relationship_objects[$index];
+      /** @var \Drupal\Core\Entity\EntityInterface $entity */
+      $entity = $integer_item->getEntity();
+      $parameters = ['@part' => $part];
+      $title = $index === 0 ? t('Recommendation @part', $parameters) : $part;
+      $renderable = $entity->toLink($title)->toRenderable();
+      $output_parts[$index] = $drupal_renderer->render($renderable);
+    }
+
+    $variables['output'] = ['#markup' => implode(', ', $output_parts)];
+  }
+
+  /** @var \Drupal\search_api\Plugin\views\field\SearchApiEntityField $field */
+  $field = $variables['field'];
+  if ($field->realField === 'entity:taxonomy_term/name') {
+    // For the EIF recommendations page they asked to show the title of the
+    // category split. The first column shows half the title and the second
+    // column shows the other half as "EIF Pillar". In order to not waste
+    // unneeded properties storing the same text 3 times, calculate the text
+    // here instead.
+    $output = (string) $variables['output'];
+    if (strpos($output, ':') === FALSE) {
+      return;
+    }
+    $parts = explode(':', $output);
+
+    if ($field->options['label'] === 'Recommendation topics') {
+      $variables['output'] = ['#markup' => $parts[1]];
+    }
+    elseif ($field->options['label'] === 'EIF Pillars') {
+      $variables['output'] = ['#markup' => $parts[0]];
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function eif_form_rdf_entity_solution_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  $form['#validate'][] = 'eif_validate_eif_field_values';
+}
+
+/**
+ * Validates EIF recommendations and categories.
+ *
+ * @param array $form
+ *   The form API form render array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form API form state object.
+ */
+function eif_validate_eif_field_values(array $form, FormStateInterface $form_state): void {
+  $eif_recommendation = $form_state->getValue('field_is_eif_recommendation');
+  $eif_category = $form_state->getValue('field_is_eif_category');
+  if (empty($eif_recommendation) && !empty($eif_category)) {
+    $form_state->setErrorByName('field_is_eif_recommendation', t("You'll have to select an EIF recommendation prior selecting an EIF category."));
+  }
+  if (!empty($eif_recommendation) && empty($eif_category)) {
+    $form_state->setErrorByName('field_is_eif_category', t("An EIF category is mandatory when at least one EIF recommendation has been selected."));
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for OG navigation menu.
+ *
+ * On EIF Toolbox filtered Solutions pages (route 'eif.solutions') we still want
+ * to highlight the left-menu 'Solution' link as being active because it acts as
+ * parent of the main 'Solutions' custom page.
+ */
+function eif_preprocess_menu__og__navigation(array &$variables): void {
+  if (\Drupal::routeMatch()->getRouteName() !== 'eif.solutions') {
+    return;
+  }
+
+  $instances = \Drupal::entityTypeManager()->getStorage('ogmenu_instance')->loadByProperties([
+    'type' => 'navigation',
+    OgGroupAudienceHelperInterface::DEFAULT_FIELD => EifInterface::EIF_ID,
+  ]);
+  $instance = reset($instances);
+
+  $menu_link_content_storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  $mids = $menu_link_content_storage->getQuery()
+    ->condition('bundle', 'menu_link_content')
+    ->condition('menu_name', "ogmenu-{$instance->id()}")
+    ->condition('link.uri', 'entity:node/' . EifInterface::EIF_SOLUTIONS_NID)
+    ->execute();
+
+  if (!$mids) {
+    throw new \Exception("There's no EIF Toolbox 'Solutions' left-menu link.");
+  }
+
+  $mid = reset($mids);
+  $plugin_id = 'menu_link_content:' . $menu_link_content_storage->load($mid)->uuid();
+
+  if (!isset($variables['items'][$plugin_id])) {
+    throw new \Exception("Link '{$plugin_id}' not present in left-side menu.");
+  }
+
+  $variables['items'][$plugin_id]['in_active_trail'] = TRUE;
 }

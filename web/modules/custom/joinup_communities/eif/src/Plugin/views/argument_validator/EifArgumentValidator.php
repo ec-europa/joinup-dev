@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\eif\Plugin\views\argument_validator;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\eif\Eif;
+use Drupal\eif\EifInterface;
 use Drupal\views\Plugin\views\argument_validator\Entity;
 
 /**
@@ -23,7 +23,7 @@ class EifArgumentValidator extends Entity {
    * {@inheritdoc}
    */
   protected function validateEntity(EntityInterface $entity) {
-    return ($entity->id() === Eif::EIF_ID) && parent::validateEntity($entity);
+    return ($entity->id() === EifInterface::EIF_ID) && parent::validateEntity($entity);
   }
 
 }

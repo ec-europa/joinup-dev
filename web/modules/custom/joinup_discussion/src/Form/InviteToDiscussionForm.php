@@ -299,7 +299,7 @@ class InviteToDiscussionForm extends InviteFormBase {
       /** @var \Drupal\rdf_entity\Entity\Rdf $group */
       $group = JoinupGroupHelper::getGroup($node);
 
-      $is_group_administrator = $user->hasPermission('administer groups');
+      $is_group_administrator = $user->hasPermission('administer organic groups');
       $is_owner = $user->id() == $node->getOwnerId();
       $is_discussion_inviter = $this->ogAccess->userAccess($group, 'invite users to discussions')->isAllowed();
 

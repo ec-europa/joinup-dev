@@ -12,7 +12,7 @@ dependencies:
 id: views_block__licence_list_licence_list_block
 theme: joinup_theme
 region: content
-weight: -15
+weight: -16
 provider: null
 plugin: 'views_block:licence_list-licence_list_block'
 settings:

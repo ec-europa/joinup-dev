@@ -172,8 +172,8 @@ function _joinup_search_search_api_has_condition($conditions, $field, $value, $o
  */
 function joinup_search_search_api_index_items_alter(IndexInterface $index, array &$items): void {
   foreach ($items as $item_id => $item) {
-    list(, $raw_id) = Utility::splitCombinedId($item_id);
-    list(, $langcode) = Utility::splitPropertyPath($raw_id);
+    [, $raw_id] = Utility::splitCombinedId($item_id);
+    [, $langcode] = Utility::splitPropertyPath($raw_id);
     // Unset non-english content from the index.
     if ($langcode != 'en') {
       unset($items[$item_id]);

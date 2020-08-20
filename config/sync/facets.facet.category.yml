@@ -1,4 +1,4 @@
-uuid: b4f12421-0cae-4e46-911c-168a3415ba5c
+uuid: 410deccd-14c4-4b2f-b68d-f47d3309e2fe
 langcode: en
 status: true
 dependencies:
@@ -7,22 +7,25 @@ dependencies:
     - views.view.eif_recommendation
   module:
     - search_api
-id: interoperability_layer
-name: 'Interoperability layer'
-url_alias: interoperability-layer
+id: category
+name: Category
+url_alias: category
 weight: 0
 min_count: 1
-show_only_one_result: false
-field_identifier: field_eif_related_term
+show_only_one_result: true
+field_identifier: vid
 facet_source_id: 'search_api:views_page__eif_recommendation__page'
 widget:
-  type: links_inline
+  type: links
   config:
     show_numbers: false
-    all_text: '- All -'
-    prefix_text: 'Interoperability layer:'
-    suffix_text: ''
-    cache_contexts: {  }
+    soft_limit: 0
+    soft_limit_settings:
+      show_less_label: 'Show less'
+      show_more_label: 'Show more'
+    show_reset_link: true
+    reset_text: 'All recommendations'
+    hide_reset_when_no_selection: false
     arbitrary_facet_plugin: _none
 query_operator: or
 use_hierarchy: false
@@ -30,26 +33,12 @@ expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
 hard_limit: 0
 exclude: false
-only_visible_when_facet_source_is_visible: false
+only_visible_when_facet_source_is_visible: true
 processor_configs:
-  bundle:
-    processor_id: bundle
-    weights:
-      build: 50
-    settings:
-      mode: include
-      bundle:
-        eif_interoperability_layer: eif_interoperability_layer
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
-      sort: -7
-    settings:
-      sort: ASC
-  term_weight_widget_order:
-    processor_id: term_weight_widget_order
-    weights:
-      sort: -8
+      sort: 40
     settings:
       sort: ASC
   translate_entity:

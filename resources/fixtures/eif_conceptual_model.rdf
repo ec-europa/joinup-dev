@@ -27,7 +27,7 @@
       are invoked and orchestrated to provide a European public service.
     </skos:definition>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
-    <adms:identifier>22</adms:identifier>
+    <adms:identifier>67</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/BC2">
@@ -39,7 +39,7 @@
       sources and services) should make their data or functionality accessible using service-oriented approaches.
     </skos:definition>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
-    <adms:identifier>23</adms:identifier>
+    <adms:identifier>68</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/BC3">
@@ -51,7 +51,7 @@
       information.
     </skos:definition>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
-    <adms:identifier>24</adms:identifier>
+    <adms:identifier>69</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/BC4">
@@ -64,7 +64,7 @@
       found, discovered and processed.
     </skos:definition>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
-    <adms:identifier>25</adms:identifier>
+    <adms:identifier>70</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/BC5">
@@ -77,7 +77,7 @@
       in catalogues are needed to enable interoperability between catalogues.
     </skos:definition>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
-    <adms:identifier>26</adms:identifier>
+    <adms:identifier>71</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/BC6">
@@ -90,7 +90,7 @@
       data can be collected through the Internet of Things (e.g. sensors) and social web applications.
     </skos:definition>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
-    <adms:identifier>27</adms:identifier>
+    <adms:identifier>72</adms:identifier>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://data.europa.eu/BC7">
@@ -99,7 +99,7 @@
     <skos:definition xml:lang="en">Security and privacy are primary concerns in the provision of public services.
     </skos:definition>
     <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
-    <adms:identifier>28</adms:identifier>
+    <adms:identifier>73</adms:identifier>
   </skos:Concept>
 
    <skos:Concept rdf:about="http://data.europa.eu/Model">
@@ -107,7 +107,7 @@
      <skos:altLabel xml:lang="en">Model</skos:altLabel>
      <skos:definition xml:lang="en"> </skos:definition>
      <skos:inScheme rdf:resource="http://data.europa.eu/eif/Model/"/>
-     <adms:identifier>3</adms:identifier>
+     <adms:identifier>66</adms:identifier>
    </skos:Concept>
 
 </rdf:RDF>
