@@ -35,7 +35,7 @@ mkdir -p ${JOINUP_DIR} || exit 1
 ${COMPOSER_PATH} install --no-dev || exit 1
 
 # Build the site.
-./vendor/bin/phing build-dist || exit 1
+./vendor/bin/run joinup:compile-scss || exit 1
 
 # Collect the source files for the package.
 cp -r build* composer.* VERSION config/ drush/ resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
@@ -48,7 +48,6 @@ rm -r ${SOURCES_DIR}/template || exit 1
 
 # Remove unneeded files.
 rm -rf ${JOINUP_DIR}/build.*local*
-rm -rf ${JOINUP_DIR}/web/sites/default/settings.local.php
 rm -rf ${JOINUP_DIR}/web/themes/joinup/prototype
 
 # Output the version number in a file that will be appended to the HTTP headers.

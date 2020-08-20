@@ -4,17 +4,10 @@
 # override there any configuration that needs to be adapted for the local
 # environment. Note that the `runner.yml` file is not under VCS control.
 
-# Override some toolkit configurations.
-toolkit:
-  project_id: joinup
-  tmp_folder: ${joinup.dir}/tmp
-  clone:
-    dumpfile: ${toolkit.tmp_folder}/mysql.sql
-
-drush:
-  # Drush binary location.
-  bin: ${joinup.dir}/vendor/bin/drush
-
 phing:
   # Phing binary location.
   bin: ${joinup.dir}/vendor/bin/phing
+
+composer:
+  # Composer binary location.
+  bin: ${joinup.dir}/vendor/bin/composer

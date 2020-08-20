@@ -119,36 +119,6 @@ All options you can use can be found in the `build.properties` file. Just copy
 the lines you want to override and change their values. Do not copy the entire
 `build.properties` file, since this would override all options.
 
-Example `build.properties.local`:
-
-```
-# The location of the Composer binary.
-composer.bin = /usr/bin/composer
-
-# SQL database settings.
-drupal.db.name = my_database
-drupal.db.user = root
-drupal.db.password = hunter2
-
-# Admin user.
-drupal.admin.username = admin
-drupal.admin.password = admin
-
-# The base URL to use in tests.
-drupal.base_url = http://joinup.local
-
-## Development settings.
-
-# Verbosity of Drush commands. Set to 'yes' for verbose output.
-drush.verbose = yes
-
-# Disable config readonly for local development.
-config_readonly.enabled = FALSE
-
-# Do not redirect emails to disk.
-# Set this to false when you are grabbing the emails using e.g. mailcatcher.
-drupal.redirect.email = no
-```
 
 #### Create a local task runner configuration file
 
@@ -166,12 +136,12 @@ details.
 
 #### Build the project
 
-Execute the [Phing](https://www.phing.info/) target `build-dev` to build a
-development instance, then install the site with `install-dev`:
+Execute the Task Runner command `toolkit:build-dev` to build a development
+instance, then install the site with `toolkit:install-clean`:
 
 ```
-$ ./vendor/bin/phing build-dev
-$ ./vendor/bin/phing install-dev
+$ ./vendor/bin/run toolkit:build-dev
+$ ./vendor/bin/run toolkit:install-clean
 ```
 
 
