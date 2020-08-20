@@ -1,10 +1,15 @@
+# This file is used by Toolkit pipelines, allowing to override the upgrade
+# procedure, pre-upgrade steps, cron execution command and extra OS packages
+# inside the container.
+# See https://webgate.ec.europa.eu/fpfis/wikis/display/MULTISITE/Pipeline+configuration+and+override.
+# See \EcEuropa\Toolkit\TaskRunner\Commands\CloneCommands::runDeploy().
 upgrade_commands:
   default:
-    - ${drush.bin} state:set system.maintenance_mode 1 --input-format=integer --yes
-    - ${phing.bin} disable-config-read-only
-    - ${phing.bin} redis-flush
-    - ${drush.bin} updatedb --no-post-updates --yes
-    - ${drush.bin} config:import --yes
-    - ${drush.bin} updatedb --yes
-    - ${phing.bin} enable-config-read-only
-    - ${drush.bin} state:set system.maintenance_mode 0 --input-format=integer --yes
+    - ./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer --yes
+    - touch disable-config-readonly
+    - ./vendor/bin/run redis:flush-all
+    - ./vendor/bin/drush updatedb --no-post-updates --yes
+    - ./vendor/bin/drush config:import --yes
+    - ./vendor/bin/drush updatedb --yes
+    - rm disable-config-readonly
+    - ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer --yes

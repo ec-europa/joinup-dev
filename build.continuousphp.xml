@@ -3,10 +3,7 @@
 <project name="ContinuousPHP" default="help">
 
     <target name="setup-continuousphp" depends="check-continuousphp">
-        <echo msg="Set the virtuoso checkpoint to -1. Do not use a checkpoint for CPHP testing."/>
-        <phingcall target="set-virtuoso-checkpoint">
-            <property name="interval" value="-1"/>
-        </phingcall>
+        <exec command="./vendor/bin/run virtuoso:checkpoint-set -- -1" checkreturn="true" passthru="true"/>
 
         <echo message="Create Solr index" />
         <exec dir="${project.basedir}"
@@ -51,18 +48,26 @@
 
     </target>
 
-    <!-- Sleeps to allow services to get up and be ready -->
-    <target name="sleep">
-        <echo message="Sleeping ${sleep.hours} hours, ${sleep.minutes} minutes, ${sleep.seconds} seconds, ${sleep.milliseconds} milliseconds"/>
-        <sleep hours="${sleep.hours}"
-               minutes="${sleep.minutes}"
-               seconds="${sleep.seconds}"
-               milliseconds="${sleep.milliseconds}"/>
-    </target>
-
     <!-- Checks to execute during build phase to exit early in case of easily preventable errors. -->
     <target name="sanity-check">
         <exec command="./vendor/bin/run dev:check-deprecated-code" checkreturn="true" passthru="true" />
+    </target>
+
+    <target name="create-phpunit-mysql-database">
+        <php expression="explode('://', '${phpunit.db_url}', 2)[0]" returnProperty="phpunit.db.type"/>
+        <if>
+            <equals arg1="${phpunit.db.type}" arg2="mysql"/>
+            <then>
+                <drush
+                        command="sql:create"
+                        assume="yes"
+                        root="${website.drupal.dir}"
+                        bin="${drush.bin}"
+                        verbose="${drush.verbose}">
+                    <option name="db-url" value="${phpunit.db_url}"/>
+                </drush>
+            </then>
+        </if>
     </target>
 
 </project>

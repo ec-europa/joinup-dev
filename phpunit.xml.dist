@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- TODO set checkForUnintentionallyCoveredCode="true" once https://www.drupal.org/node/2626832 is resolved. -->
 <!-- PHPUnit expects functional tests to be run with either a privileged user
  or your current system user. See core/tests/README.md and
  https://www.drupal.org/node/2116263 for details.
@@ -10,7 +9,6 @@
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
-         checkForUnintentionallyCoveredCode="false"
          printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"
          verbose="true">
   <php>
@@ -32,7 +30,7 @@
     -->
     <env name="BROWSERTEST_OUTPUT_BASE_URL" value=""/>
     <!-- To disable deprecation testing completely uncomment the next line. -->
-    <!-- env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/ -->
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="99999"/>
     <!-- Example for changing the driver class for mink tests MINK_DRIVER_CLASS value: 'Drupal\FunctionalJavascriptTests\DrupalSelenium2Driver' -->
     <env name="MINK_DRIVER_CLASS" value=''/>
     <!-- Example for changing the driver args to mink tests MINK_DRIVER_ARGS value: '["http://127.0.0.1:8510"]' -->
@@ -74,14 +72,7 @@
     <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
     </listener>
   </listeners>
-  <!-- Filter for coverage reports. -->
-  <filter>
-    <whitelist>
-      <directory>web/modules/custom</directory>
-      <directory>web/profiles</directory>
-      <directory>web/themes</directory>
-      <!-- Exclude all test modules, tests etc -->
-      <exclude-pattern>*/tests/*</exclude-pattern>
-     </whitelist>
-  </filter>
+  <extensions>
+    <extension class="Joinup\PhpUnit\Hooks\DrupalSettingsHook"/>
+  </extensions>
 </phpunit>

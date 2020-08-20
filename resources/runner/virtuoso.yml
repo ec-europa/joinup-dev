@@ -9,6 +9,12 @@ virtuoso:
 isql:
   bin: /usr/bin/isql-vt
 
+sparql:
+  host: ${env.SPARQL_HOST}
+  port: ${env.SPARQL_PORT}
+  user: ${env.SPARQL_USER}
+  password: ${env.SPARQL_PASSWORD}
+
 commands:
 
   # Downloads and unpacks the Virtuoso snapshot.
@@ -66,7 +72,12 @@ commands:
   # Starts the Virtuoso server.
   virtuoso:start:
     - test -f ${virtuoso.root}/db/virtuoso.lck || ${virtuoso.bin} +configfile ${virtuoso.db}/virtuoso.ini +wait
+    - echo 'GRANT SPARQL_UPDATE TO "SPARQL";' | ${isql.bin} ${sparql.host} ${sparql.user} ${sparql.password}
 
   # Stops the Virtuoso server.
   virtuoso:stop:
-    - echo "shutdown();" | ${isql.bin} ${env.SPARQL_HOST} ${env.SPARQL_USER} ${env.SPARQL_PASSWORD} || true
+    - echo "shutdown();" | ${isql.bin} ${sparql.host} ${sparql.user} ${sparql.password} || true
+
+  # Executes a Virtuoso checkpoint.
+  virtuoso:checkpoint-execute:
+    - echo 'checkpoint;' | ${isql.bin} ${sparql.host} ${sparql.user} ${sparql.password}
