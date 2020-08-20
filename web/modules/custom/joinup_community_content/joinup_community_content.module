@@ -133,8 +133,21 @@ function joinup_community_content_workflow_selector(EntityInterface $entity): ?s
     return NULL;
   }
 
-  $moderation = JoinupGroupHelper::getModeration($parent_entity);
-  return $moderation == CommunityContentWorkflowAccessControlHandler::PRE_MODERATION ? 'node:pre_moderated' : 'node:post_moderated';
+  if ($parent_entity->bundle() === 'solution') {
+    $moderation = JoinupGroupHelper::getModeration($parent_entity);
+    return $moderation == CommunityContentWorkflowAccessControlHandler::PRE_MODERATION ? 'node:pre_moderated' : 'node:post_moderated';
+  }
+  elseif ($parent_entity->bundle() === 'collection') {
+    $user_id = \Drupal::currentUser()->id();
+    /** @var \Drupal\og\OgMembershipInterface $membership */
+    if ($membership = \Drupal::getContainer()->get('og.membership_manager')->getMembership($parent_entity, $user_id)) {
+      if ($membership->hasRole($parent_entity->getEntityTypeId() . '-' . $parent_entity->bundle() . '-author')) {
+        return 'node:post_moderated';
+      }
+    }
+  }
+
+  return 'node:pre_moderated';
 }
 
 /**
