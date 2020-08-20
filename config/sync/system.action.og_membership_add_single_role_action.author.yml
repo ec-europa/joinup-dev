@@ -1,0 +1,13 @@
+uuid: 2d7d5841-2f9f-4b9f-afac-8c97a4989758
+langcode: en
+status: true
+dependencies:
+  module:
+    - og
+id: og_membership_add_single_role_action.author
+label: 'Add the author role to the selected members'
+type: og_membership
+plugin: og_membership_add_single_role_action
+weight: 4
+configuration:
+  role_name: author

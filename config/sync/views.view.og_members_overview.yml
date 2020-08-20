@@ -635,6 +635,8 @@ display:
             description: null
             use_operator: false
             operator: roles_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: roles_target_id
             required: false
             remember: false
@@ -642,8 +644,6 @@ display:
             remember_roles:
               authenticated: authenticated
             placeholder: null
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: true
           group_info:
             label: Roles
@@ -672,6 +672,10 @@ display:
                 title: Facilitator
                 operator: '='
                 value: rdf_entity-solution-facilitator
+              5:
+                title: 'Author'
+                operator: '='
+                value: rdf_entity-collection-author
           entity_type: og_membership
           entity_field: roles
           plugin_id: string

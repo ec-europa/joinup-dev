@@ -19,11 +19,11 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: rdf_entity-collection-author
+      value: rdf_entity-collection-member
       label: Member
     -
-      value: rdf_entity-collection-trusted_author
-      label: 'Trusted author'
+      value: rdf_entity-collection-author
+      label: 'Author'
   allowed_values_function: ''
 module: options
 locked: false
