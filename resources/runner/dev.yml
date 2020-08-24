@@ -59,10 +59,16 @@ commands:
 
   dev:install-modules:
     - task: run
+      command: config-readonly:disable
+    - task: run
       command: drush:module-install
       arguments: ${dev.modules}
+    - task: run
+      command: config-readonly:enable
 
   dev:demo-users:
+    - task: run
+      command: config-readonly:disable
     # Make sure CAS mock server module is installed.
     - task: run
       command: drush:module-install
@@ -172,3 +178,5 @@ commands:
       options:
         yes: null
         root: ${joinup.site_dir}
+    - task: run
+      command: config-readonly:enable
