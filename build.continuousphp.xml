@@ -40,7 +40,7 @@
                 <drush
                         command="sql:create"
                         assume="yes"
-                        root="${website.drupal.dir}"
+                        root="${project.basedir}/web"
                         bin="${drush.bin}"
                         verbose="${drush.verbose}">
                     <option name="db-url" value="${phpunit.db_url}"/>
