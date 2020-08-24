@@ -52,8 +52,6 @@ default:
             s3Dir: '${behat.screenshots.s3.dir}'
             s3Region: '${aws.region}'
             s3Bucket: '${exports.s3.bucket}'
-            s3Key: '${exports.s3.key}'
-            s3Secret: '${exports.s3.secret}'
         - Drupal\joinup\Context\SolutionContext
         - Drupal\joinup\Context\WhatsNewContext
         - Drupal\Tests\cas_mock_server\Context\CasMockServerContext:
