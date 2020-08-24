@@ -27,11 +27,6 @@
         </if>
     </target>
 
-    <!-- Checks to execute during build phase to exit early in case of easily preventable errors. -->
-    <target name="sanity-check">
-        <exec command="./vendor/bin/run dev:check-deprecated-code" checkreturn="true" passthru="true" />
-    </target>
-
     <target name="create-phpunit-mysql-database">
         <php expression="explode('://', '${phpunit.db_url}', 2)[0]" returnProperty="phpunit.db.type"/>
         <if>
