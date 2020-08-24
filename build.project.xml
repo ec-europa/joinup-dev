@@ -7,17 +7,8 @@
     <!-- Import Phing targets related to ContinuousPHP. -->
     <import file="${project.basedir}/build.continuousphp.xml" optional="true" />
 
-    <echo msg="Loading Amazon S3 download task." />
-    <taskdef name="s3dl" classname="\Joinup\Phing\AwsS3GetTask" />
-
-    <echo msg="Loading Amazon S3 list task." />
-    <taskdef name="s3list" classname="\Joinup\Phing\AwsS3ListTask" />
-
     <echo msg="Loading Drush task." />
     <taskdef name="drush" classname="\Phing\Drush\Task" />
-
-    <echo msg="Loading PHP Codesniffer Configuration task." />
-    <taskdef name="phpcodesnifferconfiguration" classname="\Joinup\Phing\PhpCodeSnifferConfigurationTask" />
 
     <echo msg="Loading PHPUnit Configuration task." />
     <taskdef name="phpunitconfiguration" classname="\Joinup\Phing\PhpUnitConfigurationTask" />
@@ -27,35 +18,6 @@
               passthru="true">
             <arg value="-l"/>
         </exec>
-    </target>
-
-    <!-- Set up PHP CodeSniffer. -->
-    <target name="setup-php-codesniffer" description="Generate the configuration file for PHP CodeSniffer.">
-        <echo message="Generating PHP Codesniffer configuration files." />
-        <phpcodesnifferconfiguration
-                configFile="${phpcs.config}"
-                extensions="${phpcs.extensions}"
-                files="${phpcs.files}"
-                globalConfig="${phpcs.global.config}"
-                ignorePatterns="${phpcs.ignore}"
-                report="${phpcs.report}"
-                showProgress="${phpcs.progress}"
-                showSniffCodes="${phpcs.sniffcodes}"
-                standard="${phpcs.standard}" />
-
-        <!-- Set up the git pre-push hook. -->
-        <phingcall target="disable-pre-push" />
-        <if>
-            <equals arg1="${phpcs.prepush.enable}" arg2="1" />
-            <then>
-                <symlink link="${phpcs.prepush.destination}" target="${phpcs.prepush.source}" overwrite="true" />
-            </then>
-        </if>
-    </target>
-
-    <!-- Disable the PHP CodeSniffer pre-push hook. -->
-    <target name="disable-pre-push" description="Disable the coding standards check when pushing to a git repository.">
-        <delete file="${phpcs.prepush.destination}" failonerror="false" />
     </target>
 
     <!-- Set up PHPUnit. -->
