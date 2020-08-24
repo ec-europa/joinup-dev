@@ -1,6 +1,0 @@
-# Configuration override for the docker container.
-# ------------------------------------------------
-
-
-# The URL of the webdriver host (e.g. Selenium or PhantomJS).
-behat.webdriver_url = http://selenium:${behat.webdriver_port}/wd/hub
