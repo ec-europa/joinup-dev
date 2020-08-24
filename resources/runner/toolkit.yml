@@ -31,6 +31,10 @@ commands:
       from: ${joinup.site_dir}/sites/default/default.services.yml
       to: ${joinup.site_dir}/sites/default/services.yml
     - task: run
+      command: testing:phpcs-setup
+    - task: run
+      command: testing:phpcs-git-hook
+    - task: run
       command: testing:behat-setup
     - task: run
       command: joinup:compile-scss
