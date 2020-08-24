@@ -30,12 +30,8 @@ commands:
     - task: copy
       from: ${joinup.site_dir}/sites/default/default.services.yml
       to: ${joinup.site_dir}/sites/default/services.yml
-    - task: exec
-      command: ${phing.bin}
-      arguments:
-        - setup-behat
-        - setup-php-codesniffer
-        - setup-phpunit
+    - task: run
+      command: testing:behat-setup
     - task: run
       command: joinup:compile-scss
     - task: run

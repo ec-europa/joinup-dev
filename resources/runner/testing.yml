@@ -1,0 +1,18 @@
+# Testing configs and commands.
+
+behat:
+  screenshots:
+    local:
+      dir: ${toolkit.tmp_folder}/behat
+  # Either 'firefox' or 'chrome'.
+  browser_name: chrome
+  formatter:
+    name: progress
+
+commands:
+
+  # Sets-up the tests/behat.yml file.
+  testing:behat-setup:
+    - task: process
+      source: ${joinup.dir}/tests/behat.yml.dist
+      destination: ${joinup.dir}/tests/behat.yml
