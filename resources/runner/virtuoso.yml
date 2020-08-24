@@ -80,4 +80,6 @@ commands:
 
   # Executes a Virtuoso checkpoint.
   virtuoso:checkpoint-execute:
-    - echo 'checkpoint;' | ${isql.bin} ${sparql.host} ${sparql.user} ${sparql.password}
+    - echo 'checkpoint;' > ${toolkit.tmp_folder}/isql
+    - ${isql.bin} ${sparql.host} ${sparql.user} ${sparql.password} ${toolkit.tmp_folder}/isql
+
