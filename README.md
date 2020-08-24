@@ -45,10 +45,10 @@ To start on macOS without Docker, please, check the separated [README file](reso
 
 #### Dependency management and builds
 
-We use Drupal composer as a template for the project.  For the most up-to-date
-information on how to use Composer, build the project using Phing, or on how to
-run the Behat test, please refer directly to the documention of
-[drupal-composer](https://github.com/drupal-composer/drupal-project).
+We use Drupal composer as a template for the project. For the most up-to-date
+information on how to use Composer, build the project using the Task Runner, or
+on how to run the Behat test, please refer directly to the documentation of each
+used tool.
 
 #### Initial setup
 
