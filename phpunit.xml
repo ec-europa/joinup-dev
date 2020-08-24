@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="vendor/weitzman/drupal-test-traits/src/bootstrap.php"
+         colors="true"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutChangesToGlobalState="true"
+         printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"
+         verbose="true">
+  <php>
+    <!-- Set error reporting to E_ALL. -->
+    <ini name="error_reporting" value="32767"/>
+    <!-- Do not limit the amount of memory tests take to run. -->
+    <ini name="memory_limit" value="-1"/>
+
+    <!--
+      Configure PHPUnit by setting the following environment variables:
+      - SIMPLETEST_BASE_URL: The base URL (e.g. http://localhost).
+      - SIMPLETEST_DB: The database URL (e.g.
+        mysql://username:password@localhost/databasename#table_prefix).
+      - SIMPLETEST_SPARQL_DB: The SPARQL connection URL (e.g.
+        sparql://127.0.0.1:8890/)
+      - BROWSERTEST_OUTPUT_DIRECTORY: Where to place the output files (e.g
+        /path/to/webroot/sites/simpletest/browser_output).
+      - BROWSERTEST_OUTPUT_BASE_URL: To have browser test output use an
+        alternative base URL. For example if SIMPLETEST_BASE_URL is an internal
+        DDEV URL, you can set this to the external DDev URL so you can follow
+        the links directly.
+      - SYMFONY_DEPRECATIONS_HELPER: To disable deprecation testing completely
+        set the value to 'disabled'.
+      - MINK_DRIVER_CLASS: Change the driver class for mink tests (e.g.
+        Drupal\FunctionalJavascriptTests\DrupalSelenium2Driver).
+      - MINK_DRIVER_ARGS: Change the driver args for mink tests (e.g.
+        ["http://127.0.0.1:8510"]).
+      - MINK_DRIVER_ARGS_PHANTOMJS: Chang the driver args for phantomjs (e.g.
+        ["http://127.0.0.1:8510"]).
+      - MINK_DRIVER_ARGS_WEBDRIVER: Change the driver args for webdriver (e.g.
+        ["chrome", { "chromeOptions": { "w3c": false } },
+        "http://localhost:4444/wd/hub"]). For using the Firefox browser,
+        replace "chrome" with "firefox".
+      - DTT_BASE_URL: Drupal Test Traits base URL (e.g. http://localhost).
+      - DTT_API_URL: Drupal Test Traits API URL (e.g.
+        http://localhost:4444/wd/hub).
+      - DTT_MINK_DRIVER_ARGS: Drupal Test Traits driver arguments (e.g.
+        ['chrome', null, 'http://localhost:4444/wd/hub']").
+    -->
+  </php>
+  <testsuites>
+    <testsuite name="unit">
+      <file>src/PhpUnit/JoinupUnitTestSuite.php</file>
+    </testsuite>
+    <testsuite name="kernel">
+      <file>src/PhpUnit/JoinupKernelTestSuite.php</file>
+    </testsuite>
+    <testsuite name="functional">
+      <file>src/PhpUnit/JoinupFunctionalTestSuite.php</file>
+    </testsuite>
+    <testsuite name="functional-javascript">
+      <file>src/PhpUnit/JoinupFunctionalJavascriptTestSuite.php</file>
+    </testsuite>
+    <testsuite name="existing-site">
+      <file>src/PhpUnit/JoinupExistingSiteTestSuite.php</file>
+    </testsuite>
+    <testsuite name="existing-site-javascript">
+      <file>src/PhpUnit/JoinupExistingSiteJavascriptTestSuite.php</file>
+    </testsuite>
+  </testsuites>
+  <listeners>
+    <listener class="\Drupal\Tests\Listeners\DrupalListener">
+    </listener>
+    <!-- The Symfony deprecation listener has to come after the Drupal listener -->
+    <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
+    </listener>
+  </listeners>
+  <extensions>
+    <extension class="Joinup\PhpUnit\Hooks\DrupalSettingsHook"/>
+  </extensions>
+</phpunit>
