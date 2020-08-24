@@ -27,27 +27,6 @@
         </if>
     </target>
 
-    <target name="build-continuousphp" depends="check-continuousphp">
-        <echo message="Create the Behat configuration files to run in parallel." />
-        <phingcall target="setup-behat">
-            <property name="behat.yml.path" value="${behat.dir}/behat-only-selenium-cphp.yml" />
-            <property name="behat.yml.template" value="${behat.dir}/behat-only-selenium-cphp.yml.dist" />
-        </phingcall>
-        <phingcall target="setup-behat">
-            <property name="behat.yml.path" value="${behat.dir}/behat-group-a-cphp.yml" />
-            <property name="behat.yml.template" value="${behat.dir}/behat-group-a-cphp.yml.dist" />
-        </phingcall>
-        <phingcall target="setup-behat">
-            <property name="behat.yml.path" value="${behat.dir}/behat-group-b-cphp.yml" />
-            <property name="behat.yml.template" value="${behat.dir}/behat-group-b-cphp.yml.dist" />
-        </phingcall>
-        <phingcall target="setup-behat">
-            <property name="behat.yml.path" value="${behat.dir}/behat-remainder-cphp.yml" />
-            <property name="behat.yml.template" value="${behat.dir}/behat-remainder-cphp.yml.dist" />
-        </phingcall>
-
-    </target>
-
     <!-- Checks to execute during build phase to exit early in case of easily preventable errors. -->
     <target name="sanity-check">
         <exec command="./vendor/bin/run dev:check-deprecated-code" checkreturn="true" passthru="true" />
