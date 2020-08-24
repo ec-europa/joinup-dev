@@ -51,6 +51,7 @@
         "drupal/og": "dev-neutral-access-result as 1.x-dev",
         "drupal/og_menu": "^1.0-alpha4",
         "drupal/paragraphs": "^1.11",
+        "drupal/paragraphs_jquery_ui_accordion": "^1.4",
         "drupal/password_policy": "3.0-alpha5",
         "drupal/pathauto": "~1.5",
         "drupal/pipeline": "^1.0",
