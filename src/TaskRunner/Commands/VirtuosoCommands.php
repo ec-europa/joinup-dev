@@ -57,8 +57,12 @@ class VirtuosoCommands extends AbstractCommands {
    */
   public function setCheckpoint(int $interval = 60): CollectionBuilder {
     $config = $this->getConfig();
-    $task = $this->taskExec("echo 'checkpoint_interval({$interval});' | {$config->get('isql.bin')} {$config->get('sparql.host')} {$config->get('sparql.user')} {$config->get('sparql.password')}");
-    return $this->collectionBuilder()->addTask($task);
+    $file = "{$config->get('toolkit.tmp_folder')}/isql";
+    $tasks = [];
+    $tasks[] = $this->taskWriteToFile($file)->line("checkpoint_interval({$interval})");
+    $tasks[] = $this->taskExec("echo 'checkpoint_interval({$interval});' | {$config->get('isql.bin')} {$config->get('sparql.host')} {$config->get('sparql.user')} {$config->get('sparql.password')}");
+    $tasks[] = $this->taskFilesystemStack()->remove($file);
+    return $this->collectionBuilder()->addTaskList($tasks);
   }
 
 }

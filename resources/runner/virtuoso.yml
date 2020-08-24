@@ -82,4 +82,5 @@ commands:
   virtuoso:checkpoint-execute:
     - echo 'checkpoint;' > ${toolkit.tmp_folder}/isql
     - ${isql.bin} ${sparql.host} ${sparql.user} ${sparql.password} ${toolkit.tmp_folder}/isql
-
+    - task: remove
+      file: ${toolkit.tmp_folder}/isql
