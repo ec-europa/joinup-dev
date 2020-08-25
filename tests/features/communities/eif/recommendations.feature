@@ -113,7 +113,7 @@ Feature:
       | Preservation of information                   | Underlying Principle 11  | Recommendation 18                 |
       | Assessment of effectiveness and efficiency    | Underlying Principle 12  | Recommendation 19                 |
 
-    When I click "All recommendations" in the "Content" region
+    When I click "All" in the "Content" region
     Then the "eif recommendations" table should be:
       | Recommendation topics                         | EIF Pillars              | Recommendations                   |
       | Subsidiarity and proportionality              | Underlying Principle 1   | Recommendation 1                  |

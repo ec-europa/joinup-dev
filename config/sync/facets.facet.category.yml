@@ -24,7 +24,7 @@ widget:
       show_less_label: 'Show less'
       show_more_label: 'Show more'
     show_reset_link: true
-    reset_text: 'All recommendations'
+    reset_text: 'All'
     hide_reset_when_no_selection: false
     arbitrary_facet_plugin: _none
 query_operator: or

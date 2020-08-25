@@ -221,3 +221,43 @@
     }
   }
 }
+// EIF recommendations category tabs
+// --------------------------------------------------
+#block-category {
+  ul.item-list__links {
+    @include flex;
+    @include flex-wrap(wrap);
+    @include justify-content(space-between);
+    list-style: none;
+    padding: 0;
+    margin-top: -9px;
+
+    li {
+      flex-grow: 1;
+      text-align: center;
+
+      a {
+        display: block;
+        width: 100%;
+        padding: 15px 0;
+        background: #fff;
+        text-decoration: none;
+        color: $color-base;
+        @include breakpoint(tablet) {
+          font-size: $font-size-base;
+        }
+
+        &:hover,
+        &.is-active {
+          background: #f4f6f7;
+          border-top: solid 4px #ee8917;
+          margin-top: -4px;
+        }
+      }
+
+      .facet-item__status {
+        display: none;
+      }
+    }
+  }
+}
