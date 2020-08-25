@@ -235,6 +235,12 @@
     li {
       flex-grow: 1;
       text-align: center;
+      @include breakpoint(tablet) {
+        padding-right: 4px;
+      }
+      &:last-child {
+        padding-right: 0;
+      }
 
       a {
         display: block;
