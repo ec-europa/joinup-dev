@@ -230,22 +230,18 @@
     @include justify-content(space-between);
     list-style: none;
     padding: 0;
-    margin-top: -9px;
+    margin: -13px -4px 14px 0;
 
     li {
       flex-grow: 1;
       text-align: center;
-      @include breakpoint(tablet) {
-        padding-right: 4px;
-      }
-      &:last-child {
-        padding-right: 0;
-      }
+      padding-right: 4px;
 
       a {
         display: block;
         width: 100%;
         padding: 15px 0;
+        margin-top: 4px;
         background: #fff;
         text-decoration: none;
         color: $color-base;
@@ -257,7 +253,7 @@
         &.is-active {
           background: #f4f6f7;
           border-top: solid 4px #ee8917;
-          margin-top: -4px;
+          margin-top: 0;
         }
       }
 
