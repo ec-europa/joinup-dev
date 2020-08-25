@@ -46,23 +46,8 @@
     -->
   </php>
   <testsuites>
-    <testsuite name="unit">
-      <file>src/PhpUnit/JoinupUnitTestSuite.php</file>
-    </testsuite>
-    <testsuite name="kernel">
-      <file>src/PhpUnit/JoinupKernelTestSuite.php</file>
-    </testsuite>
-    <testsuite name="functional">
-      <file>src/PhpUnit/JoinupFunctionalTestSuite.php</file>
-    </testsuite>
-    <testsuite name="functional-javascript">
-      <file>src/PhpUnit/JoinupFunctionalJavascriptTestSuite.php</file>
-    </testsuite>
-    <testsuite name="existing-site">
-      <file>src/PhpUnit/JoinupExistingSiteTestSuite.php</file>
-    </testsuite>
-    <testsuite name="existing-site-javascript">
-      <file>src/PhpUnit/JoinupExistingSiteJavascriptTestSuite.php</file>
+    <testsuite name="abs">
+      <file>web/modules/custom/rdf_schema_field_validation/tests/src/Kernel/RdfSchemaFieldValidationTest.php</file>
     </testsuite>
   </testsuites>
   <listeners>
