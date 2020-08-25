@@ -158,7 +158,6 @@ drupal:
           'driver' => 'mysql',
         ];
         $databases['sparql_default']['default'] = [
-          'prefix' => '',
           'host' => getenv('SPARQL_HOST'),
           'port' => getenv('SPARQL_PORT'),
           'namespace' => 'Drupal\\Driver\\Database\\joinup_sparql',
