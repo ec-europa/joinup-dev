@@ -903,7 +903,7 @@ index e415cc2c..138b9969 100644
 +  public function getCacheContexts() {
 +    // Call the pre-execute method to ensure that processors and modules have
 +    // had the chance to alter the query and modify the cacheability metadata.
-+    $this->preExecute();
++    // $this->preExecute();
 +
 +    $contexts = $this->cacheContexts;
 +
@@ -920,7 +920,7 @@ index e415cc2c..138b9969 100644
 +  public function getCacheTags() {
 +    // Call the pre-execute method to ensure that processors and modules have
 +    // had the chance to alter the query and modify the cacheability metadata.
-+    $this->preExecute();
++    // $this->preExecute();
 +
 +    $tags = $this->cacheTags;
 +
@@ -938,7 +938,7 @@ index e415cc2c..138b9969 100644
 +  public function getCacheMaxAge() {
 +    // Call the pre-execute method to ensure that processors and modules have
 +    // had the chance to alter the query and modify the cacheability metadata.
-+    $this->preExecute();
++    // $this->preExecute();
 +
 +    return $this->cacheMaxAge;
 +  }
