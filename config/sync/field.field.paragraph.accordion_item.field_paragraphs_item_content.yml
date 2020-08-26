@@ -25,11 +25,11 @@ settings:
     target_bundles:
       simple_paragraph: simple_paragraph
     target_bundles_drag_drop:
-      json_map:
-        weight: 4
-        enabled: false
       accordion_item:
         weight: 5
+        enabled: false
+      json_map:
+        weight: 4
         enabled: false
       simple_paragraph:
         enabled: true

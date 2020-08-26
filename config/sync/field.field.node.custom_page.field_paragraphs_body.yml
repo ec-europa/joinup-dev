@@ -29,15 +29,15 @@ settings:
       json_map: json_map
       accordion: accordion
     target_bundles_drag_drop:
-      json_map:
-        enabled: true
-        weight: 4
       accordion:
         enabled: true
         weight: 5
       accordion_item:
         weight: 7
         enabled: false
+      json_map:
+        enabled: true
+        weight: 4
       simple_paragraph:
         enabled: true
         weight: 2
