@@ -3,22 +3,22 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.paragraphs_accordion.field_paragraphs_accordion_item
-    - paragraphs.paragraphs_type.paragraphs_accordion
+    - field.field.paragraph.accordion.field_accordion_item
+    - paragraphs.paragraphs_type.accordion
   module:
     - paragraphs_jquery_ui_accordion
     - template_suggestion
-id: paragraph.paragraphs_accordion.default
+id: paragraph.accordion.default
 targetEntityType: paragraph
-bundle: paragraphs_accordion
+bundle: accordion
 mode: default
 content:
-  field_paragraphs_accordion_item:
+  field_accordion_item:
     type: paragraphs_jquery_ui_accordion_formatter
     weight: 0
     label: hidden
     settings:
-      bundle: paragraphs_accordion
+      bundle: accordion
       title: field_paragraphs_item_label
       content: field_paragraphs_item_content
       view_mode: default

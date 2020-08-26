@@ -3,16 +3,16 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.paragraphs_accordion.field_paragraphs_accordion_item
-    - paragraphs.paragraphs_type.paragraphs_accordion
+    - field.field.paragraph.accordion.field_accordion_item
+    - paragraphs.paragraphs_type.accordion
   module:
     - paragraphs
-id: paragraph.paragraphs_accordion.default
+id: paragraph.accordion.default
 targetEntityType: paragraph
-bundle: paragraphs_accordion
+bundle: accordion
 mode: default
 content:
-  field_paragraphs_accordion_item:
+  field_accordion_item:
     type: paragraphs
     weight: 0
     settings:

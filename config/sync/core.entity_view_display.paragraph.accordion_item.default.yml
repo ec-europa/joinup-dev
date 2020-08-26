@@ -3,14 +3,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.paragraphs_accordion_item.field_paragraphs_item_content
-    - field.field.paragraph.paragraphs_accordion_item.field_paragraphs_item_label
-    - paragraphs.paragraphs_type.paragraphs_accordion_item
+    - field.field.paragraph.accordion_item.field_paragraphs_item_content
+    - field.field.paragraph.accordion_item.field_paragraphs_item_label
+    - paragraphs.paragraphs_type.accordion_item
   module:
     - entity_reference_revisions
-id: paragraph.paragraphs_accordion_item.default
+id: paragraph.accordion_item.default
 targetEntityType: paragraph
-bundle: paragraphs_accordion_item
+bundle: accordion_item
 mode: default
 content:
   field_paragraphs_item_content:

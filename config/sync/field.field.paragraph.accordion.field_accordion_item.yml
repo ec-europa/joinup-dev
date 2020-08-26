@@ -3,15 +3,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_paragraphs_accordion_item
-    - paragraphs.paragraphs_type.paragraphs_accordion
-    - paragraphs.paragraphs_type.paragraphs_accordion_item
+    - field.storage.paragraph.field_accordion_item
+    - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.accordion_item
   module:
     - entity_reference_revisions
-id: paragraph.paragraphs_accordion.field_paragraphs_accordion_item
-field_name: field_paragraphs_accordion_item
+id: paragraph.accordion.field_accordion_item
+field_name: field_accordion_item
 entity_type: paragraph
-bundle: paragraphs_accordion
+bundle: accordion
 label: 'Accordion item'
 description: ''
 required: false
@@ -23,15 +23,15 @@ settings:
   handler_settings:
     negate: 0
     target_bundles:
-      paragraphs_accordion_item: paragraphs_accordion_item
+      accordion_item: accordion_item
     target_bundles_drag_drop:
       json_map:
         weight: 6
         enabled: false
-      paragraphs_accordion:
+      accordion:
         weight: 5
         enabled: false
-      paragraphs_accordion_item:
+      accordion_item:
         enabled: true
         weight: 7
       simple_paragraph:

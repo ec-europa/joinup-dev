@@ -4,11 +4,11 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_paragraphs_item_label
-    - paragraphs.paragraphs_type.paragraphs_accordion_item
-id: paragraph.paragraphs_accordion_item.field_paragraphs_item_label
+    - paragraphs.paragraphs_type.accordion_item
+id: paragraph.accordion_item.field_paragraphs_item_label
 field_name: field_paragraphs_item_label
 entity_type: paragraph
-bundle: paragraphs_accordion_item
+bundle: accordion_item
 label: 'Item label'
 description: ''
 required: true
