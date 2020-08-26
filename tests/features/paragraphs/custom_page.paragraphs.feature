@@ -73,8 +73,8 @@ Feature:
     And the response should contain "{\"foo\":\"bar\"}"
 
   @javascript
-  Scenario: Add an accordion to the custom page.
-    Given I am logged in as a moderator
+  Scenario Outline: Add an accordion to the custom page.
+    Given I am logged in as a <role>
     And I go to the "Paragraphs collection" collection
     And I open the plus button menu
     And I click "Add custom page"
@@ -114,3 +114,8 @@ Feature:
     Given I click "Super"
     Then I should see the text "Clumsy text"
     But I should not see the text "Crunchy text"
+
+    Examples:
+      | role                                                  |
+      | moderator                                             |
+      | facilitator of the "Paragraphs collection" collection |
