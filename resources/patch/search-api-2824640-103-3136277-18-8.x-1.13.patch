@@ -417,10 +417,18 @@ index 9f6e7100..6e056206 100644
          ->getCacheMetadata()
          ->getCacheContexts();
 diff --git a/src/Plugin/views/cache/SearchApiTagCache.php b/src/Plugin/views/cache/SearchApiTagCache.php
-index 48e7728f..6132e996 100644
+index 48e7728f..4f7c0f58 100644
 --- a/src/Plugin/views/cache/SearchApiTagCache.php
 +++ b/src/Plugin/views/cache/SearchApiTagCache.php
-@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
+@@ -3,6 +3,7 @@
+ namespace Drupal\search_api\Plugin\views\cache;
+ 
+ use Drupal\Core\Cache\Cache;
++use Drupal\Core\Cache\CacheableMetadata;
+ use Drupal\Core\Entity\EntityInterface;
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
+ use Drupal\views\Plugin\views\cache\Tag;
+@@ -17,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
   *
   * Use this for search results views that are fully controlled by a single
   * Drupal instance. A common use case is a website that uses the default
@@ -429,7 +437,7 @@ index 48e7728f..6132e996 100644
   *
   * @ingroup views_cache_plugins
   *
-@@ -78,8 +78,10 @@ class SearchApiTagCache extends Tag {
+@@ -78,8 +79,10 @@ class SearchApiTagCache extends Tag {
     */
    public function getCacheTags() {
      $tags = $this->view->storage->getCacheTags();
@@ -442,6 +450,22 @@ index 48e7728f..6132e996 100644
      return $tags;
    }
  
+@@ -109,4 +112,15 @@ class SearchApiTagCache extends Tag {
+     return $tags;
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function alterCacheMetadata(CacheableMetadata $cache_metadata) {
++    // Allow modules that alter the query to add their cache metadata to the
++    // view.
++    $query = $this->getQuery()->getSearchApiQuery();
++    $query->preExecute();
++    $cache_metadata->addCacheableDependency($query);
++  }
++
+ }
 diff --git a/src/Plugin/views/cache/SearchApiTimeCache.php b/src/Plugin/views/cache/SearchApiTimeCache.php
 index 8a3e7b95..4010c644 100644
 --- a/src/Plugin/views/cache/SearchApiTimeCache.php
@@ -868,7 +892,7 @@ index e670f33b..4f3db769 100644
 +
  }
 diff --git a/src/Query/Query.php b/src/Query/Query.php
-index e415cc2c..138b9969 100644
+index e415cc2c..d9aaa059 100644
 --- a/src/Query/Query.php
 +++ b/src/Query/Query.php
 @@ -2,6 +2,9 @@
@@ -893,7 +917,7 @@ index e415cc2c..138b9969 100644
    use DependencySerializationTrait {
      __sleep as traitSleep;
      __wakeup as traitWakeup;
-@@ -696,6 +700,52 @@ class Query implements QueryInterface {
+@@ -696,6 +700,40 @@ class Query implements QueryInterface {
      return $this->originalQuery ?: clone $this;
    }
  
@@ -901,10 +925,6 @@ index e415cc2c..138b9969 100644
 +   * {@inheritdoc}
 +   */
 +  public function getCacheContexts() {
-+    // Call the pre-execute method to ensure that processors and modules have
-+    // had the chance to alter the query and modify the cacheability metadata.
-+    // $this->preExecute();
-+
 +    $contexts = $this->cacheContexts;
 +
 +    foreach ($this->getIndex()->getDatasources() as $datasource) {
@@ -918,10 +938,6 @@ index e415cc2c..138b9969 100644
 +   * {@inheritdoc}
 +   */
 +  public function getCacheTags() {
-+    // Call the pre-execute method to ensure that processors and modules have
-+    // had the chance to alter the query and modify the cacheability metadata.
-+    // $this->preExecute();
-+
 +    $tags = $this->cacheTags;
 +
 +    // If the configuration of the search index changes we should invalidate the
@@ -936,10 +952,6 @@ index e415cc2c..138b9969 100644
 +   * {@inheritdoc}
 +   */
 +  public function getCacheMaxAge() {
-+    // Call the pre-execute method to ensure that processors and modules have
-+    // had the chance to alter the query and modify the cacheability metadata.
-+    // $this->preExecute();
-+
 +    return $this->cacheMaxAge;
 +  }
 +
@@ -1872,10 +1884,10 @@ index 00000000..e526c623
 +}
 diff --git a/tests/src/Kernel/Views/ViewsCacheabilityMetadataExportTest.php b/tests/src/Kernel/Views/ViewsCacheabilityMetadataExportTest.php
 new file mode 100644
-index 00000000..7b549a01
+index 00000000..d7db4fdc
 --- /dev/null
 +++ b/tests/src/Kernel/Views/ViewsCacheabilityMetadataExportTest.php
-@@ -0,0 +1,245 @@
+@@ -0,0 +1,246 @@
 +<?php
 +
 +namespace Drupal\Tests\search_api\Kernel\Views;
@@ -2031,6 +2043,7 @@ index 00000000..7b549a01
 +    // Activate the alter hook and resave the view so it will recalculate the
 +    // cacheability metadata.
 +    $this->state->set('search_api_test_views.alter_query_cacheability_metadata', TRUE);
++    $view = $this->getView();
 +    $view->save();
 +
 +    // Check that the altered metadata is now present in the view and the
