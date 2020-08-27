@@ -35,6 +35,28 @@ trait MailConfigTrait {
   }
 
   /**
+   * Clears the config values from both cache and $_GLOBALS array.
+   *
+   * This ensures that when values are overridden or changed in the settings.php
+   * file during the test run, the values are being read anew from storage.
+   * Config factory sets overrides both in cache and in the $_GLOBALS array so
+   * cleaning them would require to remove them from both indexes.
+   *
+   * When we are changing the settings values before running behat tests, the
+   * values are already loaded into cache and $_GLOBALS so checking for
+   * overrides will still fail.
+   */
+  protected function clearConfigValuesCache(): void {
+    $config_factory = \Drupal::configFactory();
+    foreach (static::$mailOverridableConfigurations as $config_name => $config_path) {
+      $config_factory->reset($config_name);
+      if (isset($GLOBALS['config'][$config_name])) {
+        unset($GLOBALS['config'][$config_name]);
+      }
+    }
+  }
+
+  /**
    * Checks if the test mail collector is currently used.
    *
    * @return bool
