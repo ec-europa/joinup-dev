@@ -62,7 +62,7 @@ commands:
   # Scans the code base for deprecated code.
   testing:check-deprecated-code:
     - task: exec
-      command: ${phpstan.bin} --no-progress analyse src tests/src web/modules/custom web/profiles web/themes
+      command: php -d memory_limit=-1 ${phpstan.bin} --no-progress analyse src tests/src web/modules/custom web/profiles web/themes
   testing:check-deprecated-code-contrib:
     - task: exec
-      command: ${phpstan.bin} --no-progress analyse web/modules/contrib
+      command: php -d memory_limit=-1 ${phpstan.bin} --no-progress analyse web/modules/contrib
