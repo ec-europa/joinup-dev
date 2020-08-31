@@ -1684,7 +1684,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * the form is submitted. This would make most of Behat tests to fail. We
    * disable Antibot functionality during Behat tests run.
    *
-   * @BeforeSuite
+   * @BeforeScenario
    */
   public static function disableAntibotForSuite(): void {
     static::disableAntibot();
@@ -1693,7 +1693,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Restores the Antibot functionality after tests run.
    *
-   * @AfterSuite
+   * @AfterScenario
    *
    * @see self::disableAntibotForSuite()
    */
@@ -1886,7 +1886,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Stores the ID of the latest file entity created before the scenario.
    *
-   * @BeforeFeature
+   * @BeforeScenario
    */
   public static function storeLastFileId(): void {
     static::$lastFileId = \Drupal::database()->query("SELECT MAX(fid) FROM {file_managed}")->fetchField() ?: 0;
@@ -1906,7 +1906,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @see https://www.drupal.org/node/2891902
    * @see \Drupal\joinup\Traits\FileTrait::cleanFiles()
    *
-   * @AfterFeature
+   * @AfterScenario
    */
   public static function staleFilesCleanup(): void {
     $fids = \Drupal::database()->query("SELECT fid FROM {file_managed} WHERE fid > :fid", [':fid' => static::$lastFileId])->fetchCol();
