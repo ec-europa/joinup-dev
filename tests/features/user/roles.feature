@@ -26,7 +26,7 @@ Feature: User role management
     When I fill in "Name or email contains" with "Nibby Noob"
     And I press the "Filter" button
     # Select user and assign role
-    And I check "ibby oob"
+    And I check "Nibby Noob"
     And I select "Add the Moderator role to the selected user(s)" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the success message "Add the Moderator role to the selected user(s) was applied to 1 item."
