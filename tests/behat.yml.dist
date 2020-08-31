@@ -2,6 +2,7 @@ default:
   suites:
     default:
       contexts:
+        - Drupal\joinup\Context\BootstrapDrupalContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
