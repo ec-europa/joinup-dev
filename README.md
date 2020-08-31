@@ -132,7 +132,31 @@ file is not under VCS control.
 
 Sensitive data will be stored in [environment variables](
 https://en.wikipedia.org/wiki/Environment_variable). See `.env.dist` for
-details.
+details. To adapt these values to your own environment, create a `.env` file
+that contains only the overridden values. For a local development environment
+this could look like the following:
+
+```bash
+DRUPAL_BASE_URL=http://my-base-url.local
+DRUPAL_DATABASE_USERNAME=my-database-username
+DRUPAL_DATABASE_PASSWORD=my-database-password
+DRUPAL_DATABASE_HOST=localhost
+DRUPAL_HASH_SALT=some-unique-random-string-like-37h+2BQEQx83YLa/uFdsfG55
+
+SOLR_CORE_PUBLISHED_URL=http://localhost:8983/solr
+SOLR_CORE_UNPUBLISHED_URL=http://localhost:8983/solr
+
+SPARQL_HOST=localhost
+REDIS_HOST=localhost
+
+SIMPLETEST_BASE_URL=http://my-base-url.local
+SIMPLETEST_DB=mysql://root@localhost:3306/joinup
+SIMPLETEST_SPARQL_DB=sparql://localhost:8890
+MINK_DRIVER_ARGS_WEBDRIVER=""
+DTT_BASE_URL=http://my-base-url.local
+DTT_API_URL=http://localhost:4444/wd/hub
+DTT_MINK_DRIVER_ARGS="['chrome', null, 'http://localhost:4444/wd/hub']"
+```
 
 #### Build the project
 
