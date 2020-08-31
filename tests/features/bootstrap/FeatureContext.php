@@ -894,7 +894,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * Limitation: It creates terms with maximum 2 level hierarchy.
    *
-   * @beforeScenario @terms
+   * @BeforeScenario @terms
    */
   public function provideTestingTerms(): void {
     $fixture = file_get_contents(__DIR__ . '/../../fixtures/testing_terms.yml');
@@ -1886,7 +1886,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Stores the ID of the latest file entity created before the scenario.
    *
-   * @beforeFeature
+   * @BeforeFeature
    */
   public static function storeLastFileId(): void {
     static::$lastFileId = \Drupal::database()->query("SELECT MAX(fid) FROM {file_managed}")->fetchField() ?: 0;
@@ -1906,7 +1906,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @see https://www.drupal.org/node/2891902
    * @see \Drupal\joinup\Traits\FileTrait::cleanFiles()
    *
-   * @afterFeature
+   * @AfterFeature
    */
   public static function staleFilesCleanup(): void {
     $fids = \Drupal::database()->query("SELECT fid FROM {file_managed} WHERE fid > :fid", [':fid' => static::$lastFileId])->fetchCol();
@@ -1920,7 +1920,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Switch to Behat specific Drupal settings during the test suite.
    *
-   * @beforeSuite
+   * @BeforeSuite
    */
   public static function addBehatSpecificDrupalSettings(): void {
     static::runCommand('drupal:settings behat --root=' . static::getPath('web') . ' --sites-subdir=default');
@@ -1929,7 +1929,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Restore the original Drupal settings.
    *
-   * @afterSuite
+   * @AfterSuite
    */
   public static function restoreDrupalSettings(): void {
     static::runCommand('drupal:settings site-clean --root=' . static::getPath('web') . ' --sites-subdir=default');
