@@ -156,7 +156,6 @@
     "autoload": {
         "classmap": [
             "web/modules/contrib/error_page/src/ErrorPageErrorHandler.php",
-            "web/modules/contrib/message_digest/message_digest.behat.inc",
             "web/modules/contrib/sparql_entity_storage/src/Database/Driver/sparql/ConnectionInterface.php",
             "web/modules/custom/joinup_sparql/driver/joinup_sparql/Connection.php"
         ],
@@ -277,7 +276,8 @@
                 "Message template should depend on text(s) filter formats @see https://www.drupal.org/project/message/issues/3163049": "https://www.drupal.org/files/issues/2020-08-03/3163049-2.patch"
             },
             "drupal/message_digest": {
-                "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch"
+                "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch",
+                "MessageDigestSubcontext is deprecated @see https://www.drupal.org/project/message_digest/issues/3168495": "https://www.drupal.org/files/issues/2020-09-01/3168495-2.patch"
             },
             "drupal/password_policy": {
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",

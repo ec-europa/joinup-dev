@@ -61,7 +61,6 @@ default:
               lastName: Last name
         - FeatureContext
         - LoversOfBehat\TableExtension\Context\TableContext
-        - MessageDigestSubContext
       filters:
         tags: '~@wip'
   extensions:
@@ -121,7 +120,7 @@ default:
         warning_message_selector: '.alert.alert--warning, .messages.message--warning'
         login_form_selector: '#user-login-form'
       subcontexts:
-        autoload: false
+        autoload: true
         paths:
           - ${joinup.site_dir}/modules
       text:
