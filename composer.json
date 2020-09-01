@@ -165,6 +165,7 @@
     },
     "autoload-dev": {
         "classmap": [
+            "web/modules/contrib/message_digest/src/Traits/MessageDigestContextTrait.php",
             "web/modules/contrib/message_digest/src/Traits/MessageDigestTrait.php",
             "web/modules/contrib/og_menu/src/Tests/Traits/OgMenuTrait.php"
         ],
@@ -173,7 +174,8 @@
         ],
         "psr-4": {
             "Drupal\\joinup\\": "tests/src",
-            "Drupal\\Tests\\cas_mock_server\\": "web/modules/contrib/cas_mock_server/tests/src"
+            "Drupal\\Tests\\cas_mock_server\\": "web/modules/contrib/cas_mock_server/tests/src",
+            "Drupal\\Tests\\message_digest\\": "web/modules/contrib/message_digest/tests/src"
         }
     },
     "scripts": {

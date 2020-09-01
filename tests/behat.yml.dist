@@ -59,6 +59,7 @@ default:
             attributes_map:
               firstName: First name
               lastName: Last name
+        - Drupal\Tests\message_digest\Behat\MessageDigestContext:
         - FeatureContext
         - LoversOfBehat\TableExtension\Context\TableContext
       filters:
@@ -120,9 +121,8 @@ default:
         warning_message_selector: '.alert.alert--warning, .messages.message--warning'
         login_form_selector: '#user-login-form'
       subcontexts:
-        autoload: true
-        paths:
-          - ${joinup.site_dir}/modules
+        autoload: false
+        paths: []
       text:
         log_in: 'Sign in'
         log_out: 'Sign out'
