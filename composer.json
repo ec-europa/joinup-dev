@@ -73,6 +73,7 @@
         "drupal/token": "~1.5",
         "drupal/video_embed_field": "~1.6",
         "drupal/view_unpublished": "~1.0@alpha",
+        "drupal/views_autosubmit": "^1.1",
         "drupal/views_bulk_operations": "^2.5",
         "drupal/views_data_export": "^1.0",
         "drush/drush": "~10.3",
