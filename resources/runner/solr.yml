@@ -6,7 +6,7 @@ solr:
   dir: ${solr.vendor_dir}/solr-${solr.version}
   bin: ${joinup.dir}/vendor/bin/solr
   download_url: http://archive.apache.org/dist/lucene/solr/${solr.version}/solr-${solr.version}.tgz
-  config_dir: ${joinup.dir}/web/modules/contrib/search_api_solr/solr-conf/6.x
+  config_dir: ${joinup.site_dir}/modules/contrib/search_api_solr/solr-conf/6.x
   core:
     published:
       dir: ${solr.dir}/server/solr/${env.SOLR_CORE_PUBLISHED_NAME}

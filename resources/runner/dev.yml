@@ -17,14 +17,6 @@ dev:
 
 commands:
 
-  # Scans the code base for deprecated code.
-  dev:check-deprecated-code:
-    - task: exec
-      command: ${phpstan.bin} --no-progress analyse src tests/src web/modules/custom web/profiles web/themes
-  dev:check-deprecated-code-contrib:
-    - task: exec
-      command: ${phpstan.bin} --no-progress analyse web/modules/contrib
-
   # Downloads all backends backups.
   dev:download-databases:
     - { task: "run", command: "mysql:download-dump" }
@@ -59,10 +51,16 @@ commands:
 
   dev:install-modules:
     - task: run
+      command: config-readonly:disable
+    - task: run
       command: drush:module-install
       arguments: ${dev.modules}
+    - task: run
+      command: config-readonly:enable
 
   dev:demo-users:
+    - task: run
+      command: config-readonly:disable
     # Make sure CAS mock server module is installed.
     - task: run
       command: drush:module-install
@@ -172,3 +170,5 @@ commands:
       options:
         yes: null
         root: ${joinup.site_dir}
+    - task: run
+      command: config-readonly:enable

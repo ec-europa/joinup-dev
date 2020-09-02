@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7943ae589e154e5658eb2bbc30b59c05",
+    "content-hash": "89dc767039ef4bff43d395c1ea6dc154",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5786,7 +5786,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "resources/patch/search-api-2824640-103-8.x-1.13.patch",
+                    "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "resources/patch/search-api-2824640-103-3136277-18-8.x-1.13.patch",
                     "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
                     "Add a static method that knows to index a given entity @see https://www.drupal.org/project/search_api/issues/3106342": "https://www.drupal.org/files/issues/2020-01-14/3106342-6.patch",
                     "Bulk Form field for SAPI @see https://www.drupal.org/project/search_api/issues/3117171": "https://www.drupal.org/files/issues/2020-04-01/3117171-13.patch"
@@ -6235,7 +6235,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Add support for bundle classes @see https://github.com/ec-europa/sparql_entity_storage/pull/11": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.patch"
+                    "Add support for bundle classes @see https://github.com/ec-europa/sparql_entity_storage/pull/11": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.patch",
+                    "Don't require a path in SPARQL connection URL @see https://github.com/ec-europa/sparql_entity_storage/pull/23": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/23.diff"
                 }
             },
             "autoload": {
@@ -8996,99 +8997,6 @@
             "time": "2014-12-02T06:11:22+00:00"
         },
         {
-            "name": "phing/phing",
-            "version": "2.16.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phingofficial/phing.git",
-                "reference": "b34c2bf9cd6abd39b4287dee31e68673784c8567"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phingofficial/phing/zipball/b34c2bf9cd6abd39b4287dee31e68673784c8567",
-                "reference": "b34c2bf9cd6abd39b4287dee31e68673784c8567",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2.0"
-            },
-            "require-dev": {
-                "ext-pdo_sqlite": "*",
-                "mikey179/vfsstream": "^1.6",
-                "pdepend/pdepend": "2.x",
-                "pear/archive_tar": "1.4.x",
-                "pear/http_request2": "dev-trunk",
-                "pear/net_growl": "dev-trunk",
-                "pear/pear-core-minimal": "1.10.1",
-                "pear/versioncontrol_git": "@dev",
-                "pear/versioncontrol_svn": "~0.5",
-                "phpdocumentor/phpdocumentor": "2.x",
-                "phploc/phploc": "~2.0.6",
-                "phpmd/phpmd": "~2.2",
-                "phpunit/phpunit": ">=3.7",
-                "sebastian/git": "~1.0",
-                "sebastian/phpcpd": "2.x",
-                "siad007/versioncontrol_hg": "^1.0",
-                "simpletest/simpletest": "^1.1",
-                "squizlabs/php_codesniffer": "~2.2",
-                "symfony/yaml": "^2.8 || ^3.1 || ^4.0"
-            },
-            "suggest": {
-                "pdepend/pdepend": "PHP version of JDepend",
-                "pear/archive_tar": "Tar file management class",
-                "pear/versioncontrol_git": "A library that provides OO interface to handle Git repository",
-                "pear/versioncontrol_svn": "A simple OO-style interface for Subversion, the free/open-source version control system",
-                "phpdocumentor/phpdocumentor": "Documentation Generator for PHP",
-                "phploc/phploc": "A tool for quickly measuring the size of a PHP project",
-                "phpmd/phpmd": "PHP version of PMD tool",
-                "phpunit/php-code-coverage": "Library that provides collection, processing, and rendering functionality for PHP code coverage information",
-                "phpunit/phpunit": "The PHP Unit Testing Framework",
-                "sebastian/phpcpd": "Copy/Paste Detector (CPD) for PHP code",
-                "siad007/versioncontrol_hg": "A library for interfacing with Mercurial repositories.",
-                "tedivm/jshrink": "Javascript Minifier built in PHP"
-            },
-            "bin": [
-                "bin/phing"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.16.x-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "classes/phing/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "include-path": [
-                "classes"
-            ],
-            "license": [
-                "LGPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "Michiel Rook",
-                    "email": "mrook@php.net"
-                },
-                {
-                    "name": "Phing Community",
-                    "homepage": "https://www.phing.info/trac/wiki/Development/Contributors"
-                }
-            ],
-            "description": "PHing Is Not GNU make; it's a PHP project build system or build tool based on Apache Ant.",
-            "homepage": "https://www.phing.info/",
-            "keywords": [
-                "build",
-                "phing",
-                "task",
-                "tool"
-            ],
-            "time": "2020-02-03T18:50:54+00:00"
-        },
-        {
             "name": "php-http/discovery",
             "version": "1.9.1",
             "source": {
@@ -9938,7 +9846,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-03-02T18:32:28+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
@@ -12294,24 +12202,6 @@
             "time": "2020-08-05T15:05:05+00:00"
         },
         {
-            "name": "typhonius/behattask",
-            "version": "1.0",
-            "source": {
-                "type": "git",
-                "url": "https://gist.github.com/5719e15be9687ff7c138.git",
-                "reference": "0ea666882cba3099dfa4feeb02e1bb85b2c0bde9"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "BehatTask.php"
-                ]
-            },
-            "include-path": [
-                "."
-            ]
-        },
-        {
             "name": "typo3/phar-stream-wrapper",
             "version": "v3.1.5",
             "source": {
@@ -14428,98 +14318,6 @@
             "time": "2019-09-19T12:07:17+00:00"
         },
         {
-            "name": "drupal/phingdrushtask",
-            "version": "dev-7.x-2.x",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/pfrenssen/phingdrushtask.git",
-                "reference": "57b087a7ad3e163591650d09a5583fdc9a9e8fee"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/phingdrushtask/zipball/57b087a7ad3e163591650d09a5583fdc9a9e8fee",
-                "reference": "57b087a7ad3e163591650d09a5583fdc9a9e8fee",
-                "shasum": ""
-            },
-            "require": {
-                "drush/drush": "6 - 10",
-                "phing/phing": "~2.9"
-            },
-            "require-dev": {
-                "bovigo/assert": "^1.7",
-                "drupal/coder": "^8.2",
-                "mockery/mockery": "^0.9",
-                "phpunit/php-code-coverage": "^4.0",
-                "phpunit/phpunit": "^5.6",
-                "satooshi/php-coveralls": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Phing\\Drush\\": "src/",
-                    "Phing\\Drush\\Tests\\": "./tests/"
-                }
-            },
-            "scripts": {
-                "post-install-cmd": [
-                    "vendor/bin/phpcs --config-set installed_paths ../../drupal/coder/coder_sniffer",
-                    "vendor/bin/phpcs --config-set show_progress 1",
-                    "cp scripts/pre-push.sh .git/hooks/pre-push && chmod +x .git/hooks/pre-push"
-                ],
-                "post-update-cmd": [
-                    "vendor/bin/phpcs --config-set installed_paths ../../drupal/coder/coder_sniffer",
-                    "vendor/bin/phpcs --config-set show_progress 1",
-                    "cp scripts/pre-push.sh .git/hooks/pre-push && chmod +x .git/hooks/pre-push"
-                ],
-                "phpcs": [
-                    "./vendor/bin/phpcs --standard=Drupal,DrupalPractice --ignore=vendor ."
-                ],
-                "phpcbf": [
-                    "./vendor/bin/phpcbf --standard=Drupal,DrupalPractice --ignore=vendor ."
-                ],
-                "phpunit": [
-                    "./vendor/bin/phpunit --coverage-clover build/logs/clover.xml -c tests/phpunit.xml tests"
-                ],
-                "coveralls": [
-                    "./vendor/bin/coveralls"
-                ]
-            },
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Pierre Buyle",
-                    "email": "pierre@buyle.org",
-                    "role": "Author"
-                },
-                {
-                    "name": "Frederic Dewinne",
-                    "email": "frederic@continuousphp.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Pol Dellaiera",
-                    "email": "pol.dellaiera@protonmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Drush task for Phing.",
-            "homepage": "https://www.drupal.org/project/phingdrushtask",
-            "keywords": [
-                "ci",
-                "continuous integration",
-                "drupal",
-                "drush",
-                "phing"
-            ],
-            "support": {
-                "issues": "https://www.drupal.org/project/issues/phingdrushtask",
-                "source": "http://cgit.drupalcode.org/phingdrushtask"
-            },
-            "time": "2020-01-28T09:11:48+00:00"
-        },
-        {
             "name": "drupal/renderviz",
             "version": "1.0.0-alpha2",
             "source": {
@@ -15943,10 +15741,7 @@
             "type": "library",
             "extra": {
                 "enable-patching": true,
-                "composer-exit-on-patch-failure": true,
-                "patches_applied": {
-                    "Allow to pass array options to 'run' & 'exec' tasks @see https://github.com/openeuropa/task-runner/pull/137": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/137.diff"
-                }
+                "composer-exit-on-patch-failure": true
             },
             "autoload": {
                 "psr-4": {
@@ -18886,7 +18681,6 @@
         "jacklmoore/autosize": 20,
         "semiceu/adms-ap_validator": 20,
         "drupal/config_update": 20,
-        "drupal/phingdrushtask": 20,
         "jcalderonzumba/gastonjs": 20,
         "openeuropa/task-runner": 20,
         "php-task-runner/composer": 20,
