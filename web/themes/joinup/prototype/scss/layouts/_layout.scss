@@ -24,10 +24,3 @@ img {
   max-width: $container-desktop;
   margin: 0 auto;
 }
-
-/* Clearfix all Paragraphs */
-.paragraphs::after {
-  content: "";
-  clear: both;
-  display: table;
-}
