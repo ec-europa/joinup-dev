@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "89dc767039ef4bff43d395c1ea6dc154",
+    "content-hash": "f44278241ed3b2ae9ab2cafda87642b4",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4275,29 +4275,26 @@
         },
         {
             "name": "drupal/honeypot",
-            "version": "1.30.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/honeypot.git",
-                "reference": "8.x-1.30"
+                "reference": "2.0.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/honeypot-8.x-1.30.zip",
-                "reference": "8.x-1.30",
-                "shasum": "1d7983e8e07feee4f13e4b05c9a10db15ae2097e"
+                "url": "https://ftp.drupal.org/files/projects/honeypot-2.0.1.zip",
+                "reference": "2.0.1",
+                "shasum": "c29d248c0fdcdf733a31b9214355acfa73716632"
             },
             "require": {
-                "drupal/core": "~8.0"
+                "drupal/core": "^8.0 || ^9.0"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.30",
-                    "datestamp": "1576274288",
+                    "version": "2.0.1",
+                    "datestamp": "1597855128",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4309,7 +4306,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4337,7 +4334,8 @@
                 "spam"
             ],
             "support": {
-                "source": "https://git.drupalcode.org/project/honeypot"
+                "source": "https://git.drupalcode.org/project/honeypot",
+                "issues": "https://www.drupal.org/project/issues/honeypot"
             }
         },
         {
@@ -4837,9 +4835,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.0-rc3",
                     "datestamp": "1558111386",
@@ -9835,7 +9830,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2020-08-03T19:59:39+00:00"
         },
         {
             "name": "stack/builder",
@@ -15765,7 +15760,11 @@
             "type": "library",
             "extra": {
                 "enable-patching": true,
-                "composer-exit-on-patch-failure": true
+                "composer-exit-on-patch-failure": true,
+                "patches_applied": {
+                    "Allow to pass array options to 'run' & 'exec' tasks @see https://github.com/openeuropa/task-runner/pull/137": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/137.diff",
+                    "Tokens containing digits are not supported @see https://github.com/openeuropa/task-runner/pull/145": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/145.diff"
+                }
             },
             "autoload": {
                 "psr-4": {
