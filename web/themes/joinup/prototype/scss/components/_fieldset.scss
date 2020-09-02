@@ -156,7 +156,8 @@
   }
 }
 
-.fieldset--textarea {
+.fieldset--textarea,
+.paragraph {
   overflow: hidden;
 
   img {
@@ -185,7 +186,6 @@
     @include breakpoint(md) {
       table-layout: fixed;
     }
-
 
     td {
       vertical-align: top;
