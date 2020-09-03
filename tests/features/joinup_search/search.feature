@@ -495,7 +495,7 @@ Feature: Global search
       | title             | description       | state     |
       | Custom collection | Some custom data. | validated |
     And news content:
-      | title                              | body                                                              | collection        | state     | created    | updated    |
+      | title                              | body                                                              | collection        | state     | created    | changed    |
       | Relativity is the word             | No one cares about the body.                                      | Custom collection | validated | 01/01/2019 | 03/08/2019 |
       | Relativity news: Relativity theory | I do care about the relativity keyword in the body.               | Custom collection | validated | 02/01/2019 | 02/08/2019 |
       | Absolutely nonesense               | Some news are not worth it but I will add relativity here anyway. | Custom collection | validated | 03/01/2019 | 01/08/2019 |
