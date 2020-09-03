@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_community_content\Entity;
 
 use Drupal\collection\Entity\NodeCollectionContentTrait;
+use Drupal\joinup_group\Entity\PinnableGroupContentTrait;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
 use Drupal\node\Entity\Node;
 
@@ -15,6 +16,7 @@ class CommunityContentBase extends Node implements CommunityContentInterface {
 
   use EntityWorkflowStateTrait;
   use NodeCollectionContentTrait;
+  use PinnableGroupContentTrait;
 
   /**
    * {@inheritdoc}
