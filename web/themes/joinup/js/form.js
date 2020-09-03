@@ -17,7 +17,8 @@
     attach: function (context, settings) {
       $(context).find('.vertical-tabs').once('verticalTabsGrid').each(function () {
         // Add mdl grid classes.
-        $(this).find('.vertical-tabs__menu').addClass('mdl-cell mdl-cell--4-col mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-cell--order-2-phone');
+        var firstCellSize = ($(this).parent().hasClass('field-group-tabs-wrapper')) ? 2 : 4;
+        $(this).find('.vertical-tabs__menu').addClass('mdl-cell mdl-cell--' + firstCellSize + '-col mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-cell--order-2-phone');
         $(this).find('.vertical-tabs__panes').addClass('mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phone mdl-cell--order-1-phone');
         $(this).addClass('mdl-grid mdl-grid--no-spacing');
 
