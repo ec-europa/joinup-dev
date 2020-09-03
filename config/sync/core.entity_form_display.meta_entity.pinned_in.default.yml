@@ -1,0 +1,32 @@
+uuid: 6cb64d84-a7d7-4c33-ad28-37f9a2b640f5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.meta_entity.pinned_in.field_pinned_in
+    - meta_entity.type.pinned_in
+id: meta_entity.pinned_in.default
+targetEntityType: meta_entity
+bundle: pinned_in
+mode: default
+content:
+  field_pinned_in:
+    weight: -4
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  label:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  target: true
