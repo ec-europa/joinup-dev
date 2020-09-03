@@ -67,28 +67,18 @@ Redis](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-
 1. Clone the respository of this project
 
    ```bash
-   $ git clone https://github.com/ec-europa/Joinup-dev.git
+   $ git clone https://github.com/ec-europa/joinup-dev.git
    ```
 
-2. Create file **build.properties.local** in the project with content
-   ```
-   # The base URL to use in Behat tests.
-   behat.base_url = http://joinup.test/
+1. Create a local task runner configuration file
 
-   exports.s3.bucket = ''
-   exports.s3.key = ''
-   exports.s3.secret = ''
-   ```
+    In order to override any configuration of the task runner
+    (`./vendor/bin/run`), create a `runner.yml` file in the project's top
+    directory. You can override there any default runner configuration, or any
+    other declared in `./resources/runner` files or in `runner.yml.dist`. Note
+    that the `runner.yml` file is not under VCS control.
 
-3. Create a local task runner configuration file
-
-In order to override any configuration of the task runner (`./vendor/bin/run`),
-create a `runner.yml` file in the project's top directory. You can override
-there any default runner configuration, or any other declared in
-`./resources/runner` files or in `runner.yml.dist`. Note that the `runner.yml`
-file is not under VCS control.
-
-4. Setup environment variables
+1. Setup environment variables
 
 Sensitive data will be stored in [environment variables](
 https://en.wikipedia.org/wiki/Environment_variable). See `.env.dist` for

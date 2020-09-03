@@ -120,7 +120,7 @@ Feature: Add community content
     And I click "Add discussion" in the plus button menu
     And I fill in the following:
       | Title   | Published community discussion |
-      | Content | Publihed community discussion  |
+      | Content | Published community discussion |
     And I press "Publish"
     Then I should see the heading "Published community discussion"
     And the publication date of the "Published community discussion" discussion should be equal to the created date
@@ -140,6 +140,7 @@ Feature: Add community content
     # Create a published event.
     When I go to the homepage of the "CC container" collection
     And I click "Add event" in the plus button menu
+    Then the following field should not be present "Summary"
     And I fill in the following:
       | Title       | Published community event |
       | Short title | Published community event |
@@ -160,6 +161,7 @@ Feature: Add community content
     # Create a published news.
     When I go to the homepage of the "CC container" collection
     And I click "Add news" in the plus button menu
+    Then the following field should not be present "Summary"
     And I fill in the following:
       | Short title | Published community news |
       | Headline    | Published community news |

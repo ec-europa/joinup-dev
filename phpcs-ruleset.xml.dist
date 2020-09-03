@@ -16,8 +16,6 @@
     <exclude-pattern>*.min.css</exclude-pattern>
     <exclude-pattern>*.min.js</exclude-pattern>
 
-    <!-- Exclude Phing scripts from Drupal coding standards. -->
-    <exclude-pattern>src/Phing/*</exclude-pattern>
     <!-- Exclude frontend third-party libraries from coding standards -->
     <exclude-pattern>web/themes/joinup/vendor/*</exclude-pattern>
     <exclude-pattern>web/themes/joinup/prototype/gulpfile.js</exclude-pattern>
