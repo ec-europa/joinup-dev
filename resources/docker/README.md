@@ -198,10 +198,10 @@ Download both the SPARQL and SQL database dumps using the following command:
 $ docker-compose exec --user www-data web php -d memory_limit=-1 ./vendor/bin/run dev:download-databases
 ```
 
-By default the downloaded databases are stored in the `tmp` folder which is located in the project root. The virtuoso
-dumps are stored in the sub directory `dump-virtuoso` and the mysql dump is located in the `tmp` folder itself.
-
-Note that the PHP memory limit is being disabled. Phing uses a large amount of memory during the download.
+By default, the downloaded databases are stored under the `tmp` folder which is
+located in the project root. The Virtuoso dumps are stored under the
+sub-directory `virtuoso` and the MySQL dump is located under the `tmp` folder,
+`mysql.sql`.
 
 ### Launch containers using production databases
 To start the machines with the databases restored, first make sure your docker containers are down:
