@@ -181,4 +181,24 @@ trait UtilityTrait {
     return $result;
   }
 
+  /**
+   * Converts an ordinal number (1st, 2nd, 17th etc) to a normal number.
+   *
+   * @param string $number
+   *   The ordinal number.
+   *
+   * @return int
+   *   The number.
+   *
+   * @throws \Exception
+   *   Thrown if the number is not an ordinal.
+   */
+  protected function convertOrdinalToNumber(string $number): int {
+    $return = preg_replace('/\\b(\d+)(?:st|nd|rd|th)\\b/', '$1', $number);
+    if (!is_numeric($return)) {
+      throw new \Exception("Could not convert {$number} to a number.");
+    }
+    return (int) $return;
+  }
+
 }
