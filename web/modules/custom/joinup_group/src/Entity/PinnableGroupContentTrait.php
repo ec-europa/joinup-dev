@@ -20,7 +20,7 @@ trait PinnableGroupContentTrait {
   /**
    * {@inheritdoc}
    */
-  public function pin(GroupInterface $group): self {
+  public function pin(GroupInterface $group): PinnableGroupContentInterface {
     assert(FALSE, 'Not implemented yet');
     return $this;
   }
@@ -28,7 +28,7 @@ trait PinnableGroupContentTrait {
   /**
    * {@inheritdoc}
    */
-  public function unpin(GroupInterface $group): self {
+  public function unpin(GroupInterface $group): PinnableGroupContentInterface {
     assert(FALSE, 'Not implemented yet');
     return $this;
   }

@@ -54,7 +54,7 @@ interface PinnableGroupContentInterface extends GroupContentInterface {
    * @return self
    *   The pinned entity, for chaining.
    */
-  public function pin(GroupInterface $group): self;
+  public function pin(GroupInterface $group): PinnableGroupContentInterface;
 
   /**
    * Unpins the entity from the given group.
@@ -65,7 +65,7 @@ interface PinnableGroupContentInterface extends GroupContentInterface {
    * @return self
    *   The unpinned entity, for chaining.
    */
-  public function unpin(GroupInterface $group): self;
+  public function unpin(GroupInterface $group): PinnableGroupContentInterface;
 
   /**
    * Retrieves a list of groups where the entity is pinned.
