@@ -161,6 +161,7 @@ Feature: Add community content
     # Create a published news.
     When I go to the homepage of the "CC container" collection
     And I click "Add news" in the plus button menu
+    Then the following field should not be present "Summary"
     And I fill in the following:
       | Short title | Published community news |
       | Headline    | Published community news |
