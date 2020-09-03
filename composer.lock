@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4a30dee5b8888c8b2ab54ec758c59134",
+    "content-hash": "f55cfac7dc77f4b2ab2f9a196f5eec56",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4301,7 +4301,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2019-06-03/3059040-2.patch"
+                    "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2020-09-03/3059040-24.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
