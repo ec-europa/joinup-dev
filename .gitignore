@@ -29,7 +29,6 @@
 /build.properties.local
 /grumphp.yml
 /phpcs.xml
-/phpunit.xml
 /runner.yml
 /tests/behat.yml
 /web/sites/default/services.yml
@@ -55,3 +54,6 @@
 docker-compose.local.yml
 docker-compose.*.local.yml
 /resources/docker/local
+
+# CPHP Behat files.
+/tests/behat-*
