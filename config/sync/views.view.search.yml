@@ -368,7 +368,7 @@ display:
           order: DESC
           exposed: true
           expose:
-            label: Created
+            label: Creation Date
           plugin_id: search_api
         entity_changed:
           id: entity_changed
@@ -380,7 +380,7 @@ display:
           order: DESC
           exposed: true
           expose:
-            label: Updated
+            label: Last Updated Date
           plugin_id: search_api
       title: ''
       header: {  }

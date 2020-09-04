@@ -508,13 +508,13 @@ Feature: Global search
       | Relativity is the word             |
       | Absolutely nonesense               |
 
-    Given I select "Created" from "Sort by"
+    Given I select "Creation Date" from "Sort by"
     Then I should see the following tiles in the correct order:
       | Absolutely nonesense               |
       | Relativity news: Relativity theory |
       | Relativity is the word             |
 
-    Given I select "Updated" from "Sort by"
+    Given I select "Last Updated Date" from "Sort by"
     Then I should see the following tiles in the correct order:
       | Relativity is the word             |
       | Relativity news: Relativity theory |
