@@ -7,6 +7,9 @@
 
 namespace Drupal\joinup\ProxyClass {
 
+use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
+
     /**
      * Provides a proxy class for \Drupal\joinup\PinService.
      *
@@ -70,7 +73,7 @@ namespace Drupal\joinup\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function isEntityPinned(\Drupal\Core\Entity\ContentEntityInterface $entity, \Drupal\rdf_entity\RdfInterface $group = NULL)
+        public function isEntityPinned(PinnableGroupContentInterface $entity, ?GroupInterface $group = NULL)
         {
             return $this->lazyLoadItself()->isEntityPinned($entity, $group);
         }
@@ -78,7 +81,7 @@ namespace Drupal\joinup\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function setEntityPinned(\Drupal\Core\Entity\ContentEntityInterface $entity, \Drupal\rdf_entity\RdfInterface $group, bool $pinned)
+        public function setEntityPinned(PinnableGroupContentInterface $entity, GroupInterface $group, bool $pinned)
         {
             return $this->lazyLoadItself()->setEntityPinned($entity, $group, $pinned);
         }

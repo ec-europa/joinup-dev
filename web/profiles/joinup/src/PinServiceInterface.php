@@ -5,7 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\joinup;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\rdf_entity\RdfInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 
 /**
  * Interface for a pin service.
@@ -15,9 +16,9 @@ interface PinServiceInterface {
   /**
    * Checks if an entity is pinned inside any group or a specific one.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   * @param \Drupal\joinup_group\Entity\PinnableGroupContentInterface $entity
    *   The entity to check.
-   * @param \Drupal\rdf_entity\RdfInterface|null $group
+   * @param \Drupal\joinup_group\Entity\GroupInterface|null $group
    *   The rdf group where the entity should be pinned. Defaults to NULL,
    *   so the function will return TRUE if the entity is pinned in any
    *   group.
@@ -25,19 +26,19 @@ interface PinServiceInterface {
    * @return bool
    *   True if the entity is pinned, false otherwise.
    */
-  public function isEntityPinned(ContentEntityInterface $entity, ?RdfInterface $group = NULL);
+  public function isEntityPinned(PinnableGroupContentInterface $entity, ?GroupInterface $group = NULL);
 
   /**
    * Sets the entity pinned status inside a certain group.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   * @param \Drupal\joinup_group\Entity\PinnableGroupContentInterface $entity
    *   The entity itself.
-   * @param \Drupal\rdf_entity\RdfInterface $group
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
    *   The rdf group.
    * @param bool $pinned
    *   TRUE to set the entity as pinned, FALSE otherwise.
    */
-  public function setEntityPinned(ContentEntityInterface $entity, RdfInterface $group, bool $pinned);
+  public function setEntityPinned(PinnableGroupContentInterface $entity, GroupInterface $group, bool $pinned);
 
   /**
    * Retrieves a list of groups where an entity is pinned.
