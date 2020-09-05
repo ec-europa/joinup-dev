@@ -17,6 +17,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Installer\InstallerKernel;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\solution\Entity\SolutionInterface;
@@ -388,7 +389,7 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
 
   /** @var \Drupal\joinup\PinServiceInterface $pin_service */
   $pin_service = \Drupal::service('joinup.pin_service');
-  if ($pin_service->isEntityPinned($entity, $group)) {
+  if ($entity instanceof PinnableGroupContentInterface && $pin_service->isEntityPinned($entity, $group)) {
     $variables['attributes']['class'][] = 'is-pinned';
     $variables['#attached']['library'][] = 'joinup/pinned_entities';
 
