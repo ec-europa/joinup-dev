@@ -584,9 +584,8 @@ class JoinupContext extends RawDrupalContext {
    *   for creating the node as properties on the object.
    *
    * @throws \Exception
-   *   Thrown when the term "sticky" is used instead of "pinned" in test data.
-   * @throws \UnexpectedValueException
-   *   Thrown when the values for the status and sticky fields are not correct.
+   *   Thrown when a logo could not be uploaded, e.g. because the file could not
+   *   be found.
    *
    * @BeforeNodeCreate
    */
@@ -652,10 +651,6 @@ class JoinupContext extends RawDrupalContext {
       $node->field_state = self::translateWorkflowStateAlias($node->field_state);
     }
 
-    if (isset($node->sticky)) {
-      throw new \Exception('Please use "pinned" instead of "sticky".');
-    }
-
     if (property_exists($node, 'visit_count')) {
       $node->visit_count = MetaEntity::create([
         'type' => 'visit_count',
@@ -697,10 +692,6 @@ class JoinupContext extends RawDrupalContext {
     }
 
     // Replace the human-readable values for multiple fields.
-    self::convertObjectPropertyValues($node, 'pinned', [
-      'yes' => 1,
-      'no' => 0,
-    ], 'sticky');
     self::convertObjectPropertyValues($node, 'field_site_featured', [
       'yes' => 1,
       'no' => 0,
