@@ -372,6 +372,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: title
           entity_type: node
           entity_field: title
           plugin_id: standard

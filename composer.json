@@ -240,6 +240,7 @@
                 "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2019-04-04/2730631_85_0.patch",
                 "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2018-06-11/2765065-93.patch",
                 "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-12-03/2895352-42-8.8.x.patch",
+                "Views exposed sort identifiers are not configurable @see https://www.drupal.org/project/drupal/issues/2897638": "https://www.drupal.org/files/issues/2020-09-06/2897638-33-8.9.x.patch",
                 "Pass current route parameters to the confirmation form route @see https://www.drupal.org/project/drupal/issues/2901412": "https://www.drupal.org/files/issues/2020-02-25/2901412-13.patch",
                 "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
                 "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch",

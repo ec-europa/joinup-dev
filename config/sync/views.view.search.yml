@@ -357,6 +357,7 @@ display:
           exposed: true
           expose:
             label: Relevance
+            identifier: relevance
           plugin_id: search_api
         entity_created:
           id: entity_created
@@ -369,6 +370,7 @@ display:
           exposed: true
           expose:
             label: Creation Date
+            identifier: creation-date
           plugin_id: search_api
         entity_changed:
           id: entity_changed
@@ -381,6 +383,7 @@ display:
           exposed: true
           expose:
             label: Last Updated Date
+            identifier: last-updated-date
           plugin_id: search_api
       title: ''
       header: {  }
