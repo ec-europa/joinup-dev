@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
+use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\User\Entity\User;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
@@ -2340,7 +2341,7 @@ class JoinupContext extends RawDrupalContext {
     /** @var \Drupal\joinup\PinServiceInterface $pin_service */
     $pin_service = \Drupal::service('joinup.pin_service');
 
-    if ($pin_service->isEntityPinned($entity)) {
+    if ($entity instanceof PinnableGroupContentInterface && $pin_service->isEntityPinned($entity)) {
       throw new \Exception("The tile '$heading' is marked as featured, but it shouldn't be.");
     }
   }
