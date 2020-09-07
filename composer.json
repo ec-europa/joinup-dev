@@ -263,7 +263,7 @@
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
             },
             "drupal/honeypot": {
-                "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2019-06-03/3059040-2.patch"
+                "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2020-09-07/3059040-26.patch"
             },
             "drupal/inline_entity_form": {
                 "Autocomplete field doesn't allow to reference entities with long titles @see https://www.drupal.org/node/2895663": "https://www.drupal.org/files/issues/2895663-2.patch"
@@ -311,6 +311,9 @@
             "drupal/sparql_entity_storage": {
                 "Add support for bundle classes @see https://github.com/ec-europa/sparql_entity_storage/pull/11": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.patch",
                 "Don't require a path in SPARQL connection URL @see https://github.com/ec-europa/sparql_entity_storage/pull/23": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/23.diff"
+            },
+            "drupal/spdx": {
+                "SpdxSubContext is deprecated @see https://github.com/ec-europa/spdx/pull/11": "https://github.com/ec-europa/spdx/compare/1.0.0-alpha5..5ee2ddce667d5525c89e45f3569b18e033c68991.diff"
             },
             "drupal/swiftmailer": {
                 "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2019-08-26/3000553-18.patch",
