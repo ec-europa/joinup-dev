@@ -1,0 +1,71 @@
+uuid: f047baa5-4c89-4e31-b3a6-905218780da5
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.rdf_graph
+    - sparql_entity_storage.graph.default
+id: rdf_entity.rdf_graph
+entity_type_id: rdf_entity
+bundle: rdf_graph
+rdf_type: 'http://joinup.eu/bundle/rdf-graph'
+graph:
+  default: 'http://joinup.eu/bundle/rdf-graph/graph'
+base_fields_mapping:
+  rid:
+    target_id:
+      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      format: resource
+  uid:
+    target_id:
+      predicate: 'http://joinup.eu/bundle/rdf-graph/uid'
+      format: 'xsd:integer'
+  label:
+    value:
+      predicate: 'http://purl.org/dc/terms/title'
+      format: t_literal
+  created:
+    value:
+      predicate: 'http://purl.org/dc/terms/modified'
+      format: 'xsd:dateTime'
+  changed:
+    value:
+      predicate: 'http://purl.org/dc/terms/modified'
+      format: 'xsd:dateTime'
+  uuid:
+    value:
+      predicate: ''
+      format: ''
+  langcode:
+    value:
+      predicate: ''
+      format: ''
+  default_langcode:
+    value:
+      predicate: ''
+      format: ''
+  front_page_pinned:
+    value:
+      predicate: ''
+      format: ''
+  content_translation_source:
+    value:
+      predicate: ''
+      format: ''
+  content_translation_outdated:
+    value:
+      predicate: ''
+      format: ''
+  content_translation_uid:
+    target_id:
+      predicate: ''
+      format: ''
+  content_translation_status:
+    value:
+      predicate: ''
+      format: ''
+  graph:
+    target_id:
+      predicate: ''
+      format: ''
+entity_id_plugin: joinup_rdf_graph
