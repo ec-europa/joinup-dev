@@ -55,6 +55,7 @@ class PinService implements PinServiceInterface {
 
     // Invalidate caches of the parent entity so that the pin icon will be shown
     // or hidden according to the new pinned status.
+    // @see https://www.drupal.org/project/meta_entity/issues/3169560
     Cache::invalidateTags($entity->getCacheTagsToInvalidate());
   }
 
