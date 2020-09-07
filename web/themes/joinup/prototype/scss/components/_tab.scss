@@ -221,6 +221,7 @@
     }
   }
 }
+
 // EIF recommendations category tabs
 // --------------------------------------------------
 #block-category {
@@ -260,6 +261,32 @@
       .facet-item__status {
         display: none;
       }
+    }
+  }
+}
+
+// EIF solutions filters tabs
+// --------------------------------------------------
+#block-eifcategories {
+  @include flex;
+  @include flex-wrap(wrap);
+  @include justify-content(space-between);
+  margin: 11px -4px 0 0;
+    
+  a {
+    flex-grow: 1;
+    text-align: center;
+    padding: 15px 0;
+    margin: 4px 4px 0 0;
+    background: #fff;
+    text-decoration: none;
+    color: $color-base;
+
+    &:hover,
+    &.is-active {
+      background: #f4f6f7;
+      border-top: solid 4px #ee8917;
+      margin-top: 0;
     }
   }
 }
