@@ -22,7 +22,7 @@ class BootstrapDrupalContext extends RawDrupalContext {
    *
    * @BeforeScenario @api
    */
-  public function disableLimitedAccess(): void {
+  public function bootstrap(): void {
     $this->getDriver();
   }
 

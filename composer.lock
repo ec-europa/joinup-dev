@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ae0b890a89c4e67b731ccdfb3cd468f8",
+    "content-hash": "bb526ded17a2014e85209891072fba05",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6295,6 +6295,11 @@
                 "spdx/license-list-data": "master"
             },
             "type": "drupal-module",
+            "extra": {
+                "patches_applied": {
+                    "SpdxSubContext is deprecated @see https://github.com/ec-europa/spdx/pull/11": "https://github.com/ec-europa/spdx/compare/1.0.0-alpha5..5ee2ddce667d5525c89e45f3569b18e033c68991.diff"
+                }
+            },
             "description": "Allows to federate and manage the SPDX licences.",
             "support": {
                 "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha5",
