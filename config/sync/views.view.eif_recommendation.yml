@@ -496,6 +496,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: weight
           plugin_id: search_api
         name:
           id: name
@@ -508,6 +509,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: name
           plugin_id: search_api
       title: 'EIF recommendations'
       header: {  }
