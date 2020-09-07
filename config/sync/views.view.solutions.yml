@@ -6,7 +6,7 @@ dependencies:
     - search_api.index.published
     - system.menu.main
   module:
-    - joinup_core
+    - joinup_material_design
     - search_api
 id: solutions
 label: Solutions
@@ -486,6 +486,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: site_pinned
           plugin_id: search_api
         entity_created:
           id: entity_created
@@ -498,6 +499,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: entity_created
           plugin_id: search_api
       title: Solutions
       header: {  }

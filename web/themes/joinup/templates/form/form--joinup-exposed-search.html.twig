@@ -8,6 +8,7 @@
  * - children: The child elements of the form.
  *
  * @see template_preprocess_form()
+ * @see joinup_theme_preprocess_form()
  */
 #}
 {{ attach_library('joinup_theme/global-search') }}
@@ -17,6 +18,6 @@
       <input type="hidden" class="mdl-chipfield__input" name="f[]" value="group:{{ id }}" data-description="{{ filter }}">
     {% endfor %}
     {{ children }}
-    <button class="search-bar__submit">{{ 'Search'|trans }}</button>
+    <button type="submit" class="search-bar__submit views-auto-submit-click">{{ 'Search'|trans }}</button>
   </form>
 </div>

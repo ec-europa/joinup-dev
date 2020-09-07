@@ -441,7 +441,7 @@ class JoinupSearchContext extends RawDrupalContext {
     $found = array_map(function ($item) {
       /** @var \Behat\Mink\Element\NodeElement $item */
       return $item->getText();
-    }, $element->findAll('css', 'ul.mdl-menu li.facet-item'));
+    }, $element->findAll('css', 'li.facet-item'));
 
     Assert::assertEquals($values->getColumn(0), $found, "The '{$facet}' values mismatch the expected ones.");
   }

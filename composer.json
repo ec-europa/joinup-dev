@@ -73,6 +73,7 @@
         "drupal/token": "~1.5",
         "drupal/video_embed_field": "~1.6",
         "drupal/view_unpublished": "~1.0@alpha",
+        "drupal/views_autosubmit": "^1.1",
         "drupal/views_bulk_operations": "^2.5",
         "drupal/views_data_export": "^1.0",
         "drush/drush": "~10.3",
@@ -242,6 +243,7 @@
                 "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2019-04-04/2730631_85_0.patch",
                 "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2018-06-11/2765065-93.patch",
                 "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-12-03/2895352-42-8.8.x.patch",
+                "Views exposed sort identifiers are not configurable @see https://www.drupal.org/project/drupal/issues/2897638": "https://www.drupal.org/files/issues/2020-09-06/2897638-33-8.9.x.patch",
                 "Pass current route parameters to the confirmation form route @see https://www.drupal.org/project/drupal/issues/2901412": "https://www.drupal.org/files/issues/2020-02-25/2901412-13.patch",
                 "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
                 "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch",
@@ -319,6 +321,9 @@
             },
             "drupal/video_embed_field": {
                 "Extend support for embed URLs. Option to force privacy @see https://www.drupal.org/project/video_embed_field/issues/3060201 (originally on https://www.drupal.org/node/2899093)": "https://www.drupal.org/files/issues/2019-06-11/privacy_mode-3060201-D8-6.patch"
+            },
+            "drupal/views_autosubmit": {
+                "Settings are not saved @see https://www.drupal.org/project/views_autosubmit/issues/3168560": "https://www.drupal.org/files/issues/2020-09-02/3168560-D8-2.patch"
             },
             "drush/drush": {
                 "Error message from requirements check on updatedb @see https://github.com/drush-ops/drush/pull/4513": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4513.diff"
