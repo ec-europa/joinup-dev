@@ -370,7 +370,7 @@ function _joinup_search_apply_listing_content_query_settings(SolariumQueryInterf
   // @see https://lucene.apache.org/solr/guide/6_6/function-queries.html#function-queries
   // @see http://archive.apache.org/dist/lucene/solr/ref-guide/apache-solr-ref-guide-5.5.pdf
   $computed_sort = sprintf(
-    "or(and(bs_sticky,termfreq(sm_entity_groups,%1\$s)),termfreq(sm_field_is_pinned_in,%1\$s))",
+    "or(termfreq(sm_node_pinned_in,%1\$s),termfreq(sm_rdf_pinned_in,%1\$s))",
     $solarium_query->getHelper()->escapePhrase($entity->id())
   );
   $solarium_query->setSorts([
