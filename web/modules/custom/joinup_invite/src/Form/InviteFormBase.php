@@ -6,11 +6,16 @@ namespace Drupal\joinup_invite\Form;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\joinup_invite\Entity\Invitation;
+use Drupal\joinup_invite\Entity\InvitationInterface;
+use Drupal\joinup_invite\InvitationMessageHelperInterface;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -20,6 +25,54 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class InviteFormBase extends FormBase {
 
   /**
+   * The value indicating a successful invitation.
+   *
+   * @var string
+   */
+  const RESULT_SUCCESS = 'success';
+
+  /**
+   * The value indicating a failed invitation.
+   *
+   * @var string
+   */
+  const RESULT_FAILED = 'failed';
+
+  /**
+   * The value indicating an invitation that has been resent.
+   *
+   * @var string
+   */
+  const RESULT_RESENT = 'resent';
+
+  /**
+   * The value indicating an invitation that has been previously accepted.
+   *
+   * @var string
+   */
+  const RESULT_ACCEPTED = 'accepted';
+
+  /**
+   * The value indicating an invitation that has been previously rejected.
+   *
+   * @var string
+   */
+  const RESULT_REJECTED = 'rejected';
+
+  /**
+   * The severity of the messages displayed to the user, keyed by result type.
+   *
+   * @var string[]
+   */
+  const INVITATION_MESSAGE_TYPES = [
+    self::RESULT_SUCCESS => 'status',
+    self::RESULT_FAILED => 'error',
+    self::RESULT_RESENT => 'status',
+    self::RESULT_ACCEPTED => 'status',
+    self::RESULT_REJECTED => 'status',
+  ];
+
+  /**
    * The entity type manager service.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
@@ -27,13 +80,30 @@ abstract class InviteFormBase extends FormBase {
   protected $entityTypeManager;
 
   /**
+   * The invitation message helper service.
+   *
+   * @var \Drupal\joinup_invite\InvitationMessageHelperInterface
+   */
+  protected $invitationMessageHelper;
+
+  /**
+   * The entity related to the invitation.
+   *
+   * @var \Drupal\Core\Entity\ContentEntityInterface
+   */
+  protected $entity;
+
+  /**
    * Constructs a new InviteFormBase object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager service.
+   * @param \Drupal\joinup_invite\InvitationMessageHelperInterface $invitation_message_helper
+   *   The invitation message helper service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, InvitationMessageHelperInterface $invitation_message_helper) {
     $this->entityTypeManager = $entityTypeManager;
+    $this->invitationMessageHelper = $invitation_message_helper;
   }
 
   /**
@@ -41,7 +111,8 @@ abstract class InviteFormBase extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('joinup_invite.invitation_message_helper')
     );
   }
 
@@ -206,6 +277,123 @@ abstract class InviteFormBase extends FormBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    /** @var \Drupal\user\UserInterface[] $users */
+    $users = $this->getUserList($form_state);
+    $results = array_fill_keys(array_keys(self::INVITATION_MESSAGE_TYPES), 0);
+
+    foreach ($users as $user) {
+      $result_status = $this->processUser($user);
+      $results[$result_status]++;
+    }
+
+    $this->processResults($results);
+  }
+
+  /**
+   * Processes a single user and creates the invitation when available.
+   *
+   * @param \Drupal\user\UserInterface $user
+   *   The user to process.
+   *
+   * @return string
+   *   One of the statuses of the invitation.
+   */
+  protected function processUser(UserInterface $user): string {
+    // Check if a previous invitation already exists.
+    $invitation = Invitation::loadByEntityAndUser($this->entity, $user, $this->getInvitationType());
+    if (!empty($invitation)) {
+      switch ($invitation->getStatus()) {
+        // If the invitation was already accepted, don't send an invitation.
+        case InvitationInterface::STATUS_ACCEPTED:
+          $status = self::RESULT_ACCEPTED;
+          break;
+
+        // If the invitation was already rejected, don't send an invitation.
+        case InvitationInterface::STATUS_REJECTED:
+          $status = self::RESULT_REJECTED;
+          break;
+
+        // If the invitation is still pending, resend the invitation.
+        case InvitationInterface::STATUS_PENDING:
+          $success = $this->sendMessage($invitation);
+          $status = $success ? self::RESULT_RESENT : self::RESULT_FAILED;
+          break;
+
+        default:
+          throw new \Exception('Unknown invitation status: "' . $invitation->getStatus() . '".');
+      }
+      return $status;
+    }
+
+    // No previous invitation exists. Create it.
+    $invitation = $this->createInvitation($user);
+
+    // Send the notification message for the invitation.
+    $success = $this->sendMessage($invitation);
+    $status = $success ? 'success' : 'failed';
+    return $status;
+  }
+
+  /**
+   * Creates and returns an invitation entity.
+   *
+   * @param \Drupal\user\UserInterface $user
+   *   The user associated with the invitation.
+   *
+   * @return \Drupal\joinup_invite\Entity\InvitationInterface
+   *   The invitation entity.
+   */
+  protected function createInvitation(UserInterface $user): InvitationInterface {
+    /** @var \Drupal\joinup_invite\Entity\InvitationInterface $invitation */
+    $invitation = $this->entityTypeManager->getStorage('invitation')->create([
+      'bundle' => $this->getInvitationType(),
+    ]);
+    $invitation
+      ->setRecipient($user)
+      ->setEntity($this->entity)
+      ->save();
+
+    return $invitation;
+  }
+
+  /**
+   * Sends a new message to invite the given user to the given entity.
+   *
+   * @param \Drupal\joinup_invite\Entity\InvitationInterface $invitation
+   *   The invitation.
+   *
+   * @return bool
+   *   Whether or not the message was successfully delivered.
+   */
+  protected function sendMessage(InvitationInterface $invitation): bool {
+    $arguments = $this->generateArguments($invitation->getEntity());
+    $message = $this->invitationMessageHelper->createMessage($invitation, $this->getTemplateId(), $arguments);
+    $message->save();
+
+    return $this->invitationMessageHelper->sendMessage($invitation, $this->getTemplateId());
+  }
+
+  /**
+   * Returns the message template ID of the message to be sent for the invite.
+   *
+   * @return string
+   *   The template ID.
+   */
+  abstract protected function getTemplateId(): string;
+
+  /**
+   * Processes the results array. Suitable to display messages etc.
+   *
+   * @param array $results
+   *   An array of invitation statuses and the amount of invitations processed
+   *   of each status.
+   */
+  protected function processResults(array $results): void {}
+
+  /**
    * Ajax callback that returns the updated users list.
    *
    * @param array $form
@@ -263,10 +451,10 @@ abstract class InviteFormBase extends FormBase {
    *   A loaded user object. Null if the mail matches no users in the system.
    */
   protected function loadUserByMail($mail): ?UserInterface {
-    $user = $this->entityTypeManager->getStorage('user')
+    $users = $this->entityTypeManager->getStorage('user')
       ->loadByProperties(['mail' => $mail]);
 
-    return empty($user) ? NULL : reset($user);
+    return empty($users) ? NULL : reset($users);
   }
 
   /**
@@ -280,6 +468,33 @@ abstract class InviteFormBase extends FormBase {
    */
   protected function getAccountName(UserInterface $user): string {
     return $user->getDisplayName();
+  }
+
+  /**
+   * Returns the arguments for an invitation message.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity for which to generate the message arguments.
+   *
+   * @return array
+   *   The message arguments.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the first name or last name of the current user is not known.
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   Thrown when the URL for the entity cannot be generated.
+   */
+  protected function generateArguments(EntityInterface $entity): array {
+    $arguments = [];
+
+    $arguments['@entity:title'] = $entity->label();
+    $arguments['@entity:url'] = $entity->toUrl('canonical', [
+      'absolute' => TRUE,
+    ])->toString();
+
+    $arguments += MessageArgumentGenerator::getActorArguments();
+
+    return $arguments;
   }
 
   /**
@@ -297,5 +512,13 @@ abstract class InviteFormBase extends FormBase {
    *   A URL object.
    */
   abstract protected function getCancelButtonUrl(): Url;
+
+  /**
+   * Returns the invitation bundle.
+   *
+   * @return string
+   *   The invitation bundle.
+   */
+  abstract protected function getInvitationType(): string;
 
 }
