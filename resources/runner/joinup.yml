@@ -5,7 +5,7 @@ joinup:
   theme_dir: ${joinup.site_dir}/themes/joinup
 
 scss:
-  import_dir: ${joinup.theme_dir}/prototype/scss
+  import_dir: ${joinup.theme_dir}/scss
   input: ${scss.import_dir}/app.scss
   output_dir: ${joinup.theme_dir}/css
   output: ${scss.output_dir}/style.min.css
