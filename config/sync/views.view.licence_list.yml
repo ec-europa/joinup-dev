@@ -230,6 +230,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: label
           plugin_id: search_api
       title: 'Licence list'
       header:

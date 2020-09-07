@@ -20,15 +20,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_eif_identifier:
-    weight: 3
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
   field_eif_related_term:
     weight: 1
     label: above
@@ -38,4 +29,5 @@ content:
     type: entity_reference_label
     region: content
 hidden:
+  field_eif_identifier: true
   langcode: true
