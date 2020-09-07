@@ -1,19 +1,18 @@
-@api @eif_community @terms @group-a
+@api @eif_community @terms @clearStaticCache @group-a
 Feature: As a user, visiting the EIF Toolbox page, I want to be able to filter
   the page by EIF category.
 
-  @clearStaticCache
   Scenario: Test the EIF Toolbox solution page.
 
     Given owner:
       | name | type    |
       | ACME | Company |
-    Given collection:
+    And collection:
       | title | Parent    |
       | state | validated |
     And solutions:
-      | title      | eif reference                      | eif category                      | collection | state     |
-      | Solution 1 | Recommendation 1, Recommendation 2 | Common services                   | Parent     | validated |
+      | title      | eif reference                      | eif category    | collection | state     |
+      | Solution 1 | Recommendation 1, Recommendation 2 | Common services | Parent     | validated |
 
     When I go to "/collection/nifo-collection/solution/eif-toolbox/solutions"
     Then I should see the following tiles in the correct order:
@@ -155,13 +154,24 @@ Feature: As a user, visiting the EIF Toolbox page, I want to be able to filter
     And I should see the link "Page 1"
     And I should see the link "Current page 2"
 
-    When I select "Solutions implementing Recommendation 17" from "Jump to recommendation"
-    And I press "Jump"
-    Then I should see the heading "Recommendation 17"
-
   @javascript
   Scenario: Test the recommendation selector.
-
     When I go to "/collection/nifo-collection/solution/eif-toolbox/solutions"
     And I select "Solutions implementing Recommendation 17" from "Jump to recommendation"
     Then I should see the heading "Recommendation 17"
+
+  Scenario: Test that links behave like a normal menu.
+    Given collection:
+      | title | Parent    |
+      | state | validated |
+    And solutions:
+      | title      | eif reference    | eif category     | collection | state     |
+      | Solution 1 | Recommendation 4 | Assessment tools | Parent     | validated |
+      | Solution 2 | Recommendation 4 | Common services  | Parent     | validated |
+
+    When I am an anonymous user
+    And I go to "/collection/nifo-collection/solution/eif-toolbox/solutions"
+    Then "All" should be the active item in the "Content" region
+
+    When I click "Common services"
+    Then "Common services" should be the active item in the "Content" region

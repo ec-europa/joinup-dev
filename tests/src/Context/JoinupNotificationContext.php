@@ -506,7 +506,7 @@ class JoinupNotificationContext extends RawDrupalContext {
   public function beforeEmailScenario(): void {
     if (!$this->isTestMailCollectorUsed()) {
       // Check if the mail system configuration has been overridden in
-      // settings.php or settings.local.php.
+      // settings.php or settings.override.php.
       $this->checkMailConfigOverride();
 
       self::bypassReadOnlyConfig();

@@ -11,7 +11,7 @@ web/themes/contrib/
 # Ignore sensitive information
 web/sites/sites.php
 web/sites/*/settings.php
-web/sites/*/settings.local.php
+web/sites/*/settings.override.php
 
 # Ignore Drupal's file directories.
 web/sites/*/files/
@@ -21,7 +21,6 @@ private/
 web/sites/simpletest/
 
 # Ignore environment specific settings
-build.common.xml
 build.local.xml
 build.properties
 build.properties.local

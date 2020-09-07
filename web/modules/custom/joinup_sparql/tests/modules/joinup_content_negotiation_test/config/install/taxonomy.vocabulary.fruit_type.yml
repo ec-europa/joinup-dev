@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - rdf_taxonomy
+third_party_settings:
+  rdf_taxonomy:
+    locked: false
+name: 'Fruit type'
+vid: fruit_type
+description: ''
+hierarchy: 0
+weight: 0

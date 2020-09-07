@@ -295,7 +295,7 @@ class AssetDistributionContext extends RawDrupalContext {
       if (!empty($entities)) {
         foreach ($entities as $entity) {
           $entity->skip_notification = TRUE;
-          $entity->delete();
+          @$entity->delete();
         }
       }
     }

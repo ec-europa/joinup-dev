@@ -45,10 +45,10 @@ To start on macOS without Docker, please, check the separated [README file](reso
 
 #### Dependency management and builds
 
-We use Drupal composer as a template for the project.  For the most up-to-date
-information on how to use Composer, build the project using Phing, or on how to
-run the Behat test, please refer directly to the documention of
-[drupal-composer](https://github.com/drupal-composer/drupal-project).
+We use Drupal composer as a template for the project. For the most up-to-date
+information on how to use Composer, build the project using the Task Runner, or
+on how to run the Behat test, please refer directly to the documentation of each
+used tool.
 
 #### Initial setup
 
@@ -119,36 +119,6 @@ All options you can use can be found in the `build.properties` file. Just copy
 the lines you want to override and change their values. Do not copy the entire
 `build.properties` file, since this would override all options.
 
-Example `build.properties.local`:
-
-```
-# The location of the Composer binary.
-composer.bin = /usr/bin/composer
-
-# SQL database settings.
-drupal.db.name = my_database
-drupal.db.user = root
-drupal.db.password = hunter2
-
-# Admin user.
-drupal.admin.username = admin
-drupal.admin.password = admin
-
-# The base URL to use in tests.
-drupal.base_url = http://joinup.local
-
-## Development settings.
-
-# Verbosity of Drush commands. Set to 'yes' for verbose output.
-drush.verbose = yes
-
-# Disable config readonly for local development.
-config_readonly.enabled = FALSE
-
-# Do not redirect emails to disk.
-# Set this to false when you are grabbing the emails using e.g. mailcatcher.
-drupal.redirect.email = no
-```
 
 #### Create a local task runner configuration file
 
@@ -162,16 +132,40 @@ file is not under VCS control.
 
 Sensitive data will be stored in [environment variables](
 https://en.wikipedia.org/wiki/Environment_variable). See `.env.dist` for
-details.
+details. To adapt these values to your own environment, create a `.env` file
+that contains only the overridden values. For a local development environment
+this could look like the following:
+
+```bash
+DRUPAL_BASE_URL=http://my-base-url.local
+DRUPAL_DATABASE_USERNAME=my-database-username
+DRUPAL_DATABASE_PASSWORD=my-database-password
+DRUPAL_DATABASE_HOST=localhost
+DRUPAL_HASH_SALT=some-unique-random-string-like-37h+2BQEQx83YLa/uFdsfG55
+
+SOLR_CORE_PUBLISHED_URL=http://localhost:8983/solr
+SOLR_CORE_UNPUBLISHED_URL=http://localhost:8983/solr
+
+SPARQL_HOST=localhost
+REDIS_HOST=localhost
+
+SIMPLETEST_BASE_URL=http://my-base-url.local
+SIMPLETEST_DB=mysql://root@localhost:3306/joinup
+SIMPLETEST_SPARQL_DB=sparql://localhost:8890
+MINK_DRIVER_ARGS_WEBDRIVER=""
+DTT_BASE_URL=http://my-base-url.local
+DTT_API_URL=http://localhost:4444/wd/hub
+DTT_MINK_DRIVER_ARGS="['chrome', null, 'http://localhost:4444/wd/hub']"
+```
 
 #### Build the project
 
-Execute the [Phing](https://www.phing.info/) target `build-dev` to build a
-development instance, then install the site with `install-dev`:
+Execute the Task Runner command `toolkit:build-dev` to build a development
+instance, then install the site with `toolkit:install-clean`:
 
 ```
-$ ./vendor/bin/phing build-dev
-$ ./vendor/bin/phing install-dev
+$ ./vendor/bin/run toolkit:build-dev
+$ ./vendor/bin/run toolkit:install-clean
 ```
 
 

@@ -97,7 +97,7 @@ class JoinupEventContext extends RawDrupalContext {
     $geocoder_cache_directory = self::getWebtoolsGeocodingCacheDirectory();
 
     if ($geocoder_cache_backend !== 'cache.backend.file_system' || empty($geocoder_cache_directory)) {
-      throw new \Exception('The Webtools Geocoding cache should be enabled. Please run ./vendor/bin/phing enable-webtools-geocoding-cache');
+      throw new \Exception('The Webtools Geocoding cache should be enabled. Please run ./vendor/bin/run drupal:settings site-clean');
     }
 
     // Keep track of the number of files that are present in the file cache.
