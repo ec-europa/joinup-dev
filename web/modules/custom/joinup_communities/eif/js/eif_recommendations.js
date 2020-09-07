@@ -15,7 +15,9 @@
       recommendationSelector
         .once('eif-recommendations')
         .change(function (event) {
-          form.submit();
+          if (recommendationSelector.val() !== '') {
+            form.submit();
+          }
       });
     }
   };

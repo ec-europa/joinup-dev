@@ -65,6 +65,7 @@ class EifRecommendationSelectorForm extends FormBase {
       '#title' => $this->t('Jump to recommendation'),
       '#title_display' => 'invisible',
       '#options' => $options,
+      '#empty_option' => $this->t('Filter Solutions by Recommendation'),
       '#attached' => [
         'library' => [
           'eif/recommendations.selector',

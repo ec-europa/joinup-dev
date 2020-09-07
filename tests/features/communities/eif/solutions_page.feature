@@ -157,6 +157,7 @@ Feature: As a user, visiting the EIF Toolbox page, I want to be able to filter
   @javascript
   Scenario: Test the recommendation selector.
     When I go to "/collection/nifo-collection/solution/eif-toolbox/solutions"
+    Then the option with text "Filter Solutions by Recommendation" from select "Jump to recommendation" is selected
     And I select "Solutions implementing Recommendation 17" from "Jump to recommendation"
     Then I should see the heading "Recommendation 17"
 
