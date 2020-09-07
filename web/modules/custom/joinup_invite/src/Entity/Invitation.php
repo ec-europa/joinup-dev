@@ -104,7 +104,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEntity(): ContentEntityInterface {
+  public function getEntity(): ?ContentEntityInterface {
     $entity_type = $this->get('entity_type')->value;
     $entity_id = $this->get('entity_id')->value;
 
@@ -188,6 +188,21 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
+  public function getExtraData(): array {
+    return $this->data;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setExtraData(array $data): InvitationInterface {
+    $this->data = $data;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function accept(): InvitationInterface {
     $this->setStatus(InvitationInterface::STATUS_ACCEPTED);
 
@@ -250,6 +265,10 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(t('Changed'))
       ->setDescription(t('The UNIX timestamp indicating when the invitation was last updated.'));
+
+    $fields['data'] = BaseFieldDefinition::create('map')
+      ->setLabel(t('Data'))
+      ->setDescription('Additional data that can be used by the invitation.');
 
     return $fields;
   }
