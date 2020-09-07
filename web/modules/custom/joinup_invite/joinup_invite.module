@@ -11,6 +11,9 @@ use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\joinup_invite\Entity\InvitationInterface;
+use Drupal\og\Entity\OgRole;
+use Drupal\og\OgMembershipInterface;
 
 /**
  * Implements hook_user_cancel().
@@ -59,4 +62,31 @@ function joinup_invite_block_view_alter(array &$build, BlockPluginInterface $blo
     $cache_contexts = $build['#cache']['contexts'] ?? [];
     $build['#cache']['contexts'] = Cache::mergeContexts($cache_contexts, ['og_role']);
   }
+}
+
+/**
+ * Applies a role from an invitation if a user was invited but joined manually.
+ */
+function joinup_invite_og_membership_presave(OgMembershipInterface $og_membership) {
+  $user_id = $og_membership->getOwnerId();
+  $entity = $og_membership->getGroup();
+  $invitations = \Drupal::entityTypeManager()->getStorage('invitation')->loadByProperties([
+    'entity_type' => $entity->getEntityTypeId(),
+    'entity_id' => $entity->id(),
+    'recipient_id' => $user_id,
+    'status' => InvitationInterface::STATUS_PENDING,
+  ]);
+
+  if (empty($invitations)) {
+    return;
+  }
+
+  // There cannot be more than one pending invitation for a user in a group.
+  /** @var \Drupal\joinup_invite\Entity\InvitationInterface $invitation */
+  $invitation = reset($invitations);
+  if ($role = OgRole::load($invitation->getExtraData()['role_id'])) {
+    $og_membership->addRole($role);
+  }
+  $invitation->setStatus(InvitationInterface::STATUS_ACCEPTED);
+  $invitation->save();
 }
