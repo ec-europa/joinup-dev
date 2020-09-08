@@ -404,8 +404,8 @@ Feature: Collection membership administration
     Then I should see the success message "Successfully invited the selected users."
     And the following email should have been sent:
       | recipient | dwightone                                                                                 |
-      | subject   | Invitation from Lisa Cuddy to join collection Medical diagnosis.                          |
-      | body      | You have been invited by Lisa Cuddy to join the collection Medical diagnosis as a member. |
+      | subject   | Invitation from Lisa Cuddy to join collection Medical diagnosis.                          |
+      | body      | You have been invited by Lisa Cuddy to join the collection Medical diagnosis as a member. |
 
     # Accept the invitation directly.
     When I am logged in as "dwightone"
