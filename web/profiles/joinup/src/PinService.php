@@ -19,16 +19,7 @@ class PinService implements PinServiceInterface {
    * {@inheritdoc}
    */
   public function isEntityPinned(PinnableGroupContentInterface $entity, ?GroupInterface $group = NULL) {
-    if (empty($group)) {
-      return !$entity->pinned_in->entity->field_pinned_in->isEmpty();
-    }
-    // @todo We can skip the full loading of the referenced entities.
-    foreach ($entity->pinned_in->entity->field_pinned_in->referencedEntities() as $rdf) {
-      if ($rdf->id() === $group->id()) {
-        return TRUE;
-      }
-    }
-    return FALSE;
+    return $entity->isPinned($group);
   }
 
   /**
@@ -36,17 +27,11 @@ class PinService implements PinServiceInterface {
    */
   public function setEntityPinned(PinnableGroupContentInterface $entity, GroupInterface $group, bool $pinned) {
     if ($pinned) {
-      $entity->pinned_in->entity->field_pinned_in->appendItem($group->id());
-      // $entity->pin($group);
+      $entity->pin($group);
     }
     else {
-      $entity->pinned_in->entity->field_pinned_in->filter(function ($item) use ($group) {
-        /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $item */
-        return $item->target_id !== $group->id();
-      });
-      // $entity->unpin($group);
+      $entity->unpin($group);
     }
-    $entity->pinned_in->entity->save();
 
     // @todo Move the next two to hook_meta_entity_save().
     // Reindex the parent entity since the pinned status affects the ordering of
