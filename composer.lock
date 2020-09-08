@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9a9750d55eb643c49d568252b35fdf9e",
+    "content-hash": "80f8bfcd5472785f51798c5d64a87f91",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4302,7 +4302,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2019-06-03/3059040-2.patch"
+                    "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2020-02-24/3059040_15_bis.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4836,9 +4836,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.0-rc3",
                     "datestamp": "1558111386",
@@ -4848,7 +4845,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch"
+                    "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch",
+                    "MessageDigestSubcontext is deprecated @see https://www.drupal.org/project/message_digest/issues/3168495": "https://www.drupal.org/files/issues/2020-09-01/3168495-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5406,9 +5404,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.0-alpha1",
                     "datestamp": "1581695176",
@@ -5416,6 +5411,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "PipelineSubContext is deprecated": "https://www.drupal.org/files/issues/2020-09-08/3169616-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5427,6 +5425,14 @@
                     "name": "Claudiu Cristea",
                     "homepage": "https://www.drupal.org/u/claudiu.cristea",
                     "role": "maintainer"
+                },
+                {
+                    "name": "idimopoulos",
+                    "homepage": "https://www.drupal.org/user/2578708"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
                 }
             ],
             "description": "allows splitting processes in steps and then running them via an orchestrator service.",
@@ -6297,6 +6303,11 @@
                 "spdx/license-list-data": "master"
             },
             "type": "drupal-module",
+            "extra": {
+                "patches_applied": {
+                    "SpdxSubContext is deprecated @see https://github.com/ec-europa/spdx/pull/11": "https://github.com/ec-europa/spdx/compare/1.0.0-alpha5..5ee2ddce667d5525c89e45f3569b18e033c68991.diff"
+                }
+            },
             "description": "Allows to federate and manage the SPDX licences.",
             "support": {
                 "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha5",
@@ -9893,7 +9904,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2020-08-03T19:59:39+00:00"
         },
         {
             "name": "stack/builder",
