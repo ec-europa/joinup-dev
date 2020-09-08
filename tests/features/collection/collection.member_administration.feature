@@ -360,3 +360,71 @@ Feature: Collection membership administration
       | Gregory House     |
       | Eric Foreman      |
       | Eric Drexler      |
+
+  @email
+  Scenario: Privileged members should be allowed to invite users to a collection.
+    Given users:
+      | Username  | E-mail                 | First name | Family name |
+      | jbelanger | j.belanger@example.com | Jeannette  | Belanger    |
+      | dwightone | dwight1@example.com    | Christian  | Dwight      |
+
+    When I am not logged in
+    And I go to the "Medical diagnosis" collection
+    And I click "Members" in the "Left sidebar"
+    Then I should not see the link "Invite members"
+
+    When I am logged in as an authenticated
+    And I go to the "Medical diagnosis" collection
+    And I click "Members" in the "Left sidebar"
+    Then I should not see the link "Invite members"
+
+    When I am logged in as "dwightone"
+    And I go to the "Medical diagnosis" collection
+    And I click "Members" in the "Left sidebar"
+    Then I should not see the link "Invite members"
+
+    When I am logged in as "Lisa Cuddy"
+    And I go to the "Medical diagnosis" collection
+    And I click "Members" in the "Left sidebar"
+    Then I should see the link "Invite members"
+    When I click "Invite members"
+    Then I should see the heading "Invite members"
+
+    # Add a facilitator.
+    When I fill in "E-mail" with "dwight1@example.com"
+    And I press "Add"
+    And I fill in "E-mail" with "j.belanger@example.com"
+    And I press "Add"
+    Then the page should show the following chips in the Content region:
+      | Christian Dwight   |
+      | Jeannette Belanger |
+    When I select "Facilitator" from "Role"
+    And the mail collector cache is empty
+    And I press "Invite members"
+    Then I should see the success message "Successfully invited the selected users."
+    And the following email should have been sent:
+      | recipient | dwightone                                                                                 |
+      | subject   | Invitation from Lisa Cuddy to join collection Medical diagnosis.                          |
+      | body      | You have been invited by Lisa Cuddy to join the collection Medical diagnosis as a member. |
+
+    # Accept the invitation directly.
+    When I am logged in as "dwightone"
+    And I accept the invitation for the "Medical diagnosis" collection group
+    And I go to the "Medical diagnosis" collection
+    And I click "Members" in the "Left sidebar"
+    Then I should see the link "Add members"
+    And I should see the link "Invite members"
+    When I click "Invite members"
+    Then I should see the heading "Invite members"
+
+    # Join the collection manually and trigger the invitation.
+    When I am logged in as "jbelanger"
+    And I go to the "Medical diagnosis" collection
+    And I press the "Join this collection" button
+    And I go to the "Medical diagnosis" collection
+    And I click "Members" in the "Left sidebar"
+    # The Medical diagnosis collection is closed so normally the membership should be pending.
+    # However, since there is an active invitation, both the status and the initial roles are overridden.
+    # Being able to view the links below mean that the membership is active and the user is a facilitator.
+    Then I should see the link "Add members"
+    And I should see the link "Invite members"
