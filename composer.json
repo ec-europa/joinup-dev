@@ -179,6 +179,7 @@
             "Drupal\\Tests\\cas_mock_server\\": "web/modules/contrib/cas_mock_server/tests/src",
             "Drupal\\Tests\\honeypot\\": "web/modules/contrib/honeypot/tests/src",
             "Drupal\\Tests\\message_digest\\": "web/modules/contrib/message_digest/tests/src",
+            "Drupal\\Tests\\oe_webtools\\": "web/modules/contrib/oe_webtools/tests",
             "Drupal\\Tests\\spdx\\": "web/modules/contrib/spdx/tests/src"
         }
     },

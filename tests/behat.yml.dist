@@ -60,7 +60,8 @@ default:
               firstName: First name
               lastName: Last name
         - Drupal\Tests\honeypot\Behat\HoneypotContext
-        - Drupal\Tests\message_digest\Behat\MessageDigestContext:
+        - Drupal\Tests\message_digest\Behat\MessageDigestContext
+        - Drupal\Tests\oe_webtools\Behat\WebtoolsMapsContext
         - Drupal\Tests\spdx\Behat\SpdxContext:
         - FeatureContext
         - LoversOfBehat\TableExtension\Context\TableContext
