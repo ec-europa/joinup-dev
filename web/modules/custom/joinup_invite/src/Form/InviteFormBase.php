@@ -488,6 +488,7 @@ abstract class InviteFormBase extends FormBase {
     $arguments = [];
 
     $arguments['@entity:title'] = $entity->label();
+    $arguments['@entity:bundle'] = $entity->bundle();
     $arguments['@entity:url'] = $entity->toUrl('canonical', [
       'absolute' => TRUE,
     ])->toString();

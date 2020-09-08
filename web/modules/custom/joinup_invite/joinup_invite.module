@@ -86,6 +86,7 @@ function joinup_invite_og_membership_presave(OgMembershipInterface $og_membershi
   $invitation = reset($invitations);
   if ($role = OgRole::load($invitation->getExtraData()['role_id'])) {
     $og_membership->addRole($role);
+    $og_membership->setState(OgMembershipInterface::STATE_ACTIVE);
   }
   $invitation->setStatus(InvitationInterface::STATUS_ACCEPTED);
   $invitation->save();
