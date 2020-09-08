@@ -9,10 +9,13 @@ use Drupal\meta_entity\Entity\MetaEntityInterface;
 
 /**
  * Reusable methods for accessing fields in entity bundle classes.
+ *
+ * @todo This depends on JoinupBundleClassFieldAccessTrait but due to a PHP bug
+ *   this can only be included in PHP 7.3 and higher. Add back the use statement
+ *   once we are on a supported version.
+ * @see https://bugs.php.net/bug.php?id=63911
  */
 trait JoinupBundleClassMetaEntityAccessTrait {
-
-  use JoinupBundleClassFieldAccessTrait;
 
   /**
    * Returns the meta entity that is referenced in the given field.
