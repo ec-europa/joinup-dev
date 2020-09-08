@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_group\Entity;
 
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
+use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityAccessTrait;
 
 /**
@@ -80,8 +81,22 @@ trait PinnableGroupContentTrait {
    * {@inheritdoc}
    */
   public function getPinnedGroupIds(): array {
-    assert(FALSE, 'Not implemented yet');
-    return [];
+    $ids = [];
+
+    $meta_entity = $this->getMetaEntity('pinned_in');
+    foreach ($meta_entity->get('field_pinned_in') as $item) {
+      if ($item instanceof EntityReferenceItem) {
+        try {
+          if ($target_id = $item->get('target_id')->getValue() ?? NULL) {
+            $ids[] = $target_id;
+          }
+        }
+        catch (MissingDataException $e) {
+        }
+      }
+    }
+
+    return $ids;
   }
 
 }

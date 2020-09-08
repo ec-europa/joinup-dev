@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup;
 
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 
@@ -43,12 +42,12 @@ interface PinServiceInterface {
   /**
    * Retrieves a list of groups where an entity is pinned.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   * @param \Drupal\joinup_group\Entity\PinnableGroupContentInterface $entity
    *   The entity itself.
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
    *   A list of groups where the content is pinned.
    */
-  public function getGroupsWherePinned(ContentEntityInterface $entity);
+  public function getGroupsWherePinned(PinnableGroupContentInterface $entity);
 
 }
