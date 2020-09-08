@@ -1686,7 +1686,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @BeforeScenario @api
    */
-  public static function disableAntibot(): void {
+  public static function disableAntibotBeforeScenarioStarts(): void {
     static::disableAntibot();
   }
 
@@ -1697,7 +1697,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @see self::disableAntibot()
    */
-  public static function restoreAntibot(): void {
+  public static function restoreAntibotAfterScenarioEnds(): void {
     static::restoreAntibot();
   }
 
@@ -1712,7 +1712,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @see self::disableAntibotForSuite()
    */
-  public function restoreAntibotIfNeeded(): void {
+  public function restoreAntibotOnDemand(): void {
     self::restoreAntibot();
   }
 
@@ -1723,7 +1723,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @see self::restoreAntibotForScenario()
    */
-  public function disableAntibotIfNeeded(): void {
+  public function disableAntibotOnDemand(): void {
     static::disableAntibot();
   }
 
