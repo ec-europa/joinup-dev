@@ -89,7 +89,7 @@ use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
         /**
          * {@inheritdoc}
          */
-        public function getGroupsWherePinned(\Drupal\Core\Entity\ContentEntityInterface $entity)
+        public function getGroupsWherePinned(PinnableGroupContentInterface $entity)
         {
             return $this->lazyLoadItself()->getGroupsWherePinned($entity);
         }
