@@ -268,7 +268,8 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
 
     $fields['data'] = BaseFieldDefinition::create('map')
       ->setLabel(t('Data'))
-      ->setDescription('Additional data that can be used by the invitation.');
+      ->setDescription('Additional data that can be used by the invitation.')
+      ->setProvider('invitation');
 
     return $fields;
   }

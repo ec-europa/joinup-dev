@@ -111,3 +111,11 @@ function joinup_core_update_0106400(): void {
       ->execute();
   }
 }
+
+/**
+ * Install the invitation data field.
+ */
+function joinup_core_update_0106401(&$sandbox) {
+  $field_definition = \Drupal::getContainer()->get('entity_field.manager')->getBaseFieldDefinitions('invitation')['data'];
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('data', 'invitation', 'invitation', $field_definition);
+}
