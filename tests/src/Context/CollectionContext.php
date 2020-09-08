@@ -564,7 +564,7 @@ class CollectionContext extends RawDrupalContext {
   /**
    * Removes any created collections.
    *
-   * @AfterScenario
+   * @AfterScenario @api
    */
   public function cleanCollections(): void {
     if (empty($this->collections)) {
@@ -727,7 +727,7 @@ class CollectionContext extends RawDrupalContext {
   /**
    * Creates the standard 'Joinup' collection.
    *
-   * @beforeScenario @joinup_collection
+   * @BeforeScenario @joinup_collection @api
    *
    * @see joinup_collection.module
    */
