@@ -181,7 +181,7 @@
             "Drupal\\Tests\\honeypot\\": "web/modules/contrib/honeypot/tests/src",
             "Drupal\\Tests\\message_digest\\": "web/modules/contrib/message_digest/tests/src",
             "Drupal\\Tests\\oe_webtools\\": "web/modules/contrib/oe_webtools/tests",
-            "Drupal\\Tests\\pipeline\\": "web/modules/contrib/pipeline/tests",
+            "Drupal\\Tests\\pipeline\\": "web/modules/contrib/pipeline/tests/src",
             "Drupal\\Tests\\spdx\\": "web/modules/contrib/spdx/tests/src"
         }
     },
