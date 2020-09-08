@@ -72,10 +72,11 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
   /**
    * Returns the invitation recipient user account ID.
    *
-   * @return int
-   *   The invitation recipient user account ID.
+   * @return string
+   *   The invitation recipient user account ID. The value is stored in the
+   *   entity as string.
    */
-  public function getRecipientId(): int;
+  public function getRecipientId(): string;
 
   /**
    * Sets the invitation recipient's user account entity.

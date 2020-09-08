@@ -141,7 +141,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function getRecipientId(): int {
+  public function getRecipientId(): string {
     return $this->get('recipient_id')->target_id;
   }
 
@@ -189,14 +189,14 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    * {@inheritdoc}
    */
   public function getExtraData(): array {
-    return $this->data;
+    return $this->data->first()->getValue();
   }
 
   /**
    * {@inheritdoc}
    */
   public function setExtraData(array $data): InvitationInterface {
-    $this->data = $data;
+    $this->set('data', $data);
     return $this;
   }
 
