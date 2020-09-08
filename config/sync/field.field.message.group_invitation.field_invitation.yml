@@ -1,0 +1,21 @@
+uuid: c018640a-9c13-465d-8970-63dc508e1ca6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_invitation
+    - message.template.group_invitation
+id: message.group_invitation.field_invitation
+field_name: field_invitation
+entity_type: message
+bundle: group_invitation
+label: Invitation
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:invitation'
+  handler_settings: {  }
+field_type: entity_reference

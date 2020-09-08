@@ -1,0 +1,23 @@
+uuid: 708719ba-a7b4-4967-b2cf-5a268aa0b5ee
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.group_invitation.field_invitation
+    - message.template.group_invitation
+id: message.group_invitation.default
+targetEntityType: message
+bundle: group_invitation
+mode: default
+content:
+  field_invitation:
+    weight: 0
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+hidden: {  }

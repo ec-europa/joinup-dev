@@ -1,0 +1,22 @@
+uuid: 271a39b9-46de-4cce-8c2a-70f3108679f9
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.full_html
+template: group_invitation
+label: 'Group membership invitation'
+description: 'Sent when a user is invited to join a group.'
+text:
+  -
+    value: "<p>Invitation from @actor:full_name to join @entity:bundle @entity:title.<p>"
+    format: full_html
+  -
+    value: "You have been invited by @actor:full_name to join the collection <a href=\"@entity:url\">@entity:title</a> as a member.\r\nIf you wish to do so, you can click <a href=\"@invitation:accept_url\">, or follow the abovementioned link to enter the collection’s space and then click on the button JOIN THIS COLLECTION, which is located in the banner area.\r\nLast, don’t forget that as a collection member you can take advantage of Joinup's subscription notifications, and receive updates when new content is available in the collection."
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }

@@ -1,0 +1,31 @@
+uuid: 0b433654-ae6e-4219-883e-af862d73a452
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.group_invitation.field_invitation
+    - message.template.group_invitation
+id: message.group_invitation.default
+targetEntityType: message
+bundle: group_invitation
+mode: default
+content:
+  field_invitation:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  partial_0:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  partial_1:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }
