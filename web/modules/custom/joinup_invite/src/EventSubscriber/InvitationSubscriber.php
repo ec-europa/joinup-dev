@@ -91,7 +91,8 @@ class InvitationSubscriber implements EventSubscriberInterface {
     $membership->addRole($role);
     $membership->save();
 
-    $this->messenger()->addMessage($this->t('Successfully added the role %role to the selected users.', [
+    $invitation->setStatus(InvitationInterface::STATUS_ACCEPTED)->save();
+    $this->messenger->addMessage($this->t('%role role has been added to your membership due to accepting the invitation.', [
       '%role' => $role->label(),
     ]));
   }
