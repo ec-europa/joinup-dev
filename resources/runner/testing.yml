@@ -34,6 +34,8 @@ phpcs:
       - ${joinup.site_dir}/themes
   ignore:
     - ${joinup.site_dir}/modules/contrib
+    - ${joinup.site_dir}/themes/joinup/scss
+    - ${joinup.site_dir}/themes/joinup/node_modules
     - ${joinup.site_dir}/modules/custom/joinup_communities/tallinn/lib
   report: full
   options:
