@@ -18,7 +18,6 @@
 
     <!-- Exclude frontend third-party libraries from coding standards -->
     <exclude-pattern>web/themes/joinup/vendor/*</exclude-pattern>
-    <exclude-pattern>web/themes/joinup/prototype/gulpfile.js</exclude-pattern>
 
     <rule ref="./vendor/drupal/coder/coder_sniffer/Drupal" />
     <rule ref="./vendor/drupal/coder/coder_sniffer/DrupalPractice">

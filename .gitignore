@@ -35,7 +35,6 @@
 
 # Ignore compiled CSS.
 /web/themes/joinup/css
-/web/themes/joinup/prototype/css/*.css
 
 # Ignore theme libraries
 /web/themes/joinup/vendor
