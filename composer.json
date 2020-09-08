@@ -168,7 +168,8 @@
         "classmap": [
             "web/modules/contrib/message_digest/src/Traits/MessageDigestContextTrait.php",
             "web/modules/contrib/message_digest/src/Traits/MessageDigestTrait.php",
-            "web/modules/contrib/og_menu/src/Tests/Traits/OgMenuTrait.php"
+            "web/modules/contrib/og_menu/src/Tests/Traits/OgMenuTrait.php",
+            "web/modules/contrib/spdx/src/Traits/SpdxContextTrait.php"
         ],
         "files": [
             "src/Composer/load.environment.php"
