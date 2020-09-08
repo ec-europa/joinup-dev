@@ -3776,7 +3776,8 @@
                     "dev-8.x-1.x": "1.x-dev"
                 },
                 "patches_applied": {
-                    "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
+                    "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
+                    "Notice: Undefined index: #attributes @see https://www.drupal.org/project/facets/issues/3160570": "https://www.drupal.org/files/issues/2020-07-23/undefined-index-attributes-3160570-4.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
