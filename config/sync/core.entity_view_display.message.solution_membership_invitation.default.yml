@@ -1,13 +1,13 @@
-uuid: 0b433654-ae6e-4219-883e-af862d73a452
+uuid: 6cb0bfaf-861c-4857-8130-fb05e007b627
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.message.group_invitation.field_invitation
-    - message.template.group_invitation
-id: message.group_invitation.default
+    - field.field.message.solution_membership_invitation.field_invitation
+    - message.template.solution_membership_invitation
+id: message.solution_membership_invitation.default
 targetEntityType: message
-bundle: group_invitation
+bundle: solution_membership_invitation
 mode: default
 content:
   field_invitation:

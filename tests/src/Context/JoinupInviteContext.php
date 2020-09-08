@@ -80,11 +80,11 @@ class JoinupInviteContext extends RawDrupalContext {
       ],
       'collection' => [
         'invitation_bundle' => 'group_membership',
-        'message_template' => InviteToGroupForm::TEMPLATE_GROUP_INVITE,
+        'message_template' => InviteToGroupForm::TEMPLATES['collection'],
       ],
       'solution' => [
         'invitation_bundle' => 'group_membership',
-        'message_template' => InviteToGroupForm::TEMPLATE_GROUP_INVITE,
+        'message_template' => InviteToGroupForm::TEMPLATES['solution'],
       ],
     ];
 

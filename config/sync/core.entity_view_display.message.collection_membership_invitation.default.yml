@@ -1,0 +1,31 @@
+uuid: 791a373a-6406-47b0-ade4-c2270eee1176
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.collection_membership_invitation.field_invitation
+    - message.template.collection_membership_invitation
+id: message.collection_membership_invitation.default
+targetEntityType: message
+bundle: collection_membership_invitation
+mode: default
+content:
+  field_invitation:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  partial_0:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  partial_1:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }

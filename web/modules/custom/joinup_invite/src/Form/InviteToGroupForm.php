@@ -15,11 +15,14 @@ use Drupal\user\UserInterface;
 class InviteToGroupForm extends GroupFormBase {
 
   /**
-   * The message template to use for the notification mail.
+   * The message templates to use for the notification mail.
    *
    * @var string
    */
-  const TEMPLATE_GROUP_INVITE = 'group_invitation';
+  const TEMPLATES = [
+    'collection' => 'collection_membership_invitation',
+    'solution' => 'solution_membership_invitation',
+  ];
 
   /**
    * {@inheritdoc}
@@ -39,7 +42,7 @@ class InviteToGroupForm extends GroupFormBase {
    * {@inheritdoc}
    */
   protected function getTemplateId(): string {
-    return self::TEMPLATE_GROUP_INVITE;
+    return self::TEMPLATES[$this->entity->bundle()];
   }
 
   /**

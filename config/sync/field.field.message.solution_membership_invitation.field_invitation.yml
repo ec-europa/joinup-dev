@@ -1,0 +1,28 @@
+uuid: 5be16d4c-79a8-42df-9daf-993c5caa1dd1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_invitation
+    - joinup_invite.invitation_type.group_membership
+    - message.template.solution_membership_invitation
+id: message.solution_membership_invitation.field_invitation
+field_name: field_invitation
+entity_type: message
+bundle: solution_membership_invitation
+label: Invitation
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:invitation'
+  handler_settings:
+    target_bundles:
+      group_membership: group_membership
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
