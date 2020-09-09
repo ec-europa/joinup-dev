@@ -1,0 +1,12 @@
+{
+  "name": "joinup-sass-compiler",
+  "version": "1.0.0",
+  "scripts": {
+    "css": "node-sass scss/app.scss > css/style.min.css --output-style compressed",
+    "watch": "nodemon -e scss -x \"npm run css\""
+  },
+  "devDependencies": {
+    "node-sass": "^4.14.1",
+    "nodemon": "^2.0.4"
+  }
+}

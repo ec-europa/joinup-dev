@@ -68,6 +68,11 @@
 /resources/fixtures/ export-ignore
 /resources/mac/ export-ignore
 /resources/uat/ export-ignore
+/web/sites/simpletest/ export-ignore
+/web/themes/joinup/scss/ export-ignore
+/web/themes/joinup/package.json export-ignore
+/web/themes/joinup/package-lock.json export-ignore
+/web/themes/joinup/README.md export-ignore
 .github export-ignore
 .editorconfig export-ignore
 .gitattributes export-ignore
