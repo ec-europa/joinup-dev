@@ -6,20 +6,22 @@ namespace Drupal\joinup_group\Entity;
 
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\TypedData\Exception\MissingDataException;
-use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityAccessTrait;
 
 /**
  * Reusable methods for pinnable group content entities.
+ *
+ * @todo Once we are on PHP 7.3 the JoinupBundleClassMetaEntityAccessTrait
+ *   should be included here.
  */
 trait PinnableGroupContentTrait {
-
-  use JoinupBundleClassMetaEntityAccessTrait;
 
   /**
    * {@inheritdoc}
    */
   public function isPinned(?GroupInterface $group = NULL): bool {
-    $meta_entity = $this->getMetaEntity('pinned_in');
+    if (!$meta_entity = $this->getMetaEntity('pinned_in')) {
+      return FALSE;
+    }
 
     /** @var \Drupal\joinup_federation\RdfEntityReferenceFieldItemList $item_list */
     $item_list = $meta_entity->get('field_pinned_in');
