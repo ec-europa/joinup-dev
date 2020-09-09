@@ -23,7 +23,10 @@ class BootstrapDrupalContext extends RawDrupalContext {
    * @BeforeScenario @api
    */
   public function bootstrap(): void {
-    $this->getDriver();
+    $driver = $this->getDriver();
+    if (!$driver->isBootstrapped()) {
+      $driver->bootstrap();
+    }
   }
 
 }
