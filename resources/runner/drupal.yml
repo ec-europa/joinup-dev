@@ -163,6 +163,7 @@ drupal:
           'namespace' => 'Drupal\\Driver\\Database\\joinup_sparql',
           'driver' => 'sparql',
         ];
+        $settings['joinup']['sparql_public_endpoint'] = getenv('SPARQL_PUBLIC_ENDPOINT');
       Permissions: |
         $settings['skip_permissions_hardening'] = TRUE;
       Stage File Proxy: |

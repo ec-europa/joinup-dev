@@ -7,7 +7,9 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\joinup_rdf_graph\Entity\RdfGraph;
+use Drupal\joinup_rdf_graph\Entity\RdfGraphInterface;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -15,5 +17,15 @@ use Drupal\joinup_rdf_graph\Entity\RdfGraph;
 function joinup_rdf_graph_entity_bundle_info_alter(array &$bundles): void {
   if (!empty($bundles['rdf_entity']['rdf_graph'])) {
     $bundles['rdf_entity']['rdf_graph']['class'] = RdfGraph::class;
+  }
+}
+
+/**
+ * Implements hook_entity_operation_alter().
+ */
+function joinup_rdf_graph_entity_operation_alter(array &$operations, EntityInterface $rdf_graph): void {
+  if ($rdf_graph instanceof RdfGraphInterface) {
+    // RDF graph bundle doesn't support drafts.
+    unset($operations['draft']);
   }
 }
