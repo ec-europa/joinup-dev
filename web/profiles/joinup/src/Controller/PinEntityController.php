@@ -10,10 +10,10 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\collection\Entity\CollectionInterface;
-use Drupal\joinup\PinServiceInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -33,23 +33,13 @@ class PinEntityController extends ControllerBase {
   protected $ogAccess;
 
   /**
-   * The pin service.
-   *
-   * @var \Drupal\joinup\PinServiceInterface
-   */
-  protected $pinService;
-
-  /**
    * Instantiates a new PinEntityController object.
    *
    * @param \Drupal\og\OgAccessInterface $ogAccess
    *   The OG access service.
-   * @param \Drupal\joinup\PinServiceInterface $pinService
-   *   The pin service.
    */
-  public function __construct(OgAccessInterface $ogAccess, PinServiceInterface $pinService) {
+  public function __construct(OgAccessInterface $ogAccess) {
     $this->ogAccess = $ogAccess;
-    $this->pinService = $pinService;
   }
 
   /**
@@ -57,24 +47,23 @@ class PinEntityController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('og.access'),
-      $container->get('joinup.pin_service')
+      $container->get('og.access')
     );
   }
 
   /**
    * Pins a group content entity inside a group.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   * @param \Drupal\joinup_group\Entity\PinnableGroupContentInterface $entity
    *   The content entity being pinned.
-   * @param \Drupal\rdf_entity\RdfInterface $group
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
    *   The group where to pin the content.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   The redirect response.
    */
-  public function pin(ContentEntityInterface $entity, RdfInterface $group) {
-    $this->pinService->setEntityPinned($entity, $group, TRUE);
+  public function pin(PinnableGroupContentInterface $entity, GroupInterface $group) {
+    $entity->pin($group);
 
     $this->messenger()->addMessage($this->t('@bundle %title has been pinned in the @group_bundle %group.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
@@ -89,16 +78,16 @@ class PinEntityController extends ControllerBase {
   /**
    * Unpins a group content entity inside a group.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   * @param \Drupal\joinup_group\Entity\PinnableGroupContentInterface $entity
    *   The content entity being unpinned.
-   * @param \Drupal\rdf_entity\RdfInterface $group
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
    *   The group where to unpin the content.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   The redirect response.
    */
-  public function unpin(ContentEntityInterface $entity, RdfInterface $group) {
-    $this->pinService->setEntityPinned($entity, $group, FALSE);
+  public function unpin(PinnableGroupContentInterface $entity, GroupInterface $group) {
+    $entity->unpin($group);
 
     $this->messenger()->addMessage($this->t('@bundle %title has been unpinned in the @group_bundle %group.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
@@ -120,7 +109,7 @@ class PinEntityController extends ControllerBase {
    * @param \Drupal\rdf_entity\RdfInterface $group
    *   The group where to pin the content.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
   public function pinAccess(ContentEntityInterface $entity, AccountInterface $account, RdfInterface $group) {
@@ -150,7 +139,7 @@ class PinEntityController extends ControllerBase {
    * @param \Drupal\rdf_entity\RdfInterface $group
    *   The group where to pin the content.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
   public function unpinAccess(ContentEntityInterface $entity, AccountInterface $account, RdfInterface $group) {

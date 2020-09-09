@@ -367,9 +367,7 @@ class SolutionContext extends RawDrupalContext {
         if (!$group instanceof GroupInterface) {
           throw new \Exception("Cannot pin solution {$solution->label()} in $group_label since it does not exist or is not a group.");
         }
-        /** @var \Drupal\joinup\PinServiceInterface $pin_service */
-        $pin_service = \Drupal::service('joinup.pin_service');
-        $pin_service->setEntityPinned($solution, $group, TRUE);
+        $solution->pin($group);
       }
     }
 

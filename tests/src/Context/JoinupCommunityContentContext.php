@@ -247,9 +247,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
         if ($entity instanceof PinnableGroupContentInterface) {
           try {
             $group = $entity->getGroup();
-            /** @var \Drupal\joinup\PinServiceInterface $pin_service */
-            $pin_service = \Drupal::service('joinup.pin_service');
-            $pin_service->setEntityPinned($entity, $group, TRUE);
+            $entity->pin($group);
           }
           catch (MissingGroupException $e) {
             throw new \Exception("The '{$node->title}' community content cannot be pinned since it does not belong to a group.");
