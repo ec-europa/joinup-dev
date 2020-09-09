@@ -14,6 +14,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_content_creation
     - field.field.rdf_entity.collection.field_ar_description
     - field.field.rdf_entity.collection.field_ar_logo
+    - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_new_member_role
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
@@ -81,6 +82,7 @@ third_party_settings:
         - field_keywords
         - field_spatial_coverage
         - field_ar_new_member_role
+        - field_ar_moderation
         - field_ar_closed
         - field_ar_content_creation
       parent_name: group_general
@@ -131,7 +133,7 @@ content:
     region: content
   field_ar_closed:
     type: boolean_checkbox
-    weight: 16
+    weight: 17
     region: content
     settings:
       display_label: false
@@ -155,7 +157,7 @@ content:
     region: content
   field_ar_content_creation:
     type: options_buttons
-    weight: 17
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -178,6 +180,13 @@ content:
     third_party_settings: {  }
     type: image_image
     region: content
+  field_ar_moderation:
+    type: boolean_checkbox
+    weight: 16
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_ar_new_member_role:
     type: options_select
     weight: 15

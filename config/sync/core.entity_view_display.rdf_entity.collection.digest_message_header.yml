@@ -55,6 +55,7 @@ hidden:
   field_ar_content_creation: true
   field_ar_description: true
   field_ar_logo: true
+  field_ar_moderation: true
   field_ar_new_member_role: true
   field_ar_owner: true
   field_ar_state: true

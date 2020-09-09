@@ -23,7 +23,7 @@ settings:
       label: Member
     -
       value: rdf_entity-collection-author
-      label: 'Author'
+      label: Author
   allowed_values_function: ''
 module: options
 locked: false
