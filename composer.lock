@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f44278241ed3b2ae9ab2cafda87642b4",
+    "content-hash": "2fc7175abbb43d7a7cfb529dd876c84e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2673,16 +2673,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.9.3",
+            "version": "8.9.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "ee02fd4cbe4ac148b4d7e297ec63b3459983862e"
+                "reference": "c9b9643663b80f02c038f9dea15b8717a22c3339"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/ee02fd4cbe4ac148b4d7e297ec63b3459983862e",
-                "reference": "ee02fd4cbe4ac148b4d7e297ec63b3459983862e",
+                "url": "https://api.github.com/repos/drupal/core/zipball/c9b9643663b80f02c038f9dea15b8717a22c3339",
+                "reference": "c9b9643663b80f02c038f9dea15b8717a22c3339",
                 "shasum": ""
             },
             "require": {
@@ -2895,6 +2895,7 @@
                     "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2019-04-04/2730631_85_0.patch",
                     "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2018-06-11/2765065-93.patch",
                     "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-12-03/2895352-42-8.8.x.patch",
+                    "Views exposed sort identifiers are not configurable @see https://www.drupal.org/project/drupal/issues/2897638": "https://www.drupal.org/files/issues/2020-09-06/2897638-33-8.9.x.patch",
                     "Pass current route parameters to the confirmation form route @see https://www.drupal.org/project/drupal/issues/2901412": "https://www.drupal.org/files/issues/2020-02-25/2901412-13.patch",
                     "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
                     "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch",
@@ -2926,7 +2927,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2020-08-05T21:49:40+00:00"
+            "time": "2020-09-03T21:07:45+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
@@ -3775,7 +3776,8 @@
                     "dev-8.x-1.x": "1.x-dev"
                 },
                 "patches_applied": {
-                    "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
+                    "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
+                    "Notice: Undefined index: #attributes @see https://www.drupal.org/project/facets/issues/3160570": "https://www.drupal.org/files/issues/2020-07-23/undefined-index-attributes-3160570-4.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4835,6 +4837,9 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
                     "version": "8.x-1.0-rc3",
                     "datestamp": "1558111386",
@@ -6701,6 +6706,65 @@
             "homepage": "https://www.drupal.org/project/view_unpublished",
             "support": {
                 "source": "https://git.drupalcode.org/project/view_unpublished"
+            }
+        },
+        {
+            "name": "drupal/views_autosubmit",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/views_autosubmit.git",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/views_autosubmit-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "3fd23024e3a03bcde240e01767f5d8eec8f4ee57"
+            },
+            "require": {
+                "drupal/core": "^8"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1584964760",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "patches_applied": {
+                    "Settings are not saved @see https://www.drupal.org/project/views_autosubmit/issues/3168560": "https://www.drupal.org/files/issues/2020-09-02/3168560-D8-2.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "anshu_tiwari",
+                    "homepage": "https://www.drupal.org/user/3598362"
+                },
+                {
+                    "name": "aritra.ghosh",
+                    "homepage": "https://www.drupal.org/user/1830998"
+                },
+                {
+                    "name": "i-trokhanenko",
+                    "homepage": "https://www.drupal.org/user/3546872"
+                },
+                {
+                    "name": "sandeep_jangra",
+                    "homepage": "https://www.drupal.org/user/3468193"
+                }
+            ],
+            "description": "Views exposed filter Autosubmit for drupal 8",
+            "homepage": "https://www.drupal.org/project/views_autosubmit",
+            "support": {
+                "source": "https://git.drupalcode.org/project/views_autosubmit"
             }
         },
         {
@@ -9830,7 +9894,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-08-03T19:59:39+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
