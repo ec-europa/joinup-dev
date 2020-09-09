@@ -87,7 +87,6 @@ class PinnableEntitiesTest extends JoinupExistingSiteTestBase {
    */
   protected function getGroupsWherePinned(PinnableGroupContentInterface $entity) {
     // Refresh the entity so that our test is not affected by static caches.
-    /** @var \Drupal\joinup_group\Entity\PinnableGroupContentInterface $entity */
     $entity = $this->entityTypeManager->getStorage($entity->getEntityTypeId())->loadUnchanged($entity->id());
     $group_ids = $entity->getPinnedGroupIds();
     return $this->entityTypeManager->getStorage('rdf_entity')->loadMultiple($group_ids);
