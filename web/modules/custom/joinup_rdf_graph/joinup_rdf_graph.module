@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for 'joinup_rdf_graph' module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\joinup_rdf_graph\Entity\RdfGraph;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function joinup_rdf_graph_entity_bundle_info_alter(array &$bundles): void {
+  if (!empty($bundles['rdf_entity']['rdf_graph'])) {
+    $bundles['rdf_entity']['rdf_graph']['class'] = RdfGraph::class;
+  }
+}
