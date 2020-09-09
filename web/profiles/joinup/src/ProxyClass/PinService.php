@@ -73,14 +73,6 @@ use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
         /**
          * {@inheritdoc}
          */
-        public function isEntityPinned(PinnableGroupContentInterface $entity, ?GroupInterface $group = NULL)
-        {
-            return $this->lazyLoadItself()->isEntityPinned($entity, $group);
-        }
-
-        /**
-         * {@inheritdoc}
-         */
         public function setEntityPinned(PinnableGroupContentInterface $entity, GroupInterface $group, bool $pinned)
         {
             return $this->lazyLoadItself()->setEntityPinned($entity, $group, $pinned);

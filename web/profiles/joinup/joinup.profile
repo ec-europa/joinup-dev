@@ -387,9 +387,7 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
     $group = $context['og']->getContextValue();
   }
 
-  /** @var \Drupal\joinup\PinServiceInterface $pin_service */
-  $pin_service = \Drupal::service('joinup.pin_service');
-  if ($entity instanceof PinnableGroupContentInterface && $pin_service->isEntityPinned($entity, $group)) {
+  if ($entity instanceof PinnableGroupContentInterface && $entity->isPinned($group)) {
     $variables['attributes']['class'][] = 'is-pinned';
     $variables['#attached']['library'][] = 'joinup/pinned_entities';
 

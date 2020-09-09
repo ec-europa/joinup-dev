@@ -13,21 +13,6 @@ use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 interface PinServiceInterface {
 
   /**
-   * Checks if an entity is pinned inside any group or a specific one.
-   *
-   * @param \Drupal\joinup_group\Entity\PinnableGroupContentInterface $entity
-   *   The entity to check.
-   * @param \Drupal\joinup_group\Entity\GroupInterface|null $group
-   *   The rdf group where the entity should be pinned. Defaults to NULL,
-   *   so the function will return TRUE if the entity is pinned in any
-   *   group.
-   *
-   * @return bool
-   *   True if the entity is pinned, false otherwise.
-   */
-  public function isEntityPinned(PinnableGroupContentInterface $entity, ?GroupInterface $group = NULL);
-
-  /**
    * Sets the entity pinned status inside a certain group.
    *
    * @param \Drupal\joinup_group\Entity\PinnableGroupContentInterface $entity

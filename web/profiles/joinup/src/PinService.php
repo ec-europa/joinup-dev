@@ -15,13 +15,6 @@ class PinService implements PinServiceInterface {
   /**
    * {@inheritdoc}
    */
-  public function isEntityPinned(PinnableGroupContentInterface $entity, ?GroupInterface $group = NULL) {
-    return $entity->isPinned($group);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function setEntityPinned(PinnableGroupContentInterface $entity, GroupInterface $group, bool $pinned) {
     if ($pinned) {
       $entity->pin($group);

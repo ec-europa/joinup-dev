@@ -2338,10 +2338,7 @@ class JoinupContext extends RawDrupalContext {
     }
     $entity = static::getEntityByLabel($entity_type_id, $heading);
 
-    /** @var \Drupal\joinup\PinServiceInterface $pin_service */
-    $pin_service = \Drupal::service('joinup.pin_service');
-
-    if ($entity instanceof PinnableGroupContentInterface && $pin_service->isEntityPinned($entity)) {
+    if ($entity instanceof PinnableGroupContentInterface && $entity->isPinned()) {
       throw new \Exception("The tile '$heading' is marked as featured, but it shouldn't be.");
     }
   }
