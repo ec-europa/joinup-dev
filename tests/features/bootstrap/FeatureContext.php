@@ -1684,7 +1684,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * the form is submitted. This would make most of Behat tests to fail. We
    * disable Antibot functionality during Behat tests run.
    *
-   * @BeforeScenario @api
+   * If a scenario wants to have Antibot functionality enabled, it should be
+   * tagged with @antibot.
+   *
+   * @BeforeScenario ~@antibot&&@api
    */
   public static function disableAntibotBeforeScenarioStarts(): void {
     static::disableAntibot();
@@ -1693,38 +1696,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Restores the Antibot functionality after tests run.
    *
-   * @AfterScenario @api
+   * @AfterScenario ~@antibot&&@api
    *
    * @see self::disableAntibot()
    */
   public static function restoreAntibotAfterScenarioEnds(): void {
     static::restoreAntibot();
-  }
-
-  /**
-   * Restores Antibot functionality in the scope of @antibot tagged scenarios.
-   *
-   * The Antibot functionality is disabled for the whole test suite run, in
-   * self::disableAntibotForSuite(). However, if a scenario wants run its test
-   * with Antibot functionality enabled, it should be tagged with @antibot.
-   *
-   * @BeforeScenario @antibot&&@api
-   *
-   * @see self::disableAntibotForSuite()
-   */
-  public function restoreAntibotOnDemand(): void {
-    self::restoreAntibot();
-  }
-
-  /**
-   * Disables Antibot functionality after @antibot tagged scenarios.
-   *
-   * @AfterScenario @antibot&&@api
-   *
-   * @see self::restoreAntibotForScenario()
-   */
-  public function disableAntibotOnDemand(): void {
-    static::disableAntibot();
   }
 
   /**
