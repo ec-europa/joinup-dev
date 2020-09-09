@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\joinup_rdf_graph\Entity\RdfGraph;
 use Drupal\joinup_rdf_graph\Entity\RdfGraphInterface;
 
@@ -27,5 +28,14 @@ function joinup_rdf_graph_entity_operation_alter(array &$operations, EntityInter
   if ($rdf_graph instanceof RdfGraphInterface) {
     // RDF graph bundle doesn't support drafts.
     unset($operations['draft']);
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function joinup_rdf_graph_entity_base_field_info_alter(array &$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === 'rdf_entity') {
+    $fields['label']->addConstraint('RdfGraphLabel', []);
   }
 }
