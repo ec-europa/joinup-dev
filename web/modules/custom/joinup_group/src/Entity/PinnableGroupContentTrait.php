@@ -42,6 +42,9 @@ trait PinnableGroupContentTrait {
     // Only update the pinned status in the database if needed.
     if (!$this->isPinned($group)) {
       $meta_entity = $this->getMetaEntity('pinned_in');
+      if (empty($meta_entity)) {
+        $meta_entity = $this->createMetaEntity('pinned_in');
+      }
       $meta_entity->get('field_pinned_in')->appendItem($group->id());
       $meta_entity->save();
     }
