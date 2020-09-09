@@ -501,7 +501,7 @@ class JoinupNotificationContext extends RawDrupalContext {
   /**
    * Swaps the mailing system settings with a test one.
    *
-   * @BeforeScenario @email @api
+   * @BeforeScenario @email&&@api
    */
   public function beforeEmailScenario(): void {
     if (!$this->isTestMailCollectorUsed()) {
@@ -522,7 +522,7 @@ class JoinupNotificationContext extends RawDrupalContext {
   /**
    * Restores the mailing system settings with the default one.
    *
-   * @AfterScenario @email @api
+   * @AfterScenario @email&&@api
    */
   public function afterEmailScenario(): void {
     // Temporarily bypass read only config so that we can restore the original

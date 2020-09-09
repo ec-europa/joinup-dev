@@ -31,7 +31,7 @@ class EifContext extends RawDrupalContext {
   /**
    * Creates the standard 'EIF' solution and a random parent collection.
    *
-   * @BeforeScenario @eif_community @api
+   * @BeforeScenario @eif_community&&@api
    */
   public function setupEifData(BeforeScenarioScope $scope): void {
     // Create two policy domain terms.
@@ -135,7 +135,7 @@ class EifContext extends RawDrupalContext {
    * @throws \Drupal\Core\Entity\EntityStorageException
    *   Thrown when one of the created entities could not be deleted.
    *
-   * @AfterScenario @eif_community @api
+   * @AfterScenario @eif_community&&@api
    */
   public function cleanEifData(AfterScenarioScope $scope): void {
     // Temporarily disable the feature to commit the index after every query.

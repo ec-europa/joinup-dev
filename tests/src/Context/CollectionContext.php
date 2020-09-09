@@ -727,7 +727,7 @@ class CollectionContext extends RawDrupalContext {
   /**
    * Creates the standard 'Joinup' collection.
    *
-   * @BeforeScenario @joinup_collection @api
+   * @BeforeScenario @joinup_collection&&@api
    *
    * @see joinup_collection.module
    */

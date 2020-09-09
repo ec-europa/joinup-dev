@@ -894,7 +894,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * Limitation: It creates terms with maximum 2 level hierarchy.
    *
-   * @BeforeScenario @terms @api
+   * @BeforeScenario @terms&&@api
    */
   public function provideTestingTerms(): void {
     $fixture = file_get_contents(__DIR__ . '/../../fixtures/testing_terms.yml');
@@ -1592,7 +1592,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * perform asserts before creating any content of their own, since the search
    * index might still contain stale content from the previous scenario.
    *
-   * @BeforeScenario @commitSearchIndex @api
+   * @BeforeScenario @commitSearchIndex&&@api
    */
   public function commitSearchIndexBeforeScenario(): void {
     $this->commitSearchIndex();
@@ -1601,7 +1601,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Installs the testing module for scenarios tagged with @errorPage.
    *
-   * @BeforeScenario @errorPage @api
+   * @BeforeScenario @errorPage&&@api
    */
   public function beforeErrorPageTesting(): void {
     static::toggleModule('install', 'error_page_test');
@@ -1616,7 +1616,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Uninstalls the testing module for scenarios tagged with @errorPage.
    *
-   * @AfterScenario @errorPage @api
+   * @AfterScenario @errorPage&&@api
    */
   public function afterErrorPageTesting(): void {
     static::toggleModule('uninstall', 'error_page_test');
@@ -1708,7 +1708,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * self::disableAntibotForSuite(). However, if a scenario wants run its test
    * with Antibot functionality enabled, it should be tagged with @antibot.
    *
-   * @BeforeScenario @antibot @api
+   * @BeforeScenario @antibot&&@api
    *
    * @see self::disableAntibotForSuite()
    */
@@ -1719,7 +1719,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Disables Antibot functionality after @antibot tagged scenarios.
    *
-   * @AfterScenario @antibot @api
+   * @AfterScenario @antibot&&@api
    *
    * @see self::restoreAntibotForScenario()
    */
@@ -1768,7 +1768,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Cleans up the existing list of entities before the scenario starts.
    *
-   * @BeforeScenario @messageCleanup @api
+   * @BeforeScenario @messageCleanup&&@api
    */
   public function cleanupMessageEntities(): void {
     $message_storage = \Drupal::entityTypeManager()->getStorage('message');
@@ -1781,7 +1781,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * Tests that interact with the version file should be tagged with `@version`.
    *
-   * @BeforeScenario @version @api
+   * @BeforeScenario @version&&@api
    */
   public function backupJoinupVersion(): void {
     $filename = DRUPAL_ROOT . '/../VERSION';
@@ -1791,7 +1791,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Restores the backup of the Joinup `VERSION` file.
    *
-   * @AfterScenario @version @api
+   * @AfterScenario @version&&@api
    */
   public function restoreJoinupVersion(): void {
     if ($this->version === FALSE) {
