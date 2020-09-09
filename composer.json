@@ -272,7 +272,7 @@
                 "Notice: Undefined index: #attributes @see https://www.drupal.org/project/facets/issues/3160570": "https://www.drupal.org/files/issues/2020-07-23/undefined-index-attributes-3160570-4.patch"
             },
             "drupal/honeypot": {
-                "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2020-09-07/3059040-26.patch"
+                "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2020-09-09/3059040-31.patch"
             },
             "drupal/inline_entity_form": {
                 "Autocomplete field doesn't allow to reference entities with long titles @see https://www.drupal.org/node/2895663": "https://www.drupal.org/files/issues/2895663-2.patch"
