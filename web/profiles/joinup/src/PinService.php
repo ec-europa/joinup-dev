@@ -6,7 +6,6 @@ namespace Drupal\joinup;
 
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
-use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * A service to handle pinned entities.
@@ -30,13 +29,6 @@ class PinService implements PinServiceInterface {
     else {
       $entity->unpin($group);
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getGroupsWherePinned(PinnableGroupContentInterface $entity) {
-    return Rdf::loadMultiple($entity->getPinnedGroupIds());
   }
 
 }

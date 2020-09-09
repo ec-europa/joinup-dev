@@ -86,14 +86,6 @@ use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
             return $this->lazyLoadItself()->setEntityPinned($entity, $group, $pinned);
         }
 
-        /**
-         * {@inheritdoc}
-         */
-        public function getGroupsWherePinned(PinnableGroupContentInterface $entity)
-        {
-            return $this->lazyLoadItself()->getGroupsWherePinned($entity);
-        }
-
     }
 
 }

@@ -394,10 +394,7 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
     $variables['#attached']['library'][] = 'joinup/pinned_entities';
 
     if (JoinupGroupHelper::isSolution($entity) || CommunityContentHelper::isCommunityContent($entity)) {
-      $group_ids = [];
-      foreach ($pin_service->getGroupsWherePinned($entity) as $group) {
-        $group_ids[] = $group->id();
-      }
+      $group_ids = $entity->getPinnedGroupIds();
       $variables['attributes']['data-drupal-pinned-in'] = implode(',', $group_ids);
     }
   }

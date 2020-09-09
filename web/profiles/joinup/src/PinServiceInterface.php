@@ -39,15 +39,4 @@ interface PinServiceInterface {
    */
   public function setEntityPinned(PinnableGroupContentInterface $entity, GroupInterface $group, bool $pinned);
 
-  /**
-   * Retrieves a list of groups where an entity is pinned.
-   *
-   * @param \Drupal\joinup_group\Entity\PinnableGroupContentInterface $entity
-   *   The entity itself.
-   *
-   * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of groups where the content is pinned.
-   */
-  public function getGroupsWherePinned(PinnableGroupContentInterface $entity);
-
 }
