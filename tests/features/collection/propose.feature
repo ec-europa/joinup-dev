@@ -134,14 +134,14 @@ Feature: Proposing a collection
     When I go to the propose collection form
     Then the following fields should be visible "Title, Description, Policy domain"
     And the following field widgets should be visible "Owner"
-    And the following fields should not be visible "Moderated, Abstract, Content creation, Geographical coverage"
+    And the following fields should not be visible "Moderated, New member role, Abstract, Content creation, Geographical coverage"
     And the following fields should not be present "Affiliates"
     And the following field widgets should be visible "Contact information"
 
     When I click "Additional fields" tab
     Then the following fields should not be visible "Title, Description, Policy domain"
     And the following field widgets should not be visible "Owner"
-    And the following fields should be visible "Content creation, Moderated, Abstract, Geographical coverage"
+    And the following fields should be visible "Content creation, Moderated, New member role, Abstract, Geographical coverage"
     And the following fields should not be present "Affiliates"
     And the following field widgets should not be visible "Contact information"
 
