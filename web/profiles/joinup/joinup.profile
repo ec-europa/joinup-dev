@@ -372,7 +372,10 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
   }
 
   /** @var \Drupal\Core\Entity\ContentEntityBase $entity */
-  $entity = $variables[$variables['elements']['#entity_type']];
+  $entity = $variables[$variables['elements']['#entity_type']] ?? NULL;
+  if (empty($entity)) {
+    return;
+  }
 
   // If the entity has the site-wide featured field, enable the related js
   // library.
@@ -391,10 +394,8 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
     $variables['attributes']['class'][] = 'is-pinned';
     $variables['#attached']['library'][] = 'joinup/pinned_entities';
 
-    if (JoinupGroupHelper::isSolution($entity) || CommunityContentHelper::isCommunityContent($entity)) {
-      $group_ids = $entity->getPinnedGroupIds();
-      $variables['attributes']['data-drupal-pinned-in'] = implode(',', $group_ids);
-    }
+    $group_ids = $entity->getPinnedGroupIds();
+    $variables['attributes']['data-drupal-pinned-in'] = implode(',', $group_ids);
   }
 }
 
