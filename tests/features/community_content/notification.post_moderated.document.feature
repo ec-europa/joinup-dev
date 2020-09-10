@@ -13,12 +13,12 @@ Feature: Notification test for the document transitions on a post moderated pare
       | CC member        |           | notify_member@test.com      | CC         | Member      |
     And collections:
       | title              | state     | content creation | moderation |
-      | CC post collection | validated | members          | no         |
+      | CC post collection | validated | members          | <moderation>         |
     And the following collection user memberships:
       | collection         | user           | roles       |
       | CC post collection | CC owner       | owner       |
       | CC post collection | CC facilitator | facilitator |
-      | CC post collection | CC member      |             |
+      | CC post collection | CC member      |  <roles>           |
     And document content:
       | title                                | author    | body | document type | collection         | field_state  |
       | CC notify post publish               | CC member | body | Document      | CC post collection | draft        |
@@ -100,3 +100,8 @@ Feature: Notification test for the document transitions on a post moderated pare
       | recipient | CC member                                                                                                              |
       | subject   | Joinup: Content has been deleted                                                                                       |
       | body      | Facilitator CC Facilitator has deleted the document - "CC notify post delete" in the collection: "CC post collection". |
+
+    Examples:
+      | moderation | roles  |
+      | no         |        |
+      | yes        | author |

@@ -4,7 +4,7 @@ Feature: Notification test for the event transitions on a post moderated parent.
   As an owner of the collection
   I want to receive a notification when an entity is proposed.
 
-  Scenario: Notifications should be sent whenever a event is going through a relevant transition.
+  Scenario Outline: Notifications should be sent whenever a event is going through a relevant transition.
     Given users:
       | Username         | Roles     | E-mail                      | First name | Family name |
       | Notify moderator | moderator | notify_moderator@test.com   | Notify     | Moderator   |
@@ -12,13 +12,13 @@ Feature: Notification test for the event transitions on a post moderated parent.
       | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator |
       | CC member        |           | notify_member@test.com      | CC         | Member      |
     And collections:
-      | title              | state     | content creation | moderation |
-      | CC post collection | validated | members          | no         |
+      | title              | state     | content creation | moderation   |
+      | CC post collection | validated | members          | <moderation> |
     And the following collection user memberships:
       | collection         | user           | roles       |
       | CC post collection | CC owner       | owner       |
       | CC post collection | CC facilitator | facilitator |
-      | CC post collection | CC member      |             |
+      | CC post collection | CC member      | <roles>     |
     And event content:
       | title                                | author    | body | location                       | collection         | field_state  |
       | CC notify post publish               | CC member | body | Half Moon Street, London       | CC post collection | draft        |
@@ -100,3 +100,8 @@ Feature: Notification test for the event transitions on a post moderated parent.
       | recipient | CC member                                                                                                           |
       | subject   | Joinup: Content has been deleted                                                                                    |
       | body      | Facilitator CC Facilitator has deleted the event - "CC notify post delete" in the collection: "CC post collection". |
+
+    Examples:
+      | moderation | roles  |
+      | no         |        |
+      | yes        | author |

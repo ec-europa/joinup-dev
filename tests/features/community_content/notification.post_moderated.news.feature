@@ -12,13 +12,13 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator |
       | CC member        |           | notify_member@test.com      | CC         | Member      |
     And collections:
-      | title              | state     | content creation | moderation |
-      | CC post collection | validated | members          | no         |
+      | title              | state     | content creation | moderation   |
+      | CC post collection | validated | members          | <moderation> |
     And the following collection user memberships:
       | collection         | user           | roles       |
       | CC post collection | CC owner       | owner       |
       | CC post collection | CC facilitator | facilitator |
-      | CC post collection | CC member      |             |
+      | CC post collection | CC member      | <roles>     |
     And news content:
       | title                          | author    | body | headline                       | collection         | field_state  |
       | CCN post publish               | CC member | body | CCN post publish               | CC post collection | draft        |
@@ -100,3 +100,8 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | recipient | CC member                                                                                                    |
       | subject   | Joinup: Content has been deleted                                                                             |
       | body      | Facilitator CC Facilitator has deleted the news - "CCN post delete" in the collection: "CC post collection". |
+
+    Examples:
+      | moderation | roles  |
+      | no         |        |
+      | yes        | author |
