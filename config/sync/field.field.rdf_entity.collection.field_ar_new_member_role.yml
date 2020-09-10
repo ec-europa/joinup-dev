@@ -12,7 +12,7 @@ field_name: field_ar_new_member_role
 entity_type: rdf_entity
 bundle: collection
 label: 'New member role'
-description: ''
+description: 'An author is a trusted member. They will be able to publish directly even if moderation is enabled.'
 required: true
 translatable: false
 default_value:
