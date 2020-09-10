@@ -10,7 +10,7 @@ use Drupal\Core\TypedData\Exception\MissingDataException;
 /**
  * Reusable methods for pinnable group content entities.
  *
- * @todo Once we are on PHP 7.3 the JoinupBundleClassMetaEntityAccessTrait
+ * @todo Once we are on PHP 7.3 the JoinupBundleClassMetaEntityTrait
  *   should be included here.
  */
 trait PinnableGroupContentTrait {

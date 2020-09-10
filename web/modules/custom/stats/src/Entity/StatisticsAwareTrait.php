@@ -9,7 +9,7 @@ use Drupal\joinup_bundle_class\Exception\MetaEntityAlreadyExistsException;
 /**
  * Shared code for entities that provide statistics of their usage.
  *
- * @todo Once we are on PHP 7.3 the JoinupBundleClassMetaEntityAccessTrait
+ * @todo Once we are on PHP 7.3 the JoinupBundleClassMetaEntityTrait
  *   should be included here.
  */
 trait StatisticsAwareTrait {

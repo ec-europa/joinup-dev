@@ -16,7 +16,7 @@ use Drupal\meta_entity\Entity\MetaEntityInterface;
  *   once we are on a supported version.
  * @see https://bugs.php.net/bug.php?id=63911
  */
-trait JoinupBundleClassMetaEntityAccessTrait {
+trait JoinupBundleClassMetaEntityTrait {
 
   /**
    * Returns the meta entity that is referenced in the given field.
