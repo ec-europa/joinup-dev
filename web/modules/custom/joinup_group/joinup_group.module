@@ -272,6 +272,10 @@ function joinup_group_rdf_entity_update(EntityInterface $entity) {
 function joinup_group_meta_entity_update(MetaEntityInterface $entity): void {
   if ($entity->bundle() === 'pinned_in') {
     $parent_entity = $entity->getTargetEntity();
+    if (empty($parent_entity)) {
+      // If the parent entity no longer exists nothing needs to be done.
+      return;
+    }
 
     // Reindex the parent entity since the pinned status affects the ordering of
     // search results: pinned entities are shown at the top.
