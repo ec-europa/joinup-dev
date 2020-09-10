@@ -310,7 +310,6 @@
             },
             "drupal/sparql_entity_storage": {
                 "Add support for bundle classes @see https://github.com/ec-europa/sparql_entity_storage/pull/11": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.patch",
-                "Don't require a path in SPARQL connection URL @see https://github.com/ec-europa/sparql_entity_storage/pull/23": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/23.diff",
                 "Optimize the query condition @see https://github.com/ec-europa/sparql_entity_storage/pull/24": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/24.diff"
             },
             "drupal/swiftmailer": {
