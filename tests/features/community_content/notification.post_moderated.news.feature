@@ -4,7 +4,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
   As an owner of the collection
   I want to receive a notification when an entity is proposed.
 
-  Scenario: Notifications should be sent whenever a news is going through a relevant transition.
+  Scenario Outline: Notifications should be sent whenever a news is going through a relevant transition.
     Given users:
       | Username         | Roles     | E-mail                      | First name | Family name |
       | Notify moderator | moderator | notify_moderator@test.com   | Notify     | Moderator   |
