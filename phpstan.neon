@@ -5,7 +5,6 @@ parameters:
     ignoreErrors:
         # TODO: Remove un-ignore this rule in ISAICP-5899.
         - '#\Drupal calls should be avoided in classes, use dependency injection instead#'
-        - '#Trait method .* has not been applied, because there are collisions with other trait methods#'
     excludes_analyse:
         # For some reasons, ContinuousPHP reports:
         # > Class Drupal\Sniffs\NamingConventions\ValidFunctionNameSniff not
