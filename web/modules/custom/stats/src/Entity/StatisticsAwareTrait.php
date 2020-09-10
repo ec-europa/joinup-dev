@@ -18,8 +18,6 @@ trait StatisticsAwareTrait {
    * {@inheritdoc}
    */
   public function createStatisticsMetaEntities(): array {
-    // The "count" computed field is used for both download counts and view
-    // counts.
     /** @var \Drupal\meta_entity\MetaEntityRepositoryInterface $repository */
     $repository = \Drupal::service('meta_entity.repository');
     $field_names = $repository->getReverseReferenceFieldNames($this->getEntityTypeId(), $this->bundle());
