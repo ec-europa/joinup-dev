@@ -277,6 +277,10 @@ function joinup_group_meta_entity_update(MetaEntityInterface $entity): void {
       return;
     }
 
+    // Invalidate the entity storage cache of the parent entity, this ensures
+    // that we are reindexing the updated values of the parent entity.
+    \Drupal::entityTypeManager()->getStorage($parent_entity->getEntityTypeId())->resetCache([$parent_entity->id()]);
+
     // Reindex the parent entity since the pinned status affects the ordering of
     // search results: pinned entities are shown at the top.
     ContentEntity::indexEntity($parent_entity);
