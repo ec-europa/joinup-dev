@@ -48,24 +48,26 @@ interface PinnableGroupContentInterface extends GroupContentInterface {
   /**
    * Pins the entity in the given group.
    *
-   * @param \Drupal\joinup_group\Entity\GroupInterface $group
-   *   The group in which the entity will be pinned.
+   * @param \Drupal\joinup_group\Entity\GroupInterface|null $group
+   *   The group in which the entity will be pinned. If omitted, it will be
+   *   pinned in the entity's parent group.
    *
    * @return self
    *   The pinned entity, for chaining.
    */
-  public function pin(GroupInterface $group): PinnableGroupContentInterface;
+  public function pin(?GroupInterface $group = NULL): PinnableGroupContentInterface;
 
   /**
    * Unpins the entity from the given group.
    *
-   * @param \Drupal\joinup_group\Entity\GroupInterface $group
-   *   The group from which the entity will be unpinned.
+   * @param \Drupal\joinup_group\Entity\GroupInterface|null $group
+   *   The group from which the entity will be unpinned. If omitted, it will be
+   *   unpinned from the entity's parent group.
    *
    * @return self
    *   The unpinned entity, for chaining.
    */
-  public function unpin(GroupInterface $group): PinnableGroupContentInterface;
+  public function unpin(?GroupInterface $group = NULL): PinnableGroupContentInterface;
 
   /**
    * Retrieves a list of groups where the entity is pinned.

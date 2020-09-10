@@ -38,7 +38,10 @@ trait PinnableGroupContentTrait {
   /**
    * {@inheritdoc}
    */
-  public function pin(GroupInterface $group): PinnableGroupContentInterface {
+  public function pin(?GroupInterface $group = NULL): PinnableGroupContentInterface {
+    // Default to the parent group.
+    $group = $group ?: $this->getGroup();
+
     // Only update the pinned status in the database if needed.
     if (!$this->isPinned($group)) {
       $meta_entity = $this->getMetaEntity('pinned_in');
@@ -55,7 +58,10 @@ trait PinnableGroupContentTrait {
   /**
    * {@inheritdoc}
    */
-  public function unpin(GroupInterface $group): PinnableGroupContentInterface {
+  public function unpin(?GroupInterface $group = NULL): PinnableGroupContentInterface {
+    // Default to the parent group.
+    $group = $group ?: $this->getGroup();
+
     // Only update the pinned status in the database if needed.
     if ($this->isPinned($group)) {
       $meta_entity = $this->getMetaEntity('pinned_in');
