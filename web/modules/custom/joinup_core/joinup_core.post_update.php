@@ -51,6 +51,7 @@ function joinup_core_post_update_0106400(): void {
   $index->reindex();
   $index->indexItems(-1, 'entity:taxonomy_term');
 }
+
 /**
  * Migrate data about pinned entities into meta entities.
  */
