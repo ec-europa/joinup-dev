@@ -170,14 +170,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_is_eif_recommendation
-  field_is_pinned_in:
-    label: 'Pinned in'
-    datasource_id: 'entity:rdf_entity'
-    property_path: field_is_pinned_in
-    type: string
-    dependencies:
-      config:
-        - field.storage.rdf_entity.field_is_pinned_in
   field_is_solution_type:
     label: 'Solution type'
     datasource_id: 'entity:rdf_entity'
