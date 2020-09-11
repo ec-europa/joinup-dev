@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5af035aa7be538d183c824f714681a43",
+    "content-hash": "1b7aaa70ffd438543372745e997acf93",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4940,17 +4940,11 @@
         },
         {
             "name": "drupal/meta_entity",
-            "version": "1.0.0-alpha1",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/meta_entity.git",
-                "reference": "8.x-1.0-alpha1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/meta_entity-8.x-1.0-alpha1.zip",
-                "reference": "8.x-1.0-alpha1",
-                "shasum": "707a3b306367ebcc5d4c1e8b6fc95750e0460490"
+                "reference": "a071d46da0190ae65389ef0f719e715f319f4339"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -4959,9 +4953,12 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
-                    "version": "8.x-1.0-alpha1",
-                    "datestamp": "1575031684",
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1568393285",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -4999,7 +4996,8 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/meta_entity",
                 "issues": "https://www.drupal.org/project/issues/meta_entity"
-            }
+            },
+            "time": "2019-09-13T16:46:29+00:00"
         },
         {
             "name": "drupal/metatag",
@@ -9767,7 +9765,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-08-03T19:59:39+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
@@ -18760,6 +18758,7 @@
         "drupal/cas_attributes": 20,
         "drupal/config_ignore": 20,
         "drupal/matomo_reporting_api": 20,
+        "drupal/meta_entity": 20,
         "drupal/og": 20,
         "drupal/swiftmailer": 20,
         "drupal/view_unpublished": 15,
