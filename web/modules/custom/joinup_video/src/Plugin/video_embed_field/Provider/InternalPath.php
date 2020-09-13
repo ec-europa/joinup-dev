@@ -53,13 +53,27 @@ class InternalPath extends ProviderPluginBase {
    * {@inheritdoc}
    */
   public function renderEmbedCode($width, $height, $autoplay) {
-    $iframe = [
+    $url = Url::fromUserInput('/' . ltrim($this->getVideoId(), '/'));
+    if ($this->isIframeSet()) {
+      $url->setOption('query', ['iframe' => 1]);
+    }
+
+    return [
       '#type' => 'video_embed_iframe',
       '#provider' => 'internal_path',
-      '#url' => Url::fromUserInput('/' . ltrim($this->getVideoId(), '/'))->setAbsolute(TRUE)->toString(),
+      '#url' => $url->setAbsolute(TRUE)->toString(),
     ];
+  }
 
-    return $iframe;
+  /**
+   * Returns whether the iframe parameter is set to the URL.
+   *
+   * @return bool
+   *   Whether the iframe query parameter is set in the URL.
+   */
+  protected function isIframeSet(): bool {
+    $data = $this->getDataFromInput($this->input);
+    return isset($data['iframe']) && !empty($data['iframe']);
   }
 
   /**
@@ -84,7 +98,7 @@ class InternalPath extends ProviderPluginBase {
    *   are id and base_url.
    */
   public static function getDataFromInput($input) {
-    preg_match('#^(?:(?:https?:)?//)(?<base_url>[^/]+)/(index\.php\?q=)?(?<id>[^&\?]+)#i', $input, $matches);
+    preg_match('#^(?:(?:https?:)?//)(?<base_url>[^/]+)/(index\.php\?q=)?(?<id>[^&\?]+)((.*)?(&|\?)(?<iframe>iframe)((=|&)(.*)?)?$)?#i', $input, $matches);
     return $matches;
   }
 

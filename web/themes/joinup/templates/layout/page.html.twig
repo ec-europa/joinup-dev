@@ -7,6 +7,7 @@
  * can be found in the html.html.twig template in this directory.
  *
  * Available variables:
+ * - is_iframe: Whether the flag 'iframe' has been passed as a URL query.
  *
  * General utility variables:
  * - base_path: The base URL path of the Drupal installation. Will usually be
@@ -40,79 +41,112 @@
  * @see html.html.twig
  */
 #}
-<div class="mdl-layout__container">
-  <div class="mdl-layout mdl-js-layout" {{ attributes|without('class') }}>
+{% if is_iframe %}
+    <div class="mdl-layout__container">
+        <div class="mdl-layout mdl-js-layout" {{ attributes|without('class') }}>
+
+    {% set main_classes = [
+        not page.sidebar_left ? 'mdl-grid--center',
+    ] %}
+    <main class="section section--content" role="main">
+        <div class="main-container">
+            <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+            <div class="row">
+                <div class="mdl-grid {{ main_classes|join(' ') }}">
+
+                    <div class="section section--main mdl-cell {{ container_class }} {{ has_vertical_tabs ? 'mdl-cell--12-col mdl-grid--no-spacing' : 'mdl-cell--8-col' }}">
+                        <div class="section section--content-middle {{ has_vertical_tabs ? 'mdl-cell mdl-cell--12-col form__cell' }}">
+                            {% if custom_content_title %}
+                                <div class="page__title-wrapper">
+                                    <h1 class="page__title">{{ custom_content_title }}</h1>
+                                </div>
+                            {% endif %}
+                            {{ page.content }}
+                        </div>
+                    </div>{# /.mdl-grid #}
+                </div>
+            </div>
+        </div>{# /.section--content #}
+    </main>
+
+    </div>{# /.mdl-layout #}
+    </div>{# /.mdl-layout__container #}
+
+{% else %}
+    <div class="mdl-layout__container">
+<div class="mdl-layout mdl-js-layout" {{ attributes|without('class') }}>
 
     {% if not is_front or logged_in %}
-      {% include directory ~ '/templates/parts/header.html.twig' %}
+        {% include directory ~ '/templates/parts/header.html.twig' %}
     {% endif %}
 
     {% if is_front and not logged_in %}
-      {% include directory ~ '/templates/parts/featured--anonymous.html.twig' %}
+        {% include directory ~ '/templates/parts/featured--anonymous.html.twig' %}
     {% elseif page.featured or is_blue_header %}
-      <div class="section section--featured">
-        {% if is_blue_header %}
-          {% include directory ~ '/templates/parts/featured--title.html.twig' %}
-        {% else %}
-          {{ page.featured }}
-        {% endif %}
-      </div>
+        <div class="section section--featured">
+            {% if is_blue_header %}
+                {% include directory ~ '/templates/parts/featured--title.html.twig' %}
+            {% else %}
+                {{ page.featured }}
+            {% endif %}
+        </div>
     {% endif %}
 
-    {%
-    set main_classes = [
-      not page.sidebar_left ? 'mdl-grid--center',
-    ]
-    %}
+    {% set main_classes = [
+        not page.sidebar_left ? 'mdl-grid--center',
+    ] %}
     <main class="section section--content" role="main">
-      <div class="main-container">
-        <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
-        <div class="row">
-          <div class="mdl-grid {{ main_classes|join(' ') }}">
-            {% if page.sidebar_left and not has_vertical_tabs %}
-              <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--8-col-phone{{ is_search_page ? ' section--sidebar-left--search' : '' }}" role="complementary">
-                {% if is_search_page %}
-                  <div class="section--sidebar-left--search--wrapper">{{ page.sidebar_left }}</div>
-                {% else %}
-                  {{ page.sidebar_left }}
-                {% endif %}
-              </aside>
-            {% endif %}
+        <div class="main-container">
+            <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+            <div class="row">
+                <div class="mdl-grid {{ main_classes|join(' ') }}">
+                    {% if page.sidebar_left and not has_vertical_tabs %}
+                        <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--8-col-phone{{ is_search_page ? ' section--sidebar-left--search' : '' }}"
+                               role="complementary">
+                            {% if is_search_page %}
+                                <div class="section--sidebar-left--search--wrapper">{{ page.sidebar_left }}</div>
+                            {% else %}
+                                {{ page.sidebar_left }}
+                            {% endif %}
+                        </aside>
+                    {% endif %}
 
-            <div class="section section--main mdl-cell {{ container_class }} {{ has_vertical_tabs ? 'mdl-cell--12-col mdl-grid--no-spacing' : 'mdl-cell--8-col' }}">
-              {% if page.content_top %}
-                <div class="section section--content-top {{ has_vertical_tabs ? 'mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop form__cell'}}">
-                  {{ page.content_top }}
+                    <div class="section section--main mdl-cell {{ container_class }} {{ has_vertical_tabs ? 'mdl-cell--12-col mdl-grid--no-spacing' : 'mdl-cell--8-col' }}">
+                        {% if page.content_top %}
+                            <div class="section section--content-top {{ has_vertical_tabs ? 'mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop form__cell' }}">
+                                {{ page.content_top }}
+                            </div>
+                        {% endif %}
+
+                        {% if page.filters %}
+                            <div class="section section--filters facet-region facet-region--inline-facets filters filters--horizontal">
+                                {{ page.filters }}
+                            </div>
+                        {% endif %}
+
+                        <div class="section section--content-middle {{ has_vertical_tabs ? 'mdl-cell mdl-cell--12-col form__cell' }}">
+                            {% if custom_content_title %}
+                                <div class="page__title-wrapper">
+                                    <h1 class="page__title">{{ custom_content_title }}</h1>
+                                </div>
+                            {% endif %}
+                            {{ page.content }}
+                        </div>
+
+                        {% if page.content_bottom %}
+                            <div class="section section--content-bottom">
+                                {{ page.content_bottom }}
+                            </div>
+                        {% endif %}
+                    </div>{# /.mdl-grid #}
                 </div>
-              {% endif %}
-
-              {% if page.filters %}
-                <div class="section section--filters facet-region facet-region--inline-facets filters filters--horizontal">
-                  {{ page.filters }}
-                </div>
-              {% endif %}
-
-              <div class="section section--content-middle {{ has_vertical_tabs ? 'mdl-cell mdl-cell--12-col form__cell' }}">
-                {% if custom_content_title %}
-                  <div class="page__title-wrapper">
-                    <h1 class="page__title">{{ custom_content_title }}</h1>
-                  </div>
-                {% endif %}
-                {{ page.content }}
-              </div>
-
-              {% if page.content_bottom %}
-                <div class="section section--content-bottom">
-                  {{ page.content_bottom }}
-                </div>
-              {% endif %}
-            </div>{# /.mdl-grid #}
-          </div>
-        </div>
-      </div>{# /.section--content #}
+            </div>
+        </div>{# /.section--content #}
     </main>
 
     {% include directory ~ '/templates/parts/footer.html.twig' %}
 
-  </div>{# /.mdl-layout #}
-</div>{# /.mdl-layout__container #}
+    </div>{# /.mdl-layout #}
+    </div>{# /.mdl-layout__container #}
+
+{% endif %}
