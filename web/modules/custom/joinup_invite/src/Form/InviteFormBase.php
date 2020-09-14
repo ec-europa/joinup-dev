@@ -289,9 +289,11 @@ abstract class InviteFormBase extends FormBase {
         $results[$result_status]++;
       }
       catch (\Exception $e) {
-        // An invitation had an incorrect status. This is unexpected but cannot
-        // be solved by the end user. Let's log an error and continue sending
-        // the rest of the messages.
+        // An error occurred. This can be because an invitation has an incorrect
+        // status or because a storage error occurred during the creation of the
+        // invitation entity. This is unexpected but is not due to a mistake by
+        // the end user. Let's log an error and continue sending the rest of the
+        // messages.
         $this->logger('joinup_invite')->error($e->getMessage());
       }
     }
@@ -355,6 +357,15 @@ abstract class InviteFormBase extends FormBase {
    *
    * @return \Drupal\joinup_invite\Entity\InvitationInterface
    *   The invitation entity.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown in case the Invitation entity has a bad definition.
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *   Thrown when the Invitation entity is not defined.
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when an error occurs during the saving of the invitation.
+   * @throws \Exception
+   *   Thrown when the user already has an invitation.
    */
   protected function createInvitation(UserInterface $user): InvitationInterface {
     /** @var \Drupal\joinup_invite\Entity\InvitationInterface $invitation */
@@ -377,6 +388,13 @@ abstract class InviteFormBase extends FormBase {
    *
    * @return bool
    *   Whether or not the message was successfully delivered.
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   Thrown when the URL for the entity cannot be generated.
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when the message cannot be saved to the database.
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the first name or last name of the current user is not known.
    */
   protected function sendMessage(InvitationInterface $invitation): bool {
     $arguments = $this->generateArguments($invitation->getEntity());
@@ -434,7 +452,7 @@ abstract class InviteFormBase extends FormBase {
   }
 
   /**
-   * Helper method to load all the users specified in the form state.
+   * Returns all the users specified in the form state as fully loaded entities.
    *
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form.
