@@ -344,8 +344,14 @@ abstract class InviteFormBase extends FormBase {
     $invitation = $this->createInvitation($user);
 
     // Send the notification message for the invitation.
-    $success = $this->sendMessage($invitation);
-    $status = $success ? 'success' : 'failed';
+    try {
+      $success = $this->sendMessage($invitation);
+      $status = $success ? self::RESULT_SUCCESS : self::RESULT_FAILED;
+    }
+    catch (\Exception $e) {
+      $status = self::RESULT_FAILED;
+    }
+
     return $status;
   }
 
