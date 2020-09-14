@@ -84,7 +84,8 @@ function joinup_invite_og_membership_presave(OgMembershipInterface $og_membershi
   // There cannot be more than one pending invitation for a user in a group.
   /** @var \Drupal\joinup_invite\Entity\InvitationInterface $invitation */
   $invitation = reset($invitations);
-  if ($role = OgRole::load($invitation->getExtraData()['role_id'])) {
+  $role_id = $invitation->getExtraData()['role_id'] ?? NULL;
+  if ($role_id && ($role = OgRole::load($role_id))) {
     $og_membership->addRole($role);
     $og_membership->setState(OgMembershipInterface::STATE_ACTIVE);
   }
