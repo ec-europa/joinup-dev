@@ -8,7 +8,6 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Database\Database;
-use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
@@ -53,46 +52,35 @@ function joinup_core_post_update_0106400(): void {
 }
 
 /**
- * Migrate data about pinned entities into meta entities.
+ * Migrate data about pinned entities into meta entities (stage 2).
  */
 function joinup_core_post_update_0106401(): void {
-  $entity_type_manager = \Drupal::entityTypeManager();
+  $state = \Drupal::state();
+  $data = $state->get('joinup_core_update_0106401');
+  $state->delete('joinup_core_update_0106401');
 
-  $get_storage = function (string $entity_type_id) use ($entity_type_manager) {
-    return $entity_type_manager->getStorage($entity_type_id);
-  };
-
-  $entity_ids = [];
-
-  // Retrieve community content to migrate.
-  $entity_ids['node'] = $get_storage('node')
-    ->getQuery()
-    ->condition('type', CommunityContentHelper::BUNDLES, 'IN')
-    ->condition('sticky', TRUE)
-    ->execute();
-
-  // Retrieve solutions to migrate.
-  $entity_ids['rdf_entity'] = $get_storage('rdf_entity')
-    ->getQuery()
-    ->condition('rid', 'solution')
-    ->exists('field_is_pinned_in')
-    ->execute();
-
-  foreach ($entity_ids as $entity_type_id => $ids) {
-    $storage = $get_storage($entity_type_id);
+  foreach ($data['entity_ids'] as $entity_type_id => $ids) {
+    $storage = \Drupal::entityTypeManager()->getStorage($entity_type_id);
     foreach ($storage->loadMultiple($ids) as $entity) {
       if ($entity instanceof PinnableGroupContentInterface) {
         if ($entity instanceof CommunityContentInterface) {
           $entity->pin();
         }
-        else {
-          /** @var \Drupal\joinup_group\Entity\GroupInterface[] $pinned_groups */
-          $pinned_groups = $entity->get('field_is_pinned_in')->referencedEntities();
-          foreach ($pinned_groups as $pinned_group) {
+        elseif (!empty($data['solutions'][$entity->id()])) {
+          foreach ($storage->loadMultiple($data['solutions'][$entity->id()]) as $pinned_group) {
+            /** @var \Drupal\joinup_group\Entity\GroupInterface $pinned_group */
             $entity->pin($pinned_group);
           }
         }
       }
     }
+  }
+
+  // Remove stale triples.
+  $sparql = \Drupal::getContainer()->get('sparql.endpoint');
+  foreach (['published', 'draft'] as $status) {
+    $sparql->query("WITH <http://joinup.eu/solution/{$status}>
+      DELETE { ?s <http://joinup.eu/solution/pinned_in> ?o }
+      WHERE { ?s <http://joinup.eu/solution/pinned_in> ?o }");
   }
 }
