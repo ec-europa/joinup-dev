@@ -6,7 +6,7 @@ dependencies:
     - filter.format.full_html
 template: solution_membership_invitation
 label: 'Solution membership invitation'
-description: 'Sent when a user is invited to join a group.'
+description: 'Sent when a user is invited to join a solution.'
 text:
   -
     value: '<p>Invitation from @actor:full_name to join @entity:bundle @entity:title.<p>'

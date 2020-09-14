@@ -6,7 +6,7 @@ dependencies:
     - filter.format.full_html
 template: collection_membership_invitation
 label: 'Collection membership invitation'
-description: 'Sent when a user is invited to join a soluction.'
+description: 'Sent when a user is invited to join a collection.'
 text:
   -
     value: '<p>Invitation from @actor:full_name to join @entity:bundle @entity:title.<p>'

@@ -92,7 +92,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
     $membership->save();
 
     $invitation->setStatus(InvitationInterface::STATUS_ACCEPTED)->save();
-    $this->messenger->addMessage($this->t('%role role has been added to your membership due to accepting the invitation.', [
+    $this->messenger->addMessage($this->t('You have been promoted to %role.', [
       '%role' => $role->label(),
     ]));
   }

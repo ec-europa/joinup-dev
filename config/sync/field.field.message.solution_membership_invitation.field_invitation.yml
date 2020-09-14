@@ -12,7 +12,7 @@ entity_type: message
 bundle: solution_membership_invitation
 label: Invitation
 description: ''
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''

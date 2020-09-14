@@ -10,7 +10,10 @@ use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldItemInterface;
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\user\UserInterface;
 
 /**
@@ -83,7 +86,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    * {@inheritdoc}
    */
   public function getOwnerId(): int {
-    return $this->get('uid')->target_id;
+    return (int) $this->get('uid')->target_id;
   }
 
   /**
@@ -104,14 +107,9 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEntity(): ?ContentEntityInterface {
+  public function getEntity(): ContentEntityInterface {
     $entity_type = $this->get('entity_type')->value;
     $entity_id = $this->get('entity_id')->value;
-
-    if (empty($entity_type) || empty($entity_id)) {
-      return NULL;
-    }
-
     return \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id);
   }
 
@@ -141,7 +139,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function getRecipientId(): string {
+  public function getRecipientId(): int {
     return $this->get('recipient_id')->target_id;
   }
 
@@ -189,7 +187,21 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    * {@inheritdoc}
    */
   public function getExtraData(): array {
-    return $this->data->first()->getValue();
+    $item_list = $this->get('data');
+    if (!$item_list instanceof FieldItemListInterface) {
+      return [];
+    }
+
+    try {
+      $item = $item_list->first();
+      if (!empty($item) && $item instanceof FieldItemInterface && !$item->isEmpty()) {
+        return $item ?? [];
+      }
+    }
+    catch (MissingDataException $e) {
+    }
+
+    return [];
   }
 
   /**

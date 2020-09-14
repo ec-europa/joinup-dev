@@ -39,9 +39,9 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * Returns the entity the user has been invited to.
    *
    * @return \Drupal\Core\Entity\ContentEntityInterface
-   *   The entity.
+   *   The entity associated with the invitation.
    */
-  public function getEntity(): ?ContentEntityInterface;
+  public function getEntity(): ContentEntityInterface;
 
   /**
    * Sets the entity the user will be invited to.
@@ -72,11 +72,10 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
   /**
    * Returns the invitation recipient user account ID.
    *
-   * @return string
-   *   The invitation recipient user account ID. The value is stored in the
-   *   entity as string.
+   * @return int
+   *   The invitation recipient user account ID.
    */
-  public function getRecipientId(): string;
+  public function getRecipientId(): int;
 
   /**
    * Sets the invitation recipient's user account entity.
