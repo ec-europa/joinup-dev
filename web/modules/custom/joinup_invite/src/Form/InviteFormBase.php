@@ -280,13 +280,20 @@ abstract class InviteFormBase extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    /** @var \Drupal\user\UserInterface[] $users */
     $users = $this->getUserList($form_state);
     $results = array_fill_keys(array_keys(self::INVITATION_MESSAGE_TYPES), 0);
 
     foreach ($users as $user) {
-      $result_status = $this->processUser($user);
-      $results[$result_status]++;
+      try {
+        $result_status = $this->processUser($user);
+        $results[$result_status]++;
+      }
+      catch (\Exception $e) {
+        // An invitation had an incorrect status. This is unexpected but cannot
+        // be solved by the end user. Let's log an error and continue sending
+        // the rest of the messages.
+        $this->logger('joinup_invite')->error($e->getMessage());
+      }
     }
 
     $this->processResults($results);
@@ -300,6 +307,9 @@ abstract class InviteFormBase extends FormBase {
    *
    * @return string
    *   One of the statuses of the invitation.
+   *
+   * @throws \Exception
+   *   Thrown when an invitation status is invalid.
    */
   protected function processUser(UserInterface $user): string {
     // Check if a previous invitation already exists.
