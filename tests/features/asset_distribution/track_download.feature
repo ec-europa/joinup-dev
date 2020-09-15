@@ -106,6 +106,10 @@ Feature: Asset distribution editing.
       | Marianne Sherburne       | marianne.herburne@example.com | OpenBSD images |
       | Anonymous (not verified) | trackme@example.com           | OpenBSD images |
 
+    # Sub test to assert that distribution tiles show the external button.
+    When I go to the "Winter of 95" release
+    Then I should see the link "External" in the "i386" tile
+
   Scenario: Tests the CSV download.
     Given users:
       | Username | E-mail            |
