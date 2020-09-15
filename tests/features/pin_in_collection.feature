@@ -211,7 +211,6 @@ Feature: Pinning entities inside collections
       | title                | collection    | state     | pinned in     | creation date |
       | Drop forged wrenches | Orange Wrench | validated | Orange Wrench | 2017-10-12    |
     And I am logged in as "Rozanne Minett"
-    Then I break
 
     # Pinning and unpinning items should not affect the "last update" timestamp.
     # Before changing the pinned status, let's check that the solution is in the
