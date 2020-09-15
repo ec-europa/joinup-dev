@@ -144,7 +144,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    * {@inheritdoc}
    */
   public function getRecipientId(): int {
-    return $this->get('recipient_id')->target_id;
+    return (int) $this->get('recipient_id')->target_id;
   }
 
   /**
