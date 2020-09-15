@@ -25,6 +25,6 @@ Feature: Custom Joinup i-frames
   @javascript
   Scenario: Adding the proper query parameters allows to partially display the page.
     When I am not logged in
-    And I visit "/collection/i-framed-group?iframe"
+    And I visit "/collection/i-framed-group?iframe=1"
     Then I should not see the heading "I-framed group"
     And I should see the text "Some other abstract text"
