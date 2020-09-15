@@ -100,7 +100,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
 
     $invitation->setStatus(InvitationInterface::STATUS_ACCEPTED)->save();
     $this->messenger->addMessage($this->t('You have been promoted to %role.', [
-      '%role' => $role->label(),
+      '%role' => strtolower($role->label()),
     ]));
   }
 
