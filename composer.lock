@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "99d4ab66cdcd7b03e5bc80030a4c78d2",
+    "content-hash": "b4d05b363e38ff8beaeef0d2703fa626",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4957,9 +4957,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.0-alpha1",
                     "datestamp": "1575031684",
@@ -6286,16 +6283,16 @@
         },
         {
             "name": "drupal/spdx",
-            "version": "1.0.0-alpha5",
+            "version": "1.0.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/spdx.git",
-                "reference": "972c0c06b936a51f577ada93cb011774e85feb86"
+                "reference": "c64a2c73b854f9a272972758482f19884b74fabe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/972c0c06b936a51f577ada93cb011774e85feb86",
-                "reference": "972c0c06b936a51f577ada93cb011774e85feb86",
+                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/c64a2c73b854f9a272972758482f19884b74fabe",
+                "reference": "c64a2c73b854f9a272972758482f19884b74fabe",
                 "shasum": ""
             },
             "require": {
@@ -6304,17 +6301,12 @@
                 "spdx/license-list-data": "master"
             },
             "type": "drupal-module",
-            "extra": {
-                "patches_applied": {
-                    "SpdxSubContext is deprecated @see https://github.com/ec-europa/spdx/pull/11": "https://github.com/ec-europa/spdx/compare/1.0.0-alpha5..5ee2ddce667d5525c89e45f3569b18e033c68991.diff"
-                }
-            },
             "description": "Allows to federate and manage the SPDX licences.",
             "support": {
-                "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha5",
+                "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha6",
                 "issues": "https://github.com/ec-europa/spdx/issues"
             },
-            "time": "2019-05-23T21:16:44+00:00"
+            "time": "2020-09-15T08:51:10+00:00"
         },
         {
             "name": "drupal/state_machine",
@@ -9778,7 +9770,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-08-03T19:59:39+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
