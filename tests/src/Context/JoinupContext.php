@@ -266,8 +266,8 @@ class JoinupContext extends RawDrupalContext {
     }
 
     // Submit form, waiting for Honeypot protection delay to pass.
-    /** @var \HoneypotSubContext $honeypot */
-    $honeypot = $this->getContext('\HoneypotSubContext');
+    /** @var \Drupal\Tests\honeypot\Behat\HoneypotContext $honeypot */
+    $honeypot = $this->getContext('\Drupal\Tests\honeypot\Behat\HoneypotContext');
     $honeypot->waitForTimeLimit();
 
     $this->getSession()->getPage()->pressButton("Create new account");
