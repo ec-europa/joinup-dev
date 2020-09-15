@@ -86,9 +86,7 @@ class InvitationController extends ControllerBase {
    */
   public function updateInvitation(InvitationInterface $invitation, string $action, string $hash): RedirectResponse {
     if ($invitation->getStatus() !== InvitationInterface::STATUS_PENDING) {
-      $this->messenger()->addStatus($this->t('You have already !action the invitation.', [
-        '!action' => $invitation->getStatus(),
-      ]));
+      $this->eventDispatcher->dispatch(InvitationEvents::NOT_PENDING_EVENT, $this->getEvent($invitation, $action));
     }
     else {
       switch ($action) {

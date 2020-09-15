@@ -61,10 +61,29 @@ class InvitationSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents(): array {
+    $events[InvitationEvents::NOT_PENDING_EVENT] = ['notPendingInvitation'];
     $events[InvitationEvents::ACCEPT_INVITATION_EVENT] = ['acceptInvitation'];
     $events[InvitationEvents::REJECT_INVITATION_EVENT] = ['rejectInvitation'];
 
     return $events;
+  }
+
+  /**
+   * Invitation is already accepted or rejected.
+   *
+   * @param \Drupal\joinup_invite\Event\InvitationEventInterface $event
+   *   The event that was fired.
+   */
+  public function notPendingInvitation(InvitationEventInterface $event): void {
+    $invitation = $event->getInvitation();
+
+    // Ignore invitations to other content entities.
+    if ($invitation->bundle() !== 'group_membership') {
+      return;
+    }
+    $this->messenger->addStatus($this->t('You have already %action the invitation.', [
+      '%action' => $invitation->getStatus(),
+    ]));
   }
 
   /**
@@ -99,7 +118,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
     $membership->save();
 
     $invitation->setStatus(InvitationInterface::STATUS_ACCEPTED)->save();
-    $this->messenger->addMessage($this->t('You have been promoted to %role.', [
+    $this->messenger->addMessage($this->t('You have been promoted to a %role.', [
       '%role' => strtolower($role->label()),
     ]));
   }

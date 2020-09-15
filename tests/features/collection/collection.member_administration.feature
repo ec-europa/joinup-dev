@@ -410,13 +410,19 @@ Feature: Collection membership administration
     # Accept the invitation directly.
     When I am logged in as "dwightone"
     And I accept the invitation for the "Medical diagnosis" collection group
-    Then I should see the text "You have been promoted to collection facilitator"
+    Then I should see the text "You have been promoted to a collection facilitator"
     And I go to the "Medical diagnosis" collection
     And I click "Members" in the "Left sidebar"
     Then I should see the link "Add members"
     And I should see the link "Invite members"
     When I click "Invite members"
     Then I should see the heading "Invite members"
+
+    # Trying to take action again on the invitation again informs the user about it.
+    When I accept the invitation for the "Medical diagnosis" collection group
+    Then I should see the message "You have already accepted the invitation."
+    When I reject the invitation for the "Medical diagnosis" collection group
+    Then I should see the message "You have already accepted the invitation."
 
     # Join the collection manually and trigger the invitation.
     When I am logged in as "jbelanger"
