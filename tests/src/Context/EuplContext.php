@@ -37,7 +37,7 @@ class EuplContext extends RawDrupalContext {
    *   Thrown when one of the entities could not be created, for example because
    *   it already exists.
    *
-   * @beforeScenario @eupl
+   * @BeforeScenario @eupl&&@api
    */
   public function setupEuplData(): void {
     // Create an owner.
@@ -320,7 +320,7 @@ class EuplContext extends RawDrupalContext {
    * @throws \Drupal\Core\Entity\EntityStorageException
    *   Thrown when one of the created entities could not be deleted.
    *
-   * @afterScenario @eupl
+   * @AfterScenario @eupl&&@api
    */
   public function cleanEuplData(): void {
     /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
