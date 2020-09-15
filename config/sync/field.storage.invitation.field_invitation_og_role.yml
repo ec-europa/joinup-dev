@@ -1,0 +1,24 @@
+uuid: a7f5c6b0-9104-4095-b96c-d6653b15ae7c
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - joinup_invite
+    - og
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: invitation.field_invitation_og_role
+field_name: field_invitation_og_role
+entity_type: invitation
+type: entity_reference
+settings:
+  target_type: og_role
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

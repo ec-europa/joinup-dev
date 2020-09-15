@@ -10,10 +10,7 @@ use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\Field\FieldItemInterface;
-use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\user\UserInterface;
 
 /**
@@ -190,35 +187,6 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function getExtraData(): array {
-    $item_list = $this->get('data');
-    if (!$item_list instanceof FieldItemListInterface) {
-      return [];
-    }
-
-    try {
-      $item = $item_list->first();
-      if (!empty($item) && $item instanceof FieldItemInterface && !$item->isEmpty()) {
-        return $item ?? [];
-      }
-    }
-    catch (MissingDataException $e) {
-    }
-
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setExtraData(array $data): InvitationInterface {
-    $this->set('data', $data);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function accept(): InvitationInterface {
     $this->setStatus(InvitationInterface::STATUS_ACCEPTED);
 
@@ -281,11 +249,6 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(t('Changed'))
       ->setDescription(t('The UNIX timestamp indicating when the invitation was last updated.'));
-
-    $fields['data'] = BaseFieldDefinition::create('map')
-      ->setLabel(t('Data'))
-      ->setDescription('Additional data that can be used by the invitation.')
-      ->setProvider('invitation');
 
     return $fields;
   }

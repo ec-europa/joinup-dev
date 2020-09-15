@@ -77,7 +77,7 @@ class InviteToGroupForm extends GroupFormBase {
     $invitation
       ->setRecipient($user)
       ->setEntity($this->entity)
-      ->setExtraData(['role_id' => $this->role->id()])
+      ->set('field_invitation_og_role', $this->role)
       ->save();
 
     return $invitation;

@@ -81,13 +81,20 @@ class InvitationSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $role_id = $invitation->getExtraData()['role_id'];
-    /** @var \Drupal\og\OgRoleInterface $role */
-    $role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
     $membership = $this->membershipManager->getMembership($invitation->getEntity(), $invitation->getRecipientId());
     if (empty($membership)) {
       $membership = $this->membershipManager->createMembership($invitation->getEntity(), $invitation->getRecipient());
     }
+
+    // Add the role appointed to the invitation, if one has.
+    $role = $invitation->field_invitation_og_role->entity;
+    if (empty($role)) {
+      // This might happen if the role is deleted in the meantime.
+      throw new \RuntimeException($this->t('Role with ID "!role_id" was not found in the system.', [
+        '!role_id' => $invitation->field_invitation_og_role->target_id,
+      ]));
+    }
+
     $membership->addRole($role);
     $membership->save();
 

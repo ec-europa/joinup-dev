@@ -12,7 +12,6 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\joinup_invite\Entity\InvitationInterface;
-use Drupal\og\Entity\OgRole;
 use Drupal\og\OgMembershipInterface;
 
 /**
@@ -84,11 +83,9 @@ function joinup_invite_og_membership_presave(OgMembershipInterface $og_membershi
   // There cannot be more than one pending invitation for a user in a group.
   /** @var \Drupal\joinup_invite\Entity\InvitationInterface $invitation */
   $invitation = reset($invitations);
-  $role_id = $invitation->getExtraData()['role_id'] ?? NULL;
-  if ($role_id && ($role = OgRole::load($role_id))) {
-    $og_membership->addRole($role);
-    $og_membership->setState(OgMembershipInterface::STATE_ACTIVE);
-  }
+  $role = $invitation->field_invitation_og_role->entity;
+  $og_membership->addRole($role);
+  $og_membership->setState(OgMembershipInterface::STATE_ACTIVE);
   $invitation->setStatus(InvitationInterface::STATUS_ACCEPTED);
   $invitation->save();
 }

@@ -139,25 +139,6 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
   public function setCreatedTime(int $timestamp): self;
 
   /**
-   * Gets the extra data from the invitation.
-   *
-   * @return array
-   *   An array of data.
-   */
-  public function getExtraData(): array;
-
-  /**
-   * Sets extra data to the entity that are related to the invitation.
-   *
-   * @param array $data
-   *   An array of data.
-   *
-   * @return \Drupal\joinup_invite\Entity\InvitationInterface
-   *   The updated Invitation.
-   */
-  public function setExtraData(array $data): self;
-
-  /**
    * Accepts an invitation.
    *
    * @return \Drupal\joinup_invite\Entity\InvitationInterface
