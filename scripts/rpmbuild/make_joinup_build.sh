@@ -43,7 +43,7 @@ ${COMPOSER_PATH} install --no-dev || exit 1
 ./vendor/bin/run joinup:compile-scss || exit 1
 
 # Collect the source files for the package.
-cp -r build* composer.* VERSION config/ drush/ resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
+cp -r composer.* VERSION config/ drush/ resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
 
 # Replace files and folders with production symlinks.
 rm -rf ${JOINUP_DIR}/web/sites/default/settings.php
@@ -52,8 +52,7 @@ cp -r ${SOURCES_DIR}/template/* ${JOINUP_DIR}/web || exit 1
 rm -r ${SOURCES_DIR}/template || exit 1
 
 # Remove unneeded files.
-rm -rf ${JOINUP_DIR}/build.*local*
-rm -rf ${JOINUP_DIR}/web/themes/joinup/prototype
+rm -rf ${JOINUP_DIR}/web/themes/joinup/scss
 
 # Output the version number in a file that will be appended to the HTTP headers.
 echo X-build-id: $BUILD_VERSION > ${SOURCES_DIR}/buildinfo.ini

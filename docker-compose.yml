@@ -16,15 +16,6 @@ services:
       PHP_IDE_CONFIG: "serverName=Docker"
       PHP_SENDMAIL_PATH: "/usr/sbin/sendmail -t -i -S mail:1025"
 
-  gulp:
-    image: huli/gulp
-    volumes:
-      - $PWD/web/themes/joinup:/srv
-    working_dir: /srv/prototype
-    entrypoint:
-      - /entrypoint.sh
-      - default
-
   mysql:
     image: mysql:5.6
     environment:
