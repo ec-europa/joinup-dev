@@ -58,7 +58,7 @@ class LicenceComparerController extends ControllerBase {
       $data[$spdx_id] = [
         'title' => $licence->label(),
         'description' => check_markup($licence->field_licence_description->value, 'content_editor'),
-        'spdxUrl' => $licence->field_licence_spdx_licence->target_id,
+        'spdxUrl' => $licence->getSpdxLicenceRdfId(),
       ];
     }
 

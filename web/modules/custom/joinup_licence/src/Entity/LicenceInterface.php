@@ -11,4 +11,13 @@ use Drupal\rdf_entity\RdfInterface;
  */
 interface LicenceInterface extends RdfInterface {
 
+  /**
+   * Returns the RDF ID of the associated SPDX licence.
+   *
+   * @return string|null
+   *   The RDF ID of the SPDX licence, or NULL if no SPDX licence is associated
+   *   with the licence entity.
+   */
+  public function getSpdxLicenceRdfId(): ?string;
+
 }
