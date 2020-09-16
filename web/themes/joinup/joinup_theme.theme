@@ -1750,8 +1750,8 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
   $variables['content']['spdx_licence_external_url']['#attributes']['target'] = '_blank';
 
   // Calculate variables related to the legal type.
-  if (!empty($entity->field_licence_legal_type->getValue())) {
-    $types = $entity->field_licence_legal_type->referencedEntities();
+  $types = $entity->getLegalTypes();
+  if (!empty($types)) {
     $data_property_categories = [];
     $category_lists = [];
     foreach ($types as $type) {

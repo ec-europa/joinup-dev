@@ -16,6 +16,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_licence\Entity\Licence;
 use Drupal\joinup_licence\Entity\LicenceInterface;
+use Drupal\joinup_licence\Entity\LicenceLegalType;
 use Drupal\joinup_licence\Entity\SpdxLicence;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
@@ -40,16 +41,24 @@ function joinup_licence_entity_bundle_field_info_alter(array &$fields, EntityTyp
 /**
  * Implements hook_entity_bundle_info_alter().
  *
- * Declares the bundle class for Licence entities and SPDX Licence entities.
+ * Declares the bundle classes for Licence entities, SPDX Licence entities and
+ * Licence Legal Type taxonomy terms.
  */
 function joinup_licence_entity_bundle_info_alter(&$bundles) {
-  $bundle_mapping = [
-    'licence' => Licence::class,
-    'spdx_licence' => SpdxLicence::class,
+  $class_mapping = [
+    'rdf_entity' => [
+      'licence' => Licence::class,
+      'spdx_licence' => SpdxLicence::class,
+    ],
+    'taxonomy_term' => [
+      'legal_type' => LicenceLegalType::class,
+    ],
   ];
-  foreach ($bundle_mapping as $bundle => $class) {
-    if (!empty($bundles['rdf_entity'][$bundle])) {
-      $bundles['rdf_entity'][$bundle]['class'] = $class;
+  foreach ($class_mapping as $entity_type_id => $bundle_mapping) {
+    foreach ($bundle_mapping as $bundle => $class) {
+      if (!empty($bundles[$entity_type_id][$bundle])) {
+        $bundles[$entity_type_id][$bundle]['class'] = $class;
+      }
     }
   }
 }

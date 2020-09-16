@@ -12,6 +12,14 @@ use Drupal\rdf_entity\RdfInterface;
 interface LicenceInterface extends RdfInterface {
 
   /**
+   * Returns the legal types to which this licence conforms.
+   *
+   * @return \Drupal\joinup_licence\Entity\LicenceLegalTypeInterface[]
+   *   The legal types.
+   */
+  public function getLegalTypes(): array;
+
+  /**
    * Returns the associated SPDX licence entity.
    *
    * @return \Drupal\joinup_licence\Entity\SpdxLicenceInterface|null

@@ -17,6 +17,13 @@ class Licence extends Rdf implements LicenceInterface {
   /**
    * {@inheritdoc}
    */
+  public function getLegalTypes(): array {
+    return $this->getReferencedEntities('field_licence_legal_type');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getSpdxLicenceEntity(): ?SpdxLicenceInterface {
     $spdx_licence = $this->getFirstReferencedEntity('field_licence_spdx_licence');
     if ($spdx_licence instanceof SpdxLicenceInterface) {
