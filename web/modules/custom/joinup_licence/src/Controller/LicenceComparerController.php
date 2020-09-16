@@ -34,7 +34,7 @@ class LicenceComparerController extends ControllerBase {
     $this->licences = $licences;
 
     // Build the raw data structure.
-    $data = $this->getComparisionData();
+    $data = $this->getComparisonData();
 
     // Populate the table rows.
     $rows = [];
@@ -129,7 +129,7 @@ class LicenceComparerController extends ControllerBase {
    *   ]
    *   @endcode
    */
-  protected function getComparisionData(): array {
+  protected function getComparisonData(): array {
     $legal_types = $this->getLegalTypeStructure();
 
     $data = [];
