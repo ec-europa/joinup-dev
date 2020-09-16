@@ -10,21 +10,21 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\joinup_licence\LicenceComparerHelper;
 
 /**
- * Provides a page controller callbacks.
+ * Controller for the Joinup Licensing Assistant (JLA).
  */
 class LicenceComparerController extends ControllerBase {
 
   /**
    * An ordered list of Joinup licence entities keyed by their SPDX ID.
    *
-   * @var \Drupal\rdf_entity\RdfInterface[]
+   * @var \Drupal\joinup_licence\Entity\LicenceInterface[]
    */
   protected $licences = [];
 
   /**
    * Responds to a request made to 'joinup_licence.comparer' route.
    *
-   * @param \Drupal\rdf_entity\RdfInterface[] $licences
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface[] $licences
    *   An ordered list of Joinup licence entities keyed by their SPDX ID.
    *
    * @return array
