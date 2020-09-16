@@ -20,6 +20,19 @@ interface LicenceInterface extends RdfInterface {
   public function getLegalTypes(): array;
 
   /**
+   * Returns whether or not the licence conforms to the given legal type.
+   *
+   * @param string $category_label
+   *   The legal type category label, such as 'Can', 'Must', 'Cannot', etc.
+   * @param string $label
+   *   The legal type label, such as 'Use/reproduce', 'Distribute', etc.
+   *
+   * @return bool
+   *   Whether or not the licence conforms to the legal type.
+   */
+  public function hasLegalType(string $category_label, string $label): bool;
+
+  /**
    * Returns the associated SPDX licence entity.
    *
    * @return \Drupal\joinup_licence\Entity\SpdxLicenceInterface|null

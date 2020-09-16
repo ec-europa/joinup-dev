@@ -138,15 +138,7 @@ class LicenceComparerController extends ControllerBase {
       foreach ($terms as $tid => $label) {
         $data[$parent_label][$label] = [];
         foreach ($this->licences as $spdx_id => $licence) {
-          $has_term = FALSE;
-          /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $type_item */
-          foreach ($licence->get('field_licence_legal_type') as $type_item) {
-            if ($type_item->target_id === $tid) {
-              $has_term = TRUE;
-              break;
-            }
-          }
-          $data[$parent_label][$label][$spdx_id] = $has_term;
+          $data[$parent_label][$label][$spdx_id] = $licence->hasLegalType($parent_label, $label);
         }
       }
     }
