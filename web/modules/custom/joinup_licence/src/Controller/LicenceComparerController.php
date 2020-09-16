@@ -52,7 +52,7 @@ class LicenceComparerController extends ControllerBase {
       // Collect cache metadata from dependencies.
       $cache_metadata
         ->addCacheableDependency($licence)
-        ->addCacheableDependency($licence->field_licence_spdx_licence->entity);
+        ->addCacheableDependency($licence->getSpdxLicenceEntity());
 
       // Build licence data to be attached as Json to the page.
       $data[$spdx_id] = [

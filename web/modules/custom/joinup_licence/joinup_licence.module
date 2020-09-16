@@ -15,6 +15,8 @@ use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_licence\Entity\Licence;
+use Drupal\joinup_licence\Entity\LicenceInterface;
+use Drupal\joinup_licence\Entity\SpdxLicence;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -38,11 +40,17 @@ function joinup_licence_entity_bundle_field_info_alter(array &$fields, EntityTyp
 /**
  * Implements hook_entity_bundle_info_alter().
  *
- * Declares the bundle class for Licence entities.
+ * Declares the bundle class for Licence entities and SPDX Licence entities.
  */
 function joinup_licence_entity_bundle_info_alter(&$bundles) {
-  if (!empty($bundles['rdf_entity']['licence'])) {
-    $bundles['rdf_entity']['licence']['class'] = Licence::class;
+  $bundle_mapping = [
+    'licence' => Licence::class,
+    'spdx_licence' => SpdxLicence::class,
+  ];
+  foreach ($bundle_mapping as $bundle => $class) {
+    if (!empty($bundles['rdf_entity'][$bundle])) {
+      $bundles['rdf_entity'][$bundle]['class'] = $class;
+    }
   }
 }
 
@@ -108,12 +116,11 @@ function joinup_licence_entity_extra_field_info(): array {
  *   entity.
  */
 function joinup_licence_rdf_entity_view(array &$build, RdfInterface $entity, EntityViewDisplayInterface $display, string $view_mode): void {
-  if ($entity->bundle() != 'licence') {
+  if (!$entity instanceof LicenceInterface) {
     return;
   }
 
-  $spdx_licence = $entity->get('field_licence_spdx_licence')->referencedEntities()[0] ?? NULL;
-  if ($spdx_licence) {
+  if ($spdx_licence = $entity->getSpdxLicenceEntity()) {
     if ($display->getComponent('spdx_licence_label')) {
       $field_item_list = $spdx_licence->get('label');
       $build['spdx_licence_label'] = $field_item_list->view();

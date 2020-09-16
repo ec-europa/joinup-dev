@@ -1739,6 +1739,7 @@ function joinup_theme_preprocess_rdf_entity__collection__digest_message_header(&
  * Provides variables needed for the search_list_item view mode of licences.
  */
 function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variables) {
+  /** @var \Drupal\joinup_licence\Entity\LicenceInterface $entity */
   $entity = $variables['elements']['#rdf_entity'];
   $variables['label']['#attributes']['class'][] = 'listing__teaser';
   $variables['content']['field_licence_description']['#attributes']['class'][] = 'listing__teaser';
@@ -1787,7 +1788,7 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
       $variables['category_lists'] = $category_lists;
     }
   }
-  $variables['spdx_licence_id_plain'] = $entity->field_licence_spdx_licence->entity->field_spdx_licence_id->value;
+  $variables['spdx_licence_id_plain'] = $entity->getSpdxLicenceId();
 }
 
 /**

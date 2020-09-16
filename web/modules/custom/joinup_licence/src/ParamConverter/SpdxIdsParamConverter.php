@@ -88,8 +88,8 @@ class SpdxIdsParamConverter implements ParamConverterInterface {
     $licences = $storage->loadMultiple($actual_licence_ids);
     $spdx_ids_order = array_flip($spdx_ids);
     uasort($licences, function (LicenceInterface $licence_a, LicenceInterface $licence_b) use ($spdx_ids_order): int {
-      $licence_a_spdx_id = $licence_a->field_licence_spdx_licence->entity->field_spdx_licence_id->value;
-      $licence_b_spdx_id = $licence_b->field_licence_spdx_licence->entity->field_spdx_licence_id->value;
+      $licence_a_spdx_id = $licence_a->getSpdxLicenceId();
+      $licence_b_spdx_id = $licence_b->getSpdxLicenceId();
       return $spdx_ids_order[$licence_a_spdx_id] <=> $spdx_ids_order[$licence_b_spdx_id];
     });
 
