@@ -1755,8 +1755,10 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
     $data_property_categories = [];
     $category_lists = [];
     foreach ($types as $type) {
-      $parents = $type->parent->referencedEntities();
-      $parent = reset($parents);
+      $parent = $type->getCategory();
+      if (empty($parent)) {
+        continue;
+      }
       $parent_normalized_title = strtolower($parent->label());
       if (!isset($category_lists[$parent->id()])) {
         $category_lists[$parent->id()] = [
