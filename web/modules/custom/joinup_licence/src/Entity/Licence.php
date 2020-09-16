@@ -24,5 +24,4 @@ class Licence extends Rdf implements LicenceInterface {
     return NULL;
   }
 
-
 }
