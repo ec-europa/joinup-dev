@@ -10,6 +10,7 @@ Feature:
       | http://joinup.eu/spdx/AGPL-3.0-only    | AGPL-3.0-only    | AGPL-3.0-only    |
       | http://joinup.eu/spdx/Apache-2.0       | Apache-2.0       | Apache-2.0       |
       | http://joinup.eu/spdx/CC-BY-ND-4.0     | CC-BY-ND-4.0     | CC-BY-ND-4.0     |
+      | http://joinup.eu/spdx/CC-BY-SA-4.0     | CC-BY-SA-4.0     | CC-BY-SA-4.0     |
       | http://joinup.eu/spdx/CECILL-2.0       | CECILL-2.0       | CECILL-2.0       |
       | http://joinup.eu/spdx/CECILL-2.1       | CECILL-2.1       | CECILL-2.1       |
       | http://joinup.eu/spdx/CPL-1.0          | CPL-1.0          | CPL-1.0          |
@@ -21,25 +22,32 @@ Feature:
       | http://joinup.eu/spdx/GPL-2.0+         | GPL-2.0+         | GPL-2.0+         |
       | http://joinup.eu/spdx/GPL-3.0-only     | GPL-3.0-only     | GPL-3.0-only     |
       | http://joinup.eu/spdx/GPL-3.0-or-later | GPL-3.0-or-later | GPL-3.0-or-later |
+      | http://joinup.eu/spdx/LGPL-2.1         | LGPL-2.1         | LGPL-2.1         |
+      | http://joinup.eu/spdx/LGPL-3.0-only    | LGPL-3.0-only    | LGPL-3.0-only    |
+      | http://joinup.eu/spdx/MPL-2.0          | MPL-2.0          | MPL-2.0          |
       | http://joinup.eu/spdx/OSL-3.0          | OSL-3.0          | OSL-3.0          |
 
     And licences:
-      | uri                                  | title            | spdx licence     | legal type                                     |
-      | http://joinup.eu/licence/agpl3only   | AGPL-3.0-only    | AGPL-3.0-only    | GPL, For software, Copyleft/Share a.           |
-      | http://joinup.eu/licence/apache2     | Apache-2.0       | Apache-2.0       | Permissive, GPL, For software                  |
-      | http://joinup.eu/licence/ccbynd4     | CC-BY-ND-4.0     | CC-BY-ND-4.0     | For data, Copyleft/Share a.                    |
-      | http://joinup.eu/licence/cecill20    | CECILL-2.0       | CECILL-2.0       | GPL, For software, Copyleft/Share a.           |
-      | http://joinup.eu/licence/cecill21    | CECILL-2.1       | CECILL-2.1       | GPL, For software, Copyleft/Share a.           |
-      | http://joinup.eu/licence/cpl1        | CPL-1.0          | CPL-1.0          | GPL, For software, Copyleft/Share a.           |
-      | http://joinup.eu/licence/eupl11      | EUPL-1.1         | EUPL-1.1         | GPL, For software, Copyleft/Share a.           |
-      | http://joinup.eu/licence/eupl12      | EUPL-1.2         | EUPL-1.2         | GPL, For data, For software, Copyleft/Share a. |
-      | http://joinup.eu/licence/epl2        | EPL-2.0          | EPL-2.0          | GPL, For software, Copyleft/Share a.           |
-      | http://joinup.eu/licence/epl21       | EPL-2.1          | EPL-2.1          | GPL, For software, Copyleft/Share a.           |
-      | http://joinup.eu/licence/gpl2only    | GPL-2.0-only     | GPL-2.0-only     | For software, Copyleft/Share a.                |
-      | http://joinup.eu/licence/gpl2plus    | GPL-2.0+         | GPL-2.0+         | GPL, For software, Copyleft/Share a.           |
-      | http://joinup.eu/licence/gpl3only    | GPL-3.0-only     | GPL-3.0-only     | For software, Copyleft/Share a.                |
-      | http://joinup.eu/licence/gpl3orlater | GPL-3.0-or-later | GPL-3.0-or-later | GPL, For software, Copyleft/Share a.           |
-      | http://joinup.eu/licence/osl3        | OSL-3.0          | OSL-3.0          | For software, Copyleft/Share a.                |
+      | uri                                  | title            | spdx licence     | legal type                                            |
+      | http://joinup.eu/licence/agpl3only   | AGPL-3.0-only    | AGPL-3.0-only    | GPL, For software, Copyleft/Share a.                  |
+      | http://joinup.eu/licence/apache2     | Apache-2.0       | Apache-2.0       | Permissive, GPL, For software                         |
+      | http://joinup.eu/licence/ccbynd4     | CC-BY-ND-4.0     | CC-BY-ND-4.0     | For data, Copyleft/Share a.                           |
+      | http://joinup.eu/licence/ccbysa4     | CC-BY-SA-4.0     | CC-BY-SA-4.0     | For data, Copyleft/Share a.                           |
+      | http://joinup.eu/licence/cecill20    | CECILL-2.0       | CECILL-2.0       | GPL, For software, Copyleft/Share a.                  |
+      | http://joinup.eu/licence/cecill21    | CECILL-2.1       | CECILL-2.1       | GPL, For software, Copyleft/Share a.                  |
+      | http://joinup.eu/licence/cpl1        | CPL-1.0          | CPL-1.0          | GPL, For software, Copyleft/Share a.                  |
+      | http://joinup.eu/licence/eupl11      | EUPL-1.1         | EUPL-1.1         | GPL, For software, Copyleft/Share a.                  |
+      | http://joinup.eu/licence/eupl12      | EUPL-1.2         | EUPL-1.2         | GPL, For data, For software, Copyleft/Share a.        |
+      | http://joinup.eu/licence/epl2        | EPL-2.0          | EPL-2.0          | GPL, For software, Copyleft/Share a.                  |
+      | http://joinup.eu/licence/epl21       | EPL-2.1          | EPL-2.1          | GPL, For software, Copyleft/Share a.                  |
+      | http://joinup.eu/licence/gpl2only    | GPL-2.0-only     | GPL-2.0-only     | For software, Copyleft/Share a.                       |
+      | http://joinup.eu/licence/gpl2plus    | GPL-2.0+         | GPL-2.0+         | GPL, For software, Copyleft/Share a.                  |
+      | http://joinup.eu/licence/gpl3only    | GPL-3.0-only     | GPL-3.0-only     | For software, Copyleft/Share a.                       |
+      | http://joinup.eu/licence/gpl3orlater | GPL-3.0-or-later | GPL-3.0-or-later | GPL, For software, Copyleft/Share a.                  |
+      | http://joinup.eu/licence/lgpl21      | LGPL-2.1         | LGPL-2.1         | GPL, For software, Lesser copyleft                    |
+      | http://joinup.eu/licence/lgpl3only   | LGPL-3.0-only    | LGPL-3.0-only    | GPL, For software, Lesser copyleft                    |
+      | http://joinup.eu/licence/mpl2        | MPL-2.0          | MPL-2.0          | GPL, For software, Copyleft/Share a., Lesser copyleft |
+      | http://joinup.eu/licence/osl3        | OSL-3.0          | OSL-3.0          | For software, Copyleft/Share a.                       |
 
     Then the following licences should show the expected compatibility document:
       | use              | redistribute as  | document ID  |
@@ -79,4 +87,19 @@ Feature:
       | EUPL-1.1         | AGPL-3.0-only    | T09          |
       | EUPL-1.1         | GPL-3.0-only     | T09          |
       | EUPL-1.1         | GPL-3.0-or-later | T09          |
+      | EUPL-1.2         | AGPL-3.0-only    | T10          |
+      | EUPL-1.2         | CC-BY-SA-4.0     | T10          |
+      | EUPL-1.2         | CECILL-2.0       | T10          |
+      | EUPL-1.2         | CECILL-2.1       | T10          |
+      | EUPL-1.2         | CPL-1.0          | T10          |
+      | EUPL-1.2         | EPL-2.0          | T10          |
+      | EUPL-1.2         | EPL-2.1          | T10          |
+      | EUPL-1.2         | GPL-2.0+         | T10          |
+      | EUPL-1.2         | GPL-2.0-only     | T10          |
+      | EUPL-1.2         | GPL-3.0-only     | T10          |
+      | EUPL-1.2         | GPL-3.0-or-later | T10          |
+      | EUPL-1.2         | LGPL-2.1         | T10          |
+      | EUPL-1.2         | LGPL-3.0-only    | T10          |
+      | EUPL-1.2         | MPL-2.0          | T10          |
+      | EUPL-1.2         | OSL-3.0          | T10          |
       | CC-BY-ND-4.0     | Apache-2.0       | incompatible |
