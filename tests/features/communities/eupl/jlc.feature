@@ -150,4 +150,9 @@ Feature:
       | MIT              | LiLiQ-Rplus-1.1  | T12          |
       | MIT              | MPL-2.0          | T12          |
       | MIT              | OSL-3.0          | T12          |
+      | CECILL-2.1       | GPL-2.0-only     | T13          |
+      | CECILL-2.1       | GPL-2.0+         | T13          |
+      | CECILL-2.1       | GPL-3.0-only     | T13          |
+      | CECILL-2.1       | GPL-3.0-or-later | T13          |
+      | CECILL-2.1       | AGPL-3.0-only    | T13          |
       | CC-BY-ND-4.0     | Apache-2.0       | incompatible |
