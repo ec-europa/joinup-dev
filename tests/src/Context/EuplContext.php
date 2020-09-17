@@ -168,8 +168,8 @@ class EuplContext extends RawDrupalContext {
    *
    * @When I add the :spdx_id licence to the compare list
    */
-  public function selectLicenceForComparision(string $spdx_id): void {
-    $this->toggleLicenceForComparision(TRUE, $spdx_id);
+  public function selectLicenceForComparison(string $spdx_id): void {
+    $this->toggleLicenceForComparison(TRUE, $spdx_id);
   }
 
   /**
@@ -183,8 +183,8 @@ class EuplContext extends RawDrupalContext {
    *
    * @When I remove the :spdx_id licence from the compare list
    */
-  public function unselectLicenceForComparision(string $spdx_id): void {
-    $this->toggleLicenceForComparision(FALSE, $spdx_id);
+  public function unselectLicenceForComparison(string $spdx_id): void {
+    $this->toggleLicenceForComparison(FALSE, $spdx_id);
   }
 
   /**
@@ -198,7 +198,7 @@ class EuplContext extends RawDrupalContext {
    * @throws \Exception
    *   When the licence is not found on the page.
    */
-  protected function toggleLicenceForComparision(bool $compare, string $spdx_id): void {
+  protected function toggleLicenceForComparison(bool $compare, string $spdx_id): void {
     $licence = $this->findLicenceTile($spdx_id);
     if ($compare) {
       $this->checkMaterialDesignField('Add to compare list', $licence);
