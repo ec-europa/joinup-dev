@@ -8,6 +8,8 @@ Feature:
     Given SPDX licences:
       | uri                                    | title            | ID               |
       | http://joinup.eu/spdx/AGPL-3.0-only    | AGPL-3.0-only    | AGPL-3.0-only    |
+      | http://joinup.eu/spdx/Apache-2.0       | Apache-2.0       | Apache-2.0       |
+      | http://joinup.eu/spdx/CC-BY-ND-4.0     | CC-BY-ND-4.0     | CC-BY-ND-4.0     |
       | http://joinup.eu/spdx/EUPL-1.1         | EUPL-1.1         | EUPL-1.1         |
       | http://joinup.eu/spdx/EUPL-1.2         | EUPL-1.2         | EUPL-1.2         |
       | http://joinup.eu/spdx/GPL-2.0-only     | GPL-2.0-only     | GPL-2.0-only     |
@@ -18,6 +20,8 @@ Feature:
     And licences:
       | uri                                  | title            | spdx licence     | legal type                                     |
       | http://joinup.eu/licence/agpl3only   | AGPL-3.0-only    | AGPL-3.0-only    | GPL, For software, Copyleft/Share a.           |
+      | http://joinup.eu/licence/apache2     | Apache-2.0       | Apache-2.0       | Permissive, GPL, For software                  |
+      | http://joinup.eu/licence/ccbynd4     | CC-BY-ND-4.0     | CC-BY-ND-4.0     | For data, Copyleft/Share a.                    |
       | http://joinup.eu/licence/eupl11      | EUPL-1.1         | EUPL-1.1         | GPL, For software, Copyleft/Share a.           |
       | http://joinup.eu/licence/eupl12      | EUPL-1.2         | EUPL-1.2         | GPL, For data, For software, Copyleft/Share a. |
       | http://joinup.eu/licence/gpl2only    | GPL-2.0-only     | GPL-2.0-only     | For software, Copyleft/Share a.                |
@@ -48,4 +52,9 @@ Feature:
       | GPL-3.0-only     | GPL-2.0-only     | T05          |
       | EUPL-1.1         | EUPL-1.2         | T06          |
       | EUPL-1.2         | EUPL-1.1         | T06          |
-      | GPL-2.0-only     | GPL-2.0+         | incompatible |
+      | GPL-2.0-only     | Apache-2.0       | T07          |
+      | GPL-2.0+         | Apache-2.0       | T07          |
+      | GPL-3.0-only     | Apache-2.0       | T07          |
+      | GPL-3.0-or-later | Apache-2.0       | T07          |
+      | AGPL-3.0-only    | Apache-2.0       | T07          |
+      | CC-BY-ND-4.0     | Apache-2.0       | incompatible |

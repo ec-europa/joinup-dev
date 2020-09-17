@@ -33,6 +33,7 @@ abstract class JoinupLicenceCompatibilityRulePluginBase extends PluginBase imple
    * {@inheritdoc}
    */
   public function isCompatible(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool {
+    /** @var \Drupal\joinup_licence\Entity\LicenceInterface $licence */
     foreach ([
       [$use_licence, static::USE_CRITERIA],
       [$redistribute_as_licence, static::REDISTRIBUTE_AS_CRITERIA],
@@ -42,6 +43,14 @@ abstract class JoinupLicenceCompatibilityRulePluginBase extends PluginBase imple
           case 'SPDX':
             if (!in_array($licence->getSpdxLicenceId(), $matches)) {
               return FALSE;
+            }
+            break;
+
+          default:
+            foreach ($matches as $legal_type) {
+              if (!$licence->hasLegalType($type, $legal_type)) {
+                return FALSE;
+              }
             }
             break;
         }
