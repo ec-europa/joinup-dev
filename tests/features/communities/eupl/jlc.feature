@@ -26,18 +26,24 @@ Feature:
       | http://joinup.eu/licence/gpl3orlater | GPL-3.0-or-later | GPL-3.0-or-later | GPL, For software, Copyleft/Share a.           |
 
     Then the following licences should show the expected compatibility document:
-      | use              | redistribute as | document ID  |
-      | GPL-2.0-only     | GPL-2.0-only    | T01          |
-      | GPL-2.0+         | GPL-2.0+        | T01          |
-      | EUPL-1.1         | EUPL-1.1        | T01          |
-      | GPL-2.0-only     | EUPL-1.1        | T02          |
-      | GPL-2.0+         | EUPL-1.1        | T02          |
-      | GPL-3.0-only     | EUPL-1.1        | T03          |
-      | GPL-3.0-or-later | EUPL-1.1        | T03          |
-      | AGPL-3.0-only    | EUPL-1.1        | T03          |
-      | GPL-2.0-only     | EUPL-1.2        | T04          |
-      | GPL-2.0+         | EUPL-1.2        | T04          |
-      | GPL-3.0-only     | EUPL-1.2        | T04          |
-      | GPL-3.0-or-later | EUPL-1.2        | T04          |
-      | AGPL-3.0-only    | EUPL-1.2        | T04          |
-      | GPL-2.0-only     | GPL-2.0+        | incompatible |
+      | use              | redistribute as  | document ID  |
+      | AGPL-3.0-only    | AGPL-3.0-only    | T01          |
+      | EUPL-1.1         | EUPL-1.1         | T01          |
+      | EUPL-1.2         | EUPL-1.2         | T01          |
+      | GPL-2.0-only     | GPL-2.0-only     | T01          |
+      | GPL-2.0+         | GPL-2.0+         | T01          |
+      | GPL-3.0-only     | GPL-3.0-only     | T01          |
+      | GPL-3.0-or-later | GPL-3.0-or-later | T01          |
+      | GPL-2.0-only     | EUPL-1.1         | T02          |
+      | GPL-2.0+         | EUPL-1.1         | T02          |
+      | GPL-3.0-only     | EUPL-1.1         | T03          |
+      | GPL-3.0-or-later | EUPL-1.1         | T03          |
+      | AGPL-3.0-only    | EUPL-1.1         | T03          |
+      | GPL-2.0-only     | EUPL-1.2         | T04          |
+      | GPL-2.0+         | EUPL-1.2         | T04          |
+      | GPL-3.0-only     | EUPL-1.2         | T04          |
+      | GPL-3.0-or-later | EUPL-1.2         | T04          |
+      | AGPL-3.0-only    | EUPL-1.2         | T04          |
+      | GPL-2.0-only     | GPL-3.0-only     | T05          |
+      | GPL-3.0-only     | GPL-2.0-only     | T05          |
+      | GPL-2.0-only     | GPL-2.0+         | incompatible |
