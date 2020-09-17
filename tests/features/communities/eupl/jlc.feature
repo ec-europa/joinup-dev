@@ -27,6 +27,7 @@ Feature:
       | http://joinup.eu/spdx/LiLiQ-Rplus-1.1  | LiLiQ-Rplus-1.1  | LiLiQ-Rplus-1.1  |
       | http://joinup.eu/spdx/MIT              | MIT              | MIT              |
       | http://joinup.eu/spdx/MPL-2.0          | MPL-2.0          | MPL-2.0          |
+      | http://joinup.eu/spdx/OFL-1.1          | OFL-1.1          | OFL-1.1          |
       | http://joinup.eu/spdx/OSL-3.0          | OSL-3.0          | OSL-3.0          |
 
     And licences:
@@ -51,9 +52,10 @@ Feature:
       | http://joinup.eu/licence/liliqrplus11 | LiLiQ-Rplus-1.1  | LiLiQ-Rplus-1.1  | GPL, For software, Copyleft/Share a.                  |
       | http://joinup.eu/licence/mit          | MIT              | MIT              | Permissive, GPL, For software                         |
       | http://joinup.eu/licence/mpl2         | MPL-2.0          | MPL-2.0          | GPL, For software, Copyleft/Share a., Lesser copyleft |
+      | http://joinup.eu/licence/ofl11        | OFL-1.1          | OFL-1.1          |                                                       |
       | http://joinup.eu/licence/osl3         | OSL-3.0          | OSL-3.0          | For software, Copyleft/Share a.                       |
 
-    Then the following licences should show the expected compatibility document:
+    Then the following combination of licences should be described in the compatibility document:
       | use              | redistribute as  | document ID  |
       | AGPL-3.0-only    | AGPL-3.0-only    | T01          |
       | EUPL-1.1         | EUPL-1.1         | T01          |
@@ -188,4 +190,26 @@ Feature:
       | LiLiQ-Rplus-1.1  | MIT              | T14          |
       | MPL-2.0          | MIT              | T14          |
       | OSL-3.0          | MIT              | T14          |
-      | CC-BY-ND-4.0     | GPL-3.0-only     | incompatible |
+      | CC-BY-ND-4.0     | EPL-2.0          | T15          |
+      | CC-BY-SA-4.0     | EPL-2.0          | T15          |
+      | CECILL-2.0       | EPL-2.0          | T15          |
+      | CECILL-2.1       | EPL-2.0          | T15          |
+      | CPL-1.0          | EPL-2.0          | T15          |
+      | EPL-2.1          | EPL-2.0          | T15          |
+      | LGPL-2.1         | EPL-2.0          | T15          |
+      | LGPL-3.0-only    | EPL-2.0          | T15          |
+      | LiLiQ-Rplus-1.1  | EPL-2.0          | T15          |
+      | MPL-2.0          | EPL-2.0          | T15          |
+      | OSL-3.0          | EPL-2.0          | T15          |
+      | CC-BY-ND-4.0     | OSL-3.0          | T15          |
+      | CC-BY-SA-4.0     | OSL-3.0          | T15          |
+      | CECILL-2.0       | OSL-3.0          | T15          |
+      | CECILL-2.1       | OSL-3.0          | T15          |
+      | CPL-1.0          | OSL-3.0          | T15          |
+      | EPL-2.0          | OSL-3.0          | T15          |
+      | EPL-2.1          | OSL-3.0          | T15          |
+      | LGPL-2.1         | OSL-3.0          | T15          |
+      | LGPL-3.0-only    | OSL-3.0          | T15          |
+      | LiLiQ-Rplus-1.1  | OSL-3.0          | T15          |
+      | MPL-2.0          | OSL-3.0          | T15          |
+      | CC-BY-ND-4.0     | OFL-1.1          | incompatible |

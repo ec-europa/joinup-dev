@@ -302,7 +302,7 @@ class EuplContext extends RawDrupalContext {
    * @param \Behat\Gherkin\Node\TableNode $table
    *   A table with columns 'use', 'redistribute as' and 'document ID'.
    *
-   * @Then the following licences should show the expected compatibility document:
+   * @Then the following combination of licences should be described in the compatibility document:
    */
   public function assertLicenceCompatibility(TableNode $table) {
     /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginManager $plugin_manager */
