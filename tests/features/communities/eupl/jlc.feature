@@ -13,6 +13,7 @@ Feature:
       | http://joinup.eu/spdx/CC-BY-SA-4.0     | CC-BY-SA-4.0     | CC-BY-SA-4.0     |
       | http://joinup.eu/spdx/CECILL-2.0       | CECILL-2.0       | CECILL-2.0       |
       | http://joinup.eu/spdx/CECILL-2.1       | CECILL-2.1       | CECILL-2.1       |
+      | http://joinup.eu/spdx/CECILL-C         | CECILL-C         | CECILL-C         |
       | http://joinup.eu/spdx/CPL-1.0          | CPL-1.0          | CPL-1.0          |
       | http://joinup.eu/spdx/EUPL-1.1         | EUPL-1.1         | EUPL-1.1         |
       | http://joinup.eu/spdx/EUPL-1.2         | EUPL-1.2         | EUPL-1.2         |
@@ -38,6 +39,7 @@ Feature:
       | http://joinup.eu/licence/ccbysa4      | CC-BY-SA-4.0     | CC-BY-SA-4.0     | For data, Copyleft/Share a.                           |
       | http://joinup.eu/licence/cecill20     | CECILL-2.0       | CECILL-2.0       | GPL, For software, Copyleft/Share a.                  |
       | http://joinup.eu/licence/cecill21     | CECILL-2.1       | CECILL-2.1       | GPL, For software, Copyleft/Share a.                  |
+      | http://joinup.eu/licence/cecillc      | CECILL-C         | CECILL-C         | GPL, For software, Lesser copyleft                    |
       | http://joinup.eu/licence/cpl1         | CPL-1.0          | CPL-1.0          | GPL, For software, Copyleft/Share a.                  |
       | http://joinup.eu/licence/eupl11       | EUPL-1.1         | EUPL-1.1         | GPL, For software, Copyleft/Share a.                  |
       | http://joinup.eu/licence/eupl12       | EUPL-1.2         | EUPL-1.2         | GPL, For data, For software, Copyleft/Share a.        |
@@ -212,4 +214,19 @@ Feature:
       | LGPL-3.0-only    | OSL-3.0          | T15          |
       | LiLiQ-Rplus-1.1  | OSL-3.0          | T15          |
       | MPL-2.0          | OSL-3.0          | T15          |
+      | CC-BY-SA-4.0     | CECILL-C         | T16          |
+      | CECILL-2.0       | CECILL-C         | T16          |
+      | CECILL-2.1       | CECILL-C         | T16          |
+      | CPL-1.0          | CECILL-C         | T16          |
+      | EUPL-1.1         | CECILL-C         | T16          |
+      | EUPL-1.2         | CECILL-C         | T16          |
+      | EPL-2.0          | CECILL-C         | T16          |
+      | EPL-2.1          | CECILL-C         | T16          |
+      | LiLiQ-Rplus-1.1  | CECILL-C         | T16          |
+      | OSL-3.0          | CECILL-C         | T16          |
       | CC-BY-ND-4.0     | OFL-1.1          | incompatible |
+      | CECILL-C         | LGPL-2.1         | incompatible |
+      | CECILL-C         | LGPL-3.0-only    | incompatible |
+      | LGPL-2.1         | CECILL-C         | incompatible |
+      | LGPL-3.0-only    | CECILL-C         | incompatible |
+      | OFL-1.1          | CC-BY-ND-4.0     | incompatible |
