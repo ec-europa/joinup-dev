@@ -76,4 +76,7 @@ Feature:
       | EUPL-1.1         | EPL-2.1          | T08          |
       | EUPL-1.1         | GPL-2.0-only     | T08          |
       | EUPL-1.1         | OSL-3.0          | T08          |
+      | EUPL-1.1         | AGPL-3.0-only    | T09          |
+      | EUPL-1.1         | GPL-3.0-only     | T09          |
+      | EUPL-1.1         | GPL-3.0-or-later | T09          |
       | CC-BY-ND-4.0     | Apache-2.0       | incompatible |
