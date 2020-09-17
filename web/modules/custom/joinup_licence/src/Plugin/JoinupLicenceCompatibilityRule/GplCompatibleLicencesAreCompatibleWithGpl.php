@@ -24,11 +24,11 @@ class GplCompatibleLicencesAreCompatibleWithGpl extends JoinupLicenceCompatibili
 
   const USE_CRITERIA = [
     'SPDX' => [
-      'GPL-2.0-only',
+      'AGPL-3.0-only',
       'GPL-2.0+',
+      'GPL-2.0-only',
       'GPL-3.0-only',
       'GPL-3.0-or-later',
-      'AGPL-3.0-only',
     ],
   ];
   const REDISTRIBUTE_AS_CRITERIA = [
