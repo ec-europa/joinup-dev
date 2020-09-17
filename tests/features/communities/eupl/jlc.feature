@@ -76,11 +76,16 @@ Feature:
       | GPL-3.0-only     | GPL-2.0-only     | T05          |
       | EUPL-1.1         | EUPL-1.2         | T06          |
       | EUPL-1.2         | EUPL-1.1         | T06          |
-      | GPL-2.0-only     | Apache-2.0       | T07          |
+      | AGPL-3.0-only    | Apache-2.0       | T07          |
       | GPL-2.0+         | Apache-2.0       | T07          |
+      | GPL-2.0-only     | Apache-2.0       | T07          |
       | GPL-3.0-only     | Apache-2.0       | T07          |
       | GPL-3.0-or-later | Apache-2.0       | T07          |
-      | AGPL-3.0-only    | Apache-2.0       | T07          |
+      | AGPL-3.0-only    | MIT              | T07          |
+      | GPL-2.0+         | MIT              | T07          |
+      | GPL-2.0-only     | MIT              | T07          |
+      | GPL-3.0-only     | MIT              | T07          |
+      | GPL-3.0-or-later | MIT              | T07          |
       | EUPL-1.1         | CECILL-2.0       | T08          |
       | EUPL-1.1         | CECILL-2.1       | T08          |
       | EUPL-1.1         | CPL-1.0          | T08          |
@@ -155,4 +160,32 @@ Feature:
       | CECILL-2.1       | GPL-3.0-only     | T13          |
       | CECILL-2.1       | GPL-3.0-or-later | T13          |
       | CECILL-2.1       | AGPL-3.0-only    | T13          |
-      | CC-BY-ND-4.0     | Apache-2.0       | incompatible |
+      | CC-BY-ND-4.0     | Apache-2.0       | T14          |
+      | CC-BY-SA-4.0     | Apache-2.0       | T14          |
+      | CECILL-2.0       | Apache-2.0       | T14          |
+      | CECILL-2.1       | Apache-2.0       | T14          |
+      | CPL-1.0          | Apache-2.0       | T14          |
+      | EUPL-1.1         | Apache-2.0       | T14          |
+      | EUPL-1.2         | Apache-2.0       | T14          |
+      | EPL-2.0          | Apache-2.0       | T14          |
+      | EPL-2.1          | Apache-2.0       | T14          |
+      | LGPL-2.1         | Apache-2.0       | T14          |
+      | LGPL-3.0-only    | Apache-2.0       | T14          |
+      | LiLiQ-Rplus-1.1  | Apache-2.0       | T14          |
+      | MPL-2.0          | Apache-2.0       | T14          |
+      | OSL-3.0          | Apache-2.0       | T14          |
+      | CC-BY-ND-4.0     | MIT              | T14          |
+      | CC-BY-SA-4.0     | MIT              | T14          |
+      | CECILL-2.0       | MIT              | T14          |
+      | CECILL-2.1       | MIT              | T14          |
+      | CPL-1.0          | MIT              | T14          |
+      | EUPL-1.1         | MIT              | T14          |
+      | EUPL-1.2         | MIT              | T14          |
+      | EPL-2.0          | MIT              | T14          |
+      | EPL-2.1          | MIT              | T14          |
+      | LGPL-2.1         | MIT              | T14          |
+      | LGPL-3.0-only    | MIT              | T14          |
+      | LiLiQ-Rplus-1.1  | MIT              | T14          |
+      | MPL-2.0          | MIT              | T14          |
+      | OSL-3.0          | MIT              | T14          |
+      | CC-BY-ND-4.0     | GPL-3.0-only     | incompatible |

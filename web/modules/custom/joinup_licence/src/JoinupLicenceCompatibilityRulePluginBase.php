@@ -48,11 +48,11 @@ abstract class JoinupLicenceCompatibilityRulePluginBase extends PluginBase imple
 
           default:
             foreach ($matches as $legal_type) {
-              if (!$licence->hasLegalType($type, $legal_type)) {
-                return FALSE;
+              if ($licence->hasLegalType($type, $legal_type)) {
+                continue 2;
               }
             }
-            break;
+            return FALSE;
         }
       }
     }
