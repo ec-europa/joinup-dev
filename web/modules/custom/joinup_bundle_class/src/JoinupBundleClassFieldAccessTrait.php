@@ -26,16 +26,11 @@ trait JoinupBundleClassFieldAccessTrait {
    *   The referenced entity, or NULL of no entity is referenced.
    */
   protected function getFirstReferencedEntity(string $field_name): ?EntityInterface {
-    $referenced_entities = $this->getReferencedEntities($field_name);
-
-    if (!empty($referenced_entities)) {
-      $referenced_entity = reset($referenced_entities);
-      if ($referenced_entity instanceof EntityInterface) {
-        return $referenced_entity;
-      }
+    $first_item = $this->getFirstItem($field_name);
+    if (empty($first_item) || !$first_item instanceof EntityReferenceItem) {
+      return NULL;
     }
-
-    return NULL;
+    return $first_item->entity ?? NULL;
   }
 
   /**
@@ -154,8 +149,6 @@ trait JoinupBundleClassFieldAccessTrait {
       }
     }
     catch (MissingDataException $e) {
-      $this->logException($e);
-      return NULL;
     }
 
     return NULL;
