@@ -30,6 +30,10 @@ Feature:
       | http://joinup.eu/spdx/MPL-2.0          | MPL-2.0          | MPL-2.0          |
       | http://joinup.eu/spdx/OFL-1.1          | OFL-1.1          | OFL-1.1          |
       | http://joinup.eu/spdx/OSL-3.0          | OSL-3.0          | OSL-3.0          |
+      # The following two are non-existing licences tailored to test cases T17 and T18
+      # since none of the licences that are included in Joinup at this time match them.
+      | http://joinup.eu/spdx/DATA             | DATA             | DATA             |
+      | http://joinup.eu/spdx/SOFT             | SOFT             | SOFT             |
 
     And licences:
       | uri                                   | title            | spdx licence     | legal type                                            |
@@ -56,6 +60,8 @@ Feature:
       | http://joinup.eu/licence/mpl2         | MPL-2.0          | MPL-2.0          | GPL, For software, Copyleft/Share a., Lesser copyleft |
       | http://joinup.eu/licence/ofl11        | OFL-1.1          | OFL-1.1          |                                                       |
       | http://joinup.eu/licence/osl3         | OSL-3.0          | OSL-3.0          | For software, Copyleft/Share a.                       |
+      | http://joinup.eu/licence/data         | DATA             | DATA             | For data                                              |
+      | http://joinup.eu/licence/soft         | SOFT             | SOFT             | For software                                          |
 
     Then the following combination of licences should be described in the compatibility document:
       | use              | redistribute as  | document ID  |
@@ -224,6 +230,7 @@ Feature:
       | EPL-2.1          | CECILL-C         | T16          |
       | LiLiQ-Rplus-1.1  | CECILL-C         | T16          |
       | OSL-3.0          | CECILL-C         | T16          |
+      | SOFT             | DATA             | T17          |
       | CC-BY-ND-4.0     | OFL-1.1          | incompatible |
       | CECILL-C         | LGPL-2.1         | incompatible |
       | CECILL-C         | LGPL-3.0-only    | incompatible |
