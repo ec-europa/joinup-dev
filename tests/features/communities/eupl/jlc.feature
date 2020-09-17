@@ -231,6 +231,7 @@ Feature:
       | LiLiQ-Rplus-1.1  | CECILL-C         | T16          |
       | OSL-3.0          | CECILL-C         | T16          |
       | SOFT             | DATA             | T17          |
+      | DATA             | SOFT             | T18          |
       | CC-BY-ND-4.0     | OFL-1.1          | incompatible |
       | CECILL-C         | LGPL-2.1         | incompatible |
       | CECILL-C         | LGPL-3.0-only    | incompatible |
