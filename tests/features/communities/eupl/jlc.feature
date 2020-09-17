@@ -6,22 +6,31 @@ Feature:
 
   Scenario: Compatibility of licences can be determined using licence compatibility rules
     Given SPDX licences:
-      | uri                                | title        | ID           |
-      | http://joinup.eu/spdx/GPL-2.0-only | GPL-2.0-only | GPL-2.0-only |
-      | http://joinup.eu/spdx/GPL-2.0+     | GPL-2.0+     | GPL-2.0+     |
-      | http://joinup.eu/spdx/EUPL-1.1     | EUPL-1.1     | EUPL-1.1     |
+      | uri                                    | title            | ID               |
+      | http://joinup.eu/spdx/AGPL-3.0-only    | AGPL-3.0-only    | AGPL-3.0-only    |
+      | http://joinup.eu/spdx/EUPL-1.1         | EUPL-1.1         | EUPL-1.1         |
+      | http://joinup.eu/spdx/GPL-2.0-only     | GPL-2.0-only     | GPL-2.0-only     |
+      | http://joinup.eu/spdx/GPL-2.0+         | GPL-2.0+         | GPL-2.0+         |
+      | http://joinup.eu/spdx/GPL-3.0-only     | GPL-3.0-only     | GPL-3.0-only     |
+      | http://joinup.eu/spdx/GPL-3.0-or-later | GPL-3.0-or-later | GPL-3.0-or-later |
 
     And licences:
-      | uri                               | title        | spdx licence | legal type                           |
-      | http://joinup.eu/licence/gpl2only | GPL-2.0-only | GPL-2.0-only | For software, Copyleft/Share a.      |
-      | http://joinup.eu/licence/gpl2plus | GPL-2.0+     | GPL-2.0+     | GPL, For software, Copyleft/Share a. |
-      | http://joinup.eu/licence/eupl11   | EUPL-1.1     | EUPL-1.1     | GPL, For software, Copyleft/Share a. |
+      | uri                                  | title            | spdx licence     | legal type                           |
+      | http://joinup.eu/licence/agpl3only   | AGPL-3.0-only    | AGPL-3.0-only    | GPL, For software, Copyleft/Share a. |
+      | http://joinup.eu/licence/eupl11      | EUPL-1.1         | EUPL-1.1         | GPL, For software, Copyleft/Share a. |
+      | http://joinup.eu/licence/gpl2only    | GPL-2.0-only     | GPL-2.0-only     | For software, Copyleft/Share a.      |
+      | http://joinup.eu/licence/gpl2plus    | GPL-2.0+         | GPL-2.0+         | GPL, For software, Copyleft/Share a. |
+      | http://joinup.eu/licence/gpl3only    | GPL-3.0-only     | GPL-3.0-only     | For software, Copyleft/Share a.      |
+      | http://joinup.eu/licence/gpl3orlater | GPL-3.0-or-later | GPL-3.0-or-later | GPL, For software, Copyleft/Share a. |
 
     Then the following licences should show the expected compatibility document:
-      | use          | redistribute as | document ID  |
-      | GPL-2.0-only | GPL-2.0-only    | T01          |
-      | GPL-2.0+     | GPL-2.0+        | T01          |
-      | EUPL-1.1     | EUPL-1.1        | T01          |
-      | GPL-2.0-only | EUPL-1.1        | T02          |
-      | GPL-2.0+     | EUPL-1.1        | T02          |
-      | GPL-2.0-only | GPL-2.0+        | incompatible |
+      | use              | redistribute as | document ID  |
+      | GPL-2.0-only     | GPL-2.0-only    | T01          |
+      | GPL-2.0+         | GPL-2.0+        | T01          |
+      | EUPL-1.1         | EUPL-1.1        | T01          |
+      | GPL-2.0-only     | EUPL-1.1        | T02          |
+      | GPL-2.0+         | EUPL-1.1        | T02          |
+      | AGPL-3.0-only    | EUPL-1.1        | T03          |
+      | GPL-3.0-only     | EUPL-1.1        | T03          |
+      | GPL-3.0-or-later | EUPL-1.1        | T03          |
+      | GPL-2.0-only     | GPL-2.0+        | incompatible |
