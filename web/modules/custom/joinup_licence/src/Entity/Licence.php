@@ -72,4 +72,20 @@ class Licence extends Rdf implements LicenceInterface {
     return NULL;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function isCompatibleWith(LicenceInterface $redistribute_as_licence): bool {
+    return (bool) $this->getCompatibilityDocumentId($redistribute_as_licence);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCompatibilityDocumentId(LicenceInterface $redistribute_as_licence): ?string {
+    /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginManager $plugin_manager */
+    $plugin_manager = \Drupal::service('plugin.manager.joinup_licence_compatibility_rule');
+    return $plugin_manager->getCompatibilityDocumentId($this, $redistribute_as_licence);
+  }
+
 }

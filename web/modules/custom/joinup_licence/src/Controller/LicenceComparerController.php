@@ -135,7 +135,7 @@ class LicenceComparerController extends ControllerBase {
     $data = [];
     foreach ($legal_types as $parent_label => $terms) {
       $data[$parent_label] = [];
-      foreach ($terms as $tid => $label) {
+      foreach ($terms as $label) {
         $data[$parent_label][$label] = [];
         foreach ($this->licences as $spdx_id => $licence) {
           $data[$parent_label][$label][$spdx_id] = $licence->hasLegalType($parent_label, $label);

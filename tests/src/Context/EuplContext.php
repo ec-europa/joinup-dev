@@ -14,6 +14,7 @@ use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup_licence\Entity\LicenceInterface;
 use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\Entity\Rdf;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
@@ -293,6 +294,53 @@ class EuplContext extends RawDrupalContext {
     elseif ($checked === 'unchecked' && $checkbox->hasClass('is-checked')) {
       throw new \Exception("The licence '$spdx_id' should not be checked but it is.");
     }
+  }
+
+  /**
+   * Checks the licences in the table for compatibility.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   A table with columns 'use', 'redistribute as' and 'document ID'.
+   *
+   * @Then the following licences should show the expected compatibility document:
+   */
+  public function assertLicenceCompatibility(TableNode $table) {
+    /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginManager $plugin_manager */
+    $plugin_manager = \Drupal::service('plugin.manager.joinup_licence_compatibility_rule');
+    foreach ($table->getColumnsHash() as $test_case) {
+      $use_label = $test_case['use'];
+      $redistribute_as_label = $test_case['redistribute as'];
+      $expected_result = $test_case['document ID'];
+
+      $use_licence = static::loadLicenceByLabel($use_label);
+      $redistribute_as_licence = static::loadLicenceByLabel($redistribute_as_label);
+
+      $result = $plugin_manager->getCompatibilityDocumentId($use_licence, $redistribute_as_licence) ?? 'incompatible';
+
+      // Check that the returned document ID matches the expected ID.
+      if ($expected_result !== $result) {
+        throw new \Exception("Licences $use_label and $redistribute_as_label are expected to match the $expected_result rule but they match $result.");
+      }
+    }
+  }
+
+  /**
+   * Returns the licence entity with the given label.
+   *
+   * @param string $label
+   *   The label for which to return the licence entity.
+   *
+   * @return \Drupal\joinup_licence\Entity\LicenceInterface
+   *   The licence entity.
+   */
+  protected static function loadLicenceByLabel(string $label): LicenceInterface {
+    $entity = static::getRdfEntityByLabel($label, 'licence');
+    if ($entity instanceof LicenceInterface) {
+      return $entity;
+    }
+
+    $message = "The licence entity with the label '$label' was not found.";
+    throw new \InvalidArgumentException($message);
   }
 
   /**
