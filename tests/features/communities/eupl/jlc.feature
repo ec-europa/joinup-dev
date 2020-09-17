@@ -46,4 +46,6 @@ Feature:
       | AGPL-3.0-only    | EUPL-1.2         | T04          |
       | GPL-2.0-only     | GPL-3.0-only     | T05          |
       | GPL-3.0-only     | GPL-2.0-only     | T05          |
+      | EUPL-1.1         | EUPL-1.2         | T06          |
+      | EUPL-1.2         | EUPL-1.1         | T06          |
       | GPL-2.0-only     | GPL-2.0+         | incompatible |
