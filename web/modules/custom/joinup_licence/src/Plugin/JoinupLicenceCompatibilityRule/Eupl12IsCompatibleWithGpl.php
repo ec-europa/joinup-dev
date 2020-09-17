@@ -29,7 +29,7 @@ class Eupl12IsCompatibleWithGpl extends JoinupLicenceCompatibilityRulePluginBase
       'GPL-2.0-only',
       'GPL-3.0-only',
       'GPL-3.0-or-later',
-    ]
+    ],
   ];
   const REDISTRIBUTE_AS_CRITERIA = ['SPDX' => ['EUPL-1.2']];
 
