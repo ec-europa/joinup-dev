@@ -25,6 +25,7 @@ Feature:
       | http://joinup.eu/spdx/LGPL-2.1         | LGPL-2.1         | LGPL-2.1         |
       | http://joinup.eu/spdx/LGPL-3.0-only    | LGPL-3.0-only    | LGPL-3.0-only    |
       | http://joinup.eu/spdx/LiLiQ-Rplus-1.1  | LiLiQ-Rplus-1.1  | LiLiQ-Rplus-1.1  |
+      | http://joinup.eu/spdx/MIT              | MIT              | MIT              |
       | http://joinup.eu/spdx/MPL-2.0          | MPL-2.0          | MPL-2.0          |
       | http://joinup.eu/spdx/OSL-3.0          | OSL-3.0          | OSL-3.0          |
 
@@ -48,6 +49,7 @@ Feature:
       | http://joinup.eu/licence/lgpl21       | LGPL-2.1         | LGPL-2.1         | GPL, For software, Lesser copyleft                    |
       | http://joinup.eu/licence/lgpl3only    | LGPL-3.0-only    | LGPL-3.0-only    | GPL, For software, Lesser copyleft                    |
       | http://joinup.eu/licence/liliqrplus11 | LiLiQ-Rplus-1.1  | LiLiQ-Rplus-1.1  | GPL, For software, Copyleft/Share a.                  |
+      | http://joinup.eu/licence/mit          | MIT              | MIT              | Permissive, GPL, For software                         |
       | http://joinup.eu/licence/mpl2         | MPL-2.0          | MPL-2.0          | GPL, For software, Copyleft/Share a., Lesser copyleft |
       | http://joinup.eu/licence/osl3         | OSL-3.0          | OSL-3.0          | For software, Copyleft/Share a.                       |
 
@@ -108,4 +110,44 @@ Feature:
       | CECILL-2.1       | EUPL-1.1         | T11          |
       | LiLiQ-Rplus-1.1  | EUPL-1.2         | T11          |
       | CECILL-2.1       | EUPL-1.2         | T11          |
+      | Apache-2.0       | AGPL-3.0-only    | T12          |
+      | Apache-2.0       | CC-BY-ND-4.0     | T12          |
+      | Apache-2.0       | CC-BY-SA-4.0     | T12          |
+      | Apache-2.0       | CECILL-2.0       | T12          |
+      | Apache-2.0       | CECILL-2.1       | T12          |
+      | Apache-2.0       | CPL-1.0          | T12          |
+      | Apache-2.0       | EUPL-1.1         | T12          |
+      | Apache-2.0       | EUPL-1.2         | T12          |
+      | Apache-2.0       | EPL-2.0          | T12          |
+      | Apache-2.0       | EPL-2.1          | T12          |
+      | Apache-2.0       | GPL-2.0-only     | T12          |
+      | Apache-2.0       | GPL-2.0+         | T12          |
+      | Apache-2.0       | GPL-3.0-only     | T12          |
+      | Apache-2.0       | GPL-3.0-or-later | T12          |
+      | Apache-2.0       | LGPL-2.1         | T12          |
+      | Apache-2.0       | LGPL-3.0-only    | T12          |
+      | Apache-2.0       | LiLiQ-Rplus-1.1  | T12          |
+      | Apache-2.0       | MIT              | T12          |
+      | Apache-2.0       | MPL-2.0          | T12          |
+      | Apache-2.0       | OSL-3.0          | T12          |
+      | MIT              | AGPL-3.0-only    | T12          |
+      | MIT              | Apache-2.0       | T12          |
+      | MIT              | CC-BY-ND-4.0     | T12          |
+      | MIT              | CC-BY-SA-4.0     | T12          |
+      | MIT              | CECILL-2.0       | T12          |
+      | MIT              | CECILL-2.1       | T12          |
+      | MIT              | CPL-1.0          | T12          |
+      | MIT              | EUPL-1.1         | T12          |
+      | MIT              | EUPL-1.2         | T12          |
+      | MIT              | EPL-2.0          | T12          |
+      | MIT              | EPL-2.1          | T12          |
+      | MIT              | GPL-2.0-only     | T12          |
+      | MIT              | GPL-2.0+         | T12          |
+      | MIT              | GPL-3.0-only     | T12          |
+      | MIT              | GPL-3.0-or-later | T12          |
+      | MIT              | LGPL-2.1         | T12          |
+      | MIT              | LGPL-3.0-only    | T12          |
+      | MIT              | LiLiQ-Rplus-1.1  | T12          |
+      | MIT              | MPL-2.0          | T12          |
+      | MIT              | OSL-3.0          | T12          |
       | CC-BY-ND-4.0     | Apache-2.0       | incompatible |
