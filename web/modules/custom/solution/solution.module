@@ -637,20 +637,7 @@ function solution_get_latest_release(RdfInterface $solution) {
 
     $cache[$solution->id()] = NULL;
     if (!empty($ids)) {
-      // @todo: Sorting is not yet working in SPARQL, we're fetching all results
-      // and doing the sorting in PHP right now. Once sorting is working we
-      // should limit the result set to 1 item.
-      // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
       $releases = Rdf::loadMultiple($ids);
-      usort($releases, function ($release1, $release2) {
-        $ct1 = $release1->getCreatedTime();
-        $ct2 = $release2->getCreatedTime();
-        if (empty($ct1) || empty($ct2) || $ct1 == $ct2) {
-          return 0;
-        }
-        return ($ct1 < $ct2) ? 1 : -1;
-      });
-
       $cache[$solution->id()] = reset($releases);
     }
   }
