@@ -107,11 +107,12 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   public function getEntity(): ContentEntityInterface {
     $entity_type = $this->get('entity_type')->value;
     $entity_id = $this->get('entity_id')->value;
-    if (empty($entity_type) || empty($entity_id)) {
-      throw new \RuntimeException('::getEntity() should not be called if the related entity has not been set.');
-    }
+    assert(!empty($entity_type) && !empty($entity_id), 'InvitationInterface::getEntity() should not be called if the related entity has not been set.');
 
-    return \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id);
+    $entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id);
+    assert($entity instanceof ContentEntityInterface, 'Invitations can only be associated with fieldable entities.');
+
+    return $entity;
   }
 
   /**
