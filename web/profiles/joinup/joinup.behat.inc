@@ -2424,9 +2424,7 @@ JS;
     $found_tags_array = explode(';', $found_tags);
     $invalid_tags = array_intersect($format_tags, $found_tags_array);
     if (!empty($invalid_tags)) {
-      throw new \Exception($this->t('The following elements were found in the format list but should not: @found.', [
-        '@found' => implode(', ', $invalid_tags),
-      ]));
+      throw new \Exception(sprintf('The following elements were found in the format list but should not: %s.', implode(', ', $invalid_tags)));
     }
   }
 

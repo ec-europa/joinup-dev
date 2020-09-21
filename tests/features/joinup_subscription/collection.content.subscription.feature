@@ -53,39 +53,34 @@ Feature: Subscribing to community content in collections
       | title    | body                        | collection           | state     | author |
       | Rose oil | A widely used essential oil | Products of Bulgaria | validated | bisera |
       | Burgas   | City of dreams              | Cities of Bulgaria   | validated | hristo |
+    And solutions:
+      | title          | description                      | collection           | state     | author |
+      | Double seaming | The rolls roll around the chuck  | Products of Bulgaria | proposed  | kalin  |
+      | Belt conveyors | As throughed belts gently slope  | Products of Bulgaria | validated | bisera |
+      | New urbanism   | Context-appropriate architecture | Cities of Bulgaria   | validated | hristo |
 
-    Then the daily digest for hristo should contain the following message:
-      | mail_body | Duck liver |
-    And the daily digest for hristo should contain the following message:
-      | mail_body | Sunflower seeds |
-    And the daily digest for hristo should contain the following message:
-      | mail_body | Rose oil |
-    And the daily digest for hristo should contain the following message:
-      | mail_body | Plovdiv |
-    And the daily digest for hristo should contain the following message:
-      | mail_body | Stara Zagora |
-    And the weekly digest for bisera should contain the following message:
-      | mail_body | Duck liver |
-    And the weekly digest for bisera should contain the following message:
-      | mail_body | Canned cherries |
-    And the weekly digest for bisera should contain the following message:
-      | mail_body | Rose oil |
-    And the weekly digest for bisera should contain the following message:
-      | mail_body | Sofia |
-    And the weekly digest for bisera should contain the following message:
-      | mail_body | Stara Zagora |
-    And the weekly digest for bisera should contain the following message:
-      | mail_body | Burgas |
-    And the monthly digest for kalin should contain the following message:
-      | mail_body | Canned cherries |
-    And the monthly digest for kalin should contain the following message:
-      | mail_body | Sunflower seeds |
-    And the monthly digest for kalin should contain the following message:
-      | mail_body | Sofia |
-    And the monthly digest for kalin should contain the following message:
-      | mail_body | Plovdiv |
-    And the monthly digest for kalin should contain the following message:
-      | mail_body | Burgas |
+    Then the daily collection content subscription digest for hristo should match the following messages:
+      | Belt conveyors  |
+      | New urbanism    |
+      | Duck liver      |
+      | Sunflower seeds |
+      | Rose oil        |
+      | Plovdiv         |
+      | Stara Zagora    |
+    And the weekly collection content subscription digest for bisera should match the following message:
+      | Duck liver      |
+      | Canned cherries |
+      | Rose oil        |
+      | Sofia           |
+      | Stara Zagora    |
+      | Burgas          |
+    And the monthly collection content subscription digest for kalin should match the following message:
+      | Canned cherries |
+      | Sunflower seeds |
+      | Sofia           |
+      | Plovdiv         |
+      | Burgas          |
+      | New urbanism    |
 
     # Check that only the user's chosen frequency is digested.
     But the weekly digest for hristo should not contain any messages
@@ -118,6 +113,7 @@ Feature: Subscribing to community content in collections
       | Plovdiv              |
       | Stara Zagora         |
       | Products of Bulgaria |
+      | Belt conveyors       |
       | Duck liver           |
       | Rose oil             |
       | Sunflower seeds      |
@@ -138,6 +134,7 @@ Feature: Subscribing to community content in collections
       | title                |
       | Cities of Bulgaria   |
       | Burgas               |
+      | New urbanism         |
       | Plovdiv              |
       | Sofia                |
       | Products of Bulgaria |

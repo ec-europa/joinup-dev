@@ -25,14 +25,18 @@
 /build.local.xml
 /build.properties.local
 /drush/drush.yml
+/grumphp.yml
+/local.env
 /phpcs.xml
-/tests/behat.yml
 /phpunit.xml
+/runner.yml
+/tests/behat.yml
 /web/sites/default/services.yml
 
 # Ignore compiled CSS.
 /web/themes/joinup/css
 /web/themes/joinup/prototype/css/*.css
+
 # Ignore theme libraries
 /web/themes/joinup/vendor
 

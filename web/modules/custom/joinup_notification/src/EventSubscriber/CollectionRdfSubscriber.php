@@ -483,6 +483,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    */
   protected function generateArguments(EntityInterface $entity): array {
     $arguments = parent::generateArguments($entity);
+    /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = $arguments['@actor:field_user_first_name'];
     $actor_last_name = $arguments['@actor:field_user_family_name'];
@@ -503,7 +504,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
           $arguments['@actor:role'] = t('Facilitator');
         }
       }
-      $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
+      $arguments['@actor:full_name'] = $actor->getDisplayName();
     }
 
     if ($this->operation === 'delete' || $this->transition->getId() === 'request_deletion' || ($this->transition->getId() === 'validate' && $this->fromState === 'deletion_request')) {

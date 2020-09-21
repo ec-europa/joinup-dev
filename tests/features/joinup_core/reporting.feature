@@ -10,19 +10,19 @@ Feature:
     Then I should get a <code> HTTP response
 
     Examples:
-      | url                                                         | role          | code |
-      | /admin/reporting                                            | authenticated | 403  |
-      | /admin/reporting                                            | moderator     | 200  |
-      | /admin/reporting/legal-notice-report                        | authenticated | 403  |
-      | /admin/reporting/legal-notice-report                        | moderator     | 200  |
-      | /admin/reporting/group-administrators/rdf_entity/collection | authenticated | 403  |
-      | /admin/reporting/group-administrators/rdf_entity/collection | moderator     | 200  |
-      | /admin/reporting/export-user-list                           | authenticated | 403  |
-      | /admin/reporting/export-user-list                           | moderator     | 200  |
-      | /admin/reporting/solutions-by-type                          | authenticated | 403  |
-      | /admin/reporting/solutions-by-type                          | moderator     | 200  |
-      | /admin/reporting/solutions-by-licences                      | authenticated | 403  |
-      | /admin/reporting/solutions-by-licences                      | moderator     | 200  |
+      | url                                          | role          | code |
+      | /admin/reporting                             | authenticated | 403  |
+      | /admin/reporting                             | moderator     | 200  |
+      | /admin/reporting/legal-notice-report         | authenticated | 403  |
+      | /admin/reporting/legal-notice-report         | moderator     | 200  |
+      | /admin/reporting/group-administrators/export | authenticated | 403  |
+      | /admin/reporting/group-administrators/export | moderator     | 200  |
+      | /admin/reporting/export-user-list            | authenticated | 403  |
+      | /admin/reporting/export-user-list            | moderator     | 200  |
+      | /admin/reporting/solutions-by-type           | authenticated | 403  |
+      | /admin/reporting/solutions-by-type           | moderator     | 200  |
+      | /admin/reporting/solutions-by-licences       | authenticated | 403  |
+      | /admin/reporting/solutions-by-licences       | moderator     | 200  |
 
   Scenario: Links should be visible on the reporting page for a moderator.
     Given I am logged in as a user with the moderator role

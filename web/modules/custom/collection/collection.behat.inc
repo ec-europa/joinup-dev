@@ -54,6 +54,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     'author' => 'uid',
     'uri' => 'id',
     'title' => 'label',
+    'short ID' => 'field_short_id',
     'abstract' => 'field_ar_abstract',
     'access url' => 'field_ar_access_url',
     'banner' => 'field_ar_banner',
