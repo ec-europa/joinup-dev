@@ -14,6 +14,10 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
+use Drupal\joinup_licence\Entity\Licence;
+use Drupal\joinup_licence\Entity\LicenceInterface;
+use Drupal\joinup_licence\Entity\LicenceLegalType;
+use Drupal\joinup_licence\Entity\SpdxLicence;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -31,6 +35,31 @@ function joinup_licence_entity_bundle_field_info_alter(array &$fields, EntityTyp
   }
   if (!empty($fields['field_licence_spdx_licence'])) {
     $fields['field_licence_spdx_licence']->addConstraint('UniqueFieldInBundle', ['bundles' => ['licence']]);
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ *
+ * Declares the bundle classes for Licence entities, SPDX Licence entities and
+ * Licence Legal Type taxonomy terms.
+ */
+function joinup_licence_entity_bundle_info_alter(&$bundles) {
+  $class_mapping = [
+    'rdf_entity' => [
+      'licence' => Licence::class,
+      'spdx_licence' => SpdxLicence::class,
+    ],
+    'taxonomy_term' => [
+      'legal_type' => LicenceLegalType::class,
+    ],
+  ];
+  foreach ($class_mapping as $entity_type_id => $bundle_mapping) {
+    foreach ($bundle_mapping as $bundle => $class) {
+      if (!empty($bundles[$entity_type_id][$bundle])) {
+        $bundles[$entity_type_id][$bundle]['class'] = $class;
+      }
+    }
   }
 }
 
@@ -96,12 +125,11 @@ function joinup_licence_entity_extra_field_info(): array {
  *   entity.
  */
 function joinup_licence_rdf_entity_view(array &$build, RdfInterface $entity, EntityViewDisplayInterface $display, string $view_mode): void {
-  if ($entity->bundle() != 'licence') {
+  if (!$entity instanceof LicenceInterface) {
     return;
   }
 
-  $spdx_licence = $entity->get('field_licence_spdx_licence')->referencedEntities()[0] ?? NULL;
-  if ($spdx_licence) {
+  if ($spdx_licence = $entity->getSpdxLicenceEntity()) {
     if ($display->getComponent('spdx_licence_label')) {
       $field_item_list = $spdx_licence->get('label');
       $build['spdx_licence_label'] = $field_item_list->view();
