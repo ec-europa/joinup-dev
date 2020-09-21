@@ -159,8 +159,8 @@ function joinup_core_update_0106401() {
   }
 
   // Save data to be restored in a post-update script.
-  // @see joinup_core_post_update_0106401()
-  \Drupal::state()->set('joinup_core_update_0106401', [
+  // @see joinup_core_post_update_0106402()
+  \Drupal::state()->set('joinup_core_update_0106402', [
     'entity_ids' => $entity_ids,
     'solutions' => $solutions,
   ]);

@@ -56,8 +56,8 @@ function joinup_core_post_update_0106401(): void {
  */
 function joinup_core_post_update_0106402(): void {
   $state = \Drupal::state();
-  $data = $state->get('joinup_core_update_0106401');
-  $state->delete('joinup_core_update_0106401');
+  $data = $state->get('joinup_core_update_0106402');
+  $state->delete('joinup_core_update_0106402');
 
   foreach ($data['entity_ids'] as $entity_type_id => $ids) {
     $storage = \Drupal::entityTypeManager()->getStorage($entity_type_id);
