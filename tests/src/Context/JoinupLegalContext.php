@@ -186,7 +186,7 @@ class JoinupLegalContext extends RawDrupalContext {
   /**
    * Clears the testing legal document versions.
    *
-   * @afterScenario
+   * @AfterScenario @api
    */
   public function clearLegalNoticeVersions(): void {
     if ($this->legalDocumentVersions) {

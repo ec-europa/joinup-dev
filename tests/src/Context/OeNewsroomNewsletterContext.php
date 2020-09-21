@@ -57,7 +57,7 @@ class OeNewsroomNewsletterContext extends RawDrupalContext {
   /**
    * Enables the mock newsletter subscription service.
    *
-   * @BeforeScenario @newsroom_newsletter
+   * @BeforeScenario @newsroom_newsletter&&@api
    */
   public function beforeNewsletterScenario(): void {
     // Check if the user is overriding the newsletter subscription service in
@@ -86,7 +86,7 @@ class OeNewsroomNewsletterContext extends RawDrupalContext {
   /**
    * Disables the mock newsletter subscription service.
    *
-   * @AfterScenario @newsroom_newsletter
+   * @AfterScenario @newsroom_newsletter&&@api
    */
   public function afterNewsletterScenario(): void {
     $config = \Drupal::configFactory()->get('oe_newsroom_newsletter.subscriber');
