@@ -54,7 +54,7 @@ function joinup_core_post_update_0106401(): void {
 /**
  * Migrate data about pinned entities into meta entities (stage 2).
  */
-function joinup_core_post_update_0106401(): void {
+function joinup_core_post_update_0106402(): void {
   $state = \Drupal::state();
   $data = $state->get('joinup_core_update_0106401');
   $state->delete('joinup_core_update_0106401');
