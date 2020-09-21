@@ -410,7 +410,7 @@ Feature: Collection membership administration
     # Accept the invitation directly.
     When I am logged in as "dwightone"
     And I accept the invitation for the "Medical diagnosis" collection group
-    Then I should see the text "You have been promoted to a collection facilitator"
+    Then I should see the text "You have been promoted to collection facilitator"
     And I go to the "Medical diagnosis" collection
     And I click "Members" in the "Left sidebar"
     Then I should see the link "Add members"
