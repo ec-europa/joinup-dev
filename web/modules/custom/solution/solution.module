@@ -633,12 +633,15 @@ function solution_get_latest_release(RdfInterface $solution) {
       ->condition('rid', 'asset_release')
       ->condition('field_isr_is_version_of', $solution->id())
       ->sort('created', 'DESC')
+      ->range(0, 1)
       ->execute();
 
     $cache[$solution->id()] = NULL;
     if (!empty($ids)) {
-      $releases = Rdf::loadMultiple($ids);
-      $cache[$solution->id()] = reset($releases);
+      $id = key($ids);
+      if ($release = Rdf::load($id)) {
+        $cache[$solution->id()] = $release;
+      }
     }
   }
 
