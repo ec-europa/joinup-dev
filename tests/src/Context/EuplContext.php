@@ -14,6 +14,7 @@ use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup_licence\Entity\LicenceInterface;
 use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\Entity\Rdf;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
@@ -37,7 +38,7 @@ class EuplContext extends RawDrupalContext {
    *   Thrown when one of the entities could not be created, for example because
    *   it already exists.
    *
-   * @beforeScenario @eupl
+   * @BeforeScenario @eupl&&@api
    */
   public function setupEuplData(): void {
     // Create an owner.
@@ -168,8 +169,8 @@ class EuplContext extends RawDrupalContext {
    *
    * @When I add the :spdx_id licence to the compare list
    */
-  public function selectLicenceForComparision(string $spdx_id): void {
-    $this->toggleLicenceForComparision(TRUE, $spdx_id);
+  public function selectLicenceForComparison(string $spdx_id): void {
+    $this->toggleLicenceForComparison(TRUE, $spdx_id);
   }
 
   /**
@@ -183,8 +184,8 @@ class EuplContext extends RawDrupalContext {
    *
    * @When I remove the :spdx_id licence from the compare list
    */
-  public function unselectLicenceForComparision(string $spdx_id): void {
-    $this->toggleLicenceForComparision(FALSE, $spdx_id);
+  public function unselectLicenceForComparison(string $spdx_id): void {
+    $this->toggleLicenceForComparison(FALSE, $spdx_id);
   }
 
   /**
@@ -198,7 +199,7 @@ class EuplContext extends RawDrupalContext {
    * @throws \Exception
    *   When the licence is not found on the page.
    */
-  protected function toggleLicenceForComparision(bool $compare, string $spdx_id): void {
+  protected function toggleLicenceForComparison(bool $compare, string $spdx_id): void {
     $licence = $this->findLicenceTile($spdx_id);
     if ($compare) {
       $this->checkMaterialDesignField('Add to compare list', $licence);
@@ -296,6 +297,53 @@ class EuplContext extends RawDrupalContext {
   }
 
   /**
+   * Checks the licences in the table for compatibility.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   A table with columns 'use', 'redistribute as' and 'document ID'.
+   *
+   * @Then the following combination of licences should be described in the compatibility document:
+   */
+  public function assertLicenceCompatibility(TableNode $table) {
+    /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginManager $plugin_manager */
+    $plugin_manager = \Drupal::service('plugin.manager.joinup_licence_compatibility_rule');
+    foreach ($table->getColumnsHash() as $test_case) {
+      $use_label = $test_case['use'];
+      $redistribute_as_label = $test_case['redistribute as'];
+      $expected_result = $test_case['document ID'];
+
+      $use_licence = static::loadLicenceByLabel($use_label);
+      $redistribute_as_licence = static::loadLicenceByLabel($redistribute_as_label);
+
+      $result = $plugin_manager->getCompatibilityDocumentId($use_licence, $redistribute_as_licence) ?? 'incompatible';
+
+      // Check that the returned document ID matches the expected ID.
+      if ($expected_result !== $result) {
+        throw new \Exception("Licences $use_label and $redistribute_as_label are expected to match the $expected_result rule but they match $result.");
+      }
+    }
+  }
+
+  /**
+   * Returns the licence entity with the given label.
+   *
+   * @param string $label
+   *   The label for which to return the licence entity.
+   *
+   * @return \Drupal\joinup_licence\Entity\LicenceInterface
+   *   The licence entity.
+   */
+  protected static function loadLicenceByLabel(string $label): LicenceInterface {
+    $entity = static::getRdfEntityByLabel($label, 'licence');
+    if ($entity instanceof LicenceInterface) {
+      return $entity;
+    }
+
+    $message = "The licence entity with the label '$label' was not found.";
+    throw new \InvalidArgumentException($message);
+  }
+
+  /**
    * Finds a licence tile on the page given a licence SPDX ID.
    *
    * @param string $spdx_id
@@ -320,7 +368,7 @@ class EuplContext extends RawDrupalContext {
    * @throws \Drupal\Core\Entity\EntityStorageException
    *   Thrown when one of the created entities could not be deleted.
    *
-   * @afterScenario @eupl
+   * @AfterScenario @eupl&&@api
    */
   public function cleanEuplData(): void {
     /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */

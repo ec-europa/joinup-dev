@@ -9,6 +9,7 @@ dev:
     - cas_mock_server
     - config_devel
     - config_update
+    - dblog
     - devel
     - field_ui
     - filecache

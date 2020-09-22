@@ -15,7 +15,7 @@ use EasyRdf\GraphStore;
 /**
  * Re-insert the new EIF vocabularies to apply new changes.
  */
-function joinup_core_post_update_0106400(): void {
+function joinup_core_post_update_0106401(): void {
   $vids = [
     'eif_conceptual_model',
     'eif_interoperability_layer',

@@ -67,13 +67,14 @@
         "drupal/site_alert": "~1.1",
         "drupal/smart_trim": "~1.2",
         "drupal/social_media_links": "^2.7",
-        "drupal/spdx": "^1.0.0-alpha5",
+        "drupal/spdx": "^1.0",
         "drupal/state_machine": "^1.0",
         "drupal/subpathauto": "~1.0",
         "drupal/swiftmailer": "dev-1.x#694cbf25d8c026b0c7c118093696d151a7874754",
         "drupal/token": "~1.5",
         "drupal/video_embed_field": "~1.6",
         "drupal/view_unpublished": "~1.0@alpha",
+        "drupal/views_autosubmit": "^1.1",
         "drupal/views_bulk_operations": "^2.5",
         "drupal/views_data_export": "^1.0",
         "drush/drush": "~10.3",
@@ -89,7 +90,6 @@
         "pear/console_table": "~1.3",
         "predis/predis": "1.1.1",
         "semiceu/adms-ap_validator": "dev-master",
-        "vlucas/phpdotenv": "~5",
         "webflo/drupal-finder": "~1.2",
         "webmozart/path-util": "~2.3",
         "zaporylie/composer-drupal-optimizations": "^1.1"
@@ -139,6 +139,7 @@
         "symfony/css-selector": "~2.8|~3.0|~4.0",
         "symfony/dom-crawler": "^4.4.7",
         "symfony/phpunit-bridge": "^4.2",
+        "vlucas/phpdotenv": "~5",
         "weitzman/drupal-test-traits": "^1.4",
         "weitzman/logintrait": "^1.1"
     },
@@ -166,15 +167,23 @@
     },
     "autoload-dev": {
         "classmap": [
+            "web/modules/contrib/message_digest/src/Traits/MessageDigestContextTrait.php",
             "web/modules/contrib/message_digest/src/Traits/MessageDigestTrait.php",
-            "web/modules/contrib/og_menu/src/Tests/Traits/OgMenuTrait.php"
+            "web/modules/contrib/og_menu/src/Tests/Traits/OgMenuTrait.php",
+            "web/modules/contrib/pipeline/src/Traits/PipelineContextTrait.php",
+            "web/modules/contrib/spdx/src/Traits/SpdxContextTrait.php"
         ],
         "files": [
             "src/Composer/load.environment.php"
         ],
         "psr-4": {
             "Drupal\\joinup\\": "tests/src",
-            "Drupal\\Tests\\cas_mock_server\\": "web/modules/contrib/cas_mock_server/tests/src"
+            "Drupal\\Tests\\cas_mock_server\\": "web/modules/contrib/cas_mock_server/tests/src",
+            "Drupal\\Tests\\honeypot\\": "web/modules/contrib/honeypot/tests/src",
+            "Drupal\\Tests\\message_digest\\": "web/modules/contrib/message_digest/tests/src",
+            "Drupal\\Tests\\oe_webtools\\": "web/modules/contrib/oe_webtools/tests",
+            "Drupal\\Tests\\pipeline\\": "web/modules/contrib/pipeline/tests/src",
+            "Drupal\\Tests\\spdx\\": "web/modules/contrib/spdx/tests/src"
         }
     },
     "scripts": {
@@ -240,6 +249,7 @@
                 "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2019-04-04/2730631_85_0.patch",
                 "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2018-06-11/2765065-93.patch",
                 "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-12-03/2895352-42-8.8.x.patch",
+                "Views exposed sort identifiers are not configurable @see https://www.drupal.org/project/drupal/issues/2897638": "https://www.drupal.org/files/issues/2020-09-06/2897638-33-8.9.x.patch",
                 "Pass current route parameters to the confirmation form route @see https://www.drupal.org/project/drupal/issues/2901412": "https://www.drupal.org/files/issues/2020-02-25/2901412-13.patch",
                 "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
                 "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch",
@@ -259,10 +269,11 @@
                 "FieldException during config import @see https://www.drupal.org/project/entity_legal/issues/2980786": "https://www.drupal.org/files/issues/2019-07-26/entity_legal-skip_field_creation_during_config_import-2980786-4.patch"
             },
             "drupal/facets": {
-                "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
+                "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
+                "Notice: Undefined index: #attributes @see https://www.drupal.org/project/facets/issues/3160570": "https://www.drupal.org/files/issues/2020-07-23/undefined-index-attributes-3160570-4.patch"
             },
             "drupal/honeypot": {
-                "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2019-06-03/3059040-2.patch"
+                "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2020-09-09/3059040-31.patch"
             },
             "drupal/inline_entity_form": {
                 "Autocomplete field doesn't allow to reference entities with long titles @see https://www.drupal.org/node/2895663": "https://www.drupal.org/files/issues/2895663-2.patch"
@@ -277,7 +288,8 @@
                 "Message template should depend on text(s) filter formats @see https://www.drupal.org/project/message/issues/3163049": "https://www.drupal.org/files/issues/2020-08-03/3163049-2.patch"
             },
             "drupal/message_digest": {
-                "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch"
+                "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch",
+                "MessageDigestSubcontext is deprecated @see https://www.drupal.org/project/message_digest/issues/3168495": "https://www.drupal.org/files/issues/2020-09-01/3168495-2.patch"
             },
             "drupal/password_policy": {
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",
@@ -316,6 +328,9 @@
             },
             "drupal/video_embed_field": {
                 "Extend support for embed URLs. Option to force privacy @see https://www.drupal.org/project/video_embed_field/issues/3060201 (originally on https://www.drupal.org/node/2899093)": "https://www.drupal.org/files/issues/2019-06-11/privacy_mode-3060201-D8-6.patch"
+            },
+            "drupal/views_autosubmit": {
+                "Settings are not saved @see https://www.drupal.org/project/views_autosubmit/issues/3168560": "https://www.drupal.org/files/issues/2020-09-02/3168560-D8-2.patch"
             },
             "drush/drush": {
                 "Error message from requirements check on updatedb @see https://github.com/drush-ops/drush/pull/4513": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4513.diff"

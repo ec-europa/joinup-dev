@@ -38,8 +38,10 @@ commands:
       command: testing:behat-setup
     - task: run
       command: joinup:compile-scss
-    - task: run
-      command: fs:private-create
+    - task: mkdir
+      dir: ${env.DRUPAL_PRIVATE_FILE_SYSTEM}
+    - task: mkdir
+      dir: ${env.DRUPAL_FILE_TEMP_PATH}
 
   # Overrides toolkit:install-clean.
   toolkit:install-clean:
