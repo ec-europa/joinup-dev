@@ -53,6 +53,11 @@ function joinup_core_post_update_0106401(?array &$sandbox = NULL): string {
     \Drupal::entityTypeManager()->getStorage('path_alias')->resetCache();
   }
 
+  // Also, remove the key-value pairs for entities that might have their paths
+  // set as persistent.
+  \Drupal::keyValue('pathauto_state.rdf_entity')->deleteAll();
+  \Drupal::keyValue('pathauto_state.node')->deleteAll();
+
   return "Removed {$sandbox['progress']}/{$sandbox['total']}";
 }
 
