@@ -118,6 +118,6 @@ class CompatibilityDocumentListBuilder extends EntityListBuilder {
         'description' => 'Compatibility document comparing [licence-a] with [licence-b].',
       ])->save();
     }
-
   }
+
 }
