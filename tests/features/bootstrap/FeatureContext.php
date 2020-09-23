@@ -894,7 +894,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * Limitation: It creates terms with maximum 2 level hierarchy.
    *
-   * @beforeScenario @terms
+   * @BeforeScenario @terms&&@api
    */
   public function provideTestingTerms(): void {
     $fixture = file_get_contents(__DIR__ . '/../../fixtures/testing_terms.yml');
@@ -1592,7 +1592,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * perform asserts before creating any content of their own, since the search
    * index might still contain stale content from the previous scenario.
    *
-   * @BeforeScenario @commitSearchIndex
+   * @BeforeScenario @commitSearchIndex&&@api
    */
   public function commitSearchIndexBeforeScenario(): void {
     $this->commitSearchIndex();
@@ -1601,7 +1601,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Installs the testing module for scenarios tagged with @errorPage.
    *
-   * @BeforeScenario @errorPage
+   * @BeforeScenario @errorPage&&@api
    */
   public function beforeErrorPageTesting(): void {
     static::toggleModule('install', 'error_page_test');
@@ -1616,7 +1616,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Uninstalls the testing module for scenarios tagged with @errorPage.
    *
-   * @AfterScenario @errorPage
+   * @AfterScenario @errorPage&&@api
    */
   public function afterErrorPageTesting(): void {
     static::toggleModule('uninstall', 'error_page_test');
@@ -1684,47 +1684,24 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * the form is submitted. This would make most of Behat tests to fail. We
    * disable Antibot functionality during Behat tests run.
    *
-   * @BeforeSuite
+   * If a scenario wants to have Antibot functionality enabled, it should be
+   * tagged with @antibot.
+   *
+   * @BeforeScenario ~@antibot&&@api
    */
-  public static function disableAntibotForSuite(): void {
+  public static function disableAntibotBeforeScenarioStarts(): void {
     static::disableAntibot();
   }
 
   /**
    * Restores the Antibot functionality after tests run.
    *
-   * @AfterSuite
+   * @AfterScenario ~@antibot&&@api
    *
-   * @see self::disableAntibotForSuite()
+   * @see self::disableAntibot()
    */
-  public static function restoreAntibotForSuite(): void {
+  public static function restoreAntibotAfterScenarioEnds(): void {
     static::restoreAntibot();
-  }
-
-  /**
-   * Restores Antibot functionality in the scope of @antibot tagged scenarios.
-   *
-   * The Antibot functionality is disabled for the whole test suite run, in
-   * self::disableAntibotForSuite(). However, if a scenario wants run its test
-   * with Antibot functionality enabled, it should be tagged with @antibot.
-   *
-   * @BeforeScenario @antibot
-   *
-   * @see self::disableAntibotForSuite()
-   */
-  public function restoreAntibotForScenario(): void {
-    self::restoreAntibot();
-  }
-
-  /**
-   * Disables Antibot functionality after @antibot tagged scenarios.
-   *
-   * @AfterScenario @antibot
-   *
-   * @see self::restoreAntibotForScenario()
-   */
-  public function disableAntibotForScenario(): void {
-    static::disableAntibot();
   }
 
   /**
@@ -1768,7 +1745,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Cleans up the existing list of entities before the scenario starts.
    *
-   * @BeforeScenario @messageCleanup
+   * @BeforeScenario @messageCleanup&&@api
    */
   public function cleanupMessageEntities(): void {
     $message_storage = \Drupal::entityTypeManager()->getStorage('message');
@@ -1781,7 +1758,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * Tests that interact with the version file should be tagged with `@version`.
    *
-   * @BeforeScenario @version
+   * @BeforeScenario @version&&@api
    */
   public function backupJoinupVersion(): void {
     $filename = DRUPAL_ROOT . '/../VERSION';
@@ -1791,7 +1768,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Restores the backup of the Joinup `VERSION` file.
    *
-   * @AfterScenario @version
+   * @AfterScenario @version&&@api
    */
   public function restoreJoinupVersion(): void {
     if ($this->version === FALSE) {
@@ -1886,7 +1863,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Stores the ID of the latest file entity created before the scenario.
    *
-   * @beforeFeature
+   * @BeforeScenario @api
    */
   public static function storeLastFileId(): void {
     static::$lastFileId = \Drupal::database()->query("SELECT MAX(fid) FROM {file_managed}")->fetchField() ?: 0;
@@ -1906,7 +1883,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @see https://www.drupal.org/node/2891902
    * @see \Drupal\joinup\Traits\FileTrait::cleanFiles()
    *
-   * @afterFeature
+   * @AfterScenario @api
    */
   public static function staleFilesCleanup(): void {
     $fids = \Drupal::database()->query("SELECT fid FROM {file_managed} WHERE fid > :fid", [':fid' => static::$lastFileId])->fetchCol();
@@ -1920,7 +1897,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Switch to Behat specific Drupal settings during the test suite.
    *
-   * @beforeSuite
+   * @BeforeSuite
    */
   public static function addBehatSpecificDrupalSettings(): void {
     static::runCommand('drupal:settings behat --root=' . static::getPath('web') . ' --sites-subdir=default');
@@ -1929,7 +1906,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Restore the original Drupal settings.
    *
-   * @afterSuite
+   * @AfterSuite
    */
   public static function restoreDrupalSettings(): void {
     static::runCommand('drupal:settings site-clean --root=' . static::getPath('web') . ' --sites-subdir=default');

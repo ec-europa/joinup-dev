@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "76465af925d579b90d13b2b0fed693a9",
+    "content-hash": "0b69a87238a3b5046bd59852b5acc3fa",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2673,16 +2673,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.9.5",
+            "version": "8.9.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "c9b9643663b80f02c038f9dea15b8717a22c3339"
+                "reference": "caf4e756d31dfb0c2e52cd0748e900efe4b57766"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/c9b9643663b80f02c038f9dea15b8717a22c3339",
-                "reference": "c9b9643663b80f02c038f9dea15b8717a22c3339",
+                "url": "https://api.github.com/repos/drupal/core/zipball/caf4e756d31dfb0c2e52cd0748e900efe4b57766",
+                "reference": "caf4e756d31dfb0c2e52cd0748e900efe4b57766",
                 "shasum": ""
             },
             "require": {
@@ -2927,20 +2927,20 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2020-09-03T21:07:45+00:00"
+            "time": "2020-09-16T11:22:21+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "8.9.3",
+            "version": "8.9.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
-                "reference": "07cdfe2799789fc0c2d0e3e1ba64cb5e2a973ece"
+                "reference": "c902d07cb49ef73777e2b33a39e54c2861a8c81d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core-composer-scaffold/zipball/07cdfe2799789fc0c2d0e3e1ba64cb5e2a973ece",
-                "reference": "07cdfe2799789fc0c2d0e3e1ba64cb5e2a973ece",
+                "url": "https://api.github.com/repos/drupal/core-composer-scaffold/zipball/c902d07cb49ef73777e2b33a39e54c2861a8c81d",
+                "reference": "c902d07cb49ef73777e2b33a39e54c2861a8c81d",
                 "shasum": ""
             },
             "require": {
@@ -2974,7 +2974,7 @@
             "keywords": [
                 "drupal"
             ],
-            "time": "2020-05-29T11:36:27+00:00"
+            "time": "2020-08-07T22:30:30+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -4303,7 +4303,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2019-06-03/3059040-2.patch"
+                    "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2020-09-09/3059040-31.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4837,9 +4837,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.0-rc3",
                     "datestamp": "1558111386",
@@ -4849,7 +4846,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch"
+                    "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch",
+                    "MessageDigestSubcontext is deprecated @see https://www.drupal.org/project/message_digest/issues/3168495": "https://www.drupal.org/files/issues/2020-09-01/3168495-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4959,9 +4957,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.0-alpha1",
                     "datestamp": "1575031684",
@@ -5390,29 +5385,26 @@
         },
         {
             "name": "drupal/pipeline",
-            "version": "1.0.0-alpha1",
+            "version": "1.0.0-alpha2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/pipeline.git",
-                "reference": "8.x-1.0-alpha1"
+                "reference": "8.x-1.0-alpha2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/pipeline-8.x-1.0-alpha1.zip",
-                "reference": "8.x-1.0-alpha1",
-                "shasum": "e8b45de497e5f69028fb99b9c41839c840be3ebb"
+                "url": "https://ftp.drupal.org/files/projects/pipeline-8.x-1.0-alpha2.zip",
+                "reference": "8.x-1.0-alpha2",
+                "shasum": "ab95a6cf56b86b19b0c34e9ca28bc1c31f52ccc3"
             },
             "require": {
                 "drupal/core": "~8.0"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.0-alpha1",
-                    "datestamp": "1581695176",
+                    "version": "8.x-1.0-alpha2",
+                    "datestamp": "1600173534",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5428,6 +5420,14 @@
                     "name": "Claudiu Cristea",
                     "homepage": "https://www.drupal.org/u/claudiu.cristea",
                     "role": "maintainer"
+                },
+                {
+                    "name": "idimopoulos",
+                    "homepage": "https://www.drupal.org/user/2578708"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
                 }
             ],
             "description": "allows splitting processes in steps and then running them via an orchestrator service.",
@@ -6186,7 +6186,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-2.7",
-                    "datestamp": "1595616928",
+                    "datestamp": "1598506938",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6288,16 +6288,16 @@
         },
         {
             "name": "drupal/spdx",
-            "version": "1.0.0-alpha5",
+            "version": "1.0.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/spdx.git",
-                "reference": "972c0c06b936a51f577ada93cb011774e85feb86"
+                "reference": "c64a2c73b854f9a272972758482f19884b74fabe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/972c0c06b936a51f577ada93cb011774e85feb86",
-                "reference": "972c0c06b936a51f577ada93cb011774e85feb86",
+                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/c64a2c73b854f9a272972758482f19884b74fabe",
+                "reference": "c64a2c73b854f9a272972758482f19884b74fabe",
                 "shasum": ""
             },
             "require": {
@@ -6308,10 +6308,10 @@
             "type": "drupal-module",
             "description": "Allows to federate and manage the SPDX licences.",
             "support": {
-                "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha5",
+                "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha6",
                 "issues": "https://github.com/ec-europa/spdx/issues"
             },
-            "time": "2019-05-23T21:16:44+00:00"
+            "time": "2020-09-15T08:51:10+00:00"
         },
         {
             "name": "drupal/state_machine",
