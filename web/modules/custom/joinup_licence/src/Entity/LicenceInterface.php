@@ -101,4 +101,14 @@ interface LicenceInterface extends RdfInterface {
    */
   public function getCompatibilityDocumentId(LicenceInterface $redistribute_as_licence): ?string;
 
+  /**
+   * Returns the Licence entity that corresponds to the given SPDX ID.
+   *
+   * @param string $spdx_id
+   *   The SPDX ID for which to return the corresponding Licence entity.
+   *
+   * @return \Drupal\joinup_licence\Entity\LicenceInterface|null
+   *   The licence entity, or NULL if no licence corresponds to the given ID.
+   */
+  public static function loadBySpdxId(string $spdx_id): ?LicenceInterface;
 }
