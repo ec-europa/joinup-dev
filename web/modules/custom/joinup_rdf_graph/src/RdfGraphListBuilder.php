@@ -81,4 +81,13 @@ class RdfGraphListBuilder extends EntityListBuilder {
     ] + parent::buildHeader();
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function render() {
+    $build = parent::render();
+    $build['table']['#empty'] = $this->t("There are no RDF graph items yet.");
+    return $build;
+  }
+
 }

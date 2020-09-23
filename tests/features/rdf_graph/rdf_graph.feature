@@ -7,6 +7,7 @@ Feature: As a user with 'RDF graph manager' role I want to be able to upload RDF
     Given I am logged in as an "RDF graph manager"
     When I click "RDF graphs"
     Then I should see the heading "RDF graphs"
+    And I should see "There are no RDF graph items yet."
 
     When I click "Add RDF graph"
     Then I should see the heading "Add RDF Graph"
