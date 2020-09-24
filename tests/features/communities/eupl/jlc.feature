@@ -1,9 +1,10 @@
-@api @eupl
+@api
 Feature:
   As a product owner of an open source project
   In order to assert whether I can reuse software or data and redistribute it using my favorite licence
   I want to be able to get advice on whether two licences are compatible
 
+  @eupl
   Scenario: Compatibility of licences can be determined using licence compatibility rules
     Given SPDX licences:
       | uri                                    | title            | ID               |
@@ -239,20 +240,24 @@ Feature:
       | LGPL-3.0-only    | CECILL-C         | incompatible |
       | OFL-1.1          | CC-BY-ND-4.0     | incompatible |
 
-    Scenario: Moderators can edit licence compatibility documents
-      # The compatibility documents overview should be accessible through the toolbar.
-      Given I am logged in as a moderator
-      When I click "Compatibility documents" in the "Administration toolbar" region
-      Then I should see the heading "Compatibility documents"
+  Scenario: Moderators can edit licence compatibility documents
+    # The compatibility documents overview should be accessible through the toolbar.
+    Given I am logged in as a moderator
+    When I click "Compatibility documents" in the "Administration toolbar" region
+    Then I should see the heading "Compatibility documents"
 
-      # The compatibility documents should exist and have a default text.
-      When I click "Edit"
-      Then I should see the heading "Edit T01"
-      And I should see the text "Compatibility document comparing [licence-a] with [licence-b]."
+    # The compatibility documents should exist and have a default text.
+    When I click "Edit" in the "Content" region
+    Then I should see the heading "Edit T01"
+    And I should see the text "Compatibility document comparing [licence-a] with [licence-b]."
 
-      # The document should be editable.
-      When I fill in "Description" with "In case the two components are not merged, each component keeps its primary licence: [licence-a] or [licence-b]."
-      And I press "Save"
-      Then I should see the success message "The compatibility document T01 has been updated."
-      When I click "Edit"
-      Then I should see the text "In case the two components are not merged, each component keeps its primary licence: [licence-a] or [licence-b]."
+    # The document should be editable.
+    When I fill in "Description" with "In case the two components are not merged, each component keeps its primary licence: [licence-a] or [licence-b]."
+    And I press "Save"
+    Then I should see the success message "The compatibility document T01 has been updated."
+    When I click "Edit"
+    Then I should see the text "In case the two components are not merged, each component keeps its primary licence: [licence-a] or [licence-b]."
+
+    # The compatibility documents are populated automatically when visiting the
+    # overview. Clean them up again.
+    Then all compatibility documents are cleaned up

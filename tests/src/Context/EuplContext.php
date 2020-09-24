@@ -14,6 +14,7 @@ use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup_licence\Entity\CompatibilityDocument;
 use Drupal\joinup_licence\Entity\LicenceInterface;
 use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -73,6 +74,9 @@ class EuplContext extends RawDrupalContext {
       'title' => 'JLA',
       'og_audience' => Eupl::JLA_SOLUTION,
     ])->save();
+
+    // Populate the compatibility documents.
+    CompatibilityDocument::populate();
   }
 
   /**
@@ -393,6 +397,18 @@ class EuplContext extends RawDrupalContext {
     $solution->delete();
 
     Rdf::load('http://example.com/owner')->delete();
+
+    $this->cleanCompatibilityDocuments();
+  }
+
+  /**
+   * Cleans up the compatibility documents.
+   *
+   * @Then all compatibility documents are cleaned up
+   */
+  public function cleanCompatibilityDocuments(): void {
+    $compatibility_document_storage = \Drupal::entityTypeManager()->getStorage('compatibility_document');
+    $compatibility_document_storage->delete($compatibility_document_storage->loadMultiple());
   }
 
   /**
