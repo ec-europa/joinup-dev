@@ -65,7 +65,6 @@ class CollectionContext extends RawDrupalContext {
     'keywords' => 'field_keywords',
     'logo' => 'field_ar_logo',
     'moderation' => 'field_ar_moderation',
-    'new member role' => 'field_ar_new_member_role',
     'modification date' => 'changed',
     'owner' => 'field_ar_owner',
     'policy domain' => 'field_policy_domain',
@@ -249,10 +248,6 @@ class CollectionContext extends RawDrupalContext {
   protected function convertValueAliases(array $fields): array {
     $mapped_values = [
       'field_ar_moderation' => ['no' => 0, 'yes' => 1],
-      'field_ar_new_member_role' => [
-        'member' => 'rdf_entity-collection-member',
-        'author' => 'rdf_entity-collection-author',
-      ],
       'field_ar_content_creation' => [
         'facilitators' => 'only_facilitators',
         'members' => 'only_members',

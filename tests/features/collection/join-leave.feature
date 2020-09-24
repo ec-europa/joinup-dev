@@ -161,22 +161,3 @@ Feature: Joining and leaving collections through the web interface
     # Since this is a modal, the dialog simply closes and the user is not redirected
     # to the overview page. This is why the title from "About" is still displayed.
     And I should see the heading "About Sapient Pearwood"
-
-  Scenario: Role is assigned according to the new member role option.
-    Given collections:
-      | title             | abstract                                 | closed | new member role | description                              | state     |
-      | Accepting authors | Accepted members are allowed to publish. | no     | author          | Accepted members are allowed to publish. | validated |
-    And users:
-      | Username | E-mail             | First name | Family name |
-      | Author   | author@example.com | Author     | Writter     |
-
-    When I am logged in as "Author"
-    And I go to the "Accepting authors" collection
-
-    When I press the "Join this collection" button
-    Then I should see the success message "You are now a member of Accepting authors."
-    When I go to the homepage of the "Accepting authors" collection
-    And I click "Add news"
-    # Authors can directly publish.
-    Then I should see the button "Publish"
-    And I should not see the button "Propose"

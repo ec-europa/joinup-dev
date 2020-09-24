@@ -14,7 +14,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_description
     - field.field.rdf_entity.collection.field_ar_logo
     - field.field.rdf_entity.collection.field_ar_moderation
-    - field.field.rdf_entity.collection.field_ar_new_member_role
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
@@ -83,7 +82,6 @@ third_party_settings:
         - field_ar_banner
         - field_spatial_coverage
         - field_keywords
-        - field_ar_new_member_role
         - field_ar_moderation
         - field_ar_closed
         - field_ar_content_creation
@@ -197,12 +195,6 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
-  field_ar_new_member_role:
-    weight: 16
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
   field_ar_owner:
     weight: 5
     settings:
