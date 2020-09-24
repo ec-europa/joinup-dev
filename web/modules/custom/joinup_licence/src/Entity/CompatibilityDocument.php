@@ -107,4 +107,27 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
     throw new \InvalidArgumentException(sprintf('Requested invalid compatibility document %s', $id));
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public static function populate(): void {
+    $storage = \Drupal::entityTypeManager()->getStorage('compatibility_document');
+
+    /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginManager $plugin_manager */
+    $plugin_manager = \Drupal::service('plugin.manager.joinup_licence_compatibility_rule');
+    $definitions = $plugin_manager->getDefinitions();
+    $plugin_ids = array_filter(array_map(function (array $definition): string {
+      return $definition['document_id'] ?? '';
+    }, $definitions));
+    $entity_ids = $storage->getQuery()->execute();
+    $missing_entity_ids = array_diff($plugin_ids, $entity_ids);
+
+    foreach ($missing_entity_ids as $entity_id) {
+      $storage->create([
+        'id' => $entity_id,
+        'description' => 'Compatibility document comparing [licence-a] with [licence-b].',
+      ])->save();
+    }
+  }
+
 }
