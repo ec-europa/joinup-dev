@@ -92,4 +92,19 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
     return $this->id();
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public static function load($id): CompatibilityDocumentInterface {
+    // The compatibility documents have a 1-1 relationship with the licence
+    // compatibility plugins. It is the responsibility of the caller to ensure
+    // that a correct ID is passed in. If the entity doesn't exist we throw an
+    // exception, mercilessly.
+    $entity = parent::load($id);
+    if ($entity instanceof CompatibilityDocumentInterface) {
+      return $entity;
+    }
+    throw new \InvalidArgumentException(sprintf('Requested invalid compatibility document %s', $id));
+  }
+
 }
