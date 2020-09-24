@@ -95,11 +95,12 @@ interface LicenceInterface extends RdfInterface {
    *   The licence under which the current code or data is going to be
    *   redistributed.
    *
-   * @return string|null
+   * @return string
    *   The document ID of the compatibility document that contains the requested
-   *   information. If the licences are not compatible NULL is returned.
+   *   information. If the licences are not compatible the ID "T99" is returned,
+   *   which is the ID of the document explaining the licences are incompatible.
    */
-  public function getCompatibilityDocumentId(LicenceInterface $redistribute_as_licence): ?string;
+  public function getCompatibilityDocumentId(LicenceInterface $redistribute_as_licence): string;
 
   /**
    * Returns the Licence entity that corresponds to the given SPDX ID.
@@ -111,4 +112,5 @@ interface LicenceInterface extends RdfInterface {
    *   The licence entity, or NULL if no licence corresponds to the given ID.
    */
   public static function loadBySpdxId(string $spdx_id): ?LicenceInterface;
+
 }

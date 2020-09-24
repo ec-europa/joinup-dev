@@ -10,9 +10,14 @@ use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\joinup_licence\Entity\LicenceInterface;
 
 /**
- * JoinupLicenceCompatibilityRule plugin manager.
+ * Plugin manager for JoinupLicenceCompatibilityRule plugins.
  */
 class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
+
+  /**
+   * The ID of the compatibility document for incompatible licences.
+   */
+  const INCOMPATIBLE_DOCUMENT_ID = 'T99';
 
   /**
    * Constructs a JoinupLicenceCompatibilityRulePluginManager.
@@ -50,11 +55,12 @@ class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
    *   The licence under which the modified or extended code or data is going to
    *   be redistributed.
    *
-   * @return string|null
+   * @return string
    *   The document ID of the compatibility document that contains the requested
-   *   information. If the licences are not compatible NULL is returned.
+   *   information. If the licences are not compatible the document "T99" is
+   *   returned.
    */
-  public function getCompatibilityDocumentId(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): ?string {
+  public function getCompatibilityDocumentId(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): string {
     // Sort the plugins by weight and return the first result.
     $plugin_definitions = $this->getDefinitions();
     uasort($plugin_definitions, ['Drupal\Component\Utility\SortArray', 'sortByWeightElement']);
@@ -67,7 +73,7 @@ class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
       }
     }
 
-    return NULL;
+    return 'T99';
   }
 
 }
