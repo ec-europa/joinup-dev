@@ -92,6 +92,13 @@ class Licence extends Rdf implements LicenceInterface {
   /**
    * {@inheritdoc}
    */
+  public function getCompatibilityDocument(LicenceInterface $redistribute_as_licence): CompatibilityDocumentInterface {
+    return CompatibilityDocument::load($this->getCompatibilityDocumentId($redistribute_as_licence));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function loadBySpdxId(string $spdx_id): ?LicenceInterface {
     try {
       $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');

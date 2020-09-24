@@ -103,6 +103,24 @@ interface LicenceInterface extends RdfInterface {
   public function getCompatibilityDocumentId(LicenceInterface $redistribute_as_licence): string;
 
   /**
+   * Returns the document that details how the licence can be redistributed.
+   *
+   * This document contains advice how (and if) code or data which is
+   * distributed under the current licence can be used in a project which is
+   * going to be distributed under the passed in licence.
+   *
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface $redistribute_as_licence
+   *   The licence under which the current code or data is going to be
+   *   redistributed.
+   *
+   * @return \Drupal\joinup_licence\Entity\CompatibilityDocumentInterface
+   *   The compatibility document that contains the requested information. If
+   *   the licences are not compatible the "T99" document is returned, which is
+   *   the document that explains that the licences are incompatible.
+   */
+  public function getCompatibilityDocument(LicenceInterface $redistribute_as_licence): CompatibilityDocumentInterface;
+
+  /**
    * Returns the Licence entity that corresponds to the given SPDX ID.
    *
    * @param string $spdx_id
