@@ -157,7 +157,7 @@ class EntityReferenceCustomLinkFormatter extends EntityReferenceFormatterBase {
     $elements = [];
     $entities_to_view = $this->getEntitiesToView($items, $langcode);
     if ($this->getSetting('limit') !== -1) {
-      $entities_to_view = array_splice($entities_to_view, 0, $this->getSetting('limit'));
+      $entities_to_view = array_splice($entities_to_view, 0, (int) $this->getSetting('limit'));
     }
 
     foreach ($entities_to_view as $delta => $entity) {
