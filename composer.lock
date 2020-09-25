@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6f3466f1c94a2c49f5989751878ad87",
+    "content-hash": "9e1539301444d0b5cbe4062d68cb2f0c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6220,11 +6220,17 @@
         },
         {
             "name": "drupal/sparql_entity_storage",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha7",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/sparql_entity_storage.git",
-                "reference": "2aeb96a3184ed2e15aae2fc8ad9ca7bd43978fbb"
+                "reference": "8.x-1.0-alpha7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/sparql_entity_storage-8.x-1.0-alpha7.zip",
+                "reference": "8.x-1.0-alpha7",
+                "shasum": "daa2fa15340e0c6ce25e028ac0bf54ea86763acb"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -6237,20 +6243,16 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.0-alpha5+9-dev",
-                    "datestamp": "1599731235",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1601041173",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
                 },
                 "patches_applied": {
-                    "Bundle classes support @see https://github.com/ec-europa/sparql_entity_storage/pull/11": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.diff",
-                    "Modernize SparqlCondition class": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/26.diff"
+                    "Bundle classes support @see https://github.com/ec-europa/sparql_entity_storage/pull/11": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.diff"
                 }
             },
             "autoload": {
@@ -6281,8 +6283,7 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/sparql_entity_storage",
                 "issues": "https://drupal.org/project/issues/sparql_entity_storage"
-            },
-            "time": "2020-09-24T13:25:58+00:00"
+            }
         },
         {
             "name": "drupal/spdx",
@@ -18767,7 +18768,6 @@
         "drupal/config_ignore": 20,
         "drupal/matomo_reporting_api": 20,
         "drupal/og": 20,
-        "drupal/sparql_entity_storage": 20,
         "drupal/swiftmailer": 20,
         "drupal/view_unpublished": 15,
         "ec-europa/joinup-tallinn-dashboard": 20,
