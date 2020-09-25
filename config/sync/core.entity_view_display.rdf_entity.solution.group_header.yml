@@ -61,12 +61,12 @@ bundle: solution
 mode: group_header
 content:
   collections:
-    weight: 7
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   download_total:
-    weight: 5
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -89,6 +89,19 @@ content:
       template_suggestion:
         template_suggestion: ''
     region: content
+  field_policy_domain:
+    type: entity_reference_custom_link
+    weight: 4
+    region: content
+    label: inline
+    settings:
+      path: 'internal:/search'
+      label: '[term:name]'
+      query_parameters: "f[0]|policy_domain:[term:tid]\r\nf[1]|type:solution"
+      limit: '7'
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
   label:
     label: hidden
     type: string
@@ -100,7 +113,7 @@ content:
         template_suggestion: ''
     region: content
   releases_overview:
-    weight: 6
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -142,7 +155,6 @@ hidden:
   field_is_webdav_url: true
   field_is_wiki: true
   field_keywords: true
-  field_policy_domain: true
   field_short_id: true
   field_site_featured: true
   field_site_pinned: true
