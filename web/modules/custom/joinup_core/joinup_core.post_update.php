@@ -105,6 +105,9 @@ function joinup_core_post_update_0106403(?array &$sandbox = NULL): string {
   $rdf_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
   if (empty($sandbox['entity_ids'])) {
+    // We process first the collections, solutions and releases because they're
+    // parents for the rest of entities and their alias is used in children
+    // alias computing.
     $sandbox['entity_ids']['rdf_entity'] = $rdf_storage->getQuery()->condition('rid', 'collection')->execute();
     $sandbox['entity_ids']['rdf_entity'] += $rdf_storage->getQuery()->condition('rid', 'solution')->execute();
     $sandbox['entity_ids']['rdf_entity'] += $rdf_storage->getQuery()->condition('rid', 'asset_release')->execute();
