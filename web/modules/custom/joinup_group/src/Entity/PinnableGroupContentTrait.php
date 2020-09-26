@@ -69,7 +69,7 @@ trait PinnableGroupContentTrait {
       /** @var \Drupal\joinup_federation\RdfEntityReferenceFieldItemList $item_list */
       $item_list = $meta_entity->get('field_pinned_in');
 
-      $item_list->filter(function (EntityReferenceItem $item) use ($group) {
+      $item_list->filter(function (EntityReferenceItem $item) use ($group): bool {
         return $item->target_id !== $group->id();
       });
 
