@@ -72,6 +72,8 @@ function joinup_core_post_update_0106402(): void {
             $entity->pin($pinned_group);
           }
         }
+        // Commit to Solr backend the items tracked to be indexed.
+        \Drupal::service('search_api.post_request_indexing')->destruct();
       }
     }
   }
