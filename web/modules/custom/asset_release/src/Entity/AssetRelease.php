@@ -24,13 +24,12 @@ class AssetRelease extends Rdf implements AssetReleaseInterface {
    * {@inheritdoc}
    */
   public function getGroup(): GroupInterface {
-    /** @var \Drupal\joinup_group\Entity\GroupInterface[] $groups */
-    $groups = $this->getReferencedEntities('field_isr_is_version_of');
-    if (empty($groups)) {
+    $group = $this->getFirstReferencedEntity('field_isr_is_version_of');
+    if (empty($group) || !$group instanceof GroupInterface) {
       throw new MissingGroupException();
     }
 
-    return reset($groups);
+    return $group;
   }
 
   /**

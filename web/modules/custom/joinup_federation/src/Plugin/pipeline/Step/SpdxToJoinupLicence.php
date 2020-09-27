@@ -84,8 +84,13 @@ class SpdxToJoinupLicence extends JoinupFederationStepPluginBase implements Pipe
       ->execute();
 
     $conversion_map = [];
+    /** @var string $id */
+    /** @var \Drupal\joinup_licence\Entity\LicenceInterface $licence */
     foreach ($this->getRdfStorage()->loadMultiple($ids) as $id => $licence) {
-      $spdx_licence_id = $licence->get('field_licence_spdx_licence')->target_id;
+      $spdx_licence_id = $licence->getSpdxLicenceRdfId();
+      if (empty($spdx_licence_id)) {
+        continue;
+      }
       $conversion_map[$spdx_licence_id] = $id;
       // Cover also an incoming value with '.html' as suffix.
       $conversion_map["{$spdx_licence_id}.html"] = $id;

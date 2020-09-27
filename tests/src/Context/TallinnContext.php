@@ -32,7 +32,7 @@ class TallinnContext extends RawDrupalContext {
    *   Thrown when one of the entities could not be created, for example because
    *   it already exists.
    *
-   * @beforeScenario @tallinn
+   * @BeforeScenario @tallinn&&@api
    */
   public function setupTallinnData() {
     // Create two policy domain terms.
@@ -112,7 +112,7 @@ class TallinnContext extends RawDrupalContext {
    * @throws \Drupal\Core\Entity\EntityStorageException
    *   Thrown when one of the created entities could not be deleted.
    *
-   * @afterScenario @tallinn
+   * @AfterScenario @tallinn&&@api
    */
   public function cleanTallinnData() {
     // Temporarily disable the feature to commit the index after every query.

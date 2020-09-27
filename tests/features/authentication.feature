@@ -1,4 +1,4 @@
-@group-a
+@api @group-a
 Feature: User authentication
   In order to protect the integrity of the website
   As a product owner
@@ -68,7 +68,6 @@ Feature: User authentication
       | path                                       |
       | admin/reporting/distribution-downloads/csv |
 
-  @api
   Scenario Outline: Authenticated user can access pages they are authorized to
     Given I am logged in as a user with the "authenticated" role
     Then I visit "<path>"
@@ -80,7 +79,6 @@ Feature: User authentication
       | user               |
       | user/subscriptions |
 
-  @api
   Scenario Outline: Authenticated user cannot access site administration
     Given I am logged in as a user with the "authenticated" role
     When I go to "<path>"
@@ -122,7 +120,6 @@ Feature: User authentication
       | rdf_entity/add/owner                        |
       | rdf_entity/add/solution                     |
 
-  @api
   Scenario Outline: Authenticated user cannot access restricted non-HTML URLs.
     Given I am logged in as a user with the "authenticated" role
     When I go to "<path>"
@@ -132,7 +129,6 @@ Feature: User authentication
       | path                                       |
       | admin/reporting/distribution-downloads/csv |
 
-  @api
   Scenario Outline: Moderator can access pages they are authorized to
     Given I am logged in as a user with the "moderator" role
     Then I visit "<path>"
@@ -154,7 +150,6 @@ Feature: User authentication
       | licence/add                                 |
       | propose/collection                          |
 
-  @api
   Scenario Outline: Moderator cannot access restricted pages
     Given I am logged in as a user with the "moderator" role
     When I go to "<path>"
@@ -185,7 +180,6 @@ Feature: User authentication
       | rdf_entity/add/owner               |
       | rdf_entity/add/solution            |
 
-  @api
   Scenario Outline: Administrator can access pages they are authorized to
     Given I am logged in as a user with the "administrator" role
     Then I visit "<path>"
@@ -197,7 +191,6 @@ Feature: User authentication
       | admin/reporting/distribution-downloads/csv |
       | collections                                |
 
-  @api
   Scenario Outline: Administrator cannot access pages intended for site building and development
     Given I am logged in as a user with the "administrator" role
     When I go to "<path>"

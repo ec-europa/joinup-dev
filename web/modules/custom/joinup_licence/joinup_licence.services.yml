@@ -9,3 +9,6 @@ services:
     arguments: ['@entity_type.manager']
     tags:
       - { name: event_subscriber }
+  plugin.manager.joinup_licence_compatibility_rule:
+    class: Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginManager
+    parent: default_plugin_manager
