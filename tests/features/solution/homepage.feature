@@ -164,7 +164,8 @@ Feature: Solution homepage
       | All policy domains | Bring in EVERYONE! | logo.png | banner.jpg | validated | Finance in EU, Supplier exchange, E-health, HR, Employment and Support Allowance, Statistics and Analysis, E-inclusion, Demography |
 
     When I go to the "All policy domains" solution
-    Then I should see the following links:
+    Then I should see the text "Policy domain" in the "Header"
+    And I should see the following links:
       | Finance in EU                    |
       | Supplier exchange                |
       | E-health                         |
