@@ -46,7 +46,7 @@ third_party_settings:
         id: ''
         classes: ''
         element: div
-        show_label: true
+        show_label: hidden
         label_element: h3
         attributes: ''
         effect: none
