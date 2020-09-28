@@ -183,7 +183,7 @@ content:
     weight: 16
     region: content
     settings:
-      display_label: true
+      display_label: false
     third_party_settings: {  }
   field_ar_owner:
     weight: 4
