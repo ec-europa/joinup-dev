@@ -28,3 +28,18 @@ joinup_licence.comparer:
     parameters:
       licences:
         type: spdx_ids_list
+
+joinup_licence.compatibility_check:
+  path: '/licence/compatibility-check/{use_licence}/{redistribute_as_licence}'
+  defaults:
+    _controller: 'Drupal\joinup_licence\Controller\LicenceCompatibilityController::check'
+    _title_callback: 'Drupal\joinup_licence\Controller\LicenceCompatibilityController::getTitle'
+  requirements:
+    _access: 'TRUE'
+    licences: '([a-zA-Z0-9][a-zA-Z0-9. -]+;)+[a-zA-Z0-9][a-zA-Z0-9. -]+'
+  options:
+    parameters:
+      use_licence:
+        type: licence_spdx_id
+      redistribute_as_licence:
+        type: licence_spdx_id

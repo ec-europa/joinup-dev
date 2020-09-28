@@ -5,8 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\joinup_licence\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\joinup_licence\Plugin\Field\CompatibilityDocumentLicenceFieldItemList;
 
 /**
  * Defines the compatibility document entity.
@@ -33,6 +35,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   id = "compatibility_document",
  *   label = @Translation("Compatibility document"),
  *   label_collection = @Translation("Compatibility documents"),
+ *   bundle_label = @Translation("Compatibility Document type"),
  *   handlers = {
  *     "list_builder" = "Drupal\joinup_licence\CompatibilityDocumentListBuilder",
  *     "form" = {
@@ -46,12 +49,15 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   admin_permission = "access compatibility document overview",
  *   entity_keys = {
  *     "id" = "id",
+ *     "bundle" = "bundle",
  *     "label" = "title"
  *   },
  *   links = {
  *     "edit-form" = "/admin/content/compatibility-document/{compatibility_document}/edit",
  *     "collection" = "/admin/content/compatibility-document"
  *   },
+ *   bundle_entity_type = "compatibility_document_type",
+ *   field_ui_base_route = "entity.compatibility_document_type.edit_form"
  * )
  */
 class CompatibilityDocument extends ContentEntityBase implements CompatibilityDocumentInterface {
@@ -82,6 +88,24 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
       ])
       ->setDisplayConfigurable('view', TRUE);
 
+    $fields['bundle'] = BaseFieldDefinition::create('entity_reference')
+        ->setLabel($entity_type->getBundleLabel())
+        ->setSetting('target_type', 'compatibility_document_type')
+        ->setRequired(TRUE)
+        ->setReadOnly(TRUE);
+
+    $fields['use_licence'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Use licence'))
+      ->setDescription(t('The licence of the project that is being used as part of a new project.'))
+      ->setComputed(TRUE)
+      ->setClass(CompatibilityDocumentLicenceFieldItemList::class);
+
+    $fields['redistribute_as_licence'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Redistribute as licence'))
+      ->setDescription(t('The licence under which the new project will be distributed.'))
+      ->setComputed(TRUE)
+      ->setClass(CompatibilityDocumentLicenceFieldItemList::class);
+
     return $fields;
   }
 
@@ -110,6 +134,20 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
   /**
    * {@inheritdoc}
    */
+  public static function preCreate(EntityStorageInterface $storage, array &$values) {
+    parent::preCreate($storage, $values);
+
+    // We are currently only using the 'default' bundle. The only reason we have
+    // bundles at all is to be able to use the Field UI. Specify this bundle if
+    // no other has been provided.
+    $values += [
+      'bundle' => 'default',
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function populate(): void {
     $storage = \Drupal::entityTypeManager()->getStorage('compatibility_document');
 
@@ -128,6 +166,22 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
         'description' => 'Compatibility document comparing [licence-a] with [licence-b].',
       ])->save();
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUseLicence(LicenceInterface $licence): CompatibilityDocumentInterface {
+    $this->set('use_licence', $licence);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRedistributeAsLicence(LicenceInterface $licence): CompatibilityDocumentInterface {
+    $this->set('redistribute_as_licence', $licence);
+    return $this;
   }
 
 }

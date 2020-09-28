@@ -26,4 +26,26 @@ interface CompatibilityDocumentInterface extends ContentEntityInterface {
    */
   public static function populate(): void;
 
+  /**
+   * Sets the licence of the component that will be included in the project.
+   *
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface $licence
+   *   The licence to set.
+   *
+   * @return \Drupal\joinup_licence\Entity\CompatibilityDocumentInterface
+   *   The compatibility document, for chaining.
+   */
+  public function setUseLicence(LicenceInterface $licence): CompatibilityDocumentInterface;
+
+  /**
+   * Sets the licence under which the new, combined, project will be released.
+   *
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface $licence
+   *   The licence to set.
+   *
+   * @return \Drupal\joinup_licence\Entity\CompatibilityDocumentInterface
+   *   The compatibility document, for chaining.
+   */
+  public function setRedistributeAsLicence(LicenceInterface $licence): CompatibilityDocumentInterface;
+
 }
