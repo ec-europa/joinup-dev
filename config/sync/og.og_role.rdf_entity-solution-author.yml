@@ -5,7 +5,7 @@ dependencies:
   config:
     - rdf_entity.rdfentity.solution
 id: rdf_entity-solution-author
-label: Member
+label: Author
 weight: 1
 is_admin: null
 group_type: rdf_entity
