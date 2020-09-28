@@ -166,14 +166,14 @@ Feature: Solution homepage
     When I go to the "All policy domains" solution
     Then I should see the text "Policy domain" in the "Header"
     And I should see the following links:
-      | Finance in EU                    |
-      | Supplier exchange                |
+      | Demography                       |
       | E-health                         |
-      | HR                               |
-      | Employment and Support Allowance |
-      | Statistics and Analysis          |
       | E-inclusion                      |
-    And I should not see the link "Demography"
+      | Employment and Support Allowance |
+      | Finance in EU                    |
+      | HR                               |
+      | Statistics and Analysis          |
+    And I should not see the link "Supplier exchange"
     When I click "HR"
     Then the url should match "/search"
     Then the option with text "HR   (1)" from select facet "policy domain" is selected

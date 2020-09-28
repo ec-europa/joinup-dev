@@ -156,7 +156,14 @@ class EntityReferenceCustomLinkFormatter extends EntityReferenceFormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
     $entities_to_view = $this->getEntitiesToView($items, $langcode);
-    if ($this->getSetting('limit') !== -1) {
+    $limit = $this->getSetting('limit');
+    if ($limit !== -1 && $limit < count($entities_to_view)) {
+      // Due to the fact that delta is not yet implemented in SPARQL, in case
+      // not all terms are shown, sort the terms alphabetically. This will keep
+      // the results predictable and consistent across the website.
+      usort($entities_to_view, function (EntityInterface $entity_a, EntityInterface $entity_b): int {
+        return $entity_a->label() <=> $entity_b->label();
+      });
       $entities_to_view = array_splice($entities_to_view, 0, (int) $this->getSetting('limit'));
     }
 
