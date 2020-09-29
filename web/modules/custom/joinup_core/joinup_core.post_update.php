@@ -50,9 +50,17 @@ function joinup_core_post_update_0106401(): void {
 }
 
 /**
+ * Delete all persistent aliases to ensure that they will be rebuilt.
+ */
+function joinup_core_post_update_0106402(): void {
+  \Drupal::keyValue('pathauto_state.rdf_entity')->deleteAll();
+  \Drupal::keyValue('pathauto_state.node')->deleteAll();
+}
+
+/**
  * Remove path alias duplicates.
  */
-function joinup_core_post_update_0106402(?array &$sandbox = NULL): string {
+function joinup_core_post_update_0106403(?array &$sandbox = NULL): string {
   $db = \Drupal::database();
   if (!isset($sandbox['duplicate_pids'])) {
     // Get all duplicate path alias IDs.
@@ -77,23 +85,19 @@ function joinup_core_post_update_0106402(?array &$sandbox = NULL): string {
     $sandbox['total'] = count($sandbox['duplicate_pids']);
   }
 
-  $to_delete = array_splice($sandbox['duplicate_pids'], 0, 1000);
-  $db->delete('path_alias_revision')
-    ->condition('id', $to_delete, 'IN')
-    ->execute();
-  $db->delete('path_alias')
-    ->condition('id', $to_delete, 'IN')
-    ->execute();
+  if ($to_delete = array_splice($sandbox['duplicate_pids'], 0, 1000)) {
+    $db->delete('path_alias_revision')
+      ->condition('id', $to_delete, 'IN')
+      ->execute();
+    $db->delete('path_alias')
+      ->condition('id', $to_delete, 'IN')
+      ->execute();
+  }
   $sandbox['progress'] += count($to_delete);
 
   if ($sandbox['#finished'] = (int) empty($sandbox['duplicate_pids'])) {
     \Drupal::entityTypeManager()->getStorage('path_alias')->resetCache();
   }
-
-  // Also, remove the key-value pairs for entities that might have their paths
-  // set as persistent.
-  \Drupal::keyValue('pathauto_state.rdf_entity')->deleteAll();
-  \Drupal::keyValue('pathauto_state.node')->deleteAll();
 
   return "Removed {$sandbox['progress']}/{$sandbox['total']}";
 }
@@ -101,7 +105,7 @@ function joinup_core_post_update_0106402(?array &$sandbox = NULL): string {
 /**
  * Update aliases for entities with the old alias.
  */
-function joinup_core_post_update_0106403(?array &$sandbox = NULL): string {
+function joinup_core_post_update_0106404(?array &$sandbox = NULL): string {
   $rdf_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
   if (empty($sandbox['entity_ids'])) {
@@ -116,7 +120,7 @@ function joinup_core_post_update_0106403(?array &$sandbox = NULL): string {
       'solution',
       'asset_release',
     ], 'NOT IN')->execute();
-    $sandbox['entity_ids']['node'] = [];
+    $sandbox['entity_ids']['node'] = $node_storage->getQuery()->execute();
     $sandbox['count'] = 0;
     $sandbox['max'] = count($sandbox['entity_ids']['rdf_entity']) + count($sandbox['entity_ids']['node']);
   }
@@ -139,12 +143,7 @@ function joinup_core_post_update_0106403(?array &$sandbox = NULL): string {
       // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6217
       continue;
     }
-    // Update aliases for the entity's default language and its translations.
-    foreach ($entity->getTranslationLanguages() as $langcode => $language) {
-      /** @var \Drupal\Core\Entity\TranslatableInterface $translated_entity */
-      $translated_entity = $entity->getTranslation($langcode);
-      $alias_generator->updateEntityAlias($translated_entity, 'bulkupdate');
-    }
+    $alias_generator->updateEntityAlias($entity, 'bulkupdate');
   }
 
   $sandbox['count'] += count($entity_ids);
