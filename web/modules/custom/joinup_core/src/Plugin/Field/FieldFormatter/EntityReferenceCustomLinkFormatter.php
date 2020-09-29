@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_core\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -62,7 +63,7 @@ class EntityReferenceCustomLinkFormatter extends EntityReferenceFormatterBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
     return new static(
       $container,
       $plugin_definition,
@@ -78,7 +79,7 @@ class EntityReferenceCustomLinkFormatter extends EntityReferenceFormatterBase {
   /**
    * {@inheritdoc}
    */
-  public static function defaultSettings() {
+  public static function defaultSettings(): array {
     return [
       'path' => '[term:url]',
       'label' => '[term:label]',
@@ -90,7 +91,7 @@ class EntityReferenceCustomLinkFormatter extends EntityReferenceFormatterBase {
   /**
    * {@inheritdoc}
    */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
+  public function settingsForm(array $form, FormStateInterface $form_state): array {
     $elements['path'] = [
       '#title' => $this->t('The path of the link'),
       '#description' => $this->t('The path supports tokens e.g. [term:id]. Internal paths should start with "internal:/"'),
@@ -131,7 +132,7 @@ class EntityReferenceCustomLinkFormatter extends EntityReferenceFormatterBase {
   /**
    * {@inheritdoc}
    */
-  public function settingsSummary() {
+  public function settingsSummary(): array {
     $summary = [];
     $summary[] = $this->getSetting('path') ?
       $this->t('Redirect path: %path.', [
@@ -153,7 +154,7 @@ class EntityReferenceCustomLinkFormatter extends EntityReferenceFormatterBase {
   /**
    * {@inheritdoc}
    */
-  public function viewElements(FieldItemListInterface $items, $langcode) {
+  public function viewElements(FieldItemListInterface $items, $langcode): array {
     $elements = [];
     $entities_to_view = $this->getEntitiesToView($items, $langcode);
     $limit = $this->getSetting('limit');
@@ -188,7 +189,7 @@ class EntityReferenceCustomLinkFormatter extends EntityReferenceFormatterBase {
   }
 
   /**
-   * Processes the query parameters and encodes the url parameters.
+   * Processes the query parameters and encodes the URL parameters.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity in the current delta.
@@ -204,10 +205,9 @@ class EntityReferenceCustomLinkFormatter extends EntityReferenceFormatterBase {
     }
 
     $return = [];
+    $query_parameters = array_filter(array_map('trim', explode("\n", str_replace("\r", "\n", $setting))));
     foreach ($query_parameters as $query_parameter) {
       [$name, $value] = explode('|', $query_parameter, 2);
-      $name = trim($name);
-      $value = rtrim($value, "\r");
       if (empty($name)) {
         continue;
       }
@@ -220,16 +220,16 @@ class EntityReferenceCustomLinkFormatter extends EntityReferenceFormatterBase {
   /**
    * {@inheritdoc}
    */
-  protected function checkAccess(EntityInterface $entity) {
+  protected function checkAccess(EntityInterface $entity): AccessResultInterface {
     return $entity->access('view label', NULL, TRUE);
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function isApplicable(FieldDefinitionInterface $field_definition) {
+  public static function isApplicable(FieldDefinitionInterface $field_definition): bool {
     // This formatter is only available for taxonomy terms.
-    return $field_definition->getFieldStorageDefinition()->getSetting('target_type') == 'taxonomy_term';
+    return $field_definition->getFieldStorageDefinition()->getSetting('target_type') === 'taxonomy_term';
   }
 
 }
