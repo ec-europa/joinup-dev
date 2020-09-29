@@ -37,7 +37,6 @@ use Drupal\joinup_licence\Plugin\Field\CompatibilityDocumentLicenceFieldItemList
  *   id = "compatibility_document",
  *   label = @Translation("Compatibility document"),
  *   label_collection = @Translation("Compatibility documents"),
- *   bundle_label = @Translation("Compatibility Document type"),
  *   handlers = {
  *     "form" = {
  *       "edit" = "Drupal\joinup_licence\Form\CompatibilityDocumentForm",
@@ -52,14 +51,12 @@ use Drupal\joinup_licence\Plugin\Field\CompatibilityDocumentLicenceFieldItemList
  *   admin_permission = "access compatibility document overview",
  *   entity_keys = {
  *     "id" = "id",
- *     "bundle" = "bundle",
  *     "label" = "title"
  *   },
  *   links = {
  *     "edit-form" = "/admin/structure/compatibility-document/{compatibility_document}/edit",
  *     "collection" = "/admin/structure/compatibility-document"
  *   },
- *   bundle_entity_type = "compatibility_document_type",
  *   field_ui_base_route = "entity.compatibility_document.collection"
  * )
  */
@@ -92,12 +89,6 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
         'weight' => 10,
       ])
       ->setDisplayConfigurable('view', TRUE);
-
-    $fields['bundle'] = BaseFieldDefinition::create('entity_reference')
-        ->setLabel($entity_type->getBundleLabel())
-        ->setSetting('target_type', 'compatibility_document_type')
-        ->setRequired(TRUE)
-        ->setReadOnly(TRUE);
 
     $fields['use_licence'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Use licence'))
@@ -134,20 +125,6 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
       return $entity;
     }
     throw new \InvalidArgumentException(sprintf('Requested invalid compatibility document %s', $id));
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function preCreate(EntityStorageInterface $storage, array &$values) {
-    parent::preCreate($storage, $values);
-
-    // We are currently only using the 'default' bundle. The only reason we have
-    // bundles at all is to be able to use the Field UI. Specify this bundle if
-    // no other has been provided.
-    $values += [
-      'bundle' => 'default',
-    ];
   }
 
   /**

@@ -1,9 +1,3 @@
-entity.compatibility_document_type.collection:
-  title: 'Compatibility document types'
-  parent: system.admin_structure
-  description: 'Manage Compatibility document types.'
-  route_name: entity.compatibility_document_type.collection
-
 entity.compatibility_document.collection:
   title: 'Compatibility documents'
   parent: system.admin_structure

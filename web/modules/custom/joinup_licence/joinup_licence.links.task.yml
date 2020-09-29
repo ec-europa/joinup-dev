@@ -6,11 +6,3 @@ entity.compatibility_document.collection:
   title: List
   route_name: entity.compatibility_document.collection
   base_route: entity.compatibility_document.collection
-entity.compatibility_document_type.edit_form:
-  title: Edit
-  route_name: entity.compatibility_document_type.edit_form
-  base_route: entity.compatibility_document_type.edit_form
-entity.compatibility_document_type.collection:
-  title: List
-  route_name: entity.compatibility_document_type.collection
-  base_route: entity.compatibility_document_type.collection
