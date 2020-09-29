@@ -1,0 +1,4 @@
+joinup_rdf_graph.collection:
+  title: RDF graphs
+  route_name: joinup_rdf_graph.collection
+  base_route: system.admin_content

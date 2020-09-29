@@ -56,7 +56,10 @@ Feature: User authentication
       | rdf_entity/add/contact_information          |
       | rdf_entity/add/licence                      |
       | rdf_entity/add/owner                        |
+      | rdf_entity/add/rdf_graph                    |
       | rdf_entity/add/solution                     |
+      | rdf-graph                                   |
+      | rdf-graph/add                               |
       | user/subscriptions                          |
 
   Scenario Outline: Anonymous user cannot access restricted non-HTML URLs.
@@ -118,7 +121,10 @@ Feature: User authentication
       | rdf_entity/add/contact_information          |
       | rdf_entity/add/licence                      |
       | rdf_entity/add/owner                        |
+      | rdf_entity/add/rdf_graph                    |
       | rdf_entity/add/solution                     |
+      | rdf-graph                                   |
+      | rdf-graph/add                               |
 
   Scenario Outline: Authenticated user cannot access restricted non-HTML URLs.
     Given I am logged in as a user with the "authenticated" role
@@ -178,7 +184,10 @@ Feature: User authentication
       | rdf_entity/add/contact_information |
       | rdf_entity/add/licence             |
       | rdf_entity/add/owner               |
+      | rdf_entity/add/rdf_graph           |
       | rdf_entity/add/solution            |
+      | rdf-graph                          |
+      | rdf-graph/add                      |
 
   Scenario Outline: Administrator can access pages they are authorized to
     Given I am logged in as a user with the "administrator" role
@@ -219,4 +228,7 @@ Feature: User authentication
       | rdf_entity/add/contact_information |
       | rdf_entity/add/licence             |
       | rdf_entity/add/owner               |
+      | rdf_entity/add/rdf_graph           |
       | rdf_entity/add/solution            |
+      | rdf-graph                          |
+      | rdf-graph/add                      |

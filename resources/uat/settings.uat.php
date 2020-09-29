@@ -34,3 +34,4 @@ set_error_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleError']);
 set_exception_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleException']);
 
 $settings['config_sync_directory'] = DRUPAL_ROOT . '/../config/sync';
+$settings['joinup']['sparql_public_endpoint'] = getenv('SPARQL_PUBLIC_ENDPOINT');
