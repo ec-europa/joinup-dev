@@ -56,11 +56,11 @@ use Drupal\joinup_licence\Plugin\Field\CompatibilityDocumentLicenceFieldItemList
  *     "label" = "title"
  *   },
  *   links = {
- *     "edit-form" = "/admin/content/compatibility-document/{compatibility_document}/edit",
- *     "collection" = "/admin/content/compatibility-document"
+ *     "edit-form" = "/admin/structure/compatibility-document/{compatibility_document}/edit",
+ *     "collection" = "/admin/structure/compatibility-document"
  *   },
  *   bundle_entity_type = "compatibility_document_type",
- *   field_ui_base_route = "entity.compatibility_document_type.edit_form"
+ *   field_ui_base_route = "entity.compatibility_document.collection"
  * )
  */
 class CompatibilityDocument extends ContentEntityBase implements CompatibilityDocumentInterface {

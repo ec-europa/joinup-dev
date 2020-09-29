@@ -43,3 +43,13 @@ joinup_licence.compatibility_check:
         type: licence_spdx_id
       redistribute_as_licence:
         type: licence_spdx_id
+
+entity.compatibility_document.collection:
+  path: '/admin/structure/compatibility-document'
+  defaults:
+    _entity_list: 'compatibility_document'
+    _title: 'Compatibility documents'
+  requirements:
+    _permission: 'access compatibility document overview'
+  options:
+    _admin_route: TRUE
