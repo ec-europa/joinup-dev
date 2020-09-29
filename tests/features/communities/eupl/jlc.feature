@@ -286,15 +286,41 @@ Feature:
     When I visit "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
     Then I should see the heading "Can EUPL-1.2 be redistributed as EUPL-1.2?"
     And I should see the text "Freedom for using and re-distributing is a basic common characteristic of all open licences."
+    And the page should be cacheable
+    When I reload the page
+    Then the page should be cached
+
+    When I visit "licence/compatibility-check/LGPL-2.1/LGPL-2.1"
+    Then I should see the heading "Can LGPL-2.1 be redistributed as LGPL-2.1?"
+    And I should see the text "Freedom for using and re-distributing is a basic common characteristic of all open licences."
+    And the page should be cacheable
+    When I reload the page
+    Then the page should be cached
 
     When I visit "licence/compatibility-check/EUPL-1.2/LGPL-2.1"
     Then I should see the heading "Can EUPL-1.2 be redistributed as LGPL-2.1?"
     And I should see the text "The hypothetical risk of 'viral effect' from LGPL-2.1 to the code covered by EUPL-1.2 in the case of dynamic or even static linking will not be validated."
+    And the page should be cacheable
+    When I reload the page
+    Then the page should be cached
 
     When I visit "licence/compatibility-check/EUPL-1.2/CECILL-C"
     Then I should see the heading "Can EUPL-1.2 be redistributed as CECILL-C?"
     And I should see the text "You have to check if the text of EUPL-1.2 has expressly mentioned CECILL-C as compatible."
+    And the page should be cacheable
+    When I reload the page
+    Then the page should be cached
 
     When I visit "licence/compatibility-check/LGPL-2.1/CECILL-C"
     Then I should see the heading "Can LGPL-2.1 be redistributed as CECILL-C?"
     And I should see the text "LGPL-2.1 is not compatible with CECILL-C"
+    And the page should be cacheable
+    When I reload the page
+    Then the page should be cached
+
+    When I go to "licence/compatibility-check/LPG-2.1/DIESEL-C"
+    Then the response status code should be 404
+    And I should see the heading "Page not found"
+    And the page should be cacheable
+    When I reload the page
+    Then the page should be cached
