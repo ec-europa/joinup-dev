@@ -338,6 +338,24 @@ class EuplContext extends RawDrupalContext {
   }
 
   /**
+   * Creates compatibility documents using the data provided in a table.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   A table with columns 'id' and 'description'.
+   *
+   * @Given compatibility documents:
+   */
+  public function createCompatibilityDocuments(TableNode $table): void {
+    $this->cleanCompatibilityDocuments();
+    foreach ($table->getColumnsHash() as $document) {
+      CompatibilityDocument::create([
+        'id' => $document['id'],
+        'description' => $document['description'],
+      ])->save();
+    }
+  }
+
+  /**
    * Returns the licence entity with the given label.
    *
    * @param string $label
