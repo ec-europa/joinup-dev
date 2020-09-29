@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_licence\Entity;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\joinup_licence\Plugin\Field\CompatibilityDocumentLicenceFieldItemList;
 
 /**
@@ -62,6 +64,8 @@ use Drupal\joinup_licence\Plugin\Field\CompatibilityDocumentLicenceFieldItemList
  * )
  */
 class CompatibilityDocument extends ContentEntityBase implements CompatibilityDocumentInterface {
+
+  use JoinupBundleClassFieldAccessTrait;
 
   /**
    * {@inheritdoc}
@@ -164,7 +168,7 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
     foreach ($missing_entity_ids as $entity_id) {
       $storage->create([
         'id' => $entity_id,
-        'description' => 'Compatibility document comparing [licence-a] with [licence-b].',
+        'description' => 'Compatibility document comparing @use-licence with @redistribute-as-licence.',
       ])->save();
     }
   }
@@ -183,6 +187,51 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
   public function setRedistributeAsLicence(LicenceInterface $licence): CompatibilityDocumentInterface {
     $this->set('redistribute_as_licence', $licence);
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getUseLicence(): ?LicenceInterface {
+    return $this->getLicence('use_licence');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRedistributeAsLicence(): ?LicenceInterface {
+    return $this->getLicence('redistribute_as_licence');
+  }
+
+  /**
+   * Returns the licence that is referenced by the field with the given name.
+   *
+   * @param string $field_name
+   *   The name of the entity reference field.
+   *
+   * @return \Drupal\joinup_licence\Entity\LicenceInterface|null
+   *   The referenced licence, or NULL if this field does not reference one.
+   */
+  protected function getLicence(string $field_name): ?LicenceInterface {
+    $entity = $this->getFirstReferencedEntity($field_name);
+    if ($entity instanceof LicenceInterface) {
+      return $entity;
+    }
+    return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDescription(): FormattableMarkup {
+    $description = $this->getMainPropertyValue('description') ?? '';
+    $use_licence = $this->getUseLicence()->getSpdxLicenceId() ?? t('Unknown');
+    $redistribute_as_licence = $this->getRedistributeAsLicence()->getSpdxLicenceId() ?? t('Unknown');
+
+    return new FormattableMarkup($description, [
+      '@use-licence' => $use_licence,
+      '@redistribute-as-licence' => $redistribute_as_licence,
+    ]);
   }
 
 }

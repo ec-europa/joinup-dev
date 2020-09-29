@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_licence\Entity;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
@@ -25,6 +26,31 @@ interface CompatibilityDocumentInterface extends ContentEntityInterface {
    *   document.
    */
   public static function populate(): void;
+
+  /**
+   * Returns the licence of the component that will be included in the project.
+   *
+   * @return \Drupal\joinup_licence\Entity\LicenceInterface|null
+   *   The licence, or NULL if no licence has been set yet.
+   */
+  public function getUseLicence(): ?LicenceInterface;
+
+  /**
+   * Returns the licence under which the combined project will be released.
+   *
+   * @return \Drupal\joinup_licence\Entity\LicenceInterface|null
+   *   The licence, or NULL if no licence has been set yet.
+   */
+  public function getRedistributeAsLicence(): ?LicenceInterface;
+
+  /**
+   * Returns the description, replacing all licence placeholders.
+   *
+   * @return FormattableMarkup
+   *   The description, with actual licence names as replacement arguments for
+   *   '@use-licence' and '@redistribute-as-licence'.
+   */
+  public function getDescription(): FormattableMarkup;
 
   /**
    * Sets the licence of the component that will be included in the project.
