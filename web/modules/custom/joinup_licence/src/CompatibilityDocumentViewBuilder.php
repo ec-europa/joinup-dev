@@ -12,6 +12,9 @@ use Drupal\joinup_licence\Entity\CompatibilityDocumentInterface;
  */
 class CompatibilityDocumentViewBuilder extends EntityViewBuilder {
 
+  /**
+   * {@inheritdoc}
+   */
   public function buildComponents(array &$build, array $entities, array $displays, $view_mode) {
     if (empty($entities)) {
       return;

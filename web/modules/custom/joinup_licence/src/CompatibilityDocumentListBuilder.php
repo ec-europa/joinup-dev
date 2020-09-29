@@ -69,7 +69,7 @@ class CompatibilityDocumentListBuilder extends EntityListBuilder {
       CompatibilityDocument::populate();
     }
     catch (\Exception $e) {
-      $this->messenger()->addError(t('An error occurred while trying to populate the compatibility documents: %error', [
+      $this->messenger()->addError($this->t('An error occurred while trying to populate the compatibility documents: %error', [
         '%error' => $e->getMessage(),
       ]));
     }

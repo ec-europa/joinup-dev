@@ -6,9 +6,9 @@ namespace Drupal\joinup_licence\Entity;
 
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Entity\ContentEntityBase;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\joinup_licence\Plugin\Field\CompatibilityDocumentLicenceFieldItemList;
 
@@ -63,6 +63,7 @@ use Drupal\joinup_licence\Plugin\Field\CompatibilityDocumentLicenceFieldItemList
 class CompatibilityDocument extends ContentEntityBase implements CompatibilityDocumentInterface {
 
   use JoinupBundleClassFieldAccessTrait;
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -203,9 +204,9 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
   public function getDescription(): FormattableMarkup {
     $description = $this->getMainPropertyValue('description') ?? '';
     $use_licence = $this->getUseLicence();
-    $use_licence_id = $use_licence ? $use_licence->getSpdxLicenceId() ?? t('Unknown') : t('Unknown');
+    $use_licence_id = $use_licence ? $use_licence->getSpdxLicenceId() ?? $this->t('Unknown') : $this->t('Unknown');
     $redistribute_as_licence = $this->getRedistributeAsLicence();
-    $redistribute_as_licence_id = $redistribute_as_licence ? $redistribute_as_licence->getSpdxLicenceId() ?? t('Unknown') : t('Unknown');
+    $redistribute_as_licence_id = $redistribute_as_licence ? $redistribute_as_licence->getSpdxLicenceId() ?? $this->t('Unknown') : $this->t('Unknown');
 
     return new FormattableMarkup($description, [
       '@use-licence' => $use_licence_id,
