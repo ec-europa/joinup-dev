@@ -37,13 +37,14 @@ use Drupal\joinup_licence\Plugin\Field\CompatibilityDocumentLicenceFieldItemList
  *   label_collection = @Translation("Compatibility documents"),
  *   bundle_label = @Translation("Compatibility Document type"),
  *   handlers = {
- *     "list_builder" = "Drupal\joinup_licence\CompatibilityDocumentListBuilder",
  *     "form" = {
  *       "edit" = "Drupal\joinup_licence\Form\CompatibilityDocumentForm",
  *     },
+ *     "list_builder" = "Drupal\joinup_licence\CompatibilityDocumentListBuilder",
  *     "route_provider" = {
  *       "html" = "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
- *     }
+ *     },
+ *     "view_builder" = "Drupal\joinup_licence\CompatibilityDocumentViewBuilder",
  *   },
  *   base_table = "compatibility_document",
  *   admin_permission = "access compatibility document overview",
