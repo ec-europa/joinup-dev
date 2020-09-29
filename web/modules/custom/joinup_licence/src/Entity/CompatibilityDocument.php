@@ -202,12 +202,14 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
    */
   public function getDescription(): FormattableMarkup {
     $description = $this->getMainPropertyValue('description') ?? '';
-    $use_licence = $this->getUseLicence()->getSpdxLicenceId() ?? t('Unknown');
-    $redistribute_as_licence = $this->getRedistributeAsLicence()->getSpdxLicenceId() ?? t('Unknown');
+    $use_licence = $this->getUseLicence();
+    $use_licence_id = $use_licence ? $use_licence->getSpdxLicenceId() ?? t('Unknown') : t('Unknown');
+    $redistribute_as_licence = $this->getRedistributeAsLicence();
+    $redistribute_as_licence_id = $redistribute_as_licence ? $redistribute_as_licence->getSpdxLicenceId() ?? t('Unknown') : t('Unknown');
 
     return new FormattableMarkup($description, [
-      '@use-licence' => $use_licence,
-      '@redistribute-as-licence' => $redistribute_as_licence,
+      '@use-licence' => $use_licence_id,
+      '@redistribute-as-licence' => $redistribute_as_licence_id,
     ]);
   }
 

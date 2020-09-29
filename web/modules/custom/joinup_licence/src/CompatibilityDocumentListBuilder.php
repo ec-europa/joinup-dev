@@ -82,6 +82,7 @@ class CompatibilityDocumentListBuilder extends EntityListBuilder {
    */
   public function buildHeader() {
     $header['id'] = $this->t('ID');
+    $header['description'] = $this->t('Description');
     return $header + parent::buildHeader();
   }
 
@@ -91,6 +92,7 @@ class CompatibilityDocumentListBuilder extends EntityListBuilder {
   public function buildRow(EntityInterface $entity) {
     /* @var $entity \Drupal\joinup_licence\Entity\CompatibilityDocumentInterface */
     $row['id'] = $entity->id();
+    $row['description'] = text_summary($entity->getDescription(), NULL, 100);
     return $row + parent::buildRow($entity);
   }
 
