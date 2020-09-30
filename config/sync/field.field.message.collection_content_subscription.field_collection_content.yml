@@ -251,7 +251,4 @@ settings:
   compatibility_document:
     handler: 'default:compatibility_document'
     handler_settings: {  }
-  compatibility_document_type:
-    handler: 'default:compatibility_document_type'
-    handler_settings: {  }
 field_type: dynamic_entity_reference
