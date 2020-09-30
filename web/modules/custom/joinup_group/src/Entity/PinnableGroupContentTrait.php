@@ -98,11 +98,11 @@ trait PinnableGroupContentTrait {
     foreach ($meta_entity->get('field_pinned_in') as $item) {
       if ($item instanceof EntityReferenceItem) {
         try {
-          if ($target_id = $item->get('target_id')->getValue() ?? NULL) {
+          if ($target_id = $item->get('target_id')->getValue()) {
             $ids[] = $target_id;
           }
         }
-        catch (MissingDataException $e) {
+        catch (MissingDataException|\InvalidArgumentException $e) {
         }
       }
     }
