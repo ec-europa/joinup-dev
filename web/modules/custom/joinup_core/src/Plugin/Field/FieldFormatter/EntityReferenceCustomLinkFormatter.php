@@ -6,6 +6,7 @@ namespace Drupal\joinup_core\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceFormatterBase;
@@ -20,8 +21,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @FieldFormatter(
  *   id = "entity_reference_custom_link",
  *   label = @Translation("Custom link"),
- *   description = @Translation("Displays the label as a link to a customized path."),
- *   field_types = {
+ *   description = @Translation("Displays the label as a link to a customized
+ *   path."), field_types = {
  *     "entity_reference"
  *   }
  * )
@@ -156,21 +157,11 @@ class EntityReferenceCustomLinkFormatter extends EntityReferenceFormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode): array {
     $elements = [];
-    $entities_to_view = $this->getEntitiesToView($items, $langcode);
-    $limit = $this->getSetting('limit');
-    if ($limit !== -1 && $limit < count($entities_to_view)) {
-      // Due to the fact that delta is not yet implemented in SPARQL, in case
-      // not all terms are shown, sort the terms alphabetically. This will keep
-      // the results predictable and consistent across the website.
-      usort($entities_to_view, function (EntityInterface $entity_a, EntityInterface $entity_b): int {
-        return $entity_a->label() <=> $entity_b->label();
-      });
-      $entities_to_view = array_splice($entities_to_view, 0, (int) $this->getSetting('limit'));
-    }
+    $path = $this->getSetting('path');
+    $label = $this->getSetting('label');
 
-    foreach ($entities_to_view as $delta => $entity) {
-      $path = $this->getSetting('path');
-      $label = $this->getSetting('label');
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $items */
+    foreach ($this->getEntitiesToView($items, $langcode) as $delta => $entity) {
       $query_parameters = $this->getQueryParameters($entity);
 
       $path = $this->token->replace($path, [$entity->getEntityTypeId() => $entity]);
@@ -186,6 +177,24 @@ class EntityReferenceCustomLinkFormatter extends EntityReferenceFormatterBase {
     }
 
     return $elements;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getEntitiesToView(EntityReferenceFieldItemListInterface $items, $langcode): array {
+    $entities_to_view = parent::getEntitiesToView($items, $langcode);
+    $limit = $this->getSetting('limit');
+    if ($limit !== -1 && $limit < count($entities_to_view)) {
+      // Due to the fact that delta is not yet implemented in SPARQL, in case
+      // not all terms are shown, sort the terms alphabetically. This will keep
+      // the results predictable and consistent across the website.
+      usort($entities_to_view, function (EntityInterface $entity_a, EntityInterface $entity_b): int {
+        return $entity_a->label() <=> $entity_b->label();
+      });
+      $entities_to_view = array_splice($entities_to_view, 0, $limit);
+    }
+    return $entities_to_view;
   }
 
   /**
