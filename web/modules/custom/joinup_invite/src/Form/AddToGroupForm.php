@@ -37,11 +37,11 @@ class AddToGroupForm extends GroupFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $role_id = implode('-', [
-      $this->entity->getEntityTypeId(),
-      $this->entity->bundle(),
-      $form_state->getValue('role'),
-    ]);
+    $role_id = implode(
+      $this->entity->getEntityTypeId(), '-', [
+        $this->entity->bundle(),
+        $form_state->getValue('role'),
+      ]);
     $this->role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
 
     $users = $this->getUserList($form_state);

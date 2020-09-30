@@ -124,15 +124,15 @@ Feature: Solution membership administration
     When I fill in "E-mail" with "dwight1@example.com"
     And I press "Add"
     Then the page should show the following chips in the Content region:
-      | Christian Dwight   |
+      | Christian Dwight |
     When I select "Facilitator" from "Role"
     And the mail collector cache is empty
     And I press "Invite members"
     Then I should see the success message "Successfully invited the selected users."
     And the following email should have been sent:
-      | recipient | dwightone                                                                                    |
-      | subject   | Invitation from Guadalupe Norman to join solution The Missing Sons.                          |
-      | body      | You have been invited by Guadalupe Norman to join the solution The Missing Sons as a member. |
+      | recipient | dwightone                                                                                                  |
+      | subject   | Invitation from Guadalupe Norman to join solution The Missing Sons.                                        |
+      | body      | You have been invited by Guadalupe Norman to join the solution The Missing Sons as a solution facilitator. |
 
     # Accept the invitation directly.
     When I am logged in as "dwightone"

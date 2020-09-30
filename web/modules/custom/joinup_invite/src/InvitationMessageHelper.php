@@ -93,6 +93,9 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
       $arguments["@invitation:${action}_url"] = Url::fromRoute('joinup_invite.update_invitation', $url_arguments, $url_options)->toString();
     }
 
+    $arguments['@invitation:role'] = $invitation->field_invitation_og_role->isEmpty() ? '' :
+      strtolower($invitation->field_invitation_og_role->first()->entity->label());
+
     return $arguments;
   }
 
