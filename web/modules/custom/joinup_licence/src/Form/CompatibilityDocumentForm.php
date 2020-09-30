@@ -16,10 +16,12 @@ class CompatibilityDocumentForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state): int {
-    $entity = $this->getEntity();
-    $entity->save();
+    $result = parent::save($form, $form_state);
+
     $message_arguments = ['%label' => $this->entity->label()];
     $this->messenger()->addStatus($this->t('The compatibility document %label has been updated.', $message_arguments));
+
+    return $result;
   }
 
 }
