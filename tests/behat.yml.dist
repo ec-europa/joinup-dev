@@ -47,6 +47,7 @@ default:
         - Drupal\joinup\Context\OeNewsroomNewsletterContext
         - Drupal\joinup\Context\OwnerContext
         - Drupal\joinup\Context\RdfEntityProvenanceContext
+        - Drupal\joinup\Context\RdfGraphContext
         - Drupal\joinup\Context\RssContext
         - Drupal\joinup\Context\ScreenshotContext:
             localDir: ${behat.screenshots.local.dir}

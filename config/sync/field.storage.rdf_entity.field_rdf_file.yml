@@ -1,0 +1,39 @@
+uuid: dd4cefab-75c7-4cd2-8cc4-916b939fc06b
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - file
+    - rdf_entity
+    - sparql_entity_storage
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      target_id:
+        predicate: 'http://joinup.eu/bundle/rdf-graph/file/fid'
+        format: 'xsd:integer'
+      display:
+        predicate: 'http://joinup.eu/bundle/rdf-graph/file/display'
+        format: 'xsd:boolean'
+      description:
+        predicate: 'http://joinup.eu/bundle/rdf-graph/file/description'
+        format: t_literal
+  field_permissions:
+    permission_type: public
+id: rdf_entity.field_rdf_file
+field_name: field_rdf_file
+entity_type: rdf_entity
+type: file
+settings:
+  display_field: false
+  display_default: false
+  uri_scheme: public
+  target_type: file
+module: file
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
