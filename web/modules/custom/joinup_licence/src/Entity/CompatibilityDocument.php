@@ -59,7 +59,7 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
   /**
    * {@inheritdoc}
    */
-  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
     $fields = [];
 
     $fields['id'] = BaseFieldDefinition::create('string')
@@ -88,7 +88,7 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
   /**
    * {@inheritdoc}
    */
-  public function label() {
+  public function label(): string {
     return $this->id();
   }
 

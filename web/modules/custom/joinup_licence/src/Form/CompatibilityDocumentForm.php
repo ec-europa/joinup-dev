@@ -15,7 +15,7 @@ class CompatibilityDocumentForm extends ContentEntityForm {
   /**
    * {@inheritdoc}
    */
-  public function save(array $form, FormStateInterface $form_state) {
+  public function save(array $form, FormStateInterface $form_state): int {
     $entity = $this->getEntity();
     $entity->save();
     $message_arguments = ['%label' => $this->entity->label()];
