@@ -1,0 +1,23 @@
+uuid: a9ca268c-a6cd-48e1-afef-572fac0ff18c
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - rdf_entity
+id: rdf_entities_rdf_graphs
+label: 'Rdf entities - RDF graphs'
+type: rdf_entity
+pattern: 'rdf-graph/[rdf_entity:label]'
+selection_criteria:
+  1d496de2-bc06-4747-8fc3-258f4144a767:
+    id: 'entity_bundle:rdf_entity'
+    bundles:
+      rdf_graph: rdf_graph
+    negate: false
+    context_mapping:
+      rdf_entity: rdf_entity
+    uuid: 1d496de2-bc06-4747-8fc3-258f4144a767
+selection_logic: and
+weight: -2
+relationships: {  }
