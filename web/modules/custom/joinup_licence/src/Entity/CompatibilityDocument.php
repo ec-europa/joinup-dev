@@ -65,7 +65,8 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
     $fields['id'] = BaseFieldDefinition::create('string')
       ->setLabel(t('ID'))
       ->setReadOnly(TRUE)
-      ->setSetting('unsigned', TRUE);
+      ->setSetting('max_length', 32)
+      ->setSetting('is_ascii', TRUE);
 
     $fields['description'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Description'))
