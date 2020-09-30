@@ -1,0 +1,35 @@
+uuid: 64b24dc3-a205-4d78-a508-e8d39a386e82
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.rdf_graph.field_rdf_file
+    - rdf_entity.rdfentity.rdf_graph
+  module:
+    - file
+    - user
+id: rdf_entity.rdf_graph.default
+targetEntityType: rdf_entity
+bundle: rdf_graph
+mode: default
+content:
+  field_rdf_file:
+    weight: 1
+    label: inline
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
+  label:
+    label: hidden
+    type: string
+    weight: -5
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  changed: true
+  created: true
+  langcode: true
