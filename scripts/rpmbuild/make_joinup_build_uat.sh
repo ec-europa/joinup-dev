@@ -38,7 +38,7 @@ COMPOSER_DISCARD_CHANGES=true ${COMPOSER_PATH} install --no-interaction --prefer
 
 
 # Collect the source files for the package.
-cp -r composer.* VERSION config/ drush/ resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
+cp -r .env.dist composer.* VERSION config/ drush/ resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
 
 # Replace files and folders with production symlinks.
 rm -rf ${JOINUP_DIR}/web/sites/default/settings.php

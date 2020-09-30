@@ -1,0 +1,7 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<http://joinup.eu/totally-different>
+    a skos:Concept ;
+    skos:inScheme <http://joinup.eu/types> ;
+    skos:prefLabel "Hidro cylinders"@en .
+
