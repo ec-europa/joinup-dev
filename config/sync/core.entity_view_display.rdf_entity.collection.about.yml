@@ -142,7 +142,7 @@ content:
     type: boolean
     weight: 2
     region: content
-    label: above
+    label: hidden
     settings:
       format: default
       format_custom_false: ''
