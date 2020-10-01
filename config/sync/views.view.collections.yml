@@ -529,7 +529,7 @@ display:
       menu:
         type: normal
         title: Collections
-        description: ''
+        description: 'Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community.'
         expanded: false
         parent: ''
         weight: -49
