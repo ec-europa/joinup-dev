@@ -98,7 +98,7 @@ content:
       path: 'internal:/search'
       label: '[term:name]'
       query_parameters: "f[0]|policy_domain:[term:tid]\r\nf[1]|type:solution"
-      limit: '7'
+      limit: 7
     third_party_settings:
       template_suggestion:
         template_suggestion: ''
