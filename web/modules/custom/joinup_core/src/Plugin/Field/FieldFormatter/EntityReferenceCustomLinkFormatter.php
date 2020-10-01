@@ -157,15 +157,15 @@ class EntityReferenceCustomLinkFormatter extends EntityReferenceFormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode): array {
     $elements = [];
-    $path = $this->getSetting('path');
-    $label = $this->getSetting('label');
+    $path_pattern = $this->getSetting('path');
+    $label_pattern = $this->getSetting('label');
 
     /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $items */
     foreach ($this->getEntitiesToView($items, $langcode) as $delta => $entity) {
       $query_parameters = $this->getQueryParameters($entity);
 
-      $path = $this->token->replace($path, [$entity->getEntityTypeId() => $entity]);
-      $label = $this->token->replace($label, [$entity->getEntityTypeId() => $entity]);
+      $path = $this->token->replace($path_pattern, [$entity->getEntityTypeId() => $entity]);
+      $label = $this->token->replace($label_pattern, [$entity->getEntityTypeId() => $entity]);
 
       $url = Url::fromUri($path, ['query' => $query_parameters]);
       $elements[$delta] = [
