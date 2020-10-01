@@ -21,15 +21,11 @@ Feature: User authentication
     Then I should see the heading "Sign in to continue"
 
     Examples:
-    <<<<<<< HEAD
       | path                                                |
       | admin                                               |
       | admin/config                                        |
       | admin/config/search/redirect                        |
       | admin/content                                       |
-      | admin/structure/compatibility-document              |
-      | admin/structure/compatibility-document/display      |
-      | admin/structure/compatibility-document/form-display |
       | admin/content/rdf                                   |
       | admin/legal-notice                                  |
       | admin/legal-notice/add                              |
@@ -40,6 +36,9 @@ Feature: User authentication
       | admin/reporting/solutions-by-licences               |
       | admin/reporting/solutions-by-type                   |
       | admin/structure                                     |
+      | admin/structure/compatibility-document              |
+      | admin/structure/compatibility-document/display      |
+      | admin/structure/compatibility-document/form-display |
       | admin/structure/views                               |
       | dashboard                                           |
       | licence                                             |
@@ -53,6 +52,8 @@ Feature: User authentication
       | node/add/news                                       |
       | propose/collection                                  |
       | propose/solution                                    |
+      | rdf-graph                                           |
+      | rdf-graph/add                                       |
       | rdf_entity/add                                      |
       | rdf_entity/add/asset_distribution                   |
       | rdf_entity/add/asset_release                        |
@@ -60,50 +61,9 @@ Feature: User authentication
       | rdf_entity/add/contact_information                  |
       | rdf_entity/add/licence                              |
       | rdf_entity/add/owner                                |
+      | rdf_entity/add/rdf_graph                            |
       | rdf_entity/add/solution                             |
       | user/subscriptions                                  |
-  =======
-  | path                                        |
-  | admin                                       |
-  | admin/config                                |
-  | admin/config/search/redirect                |
-  | admin/content                               |
-  | admin/content/rdf                           |
-  | admin/legal-notice                          |
-  | admin/legal-notice/add                      |
-  | admin/people                                |
-  | admin/reporting/distribution-downloads      |
-  | admin/reporting/export-user-list            |
-  | admin/reporting/group-administrators/export |
-  | admin/reporting/solutions-by-licences       |
-  | admin/reporting/solutions-by-type           |
-  | admin/structure                             |
-  | admin/structure/views                       |
-  | dashboard                                   |
-  | licence                                     |
-  | licence/add                                 |
-  | node/add                                    |
-  | node/add/custom_page                        |
-  | node/add/discussion                         |
-  | node/add/document                           |
-  | node/add/event                              |
-  | node/add/glossary                           |
-  | node/add/news                               |
-  | propose/collection                          |
-  | propose/solution                            |
-  | rdf_entity/add                              |
-  | rdf_entity/add/asset_distribution           |
-  | rdf_entity/add/asset_release                |
-  | rdf_entity/add/collection                   |
-  | rdf_entity/add/contact_information          |
-  | rdf_entity/add/licence                      |
-  | rdf_entity/add/owner                        |
-  | rdf_entity/add/rdf_graph                    |
-  | rdf_entity/add/solution                     |
-  | rdf-graph                                   |
-  | rdf-graph/add                               |
-  | user/subscriptions                          |
-  >>>>>>> @{-1}
 
   Scenario Outline: Anonymous user cannot access restricted non-HTML URLs.
     Given I am not logged in
