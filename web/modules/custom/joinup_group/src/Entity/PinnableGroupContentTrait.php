@@ -102,7 +102,7 @@ trait PinnableGroupContentTrait {
             $ids[] = $target_id;
           }
         }
-        catch (MissingDataException|\InvalidArgumentException $e) {
+        catch (MissingDataException | \InvalidArgumentException $e) {
         }
       }
     }
