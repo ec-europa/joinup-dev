@@ -21,10 +21,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @FieldFormatter(
  *   id = "entity_reference_custom_link",
  *   label = @Translation("Custom link"),
- *   description = @Translation("Displays the label as a link to a customized
- *   path."), field_types = {
- *     "entity_reference"
- *   }
+ *   description = @Translation("Displays the label as a link to a customized path."),
+ *   field_types = {
+ *     "entity_reference",
+ *   },
  * )
  */
 class EntityReferenceCustomLinkFormatter extends EntityReferenceFormatterBase {
