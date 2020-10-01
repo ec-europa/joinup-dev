@@ -111,7 +111,7 @@ default:
         Navigation menu: 'div.navigation-menu ul'
         Page title: 'div.page__title-wrapper'
         Pager: 'nav.pager'
-        Plus button menu: 'div.add-content-menu ul'
+        Plus button menu: 'div.add-content-menu'
         Primary menu: '.region-primary-menu'
         SevenHeader: '.region-header'
         Table of contents: '#block-table-of-contents'
