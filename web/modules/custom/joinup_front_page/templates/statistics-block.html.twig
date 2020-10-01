@@ -14,7 +14,7 @@
 #}
 <div class="featured-lg__stats">
   <div class="stats__wrapper stats__wrapper__collections">
-    <a href="/collections">
+    <a href="/collections" title="{{ 'Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community.' | t }}">
       <div class="stats__icon icon icon--collections"></div>
       <div class="stats__text">
         <div class="stats__text--upper">{{ collection_count }}</div>
@@ -24,7 +24,7 @@
     <div class="stats__description">{{ 'Collaborate around thematics'|t }}</div>
   </div>
   <div class="stats__wrapper stats__wrapper__solutions">
-    <a href="/solutions">
+    <a href="/solutions" title="{{ 'A Solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories.' | t }}">
       <div class="stats__icon icon icon--solutions"></div>
       <div class="stats__text">
         <div class="stats__text--upper">{{ solution_count }}</div>
@@ -34,7 +34,7 @@
     <div class="stats__description">{{ 'Interoperability solutions ready to use'|t }}</div>
   </div>
   <div class="stats__wrapper stats__wrapper__content">
-    <a href="/keep-up-to-date">
+    <a href="/keep-up-to-date" title="{{ 'KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Collections and Solutions.' | t }}">
       <div class="stats__icon icon icon--content"></div>
       <div class="stats__text">
         <div class="stats__text--upper">{{ content_count }}</div>
