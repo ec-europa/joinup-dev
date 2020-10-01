@@ -74,7 +74,7 @@ function joinup_core_post_update_0106403(?array &$sandbox = NULL): string {
         path
       FROM {path_alias}
       WHERE langcode = 'en'
-      GROUP BY path
+      GROUP BY path, duplicates_count
       HAVING duplicates_count > 1
     ) valid_aliases ON p.path = valid_aliases.path
     WHERE valid_aliases.valid_id IS NOT NULL
