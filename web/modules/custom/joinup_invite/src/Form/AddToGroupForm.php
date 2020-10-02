@@ -38,6 +38,7 @@ class AddToGroupForm extends GroupFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $role_id = implode('-', [
+      $this->entity->getEntityTypeId(),
       $this->entity->bundle(),
       $form_state->getValue('role'),
     ]);
