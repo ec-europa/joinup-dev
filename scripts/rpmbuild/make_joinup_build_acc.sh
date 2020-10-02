@@ -44,6 +44,10 @@ rm -rf ${JOINUP_DIR}/web/sites/default/files
 cp -r ${SOURCES_DIR}/template/* ${JOINUP_DIR}/web || exit 1
 rm -r ${SOURCES_DIR}/template || exit 1
 
+# Fix Drush settings.
+echo 'options:' > ${JOINUP_DIR}/drush/drush.yml
+echo "  uri: ${DRUPAL_BASE_URL}" >> ${JOINUP_DIR}/drush/drush.yml
+
 # Output the version number in a file that will be appended to the HTTP headers.
 echo X-build-id: $BUILD_VERSION > ${SOURCES_DIR}/buildinfo.ini
 
