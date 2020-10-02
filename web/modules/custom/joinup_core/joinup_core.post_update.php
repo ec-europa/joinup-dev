@@ -74,10 +74,10 @@ function joinup_core_post_update_0106403(?array &$sandbox = NULL): string {
         path
       FROM {path_alias}
       WHERE langcode = 'en'
-      GROUP BY path, duplicates_count
-      HAVING duplicates_count > 1
+      GROUP BY path
     ) valid_aliases ON p.path = valid_aliases.path
-    WHERE valid_aliases.valid_id IS NOT NULL
+    WHERE valid_aliases.duplicates_count > 1
+    AND valid_aliases.valid_id IS NOT NULL
     AND p.id <> valid_aliases.valid_id
     -- Only select English aliases.
     AND p.langcode = 'en'")->fetchCol();
