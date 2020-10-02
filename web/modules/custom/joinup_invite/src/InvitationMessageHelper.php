@@ -94,7 +94,7 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
     }
 
     $arguments['@invitation:role'] = '';
-    if ($invitation->get('field_invitation_og_role')->isEmpty()) {
+    if (!$invitation->hasField('field_invitation_og_role') || $invitation->get('field_invitation_og_role')->isEmpty()) {
       return $arguments;
     }
     // Field is not empty so at least one value exists.
