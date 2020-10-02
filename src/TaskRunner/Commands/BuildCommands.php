@@ -113,7 +113,7 @@ class BuildCommands extends AbstractCommands {
    *   Current Git hash.
    */
   protected function getGitCommitHash(): string {
-    return Robo::getContainer()->get('repository')->getHead()->getCommitHash();
+    return Robo::getContainer()->get('repository')->getHeadCommit()->getHash();
   }
 
 }
