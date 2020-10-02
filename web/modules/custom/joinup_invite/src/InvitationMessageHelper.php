@@ -99,7 +99,7 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
     }
     // Field is not empty so at least one value exists.
     elseif ($entity = $invitation->field_invitation_og_role->first()->entity) {
-      $arguments['@invitation:role'] = $entity->label();
+      $arguments['@invitation:role'] = strtolower($entity->label());
     }
 
     return $arguments;
