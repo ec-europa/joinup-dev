@@ -29,25 +29,20 @@ cp -r ${PROJECT_ROOT}/resources/rpmbuild/* ${BUILD_ROOT} || exit 1
 SOURCES_DIR=${BUILD_ROOT}/SOURCES
 JOINUP_DIR=${SOURCES_DIR}/Joinup-${BUILD_VERSION}
 
-mkdir -p ${JOINUP_DIR} || exit 1
-
 # Download composer dependencies.
-${COMPOSER_PATH} install --no-dev || exit 1
+${COMPOSER_PATH} install || exit 1
 
 # Build the site.
-./vendor/bin/run joinup:compile-scss || exit 1
+./vendor/bin/run toolkit:build-dist || exit 1
 
 # Collect the source files for the package.
-cp -r composer.* VERSION config/ drush/ resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
+mv dist ${JOINUP_DIR} || exit 1
 
 # Replace files and folders with production symlinks.
 rm -rf ${JOINUP_DIR}/web/sites/default/settings.php
 rm -rf ${JOINUP_DIR}/web/sites/default/files
 cp -r ${SOURCES_DIR}/template/* ${JOINUP_DIR}/web || exit 1
 rm -r ${SOURCES_DIR}/template || exit 1
-
-# Remove unneeded files.
-rm -rf ${JOINUP_DIR}/web/themes/joinup/scss
 
 # Output the version number in a file that will be appended to the HTTP headers.
 echo X-build-id: $BUILD_VERSION > ${SOURCES_DIR}/buildinfo.ini
