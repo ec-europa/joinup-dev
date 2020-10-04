@@ -75,9 +75,8 @@ Feature: Proposing a collection
       | Field Banner is required |
     And I should see the heading "Ancient and Classical Mythology"
     # Regression test for the keywords field in the about page.
-    And I should not see the following lines of text:
-      | Keywords     |
-      | Some keyword |
+    And I should not see the text "Keywords" in the "Content" region
+    And I should not see the text "Some keyword" in the "Content" region
     And I should see a logo on the header
     And I should see a banner on the header
     And I should see "Thank you for proposing a collection. Your request is currently pending approval by the site administrator."
