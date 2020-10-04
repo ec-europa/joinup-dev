@@ -43,7 +43,7 @@ Deploying website to different environments
 
 %changelog
 * Wed Sep 13 2017 Joinup - European Commission
-+ initial creation
+- initial creation
 
 %prep
 %setup -c -n %{name}-%{version}
