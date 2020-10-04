@@ -57,6 +57,7 @@ Feature: Proposing a collection
       # Contact information data.
       | Name                  | Contact person                                                                                       |
       | E-mail                | contact_person@example.com                                                                           |
+      | Keywords              | Some keyword                                                                                         |
     When I select "HR" from "Policy domain"
     And I select the radio button "Only members can create content."
     And I check "Moderated"
@@ -73,6 +74,10 @@ Feature: Proposing a collection
       | Field Logo is required   |
       | Field Banner is required |
     And I should see the heading "Ancient and Classical Mythology"
+    # Regression test for the keywords field in the about page.
+    And I should not see the following lines of text:
+      | Keywords     |
+      | Some keyword |
     And I should see a logo on the header
     And I should see a banner on the header
     And I should see "Thank you for proposing a collection. Your request is currently pending approval by the site administrator."
@@ -165,8 +170,8 @@ Feature: Proposing a collection
     # Fill the required fields.
     When I select "HR" from "Policy domain"
     And I fill in the following:
-      | Name                  | Contact person                                                                                       |
-      | E-mail                | contact_person@example.com                                                                           |
+      | Name   | Contact person             |
+      | E-mail | contact_person@example.com |
     And I press "Propose"
     # The backend-side validation will kick in now.
     Then I should see the error message "Description field is required."
