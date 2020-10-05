@@ -11,7 +11,7 @@ use Drupal\node\Entity\Node;
 /**
  * Base class for community content entities.
  */
-class CommunityContentBase extends Node implements CommunityContentInterface {
+abstract class CommunityContentBase extends Node implements CommunityContentInterface {
 
   use EntityWorkflowStateTrait;
   use NodeCollectionContentTrait;
