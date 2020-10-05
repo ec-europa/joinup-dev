@@ -118,6 +118,12 @@ class CompatibilityDocumentListBuilder extends EntityListBuilder {
         'description' => 'Compatibility document comparing [licence-a] with [licence-b].',
       ])->save();
     }
+
+    // Some plugins might have been removed from the codebase or third-party
+    // modules, shipping plugins of this type, might have been uninstalled.
+    if ($removed_entity_ids = array_diff($entity_ids, $plugin_ids)) {
+      $storage->delete($storage->loadMultiple($removed_entity_ids));
+    }
   }
 
 }
