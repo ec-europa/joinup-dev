@@ -1,4 +1,4 @@
-joinup.compatibility_documents:
+joinup_licence.compatibility_documents:
   route_name: entity.compatibility_document.collection
   parent: system.admin
   description: 'Overview of licence compatibility documents.'
