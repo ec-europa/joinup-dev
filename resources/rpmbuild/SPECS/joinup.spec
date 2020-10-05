@@ -80,4 +80,6 @@ fi
 
 %files
 %{_prefix}/%{name}-%{version}/*
-
+%{_prefix}/%{name}-%{version}/.dockerignore
+%{_prefix}/%{name}-%{version}/.env.dist
+%{_prefix}/%{name}-%{version}/.opts.yml
