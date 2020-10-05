@@ -117,6 +117,7 @@ default:
         Table of contents: '#block-table-of-contents'
         Table of contents outline: '#block-toc-outline'
         Unpublished content area: '.block-entity-unpublished'
+        Statistics: '#block-statistics'
       drupal:
         drupal_root: ${joinup.site_dir}
       selectors:

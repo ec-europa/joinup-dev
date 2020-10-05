@@ -57,22 +57,20 @@ Feature: Site menus
     When I click "First movement"
     Then "Solutions" should be the active item in the "Header menu" menu
 
-  @javascript
   Scenario: Tooltip text should be set for important menu items.
     Given collection:
       | title | Some collection |
       | state | validated |
 
-    When I am not logged in
-    And I am on the homepage
-    Then the response should contain "<a href=\"/collections\" title=\"Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community.\">"
-    And the response should contain "<a href=\"/solutions\" title=\"A Solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories.\">"
-    And the response should contain "<a href=\"/keep-up-to-date\" title=\"KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Collections and Solutions.\">"
+    When I am on the homepage
+    Then I see the "a" element with the "title" attribute set to "Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community." in the "Statistics" region
+    And I see the "a" element with the "title" attribute set to "A Solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories." in the "Statistics" region
+    And I see the "a" element with the "title" attribute set to "KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Collections and Solutions." in the "Statistics" region
 
     When I go to "/collections"
     Then I see the "a" element with the "title" attribute set to "Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community." in the "Header menu" region
-    Then I see the "a" element with the "title" attribute set to "A Solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories." in the "Header menu" region
-    Then I see the "a" element with the "title" attribute set to "KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Collections and Solutions." in the "Header menu" region
+    And I see the "a" element with the "title" attribute set to "A Solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories." in the "Header menu" region
+    And I see the "a" element with the "title" attribute set to "KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Collections and Solutions." in the "Header menu" region
 
     When I am logged in as a user with the facilitator role of the "Some collection" collection
     And I go to the "Some collection" collection
