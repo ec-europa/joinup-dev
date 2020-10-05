@@ -265,8 +265,8 @@ class JoinupContext extends RawDrupalContext {
     }
 
     // Submit form, waiting for Honeypot protection delay to pass.
-    /** @var \HoneypotSubContext $honeypot */
-    $honeypot = $this->getContext('\HoneypotSubContext');
+    /** @var \Drupal\Tests\honeypot\Behat\HoneypotContext $honeypot */
+    $honeypot = $this->getContext('\Drupal\Tests\honeypot\Behat\HoneypotContext');
     $honeypot->waitForTimeLimit();
 
     $this->getSession()->getPage()->pressButton("Create new account");
@@ -1199,6 +1199,26 @@ class JoinupContext extends RawDrupalContext {
     $headings_in_page = array_keys($this->getTiles());
     $headings_expected = $titles_table->getColumn(0);
     Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found or were not in the proper order.');
+  }
+
+  /**
+   * Asserts that a certain link is present in a tile.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   * @param string $link
+   *   The text of the link.
+   *
+   * @throws \Exception
+   *   Thrown when the tile or the link are not found.
+   *
+   * @Then I( should) see the link :text in the :heading tile
+   */
+  public function assertTileContainsLink($heading, $link) {
+    $element = $this->getTileByHeading($heading);
+    if (!$element->findLink($link)) {
+      throw new \Exception("The link '$link' was not found in the tile '$heading'.");
+    }
   }
 
   /**

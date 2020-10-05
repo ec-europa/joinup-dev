@@ -1,3 +1,4 @@
+@api
 Feature: Owner API
   In order to manage owners programmatically
   As a backend developer

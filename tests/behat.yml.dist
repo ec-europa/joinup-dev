@@ -2,6 +2,7 @@ default:
   suites:
     default:
       contexts:
+        - Drupal\joinup\Context\BootstrapDrupalContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
@@ -46,6 +47,7 @@ default:
         - Drupal\joinup\Context\OeNewsroomNewsletterContext
         - Drupal\joinup\Context\OwnerContext
         - Drupal\joinup\Context\RdfEntityProvenanceContext
+        - Drupal\joinup\Context\RdfGraphContext
         - Drupal\joinup\Context\RssContext
         - Drupal\joinup\Context\ScreenshotContext:
             localDir: ${behat.screenshots.local.dir}
@@ -58,6 +60,11 @@ default:
             attributes_map:
               firstName: First name
               lastName: Last name
+        - Drupal\Tests\honeypot\Behat\HoneypotContext
+        - Drupal\Tests\message_digest\Behat\MessageDigestContext
+        - Drupal\Tests\oe_webtools\Behat\WebtoolsMapsContext
+        - Drupal\Tests\pipeline\Behat\PipelineContext
+        - Drupal\Tests\spdx\Behat\SpdxContext:
         - FeatureContext
         - LoversOfBehat\TableExtension\Context\TableContext
       filters:
@@ -119,8 +126,8 @@ default:
         warning_message_selector: '.alert.alert--warning, .messages.message--warning'
         login_form_selector: '#user-login-form'
       subcontexts:
-        paths:
-          - ${joinup.site_dir}/modules
+        autoload: false
+        paths: []
       text:
         log_in: 'Sign in'
         log_out: 'Sign out'

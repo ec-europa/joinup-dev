@@ -1,0 +1,15 @@
+uuid: 765c6c80-4aad-4deb-a754-5b4af12b7f01
+langcode: en
+status: true
+dependencies: {  }
+id: rdf_graph_manager
+label: 'RDF graph manager'
+weight: 5
+is_admin: null
+permissions:
+  - 'access toolbar'
+  - 'create rdf_graph rdf entity'
+  - 'delete own rdf_graph rdf entity'
+  - 'delete rdf_graph rdf entity'
+  - 'edit own asset_release rdf entity'
+  - 'edit rdf_graph rdf entity'

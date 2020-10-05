@@ -3,7 +3,6 @@
 /tests export-ignore
 /drush/Commands/ export-ignore
 /drush/sites/ export-ignore
-/resources/fixtures/ export-ignore
 /resources/mac/ export-ignore
 /resources/uat/ export-ignore
 /web/sites/simpletest/ export-ignore

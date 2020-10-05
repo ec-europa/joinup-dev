@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_bundle_class;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
@@ -14,6 +15,23 @@ use Drupal\dynamic_entity_reference\Plugin\Field\FieldType\DynamicEntityReferenc
  * Reusable methods for accessing fields in entity bundle classes.
  */
 trait JoinupBundleClassFieldAccessTrait {
+
+  /**
+   * Returns the first entity that is referenced by the given field.
+   *
+   * @param string $field_name
+   *   The name of the field for which to return the entity.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|null
+   *   The referenced entity, or NULL of no entity is referenced.
+   */
+  protected function getFirstReferencedEntity(string $field_name): ?EntityInterface {
+    $first_item = $this->getFirstItem($field_name);
+    if (empty($first_item) || !$first_item instanceof EntityReferenceItem) {
+      return NULL;
+    }
+    return $first_item->entity ?? NULL;
+  }
 
   /**
    * Returns the entities that are referenced by the field with the given name.
@@ -131,8 +149,6 @@ trait JoinupBundleClassFieldAccessTrait {
       }
     }
     catch (MissingDataException $e) {
-      $this->logException($e);
-      return NULL;
     }
 
     return NULL;

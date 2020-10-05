@@ -20,7 +20,7 @@ class JoinupEuLoginContext extends RawDrupalContext {
    * the other hand, in testing, we use the one-time-login mechanism to perform
    * the authentication, instead of following the CAS login process.
    *
-   * @BeforeSuite
+   * @BeforeScenario @api
    */
   public static function disableLimitedAccess(): void {
     \Drupal::state()->set('joinup_eulogin.disable_limited_access', TRUE);
@@ -29,11 +29,11 @@ class JoinupEuLoginContext extends RawDrupalContext {
   /**
    * Restores the limited access functionality after tests run.
    *
-   * @AfterSuite
+   * @AfterScenario @api
    *
    * @see self::disableLimitedAccess()
    */
-  public static function restoreLimitedAccess(): void {
+  public function restoreLimitedAccess(): void {
     \Drupal::state()->delete('joinup_eulogin.disable_limited_access');
   }
 
