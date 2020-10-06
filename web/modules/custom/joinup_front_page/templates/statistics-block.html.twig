@@ -14,30 +14,30 @@
 #}
 <div class="featured-lg__stats">
   <div class="stats__wrapper stats__wrapper__collections">
-    <a href="/collections">
+    <a href="/collections" title="{{ collection.description }}">
       <div class="stats__icon icon icon--collections"></div>
       <div class="stats__text">
-        <div class="stats__text--upper">{{ collection_count }}</div>
+        <div class="stats__text--upper">{{ collection.count }}</div>
         <div class="stats__text--lower">{{ 'Collections'|t }}</div>
       </div>
     </a>
     <div class="stats__description">{{ 'Collaborate around thematics'|t }}</div>
   </div>
   <div class="stats__wrapper stats__wrapper__solutions">
-    <a href="/solutions">
+    <a href="/solutions" title="{{ solution.description }}">
       <div class="stats__icon icon icon--solutions"></div>
       <div class="stats__text">
-        <div class="stats__text--upper">{{ solution_count }}</div>
+        <div class="stats__text--upper">{{ solution.count }}</div>
         <div class="stats__text--lower">{{ 'Solutions'|t }}</div>
       </div>
     </a>
     <div class="stats__description">{{ 'Interoperability solutions ready to use'|t }}</div>
   </div>
   <div class="stats__wrapper stats__wrapper__content">
-    <a href="/keep-up-to-date">
+    <a href="/keep-up-to-date" title="{{ content.description }}">
       <div class="stats__icon icon icon--content"></div>
       <div class="stats__text">
-        <div class="stats__text--upper">{{ content_count }}</div>
+        <div class="stats__text--upper">{{ content.count }}</div>
         <div class="stats__text--lower">{{ 'Events, discussions, news ...'|t }}</div>
       </div>
     </a>
