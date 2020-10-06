@@ -24,7 +24,7 @@ abstract class TcaFormBase extends FormBase {
   protected $blockManager;
 
   /**
-   * Constructs a TcaFormBase object
+   * Constructs a TcaFormBase object.
    *
    * @param \Drupal\Core\Block\BlockManagerInterface $block_manager
    *   The block manager service.
@@ -48,7 +48,7 @@ abstract class TcaFormBase extends FormBase {
    * @return string
    *   The bundle in a human readable format.
    */
-  abstract function getEntityBundle(): string;
+  abstract protected function getEntityBundle(): string;
 
   /**
    * The simple block ID to load.
@@ -56,7 +56,7 @@ abstract class TcaFormBase extends FormBase {
    * @return string
    *   The simple block ID including the "simple_block:" prefix.
    */
-  abstract function getTcaBlockId(): string;
+  abstract protected function getTcaBlockId(): string;
 
   /**
    * {@inheritdoc}

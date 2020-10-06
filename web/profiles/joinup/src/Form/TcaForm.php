@@ -16,21 +16,21 @@ class TcaForm extends TcaFormBase {
   /**
    * {@inheritdoc}
    */
-  function getFormId() {
+  public function getFormId() {
     return 'collection_tca_form';
   }
 
   /**
    * {@inheritdoc}
    */
-  function getEntityBundle(): string {
+  protected function getEntityBundle(): string {
     return 'collection';
   }
 
   /**
    * {@inheritdoc}
    */
-  function getTcaBlockId(): string {
+  protected function getTcaBlockId(): string {
     return 'simple_block:collection_tca';
   }
 
