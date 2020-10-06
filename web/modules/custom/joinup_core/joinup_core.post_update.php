@@ -7,12 +7,8 @@
 
 declare(strict_types = 1);
 
-use Drupal\Core\Database\Database;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
-use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
-use EasyRdf\Graph;
-use EasyRdf\GraphStore;
 
 /**
  * Delete all persistent aliases to ensure that they will be rebuilt.
@@ -121,8 +117,8 @@ function joinup_core_post_update_0106502(?array &$sandbox = NULL): string {
  */
 function joinup_core_post_update_0106503(): void {
   $state = \Drupal::state();
-  $data = $state->get('joinup_core_update_0106402');
-  $state->delete('joinup_core_update_0106402');
+  $data = $state->get('joinup_core_update_0106501');
+  $state->delete('joinup_core_update_0106501');
 
   foreach ($data['entity_ids'] as $entity_type_id => $ids) {
     $storage = \Drupal::entityTypeManager()->getStorage($entity_type_id);
