@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
+use Drupal\og\OgRoleInterface;
 use Drupal\User\Entity\User;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
@@ -241,11 +242,15 @@ class JoinupContext extends RawDrupalContext {
     if (empty($membership)) {
       return FALSE;
     }
-    if ($roles == $membership->getRolesIds()) {
-      return FALSE;
-    }
+    $expected_roles_ids = array_map(function (OgRoleInterface $role): string {
+      return $role->id();
+    }, $roles);
+    $actual_roles_ids = $membership->getRolesIds();
 
-    return TRUE;
+    sort($expected_roles_ids);
+    sort($actual_roles_ids);
+
+    return $expected_roles_ids === $actual_roles_ids;
   }
 
   /**
