@@ -529,7 +529,7 @@ display:
       menu:
         type: normal
         title: Solutions
-        description: ''
+        description: 'A Solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories.'
         expanded: false
         parent: ''
         weight: -48

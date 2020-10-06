@@ -6,9 +6,11 @@ namespace Drupal\joinup_front_page\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\joinup_workflow\WorkflowHelperInterface;
+use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -22,18 +24,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The community content bundle ids.
-   *
-   * @var array
-   */
-  const COMMUNITY_BUNDLES = [
-    'discussion',
-    'document',
-    'event',
-    'news',
-  ];
-
-  /**
    * The entity type manager.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
@@ -41,11 +31,11 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
   protected $entityTypeManager;
 
   /**
-   * The workflow helper.
+   * Static cache for RDF Entity Type storage.
    *
-   * @var \Drupal\joinup_workflow\WorkflowHelperInterface
+   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
    */
-  protected $workflowHelper;
+  protected $rdfEntityTypeStorage;
 
   /**
    * Constructs a new StatisticsBlock.
@@ -58,13 +48,10 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
    *   The plugin implementation definition.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper
-   *   The workflow helper.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, WorkflowHelperInterface $workflow_helper) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
-    $this->workflowHelper = $workflow_helper;
   }
 
   /**
@@ -75,8 +62,7 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity_type.manager'),
-      $container->get('joinup_workflow.workflow_helper')
+      $container->get('entity_type.manager')
     );
   }
 
@@ -87,7 +73,10 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $build = ['#theme' => 'statistics_block'];
 
     foreach (['collection', 'solution', 'content'] as $type) {
-      $build["#{$type}_count"] = $this->getCount($type);
+      $build["#{$type}"] = [
+        'count' => $this->getCount($type),
+        'description' => $this->getDescription($type),
+      ];
     }
 
     return $build;
@@ -117,7 +106,7 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
         break;
 
       case 'content':
-        $query->addCondition('entity_bundle', self::COMMUNITY_BUNDLES, 'IN');
+        $query->addCondition('entity_bundle', CommunityContentHelper::BUNDLES, 'IN');
         break;
 
     }
@@ -128,6 +117,25 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
   }
 
   /**
+   * Returns the description of the given type.
+   *
+   * @param string $type
+   *   One of 'collection', 'solution' or 'content'.
+   *
+   * @return \Drupal\Component\Render\MarkupInterface|string
+   *   The type's description.
+   */
+  protected function getDescription(string $type) {
+    if ($type === 'collection') {
+      return $this->getRdfEntityTypeStorage()->load('collection')->getDescription();
+    }
+    elseif ($type === 'solution') {
+      return $this->getRdfEntityTypeStorage()->load('solution')->getDescription();
+    }
+    return CommunityContentHelper::getCommunityContentDescription();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getCacheTags() {
@@ -135,11 +143,35 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // so that the cache is invalidated whenever an entity is created or
     // deleted. This makes sure the count is always correct.
     $cache_tags = parent::getCacheTags();
-    foreach (['node', 'rdf_entity'] as $type) {
-      $entity_type = $this->entityTypeManager->getStorage($type)->getEntityType();
-      $cache_tags = Cache::mergeTags($cache_tags, $entity_type->getListCacheTags());
+    $entity_bundles = [
+      'rdf_entity' => array_values(JoinupGroupHelper::GROUP_BUNDLES),
+      'node' => CommunityContentHelper::BUNDLES,
+    ];
+    $cache_tags = Cache::mergeTags($cache_tags);
+    foreach ($entity_bundles as $entity_type_id => $bundles) {
+      foreach ($bundles as $bundle) {
+        $cache_tags = Cache::mergeTags($cache_tags, ["{$entity_type_id}_list:{$bundle}"]);
+      }
     }
+
+    // Add also the cache tags of collection and solution rdf_type entities.
+    $cache_tags = Cache::mergeTags($cache_tags, $this->getRdfEntityTypeStorage()->load('collection')->getCacheTagsToInvalidate());
+    $cache_tags = Cache::mergeTags($cache_tags, $this->getRdfEntityTypeStorage()->load('solution')->getCacheTagsToInvalidate());
+
     return $cache_tags;
+  }
+
+  /**
+   * Returns the RDF Entity Type storage.
+   *
+   * @return \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
+   *   RDF Entity Type storage.
+   */
+  protected function getRdfEntityTypeStorage(): ConfigEntityStorageInterface {
+    if (!isset($this->rdfEntityTypeStorage)) {
+      $this->rdfEntityTypeStorage = $this->entityTypeManager->getStorage('rdf_type');
+    }
+    return $this->rdfEntityTypeStorage;
   }
 
 }
