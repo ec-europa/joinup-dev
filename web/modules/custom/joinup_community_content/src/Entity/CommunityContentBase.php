@@ -17,7 +17,7 @@ use Drupal\node\Entity\Node;
  * @todo Once we are on PHP 7.3 we should no longer include
  *   JoinupBundleClassMetaEntityTrait.
  */
-class CommunityContentBase extends Node implements CommunityContentInterface {
+abstract class CommunityContentBase extends Node implements CommunityContentInterface {
 
   use EntityWorkflowStateTrait;
   use NodeCollectionContentTrait;

@@ -99,7 +99,7 @@ function joinup_core_requirements($phase): array {
 /**
  * Remove message history for obsolete notification types.
  */
-function joinup_core_update_0106400(): void {
+function joinup_core_update_0106500(): void {
   $removed_templates = [
     'sol_request_deletion',
     'sol_deletion_approved',
@@ -119,7 +119,7 @@ function joinup_core_update_0106400(): void {
 /**
  * Migrate data about pinned entities into meta entities (stage 1).
  */
-function joinup_core_update_0106401() {
+function joinup_core_update_0106501(): void {
   $entity_type_manager = \Drupal::entityTypeManager();
 
   $get_storage = function (string $entity_type_id) use ($entity_type_manager): EntityStorageInterface {

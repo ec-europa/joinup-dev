@@ -31,7 +31,7 @@ content:
     settings:
       hosted_files_title: Download
       remote_files_title: External
-      show_remote_files: false
+      show_remote_files: true
     third_party_settings:
       template_suggestion:
         template_suggestion: no_wrappers
