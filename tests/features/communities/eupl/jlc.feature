@@ -280,8 +280,8 @@ Feature:
       | id  | description                                                                                                                                                                    |
       | T01 | Freedom for using and re-distributing is a basic common characteristic of all open licences.                                                                                   |
       | T10 | The hypothetical risk of 'viral effect' from @redistribute-as-licence to the code covered by @use-licence in the case of dynamic or even static linking will not be validated. |
-      | T16 | You have to check if the text of @use-licence has expressly mentioned @redistribute-as-licence as compatible.                                                          |
-      | T99 | @use-licence is not compatible with @redistribute-as-licence.                                                                                                                    |
+      | T16 | You have to check if the text of @use-licence has expressly mentioned @redistribute-as-licence as compatible.                                                                  |
+      | T99 | @use-licence is not compatible with @redistribute-as-licence.                                                                                                                  |
 
     When I visit "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
     Then I should see the heading "Can EUPL-1.2 be redistributed as EUPL-1.2?"
