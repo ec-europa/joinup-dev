@@ -5,13 +5,6 @@ joinup.admin_reporting:
   title: 'Reporting'
   weight: 75
 
-joinup.compatibility_documents:
-  route_name: entity.compatibility_document.collection
-  parent: system.admin
-  description: 'Overview of licence compatibility documents.'
-  title: 'Compatibility documents'
-  weight: 60
-
 joinup.export_user_list:
   title: 'Export user list'
   route_name: joinup.export_user_list

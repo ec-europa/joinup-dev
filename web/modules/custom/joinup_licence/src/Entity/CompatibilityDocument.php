@@ -68,13 +68,14 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
   /**
    * {@inheritdoc}
    */
-  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
     $fields = [];
 
     $fields['id'] = BaseFieldDefinition::create('string')
       ->setLabel(t('ID'))
       ->setReadOnly(TRUE)
-      ->setSetting('unsigned', TRUE);
+      ->setSetting('max_length', 32)
+      ->setSetting('is_ascii', TRUE);
 
     $fields['description'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Description'))
@@ -109,7 +110,7 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
   /**
    * {@inheritdoc}
    */
-  public function label() {
+  public function label(): string {
     return $this->id();
   }
 
@@ -148,6 +149,12 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
         'id' => $entity_id,
         'description' => 'Compatibility document comparing @use-licence with @redistribute-as-licence.',
       ])->save();
+    }
+
+    // Some plugins might have been removed from the codebase or third-party
+    // modules, shipping plugins of this type, might have been uninstalled.
+    if ($removed_entity_ids = array_diff($entity_ids, $plugin_ids)) {
+      $storage->delete($storage->loadMultiple($removed_entity_ids));
     }
   }
 

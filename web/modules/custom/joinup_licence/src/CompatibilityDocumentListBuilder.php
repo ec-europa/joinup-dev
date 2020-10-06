@@ -52,7 +52,7 @@ class CompatibilityDocumentListBuilder extends EntityListBuilder {
   /**
    * {@inheritdoc}
    */
-  public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
+  public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type): CompatibilityDocumentListBuilder {
     return new static(
       $entity_type,
       $container->get('entity_type.manager')->getStorage($entity_type->id()),
@@ -80,7 +80,7 @@ class CompatibilityDocumentListBuilder extends EntityListBuilder {
   /**
    * {@inheritdoc}
    */
-  public function buildHeader() {
+  public function buildHeader(): array {
     $header['id'] = $this->t('ID');
     return $header + parent::buildHeader();
   }
@@ -88,7 +88,7 @@ class CompatibilityDocumentListBuilder extends EntityListBuilder {
   /**
    * {@inheritdoc}
    */
-  public function buildRow(EntityInterface $entity) {
+  public function buildRow(EntityInterface $entity): array {
     /* @var $entity \Drupal\joinup_licence\Entity\CompatibilityDocumentInterface */
     $row['id'] = $entity->id();
     return $row + parent::buildRow($entity);
@@ -97,7 +97,7 @@ class CompatibilityDocumentListBuilder extends EntityListBuilder {
   /**
    * {@inheritdoc}
    */
-  protected function getDefaultOperations(EntityInterface $entity) {
+  protected function getDefaultOperations(EntityInterface $entity): array {
     $operations = parent::getDefaultOperations($entity);
     $destination = $this->redirectDestination->getAsArray();
     foreach ($operations as $key => $operation) {
