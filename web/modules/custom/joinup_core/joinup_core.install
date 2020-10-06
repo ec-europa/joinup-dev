@@ -94,29 +94,9 @@ function joinup_core_requirements($phase): array {
 }
 
 /**
- * Remove message history for obsolete notification types.
- */
-function joinup_core_update_0106400(): void {
-  $removed_templates = [
-    'sol_request_deletion',
-    'sol_deletion_approved',
-    'sol_deletion_reject',
-    'sol_deletion_no_approval',
-  ];
-
-  $connection = \Drupal::database();
-  foreach (['message', 'message_field_data'] as $table) {
-    $connection
-      ->delete($table)
-      ->condition('template', $removed_templates, 'IN')
-      ->execute();
-  }
-}
-
-/**
  * Create the table for the new Compatibility Document entity type.
  */
-function joinup_core_update_0106401(): void {
+function joinup_core_update_0106500(): void {
   if (!Database::getConnection()->schema()->tableExists('compatibility_document')) {
     $entity_type_manager = \Drupal::entityTypeManager();
     $entity_type_manager->clearCachedDefinitions();
