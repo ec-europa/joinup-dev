@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup;
+namespace Drupal\joinup_group;
 
 use Drupal\Core\Block\BlockManagerInterface;
 use Drupal\Core\Block\Plugin\Block\Broken;

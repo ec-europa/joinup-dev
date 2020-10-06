@@ -6,7 +6,7 @@ namespace Drupal\joinup\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\joinup\TcaFormBase;
+use Drupal\joinup_group\TcaFormBase;
 
 /**
  * A simple page that presents a TCA form for the collection creation.

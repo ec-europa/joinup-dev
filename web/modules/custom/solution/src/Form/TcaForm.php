@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\solution\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\joinup\TcaFormBase;
+use Drupal\joinup_group\TcaFormBase;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
