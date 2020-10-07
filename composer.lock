@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e32906c233f194afc1a71e1bd11e9d91",
+    "content-hash": "3afa8274ead74ac506ae5b75761738b0",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6045,6 +6045,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Add drush commands @see https://www.drupal.org/project/site_alert/issues/3118800": "https://www.drupal.org/files/issues/2020-10-06/3118800-31.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
