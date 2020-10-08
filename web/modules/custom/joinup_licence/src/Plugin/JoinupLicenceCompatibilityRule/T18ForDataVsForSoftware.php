@@ -15,8 +15,7 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  * @codingStandardsIgnoreEnd
  *
  * @JoinupLicenceCompatibilityRule(
- *   id = "for_data_vs_for_software",
- *   document_id = "T18",
+ *   id = "T18",
  *   weight = 1800,
  * )
  */

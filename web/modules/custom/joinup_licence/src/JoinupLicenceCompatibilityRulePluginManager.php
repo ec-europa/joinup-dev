@@ -66,13 +66,13 @@ class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
    *   If the plugin being created is missing.
    */
   public function getCompatibilityDocumentId(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): string {
-    foreach ($this->getDefinitions() as $plugin_definition) {
-      /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRuleInterface $plugin */
-      $plugin = $this->createInstance($plugin_definition['id']);
-      if ($plugin->isVerified($use_licence, $redistribute_as_licence)) {
+    foreach ($this->getDefinitions() as $plugin_id => $plugin_definition) {
+      /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRuleInterface $rule */
+      $rule = $this->createInstance($plugin_id);
+      if ($rule->isVerified($use_licence, $redistribute_as_licence)) {
         // Return the first compatible result. Note that the plugin definitions
         // were already sorted by their weight after discovery.
-        return $plugin->getDocumentId();
+        return $plugin_id;
       }
     }
   }
@@ -83,25 +83,18 @@ class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
   protected function findDefinitions(): array {
     $plugin_definitions = parent::findDefinitions();
 
-    // Extract the incompatible licence plugin from the list. We'll append it,
-    // later, to the end of the list.
-    $incompatible_plugin_definition = NULL;
-    foreach ($plugin_definitions as $plugin_definition) {
-      if ($plugin_definition['document_id'] === static::INCOMPATIBLE_DOCUMENT_ID) {
-        $incompatible_plugin_definition = $plugin_definition;
-      }
+    // Extract the incompatible licence plugin from the list.
+    if (!isset($plugin_definitions[static::INCOMPATIBLE_DOCUMENT_ID])) {
+      throw new \RuntimeException("A plugin with ID '" . static::INCOMPATIBLE_DOCUMENT_ID . "' should exist, but is missed.");
     }
-    if (!$incompatible_plugin_definition) {
-      throw new \RuntimeException("There should be a plugin with document_id equals '" . static::INCOMPATIBLE_DOCUMENT_ID . "' but is missed.");
-    }
-    unset($plugin_definitions[$incompatible_plugin_definition['id']]);
+    $incompatible_plugin_definition = $plugin_definitions[static::INCOMPATIBLE_DOCUMENT_ID];
+    unset($plugin_definitions[static::INCOMPATIBLE_DOCUMENT_ID]);
 
     // Sort the plugins by weight.
     uasort($plugin_definitions, [SortArray::class, 'sortByWeightElement']);
 
-    // The incompatible licence plugin should be always the last, regardless of
-    // its weight.
-    $plugin_definitions[$incompatible_plugin_definition['id']] = $incompatible_plugin_definition;
+    // The 'INCOMPATIBLE' rule plugin is at the end, regardless of its weight.
+    $plugin_definitions[static::INCOMPATIBLE_DOCUMENT_ID] = $incompatible_plugin_definition;
 
     return $plugin_definitions;
   }

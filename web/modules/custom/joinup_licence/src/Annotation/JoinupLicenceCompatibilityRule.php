@@ -16,16 +16,12 @@ class JoinupLicenceCompatibilityRule extends Plugin {
   /**
    * The plugin ID.
    *
-   * @var string
-   */
-  public $id;
-
-  /**
-   * The ID of the licence compatibility document that explains this rule.
+   * Acts also as ID of the licence compatibility document that explains
+   * this rule.
    *
    * @var string
    */
-  public $document_id;
+  public $id;
 
   /**
    * The weight of this plugin relative to other plugins.

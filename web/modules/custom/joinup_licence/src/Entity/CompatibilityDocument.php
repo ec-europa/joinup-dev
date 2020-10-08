@@ -17,8 +17,8 @@ use Drupal\joinup_licence\Plugin\Field\CompatibilityDocumentLicenceFieldItemList
  *
  * These entities contain additional information about compatibility between
  * licences as described by licence compatibility rule plugins. The rule plugins
- * refer to the documents by the `document_id` property which is unique for each
- * rule and corresponds to the numbered test cases in the original functionality
+ * refer to the documents by their plugin ID which is unique for each rule and
+ * corresponds to the numbered test cases in the original functionality
  * description. This document is not publicly available but people with access
  * to the private JIRA instance of the European Commission can find this
  * attached to the ticket ISAICP-6054, ref. 'SC237-D06.02 Specification'. People
@@ -137,10 +137,8 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
 
     /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginManager $plugin_manager */
     $plugin_manager = \Drupal::service('plugin.manager.joinup_licence_compatibility_rule');
-    $definitions = $plugin_manager->getDefinitions();
-    $plugin_ids = array_filter(array_map(function (array $definition): string {
-      return $definition['document_id'] ?? '';
-    }, $definitions));
+    $plugin_ids = array_keys($plugin_manager->getDefinitions());
+
     $entity_ids = $storage->getQuery()->execute();
     $missing_entity_ids = array_diff($plugin_ids, $entity_ids);
 

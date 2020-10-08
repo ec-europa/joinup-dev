@@ -11,8 +11,7 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  * Rule that links to a document explaining the licences are incompatible.
  *
  * @JoinupLicenceCompatibilityRule(
- *   id = "incompatible_licences",
- *   document_id = "INCOMPATIBLE",
+ *   id = "INCOMPATIBLE",
  * )
  */
 class IncompatibleLicences extends JoinupLicenceCompatibilityRulePluginBase {

@@ -15,8 +15,7 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  * @codingStandardsIgnoreEnd
  *
  * @JoinupLicenceCompatibilityRule(
- *   id = "copyleft_can_be_distributed_as_permissive_if_unchanged",
- *   document_id = "T14",
+ *   id = "T14",
  *   weight = 1400,
  * )
  */

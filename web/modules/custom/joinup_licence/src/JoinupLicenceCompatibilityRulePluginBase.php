@@ -25,13 +25,6 @@ abstract class JoinupLicenceCompatibilityRulePluginBase extends PluginBase imple
   /**
    * {@inheritdoc}
    */
-  public function getDocumentId(): string {
-    return (string) $this->pluginDefinition['document_id'];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function isVerified(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool {
     /** @var \Drupal\joinup_licence\Entity\LicenceInterface $licence */
     foreach ([

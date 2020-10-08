@@ -12,14 +12,6 @@ use Drupal\joinup_licence\Entity\LicenceInterface;
 interface JoinupLicenceCompatibilityRuleInterface {
 
   /**
-   * Returns the ID of the CompatibilityDocument that explains this rule.
-   *
-   * @return string
-   *   The translated title.
-   */
-  public function getDocumentId(): string;
-
-  /**
    * Checks whether the two licences are verifying this rule.
    *
    * @param \Drupal\joinup_licence\Entity\LicenceInterface $use_licence

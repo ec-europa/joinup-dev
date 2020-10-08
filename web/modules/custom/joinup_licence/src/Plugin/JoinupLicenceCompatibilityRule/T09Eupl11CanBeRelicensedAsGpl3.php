@@ -15,8 +15,7 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  * @codingStandardsIgnoreEnd
  *
  * @JoinupLicenceCompatibilityRule(
- *   id = "eupl_1_1_can_be_relicensed_as_gpl_3",
- *   document_id = "T09",
+ *   id = "T09",
  *   weight = 900,
  * )
  */

@@ -16,8 +16,7 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  * @codingStandardsIgnoreEnd
  *
  * @JoinupLicenceCompatibilityRule(
- *   id = "any_licence_can_redistribute_permissive_license",
- *   document_id = "T12",
+ *   id = "T12",
  *   weight = 1200,
  * )
  */

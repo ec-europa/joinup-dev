@@ -15,8 +15,7 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  * @codingStandardsIgnoreEnd
  *
  * @JoinupLicenceCompatibilityRule(
- *   id = "governmental_licences_can_be_relicensed_as_eupl",
- *   document_id = "T11",
+ *   id = "T11",
  *   weight = 1100,
  * )
  */
