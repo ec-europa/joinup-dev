@@ -43,7 +43,7 @@ commands:
       command: solr:restore
     - task: run
       command: virtuoso:restore
-    - tast: run
+    - task: run
       command: redis:flush-all
     - task: run
       command: drupal:settings
