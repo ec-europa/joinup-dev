@@ -101,7 +101,7 @@ content:
       limit: 7
     third_party_settings:
       template_suggestion:
-        template_suggestion: ''
+        template_suggestion: 'solution_header_policy_domain'
   label:
     label: hidden
     type: string
