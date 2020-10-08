@@ -36,7 +36,6 @@ joinup_licence.compatibility_check:
     _title_callback: 'Drupal\joinup_licence\Controller\LicenceCompatibilityController::getTitle'
   requirements:
     _access: 'TRUE'
-    licences: '([a-zA-Z0-9][a-zA-Z0-9. -]+;)+[a-zA-Z0-9][a-zA-Z0-9. -]+'
   options:
     parameters:
       use_licence:
