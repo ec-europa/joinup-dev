@@ -6,7 +6,7 @@ _core:
   default_config_hash: MMqUO29XmXa_FwBvKFUq21Rwk_9gUsarOZdp1W-Iok8
 name: Collection
 rid: collection
-description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
+description: 'Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community.'
 label_singular: collection
 label_plural: collections
 label_count:
