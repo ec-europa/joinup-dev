@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Database\Database;
 use Drupal\Core\Site\Settings;
 use Drupal\user\Entity\User;
 
@@ -90,4 +91,16 @@ function joinup_core_requirements($phase): array {
   }
 
   return $requirements;
+}
+
+/**
+ * Create the table for the new Compatibility Document entity type.
+ */
+function joinup_core_update_0106500(): void {
+  if (!Database::getConnection()->schema()->tableExists('compatibility_document')) {
+    $entity_type_manager = \Drupal::entityTypeManager();
+    $entity_type_manager->clearCachedDefinitions();
+    $definition = $entity_type_manager->getDefinition('compatibility_document');
+    \Drupal::entityDefinitionUpdateManager()->installEntityType($definition);
+  }
 }

@@ -325,6 +325,15 @@ class EuplContext extends RawDrupalContext {
   }
 
   /**
+   * Navigates to the compatibility document overview.
+   *
+   * @When I go to the compatibility document overview
+   */
+  public function visitCompatibilityDocumentOverview(): void {
+    $this->visitPath('admin/content/compatibility-document');
+  }
+
+  /**
    * Returns the licence entity with the given label.
    *
    * @param string $label

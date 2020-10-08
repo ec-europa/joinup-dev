@@ -1,11 +1,12 @@
 name: Licence
 type: module
 description: 'Licence entity for Joinup'
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup
 
 dependencies:
   - 'drupal:taxonomy'
+  - 'drupal:text'
   - 'joinup:joinup_validation'
   - 'spdx:spdx'
 

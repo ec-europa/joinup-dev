@@ -26,6 +26,7 @@ Feature: User authentication
       | admin/config                                |
       | admin/config/search/redirect                |
       | admin/content                               |
+      | admin/content/compatibility-document        |
       | admin/content/rdf                           |
       | admin/legal-notice                          |
       | admin/legal-notice/add                      |
@@ -92,6 +93,7 @@ Feature: User authentication
       | admin                                       |
       | admin/config                                |
       | admin/content                               |
+      | admin/content/compatibility-document        |
       | admin/content/rdf                           |
       | admin/legal-notice                          |
       | admin/legal-notice/add                      |
@@ -142,6 +144,7 @@ Feature: User authentication
     Examples:
       | path                                        |
       | admin/people                                |
+      | admin/content/compatibility-document        |
       | admin/content/rdf                           |
       | admin/legal-notice                          |
       | admin/legal-notice/add                      |
