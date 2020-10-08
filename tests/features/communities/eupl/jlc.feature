@@ -65,180 +65,180 @@ Feature:
       | http://joinup.eu/licence/soft         | SOFT             | SOFT             | For software                                          |
 
     Then the following combination of licences should be described in the compatibility document:
-      | use              | redistribute as  | document ID |
-      | AGPL-3.0-only    | AGPL-3.0-only    | T01         |
-      | EUPL-1.1         | EUPL-1.1         | T01         |
-      | EUPL-1.2         | EUPL-1.2         | T01         |
-      | GPL-2.0-only     | GPL-2.0-only     | T01         |
-      | GPL-2.0+         | GPL-2.0+         | T01         |
-      | GPL-3.0-only     | GPL-3.0-only     | T01         |
-      | GPL-3.0-or-later | GPL-3.0-or-later | T01         |
-      | GPL-2.0-only     | EUPL-1.1         | T02         |
-      | GPL-2.0+         | EUPL-1.1         | T02         |
-      | GPL-3.0-only     | EUPL-1.1         | T03         |
-      | GPL-3.0-or-later | EUPL-1.1         | T03         |
-      | AGPL-3.0-only    | EUPL-1.1         | T03         |
-      | GPL-2.0-only     | EUPL-1.2         | T04         |
-      | GPL-2.0+         | EUPL-1.2         | T04         |
-      | GPL-3.0-only     | EUPL-1.2         | T04         |
-      | GPL-3.0-or-later | EUPL-1.2         | T04         |
-      | AGPL-3.0-only    | EUPL-1.2         | T04         |
-      | GPL-2.0-only     | GPL-3.0-only     | T05         |
-      | GPL-3.0-only     | GPL-2.0-only     | T05         |
-      | EUPL-1.1         | EUPL-1.2         | T06         |
-      | EUPL-1.2         | EUPL-1.1         | T06         |
-      | AGPL-3.0-only    | Apache-2.0       | T07         |
-      | GPL-2.0+         | Apache-2.0       | T07         |
-      | GPL-2.0-only     | Apache-2.0       | T07         |
-      | GPL-3.0-only     | Apache-2.0       | T07         |
-      | GPL-3.0-or-later | Apache-2.0       | T07         |
-      | AGPL-3.0-only    | MIT              | T07         |
-      | GPL-2.0+         | MIT              | T07         |
-      | GPL-2.0-only     | MIT              | T07         |
-      | GPL-3.0-only     | MIT              | T07         |
-      | GPL-3.0-or-later | MIT              | T07         |
-      | EUPL-1.1         | CECILL-2.0       | T08         |
-      | EUPL-1.1         | CECILL-2.1       | T08         |
-      | EUPL-1.1         | CPL-1.0          | T08         |
-      | EUPL-1.1         | EPL-2.0          | T08         |
-      | EUPL-1.1         | EPL-2.1          | T08         |
-      | EUPL-1.1         | GPL-2.0-only     | T08         |
-      | EUPL-1.1         | OSL-3.0          | T08         |
-      | EUPL-1.1         | AGPL-3.0-only    | T09         |
-      | EUPL-1.1         | GPL-3.0-only     | T09         |
-      | EUPL-1.1         | GPL-3.0-or-later | T09         |
-      | EUPL-1.2         | AGPL-3.0-only    | T10         |
-      | EUPL-1.2         | CC-BY-SA-4.0     | T10         |
-      | EUPL-1.2         | CECILL-2.0       | T10         |
-      | EUPL-1.2         | CECILL-2.1       | T10         |
-      | EUPL-1.2         | CPL-1.0          | T10         |
-      | EUPL-1.2         | EPL-2.0          | T10         |
-      | EUPL-1.2         | EPL-2.1          | T10         |
-      | EUPL-1.2         | GPL-2.0+         | T10         |
-      | EUPL-1.2         | GPL-2.0-only     | T10         |
-      | EUPL-1.2         | GPL-3.0-only     | T10         |
-      | EUPL-1.2         | GPL-3.0-or-later | T10         |
-      | EUPL-1.2         | LGPL-2.1         | T10         |
-      | EUPL-1.2         | LGPL-3.0-only    | T10         |
-      | EUPL-1.2         | MPL-2.0          | T10         |
-      | EUPL-1.2         | OSL-3.0          | T10         |
-      | LiLiQ-Rplus-1.1  | EUPL-1.1         | T11         |
-      | CECILL-2.1       | EUPL-1.1         | T11         |
-      | LiLiQ-Rplus-1.1  | EUPL-1.2         | T11         |
-      | CECILL-2.1       | EUPL-1.2         | T11         |
-      | Apache-2.0       | AGPL-3.0-only    | T12         |
-      | Apache-2.0       | CC-BY-ND-4.0     | T12         |
-      | Apache-2.0       | CC-BY-SA-4.0     | T12         |
-      | Apache-2.0       | CECILL-2.0       | T12         |
-      | Apache-2.0       | CECILL-2.1       | T12         |
-      | Apache-2.0       | CPL-1.0          | T12         |
-      | Apache-2.0       | EUPL-1.1         | T12         |
-      | Apache-2.0       | EUPL-1.2         | T12         |
-      | Apache-2.0       | EPL-2.0          | T12         |
-      | Apache-2.0       | EPL-2.1          | T12         |
-      | Apache-2.0       | GPL-2.0-only     | T12         |
-      | Apache-2.0       | GPL-2.0+         | T12         |
-      | Apache-2.0       | GPL-3.0-only     | T12         |
-      | Apache-2.0       | GPL-3.0-or-later | T12         |
-      | Apache-2.0       | LGPL-2.1         | T12         |
-      | Apache-2.0       | LGPL-3.0-only    | T12         |
-      | Apache-2.0       | LiLiQ-Rplus-1.1  | T12         |
-      | Apache-2.0       | MIT              | T12         |
-      | Apache-2.0       | MPL-2.0          | T12         |
-      | Apache-2.0       | OSL-3.0          | T12         |
-      | MIT              | AGPL-3.0-only    | T12         |
-      | MIT              | Apache-2.0       | T12         |
-      | MIT              | CC-BY-ND-4.0     | T12         |
-      | MIT              | CC-BY-SA-4.0     | T12         |
-      | MIT              | CECILL-2.0       | T12         |
-      | MIT              | CECILL-2.1       | T12         |
-      | MIT              | CPL-1.0          | T12         |
-      | MIT              | EUPL-1.1         | T12         |
-      | MIT              | EUPL-1.2         | T12         |
-      | MIT              | EPL-2.0          | T12         |
-      | MIT              | EPL-2.1          | T12         |
-      | MIT              | GPL-2.0-only     | T12         |
-      | MIT              | GPL-2.0+         | T12         |
-      | MIT              | GPL-3.0-only     | T12         |
-      | MIT              | GPL-3.0-or-later | T12         |
-      | MIT              | LGPL-2.1         | T12         |
-      | MIT              | LGPL-3.0-only    | T12         |
-      | MIT              | LiLiQ-Rplus-1.1  | T12         |
-      | MIT              | MPL-2.0          | T12         |
-      | MIT              | OSL-3.0          | T12         |
-      | CECILL-2.1       | GPL-2.0-only     | T13         |
-      | CECILL-2.1       | GPL-2.0+         | T13         |
-      | CECILL-2.1       | GPL-3.0-only     | T13         |
-      | CECILL-2.1       | GPL-3.0-or-later | T13         |
-      | CECILL-2.1       | AGPL-3.0-only    | T13         |
-      | CC-BY-ND-4.0     | Apache-2.0       | T14         |
-      | CC-BY-SA-4.0     | Apache-2.0       | T14         |
-      | CECILL-2.0       | Apache-2.0       | T14         |
-      | CECILL-2.1       | Apache-2.0       | T14         |
-      | CPL-1.0          | Apache-2.0       | T14         |
-      | EUPL-1.1         | Apache-2.0       | T14         |
-      | EUPL-1.2         | Apache-2.0       | T14         |
-      | EPL-2.0          | Apache-2.0       | T14         |
-      | EPL-2.1          | Apache-2.0       | T14         |
-      | LGPL-2.1         | Apache-2.0       | T14         |
-      | LGPL-3.0-only    | Apache-2.0       | T14         |
-      | LiLiQ-Rplus-1.1  | Apache-2.0       | T14         |
-      | MPL-2.0          | Apache-2.0       | T14         |
-      | OSL-3.0          | Apache-2.0       | T14         |
-      | CC-BY-ND-4.0     | MIT              | T14         |
-      | CC-BY-SA-4.0     | MIT              | T14         |
-      | CECILL-2.0       | MIT              | T14         |
-      | CECILL-2.1       | MIT              | T14         |
-      | CPL-1.0          | MIT              | T14         |
-      | EUPL-1.1         | MIT              | T14         |
-      | EUPL-1.2         | MIT              | T14         |
-      | EPL-2.0          | MIT              | T14         |
-      | EPL-2.1          | MIT              | T14         |
-      | LGPL-2.1         | MIT              | T14         |
-      | LGPL-3.0-only    | MIT              | T14         |
-      | LiLiQ-Rplus-1.1  | MIT              | T14         |
-      | MPL-2.0          | MIT              | T14         |
-      | OSL-3.0          | MIT              | T14         |
-      | CC-BY-ND-4.0     | EPL-2.0          | T15         |
-      | CC-BY-SA-4.0     | EPL-2.0          | T15         |
-      | CECILL-2.0       | EPL-2.0          | T15         |
-      | CECILL-2.1       | EPL-2.0          | T15         |
-      | CPL-1.0          | EPL-2.0          | T15         |
-      | EPL-2.1          | EPL-2.0          | T15         |
-      | LGPL-2.1         | EPL-2.0          | T15         |
-      | LGPL-3.0-only    | EPL-2.0          | T15         |
-      | LiLiQ-Rplus-1.1  | EPL-2.0          | T15         |
-      | MPL-2.0          | EPL-2.0          | T15         |
-      | OSL-3.0          | EPL-2.0          | T15         |
-      | CC-BY-ND-4.0     | OSL-3.0          | T15         |
-      | CC-BY-SA-4.0     | OSL-3.0          | T15         |
-      | CECILL-2.0       | OSL-3.0          | T15         |
-      | CECILL-2.1       | OSL-3.0          | T15         |
-      | CPL-1.0          | OSL-3.0          | T15         |
-      | EPL-2.0          | OSL-3.0          | T15         |
-      | EPL-2.1          | OSL-3.0          | T15         |
-      | LGPL-2.1         | OSL-3.0          | T15         |
-      | LGPL-3.0-only    | OSL-3.0          | T15         |
-      | LiLiQ-Rplus-1.1  | OSL-3.0          | T15         |
-      | MPL-2.0          | OSL-3.0          | T15         |
-      | CC-BY-SA-4.0     | CECILL-C         | T16         |
-      | CECILL-2.0       | CECILL-C         | T16         |
-      | CECILL-2.1       | CECILL-C         | T16         |
-      | CPL-1.0          | CECILL-C         | T16         |
-      | EUPL-1.1         | CECILL-C         | T16         |
-      | EUPL-1.2         | CECILL-C         | T16         |
-      | EPL-2.0          | CECILL-C         | T16         |
-      | EPL-2.1          | CECILL-C         | T16         |
-      | LiLiQ-Rplus-1.1  | CECILL-C         | T16         |
-      | OSL-3.0          | CECILL-C         | T16         |
-      | SOFT             | DATA             | T17         |
-      | DATA             | SOFT             | T18         |
-      | CC-BY-ND-4.0     | OFL-1.1          | T99         |
-      | CECILL-C         | LGPL-2.1         | T99         |
-      | CECILL-C         | LGPL-3.0-only    | T99         |
-      | LGPL-2.1         | CECILL-C         | T99         |
-      | LGPL-3.0-only    | CECILL-C         | T99         |
-      | OFL-1.1          | CC-BY-ND-4.0     | T99         |
+      | use              | redistribute as  | document ID  |
+      | AGPL-3.0-only    | AGPL-3.0-only    | T01          |
+      | EUPL-1.1         | EUPL-1.1         | T01          |
+      | EUPL-1.2         | EUPL-1.2         | T01          |
+      | GPL-2.0-only     | GPL-2.0-only     | T01          |
+      | GPL-2.0+         | GPL-2.0+         | T01          |
+      | GPL-3.0-only     | GPL-3.0-only     | T01          |
+      | GPL-3.0-or-later | GPL-3.0-or-later | T01          |
+      | GPL-2.0-only     | EUPL-1.1         | T02          |
+      | GPL-2.0+         | EUPL-1.1         | T02          |
+      | GPL-3.0-only     | EUPL-1.1         | T03          |
+      | GPL-3.0-or-later | EUPL-1.1         | T03          |
+      | AGPL-3.0-only    | EUPL-1.1         | T03          |
+      | GPL-2.0-only     | EUPL-1.2         | T04          |
+      | GPL-2.0+         | EUPL-1.2         | T04          |
+      | GPL-3.0-only     | EUPL-1.2         | T04          |
+      | GPL-3.0-or-later | EUPL-1.2         | T04          |
+      | AGPL-3.0-only    | EUPL-1.2         | T04          |
+      | GPL-2.0-only     | GPL-3.0-only     | T05          |
+      | GPL-3.0-only     | GPL-2.0-only     | T05          |
+      | EUPL-1.1         | EUPL-1.2         | T06          |
+      | EUPL-1.2         | EUPL-1.1         | T06          |
+      | AGPL-3.0-only    | Apache-2.0       | T07          |
+      | GPL-2.0+         | Apache-2.0       | T07          |
+      | GPL-2.0-only     | Apache-2.0       | T07          |
+      | GPL-3.0-only     | Apache-2.0       | T07          |
+      | GPL-3.0-or-later | Apache-2.0       | T07          |
+      | AGPL-3.0-only    | MIT              | T07          |
+      | GPL-2.0+         | MIT              | T07          |
+      | GPL-2.0-only     | MIT              | T07          |
+      | GPL-3.0-only     | MIT              | T07          |
+      | GPL-3.0-or-later | MIT              | T07          |
+      | EUPL-1.1         | CECILL-2.0       | T08          |
+      | EUPL-1.1         | CECILL-2.1       | T08          |
+      | EUPL-1.1         | CPL-1.0          | T08          |
+      | EUPL-1.1         | EPL-2.0          | T08          |
+      | EUPL-1.1         | EPL-2.1          | T08          |
+      | EUPL-1.1         | GPL-2.0-only     | T08          |
+      | EUPL-1.1         | OSL-3.0          | T08          |
+      | EUPL-1.1         | AGPL-3.0-only    | T09          |
+      | EUPL-1.1         | GPL-3.0-only     | T09          |
+      | EUPL-1.1         | GPL-3.0-or-later | T09          |
+      | EUPL-1.2         | AGPL-3.0-only    | T10          |
+      | EUPL-1.2         | CC-BY-SA-4.0     | T10          |
+      | EUPL-1.2         | CECILL-2.0       | T10          |
+      | EUPL-1.2         | CECILL-2.1       | T10          |
+      | EUPL-1.2         | CPL-1.0          | T10          |
+      | EUPL-1.2         | EPL-2.0          | T10          |
+      | EUPL-1.2         | EPL-2.1          | T10          |
+      | EUPL-1.2         | GPL-2.0+         | T10          |
+      | EUPL-1.2         | GPL-2.0-only     | T10          |
+      | EUPL-1.2         | GPL-3.0-only     | T10          |
+      | EUPL-1.2         | GPL-3.0-or-later | T10          |
+      | EUPL-1.2         | LGPL-2.1         | T10          |
+      | EUPL-1.2         | LGPL-3.0-only    | T10          |
+      | EUPL-1.2         | MPL-2.0          | T10          |
+      | EUPL-1.2         | OSL-3.0          | T10          |
+      | LiLiQ-Rplus-1.1  | EUPL-1.1         | T11          |
+      | CECILL-2.1       | EUPL-1.1         | T11          |
+      | LiLiQ-Rplus-1.1  | EUPL-1.2         | T11          |
+      | CECILL-2.1       | EUPL-1.2         | T11          |
+      | Apache-2.0       | AGPL-3.0-only    | T12          |
+      | Apache-2.0       | CC-BY-ND-4.0     | T12          |
+      | Apache-2.0       | CC-BY-SA-4.0     | T12          |
+      | Apache-2.0       | CECILL-2.0       | T12          |
+      | Apache-2.0       | CECILL-2.1       | T12          |
+      | Apache-2.0       | CPL-1.0          | T12          |
+      | Apache-2.0       | EUPL-1.1         | T12          |
+      | Apache-2.0       | EUPL-1.2         | T12          |
+      | Apache-2.0       | EPL-2.0          | T12          |
+      | Apache-2.0       | EPL-2.1          | T12          |
+      | Apache-2.0       | GPL-2.0-only     | T12          |
+      | Apache-2.0       | GPL-2.0+         | T12          |
+      | Apache-2.0       | GPL-3.0-only     | T12          |
+      | Apache-2.0       | GPL-3.0-or-later | T12          |
+      | Apache-2.0       | LGPL-2.1         | T12          |
+      | Apache-2.0       | LGPL-3.0-only    | T12          |
+      | Apache-2.0       | LiLiQ-Rplus-1.1  | T12          |
+      | Apache-2.0       | MIT              | T12          |
+      | Apache-2.0       | MPL-2.0          | T12          |
+      | Apache-2.0       | OSL-3.0          | T12          |
+      | MIT              | AGPL-3.0-only    | T12          |
+      | MIT              | Apache-2.0       | T12          |
+      | MIT              | CC-BY-ND-4.0     | T12          |
+      | MIT              | CC-BY-SA-4.0     | T12          |
+      | MIT              | CECILL-2.0       | T12          |
+      | MIT              | CECILL-2.1       | T12          |
+      | MIT              | CPL-1.0          | T12          |
+      | MIT              | EUPL-1.1         | T12          |
+      | MIT              | EUPL-1.2         | T12          |
+      | MIT              | EPL-2.0          | T12          |
+      | MIT              | EPL-2.1          | T12          |
+      | MIT              | GPL-2.0-only     | T12          |
+      | MIT              | GPL-2.0+         | T12          |
+      | MIT              | GPL-3.0-only     | T12          |
+      | MIT              | GPL-3.0-or-later | T12          |
+      | MIT              | LGPL-2.1         | T12          |
+      | MIT              | LGPL-3.0-only    | T12          |
+      | MIT              | LiLiQ-Rplus-1.1  | T12          |
+      | MIT              | MPL-2.0          | T12          |
+      | MIT              | OSL-3.0          | T12          |
+      | CECILL-2.1       | GPL-2.0-only     | T13          |
+      | CECILL-2.1       | GPL-2.0+         | T13          |
+      | CECILL-2.1       | GPL-3.0-only     | T13          |
+      | CECILL-2.1       | GPL-3.0-or-later | T13          |
+      | CECILL-2.1       | AGPL-3.0-only    | T13          |
+      | CC-BY-ND-4.0     | Apache-2.0       | T14          |
+      | CC-BY-SA-4.0     | Apache-2.0       | T14          |
+      | CECILL-2.0       | Apache-2.0       | T14          |
+      | CECILL-2.1       | Apache-2.0       | T14          |
+      | CPL-1.0          | Apache-2.0       | T14          |
+      | EUPL-1.1         | Apache-2.0       | T14          |
+      | EUPL-1.2         | Apache-2.0       | T14          |
+      | EPL-2.0          | Apache-2.0       | T14          |
+      | EPL-2.1          | Apache-2.0       | T14          |
+      | LGPL-2.1         | Apache-2.0       | T14          |
+      | LGPL-3.0-only    | Apache-2.0       | T14          |
+      | LiLiQ-Rplus-1.1  | Apache-2.0       | T14          |
+      | MPL-2.0          | Apache-2.0       | T14          |
+      | OSL-3.0          | Apache-2.0       | T14          |
+      | CC-BY-ND-4.0     | MIT              | T14          |
+      | CC-BY-SA-4.0     | MIT              | T14          |
+      | CECILL-2.0       | MIT              | T14          |
+      | CECILL-2.1       | MIT              | T14          |
+      | CPL-1.0          | MIT              | T14          |
+      | EUPL-1.1         | MIT              | T14          |
+      | EUPL-1.2         | MIT              | T14          |
+      | EPL-2.0          | MIT              | T14          |
+      | EPL-2.1          | MIT              | T14          |
+      | LGPL-2.1         | MIT              | T14          |
+      | LGPL-3.0-only    | MIT              | T14          |
+      | LiLiQ-Rplus-1.1  | MIT              | T14          |
+      | MPL-2.0          | MIT              | T14          |
+      | OSL-3.0          | MIT              | T14          |
+      | CC-BY-ND-4.0     | EPL-2.0          | T15          |
+      | CC-BY-SA-4.0     | EPL-2.0          | T15          |
+      | CECILL-2.0       | EPL-2.0          | T15          |
+      | CECILL-2.1       | EPL-2.0          | T15          |
+      | CPL-1.0          | EPL-2.0          | T15          |
+      | EPL-2.1          | EPL-2.0          | T15          |
+      | LGPL-2.1         | EPL-2.0          | T15          |
+      | LGPL-3.0-only    | EPL-2.0          | T15          |
+      | LiLiQ-Rplus-1.1  | EPL-2.0          | T15          |
+      | MPL-2.0          | EPL-2.0          | T15          |
+      | OSL-3.0          | EPL-2.0          | T15          |
+      | CC-BY-ND-4.0     | OSL-3.0          | T15          |
+      | CC-BY-SA-4.0     | OSL-3.0          | T15          |
+      | CECILL-2.0       | OSL-3.0          | T15          |
+      | CECILL-2.1       | OSL-3.0          | T15          |
+      | CPL-1.0          | OSL-3.0          | T15          |
+      | EPL-2.0          | OSL-3.0          | T15          |
+      | EPL-2.1          | OSL-3.0          | T15          |
+      | LGPL-2.1         | OSL-3.0          | T15          |
+      | LGPL-3.0-only    | OSL-3.0          | T15          |
+      | LiLiQ-Rplus-1.1  | OSL-3.0          | T15          |
+      | MPL-2.0          | OSL-3.0          | T15          |
+      | CC-BY-SA-4.0     | CECILL-C         | T16          |
+      | CECILL-2.0       | CECILL-C         | T16          |
+      | CECILL-2.1       | CECILL-C         | T16          |
+      | CPL-1.0          | CECILL-C         | T16          |
+      | EUPL-1.1         | CECILL-C         | T16          |
+      | EUPL-1.2         | CECILL-C         | T16          |
+      | EPL-2.0          | CECILL-C         | T16          |
+      | EPL-2.1          | CECILL-C         | T16          |
+      | LiLiQ-Rplus-1.1  | CECILL-C         | T16          |
+      | OSL-3.0          | CECILL-C         | T16          |
+      | SOFT             | DATA             | T17          |
+      | DATA             | SOFT             | T18          |
+      | CC-BY-ND-4.0     | OFL-1.1          | INCOMPATIBLE |
+      | CECILL-C         | LGPL-2.1         | INCOMPATIBLE |
+      | CECILL-C         | LGPL-3.0-only    | INCOMPATIBLE |
+      | LGPL-2.1         | CECILL-C         | INCOMPATIBLE |
+      | LGPL-3.0-only    | CECILL-C         | INCOMPATIBLE |
+      | OFL-1.1          | CC-BY-ND-4.0     | INCOMPATIBLE |
 
   Scenario: Moderators can edit licence compatibility documents
     # The compatibility documents overview should be accessible through the toolbar.
@@ -247,7 +247,7 @@ Feature:
     Then I should see the heading "Compatibility documents"
 
     # The compatibility documents should exist and have a default text.
-    When I click "Edit" in the "Content" region
+    When I click "Edit" in the "T01" row
     Then I should see the heading "Edit T01"
     And I should see the text "Compatibility document comparing @use-licence with @redistribute-as-licence."
 
@@ -255,7 +255,7 @@ Feature:
     When I fill in "Description" with "In case the two components are not merged, each component keeps its primary licence: @use-licence or @redistribute-as-licence."
     And I press "Save"
     Then I should see the success message "The compatibility document T01 has been updated."
-    When I click "Edit"
+    When I click "Edit" in the "T01" row
     Then I should see the text "In case the two components are not merged, each component keeps its primary licence: @use-licence or @redistribute-as-licence."
 
     # The compatibility documents are populated automatically when visiting the
@@ -277,11 +277,11 @@ Feature:
       | http://joinup.eu/licence/lgpl21  | LGPL-2.1 | LGPL-2.1     | GPL, For software, Lesser copyleft             |
 
     And compatibility documents:
-      | id  | description                                                                                                                                                                    |
-      | T01 | Freedom for using and re-distributing is a basic common characteristic of all open licences.                                                                                   |
-      | T10 | The hypothetical risk of 'viral effect' from @redistribute-as-licence to the code covered by @use-licence in the case of dynamic or even static linking will not be validated. |
-      | T16 | You have to check if the text of @use-licence has expressly mentioned @redistribute-as-licence as compatible.                                                                  |
-      | T99 | @use-licence is not compatible with @redistribute-as-licence.                                                                                                                  |
+      | id           | description                                                                                                                                                                    |
+      | T01          | Freedom for using and re-distributing is a basic common characteristic of all open licences.                                                                                   |
+      | T10          | The hypothetical risk of 'viral effect' from @redistribute-as-licence to the code covered by @use-licence in the case of dynamic or even static linking will not be validated. |
+      | T16          | You have to check if the text of @use-licence has expressly mentioned @redistribute-as-licence as compatible.                                                                  |
+      | INCOMPATIBLE | @use-licence is not compatible with @redistribute-as-licence.                                                                                                                  |
 
     When I visit "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
     Then I should see the heading "Can EUPL-1.2 be redistributed as EUPL-1.2?"

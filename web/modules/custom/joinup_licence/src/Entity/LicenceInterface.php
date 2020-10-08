@@ -97,8 +97,9 @@ interface LicenceInterface extends RdfInterface {
    *
    * @return string
    *   The document ID of the compatibility document that contains the requested
-   *   information. If the licences are not compatible the ID "T99" is returned,
-   *   which is the ID of the document explaining the licences are incompatible.
+   *   information. If the licences are not compatible the ID "INCOMPATIBLE" is
+   *   returned, which is the ID of the document explaining the licences are
+   *   incompatible.
    */
   public function getCompatibilityDocumentId(LicenceInterface $redistribute_as_licence): string;
 
@@ -114,9 +115,7 @@ interface LicenceInterface extends RdfInterface {
    *   redistributed.
    *
    * @return \Drupal\joinup_licence\Entity\CompatibilityDocumentInterface
-   *   The compatibility document that contains the requested information. If
-   *   the licences are not compatible the "T99" document is returned, which is
-   *   the document that explains that the licences are incompatible.
+   *   The compatibility document that contains the requested information.
    */
   public function getCompatibilityDocument(LicenceInterface $redistribute_as_licence): CompatibilityDocumentInterface;
 

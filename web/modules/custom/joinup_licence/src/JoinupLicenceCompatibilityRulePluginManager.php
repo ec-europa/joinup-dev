@@ -17,7 +17,7 @@ class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
   /**
    * The ID of the compatibility document for incompatible licences.
    */
-  const INCOMPATIBLE_DOCUMENT_ID = 'T99';
+  const INCOMPATIBLE_DOCUMENT_ID = 'INCOMPATIBLE';
 
   /**
    * Constructs a JoinupLicenceCompatibilityRulePluginManager.
@@ -57,7 +57,7 @@ class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
    *
    * @return string
    *   The document ID of the compatibility document that contains the requested
-   *   information. If the licences are not compatible the document "T99" is
+   *   information. If the licences are not compatible, the 'INCOMPATIBLE' is
    *   returned.
    */
   public function getCompatibilityDocumentId(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): string {
@@ -68,12 +68,12 @@ class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
     foreach ($plugin_definitions as $plugin_definition) {
       /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRuleInterface $plugin */
       $plugin = $this->createInstance($plugin_definition['id']);
-      if ($plugin->isCompatible($use_licence, $redistribute_as_licence)) {
+      if ($plugin->isCompatible($use_licence, $redistribute_as_licence) || $plugin_definition['document_id'] === static::INCOMPATIBLE_DOCUMENT_ID) {
         return $plugin->getDocumentId();
       }
     }
 
-    return 'T99';
+    throw new \RuntimeException("There should be a plugin with document_id equals '" . static::INCOMPATIBLE_DOCUMENT_ID . "' but is missed.");
   }
 
 }

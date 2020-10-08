@@ -319,7 +319,7 @@ class EuplContext extends RawDrupalContext {
       $use_licence = static::loadLicenceByLabel($use_label);
       $redistribute_as_licence = static::loadLicenceByLabel($redistribute_as_label);
 
-      $result = $plugin_manager->getCompatibilityDocumentId($use_licence, $redistribute_as_licence) ?? 'incompatible';
+      $result = $plugin_manager->getCompatibilityDocumentId($use_licence, $redistribute_as_licence);
 
       // Check that the returned document ID matches the expected ID.
       if ($expected_result !== $result) {
