@@ -7,29 +7,30 @@ namespace Drupal\joinup_licence\Plugin\JoinupLicenceCompatibilityRule;
 use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
 
 /**
- * Implementation of the T16 rule.
+ * Implementation of the T14 rule.
  *
  * @codingStandardsIgnoreStart
- * - <Licence-A>: Must=Copyleft
- * - <Licence-B>: Must=Lesser copyleft
+ * - <Licence-A>: Must=Copyleft OR Must=Lesser copyleft
+ * - <Licence-B>: Compatible=Permissive
  * @codingStandardsIgnoreEnd
  *
  * @JoinupLicenceCompatibilityRule(
- *   id = "copyleft_can_be_distributed_as_lesser_copyleft",
- *   document_id = "T16",
- *   weight = 1600
+ *   id = "copyleft_can_be_distributed_as_permissive_if_unchanged",
+ *   document_id = "T14",
+ *   weight = 1400,
  * )
  */
-class CopyLeftCanBeDistributedAsLesserCopyLeft extends JoinupLicenceCompatibilityRulePluginBase {
+class T14CopyLeftCanBeDistributedAsPermissiveIfUnchanged extends JoinupLicenceCompatibilityRulePluginBase {
 
   const USE_CRITERIA = [
     'Must' => [
       'Copyleft/Share a.',
+      'Lesser copyleft',
     ],
   ];
   const REDISTRIBUTE_AS_CRITERIA = [
-    'Must' => [
-      'Lesser copyleft',
+    'Compatible' => [
+      'Permissive',
     ],
   ];
 

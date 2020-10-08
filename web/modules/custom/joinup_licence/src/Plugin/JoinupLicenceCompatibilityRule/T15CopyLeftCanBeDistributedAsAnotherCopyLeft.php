@@ -17,10 +17,10 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  * @JoinupLicenceCompatibilityRule(
  *   id = "copyleft_can_be_distributed_as_another_copyleft",
  *   document_id = "T15",
- *   weight = 1500
+ *   weight = 1500,
  * )
  */
-class CopyLeftCanBeDistributedAsAnotherCopyLeft extends JoinupLicenceCompatibilityRulePluginBase {
+class T15CopyLeftCanBeDistributedAsAnotherCopyLeft extends JoinupLicenceCompatibilityRulePluginBase {
 
   const USE_CRITERIA = [
     'Must' => [

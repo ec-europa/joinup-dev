@@ -17,10 +17,10 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  * @JoinupLicenceCompatibilityRule(
  *   id = "governmental_licences_can_be_relicensed_as_eupl",
  *   document_id = "T11",
- *   weight = 1100
+ *   weight = 1100,
  * )
  */
-class GovernmentalLicencesCanBeRelicensedAsEupl extends JoinupLicenceCompatibilityRulePluginBase {
+class T11GovernmentalLicencesCanBeRelicensedAsEupl extends JoinupLicenceCompatibilityRulePluginBase {
 
   const USE_CRITERIA = [
     'SPDX' => [

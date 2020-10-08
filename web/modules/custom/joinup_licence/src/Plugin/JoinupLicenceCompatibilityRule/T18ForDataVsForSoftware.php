@@ -17,10 +17,10 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  * @JoinupLicenceCompatibilityRule(
  *   id = "for_data_vs_for_software",
  *   document_id = "T18",
- *   weight = 1800
+ *   weight = 1800,
  * )
  */
-class ForDataVsForSoftware extends JoinupLicenceCompatibilityRulePluginBase {
+class T18ForDataVsForSoftware extends JoinupLicenceCompatibilityRulePluginBase {
 
   const USE_CRITERIA = [
     'Compatible' => [

@@ -7,31 +7,31 @@ namespace Drupal\joinup_licence\Plugin\JoinupLicenceCompatibilityRule;
 use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
 
 /**
- * Implementation of the T06 rule.
+ * Implementation of the T05 rule.
  *
  * @codingStandardsIgnoreStart
- * - <Licence-A>: SPDX=EUPL-1.1 or SPDX=EUPL-1.2
- * - <Licence-B>: SPDX=EUPL-1.1 or SPDX=EUPL-1.2
+ * - <Licence-A>: SPDX=GPL-2.0-only OR SPDX=GPL-3.0-only
+ * - <Licence-B>: SPDX=GPL-2.0-only OR SPDX=GPL-3.0-only
  * @codingStandardsIgnoreEnd
  *
  * @JoinupLicenceCompatibilityRule(
- *   id = "eupl_1_1_and_eupl_1_2_are_compatible",
- *   document_id = "T06",
- *   weight = 600
+ *   id = "gpl_2_and_gpl_3_are_compatible",
+ *   document_id = "T05",
+ *   weight = 500,
  * )
  */
-class Eupl11andEupl12AreCompatible extends JoinupLicenceCompatibilityRulePluginBase {
+class T05Gpl2andGpl3AreCompatible extends JoinupLicenceCompatibilityRulePluginBase {
 
   const USE_CRITERIA = [
     'SPDX' => [
-      'EUPL-1.1',
-      'EUPL-1.2',
+      'GPL-2.0-only',
+      'GPL-3.0-only',
     ],
   ];
   const REDISTRIBUTE_AS_CRITERIA = [
     'SPDX' => [
-      'EUPL-1.1',
-      'EUPL-1.2',
+      'GPL-2.0-only',
+      'GPL-3.0-only',
     ],
   ];
 

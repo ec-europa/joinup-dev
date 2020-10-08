@@ -8,26 +8,26 @@ use Drupal\joinup_licence\Entity\LicenceInterface;
 use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
 
 /**
- * Implementation of the T01 rule.
+ * Implementation of the T12 rule.
  *
  * @codingStandardsIgnoreStart
- * - <Licence-A>: SPDX=any licence
- * - <Licence-B>: SPDX=(same as <Licence-A>)
+ * - <Licence-A>: Compatible=Permissive
+ * - <Licence-B>: SPDX=any licence
  * @codingStandardsIgnoreEnd
  *
  * @JoinupLicenceCompatibilityRule(
- *   id = "identical_licence",
- *   document_id = "T01",
- *   weight = 100
+ *   id = "any_licence_can_redistribute_permissive_license",
+ *   document_id = "T12",
+ *   weight = 1200,
  * )
  */
-class IdenticalLicence extends JoinupLicenceCompatibilityRulePluginBase {
+class T12AnyLicenceCanRedistributePermissiveLicence extends JoinupLicenceCompatibilityRulePluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function isCompatible(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool {
-    return $use_licence->getSpdxLicenceId() === $redistribute_as_licence->getSpdxLicenceId();
+    return $use_licence->hasLegalType('Compatible', 'Permissive');
   }
 
 }
