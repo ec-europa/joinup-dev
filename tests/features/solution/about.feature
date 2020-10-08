@@ -104,9 +104,10 @@ Feature: About this solution
       | Italy |
 
     # Multiple policy domains.
-    And I should not see the following lines of text:
-      | Demography  |
-      | E-inclusion |
+    And I should see the text "Demography" in the "Header" region
+    And I should see the text "E-inclusion" in the "Header" region
+    But I should not see the text "Demography" in the "Content" region
+    And I should not see the text "E-inclusion" in the "Content" region
 
     # Multiple related solutions.
     And I should not see the following lines of text:
