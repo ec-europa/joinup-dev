@@ -26,7 +26,7 @@ class T01IdenticalLicence extends JoinupLicenceCompatibilityRulePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function isCompatible(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool {
+  public function isVerified(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool {
     return $use_licence->getSpdxLicenceId() === $redistribute_as_licence->getSpdxLicenceId();
   }
 

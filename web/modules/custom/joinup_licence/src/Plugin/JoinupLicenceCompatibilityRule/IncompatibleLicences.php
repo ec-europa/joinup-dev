@@ -20,8 +20,8 @@ class IncompatibleLicences extends JoinupLicenceCompatibilityRulePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function isCompatible(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool {
-    return FALSE;
+  public function isVerified(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool {
+    return TRUE;
   }
 
 }

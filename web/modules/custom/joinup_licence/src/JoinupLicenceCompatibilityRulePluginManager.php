@@ -69,14 +69,12 @@ class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
     foreach ($this->getDefinitions() as $plugin_definition) {
       /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRuleInterface $plugin */
       $plugin = $this->createInstance($plugin_definition['id']);
-      if ($plugin->isCompatible($use_licence, $redistribute_as_licence) || $plugin_definition['document_id'] === static::INCOMPATIBLE_DOCUMENT_ID) {
+      if ($plugin->isVerified($use_licence, $redistribute_as_licence)) {
         // Return the first compatible result. Note that the plugin definitions
         // were already sorted by their weight after discovery.
         return $plugin->getDocumentId();
       }
     }
-
-    throw new \RuntimeException("There should be a plugin with document_id equals '" . static::INCOMPATIBLE_DOCUMENT_ID . "' but is missed.");
   }
 
   /**
