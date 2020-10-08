@@ -12,7 +12,6 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  *
  * @JoinupLicenceCompatibilityRule(
  *   id = "incompatible_licences",
- *   weight = 9999
  *   document_id = "INCOMPATIBLE",
  * )
  */
