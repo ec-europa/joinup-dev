@@ -7,6 +7,7 @@ namespace Drupal\joinup_licence;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
+use Drupal\joinup_licence\Annotation\JoinupLicenceCompatibilityRule;
 use Drupal\joinup_licence\Entity\LicenceInterface;
 
 /**
@@ -35,8 +36,8 @@ class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
       'Plugin/JoinupLicenceCompatibilityRule',
       $namespaces,
       $module_handler,
-      'Drupal\joinup_licence\JoinupLicenceCompatibilityRuleInterface',
-      'Drupal\joinup_licence\Annotation\JoinupLicenceCompatibilityRule'
+      JoinupLicenceCompatibilityRuleInterface::class,
+      JoinupLicenceCompatibilityRule::class
     );
     $this->alterInfo('joinup_licence_compatibility_rule_info');
     $this->setCacheBackend($cache_backend, 'joinup_licence_compatibility_rule_plugins');
