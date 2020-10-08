@@ -203,6 +203,8 @@ Feature: As a site moderator I am able to import RDF files.
 
     # Licence should be excluded from the import process.
     And the "Licence same as Apache 2" entity should not have a related provenance activity
+    # Regression test to assert that created entities have a creation time.
+    And the "Solution 1" solution has a creation date set
 
     # Regression test to ensure that solutions with complex urls still receive all menu items.
     # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5608

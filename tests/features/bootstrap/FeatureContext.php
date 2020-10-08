@@ -1861,6 +1861,29 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Tests that the given entity has a creation date.
+   *
+   * @param string $title
+   *   The entity title.
+   * @param string $bundle
+   *   The entity bundle.
+   *
+   * @Given the :title :bundle has a creation date set
+   */
+  public function assertEntityCreationDate(string $title, string $bundle): void {
+    $rdf_bundles = [
+      'collection',
+      'solution',
+      'asset_release',
+      'asset_distribution',
+    ];
+    $type = in_array($bundle, $rdf_bundles) ? 'rdf_entity' : 'node';
+    $entity = $this->getEntityByLabel($type, $title, $bundle);
+
+    Assert::assertNotEmpty($entity->getCreatedTime());
+  }
+
+  /**
    * Stores the ID of the latest file entity created before the scenario.
    *
    * @BeforeScenario @api
