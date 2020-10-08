@@ -283,7 +283,12 @@ Feature:
       | T16          | You have to check if the text of @use-licence has expressly mentioned @redistribute-as-licence as compatible.                                                                  |
       | INCOMPATIBLE | @use-licence is not compatible with @redistribute-as-licence.                                                                                                                  |
 
-    When I visit "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
+    # @todo Temporary, the access is limited to moderators.
+    When I go to "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
+    Then I should see the heading "Sign in to continue"
+
+    Given I am logged in as a moderator
+    When I go to "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
     Then I should see the heading "Can EUPL-1.2 be redistributed as EUPL-1.2?"
     And I should see the text "Freedom for using and re-distributing is a basic common characteristic of all open licences."
     And the page should be cacheable
@@ -321,6 +326,6 @@ Feature:
     When I go to "licence/compatibility-check/LPG-2.1/DIESEL-C"
     Then the response status code should be 404
     And I should see the heading "Page not found"
-    And the page should be cacheable
+    And the page should not be cached
     When I reload the page
     Then the page should be cached

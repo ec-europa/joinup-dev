@@ -84,6 +84,7 @@ permissions:
   - 'update paragraph content simple_paragraph'
   - 'update site alerts'
   - 'view any unpublished content'
+  - 'view compatibility documents'
   - 'view field_is_eif_category'
   - 'view field_is_eif_recommendation'
   - 'view licence overview page'
