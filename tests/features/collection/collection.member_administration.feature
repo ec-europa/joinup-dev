@@ -401,7 +401,7 @@ Feature: Collection membership administration
     When I select "Facilitator" from "Role"
     And the mail collector cache is empty
     And I press "Invite members"
-    Then I should see the success message "Successfully invited the selected users."
+    Then I should see the success message "2 user(s) have been invited to this group."
     And the following email should have been sent:
       | recipient | dwightone                                                                                                 |
       | subject   | Invitation from Lisa Cuddy to join collection Medical diagnosis.                                          |
@@ -435,3 +435,25 @@ Feature: Collection membership administration
     # Being able to view the links below mean that the membership is active and the user is a facilitator.
     Then I should see the link "Add members"
     And I should see the link "Invite members"
+
+  @terms
+  Scenario: Invitations can not be sent for pending users.
+    Given users:
+      | Username       | E-mail                     | First name | Family name |
+      | pending_member | pending_member@example.com | Pending    | Member      |
+    And the following collection user membership:
+      | collection        | user           | state   |
+      | Medical diagnosis | pending_member | pending |
+
+    When I am logged in as "Lisa Cuddy"
+    And I go to the "Medical diagnosis" collection
+    And I click "Members" in the "Left sidebar"
+    When I click "Invite members"
+
+    When I fill in "E-mail" with "pending_member@example.com"
+    And I press "Add"
+    Then the page should show the following chips in the Content region:
+      | Pending Member   |
+    And I press "Invite members"
+    Then I should not see the success message "Successfully invited the selected users."
+    And I should see the error message "1 user(s) have a pending membership. Please, approve their membership request and assign the roles."
