@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup\Form;
 
-use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\joinup_group\TcaFormBase;
 
 /**
  * A simple page that presents a TCA form for the collection creation.
  */
-class TcaForm extends FormBase {
+class TcaForm extends TcaFormBase {
 
   /**
    * {@inheritdoc}
@@ -23,59 +23,21 @@ class TcaForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['warning'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'p',
-      '#value' => $this->t('In order to create the Collection you need first check the field below and then press the <em>Yes</em> button to proceed.'),
-    ];
-
-    $form['collection_tca'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('I have read and accept <a href=":legal_notice_url">the legal notice</a> and I commit to manage my collection on a regular basis.', [
-        ':legal_notice_url' => Url::fromRoute('entity.entity_legal_document.canonical', ['entity_legal_document' => 'legal_notice'], ['absolute' => TRUE])->toString(),
-      ]),
-    ];
-
-    $form['cancel'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('No thanks'),
-      '#limit_validation_errors' => [],
-      '#submit' => ['::cancelSubmit'],
-    ];
-
-    $form['create'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Yes'),
-      '#states' => [
-        'disabled' => [
-          ':input[name="collection_tca"]' => ['checked' => FALSE],
-        ],
-      ],
-    ];
-
-    return $form;
+  protected function getEntityBundle(): string {
+    return 'collection';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    if ($form_state->getValue('collection_tca') === 0) {
-      $form_state->setError($form['collection_tca'], 'You have to agree that you will manage your collection on a regular basis.');
-    }
-    parent::validateForm($form, $form_state);
+  protected function getTcaBlockId(): string {
+    return 'simple_block:collection_tca';
   }
 
   /**
-   * Submit handler for the 'No thanks' button.
-   *
-   * @param array $form
-   *   The form array.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The form state object.
+   * {@inheritdoc}
    */
-  public function cancelSubmit(array &$form, FormStateInterface $form_state) {
+  public function cancelSubmit(array &$form, FormStateInterface $form_state): void {
     $form_state->setRedirect(Url::fromUri('internal:/collections')
       ->getRouteName());
   }
@@ -83,7 +45,7 @@ class TcaForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
     $form_state->setRedirect('rdf_entity.propose_form', [
       'rdf_type' => 'collection',
     ]);
