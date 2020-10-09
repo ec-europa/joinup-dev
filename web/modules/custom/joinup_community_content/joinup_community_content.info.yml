@@ -13,6 +13,7 @@ dependencies:
   - drupal:text
   - joinup:joinup_core
   - joinup:joinup_group
+  - joinup:joinup_stats
   - joinup:joinup_workflow
   - joinup:workflow_state_permission
   - publication_date:publication_date

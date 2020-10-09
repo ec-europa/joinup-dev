@@ -4928,17 +4928,11 @@
         },
         {
             "name": "drupal/meta_entity",
-            "version": "1.0.0-alpha1",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/meta_entity.git",
-                "reference": "8.x-1.0-alpha1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/meta_entity-8.x-1.0-alpha1.zip",
-                "reference": "8.x-1.0-alpha1",
-                "shasum": "707a3b306367ebcc5d4c1e8b6fc95750e0460490"
+                "reference": "a071d46da0190ae65389ef0f719e715f319f4339"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -4947,13 +4941,19 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
-                    "version": "8.x-1.0-alpha1",
-                    "datestamp": "1575031684",
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1568393285",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Meta entity cache tags are not included @see https://www.drupal.org/project/meta_entity/issues/3170250": "https://www.drupal.org/files/issues/2020-09-11/3170250-7.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4984,7 +4984,8 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/meta_entity",
                 "issues": "https://www.drupal.org/project/issues/meta_entity"
-            }
+            },
+            "time": "2019-09-13T16:46:29+00:00"
         },
         {
             "name": "drupal/metatag",
@@ -6158,7 +6159,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-2.7",
-                    "datestamp": "1598506938",
+                    "datestamp": "1595616928",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"

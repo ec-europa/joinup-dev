@@ -122,7 +122,7 @@ trait JoinupBundleClassFieldAccessTrait {
 
     if (!$item_list instanceof EntityReferenceFieldItemListInterface) {
       $type = gettype($item_list) === 'object' ? get_class($item_list) : gettype($item_list);
-      $message = sprintf('The field %s on collection %s is expected to return an EntityReferenceFieldItemList but got a %s', $field_name, $this->id(), $type);
+      $message = sprintf('The field %s on entity %s is expected to return an EntityReferenceFieldItemList but got a %s', $field_name, $this->id(), $type);
       throw new \InvalidArgumentException($message);
     }
 
