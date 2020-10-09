@@ -65,3 +65,20 @@ field.formatter.settings.joinup_timestamp_timeago:
     timeago_settings:
       type: ignore
       label: 'Timeago plugin settings'
+
+field.formatter.settings.entity_reference_custom_link:
+  type: mapping
+  label: 'Entity reference custom link display format settings'
+  mapping:
+    path:
+      type: string
+      label: Path
+    label:
+      type: string
+      label: Label
+    query_parameters:
+      type: string
+      label: Query parameters
+    limit:
+      type: integer
+      label: limit

@@ -6,7 +6,7 @@ _core:
   default_config_hash: GyRYvTfYjjaZ2pg13gMR0T2W45Akp5PFQIyUSkgg6PM
 name: Solution
 rid: solution
-description: ''
+description: 'A Solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories.'
 label_singular: solution
 label_plural: solutions
 label_count:
