@@ -6,6 +6,8 @@ namespace Drupal\joinup_group\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -28,6 +30,20 @@ class OverviewMessageBlock extends BlockBase implements ContainerFactoryPluginIn
   protected $currentRouteMatch;
 
   /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Static cache of the RDF Entity Type storage.
+   *
+   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
+   */
+  protected $rdfEntityTypeStorage;
+
+  /**
    * Constructs a new OverviewMessageBlock object.
    *
    * @param array $configuration
@@ -38,10 +54,13 @@ class OverviewMessageBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The plugin implementation definition.
    * @param \Drupal\Core\Routing\CurrentRouteMatch $current_route_match
    *   The current route match service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, CurrentRouteMatch $current_route_match) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, CurrentRouteMatch $current_route_match, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $current_route_match;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -52,7 +71,8 @@ class OverviewMessageBlock extends BlockBase implements ContainerFactoryPluginIn
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('current_route_match')
+      $container->get('current_route_match'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -65,13 +85,13 @@ class OverviewMessageBlock extends BlockBase implements ContainerFactoryPluginIn
     if ($route_name === 'view.solutions.page_1') {
       $build['header_description'] = [
         '#type' => 'inline_template',
-        '#template' => '<p>A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories.</p>',
+        '#template' => '<p>' . $this->getRdfEntityTypeStorage()->load('solution')->getDescription() . '</p>',
       ];
     }
     elseif ($route_name === 'view.collections.page_1') {
       $build['header_description'] = [
         '#type' => 'inline_template',
-        '#template' => '<p>Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community.</p>',
+        '#template' => '<p>' . $this->getRdfEntityTypeStorage()->load('collection')->getDescription() . '</p>',
       ];
     }
 
@@ -84,6 +104,29 @@ class OverviewMessageBlock extends BlockBase implements ContainerFactoryPluginIn
   public function getCacheContexts(): array {
     $cache_contexts = parent::getCacheContexts();
     return Cache::mergeContexts($cache_contexts, ['route']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    return Cache::mergeTags(parent::getCacheTags(), Cache::mergeTags(
+      $this->getRdfEntityTypeStorage()->load('collection')->getCacheTagsToInvalidate(),
+      $this->getRdfEntityTypeStorage()->load('solution')->getCacheTagsToInvalidate()
+    ));
+  }
+
+  /**
+   * Returns the RDF Entity Type storage.
+   *
+   * @return \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
+   *   The RDF Entity Type storage.
+   */
+  protected function getRdfEntityTypeStorage(): ConfigEntityStorageInterface {
+    if (!isset($this->rdfEntityTypeStorage)) {
+      $this->rdfEntityTypeStorage = $this->entityTypeManager->getStorage('rdf_type');
+    }
+    return $this->rdfEntityTypeStorage;
   }
 
 }
