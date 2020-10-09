@@ -6,7 +6,6 @@ namespace Drupal\joinup_invite\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\joinup_invite\Entity\Invitation;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\user\UserInterface;
@@ -113,8 +112,6 @@ class InviteToGroupForm extends GroupFormBase {
    * {@inheritdoc}
    */
   protected function processResults(array $results): void {
-
-
     $types = self::INVITATION_MESSAGE_TYPES + [
       self::STATUS_MEMBERSHIP_PENDING => 'error',
     ];
