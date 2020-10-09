@@ -7,6 +7,9 @@
 
 declare(strict_types = 1);
 
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
+use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
+
 /**
  * Delete all persistent aliases to ensure that they will be rebuilt.
  */
@@ -110,9 +113,45 @@ function joinup_core_post_update_0106502(?array &$sandbox = NULL): string {
 }
 
 /**
+ * Migrate data about pinned entities into meta entities (stage 2).
+ */
+function joinup_core_post_update_0106503(): void {
+  $state = \Drupal::state();
+  $data = $state->get('joinup_core_update_0106501');
+  $state->delete('joinup_core_update_0106501');
+
+  foreach ($data['entity_ids'] as $entity_type_id => $ids) {
+    $storage = \Drupal::entityTypeManager()->getStorage($entity_type_id);
+    foreach ($storage->loadMultiple($ids) as $entity) {
+      if ($entity instanceof PinnableGroupContentInterface) {
+        if ($entity instanceof CommunityContentInterface) {
+          $entity->pin();
+        }
+        elseif (!empty($data['solutions'][$entity->id()])) {
+          foreach ($storage->loadMultiple($data['solutions'][$entity->id()]) as $pinned_group) {
+            /** @var \Drupal\joinup_group\Entity\GroupInterface $pinned_group */
+            $entity->pin($pinned_group);
+          }
+        }
+        // Commit to Solr backend the items tracked to be indexed.
+        \Drupal::service('search_api.post_request_indexing')->destruct();
+      }
+    }
+  }
+
+  // Remove stale triples.
+  $sparql = \Drupal::getContainer()->get('sparql.endpoint');
+  foreach (['published', 'draft'] as $status) {
+    $sparql->query("WITH <http://joinup.eu/solution/{$status}>
+      DELETE { ?s <http://joinup.eu/solution/pinned_in> ?o }
+      WHERE { ?s <http://joinup.eu/solution/pinned_in> ?o }");
+  }
+}
+
+/**
  * Clean up the validation graphs.
  */
-function joinup_core_post_update_0106503(array &$sandbox): void {
+function joinup_core_post_update_0106504(array &$sandbox): void {
   $query = <<<QUERY
 SELECT DISTINCT ?g 
    WHERE { GRAPH ?g {?s ?p ?o} } 
@@ -132,7 +171,7 @@ QUERY;
 /**
  * Add creation time to entities solutions that lack it.
  */
-function joinup_core_post_update_0106504(array &$sandbox): void {
+function joinup_core_post_update_0106505(array &$sandbox): void {
   // Query the solutions without created date and their provenance records
   // corresponding created date.
   $query = <<<QUERY
