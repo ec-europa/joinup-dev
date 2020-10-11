@@ -1752,7 +1752,7 @@ class JoinupContext extends RawDrupalContext {
    * @Then I should see a banner on the header
    */
   public function assertExistingBanner() {
-    $xpath = '//div[@class="featured__outer-wrapper"]/@style';
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " featured__outer-wrapper ")]/@style';
     $results = $this->getSession()->getPage()->find('xpath', $xpath);
     // If the preg_match get a match, it means that the background image is
     // empty.
