@@ -45,6 +45,8 @@ Feature: Collection content
     And I see the text "1 Solution" in the "Header" region
 
     When I click "Add solution" in the plus button menu
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     And I fill in the following:
       | Title                 | Solution from draft to validated                                    |
       | Description           | Testing that publishing a solution, updates the collection content. |

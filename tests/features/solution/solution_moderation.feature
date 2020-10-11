@@ -26,6 +26,8 @@ Feature: Solution moderation
     When I am logged in as a "facilitator" of the "Collection propose state test" collection
     And I go to the homepage of the "Collection propose state test" collection
     And I click "Add solution"
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     Then the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request changes, Blacklist"
     And I should not see the link "Delete"
