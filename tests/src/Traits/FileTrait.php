@@ -23,7 +23,7 @@ trait FileTrait {
    *
    * @param string $filename
    *   The file name given by the user.
-   * @param string $files_path
+   * @param string|null $files_path
    *   The path of the directory where the file is located. Defaults to the path
    *   configured in the 'files_path' parameter in behat.yml.
    *
@@ -33,7 +33,7 @@ trait FileTrait {
    * @throws \Exception
    *   Throws an exception when the file is not found.
    */
-  protected function createFile($filename, $files_path = NULL) {
+  protected function createFile(string $filename, ?string $files_path = NULL) {
     // Default to the 'files_path' mink parameter defined in behat.yml.
     if (empty($files_path)) {
       $files_path = $this->getMinkParameter('files_path');
