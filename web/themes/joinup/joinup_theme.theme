@@ -844,6 +844,15 @@ function joinup_theme_preprocess_field(&$variables) {
   if (in_array($variables['element']['#field_name'], $file_field_names)) {
     $variables['attributes']['class'] = ['fieldset__field--files'];
   }
+  if ($variables['field_name'] === 'field_policy_domain' && $variables['element']['#view_mode'] === 'group_header' && $variables['element']['#bundle'] === 'solution') {
+    $last = count($variables['items']) - 1;
+    foreach ($variables['items'] as $index => &$item) {
+      $item['content']['#attributes'] = ['class' => ['stats__text', 'bold']];
+      if ($index !== $last) {
+        $item['content']['#suffix'] = ',';
+      }
+    }
+  }
 }
 
 /**

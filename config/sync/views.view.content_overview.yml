@@ -657,7 +657,7 @@ display:
       menu:
         type: normal
         title: 'Keep up to date'
-        description: ''
+        description: 'KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Collections and Solutions.'
         expanded: false
         parent: ''
         weight: -47
