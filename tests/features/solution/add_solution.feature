@@ -11,6 +11,8 @@ Feature: "Add solution" visibility options.
     And I am logged in as a facilitator of the "Language parsers" collection
     And I go to the homepage of the "Language parsers" collection
     And I click "Add solution"
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
 
     # Submit the incomplete form, so error messages about missing fields will
     # be shown.
@@ -71,6 +73,8 @@ Feature: "Add solution" visibility options.
     And I am logged in as "Wendell Silva"
     And I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner, Name, E-mail address, Website URL"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation, Motivation"
@@ -140,6 +144,8 @@ Feature: "Add solution" visibility options.
     # Make sure that when another solution is added, both are affiliated.
     When I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     When I fill in the following:
       | Title                 | V60 filter coffee solution                                             |
       | Description           | This is a test text                                                    |
@@ -184,6 +190,8 @@ Feature: "Add solution" visibility options.
     When I am logged in as a facilitator of the "Language parsers" collection
     And I go to the homepage of the "Language parsers" collection
     And I click "Add solution"
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     And I fill in the following:
       | Title       | PHP comments parser                             |
       | Description | A simple parser that goes through PHP comments. |
@@ -229,6 +237,8 @@ Feature: "Add solution" visibility options.
     Given I am logged in as a member of the "Ocean studies" collection
     When I go to the homepage of the "Ocean studies" collection
     And I click "Add solution" in the plus button menu
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     And I fill in "Title" with "Climate change tracker"
     And I press "Propose"
     Then I should see the error message "A solution titled Climate change tracker already exists in this collection. Please choose a different title."
@@ -239,6 +249,8 @@ Feature: "Add solution" visibility options.
     Given I am logged in as a member of the "Glacier monitoring" collection
     When I go to the homepage of the "Glacier monitoring" collection
     And I click "Add solution" in the plus button menu
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     And I fill in the following:
       | Title                 | Climate change tracker                      |
       | Description           | Logs retreat of 40 glaciers in Switzerland. |
