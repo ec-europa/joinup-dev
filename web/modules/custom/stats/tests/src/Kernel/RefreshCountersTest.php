@@ -88,6 +88,7 @@ class RefreshCountersTest extends KernelTestBase {
 
     // Check that creating entities the meta entities are also created. Only
     // test one RDF entity and one node.
+    $this->reloadEntities();
     $distro = $this->entities['rdf_entity']['http://example.com/distro/2'];
     $this->assertSame('http://example.com/distro/2', $distro->download_count->entity->target->target_id);
     $node = $this->entities['node'][3];
@@ -137,12 +138,7 @@ class RefreshCountersTest extends KernelTestBase {
     // Run again the cron and check that values were incremented. Entities need
     // reload in order to get the new values.
     cached_computed_field_cron();
-    $entity_type_manager = $this->container->get('entity_type.manager');
-    foreach ($this->entities as $entity_type_id => $entities) {
-      foreach ($entities as $entity) {
-        $this->entities[$entity_type_id][$entity->id()] = $entity_type_manager->getStorage($entity_type_id)->load($entity->id());
-      }
-    }
+    $this->reloadEntities();
     $this->assertEquals(1055, $this->entities['rdf_entity']['http://example.com/distro/1']->download_count->entity->count->value);
     $this->assertEquals(12034, $this->entities['rdf_entity']['http://example.com/distro/2']->download_count->entity->count->value);
     $this->assertEquals(39, $this->entities['rdf_entity']['http://example.com/distro/3']->download_count->entity->count->value);
@@ -150,6 +146,22 @@ class RefreshCountersTest extends KernelTestBase {
     $this->assertEquals(10234, $this->entities['node'][2]->visit_count->entity->count->value);
     $this->assertEquals(28766, $this->entities['node'][3]->visit_count->entity->count->value);
     $this->assertEquals(200334, $this->entities['node'][4]->visit_count->entity->count->value);
+  }
+
+  /**
+   * Refreshes the test entities.
+   *
+   * This ensures that we are getting the actual data from the meta entities and
+   * not stale data from the entity storage cache.
+   */
+  protected function reloadEntities() {
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
+    $entity_type_manager = $this->container->get('entity_type.manager');
+    foreach ($this->entities as $entity_type_id => $entities) {
+      foreach ($entities as $entity) {
+        $this->entities[$entity_type_id][$entity->id()] = $entity_type_manager->getStorage($entity_type_id)->loadUnchanged($entity->id());
+      }
+    }
   }
 
   /**

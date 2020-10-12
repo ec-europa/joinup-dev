@@ -24,6 +24,7 @@ use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup_group\ContentCreationOptions;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
@@ -338,7 +339,8 @@ class SolutionContext extends RawDrupalContext {
    *   A new solution entity.
    *
    * @throws \Exception
-   *   Thrown when a given image is not found.
+   *   Thrown when a given image is not found, or when a solution is being
+   *   pinned in a non-existing group.
    */
   protected function createSolution(array $values) {
     $file_fields = [
@@ -355,8 +357,19 @@ class SolutionContext extends RawDrupalContext {
       }
     }
 
+    /** @var \Drupal\solution\Entity\SolutionInterface $solution */
     $solution = $this->createRdfEntity('solution', $values);
     $this->rdfEntities[$solution->id()] = $solution;
+
+    if (!empty($values['pinned_in_collection'])) {
+      foreach (explode(',', $values['pinned_in_collection']) as $group_label) {
+        $group = self::getRdfEntityByLabel(trim($group_label));
+        if (!$group instanceof GroupInterface) {
+          throw new \Exception("Cannot pin solution {$solution->label()} in $group_label since it does not exist or is not a group.");
+        }
+        $solution->pin($group);
+      }
+    }
 
     return $solution;
   }
@@ -550,7 +563,7 @@ class SolutionContext extends RawDrupalContext {
       'collections' => 'collection',
       'featured' => 'field_site_featured',
       'pinned to front page' => 'field_site_pinned',
-      'pinned in' => 'field_is_pinned_in',
+      'pinned in' => 'pinned_in_collection',
       'shared on' => 'field_is_shared_in',
     ];
   }

@@ -77,6 +77,8 @@ Feature: Solution API
     # And I click on element ".mdl-button__ripple-container"
     Then I should see the link "Add solution"
     And I click "Add solution"
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     When I fill in the following:
       | Title          | Solution API example                         |
       | Description    | We do not care that much about descriptions. |

@@ -1,0 +1,50 @@
+uuid: fbb78bc5-4547-46f4-9ba4-7d686bafbc85
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.meta_entity.pinned_in.field_pinned_in
+    - meta_entity.type.pinned_in
+id: meta_entity.pinned_in.default
+targetEntityType: meta_entity
+bundle: pinned_in
+mode: default
+content:
+  changed:
+    label: inline
+    type: timestamp
+    weight: 22
+    region: content
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+  created:
+    label: inline
+    type: timestamp
+    weight: 20
+    region: content
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+  field_pinned_in:
+    weight: 23
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  label:
+    label: hidden
+    type: string
+    weight: -5
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  target: true

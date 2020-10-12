@@ -1,18 +1,17 @@
-uuid: 4a88b602-1d1d-469e-b549-5346f700b535
+uuid: 82a2c999-5452-403b-9daf-d257dd42c371
 langcode: en
 status: true
 dependencies:
   module:
+    - field_permissions
+    - meta_entity
     - rdf_entity
 third_party_settings:
-  sparql_entity_storage:
-    mapping:
-      target_id:
-        predicate: 'http://joinup.eu/solution/pinned_in'
-        format: resource
-id: rdf_entity.field_is_pinned_in
-field_name: field_is_pinned_in
-entity_type: rdf_entity
+  field_permissions:
+    permission_type: public
+id: meta_entity.field_pinned_in
+field_name: field_pinned_in
+entity_type: meta_entity
 type: entity_reference
 settings:
   target_type: rdf_entity

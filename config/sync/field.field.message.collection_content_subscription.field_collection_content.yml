@@ -248,6 +248,9 @@ settings:
   site_alert:
     handler: 'default:site_alert'
     handler_settings: {  }
+  simple_block:
+    handler: 'default:simple_block'
+    handler_settings: {  }
   compatibility_document:
     handler: 'default:compatibility_document'
     handler_settings: {  }
