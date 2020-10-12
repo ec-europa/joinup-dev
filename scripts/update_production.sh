@@ -28,9 +28,6 @@ echo "Rebuilding node access records."
 echo "Enabling config_readonly."
 rm disable-config-readonly || exit 1
 
-echo "Disabling all active site alerts."
-./vendor/bin/drush site-alert:disable --all || exit 1
-
 # Check if there are any errors or warnings reported. Ignore the warning about
 # the update notifications module not being enabled, the updates are monitored
 # by the development team.
