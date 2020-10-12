@@ -39,6 +39,7 @@ use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og\OgRoleInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\search_api\Entity\Server;
 use GuzzleHttp\Client;
@@ -242,11 +243,15 @@ class JoinupContext extends RawDrupalContext {
     if (empty($membership)) {
       return FALSE;
     }
-    if ($roles == $membership->getRolesIds()) {
-      return FALSE;
-    }
+    $expected_roles_ids = array_map(function (OgRoleInterface $role): string {
+      return $role->id();
+    }, $roles);
+    $actual_roles_ids = $membership->getRolesIds();
 
-    return TRUE;
+    sort($expected_roles_ids);
+    sort($actual_roles_ids);
+
+    return $expected_roles_ids === $actual_roles_ids;
   }
 
   /**
@@ -1747,7 +1752,7 @@ class JoinupContext extends RawDrupalContext {
    * @Then I should see a banner on the header
    */
   public function assertExistingBanner() {
-    $xpath = '//div[@class="featured__outer-wrapper"]/@style';
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " featured__outer-wrapper ")]/@style';
     $results = $this->getSession()->getPage()->find('xpath', $xpath);
     // If the preg_match get a match, it means that the background image is
     // empty.
