@@ -51,7 +51,7 @@ class SpdxIdsParamConverter implements ParamConverterInterface {
     $spdx_ids = array_values(array_unique($spdx_ids));
 
     // At least two, but no more than LicenceComparerHelper::MAX_LICENCE_COUNT
-    // SPDX IDs to be passed along the request, in order to have a comparision.
+    // SPDX IDs to be passed along the request, in order to have a comparison.
     if (count($spdx_ids) < 2 || count($spdx_ids) > LicenceComparerHelper::MAX_LICENCE_COUNT) {
       return NULL;
     }

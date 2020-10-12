@@ -16,17 +16,16 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  * @codingStandardsIgnoreEnd
  *
  * @JoinupLicenceCompatibilityRule(
- *   id = "identical_licence",
- *   document_id = "T01",
- *   weight = 100
+ *   id = "T01",
+ *   weight = 100,
  * )
  */
-class IdenticalLicence extends JoinupLicenceCompatibilityRulePluginBase {
+class T01IdenticalLicence extends JoinupLicenceCompatibilityRulePluginBase {
 
   /**
    * {@inheritdoc}
    */
-  public function isCompatible(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool {
+  public function isVerified(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool {
     return $use_licence->getSpdxLicenceId() === $redistribute_as_licence->getSpdxLicenceId();
   }
 

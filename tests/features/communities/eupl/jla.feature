@@ -142,7 +142,7 @@ Feature:
       | http://joinup.eu/licence/apache20 | Apache License, Version 2.0              | Apache-2.0   | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce | Apache-2.0 descr |
       | http://joinup.eu/licence/gpl2plus | GNU General Public License v2.0 or later | GPL-2.0+     | Distribute                                                            | GPL-2.0+ descr   |
 
-    # Test the page when the comparision list is missed.
+    # Test the page when the comparison list is missed.
     When I am on "/licence/compare"
     Then I should get a 404 HTTP response
 

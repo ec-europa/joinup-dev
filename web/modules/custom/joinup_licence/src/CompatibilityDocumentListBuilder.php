@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityListBuilder;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Routing\RedirectDestinationInterface;
+use Drupal\joinup_licence\Entity\CompatibilityDocument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -63,8 +64,15 @@ class CompatibilityDocumentListBuilder extends EntityListBuilder {
   /**
    * {@inheritdoc}
    */
-  public function render(): array {
-    $this->ensureEntitiesExist();
+  public function render() {
+    try {
+      CompatibilityDocument::populate();
+    }
+    catch (\Exception $e) {
+      $this->messenger()->addError($this->t('An error occurred while trying to populate the compatibility documents: %error', [
+        '%error' => $e->getMessage(),
+      ]));
+    }
 
     return ['table' => parent::render()];
   }
@@ -96,34 +104,6 @@ class CompatibilityDocumentListBuilder extends EntityListBuilder {
       $operations[$key]['query'] = $destination;
     }
     return $operations;
-  }
-
-  /**
-   * Creates missing compatibility documents.
-   *
-   * There should be one compatibility document for each compatibility rule.
-   */
-  protected function ensureEntitiesExist(): void {
-    $storage = $this->getStorage();
-    $definitions = $this->pluginManager->getDefinitions();
-    $plugin_ids = array_filter(array_map(function (array $definition): string {
-      return $definition['document_id'] ?? '';
-    }, $definitions));
-    $entity_ids = $storage->getQuery()->execute();
-    $missing_entity_ids = array_diff($plugin_ids, $entity_ids);
-
-    foreach ($missing_entity_ids as $entity_id) {
-      $storage->create([
-        'id' => $entity_id,
-        'description' => 'Compatibility document comparing [licence-a] with [licence-b].',
-      ])->save();
-    }
-
-    // Some plugins might have been removed from the codebase or third-party
-    // modules, shipping plugins of this type, might have been uninstalled.
-    if ($removed_entity_ids = array_diff($entity_ids, $plugin_ids)) {
-      $storage->delete($storage->loadMultiple($removed_entity_ids));
-    }
   }
 
 }

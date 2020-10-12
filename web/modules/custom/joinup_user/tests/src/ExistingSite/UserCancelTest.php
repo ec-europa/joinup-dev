@@ -112,7 +112,7 @@ class UserCancelTest extends JoinupExistingSiteTestBase {
     // Add some user data.
     $user_data->set('joinup_user', $account->id(), 'foo', 'bar');
 
-    // Store the hashed password for later comparision.
+    // Store the hashed password so we can compare it later.
     $password_hash = $account->getEmail();
 
     // Cancel the account.

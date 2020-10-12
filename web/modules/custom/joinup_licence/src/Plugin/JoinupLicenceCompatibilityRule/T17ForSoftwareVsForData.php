@@ -15,12 +15,11 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  * @codingStandardsIgnoreEnd
  *
  * @JoinupLicenceCompatibilityRule(
- *   id = "for_software_vs_for_data",
- *   document_id = "T17",
- *   weight = 1700
+ *   id = "T17",
+ *   weight = 1700,
  * )
  */
-class ForSoftwareVsForData extends JoinupLicenceCompatibilityRulePluginBase {
+class T17ForSoftwareVsForData extends JoinupLicenceCompatibilityRulePluginBase {
 
   const USE_CRITERIA = [
     'Compatible' => [

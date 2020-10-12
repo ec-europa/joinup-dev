@@ -14,6 +14,7 @@ use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup_licence\Entity\CompatibilityDocument;
 use Drupal\joinup_licence\Entity\LicenceInterface;
 use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -73,6 +74,9 @@ class EuplContext extends RawDrupalContext {
       'title' => 'JLA',
       'og_audience' => Eupl::JLA_SOLUTION,
     ])->save();
+
+    // Populate the compatibility documents.
+    CompatibilityDocument::populate();
   }
 
   /**
@@ -315,7 +319,7 @@ class EuplContext extends RawDrupalContext {
       $use_licence = static::loadLicenceByLabel($use_label);
       $redistribute_as_licence = static::loadLicenceByLabel($redistribute_as_label);
 
-      $result = $plugin_manager->getCompatibilityDocumentId($use_licence, $redistribute_as_licence) ?? 'incompatible';
+      $result = $plugin_manager->getCompatibilityDocumentId($use_licence, $redistribute_as_licence);
 
       // Check that the returned document ID matches the expected ID.
       if ($expected_result !== $result) {
@@ -331,6 +335,24 @@ class EuplContext extends RawDrupalContext {
    */
   public function visitCompatibilityDocumentOverview(): void {
     $this->visitPath('admin/content/compatibility-document');
+  }
+
+  /**
+   * Creates compatibility documents using the data provided in a table.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   A table with columns 'id' and 'description'.
+   *
+   * @Given compatibility documents:
+   */
+  public function createCompatibilityDocuments(TableNode $table): void {
+    $this->cleanCompatibilityDocuments();
+    foreach ($table->getColumnsHash() as $document) {
+      CompatibilityDocument::create([
+        'id' => $document['id'],
+        'description' => $document['description'],
+      ])->save();
+    }
   }
 
   /**
@@ -393,6 +415,18 @@ class EuplContext extends RawDrupalContext {
     $solution->delete();
 
     Rdf::load('http://example.com/owner')->delete();
+
+    $this->cleanCompatibilityDocuments();
+  }
+
+  /**
+   * Cleans up the compatibility documents.
+   *
+   * @Then all compatibility documents are cleaned up
+   */
+  public function cleanCompatibilityDocuments(): void {
+    $compatibility_document_storage = \Drupal::entityTypeManager()->getStorage('compatibility_document');
+    $compatibility_document_storage->delete($compatibility_document_storage->loadMultiple());
   }
 
   /**
