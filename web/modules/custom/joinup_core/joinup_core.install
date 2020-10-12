@@ -7,7 +7,11 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Site\Settings;
+use Drupal\collection\Entity\CollectionInterface;
+use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\solution\Entity\SolutionInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -93,21 +97,63 @@ function joinup_core_requirements($phase): array {
 }
 
 /**
- * Remove message history for obsolete notification types.
+ * Migrate data about pinned entities into meta entities (stage 1).
  */
-function joinup_core_update_0106400(): void {
-  $removed_templates = [
-    'sol_request_deletion',
-    'sol_deletion_approved',
-    'sol_deletion_reject',
-    'sol_deletion_no_approval',
-  ];
+function joinup_core_update_0106500(): void {
+  $entity_type_manager = \Drupal::entityTypeManager();
 
-  $connection = \Drupal::database();
-  foreach (['message', 'message_field_data'] as $table) {
-    $connection
-      ->delete($table)
-      ->condition('template', $removed_templates, 'IN')
-      ->execute();
+  $get_storage = function (string $entity_type_id) use ($entity_type_manager): EntityStorageInterface {
+    return $entity_type_manager->getStorage($entity_type_id);
+  };
+
+  $entity_ids = [];
+
+  // Retrieve community content to migrate.
+  $entity_ids['node'] = array_values($get_storage('node')
+    ->getQuery()
+    ->condition('type', CommunityContentHelper::BUNDLES, 'IN')
+    ->condition('sticky', TRUE)
+    ->execute());
+
+  // Retrieve solutions to migrate.
+  $entity_ids['rdf_entity'] = array_values($get_storage('rdf_entity')
+    ->getQuery()
+    ->condition('rid', 'solution')
+    ->exists('field_is_pinned_in')
+    ->execute());
+
+  $solutions = [];
+  $get_pinned_groups = function (SolutionInterface $solution): array {
+    return array_map(
+      function (CollectionInterface $collection) {
+        return $collection->id();
+      },
+      $solution->get('field_is_pinned_in')->referencedEntities()
+    );
+  };
+  /** @var \Drupal\solution\Entity\SolutionInterface $solution */
+  foreach ($get_storage('rdf_entity')->loadMultiple($entity_ids['rdf_entity']) as $solution) {
+    if ($pinned_groups = $get_pinned_groups($solution)) {
+      $solutions[$solution->id()] = $pinned_groups;
+    }
+  }
+
+  // Save data to be restored in a post-update script.
+  // @see joinup_core_post_update_0106503()
+  \Drupal::state()->set('joinup_core_update_0106501', [
+    'entity_ids' => $entity_ids,
+    'solutions' => $solutions,
+  ]);
+
+  // During config import, the Search API indexes are loaded when creating the
+  // `block.block.eifrecomendationsselector` and `block.block.category` configs
+  // but the field `field_is_pinned_in` is not yet removed from the Search API
+  // indexes. This causes an error, as Search API tries to load the field
+  // definition but the field has been removed already during the config import.
+  // Explicitly remove the field from indexes in this phase to prevent errors.
+  foreach (['published', 'unpublished'] as $index_id) {
+    \Drupal::configFactory()->getEditable("search_api.index.{$index_id}")
+      ->clear('field_settings.field_is_pinned_in')
+      ->save(TRUE);
   }
 }

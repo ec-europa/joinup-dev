@@ -3,21 +3,22 @@ langcode: en
 status: true
 dependencies:
   module:
-    - search_api_solr
-    - node
-    - meta_entity
-    - rdf_entity
-    - taxonomy
-    - paragraphs
-    - publication_date
-    - rdf_taxonomy
-    - user
-    - search_api
     - asset_distribution
     - custom_page
     - joinup_search
+    - meta_entity
+    - node
+    - paragraphs
+    - publication_date
+    - rdf_entity
+    - rdf_taxonomy
+    - search_api
+    - search_api_solr
+    - taxonomy
+    - user
   config:
     - field.storage.meta_entity.count
+    - field.storage.meta_entity.field_pinned_in
     - field.storage.node.body
     - field.storage.node.field_event_agenda
     - field.storage.node.field_event_date
@@ -37,7 +38,6 @@ dependencies:
     - field.storage.rdf_entity.field_is_eif_category
     - field.storage.rdf_entity.field_is_eif_recommendation
     - field.storage.rdf_entity.field_is_owner
-    - field.storage.rdf_entity.field_is_pinned_in
     - field.storage.rdf_entity.field_is_solution_type
     - field.storage.rdf_entity.field_isr_contact_information
     - field.storage.rdf_entity.field_isr_description
@@ -214,14 +214,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_is_eif_recommendation
-  field_is_pinned_in:
-    label: 'Pinned in'
-    datasource_id: 'entity:rdf_entity'
-    property_path: field_is_pinned_in
-    type: string
-    dependencies:
-      config:
-        - field.storage.rdf_entity.field_is_pinned_in
   field_is_solution_type:
     label: 'Solution type'
     datasource_id: 'entity:rdf_entity'
@@ -335,7 +327,6 @@ field_settings:
     dependencies:
       module:
         - meta_entity
-        - meta_entity
       config:
         - field.storage.meta_entity.count
   id:
@@ -424,6 +415,17 @@ field_settings:
     dependencies:
       module:
         - node
+  node_pinned_in:
+    label: 'Pinned in'
+    datasource_id: 'entity:node'
+    property_path: 'pinned_in:entity:field_pinned_in:entity:id'
+    type: string
+    dependencies:
+      module:
+        - meta_entity
+        - rdf_entity
+      config:
+        - field.storage.meta_entity.field_pinned_in
   parent:
     label: 'Term Parents'
     datasource_id: 'entity:taxonomy_term'
@@ -476,6 +478,17 @@ field_settings:
     dependencies:
       module:
         - rdf_entity
+  rdf_pinned_in:
+    label: 'Pinned in'
+    datasource_id: 'entity:rdf_entity'
+    property_path: 'pinned_in:entity:field_pinned_in:entity:id'
+    type: string
+    dependencies:
+      module:
+        - meta_entity
+        - rdf_entity
+      config:
+        - field.storage.meta_entity.field_pinned_in
   reverse_eif_related_term_tid:
     label: 'Reverse » Related term » Term ID'
     datasource_id: 'entity:taxonomy_term'
