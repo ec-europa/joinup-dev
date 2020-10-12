@@ -274,6 +274,20 @@
   text-align: center;
 }
 
+.solution--group-header {
+  .featured__stats {
+    max-width: 550px;
+    padding: 10px 15px;
+    .stats__row {
+      .stats__column {
+        padding: 0 0 5px 0;
+      }
+    }
+    .stats__text {
+      vertical-align: initial;
+    }
+  }
+}
 // Dependencies
 // --------------------------------------------------
 .featured__menu-wrapper {

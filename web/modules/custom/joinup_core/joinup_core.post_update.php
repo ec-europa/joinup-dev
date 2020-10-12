@@ -7,6 +7,9 @@
 
 declare(strict_types = 1);
 
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
+use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
+
 /**
  * Delete all persistent aliases to ensure that they will be rebuilt.
  */
@@ -107,4 +110,40 @@ function joinup_core_post_update_0106502(?array &$sandbox = NULL): string {
   $sandbox['count'] += count($entity_ids);
   $sandbox['#finished'] = (int) (empty($sandbox['entity_ids']['rdf_entity']) && empty($sandbox['entity_ids']['node']));
   return "Processed {$sandbox['count']}/{$sandbox['max']}";
+}
+
+/**
+ * Migrate data about pinned entities into meta entities (stage 2).
+ */
+function joinup_core_post_update_0106503(): void {
+  $state = \Drupal::state();
+  $data = $state->get('joinup_core_update_0106501');
+  $state->delete('joinup_core_update_0106501');
+
+  foreach ($data['entity_ids'] as $entity_type_id => $ids) {
+    $storage = \Drupal::entityTypeManager()->getStorage($entity_type_id);
+    foreach ($storage->loadMultiple($ids) as $entity) {
+      if ($entity instanceof PinnableGroupContentInterface) {
+        if ($entity instanceof CommunityContentInterface) {
+          $entity->pin();
+        }
+        elseif (!empty($data['solutions'][$entity->id()])) {
+          foreach ($storage->loadMultiple($data['solutions'][$entity->id()]) as $pinned_group) {
+            /** @var \Drupal\joinup_group\Entity\GroupInterface $pinned_group */
+            $entity->pin($pinned_group);
+          }
+        }
+        // Commit to Solr backend the items tracked to be indexed.
+        \Drupal::service('search_api.post_request_indexing')->destruct();
+      }
+    }
+  }
+
+  // Remove stale triples.
+  $sparql = \Drupal::getContainer()->get('sparql.endpoint');
+  foreach (['published', 'draft'] as $status) {
+    $sparql->query("WITH <http://joinup.eu/solution/{$status}>
+      DELETE { ?s <http://joinup.eu/solution/pinned_in> ?o }
+      WHERE { ?s <http://joinup.eu/solution/pinned_in> ?o }");
+  }
 }
