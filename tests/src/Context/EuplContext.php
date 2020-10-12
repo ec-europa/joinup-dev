@@ -66,12 +66,22 @@ class EuplContext extends RawDrupalContext {
       'field_is_state' => 'validated',
     ])->save();
 
-    // The 'Implementation monitoring' standard custom page.
+    // The 'Joinup Licencing Assistant' standard custom page.
     Node::create([
       'nid' => 701805,
       'type' => 'custom_page',
       'uuid' => '3bee8b04-75fd-46a8-94b3-af0d8f5a4c41',
       'title' => 'JLA',
+      'og_audience' => Eupl::JLA_SOLUTION,
+    ])->save();
+
+    // The 'Joinup Licencing Compatibility Check' standard custom page.
+    Node::create([
+      // @todo Change to the actual node ID when the page is created.
+      'nid' => 799999,
+      'type' => 'custom_page',
+      'uuid' => '431f631f-e973-4fae-8368-c31f346a9616',
+      'title' => 'JLC',
       'og_audience' => Eupl::JLA_SOLUTION,
     ])->save();
 
@@ -404,7 +414,9 @@ class EuplContext extends RawDrupalContext {
   public function cleanEuplData(): void {
     /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
     $entity_repository = \Drupal::service('entity.repository');
-    $entity_repository->loadEntityByUuid('node', '3bee8b04-75fd-46a8-94b3-af0d8f5a4c41')->delete();
+    foreach (['3bee8b04-75fd-46a8-94b3-af0d8f5a4c41', '431f631f-e973-4fae-8368-c31f346a9616'] as $uuid) {
+      $entity_repository->loadEntityByUuid('node', $uuid)->delete();
+    }
 
     $collection = Rdf::load(Eupl::EUPL_COMMUNITY_ID);
     $collection->skip_notification = TRUE;
