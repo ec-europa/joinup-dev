@@ -29,7 +29,7 @@ class UniqueShortIdInsensitiveValidator extends ConstraintValidator implements C
   /**
    * Creates a new UniqueShortIdInsensitiveValidator.
    *
-   * @param ConnectionInterface $connection
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $connection
    *   The SPARQL database connection.
    */
   public function __construct(ConnectionInterface $connection) {

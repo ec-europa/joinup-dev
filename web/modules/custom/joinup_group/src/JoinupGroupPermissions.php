@@ -34,6 +34,9 @@ class JoinupGroupPermissions implements ContainerInjectionInterface {
     $this->groupTypeManager = $groupTypeManager;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('og.group_type_manager')
