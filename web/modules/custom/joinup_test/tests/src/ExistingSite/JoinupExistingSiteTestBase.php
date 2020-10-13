@@ -98,7 +98,7 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     $this->restoreReadOnlyConfig();
 
     /** @var \Drupal\Component\Plugin\PluginManagerInterface $delete_orphans_manager */
-    $delete_orphans_manager = \Drupal::service('plugin.manager.og.delete_orphans');
+    $delete_orphans_manager = $this->container->get('plugin.manager.og.delete_orphans');
     /** @var \Drupal\og\OgDeleteOrphansInterface $delete_orphans_plugin */
     $delete_orphans_plugin = $delete_orphans_manager->createInstance('simple');
     // Delete the OG group content orphans now because parent::tearDown() is
@@ -136,7 +136,7 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
    */
   protected function disableHoneypot(): void {
     static::bypassReadOnlyConfig();
-    $config_factory = \Drupal::configFactory();
+    $config_factory = $this->container->get('config.factory');
     $config = $config_factory->getEditable('honeypot.settings');
     if (!isset($this->honeypotForms)) {
       $this->honeypotForms = $config->get('form_settings') ?? [];
@@ -152,7 +152,7 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
    */
   protected function restoreHoneypot(): void {
     static::bypassReadOnlyConfig();
-    \Drupal::configFactory()->getEditable('honeypot.settings')
+    $this->container->get('config.factory')->getEditable('honeypot.settings')
       ->set('form_settings', $this->honeypotForms)
       ->save();
     static::restoreReadOnlyConfig();

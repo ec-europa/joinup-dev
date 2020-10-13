@@ -11,6 +11,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\facets\FacetInterface;
 use Drupal\facets\Widget\WidgetPluginInterface;
+use Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -29,7 +30,7 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface, ContainerF
   protected $original;
 
   /**
-   * The arbitratry facet plugin manager.
+   * The arbitrary facet plugin manager.
    *
    * @var \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetManager
    */
@@ -46,12 +47,13 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface, ContainerF
    *   The plugin implementation definition.
    * @param \Drupal\Core\Cache\Context\CacheContextsManager $cache_contexts_manager
    *   The cache contexts manager service.
+   * @param \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetManager $arbitrary_facet_manager
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, CacheContextsManager $cache_contexts_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, CacheContextsManager $cache_contexts_manager, ArbitraryFacetManager $arbitrary_facet_manager) {
     // Instantiate the decorated object.
     $class = $plugin_definition['decorated_class'];
     $this->original = new $class($configuration, $plugin_id, $plugin_definition, $cache_contexts_manager);
-    $this->arbitraryFacetManager = \Drupal::getContainer()->get('plugin.manager.arbitrary_facet');
+    $this->arbitraryFacetManager = $arbitrary_facet_manager;
   }
 
   /**
@@ -62,7 +64,8 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface, ContainerF
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('cache_contexts_manager')
+      $container->get('cache_contexts_manager'),
+      $container->get('plugin.manager.arbitrary_facet')
     );
   }
 
