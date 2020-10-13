@@ -135,7 +135,7 @@ class LicenceFilterBlock extends BlockBase implements ContainerFactoryPluginInte
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
 
-    $this->configuration['show_terms'] = $form_state->getValue('show_terms');
+    $this->configuration['show_terms'] = (bool) $form_state->getValue('show_terms');
   }
 
 }
