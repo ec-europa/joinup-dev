@@ -92,15 +92,16 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     // Restore the mail settings.
     $this->restoreMailSettings();
 
+    /** @var \Drupal\Component\Plugin\PluginManagerInterface $delete_orphans_manager */
+    $delete_orphans_manager = $this->container->get('plugin.manager.og.delete_orphans');
+    /** @var \Drupal\og\OgDeleteOrphansInterface $delete_orphans_plugin */
+    $delete_orphans_plugin = $delete_orphans_manager->createInstance('simple');
+
     // The parent method might cleanup config entities.
     $this->bypassReadOnlyConfig();
     parent::tearDown();
     $this->restoreReadOnlyConfig();
 
-    /** @var \Drupal\Component\Plugin\PluginManagerInterface $delete_orphans_manager */
-    $delete_orphans_manager = $this->container->get('plugin.manager.og.delete_orphans');
-    /** @var \Drupal\og\OgDeleteOrphansInterface $delete_orphans_plugin */
-    $delete_orphans_plugin = $delete_orphans_manager->createInstance('simple');
     // Delete the OG group content orphans now because parent::tearDown() is
     // destroying the container and the registered shutdown callback will fail.
     $delete_orphans_plugin->process();

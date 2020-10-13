@@ -48,11 +48,22 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface, ContainerF
    * @param \Drupal\Core\Cache\Context\CacheContextsManager $cache_contexts_manager
    *   The cache contexts manager service.
    * @param \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetManager $arbitrary_facet_manager
+   *   The arbitrary facet plugin manager.
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The dependency injection container.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, CacheContextsManager $cache_contexts_manager, ArbitraryFacetManager $arbitrary_facet_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, CacheContextsManager $cache_contexts_manager, ArbitraryFacetManager $arbitrary_facet_manager, ContainerInterface $container) {
     // Instantiate the decorated object.
     $class = $plugin_definition['decorated_class'];
-    $this->original = new $class($configuration, $plugin_id, $plugin_definition, $cache_contexts_manager);
+
+    // If the plugin provides a factory method, pass the container to it.
+    if (is_subclass_of($class, ContainerFactoryPluginInterface::class)) {
+      $this->original = $class::create($container, $configuration, $plugin_id, $plugin_definition);
+    }
+    else {
+      $this->original = new $class($configuration, $plugin_id, $plugin_definition, $cache_contexts_manager);
+    }
+
     $this->arbitraryFacetManager = $arbitrary_facet_manager;
   }
 
@@ -65,7 +76,8 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface, ContainerF
       $plugin_id,
       $plugin_definition,
       $container->get('cache_contexts_manager'),
-      $container->get('plugin.manager.arbitrary_facet')
+      $container->get('plugin.manager.arbitrary_facet'),
+      $container
     );
   }
 

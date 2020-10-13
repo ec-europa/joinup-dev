@@ -12,6 +12,7 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
 use Drupal\pipeline\PipelineStateManager;
 use Drupal\pipeline\Plugin\PipelineStepPluginManager;
 use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a pipeline testing plugin.
@@ -58,6 +59,24 @@ class JoinupFederationInvalidTestingPipeline extends JoinupFederationPipelinePlu
   public function __construct(array $configuration, string $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, AccountProxyInterface $current_user, ConnectionInterface $sparql, SharedTempStoreFactory $shared_tempstore_factory, EntityTypeManagerInterface $entity_type_manager, StateInterface $state) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $step_plugin_manager, $state_manager, $current_user, $sparql, $shared_tempstore_factory, $entity_type_manager);
     $this->stateStorage = $state;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('plugin.manager.pipeline_step'),
+      $container->get('pipeline.state_manager'),
+      $container->get('current_user'),
+      $container->get('sparql_endpoint'),
+      $container->get('joinup_federation.tempstore.shared'),
+      $container->get('entity_type.manager'),
+      $container->get('state')
+    );
   }
 
   /**
