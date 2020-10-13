@@ -36,6 +36,13 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
   protected $disableSpamProtection = TRUE;
 
   /**
+   * The state service.
+   *
+   * @var \Drupal\Core\State\StateInterface
+   */
+  protected $state;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -53,7 +60,8 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     // that are specifically testing limited access are able to use this
     // kill-switch by temporary re-enabling the functionality during testing.
     // @see \Drupal\Tests\joinup_eulogin\ExistingSite\JoinupEuLoginTest::testLimitedAccess()
-    \Drupal::state()->set('joinup_eulogin.disable_limited_access', TRUE);
+    $this->state = $this->container->get('state');
+    $this->state->set('joinup_eulogin.disable_limited_access', TRUE);
 
     if ($this->disableSpamProtection) {
       // As ExistingSiteBase tests are running without javascript, we disable
@@ -79,7 +87,7 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     }
 
     // Re-enable limited access functionality.
-    \Drupal::state()->delete('joinup_eulogin.disable_limited_access');
+    $this->state->delete('joinup_eulogin.disable_limited_access');
 
     // Restore the mail settings.
     $this->restoreMailSettings();
