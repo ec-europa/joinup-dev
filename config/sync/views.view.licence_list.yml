@@ -253,18 +253,39 @@ display:
       max-age: -1
       contexts:
         - 'languages:language_interface'
-        - user
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
+        - 'search_api_list:published'
   licence_list_block:
     display_plugin: block
     id: licence_list_block
-    display_title: Block
+    display_title: 'Block (JLA)'
     position: 1
     display_options:
       display_extenders: {  }
+      display_description: ''
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_interface'
-        - user
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
+        - 'search_api_list:published'
+  licence_list_block_jlc:
+    display_plugin: block
+    id: licence_list_block_jlc
+    display_title: 'Block (JLC)'
+    position: 1
+    display_options:
+      display_extenders: {  }
+      display_description: ''
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
+        - 'search_api_list:published'

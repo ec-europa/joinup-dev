@@ -1,22 +1,22 @@
-uuid: 1419c590-293c-43c9-afdc-080e29fc41e0
+uuid: 431a5066-18cc-4bc8-a561-245ad1e2ec37
 langcode: en
 status: true
 dependencies:
   config:
-    - views.view.eif_solutions
+    - views.view.licence_list
   module:
     - system
     - views
   theme:
     - joinup_theme
-id: views_block__eif_solutions_all
+id: views_block__licence_list_licence_list_block_jlc
 theme: joinup_theme
 region: content
-weight: -14
+weight: -16
 provider: null
-plugin: 'views_block:eif_solutions-all'
+plugin: 'views_block:licence_list-licence_list_block_jlc'
 settings:
-  id: 'views_block:eif_solutions-all'
+  id: 'views_block:licence_list-licence_list_block_jlc'
   label: ''
   provider: views
   label_display: '0'
@@ -25,6 +25,6 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: /node/703013
+    pages: /node/799999
     negate: false
     context_mapping: {  }

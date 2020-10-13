@@ -12,7 +12,7 @@ dependencies:
 id: category
 theme: joinup_theme
 region: content
-weight: -22
+weight: -24
 provider: null
 plugin: 'facet_block:category'
 settings:
