@@ -17,6 +17,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Installer\InstallerKernel;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\solution\Entity\SolutionInterface;
@@ -279,6 +280,9 @@ function joinup_preprocess_menu__main(&$variables) {
 
 /**
  * Implements hook_entity_view_alter().
+ *
+ * Adds metadata needed to show relevant contextual links whenever entities are
+ * displayed.
  */
 function joinup_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
   if (in_array($entity->getEntityTypeId(), ['node', 'rdf_entity'])) {
@@ -292,26 +296,27 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
     ];
   }
 
-  if (!JoinupGroupHelper::isSolution($entity) && !CommunityContentHelper::isCommunityContent($entity)) {
+  if (!$entity instanceof PinnableGroupContentInterface) {
     return;
   }
 
-  // The contextual links need to vary per user roles and per user og roles.
+  // The contextual links vary per user roles (since moderators are able to pin
+  // content) and per OG roles (since facilitators are able to pin content).
   // Core already takes care of varying by roles by applying the
   // user.permissions cache context and applying the permission hash in the
   // contextual links. We need to include the corresponding data deriving from
-  // the og role cache context.
+  // the og_role cache context.
   /** @var \Drupal\og\Cache\Context\OgRoleCacheContext $cache_service */
   $cache_service = \Drupal::service('cache_context.og_role');
   $roles_hash = $cache_service->getContext();
 
-  // The rendered entity needs to vary by og group context.
+  // The rendered entity needs to vary by OG group context.
   $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], [
     'og_role',
     'og_group_context',
   ]);
 
-  /** @var \Drupal\rdf_entity\RdfInterface $group */
+  /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
   $group = \Drupal::service('og.context')->getGroup();
 
   // The existence of the group context contextual links helps with enforcing
@@ -332,6 +337,7 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
     'metadata' => [
       'changed' => $entity->getChangedTime(),
       'og_roles_hash' => $roles_hash,
+      'pin_status' => $entity->isPinned($group),
     ],
   ];
 
@@ -371,7 +377,10 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
   }
 
   /** @var \Drupal\Core\Entity\ContentEntityBase $entity */
-  $entity = $variables[$variables['elements']['#entity_type']];
+  $entity = $variables[$variables['elements']['#entity_type']] ?? NULL;
+  if (empty($entity)) {
+    return;
+  }
 
   // If the entity has the site-wide featured field, enable the related js
   // library.
@@ -386,19 +395,12 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
     $group = $context['og']->getContextValue();
   }
 
-  /** @var \Drupal\joinup\PinServiceInterface $pin_service */
-  $pin_service = \Drupal::service('joinup.pin_service');
-  if ($pin_service->isEntityPinned($entity, $group)) {
+  if ($entity instanceof PinnableGroupContentInterface && $entity->isPinned($group)) {
     $variables['attributes']['class'][] = 'is-pinned';
     $variables['#attached']['library'][] = 'joinup/pinned_entities';
 
-    if (JoinupGroupHelper::isSolution($entity) || CommunityContentHelper::isCommunityContent($entity)) {
-      $group_ids = [];
-      foreach ($pin_service->getGroupsWherePinned($entity) as $group) {
-        $group_ids[] = $group->id();
-      }
-      $variables['attributes']['data-drupal-pinned-in'] = implode(',', $group_ids);
-    }
+    $group_ids = $entity->getPinnedGroupIds();
+    $variables['attributes']['data-drupal-pinned-in'] = implode(',', $group_ids);
   }
 }
 

@@ -1,0 +1,24 @@
+uuid: 068db1e5-050a-4749-81cd-3438a51b2fa0
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.discussion
+    - node.type.document
+    - node.type.event
+    - node.type.news
+    - rdf_entity.rdfentity.solution
+  module:
+    - node
+    - rdf_entity
+id: pinned_in
+label: 'Pinned in'
+description: 'A list of groups that the entity is "pinned" in. The entity will be displayed prominently on the homepages of these groups.'
+mapping:
+  node:
+    discussion: pinned_in
+    document: pinned_in
+    event: pinned_in
+    news: pinned_in
+  rdf_entity:
+    solution: pinned_in

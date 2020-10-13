@@ -37,7 +37,7 @@ class SolutionGroupSubscriber extends AddGroupContentEventSubscriberBase {
    * {@inheritdoc}
    */
   protected function getRouteName(): string {
-    return 'solution.collection_solution.add';
+    return 'solution.collection_solution.tca';
   }
 
   /**
