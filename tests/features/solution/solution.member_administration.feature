@@ -128,7 +128,7 @@ Feature: Solution membership administration
     When I select "Facilitator" from "Role"
     And the mail collector cache is empty
     And I press "Invite members"
-    Then I should see the success message "1 user(s) have been invited to this group."
+    Then I should see the success message "1 user has been invited to this group."
     And the following email should have been sent:
       | recipient | dwightone                                                                                                  |
       | subject   | Invitation from Guadalupe Norman to join solution The Missing Sons.                                        |
