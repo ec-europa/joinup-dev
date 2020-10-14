@@ -25,12 +25,12 @@ Feature: Pinning content entities inside solutions
 
   Scenario Outline: Facilitators can pin and unpin community content inside their solutions.
     Given discussion content:
-      | title                      | solution    | state     |
-      | What is the HEX for lemon? | Blue Wrench | validated |
+      | title                      | solution    | state     | created    |
+      | What is the HEX for lemon? | Blue Wrench | validated | 2018-10-03 |
     And <content type> content:
-      | title              | solution    | state     | pinned |
-      | Very important     | Blue Wrench | validated | yes    |
-      | Useful information | Blue Wrench | validated | no     |
+      | title              | solution    | state     | pinned | created    |
+      | Very important     | Blue Wrench | validated | yes    | 2018-11-03 |
+      | Useful information | Blue Wrench | validated | no     | 2018-12-03 |
 
     When I am an anonymous user
     And I go to the homepage of the "Blue Wrench" solution
