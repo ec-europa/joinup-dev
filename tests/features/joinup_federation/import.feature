@@ -171,6 +171,9 @@ Feature: As a site moderator I am able to import RDF files.
     Then I should see "Slovenian Interoperability Portal - NIO: User selection"
     # Solution 1 is checked because it is new.
     And the row "Solution 1 [http://example.com/solution/1?query=4#]" is checked
+    # Regression test to ensure that releases are not confused for solutions.
+    And I should not see the text "Asset release 1"
+    And I should not see the text "Asset release 2"
     And I should see the text "Not federated yet" in the "Solution 1 [http://example.com/solution/1?query=4#]" row
     # Solution 2 is checked because there are changes detected (The title is different).
     And the row "Solution 2 [http://example.com/solution/2]" is checked
