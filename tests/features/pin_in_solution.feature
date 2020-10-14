@@ -36,8 +36,8 @@ Feature: Pinning content entities inside solutions
     And I go to the homepage of the "Blue Wrench" solution
     Then I should see the following tiles in the correct order:
       | Very important             |
-      | What is the HEX for lemon? |
       | Useful information         |
+      | What is the HEX for lemon? |
     Then I should not see the contextual links "Pin, Unpin" in the "Useful information" tile
     And I should not see the contextual links "Pin, Unpin" in the "Very important" tile
 
