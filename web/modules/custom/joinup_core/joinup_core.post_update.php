@@ -147,3 +147,37 @@ function joinup_core_post_update_0106503(): void {
       WHERE { ?s <http://joinup.eu/solution/pinned_in> ?o }");
   }
 }
+
+/**
+ * Fix the creation date for the rdf graphs.
+ */
+function joinup_core_post_update_0106504(): void {
+  $query = <<<QUERY
+WITH <http://joinup.eu/bundle/rdf-graph/graph>
+INSERT { ?entity <http://purl.org/dc/terms/issued> ?creation_time }
+WHERE { 
+  ?entity <http://purl.org/dc/terms/modified> ?creation_time .
+  FILTER NOT EXISTS { ?entity <http://purl.org/dc/terms/issued> ?time }
+}
+QUERY;
+
+  \Drupal::getContainer()->get('sparql.endpoint')->query($query);
+}
+
+/**
+ * Clean up orphaned triples.
+ */
+function joinup_core_post_update_0106505(): void {
+  $query = <<<QUERY
+DELETE { GRAPH ?g { ?s ?p ?o } }
+WHERE {
+  GRAPH ?g {
+    ?s ?p ?o .
+    FILTER NOT EXISTS {?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type} .
+    VALUES ?g { <http://joinup.eu/asset_distribution/published> <http://joinup.eu/asset_release/published> <http://joinup.eu/asset_release/draft> <http://joinup.eu/collection/published> <http://joinup.eu/collection/draft> <http://joinup.eu/contact-information/published> <http://joinup.eu/licence/published> <http://joinup.eu/owner/published> <http://joinup.eu/provenance_activity> <http://joinup.eu/solution/published> <http://joinup.eu/solution/draft><http://joinup.eu/spdx_licence/published> }
+  }
+}
+QUERY;
+
+  \Drupal::getContainer()->get('sparql.endpoint')->query($query);
+}
