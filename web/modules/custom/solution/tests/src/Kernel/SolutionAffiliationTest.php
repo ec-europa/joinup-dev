@@ -188,6 +188,43 @@ class SolutionAffiliationTest extends KernelTestBase {
   }
 
   /**
+   * Tests that adding a solution only adds a relation to the appropriate graph.
+   */
+  public function testNoOrphans(): void {
+    Rdf::create([
+      'rid' => 'collection',
+      'id' => "http://example.com/collection/1",
+      'label' => "Collection 1",
+      'field_ar_state' => 'validated',
+    ])->save();
+
+    $solution = Rdf::create([
+      'rid' => 'solution',
+      'id' => 'http://example.com/solution',
+      'label' => 'Test solution',
+      'collection' => [
+        'http://example.com/collection/1',
+        'http://example.com/collection/2',
+      ],
+      'field_is_state' => 'draft',
+    ]);
+    $solution->save();
+
+    $query = <<<QUERY
+SELECT COUNT(*) as ?count
+WHERE {
+  GRAPH ?g {
+    ?s ?p <{$solution->id()}> .
+    FILTER NOT EXISTS { ?s a ?type } .
+  }
+}
+QUERY;
+
+    $results = \Drupal::getContainer()->get('sparql.endpoint')->query($query);
+    $this->assertEqual($results[0]->count->getValue(), 0);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function tearDown() {
