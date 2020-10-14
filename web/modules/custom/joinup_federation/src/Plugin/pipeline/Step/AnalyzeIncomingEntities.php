@@ -382,6 +382,11 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     return $this->getSparqlQuery()
       ->graphs(['staging'])
       ->condition('rid', 'solution')
+      // Normally the solutions are stored in a separate graph and can be
+      // distinguished using the 'rid' condition above. However, the staging
+      // entities are all placed in the sink graph and we have to distinguish
+      // by the isVersionOf property.
+      ->notExists('field_isr_is_version_of')
       ->execute();
   }
 
