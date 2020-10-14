@@ -39,6 +39,7 @@ use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og\OgRoleInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\search_api\Entity\Server;
 use GuzzleHttp\Client;
@@ -242,11 +243,15 @@ class JoinupContext extends RawDrupalContext {
     if (empty($membership)) {
       return FALSE;
     }
-    if ($roles == $membership->getRolesIds()) {
-      return FALSE;
-    }
+    $expected_roles_ids = array_map(function (OgRoleInterface $role): string {
+      return $role->id();
+    }, $roles);
+    $actual_roles_ids = $membership->getRolesIds();
 
-    return TRUE;
+    sort($expected_roles_ids);
+    sort($actual_roles_ids);
+
+    return $expected_roles_ids === $actual_roles_ids;
   }
 
   /**
