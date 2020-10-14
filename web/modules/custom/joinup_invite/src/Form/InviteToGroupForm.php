@@ -121,27 +121,27 @@ class InviteToGroupForm extends GroupFormBase {
       $args = [':count' => $count];
       switch ($result) {
         case self::RESULT_SUCCESS:
-          $message = $this->t(':count user(s) have been invited to this group.', $args);
+          $message = $this->formatPlural($count, '1 user has been invited to this group.', ':count users have been invited to this group.', $args);
           break;
 
         case self::RESULT_FAILED:
-          $message = $this->t('The invitation could not be sent for :count user(s). Please try again later.', $args);
+          $message = $this->formatPlural($count, 'The invitation could not be sent to 1 user. Please try again later.', 'The invitation could not be sent for :count users. Please try again later.', $args);
           break;
 
         case self::RESULT_RESENT:
-          $message = $this->t("The invitation was resent to :count user(s) that were already invited previously but haven't yet accepted the invitation.", $args);
+          $message = $this->formatPlural($count, "The invitation was resent to 1 user who was already invited previously but hasn't yet accepted the invitation.", "The invitation was resent to :count users that were already invited previously but haven't yet accepted the invitation.", $args);
           break;
 
         case self::RESULT_ACCEPTED:
-          $message = $this->t(':count user(s) were already subscribed to the group. No new invitation was sent.', $args);
+          $message = $this->formatPlural($count, '1 user was already subscribed to the group. No new invitation was sent.', ':count users were already subscribed to the group. No new invitation was sent.', $args);
           break;
 
         case self::RESULT_REJECTED:
-          $message = $this->t(':count user(s) have previously rejected the group. No new invitation was sent.', $args);
+          $message = $this->formatPlural($count, '1 user has previously rejected the invitation. No new invitation was sent.', ':count users have previously rejected the invitation. No new invitation was sent.', $args);
           break;
 
         case self::STATUS_MEMBERSHIP_PENDING:
-          $message = $this->t(':count user(s) have a pending membership. Please, approve their membership request and assign the roles.', $args);
+          $message = $this->formatPlural($count, '1 user has a pending membership. Please, approve their membership request and assign the roles.', ':count users have a pending membership. Please, approve their membership requests and assign the roles.', $args);
           break;
 
         default:
