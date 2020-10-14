@@ -68,9 +68,14 @@ display:
               asset_distribution: default
               asset_release: default
               collection: default
-              licence: view_mode_search_list_item
+              licence: compatibility_check
               solution: default
               spdx_licence: default
+            'entity:taxonomy_term':
+              eif_conceptual_model: default
+              eif_interoperability_layer: default
+              eif_principle: default
+              eif_recommendation: default
             'entity:user':
               user: default
       fields:

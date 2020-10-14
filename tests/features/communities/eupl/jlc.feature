@@ -271,10 +271,10 @@ Feature:
       | http://joinup.eu/spdx/LGPL-2.1 | LGPL-2.1 | LGPL-2.1 |
 
     And licences:
-      | uri                              | title    | spdx licence | legal type                                     |
-      | http://joinup.eu/licence/cecillc | CECILL-C | CECILL-C     | GPL, For software, Lesser copyleft             |
-      | http://joinup.eu/licence/eupl12  | EUPL-1.2 | EUPL-1.2     | GPL, For data, For software, Copyleft/Share a. |
-      | http://joinup.eu/licence/lgpl21  | LGPL-2.1 | LGPL-2.1     | GPL, For software, Lesser copyleft             |
+      | uri                              | title                                 | spdx licence | legal type                                     |
+      | http://joinup.eu/licence/cecillc | CeCILL-C                              | CECILL-C     | GPL, For software, Lesser copyleft             |
+      | http://joinup.eu/licence/eupl12  | European Union Public Licence 1.2     | EUPL-1.2     | GPL, For data, For software, Copyleft/Share a. |
+      | http://joinup.eu/licence/lgpl21  | GNU Lesser General Public License 2.1 | LGPL-2.1     | GPL, For software, Lesser copyleft             |
 
     And compatibility documents:
       | id           | description                                                                                                                                                                    |
