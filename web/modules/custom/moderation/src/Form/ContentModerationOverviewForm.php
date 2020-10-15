@@ -311,7 +311,7 @@ class ContentModerationOverviewForm extends FormBase {
 
     // Filter out the non-latest versions.
     foreach ($entities as $vid => $nid) {
-      if ($this->isLatestRevision((string) $vid, $nid)) {
+      if ($this->isLatestRevision($vid, $nid)) {
         $return[$nid] = $this->nodeStorage->loadRevision($vid);
       }
     }
@@ -345,7 +345,7 @@ class ContentModerationOverviewForm extends FormBase {
   /**
    * Checks if the passed revision is the latest one.
    *
-   * @param string $revision_id
+   * @param int $revision_id
    *   The revision id.
    * @param string $entity_id
    *   The entity id.
@@ -353,7 +353,7 @@ class ContentModerationOverviewForm extends FormBase {
    * @return bool
    *   Whether the revision is the latest.
    */
-  public function isLatestRevision(string $revision_id, string $entity_id): bool {
+  public function isLatestRevision(int $revision_id, string $entity_id): bool {
     return $revision_id == $this->getLatestRevisionId($entity_id);
   }
 
