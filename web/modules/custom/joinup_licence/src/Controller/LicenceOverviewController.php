@@ -120,13 +120,16 @@ class LicenceOverviewController extends ControllerBase {
   /**
    * Builds a table row for a licence rdf_entity.
    *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity for which to build a table row.
+   *
    * @return array
    *   A table row.
    *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    */
-  public function buildRow(EntityInterface $entity) {
-    /* @var $entity \Drupal\rdf_entity\Entity\Rdf */
+  public function buildRow(EntityInterface $entity): array {
+    /** @var $entity \Drupal\rdf_entity\Entity\Rdf */
     $row['id'] = $entity->toLink()->toString();
     $row['rid'] = $entity->bundle();
     return $row;
