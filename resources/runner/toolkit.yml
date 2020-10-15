@@ -18,7 +18,8 @@ toolkit:
             - ${toolkit.build.dist.root}/.editorconfig
             - ${toolkit.build.dist.root}/.gitattributes
             - ${toolkit.build.dist.root}/.gitignore
-            - ${toolkit.build.dist.root}/composer.json
+            # Drupal Finder, and consequently Drush, are still needing
+            # composer.json to locate the root dir. Remove only composer.lock.
             - ${toolkit.build.dist.root}/composer.lock
 
 commands:
@@ -49,6 +50,8 @@ commands:
       command: sparql:empty
     - task: run
       command: solr:empty
+    - task: run
+      command: redis:flush-all
     - task: run
       command: drupal:settings
       arguments:

@@ -348,8 +348,8 @@ function _joinup_search_apply_listing_content_query_settings(SolariumQueryInterf
   // infinite.
   // Example:
   // @codingStandardsIgnoreStart
-  // "or(and(bs_sticky, query({!v='sm_entity_groups:<id>'},0)), query({!v='sm_field_is_pinned_in:<id>'},0))"
-  // "query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_field_is_pinned_in:<id>)'})"
+  // "or(and(bs_sticky, query({!v='sm_entity_groups:<id>'},0)), query({!v='sm_rdf_pinned_in:<id>'},0))"
+  // "query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_rdf_pinned_in:<id>)'})"
   // @codingStandardsIgnoreEnd
   // The and() operator will return false when the subquery score is lower than
   // 1, so both of the above will fail the sorting.
@@ -357,8 +357,8 @@ function _joinup_search_apply_listing_content_query_settings(SolariumQueryInterf
   // than y. By using gt(), any positive score can be transformed to true.
   // Example:
   // @codingStandardsIgnoreStart
-  // "or(and(bs_sticky, gt(query({!v='sm_entity_groups:<id>'},0),0)), gt(query({!v='sm_field_is_pinned_in:<id>'},0),0))"
-  // "gt(query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_field_is_pinned_in:<id>)'}),0)"
+  // "or(and(bs_sticky, gt(query({!v='sm_entity_groups:<id>'},0),0)), gt(query({!v='sm_rdf_pinned_in:<id>'},0),0))"
+  // "gt(query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_rdf_pinned_in:<id>)'}),0)"
   // @codingStandardsIgnoreEnd
   // Unfortunately, Solr 5.x doesn't support the gt() function.
   // Both Solr versions support the termfreq() function, which will return the
@@ -367,11 +367,11 @@ function _joinup_search_apply_listing_content_query_settings(SolariumQueryInterf
   // the query() function, but it looks more expensive.
   // Example:
   // @codingStandardsIgnoreLine
-  // "or(and(bs_sticky,exists(query({!v='sm_entity_groups:<id>'},0))),exists(query({!v='sm_field_is_pinned_in:<id>'},0)))"
+  // "or(and(bs_sticky,exists(query({!v='sm_entity_groups:<id>'},0))),exists(query({!v='sm_rdf_pinned_in:<id>'},0)))"
   // @see https://lucene.apache.org/solr/guide/6_6/function-queries.html#function-queries
   // @see http://archive.apache.org/dist/lucene/solr/ref-guide/apache-solr-ref-guide-5.5.pdf
   $computed_sort = sprintf(
-    "or(and(bs_sticky,termfreq(sm_entity_groups,%1\$s)),termfreq(sm_field_is_pinned_in,%1\$s))",
+    "or(termfreq(sm_node_pinned_in,%1\$s),termfreq(sm_rdf_pinned_in,%1\$s))",
     $solarium_query->getHelper()->escapePhrase($entity->id())
   );
   $solarium_query->setSorts([

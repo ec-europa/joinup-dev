@@ -77,3 +77,22 @@ Feature: User role management
     And I fill in "Title" with "Closed licence"
     And I press "Save"
     Then I should see the heading "Closed licence"
+
+  Scenario: A moderator can assign and remove the 'RDF graph manager' role.
+
+    Given I am logged in as "Rick Rolls"
+    When I click "People"
+    Then I should see the link "Nibby Noob"
+    And  I should not see the text "RDF graph manager" in the "Nibby Noob" row
+
+    When I check "Nibby Noob"
+    And I select "Add the RDF graph manager role to the selected user(s)" from "Action"
+    And I press the "Apply to selected items" button
+    Then I should see the success message "Add the RDF graph manager role to the selected user(s) was applied to 1 item."
+    And I should see the text "RDF graph manager" in the "Nibby Noob" row
+
+    When I check "Nibby Noob"
+    And I select "Remove the RDF graph manager role from the selected user(s)" from "Action"
+    And I press the "Apply to selected items" button
+    Then I should see the success message "Remove the RDF graph manager role from the selected user(s) was applied to 1 item."
+    And I should not see the text "RDF graph manager" in the "Nibby Noob" row
