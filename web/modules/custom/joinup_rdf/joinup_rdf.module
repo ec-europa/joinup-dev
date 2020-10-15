@@ -91,7 +91,7 @@ function joinup_rdf_entity_type_alter(array &$entity_types) {
  */
 function joinup_rdf_taxonomy_term_storage_load(array $terms) {
   $sparql = \Drupal::service('sparql_endpoint');
-  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql */
+  /** @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparql */
 
   $query = <<<QUERY
 SELECT ?extension ?mime_type
