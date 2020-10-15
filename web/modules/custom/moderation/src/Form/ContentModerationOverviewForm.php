@@ -246,18 +246,19 @@ class ContentModerationOverviewForm extends FormBase {
   }
 
   /**
-   * Builds the filers on content type and state.
+   * Builds the filters on content type and state.
    *
    * @param array $count
    *   An associative array keyed by content type, each value an associative
    *   array keyed by moderation state, with the number of items as value.
-   * @param string $type_filter
-   *   The active content type filter.
+   * @param string|null $type_filter
+   *   The active content type filter. If omitted select options for all content
+ *   types will be included.
    *
    * @return array
    *   The form array with the content type and state filters.
    */
-  protected function buildSelectForm(array $count, string $type_filter): array {
+  protected function buildSelectForm(array $count, ?string $type_filter): array {
     return [
       'wrapper' => [
         '#type' => 'container',
@@ -310,7 +311,7 @@ class ContentModerationOverviewForm extends FormBase {
 
     // Filter out the non-latest versions.
     foreach ($entities as $vid => $nid) {
-      if ($this->isLatestRevision($vid, $nid)) {
+      if ($this->isLatestRevision((string) $vid, $nid)) {
         $return[$nid] = $this->nodeStorage->loadRevision($vid);
       }
     }
