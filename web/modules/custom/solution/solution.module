@@ -29,6 +29,7 @@ use Drupal\search_api\Query\QueryInterface;
 use Drupal\solution\Entity\Solution;
 use Drupal\solution\Entity\SolutionInterface;
 use Drupal\solution\SolutionAffiliationFieldItemList;
+use Drupal\solution\SolutionLatestReleasesFieldItemList;
 use Drupal\solution\SolutionReleasesAndDistributionsFieldItemList;
 use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Drupal\user\Entity\User;
@@ -86,6 +87,18 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
     ->setReadOnly(TRUE)
     ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
     ->setClass(SolutionReleasesAndDistributionsFieldItemList::class);
+  // References the latest release, if any.
+  $fields['latest_release'] = BaseFieldDefinition::create('entity_reference')
+    ->setLabel(t('Latest release'))
+    ->setName('latest_release')
+    ->setDescription(t('The latest release, if any.'))
+    ->setTargetEntityTypeId('rdf_entity')
+    ->setTargetBundle('solution')
+    ->setSetting('target_type', 'rdf_entity')
+    ->setComputed(TRUE)
+    ->setReadOnly(TRUE)
+    ->setCardinality(1)
+    ->setClass(SolutionLatestReleasesFieldItemList::class);
 
   // Make sure a solution's title is unique among the collections it belongs to.
   if (!empty($fields['label'])) {
