@@ -24,7 +24,7 @@ class DbLogTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'dblog',
     'field',
     'filter',
@@ -34,6 +34,13 @@ class DbLogTest extends KernelTestBase {
     'text',
     'user',
   ];
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
 
   /**
    * {@inheritdoc}
@@ -51,6 +58,7 @@ class DbLogTest extends KernelTestBase {
       'name' => 'Basic page',
       'display_submitted' => FALSE,
     ]);
+    $this->entityTypeManager = $this->container->get('entity_type.manager');
   }
 
   /**
@@ -58,7 +66,7 @@ class DbLogTest extends KernelTestBase {
    */
   public function testDbLogRevisionUpdate() {
     /** @var \Drupal\node\NodeStorageInterface $node_storage */
-    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+    $node_storage = $this->entityTypeManager->getStorage('node');
     $watchdog_query = "SELECT COUNT(wid) FROM {watchdog} WHERE type = 'joinup_debug'";
 
     /** @var \Drupal\node\NodeInterface $node */

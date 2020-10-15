@@ -126,16 +126,11 @@ trait UtilityTrait {
    * @param object $object
    *   The object itself.
    * @param string $property
-   *   The source property name. It will be used also as destination if the
-   *   related parameter is not passed.
+   *   The property name.
    * @param array $mapping
    *   An array of mapped values, where keys are the human-readable strings.
-   * @param string|null $destination
-   *   The destination property name. If left empty, the source property will
-   *   be reused. When specified, the source property gets unset from the
-   *   object.
    */
-  protected static function convertObjectPropertyValues($object, string $property, array $mapping, ?string $destination = NULL): void {
+  protected static function convertObjectPropertyValues($object, string $property, array $mapping): void {
     if (!property_exists($object, $property)) {
       return;
     }
@@ -147,17 +142,8 @@ trait UtilityTrait {
       throw new \UnexpectedValueException("Unexpected value for {$property} '{$object->$property}'. Supported values are: $supported_values.");
     }
 
-    // If no destination property is specified, reuse the source property.
-    $destination = $destination ?: $property;
-
     // Replace the human readable value with the expected boolean.
-    $object->$destination = $mapping[$object->$property];
-
-    // When a destination property has been specified, delete the source
-    // property.
-    if ($destination !== $property) {
-      unset($object->$property);
-    }
+    $object->$property = $mapping[$object->$property];
   }
 
   /**

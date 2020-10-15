@@ -1,0 +1,30 @@
+uuid: 3c977510-d8e7-42b4-89fc-1495919e8adf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.meta_entity.field_pinned_in
+    - meta_entity.type.pinned_in
+    - rdf_entity.rdfentity.collection
+    - rdf_entity.rdfentity.solution
+id: meta_entity.pinned_in.field_pinned_in
+field_name: field_pinned_in
+entity_type: meta_entity
+bundle: pinned_in
+label: 'Pinned in'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      collection: collection
+      solution: solution
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: collection
+field_type: entity_reference

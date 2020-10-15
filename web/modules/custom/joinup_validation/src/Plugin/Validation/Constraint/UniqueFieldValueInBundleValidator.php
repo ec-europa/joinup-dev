@@ -4,13 +4,42 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_validation\Plugin\Validation\Constraint;
 
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * Validates that a field is unique for the given entity type within a bundle.
  */
-class UniqueFieldValueInBundleValidator extends ConstraintValidator {
+class UniqueFieldValueInBundleValidator extends ConstraintValidator implements ContainerInjectionInterface {
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Creates a new UniqueFieldValueInBundleValidator instance.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
+   */
+  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
+    $this->entityTypeManager = $entityTypeManager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity_type.manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -34,7 +63,7 @@ class UniqueFieldValueInBundleValidator extends ConstraintValidator {
     $id_key = $entity->getEntityType()->getKey('id');
     $main_property = $items->getFieldDefinition()->getFieldStorageDefinition()->getMainPropertyName();
 
-    $query = \Drupal::entityQuery($entity_type_id)
+    $query = $this->entityTypeManager->getStorage($entity_type_id)->getQuery()
       ->condition($field_name, $item->{$main_property})
       ->condition($bundle_key, $bundles, 'IN');
     if (!empty($entity->id())) {
