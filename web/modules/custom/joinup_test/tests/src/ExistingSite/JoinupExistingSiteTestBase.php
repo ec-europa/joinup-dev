@@ -36,6 +36,13 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
   protected $disableSpamProtection = TRUE;
 
   /**
+   * The state service.
+   *
+   * @var \Drupal\Core\State\StateInterface
+   */
+  protected $state;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -53,7 +60,8 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     // that are specifically testing limited access are able to use this
     // kill-switch by temporary re-enabling the functionality during testing.
     // @see \Drupal\Tests\joinup_eulogin\ExistingSite\JoinupEuLoginTest::testLimitedAccess()
-    \Drupal::state()->set('joinup_eulogin.disable_limited_access', TRUE);
+    $this->state = $this->container->get('state');
+    $this->state->set('joinup_eulogin.disable_limited_access', TRUE);
 
     if ($this->disableSpamProtection) {
       // As ExistingSiteBase tests are running without javascript, we disable
@@ -79,20 +87,21 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     }
 
     // Re-enable limited access functionality.
-    \Drupal::state()->delete('joinup_eulogin.disable_limited_access');
+    $this->state->delete('joinup_eulogin.disable_limited_access');
 
     // Restore the mail settings.
     $this->restoreMailSettings();
+
+    /** @var \Drupal\Component\Plugin\PluginManagerInterface $delete_orphans_manager */
+    $delete_orphans_manager = $this->container->get('plugin.manager.og.delete_orphans');
+    /** @var \Drupal\og\OgDeleteOrphansInterface $delete_orphans_plugin */
+    $delete_orphans_plugin = $delete_orphans_manager->createInstance('simple');
 
     // The parent method might cleanup config entities.
     $this->bypassReadOnlyConfig();
     parent::tearDown();
     $this->restoreReadOnlyConfig();
 
-    /** @var \Drupal\Component\Plugin\PluginManagerInterface $delete_orphans_manager */
-    $delete_orphans_manager = \Drupal::service('plugin.manager.og.delete_orphans');
-    /** @var \Drupal\og\OgDeleteOrphansInterface $delete_orphans_plugin */
-    $delete_orphans_plugin = $delete_orphans_manager->createInstance('simple');
     // Delete the OG group content orphans now because parent::tearDown() is
     // destroying the container and the registered shutdown callback will fail.
     $delete_orphans_plugin->process();
@@ -128,7 +137,7 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
    */
   protected function disableHoneypot(): void {
     static::bypassReadOnlyConfig();
-    $config_factory = \Drupal::configFactory();
+    $config_factory = $this->container->get('config.factory');
     $config = $config_factory->getEditable('honeypot.settings');
     if (!isset($this->honeypotForms)) {
       $this->honeypotForms = $config->get('form_settings') ?? [];
@@ -144,7 +153,7 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
    */
   protected function restoreHoneypot(): void {
     static::bypassReadOnlyConfig();
-    \Drupal::configFactory()->getEditable('honeypot.settings')
+    $this->container->get('config.factory')->getEditable('honeypot.settings')
       ->set('form_settings', $this->honeypotForms)
       ->save();
     static::restoreReadOnlyConfig();
