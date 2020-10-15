@@ -213,8 +213,8 @@ function asset_distribution_preprocess_rdf_entity(&$variables) {
  *   The term ID as URI or NULL, if the term doesn't exists.
  */
 function asset_distribution_get_file_type_term_by_mime($mime_type) {
-  $sparql = \Drupal::service('sparql_endpoint');
   /** @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparql */
+  $sparql = \Drupal::service('sparql.endpoint');
 
   $query = <<<QUERY
 SELECT ?entity_id

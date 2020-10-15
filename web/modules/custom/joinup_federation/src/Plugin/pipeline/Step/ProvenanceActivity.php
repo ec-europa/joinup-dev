@@ -80,7 +80,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('sparql_endpoint'),
+      $container->get('sparql.endpoint'),
       $container->get('entity_type.manager'),
       $container->get('rdf_entity_provenance.provenance_helper'),
       $container->get('current_user')

@@ -84,7 +84,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('sparql_endpoint'),
+      $container->get('sparql.endpoint'),
       $container->get('entity_type.manager'),
       $container->get('entity_field.manager'),
       $container->get('rdf_schema_field_validation.schema_field_validator')

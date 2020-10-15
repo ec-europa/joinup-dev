@@ -72,7 +72,7 @@ class SolutionsByLicenceForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('sparql_endpoint'),
+      $container->get('sparql.endpoint'),
       $container->get('pager.manager'),
       $container->get('link_generator')
     );

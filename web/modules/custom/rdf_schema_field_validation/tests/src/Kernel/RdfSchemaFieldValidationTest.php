@@ -60,7 +60,7 @@ class RdfSchemaFieldValidationTest extends JoinupKernelTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->spaqlEndpoint = $this->container->get('sparql_endpoint');
+    $this->spaqlEndpoint = $this->container->get('sparql.endpoint');
     $this->entityTypeManger = $this->container->get('entity_type.manager');
     $this->schemaFieldValidator = $this->container->get('rdf_schema_field_validation.schema_field_validator');
 

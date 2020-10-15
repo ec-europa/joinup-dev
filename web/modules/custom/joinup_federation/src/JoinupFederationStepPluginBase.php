@@ -71,7 +71,7 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('sparql_endpoint'),
+      $container->get('sparql.endpoint'),
       $container->get('entity_type.manager')
     );
   }

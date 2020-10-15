@@ -101,7 +101,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
       $container->get('plugin.manager.pipeline_step'),
       $container->get('pipeline.state_manager'),
       $container->get('current_user'),
-      $container->get('sparql_endpoint'),
+      $container->get('sparql.endpoint'),
       $container->get('joinup_federation.tempstore.shared'),
       $container->get('entity_type.manager')
     );

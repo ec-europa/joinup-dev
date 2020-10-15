@@ -105,7 +105,7 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('sparql_endpoint'),
+      $container->get('sparql.endpoint'),
       $container->get('entity_type.manager'),
       $container->get('validation.constraint')
     );

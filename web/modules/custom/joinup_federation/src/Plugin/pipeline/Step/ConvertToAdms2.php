@@ -68,7 +68,7 @@ class ConvertToAdms2 extends JoinupFederationStepPluginBase implements PipelineS
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('sparql_endpoint'),
+      $container->get('sparql.endpoint'),
       $container->get('entity_type.manager'),
       $container->get('plugin.manager.joinup_federation_adms2_convert_pass')
     );
