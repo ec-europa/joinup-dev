@@ -14,4 +14,12 @@ use Drupal\solution\Entity\SolutionContentInterface;
  */
 interface AssetReleaseInterface extends RdfInterface, CollectionContentInterface, SolutionContentInterface, EntityWorkflowStateInterface {
 
+  /**
+   * Checks whether this release is the latest release of the parent solution.
+   *
+   * @return bool
+   *   If this release is the latest release in the parent solution.
+   */
+  public function isLatestRelease(): bool;
+
 }

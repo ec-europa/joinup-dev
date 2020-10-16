@@ -39,4 +39,11 @@ class AssetRelease extends Rdf implements AssetReleaseInterface {
     return 'field_isr_state';
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function isLatestRelease(): bool {
+    return $this->id() === $this->getSolution()->getLatestReleaseId();
+  }
+
 }

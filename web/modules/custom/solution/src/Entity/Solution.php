@@ -70,6 +70,13 @@ class Solution extends Rdf implements SolutionInterface {
   /**
    * {@inheritdoc}
    */
+  public function getLatestReleaseId(): ?string {
+    return $this->get('latest_release')->target_id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getLatestRelease(): ?AssetReleaseInterface {
     return $this->get('latest_release')->entity;
   }

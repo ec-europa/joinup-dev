@@ -18,6 +18,14 @@ use Drupal\rdf_entity\RdfInterface;
 interface SolutionInterface extends RdfInterface, CollectionContentInterface, PinnableGroupContentInterface, EntityWorkflowStateInterface, GroupInterface, ShortIdInterface {
 
   /**
+   * Returns the latest release ID of this solution, if any.
+   *
+   * @return string|null
+   *   The latest release ID of this solution, if any.
+   */
+  public function getLatestReleaseId(): ?string;
+
+  /**
    * Returns the latest release of this solution, if any.
    *
    * @return \Drupal\asset_release\Entity\AssetReleaseInterface|null
