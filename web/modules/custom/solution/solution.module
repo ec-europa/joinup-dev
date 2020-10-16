@@ -627,41 +627,6 @@ function solution_rdf_entity_delete(RdfInterface $solution) {
 }
 
 /**
- * Gets the latest release of a solution.
- *
- * @param \Drupal\rdf_entity\RdfInterface $solution
- *   The 'solution' RDF entity.
- *
- * @return \Drupal\rdf_entity\RdfInterface|null
- *   The latest release entity or NULL if there are no releases.
- */
-function solution_get_latest_release(RdfInterface $solution) {
-  if ($solution->bundle() !== 'solution') {
-    throw new \InvalidArgumentException('Passed argument is not a solution RDF entity.');
-  }
-
-  $cache = &drupal_static(__FUNCTION__, []);
-  if (!isset($cache[$solution->id()])) {
-    $ids = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'asset_release')
-      ->condition('field_isr_is_version_of', $solution->id())
-      ->sort('created', 'DESC')
-      ->range(0, 1)
-      ->execute();
-
-    $cache[$solution->id()] = NULL;
-    if (!empty($ids)) {
-      $id = key($ids);
-      if ($release = Rdf::load($id)) {
-        $cache[$solution->id()] = $release;
-      }
-    }
-  }
-
-  return $cache[$solution->id()];
-}
-
-/**
  * Implements hook_search_api_query_TAG_alter().
  *
  * Alters the Search API queries for the solution content:
