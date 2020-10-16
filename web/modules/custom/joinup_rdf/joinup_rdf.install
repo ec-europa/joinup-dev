@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * @file
+ * Post update functions for the Joinup RDF module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Performs checks for the RDF entities and its storage.
+ *
+ * Performs the following checks:
+ * - Checks for leftover graphs from the ADMS validation.
+ */
+function joinup_rdf_requirements(string $phase): array {
+  if ($phase !== 'runtime') {
+    return [];
+  }
+
+  $requirements = [];
+
+  // Ensure that leftover graphs from the ADMS validation graph do not exist.
+  $requirements['joinup_rdf_adms_validation_graphs'] = [
+    'title' => t('RDF: ADMS graphs leftovers'),
+    'description' => t('Detects if there are leftover graphs and data from the ADMS validation step of the import pipeline. Can occur if the user navigates away during the validation.'),
+    'severity' => REQUIREMENT_OK,
+  ];
+
+  $query = <<<QUERY
+SELECT DISTINCT ?g WHERE { GRAPH ?g {?s ?p ?o} } ORDER BY ?g
+QUERY;
+
+  $connection = \Drupal::getContainer()->get('sparql.endpoint');
+  $graphs = $connection->query($query);
+  $errors = [];
+  foreach ($graphs as $graph) {
+    $uri = $graph->g->getUri();
+    if (strpos($uri, 'http://adms-validator/') === 0) {
+      // @todo: Would it be better to just clear them? Then that would run at
+      // every deployment.
+      $errors[] = $uri;
+    }
+  }
+
+  if (!empty($errors)) {
+    $error = t('Leftover graphs were found: :graphs', [
+      ':graphs' => implode(', ', $errors),
+    ]);
+    $requirements['joinup_rdf_adms_validation_graphs']['severity'] = REQUIREMENT_ERROR;
+    $requirements['joinup_rdf_adms_validation_graphs']['value'] = $error;
+  }
+
+  return $requirements;
+}
