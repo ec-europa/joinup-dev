@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\joinup_core;
 
 use Drupal\Core\Database\Connection;
-use Drupal\Driver\Database\joinup_sparql\Connection as SparqlConnection;
 
 /**
  * Implements helper methods related to the requirements.
@@ -20,23 +19,13 @@ class RequirementsHelper {
   protected $sqlConnection;
 
   /**
-   * The SQL connection class for the SPARQL database storage.
-   *
-   * @var \Drupal\Driver\Database\joinup_sparql\Connection
-   */
-  protected $sparql;
-
-  /**
    * Constructs a new RequirementsHelper.
    *
    * @param \Drupal\Core\Database\Connection $connection
    *   The SQL connection class for the primary database storage.
-   * @param \Drupal\Driver\Database\joinup_sparql\Connection $sparql
-   *   The SQL connection class for the SPARQL database storage.
    */
-  public function __construct(Connection $connection, SparqlConnection $sparql) {
+  public function __construct(Connection $connection) {
     $this->sqlConnection = $connection;
-    $this->sparql = $sparql;
   }
 
   /**
@@ -86,26 +75,6 @@ WHERE nr.vid > n.vid
 GROUP BY nid, latest_vid
 QUERY;
     return $this->sqlConnection->query($query)->fetchAllAssoc('nid');
-  }
-
-  /**
-   * Fetches the number of orphaned triples in the RDF entity main graphs.
-   *
-   * @return int
-   *   The number of orphaned triples.
-   */
-  public function getOrphanedTriples(): int {
-    $query = <<<QUERY
-SELECT COUNT(*) as ?count
-WHERE {
-  GRAPH ?g {
-    ?s ?p ?o .
-    FILTER NOT EXISTS {?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?o1} .
-    VALUES ?g { <http://joinup.eu/asset_distribution/published> <http://joinup.eu/asset_release/published> <http://joinup.eu/asset_release/draft> <http://joinup.eu/collection/published> <http://joinup.eu/collection/draft> <http://joinup.eu/contact-information/published> <http://joinup.eu/licence/published> <http://joinup.eu/owner/published> <http://joinup.eu/provenance_activity> <http://joinup.eu/solution/published> <http://joinup.eu/solution/draft><http://joinup.eu/spdx_licence/published> }
-  }
-}
-QUERY;
-    return $this->sparql->query($query)->offsetGet(0)->count->getValue();
   }
 
 }

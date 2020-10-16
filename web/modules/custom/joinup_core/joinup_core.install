@@ -91,25 +91,6 @@ function joinup_core_requirements($phase): array {
       $requirements['joinup_core_forward_revisions']['severity'] = REQUIREMENT_ERROR;
       $requirements['joinup_core_forward_revisions']['value'] = $error;
     }
-
-    // Regression requirement to ensure that no orphaned triples are leftover
-    // after various actions that interact with SPARQL storage.
-    $requirements['joinup_core_orphaned_triples'] = [
-      'title' => t('Orphaned triples in the database'),
-      'description' => t('Ensure that in graphs that host RDF entities, no orphaned triples are leftover.'),
-      'severity' => REQUIREMENT_OK,
-      'value' => t('No orphaned triples were detected in the RDF entity graphs.'),
-    ];
-
-    $count = $requirements_helper->getOrphanedTriples();
-    if ($count !== 0) {
-      $error = t(':count orphaned triples were found in the database.', [
-        ':count' => $count,
-      ]);
-
-      $requirements['joinup_core_orphaned_triples']['severity'] = REQUIREMENT_ERROR;
-      $requirements['joinup_core_orphaned_triples']['value'] = $error;
-    }
   }
 
   return $requirements;
