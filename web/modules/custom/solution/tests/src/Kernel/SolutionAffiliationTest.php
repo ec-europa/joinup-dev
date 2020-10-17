@@ -221,7 +221,7 @@ WHERE {
 QUERY;
 
     $results = $this->container->get('sparql.endpoint')->query($query);
-    $this->assertEqual($results[0]->count->getValue(), 0);
+    $this->assertSame($results[0]->count->getValue(), 0);
   }
 
   /**
