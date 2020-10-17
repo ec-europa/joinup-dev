@@ -220,7 +220,7 @@ WHERE {
 }
 QUERY;
 
-    $results = \Drupal::getContainer()->get('sparql.endpoint')->query($query);
+    $results = $this->container->get('sparql.endpoint')->query($query);
     $this->assertEqual($results[0]->count->getValue(), 0);
   }
 
