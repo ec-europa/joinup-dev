@@ -55,7 +55,7 @@
         "drupal/pathauto": "~1.5",
         "drupal/pipeline": "^1.0",
         "drupal/publication_date": "^2.0-beta1",
-        "drupal/rdf_entity": "dev-deprecated-code",
+        "drupal/rdf_entity": "^1.0",
         "drupal/redirect": "^1.4",
         "drupal/redis": "^1.2",
         "drupal/schema_metatag": "^1.4",
@@ -67,7 +67,7 @@
         "drupal/site_alert": "~1.1",
         "drupal/smart_trim": "~1.2",
         "drupal/social_media_links": "^2.7",
-        "drupal/spdx": "dev-deprecated-code",
+        "drupal/spdx": "^1.0",
         "drupal/state_machine": "^1.0",
         "drupal/subpathauto": "~1.0",
         "drupal/swiftmailer": "dev-1.x#694cbf25d8c026b0c7c118093696d151a7874754",
@@ -304,7 +304,7 @@
                 "Provide computed properties that return the publication date or the created/updated date @see https://www.drupal.org/project/publication_date/issues/3066317": "https://www.drupal.org/files/issues/2019-07-07/3066317-3.patch"
             },
             "drupal/rdf_entity": {
-                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "resources/patch/rdf_entity.plural_label.patch"
+                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...ea8f6af001fca732e89a4be0e29643953f49a88f.diff"
             },
             "drupal/schema_metatag": {
                 "Split SchemaArticle and SchemaSocialMediaPosting @see https://www.drupal.org/project/schema_metatag/issues/3117434": "https://www.drupal.org/files/issues/2020-03-13/3117434-D8-8.patch",
@@ -345,14 +345,6 @@
         }
     },
     "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/ec-europa/rdf_entity.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/ec-europa/sparql_entity_storage.git"
-        },
         {
             "type": "vcs",
             "url": "https://git.drupal.org/project/matomo_reporting_api.git"
