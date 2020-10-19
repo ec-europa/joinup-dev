@@ -62,7 +62,10 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
       // By keying on the user ID we can avoid that a user might get the message
       // more than once.
       $recipients_metadata[$account->id()] = [
-        'options' => $notifier_options + ['save on success' => FALSE, 'mail' => $mail],
+        'options' => $notifier_options + [
+          'save on success' => FALSE,
+          'mail' => $mail,
+        ],
         'notifier' => 'email',
       ];
     }
@@ -80,7 +83,10 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
     // the same address.
     foreach (array_unique($mails) as $mail) {
       $recipients_metadata[] = [
-        'options' => $notifier_options + ['save on success' => FALSE, 'mail' => $mail],
+        'options' => $notifier_options + [
+          'save on success' => FALSE,
+          'mail' => $mail,
+        ],
         'notifier' => 'email',
       ];
     }

@@ -99,7 +99,11 @@ class AdmsValidatorForm extends FormBase {
       $form['table'] = $validation_errors->toTable();
     }
 
-    honeypot_add_form_protection($form, $form_state, ['honeypot', 'time_restriction']);
+    honeypot_add_form_protection(
+      $form,
+      $form_state,
+      ['honeypot', 'time_restriction']
+    );
 
     return $form;
   }
