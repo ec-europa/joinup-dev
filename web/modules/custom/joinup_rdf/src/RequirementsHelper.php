@@ -46,9 +46,9 @@ class RequirementsHelper {
    * Returns a list of error messages for the joinup_rdf requirements.
    *
    * @return array
-   *   An array of string messages.
+   *   A list of error messages.
    */
-  public function getRequirementErrors() {
+  public function getRequirementErrors(): array {
     $errors = [];
     if ($count = $this->getOrphanedTriples()) {
       $errors[] = $this->translation->formatPlural($count, ':count orphaned triple was detected.', ':count orphaned triples were found.', [
