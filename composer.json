@@ -190,14 +190,12 @@
         "post-install-cmd": [
             "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
-            "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
-            "./vendor/bin/grumphp git:deinit"
+            "Joinup\\Composer\\RemoveWrongPatchedObjects::remove"
         ],
         "post-update-cmd": [
             "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
-            "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
-            "./vendor/bin/grumphp git:deinit"
+            "Joinup\\Composer\\RemoveWrongPatchedObjects::remove"
         ]
     },
     "extra": {
