@@ -149,7 +149,7 @@ function joinup_core_post_update_0106503(): void {
 }
 
 /**
- * Fix the creation date for the rdf graphs.
+ * Fix the creation date for the RDF graphs.
  */
 function joinup_core_post_update_0106504(): void {
   $query = <<<QUERY

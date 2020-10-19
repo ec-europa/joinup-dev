@@ -114,7 +114,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
     $field_handler = \Drupal::service('sparql.field_handler');
     $field_uri = $field_handler->getFieldPredicates('rdf_entity', 'field_ar_affiliates')['collection'];
 
-    // Generate a list of new ids that the solution references as an affiliate.
+    // Generate a list of new IDs that the solution references as an affiliate.
     $new_ids = array_map(function (EntityReferenceItem $field_item): string {
       return $field_item->target_id;
     }, $this->list);
@@ -174,7 +174,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
   }
 
   /**
-   * Returns the graph ids that the collections exists in.
+   * Returns the graph IDs that the collections exists in.
    *
    * Not to be confused with the final graphs the values will be inserted in.
    *
