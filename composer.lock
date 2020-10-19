@@ -4661,7 +4661,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/matomo_reporting_api.git",
-                "reference": "830c9c63a45ff5565710ccd0cc9d809a680d3300"
+                "reference": "c8f89a0aa57aa31761b8f1107f2c4d3a000778d4"
             },
             "require": {
                 "drupal/matomo": "^1.7",
@@ -4685,7 +4685,7 @@
                 "issues": "https://www.drupal.org/project/issues/matomo_reporting_api",
                 "source": "http://cgit.drupalcode.org/matomo_reporting_api"
             },
-            "time": "2019-09-18T07:08:31+00:00"
+            "time": "2020-10-19T19:58:58+00:00"
         },
         {
             "name": "drupal/menu_admin_per_menu",
