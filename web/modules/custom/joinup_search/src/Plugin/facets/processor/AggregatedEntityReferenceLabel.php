@@ -111,7 +111,10 @@ class AggregatedEntityReferenceLabel extends ProcessorPluginBase implements Buil
 
         // When the field is a entity reference or an OG group audience field,
         // collect the target type.
-        if ($property instanceof FieldDefinitionInterface && in_array($property->getType(), ['entity_reference', 'og_standard_reference'])) {
+        if ($property instanceof FieldDefinitionInterface && in_array(
+          $property->getType(),
+          ['entity_reference', 'og_standard_reference']
+        )) {
           $target_type = $property->getSetting('target_type');
 
           // Ensure that the entry exists in the array.
