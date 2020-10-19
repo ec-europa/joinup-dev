@@ -63,14 +63,17 @@
   }
 
   // Enable or disable all compare buttons.
-  function enableCompareButton(state) {
+  function enableButtons(state) {
+    var btnSelector = $( ".licence-tile__button--compatible" ).length ?
+                      '.licence-tile__button--compatible' :
+                      '.licence-tile__button--compare';
     if (state) {
-      $('.licence-tile__button--compare.licence-tile__button--disabled').each(function () {
+      $(btnSelector + '.licence-tile__button--disabled').each(function () {
         $(this).removeClass('licence-tile__button--disabled');
       });
     }
     else {
-      $('.licence-tile__button--compare').each(function () {
+      $(btnSelector).each(function () {
         $(this).addClass('licence-tile__button--disabled');
       });
     }
@@ -96,7 +99,7 @@
         }
 
         if (licencesArray.length >= 2) {
-          enableCompareButton(true);
+          enableButtons(true);
         }
       }
     });
@@ -142,7 +145,7 @@
       $(this)[0].MaterialCheckbox.uncheck();
     });
     $('.listing--licences').attr('data-licence-compare', '[]');
-    enableCompareButton(false);
+    enableButtons(false);
   });
 
   // Change compare elements if the checkbox is clicked.
@@ -167,7 +170,7 @@
         }
 
         if (licencesArray.length === 2) {
-          enableCompareButton(true);
+          enableButtons(true);
         }
       }
       else {
@@ -184,7 +187,7 @@
         }
 
         if (licencesArray.length < 2) {
-          enableCompareButton(false);
+          enableButtons(false);
         }
       }
 
@@ -199,6 +202,20 @@
       if (licences.length > 0) {
         var licencesArray = JSON.parse(licences);
         window.location.href = drupalSettings.licenceComparer.path + '/' + licencesArray.join(';');
+      }
+    });
+  });
+
+  // Change compatible elements if the radio is clicked.
+  $('.listing__item--compatibility .mdl-radio__button').each(function () {
+    $(this).on('click', function () {
+      var use_licence = $("input[name='use-licence']:checked").attr('data-licence-name');
+      var distribute_licence = $("input[name='distribute-as-licence']:checked").attr('data-licence-name');
+
+      if(use_licence && distribute_licence) {
+        var compatible_url = drupalSettings.path.baseUrl + "licence/compatibility-check/" + use_licence + "/" + distribute_licence;
+        $('.licence-tile__button--compatible').attr('href', compatible_url);
+        enableButtons(use_licence != distribute_licence);
       }
     });
   });
