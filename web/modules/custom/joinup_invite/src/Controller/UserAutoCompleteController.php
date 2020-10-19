@@ -65,7 +65,10 @@ class UserAutoCompleteController extends ControllerBase {
       $users = $this->entityTypeManager->getStorage('user')->loadMultiple($results);
 
       foreach ($users as $user) {
-        $values[] = ['value' => $user->getEmail(), 'label' => $this->getAccountName($user)];
+        $values[] = [
+          'value' => $user->getEmail(),
+          'label' => $this->getAccountName($user),
+        ];
       }
     }
     return new JsonResponse($values);

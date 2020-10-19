@@ -20,7 +20,7 @@ services:
       - { name: state_machine.guard, group: solution }
   solution.requirements_helper:
     class: Drupal\solution\RequirementsHelper
-    arguments: ['@sparql_endpoint']
+    arguments: ['@sparql.endpoint']
   solution.title_duplicate_helper:
     class: 'Drupal\solution\SolutionTitleDuplicateHelper'
     arguments: ['@entity_type.manager', '@sparql.graph_handler']

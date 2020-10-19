@@ -11,7 +11,7 @@ use Drupal\Core\TempStore\SharedTempStoreFactory;
 use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
 use Drupal\pipeline\PipelineStateManager;
 use Drupal\pipeline\Plugin\PipelineStepPluginManager;
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -47,7 +47,7 @@ class JoinupFederationInvalidTestingPipeline extends JoinupFederationPipelinePlu
    *   The pipeline state manager service.
    * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user.
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Core\TempStore\SharedTempStoreFactory $shared_tempstore_factory
    *   The shared temp store factory service.
@@ -72,7 +72,7 @@ class JoinupFederationInvalidTestingPipeline extends JoinupFederationPipelinePlu
       $container->get('plugin.manager.pipeline_step'),
       $container->get('pipeline.state_manager'),
       $container->get('current_user'),
-      $container->get('sparql_endpoint'),
+      $container->get('sparql.endpoint'),
       $container->get('joinup_federation.tempstore.shared'),
       $container->get('entity_type.manager'),
       $container->get('state')

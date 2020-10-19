@@ -173,7 +173,7 @@ drupal:
         $databases['sparql_default']['default'] = [
           'host' => getenv('SPARQL_HOST'),
           'port' => getenv('SPARQL_PORT'),
-          'namespace' => 'Drupal\\Driver\\Database\\joinup_sparql',
+          'namespace' => 'Drupal\\joinup_sparql\\Driver\\Database\\joinup_sparql',
           'driver' => 'sparql',
         ];
         $settings['joinup']['sparql_public_endpoint'] = getenv('SPARQL_PUBLIC_ENDPOINT');

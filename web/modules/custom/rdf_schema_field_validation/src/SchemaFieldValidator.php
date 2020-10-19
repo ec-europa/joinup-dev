@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\rdf_schema_field_validation;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 use Drupal\sparql_entity_storage\Exception\UnmappedFieldException;
 use Drupal\sparql_entity_storage\SparqlEntityStorageFieldHandlerInterface;
@@ -19,7 +19,7 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
   /**
    * The database connection.
    *
-   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface
    */
   protected $sparqlEndpoint;
 
@@ -40,7 +40,7 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
   /**
    * Constructs a new SchemaFieldValidator object.
    *
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparql_endpoint
    *   The database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
