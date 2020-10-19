@@ -25,19 +25,19 @@ Feature: Pinning content entities inside solutions
 
   Scenario Outline: Facilitators can pin and unpin community content inside their solutions.
     Given discussion content:
-      | title                      | solution    | state     |
-      | What is the HEX for lemon? | Blue Wrench | validated |
+      | title                      | solution    | state     | created    |
+      | What is the HEX for lemon? | Blue Wrench | validated | 2018-10-03 |
     And <content type> content:
-      | title              | solution    | state     | pinned |
-      | Very important     | Blue Wrench | validated | yes    |
-      | Useful information | Blue Wrench | validated | no     |
+      | title              | solution    | state     | pinned | created    |
+      | Very important     | Blue Wrench | validated | yes    | 2018-11-03 |
+      | Useful information | Blue Wrench | validated | no     | 2018-12-03 |
 
     When I am an anonymous user
     And I go to the homepage of the "Blue Wrench" solution
     Then I should see the following tiles in the correct order:
       | Very important             |
-      | What is the HEX for lemon? |
       | Useful information         |
+      | What is the HEX for lemon? |
     Then I should not see the contextual links "Pin, Unpin" in the "Useful information" tile
     And I should not see the contextual links "Pin, Unpin" in the "Very important" tile
 
@@ -73,9 +73,9 @@ Feature: Pinning content entities inside solutions
     When I click the contextual link "Unpin" in the "Very important" tile
     Then I should see the success message "<label> Very important has been unpinned in the solution Blue Wrench."
     And I should see the following tiles in the correct order:
-      | What is the HEX for lemon? |
       | Useful information         |
       | Very important             |
+      | What is the HEX for lemon? |
     And I should see the contextual link "Pin" in the "Very important" tile
     But I should not see the contextual link "Unpin" in the "Very important" tile
 
@@ -83,8 +83,8 @@ Feature: Pinning content entities inside solutions
     Then I should see the success message "<label> Useful information has been pinned in the solution Blue Wrench."
     And I should see the following tiles in the correct order:
       | Useful information         |
-      | What is the HEX for lemon? |
       | Very important             |
+      | What is the HEX for lemon? |
     And I should see the contextual link "Unpin" in the "Useful information" tile
     But I should not see the contextual link "Pin" in the "Useful information" tile
 
