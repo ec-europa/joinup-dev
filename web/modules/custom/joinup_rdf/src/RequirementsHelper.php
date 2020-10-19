@@ -6,7 +6,7 @@ namespace Drupal\joinup_rdf;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationManager;
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 
 /**
  * Implements helper methods related to the requirements.
@@ -18,7 +18,7 @@ class RequirementsHelper {
   /**
    * The SQL connection class for the SPARQL database storage.
    *
-   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface
    */
   protected $sparql;
 
@@ -32,7 +32,7 @@ class RequirementsHelper {
   /**
    * Constructs a new RequirementsHelper.
    *
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparql
    *   The SQL connection class for the SPARQL database storage.
    * @param \Drupal\Core\StringTranslation\TranslationManager $translation
    *   The translation manager service.
