@@ -14386,20 +14386,20 @@
         },
         {
             "name": "drupaltest/behat-one-time-login",
-            "version": "1.0.0-beta1",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupaltest/behat-one-time-login.git",
-                "reference": "92c0c9a71d2bf699a98d17ef4a4e8a437908038b"
+                "reference": "43e4374e18f0132d7ec949ffad6d929c1c46c49d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupaltest/behat-one-time-login/zipball/92c0c9a71d2bf699a98d17ef4a4e8a437908038b",
-                "reference": "92c0c9a71d2bf699a98d17ef4a4e8a437908038b",
+                "url": "https://api.github.com/repos/drupaltest/behat-one-time-login/zipball/43e4374e18f0132d7ec949ffad6d929c1c46c49d",
+                "reference": "43e4374e18f0132d7ec949ffad6d929c1c46c49d",
                 "shasum": ""
             },
             "require": {
-                "drupal/drupal-extension": "~4.0",
+                "drupal/drupal-extension": "~4.1",
                 "friends-of-behat/service-container-extension": "~1.0"
             },
             "require-dev": {
@@ -14441,7 +14441,7 @@
             ],
             "description": "Authenticates users through the Drupal one time login mechanism.",
             "homepage": "https://github.com/drupaltest/behat-one-time-login",
-            "time": "2020-01-17T09:12:53+00:00"
+            "time": "2020-10-19T13:55:55+00:00"
         },
         {
             "name": "ec-europa/qa-automation",
