@@ -21,7 +21,8 @@
 #}
 {%
   set classes = [
-    'listing__item ',
+    'listing__item',
+    'listing__item--compatibility',
     'listing__item--tile',
     'licence-tile mdl-cell',
     'mdl-cell--12-col',
@@ -39,7 +40,7 @@
         </div>
       {% endif %}
       <div class="listing__field">
-        {{ label }}
+        <div class="listing__teaser">{{ label }}</div>
       </div>
     </div>
     <div class="licence-tile__actions">
@@ -74,7 +75,7 @@
         </label>
       </div>
       <div class="licence-tile__actions-item">
-        <a class="licence-tile__button licence-tile__button--compare licence-tile__button--disabled" href="#">{{ 'Check compatibility'|t }}</a>
+        <a class="licence-tile__button licence-tile__button--compatible licence-tile__button--disabled" href="#">{{ 'Check compatibility'|t }}</a>
       </div>
       {% if content.spdx_licence_external_url %}
         <div class="licence-tile__actions-item">
