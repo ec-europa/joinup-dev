@@ -147,3 +147,100 @@ function joinup_core_post_update_0106503(): void {
       WHERE { ?s <http://joinup.eu/solution/pinned_in> ?o }");
   }
 }
+
+/**
+ * Fix the creation date for the RDF graphs.
+ */
+function joinup_core_post_update_0106504(): void {
+  $query = <<<QUERY
+WITH <http://joinup.eu/bundle/rdf-graph/graph>
+INSERT { ?entity <http://purl.org/dc/terms/issued> ?creation_time }
+WHERE { 
+  ?entity <http://purl.org/dc/terms/modified> ?creation_time .
+  FILTER NOT EXISTS { ?entity <http://purl.org/dc/terms/issued> ?time }
+}
+QUERY;
+
+  \Drupal::getContainer()->get('sparql.endpoint')->query($query);
+}
+
+/**
+ * Add creation time to entities solutions that lack it.
+ */
+function joinup_core_post_update_0106505(array &$sandbox): void {
+  // Query the solutions without created date and their provenance records
+  // corresponding created date.
+  $query = <<<QUERY
+SELECT DISTINCT ?graph ?id ?created
+WHERE {
+  GRAPH ?graph {
+    ?id ?p ?o .
+    ?id a <http://www.w3.org/ns/dcat#Dataset>
+    FILTER NOT EXISTS {?id <http://purl.org/dc/terms/issued> ?created__value} .
+    FILTER NOT EXISTS {?id <http://purl.org/dc/terms/isVersionOf> ?field_isr_is_version_of__target_id}
+  }
+  ?provenance_id a <http://www.w3.org/ns/prov#Activity> .
+  ?provenance_id <http://purl.org/dc/terms/issued> ?created .
+  ?provenance_id <http://www.w3.org/ns/prov#generated> ?id
+}
+QUERY;
+
+  $database = \Drupal::getContainer()->get('sparql.endpoint');
+  $results = $database->query($query);
+  $ids_to_clear = [];
+
+  foreach ($results as $result) {
+    $graph = $result->graph->getUri();
+    $id = $result->id->getUri();
+    $ids_to_clear[] = $id;
+    $created = $result->created->toRdfPhp();
+    $value = $created['value'];
+    $type = $created['datatype'];
+
+    $insert_query = <<<QUERY
+WITH <{$graph}>
+INSERT { <$id> <http://purl.org/dc/terms/issued> "{$value}"^^<{$type}> }
+QUERY;
+    $database->query($insert_query);
+  }
+
+  \Drupal::entityTypeManager()->getStorage('rdf_entity')->resetCache($ids_to_clear);
+}
+
+/**
+ * Clean up orphaned triples.
+ */
+function joinup_core_post_update_0106506(): void {
+  $query = <<<QUERY
+DELETE { GRAPH ?g { ?s ?p ?o } }
+WHERE {
+  GRAPH ?g {
+    ?s ?p ?o .
+    FILTER NOT EXISTS {?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type} .
+    VALUES ?g { <http://joinup.eu/asset_distribution/published> <http://joinup.eu/asset_release/published> <http://joinup.eu/asset_release/draft> <http://joinup.eu/collection/published> <http://joinup.eu/collection/draft> <http://joinup.eu/contact-information/published> <http://joinup.eu/licence/published> <http://joinup.eu/owner/published> <http://joinup.eu/provenance_activity> <http://joinup.eu/solution/published> <http://joinup.eu/solution/draft><http://joinup.eu/spdx_licence/published> }
+  }
+}
+QUERY;
+
+  \Drupal::getContainer()->get('sparql.endpoint')->query($query);
+}
+
+/**
+ * Clean up the validation graphs.
+ */
+function joinup_core_post_update_0106507(array &$sandbox): void {
+  $query = <<<QUERY
+SELECT DISTINCT ?g
+   WHERE { GRAPH ?g {?s ?p ?o} }
+ORDER BY ?g
+QUERY;
+
+  $connection = \Drupal::getContainer()->get('sparql.endpoint');
+  $graphs = $connection->query($query);
+  foreach ($graphs as $graph) {
+    $uri = $graph->g->getUri();
+    if (strpos($uri, 'http://adms-validator/') === 0) {
+      $connection->query("CLEAR GRAPH <$uri>");
+    }
+  }
+}
