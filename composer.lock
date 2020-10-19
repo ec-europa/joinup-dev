@@ -6307,16 +6307,16 @@
         },
         {
             "name": "drupal/spdx",
-            "version": "1.0.0-alpha6",
+            "version": "1.0.0-alpha8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/spdx.git",
-                "reference": "c64a2c73b854f9a272972758482f19884b74fabe"
+                "reference": "93357da0473b54fdbf84f0f54aa728c42e11844b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/c64a2c73b854f9a272972758482f19884b74fabe",
-                "reference": "c64a2c73b854f9a272972758482f19884b74fabe",
+                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/93357da0473b54fdbf84f0f54aa728c42e11844b",
+                "reference": "93357da0473b54fdbf84f0f54aa728c42e11844b",
                 "shasum": ""
             },
             "require": {
@@ -6327,10 +6327,10 @@
             "type": "drupal-module",
             "description": "Allows to federate and manage the SPDX licences.",
             "support": {
-                "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha6",
+                "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha8",
                 "issues": "https://github.com/ec-europa/spdx/issues"
             },
-            "time": "2020-09-15T08:51:10+00:00"
+            "time": "2020-10-19T13:59:26+00:00"
         },
         {
             "name": "drupal/state_machine",
