@@ -40,7 +40,7 @@ abstract class JoinupKernelTestBase extends RdfKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->installEntitySchema('user');
   }
@@ -48,7 +48,7 @@ abstract class JoinupKernelTestBase extends RdfKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function tearDown() {
+  public function tearDown(): void {
     // Delete all data produced by testing module.
     foreach (['dummy', 'with_owner', 'multifield'] as $bundle) {
       foreach (['published', 'draft'] as $graph) {

@@ -57,7 +57,7 @@ class RdfSchemaFieldValidationTest extends JoinupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->spaqlEndpoint = $this->container->get('sparql.endpoint');
@@ -88,7 +88,7 @@ class RdfSchemaFieldValidationTest extends JoinupKernelTestBase {
   /**
    * Asserts that fields belong or don't belong to a defined schema.
    */
-  public function testFieldSchema() {
+  public function testFieldSchema(): void {
     $this->assertTrue($this->schemaFieldValidator->isDefinedInSchema('rdf_entity', 'dummy', 'field_text'));
     $this->assertFalse($this->schemaFieldValidator->isDefinedInSchema('rdf_entity', 'dummy', 'field_text', 'format'));
     $this->assertFalse($this->schemaFieldValidator->isDefinedInSchema('rdf_entity', 'dummy', 'label'));
@@ -97,7 +97,7 @@ class RdfSchemaFieldValidationTest extends JoinupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function tearDown() {
+  public function tearDown(): void {
     $query = <<<EndOfQuery
 DELETE {
   GRAPH <{$this->definitionUri}> {
