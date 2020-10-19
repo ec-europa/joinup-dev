@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_rdf;
 
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
 
@@ -16,14 +16,14 @@ class VocabularyFixturesHelper implements VocabularyFixturesHelperInterface {
   /**
    * The SPARQL connection service.
    *
-   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface
    */
   protected $connection;
 
   /**
    * Constructs a VocabularyFixturesHelper.
    *
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $connection
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $connection
    *   The SPARQL connection service.
    */
   public function __construct(ConnectionInterface $connection) {
