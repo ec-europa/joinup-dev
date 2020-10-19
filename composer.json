@@ -114,7 +114,7 @@
         "drupal/config_update": "dev-1.x",
         "drupal/default_content": "^1.0-alpha8",
         "drupal/devel": "~2.1",
-        "drupal/drupal-extension": "4.0",
+        "drupal/drupal-extension": "^4.1",
         "drupal/filecache": "^1.0-beta2",
         "drupal/renderviz": "^1.0",
         "drupal/restui": "^1.17",
@@ -258,9 +258,6 @@
                 "EntityConstraintValidationList::findByCode is inconsistent @see https://www.drupal.org/project/drupal/issues/3126654": "https://www.drupal.org/files/issues/2020-04-10/find_by_code_override-3126654-D8-4.patch",
                 "Cannot implement a custom user cancellation method @see https://www.drupal.org/project/drupal/issues/3135592": "https://www.drupal.org/files/issues/2020-05-11/3135592-3.patch",
                 "Allow to refine by bundle in EntityConverter @see https://www.drupal.org/project/drupal/issues/3155568": "https://www.drupal.org/files/issues/2020-06-30/3155568-4.patch"
-            },
-            "drupal/drupal-extension": {
-              "Add space arround the keywords to avoid wrongly matching @see https://github.com/jhedstrom/drupalextension/pull/561": "https://patch-diff.githubusercontent.com/raw/jhedstrom/drupalextension/pull/561.patch"
             },
             "drupal/dynamic_entity_reference": {
                 "Backport improvements in infinite recursion protection from the entity_reference field formatter @see https://www.drupal.org/project/dynamic_entity_reference/issues/3152105#comment-13701599": "https://www.drupal.org/files/issues/2020-06-16/3152105-2.patch"
