@@ -253,7 +253,7 @@ class ContentModerationOverviewForm extends FormBase {
    *   array keyed by moderation state, with the number of items as value.
    * @param string|null $type_filter
    *   The active content type filter. If omitted select options for all content
- *   types will be included.
+   *   types will be included.
    *
    * @return array
    *   The form array with the content type and state filters.
