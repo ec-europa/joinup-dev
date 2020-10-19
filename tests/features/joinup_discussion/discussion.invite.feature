@@ -169,11 +169,11 @@ Feature: Invite members to subscribe to discussions
     And the following email should have been sent:
       | recipient | Glory Ruskin                                                                                              |
       | subject   | Lynwood Crawford invited you to follow a discussion on Joinup.                                            |
-      | body      | Lynwood Crawford invites you to participate in the discussion Concerned about dissolved gases? on Joinup. |
+      | body      | Lynwood Crawford invited you to participate in the discussion Concerned about dissolved gases? on Joinup. |
     And the following email should have been sent:
       | recipient | paternoster                                                                                               |
       | subject   | Lynwood Crawford invited you to follow a discussion on Joinup.                                            |
-      | body      | Lynwood Crawford invites you to participate in the discussion Concerned about dissolved gases? on Joinup. |
+      | body      | Lynwood Crawford invited you to participate in the discussion Concerned about dissolved gases? on Joinup. |
     And 2 e-mails should have been sent
 
     # Try if it is possible to resend an invitation.
@@ -188,7 +188,7 @@ Feature: Invite members to subscribe to discussions
     And the following email should have been sent:
       | recipient | Glory Ruskin                                                                                              |
       | subject   | Lynwood Crawford invited you to follow a discussion on Joinup.                                            |
-      | body      | Lynwood Crawford invites you to participate in the discussion Concerned about dissolved gases? on Joinup. |
+      | body      | Lynwood Crawford invited you to participate in the discussion Concerned about dissolved gases? on Joinup. |
 
     # Accept an invitation by clicking on the link in the e-mail.
     # Initially there should not be any subscriptions.

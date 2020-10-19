@@ -12,7 +12,7 @@ text:
     value: '<p>@actor:full_name invited you to follow a discussion on Joinup.</p>'
     format: full_html
   -
-    value: '<p>@actor:full_name invites you to participate in the discussion <a href="@entity:url"><em>@entity:title</em></a> on Joinup.</p><p>If you are interested please <a href="@invitation:accept_url">accept the invitation</a>.</p><p>By accepting the invitation you will be following the discussion and you will be notified when other users post comments. You can unfollow at any time by clicking the "Unfollow" button on the discussion page.</p>'
+    value: '<p>@actor:full_name invited you to participate in the discussion <a href="@entity:url"><em>@entity:title</em></a> on Joinup.</p><p>If you are interested please <a href="@invitation:accept_url">accept the invitation</a>.</p><p>By accepting the invitation you will be following the discussion and you will be notified when other users post comments. You can unfollow at any time by clicking the "Unfollow" button on the discussion page.</p>'
     format: full_html
 settings:
   'token options':
