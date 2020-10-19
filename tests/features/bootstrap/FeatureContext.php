@@ -1627,7 +1627,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     // Pipe error log entries to a file rather than to standard PHP log.
     $settings = Settings::getAll();
     $settings['error_page']['log']['method'] = 3;
-    $settings['error_page']['log']['destination'] = 'temporary://testing.log';
+    $settings['error_page']['log']['destination'] = 'php://memory';
     new Settings($settings);
   }
 
