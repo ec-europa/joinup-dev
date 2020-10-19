@@ -31,7 +31,7 @@ function joinup_rdf_requirements(string $phase): array {
 
   if ($errors = \Drupal::getContainer()->get('joinup_rdf.requirements_helper')->getRequirementErrors()) {
     $requirements['joinup_rdf_content_integrity']['severity'] = REQUIREMENT_ERROR;
-    $requirements['joinup_rdf_content_integrity']['value'] = implode("\n", $errors);
+    $requirements['joinup_rdf_content_integrity']['value'] = $errors;
   }
 
   return $requirements;

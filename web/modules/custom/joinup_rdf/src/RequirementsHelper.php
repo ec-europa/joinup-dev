@@ -48,18 +48,28 @@ class RequirementsHelper {
    * @return array
    *   An array of string messages.
    */
-  public function getRequirementErrors(): array {
+  public function getRequirementErrors() {
     $errors = [];
     if ($count = $this->getOrphanedTriples()) {
-      $errors[] = $this->translation->formatPlural($count, '- :count orphaned triple was detected.', '- :count orphaned triples were found.', [
+      $errors[] = $this->translation->formatPlural($count, ':count orphaned triple was detected.', ':count orphaned triples were found.', [
         ':count' => $count,
       ]);
     }
 
     if ($graphs = $this->getLeftoverFederationGraphs()) {
-      $errors[] = $this->t('- Leftover graphs were found: :graphs', [
-        ':graphs' => implode(', ', $graphs),
-      ]);
+      $errors[] = [
+        '#markup' => $this->t('Leftover graphs were found:'),
+        'children' => [
+          '#items' => $graphs,
+        ],
+      ];
+    }
+
+    if ($errors) {
+      return [
+        '#theme' => 'item_list',
+        '#items' => $errors,
+      ];
     }
 
     return $errors;
