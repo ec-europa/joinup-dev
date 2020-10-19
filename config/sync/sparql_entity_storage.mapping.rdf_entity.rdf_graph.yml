@@ -26,7 +26,7 @@ base_fields_mapping:
       format: t_literal
   created:
     value:
-      predicate: 'http://purl.org/dc/terms/modified'
+      predicate: 'http://purl.org/dc/terms/issued'
       format: 'xsd:dateTime'
   changed:
     value:
