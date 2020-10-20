@@ -46,7 +46,7 @@ class UniqueSpdxReferenceTest extends JoinupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installConfig('joinup_licence');
@@ -56,7 +56,7 @@ class UniqueSpdxReferenceTest extends JoinupKernelTestBase {
   /**
    * Test that references to SPDX licences are unique.
    */
-  public function testUniqueSpdxReference() {
+  public function testUniqueSpdxReference(): void {
     $licence_type_id = 'http://purl.org/adms/licencetype/Attribution';
     $this->entities['spdx'] = Rdf::create([
       'label' => 'Test SPDX',
@@ -93,7 +93,7 @@ class UniqueSpdxReferenceTest extends JoinupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function tearDown() {
+  public function tearDown(): void {
     parent::tearDown();
 
     if (!empty($this->entities)) {

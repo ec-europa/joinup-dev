@@ -114,7 +114,7 @@ function _spain_ctt_duplicates_collection_relations() {
   $collection->skip_notification = TRUE;
   $collection->save();
 
-  $connection = \Drupal::service('sparql_endpoint');
+  $connection = \Drupal::service('sparql.endpoint');
   // Update all other references.
   foreach (_span_ctt_get_duplicated_ids() as $original_id => $duplicate_ids) {
     $ids = SparqlArg::serializeUris($duplicate_ids, ' ');
