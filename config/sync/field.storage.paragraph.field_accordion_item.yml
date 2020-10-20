@@ -1,18 +1,17 @@
-uuid: ed4fc153-5a15-4d80-8769-0ca85f9235ac
+uuid: 4f684f32-95df-4fdc-a8be-416fc3e1da35
 langcode: en
 status: true
 dependencies:
   module:
     - entity_reference_revisions
     - field_permissions
-    - node
     - paragraphs
 third_party_settings:
   field_permissions:
     permission_type: public
-id: node.field_paragraphs_body
-field_name: field_paragraphs_body
-entity_type: node
+id: paragraph.field_accordion_item
+field_name: field_accordion_item
+entity_type: paragraph
 type: entity_reference_revisions
 settings:
   target_type: paragraph
