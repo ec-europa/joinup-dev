@@ -70,7 +70,6 @@ Feature:
 
   @javascript
   Scenario: Test the licence comparer trigger.
-
     Given SPDX licences:
       | uri                              | title      | ID         |
       | http://joinup.eu/spdx/Apache-2.0 | Apache-2.0 | Apache-2.0 |
@@ -128,7 +127,6 @@ Feature:
     And the url should match "/licence/compare/Apache-2.0;GPL-2.0\+;BSL-1.0;0BSD;LGPL-2.1"
 
   Scenario: Test the licence comparer.
-
     Given SPDX licences:
       | uri                              | title      | ID         |
       | http://joinup.eu/spdx/Apache-2.0 | Apache-2.0 | Apache-2.0 |

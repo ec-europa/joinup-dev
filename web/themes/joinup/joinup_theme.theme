@@ -1750,15 +1750,16 @@ function joinup_theme_preprocess_rdf_entity__collection__digest_message_header(&
  * page.
  */
 function joinup_theme_preprocess_rdf_entity__licence__compatibility_check(&$variables) {
+  joinup_theme_preprocess_rdf_entity__licence__jla($variables);
 }
 
 /**
  * Implements hook_preprocess_HOOK().
  *
- * Provides variables needed for the both the search_list_item and
- * compatibility_check view mode of licences.
+ * Provides variables needed for the both the JLA view modes (search_list_item
+ * and compatibility_check) of licences.
  */
-function joinup_theme_preprocess_rdf_entity__licence(&$variables) {
+function joinup_theme_preprocess_rdf_entity__licence__jla(&$variables) {
   /** @var \Drupal\joinup_licence\Entity\LicenceInterface $entity */
   $entity = $variables['elements']['#rdf_entity'];
   $variables['label']['#attributes']['class'][] = 'listing__teaser';
@@ -1785,6 +1786,8 @@ function joinup_theme_preprocess_rdf_entity__licence(&$variables) {
  * This is used on the Joinup Licence Assistant overview page.
  */
 function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variables) {
+  joinup_theme_preprocess_rdf_entity__licence__jla($variables);
+
   /** @var \Drupal\joinup_licence\Entity\LicenceInterface $entity */
   $entity = $variables['elements']['#rdf_entity'];
 
