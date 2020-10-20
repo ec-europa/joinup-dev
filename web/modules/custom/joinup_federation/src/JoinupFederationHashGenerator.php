@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation;
 
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 use Drupal\sparql_entity_storage\SparqlEntityStorageFieldHandlerInterface;
 use Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface;
@@ -39,7 +39,7 @@ class JoinupFederationHashGenerator {
   /**
    * Constructs a JoinupFederationHashGenerator object.
    *
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $connection
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $connection
    *   The SPARQL database connection.
    * @param \Drupal\sparql_entity_storage\SparqlEntityStorageFieldHandlerInterface $field_handler
    *   The SPARQL storage field handler service.
