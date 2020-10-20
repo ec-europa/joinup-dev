@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\solution;
 
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 
 /**
  * Implements helper methods related to installation requirements for solutions.
@@ -21,7 +21,7 @@ class RequirementsHelper {
   /**
    * Constructs a new RequirementsHelper.
    *
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparql
    *   The SPARQL connection class.
    */
   public function __construct(ConnectionInterface $sparql) {

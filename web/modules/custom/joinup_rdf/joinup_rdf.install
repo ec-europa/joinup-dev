@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ * Post update functions for the Joinup RDF module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Performs checks for the RDF entities and its storage.
+ *
+ * Performs the following checks:
+ * - Checks for leftover graphs from the ADMS validation.
+ * - Checks for orphaned triples.
+ */
+function joinup_rdf_requirements(string $phase): array {
+  if ($phase !== 'runtime') {
+    return [];
+  }
+
+  $requirements = [];
+
+  // Ensure that leftover graphs from the ADMS validation graph do not exist.
+  $requirements['joinup_rdf_content_integrity'] = [
+    'title' => t('RDF content integrity'),
+    'description' => t('A series of requirements that ensure the consistency in the SPARQL database.'),
+    'severity' => REQUIREMENT_OK,
+    'value' => t('No issues found.'),
+  ];
+
+  if ($errors = \Drupal::getContainer()->get('joinup_rdf.requirements_helper')->getRequirementErrors()) {
+    $requirements['joinup_rdf_content_integrity']['severity'] = REQUIREMENT_ERROR;
+    $requirements['joinup_rdf_content_integrity']['value'] = $errors;
+  }
+
+  return $requirements;
+}

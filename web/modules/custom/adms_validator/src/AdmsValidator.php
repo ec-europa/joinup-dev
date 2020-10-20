@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\adms_validator;
 
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
 use EasyRdf\Graph;
 
@@ -18,7 +18,7 @@ class AdmsValidator implements AdmsValidatorInterface {
   /**
    * The connection to the SPARQL backend.
    *
-   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface
    */
   protected $sparqlEndpoint;
 

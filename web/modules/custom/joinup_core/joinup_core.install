@@ -68,6 +68,8 @@ function joinup_core_requirements($phase): array {
       }
     }
 
+    $requirements_helper = \Drupal::getContainer()->get('joinup_core.requirements_helper');
+
     // Ensure that a cache state inconsistency will not cause also
     // inconsistencies with the published revisions of the entities.
     //
@@ -77,20 +79,18 @@ function joinup_core_requirements($phase): array {
     $requirements['joinup_core_forward_revisions'] = [
       'title' => t('Forward published revisions'),
       'description' => t('In all content, the last published revision should be the latest of the published revisions.'),
+      'severity' => REQUIREMENT_OK,
+      'value' => t('No entities were found without a parent.'),
     ];
 
-    /** @var \Drupal\joinup_core\RequirementsHelper $requirements_helper */
-    $requirements_helper = \Drupal::service('joinup_core.requirements_helper');
     $results = $requirements_helper->getNodesWithProblematicRevisions();
     if (!empty($results)) {
       $nids = array_keys($results);
       $error = t('Issues with the latest revision have been found in the following nid(s): :nids', [
         ':nids' => implode(', ', $nids),
       ]);
-      $requirements['joinup_core_forward_revisions'] += [
-        'severity' => REQUIREMENT_ERROR,
-        'value' => $error,
-      ];
+      $requirements['joinup_core_forward_revisions']['severity'] = REQUIREMENT_ERROR;
+      $requirements['joinup_core_forward_revisions']['value'] = $error;
     }
   }
 
