@@ -68,7 +68,7 @@ display:
               asset_distribution: default
               asset_release: default
               collection: default
-              licence: compatibility_check
+              licence: view_mode_search_list_item
               solution: default
               spdx_licence: default
             'entity:taxonomy_term':
@@ -286,6 +286,42 @@ display:
     display_options:
       display_extenders: {  }
       display_description: ''
+      style:
+        type: default
+        options:
+          row_class: ''
+          default_row_class: false
+          uses_fields: false
+      defaults:
+        style: false
+        row: false
+      row:
+        type: search_api
+        options:
+          view_modes:
+            'entity:node':
+              custom_page: default
+              discussion: default
+              document: default
+              event: default
+              news: default
+              newsletter: default
+              tallinn_report: default
+              video: default
+            'entity:rdf_entity':
+              asset_distribution: default
+              asset_release: default
+              collection: default
+              licence: compatibility_check
+              solution: default
+              spdx_licence: default
+            'entity:taxonomy_term':
+              eif_conceptual_model: default
+              eif_interoperability_layer: default
+              eif_principle: default
+              eif_recommendation: default
+            'entity:user':
+              user: default
     cache_metadata:
       max-age: -1
       contexts:
