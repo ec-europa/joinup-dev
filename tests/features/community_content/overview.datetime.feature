@@ -8,7 +8,7 @@ Feature:
     Given the following collection:
       | title | Gravitational wave detectors |
       | state | validated                    |
-    Given <type> content:
+    And <type> content:
       | title | created                         | <publication field name>        | changed                         | collection                   | state     |
       | LIGO  | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 25 Dec 2019 14:00:00 +0100 | Wed, 25 Dec 2019 15:00:00 +0100 | Gravitational wave detectors | validated |
 
@@ -45,3 +45,37 @@ Feature:
       | discussion | publication date          |
       | document   | document publication date |
       | news       | publication date          |
+
+  Scenario: Documents without a publication date should show the published_at property.
+    Given the following collection:
+      | title | Gravitational pull detectors |
+      | state | validated                    |
+    When I am logged in as a facilitator of the "Gravitational pull detectors" collection
+    And I go to the "Gravitational pull detectors" collection
+    And I click "Add document"
+    And I fill in the following:
+      | Title       | POLI |
+      | Short title | POLI |
+    And I select "Document" from "Type"
+    # Regression test: Document is successfully displayed even when a publication date is not set.
+    And I clear the date of the "Publication date" widget
+    And I clear the time of the "Publication date" widget
+    Then I upload the file "test.zip" to "Upload a new file or enter a URL"
+    When I enter "Blah blah nobody cares." in the "Description" wysiwyg editor
+    And I press "Publish"
+    Then I should see the heading "POLI"
+    # We do not see the "Last update:" because the "Published on:" text appears and is the same as the "Last update:"
+    # since it was just created.
+    And I should not see the text "Last update:" in the "Content" region
+
+  Scenario: Draft documents without a publication date should only show the last updated time.
+    Given the following collection:
+      | title | Gravitational pull detectors |
+      | state | validated                    |
+    And document content:
+      | title | created                         | document publication date | changed                         | collection                   | state |
+      | POLI  | Wed, 25 Dec 2019 13:00:00 +0100 |                           | Wed, 25 Dec 2019 15:00:00 +0100 | Gravitational pull detectors | draft |
+
+    When I am logged in as a moderator
+    When I go to the "POLI" document
+    Then I should see the text "Last update: 25/12/2019"

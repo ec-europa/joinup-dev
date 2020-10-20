@@ -25,7 +25,7 @@ class Document extends CommunityContentBase implements DocumentInterface {
       return NULL;
     }
 
-    return $this->get('published_at')->value;
+    return (int) $this->get('published_at')->value;
   }
 
 }
