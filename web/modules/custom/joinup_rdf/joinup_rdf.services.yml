@@ -1,4 +1,7 @@
 services:
-  joinup_core.vocabulary_fixtures.helper:
-    class: Drupal\joinup_core\VocabularyFixturesHelper
-    arguments: ['@sparql_endpoint']
+  joinup_rdf.vocabulary_fixtures.helper:
+    class: Drupal\joinup_rdf\VocabularyFixturesHelper
+    arguments: ['@sparql.endpoint']
+  joinup_rdf.requirements_helper:
+    class: Drupal\joinup_rdf\RequirementsHelper
+    arguments: ['@sparql.endpoint', '@string_translation']
