@@ -70,6 +70,19 @@ drupal:
         - OpenEuropa Newsroom Newsletter
         - OpenEuropa Webtools Geocoding Cache
         - Redis
+      error_page_test:
+        - Main settings
+        - Databases
+        - Configuration
+        - Search API
+        - Matomo & OpenEuropa Webtools Analytics
+        - Custom error handler
+        - Permissions
+        - Development
+        - OpenEuropa Newsroom Newsletter
+        - OpenEuropa Webtools Geocoding Cache
+        - Redis
+        - Pipe errors to a temporary file
       phpunit:
         - Main settings
         - Databases
@@ -201,6 +214,9 @@ drupal:
         $settings['error_page']['template_dir'] = DRUPAL_ROOT . '/../resources/error_page';
         set_error_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleError']);
         set_exception_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleException']);
+      Pipe errors to a temporary file:
+        $settings['error_page']['log']['method'] = 3;
+        $settings['error_page']['log']['destination'] = 'php://temp';
       OpenEuropa Newsroom Newsletter: |
         $config['oe_newsroom_newsletter.subscriber']['class'] = 'Drupal\oe_newsroom_newsletter\NewsletterSubscriber\MockNewsletterSubscriber';
       OpenEuropa Webtools Geocoding Cache: |
