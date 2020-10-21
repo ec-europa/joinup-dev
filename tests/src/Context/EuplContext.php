@@ -265,7 +265,7 @@ class EuplContext extends RawDrupalContext {
       'Compare' => 'licence-tile__button--compare',
       'Check compatibility' => 'licence-tile__button--compatible',
     ];
-    \assert(array_key_exists($label, $mapping), 'The label should be one of ' .  implode(',', array_keys($mapping)) . ' but "' . $label . '" was given.');
+    \assert(array_key_exists($label, $mapping), 'The label should be one of ' . implode(',', array_keys($mapping)) . ' but "' . $label . '" was given.');
 
     $page = $this->getSession()->getPage();
     $xpath = '//a[text()="' . $label . '" and contains(concat(" ", normalize-space(@class), " "), " ' . $mapping[$label] . ' ")]';
