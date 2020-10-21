@@ -325,6 +325,9 @@ Feature:
     When I reload the page
     Then the page should be cached
 
+    # Temporary. When access is no longer limited to moderators the next line
+    # can be removed.
+    Given I am not logged in
     When I go to "licence/compatibility-check/LPG-2.1/DIESEL-C"
     Then the response status code should be 404
     And I should see the heading "Page not found"
