@@ -6,7 +6,7 @@ namespace Drupal\joinup_group\Plugin\Validation\Constraint;
 
 use Drupal\Core\Database\Database;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -22,14 +22,14 @@ class UniqueShortIdInsensitiveValidator extends ConstraintValidator implements C
   /**
    * The SPARQL database connection.
    *
-   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface
    */
   protected $connection;
 
   /**
    * Creates a new UniqueShortIdInsensitiveValidator.
    *
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $connection
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $connection
    *   The SPARQL database connection.
    */
   public function __construct(ConnectionInterface $connection) {
