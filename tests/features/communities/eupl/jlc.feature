@@ -326,6 +326,6 @@ Feature:
     When I go to "licence/compatibility-check/LPG-2.1/DIESEL-C"
     Then the response status code should be 404
     And I should see the heading "Page not found"
-    And the page should not be cached
+    And the page should be cacheable
     When I reload the page
     Then the page should be cached
