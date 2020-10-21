@@ -138,7 +138,7 @@ class EuplContext extends RawDrupalContext {
    */
   public function assertLegalTypeTagsCategoriesAndOrder(string $spdx, TableNode $table): void {
     $expected = $table->getColumn(0);
-    $xpath = "//div[@data-spdx='{$spdx}']//div[contains(concat(' ', normalize-space(@class), ' '), ' listing__inner-tile--wider ')]//span[contains(concat(' ', normalize-space(@class), ' '), ' licence-tile__label ')]";
+    $xpath = '//div[@data-spdx="' . $spdx . '"]//div[contains(concat(" ", normalize-space(@class), " "), " listing__inner-tile--wider ")]//span[contains(concat(" ", normalize-space(@class), " "), " licence-tile__label ")]';
     $this->assertCategoriesAndOrder($xpath, $expected);
   }
 
@@ -152,7 +152,7 @@ class EuplContext extends RawDrupalContext {
    */
   public function assertFilterCategoriesAndOrder(TableNode $table): void {
     $expected = $table->getColumn(0);
-    $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' licence-filter ')]//div[contains(concat(' ', normalize-space(@class), ' '), ' licence-filter__header ')]";
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " licence-filter ")]//div[contains(concat(" ", normalize-space(@class), " "), " licence-filter__header ")]';
     $this->assertCategoriesAndOrder($xpath, $expected);
   }
 
@@ -425,7 +425,7 @@ class EuplContext extends RawDrupalContext {
    *   When the licence tile is not found on the page.
    */
   protected function findLicenceTile(string $spdx_id): NodeElement {
-    if ($licence = $this->getSession()->getPage()->find('css', "div[data-spdx='{$spdx_id}']")) {
+    if ($licence = $this->getSession()->getPage()->find('css', 'div[data-spdx="' . $spdx_id . '"]')) {
       return $licence;
     }
     throw new \Exception("Can't find the '$spdx_id' licence on the page.");
