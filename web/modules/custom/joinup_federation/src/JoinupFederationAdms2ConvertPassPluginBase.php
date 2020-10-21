@@ -16,7 +16,7 @@ abstract class JoinupFederationAdms2ConvertPassPluginBase extends PluginBase imp
   /**
    * The SPARQL database connection.
    *
-   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface
    */
   protected $sparql;
 

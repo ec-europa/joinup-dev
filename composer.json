@@ -51,11 +51,12 @@
         "drupal/og": "dev-neutral-access-result as 1.x-dev",
         "drupal/og_menu": "^1.0-alpha4",
         "drupal/paragraphs": "^1.11",
+        "drupal/paragraphs_jquery_ui_accordion": "^1.4",
         "drupal/password_policy": "3.0-alpha5",
         "drupal/pathauto": "~1.5",
         "drupal/pipeline": "^1.0",
         "drupal/publication_date": "^2.0-beta1",
-        "drupal/rdf_entity": "^1.0-alpha22",
+        "drupal/rdf_entity": "^1.0",
         "drupal/redirect": "^1.4",
         "drupal/redis": "^1.2",
         "drupal/schema_metatag": "^1.4",
@@ -78,7 +79,7 @@
         "drupal/views_bulk_operations": "^2.5",
         "drupal/views_data_export": "^1.0",
         "drush/drush": "~10.3",
-        "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
+        "easyrdf/easyrdf": "1.0.0 as 0.9.2",
         "ec-europa/joinup-tallinn-dashboard": "dev-master",
         "ec-europa/material-design-lite": "dev-joinup",
         "ec-europa/virtuoso": "^2.1",
@@ -114,7 +115,7 @@
         "drupal/config_update": "dev-1.x",
         "drupal/default_content": "^1.0-alpha8",
         "drupal/devel": "~2.1",
-        "drupal/drupal-extension": "4.0",
+        "drupal/drupal-extension": "^4.1",
         "drupal/filecache": "^1.0-beta2",
         "drupal/renderviz": "^1.0",
         "drupal/restui": "^1.17",
@@ -158,8 +159,8 @@
     "autoload": {
         "classmap": [
             "web/modules/contrib/error_page/src/ErrorPageErrorHandler.php",
-            "web/modules/contrib/sparql_entity_storage/src/Database/Driver/sparql/ConnectionInterface.php",
-            "web/modules/custom/joinup_sparql/driver/joinup_sparql/Connection.php"
+            "web/modules/contrib/sparql_entity_storage/src/Driver/Database/sparql/ConnectionInterface.php",
+            "web/modules/custom/joinup_sparql/src/Driver/Database/joinup_sparql/Connection.php"
         ],
         "psr-4": {
             "Joinup\\": "src"
@@ -190,12 +191,14 @@
         "post-install-cmd": [
             "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
-            "Joinup\\Composer\\RemoveWrongPatchedObjects::remove"
+            "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
+            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit"
         ],
         "post-update-cmd": [
             "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
-            "Joinup\\Composer\\RemoveWrongPatchedObjects::remove"
+            "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
+            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit"
         ]
     },
     "extra": {
@@ -259,9 +262,6 @@
                 "Cannot implement a custom user cancellation method @see https://www.drupal.org/project/drupal/issues/3135592": "https://www.drupal.org/files/issues/2020-05-11/3135592-3.patch",
                 "Allow to refine by bundle in EntityConverter @see https://www.drupal.org/project/drupal/issues/3155568": "https://www.drupal.org/files/issues/2020-06-30/3155568-4.patch"
             },
-            "drupal/drupal-extension": {
-              "Add space arround the keywords to avoid wrongly matching @see https://github.com/jhedstrom/drupalextension/pull/561": "https://patch-diff.githubusercontent.com/raw/jhedstrom/drupalextension/pull/561.patch"
-            },
             "drupal/dynamic_entity_reference": {
                 "Backport improvements in infinite recursion protection from the entity_reference field formatter @see https://www.drupal.org/project/dynamic_entity_reference/issues/3152105#comment-13701599": "https://www.drupal.org/files/issues/2020-06-16/3152105-2.patch"
             },
@@ -304,8 +304,7 @@
                 "Provide computed properties that return the publication date or the created/updated date @see https://www.drupal.org/project/publication_date/issues/3066317": "https://www.drupal.org/files/issues/2019-07-07/3066317-3.patch"
             },
             "drupal/rdf_entity": {
-                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff",
-                "RDF taxonomy term 'tid' base field is losing some definition entries @see https://github.com/ec-europa/rdf_entity/pull/134": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/134.diff"
+                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...ea8f6af001fca732e89a4be0e29643953f49a88f.diff"
             },
             "drupal/schema_metatag": {
                 "Split SchemaArticle and SchemaSocialMediaPosting @see https://www.drupal.org/project/schema_metatag/issues/3117434": "https://www.drupal.org/files/issues/2020-03-13/3117434-D8-8.patch",

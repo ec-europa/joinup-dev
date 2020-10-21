@@ -11,8 +11,8 @@ use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\tallinn\DashboardAccessInterface;
@@ -24,6 +24,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides a controller for the 'tallinn.dashboard' route.
  */
 class DashboardController extends ControllerBase {
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
 
   /**
    * The entity field manager service.
@@ -49,12 +56,15 @@ class DashboardController extends ControllerBase {
   /**
    * Constructs a new controller.
    *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   The entity field manager service.
    * @param \Drupal\tallinn\DashboardAccessInterface $dashboard_access
    *   The dashboard access service.
    */
-  public function __construct(EntityFieldManagerInterface $entity_field_manager, DashboardAccessInterface $dashboard_access) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, DashboardAccessInterface $dashboard_access) {
+    $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->dashboardAccess = $dashboard_access;
   }
@@ -64,6 +74,7 @@ class DashboardController extends ControllerBase {
    */
   public static function create(ContainerInterface $container): self {
     return new static(
+      $container->get('entity_type.manager'),
       $container->get('entity_field.manager'),
       $container->get('tallinn.dashboard.access')
     );
@@ -88,7 +99,8 @@ class DashboardController extends ControllerBase {
     }
 
     $field_definitions = $this->entityFieldManager->getFieldDefinitions('node', 'tallinn_report');
-    $entity_form_display = EntityFormDisplay::load("node.tallinn_report.default");
+    $entity_form_display_storage = $this->entityTypeManager->getStorage('entity_form_display');
+    $entity_form_display = $entity_form_display_storage->load('node.tallinn_report.default');
     $groups = $entity_form_display->getThirdPartySettings('field_group');
     $reports = $this->getReports();
     $status_options = TallinnEntryItem::getStatusOptions();

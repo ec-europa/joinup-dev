@@ -90,7 +90,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
   public function setUp(): void {
     parent::setUp();
 
-    $this->workflowAccess = \Drupal::service('joinup_community_content.community_content_workflow_access');
+    $this->workflowAccess = $this->container->get('joinup_community_content.community_content_workflow_access');
     $this->userOwner = $this->createUser();
     $this->userAnonymous = new AnonymousUserSession();
     $this->userAuthenticated = $this->createUser();

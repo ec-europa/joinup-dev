@@ -35,3 +35,5 @@ set_exception_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleExcepti
 
 $settings['config_sync_directory'] = DRUPAL_ROOT . '/../config/sync';
 $settings['joinup']['sparql_public_endpoint'] = getenv('SPARQL_PUBLIC_ENDPOINT');
+
+$databases['sparql_default']['default']['namespace'] = 'Drupal\\joinup_sparql\\Driver\\Database\\joinup_sparql';

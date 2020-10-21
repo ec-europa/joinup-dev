@@ -53,11 +53,11 @@ abstract class JoinupWorkflowExistingSiteTestBase extends JoinupExistingSiteTest
    */
   protected function setUp(): void {
     parent::setUp();
-    $this->ogMembershipManager = \Drupal::service('og.membership_manager');
-    $this->ogAccess = \Drupal::service('og.access');
-    $this->entityAccess = \Drupal::service('entity_type.manager')
+    $this->ogMembershipManager = $this->container->get('og.membership_manager');
+    $this->ogAccess = $this->container->get('og.access');
+    $this->entityAccess = $this->container->get('entity_type.manager')
       ->getAccessControlHandler($this->getEntityType());
-    $this->workflowHelper = \Drupal::service('joinup_workflow.workflow_helper');
+    $this->workflowHelper = $this->container->get('joinup_workflow.workflow_helper');
   }
 
   /**

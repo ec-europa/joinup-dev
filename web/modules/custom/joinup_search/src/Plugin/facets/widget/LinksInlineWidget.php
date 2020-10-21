@@ -15,6 +15,7 @@ use Drupal\facets\Result\ResultInterface;
 use Drupal\facets\Widget\WidgetPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * The links widget.
@@ -42,6 +43,13 @@ class LinksInlineWidget extends WidgetPluginBase implements ContainerFactoryPlug
   protected $cacheContextsManager;
 
   /**
+   * The request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
+
+  /**
    * Constructs a new plugin instance.
    *
    * @param array $configuration
@@ -52,10 +60,13 @@ class LinksInlineWidget extends WidgetPluginBase implements ContainerFactoryPlug
    *   The plugin implementation definition.
    * @param \Drupal\Core\Cache\Context\CacheContextsManager $cache_contexts_manager
    *   The cache contexts manager service.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The request stack.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, CacheContextsManager $cache_contexts_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, CacheContextsManager $cache_contexts_manager, RequestStack $request_stack) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->cacheContextsManager = $cache_contexts_manager;
+    $this->requestStack = $request_stack;
   }
 
   /**
@@ -66,7 +77,8 @@ class LinksInlineWidget extends WidgetPluginBase implements ContainerFactoryPlug
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('cache_contexts_manager')
+      $container->get('cache_contexts_manager'),
+      $container->get('request_stack')
     );
   }
 
@@ -183,8 +195,7 @@ class LinksInlineWidget extends WidgetPluginBase implements ContainerFactoryPlug
    *   The renderable array of the link.
    */
   protected function generateResetLink(FacetInterface $facet) {
-    $request = \Drupal::service('request_stack')->getMasterRequest();
-    /** @var \Symfony\Component\HttpFoundation\ParameterBag $get_params */
+    $request = $this->requestStack->getMasterRequest();
     $get_params = clone $request->query;
     if ($get_params->has('page')) {
       $get_params->remove('page');
