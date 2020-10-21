@@ -215,7 +215,7 @@
       if(use_licence && distribute_licence) {
         var compatible_url = drupalSettings.path.baseUrl + "licence/compatibility-check/" + use_licence + "/" + distribute_licence;
         $('.licence-tile__button--compatible').attr('href', compatible_url);
-        enableButtons(use_licence != distribute_licence);
+        enableButtons(true);
       }
     });
   });
