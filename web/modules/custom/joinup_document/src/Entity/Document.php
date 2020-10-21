@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_document\Entity;
 
-use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\joinup_community_content\Entity\CommunityContentBase;
 
 /**
@@ -17,7 +16,7 @@ class Document extends CommunityContentBase implements DocumentInterface {
    */
   public function getPublicationDate(): ?int {
     $publication_date_item_list = $this->get('field_document_publication_date');
-    if (($publication_date_item_list instanceof FieldItemListInterface) && !$publication_date_item_list->isEmpty() && $value = $publication_date_item_list->first()->value) {
+    if (!$publication_date_item_list->isEmpty() && $value = $publication_date_item_list->first()->value) {
       return strtotime($value);
     }
 
