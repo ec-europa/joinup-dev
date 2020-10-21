@@ -1,20 +1,18 @@
-uuid: e6153b91-b568-4049-8065-32b7b1c6c3ce
+uuid: 02705d68-f963-4d6f-9aee-4a4b7b7810d6
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_paragraphs_body
-    - node.type.custom_page
-    - paragraphs.paragraphs_type.json_map
-    - paragraphs.paragraphs_type.accordion
+    - field.storage.paragraph.field_paragraphs_item_content
+    - paragraphs.paragraphs_type.accordion_item
     - paragraphs.paragraphs_type.simple_paragraph
   module:
     - entity_reference_revisions
-id: node.custom_page.field_paragraphs_body
-field_name: field_paragraphs_body
-entity_type: node
-bundle: custom_page
-label: Body
+id: paragraph.accordion_item.field_paragraphs_item_content
+field_name: field_paragraphs_item_content
+entity_type: paragraph
+bundle: accordion_item
+label: 'Item content'
 description: ''
 required: false
 translatable: false
@@ -26,19 +24,14 @@ settings:
     negate: 0
     target_bundles:
       simple_paragraph: simple_paragraph
-      json_map: json_map
-      accordion: accordion
     target_bundles_drag_drop:
-      accordion:
-        enabled: true
-        weight: 5
       accordion_item:
-        weight: 7
+        weight: 5
         enabled: false
       json_map:
-        enabled: true
         weight: 4
+        enabled: false
       simple_paragraph:
         enabled: true
-        weight: 2
+        weight: 6
 field_type: entity_reference_revisions

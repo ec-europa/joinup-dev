@@ -39,6 +39,8 @@ permissions:
   - 'use text format glossary_html'
   - 'use text format simple_html'
   - 'view own unpublished content'
+  - 'view paragraph content accordion'
+  - 'view paragraph content accordion_item'
   - 'view paragraph content json_map'
   - 'view paragraph content simple_paragraph'
   - 'view published og menu instance entities'
