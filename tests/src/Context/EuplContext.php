@@ -224,8 +224,29 @@ class EuplContext extends RawDrupalContext {
   }
 
   /**
-   * Asserts that Compare buttons are enabled or disabled.
+   * Selects a radio button for a licence compatibility check.
    *
+   * @param string $spdx_id
+   *   The SPDX ID of the licence to select.
+   * @param string $label
+   *   The label of the radio button. Can be either 'Use' or 'Distribute'.
+   *
+   * @throws \Exception
+   *   Thrown when the radio button or licence is not found in the page.
+   *
+   * @When I choose :spdx_id as the :label licence
+   */
+  public function selectRadioButtonForLicenceCompatibilityCheck(string $spdx_id, string $label): void {
+    assert(in_array($label, ['Use', 'Distribute']), 'The purpose should be either "Use" or "Distribute".');
+    $licence = $this->findLicenceTile($spdx_id);
+    $this->selectMaterialDesignRadioButton($label, $licence);
+  }
+
+  /**
+   * Asserts that Compare / Check compatibility buttons are enabled or disabled.
+   *
+   * @param string $label
+   *   The button labels. Either "Compare" or "Check compatibility".
    * @param string $status
    *   Either 'enabled' or 'disabled'.
    *
@@ -234,24 +255,31 @@ class EuplContext extends RawDrupalContext {
    *   - No 'Compare' buttons were found in page.
    *   - The expectancy is not satisfied.
    *
-   * @Then the Compare buttons are :status
+   * @Then the :label buttons should be :status
    */
-  public function assertCompareButtonDisableStatus(string $status): void {
+  public function assertLicenceButtonStatus(string $label, string $status): void {
     \assert(in_array($status, ['enabled', 'disabled']), 'The $status parameter should take one of the values "enabled" or "disabled" but "' . $status . '" was given.');
 
+    $mapping = [
+      'Compare' => 'licence-tile__button--compare',
+      'Check compatibility' => 'licence-tile__button--compatible',
+    ];
+    \assert(array_key_exists($label, $mapping), 'The label should be one of ' .  implode(',', array_keys($mapping)) . ' but "' . $label . '" was given.');
+
     $page = $this->getSession()->getPage();
-    $xpath = '//a[text()="Compare" and contains(concat(" ", normalize-space(@class), " "), " licence-tile__button--compare ")]';
-    if (!$buttons = $page->find('xpath', $xpath)) {
-      throw new \Exception("No 'Compare' buttons found in page.");
+    $xpath = '//a[text()="' . $label . '" and contains(concat(" ", normalize-space(@class), " "), " ' . $mapping[$label] . ' ")]';
+    $buttons = $page->findAll('xpath', $xpath);
+    if (empty($buttons)) {
+      throw new \Exception("No '$label' buttons found in the page.");
     }
 
     /** @var \Behat\Mink\Element\NodeElement[] $buttons */
     foreach ($buttons as $button) {
       if ($status === 'disabled' && !$button->hasClass('licence-tile__button--disabled')) {
-        throw new \Exception("'Compare' buttons should be disabled but are enabled.");
+        throw new \Exception("'$label' buttons should be disabled but are enabled.");
       }
       elseif ($status === 'enabled' && $button->hasClass('licence-tile__button--disabled')) {
-        throw new \Exception("'Compare' buttons should be enabled but are disabled.");
+        throw new \Exception("'$label' buttons should be enabled but are disabled.");
       }
     }
   }

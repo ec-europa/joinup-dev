@@ -263,6 +263,8 @@ Feature:
     Then all compatibility documents are cleaned up
 
   @eupl
+  # This scenario and the next are checking the same things, but this one runs
+  # without JS so that we can inspect the response headers for cacheability.
   Scenario: Get information about how a project can be redistributed under another licence
     Given SPDX licences:
       | uri                            | title    | ID       |
@@ -329,3 +331,86 @@ Feature:
     And the page should be cacheable
     When I reload the page
     Then the page should be cached
+
+  @eupl @javascript
+  # This scenario and the previous are checking the same things, but this one
+  # runs with JS so that we can check the frontend implementation.
+  Scenario: Get information about how a project can be redistributed under another licence
+    Given SPDX licences:
+      | uri                            | title    | ID       |
+      | http://joinup.eu/spdx/CECILL-C | CECILL-C | CECILL-C |
+      | http://joinup.eu/spdx/EUPL-1.2 | EUPL-1.2 | EUPL-1.2 |
+      | http://joinup.eu/spdx/LGPL-2.1 | LGPL-2.1 | LGPL-2.1 |
+
+    And licences:
+      | uri                              | title                                 | spdx licence | legal type                                     |
+      | http://joinup.eu/licence/cecillc | CeCILL-C                              | CECILL-C     | GPL, For software, Lesser copyleft             |
+      | http://joinup.eu/licence/eupl12  | European Union Public Licence 1.2     | EUPL-1.2     | GPL, For data, For software, Copyleft/Share a. |
+      | http://joinup.eu/licence/lgpl21  | GNU Lesser General Public License 2.1 | LGPL-2.1     | GPL, For software, Lesser copyleft             |
+
+    And compatibility documents:
+      | id           | description                                                                                                                                                                    |
+      | T01          | Freedom for using and re-distributing is a basic common characteristic of all open licences.                                                                                   |
+      | T10          | The hypothetical risk of 'viral effect' from @redistribute-as-licence to the code covered by @use-licence in the case of dynamic or even static linking will not be validated. |
+      | T16          | You have to check if the text of @use-licence has expressly mentioned @redistribute-as-licence as compatible.                                                                  |
+      | INCOMPATIBLE | @use-licence is not compatible with @redistribute-as-licence.                                                                                                                  |
+
+    # @todo Temporary, the access is limited to moderators.
+    When I go to "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
+    Then I should see the heading "Sign in to continue"
+
+    Given I am logged in as a moderator
+    When I visit the "JLC" custom page
+    Then the "Check compatibility" buttons should be disabled
+    When I choose "EUPL-1.2" as the "Use" licence
+    Then the "Check compatibility" buttons should be disabled
+    When I choose "EUPL-1.2" as the "Distribute" licence
+    Then the "Check compatibility" buttons should be enabled
+    When I click "Check compatibility"
+    Then the url should match "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
+    And I should see the heading "Can European Union Public Licence 1.2 be redistributed as European Union Public Licence 1.2?"
+    And I should see the text "Freedom for using and re-distributing is a basic common characteristic of all open licences."
+
+    When I visit the "JLC" custom page
+    Then the "Check compatibility" buttons should be disabled
+    When I choose "LGPL-2.1" as the "Use" licence
+    Then the "Check compatibility" buttons should be disabled
+    When I choose "LGPL-2.1" as the "Distribute" licence
+    Then the "Check compatibility" buttons should be enabled
+    When I click "Check compatibility"
+    Then the url should match "licence/compatibility-check/LGPL-2.1/LGPL-2.1"
+    And I should see the heading "Can GNU Lesser General Public License 2.1 be redistributed as GNU Lesser General Public License 2.1?"
+    And I should see the text "Freedom for using and re-distributing is a basic common characteristic of all open licences."
+
+    When I visit the "JLC" custom page
+    Then the "Check compatibility" buttons should be disabled
+    When I choose "EUPL-1.2" as the "Use" licence
+    Then the "Check compatibility" buttons should be disabled
+    When I choose "LGPL-2.1" as the "Distribute" licence
+    Then the "Check compatibility" buttons should be enabled
+    When I click "Check compatibility"
+    Then the url should match "licence/compatibility-check/EUPL-1.2/LGPL-2.1"
+    And I should see the heading "Can European Union Public Licence 1.2 be redistributed as GNU Lesser General Public License 2.1?"
+    And I should see the text "The hypothetical risk of 'viral effect' from LGPL-2.1 to the code covered by EUPL-1.2 in the case of dynamic or even static linking will not be validated."
+
+    When I visit the "JLC" custom page
+    Then the "Check compatibility" buttons should be disabled
+    When I choose "EUPL-1.2" as the "Use" licence
+    Then the "Check compatibility" buttons should be disabled
+    When I choose "CECILL-C" as the "Distribute" licence
+    Then the "Check compatibility" buttons should be enabled
+    When I click "Check compatibility"
+    Then the url should match "licence/compatibility-check/EUPL-1.2/CECILL-C"
+    And I should see the heading "Can European Union Public Licence 1.2 be redistributed as CeCILL-C?"
+    And I should see the text "You have to check if the text of EUPL-1.2 has expressly mentioned CECILL-C as compatible."
+
+    When I visit the "JLC" custom page
+    Then the "Check compatibility" buttons should be disabled
+    When I choose "LGPL-2.1" as the "Use" licence
+    Then the "Check compatibility" buttons should be disabled
+    When I choose "CECILL-C" as the "Distribute" licence
+    Then the "Check compatibility" buttons should be enabled
+    When I click "Check compatibility"
+    Then the url should match "licence/compatibility-check/LGPL-2.1/CECILL-C"
+    And I should see the heading "Can GNU Lesser General Public License 2.1 be redistributed as CeCILL-C?"
+    And I should see the text "LGPL-2.1 is not compatible with CECILL-C"
