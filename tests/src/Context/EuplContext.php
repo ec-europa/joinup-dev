@@ -255,6 +255,7 @@ class EuplContext extends RawDrupalContext {
    *   - No 'Compare' buttons were found in page.
    *   - The expectancy is not satisfied.
    *
+   * @Then the :label buttons are :status
    * @Then the :label buttons should be :status
    */
   public function assertLicenceButtonStatus(string $label, string $status): void {
