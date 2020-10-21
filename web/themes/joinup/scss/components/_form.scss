@@ -322,6 +322,105 @@
   }
 }
 
+// Paragraphs
+// --------------------------------------------------
+#edit-field-paragraphs-body-wrapper {
+  .field-multiple-drag {
+    width: 30px;
+    .tabledrag-handle {
+      min-width: auto;
+      margin: 3px 0 0 10px;
+    }
+    .tabledrag-changed {
+      padding-left: 10px;
+    }
+  }
+  .form-wrapper {
+    margin-bottom: 10px;
+    .paragraphs-icon-button {
+      padding: 5px 10px;
+      font-size: 10px;
+      background: #c5c5c5 !important;
+      border-color: #c5c5c5 !important;
+    }
+  }
+  .form-table__cell {
+    padding-right: 10px;
+    label {
+      font-size: 15px;
+    }
+  }
+  .paragraph-top {
+    -ms-grid-columns: auto auto 1fr auto;
+    grid-template-columns: auto auto 1fr auto;
+  }
+  .paragraphs-dropdown-actions {
+    padding: 5px;
+    background-color: #fff;
+    .icon {
+      display: none;
+    }
+    .button--small {
+      font-size: 11px;
+      background: transparent !important;
+      padding: 0;
+      box-shadow: initial;
+      color: #a0a1a2;
+    }
+  }
+  .form-table__button {
+    text-align: left;
+    .field-add-more-submit {
+      font-size: 12px;
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 1px;
+      padding: 10px 15px;
+    }
+    .dropbutton-multiple {
+      background: #2875CF;
+      border-radius: 3px;
+      overflow: hidden;
+      li {
+        &.dropbutton-toggle {
+          background: #2861a2;
+          .dropbutton-arrow {
+            top: 22px;
+            color: #fff;
+          }
+        }
+      }
+      .field-add-more-submit {
+        border-radius: 0;
+      }
+      &.open {
+        li {
+          &.dropbutton-toggle {
+            .dropbutton-arrow {
+              top: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .field--name-field-accordion-item {
+    tr {
+      background-color: transparent;
+
+      .field--name-field-paragraphs-item-content {
+        background: white;
+        border: 1px solid #ccc;
+
+        .form-table__button {
+          margin: 0 0 30px 40px;
+        }
+      }
+    }
+  }
+}
+
 // Dependencies
 // --------------------------------------------------
 .form__actions {

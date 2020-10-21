@@ -51,6 +51,7 @@
         "drupal/og": "dev-neutral-access-result as 1.x-dev",
         "drupal/og_menu": "^1.0-alpha4",
         "drupal/paragraphs": "^1.11",
+        "drupal/paragraphs_jquery_ui_accordion": "^1.4",
         "drupal/password_policy": "3.0-alpha5",
         "drupal/pathauto": "~1.5",
         "drupal/pipeline": "^1.0",
@@ -190,12 +191,14 @@
         "post-install-cmd": [
             "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
-            "Joinup\\Composer\\RemoveWrongPatchedObjects::remove"
+            "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
+            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit"
         ],
         "post-update-cmd": [
             "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
-            "Joinup\\Composer\\RemoveWrongPatchedObjects::remove"
+            "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
+            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit"
         ]
     },
     "extra": {

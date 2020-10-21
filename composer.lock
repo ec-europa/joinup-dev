@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de52b4371f2e43ec41573e5d87b0048d",
+    "content-hash": "a52c93d77b782d7999e29f3dae13d93e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3625,17 +3625,17 @@
         },
         {
             "name": "drupal/error_page",
-            "version": "1.0.0-alpha2",
+            "version": "1.0.0-alpha3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/error_page.git",
-                "reference": "8.x-1.0-alpha2"
+                "reference": "8.x-1.0-alpha3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/error_page-8.x-1.0-alpha2.zip",
-                "reference": "8.x-1.0-alpha2",
-                "shasum": "9dbfe7d631f36560a3d957a9de27fae6a6bf8adf"
+                "url": "https://ftp.drupal.org/files/projects/error_page-8.x-1.0-alpha3.zip",
+                "reference": "8.x-1.0-alpha3",
+                "shasum": "1e621122fae333f2d9d18f21f9cda54b837c2ad1"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -3644,8 +3644,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-alpha2",
-                    "datestamp": "1585747291",
+                    "version": "8.x-1.0-alpha3",
+                    "datestamp": "1603274290",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -4658,7 +4658,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/matomo_reporting_api.git",
-                "reference": "830c9c63a45ff5565710ccd0cc9d809a680d3300"
+                "reference": "c8f89a0aa57aa31761b8f1107f2c4d3a000778d4"
             },
             "require": {
                 "drupal/matomo": "^1.7",
@@ -4682,7 +4682,7 @@
                 "issues": "https://www.drupal.org/project/issues/matomo_reporting_api",
                 "source": "http://cgit.drupalcode.org/matomo_reporting_api"
             },
-            "time": "2019-09-18T07:08:31+00:00"
+            "time": "2020-10-19T19:58:58+00:00"
         },
         {
             "name": "drupal/menu_admin_per_menu",
@@ -5232,6 +5232,51 @@
             "homepage": "https://www.drupal.org/project/paragraphs",
             "support": {
                 "source": "https://git.drupalcode.org/project/paragraphs"
+            }
+        },
+        {
+            "name": "drupal/paragraphs_jquery_ui_accordion",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/paragraphs_jquery_ui_accordion.git",
+                "reference": "8.x-1.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/paragraphs_jquery_ui_accordion-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "0ad543827a09a2ff67488ec7288b11674afcf30b"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9",
+                "drupal/paragraphs": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.4",
+                    "datestamp": "1591042183",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "maxdev",
+                    "homepage": "https://www.drupal.org/user/650934"
+                }
+            ],
+            "description": "Adds jQuery UI Accordion for paragraphs.",
+            "homepage": "https://www.drupal.org/project/paragraphs_jquery_ui_accordion",
+            "support": {
+                "source": "https://git.drupalcode.org/project/paragraphs_jquery_ui_accordion"
             }
         },
         {
@@ -9797,7 +9842,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-08-03T19:59:39+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
