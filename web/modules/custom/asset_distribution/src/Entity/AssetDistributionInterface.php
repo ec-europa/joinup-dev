@@ -25,4 +25,12 @@ interface AssetDistributionInterface extends RdfInterface, CollectionContentInte
    */
   public function getParent();
 
+  /**
+   * Checks whether the distribution parent is a solution rather than a release.
+   *
+   * @return bool
+   *   Whether the distribution parent is a solution rather than a release.
+   */
+  public function isStandalone(): bool;
+
 }

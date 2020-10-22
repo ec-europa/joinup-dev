@@ -10,6 +10,7 @@ use Drupal\joinup_group\Entity\GroupContentTrait;
 use Drupal\joinup_stats\Entity\StatisticsAwareTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\solution\Entity\SolutionContentTrait;
+use Drupal\solution\Entity\SolutionInterface;
 
 /**
  * Bundle class for the 'asset_distribution' bundle.
@@ -37,6 +38,13 @@ class AssetDistribution extends Rdf implements AssetDistributionInterface {
     }
 
     return $parent;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isStandalone(): bool {
+    return $this->getParent() instanceof SolutionInterface;
   }
 
 }
