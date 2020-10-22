@@ -14,4 +14,15 @@ use Drupal\solution\Entity\SolutionContentInterface;
  */
 interface AssetDistributionInterface extends RdfInterface, CollectionContentInterface, SolutionContentInterface, DownloadCountAwareInterface {
 
+  /**
+   * Return the distribution's parent, either a release or a solution.
+   *
+   * @return \Drupal\asset_release\Entity\AssetReleaseInterface|\Drupal\solution\Entity\SolutionInterface
+   *   The parent entity, either a release or a solution.
+   *
+   * @throws \Drupal\asset_distribution\Exception\MissingDistributionParentException
+   *   If the parent entity reference is missing or refers an invalid entity.
+   */
+  public function getParent();
+
 }
