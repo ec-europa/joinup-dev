@@ -22,4 +22,15 @@ interface AssetReleaseInterface extends RdfInterface, CollectionContentInterface
    */
   public function isLatestRelease(): bool;
 
+  /**
+   * Returns the release version number.
+   *
+   * @return string|null
+   *   The release version number.
+   *
+   * @todo The return value should be enforced to `string` in ISAICP-6217.
+   * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6217
+   */
+  public function getVersion(): ?string;
+
 }

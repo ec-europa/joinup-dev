@@ -6,6 +6,7 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\asset_release\Entity\AssetReleaseInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\MessageArgumentGenerator;
@@ -185,6 +186,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
    * {@inheritdoc}
    */
   protected function generateArguments(EntityInterface $entity): array {
+    /** @var \Drupal\asset_distribution\Entity\AssetDistributionInterface $entity */
     $arguments = parent::generateArguments($entity);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     /** @var \Drupal\user\UserInterface $actor */
@@ -193,13 +195,10 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
     // Add arguments related to the parent collection or solution.
     $parent = $entity->parent->entity;
     $solution = (!empty($parent) && $parent->bundle() === 'solution') ? $parent : JoinupGroupHelper::getGroup($entity);
-    if (!empty($parent) && $parent->bundle() === 'asset_release') {
-      // Some legacy releases exist without a version. Thus, a check for
-      // existence is needed.
-      $version = empty($parent->get('field_isr_release_number')->first()->value) ? '' : $parent->get('field_isr_release_number')->first()->value;
+    if (!empty($parent) && $parent instanceof AssetReleaseInterface) {
       $arguments['@release:info:with_version'] = $this->t('of the release @release, @version', [
         '@release' => $parent->label(),
-        '@version' => $version,
+        '@version' => $parent->getVersion(),
       ]);
     }
     if (!empty($solution)) {

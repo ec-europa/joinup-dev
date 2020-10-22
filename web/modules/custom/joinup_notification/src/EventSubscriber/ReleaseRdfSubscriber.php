@@ -300,12 +300,13 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
    * {@inheritdoc}
    */
   protected function generateArguments(EntityInterface $entity): array {
+    /** @var \Drupal\asset_release\Entity\AssetReleaseInterface $entity */
     $arguments = parent::generateArguments($entity);
     /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
     $arguments['@transition:motivation'] = $motivation;
-    $arguments['@entity:field_isr_release_number'] = !empty($entity->get('field_isr_release_number')->first()->value) ? $entity->get('field_isr_release_number')->first()->value : '';
+    $arguments['@entity:field_isr_release_number'] = $entity->getVersion();
 
     // Add arguments related to the parent collection or solution.
     $parent = JoinupGroupHelper::getGroup($entity);

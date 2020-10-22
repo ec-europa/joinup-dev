@@ -121,8 +121,10 @@ function asset_release_preprocess_rdf_entity(array &$variables): void {
   if (!$release instanceof AssetReleaseInterface) {
     return;
   }
-  $variables['full_label'] = new TranslatableMarkup('@label @ver', ['@label' => $release->label(), '@ver' => $release->field_isr_release_number->value]);
-  $parent_solution = $release->getSolution();
+  $variables['full_label'] = new TranslatableMarkup('@label @version', [
+    '@label' => $release->label(),
+    '@version' => $release->getVersion(),
+  ]);
 
   // Mark the release as latest.
   $is_latest_release = FALSE;
@@ -297,7 +299,7 @@ function template_preprocess_asset_release_releases_download(array &$variables) 
  * confusion we should avoid having releases with identical names and versions
  * within the same solution.
  *
- * @param \Drupal\rdf_entity\RdfInterface $asset_release
+ * @param \Drupal\asset_release\Entity\AssetReleaseInterface $asset_release
  *   The release to check.
  * @param bool $check_unaffiliated_solutions
  *   Whether or not to check if the release title and version are unique in
@@ -312,18 +314,11 @@ function template_preprocess_asset_release_releases_download(array &$variables) 
  *
  * @return bool
  *   TRUE if the title and version are unique.
- *
- * @throws \Exception
- *   Thrown when anything but an asset release entity is passed in.
  */
-function asset_release_title_version_is_unique(RdfInterface $asset_release, $check_unaffiliated_solutions = FALSE) {
-  if ($asset_release->bundle() !== 'asset_release') {
-    throw new \Exception('Title and version uniqueness within a solution can only be checked for asset releases.');
-  }
-
+function asset_release_title_version_is_unique(AssetReleaseInterface $asset_release, $check_unaffiliated_solutions = FALSE) {
   $query = \Drupal::entityQuery('rdf_entity')
     ->condition('label', $asset_release->label())
-    ->condition('field_isr_release_number', $asset_release->get('field_isr_release_number')->first()->getValue()['value'])
+    ->condition('field_isr_release_number', $asset_release->getVersion())
     ->condition('rid', 'asset_release');
   if (!empty($asset_release->id())) {
     $query->condition('id', $asset_release->id(), '<>');

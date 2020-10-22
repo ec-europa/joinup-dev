@@ -6,6 +6,7 @@ namespace Drupal\joinup\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\asset_release\Entity\AssetReleaseInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -196,10 +197,10 @@ class AssetReleaseContext extends RawDrupalContext {
    * @param string $title
    *   The asset release name.
    *
-   * @return \Drupal\rdf_entity\RdfInterface
+   * @return \Drupal\asset_release\Entity\AssetReleaseInterface
    *   The asset release.
    */
-  protected function getAssetReleaseByName(string $title): RdfInterface {
+  protected function getAssetReleaseByName(string $title): AssetReleaseInterface {
     return $this->getRdfEntityByLabel($title, 'asset_release');
   }
 
@@ -360,7 +361,7 @@ class AssetReleaseContext extends RawDrupalContext {
       throw new \Exception('Multiple releases marked as latest were found in the page.');
     }
 
-    $release_version = $release->get('field_isr_release_number')->value;
+    $release_version = $release->getVersion();
     $name_with_version = $release->label() . " " . $release_version;
 
     $latest_release = reset($latest_releases);
