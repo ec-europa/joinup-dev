@@ -126,36 +126,22 @@ function asset_release_preprocess_rdf_entity(array &$variables): void {
     '@version' => $release->getVersion(),
   ]);
 
-  // Mark the release as latest.
-  $is_latest_release = FALSE;
-  if ($variables['view_mode'] === 'compact') {
-    // @see \Drupal\asset_release\Controller\AssetReleaseController::overview()
-    $is_latest_release = !empty($release->is_latest_release);
-  }
-  elseif ($parent_solution) {
-    // @todo Find a better way of marking the latest release that doesn't
-    //   involve performing a database query in the theme layer.
-    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
-    $latest_release = $parent_solution->getLatestRelease();
-    if ($latest_release && $latest_release->id() === $release->id()) {
-      $is_latest_release = TRUE;
-    }
-  }
-
-  $variables['is_latest_release'] = $is_latest_release;
+  $solution = $release->getSolution();
+  $is_latest_release = $release->isLatestRelease();
+  $variables['is_latest_release'] = $release->isLatestRelease();
 
   // Whenever a new release gets created, the parent solution gets updated.
   // Invalidate the rendered template cache of the latest release in that case,
   // so the latest release flag gets updated.
-  if ($parent_solution && $is_latest_release) {
+  if ($solution && $is_latest_release) {
     $cache_tags = isset($variables['#cache']['tags']) ? $variables['#cache']['tags'] : [];
-    $cache_tags = Cache::mergeTags($cache_tags, $parent_solution->getCacheTags());
+    $cache_tags = Cache::mergeTags($cache_tags, $solution->getCacheTags());
 
     // Add the group content tag belonging to the parent too. We need to
     // invalidate the cache also when a release is first saved as draft and then
     // published. In that case the solution won't be updated, so we need to
     // manually take care of this.
-    $group_tag = Cache::buildTags('og-group-content', $parent_solution->getCacheTagsToInvalidate());
+    $group_tag = Cache::buildTags('og-group-content', $solution->getCacheTagsToInvalidate());
     $variables['#cache']['tags'] = Cache::mergeTags($cache_tags, $group_tag);
   }
 }
