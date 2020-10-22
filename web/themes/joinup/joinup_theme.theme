@@ -14,7 +14,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\block\Entity\Block;
@@ -955,44 +954,6 @@ function joinup_theme_preprocess_form_element(&$variables) {
       $variables['attributes']['class'][] = 'form-wrapper';
     }
   }
-}
-
-/**
- * Implements hook_preprocess_page_title__rdf_entity__asset_release().
- */
-function joinup_theme_preprocess_page_title__rdf_entity__asset_release(&$variables) {
-  /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
-  $entity = $variables['entity'];
-
-  $variables['additional_content']['full_label'] = new TranslatableMarkup('@label @ver', [
-    '@label' => $entity->label(),
-    '@ver' => $entity->field_isr_release_number->value,
-  ]);
-
-  $is_latest_release = FALSE;
-  $field_solution = $entity->get('field_isr_is_version_of');
-  /** @var \Drupal\solution\Entity\SolutionInterface $solution */
-  if (!empty($field_solution) && ($solution = $field_solution->entity)) {
-    // @todo Find a better way of marking the latest release that doesn't
-    //   involve performing a database query in the theme layer.
-    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
-    $latest_release = $solution->getLatestRelease();
-    if ($latest_release && $latest_release->id() === $entity->id()) {
-      $is_latest_release = TRUE;
-    }
-  }
-  $variables['additional_content']['is_latest_release'] = $is_latest_release;
-  if (!$is_latest_release && $latest_release) {
-    $variables['additional_content']['latest_release'] = $latest_release->toUrl()->toString();
-  }
-
-  // Get the view builder service from the entity type manager.
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
-  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
-  // Get the creation date field.
-  $creation_date = $entity->get('created');
-  $creation_date = $view_builder->viewField($creation_date, 'default');
-  $variables['additional_content']['created'] = $creation_date;
 }
 
 /**
