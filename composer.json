@@ -318,7 +318,7 @@
                 "Bulk Form field for SAPI @see https://www.drupal.org/project/search_api/issues/3117171": "https://www.drupal.org/files/issues/2020-04-01/3117171-13.patch"
             },
             "drupal/site_alert": {
-                "Add drush commands @see https://www.drupal.org/project/site_alert/issues/3118800": "https://www.drupal.org/files/issues/2020-10-19/3118800-38.patch"
+                "Add drush commands @see https://www.drupal.org/project/site_alert/issues/3118800": "https://www.drupal.org/files/issues/2020-10-22/3118800-42.patch"
             },
             "drupal/social_media_links": {
                 "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-6.patch"
