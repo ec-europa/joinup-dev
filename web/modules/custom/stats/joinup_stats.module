@@ -102,6 +102,12 @@ function joinup_stats_module_implements_alter(array &$implementations, $hook): v
     // @see joinup_stats_cron()
     unset($implementations['cached_computed_field']);
   }
+  elseif ($hook === 'requirements') {
+    // Remove matomo_reporting_api module requirements, if the killswitch is on.
+    if (!Settings::get('joinup.parse_cached_computed_field', TRUE)) {
+      unset($implementations['matomo_reporting_api']);
+    }
+  }
 }
 
 /**
