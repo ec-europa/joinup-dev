@@ -103,7 +103,7 @@ class EifContext extends RawDrupalContext {
       'title' => $this->t('Recommendations'),
       'menu_name' => $menu_name,
       'link' => [
-        'uri' => Url::fromRoute('view.eif_recommendation.page', [
+        'uri' => Url::fromRoute('view.eif_recommendation.all', [
           'rdf_entity' => UriEncoder::encodeUrl(EifInterface::EIF_ID),
         ])->toUriString(),
       ],
