@@ -210,13 +210,13 @@ function joinup_core_module_implements_alter(array &$implementations, $hook) {
  * Implements hook_block_access().
  */
 function joinup_core_block_access(BlockInterface $block, string $operation, AccountInterface $account): AccessResultInterface {
-  if ($operation === 'view' && $block->id() === 'joinup_theme_local_tasks') {
+  if ($operation === 'view' && $block->id() === 'three_dots_menu') {
     // A local tasks block can be either a horizontal tabs menu or a three-dots
     // menu. Both are not possible on the same page. In order to determine the
     // routes of pages with horizontal tabs, the 'horizontal_tabs' block
     // visibility should be edited. All others pages will show the local tasks
     // as three-dots menu. We avoid the redundancy of maintaining the visibility
-    // also for 'joinup_theme_local_tasks' block by implementing this hook.
+    // also for 'three_dots_menu' block by implementing this hook.
     $horizontal_tabs_block = \Drupal::entityTypeManager()->getStorage('block')->load('horizontal_tabs');
     $horizontal_tabs_routes = $horizontal_tabs_block->getVisibilityCondition('request_route')->getConfiguration()['routes'];
     return AccessResult::forbiddenIf(in_array(\Drupal::routeMatch()->getRouteName(), $horizontal_tabs_routes, TRUE))
