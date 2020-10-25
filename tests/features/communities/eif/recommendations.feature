@@ -38,12 +38,13 @@ Feature:
     Given I am not logged in
     And I go to the "EIF Toolbox" solution
     When I click "Recommendations" in the "Left sidebar" region
-    Then the "EIF recommendations" inline facet should allow selecting the following values:
-      # (-) means it is selected.
-      | (-) All                |
-      | Underlying principle   |
-      | Interoperability layer |
-      | Conceptual model       |
+    Then I should see the link "All"
+    And I should see the primary task links:
+      | link                   | active |
+      | All                    | yes    |
+      | Underlying principle   |        |
+      | Interoperability layer |        |
+      | Conceptual model       |        |
 
   Scenario: The recommendations page lists the recommendations links.
     Given I am not logged in

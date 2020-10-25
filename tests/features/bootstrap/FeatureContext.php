@@ -37,6 +37,7 @@ use Joinup\TaskRunner\Traits\TaskRunnerTrait;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
+use SebastianBergmann\Comparator\ComparisonFailure;
 use WebDriver\Exception;
 use WebDriver\Key;
 
@@ -1901,6 +1902,50 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $entity = $this->getEntityByLabel($type, $title, $bundle);
 
     Assert::assertNotEmpty($entity->getCreatedTime());
+  }
+
+  /**
+   * Asserts that a list of primary or secondary task list is on the page.
+   *
+   * Provide data in the following format:
+   *   | link  | active |
+   *   | Link1 | yes    |
+   *   | Link2 |        |
+   *   | Link3 |        |
+   *
+   * @param string $type
+   *   The task list type, either 'primary' or 'secondary'.
+   * @param \Behat\Gherkin\Node\TableNode $links
+   *   The list of links. The order matters.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   If the tasks list tabs are not found in the page.
+   *
+   * @Then I should see the :type task links:
+   */
+  public function assertTaskLinks(string $type, TableNode $links): void {
+    if (!in_array($type, ['primary', 'secondary'], TRUE)) {
+      throw new \InvalidArgumentException("The task list type should be 'primary' or 'secondary'. Received '$type'.");
+    }
+    $session = $this->getSession();
+    $page = $session->getPage();
+    $tabs = $page->find('xpath', "//ul[contains(concat(' ', @class, ' '), ' tabs ') and contains(concat(' ', @class, ' '), ' {$type} ')]");
+    if (!$tabs) {
+      throw new ElementNotFoundException($session, "{$type} task list");
+    }
+
+    $actual_links = array_map(function (NodeElement $link): string {
+      return $link->getText();
+    }, $tabs->findAll('css', 'a'));
+
+    $expected_links = array_map(function (array $link): string {
+      return $link['active'] === 'yes' ? "{$link['link']}(active tab)" : $link['link'];
+    }, $links->getColumnsHash());
+
+    if ($actual_links !== $expected_links) {
+      $comparison = new ComparisonFailure($expected_links, $actual_links, print_r($expected_links, TRUE), print_r($actual_links, TRUE));
+      throw new ExpectationFailedException("The {$type} task links expectation is not met", $comparison);
+    }
   }
 
   /**
