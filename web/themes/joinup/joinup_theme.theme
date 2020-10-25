@@ -103,15 +103,13 @@ function _joinup_menu_local_task_by_route(RouteMatchInterface $route_match) {
 /**
  * Get a list of routes where menu_local_tasks are normal horizontal tabs.
  *
- * @return array
+ * @return string[]
  *   The routes.
  */
 function _joinup_horizontal_tabs_routes() {
-  return [
-    'user.login',
-    'user.pass',
-    'user.register',
-  ];
+  /** @var \Drupal\block\BlockInterface $block */
+  $block = \Drupal::entityTypeManager()->getStorage('block')->load('horizontal_tabs');
+  return $block->getVisibilityCondition('request_route')->getConfiguration()['routes'];
 }
 
 /**
