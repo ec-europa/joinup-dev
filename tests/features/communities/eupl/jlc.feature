@@ -285,10 +285,6 @@ Feature:
       | T16          | You have to check if the text of @use-licence has expressly mentioned @redistribute-as-licence as compatible.                                                                  |
       | INCOMPATIBLE | @use-licence is not compatible with @redistribute-as-licence.                                                                                                                  |
 
-    # @todo Temporary, the access is limited to moderators.
-    When I go to "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
-    Then I should see the heading "Sign in to continue"
-
     Given I am logged in as a moderator
     When I go to "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
     Then I should see the heading "Can European Union Public Licence 1.2 be redistributed as European Union Public Licence 1.2?"
@@ -358,10 +354,6 @@ Feature:
       | T16          | You have to check if the text of @use-licence has expressly mentioned @redistribute-as-licence as compatible.                                                                  |
       | INCOMPATIBLE | @use-licence is not compatible with @redistribute-as-licence.                                                                                                                  |
 
-    # @todo Temporary, the access is limited to moderators.
-    When I go to "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
-    Then I should see the heading "Sign in to continue"
-
     Given I am logged in as a moderator
     When I visit the "JLC" custom page
     Then the "Check compatibility" buttons should be disabled
@@ -413,6 +405,15 @@ Feature:
     Then the "Check compatibility" buttons should be disabled
     When I choose "CECILL-C" as the "Distribute" licence
     Then the "Check compatibility" buttons should be enabled
+    When I click "Check compatibility"
+    Then the url should match "licence/compatibility-check/LGPL-2.1/CECILL-C"
+    And I should see the heading "Can GNU Lesser General Public License 2.1 be redistributed as CeCILL-C?"
+    And I should see the text "LGPL-2.1 is not compatible with CECILL-C"
+
+    When I am not logged in
+    When I visit the "JLC" custom page
+    When I choose "LGPL-2.1" as the "Use" licence
+    When I choose "CECILL-C" as the "Distribute" licence
     When I click "Check compatibility"
     Then the url should match "licence/compatibility-check/LGPL-2.1/CECILL-C"
     And I should see the heading "Can GNU Lesser General Public License 2.1 be redistributed as CeCILL-C?"
