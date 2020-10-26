@@ -146,7 +146,7 @@ view:
 # Create operation permission scheme.
 create:
   'node:pre_moderated':
-    only_facilitators:
+    facilitators_and_authors:
       save_as_draft:
         roles:
           - moderator
@@ -200,7 +200,7 @@ create:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
   'node:post_moderated':
-    only_facilitators:
+    facilitators_and_authors:
       save_as_draft:
         roles:
           - moderator
@@ -238,7 +238,7 @@ create:
         roles:
           - authenticated
   'node:discussion:post_moderated':
-    only_facilitators:
+    facilitators_and_authors:
       save_as_draft:
         roles:
           - moderator

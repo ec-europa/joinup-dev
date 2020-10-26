@@ -249,7 +249,7 @@ class CollectionContext extends RawDrupalContext {
     $mapped_values = [
       'field_ar_moderation' => ['no' => 0, 'yes' => 1],
       'field_ar_content_creation' => [
-        'facilitators' => 'only_facilitators',
+        'facilitators' => 'facilitators_and_authors',
         'members' => 'only_members',
         'registered users' => 'any_user',
       ],

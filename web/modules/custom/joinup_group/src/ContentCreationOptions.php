@@ -12,7 +12,7 @@ final class ContentCreationOptions {
   /**
    * Option defining that Only facilitators and authors can create content.
    */
-  const FACILITATORS_AND_AUTHORS = 'only_facilitators';
+  const FACILITATORS_AND_AUTHORS = 'facilitators_and_authors';
 
   /**
    * Option defining that members and facilitators can create content.

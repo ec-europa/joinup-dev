@@ -25,7 +25,7 @@ settings:
       value: only_members
       label: '<strong>Only members</strong> can create content.'
     -
-      value: only_facilitators
+      value: facilitators_and_authors
       label: '<strong>Only facilitators and authors</strong> can create content.'
   allowed_values_function: ''
 module: options
