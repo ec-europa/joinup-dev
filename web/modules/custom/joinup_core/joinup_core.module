@@ -201,3 +201,24 @@ function joinup_core_module_implements_alter(array &$implementations, $hook) {
       break;
   }
 }
+
+/**
+ * Implements hook_theme_suggestions_HOOK() for menu_local_task.
+ */
+function joinup_core_theme_suggestions_menu_local_task(array $variables): array {
+  $suggestions = [];
+
+  if ($current_route_name = \Drupal::routeMatch()->getRouteName()) {
+    /** @var \Drupal\block\BlockInterface $block */
+    $block = \Drupal::entityTypeManager()->getStorage('block')->load('horizontal_tabs');
+    $routes = $block->getVisibilityCondition('request_route')->getConfiguration()['routes'];
+    if (in_array($current_route_name, $routes, TRUE)) {
+      $suggestions[] = 'menu_local_task__horizontal_tabs';
+    }
+    else {
+      $suggestions[] = 'menu_local_task__three_dots_menu';
+    }
+  }
+
+  return $suggestions;
+}

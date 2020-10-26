@@ -1,0 +1,17 @@
+{#
+/**
+ * @file
+ * Joinup theme override for a local task link from three dots menu tabs .
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the wrapper element.
+ * - is_active: Whether the task item is an active tab.
+ * - link: A rendered link element.
+ *
+ * @see template_preprocess_menu_local_task()
+ * @see joinup_theme_theme_suggestions_menu_local_task()
+ *
+ * @ingroup themeable
+ */
+#}
+<li class="mdl-menu__item{% if is_active %} is-active{% endif %}">{{ link }}</li>
