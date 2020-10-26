@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_notification\EventSubscriber;
 
+use Drupal\asset_distribution\Entity\AssetDistributionInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\asset_release\Entity\AssetReleaseInterface;
@@ -186,7 +187,10 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
    * {@inheritdoc}
    */
   protected function generateArguments(EntityInterface $entity): array {
-    /** @var \Drupal\asset_distribution\Entity\AssetDistributionInterface $entity */
+    // PHP does not support covariance on arguments so we cannot narrow the type
+    // hint to only asset release entities. Let's assert the type instead.
+    assert($entity instanceof AssetDistributionInterface, __METHOD__ . ' only supports asset distribution entities.');
+
     $arguments = parent::generateArguments($entity);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     /** @var \Drupal\user\UserInterface $actor */
