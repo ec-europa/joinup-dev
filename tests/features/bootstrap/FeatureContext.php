@@ -1905,7 +1905,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Asserts that a list of primary or secondary task list is on the page.
+   * Asserts that a list of horizontal tabs links exist on the page.
    *
    * Provide data in the following format:
    *   | link  | active |
@@ -1914,18 +1914,18 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *   | Link3 |        |
    *
    * @param string $type
-   *   The task list type, either 'primary' or 'secondary'.
+   *   The horizontal tabs type, either 'primary' or 'secondary'.
    * @param \Behat\Gherkin\Node\TableNode $links
    *   The list of links. The order matters.
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
-   *   If the tasks list tabs are not found in the page.
+   *   If the horizontal tabs are not found in the page.
    *
-   * @Then I should see the :type task links:
+   * @Then I should see the :type horizontal tabs:
    */
-  public function assertTaskLinks(string $type, TableNode $links): void {
+  public function assertHorizontalTabs(string $type, TableNode $links): void {
     if (!in_array($type, ['primary', 'secondary'], TRUE)) {
-      throw new \InvalidArgumentException("The task list type should be 'primary' or 'secondary'. Received '$type'.");
+      throw new \InvalidArgumentException("The horizontal tabs type should be 'primary' or 'secondary'. Received '$type'.");
     }
     $session = $this->getSession();
     $page = $session->getPage();

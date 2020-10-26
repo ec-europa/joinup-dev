@@ -39,7 +39,7 @@ Feature:
     And I go to the "EIF Toolbox" solution
     When I click "Recommendations" in the "Left sidebar" region
     Then I should see the link "All"
-    And I should see the primary task links:
+    And I should see the primary horizontal tabs:
       | link                   | active |
       | All                    | yes    |
       | Underlying principle   |        |
