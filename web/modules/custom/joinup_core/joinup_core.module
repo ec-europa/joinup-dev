@@ -211,16 +211,15 @@ function joinup_core_module_implements_alter(array &$implementations, $hook) {
  */
 function joinup_core_block_access(BlockInterface $block, string $operation, AccountInterface $account): AccessResultInterface {
   if ($operation === 'view' && $block->id() === 'three_dots_menu') {
+    /** @var \Drupal\joinup_core\LocalTaskLinksHelperInterface $local_task_links_helper */
+    $local_task_links_helper = \Drupal::service('joinup_core.local_task_links_helper');
     // A local tasks block can be either a horizontal tabs menu or a three-dots
     // menu. Both are not possible on the same page. In order to determine the
-    // routes of pages with horizontal tabs, the 'horizontal_tabs' block
-    // visibility should be edited. All others pages will show the local tasks
-    // as three-dots menu. We avoid the redundancy of maintaining the visibility
-    // also for 'three_dots_menu' block by implementing this hook.
-    $horizontal_tabs_block = \Drupal::entityTypeManager()->getStorage('block')->load('horizontal_tabs');
-    $horizontal_tabs_routes = $horizontal_tabs_block->getVisibilityCondition('request_route')->getConfiguration()['routes'];
-    return AccessResult::forbiddenIf(in_array(\Drupal::routeMatch()->getRouteName(), $horizontal_tabs_routes, TRUE))
-      ->addCacheableDependency($horizontal_tabs_block);
+    // pages with horizontal tabs, the 'horizontal_tabs' block visibility should
+    // be edited. All others pages will show the local tasks as three-dots menu.
+    // Avoid the redundancy of maintaining the visibility also for the
+    // 'three_dots_menu' block by implementing this hook.
+    return $local_task_links_helper->allowThreeDotsMenu();
   }
   return AccessResult::neutral();
 }
@@ -229,19 +228,10 @@ function joinup_core_block_access(BlockInterface $block, string $operation, Acco
  * Implements hook_theme_suggestions_HOOK() for menu_local_task.
  */
 function joinup_core_theme_suggestions_menu_local_task(array $variables): array {
-  $suggestions = [];
-
-  if ($current_route_name = \Drupal::routeMatch()->getRouteName()) {
-    /** @var \Drupal\block\BlockInterface $block */
-    $block = \Drupal::entityTypeManager()->getStorage('block')->load('horizontal_tabs');
-    $routes = $block->getVisibilityCondition('request_route')->getConfiguration()['routes'];
-    if (in_array($current_route_name, $routes, TRUE)) {
-      $suggestions[] = 'menu_local_task__horizontal_tabs';
-    }
-    else {
-      $suggestions[] = 'menu_local_task__three_dots_menu';
-    }
+  /** @var \Drupal\joinup_core\LocalTaskLinksHelperInterface $local_task_links_helper */
+  $local_task_links_helper = \Drupal::service('joinup_core.local_task_links_helper');
+  if ($local_task_links_helper->allowHorizontalTabs()->isAllowed()) {
+    return ['menu_local_task__horizontal_tabs'];
   }
-
-  return $suggestions;
+  return ['menu_local_task__three_dots_menu'];
 }
