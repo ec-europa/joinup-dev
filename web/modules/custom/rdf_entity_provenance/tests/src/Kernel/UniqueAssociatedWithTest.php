@@ -25,7 +25,7 @@ class UniqueAssociatedWithTest extends RdfKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->installConfig(['rdf_entity_provenance']);
   }
@@ -33,7 +33,7 @@ class UniqueAssociatedWithTest extends RdfKernelTestBase {
   /**
    * Tests the unique field group constraint.
    */
-  public function testUniqueAssociatedWith() {
+  public function testUniqueAssociatedWith(): void {
     $first_entity = Rdf::create([
       'rid' => 'dummy',
       'id' => 'http://example.com/1',

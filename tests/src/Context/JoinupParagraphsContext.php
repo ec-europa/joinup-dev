@@ -8,7 +8,9 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\TraversableElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\Exception\WysiwygEditorNotFoundException;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
 use PHPUnit\Framework\Assert;
 
@@ -19,6 +21,7 @@ class JoinupParagraphsContext extends RawDrupalContext {
 
   use BrowserCapabilityDetectionTrait;
   use WysiwygTrait;
+  use UtilityTrait;
 
   /**
    * A copycat of Behat's internal region mapping.
@@ -69,7 +72,80 @@ class JoinupParagraphsContext extends RawDrupalContext {
       $this->setWysiwygText($label, $text, $field);
     }
     else {
-      $this->getSession()->getPage()->fillField($label, $text);
+      $field->fillField($label, $text);
+    }
+  }
+
+  /**
+   * Fills in a text field in the given paragraph.
+   *
+   * Sometimes, when testing complex paragraph structures makes it hard to
+   * properly fill in fields due to the subforms and nested elements.
+   * Below, all fields are fetched and the one matching the position is filled.
+   *
+   * @param string $position
+   *   The ordinal position of the field.
+   * @param string $text
+   *   The text to enter.
+   * @param string $label
+   *   The label of the field.
+   * @param string $field
+   *   The field in which to take action.
+   *
+   * @When I fill in the :position :label with :text in the :field field
+   */
+  public function fillInParagraphsFieldInRawOrder(string $position, string $text, string $label, string $field): void {
+    $position = $this->convertOrdinalToNumber($position);
+    // Convert ordinal to array index.
+    $position--;
+    $field = $this->getParagraphsElement($field);
+    $fields = $field->findAll('named', ['field', $label]);
+    if (empty($fields) || !isset($fields[$position])) {
+      throw new ElementNotFoundException($this->getSession()->getDriver(), "Element was not found or not enough elements were found.");
+    }
+
+    $field = $fields[$position];
+    $field->setValue($text);
+  }
+
+  /**
+   * Fills in a WYSIWYG field identified by its generic position.
+   *
+   * Sometimes, when testing complex paragraph structures makes it hard to
+   * properly fill in fields due to the subforms and nested elements.
+   * Below, all WYSIWYG fields are fetched and the one matching the position is
+   * filled.
+   *
+   * @param string $text
+   *   The text to enter in the WYSIWYG editor.
+   * @param string $position
+   *   The ordinal position of the field.
+   * @param string $label
+   *   The label of the field containing the WYSIWYG editor.
+   * @param string $field
+   *   The field in which to take action.
+   *
+   * @When I enter :text in the :position :label wysiwyg editor in the :field field
+   */
+  public function enterWysywigInRawOrder(string $text, string $position, string $label, string $field): void {
+    $position = $this->convertOrdinalToNumber($position);
+    // Convert ordinal to array index.
+    $position--;
+    $field = $this->getParagraphsElement($field);
+    $wysiwygs = $field->findAll('named', ['field', $label]);
+    if (empty($wysiwygs) || !isset($wysiwygs[$position])) {
+      throw new WysiwygEditorNotFoundException("Wysiwyg editor was not found or not enough editors were found.");
+    }
+
+    // Ascend twice so that the label of the field is also included and can be
+    // found by xpath search properly.
+    $region = $wysiwygs[$position]->getParent()->getParent();
+    if ($this->browserSupportsJavaScript()) {
+      $this->pressWysiwygButton($label, 'Source', $region);
+      $this->setWysiwygText($label, $text, $region);
+    }
+    else {
+      $region->fillField($label, $text);
     }
   }
 

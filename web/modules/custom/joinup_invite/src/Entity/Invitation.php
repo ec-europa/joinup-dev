@@ -279,7 +279,10 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
     // Only allow to change the recipient or the entity on new invitations. An
     // invitation is bound to these parameters and they should not be changed
     // once the invitation is saved. Instead a new invitation should be created.
-    if (in_array($name, ['recipient_id', 'entity_type', 'entity_id']) && !$this->isNew()) {
+    if (in_array(
+      $name,
+      ['recipient_id', 'entity_type', 'entity_id']
+    ) && !$this->isNew()) {
       throw new \RuntimeException("The '$name' cannot be changed for an existing invitation.");
     }
     return parent::set($name, $value, $notify);
