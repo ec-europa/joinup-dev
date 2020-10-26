@@ -152,13 +152,13 @@ class AssetReleaseContext extends RawDrupalContext {
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\asset_release\Entity\AssetReleaseInterface
    *   A new asset release entity.
    *
    * @throws \Exception
    *   Thrown when a given image is not found.
    */
-  protected function createAssetRelease(array $values): RdfInterface {
+  protected function createAssetRelease(array $values): AssetReleaseInterface {
     if (!empty($values['field_isr_documentation'])) {
       foreach ($values['field_isr_documentation'] as &$filename) {
         $filename = [$this->createFile($filename)->id()];
