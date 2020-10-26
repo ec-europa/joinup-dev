@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_notification\EventSubscriber;
 
-use Drupal\asset_release\Entity\AssetReleaseInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\asset_release\Entity\AssetReleaseInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\MessageArgumentGenerator;

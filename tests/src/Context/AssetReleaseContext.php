@@ -11,7 +11,6 @@ use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\SearchTrait;
-use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Behat step definitions for testing asset_releases.
