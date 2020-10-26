@@ -109,12 +109,12 @@ class AssetReleaseContext extends RawDrupalContext {
    * Creates a asset_release with data provided in a table.
    *
    * Table format:
-   * | title             | Sample asset_release                    |
-   * | documentation     | text.pdf                                |
-   * | is version of     | Solution                                |
-   * | release number    | 1                                       |
-   * | release notes     | Notes on the release                    |
-   * | keywords          | key1, key2                              |
+   * | title             | Sample asset_release |
+   * | documentation     | text.pdf             |
+   * | is version of     | Solution             |
+   * | release number    | 1                    |
+   * | release notes     | Notes on the release |
+   * | keywords          | key1, key2           |
    * ...
    *
    * Fields title, release number and release notes required.
