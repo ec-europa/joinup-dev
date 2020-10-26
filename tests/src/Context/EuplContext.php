@@ -77,8 +77,7 @@ class EuplContext extends RawDrupalContext {
 
     // The 'Joinup Licencing Compatibility Check' standard custom page.
     Node::create([
-      // @todo Change to the actual node ID when the page is created.
-      'nid' => 799999,
+      'nid' => 703242,
       'type' => 'custom_page',
       'uuid' => '431f631f-e973-4fae-8368-c31f346a9616',
       'title' => 'JLC',
