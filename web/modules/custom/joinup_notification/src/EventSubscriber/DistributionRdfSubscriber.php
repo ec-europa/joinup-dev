@@ -13,6 +13,7 @@ use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
+use Drupal\solution\Exception\MissingSolutionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -197,15 +198,16 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
     $arguments['@release:info:with_version'] = '';
 
     // Add arguments related to the parent collection or solution.
-    $parent = $entity->parent->entity;
-    $solution = (!empty($parent) && $parent->bundle() === 'solution') ? $parent : JoinupGroupHelper::getGroup($entity);
+    $parent = $entity->getParent();
     if (!empty($parent) && $parent instanceof AssetReleaseInterface) {
       $arguments['@release:info:with_version'] = $this->t('of the release @release, @version', [
         '@release' => $parent->label(),
         '@version' => $parent->getVersion(),
       ]);
     }
-    if (!empty($solution)) {
+
+    try {
+      $solution = $entity->getSolution();
       $arguments += MessageArgumentGenerator::getGroupArguments($solution);
       if (empty($arguments['@actor:role'])) {
         $membership = $this->membershipManager->getMembership($solution, $actor->id());
@@ -223,6 +225,13 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
         }
         $arguments['@actor:full_name'] = $actor->getDisplayName();
       }
+    }
+    catch (MissingSolutionException $e) {
+      // @todo This shouldn't occur in normal usage, but at the moment there are
+      //   some orphaned distributions remaining in the database. Once these are
+      //   cleaned up we can transform the MissingSolutionException to a runtime
+      //   exception and this try-catch block is no longer required.
+      // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6218
     }
 
     return $arguments;
