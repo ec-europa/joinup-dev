@@ -22,8 +22,11 @@ class LoginLogoutMenuLink extends CoreLoginLogoutMenuLink {
       return $this->t('Sign out');
     }
     else {
-      return $this->t('Sign in (legacy)');
+      // The route is no longer accessible but a title is required.
+      return $this->t('Sign in');
     }
   }
+
+
 
 }

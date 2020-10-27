@@ -29,6 +29,14 @@ class JoinupEuLoginRouteSubscriber extends RouteSubscriberBase {
         ->setDefaults(['_controller' => UserRegisterRedirectController::class . '::redirectUserRegister'])
         ->setRequirements(['_user_is_logged_in' => 'FALSE']);
     }
+
+    foreach (['user.pass', 'user.pass.http', 'user.login'] as $denied_route) {
+      // Password reset should not be available anymore.
+      if ($route = $collection->get($denied_route)) {
+        $route->setRequirements(['_access' => 'FALSE']);
+      }
+    }
+
   }
 
 }
