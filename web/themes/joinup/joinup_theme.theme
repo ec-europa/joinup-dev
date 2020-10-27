@@ -1707,6 +1707,7 @@ function joinup_theme_preprocess_rdf_entity__collection__digest_message_header(&
  * page.
  */
 function joinup_theme_preprocess_rdf_entity__licence__compatibility_check(&$variables) {
+  joinup_theme_remove_contextual_links($variables);
   joinup_theme_preprocess_rdf_entity__licence__jla($variables);
 }
 
