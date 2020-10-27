@@ -122,7 +122,7 @@
         "drupal/restui": "^1.17",
         "drupal/stage_file_proxy": "^1.0",
         "drupaltest/behat-one-time-login": "^1.0",
-        "ec-europa/toolkit": "^4.0",
+        "ec-europa/toolkit": "dev-joinup",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "^0.3.3",
         "lovers-of-behat/table-extension": "^1.2.0",
@@ -359,6 +359,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/claudiu-cristea/og.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/claudiu-cristea/toolkit.git"
         },
         {
             "type": "vcs",
