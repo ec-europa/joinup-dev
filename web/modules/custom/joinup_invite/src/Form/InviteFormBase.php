@@ -281,7 +281,7 @@ abstract class InviteFormBase extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $users = $this->getUserList($form_state);
-    $results = array_fill_keys(array_keys(self::INVITATION_MESSAGE_TYPES), 0);
+    $results = array_fill_keys(array_keys(static::INVITATION_MESSAGE_TYPES), 0);
 
     foreach ($users as $user) {
       try {
@@ -320,18 +320,18 @@ abstract class InviteFormBase extends FormBase {
       switch ($invitation->getStatus()) {
         // If the invitation was already accepted, don't send an invitation.
         case InvitationInterface::STATUS_ACCEPTED:
-          $status = self::RESULT_ACCEPTED;
+          $status = static::RESULT_ACCEPTED;
           break;
 
         // If the invitation was already rejected, don't send an invitation.
         case InvitationInterface::STATUS_REJECTED:
-          $status = self::RESULT_REJECTED;
+          $status = static::RESULT_REJECTED;
           break;
 
         // If the invitation is still pending, resend the invitation.
         case InvitationInterface::STATUS_PENDING:
           $success = $this->sendMessage($invitation);
-          $status = $success ? self::RESULT_RESENT : self::RESULT_FAILED;
+          $status = $success ? static::RESULT_RESENT : static::RESULT_FAILED;
           break;
 
         default:
@@ -346,10 +346,10 @@ abstract class InviteFormBase extends FormBase {
     // Send the notification message for the invitation.
     try {
       $success = $this->sendMessage($invitation);
-      $status = $success ? self::RESULT_SUCCESS : self::RESULT_FAILED;
+      $status = $success ? static::RESULT_SUCCESS : static::RESULT_FAILED;
     }
     catch (\Exception $e) {
-      $status = self::RESULT_FAILED;
+      $status = static::RESULT_FAILED;
     }
 
     return $status;

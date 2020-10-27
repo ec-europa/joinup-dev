@@ -23,6 +23,20 @@ class InviteToGroupForm extends GroupFormBase {
   const STATUS_MEMBERSHIP_PENDING = 'membership_pending';
 
   /**
+   * The severity of the messages displayed to the user, keyed by result type.
+   *
+   * @var string[]
+   */
+  const INVITATION_MESSAGE_TYPES = [
+    self::RESULT_SUCCESS => 'status',
+    self::RESULT_FAILED => 'error',
+    self::RESULT_RESENT => 'status',
+    self::RESULT_ACCEPTED => 'status',
+    self::RESULT_REJECTED => 'status',
+    self::STATUS_MEMBERSHIP_PENDING => 'error',
+  ];
+
+  /**
    * The message templates to use for the notification mail.
    *
    * @var string
@@ -112,12 +126,8 @@ class InviteToGroupForm extends GroupFormBase {
    * {@inheritdoc}
    */
   protected function processResults(array $results): void {
-    $types = self::INVITATION_MESSAGE_TYPES + [
-      self::STATUS_MEMBERSHIP_PENDING => 'error',
-    ];
-
     foreach (array_filter($results) as $result => $count) {
-      $type = $types[$result];
+      $type = self::INVITATION_MESSAGE_TYPES[$result];
       $args = [':count' => $count];
       switch ($result) {
         case self::RESULT_SUCCESS:
