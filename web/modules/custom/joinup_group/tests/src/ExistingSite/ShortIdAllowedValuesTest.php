@@ -18,7 +18,8 @@ class ShortIdAllowedValuesTest extends JoinupExistingSiteTestBase {
    */
   public function testEmptyShortId(): void {
     foreach (['collection', 'solution'] as $bundle) {
-      $entity = Rdf::create(['rid' => $bundle]);;
+      $entity = Rdf::create(['rid' => $bundle]);
+      ;
       $violations = $entity->validate()->findByCodes([RegexConstraint::REGEX_FAILED_ERROR]);
       $violations = iterator_to_array($violations);
       $this->assertEmpty($violations);
@@ -35,7 +36,8 @@ class ShortIdAllowedValuesTest extends JoinupExistingSiteTestBase {
       $entity = Rdf::create([
         'rid' => $bundle,
         'field_short_id' => $short_id,
-      ]);;
+      ]);
+      ;
 
       $violations = $entity->validate()->findByCodes([RegexConstraint::REGEX_FAILED_ERROR]);
       $violations = iterator_to_array($violations);

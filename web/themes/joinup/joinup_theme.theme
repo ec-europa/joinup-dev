@@ -232,7 +232,7 @@ function _joinup_is_create_form_route($route_name) {
  *   Renderable array contains the author.
  */
 function _joinup_theme_get_author(NodeInterface $node) {
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  /** @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
   $view_builder = \Drupal::entityTypeManager()->getViewBuilder('user');
   $author = $node->get('uid')->entity;
   $author_inline = $view_builder->view($author, 'inline');
@@ -508,7 +508,10 @@ function joinup_build_permalink(RouteMatchInterface $route_match) {
   }
 
   // Don't process the path to avoid pathauto aliasing.
-  return $entity->toUrl('canonical', ['path_processing' => FALSE, 'absolute' => TRUE])->toString();
+  return $entity->toUrl('canonical', [
+    'path_processing' => FALSE,
+    'absolute' => TRUE,
+  ])->toString();
 }
 
 /**
@@ -964,7 +967,7 @@ function joinup_theme_preprocess_page_title__rdf_entity__asset_distribution(&$va
   $entity = $variables['entity'];
 
   // Get the view builder service from the entity type manager.
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  /** @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
   $view_builder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
   // Get the file size and licence fields.
   $field_ad_file_size = $entity->field_ad_file_size;
@@ -983,7 +986,7 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['entity'];
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  /** @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
   $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
   $field_news_headline = $view_builder->viewField($node->field_news_headline, 'default');
   $variables['additional_content']['field_news_headline'] = $field_news_headline;
@@ -1181,7 +1184,7 @@ function joinup_theme_preprocess_page_title__node__event(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['entity'];
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  /** @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
   $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
 
   // Get dates and location fields.

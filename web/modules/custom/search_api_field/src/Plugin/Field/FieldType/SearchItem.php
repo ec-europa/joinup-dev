@@ -76,7 +76,7 @@ class SearchItem extends FieldItemBase implements SearchItemInterface {
   public function storageSettingsForm(array &$form, FormStateInterface $form_state, $has_data) {
     $search_api_indexes = \Drupal::entityTypeManager()->getStorage('search_api_index')->loadMultiple();
     $index_options = [];
-    /* @var  $search_api_index \Drupal\search_api\IndexInterface */
+    /** @var  \Drupal\search_api\IndexInterface $search_api_index */
     foreach ($search_api_indexes as $search_api_index) {
       $index_options[$search_api_index->id()] = $search_api_index->label();
     }
@@ -167,7 +167,7 @@ class SearchItem extends FieldItemBase implements SearchItemInterface {
     $element = [];
     $settings = $this->getSetting('view_modes');
 
-    /* @var $search_api_index \Drupal\search_api\IndexInterface */
+    /** @var \Drupal\search_api\IndexInterface $search_api_index */
     $search_api_index = SearchApiIndex::load($index_id);
 
     foreach ($search_api_index->getDatasources() as $datasource_id => $datasource) {
@@ -184,7 +184,10 @@ class SearchItem extends FieldItemBase implements SearchItemInterface {
       }
 
       foreach ($bundles as $bundle_id => $bundle_label) {
-        $title = $this->t('View mode for datasource %datasource, bundle %bundle', ['%datasource' => $datasource_label, '%bundle' => $bundle_label]);
+        $title = $this->t('View mode for datasource %datasource, bundle %bundle', [
+          '%datasource' => $datasource_label,
+          '%bundle' => $bundle_label,
+        ]);
         $view_modes = $datasource->getViewModes($bundle_id);
         if (!$view_modes) {
           $element[$datasource_id][$bundle_id] = [

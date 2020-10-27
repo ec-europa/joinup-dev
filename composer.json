@@ -109,7 +109,7 @@
         "composer/semver": "3.2.2 as 1.9999.9999",
         "drupal/admin_toolbar": "~2.0",
         "drupal/cas_mock_server": "^1.0",
-        "drupal/coder": "8.3.8",
+        "drupal/coder": "^8.3",
         "drupal/config_devel": "~1.6",
         "drupal/config_filter": "^1.5",
         "drupal/config_inspector": "^1.0",
@@ -233,6 +233,9 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "drupal/coder": {
+                "Prevent array false positives @see https://www.drupal.org/project/coder/issues/3169452": "https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/119.diff"
+            },
             "drupal/config_devel": {
                 "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2020-05-15/2392929-11.patch"
             },

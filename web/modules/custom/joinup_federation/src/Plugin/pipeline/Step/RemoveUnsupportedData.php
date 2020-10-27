@@ -49,7 +49,10 @@ class RemoveUnsupportedData extends JoinupFederationStepPluginBase implements Pi
       // the site, should be proposed through the support form before importing
       // related entities.
       // @todo Reconsider this decision, if case.
-      if ($mapping->getTargetEntityTypeId() === 'rdf_entity' && !in_array($mapping->getTargetBundle(), ['collection', 'licence'])) {
+      if ($mapping->getTargetEntityTypeId() === 'rdf_entity' && !in_array($mapping->getTargetBundle(), [
+        'collection',
+        'licence',
+      ])) {
         $rdf_entity_bundle_uris[] = $mapping->getRdfType();
       }
     }

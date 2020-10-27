@@ -196,7 +196,8 @@ function joinup_community_content_theme_suggestions_container_alter(array &$sugg
   // collections and solutions so that a fake "Advanced search" facet can be
   // appended to the inline facets.
   if ($variables['theme_hook_original'] === 'container__facet_region__inline_facets') {
-    if (in_array($variables['element']['#entity']->bundle(), ['collection', 'solution'])) {
+    $bundles = ['collection', 'solution'];
+    if (in_array($variables['element']['#entity']->bundle(), $bundles)) {
       $suggestions[] = $variables['theme_hook_original'] . '__with_advanced_search';
     }
   }

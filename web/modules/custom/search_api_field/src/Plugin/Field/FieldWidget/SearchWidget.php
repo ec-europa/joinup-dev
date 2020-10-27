@@ -6,6 +6,7 @@ namespace Drupal\search_api_field\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Component\Utility\SortArray;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -619,7 +620,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     // Extract field id and plugin id from the selected option. Since field ids
     // cannot contain special characters, it's safe to explode on the first
     // colon.
-    list($field_id, $plugin_id) = explode(':', $form_state->getValue($wrapper['field']['#parents']), 2);
+    [$field_id, $plugin_id] = explode(':', $form_state->getValue($wrapper['field']['#parents']), 2);
 
     // Extract element and widget elements.
     $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -4));
@@ -750,7 +751,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       if (!empty($values[$delta]['wrapper']['query_builder']['filters'])) {
         $filter_values = $values[$delta]['wrapper']['query_builder']['filters'];
         // Re-order values in case JS is not used.
-        uasort($filter_values, ['Drupal\Component\Utility\SortArray', 'sortByWeightElement']);
+        uasort($filter_values, [SortArray::class, 'sortByWeightElement']);
 
         foreach (array_keys($filter_values) as $plugin_delta) {
           $plugin_config = $field_state['query_builder'][$delta]['filters'][$plugin_delta];

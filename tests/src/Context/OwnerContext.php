@@ -153,7 +153,10 @@ class OwnerContext extends RawDrupalContext {
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     /** @var \Behat\Mink\Element\NodeElement $owner_fieldset */
-    $owner_fieldset = $this->getSession()->getPage()->find('named', ['fieldset', 'Type']);
+    $owner_fieldset = $this->getSession()->getPage()->find('named', [
+      'fieldset',
+      'Type',
+    ]);
 
     /** @var \Behat\Mink\Element\NodeElement[] $labels */
     $labels = $owner_fieldset->findAll('xpath', '//label//label');

@@ -111,12 +111,13 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
    * {@inheritdoc}
    */
   public function execute() {
+    $entity_type_ids = ['rdf_entity', 'taxonomy_term'];
     $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
     $not_selected = array_flip($this->getPersistentDataValue('not_selected'));
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     foreach ($this->getRdfStorage()->loadMultiple($ids, ['staging']) as $entity) {
       $changed = 0;
-      $reference_fields = $this->getAdmsSchemaEntityReferenceFields($entity->bundle(), ['rdf_entity', 'taxonomy_term']);
+      $reference_fields = $this->getAdmsSchemaEntityReferenceFields($entity->bundle(), $entity_type_ids);
 
       foreach ($reference_fields as $field_name => $target_entity_type_id) {
         /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
