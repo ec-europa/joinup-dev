@@ -306,7 +306,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
     return [
       'collection' => [
         CommunityContentWorkflowAccessControlHandler::PRE_MODERATION => [
-          ContentCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS_AND_AUTHORS => [
             'userModerator' => [
               'draft',
               'proposed',
@@ -364,7 +364,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
           ],
         ],
         CommunityContentWorkflowAccessControlHandler::POST_MODERATION => [
-          ContentCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS_AND_AUTHORS => [
             'userModerator' => [
               'draft',
               'validated',
@@ -418,7 +418,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
       ],
       'solution' => [
         CommunityContentWorkflowAccessControlHandler::PRE_MODERATION => [
-          ContentCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS_AND_AUTHORS => [
             'userModerator' => [
               'draft',
               'proposed',
@@ -456,7 +456,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
           ],
         ],
         CommunityContentWorkflowAccessControlHandler::POST_MODERATION => [
-          ContentCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS_AND_AUTHORS => [
             'userModerator' => [
               'draft',
               'validated',
