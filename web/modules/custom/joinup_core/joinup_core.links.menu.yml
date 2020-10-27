@@ -34,3 +34,9 @@ joinup_core.support.contact:
   menu_name: support
   url: 'internal:/contact'
   weight: -100
+
+joinup_core.eu_login_info:
+  title: 'More about EU Login'
+  menu_name: support
+  url: 'internal:/collection/joinup/news/joinup-use-eu-login'
+  weight: 1
