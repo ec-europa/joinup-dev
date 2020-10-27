@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e84ca36c5af1b6b8e3989e3f66b904a",
+    "content-hash": "9855f7999b5e1b8fd864696636ab6c4d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -19019,8 +19019,8 @@
         {
             "package": "composer/semver",
             "version": "3.2.2.0",
-            "alias": "1.7.10",
-            "alias_normalized": "1.7.10.0"
+            "alias": "1.9999.9999",
+            "alias_normalized": "1.9999.9999.0"
         },
         {
             "package": "easyrdf/easyrdf",
