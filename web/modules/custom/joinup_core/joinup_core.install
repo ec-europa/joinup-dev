@@ -159,7 +159,7 @@ function joinup_core_update_0106500(): void {
 }
 
 /**
- * Change the 'facilitators_and_authors' option to 'facilitators_and_authors'.
+ * Change the 'only_facilitators' option to 'facilitators_and_authors'.
  */
 function joinup_core_update_0106501(): void {
   $connection = \Drupal::getContainer()->get('sparql.endpoint');
