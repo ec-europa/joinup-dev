@@ -20,7 +20,7 @@ Feature: In order to avoid users changing federated values
       | moderation          | yes                      |
       | owner               | John Federator           |
       | contact information | John Federator's contact |
-      | content creation    | facilitators             |
+      | content creation    | facilitators and authors |
       | state               | validated                |
     And the following solution:
       | title               | A federated solution                 |

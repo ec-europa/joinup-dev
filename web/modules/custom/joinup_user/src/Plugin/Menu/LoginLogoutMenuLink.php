@@ -27,6 +27,4 @@ class LoginLogoutMenuLink extends CoreLoginLogoutMenuLink {
     }
   }
 
-
-
 }

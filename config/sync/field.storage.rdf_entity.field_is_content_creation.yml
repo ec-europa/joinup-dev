@@ -22,8 +22,8 @@ settings:
       value: any_user
       label: '<strong>Any user</strong> can create content.'
     -
-      value: only_facilitators
-      label: '<strong>Only facilitators</strong> can create content.'
+      value: facilitators_and_authors
+      label: '<strong>Only facilitators and authors</strong> can create content.'
   allowed_values_function: ''
 module: options
 locked: false
