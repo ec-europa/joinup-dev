@@ -6,6 +6,7 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\asset_release\Entity\AssetReleaseInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\MessageArgumentGenerator;
@@ -300,12 +301,16 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
    * {@inheritdoc}
    */
   protected function generateArguments(EntityInterface $entity): array {
+    // PHP does not support covariance on arguments so we cannot narrow the type
+    // hint to only asset release entities. Let's assert the type instead.
+    assert($entity instanceof AssetReleaseInterface, __METHOD__ . ' only supports asset release entities.');
+
     $arguments = parent::generateArguments($entity);
     /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
     $arguments['@transition:motivation'] = $motivation;
-    $arguments['@entity:field_isr_release_number'] = !empty($entity->get('field_isr_release_number')->first()->value) ? $entity->get('field_isr_release_number')->first()->value : '';
+    $arguments['@entity:field_isr_release_number'] = $entity->getVersion();
 
     // Add arguments related to the parent collection or solution.
     $parent = JoinupGroupHelper::getGroup($entity);
