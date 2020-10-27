@@ -6,6 +6,7 @@ namespace Drupal\joinup_invite\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\og\OgMembershipInterface;
 
 /**
  * Form to add a member with a certain role in a rdf entity group.
@@ -46,10 +47,13 @@ class AddToGroupForm extends GroupFormBase {
 
     $users = $this->getUserList($form_state);
     foreach ($users as $user) {
-      $membership = $this->ogMembershipManager->getMembership($this->entity, $user->id());
+      $membership = $this->ogMembershipManager->getMembership($this->entity, $user->id(), OgMembershipInterface::ALL_STATES);
       if (empty($membership)) {
         $membership = $this->ogMembershipManager->createMembership($this->entity, $user);
       }
+      // If the membership is pending or blocked, this should re-enable the
+      // membership. In case it is already active, nothing will change.
+      $membership->setState(OgMembershipInterface::STATE_ACTIVE);
       $membership->addRole($this->role);
       $membership->save();
     }
