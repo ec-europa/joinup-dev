@@ -49,4 +49,4 @@ Feature: Password management
     When I am an anonymous user
     And I am on the homepage
     Then I should not see the link "Sign in (legacy)"
-    And I should see the link "More about EU login"
+    And I should see the link "More about EU Login"
