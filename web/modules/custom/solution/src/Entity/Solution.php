@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\solution\Entity;
 
+use Drupal\asset_release\Entity\AssetReleaseInterface;
 use Drupal\collection\Entity\CollectionInterface;
 use Drupal\collection\Exception\MissingCollectionException;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
@@ -64,6 +65,20 @@ class Solution extends Rdf implements SolutionInterface {
    */
   public function getWorkflowStateFieldName(): string {
     return 'field_is_state';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLatestReleaseId(): ?string {
+    return $this->get('latest_release')->target_id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLatestRelease(): ?AssetReleaseInterface {
+    return $this->get('latest_release')->entity;
   }
 
 }
