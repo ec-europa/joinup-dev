@@ -6,8 +6,10 @@ namespace Drupal\joinup_invite\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\og\OgMembershipInterface;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\UserInterface;
 
 /**
@@ -65,6 +67,44 @@ class InviteToGroupForm extends GroupFormBase {
    */
   protected function getTemplateId(): string {
     return self::TEMPLATES[$this->entity->bundle()];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getCancelButtonUrl(): Url {
+    return new Url('entity.rdf_entity.member_overview', [
+      'rdf_entity' => $this->entity->id(),
+    ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL) {
+    $this->entity = $rdf_entity;
+
+    $options = [
+      'collection' => [
+        'member' => $this->t('Member'),
+        'author' => $this->t('Author'),
+        'facilitator' => $this->t('Facilitator'),
+      ],
+      'solution' => [
+        'author' => $this->t('Author'),
+        'facilitator' => $this->t('Facilitator'),
+      ],
+    ];
+
+    $form['role'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Role'),
+      '#required' => TRUE,
+      '#options' => $options[$this->entity->bundle()],
+      '#default_value' => 'member',
+    ];
+
+    return parent::build($form, $form_state);
   }
 
   /**

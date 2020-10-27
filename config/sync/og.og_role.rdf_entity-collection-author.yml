@@ -1,0 +1,15 @@
+uuid: ea4be6a5-b4cb-42c0-aee4-796e4776fd2e
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.collection
+id: rdf_entity-collection-author
+label: Author
+weight: 1
+is_admin: null
+group_type: rdf_entity
+group_bundle: collection
+group_id: null
+permissions: {  }
+role_type: required

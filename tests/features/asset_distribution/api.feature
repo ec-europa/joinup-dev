@@ -9,7 +9,7 @@ Feature: Distribution API
       | title            | Asset distribution collection API foo |
       | logo             | logo.png                              |
       | moderation       | yes                                   |
-      | content creation | facilitators                          |
+      | content creation | facilitators and authors              |
       | state            | validated                             |
     And the following solution:
       | title            | Asset distribution solution           |
@@ -43,13 +43,13 @@ Feature: Distribution API
       | title            | Asset distribution short API bar |
       | logo             | logo.png                         |
       | moderation       | yes                              |
-      | content creation | facilitators                     |
+      | content creation | facilitators and authors         |
       | state            | validated                        |
     And the following solution:
       | title            | AD first solution mandatory short |
       | collection       | Asset distribution short API bar  |
       | description      | Another sample solution           |
-      | content creation | members                           |
+      | content creation | registered users                  |
       | state            | validated                         |
     And the following release:
       | title          | AD first release                   |

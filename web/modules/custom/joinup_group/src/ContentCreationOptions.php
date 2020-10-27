@@ -10,9 +10,9 @@ namespace Drupal\joinup_group;
 final class ContentCreationOptions {
 
   /**
-   * Option defining that only facilitators can create content.
+   * Option defining that Only facilitators and authors can create content.
    */
-  const FACILITATORS = 'only_facilitators';
+  const FACILITATORS_AND_AUTHORS = 'facilitators_and_authors';
 
   /**
    * Option defining that members and facilitators can create content.
