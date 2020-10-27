@@ -6,11 +6,11 @@ Feature: Solution API
 
   Scenario: Programmatically create a solution
     Given the following collection:
-      | title            | Solution API foo |
-      | logo             | logo.png         |
-      | moderation       | yes              |
-      | content creation | facilitators     |
-      | state            | validated        |
+      | title            | Solution API foo         |
+      | logo             | logo.png                 |
+      | moderation       | yes                      |
+      | content creation | facilitators and authors |
+      | state            | validated                |
     And the following solution:
       | title            | My first solution                    |
       | collection       | Solution API foo                     |
@@ -28,11 +28,11 @@ Feature: Solution API
 
   Scenario: Programmatically create a solution using only the mandatory fields
     Given the following collection:
-      | title            | Solution API bar |
-      | logo             | logo.png         |
-      | moderation       | yes              |
-      | content creation | facilitators     |
-      | state            | validated        |
+      | title            | Solution API bar         |
+      | logo             | logo.png                 |
+      | moderation       | yes                      |
+      | content creation | facilitators and authors |
+      | state            | validated                |
     And the following solution:
       | title            | My first solution mandatory |
       | collection       | Solution API bar            |
@@ -43,13 +43,13 @@ Feature: Solution API
 
   Scenario: Programmatically create a solution that is affiliated with a collection
     Given the following collection:
-      | title             | Inflatable mascots |
-      | state             | validated          |
+      | title | Inflatable mascots |
+      | state | validated          |
     And the following solution:
-      | title             | Inflatable rooster             |
-      | description       | For placing near a white house |
-      | state             | validated                      |
-      | collection        | Inflatable mascots             |
+      | title       | Inflatable rooster             |
+      | description | For placing near a white house |
+      | state       | validated                      |
+      | collection  | Inflatable mascots             |
     Then I should have 1 solution
     And the "Inflatable rooster" solution should be affiliated with the "Inflatable mascots" collection
 
@@ -67,7 +67,7 @@ Feature: Solution API
       | banner           | banner.jpg               |
       | moderation       | no                       |
       | closed           | no                       |
-      | content creation | facilitators             |
+      | content creation | facilitators and authors |
       | state            | validated                |
     And the following collection user memberships:
       | user              | collection               | roles       |

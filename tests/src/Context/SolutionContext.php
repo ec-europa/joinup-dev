@@ -584,8 +584,7 @@ class SolutionContext extends RawDrupalContext {
     $mapped_values = [
       'field_is_moderation' => ['no' => 0, 'yes' => 1],
       'field_is_content_creation' => [
-        'facilitators' => ContentCreationOptions::FACILITATORS_AND_AUTHORS,
-        'members' => ContentCreationOptions::MEMBERS,
+        'facilitators and authors' => ContentCreationOptions::FACILITATORS_AND_AUTHORS,
         'registered users' => ContentCreationOptions::REGISTERED_USERS,
       ],
       'field_is_webdav_creation' => ['no' => 0, 'yes' => 1],
