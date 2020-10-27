@@ -6,11 +6,11 @@ namespace Drupal\joinup\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\asset_release\Entity\AssetReleaseInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\SearchTrait;
-use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Behat step definitions for testing asset_releases.
@@ -108,12 +108,12 @@ class AssetReleaseContext extends RawDrupalContext {
    * Creates a asset_release with data provided in a table.
    *
    * Table format:
-   * | title             | Sample asset_release                    |
-   * | documentation     | text.pdf                                |
-   * | is version of     | Solution                                |
-   * | release number    | 1                                       |
-   * | release notes     | Notes on the release                    |
-   * | keywords          | key1, key2                              |
+   * | title             | Sample asset_release |
+   * | documentation     | text.pdf             |
+   * | is version of     | Solution             |
+   * | release number    | 1                    |
+   * | release notes     | Notes on the release |
+   * | keywords          | key1, key2           |
    * ...
    *
    * Fields title, release number and release notes required.
@@ -151,13 +151,13 @@ class AssetReleaseContext extends RawDrupalContext {
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\asset_release\Entity\AssetReleaseInterface
    *   A new asset release entity.
    *
    * @throws \Exception
    *   Thrown when a given image is not found.
    */
-  protected function createAssetRelease(array $values): RdfInterface {
+  protected function createAssetRelease(array $values): AssetReleaseInterface {
     if (!empty($values['field_isr_documentation'])) {
       foreach ($values['field_isr_documentation'] as &$filename) {
         $filename = [$this->createFile($filename)->id()];
@@ -196,10 +196,10 @@ class AssetReleaseContext extends RawDrupalContext {
    * @param string $title
    *   The asset release name.
    *
-   * @return \Drupal\rdf_entity\RdfInterface
+   * @return \Drupal\asset_release\Entity\AssetReleaseInterface
    *   The asset release.
    */
-  protected function getAssetReleaseByName(string $title): RdfInterface {
+  protected function getAssetReleaseByName(string $title): AssetReleaseInterface {
     return $this->getRdfEntityByLabel($title, 'asset_release');
   }
 
@@ -360,7 +360,7 @@ class AssetReleaseContext extends RawDrupalContext {
       throw new \Exception('Multiple releases marked as latest were found in the page.');
     }
 
-    $release_version = $release->get('field_isr_release_number')->value;
+    $release_version = $release->getVersion();
     $name_with_version = $release->label() . " " . $release_version;
 
     $latest_release = reset($latest_releases);

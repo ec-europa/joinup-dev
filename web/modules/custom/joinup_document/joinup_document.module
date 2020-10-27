@@ -14,15 +14,17 @@ use Drupal\joinup_document\Entity\Document;
  * Implements hook_entity_bundle_field_info_alter().
  */
 function joinup_document_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() !== 'node' || $bundle !== 'document') {
+    return;
+  }
+
   // @todo Add test coverage for these constraints.
   // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2499
-  if ($entity_type->id() == 'node' && $bundle == 'document') {
-    if (!empty($fields['field_short_title'])) {
-      $fields['field_short_title']->addConstraint('UniqueField');
-    }
-    if (!empty($fields['title'])) {
-      $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['document']]);
-    }
+  if (!empty($fields['field_short_title'])) {
+    $fields['field_short_title']->addConstraint('UniqueField');
+  }
+  if (!empty($fields['title'])) {
+    $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['document']]);
   }
 }
 

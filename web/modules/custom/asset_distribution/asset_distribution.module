@@ -13,6 +13,7 @@ use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\asset_distribution\DistributionParentFieldItemList;
 use Drupal\asset_distribution\Entity\AssetDistribution;
+use Drupal\asset_distribution\Entity\AssetDistributionInterface;
 use Drupal\file_url\FileUrlHandler;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
@@ -174,32 +175,12 @@ function asset_distribution_invalidate_solution_cache(RdfInterface $distribution
 
 /**
  * Implements hook_preprocess_HOOK().
- *
- * Provides a promoted link for each distribution on the release overview page
- * because there is only one 'Download' button displayed.
- *
- * @todo: The behavior of the multi value file field is recorded and will be
- * implemented in
- * https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2925.
  */
-function asset_distribution_preprocess_rdf_entity(&$variables) {
-  /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
-  $rdf_entity = $variables['rdf_entity'];
-  if ($rdf_entity->bundle() !== 'asset_distribution') {
-    return;
-  }
-
-  // Make some alterations for the Release download page.
-  // @see \Drupal\asset_release\Controller\AssetReleaseController::overview()
-  if ($variables['view_mode'] === 'compact') {
-    // There is only one available download link so we set the one available
-    // here.
-    if (!empty($rdf_entity->field_ad_access_url->first()->uri)) {
-      $variables['content']['promoted_download'] = $rdf_entity->field_ad_access_url->first()->uri;
-    }
-
+function asset_distribution_preprocess_rdf_entity(array &$variables): void {
+  $distribution = $variables['rdf_entity'];
+  if ($distribution instanceof AssetDistributionInterface && $variables['view_mode'] === 'compact') {
     // Provide a flag if this is a standalone distribution.
-    $variables['is_standalone'] = !empty($rdf_entity->standalone);
+    $variables['is_standalone'] = $distribution->isStandalone();
   }
 }
 

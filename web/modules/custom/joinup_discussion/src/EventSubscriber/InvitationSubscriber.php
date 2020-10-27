@@ -75,7 +75,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
     try {
       $result = $this->joinupSubscription->subscribe($invitation->getRecipient(), $invitation->getEntity(), 'subscribe_discussions');
       if ($result) {
-        $this->messenger->addMessage($this->t('You have been subscribed to this discussion.'));
+        $this->messenger->addMessage($this->t('You are now following this discussion.'));
       }
       else {
         $this->messenger->addMessage($this->t('Your subscription request could not be processed. Please try again later.'));

@@ -69,23 +69,6 @@ class AssetReleaseRelations implements ContainerInjectionInterface {
   }
 
   /**
-   * Returns the solution that a release belongs to.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $asset_release
-   *   The asset release rdf entity.
-   *
-   * @return \Drupal\rdf_entity\RdfInterface
-   *   The solution rdf entity that the release is version of.
-   */
-  public function getReleaseSolution(RdfInterface $asset_release) {
-    if ($asset_release->bundle() != 'asset_release') {
-      return NULL;
-    }
-    $target_id = $asset_release->field_isr_is_version_of->first()->target_id;
-    return $this->entityTypeManager->getStorage('rdf_entity')->load($target_id);
-  }
-
-  /**
    * Synchronizes common fields from the parent solution of a given release.
    *
    * @param \Drupal\rdf_entity\RdfInterface $release

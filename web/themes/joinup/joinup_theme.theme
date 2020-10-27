@@ -14,7 +14,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\block\Entity\Block;
@@ -958,43 +957,6 @@ function joinup_theme_preprocess_form_element(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_page_title__rdf_entity__asset_release().
- */
-function joinup_theme_preprocess_page_title__rdf_entity__asset_release(&$variables) {
-  /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
-  $entity = $variables['entity'];
-
-  $variables['additional_content']['full_label'] = new TranslatableMarkup('@label @ver', [
-    '@label' => $entity->label(),
-    '@ver' => $entity->field_isr_release_number->value,
-  ]);
-
-  $is_latest_release = FALSE;
-  $field_solution = $entity->get('field_isr_is_version_of');
-  if (!empty($field_solution) && ($solution = $field_solution->entity)) {
-    // @todo Find a better way of marking the latest release that doesn't
-    //   involve performing a database query in the theme layer.
-    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
-    $latest_release = solution_get_latest_release($solution);
-    if ($latest_release && $latest_release->id() === $entity->id()) {
-      $is_latest_release = TRUE;
-    }
-  }
-  $variables['additional_content']['is_latest_release'] = $is_latest_release;
-  if (!$is_latest_release && $latest_release) {
-    $variables['additional_content']['latest_release'] = $latest_release->toUrl()->toString();
-  }
-
-  // Get the view builder service from the entity type manager.
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
-  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
-  // Get the creation date field.
-  $creation_date = $entity->get('created');
-  $creation_date = $view_builder->viewField($creation_date, 'default');
-  $variables['additional_content']['created'] = $creation_date;
-}
-
-/**
  * Implements hook_preprocess_page_title__rdf_entity__asset_distribution().
  */
 function joinup_theme_preprocess_page_title__rdf_entity__asset_distribution(&$variables) {
@@ -1078,20 +1040,15 @@ function joinup_theme_preprocess_page_title__node__glossary(&$variables) {
  * Implements hook_preprocess_HOOK() for page-title--node--document.html.twig.
  */
 function joinup_theme_preprocess_page_title__node__document(&$variables) {
-  /** @var \Drupal\node\NodeInterface $node */
+  /** @var \Drupal\joinup_document\Entity\DocumentInterface $node */
   $node = $variables['entity'];
 
   /** @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
   $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
   /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
   $date_formatter = \Drupal::service('date.formatter');
-  $field_document_publication_date = $view_builder->viewField($node->field_document_publication_date, 'default');
-  $variables['additional_content']['field_document_publication_date'] = $field_document_publication_date;
-  $publication_date_value = $node->field_document_publication_date->value;
-  // The raw value allowed to properly display the field above with any class
-  // or configuration applied but still have the value to compare to the changed
-  // date in the Twig template.
-  $variables['additional_content']['field_document_publication_date_raw'] = empty($publication_date_value) ? '' : $date_formatter->format(strtotime($publication_date_value), 'custom', 'd/m/Y');
+  $field_document_publication_date = $node->getPublicationDate();
+  $variables['additional_content']['publication_date'] = empty($field_document_publication_date) ? '' : $date_formatter->format($field_document_publication_date, 'custom', 'd/m/Y');
 
   $update_date = $date_formatter->format($node->getChangedTime(), 'custom', 'd/m/Y');
   $variables['additional_content']['updated'] = $update_date;
