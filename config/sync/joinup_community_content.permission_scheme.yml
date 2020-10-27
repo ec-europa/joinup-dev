@@ -203,13 +203,17 @@ create:
         roles:
           - moderator
         og_roles:
+          - rdf_entity-collection-author
           - rdf_entity-collection-facilitator
+          - rdf_entity-solution-author
           - rdf_entity-solution-facilitator
       publish:
         roles:
           - moderator
         og_roles:
+          - rdf_entity-collection-author
           - rdf_entity-collection-facilitator
+          - rdf_entity-solution-author
           - rdf_entity-solution-facilitator
     only_members:
       save_as_draft:
@@ -219,6 +223,7 @@ create:
           - rdf_entity-collection-author
           - rdf_entity-collection-member
           - rdf_entity-collection-facilitator
+          - rdf_entity-solution-author
           - rdf_entity-solution-facilitator
       publish:
         roles:
@@ -227,6 +232,7 @@ create:
           - rdf_entity-collection-author
           - rdf_entity-collection-member
           - rdf_entity-collection-facilitator
+          - rdf_entity-solution-author
           - rdf_entity-solution-facilitator
     any_user:
       save_as_draft:
@@ -241,28 +247,36 @@ create:
         roles:
           - moderator
         og_roles:
+          - rdf_entity-collection-author
           - rdf_entity-collection-facilitator
+          - rdf_entity-solution-author
           - rdf_entity-solution-facilitator
       publish:
         roles:
           - moderator
         og_roles:
+          - rdf_entity-collection-author
           - rdf_entity-collection-facilitator
+          - rdf_entity-solution-author
           - rdf_entity-solution-facilitator
     only_members:
       save_as_draft:
         roles:
           - moderator
         og_roles:
+          - rdf_entity-collection-author
           - rdf_entity-collection-member
           - rdf_entity-collection-facilitator
+          - rdf_entity-solution-author
           - rdf_entity-solution-facilitator
       publish:
         roles:
           - moderator
         og_roles:
+          - rdf_entity-collection-author
           - rdf_entity-collection-member
           - rdf_entity-collection-facilitator
+          - rdf_entity-solution-author
           - rdf_entity-solution-facilitator
     any_user:
       save_as_draft:

@@ -42,7 +42,7 @@ Feature: Release API
       | title            | My first solution mandatory |
       | collection       | Solution API bar            |
       | description      | Another sample solution     |
-      | content creation | members                     |
+      | content creation | registered users            |
       | state            | validated                   |
     And the following release:
       | title          | My first mandatory release  |

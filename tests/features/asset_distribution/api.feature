@@ -49,7 +49,7 @@ Feature: Distribution API
       | title            | AD first solution mandatory short |
       | collection       | Asset distribution short API bar  |
       | description      | Another sample solution           |
-      | content creation | members                           |
+      | content creation | registered users                  |
       | state            | validated                         |
     And the following release:
       | title          | AD first release                   |

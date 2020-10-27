@@ -37,7 +37,7 @@ Feature: Solution API
       | title            | My first solution mandatory |
       | collection       | Solution API bar            |
       | description      | Another sample solution     |
-      | content creation | members                     |
+      | content creation | registered users            |
       | state            | validated                   |
     Then I should have 1 solution
 
