@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_licence;
 
+use Drupal\Component\Utility\SortArray;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
@@ -57,7 +58,7 @@ class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
   public function getCompatibilityDocumentId(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): ?string {
     // Sort the plugins by weight and return the first result.
     $plugin_definitions = $this->getDefinitions();
-    uasort($plugin_definitions, ['Drupal\Component\Utility\SortArray', 'sortByWeightElement']);
+    uasort($plugin_definitions, [SortArray::class, 'sortByWeightElement']);
 
     foreach ($plugin_definitions as $plugin_definition) {
       /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRuleInterface $plugin */

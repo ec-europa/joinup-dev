@@ -488,7 +488,8 @@ function solution_rdf_entity_presave(RdfInterface $entity) {
   }
 
   // Set the graph only for new solutions or those loaded from the main graphs.
-  if (!$entity->isNew() && !in_array($entity->sparqlEntityOriginalGraph, ['default', 'draft'])) {
+  $graphs = ['default', 'draft'];
+  if (!$entity->isNew() && !in_array($entity->sparqlEntityOriginalGraph, $graphs)) {
     return;
   }
 
@@ -537,7 +538,7 @@ function solution_invalidate_collection(EntityInterface $entity) {
       ->execute();
     if ($ids) {
       $tags = [];
-      /* @var \Drupal\rdf_entity\RdfInterface $collection */
+      /** @var \Drupal\rdf_entity\RdfInterface $collection */
       foreach (Rdf::loadMultiple($ids) as $collection) {
         $tags = Cache::mergeTags($tags, $collection->getCacheTagsToInvalidate());
       }
@@ -672,7 +673,7 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
     // passing twice the same bundle.
     // @see \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend::createFilterQuery()
     // @see http://stackoverflow.com/a/635109
-    $or->addCondition('entity_bundle', ['asset_distribution', 'asset_distribution'], 'NOT IN');
+    $or->addCondition('entity_bundle', array_fill(0, 2, 'asset_distribution'), 'NOT IN');
     $or->addCondition($entity->getEntityType()->getKey('id'), $distributions, 'IN');
     $query->addConditionGroup($or);
   }

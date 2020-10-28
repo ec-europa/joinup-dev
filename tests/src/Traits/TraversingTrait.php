@@ -378,7 +378,9 @@ trait TraversingTrait {
    */
   protected function findDateRangeComponent(string $field, string $component, ?string $date = NULL): NodeElement {
     /** @var \Behat\Mink\Element\NodeElement $fieldset */
-    $fieldset = $this->getSession()->getPage()->find('named', ['fieldset', $field]);
+    $fieldset = $this->getSession()
+      ->getPage()
+      ->find('named', ['fieldset', $field]);
 
     if (!$fieldset) {
       throw new \Exception("The '$field' field was not found.");

@@ -27,7 +27,10 @@ use Drupal\sparql_entity_storage\SparqlGraphInterface;
  * can be resolved automatically.
  */
 function asset_release_entity_type_alter(array &$entity_types) {
-  $entity_types['rdf_entity']->setLinkTemplate('solution-releases', '/rdf_entity/{rdf_entity}/releases');
+  $entity_types['rdf_entity']->setLinkTemplate(
+    'solution-releases',
+    '/rdf_entity/{rdf_entity}/releases'
+  );
 }
 
 /**
@@ -42,16 +45,23 @@ function asset_release_entity_bundle_info_alter(&$bundles) {
 /**
  * Implements hook_entity_bundle_field_info_alter().
  */
-function asset_release_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+function asset_release_entity_bundle_field_info_alter(
+  &$fields,
+  EntityTypeInterface $entity_type,
+  $bundle
+) {
   /** @var \Drupal\Core\Field\FieldConfigInterface[] $fields */
   // Make sure a release's title and version number is unique in its solution.
-  if ($entity_type->id() == 'rdf_entity' && $bundle == 'asset_release' && !empty($fields['label'])) {
+  if ($entity_type->id(
+    ) == 'rdf_entity' && $bundle == 'asset_release' && !empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueAssetReleaseTitleVersion', []);
   }
 
   // A distribution can be referenced only by a single parent.
   if (!empty($fields['field_isr_distribution'])) {
-    $fields['field_isr_distribution']->addConstraint('DistributionSingleParent');
+    $fields['field_isr_distribution']->addConstraint(
+      'DistributionSingleParent'
+    );
   }
 }
 
@@ -69,7 +79,9 @@ function asset_release_rdf_entity_insert(RdfInterface $release) {
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     if (!$is_version_of->isEmpty() && ($solution = $is_version_of->entity)) {
       if ($solution->bundle() !== 'solution') {
-        throw new \Exception("Entity '{$solution->label()}' ({$solution->id()}) is a '{$solution->bundle()}' but it should be 'solution' to be set as parent of release '{$release->label()}' ({$release->id()}).");
+        throw new \Exception(
+          "Entity '{$solution->label()}' ({$solution->id()}) is a '{$solution->bundle()}' but it should be 'solution' to be set as parent of release '{$release->label()}' ({$release->id()})."
+        );
       }
 
       $parent_is_set = FALSE;
@@ -127,7 +139,7 @@ function asset_release_preprocess_rdf_entity(array &$variables): void {
   ]);
 
   $solution = $release->getSolution();
-  $variables['is_latest_release'] = $release->isLatestRelease();;
+  $variables['is_latest_release'] = $release->isLatestRelease();
 
   // Whenever a new release gets created, the parent solution gets updated.
   // Invalidate the rendered template cache of the latest release in that case,
@@ -179,7 +191,8 @@ function asset_release_rdf_entity_access(EntityInterface $release, $operation, A
       }
 
       /** @var \Drupal\Core\Entity\EntityAccessControlHandlerInterface $access_handler */
-      $access_handler = \Drupal::service('entity_type.manager')->getAccessControlHandler('rdf_entity');
+      $access_handler = \Drupal::service('entity_type.manager')
+        ->getAccessControlHandler('rdf_entity');
       if (!$access_handler->access($parent, 'view', $account)) {
         return AccessResult::forbidden();
       }
@@ -219,15 +232,24 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
 
   if (!$entity->get('field_isr_is_version_of')->isEmpty()) {
     // Synchronize common fields from parent solution.
-    \Drupal::service('asset_release.relations')->syncFieldsFromParentSolution($entity);
+    \Drupal::service('asset_release.relations')->syncFieldsFromParentSolution(
+      $entity
+    );
   }
 
-  if (!\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'asset_release', 'draft')) {
+  if (!\Drupal::service('sparql.graph_handler')->bundleHasGraph(
+    'rdf_entity',
+    'asset_release',
+    'draft'
+  )) {
     return;
   }
 
   // Set the graph only for new releases or those loaded from the main graphs.
-  if (!$entity->isNew() && !in_array($entity->sparqlEntityOriginalGraph, ['default', 'draft'])) {
+  if (!$entity->isNew() && !in_array(
+      $entity->sparqlEntityOriginalGraph,
+      ['default', 'draft']
+    )) {
     return;
   }
 
@@ -239,10 +261,14 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
     $entity->set('graph', SparqlGraphInterface::DEFAULT);
   }
   elseif (empty($state)) {
-    throw new \Exception("State field not found while trying to get the appropriate graph.");
+    throw new \Exception(
+      "State field not found while trying to get the appropriate graph."
+    );
   }
   else {
-    throw new \Exception("State field value is invalid. Current value found: " . $state);
+    throw new \Exception(
+      "State field value is invalid. Current value found: " . $state
+    );
   }
 }
 
@@ -254,12 +280,17 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
  */
 function asset_release_entity_update(EntityInterface $entity) {
   // Quick escape check to avoid unnecessary loadings.
-  if ($entity->bundle() !== 'asset_release' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'asset_release', 'draft')) {
+  if ($entity->bundle() !== 'asset_release' || !\Drupal::service(
+      'sparql.graph_handler'
+    )->bundleHasGraph('rdf_entity', 'asset_release', 'draft')) {
     return;
   }
 
   if ($entity->field_isr_state->value === 'validated') {
-    \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'draft');
+    \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph(
+      [$entity],
+      'draft'
+    );
   }
 }
 
@@ -273,7 +304,9 @@ function asset_release_entity_update(EntityInterface $entity) {
 function template_preprocess_asset_release_releases_download(array &$variables) {
   $releases = $variables['releases'];
 
-  $variables['releases'] = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity')->viewMultiple($releases, 'compact');
+  $variables['releases'] = \Drupal::entityTypeManager()->getViewBuilder(
+    'rdf_entity'
+  )->viewMultiple($releases, 'compact');
 }
 
 /**
@@ -311,7 +344,12 @@ function asset_release_title_version_is_unique(AssetReleaseInterface $asset_rele
 
   // Filter all releases that do not belong to the same solution.
   if (!$check_unaffiliated_solutions) {
-    $query->condition('field_isr_is_version_of', $asset_release->get('field_isr_is_version_of')->first()->getValue()['target_id']);
+    $query->condition(
+      'field_isr_is_version_of',
+      $asset_release->get('field_isr_is_version_of')
+        ->first()
+        ->getValue()['target_id']
+    );
   }
 
   $result = $query->execute();
@@ -325,16 +363,26 @@ function asset_release_title_version_is_unique(AssetReleaseInterface $asset_rele
  * For releases, put a permission control on who can edit the creation date.
  * This applies in edit forms only.
  */
-function asset_release_form_rdf_entity_asset_release_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function asset_release_form_rdf_entity_asset_release_edit_form_alter(
+  &$form,
+  FormStateInterface $form_state,
+  $form_id
+) {
   if (isset($form['created'])) {
-    $form['created']['#access'] = \Drupal::currentUser()->hasPermission('access release create field');
+    $form['created']['#access'] = \Drupal::currentUser()->hasPermission(
+      'access release create field'
+    );
   }
 }
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function asset_release_form_rdf_entity_asset_release_delete_form_alter(array &$form, FormStateInterface $form_state, string $form_id) {
+function asset_release_form_rdf_entity_asset_release_delete_form_alter(
+  array &$form,
+  FormStateInterface $form_state,
+  string $form_id
+) {
   $form['actions']['submit']['#submit'][] = 'asset_release_delete_redirect';
 }
 
@@ -352,7 +400,11 @@ function asset_release_delete_redirect(array &$form, FormStateInterface $form_st
   $solution = $release->getSolution();
   if (!empty($solution)) {
     $url = $solution->toUrl();
-    $form_state->setRedirect($url->getRouteName(), $url->getRouteParameters(), $url->getOptions());
+    $form_state->setRedirect(
+      $url->getRouteName(),
+      $url->getRouteParameters(),
+      $url->getOptions()
+    );
   }
 }
 

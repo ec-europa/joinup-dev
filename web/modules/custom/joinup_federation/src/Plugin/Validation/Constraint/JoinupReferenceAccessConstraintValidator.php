@@ -48,7 +48,7 @@ class JoinupReferenceAccessConstraintValidator extends ReferenceAccessConstraint
    * {@inheritdoc}
    */
   public function validate($value, Constraint $constraint): void {
-    /* @var \Drupal\Core\Field\FieldItemInterface $value */
+    /** @var \Drupal\Core\Field\FieldItemInterface $value */
     if (!isset($value)) {
       return;
     }
@@ -57,7 +57,7 @@ class JoinupReferenceAccessConstraintValidator extends ReferenceAccessConstraint
     if (empty($id)) {
       return;
     }
-    /* @var \Drupal\Core\Entity\FieldableEntityInterface $referenced_entity */
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface $referenced_entity */
     $referenced_entity = $value->entity;
     if ($referenced_entity) {
       $entity = $value->getEntity();
@@ -78,7 +78,10 @@ class JoinupReferenceAccessConstraintValidator extends ReferenceAccessConstraint
       // referenced entity.
       if ($check_permission && !$referenced_entity->access('view')) {
         $type = $value->getFieldDefinition()->getSetting('target_type');
-        $this->context->addViolation($constraint->message, ['%type' => $type, '%id' => $id]);
+        $this->context->addViolation($constraint->message, [
+          '%type' => $type,
+          '%id' => $id,
+        ]);
       }
     }
   }
