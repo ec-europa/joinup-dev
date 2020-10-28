@@ -81,7 +81,7 @@ Feature: "Add solution" visibility options.
     # Regression test for ensuring that obsolete content creation value is removed.
     # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3567
     And I should not see the text "Only members can create content"
-    And I should see the text "Only facilitators can create content"
+    And I should see the text "Only facilitators and authors can create content"
     # Regression test to endure that the language terms "Multilingual Code" are not present.
     And the available options in the "Language" select should not include the "Multilingual Code"
     And I should see the description "For best result the image must be larger than 2400x345 pixels." for the "Banner" field

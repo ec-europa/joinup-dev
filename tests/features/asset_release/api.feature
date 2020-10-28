@@ -6,11 +6,11 @@ Feature: Release API
 
   Scenario: Programmatically create a solution
     Given the following collection:
-      | title            | Solution API foo |
-      | logo             | logo.png         |
-      | moderation       | yes              |
-      | content creation | facilitators     |
-      | state            | validated        |
+      | title            | Solution API foo         |
+      | logo             | logo.png                 |
+      | moderation       | yes                      |
+      | content creation | facilitators and authors |
+      | state            | validated                |
     And the following solution:
       | title            | My first solution                    |
       | collection       | Solution API foo                     |
@@ -33,16 +33,16 @@ Feature: Release API
 
   Scenario: Programmatically create a collection using only the mandatory fields
     Given the following collection:
-      | title            | Solution API bar |
-      | logo             | logo.png         |
-      | moderation       | yes              |
-      | content creation | facilitators     |
-      | state            | validated        |
+      | title            | Solution API bar         |
+      | logo             | logo.png                 |
+      | moderation       | yes                      |
+      | content creation | facilitators and authors |
+      | state            | validated                |
     And the following solution:
       | title            | My first solution mandatory |
       | collection       | Solution API bar            |
       | description      | Another sample solution     |
-      | content creation | members                     |
+      | content creation | registered users            |
       | state            | validated                   |
     And the following release:
       | title          | My first mandatory release  |

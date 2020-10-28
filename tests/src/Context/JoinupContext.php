@@ -108,6 +108,21 @@ class JoinupContext extends RawDrupalContext {
   }
 
   /**
+   * Checks that a given text appears a certain number of times.
+   *
+   * @param string $text
+   *   The text that should have a particular number of appearances.
+   * @param int $count
+   *   The number of appearances.
+   *
+   * @Then the text :text should appear :count time(s)
+   */
+  public function assertTextCount(string $text, int $count): void {
+    $xpath = '//*[contains(text(), "' . $text . '")]';
+    $this->assertSession()->elementsCount('xpath', $xpath, $count);
+  }
+
+  /**
    * Creates and authenticates a user with the given og role(s).
    *
    * Multiple roles can be passed separated with comma.

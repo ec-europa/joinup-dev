@@ -157,3 +157,30 @@ function joinup_core_update_0106500(): void {
       ->save(TRUE);
   }
 }
+
+/**
+ * Change the 'only_facilitators' option to 'facilitators_and_authors'.
+ */
+function joinup_core_update_0106501(): void {
+  $connection = \Drupal::getContainer()->get('sparql.endpoint');
+  $query = <<<QUERY
+SELECT ?entity
+WHERE {
+  ?entity ?content_creation_predicate "only_facilitators" .
+  VALUES ?content_creation_predicate { <http://joinup.eu/solution/content_creation> <http://joinup.eu/solution/content_creation> }
+}
+QUERY;
+
+  $results = $connection->query($query)->getArrayCopy();
+  $results = array_map(function (stdClass $result): string {
+    return $result->entity->getUri();
+  }, $results);
+
+  $update_query = <<<QUERY
+DELETE { GRAPH ?g { ?entity ?content_creation_predicate "only_facilitators" } }
+INSERT { GRAPH ?g { ?entity ?content_creation_predicate "facilitators_and_authors" } }
+WHERE { GRAPH ?g { ?entity ?content_creation_predicate "only_facilitators" } }
+QUERY;
+  $connection->query($update_query);
+  \Drupal::entityTypeManager()->getStorage('rdf_entity')->resetCache($results);
+}

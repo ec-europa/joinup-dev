@@ -334,7 +334,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
-    And I select the radio button "Only facilitators can create content."
+    And I select the radio button "Only facilitators and authors can create content."
 
     # Save the collection.
     When I press "Propose"
@@ -343,7 +343,7 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the radio button "Only facilitators can create content." from field "Content creation" should be selected
+    Then the radio button "Only facilitators and authors can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "Theft of Body" collection
@@ -379,7 +379,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
-    And I select the radio button "Only facilitators can create content."
+    And I select the radio button "Only facilitators and authors can create content."
 
     # Save the collection.
     When I press "Propose"
@@ -388,7 +388,7 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the radio button "Only facilitators can create content." from field "Content creation" should be selected
+    Then the radio button "Only facilitators and authors can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "Silken Emperor" collection
@@ -421,7 +421,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
-    And I select the radio button "Only facilitators can create content."
+    And I select the radio button "Only facilitators and authors can create content."
 
     When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
@@ -433,7 +433,7 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the radio button "Only facilitators can create content." from field "Content creation" should be selected
+    Then the radio button "Only facilitators and authors can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "The blue ships" collection
