@@ -217,7 +217,7 @@
     $('.listing__item--compatibility .mdl-js-radio').each(function () {
       // UnCheck radios on page load.
       $(this).find('input').prop('checked', false);
-      
+
       // Change compatible elements if the radio is clicked.
       $(this).on('click', function () {
         var use_licence = $("input[name='use-licence']:checked").attr('data-licence-name');

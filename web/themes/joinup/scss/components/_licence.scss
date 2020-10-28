@@ -493,6 +493,10 @@
       left: initial;
     }
   }
+  
+  div[data-contextual-id] {
+    display: none;
+  }
 }
 
 // Dependencies
