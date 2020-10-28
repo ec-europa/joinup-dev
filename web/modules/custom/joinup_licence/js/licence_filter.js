@@ -141,9 +141,16 @@
     // Also, uncheck any selected licences checked for comparison and disable
     // the "Compare" buttons. The 'data-licence-compare' attribute which is set
     // to [], is the attribute that stores the licences set-up for comparison.
-    $('.licence-tile .mdl-js-checkbox').each(function () {
-      $(this)[0].MaterialCheckbox.uncheck();
-    });
+
+    if ($('.licence-tile__button--compatible').length) {
+      $('.licence-tile .mdl-js-radio').each(function (event, element) {
+        $(this)[0].MaterialRadio.uncheck();
+      });
+    } else {
+      $('.licence-tile .mdl-js-checkbox').each(function () {
+        $(this)[0].MaterialCheckbox.uncheck();
+      });
+    }
     $('.listing--licences').attr('data-licence-compare', '[]');
     enableButtons(false);
   });
@@ -206,24 +213,30 @@
     });
   });
 
-  // Change compatible elements if the radio is clicked.
-  $('.listing__item--compatibility .mdl-radio__button').each(function () {
-    $(this).on('click', function () {
-      var use_licence = $("input[name='use-licence']:checked").attr('data-licence-name');
-      var distribute_licence = $("input[name='distribute-as-licence']:checked").attr('data-licence-name');
+  function initCompatibleRadios() {
+    $('.listing__item--compatibility .mdl-js-radio').each(function () {
+      // UnCheck radios on page load.
+      $(this).find('input').prop('checked', false);
+      
+      // Change compatible elements if the radio is clicked.
+      $(this).on('click', function () {
+        var use_licence = $("input[name='use-licence']:checked").attr('data-licence-name');
+        var distribute_licence = $("input[name='distribute-as-licence']:checked").attr('data-licence-name');
 
-      if(use_licence && distribute_licence) {
-        var compatible_url = drupalSettings.path.baseUrl + "licence/compatibility-check/" + use_licence + "/" + distribute_licence;
-        $('.licence-tile__button--compatible').attr('href', compatible_url);
-        enableButtons(true);
-      }
+        if(use_licence && distribute_licence) {
+          var compatible_url = drupalSettings.path.baseUrl + "licence/compatibility-check/" + use_licence + "/" + distribute_licence;
+          $('.licence-tile__button--compatible').attr('href', compatible_url);
+          enableButtons(true);
+        }
+      });
     });
-  });
+  }
 
   // Filter on window load. Needed for licence search filter.
   $(window).on('load', function () {
     checkLicenceCategories();
     checkCompareStatus();
+    initCompatibleRadios();
   });
 
 })(jQuery, drupalSettings);
