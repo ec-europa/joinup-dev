@@ -35,7 +35,7 @@ SOURCES_DIR=${BUILD_ROOT}/SOURCES
 JOINUP_DIR=${SOURCES_DIR}/Joinup-${BUILD_VERSION}
 
 # Download composer dependencies.
-${COMPOSER_PATH} install || exit 1
+${COMPOSER_PATH} install --no-interaction --prefer-dist || exit 1
 
 # Build the site.
 ./vendor/bin/run toolkit:build-dist || exit 1
