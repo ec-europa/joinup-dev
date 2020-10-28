@@ -356,7 +356,13 @@ Feature:
     Then the "Check compatibility" buttons should be disabled
     When I choose "EUPL-1.2" as the "Distribute" licence
     Then the "Check compatibility" buttons should be enabled
-    When I click "Check compatibility"
+    # Check that the user can disable the buttons by pressing "Reset"
+    When I press "Reset"
+    Then the "Check compatibility" buttons should be disabled
+
+    When I choose "EUPL-1.2" as the "Use" licence
+    And I choose "EUPL-1.2" as the "Distribute" licence
+    And I click "Check compatibility"
     Then the url should match "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
     And I should see the heading "Can European Union Public Licence 1.2 be redistributed as European Union Public Licence 1.2?"
     And I should see the text "Freedom for using and re-distributing is a basic common characteristic of all open licences."
@@ -405,7 +411,6 @@ Feature:
     And I should see the heading "Can GNU Lesser General Public License 2.1 be redistributed as CeCILL-C?"
     And I should see the text "LGPL-2.1 is not compatible with CECILL-C"
 
-    When I am not logged in
     When I visit the "JLC" custom page
     When I choose "LGPL-2.1" as the "Use" licence
     When I choose "CECILL-C" as the "Distribute" licence
