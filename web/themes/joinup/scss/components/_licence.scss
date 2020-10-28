@@ -479,7 +479,7 @@
       flex: 2 1 300px;
       padding: 10px;
 
-      .listing__title, 
+      .listing__title,
       .listing__teaser {
         margin-left: 0;
         max-height: initial;
@@ -492,10 +492,6 @@
       top: initial;
       left: initial;
     }
-  }
-  
-  div[data-contextual-id] {
-    display: none;
   }
 }
 
