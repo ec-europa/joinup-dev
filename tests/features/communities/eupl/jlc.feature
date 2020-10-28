@@ -285,7 +285,6 @@ Feature:
       | T16          | You have to check if the text of @use-licence has expressly mentioned @redistribute-as-licence as compatible.                                                                  |
       | INCOMPATIBLE | @use-licence is not compatible with @redistribute-as-licence.                                                                                                                  |
 
-    Given I am logged in as a moderator
     When I go to "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
     Then I should see the heading "Can European Union Public Licence 1.2 be redistributed as European Union Public Licence 1.2?"
     And I should see the text "Freedom for using and re-distributing is a basic common characteristic of all open licences."
@@ -321,9 +320,6 @@ Feature:
     When I reload the page
     Then the page should be cached
 
-    # Temporary. When access is no longer limited to moderators the next line
-    # can be removed.
-    Given I am not logged in
     When I go to "licence/compatibility-check/LPG-2.1/DIESEL-C"
     Then the response status code should be 404
     And I should see the heading "Page not found"
@@ -354,7 +350,6 @@ Feature:
       | T16          | You have to check if the text of @use-licence has expressly mentioned @redistribute-as-licence as compatible.                                                                  |
       | INCOMPATIBLE | @use-licence is not compatible with @redistribute-as-licence.                                                                                                                  |
 
-    Given I am logged in as a moderator
     When I visit the "JLC" custom page
     Then the "Check compatibility" buttons should be disabled
     When I choose "EUPL-1.2" as the "Use" licence
@@ -418,3 +413,11 @@ Feature:
     Then the url should match "licence/compatibility-check/LGPL-2.1/CECILL-C"
     And I should see the heading "Can GNU Lesser General Public License 2.1 be redistributed as CeCILL-C?"
     And I should see the text "LGPL-2.1 is not compatible with CECILL-C"
+
+    # Even though moderators can edit compatibility documents they should not be
+    # bothered with contextual links leading to compatibility document edit
+    # forms in the licence compatibility overview. The licences are laid out as
+    # thin strips which don't have enough room for contextual links.
+    Given I am logged in as a moderator
+    When I visit the "JLC" custom page
+    Then I should not see any contextual links in the "Content" region
