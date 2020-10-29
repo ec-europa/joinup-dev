@@ -10,8 +10,7 @@ Feature: Log in through EU Login
       | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    |
 
     Given I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
 
     # The user gets redirected to the CAS server.
     Then I should see the heading "Sign in to continue"
@@ -60,8 +59,7 @@ Feature: Log in through EU Login
       | chuck_the_local_hero | 12345    | chuck_the_local_hero@example.com | LocalChick | LocalNorris | ACME         |
 
     Given I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
 
     # The user gets redirected to the CAS server.
     Then I should see the heading "Sign in to continue"
@@ -134,9 +132,16 @@ Feature: Log in through EU Login
       | Username | E-mail     | Password           | First name | Last name | Local username |
       | jb007    | 007@mi6.eu | shaken_not_stirred | James      | Bond      | jb007_local    |
 
+    # Test the password reset customized message as anonymous.
+    Given I visit "/user/password"
+    And I fill in "Email" with "007-local@mi6.eu"
+    And I wait for the honeypot time limit to pass
+    And I press "Submit"
+    Then I should see the error message "The requested account is associated with EU Login and its password cannot be managed from this website."
+    And I should see the link "EU Login"
+
     Given I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     Then I should see the heading "Sign in to continue"
     And I fill in "E-mail address" with "007@mi6.eu"
     When I fill in "Password" with "shaken_not_stirred"
@@ -166,8 +171,7 @@ Feature: Log in through EU Login
       | other_user | 007.changed@mi6.eu |
 
     Given I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     Then I should see the heading "Sign in to continue"
     When I fill in "E-mail address" with "007.changed@mi6.eu"
     And I fill in "Password" with "shaken_not_stirred"
@@ -181,8 +185,7 @@ Feature: Log in through EU Login
       | jb007    | uniq@example.com | shaken_not_stirred | James      | Bond      | jb007_local    |
 
     When I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     Then I should see the heading "Sign in to continue"
     When I fill in "E-mail address" with "uniq@example.com"
     And I fill in "Password" with "shaken_not_stirred"
@@ -214,6 +217,21 @@ Feature: Log in through EU Login
     And I press the "Log in" button
     And I select the radio button "I am an existing user (pair my existing account with my EU Login account)"
 
+    When I click "reset your password"
+    And I fill in "Email" with "jcvd@gmail.com"
+    And I wait for the spam protection time limit to pass
+    And I press the "Submit" button
+    Then I should see the success message "Further instructions have been sent to your email address."
+
+    When I go to the one time sign in page of the user "jclocal"
+    And I fill in "Password" with "Cœur-de-lion-123!"
+    And I fill in "Confirm password" with "Cœur-de-lion-123!"
+    And I press "Save"
+    Then I should see the success message "The changes have been saved."
+    # The user is logged in at this point which is a loophole that allows users
+    # to bypass EU Login for as long as we keep the old password reset form.
+    And I click "Sign out"
+
     Given I am on the homepage
     And I click "Sign in with EU Login"
     And I fill in "E-mail address" with "muscles@brussels.be"
@@ -221,7 +239,7 @@ Feature: Log in through EU Login
     And I press the "Log in" button
     And I select the radio button "I am an existing user (pair my existing account with my EU Login account)"
     And I fill in "Email or username" with "jcvd@gmail.com"
-    And I fill in "Password" with "dragonne"
+    And I fill in "Password" with "Cœur-de-lion-123!"
     And I press "Sign in"
     Then I should see the success message "Your EU Login account jeanclaude has been successfully linked to your local account Jean-Claude Van Damme."
 
@@ -241,8 +259,7 @@ Feature: Log in through EU Login
 
     # User with full profile data.
     Given I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     When I fill in "E-mail address" with "f@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -257,9 +274,9 @@ Feature: Log in through EU Login
     And I should see the following lines of text:
       | Account information                                                                                                                                                                                                       |
       | Your name and E-mail are inherited from EU Login. To update this information, you can visit your EU Login account page. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup. |
-      | Your e-mail address is not made public. We will only send you necessary system notifications and you can opt in later if you wish to receive additional notifications about content you are subscribed to.                |
-      | Your first name is publicly visible.                                                                                                                                                                                      |
-      | Your last name is publicly visible.                                                                                                                                                                                       |
+      | Your e-mail address is not made public. We will only send you necessary system notifications and you can opt in later if you wish to receive additional notifications about content you are subscribed to.                         |
+      | Your first name is publicly visible.                                                                                                                                                                                               |
+      | Your last name is publicly visible.                                                                                                                                                                                                |
 
     When I press "Save"
     Then I should see the success message "The changes have been saved."
@@ -267,8 +284,7 @@ Feature: Log in through EU Login
     # User with partial profile data.
     Given I am an anonymous user
     And I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     When I fill in "E-mail address" with "p@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -294,8 +310,7 @@ Feature: Log in through EU Login
     # User with no profile data.
     Given I am an anonymous user
     And I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     When I fill in "E-mail address" with "n@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -338,20 +353,6 @@ Feature: Log in through EU Login
     Then I should see the error message "First name field is required."
     And I should see the error message "Family name field is required."
 
-  Scenario: The Drupal login redirects to EU Login and back to the account page when logged in.
-    Given users:
-      | Username | E-mail          | First name | Family name |
-      | joe      | joe@example.com | Joe        | Doe         |
-    And CAS users:
-      | Username | E-mail          | Password | First name | Last name | Local username |
-      | joe_doe  | joe@example.com | 123      | Joe        | Doe       | joe            |
-    When I visit "/user/login"
-    And I fill in "E-mail address" with "joe@example.com"
-    And I fill in "Password" with "123"
-    And I press the "Log in" button
-    Then I should see the heading "Joe Doe"
-    And I should not see the link "More about EU Login"
-
   Scenario: A new user tries to register with an existing Email.
     Given users:
       | Username | E-mail          |
@@ -362,7 +363,8 @@ Feature: Log in through EU Login
       | joe_doe  | joe@example.com | 123      |
 
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
+    When I click "EU Login"
     When I fill in "E-mail address" with "joe@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -398,7 +400,7 @@ Feature: Log in through EU Login
   Scenario: The Drupal registration tab has been removed and the /user/register
   route redirects to EU Login registration form.
     When I visit "/user/login"
-    Then I should not see the link "Sign in to continue"
+    Then I should not see the link "Create new account"
     When I visit "/user/register"
     Then the url should match "/cas/eim/external/register.cgi"
 
@@ -442,15 +444,14 @@ Feature: Log in through EU Login
 
     Given I am an anonymous user
     And I am on the homepage
-    And I click "Sign in"
-    And I click "EU Login"
+    And I click "Sign in with EU Login"
     And I fill in "E-mail address" with "Joe_Case_Insensitive@example.com"
     And I fill in "Password" with "123"
     When I press the "Log in" button
     Then I should see the success message "You have been logged in."
     # The email ends up getting the upstream email so that correct character casing is applied.
     And the user joe should have the following data in their user profile:
-      | E-mail | Joe_Case_Insensitive@example.com |
+      | E-mail      | Joe_Case_Insensitive@example.com |
 
   Scenario: Anonymous user is asked to log in when accessing a protected page
     Given users:
