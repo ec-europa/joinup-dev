@@ -327,6 +327,23 @@ Feature:
     When I reload the page
     Then the page should be cached
 
+    # Authenticated users should also be able to see the licence compatibility
+    # checker and the compatibility documents.
+    Given I am logged in as an "authenticated user"
+    When I visit the "JLC" custom page
+    Then I should see the heading "JLC"
+    And the page should be cacheable
+    When I reload the page
+    Then the page should be cached
+    # Note that the clicking of the radio buttons is not checked here since this
+    # requires a JS enabled browser. It is tested below.
+    When I go to "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
+    Then I should see the heading "Can European Union Public Licence 1.2 be redistributed as European Union Public Licence 1.2?"
+    And I should see the text "Freedom for using and re-distributing is a basic common characteristic of all open licences."
+    And the page should be cacheable
+    When I reload the page
+    Then the page should be cached
+
   @eupl @javascript
   # This scenario and the previous are checking the same things, but this one
   # runs with JS so that we can check the frontend implementation.
@@ -426,3 +443,21 @@ Feature:
     Given I am logged in as a moderator
     When I visit the "JLC" custom page
     Then I should not see any contextual links in the "Content" region
+
+    # Authenticated users should also be able to see the licence compatibility
+    # checker and compatibility documents.
+    Given I am logged in as an "authenticated user"
+    When I visit the "JLC" custom page
+    Then the "Check compatibility" buttons should be disabled
+    When I choose "EUPL-1.2" as the "Use" licence
+    Then the "Check compatibility" buttons should be disabled
+    When I choose "EUPL-1.2" as the "Distribute" licence
+    Then the "Check compatibility" buttons should be enabled
+    When I press "Reset"
+    Then the "Check compatibility" buttons should be disabled
+    When I choose "EUPL-1.2" as the "Use" licence
+    And I choose "EUPL-1.2" as the "Distribute" licence
+    And I click "Check compatibility"
+    Then the url should match "licence/compatibility-check/EUPL-1.2/EUPL-1.2"
+    And I should see the heading "Can European Union Public Licence 1.2 be redistributed as European Union Public Licence 1.2?"
+    And I should see the text "Freedom for using and re-distributing is a basic common characteristic of all open licences."
