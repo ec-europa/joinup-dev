@@ -212,7 +212,7 @@
     ],
     "field_ar_content_creation": [
         {
-            "value": "only_facilitators"
+            "value": "facilitators_and_authors"
         }
     ],
     "field_ar_moderation": [

@@ -19,6 +19,7 @@ use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup_collection\JoinupCollectionHelper;
+use Drupal\joinup_group\ContentCreationOptions;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
@@ -249,9 +250,9 @@ class CollectionContext extends RawDrupalContext {
     $mapped_values = [
       'field_ar_moderation' => ['no' => 0, 'yes' => 1],
       'field_ar_content_creation' => [
-        'facilitators' => 'only_facilitators',
-        'members' => 'only_members',
-        'registered users' => 'any_user',
+        'facilitators and authors' => ContentCreationOptions::FACILITATORS_AND_AUTHORS,
+        'members' => ContentCreationOptions::MEMBERS,
+        'registered users' => ContentCreationOptions::REGISTERED_USERS,
       ],
       'field_ar_closed' => ['no' => 0, 'yes' => 1],
       'field_ar_state' => [

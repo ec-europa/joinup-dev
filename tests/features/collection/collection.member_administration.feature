@@ -1,4 +1,4 @@
-@api @email @group-a
+@api @email @group-a @terms
 Feature: Collection membership administration
   In order to build a community
   As a collection facilitator
@@ -77,9 +77,11 @@ Feature: Collection membership administration
       | Block the selected membership(s)                                |
       | Unblock the selected membership(s)                              |
       | Delete the selected membership(s)                               |
+      | Add the author role to the selected members                     |
       | Add the facilitator role to the selected members                |
       | Transfer the ownership of the collection to the selected member |
       | Remove the facilitator role from the selected members           |
+      | Remove the author role from the selected members                |
     # Assert that the user does not see the default OG tab.
     Then I should not see the link "Group"
     And I check the box "Update the member Kathie Cumbershot"

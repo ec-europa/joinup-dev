@@ -92,7 +92,7 @@ Feature: Collection membership overview
     And I should see the "Sukhrab Valenta" tile
 
     # Check the filter on the user roles inside the collection.
-    And the available options in the "Roles" select should be "- Any - (14), Owner (1), Facilitator (4)"
+    And the available options in the "Roles" select should be "- Any - (14), Author (0), Facilitator (4), Owner (1)"
     And the option "- Any - (14)" should be selected
 
     When I select "Owner (1)" from "Roles"

@@ -11,12 +11,12 @@ Feature: Video API
       | name         |
       | Video editor |
     And the following <group type>:
-      | title            | Video library |
-      | owner            | Video editor  |
-      | logo             | logo.png      |
-      | moderation       | yes           |
-      | content creation | facilitators  |
-      | state            | validated     |
+      | title            | Video library            |
+      | owner            | Video editor             |
+      | logo             | logo.png                 |
+      | moderation       | yes                      |
+      | content creation | facilitators and authors |
+      | state            | validated                |
     And video content:
       | title       | body        | field_video                                 | og_audience   |
       | Dummy Video | Dummy text. | https://www.youtube.com/watch?v=uLcS7uIlqPo | Video library |
@@ -26,7 +26,7 @@ Feature: Video API
     # @todo: This should move to the appropriate test once the video functionality is implemented.
     When I go to the homepage of the "Video library" <group type>
     Then I should see the "Dummy Video" tile
-  Examples:
-    | group type |
-    | collection |
-    | solution   |
+    Examples:
+      | group type |
+      | collection |
+      | solution   |
