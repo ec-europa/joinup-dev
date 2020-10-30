@@ -133,6 +133,17 @@ function joinup_community_content_workflow_selector(EntityInterface $entity): ?s
     return NULL;
   }
 
+  $user_id = \Drupal::currentUser()->id();
+  /** @var \Drupal\og\OgMembershipInterface $membership */
+  if ($membership = \Drupal::getContainer()->get('og.membership_manager')->getMembership($parent_entity, $user_id)) {
+    if ($membership->hasRole($parent_entity->getEntityTypeId() . '-' . $parent_entity->bundle() . '-author')) {
+      // The author role is able to directly publish in the group regardless of
+      // the moderation state, as a trusted user. Return the post moderated
+      // workflow to allow them to publish content.
+      return 'node:post_moderated';
+    }
+  }
+
   $moderation = JoinupGroupHelper::getModeration($parent_entity);
   return $moderation == CommunityContentWorkflowAccessControlHandler::PRE_MODERATION ? 'node:pre_moderated' : 'node:post_moderated';
 }

@@ -87,15 +87,15 @@ content:
     type: text_default
     region: content
   field_ar_moderation:
+    type: boolean
     weight: 11
+    region: content
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
-    region: content
   field_ar_owner:
     weight: 4
     label: above

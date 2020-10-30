@@ -139,17 +139,15 @@ content:
     type: text_default
     region: content
   field_ar_moderation:
+    type: boolean
     weight: 2
+    region: content
     label: hidden
     settings:
       format: default
-      format_custom_true: ''
       format_custom_false: ''
-    third_party_settings:
-      template_suggestion:
-        template_suggestion: fieldset
-    type: boolean
-    region: content
+      format_custom_true: ''
+    third_party_settings: {  }
   field_ar_owner:
     weight: 4
     label: above

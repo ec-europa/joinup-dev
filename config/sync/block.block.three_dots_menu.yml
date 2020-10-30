@@ -1,12 +1,13 @@
+uuid: 998c6074-0e67-43ac-b241-615239dee76a
 langcode: en
 status: true
 dependencies:
   theme:
     - joinup_theme
-id: joinup_theme_local_tasks
+id: three_dots_menu
 theme: joinup_theme
 region: featured
-weight: -13
+weight: -17
 provider: null
 plugin: local_tasks_block
 settings:
@@ -15,5 +16,5 @@ settings:
   provider: core
   label_display: '0'
   primary: true
-  secondary: true
+  secondary: false
 visibility: {  }

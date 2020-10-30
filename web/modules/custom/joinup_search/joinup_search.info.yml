@@ -19,7 +19,6 @@ dependencies:
   - drupal:views
 
 config_devel:
-  - block.block.global_search
   - facets.facet.type
   - facets.facet_source.search_api_views__search__page_1
   - search_api.index.published

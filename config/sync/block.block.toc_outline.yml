@@ -41,6 +41,7 @@ visibility:
       og: '@og.context:og'
   request_route:
     id: request_route
-    routes: entity.node.canonical
+    routes:
+      - entity.node.canonical
     negate: false
     context_mapping: {  }
