@@ -15,12 +15,11 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  * @codingStandardsIgnoreEnd
  *
  * @JoinupLicenceCompatibilityRule(
- *   id = "eupl_1_1_can_be_relicensed_as_gpl_2_and_others",
- *   document_id = "T08",
- *   weight = 800
+ *   id = "T08",
+ *   weight = 800,
  * )
  */
-class Eupl11CanBeRelicensedAsGpl2AndOthers extends JoinupLicenceCompatibilityRulePluginBase {
+class T08Eupl11CanBeRelicensedAsGpl2AndOthers extends JoinupLicenceCompatibilityRulePluginBase {
 
   const USE_CRITERIA = [
     'SPDX' => [

@@ -251,4 +251,7 @@ settings:
   simple_block:
     handler: 'default:simple_block'
     handler_settings: {  }
+  compatibility_document:
+    handler: 'default:compatibility_document'
+    handler_settings: {  }
 field_type: dynamic_entity_reference

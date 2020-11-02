@@ -16,17 +16,16 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  * @codingStandardsIgnoreEnd
  *
  * @JoinupLicenceCompatibilityRule(
- *   id = "any_licence_can_redistribute_permissive_license",
- *   document_id = "T12",
- *   weight = 1200
+ *   id = "T12",
+ *   weight = 1200,
  * )
  */
-class AnyLicenceCanRedistributePermissiveLicence extends JoinupLicenceCompatibilityRulePluginBase {
+class T12AnyLicenceCanRedistributePermissiveLicence extends JoinupLicenceCompatibilityRulePluginBase {
 
   /**
    * {@inheritdoc}
    */
-  public function isCompatible(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool {
+  public function isVerified(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool {
     return $use_licence->hasLegalType('Compatible', 'Permissive');
   }
 
