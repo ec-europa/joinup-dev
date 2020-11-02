@@ -84,8 +84,15 @@ Feature: Log in through EU Login
     When I press "Sign in"
     Then I should see the error message "Unrecognized username or password. Forgot your password?"
 
+    # Check that user can still reset their password.
+    When I click "reset your password"
+    Then I should see the heading "Reset your password"
+    And the following fields should be present "Email"
+    And I should see "Password reset instructions will be sent to your registered email address."
+
     # Successful login.
-    Given I fill in "Email or username" with "chuck_the_local_hero"
+    Given I move backward one page
+    And I fill in "Email or username" with "chuck_the_local_hero"
     And I fill in "Password" with "12345"
     When I press "Sign in"
     Then I should see the success message "Your EU Login account chucknorris has been successfully linked to your local account Chuck Norris."
