@@ -1,0 +1,7 @@
+block.settings.licence_filter_block:
+  type: block_settings
+  label: 'Licence filter block settings'
+  mapping:
+    show_terms:
+      type: boolean
+      label: 'Whether or not to show the licence term filter.'

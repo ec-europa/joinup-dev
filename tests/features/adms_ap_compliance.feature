@@ -30,7 +30,7 @@ Feature: Joinup should be ADMS-AP compliant.
       | creation date        | 2016-07-13T13:00               |
       | modification date    | 2017-06-30T11:27               |
       | closed               | no                             |
-      | content creation     | facilitators                   |
+      | content creation     | facilitators and authors       |
       | moderation           | no                             |
       | policy domain        | Demography                     |
       | spatial coverage     | Belgium                        |

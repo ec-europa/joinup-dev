@@ -1,0 +1,13 @@
+uuid: e8d2e6fa-45fe-422f-be24-0ddd5b68871f
+langcode: en
+status: true
+dependencies:
+  module:
+    - og
+id: og_membership_remove_single_role_action.author
+label: 'Remove the author role from the selected members'
+type: og_membership
+plugin: og_membership_remove_single_role_action
+weight: 7
+configuration:
+  role_name: author

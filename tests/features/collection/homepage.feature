@@ -32,7 +32,7 @@ Feature: Collection homepage
       | title            | Bilbo's book          |
       | collection       | Middle earth daily    |
       | description      | Bilbo's autobiography |
-      | content creation | members               |
+      | content creation | registered users      |
       | creation date    | 2014-10-17 8:32am     |
       | state            | validated             |
     And the following collection user memberships:
