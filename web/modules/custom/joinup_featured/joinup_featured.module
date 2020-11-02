@@ -2,9 +2,7 @@
 
 /**
  * @file
- * Primary module hooks for Joinup Featured module.
- *
- * @DCG
- * This file is no longer required in Drupal 8.
- * @see https://www.drupal.org/node/2217931
+ * Hook implementations for the Joinup Featured module.
  */
+
+declare(strict_types = 1);
