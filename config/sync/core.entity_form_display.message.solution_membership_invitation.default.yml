@@ -1,0 +1,23 @@
+uuid: d62375d6-4aa1-4a02-872e-7ff06bfba8a3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.solution_membership_invitation.field_invitation
+    - message.template.solution_membership_invitation
+id: message.solution_membership_invitation.default
+targetEntityType: message
+bundle: solution_membership_invitation
+mode: default
+content:
+  field_invitation:
+    weight: 0
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+hidden: {  }

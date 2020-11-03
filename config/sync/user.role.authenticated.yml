@@ -38,6 +38,7 @@ permissions:
   - 'use text format content_editor'
   - 'use text format glossary_html'
   - 'use text format simple_html'
+  - 'view compatibility documents'
   - 'view own unpublished content'
   - 'view paragraph content accordion'
   - 'view paragraph content accordion_item'

@@ -1,0 +1,20 @@
+uuid: 82c89580-6058-4d8f-a250-2524e49bc96c
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_licence
+    - text
+id: compatibility_document.compatibility_document.default
+targetEntityType: compatibility_document
+bundle: compatibility_document
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

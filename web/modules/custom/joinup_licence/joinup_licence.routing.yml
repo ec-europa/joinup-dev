@@ -28,3 +28,27 @@ joinup_licence.comparer:
     parameters:
       licences:
         type: spdx_ids_list
+
+joinup_licence.compatibility_check:
+  path: '/licence/compatibility-check/{use_licence}/{redistribute_as_licence}'
+  defaults:
+    _controller: 'Drupal\joinup_licence\Controller\LicenceCompatibilityController::check'
+    _title_callback: 'Drupal\joinup_licence\Controller\LicenceCompatibilityController::getTitle'
+  requirements:
+    _permission: 'view compatibility documents'
+  options:
+    parameters:
+      use_licence:
+        type: licence_spdx_id
+      redistribute_as_licence:
+        type: licence_spdx_id
+
+entity.compatibility_document.collection:
+  path: '/admin/structure/compatibility-document'
+  defaults:
+    _entity_list: 'compatibility_document'
+    _title: 'Compatibility documents'
+  requirements:
+    _permission: 'access compatibility document overview'
+  options:
+    _admin_route: TRUE

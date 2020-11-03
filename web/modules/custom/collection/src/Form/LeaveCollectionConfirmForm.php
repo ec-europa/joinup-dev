@@ -193,11 +193,6 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    *   The access result object.
    */
   public static function access(RdfInterface $rdf_entity): AccessResultInterface {
-    // Deny access if the entity is not a 'collection'.
-    if ($rdf_entity->bundle() !== 'collection') {
-      return AccessResult::forbidden();
-    }
-
     /** @var \Drupal\Core\Session\AccountProxyInterface $account_proxy */
     $account_proxy = \Drupal::service('current_user');
 

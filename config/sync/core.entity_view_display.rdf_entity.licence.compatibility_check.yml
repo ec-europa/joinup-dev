@@ -1,0 +1,59 @@
+uuid: b02a5519-b548-46bd-ab1d-674e7c414548
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.rdf_entity.compatibility_check
+    - field.field.rdf_entity.licence.field_licence_deprecated
+    - field.field.rdf_entity.licence.field_licence_description
+    - field.field.rdf_entity.licence.field_licence_legal_type
+    - field.field.rdf_entity.licence.field_licence_spdx_licence
+    - field.field.rdf_entity.licence.field_licence_type
+    - rdf_entity.rdfentity.licence
+  module:
+    - template_suggestion
+    - text
+    - user
+id: rdf_entity.licence.compatibility_check
+targetEntityType: rdf_entity
+bundle: licence
+mode: compatibility_check
+content:
+  field_licence_description:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  label:
+    label: hidden
+    type: string
+    weight: 0
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: no_wrappers
+    region: content
+  spdx_licence_external_url:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  spdx_licence_id:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  changed: true
+  created: true
+  field_licence_deprecated: true
+  field_licence_legal_type: true
+  field_licence_spdx_licence: true
+  field_licence_type: true
+  langcode: true
+  spdx_licence_label: true
+  spdx_licence_text: true
+  spdx_see_also: true

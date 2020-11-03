@@ -194,14 +194,14 @@ Feature: Invite members to subscribe to discussions
     # Initially there should not be any subscriptions.
     And the "Concerned about dissolved gases?" discussion should have 0 subscribers
     Given I am logged in as "Glory Ruskin"
-    When I accept the invitation for the "Concerned about dissolved gases?" discussion
+    When I accept the invitation for the "Concerned about dissolved gases?" discussion content
     Then I should see the heading "Concerned about dissolved gases?"
     And I should see the success message "You are now following this discussion."
     And the "Concerned about dissolved gases?" discussion should have 1 subscriber
 
     # Try to accept the invitation a second time. An appropriate message should
     # be shown.
-    When I accept the invitation for the "Concerned about dissolved gases?" discussion
+    When I accept the invitation for the "Concerned about dissolved gases?" discussion content
     Then I should see the heading "Concerned about dissolved gases?"
     And I should see the success message "You were already subscribed to this discussion."
     And the "Concerned about dissolved gases?" discussion should have 1 subscriber

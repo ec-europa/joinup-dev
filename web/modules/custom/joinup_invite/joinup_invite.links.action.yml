@@ -1,7 +1,14 @@
 # Beneath the tabs on the page. Action buttons.
 joinup_invite.add_members:
-  route_name: entity.rdf_entity.members.invite
+  route_name: entity.rdf_entity.members.add_members
   title: 'Add members'
+  appears_on:
+    - entity.rdf_entity.member_overview
+  cache_contexts:
+    - og_role
+joinup_invite.invite_members:
+  route_name: entity.rdf_entity.members.invite
+  title: 'Invite members'
   appears_on:
     - entity.rdf_entity.member_overview
   cache_contexts:

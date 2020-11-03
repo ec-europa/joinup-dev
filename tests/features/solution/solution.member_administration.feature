@@ -91,3 +91,56 @@ Feature: Solution membership administration
       | recipient | Marcia Garcia                                                                    |
       | subject   | Your role has been changed to member                                             |
       | body      | Guadalupe Norman has changed your role in solution "The Missing Sons" to member. |
+
+  @email
+  Scenario: Privileged members should be allowed to invite users to a solution.
+    Given users:
+      | Username  | E-mail                 | First name | Family name |
+      | jbelanger | j.belanger@example.com | Jeannette  | Belanger    |
+      | dwightone | dwight1@example.com    | Christian  | Dwight      |
+
+    When I am not logged in
+    And I go to the "The Missing Sons" solution
+    And I click "Members" in the "Left sidebar"
+    Then I should not see the link "Invite members"
+
+    When I am logged in as an authenticated
+    And I go to the "The Missing Sons" solution
+    And I click "Members" in the "Left sidebar"
+    Then I should not see the link "Invite members"
+
+    When I am logged in as "dwightone"
+    And I go to the "The Missing Sons" solution
+    And I click "Members" in the "Left sidebar"
+    Then I should not see the link "Invite members"
+
+    When I am logged in as "Guadalupe Norman"
+    And I go to the "The Missing Sons" solution
+    And I click "Members" in the "Left sidebar"
+    Then I should see the link "Invite members"
+    When I click "Invite members"
+    Then I should see the heading "Invite members"
+
+    # Add a facilitator.
+    When I fill in "E-mail" with "dwight1@example.com"
+    And I press "Add"
+    Then the page should show the following chips in the Content region:
+      | Christian Dwight |
+    When I select "Facilitator" from "Role"
+    And the mail collector cache is empty
+    And I press "Invite members"
+    Then I should see the success message "1 user has been invited to this group."
+    And the following email should have been sent:
+      | recipient | dwightone                                                                                                  |
+      | subject   | Invitation from Guadalupe Norman to join solution The Missing Sons.                                        |
+      | body      | You have been invited by Guadalupe Norman to join the solution The Missing Sons as a solution facilitator. |
+
+    # Accept the invitation directly.
+    When I am logged in as "dwightone"
+    And I accept the invitation for the "The Missing Sons" solution group
+    And I go to the "The Missing Sons" solution
+    And I click "Members" in the "Left sidebar"
+    Then I should see the link "Add members"
+    And I should see the link "Invite members"
+    When I click "Invite members"
+    Then I should see the heading "Invite members"

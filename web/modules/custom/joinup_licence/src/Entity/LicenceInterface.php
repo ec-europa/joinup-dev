@@ -60,31 +60,6 @@ interface LicenceInterface extends RdfInterface {
   public function getSpdxLicenceRdfId(): ?string;
 
   /**
-   * Checks if the current licence can be redistributed under another licence.
-   *
-   * This allows to verify whether code or data which is distributed under the
-   * current licence can be used in a project which is going to be distributed
-   * under the given licence.
-   *
-   * Note that this comes with some legal caveats, and the result of this method
-   * should be interpreted alongside the accompanying compatibility document
-   * that contains more details about how the redistribution can / should take
-   * place.
-   *
-   * @param \Drupal\joinup_licence\Entity\LicenceInterface $redistribute_as_licence
-   *   The licence under which the current code or data is going to be
-   *   redistributed.
-   *
-   * @return bool
-   *   TRUE if the current licence can be redistributed as the given licence.
-   *   Some restrictions apply, please check the accompanying compatibility
-   *   document for more information.
-   *
-   * @see \Drupal\joinup_licence\Entity\LicenceInterface::getCompatibilityDocumentId()
-   */
-  public function isCompatibleWith(LicenceInterface $redistribute_as_licence): bool;
-
-  /**
    * Returns a document ID that details how the licence can be redistributed.
    *
    * This document contains advice how code or data which is distributed under
@@ -95,10 +70,39 @@ interface LicenceInterface extends RdfInterface {
    *   The licence under which the current code or data is going to be
    *   redistributed.
    *
-   * @return string|null
+   * @return string
    *   The document ID of the compatibility document that contains the requested
-   *   information. If the licences are not compatible NULL is returned.
+   *   information. If the licences are not compatible the ID "INCOMPATIBLE" is
+   *   returned, which is the ID of the document explaining the licences are
+   *   incompatible.
    */
-  public function getCompatibilityDocumentId(LicenceInterface $redistribute_as_licence): ?string;
+  public function getCompatibilityDocumentId(LicenceInterface $redistribute_as_licence): string;
+
+  /**
+   * Returns the document that details how the licence can be redistributed.
+   *
+   * This document contains advice how (and if) code or data which is
+   * distributed under the current licence can be used in a project which is
+   * going to be distributed under the passed in licence.
+   *
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface $redistribute_as_licence
+   *   The licence under which the current code or data is going to be
+   *   redistributed.
+   *
+   * @return \Drupal\joinup_licence\Entity\CompatibilityDocumentInterface
+   *   The compatibility document that contains the requested information.
+   */
+  public function getCompatibilityDocument(LicenceInterface $redistribute_as_licence): CompatibilityDocumentInterface;
+
+  /**
+   * Returns the Licence entity that corresponds to the given SPDX ID.
+   *
+   * @param string $spdx_id
+   *   The SPDX ID for which to return the corresponding Licence entity.
+   *
+   * @return \Drupal\joinup_licence\Entity\LicenceInterface|null
+   *   The licence entity, or NULL if no licence corresponds to the given ID.
+   */
+  public static function loadBySpdxId(string $spdx_id): ?LicenceInterface;
 
 }
