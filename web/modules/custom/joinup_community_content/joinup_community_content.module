@@ -16,6 +16,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
+use Drupal\joinup_community_content\JoinupCommunityContentCommentAccessControlHandler;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\node\NodeInterface;
 
@@ -245,4 +246,14 @@ function joinup_community_content_translate_facet_arguments(array $arguments) {
   }
 
   return $arguments;
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_community_content_entity_type_alter(array &$entity_types): void {
+  // Swap out access handler for comments.
+  if (isset($entity_types['comment'])) {
+    $entity_types['comment']->setAccessClass(JoinupCommunityContentCommentAccessControlHandler::class);
+  }
 }
