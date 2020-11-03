@@ -16,11 +16,3 @@ function og_comment_entity_type_alter(array &$entity_types) {
   // Swap out access handler for comments.
   $comment->setAccessClass('Drupal\og_comment\OgCommentAccessControlHandler');
 }
-
-/**
- * Implements hook_field_formatter_info_alter().
- */
-function og_comment_field_formatter_info_alter(array &$info) {
-  // Swap out default field formatter class.
-  $info['comment_default']['class'] = 'Drupal\og_comment\Plugin\Field\FieldFormatter\OgCommentDefaultFormatter';
-}
