@@ -257,3 +257,24 @@ function joinup_community_content_entity_type_alter(array &$entity_types): void 
     $entity_types['comment']->setAccessClass(JoinupCommunityContentCommentAccessControlHandler::class);
   }
 }
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ *
+ * Adds contextual links to comment view displays.
+ */
+function joinup_community_content_comment_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display): void {
+  // Add contextual links to comments.
+  $build['#contextual_links']['comment'] = [
+    'route_parameters' => ['comment' => $entity->id()],
+    'metadata' => ['changed' => $entity->getChangedTime()],
+  ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_community_content_form_comment_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  // Updates the submit button text of the comment form to be more clear.
+  $form['actions']['submit']['#value'] = t('Post comment');
+}
