@@ -17,6 +17,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Installer\InstallerKernel;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_featured\FeaturedContentInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\search_api\Query\QueryInterface;
@@ -382,9 +383,8 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
     return;
   }
 
-  // If the entity has the site-wide featured field, enable the related js
-  // library.
-  if ($entity->hasField('field_site_featured') && $entity->get('field_site_featured')->value) {
+  // If the entity is featured site-wide, enable the related JS library.
+  if ($entity instanceof FeaturedContentInterface && $entity->isFeatured()) {
     $variables['attributes']['data-drupal-featured'][] = TRUE;
     $variables['#attached']['library'][] = 'joinup/site_wide_featured';
   }
