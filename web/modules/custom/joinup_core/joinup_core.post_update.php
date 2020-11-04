@@ -9,6 +9,9 @@ declare(strict_types = 1);
 
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
+use Drupal\node\Entity\Node;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\redirect\Entity\Redirect;
 
 /**
  * Delete all persistent aliases to ensure that they will be rebuilt.
@@ -257,4 +260,19 @@ QUERY;
       $connection->query("CLEAR GRAPH <$uri>");
     }
   }
+}
+
+/**
+ * Change the landing page of the EIF solution to a custom page with a redirect.
+ */
+function joinup_core_post_update_0106508(): void {
+  $eif_solution = Rdf::load('http://data.europa.eu/w21/405d8980-3f06-4494-b34a-46c388a38651');
+  $target_page = Node::load('703243');
+
+  $redirect = Redirect::create();
+  $redirect->setSource($eif_solution->toUrl()->toString());
+  $redirect->setRedirect($target_page->toUrl()->getInternalPath());
+  $redirect->setLanguage($eif_solution->language()->getId());
+  $redirect->setStatusCode(301);
+  $redirect->save();
 }
