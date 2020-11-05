@@ -211,18 +211,32 @@ QUERY;
  * Clean up orphaned triples.
  */
 function joinup_core_post_update_0106506(): void {
-  $query = <<<QUERY
-DELETE { GRAPH ?g { ?s ?p ?o } }
+  $graphs = [
+    'http://joinup.eu/asset_distribution/published',
+    'http://joinup.eu/asset_release/published',
+    'http://joinup.eu/asset_release/draft',
+    'http://joinup.eu/collection/published',
+    'http://joinup.eu/collection/draft',
+    'http://joinup.eu/contact-information/published',
+    'http://joinup.eu/licence/published',
+    'http://joinup.eu/owner/published',
+    'http://joinup.eu/provenance_activity',
+    'http://joinup.eu/solution/published',
+    'http://joinup.eu/solution/draft',
+    'http://joinup.eu/spdx_licence/published',
+  ];
+  $connection = \Drupal::getContainer()->get('sparql.endpoint');
+  foreach ($graphs as $graph) {
+    $query = <<<QUERY
+WITH <{$graph}>
+DELETE { ?s ?p ?o }
 WHERE {
-  GRAPH ?g {
-    ?s ?p ?o .
-    FILTER NOT EXISTS {?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type} .
-    VALUES ?g { <http://joinup.eu/asset_distribution/published> <http://joinup.eu/asset_release/published> <http://joinup.eu/asset_release/draft> <http://joinup.eu/collection/published> <http://joinup.eu/collection/draft> <http://joinup.eu/contact-information/published> <http://joinup.eu/licence/published> <http://joinup.eu/owner/published> <http://joinup.eu/provenance_activity> <http://joinup.eu/solution/published> <http://joinup.eu/solution/draft><http://joinup.eu/spdx_licence/published> }
-  }
+  ?s ?p ?o .
+  FILTER NOT EXISTS {?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type} .
 }
 QUERY;
-
-  \Drupal::getContainer()->get('sparql.endpoint')->query($query);
+    $connection->query($query);
+  }
 }
 
 /**
