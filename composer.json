@@ -108,7 +108,7 @@
         "composer/composer": "^1.10",
         "drupal/admin_toolbar": "~2.0",
         "drupal/cas_mock_server": "^1.0",
-        "drupal/coder": "8.3.8",
+        "drupal/coder": "^8.3.8",
         "drupal/config_devel": "~1.6",
         "drupal/config_filter": "^1.5",
         "drupal/config_inspector": "^1.0",

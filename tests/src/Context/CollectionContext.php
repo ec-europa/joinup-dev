@@ -603,7 +603,7 @@ class CollectionContext extends RawDrupalContext {
    * @throws \Exception
    *    Thrown when the user does not exist.
    *
-   * @todo: Maybe there is a better definition available here like 'The
+   * @todo Maybe there is a better definition available here like 'The
    * following state buttons should be available for the user on the
    * collection'.
    *
