@@ -69,11 +69,16 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
   public static $modules = [
     'entity_test',
     'flag',
+    'joinup_notification',
     'joinup_subscription',
+    'joinup_workflow',
     'message_digest',
     'message_notify',
+    'og',
+    'state_machine_revisions',
     'system',
     'user',
+    'workflow_state_permission',
   ];
 
   /**

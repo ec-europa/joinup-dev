@@ -60,6 +60,10 @@ $subscription_bundles = [
 $membership->set('subscription_bundles', $subscription_bundles)->save();
 ```
 
+The messages are included in the digests by the
+`CollectionContentSubscriptionSubscriber` event listener which acts on solutions
+and community content being created or updated.
+
 Digests
 -------
 

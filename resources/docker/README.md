@@ -183,22 +183,19 @@ By default, there is no need to pass any settings to the XDEBUG_CONFIG environme
 from the xdebug ini files.
 
 ## Rebuild from existing databases
+
 ### Obtain credentials
 The production databases are stored on a private server. In order to get access, ask your friendly project manager for
 the paths and credentials. Store them in the `build.properties.local` file in the following properties:
 
 - `exports.s3.key`
 - `exports.s3.secret`
-- `exports.virtuoso.source`
-- `exports.sql.source`
-- `asda.username`
-- `asda.password`
 
 ### Download databases
 Download both the SPARQL and SQL database dumps using the following command:
 
 ```
-$ docker-compose exec --user www-data web php -d memory_limit=-1 ./vendor/bin/phing download-databases
+$ docker-compose exec --user www-data web php -d memory_limit=-1 ./vendor/bin/run dev:download-databases
 ```
 
 By default the downloaded databases are stored in the `tmp` folder which is located in the project root. The virtuoso
@@ -226,20 +223,20 @@ image, and the virtuoso dumps within the startup directory of the virtuoso image
 **Note:** As you can see in `docker-compose.db.yml`, the dumps need to be placed in a specific folder in the container.
 You can alter the configuration using your override to draw the dump from anywhere in the host, but the container target
 must remain the same. The download of the database is *not* automatic. You need to download and place them in the
-specific directories manually or by using the `download-databases` phing target. In any case, the dumps must be placed
-as described in the volumes entry in `docker-compose.prod_db.yml`.
+specific directories manually or by using the `dev:download-databases` runner command. In any case, the dumps must be
+placed as described in the volumes entry in `docker-compose.prod_db.yml`.
 
 After the images have been built and the databases have been restored, run the following command to execute the
 updates:
 
 ```
-$ docker-compose exec --user www-data web ./vendor/bin/phing execute-updates
+$ docker-compose exec --user www-data web ./vendor/bin/run toolkit:run-deploy --sequence-file=runner/deploy.yml --sequence-key=default
 ```
 
 Finally, in order to run a full re-index of the site, run the command:
 
 ```
-$ docker-compose exec --user www-data web ./vendor/bin/phing reindex-apache-solr
+$ docker-compose exec --user www-data web ./vendor/bin/run solr:reindex
 ```
 
 **IMPORTANT**: All images start normally and the web server is available almost immediately. However, mysql container

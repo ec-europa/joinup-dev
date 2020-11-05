@@ -1,0 +1,10 @@
+uuid: 065b4277-e5ce-4c9d-9882-7422f9cef56d
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+id: rdf_entity.digest_message
+label: 'Digest message'
+targetEntityType: rdf_entity
+cache: true

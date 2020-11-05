@@ -6,12 +6,12 @@ namespace Drupal\joinup_event\Entity;
 
 use Drupal\Core\Url;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
-use Drupal\node\Entity\Node;
+use Drupal\joinup_community_content\Entity\CommunityContentBase;
 
 /**
  * Entity subclass for the 'event' bundle.
  */
-class Event extends Node implements EventInterface {
+class Event extends CommunityContentBase implements EventInterface {
 
   use JoinupBundleClassFieldAccessTrait;
 
