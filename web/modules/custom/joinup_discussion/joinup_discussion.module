@@ -116,6 +116,8 @@ function joinup_discussion_entity_bundle_info_alter(&$bundles) {
 
 /**
  * Implements hook_ENTITY_TYPE_create_access() for comment entity type.
+ *
+ * Prevents comments from being posted to archived discussions.
  */
 function joinup_discussion_comment_create_access(AccountInterface $account, array $context, string $entity_bundle): AccessResultInterface {
   if (isset($context['commented_entity'])) {
