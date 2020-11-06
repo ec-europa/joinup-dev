@@ -1,4 +1,4 @@
-@api @email
+@api @email @group-a
 Feature:
   In order to efficiently manage users
   As a moderator of the website
@@ -80,7 +80,7 @@ Feature:
       | title | Test challenge      |
       | state | validated |
     And news content:
-      | title     | author       | challenge      | state     |
+      | title     | author       | collection      | state     |
       | News item | alicia__1997 | Test challenge | validated |
     And document content:
       | title | author       | collection     | state     |

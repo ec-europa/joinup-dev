@@ -10,7 +10,7 @@ Feature: User authentication
 
     Examples:
       | path          |
-      | challenges   |
+      | challenges    |
       | user/login    |
       | user/password |
       | user/register |
