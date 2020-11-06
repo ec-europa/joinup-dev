@@ -106,7 +106,7 @@ class IncludeCustomPageContent extends ProcessorPluginBase {
         // field_paragraphs_body field. Iterate through all items in the field
         // and add the markup to the group description.
         //
-        // @todo: Automatically add the entries needed.
+        // @todo Automatically add the entries needed.
         // @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5962
         if (!$custom_page->get('field_paragraphs_body')->isEmpty()) {
           /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */

@@ -89,7 +89,7 @@ class CompatibilityDocumentListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity): array {
-    /* @var $entity \Drupal\joinup_licence\Entity\CompatibilityDocumentInterface */
+    /** @var \Drupal\joinup_licence\Entity\CompatibilityDocumentInterface $entity */
     $row['id'] = $entity->id();
     return $row + parent::buildRow($entity);
   }

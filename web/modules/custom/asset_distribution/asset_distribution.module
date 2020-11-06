@@ -76,7 +76,11 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
   // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4581
   // @todo Implement this by subscribing to RDF entity rdf_entity.rdf_add route
   // and deny the access for asset_distribution, in ISAICP-4581.
-  if (!$rdf || !$rdf instanceof RdfInterface || !in_array($rdf->bundle(), ['asset_release', 'solution'])) {
+  if (
+    !$rdf
+    || !$rdf instanceof RdfInterface
+    || !in_array($rdf->bundle(), ['asset_release', 'solution']
+  )) {
     throw new AccessDeniedHttpException('Distributions can only be created in context of a solution or an asset release.');
   }
 }
@@ -226,7 +230,10 @@ QUERY;
  */
 function asset_distribution_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Act on distribution create and update form.
-  if (!in_array($form_id, ['rdf_entity_asset_distribution_edit_form', 'rdf_entity_asset_distribution_form'])) {
+  if (!in_array($form_id, [
+    'rdf_entity_asset_distribution_edit_form',
+    'rdf_entity_asset_distribution_form',
+  ])) {
     return;
   }
   $solution = NULL;

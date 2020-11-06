@@ -127,7 +127,7 @@ function asset_release_preprocess_rdf_entity(array &$variables): void {
   ]);
 
   $solution = $release->getSolution();
-  $variables['is_latest_release'] = $release->isLatestRelease();;
+  $variables['is_latest_release'] = $release->isLatestRelease();
 
   // Whenever a new release gets created, the parent solution gets updated.
   // Invalidate the rendered template cache of the latest release in that case,
@@ -227,7 +227,10 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
   }
 
   // Set the graph only for new releases or those loaded from the main graphs.
-  if (!$entity->isNew() && !in_array($entity->sparqlEntityOriginalGraph, ['default', 'draft'])) {
+  if (!$entity->isNew() && !in_array(
+    $entity->sparqlEntityOriginalGraph,
+    ['default', 'draft']
+  )) {
     return;
   }
 

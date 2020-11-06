@@ -137,7 +137,7 @@ function joinup_group_propose_message_submit(&$form, FormStateInterface $form_st
  * is to override the results of the global access check if the user has the
  * appropriate OG permissions.
  *
- * @todo: hook api definition is needed.
+ * @todo hook api definition is needed.
  */
 function joinup_group_entity_graph_access(EntityInterface $entity, string $operation, AccountInterface $account, string $graph_name): AccessResult {
   if (!$entity || !JoinupGroupHelper::isGroup($entity) || $operation != 'view' || $graph_name == 'default') {
