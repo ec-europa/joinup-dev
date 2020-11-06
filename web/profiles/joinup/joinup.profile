@@ -19,6 +19,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\solution\Entity\SolutionInterface;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -144,46 +145,32 @@ function joinup_sparql_apply_default_fields_alter($type, &$values) {
 }
 
 /**
- * Implements hook_og_user_access_alter().
- */
-function joinup_og_user_access_alter(&$permissions, &$cacheable_metadata, $context) {
-  // Moderators should have access to view, create, edit and delete all group
-  // content in collections.
-  /** @var \Drupal\Core\Session\AccountProxyInterface $user */
-  $user = $context['user'];
-  $operation = $context['operation'];
-  $group = $context['group'];
-
-  $is_moderator = in_array('moderator', $user->getRoles());
-  $is_collection = $group->bundle() === 'collection';
-  $operation_allowed = in_array($operation, [
-    'view',
-    'create',
-    'update',
-    'delete',
-  ]);
-
-  if ($is_moderator && $is_collection && $operation_allowed) {
-    $permissions[] = $operation;
-  }
-}
-
-/**
  * Implements hook_entity_access().
  */
 function joinup_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  // Moderators have the 'administer group' permission so they can manage all
-  // group content across all groups. However since the OG Menu entities are
-  // also group content moderators are also granted access to the OG Menu
-  // administration pages. Let's specifically deny access to these, since we are
-  // handling the menu items transparently whenever custom pages are created or
-  // deleted. Moderators and collection facilitators should only have access to
-  // the edit form of an OG Menu instance so they can rearrange the custom
-  // pages, but not to the entity forms of the menu items themselves.
+  // Moderators have the 'administer organic groups' permission so they can
+  // manage all group content across all groups. However since the OG Menu
+  // entities are also group content moderators are also granted access to the
+  // OG Menu administration pages. Let's specifically deny access to these,
+  // since we are handling the menu items transparently whenever custom pages
+  // are created or deleted. Moderators and collection facilitators should only
+  // have access to the edit form of an OG Menu instance so they can rearrange
+  // the custom pages, but not to the entity forms of the menu items themselves.
   // In fact, nobody should have access to these pages except UID 1.
   if ($entity->getEntityTypeId() === 'ogmenu_instance' && $operation !== 'update') {
     return AccessResult::forbidden();
   }
+
+  // Moderators have the 'administer organic groups' permission so they can
+  // manage all group content across all groups. However since solutions are
+  // both groups and group content they would have full access on solutions.
+  // According to the functional specifications they should not be able to
+  // delete solutions unless they are published.
+  $is_moderator = in_array('moderator', $account->getRoles());
+  if ($is_moderator && $operation === 'delete' && $entity instanceof SolutionInterface && $entity->getWorkflowState() !== 'validated') {
+    return AccessResult::forbidden();
+  }
+
   return AccessResult::neutral();
 }
 

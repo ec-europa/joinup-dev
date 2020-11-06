@@ -8,10 +8,13 @@
 /web/profiles/contrib/
 /web/themes/contrib/
 
+# Ignore dist build location
+/dist/
+
 # Ignore sensitive information
 /web/sites/sites.php
 /web/sites/*/settings.php
-/web/sites/*/settings.local.php
+/web/sites/*/settings.override.php
 
 # Ignore Drupal's file directories.
 /web/sites/*/files/
@@ -22,20 +25,14 @@
 
 # Ignore environment specific settings
 /.env
-/build.common.xml
-/build.local.xml
-/build.properties.local
-/drush/drush.yml
 /grumphp.yml
 /phpcs.xml
-/phpunit.xml
 /runner.yml
 /tests/behat.yml
 /web/sites/default/services.yml
 
 # Ignore compiled CSS.
 /web/themes/joinup/css
-/web/themes/joinup/prototype/css/*.css
 
 # Ignore theme libraries
 /web/themes/joinup/vendor
@@ -54,3 +51,6 @@
 docker-compose.local.yml
 docker-compose.*.local.yml
 /resources/docker/local
+
+# CPHP Behat files.
+/tests/behat-*

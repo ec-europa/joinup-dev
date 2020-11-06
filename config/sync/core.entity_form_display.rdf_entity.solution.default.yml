@@ -14,6 +14,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
+    - field.field.rdf_entity.solution.field_is_eif_category
     - field.field.rdf_entity.solution.field_is_eif_recommendation
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
@@ -117,6 +118,7 @@ third_party_settings:
         - field_is_landing_page
         - field_is_metrics_page
         - field_is_eif_recommendation
+        - field_is_eif_category
       parent_name: group_general
       weight: 21
       format_type: tab
@@ -208,6 +210,12 @@ content:
       add_new_label: 'Upload a new file or enter a URL'
     third_party_settings: {  }
     type: file_url_generic
+    region: content
+  field_is_eif_category:
+    weight: 16
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   field_is_eif_recommendation:
     weight: 15

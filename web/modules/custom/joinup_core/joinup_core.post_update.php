@@ -7,72 +7,44 @@
 
 declare(strict_types = 1);
 
-use Drupal\menu_link_content\Entity\MenuLinkContent as MenuLinkContentEntity;
+use Drupal\Core\Database\Database;
+use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
+use EasyRdf\Graph;
+use EasyRdf\GraphStore;
 
 /**
- * Fix solutions with more than one OG menu instances.
+ * Re-insert the new EIF vocabularies to apply new changes.
  */
-function joinup_core_post_update_0106400(?array &$sandbox = NULL): void {
-  $db = \Drupal::database();
-
-  // Broken solutions.
-  $ids = [
-    'http://administracionelectronica.gob.es/ctt/archive',
-    'http://administracionelectronica.gob.es/ctt/eemgde',
-    'http://administracionelectronica.gob.es/ctt/documentoe',
-    'http://administracionelectronica.gob.es/ctt/dscp',
-    'http://administracionelectronica.gob.es/ctt/pau',
-    'http://administracionelectronica.gob.es/ctt/pfiaragon',
-    'http://administracionelectronica.gob.es/ctt/dir3',
-    'http://administracionelectronica.gob.es/ctt/svd',
-    'http://administracionelectronica.gob.es/ctt/scsp',
-    'http://administracionelectronica.gob.es/ctt/tsa',
-    'http://administracionelectronica.gob.es/ctt/afirma',
-    'http://administracionelectronica.gob.es/ctt/codice',
-    'http://administracionelectronica.gob.es/ctt/badaral',
-    'http://administracionelectronica.gob.es/ctt/regfia',
-    'http://administracionelectronica.gob.es/ctt/sicres',
+function joinup_core_post_update_0106401(): void {
+  $vids = [
+    'eif_conceptual_model',
+    'eif_interoperability_layer',
+    'eif_principle',
+    'eif_recommendation',
   ];
 
-  // By accident, these solutions have two or more OG Menu instance each. Only
-  // the latest is valid. Collect the unused OG Menu instance IDs.
-  $deleted_ogmenu_ids = [];
-  foreach ($ids as $id) {
-    $per_entity_ogmenu_ids = $db->query("SELECT entity_id FROM {ogmenu_instance__og_audience} WHERE og_audience_target_id = :id ORDER BY entity_id", [
-      ':id' => $id,
-    ])->fetchCol();
-    // Remove the latest, valid, ID.
-    array_pop($per_entity_ogmenu_ids);
-    $deleted_ogmenu_ids = array_merge($deleted_ogmenu_ids, $per_entity_ogmenu_ids);
+  $sparql_connection = Database::getConnection('default', 'sparql_default');
+  $connection_options = $sparql_connection->getConnectionOptions();
+  $connect_string = "http://{$connection_options['host']}:{$connection_options['port']}/sparql-graph-crud";
+  $graph_store = new GraphStore($connect_string);
+  foreach ($vids as $vocabulary) {
+    $filepath = __DIR__ . "/../../../../resources/fixtures/{$vocabulary}.rdf";
+    $graph_uri = "http://{$vocabulary}";
+    $graph = new Graph($graph_uri);
+    $sparql_connection->update("CLEAR GRAPH <{$graph_uri}>");
+    $graph->parse(file_get_contents($filepath));
+    $graph_store->insert($graph);
   }
-  // Remove redundant OG Menu instances. Their menu links are removed too.
-  // @see \Drupal\og_menu\Entity\OgMenuInstance::preDelete()
-  $ogmenu_instance_storage = \Drupal::entityTypeManager()->getStorage('ogmenu_instance');
-  $ogmenu_instance_storage->delete($ogmenu_instance_storage->loadMultiple($deleted_ogmenu_ids));
 
-  // Get all the remaining OG Menu instance IDs.
-  $ogmenu_ids = $db->query("SELECT entity_id FROM {ogmenu_instance__og_audience} WHERE og_audience_target_id IN(:ids[]) ORDER BY entity_id", [
-    ':ids[]' => $ids,
-  ])->fetchCol();
-
-  // Get the menu links to be updated.
-  $mids = \Drupal::entityQuery('menu_link_content')
-    ->condition('menu_name', array_map(function ($i) {
-      return "ogmenu-{$i}";
-    }, $ogmenu_ids), 'IN')
-    ->condition('title', 'Glossary')
-    ->execute();
-  /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menu_link_content */
-  foreach (MenuLinkContentEntity::loadMultiple($mids) as $menu_link_content) {
-    $url = $menu_link_content->getUrlObject();
-    if ($url->isRouted() && $url->getRouteName() === 'collection.glossary_page') {
-      $route_parameters = $url->getRouteParameters();
-      if (isset($route_parameters['rdf_entity']) && $route_parameters['rdf_entity'] !== 'http_e_f_fadministracionelectronica_cgob_ces_fctt') {
-        $menu_link_content->set('link', [
-          'uri' => 'route:collection.glossary_page;rdf_entity=http_e_f_fadministracionelectronica_cgob_ces_fctt',
-          'title' => 'Glossary',
-        ])->save();
-      }
-    }
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $storage = $entity_type_manager->getStorage('taxonomy_term');
+  $tids = $storage->getQuery()->condition('vid', $vids, 'IN')->execute();
+  /** @var \Drupal\taxonomy\TermInterface $term */
+  foreach ($storage->loadMultiple($tids) as $term) {
+    ContentEntity::indexEntity($term);
   }
+  /** @var \Drupal\search_api\IndexInterface $index */
+  $index = $entity_type_manager->getStorage('search_api_index')->load('published');
+  $index->reindex();
+  $index->indexItems(-1, 'entity:taxonomy_term');
 }

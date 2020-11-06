@@ -96,7 +96,7 @@ trait FileTrait {
   /**
    * Remove any created files.
    *
-   * @AfterScenario
+   * @AfterScenario @api
    */
   public function cleanFiles() {
     // Remove the image entities that were attached to the collections.

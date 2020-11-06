@@ -97,6 +97,5 @@ config_devel:
     - views.view.content_overview
     - views.view.legal_notice_report
     - views.view.licence_list
-    - views.view.messages_overview
     - views.view.moderator_solutions_by_type
     - views.view.solutions

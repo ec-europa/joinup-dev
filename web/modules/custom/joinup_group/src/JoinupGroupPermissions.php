@@ -22,7 +22,9 @@ class JoinupGroupPermissions {
    */
   public function groupOwnershipPermissions() {
     $permissions = [];
-    $bundle_ids = \Drupal::service('og.group_type_manager')->getAllGroupBundles('rdf_entity');
+    /** @var \Drupal\og\GroupTypeManagerInterface $group_type_manager */
+    $group_type_manager = \Drupal::service('og.group_type_manager');
+    $bundle_ids = $group_type_manager->getGroupBundleIdsByEntityType('rdf_entity');
     /** @var \Drupal\rdf_entity\RdfEntityTypeInterface[] $bundles */
     $bundles = RdfEntityType::loadMultiple($bundle_ids);
     foreach ($bundles as $bundle_id => $bundle) {

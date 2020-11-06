@@ -75,10 +75,6 @@
         }
     };
 
-    MaterialChipInput.prototype.mouseDown_ = function (event) {
-        this.input_.focus();
-    };
-
     MaterialChipInput.prototype.keyDown_ = function (event) {
         var code = event.which || event.keyCode;
         if (code === 8 && !this.input_.value) {
@@ -97,9 +93,6 @@
             this.input_ = this.element_.getElementsByClassName('mdl-textfield__input')[0];
             this.input_.addEventListener('keydown', this.keyDown_.bind(this));
             this.targets_ = this.element_.getElementsByClassName('mdl-chipfield__input');
-
-            // Let the whole element look like a input field.
-            this.element_.addEventListener('click', this.mouseDown_.bind(this));
 
             // Set the default options.
             this.options_ = {

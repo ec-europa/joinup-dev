@@ -488,3 +488,37 @@ Feature: Global search
 
     When I enter "unique" in the search bar and press enter
     Then the page should show only the tiles "Collection sample"
+
+  @javascript
+  Scenario: Users are able to select the sort order.
+    Given collections:
+      | title             | description       | state     |
+      | Custom collection | Some custom data. | validated |
+    And news content:
+      | title                              | body                                                              | collection        | state     | created    | changed    |
+      | Relativity is the word             | No one cares about the body.                                      | Custom collection | validated | 01/01/2019 | 03/08/2019 |
+      | Relativity news: Relativity theory | I do care about the relativity keyword in the body.               | Custom collection | validated | 02/01/2019 | 02/08/2019 |
+      | Absolutely nonesense               | Some news are not worth it but I will add relativity here anyway. | Custom collection | validated | 03/01/2019 | 01/08/2019 |
+
+    When I am on the homepage
+    And I enter "Relativity" in the search bar and press enter
+    Then the option "Relevance" should be selected
+    And I should see the following tiles in the correct order:
+      | Relativity news: Relativity theory |
+      | Relativity is the word             |
+      | Absolutely nonesense               |
+    And I should be on "/search?keys=Relativity&sort_by=relevance"
+
+    Given I select "Creation Date" from "Sort by"
+    Then I should see the following tiles in the correct order:
+      | Absolutely nonesense               |
+      | Relativity news: Relativity theory |
+      | Relativity is the word             |
+    And I should be on "/search?keys=Relativity&sort_by=creation-date"
+
+    Given I select "Last Updated Date" from "Sort by"
+    Then I should see the following tiles in the correct order:
+      | Relativity is the word             |
+      | Relativity news: Relativity theory |
+      | Absolutely nonesense               |
+    And I should be on "/search?keys=Relativity&sort_by=last-updated-date"

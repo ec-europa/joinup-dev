@@ -6,7 +6,7 @@ dependencies:
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_first_name
   module:
-    - joinup_core
+    - joinup_material_design
     - joinup_user
     - og
     - user
@@ -523,6 +523,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: field_user_first_name_value
           plugin_id: standard
         field_user_family_name_value:
           id: field_user_family_name_value
@@ -535,6 +536,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: field_user_family_name_value
           plugin_id: standard
       title: 'Challenge members'
       header: {  }

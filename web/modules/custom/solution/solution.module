@@ -483,7 +483,7 @@ function solution_rdf_entity_presave(RdfInterface $entity) {
   if (in_array($state, ['draft', 'proposed', 'needs_update', 'blacklisted'])) {
     $entity->set('graph', 'draft');
   }
-  elseif (in_array($state, ['validated', 'deletion_request'])) {
+  elseif ($state === 'validated') {
     $entity->set('graph', SparqlGraphInterface::DEFAULT);
   }
   elseif (empty($state)) {
@@ -572,10 +572,12 @@ function solution_rdf_entity_update(EntityInterface $entity) {
     return;
   }
 
+  assert($entity instanceof SolutionInterface);
+
   // @todo: Maybe we can avoid the attempt to delete from graph if there is no
   // transition made. This should move to an event subscriber.
-  $state = $entity->field_is_state->value;
-  if (in_array($state, ['validated', 'deletion_request'])) {
+  $state = $entity->getWorkflowState();
+  if ($state === 'validated') {
     \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'draft');
   }
   if ($state == 'blacklisted') {
@@ -631,25 +633,15 @@ function solution_get_latest_release(RdfInterface $solution) {
       ->condition('rid', 'asset_release')
       ->condition('field_isr_is_version_of', $solution->id())
       ->sort('created', 'DESC')
+      ->range(0, 1)
       ->execute();
 
     $cache[$solution->id()] = NULL;
     if (!empty($ids)) {
-      // @todo: Sorting is not yet working in SPARQL, we're fetching all results
-      // and doing the sorting in PHP right now. Once sorting is working we
-      // should limit the result set to 1 item.
-      // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
-      $releases = Rdf::loadMultiple($ids);
-      usort($releases, function ($release1, $release2) {
-        $ct1 = $release1->getCreatedTime();
-        $ct2 = $release2->getCreatedTime();
-        if (empty($ct1) || empty($ct2) || $ct1 == $ct2) {
-          return 0;
-        }
-        return ($ct1 < $ct2) ? 1 : -1;
-      });
-
-      $cache[$solution->id()] = reset($releases);
+      $id = key($ids);
+      if ($release = Rdf::load($id)) {
+        $cache[$solution->id()] = $release;
+      }
     }
   }
 

@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.taxonomy_term.eif_recommendation.field_eif_identifier
     - field.field.taxonomy_term.eif_recommendation.field_eif_related_term
     - taxonomy.vocabulary.eif_recommendation
   module:
@@ -28,4 +29,5 @@ content:
     type: entity_reference_label
     region: content
 hidden:
+  field_eif_identifier: true
   langcode: true

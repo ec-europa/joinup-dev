@@ -1,0 +1,22 @@
+uuid: ee82333f-113c-4290-839b-5da9694a54ab
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.full_html
+template: col_deletion_by_moderator
+label: 'Collection deleted by moderator'
+description: 'Moderator deletes a collection'
+text:
+  -
+    value: 'Joinup: Your collection has been deleted by the moderation team'
+    format: full_html
+  -
+    value: '<p>The Joinup moderation team deleted the collection @entity:title.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

@@ -12,7 +12,7 @@ use Drupal\rdf_entity\RdfInterface;
 /**
  * Interface for collection entities in Joinup.
  */
-interface CollectionInterface extends RdfInterface, GroupInterface, EntityWorkflowStateInterface, ShortIdInterface {
+interface CollectionInterface extends RdfInterface, EntityWorkflowStateInterface, GroupInterface, ShortIdInterface {
 
   /**
    * Returns the solutions that are affiliated with this collection.

@@ -42,6 +42,7 @@ permissions:
   - 'edit any event content'
   - 'edit any glossary content'
   - 'edit any news content'
+  - 'edit any tallinn_report content'
   - 'edit own custom_page content'
   - 'edit own discussion content'
   - 'edit own document content'

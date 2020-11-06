@@ -1741,6 +1741,7 @@ function joinup_theme_preprocess_rdf_entity__collection__digest_message_header(&
  * Provides variables needed for the search_list_item view mode of licences.
  */
 function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variables) {
+  /** @var \Drupal\joinup_licence\Entity\LicenceInterface $entity */
   $entity = $variables['elements']['#rdf_entity'];
   $variables['label']['#attributes']['class'][] = 'listing__teaser';
   $variables['content']['field_licence_description']['#attributes']['class'][] = 'listing__teaser';
@@ -1751,13 +1752,15 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
   $variables['content']['spdx_licence_external_url']['#attributes']['target'] = '_blank';
 
   // Calculate variables related to the legal type.
-  if (!empty($entity->field_licence_legal_type->getValue())) {
-    $types = $entity->field_licence_legal_type->referencedEntities();
+  $types = $entity->getLegalTypes();
+  if (!empty($types)) {
     $data_property_categories = [];
     $category_lists = [];
     foreach ($types as $type) {
-      $parents = $type->parent->referencedEntities();
-      $parent = reset($parents);
+      $parent = $type->getCategory();
+      if (empty($parent)) {
+        continue;
+      }
       $parent_normalized_title = strtolower($parent->label());
       if (!isset($category_lists[$parent->id()])) {
         $category_lists[$parent->id()] = [
@@ -1789,7 +1792,7 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
       $variables['category_lists'] = $category_lists;
     }
   }
-  $variables['spdx_licence_id_plain'] = $entity->field_licence_spdx_licence->entity->field_spdx_licence_id->value;
+  $variables['spdx_licence_id_plain'] = $entity->getSpdxLicenceId();
 }
 
 /**

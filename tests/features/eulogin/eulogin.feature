@@ -10,7 +10,10 @@ Feature: Log in through EU Login
       | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    |
 
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
+    When I click "EU Login"
+
+    # The user gets redirected to the CAS server.
     Then I should see the heading "Sign in to continue"
     When I fill in "E-mail address" with "texasranger@chucknorris.com.eu"
     And I fill in "Password" with "wrong password"
@@ -20,12 +23,34 @@ Feature: Log in through EU Login
     When I fill in "Password" with "Qwerty098"
     And I press the "Log in" button
 
-    Then I should see the success message "You have been logged in."
+    # The user gets redirected back to Drupal.
+    Then I should see the heading "Already a COVID-19 Challenge user?"
+    And I should see "Since you have signed in for the first time using EU Login, you need to take one extra step."
+    And I should see "Before you make your selection below, please note this important information:"
+    And I should see "If you are an existing user on COVID-19 Challenge, and would like to keep all your account data (collection/solution memberships, published events, news, documents, discussions etc.), we suggest you select the first option to pair your existing account with your EU Login account;"
+    And I should see "If you are a new user on COVID-19 Challenge, the second option is the right one for you."
+    And I should see "Please make your selection:"
+    And I should see "I am an existing user (pair my existing account with my EU Login account)"
+    And I should see "You will be asked to login with your site credentials."
+    And I should see "I am a new user (create a new account)"
+    And I should see "No action is required on your side. A new account, linked to your EU Login account, will be created."
+
+    Given I select the radio button "I am a new user (create a new account)"
+    When I press "Next"
+    Then I should see the success message "Fill in the fields below to let the COVID-19 Challenge community learn more about you!"
+
+    # The user has been redirected to its user account edit form.
+    Then the following fields should be present "Email, First name, Family name, Photo, Country of origin, Professional domain, Business title"
+    And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, SlideShare, Youtube, Vimeo"
+    But I should not see "Fail - Password length must be at least 8 characters."
+    And I should not see "Password character length of at least 8"
+    And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
+    And I should not see "Minimum password character types: 3"
+
     And the user chucknorris should have the following data in their user profile:
       | First name  | Chuck  |
       | Family name | Norris |
 
-  @wip
   Scenario: An existing local account can be linked by the user.
     Given CAS users:
       | Username    | E-mail                         | Password  | First name | Last name |
@@ -74,7 +99,6 @@ Feature: Log in through EU Login
       | First name  | Chuck                          |
       | Family name | Norris                         |
 
-  @wip
   Scenario: An existing local account can be linked by the user using the email.
     Given CAS users:
       | Username    | E-mail                         | Password  | First name | Last name |
@@ -112,10 +136,15 @@ Feature: Log in through EU Login
 
     # Test the password reset customized message as anonymous.
     Given I visit "/user/password"
-    Then I should see the text "Sign in to continue"
+    And I fill in "Email" with "007-local@mi6.eu"
+    And I wait for the honeypot time limit to pass
+    And I press "Submit"
+    Then I should see the error message "The requested account is associated with EU Login and its password cannot be managed from this website."
+    And I should see the link "EU Login"
 
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
+    When I click "EU Login"
     Then I should see the heading "Sign in to continue"
     And I fill in "E-mail address" with "007@mi6.eu"
     When I fill in "Password" with "shaken_not_stirred"
@@ -145,7 +174,8 @@ Feature: Log in through EU Login
       | other_user | 007.changed@mi6.eu |
 
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
+    When I click "EU Login"
     Then I should see the heading "Sign in to continue"
     When I fill in "E-mail address" with "007.changed@mi6.eu"
     And I fill in "Password" with "shaken_not_stirred"
@@ -159,7 +189,8 @@ Feature: Log in through EU Login
       | jb007    | uniq@example.com | shaken_not_stirred | James      | Bond      | jb007_local    |
 
     When I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
+    When I click "EU Login"
     Then I should see the heading "Sign in to continue"
     When I fill in "E-mail address" with "uniq@example.com"
     And I fill in "Password" with "shaken_not_stirred"
@@ -173,9 +204,9 @@ Feature: Log in through EU Login
 
     # A logged in user cannot access the reset password form.
     When I go to "/user/password"
-    Then the response status code should be 403
+    Then I should get an access denied error
 
-  @wip @email
+  @email
   Scenario: An existing local user wants to link their EU Login account but forgot their Drupal password.
     Given CAS users:
       | Username   | E-mail              | Password | First name  | Last name |
@@ -235,7 +266,8 @@ Feature: Log in through EU Login
 
     # User with full profile data.
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
+    When I click "EU Login"
     When I fill in "E-mail address" with "f@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -248,11 +280,11 @@ Feature: Log in through EU Login
     But I should not see "Username"
     And I should not see "full_cas_profile"
     And I should see the following lines of text:
-      | Account information                                                                                                                                                                                                       |
-      | Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login. |
-      | Your e-mail address is not made public. We will only send you necessary system notifications and you can opt in later if you wish to receive additional notifications about content you are subscribed to.                |
-      | Your first name is publicly visible.                                                                                                                                                                                      |
-      | Your last name is publicly visible.                                                                                                                                                                                       |
+      | Account information                                                                                                                                                                                                  |
+      | Your name and E-mail are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login. |
+      | Your e-mail address is not made public. We will only send you necessary system notifications and you can opt in later if you wish to receive additional notifications about content you are subscribed to.           |
+      | Your first name is publicly visible.                                                                                                                                                                                 |
+      | Your last name is publicly visible.                                                                                                                                                                                  |
 
     When I press "Save"
     Then I should see the success message "The changes have been saved."
@@ -260,7 +292,8 @@ Feature: Log in through EU Login
     # User with partial profile data.
     Given I am an anonymous user
     And I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
+    When I click "EU Login"
     When I fill in "E-mail address" with "p@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -273,7 +306,7 @@ Feature: Log in through EU Login
     And the following fields should be disabled "Family name"
     But I should not see "Username"
     And I should not see "partial_cas_profile"
-    And I should see "Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login."
+    And I should see "Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup."
     But I should not see "Fail - Password length must be at least 8 characters."
     And I should not see "Password character length of at least 8"
     And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
@@ -286,7 +319,8 @@ Feature: Log in through EU Login
     # User with no profile data.
     Given I am an anonymous user
     And I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
+    When I click "EU Login"
     When I fill in "E-mail address" with "n@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -299,7 +333,7 @@ Feature: Log in through EU Login
     But I should not see "Username"
     # The username appears in the page header because this use has no first and
     # last name. But we check the absence of "Username" and this is enough.
-    And I should see "Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login."
+    And I should see "Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup."
     But I should not see "Fail - Password length must be at least 8 characters."
     And I should not see "Password character length of at least 8"
     And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
@@ -309,15 +343,33 @@ Feature: Log in through EU Login
     Then I should see the error message "First name field is required."
     And I should see the error message "Family name field is required."
 
-  @wip
+    # User not linked to a CAS account.
+    Given I am logged in as "without_cas"
+    And I click "My account"
+
+    When I click "Edit"
+    Then the "First name" field should contain ""
+    And the "Family name" field should contain ""
+    And the following fields should not be disabled "First name,Family name"
+    And I should see "Username"
+    And I should see "without_cas"
+    And I should see "A valid email address. All emails from the system will be sent to this address. The email address is not made public and will only be used if you wish to receive a new password or wish to receive certain news or notifications by email."
+    And I should see "Fail - Password length must be at least 8 characters."
+    And I should see "Password character length of at least 8"
+    And I should see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
+    And I should see "Minimum password character types: 3"
+
+    When I press "Save"
+    Then I should see the error message "First name field is required."
+    And I should see the error message "Family name field is required."
+
   Scenario: The Drupal login form shows a warning message.
     When I visit "/user/login"
-    Then I should see the warning message "Starting from 02/03/2020, signing in to COVID-19 Challenge is handled by EU Login, the European Commission Authentication Service."
+    Then I should see the warning message "Starting from 02/03/2020, signing in to Joinup is handled by EU Login, the European Commission Authentication Service."
     And I should see the link "EU Login"
     But the following fields should not be present "Email or username, Password"
     And I should not see the "Sign in" button
 
-  @wip
   Scenario: A new user tries to register with an existing Email.
     Given users:
       | Username | E-mail          |
@@ -328,17 +380,20 @@ Feature: Log in through EU Login
       | joe_doe  | joe@example.com | 123      |
 
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
+    When I click "EU Login"
     When I fill in "E-mail address" with "joe@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
 
-    Then I should see the following error messages:
-      | error messages                                                                                                         |
-      | The email address joe@example.com is already taken.                                                                    |
-      | If you are the owner of this account please select the first option, otherwise contact the COVID-19 Challenge support. |
+    Given I select the radio button "I am a new user (create a new account)"
+    When I press "Next"
 
-  @wip
+    Then I should see the following error messages:
+      | error messages                                                                                             |
+      | The email address joe@example.com is already taken.                                                        |
+      | If you are the owner of this account please select the first option, otherwise contact the Joinup support. |
+
   Scenario: A new user tries to register with an existing username.
     Given users:
       | Username | E-mail          |
@@ -349,7 +404,8 @@ Feature: Log in through EU Login
       | joe      | joe.cas@example.com | 123      |
 
     Given I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
+    When I click "EU Login"
     When I fill in "E-mail address" with "joe.cas@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -357,14 +413,14 @@ Feature: Log in through EU Login
     When I select the radio button "I am a new user (create a new account)"
     When I press "Next"
 
-    Then I should see the success message "Fill in the fields below to let the community learn more about you!"
+    Then I should see the success message "Fill in the fields below to let the Joinup community learn more about you!"
 
   Scenario: The Drupal registration tab has been removed and the /user/register
   route redirects to EU Login registration form.
     When I visit "/user/login"
-    Then I should see the text "Sign in to continue"
+    Then I should not see the link "Create new account"
     When I visit "/user/register"
-    Then I should see the text "Sign in to continue"
+    Then the url should match "/cas/eim/external/register.cgi"
 
   Scenario: The CAS module 'Add CAS user(s)' functionality is dismantled.
     Given I am logged in as a moderator
@@ -406,14 +462,15 @@ Feature: Log in through EU Login
 
     Given I am an anonymous user
     And I am on the homepage
-    And I click "Sign in with EU Login"
+    And I click "Sign in"
+    And I click "EU Login"
     And I fill in "E-mail address" with "Joe_Case_Insensitive@example.com"
     And I fill in "Password" with "123"
     When I press the "Log in" button
     Then I should see the success message "You have been logged in."
     # The email ends up getting the upstream email so that correct character casing is applied.
     And the user joe should have the following data in their user profile:
-      | E-mail | Joe_Case_Insensitive@example.com |
+      | E-mail      | Joe_Case_Insensitive@example.com |
 
   Scenario: Anonymous user is asked to log in when accessing a protected page
     Given users:

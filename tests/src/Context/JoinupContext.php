@@ -265,8 +265,8 @@ class JoinupContext extends RawDrupalContext {
     }
 
     // Submit form, waiting for Honeypot protection delay to pass.
-    /** @var \HoneypotSubContext $honeypot */
-    $honeypot = $this->getContext('\HoneypotSubContext');
+    /** @var \Drupal\Tests\honeypot\Behat\HoneypotContext $honeypot */
+    $honeypot = $this->getContext('\Drupal\Tests\honeypot\Behat\HoneypotContext');
     $honeypot->waitForTimeLimit();
 
     $this->getSession()->getPage()->pressButton("Create new account");
@@ -409,7 +409,7 @@ class JoinupContext extends RawDrupalContext {
     $options = $this->explodeCommaSeparatedStepArgument($optgroups);
 
     foreach ($options as $option) {
-      Assert::assertContains($option, $available_optgroups, TRUE, "The '{$select}' select doesn't contain the option '{$option}''.");
+      Assert::assertContains($option, $available_optgroups, "The '{$select}' select doesn't contain the option '{$option}''.", TRUE);
     }
   }
 
@@ -1218,6 +1218,26 @@ class JoinupContext extends RawDrupalContext {
     $headings_in_page = array_keys($this->getTiles());
     $headings_expected = $titles_table->getColumn(0);
     Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found or were not in the proper order.');
+  }
+
+  /**
+   * Asserts that a certain link is present in a tile.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   * @param string $link
+   *   The text of the link.
+   *
+   * @throws \Exception
+   *   Thrown when the tile or the link are not found.
+   *
+   * @Then I( should) see the link :text in the :heading tile
+   */
+  public function assertTileContainsLink($heading, $link) {
+    $element = $this->getTileByHeading($heading);
+    if (!$element->findLink($link)) {
+      throw new \Exception("The link '$link' was not found in the tile '$heading'.");
+    }
   }
 
   /**
@@ -3061,6 +3081,29 @@ JS;
       throw new \Exception("The {$current_url} does not contain an anchor.");
     }
     $this->assertHtmlText("id=\"{$url_parts['fragment']}\"");
+  }
+
+  /**
+   * Asserts that a menu link is in the active trail.
+   *
+   * @param string $link_label
+   *   The label of the link to be tested.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   When the link doesn't exist.
+   *
+   * @Then the( menu) link :link_label is in the active trail
+   */
+  public function assertLinkIsInActiveTrail(string $link_label): void {
+    $session = $this->getSession();
+    $page = $session->getPage();
+    if (!$page->findLink($link_label)) {
+      throw new ElementNotFoundException($session->getDriver(), 'Link', 'label', $link_label);
+    }
+    $xpath = "//ul/li[contains(concat(' ', @class, ' '), ' menu-item--active-trail ')]/descendant::a/descendant-or-self::*[text()='{$link_label}']";
+    if (!$page->find('xpath', $xpath)) {
+      throw new ExpectationFailedException("The '{$link_label}' link is not in the active trail but it should.");
+    }
   }
 
 }

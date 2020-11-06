@@ -151,8 +151,14 @@ function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account
     }
   }
 
-  $access = $node->access('view any tallinn_report content', $account);
-  return $access ? AccessResult::allowed() : AccessResult::forbidden();
+  /** @var \Drupal\og\OgAccessInterface $og_access */
+  $og_access = \Drupal::service('og.access');
+  $access = $og_access->userAccessEntity('view any tallinn_report content', $node, $account);
+  if ($access->isAllowed()) {
+    return $access;
+  }
+
+  return AccessResult::forbidden()->inheritCacheability($access);
 }
 
 /**

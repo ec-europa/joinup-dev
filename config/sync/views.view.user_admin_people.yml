@@ -196,10 +196,12 @@ display:
             - pathauto_update_alias_user
             - user_add_role_action.licence_manager
             - user_add_role_action.moderator
+            - user_add_role_action.rdf_graph_manager
             - user_block_user_action
             - user_cancel_user_action
             - user_remove_role_action.licence_manager
             - user_remove_role_action.moderator
+            - user_remove_role_action.rdf_graph_manager
             - user_unblock_user_action
           plugin_id: joinup_user_bulk_form
           entity_type: user
@@ -993,6 +995,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: created
           granularity: second
           plugin_id: date
           entity_type: user

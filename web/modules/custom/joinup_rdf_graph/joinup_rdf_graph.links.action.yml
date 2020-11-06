@@ -1,0 +1,5 @@
+joinup_rdf_graph.add:
+  route_name: joinup_rdf_graph.add
+  title: 'Add RDF graph'
+  appears_on:
+    - joinup_rdf_graph.collection

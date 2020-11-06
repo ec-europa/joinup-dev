@@ -108,7 +108,7 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
       return $result->addCacheableDependency($cache_metadata);
     }
 
-    $pattern = '/\b(' . implode('|', array_keys($replacements)) . ')\b/';
+    $pattern = '/\b(' . implode('|', array_keys($replacements)) . ')\b/i';
 
     // First, do a bird-eye check for glossary terms so that we avoid a heavy
     // processing if the text contains no term.
@@ -128,16 +128,17 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
       $parent_node = $text_node->parentNode;
 
       foreach ($text_parts as $text_part) {
-        if (!isset($replacements[$text_part])) {
+        $text_part_lowercased = \mb_strtolower($text_part);
+        if (!isset($replacements[$text_part_lowercased])) {
           $parent_node->insertBefore($document->createTextNode($text_part), $text_node);
           continue;
         }
 
         // @todo Consider replacing the link with a JavaScript tooltip.
         $link = $document->createElement('a', $text_part);
-        $link->setAttribute('href', $replacements[$text_part]['url']);
+        $link->setAttribute('href', $replacements[$text_part_lowercased]['url']);
         $link->setAttribute('class', 'glossary-term');
-        $link->setAttribute('title', $replacements[$text_part]['summary']);
+        $link->setAttribute('title', $replacements[$text_part_lowercased]['summary']);
         $parent_node->insertBefore($link, $text_node);
       }
       $parent_node->removeChild($text_node);
@@ -176,11 +177,11 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
    *
    * @return array
    *   An indexed array (tuple) with two values:
-   *     0. An associative array keyed by the glossary term or abbreviation. The
+   *     0: An associative array keyed by the glossary term or abbreviation. The
    *        values are arrays with two keys:
    *        - url: The glossary term URL.
    *        - summary: A summary to be used as tooltip.
-   *     1. An object containing the cacheable metadata.
+   *     1: An object containing the cacheable metadata.
    */
   protected function getReplacementsMap(CollectionInterface $collection): array {
     // Make sure the filter cache invalidates when a new glossary term is added
@@ -206,10 +207,14 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
           'summary' => $glossary->getSummary(),
         ];
 
-        $map[$glossary->label()] = $link;
+        // Ensure case-insensitive search.
+        $label = \mb_strtolower($glossary->label());
+        $map[$label] = $link;
         // Link also the abbreviation, if any.
         if ($glossary->hasAbbreviation()) {
-          $map[$glossary->getAbbreviation()] = $link;
+          // Ensure abbreviation case-insensitive search.
+          $abbreviation = \mb_strtolower($glossary->getAbbreviation());
+          $map[$abbreviation] = $link;
         }
 
         // When this glossary node is changing, invalidate the filter cache.
@@ -227,11 +232,11 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
    * context they belong to. We do not have access to the field that contains
    * the text.
    *
-   * @see https://www.drupal.org/project/drupal/issues/226963
-   *
    * @return \Drupal\collection\Entity\CollectionInterface|null
    *   The collection, or NULL if no collection could be derived from the
    *   context.
+   *
+   * @see https://www.drupal.org/project/drupal/issues/226963
    */
   protected function getCollection(): ?CollectionInterface {
     $group = NULL;

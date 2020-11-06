@@ -2,6 +2,7 @@ default:
   suites:
     default:
       contexts:
+        - Drupal\joinup\Context\BootstrapDrupalContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
@@ -46,37 +47,42 @@ default:
         - Drupal\joinup\Context\OeNewsroomNewsletterContext
         - Drupal\joinup\Context\OwnerContext
         - Drupal\joinup\Context\RdfEntityProvenanceContext
+        - Drupal\joinup\Context\RdfGraphContext
         - Drupal\joinup\Context\RssContext
         - Drupal\joinup\Context\ScreenshotContext:
-            localDir: '${behat.screenshots.local.dir}'
-            s3Dir: '${behat.screenshots.s3.dir}'
-            s3Region: '${aws.region}'
-            s3Bucket: '${exports.s3.bucket}'
-            s3Key: '${exports.s3.key}'
-            s3Secret: '${exports.s3.secret}'
+            localDir: ${behat.screenshots.local.dir}
+            s3Dir: ${env.BEHAT_S3_DIR}
+            s3Region: ${env.BEHAT_S3_AWS_REGION}
+            s3Bucket: ${env.BEHAT_S3_BUCKET}
         - Drupal\joinup\Context\SolutionContext
         - Drupal\joinup\Context\WhatsNewContext
         - Drupal\Tests\cas_mock_server\Context\CasMockServerContext:
             attributes_map:
               firstName: First name
               lastName: Last name
+        - Drupal\Tests\honeypot\Behat\HoneypotContext
+        - Drupal\Tests\message_digest\Behat\MessageDigestContext
+        - Drupal\Tests\oe_webtools\Behat\WebtoolsMapsContext
+        - Drupal\Tests\pipeline\Behat\PipelineContext
+        - Drupal\Tests\spdx\Behat\SpdxContext:
         - FeatureContext
         - LoversOfBehat\TableExtension\Context\TableContext
       filters:
         tags: '~@wip'
   extensions:
     Drupal\MinkExtension:
-      base_url: '${behat.base_url}'
+      base_url: ${env.DRUPAL_BASE_URL}
       ajax_timeout: 10
-      files_path: '${behat.files.path}'
+      files_path: ${joinup.dir}/tests/fixtures/files
       goutte: ~
-      javascript_session: 'selenium2'
-      browser_name: '${behat.browser_name}'
+      javascript_session: selenium2
+      browser_name: ${behat.browser_name}
       selenium2:
-        wd_host: '${behat.webdriver_url}'
+        wd_host: ${env.WEBDRIVER_URL}
     LoversOfBehat\TableExtension:
       table_map:
         'group menu edit table': '#menu-overview'
+        'eif recommendations': '.eif-recommendations table'
         'member administration': '.og-members-overview table'
         'licence comparer': 'table[data-drupal-selector="licence-comparer"]'
     Drupal\DrupalExtension:
@@ -112,7 +118,7 @@ default:
         Table of contents outline: '#block-toc-outline'
         Unpublished content area: '.block-entity-unpublished'
       drupal:
-        drupal_root: '${website.drupal.dir}'
+        drupal_root: ${joinup.site_dir}
       selectors:
         message_selector: '.alert, .messages'
         error_message_selector: '.alert.alert--error, .messages.message--error'
@@ -120,14 +126,14 @@ default:
         warning_message_selector: '.alert.alert--warning, .messages.message--warning'
         login_form_selector: '#user-login-form'
       subcontexts:
-        paths:
-          - '${behat.subcontexts.path}'
+        autoload: false
+        paths: []
       text:
         log_in: 'Sign in'
         log_out: 'Sign out'
         username_field: 'Email or username'
     FriendsOfBehat\ServiceContainerExtension:
       imports:
-        - "../vendor/drupaltest/behat-one-time-login/behat.services.yml"
+        - ../vendor/drupaltest/behat-one-time-login/behat.services.yml
   formatters:
     ${behat.formatter.name}: ~

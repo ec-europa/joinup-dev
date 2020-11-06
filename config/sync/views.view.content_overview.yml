@@ -6,7 +6,7 @@ dependencies:
     - search_api.index.published
     - system.menu.main
   module:
-    - joinup_core
+    - joinup_material_design
     - search_api
 id: content_overview
 label: 'Content overview'
@@ -610,6 +610,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: published_at
           plugin_id: search_api
         entity_created:
           id: entity_created
@@ -622,6 +623,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: entity_created
           plugin_id: search_api
       title: Latest
       header: {  }

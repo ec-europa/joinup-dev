@@ -10,16 +10,20 @@ declare(strict_types = 1);
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Event\GroupMenuLinksEvent;
 use Drupal\joinup_group\Form\RdfDeleteForm;
 use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\og\Og;
+use Drupal\og\OgAccess;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
@@ -182,10 +186,6 @@ function joinup_group_rdf_entity_insert(RdfInterface $group): void {
   // Allow third-party to add group menu links.
   $event = new GroupMenuLinksEvent($group, $menu_name, \Drupal::entityTypeManager());
   $event_dispatcher->dispatch($event::ADD_LINKS, $event);
-
-  // Invalidate all list caches tagged with the affected bundle so the that they
-  // will be regenerated.
-  Cache::invalidateTags(["rdf_entity_list:{$group->bundle()}"]);
 }
 
 /**
@@ -260,6 +260,43 @@ function joinup_group_rdf_entity_update(EntityInterface $entity) {
       ContentEntity::indexEntity($node);
     }
   }
+}
+
+/**
+ * Implements hook_og_user_access_alter().
+ */
+function joinup_group_og_user_access_alter(array &$permissions, CacheableMetadata &$cacheable_metadata, array $context): void {
+  $group = $context['group'];
+  $user = $context['user'];
+
+  // Group owners are allowed to delete their own groups when they are in
+  // validated state.
+  // @todo Also allow groups to be deleted in any state other than 'archived'.
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6088
+  $permission = $context['permission'];
+  if ($permission !== OgAccess::DELETE_GROUP_PERMISSION) {
+    return;
+  }
+
+  // Only act on entities that are groups and subject to workflow.
+  if (!$group instanceof GroupInterface || !$group instanceof EntityWorkflowStateInterface) {
+    return;
+  }
+
+  // Skip if the group is not in validated state.
+  if ($group->getWorkflowState() !== 'validated') {
+    return;
+  }
+
+  // Check if the user is the group owner and bail out if this is not the case.
+  $membership = $group->getMembership((int) $user->id());
+  $role_id = "{$group->getEntityTypeId()}-{$group->bundle()}-administrator";
+  if (!$membership instanceof OgMembershipInterface || !$membership->hasRole($role_id)) {
+    return;
+  }
+
+  // All conditions are met. Grant permission to delete the group.
+  $permissions[] = OgAccess::DELETE_GROUP_PERMISSION;
 }
 
 /**

@@ -18,6 +18,7 @@ use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Query\ConditionGroupInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\Utility\Utility;
+use Drupal\views\ViewExecutable;
 use Solarium\Core\Query\QueryInterface as SolariumQueryInterface;
 use Solarium\QueryType\Select\Query\Query;
 
@@ -172,8 +173,8 @@ function _joinup_search_search_api_has_condition($conditions, $field, $value, $o
  */
 function joinup_search_search_api_index_items_alter(IndexInterface $index, array &$items): void {
   foreach ($items as $item_id => $item) {
-    list(, $raw_id) = Utility::splitCombinedId($item_id);
-    list(, $langcode) = Utility::splitPropertyPath($raw_id);
+    [, $raw_id] = Utility::splitCombinedId($item_id);
+    [, $langcode] = Utility::splitPropertyPath($raw_id);
     // Unset non-english content from the index.
     if ($langcode != 'en') {
       unset($items[$item_id]);
@@ -378,4 +379,19 @@ function _joinup_search_apply_listing_content_query_settings(SolariumQueryInterf
     'score' => 'desc',
     'ds_entity_created' => 'desc',
   ]);
+}
+
+/**
+ * Implements hook_views_pre_execute().
+ */
+function joinup_search_views_pre_execute(ViewExecutable $view) {
+  if ($view->id() !== 'search') {
+    return;
+  }
+
+  // Having exposed sort options mean that only one option is passed in the
+  // query. Regardless of the case, add the entity_created as a secondary sort
+  // method to ensure legacy support.
+  // Selecting the entity_created option itself won't affect the query.
+  $view->getQuery()->sort('entity_created', 'DESC');
 }

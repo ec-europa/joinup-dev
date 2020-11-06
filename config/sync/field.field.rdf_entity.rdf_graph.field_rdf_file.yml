@@ -1,0 +1,28 @@
+uuid: 96981b56-c71f-471f-8ac7-41b51ee79a8f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_rdf_file
+    - rdf_entity.rdfentity.rdf_graph
+  module:
+    - file
+id: rdf_entity.rdf_graph.field_rdf_file
+field_name: field_rdf_file
+entity_type: rdf_entity
+bundle: rdf_graph
+label: 'RDF file'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: queryable-artefacts
+  file_extensions: 'ttl rdf'
+  max_filesize: '10 MB'
+  description_field: false
+  description_field_required: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

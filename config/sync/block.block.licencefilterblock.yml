@@ -10,7 +10,7 @@ dependencies:
 id: licencefilterblock
 theme: joinup_theme
 region: content
-weight: -16
+weight: -17
 provider: null
 plugin: licence_filter_block
 settings:
