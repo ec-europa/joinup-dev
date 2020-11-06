@@ -21,7 +21,10 @@ config_devel:
     - block.block.joinup_theme_main_menu
     - block.block.joinup_theme_main_menu_mobile
     - block.block.joinup_theme_messages
+    - block.block.joinup_user_local_tasks
+    - block.block.licencedeprecatedmessage
     - block.block.licencefilterblock
+    - block.block.mycontent
     - block.block.mycontentcollection
     - block.block.mycontentsolution
     - block.block.navigation
@@ -33,7 +36,6 @@ config_devel:
     - block.block.support
     - block.block.support_homepage
     - block.block.userheader
-    - block.block.views_block__licence_list_licence_list_block
     - core.date_format.date_only
     - core.date_format.date_only_text_month
     - core.entity_form_display.ogmenu_instance.navigation.default

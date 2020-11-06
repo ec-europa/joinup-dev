@@ -83,7 +83,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    * {@inheritdoc}
    */
   public function getOwnerId(): int {
-    return $this->get('uid')->target_id;
+    return (int) $this->get('uid')->target_id;
   }
 
   /**
@@ -107,12 +107,12 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   public function getEntity(): ContentEntityInterface {
     $entity_type = $this->get('entity_type')->value;
     $entity_id = $this->get('entity_id')->value;
+    assert(!empty($entity_type) && !empty($entity_id), 'InvitationInterface::getEntity() should not be called if the related entity has not been set.');
 
-    if (empty($entity_type) || empty($entity_id)) {
-      return NULL;
-    }
+    $entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id);
+    assert($entity instanceof ContentEntityInterface, 'Invitations can only be associated with fieldable entities.');
 
-    return \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id);
+    return $entity;
   }
 
   /**
@@ -142,7 +142,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    * {@inheritdoc}
    */
   public function getRecipientId(): int {
-    return $this->get('recipient_id')->target_id;
+    return (int) $this->get('recipient_id')->target_id;
   }
 
   /**

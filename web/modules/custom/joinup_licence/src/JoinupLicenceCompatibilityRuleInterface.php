@@ -12,15 +12,7 @@ use Drupal\joinup_licence\Entity\LicenceInterface;
 interface JoinupLicenceCompatibilityRuleInterface {
 
   /**
-   * Returns the ID of the CompatibilityDocument that explains this rule.
-   *
-   * @return string
-   *   The translated title.
-   */
-  public function getDocumentId(): string;
-
-  /**
-   * Checks whether the two licences are compatible according to this rule.
+   * Checks whether the two licences are verifying this rule.
    *
    * @param \Drupal\joinup_licence\Entity\LicenceInterface $use_licence
    *   The licence of an existing project of which the code or data is used.
@@ -31,6 +23,6 @@ interface JoinupLicenceCompatibilityRuleInterface {
    * @return bool
    *   TRUE if the two licences are compatible according to this rule.
    */
-  public function isCompatible(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool;
+  public function isVerified(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool;
 
 }
