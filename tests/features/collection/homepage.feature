@@ -146,7 +146,7 @@ Feature: Collection homepage
     But I should not see the "Big hobbit feast - fireworks at midnight" tile
 
   # Regression test to ensure that related community content does not appear in the draft view.
-  # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
+  # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
   Scenario: The related content should not be shown in the draft view version as part of the content.
     When I am logged in as a facilitator of the "Middle earth daily" collection
     And I go to the homepage of the "Middle earth daily" collection

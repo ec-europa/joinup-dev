@@ -105,7 +105,7 @@ Feature: Solution homepage
     And I should see the text "Downloads: 1172"
 
   # Regression test to ensure that related community content does not appear in the draft view.
-  # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
+  # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
   Scenario: The related content should not be shown in the draft view version as part of the content.
     When I am logged in as a facilitator of the "Information sharing protocol" solution
     And I go to the homepage of the "Information sharing protocol" solution

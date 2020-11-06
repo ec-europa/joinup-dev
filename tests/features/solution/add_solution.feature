@@ -43,7 +43,7 @@ Feature: "Add solution" visibility options.
     And I go to the homepage of the "Collection solution test" collection
     Then I should not see the link "Add solution"
     # Regression test to ensure that the user has not access to the 'Propose solution' page.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2842
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2842
     And I should not see the link "Propose solution"
 
     When I am an anonymous user
@@ -75,7 +75,7 @@ Feature: "Add solution" visibility options.
     And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner, Name, E-mail address, Website URL"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation, Motivation"
     # Regression test for ensuring that obsolete content creation value is removed.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3567
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3567
     And I should not see the text "Only members can create content"
     And I should see the text "Only facilitators can create content"
     # Regression test to endure that the language terms "Multilingual Code" are not present.
@@ -99,7 +99,7 @@ Feature: "Add solution" visibility options.
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
     # Ensure that the Status field is a dropdown.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3342
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3342
     And I select "Completed" from "Status"
     And I press "Propose"
     Then the email sent to "Ruth Lee" with subject "COVID-19 Challenge: A new solution has been proposed" contains the following lines of text:
@@ -109,7 +109,7 @@ Feature: "Add solution" visibility options.
     And I should see "Thank you for proposing a solution. Your request is currently pending approval by the site administrator."
 
     # Regression test for non required fields 'Banner' and 'Logo'.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3328
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3328
     And I should not see the following error messages:
       | error messages            |
       | Banner field is required. |
@@ -126,7 +126,7 @@ Feature: "Add solution" visibility options.
     # The description is shown in the overview.
     And I should see the text "This is a test text"
     # Most solution fields are not shown in the overview but in the "about" page.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3224
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3224
     And I should not see the link "Demography"
     And I should not see the link "Belgium"
     And I should not see the link "Flemish"

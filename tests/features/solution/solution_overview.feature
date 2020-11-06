@@ -207,7 +207,7 @@ Feature: Solutions Overview
     # Regression test to ensure that the facets are cached by user.
     # Subsequent page loads of the collections page would lead to cached facets
     # to be leaked to other users.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
     When I click "All solutions" in the "My solutions content" inline facet
     Then the "My solutions content" inline facet should allow selecting the following values "My solutions (3), Featured solutions (2)"
     And the page should be cacheable

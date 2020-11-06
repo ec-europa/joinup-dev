@@ -122,7 +122,7 @@ function contact_form_tokens($type, $tokens, array $data, array $options, Bubble
  *
  * @todo This doesn't belong in the Joinup distribution and should be removed.
  *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3988
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3988
  */
 function contact_form_mail_alter(&$message) {
   if ($message['key'] !== 'contact_form_submission') {

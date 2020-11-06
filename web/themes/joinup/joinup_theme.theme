@@ -440,7 +440,7 @@ function joinup_theme_preprocess_page_title(&$variables) {
   $variables['visually_hidden_class'] = '';
 
   // @todo Move the permalink computing outside the theme layer, in ISAICP-4724.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4724
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4724
   if ($permalink = joinup_build_permalink($route_match)) {
     $variables['permalink'] = $permalink;
   }
@@ -962,7 +962,7 @@ function joinup_theme_preprocess_page_title__rdf_entity__asset_release(&$variabl
   if (!empty($field_solution) && ($solution = $field_solution->entity)) {
     // @todo Find a better way of marking the latest release that doesn't
     //   involve performing a database query in the theme layer.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
     $latest_release = solution_get_latest_release($solution);
     if ($latest_release && $latest_release->id() === $entity->id()) {
       $is_latest_release = TRUE;

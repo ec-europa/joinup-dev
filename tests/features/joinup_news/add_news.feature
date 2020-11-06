@@ -54,7 +54,7 @@ Feature: Creation of news through the UI.
     When I fill in "Referenced solution" with "Dig do's and don'ts"
     # Test that the title character limit is restricted. This cannot be reproduced in the normal UI but checks the form
     # validation.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3680
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3680
     And I press "Publish"
     Then I should see the error message "Short title cannot be longer than 66 characters but is currently 69 characters long."
     When I fill in "Short title" with "Ytterbium metal of the year"

@@ -679,8 +679,4 @@
         <phingcall target="enable-config-read-only"/>
     </target>
 
-    <target name="check-deprecated-code">
-        <exec command="${project.basedir}/vendor/bin/phpstan --no-progress --ansi -n -vvv analyse web/modules/custom web/profiles web/themes src tests/src" passthru="true" checkreturn="true"/>
-    </target>
-
 </project>

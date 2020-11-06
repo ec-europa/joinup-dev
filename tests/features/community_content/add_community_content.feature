@@ -154,7 +154,7 @@ Feature: Add community content
     Then I should see the heading "Published community event"
     # We are not testing events as behat assigns a slightly different publication date than the creation date.
     # e.g. if the creation date is 1147483647, the publication date assigned will be 1147483645.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5679
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5679
     # And the publication date of the "Published community event" event should be equal to the created date
 
     # Create a published news.

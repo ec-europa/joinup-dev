@@ -28,6 +28,7 @@ module:
   datetime_range: 0
   diff: 0
   digital_size_formatter: 0
+  dpsi: 0
   dynamic_entity_reference: 0
   dynamic_page_cache: 0
   easme_pledge: 0
@@ -70,6 +71,7 @@ module:
   joinup_invite: 0
   joinup_legal: 0
   joinup_licence: 0
+  joinup_material_design: 0
   joinup_menu: 0
   joinup_news: 0
   joinup_newsletter: 0
@@ -82,6 +84,7 @@ module:
   joinup_sparql: 0
   joinup_stats: 0
   joinup_subscription: 0
+  joinup_tour: 0
   joinup_user: 0
   joinup_validation: 0
   joinup_video: 0

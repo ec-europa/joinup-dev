@@ -65,7 +65,7 @@ Feature: Creation of owners through UI
     And I press "Add existing" at the "Owner" field
     # Regression test for a bug that occurred when the entities being
     # referenced had a very long title.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3444
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3444
     And I pick "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fermentum ante arcu. Vivamus nisl turpis, fringilla ut ante sit amet, bibendum iaculis ante. Nullam vel nisl vehicula, rutrum ante nec, placerat dolor. Sed id odio imperdiet, efficitur lacus" from the "Owner" autocomplete suggestions
     And I press "Add owner"
     Then I should see the text "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fermentum ante arcu. Vivamus nisl turpis, fringilla ut ante sit amet, bibendum iaculis ante. Nullam vel nisl vehicula, rutrum ante nec, placerat dolor. Sed id odio imperdiet, efficitur lacus"

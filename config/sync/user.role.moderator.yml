@@ -55,6 +55,7 @@ permissions:
   - 'edit own document content'
   - 'edit owner rdf entity'
   - 'edit short id after publication'
+  - 'execute dpsi pipeline'
   - 'execute eu_sic pipeline'
   - 'execute joinup_collection pipeline'
   - 'execute nio pipeline'

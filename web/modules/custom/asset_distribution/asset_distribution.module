@@ -72,7 +72,7 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
   // Since this form is only intended to be used in the context of a solution or
   // release, there is no field provided for it. Without a solution or a release
   // the asset distribution will be dangling and won't be reachable.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4581
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4581
   // @todo Implement this by subscribing to RDF entity rdf_entity.rdf_add route
   // and deny the access for asset_distribution, in ISAICP-4581.
   if (!$rdf || !$rdf instanceof RdfInterface || !in_array($rdf->bundle(), ['asset_release', 'solution'])) {
@@ -179,7 +179,8 @@ function asset_distribution_invalidate_solution_cache(RdfInterface $distribution
  * because there is only one 'Download' button displayed.
  *
  * @todo: The behavior of the multi value file field is recorded and will be
- * implemented in https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2925.
+ * implemented in
+ * https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2925.
  */
 function asset_distribution_preprocess_rdf_entity(&$variables) {
   /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
