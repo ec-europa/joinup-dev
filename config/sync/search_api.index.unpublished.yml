@@ -2,19 +2,38 @@ uuid: 65b311ba-c63c-4f45-951e-11c101e528fc
 langcode: en
 status: true
 dependencies:
+  module:
+    - search_api_solr
+    - node
+    - rdf_entity
+    - paragraphs
+    - user
+    - search_api
+    - asset_distribution
+    - custom_page
+    - joinup_search
   config:
-    - field.storage.node.field_event_agenda
-    - field.storage.node.field_paragraphs_body
-    - field.storage.paragraph.field_body
     - field.storage.node.body
+    - field.storage.rdf_entity.field_ad_description
+    - field.storage.rdf_entity.field_ar_abstract
+    - field.storage.rdf_entity.field_ar_description
+    - field.storage.node.field_event_agenda
     - field.storage.node.field_event_date
-    - field.storage.node.field_news_headline
+    - field.storage.rdf_entity.field_is_description
+    - field.storage.rdf_entity.field_is_pinned_in
+    - field.storage.rdf_entity.field_is_solution_type
+    - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_isr_release_notes
+    - field.storage.rdf_entity.field_licence_description
     - field.storage.node.field_location
+    - field.storage.node.field_news_headline
     - field.storage.node.field_organisation
     - field.storage.node.field_scope
     - field.storage.node.field_shared_in
     - field.storage.node.field_short_title
-    - field.storage.rdf_entity.field_ar_abstract
+    - field.storage.user.field_user_family_name
+    - field.storage.user.field_user_first_name
+    - field.storage.user.field_user_organisation
     - field.storage.rdf_entity.field_is_contact_information
     - field.storage.rdf_entity.field_ci_name
     - field.storage.rdf_entity.field_isr_contact_information
@@ -23,26 +42,19 @@ dependencies:
     - field.storage.rdf_entity.field_is_description
     - field.storage.rdf_entity.field_isr_description
     - field.storage.rdf_entity.field_licence_description
+    - field.storage.rdf_entity.field_is_eif_recommendation
     - field.storage.rdf_entity.field_is_owner
     - field.storage.rdf_entity.field_owner_name
+    - field.storage.rdf_entity.field_isr_contact_information
     - field.storage.rdf_entity.field_isr_owner
-    - field.storage.rdf_entity.field_is_pinned_in
-    - field.storage.rdf_entity.field_isr_release_notes
-    - field.storage.rdf_entity.field_is_solution_type
-    - field.storage.user.field_user_family_name
-    - field.storage.user.field_user_first_name
-    - field.storage.user.field_user_organisation
+    - field.storage.node.field_paragraphs_body
+    - field.storage.paragraph.field_body
     - search_api.server.solr_unpublished
-  module:
-    - node
-    - paragraphs
-    - rdf_entity
-    - user
-    - search_api
-    - asset_distribution
-    - custom_page
-    - joinup_search
-    - search_api_solr
+third_party_settings:
+  search_api_solr:
+    finalize: false
+    commit_before_finalize: false
+    commit_after_finalize: false
 id: unpublished
 name: 'Unpublished entities index'
 description: ''
@@ -150,6 +162,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_is_description
+  field_is_eif_recommendation:
+    label: 'EIF reference'
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_is_eif_recommendation
+    type: string
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_is_eif_recommendation
   field_is_pinned_in:
     label: 'Pinned in'
     datasource_id: 'entity:rdf_entity'
@@ -441,18 +461,30 @@ field_settings:
 datasource_settings:
   'entity:node':
     bundles:
-      default: true
-      selected: {  }
+      default: false
+      selected:
+        - custom_page
+        - discussion
+        - document
+        - event
+        - glossary
+        - news
+        - newsletter
+        - tallinn_report
+        - video
     languages:
       default: true
       selected: {  }
   'entity:rdf_entity':
     bundles:
-      default: true
+      default: false
       selected:
-        - contact_information
-        - owner
-        - provenance_activity
+        - asset_distribution
+        - asset_release
+        - collection
+        - licence
+        - solution
+        - spdx_licence
     languages:
       default: true
       selected: {  }

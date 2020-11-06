@@ -12,7 +12,7 @@ dependencies:
 id: navigation
 theme: joinup_theme
 region: sidebar_left
-weight: -17
+weight: -22
 provider: null
 plugin: 'group_menu_block:navigation'
 settings:

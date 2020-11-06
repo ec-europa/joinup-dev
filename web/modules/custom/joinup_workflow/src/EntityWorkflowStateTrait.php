@@ -19,4 +19,13 @@ trait EntityWorkflowStateTrait {
     return $value ? (string) $value : '__new__';
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function setWorkflowState(string $state): EntityWorkflowStateInterface {
+    assert(method_exists($this, 'getWorkflowStateFieldName'), __TRAIT__ . ' depends on EntityWorkflowStateInterface. Please implement it in your class.');
+    $this->get($this->getWorkflowStateFieldName())->setValue($state);
+    return $this;
+  }
+
 }

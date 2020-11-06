@@ -1,7 +1,9 @@
 uuid: a7bc7af4-dd74-4b9d-9359-aa3b90559c5a
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: og_membership_request
 label: 'Group membership request'
 description: 'A user requests to join a closed collection.'

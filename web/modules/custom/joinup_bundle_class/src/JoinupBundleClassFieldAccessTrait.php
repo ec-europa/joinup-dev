@@ -53,6 +53,7 @@ trait JoinupBundleClassFieldAccessTrait {
       $item_list = $this->getEntityReferenceFieldItemList($field_name);
     }
     catch (\InvalidArgumentException $e) {
+      $this->logException($e);
       return [];
     }
 
@@ -120,15 +121,17 @@ trait JoinupBundleClassFieldAccessTrait {
    *   The field item.
    */
   protected function getFirstItem(string $field_name): ?FieldItemInterface {
-    assert($this->get($field_name), sprintf('Field name %s is not defined.', $field_name));
+    $item_list = $this->get($field_name);
+    assert($item_list, sprintf('Field name %s is not defined.', $field_name));
 
     try {
-      $item = $this->get($field_name)->first();
+      $item = $item_list->first();
       if (!empty($item) && $item instanceof FieldItemInterface && !$item->isEmpty()) {
         return $item;
       }
     }
     catch (MissingDataException $e) {
+      $this->logException($e);
       return NULL;
     }
 
@@ -153,6 +156,16 @@ trait JoinupBundleClassFieldAccessTrait {
     }
 
     return NULL;
+  }
+
+  /**
+   * Logs an error containing the message from the given exception.
+   *
+   * @param \Exception $e
+   *   The exception for which to log an error.
+   */
+  protected function logException(\Exception $e): void {
+    \Drupal::logger($this->getEntityTypeId())->error($e->getMessage());
   }
 
 }

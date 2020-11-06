@@ -62,7 +62,7 @@ function joinup_workflow_entity_create(EntityInterface $entity) {
         return;
       }
       $state_id = $state_field->getValue()['value'];
-      if ($workflow_helper->isWorkflowStatePublished($state_id, $workflow)) {
+      if ($workflow && $workflow_helper->isWorkflowStatePublished($state_id, $workflow)) {
         $entity->setPublished();
       }
       else {

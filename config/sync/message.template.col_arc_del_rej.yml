@@ -1,7 +1,9 @@
 uuid: 2f2c7ad0-1246-4fff-8160-75bff74cc16a
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: col_arc_del_rej
 label: 'Collection archive/delete reject - Owner'
 description: 'Template id 10'

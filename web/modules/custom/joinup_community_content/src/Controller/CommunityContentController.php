@@ -4,28 +4,20 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_community_content\Controller;
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
+use Drupal\joinup_group\Controller\GroupNodeController;
+use Drupal\node\NodeTypeInterface;
 use Drupal\og\OgAccessInterface;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Controller that handles the form to add community content to a collection.
- *
- * The parent is passed as a parameter from the route.
+ * Provides controllers for community content.
  */
-abstract class CommunityContentController extends ControllerBase {
-
-  /**
-   * The OG access handler.
-   *
-   * @var \Drupal\og\OgAccessInterface
-   */
-  protected $ogAccess;
+class CommunityContentController extends GroupNodeController {
 
   /**
    * The node workflow access control handler.
@@ -35,7 +27,7 @@ abstract class CommunityContentController extends ControllerBase {
   protected $workflowAccessControlHandler;
 
   /**
-   * Constructs a CommunityContentController.
+   * Constructs a new controller instance.
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
@@ -43,7 +35,7 @@ abstract class CommunityContentController extends ControllerBase {
    *   The node workflow access control handler.
    */
   public function __construct(OgAccessInterface $og_access, CommunityContentWorkflowAccessControlHandler $workflow_access_control_handler) {
-    $this->ogAccess = $og_access;
+    parent::__construct($og_access);
     $this->workflowAccessControlHandler = $workflow_access_control_handler;
   }
 
@@ -58,75 +50,30 @@ abstract class CommunityContentController extends ControllerBase {
   }
 
   /**
-   * Constructs a create form for community content.
-   *
-   * The main purpose is to automatically reference the parent group entity.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The collection or solution rdf_entity.
-   *
-   * @return array
-   *   Return the form array to be rendered.
-   */
-  public function add(RdfInterface $rdf_entity): array {
-    $node = $this->createContentEntity($rdf_entity);
-    return $this->entityFormBuilder()->getForm($node);
-  }
-
-  /**
    * Handles access to the content add form through RDF entity pages.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the document entity is created.
+   * @param \Drupal\node\NodeTypeInterface $node_type
+   *   The type of node to be added.
    * @param \Drupal\Core\Session\AccountInterface|null $account
    *   The account to check access for. The current user will be used if NULL.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown when the user entity plugin definition is invalid.
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *   Thrown when the user entity type is not defined.
    */
-  public function createAccess(RdfInterface $rdf_entity, ?AccountInterface $account = NULL): AccessResult {
-    if (empty($account)) {
-      $account = $this->currentUser();
+  public function createAccess(RdfInterface $rdf_entity, NodeTypeInterface $node_type, AccountInterface $account): AccessResultInterface {
+    if (in_array($node_type->id(), CommunityContentHelper::BUNDLES, TRUE)) {
+      /** @var \Drupal\joinup_community_content\Entity\CommunityContentInterface $node */
+      $node = $this->createNode($rdf_entity, $node_type);
+      return $this->workflowAccessControlHandler->entityAccess($node, 'create', $account);
     }
-    if (!in_array($rdf_entity->bundle(), ['collection', 'solution'])) {
-      return AccessResult::forbidden();
-    }
-
-    // If the collection is archived, content creation is not allowed.
-    if ($rdf_entity->bundle() === 'collection' && $rdf_entity->field_ar_state->first()->value === 'archived') {
-      return AccessResult::forbidden();
-    }
-
-    // @todo This is probably related to ISAICP-6007. The 'create aceess' check
-    // shouldn't require an entity. The entity is created only after the 'create
-    // access' is checked. Refactor this in ISAICP-6007.
-    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6007
-    $content = $this->createContentEntity($rdf_entity);
-    return $this->workflowAccessControlHandler->entityAccess($content, 'create', $account);
+    return parent::createAccess($rdf_entity, $node_type, $account);
   }
-
-  /**
-   * Returns a community content entity.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The parent that the community content entity belongs to.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface
-   *   A node entity.
-   */
-  protected function createContentEntity(RdfInterface $rdf_entity) {
-    return $this->entityTypeManager()->getStorage('node')->create([
-      'type' => $this->getBundle(),
-      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $rdf_entity->id(),
-    ]);
-  }
-
-  /**
-   * Returns the bundle of the entity this controller is about.
-   *
-   * @return string
-   *   The bundle machine name.
-   */
-  abstract protected function getBundle(): string;
 
 }

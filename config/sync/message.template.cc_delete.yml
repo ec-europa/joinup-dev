@@ -1,7 +1,9 @@
 uuid: c911165b-955b-4ea3-ab78-97ed6ebce59a
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: oLx_8k24xryZHmQBW7B3xnWnYztsAe9zTqke9MmyoPA
 template: cc_delete

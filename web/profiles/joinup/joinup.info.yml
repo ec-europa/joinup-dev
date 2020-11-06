@@ -13,7 +13,6 @@ config_devel:
     - block.block.authoredon
     - block.block.changed
     - block.block.contentbundle
-    - block.block.eiradeprecatedtermmessage
     - block.block.entity_bundle_facet
     - block.block.eventdate
     - block.block.exposed_form_search_page

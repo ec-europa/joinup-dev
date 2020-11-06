@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\EntityTrait;
@@ -17,6 +18,7 @@ use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\joinup_collection\JoinupCollectionHelper;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
@@ -24,6 +26,7 @@ use Drupal\og_menu\Tests\Traits\OgMenuTrait;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\user\Entity\User;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Behat step definitions for testing collections.
@@ -695,6 +698,54 @@ class CollectionContext extends RawDrupalContext {
   public function updateCollectionName(string $collection, string $name): void {
     $entity = $this->getCollectionByName($collection);
     $entity->setName($name)->save();
+  }
+
+  /**
+   * Creates the standard 'Joinup' collection.
+   *
+   * @beforeScenario @joinup_collection
+   *
+   * @see joinup_collection.module
+   */
+  public function createJoinupCollection(): void {
+    $this->createCollection([
+      'id' => JoinupCollectionHelper::getCollectionId(),
+      'label' => 'Joinup',
+      'field_ar_state' => 'validated',
+    ]);
+  }
+
+  /**
+   * Asserts that a glossary navigator is present or not on the page.
+   *
+   * @param string|null $expected_navigator
+   *   The navigator links.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   The navigator is missing from the page.
+   *
+   * @Then I should see the glossary navigator :expected_navigator
+   * @Then I should not see the glossary navigator
+   */
+  public function assertGlossaryNavigator(?string $expected_navigator = NULL): void {
+    $page = $this->getSession()->getPage();
+    $navigator_node = $page->find('css', '.glossary-navigator');
+
+    if (!$expected_navigator) {
+      if ($navigator_node) {
+        throw new ExpectationFailedException("The glossary navigator exists on the page but it should not.");
+      }
+      return;
+    }
+
+    if (!$navigator_node) {
+      throw new ElementNotFoundException($this->getSession()->getDriver(), 'navigator');
+    }
+
+    $actual_navigator = $navigator_node->getText();
+    if ($actual_navigator !== $expected_navigator) {
+      throw new ExpectationFailedException("Expected navigator '{$expected_navigator}' but found '{$actual_navigator}'.");
+    }
   }
 
 }

@@ -1,7 +1,9 @@
 uuid: 2244951b-048a-4f39-82b1-9861d52ab11c
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: p--OjEkHKa4NzPYJzXiaqyK_hmal4RQYLwG4ReWMXLo
 template: col_arc_del_no_request

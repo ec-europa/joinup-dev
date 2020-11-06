@@ -1,7 +1,9 @@
 uuid: 8f8c7f90-9e0b-45a6-8b39-3ebc934d6813
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: col_arc_del_members
 label: 'Collection archive/delete members'
 description: 'Template id 14 - Sent to all members when a collection is archived/deleted'

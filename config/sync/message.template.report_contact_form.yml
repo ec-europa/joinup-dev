@@ -1,7 +1,9 @@
 uuid: 878876c4-7fc9-4bfc-b125-2455f6c70f95
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.content_editor
 template: report_contact_form
 label: 'Report contact form'
 description: 'The message template for reporting content'

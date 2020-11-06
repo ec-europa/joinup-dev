@@ -618,8 +618,11 @@ function joinup_theme_preprocess_block(&$variables) {
 
     // Add classes to identify the search bars.
     case 'global_search':
-    case 'exposed_form_search_page':
       $variables['attributes']['class'][] = 'search-bar search-bar--header search-bar--white mdl-textfield mdl-js-textfield mdl-chipfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right';
+      break;
+
+    case 'exposed_form_search_page':
+      $variables['attributes']['class'][] = 'search-bar mdl-textfield mdl-js-textfield mdl-chipfield mdl-textfield--floating-label mdl-textfield--full-width';
       break;
 
     // Add special classes for dropdown menus in header.
@@ -1053,6 +1056,13 @@ function joinup_theme_preprocess_page_title__node__video(&$variables) {
 
   $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page-title--node--glossary.html.twig.
+ */
+function joinup_theme_preprocess_page_title__node__glossary(&$variables) {
+  $variables['title'] = t('Glossary');
 }
 
 /**
@@ -1527,14 +1537,11 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
   // disable the "floating label" behaviour in these forms:
   $non_floating_form_routes = [
     'collection.propose_form',
-    'custom_page.group_custom_page.add',
     'entity.node.edit_form',
     'entity.rdf_entity.edit_form',
     'entity.user.edit_form',
-    'joinup_discussion.rdf_entity_discussion.add',
-    'joinup_document.rdf_entity_document.add',
+    'joinup_group.add_content',
     'joinup_licence.add',
-    'joinup_news.rdf_entity_news.add',
     'node.add',
     'rdf_entity.propose_form',
     'rdf_entity.rdf_add',

@@ -20,6 +20,24 @@ class Collection extends Rdf implements CollectionInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * phpcs:disable Generic.CodeAnalysis.UselessOverridingMethod.Found
+   */
+  public static function create(array $values = []): CollectionInterface {
+    // Delegate to the parent method. This is only overridden to provide the
+    // correct return type.
+    return parent::create($values);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSolutions(): array {
+    return $this->getReferencedEntities('field_ar_affiliates');
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function getSolutionIds(): array {
     $ids = $this->getReferencedEntityIds('field_ar_affiliates');

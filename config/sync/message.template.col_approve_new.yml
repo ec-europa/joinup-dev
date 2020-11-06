@@ -1,7 +1,9 @@
 uuid: feefde71-1e71-44a3-8c99-cada84326d73
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: col_approve_new
 label: 'Collection approve new'
 description: 'Template id 2'

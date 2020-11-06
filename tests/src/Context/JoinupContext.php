@@ -624,6 +624,14 @@ class JoinupContext extends RawDrupalContext {
           $node->$name = $value;
         }
       }
+      // Add the body field format.
+      if ($name === 'body') {
+        $value_key = "{$name}:value";
+        $format_key = "{$name}:format";
+        $node->{$value_key} = $value;
+        $node->{$format_key} = 'content_editor';
+        unset($node->{$name});
+      }
     }
 
     if (!empty($node->field_attachment)) {
@@ -696,7 +704,10 @@ class JoinupContext extends RawDrupalContext {
     if (isset($node->field_paragraphs_body)) {
       $paragraph = Paragraph::create([
         'type' => 'simple_paragraph',
-        'field_body' => $node->field_paragraphs_body,
+        'field_body' => [
+          'value' => $node->field_paragraphs_body,
+          'format' => 'content_editor',
+        ],
       ]);
       $paragraph->save();
       $node->{"field_paragraphs_body:target_id"} = $paragraph->id();
@@ -768,6 +779,11 @@ class JoinupContext extends RawDrupalContext {
         'web url' => 'field_event_web_url',
         'scope' => 'field_scope',
         'state' => 'field_state',
+      ],
+      'glossary' => [
+        'abbreviation' => 'field_glossary_abbreviation',
+        'definition' => 'field_glossary_definition:value',
+        'summary' => 'field_glossary_definition:summary',
       ],
       'news' => [
         'headline' => 'field_news_headline',

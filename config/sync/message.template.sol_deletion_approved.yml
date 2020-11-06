@@ -1,7 +1,9 @@
 uuid: a7ddebd1-29e3-431f-92a6-d80090313d5a
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: sol_deletion_approved
 label: 'Solution deletion approved'
 description: 'Template 11: Approve deletion request/Delete'

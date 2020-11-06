@@ -1,7 +1,9 @@
 uuid: 10c6600c-71e1-4bbc-85e1-8cbe9d040d5c
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: discussion_updated
 label: 'Notify discussion subscribers on discussion update'
 description: 'Message sent to subscribers of a discussion when a discussion is updated'

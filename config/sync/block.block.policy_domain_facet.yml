@@ -12,7 +12,7 @@ dependencies:
 id: policy_domain_facet
 theme: joinup_theme
 region: sidebar_left
-weight: -10
+weight: -16
 provider: null
 plugin: 'facet_block:policy_domain'
 settings:
