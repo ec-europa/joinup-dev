@@ -104,14 +104,14 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
     // again. This happens when a page or block is cached, so Search API has
     // not fired an actual search.
     if (!$results) {
-      /* @var $search_api_index \Drupal\search_api\IndexInterface */
+      /** @var \Drupal\search_api\IndexInterface $search_api_index */
       $search_api_index = $this->getIndex();
       $current_request = $this->requestStack->getCurrentRequest();
 
       // Create the query.
       $options = [
         'parse_mode' => 'direct',
-        // @Todo Fix limit, get it from field settings.
+        // @todo Fix limit, get it from field settings.
         'limit' => 10,
         'offset' => $current_request->get('page', 0),
       ];

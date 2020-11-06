@@ -129,7 +129,7 @@ class LicenceOverviewController extends ControllerBase {
    * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function buildRow(EntityInterface $entity): array {
-    /** @var $entity \Drupal\rdf_entity\Entity\Rdf */
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
     $row['id'] = $entity->toLink()->toString();
     $row['rid'] = $entity->bundle();
     return $row;

@@ -202,7 +202,11 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
         $node->skip_notification = TRUE;
         $node->set('og_audience', $group_id)->save();
         if (empty($node->isChild)) {
-          $message['status'][] = [['#markup' => $this->t('@type <a href=":url">@title</a> group was changed to <a href=":group_url">@group</a>.', $args)]];
+          $message['status'][] = [
+            [
+              '#markup' => $this->t('@type <a href=":url">@title</a> group was changed to <a href=":group_url">@group</a>.', $args),
+            ],
+          ];
         }
         else {
           $last_message =& $message['status'][count($message['status']) - 1];

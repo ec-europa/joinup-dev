@@ -190,7 +190,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    */
   protected function getResultEntities(ResultSetInterface $result): array {
     $results = [];
-    /* @var $item \Drupal\search_api\Item\ItemInterface */
+    /** @var \Drupal\search_api\Item\ItemInterface $item */
     foreach ($result->getResultItems() as $item) {
       try {
         $entity = $this->revisionManager->loadLatestRevision($item->getOriginalObject()->getValue());

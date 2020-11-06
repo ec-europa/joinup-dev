@@ -112,7 +112,10 @@ trait UtilityTrait {
     // visible portion of the element. This css property works only when the
     // "position" property is set either to fixed or absolute.
     $webdriver_element = $driver->getWebDriverSession()->element('xpath', $element->getXpath());
-    $is_clipped = in_array($webdriver_element->css('position'), ['fixed', 'absolute']);
+    $is_clipped = in_array(
+      $webdriver_element->css('position'),
+      ['fixed', 'absolute']
+    );
 
     return $is_visible && !$is_clipped;
   }

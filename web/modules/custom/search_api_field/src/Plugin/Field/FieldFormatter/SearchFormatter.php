@@ -254,7 +254,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     $view_mode_settings = $this->fieldDefinition->getSetting('view_modes');
 
     $results = [];
-    /* @var $item \Drupal\search_api\Item\ItemInterface */
+    /** @var \Drupal\search_api\Item\ItemInterface $item */
     foreach ($result->getResultItems() as $item) {
       try {
         /** @var \Drupal\Core\Entity\EntityInterface $entity */

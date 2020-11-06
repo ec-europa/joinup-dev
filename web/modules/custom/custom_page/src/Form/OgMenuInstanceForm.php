@@ -208,7 +208,10 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
           $element['title'],
         ];
         $form['links'][$id]['enabled'] = $element['enabled'];
-        $form['links'][$id]['enabled']['#wrapper_attributes']['class'] = ['checkbox', 'menu-enabled'];
+        $form['links'][$id]['enabled']['#wrapper_attributes']['class'] = [
+          'checkbox',
+          'menu-enabled',
+        ];
 
         $form['links'][$id]['weight'] = $element['weight'];
 

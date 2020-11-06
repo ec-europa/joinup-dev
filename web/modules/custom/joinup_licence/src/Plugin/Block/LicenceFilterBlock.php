@@ -77,7 +77,9 @@ class LicenceFilterBlock extends BlockBase implements ContainerFactoryPluginInte
           $tree[$parent]['items'][] = [
             'title' => $term->name,
             'description' => $child->getDescription(),
-            'licence_category' => htmlentities(str_replace([' ', '/'], ['-', '-'], strtolower($term->name))),
+            'licence_category' => htmlentities(
+              str_replace([' ', '/'], ['-', '-'], strtolower($term->name))
+            ),
           ];
         }
       }
