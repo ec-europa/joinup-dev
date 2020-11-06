@@ -1,0 +1,19 @@
+uuid: 96b18146-763a-4cf7-8c04-6d4b19dfa31c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - field.field.message.solution_membership_invitation.field_invitation
+    - message.template.solution_membership_invitation
+id: message.solution_membership_invitation.mail_body
+targetEntityType: message
+bundle: solution_membership_invitation
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+hidden:
+  field_invitation: true
+  partial_0: true

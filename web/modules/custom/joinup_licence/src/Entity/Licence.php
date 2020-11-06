@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_licence\Entity;
 
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -75,17 +76,67 @@ class Licence extends Rdf implements LicenceInterface {
   /**
    * {@inheritdoc}
    */
-  public function isCompatibleWith(LicenceInterface $redistribute_as_licence): bool {
-    return (bool) $this->getCompatibilityDocumentId($redistribute_as_licence);
+  public function getCompatibilityDocumentId(LicenceInterface $redistribute_as_licence): string {
+    /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginManager $plugin_manager */
+    $plugin_manager = \Drupal::service('plugin.manager.joinup_licence_compatibility_rule');
+    return $plugin_manager->getCompatibilityDocumentId($this, $redistribute_as_licence);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getCompatibilityDocumentId(LicenceInterface $redistribute_as_licence): ?string {
-    /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginManager $plugin_manager */
-    $plugin_manager = \Drupal::service('plugin.manager.joinup_licence_compatibility_rule');
-    return $plugin_manager->getCompatibilityDocumentId($this, $redistribute_as_licence);
+  public function getCompatibilityDocument(LicenceInterface $redistribute_as_licence): CompatibilityDocumentInterface {
+    $compatibility_document_id = $this->getCompatibilityDocumentId($redistribute_as_licence);
+    return CompatibilityDocument::load($compatibility_document_id)
+      ->setUseLicence($this)
+      ->setRedistributeAsLicence($redistribute_as_licence);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function loadBySpdxId(string $spdx_id): ?LicenceInterface {
+    try {
+      $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('joinup_licence')->error($e->getMessage());
+      return NULL;
+    }
+
+    if (!$storage instanceof EntityStorageInterface) {
+      \Drupal::logger('joinup_licence')->error('Retrieval of RDF storage failed.');
+      return NULL;
+    }
+
+    // Retrieve the ID of the SPDX licence entity.
+    $spdx_entity_ids = $storage->getQuery()
+      ->condition('rid', 'spdx_licence')
+      ->condition('field_spdx_licence_id', $spdx_id)
+      ->execute();
+
+    if (empty($spdx_entity_ids)) {
+      return NULL;
+    }
+
+    // Retrieve the ID of the licence that references the SPDX licence entity.
+    $spdx_entity_id = reset($spdx_entity_ids);
+    $licence_ids = $storage->getQuery()
+      ->condition('rid', 'licence')
+      ->condition('field_licence_spdx_licence', $spdx_entity_id)
+      ->execute();
+
+    if (empty($licence_ids)) {
+      return NULL;
+    }
+
+    $licence_id = reset($licence_ids);
+    $licence = $storage->load($licence_id);
+    if (!$licence instanceof LicenceInterface) {
+      return NULL;
+    }
+
+    return $licence;
   }
 
 }

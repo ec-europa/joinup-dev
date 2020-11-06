@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\collection\Entity\CollectionInterface;
@@ -183,4 +184,16 @@ WHERE { GRAPH ?g { ?entity ?content_creation_predicate "only_facilitators" } }
 QUERY;
   $connection->query($update_query);
   \Drupal::entityTypeManager()->getStorage('rdf_entity')->resetCache($results);
+}
+
+/**
+ * Create the table for the new Compatibility Document entity type.
+ */
+function joinup_core_update_0106502(): void {
+  if (!Database::getConnection()->schema()->tableExists('compatibility_document')) {
+    $entity_type_manager = \Drupal::entityTypeManager();
+    $entity_type_manager->clearCachedDefinitions();
+    $definition = $entity_type_manager->getDefinition('compatibility_document');
+    \Drupal::entityDefinitionUpdateManager()->installEntityType($definition);
+  }
 }

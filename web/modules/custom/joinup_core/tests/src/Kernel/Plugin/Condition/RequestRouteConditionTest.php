@@ -69,7 +69,7 @@ class RequestRouteConditionTest extends KernelTestBase {
    * Tests the request route condition.
    */
   public function testConditions() {
-    /* @var \Drupal\system\Plugin\Condition\RequestPath $condition */
+    /** @var \Drupal\system\Plugin\Condition\RequestPath $condition */
     $condition = $this->pluginManager->createInstance('request_route');
     $condition->setConfig('routes', ['foo.test', 'bar.test.foo']);
 

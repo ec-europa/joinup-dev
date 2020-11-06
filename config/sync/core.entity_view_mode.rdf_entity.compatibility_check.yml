@@ -1,0 +1,10 @@
+uuid: 50026e2d-9621-46fa-a0f4-514e5ce73fd8
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+id: rdf_entity.compatibility_check
+label: 'Compatibility check'
+targetEntityType: rdf_entity
+cache: true

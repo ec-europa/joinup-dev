@@ -85,19 +85,24 @@ class InvitationController extends ControllerBase {
    *   The redirect response.
    */
   public function updateInvitation(InvitationInterface $invitation, string $action, string $hash): RedirectResponse {
-    switch ($action) {
-      case self::ACTION_ACCEPT:
-        $invitation->accept()->save();
-        $this->eventDispatcher->dispatch(InvitationEvents::ACCEPT_INVITATION_EVENT, $this->getEvent($invitation, $action));
-        break;
+    if ($invitation->getStatus() !== InvitationInterface::STATUS_PENDING) {
+      $this->eventDispatcher->dispatch(InvitationEvents::NOT_PENDING_EVENT, $this->getEvent($invitation, $action));
+    }
+    else {
+      switch ($action) {
+        case self::ACTION_ACCEPT:
+          $invitation->accept()->save();
+          $this->eventDispatcher->dispatch(InvitationEvents::ACCEPT_INVITATION_EVENT, $this->getEvent($invitation, $action));
+          break;
 
-      case self::ACTION_REJECT:
-        $invitation->reject()->save();
-        $this->eventDispatcher->dispatch(InvitationEvents::REJECT_INVITATION_EVENT, $this->getEvent($invitation, $action));
-        break;
+        case self::ACTION_REJECT:
+          $invitation->reject()->save();
+          $this->eventDispatcher->dispatch(InvitationEvents::REJECT_INVITATION_EVENT, $this->getEvent($invitation, $action));
+          break;
 
-      default:
-        throw new \InvalidArgumentException("Unknow action '$action'.");
+        default:
+          throw new \InvalidArgumentException("Unknow action '$action'.");
+      }
     }
 
     $url = $invitation->getEntity()->toUrl();

@@ -470,6 +470,31 @@
   }
 }
 
+// Modifiers
+// --------------------------------------------------
+.listing__item--compatibility {
+  .listing__card--inline-container {
+    padding: 10px;
+    .listing__inner-tile--shifted {
+      flex: 2 1 300px;
+      padding: 10px;
+
+      .listing__title,
+      .listing__teaser {
+        margin-left: 0;
+        max-height: initial;
+        line-height: initial;
+        overflow: initial;
+      }
+    }
+    .licence-tile__actions {
+      position: initial;
+      top: initial;
+      left: initial;
+    }
+  }
+}
+
 // Dependencies
 // --------------------------------------------------
 .licence-tile {

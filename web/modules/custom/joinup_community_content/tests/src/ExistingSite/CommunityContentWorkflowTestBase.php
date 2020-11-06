@@ -149,7 +149,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
   /**
    * Tests the 'view' (read) operation access.
    *
-   * @todo: Add test for unpublished parent.
+   * @todo Add test for unpublished parent.
    */
   protected function readOperationTest() {
     $test_roles = array_diff($this->getAvailableUsers(), ['userOwner']);

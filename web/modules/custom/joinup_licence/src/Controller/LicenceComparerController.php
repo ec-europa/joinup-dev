@@ -99,7 +99,7 @@ class LicenceComparerController extends ControllerBase {
       // combinations and that would flood the cache backend. As updating or
       // deleting licences is a very rare event, the cached items may be stored
       // for a long period of time. We ensure a life time for cached licence
-      // comparision of two months: 2 * 60s * 60m * 24h * 30d = 5184000s.
+      // comparison of two months: 2 * 60s * 60m * 24h * 30d = 5184000s.
       ->setCacheMaxAge(5184000)
       ->applyTo($build);
 
@@ -220,7 +220,10 @@ class LicenceComparerController extends ControllerBase {
       ];
     }
 
-    $this->padWithEmptyCells($row, ['licence-comparer__header', 'licence-comparer__empty']);
+    $this->padWithEmptyCells($row, [
+      'licence-comparer__header',
+      'licence-comparer__empty',
+    ]);
 
     return $row;
   }
