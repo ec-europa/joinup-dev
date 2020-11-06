@@ -13,6 +13,7 @@ use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\SearchTrait;
 use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\tallinn\Tallinn;
 use Drupal\taxonomy\Entity\Term;
@@ -81,12 +82,13 @@ class TallinnSubContext extends DrupalSubContextBase {
       'uuid' => '9d7b6405-061a-4064-ae7e-b34c67f3afad',
       'title' => 'Implementation monitoring',
       'og_audience' => Tallinn::TALLINN_COMMUNITY_ID,
-      'body' => [
-        [
+      'field_paragraphs_body' => Paragraph::create([
+        'type' => 'simple_paragraph',
+        'field_body' => [
           'value' => '{block:tallinn_dashboard}',
           'format' => 'content_editor',
         ],
-      ],
+      ]),
       'field_cp_content_listing' => [
         [
           'value' => [
@@ -98,6 +100,7 @@ class TallinnSubContext extends DrupalSubContextBase {
             ],
             'enabled' => 1,
             'query_presets' => 'entity_bundle|tallinn_report',
+            'global_search' => FALSE,
             // Show all tallinn reports in one page.
             'limit' => '33',
           ],
@@ -120,7 +123,9 @@ class TallinnSubContext extends DrupalSubContextBase {
 
     /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
     $entity_repository = \Drupal::service('entity.repository');
-    $entity_repository->loadEntityByUuid('node', '9d7b6405-061a-4064-ae7e-b34c67f3afad')->delete();
+    $node = $entity_repository->loadEntityByUuid('node', '9d7b6405-061a-4064-ae7e-b34c67f3afad');
+    $node->field_paragraphs_body->entity->delete();
+    $node->delete();
 
     $collection = Rdf::load(Tallinn::TALLINN_COMMUNITY_ID);
     $collection->skip_notification = TRUE;

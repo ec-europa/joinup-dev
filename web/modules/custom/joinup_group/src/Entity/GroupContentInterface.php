@@ -4,14 +4,17 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group\Entity;
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Interface for entities that are group content.
  *
- * This comprises community content, custom pages, and solutions.
+ * The following group types can be returned for these bundles:
+ * - collections: community content, custom pages, and solutions.
+ * - solutions: asset releases and asset distributions.
  */
-interface GroupContentInterface {
+interface GroupContentInterface extends ContentEntityInterface {
 
   /**
    * Returns the group to which this entity belongs.

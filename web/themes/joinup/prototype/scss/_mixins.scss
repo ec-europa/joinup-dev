@@ -240,3 +240,10 @@ $z-index: (auto: auto, zero: 0, highlight: 1, highlight + 1: 2, highlight + 2: 3
     max-height: ($number - 1) * $row-height + $number-small * $row-height-small + $margin + $margin-small;
   }
 }
+
+// Box sizing mixin
+@mixin box-sizing($box-model) {
+  -webkit-box-sizing: $box-model; // Safari <= 5
+     -moz-box-sizing: $box-model; // Firefox <= 19
+          box-sizing: $box-model;
+}

@@ -28,7 +28,7 @@ class EuBrandingTest extends JoinupExistingSiteTestBase {
     ];
     foreach ($pages as $page) {
       $this->drupalGet($page);
-      $this->assertSession()->responseContains('<script src="//europa.eu/webtools/load.js?globan=111" defer></script>');
+      $this->assertSession()->responseContains('<script src="//europa.eu/webtools/load.js?globan=1110" defer></script>');
     }
   }
 

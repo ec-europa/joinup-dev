@@ -41,6 +41,7 @@ use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\search_api\Entity\Server;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\Assert;
@@ -701,6 +702,17 @@ class JoinupSubContext extends DrupalSubContextBase {
       }
     }
 
+    if (isset($node->field_paragraphs_body)) {
+      $paragraph = Paragraph::create([
+        'type' => 'simple_paragraph',
+        'field_body' => $node->field_paragraphs_body,
+      ]);
+      $paragraph->save();
+      $node->{"field_paragraphs_body:target_id"} = $paragraph->id();
+      $node->{"field_paragraphs_body:target_revision_id"} = $paragraph->getRevisionId();
+      unset($node->field_paragraphs_body);
+    }
+
     // Replace the human-readable values for multiple fields.
     self::convertObjectPropertyValues($node, 'pinned', [
       'yes' => 1,
@@ -732,6 +744,7 @@ class JoinupSubContext extends DrupalSubContextBase {
       'custom_page' => [
         'attachments' => 'field_attachment',
         'logo' => 'field_custom_page_logo',
+        'body' => 'field_paragraphs_body',
       ],
       'discussion' => [
         'attachments' => 'field_attachment',
@@ -2607,17 +2620,22 @@ JS;
    *   The position of the row in the table. First position starts at 1.
    * @param string $direction
    *   The direction to move the row to. One of "up", "down", "left", "right".
+   * @param string|null $region
+   *   (optional) Only search within a certain region for the given drag icon.
+   *   Default to the whole page.
    *
    * @throws \Exception
    *   Thrown when the table row with the given position cannot be found in the
    *   page.
    *
    * @Then I drag the table row at position :position( to the) :direction
+   * @Then I drag the table row in the :region region at position :position( to the) :direction
    */
-  public function findTableRowByPositionAndDragTowardsDirection(string $position, string $direction): void {
+  public function findTableRowByPositionAndDragTowardsDirection(string $position, string $direction, ?string $region = NULL): void {
     self::assertJavaScriptEnabledBrowser();
 
-    $row = $this->findDraggableTableRowByPosition((int) $position);
+    $region = empty($region) ? $this->getSession()->getPage() : $this->getRegion($region);
+    $row = $this->findDraggableTableRowByPosition((int) $position, $region);
     $this->dragTableRowTowardsDirection($row, $direction);
   }
 

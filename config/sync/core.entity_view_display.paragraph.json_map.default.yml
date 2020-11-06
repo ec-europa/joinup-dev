@@ -1,0 +1,22 @@
+uuid: b1d45961-7640-431d-984b-b0510b577f9f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.json_map.field_json
+    - paragraphs.paragraphs_type.json_map
+  module:
+    - oe_webtools
+id: paragraph.json_map.default
+targetEntityType: paragraph
+bundle: json_map
+mode: default
+content:
+  field_json:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: webtools_snippet
+    region: content
+hidden: {  }

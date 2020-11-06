@@ -161,7 +161,7 @@ file is not under VCS control.
 #### Setup environment variables
 
 Sensitive data will be stored in [environment variables](
-https://en.wikipedia.org/wiki/Environment_variable). See `local.env.dist` for
+https://en.wikipedia.org/wiki/Environment_variable). See `.env.dist` for
 details.
 
 #### Build the project

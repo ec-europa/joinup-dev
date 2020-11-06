@@ -10,12 +10,15 @@ declare(strict_types = 1);
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
+use Drupal\eupl\Eupl;
 use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\node\Entity\Node;
+use Drupal\rdf_entity\Entity\Rdf;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
 use PHPUnit\Framework\Assert;
 
@@ -29,6 +32,87 @@ class EuplSubContext extends DrupalSubContextBase {
   use EntityTrait;
   use MaterialDesignTrait;
   use RdfEntityTrait;
+
+  /**
+   * Creates the standard 'EUPL' collection and several dependencies.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when one of the entities could not be created, for example because
+   *   it already exists.
+   *
+   * @beforeScenario @eupl
+   */
+  public function setupEuplData(): void {
+    // Create an owner.
+    Rdf::create([
+      'rid' => 'owner',
+      'id' => 'http://example.com/owner',
+      'field_owner_name' => 'Owner',
+    ])->save();
+
+    // Create the EUPL entity.
+    Rdf::create([
+      'rid' => 'collection',
+      'id' => Eupl::EUPL_COMMUNITY_ID,
+      'label' => 'EUPL',
+      'field_ar_state' => 'validated',
+      'field_ar_owner' => 'http://example.com/owner',
+    ])->save();
+
+    Rdf::create([
+      'rid' => 'solution',
+      'collection' => Eupl::EUPL_COMMUNITY_ID,
+      'id' => Eupl::JLA_SOLUTION,
+      'label' => 'Joinup Licensing Assistant',
+      'field_is_state' => 'validated',
+    ])->save();
+
+    // The 'Implementation monitoring' standard custom page.
+    Node::create([
+      'nid' => 701805,
+      'type' => 'custom_page',
+      'uuid' => '3bee8b04-75fd-46a8-94b3-af0d8f5a4c41',
+      'title' => 'JLA',
+      'og_audience' => Eupl::JLA_SOLUTION,
+    ])->save();
+  }
+
+  /**
+   * Clicks the info icon next to the SPDX licence header.
+   *
+   * @param string $spdx
+   *   The SPDX licence ID.
+   *
+   * @throws \Exception
+   *   Thrown if the info icon could not be found.
+   *
+   * @Given I click the info icon of the :spdx licence( table cell)
+   */
+  public function clickLicenceInfoIcon(string $spdx): void {
+    $xpath = '//td[@class and contains(concat(" ", normalize-space(@class), " "), " licence-comparer__header ") and contains(., "' . $spdx . '")]//span[@class and contains(concat(" ", normalize-space(@class), " "), " icon--info ")]';
+    $icon = $this->getSession()->getPage()->find('xpath', $xpath);
+    if (empty($icon)) {
+      throw new \Exception("Could not locate a table cell with the text {$spdx}.");
+    }
+    $icon->click();
+  }
+
+  /**
+   * Closes the licence modal dialog.
+   *
+   * @throws \Exception
+   *   Thrown if the dialog is not open or the x button is not found.
+   *
+   * @Given I close the licence modal dialog
+   */
+  public function closeLicenceModalDialog(): void {
+    $xpath = '//div[@class and contains(concat(" ", normalize-space(@class), " "), " licence-comparer__dialog ")]//button[@title="Close"]';
+    $icon = $this->getSession()->getPage()->find('xpath', $xpath);
+    if (empty($icon)) {
+      throw new \Exception("Either the dialog is not available or the 'Close' button could not be located.");
+    }
+    $icon->click();
+  }
 
   /**
    * Asserts the legal type categories order in the JLA licence listing item.
@@ -231,6 +315,30 @@ class EuplSubContext extends DrupalSubContextBase {
       return $licence;
     }
     throw new \Exception("Can't find the '$spdx_id' licence on the page.");
+  }
+
+  /**
+   * Clears the content created for the purpose of this test.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when one of the created entities could not be deleted.
+   *
+   * @afterScenario @eupl
+   */
+  public function cleanEuplData(): void {
+    /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
+    $entity_repository = \Drupal::service('entity.repository');
+    $entity_repository->loadEntityByUuid('node', '3bee8b04-75fd-46a8-94b3-af0d8f5a4c41')->delete();
+
+    $collection = Rdf::load(Eupl::EUPL_COMMUNITY_ID);
+    $collection->skip_notification = TRUE;
+    $collection->delete();
+
+    $solution = Rdf::load(Eupl::JLA_SOLUTION);
+    $solution->skip_notification = TRUE;
+    $solution->delete();
+
+    Rdf::load('http://example.com/owner')->delete();
   }
 
   /**

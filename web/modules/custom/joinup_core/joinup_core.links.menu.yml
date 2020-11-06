@@ -18,9 +18,16 @@ joinup_core.edit_support_menu:
   route_name: entity.menu.edit_form
   route_parameters:
     menu: support
-  description: 'Allows to manage of the user support menu.'
+  description: 'Allows to manage the user support menu.'
   parent: system.admin
   weight: 0
+
+joinup_core.site_alerts:
+  title: 'Site alerts'
+  route_name: entity.site_alert.collection
+  description: 'Manage site wide alerts.'
+  parent: system.admin
+  weight: 3
 
 joinup_core.support.tour:
   title: 'Take a tour'

@@ -41,6 +41,7 @@ config_devel:
     - block.block.primaryadminactions
     - block.block.rdf_entities_in_proposed_state
     - block.block.seven_login
+    - block.block.site_alerts
     - block.block.solutiontype
     - block.block.spatial_coverage_facet
     - block.block.support
@@ -97,11 +98,6 @@ config_devel:
     - og_comment.settings
     - og_menu.ogmenu.navigation
     - password_policy.password_policy.generic_policy
-    - pathauto.pattern.community_content
-    - pathauto.pattern.custom_page
-    - pathauto.pattern.rdf_entities_distributions
-    - pathauto.pattern.rdf_entities_generic
-    - pathauto.pattern.rdf_entities_releases
     - system.menu.support
     - views.view.collection_content
     - views.view.collections

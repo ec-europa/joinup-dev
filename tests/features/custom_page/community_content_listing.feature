@@ -149,8 +149,8 @@ Feature:
     And I select "Event" from "Available filters"
     And I press "Add and configure filter"
     And I fill in "Event" with "20 year anniversary"
-    And I drag the table row at position 3 up
-    And I drag the table row at position 2 up
+    And I drag the table row in the "Content listing field filter form" region at position 3 up
+    And I drag the table row in the "Content listing field filter form" region at position 2 up
     And I press "Save"
     And I should see the following tiles in the correct order:
       | 20 year anniversary                   |
@@ -201,9 +201,9 @@ Feature:
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     # Simulate reordering and removal of rows.
-    And I drag the table row at position 4 up
-    And I drag the table row at position 3 up
-    And I drag the table row at position 1 down
+    And I drag the table row in the "Content listing field filter form" region at position 4 up
+    And I drag the table row in the "Content listing field filter form" region at position 3 up
+    And I drag the table row in the "Content listing field filter form" region at position 1 down
     # Remove the first two rows.
     And I press "Remove filter"
     And I wait for AJAX to finish

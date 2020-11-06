@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\custom_page\Entity\CustomPage;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\node\NodeInterface;
@@ -20,6 +21,28 @@ use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Drupal\search_api\Query\QueryInterface;
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function custom_page_entity_type_alter(array &$entity_types) {
+  /** @var \Drupal\Core\Entity\ContentEntityTypeInterface[] $entity_types */
+  // Add a link template allow adding custom pages.
+  $entity_types['rdf_entity']->setLinkTemplate('add-custom-page', '/rdf_entity/{rdf_entity}/custom_page/add');
+
+  // Replaces the standard OG Menu Instance form with a customized one that is
+  // suitable for use in the front end.
+  $entity_types['ogmenu_instance']->setFormClass('edit', 'Drupal\custom_page\Form\OgMenuInstanceForm');
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function custom_page_entity_bundle_info_alter(array &$bundles) {
+  if (!empty($bundles['node']['custom_page'])) {
+    $bundles['node']['custom_page']['class'] = CustomPage::class;
+  }
+}
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -152,17 +175,6 @@ function custom_page_menu_link_content_update(MenuLinkContentInterface $entity) 
   if (!empty($group)) {
     ContentEntity::indexEntity($group);
   }
-}
-
-/**
- * Implements hook_entity_type_alter().
- *
- * Replaces the standard OG Menu Instance form with a customized one that is
- * suitable for use in the front end.
- */
-function custom_page_entity_type_alter(array &$entity_types) {
-  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
-  $entity_types['ogmenu_instance']->setFormClass('edit', 'Drupal\custom_page\Form\OgMenuInstanceForm');
 }
 
 /**

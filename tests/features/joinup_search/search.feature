@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-b
 Feature: Global search
   As a user of the site I can find content through the global search.
 
@@ -235,6 +235,17 @@ Feature: Global search
     Then the page should show the tiles "Jenessa Carlyle"
     When I enter "Omero+snc" in the search bar and press enter
     Then the page should show the tiles "Ulysses Freeman"
+
+  Scenario: Advanced search
+    # An advanced search link is shown in the header, except on the home page
+    # and the search page.
+    Given I am on the homepage
+    Then I should not see the link "Advanced search"
+    Given I visit the collection overview
+    Then I should see the link "Advanced search"
+    When I click "Advanced search"
+    Then I should be on the advanced search page
+    But I should not see the link "Advanced search"
 
   Scenario: Collections and solutions are shown first in search results with the same relevance.
     Given collections:

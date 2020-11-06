@@ -49,7 +49,7 @@ Feature: About this solution
     When I click "About"
 
     # Clean URLs should be applied to the "About" subpage.
-    Then I should be on "/solution/size-exclusion-chromatography/about"
+    Then I should be on "/collection/monoclonal-antibody-development/solution/size-exclusion-chromatography/about"
 
     # The description.
     Then I should see the text "Separating molecules by size."
