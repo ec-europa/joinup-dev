@@ -14,7 +14,6 @@ use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
-use Drupal\og\Entity\OgMembership;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
@@ -76,6 +75,13 @@ abstract class JoinGroupFormBase extends FormBase {
   protected $user;
 
   /**
+   * {@inheritdoc}
+   */
+  public function getFormId() {
+    return 'join_group_form';
+  }
+
+  /**
    * Constructs a JoinGroupFormBase.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -121,6 +127,17 @@ abstract class JoinGroupFormBase extends FormBase {
       ':type' => $this->group->bundle(),
     ]);
   }
+
+  /**
+   * Retrieves the success message for the new membership.
+   *
+   * @param \Drupal\og\OgMembershipInterface $membership
+   *   The new membership.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The success status message.
+   */
+  abstract public function getSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup;
 
   /**
    * {@inheritdoc}
@@ -230,12 +247,7 @@ abstract class JoinGroupFormBase extends FormBase {
       ->setRoles($og_roles)
       ->save();
 
-    $parameters = ['%group' => $this->group->getName()];
-    // @todo Abstractify the messages.
-    $message = $state === OgMembership::STATE_ACTIVE ?
-      $this->t('You are now a member of %group.', $parameters) :
-      $this->t('Your membership to the %group group is under approval.', $parameters);
-    $this->messenger->addStatus($message);
+    $this->messenger->addStatus($this->getSuccessMessage($membership));
   }
 
   /**

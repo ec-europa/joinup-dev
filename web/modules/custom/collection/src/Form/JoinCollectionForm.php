@@ -10,7 +10,9 @@ use Drupal\Core\Ajax\PrependCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\joinup_group\Form\JoinGroupFormBase;
+use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -19,10 +21,20 @@ use Drupal\rdf_entity\RdfInterface;
 class JoinCollectionForm extends JoinGroupFormBase {
 
   /**
+   * The state of the new membership the user will get.
+   *
+   * @var string
+   */
+  protected $membershipState;
+
+  /**
    * {@inheritdoc}
    */
-  public function getFormId(): string {
-    return 'join_collection_form';
+  public function getSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup {
+    $parameters = ['%group' => $this->group->getName()];
+    return $membership->getState() === OgMembershipInterface::STATE_ACTIVE ?
+      $this->t('You are now a member of %group.', $parameters) :
+      $this->t('Your membership to the %group group is under approval.', $parameters);
   }
 
   /**
@@ -63,8 +75,8 @@ class JoinCollectionForm extends JoinGroupFormBase {
       // Rebuild the form and replace it in the page, so that the "Join this
       // "collection" button will be replaced with either the "You're a member"
       // button or the "Membership is pending" button.
-      $form_button = $this->formBuilder->rebuildForm('join-collection-form', $form_state, $form);
-      $response->addCommand(new ReplaceCommand('#join-collection-form', $form_button));
+      $form_button = $this->formBuilder->rebuildForm('join-group-form', $form_state, $form);
+      $response->addCommand(new ReplaceCommand('#join-group-form', $form_button));
 
       $title = $this->t('Welcome to %collection', ['%collection' => $this->group->label()]);
 

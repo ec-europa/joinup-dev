@@ -27,7 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * This form is shown in a modal dialog after the user joins a collection.
  *
- * @see \Drupal\collection\Form\JoinCollectionFormBase::showSubscribeDialog()
+ * @see \Drupal\collection\Form\JoinCollectionForm::showSubscribeDialog()
  */
 class SubscribeToCollectionForm extends FormBase {
   /**

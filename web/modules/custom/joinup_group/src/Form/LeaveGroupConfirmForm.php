@@ -78,7 +78,9 @@ class LeaveGroupConfirmForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion(): TranslatableMarkup {
-    return $this->t('Leave collection');
+    return $this->t('Leave :group', [
+      ':group' => $this->group->bundle(),
+    ]);
   }
 
   /**
