@@ -236,6 +236,22 @@ abstract class JoinGroupFormBase extends FormBase {
       $state = OgMembershipInterface::STATE_PENDING;
     }
 
+    $membership = $this->createMembership($state, $og_roles);
+    $this->messenger->addStatus($this->getSuccessMessage($membership));
+  }
+
+  /**
+   * Creates a membership for the group and the user.
+   *
+   * @param string $state
+   *   The membership state.
+   * @param array $roles
+   *   The role ids to pass in the membership.
+   *
+   * @return \Drupal\og\OgMembershipInterface
+   *   The created membership.
+   */
+  protected function createMembership(string $state, array $roles): OgMembershipInterface {
     /** @var \Drupal\og\OgMembershipInterface $membership */
     $membership = $this->entityTypeManager->getStorage('og_membership')->create([
       'type' => OgMembershipInterface::TYPE_DEFAULT,
@@ -244,10 +260,9 @@ abstract class JoinGroupFormBase extends FormBase {
       ->setOwner($this->user)
       ->setGroup($this->group)
       ->setState($state)
-      ->setRoles($og_roles)
-      ->save();
+      ->setRoles($roles);
 
-    $this->messenger->addStatus($this->getSuccessMessage($membership));
+    return $membership;
   }
 
   /**
