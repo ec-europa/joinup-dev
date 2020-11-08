@@ -107,7 +107,7 @@ class MySubscriptionsForm extends FormBase {
     // We have two different pages for the subscriptions. The "Subscriptions"
     // page and the "My subscriptions". In case of the first, the parameter is
     // not passed.
-    $this->subscriptionType = $this->routeMatch->getParameter('subscription_type') ?? 'collection';
+    $this->subscriptionType = $this->getRouteMatch()->getParameter('subscription_type') ?? 'collection';
 
     // When no user is passed we cannot show anything useful.
     if (empty($user)) {

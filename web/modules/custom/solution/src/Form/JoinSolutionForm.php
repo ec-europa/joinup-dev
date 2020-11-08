@@ -21,8 +21,27 @@ class JoinSolutionForm extends JoinGroupFormBase {
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup
    *   The title of the label.
    */
-  public function getSubmitLabel(): TranslatableMarkup {
+  public function getJoinSubmitLabel(): TranslatableMarkup {
     return $this->t('Subscribe to this :type', [
+      ':type' => $this->group->bundle(),
+    ]);
+  }
+
+  /**
+   * Returns the label for the leave submit button.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The title of the label.
+   */
+  public function getLeaveSubmitLabel(): TranslatableMarkup {
+    $membership = $this->membershipManager->getMembership($this->group, $this->user->id(), OgMembershipInterface::ALL_STATES);
+    if ($membership->hasRole($this->group->getEntityTypeId() . '-' . $this->group->bundle() . '-facilitator') || $membership->hasRole($this->group->getEntityTypeId() . '-' . $this->group->bundle() . '-author')) {
+      return $this->t('Leave this :type', [
+        ':type' => $this->group->bundle(),
+      ]);
+    }
+
+    return $this->t('Unsubscribe from this :type', [
       ':type' => $this->group->bundle(),
     ]);
   }

@@ -117,13 +117,25 @@ abstract class JoinGroupFormBase extends FormBase {
   }
 
   /**
-   * Returns the label for the submit button.
+   * Returns the label for the join submit button.
    *
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup
    *   The title of the label.
    */
-  public function getSubmitLabel(): TranslatableMarkup {
+  public function getJoinSubmitLabel(): TranslatableMarkup {
     return $this->t('Join this :type', [
+      ':type' => $this->group->bundle(),
+    ]);
+  }
+
+  /**
+   * Returns the label for the leave submit button.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The title of the label.
+   */
+  public function getLeaveSubmitLabel(): TranslatableMarkup {
+    return $this->t('Leave this :type', [
       ':type' => $this->group->bundle(),
     ]);
   }
@@ -153,7 +165,7 @@ abstract class JoinGroupFormBase extends FormBase {
     if (empty($membership)) {
       $form['join'] = [
         '#type' => 'submit',
-        '#value' => $this->getSubmitLabel(),
+        '#value' => $this->getJoinSubmitLabel(),
       ];
     }
 
@@ -169,9 +181,7 @@ abstract class JoinGroupFormBase extends FormBase {
       if ($this->accessManager->checkNamedRoute('joinup_group.leave_confirm_form', $parameters)) {
         $form['leave']['#confirm'] = [
           '#type' => 'link',
-          '#title' => $this->t('Leave this :type', [
-            ':type' => $this->group->bundle(),
-          ]),
+          '#title' => $this->getLeaveSubmitLabel(),
           '#url' => Url::fromRoute('joinup_group.leave_confirm_form', $parameters),
           '#attributes' => [
             'class' => ['use-ajax'],

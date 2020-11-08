@@ -1,8 +1,23 @@
-@api
+@api @group-b
 Feature: Subscribing to a collection after joining
   In order to promote my collection
   As a collection owner
   I want to persuade new members to subscribe to my collection
+
+  Background:
+    Given collection:
+      | title       | Some parent collection |
+      | abstract    | Abstract               |
+      | description | Description            |
+      | closed      | yes                    |
+      | state       | validated              |
+    And solution:
+      | title      | Some solution to subscribe |
+      | state      | validated                  |
+      | collection | Some parent collection     |
+    And users:
+      | Username          |
+      | Cornilius Darcias |
 
   @javascript
   Scenario: Show a modal dialog asking a user to subscribe after joining
@@ -51,3 +66,31 @@ Feature: Subscribing to a collection after joining
     But I should see the "Saved!" button on the "Some solution to subscribe" subscription card
     And the following solution content subscriptions should be selected:
       | Some solution to subscribe | Document, Event, News |
+
+    When I go to the "Some solution to subscribe" solution
+    And I press "You're a member"
+    And I wait for animations to finish
+    And I click "Unsubscribe from this solution"
+    And a modal should open
+
+    Then I should see the following lines of text:
+      | Leave solution                                                                                                |
+      | Are you sure you want to leave the Some solution to subscribe solution?                                       |
+      | By leaving the solution you will be no longer able to publish content in it or receive notifications from it. |
+
+  @javascript
+  Scenario Outline: Authors and facilitators see "Leave this solution" instead of "Unsubscribe from this solution".
+    Given the following solution user membership:
+      | solution                   | user              | roles  |
+      | Some solution to subscribe | Cornilius Darcias | <role> |
+    When I am logged in as "Cornilius Darcias"
+    And I go to the "Some solution to subscribe" solution
+    And I press "You're a member"
+    And I wait for animations to finish
+    And I click "<label>"
+
+    Examples:
+      | role        | label                          |
+      |             | Unsubscribe from this solution |
+      | author      | Leave this solution            |
+      | facilitator | Leave this solution            |
