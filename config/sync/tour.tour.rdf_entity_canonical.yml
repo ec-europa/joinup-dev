@@ -56,7 +56,7 @@ tips:
     weight: 6
     location: right
     attributes:
-      data-class: 'join-collection-form input.button'
+      data-class: 'join-group-form input.button'
   download:
     id: download
     plugin: text

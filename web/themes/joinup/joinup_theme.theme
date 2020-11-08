@@ -1594,7 +1594,7 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
   ];
 
   switch ($form_id) {
-    case 'join_collection_form':
+    case 'join_group_form':
       // Add class for join collection button.
       $form['join']['#attributes']['class'][] = 'button--blue-light';
 
