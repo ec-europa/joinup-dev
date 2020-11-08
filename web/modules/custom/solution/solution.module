@@ -245,6 +245,11 @@ function solution_entity_extra_field_info(): array {
       'description' => t('A link to share the content'),
       'visible' => FALSE,
     ];
+    $display['solution_subscribe'] = [
+      'label' => t('Subscribe to this Solution'),
+      'description' => t('Subscribes the user to the solution.'),
+      'visible' => FALSE,
+    ];
   }
 
   return $fields;
@@ -379,6 +384,19 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
       'contexts' => [
         'og_role',
       ],
+    ];
+  }
+
+  if ($display->getComponent('join_collection')) {
+    $build['join_collection'] = [
+      '#lazy_builder' => [
+        'solution.lazy_builders:renderJoinSolutionForm',
+        [$entity->id()],
+      ],
+      '#create_placeholder' => TRUE,
+      // This form varies by the role a user has inside the collection. Set the
+      // applicable cache context.
+      '#cache' => ['contexts' => ['og_role']],
     ];
   }
 }
