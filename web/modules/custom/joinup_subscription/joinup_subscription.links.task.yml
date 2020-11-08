@@ -3,3 +3,19 @@ joinup_subscription.subscriptions:
   route_name: joinup_subscription.subscriptions
   base_route: entity.user.canonical
   weight: 0
+
+joinup_subscription.my_subscriptions.collections:
+  title: 'Collections'
+  route_name: joinup_subscription.my_subscriptions
+  route_parameters:
+    subscription_type: 'collection'
+  base_route: joinup_subscription.my_subscriptions
+  weight: 0
+
+joinup_subscription.my_subscriptions.solutions:
+  title: 'Solutions'
+  route_name: joinup_subscription.my_subscriptions
+  route_parameters:
+    subscription_type: 'solution'
+  base_route: joinup_subscription.my_subscriptions
+  weight: 1

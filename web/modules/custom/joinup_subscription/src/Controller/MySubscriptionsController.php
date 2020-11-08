@@ -49,11 +49,14 @@ class MySubscriptionsController extends ControllerBase {
    * This is enforced for the 'joinup_subscription.my_subscriptions' route with
    * the '_user_is_logged_in' requirement.
    *
+   * @param string $subscription_type
+   *   The subscription type. Either collection or solution.
+   *
    * @return array
    *   The subscription settings form array.
    */
-  public function build(): array {
-    return $this->formBuilder()->getForm('Drupal\joinup_subscription\Form\MySubscriptionsForm', $this->currentUser());
+  public function build(string $subscription_type): array {
+    return $this->formBuilder()->getForm('Drupal\joinup_subscription\Form\MySubscriptionsForm', $this->currentUser(), $subscription_type);
   }
 
   /**

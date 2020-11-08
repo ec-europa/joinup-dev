@@ -13,12 +13,15 @@ joinup_subscription.subscriptions:
         type: entity:user
 
 joinup_subscription.my_subscriptions:
-  path: '/user/subscriptions'
+  path: '/user/subscriptions/{subscription_type}'
   defaults:
     _controller: '\Drupal\joinup_subscription\Controller\MySubscriptionsController::build'
     _title: 'My subscriptions'
+    # Set the default page to show collections.
+    subscription_type: 'collection'
   requirements:
     _user_is_logged_in: 'TRUE'
+    subscription_type: '(collection|solution)'
 
 joinup_subscription.unsubscribe_all:
   path: '/user/{user}/unsubscribe-all'
