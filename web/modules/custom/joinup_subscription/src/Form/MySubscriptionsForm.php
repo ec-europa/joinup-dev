@@ -153,7 +153,8 @@ class MySubscriptionsForm extends FormBase {
     // to subscribe to.
     $form['groups']['#tree'] = TRUE;
     $bundle_info = [];
-    foreach (array_keys(JoinupSubscriptionsInterface::BUNDLES) as $entity_type_id) {
+    $active_subscription_bundles = $this->subscriptionType === 'collection' ? JoinupSubscriptionsInterface::COLLECTION_BUNDLES : JoinupSubscriptionsInterface::SOLUTION_BUNDLES;
+    foreach (array_keys($active_subscription_bundles) as $entity_type_id) {
       $bundle_info[$entity_type_id] = $this->entityTypeBundleInfo->getBundleInfo($entity_type_id);
     }
 
@@ -197,11 +198,12 @@ class MySubscriptionsForm extends FormBase {
 
       $subscription_status = [];
 
-      $subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
-      foreach (JoinupSubscriptionsInterface::BUNDLES as $entity_type_id => $bundle_ids) {
+      $active_subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
+      $subscription_bundles = $this->subscriptionType === 'collection' ? JoinupSubscriptionsInterface::COLLECTION_BUNDLES : JoinupSubscriptionsInterface::SOLUTION_BUNDLES;
+      foreach ($subscription_bundles as $entity_type_id => $bundle_ids) {
         foreach ($bundle_ids as $bundle_id) {
           $key = static::getSubscriptionKey($entity_type_id, $bundle_id);
-          $value = array_reduce($subscription_bundles, function (bool $carry, EntityBundlePairItem $entity_bundle_pair) use ($entity_type_id, $bundle_id): bool {
+          $value = array_reduce($active_subscription_bundles, function (bool $carry, EntityBundlePairItem $entity_bundle_pair) use ($entity_type_id, $bundle_id): bool {
             return $carry || $entity_bundle_pair->getEntityTypeId() === $entity_type_id && $entity_bundle_pair->getBundleId() === $bundle_id;
           }, FALSE);
           $user_is_subscribed = $user_is_subscribed || $value;
@@ -344,7 +346,8 @@ class MySubscriptionsForm extends FormBase {
 
     // Change status of checkboxes.
     $subscription_status = [];
-    foreach (JoinupSubscriptionsInterface::BUNDLES as $entity_type_id => $bundle_ids) {
+    $subscription_bundles = $this->subscriptionType === 'collection' ? JoinupSubscriptionsInterface::COLLECTION_BUNDLES : JoinupSubscriptionsInterface::SOLUTION_BUNDLES;
+    foreach ($subscription_bundles as $entity_type_id => $bundle_ids) {
       foreach ($bundle_ids as $bundle_id) {
         $key = static::getSubscriptionKey($entity_type_id, $bundle_id);
         $subscription_status[$key] = $form['groups'][$submitted_group_id]['bundles'][$key]['#checked'];

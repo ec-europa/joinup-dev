@@ -70,7 +70,7 @@ class DigestFormatter extends OriginalFormatter {
   }
 
   /**
-   * Checks whether the digest is a collection content subscription digest.
+   * Checks whether the digest is a content subscription digest.
    *
    * @param array $digest
    *   The array of digest messages.

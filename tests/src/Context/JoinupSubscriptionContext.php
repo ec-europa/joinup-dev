@@ -121,18 +121,19 @@ class JoinupSubscriptionContext extends RawDrupalContext {
       $user = $this->getUserByName($values['user']);
       $membership = $this->getMembershipByGroupAndUser($collection, $user, OgMembershipInterface::ALL_STATES);
       $subscriptions = [];
-      foreach ($this->explodeCommaSeparatedStepArgument(strtolower($values['subscriptions'])) as $bundle) {
+      $subscription_bundles = $bundle === 'collection' ? JoinupSubscriptionsInterface::COLLECTION_BUNDLES : JoinupSubscriptionsInterface::SOLUTION_BUNDLES;
+      foreach ($this->explodeCommaSeparatedStepArgument(strtolower($values['subscriptions'])) as $subscription_bundle) {
         $entity_type = NULL;
-        foreach (JoinupSubscriptionsInterface::BUNDLES as $entity_type_id => $bundles) {
-          if (in_array($bundle, $bundles)) {
+        foreach ($subscription_bundles as $entity_type_id => $bundles) {
+          if (in_array($subscription_bundle, $bundles)) {
             $entity_type = $entity_type_id;
             break 1;
           }
         }
-        Assert::assertNotEmpty($entity_type, "Unknown bundle $bundle.");
+        Assert::assertNotEmpty($entity_type, "Unknown bundle $subscription_bundle.");
         $subscriptions[] = [
           'entity_type' => $entity_type,
-          'bundle' => $bundle,
+          'bundle' => $subscription_bundle,
         ];
       }
       $membership->set('subscription_bundles', $subscriptions)->save();
@@ -330,7 +331,8 @@ class JoinupSubscriptionContext extends RawDrupalContext {
     foreach ($subscription_options->getRowsHash() as $group_label => $expected_bundle_ids) {
       $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
       $group = self::getRdfEntityByLabel($group_label, $bundle);
-      foreach (JoinupSubscriptionsInterface::BUNDLES as $entity_type_id => $bundle_ids) {
+      $subscription_bundles = $bundle === 'collection' ? JoinupSubscriptionsInterface::COLLECTION_BUNDLES : JoinupSubscriptionsInterface::SOLUTION_BUNDLES;
+      foreach ($subscription_bundles as $entity_type_id => $bundle_ids) {
         foreach ($bundle_ids as $bundle_id) {
           $key = implode('|', [$entity_type_id, $bundle_id]);
           $locator = 'groups[' . $group->id() . '][bundles][' . $key . ']';
@@ -438,8 +440,8 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @param string|null $entity_type
    *   Optional entity type of an entity that is related to the message.
    *
-   * @Then the :interval (collection|solution) content subscription digest for :username should :scope the following message(s) for the :label :entity_type:
-   * @Then the :interval (collection|solution) content subscription digest for :username should :scope the following message(s):
+   * @Then the :interval content subscription digest for :username should :scope the following message(s) for the :label :entity_type:
+   * @Then the :interval content subscription digest for :username should :scope the following message(s):
    */
   public function assertDigestContains(TableNode $table, string $interval, string $username, string $scope, $label = NULL, $entity_type = NULL): void {
     Assert::assertContains($scope, ['match', 'include'], sprintf('Unknown scope %s.', $scope));
@@ -496,8 +498,8 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @param string|null $entity_type
    *   Optional entity type of an entity that is related to the message.
    *
-   * @Then the :interval (collection|solution) content subscription digest for :username should not contain the following message(s) for the :label :entity_type:
-   * @Then the :interval (collection|solution) content subscription digest for :username should not contain the following message(s):
+   * @Then the :interval content subscription digest for :username should not contain the following message(s) for the :label :entity_type:
+   * @Then the :interval content subscription digest for :username should not contain the following message(s):
    */
   public function assertDigestNotContains(TableNode $table, string $interval, string $username, $label = NULL, $entity_type = NULL): void {
     // Check that the notifier for the requested interval includes the view
@@ -574,7 +576,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @throws \Exception
    *   Throws an exception when a parameter is not the expected one.
    *
-   * @Then the collection content subscription digest sent to :username contains the following sections:
+   * @Then the content subscription digest sent to :username contains the following sections:
    */
   public function assertGroupContentSubscriptionEmailSections(string $username, TableNode $table): void {
     $this->assertEmailTagPresent();
@@ -626,7 +628,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *   Throws an exception when the user doesn't exist, has no digest message or
    *   the message subject is incorrect.
    *
-   * @Then the (collection|solution) content subscription digest sent to :username should have the subject :subject
+   * @Then the content subscription digest sent to :username should have the subject :subject
    */
   public function assertGroupContentSubscriptionEmailSubject(string $username, string $subject): void {
     $this->assertEmailTagPresent();

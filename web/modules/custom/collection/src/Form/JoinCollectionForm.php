@@ -31,10 +31,13 @@ class JoinCollectionForm extends JoinGroupFormBase {
    * {@inheritdoc}
    */
   public function getSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup {
-    $parameters = ['%group' => $this->group->getName()];
+    $parameters = [
+      '%group' => $this->group->getName(),
+      ':bundle' => $this->group->bundle(),
+    ];
     return $membership->getState() === OgMembershipInterface::STATE_ACTIVE ?
       $this->t('You are now a member of %group.', $parameters) :
-      $this->t('Your membership to the %group group is under approval.', $parameters);
+      $this->t('Your membership to the %group :bundle is under approval.', $parameters);
   }
 
   /**

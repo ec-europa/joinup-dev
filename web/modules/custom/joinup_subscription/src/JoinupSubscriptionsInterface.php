@@ -14,7 +14,15 @@ interface JoinupSubscriptionsInterface {
   /**
    * An array of bundles that can be subscribed to, keyed by entity type.
    */
-  const BUNDLES = [
+  const COLLECTION_BUNDLES = [
+    'rdf_entity' => ['solution'],
+    'node' => CommunityContentHelper::BUNDLES,
+  ];
+
+  /**
+   * An array of bundles that can be subscribed to, keyed by entity type.
+   */
+  const SOLUTION_BUNDLES = [
     'node' => CommunityContentHelper::BUNDLES,
   ];
 

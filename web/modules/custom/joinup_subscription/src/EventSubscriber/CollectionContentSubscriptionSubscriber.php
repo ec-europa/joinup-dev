@@ -16,7 +16,7 @@ use Drupal\og\OgMembershipInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Subscriber for compiling collection content subscription digest messages .
+ * Subscriber for compiling content subscription digest messages.
  */
 class CollectionContentSubscriptionSubscriber implements EventSubscriberInterface {
 
