@@ -53,7 +53,6 @@ config_devel:
     - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
-    - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
     - field.storage.rdf_entity.field_ar_abstract
@@ -73,11 +72,4 @@ config_devel:
     - rdf_entity.rdfentity.collection
     - sparql_entity_storage.mapping.rdf_entity.collection
   optional:
-    - core.entity_form_display.rdf_entity.collection.default
-    - core.entity_view_display.rdf_entity.collection.compact
-    - core.entity_view_display.rdf_entity.collection.default
-    - core.entity_view_display.rdf_entity.collection.group_header
-    - core.entity_view_display.rdf_entity.collection.rdf_draft
-    - core.entity_view_display.rdf_entity.collection.view_mode_featured
-    - core.entity_view_display.rdf_entity.collection.view_mode_tile
     - field.field.rdf_entity.collection.field_short_id
