@@ -20,11 +20,6 @@ dependencies:
 config_devel:
   - core.base_field_override.node.news.status
   - core.base_field_override.node.news.title
-  - core.entity_form_display.node.news.default
-  - core.entity_view_display.node.news.default
-  - core.entity_view_display.node.news.moderation
-  - core.entity_view_display.node.news.view_mode_featured
-  - core.entity_view_display.node.news.view_mode_tile
   - field.field.node.news.body
   - field.field.node.news.field_comments
   - field.field.node.news.field_attachment
@@ -36,7 +31,6 @@ config_devel:
   - field.field.node.news.field_news_spatial_coverage
   - field.field.node.news.field_policy_domain
   - field.field.node.news.field_shared_in
-  - field.field.node.news.field_site_featured
   - field.field.node.news.field_site_pinned
   - field.field.node.news.field_state
   - field.field.node.news.og_audience
