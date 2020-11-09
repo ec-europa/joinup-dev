@@ -55,4 +55,3 @@ processor_configs:
 empty_behavior:
   behavior: none
 show_title: false
-
