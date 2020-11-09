@@ -64,7 +64,7 @@ class JoinSolutionForm extends JoinGroupFormBase {
     $membership = parent::createMembership($state, $roles);
     $membership->set('subscription_bundles', array_map(function (string $bundle): array {
       return ['entity_type' => 'node', 'bundle' => $bundle];
-    }, CommunityContentHelper::BUNDLES))->save();
+    }, CommunityContentHelper::BUNDLES));
 
     return $membership;
   }

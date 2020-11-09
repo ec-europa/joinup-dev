@@ -80,7 +80,7 @@ class JoinCollectionForm extends JoinGroupFormBase {
 
       $title = $this->t('Welcome to %collection', ['%collection' => $this->group->label()]);
 
-      $modal_form = $this->formBuilder->getForm('\Drupal\collection\Form\SubscribeToCollectionForm', $this->group);
+      $modal_form = $this->formBuilder->getForm(SubscribeToCollectionForm::class, $this->group);
       $modal_form['#attached']['library'][] = 'core/drupal.dialog.ajax';
 
       $response->addCommand(new OpenModalDialogCommand($title, $modal_form, ['width' => '500']));

@@ -247,6 +247,7 @@ abstract class JoinGroupFormBase extends FormBase {
     }
 
     $membership = $this->createMembership($state, $og_roles);
+    $membership->save();
     $this->messenger->addStatus($this->getSuccessMessage($membership));
   }
 
