@@ -713,10 +713,6 @@ class JoinupContext extends RawDrupalContext {
     }
 
     // Replace the human-readable values for multiple fields.
-    self::convertObjectPropertyValues($node, 'field_site_featured', [
-      'yes' => 1,
-      'no' => 0,
-    ]);
     self::convertObjectPropertyValues($node, 'field_site_pinned', [
       'yes' => 1,
       'no' => 0,
@@ -792,7 +788,6 @@ class JoinupContext extends RawDrupalContext {
         'policy domain' => 'field_policy_domain',
         'shared on' => 'field_shared_in',
         'visits' => 'visit_count',
-        'featured' => 'field_site_featured',
         'pinned to front page' => 'field_site_pinned',
       ],
     ];
