@@ -21,20 +21,6 @@ Feature: Subscribing to a collection after joining
 
   @javascript
   Scenario: Show a modal dialog asking a user to subscribe after joining
-    Given collection:
-      | title       | Some parent collection |
-      | abstract    | Abstract               |
-      | description | Description            |
-      | closed      | yes                    |
-      | state       | validated              |
-    And solution:
-      | title      | Some solution to subscribe |
-      | state      | validated                  |
-      | collection | Some parent collection     |
-    And users:
-      | Username          |
-      | Cornilius Darcias |
-
     When I am logged in as "Cornilius Darcias"
     And I go to the "Some solution to subscribe" solution
     Then I should see the button "Subscribe to this solution"
