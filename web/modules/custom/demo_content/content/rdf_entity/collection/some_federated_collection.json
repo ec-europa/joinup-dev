@@ -247,10 +247,5 @@
                 "limit": 12
             }
         }
-    ],
-    "field_site_featured": [
-        {
-            "value": false
-        }
     ]
 }
