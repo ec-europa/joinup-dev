@@ -8,7 +8,6 @@ dependencies:
   - cached_computed_field:cached_computed_field
   - joinup:collection
   - drupal:image
-  - joinup:joinup_comment
   - joinup:joinup_community_content
   - joinup:joinup_core
   - joinup:joinup_validation
