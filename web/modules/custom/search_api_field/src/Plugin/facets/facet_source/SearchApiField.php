@@ -68,13 +68,6 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
 
     $this->currentPathStack = $current_path_stack;
     $this->requestStack = $request_stack;
-
-    // Load facet plugin definition and depending on those settings; load the
-    // corresponding search api page and load its index.
-    $field_id = $plugin_definition['search_api_field'];
-    $field = FieldStorageConfig::load($field_id);
-    $index = $field->getSetting('index');
-    $this->index = Index::load($index);
   }
 
   /**
@@ -176,7 +169,12 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
    * {@inheritdoc}
    */
   public function getIndex() {
-    return $this->index;
+    // Load facet plugin definition and depending on those settings; load the
+    // corresponding search api page and load its index.
+    $field_id = $this->pluginDefinition['search_api_field'];
+    $field = FieldStorageConfig::load($field_id);
+    $index = $field->getSetting('index');
+    return Index::load($index);
   }
 
   /**
