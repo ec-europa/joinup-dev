@@ -24,6 +24,7 @@ settings:
 visibility:
   request_route:
     id: request_route
-    routes: view.eif_recommendation.page
+    routes:
+      - view.eif_recommendation.page
     negate: false
     context_mapping: {  }
