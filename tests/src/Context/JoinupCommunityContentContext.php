@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup\Context;
 
+use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\Hook\Scope\AfterNodeCreateScope;
 use Drupal\joinup\Traits\NodeTrait;
@@ -12,6 +14,7 @@ use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\node\Entity\Node;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Behat step definitions to test common community content functionality.
@@ -258,6 +261,126 @@ class JoinupCommunityContentContext extends RawDrupalContext {
         }
       }
     }
+  }
+
+  /**
+   * Asserts that a sequence of HTML markup exists inside a comment.
+   *
+   * The comment is identified by its '1 based' number. Numbers are starting
+   * from 1 and are assigned in the order comments are shown on the page,
+   * regardless of their indent.
+   *
+   * @param string $comment_number
+   *   The '1 based' number of the comment in the page.
+   * @param string $markup
+   *   The piece of markup to be checked.
+   *
+   * @Then (the )comment #:comment_number should contain the markup :markup
+   */
+  public function assertCommentContainsMarkup(string $comment_number, string $markup): void {
+    $comment = $this->getNumberedComment($comment_number - 1);
+    $regex = '/' . preg_quote($markup, '/') . '/ui';
+    Assert::assertRegExp($regex, $comment->getOuterHtml());
+  }
+
+  /**
+   * Asserts that a comment has given indent.
+   *
+   * The comment is identified by its '1 based' number. Numbers are starting
+   * from 1 and are assigned in the order comments are shown on the page,
+   * regardless of their indent. The indent is a '0 based' integer.
+   *
+   * @param string $comment_number
+   *   The '1 based' number of the comment in the page.
+   * @param string $indent
+   *   The '0 based' indent value.
+   *
+   * @Then (the )comment #:comment_number indent is :indent
+   */
+  public function assertCommentIndent(string $comment_number, string $indent): void {
+    $comment = $this->getNumberedComment($comment_number - 1);
+    $nested_comments = $comment->findAll('xpath', '/ancestor::div[contains(concat(" ", @class, " "), " indented ")]');
+    Assert::assertCount((int) $indent, $nested_comments);
+  }
+
+  /**
+   * Asserts that a link exists within a comment.
+   *
+   * The comment is identified by its '1 based' number. Numbers are starting
+   * from 1 and are assigned in the order comments are shown on the page,
+   * regardless of their indent.
+   *
+   * @param string $label
+   *   The link's text.
+   * @param string $comment_number
+   *   The '1 based' number of the comment in the page.
+   *
+   * @Then I should see the link :label in comment #:comment_number
+   */
+  public function assertCommentContainsLink(string $label, string $comment_number): void {
+    if (!$this->getNumberedComment($comment_number - 1)->findLink($label)) {
+      throw new ElementNotFoundException($this->getSession(), 'link', 'text', $label);
+    }
+  }
+
+  /**
+   * Asserts that a link doesn't exist within a comment.
+   *
+   * The comment is identified by its '1 based' number. Numbers are starting
+   * from 1 and are assigned in the order comments are shown on the page,
+   * regardless of their indent.
+   *
+   * @param string $label
+   *   The link's text.
+   * @param string $comment_number
+   *   The '1 based' number of the comment in the page.
+   *
+   * @Then I should not see the link :label in comment #:comment_number
+   */
+  public function assertCommentNotContainsLink(string $label, string $comment_number): void {
+    if ($this->getNumberedComment($comment_number - 1)->findLink($label)) {
+      throw new ExpectationFailedException("Link '{$label}' exists in comment #{$comment_number} but it should not.");
+    }
+  }
+
+  /**
+   * Clicks a link within a comment.
+   *
+   * The comment is identified by its '1 based' number. Numbers are starting
+   * from 1 and are assigned in the order comments are shown on the page,
+   * regardless of their indent.
+   *
+   * @param string $label
+   *   The link's text.
+   * @param string $comment_number
+   *   The '1 based' number of the comment in the page.
+   *
+   * @Then I click :label in comment #:comment_number
+   */
+  public function clickCommentLink(string $label, string $comment_number): void {
+    $comment = $this->getNumberedComment($comment_number - 1);
+    $comment->clickLink($label);
+  }
+
+  /**
+   * Returns the a comment element given its '0 based' index on the page.
+   *
+   * @param int $index
+   *   The '0 based' index of the comment in page.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The comment node element.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   When there's no comment with the provided index on the current page.
+   */
+  protected function getNumberedComment(int $index): NodeElement {
+    $session = $this->getSession();
+    $comments = $session->getPage()->findAll('css', '.comment-item');
+    if (!isset($comments[$index])) {
+      throw new ElementNotFoundException($session, 'Comment #' . ($index + 1));
+    }
+    return $comments[$index];
   }
 
 }

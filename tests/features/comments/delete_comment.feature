@@ -26,24 +26,24 @@ Feature: Delete comments
     # As the creator of the comment I can delete the comment.
     Given I am logged in as "Tim Berners Lee"
     When I go to the "RDF Schemas for government use" news
-    When I click the contextual link "Delete comment" in the "Comment" region
+    And I click "Delete" in comment #1
     Then I should see "Are you sure you want to delete the comment ADMS is awesome?"
 
     # As another user I don't have access.
     Given I am logged in as "Vicky visitor"
     When I go to the "RDF Schemas for government use" news
-    Then I should not see the contextual link "Delete comment" in the "Comment" region
+    Then I should not see the link "Delete" in comment #1
 
     # As the moderator of the comment I can delete the comment.
     Given I am logged in as a user with the "moderator" role
     When I go to the "RDF Schemas for government use" news
-    When I click the contextual link "Delete comment" in the "Comment" region
+    And I click "Delete" in comment #1
     Then I should see "Are you sure you want to delete the comment ADMS is awesome?"
 
     # As collection facilitator of the comment I can delete the comment.
     Given I am logged in as "Do Re Mi Facilitator"
     When I go to the "RDF Schemas for government use" news
-    When I click the contextual link "Delete comment" in the "Comment" region
+    And I click "Delete" in comment #1
     Then I should see "Are you sure you want to delete the comment ADMS is awesome?"
     Then I press "Delete"
     Then the following email should have been sent:
