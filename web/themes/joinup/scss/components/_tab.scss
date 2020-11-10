@@ -35,7 +35,7 @@
   padding: 0;
   border-bottom: 1px solid $color-grey-light;
 
-  @include justify-content(center);
+  @include justify-content(start);
   @include flex;
   @include flex-direction(column);
   @include flex-wrap(nowrap);
@@ -193,6 +193,7 @@
   &.is-active {
     font-weight: $font-weight-medium;
     border-bottom: 1px solid #fff;
+    border-top: 3px solid $color-orange;
     background-color: #fff;
   }
 }
