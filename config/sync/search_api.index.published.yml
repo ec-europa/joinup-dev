@@ -420,7 +420,7 @@ field_settings:
   node_featured:
     label: 'Featured site-wide'
     datasource_id: 'entity:node'
-    property_path: 'featured:entity:field_featured:entity:id'
+    property_path: 'featured:entity:field_featured'
     type: string
     dependencies:
       module:
@@ -494,7 +494,7 @@ field_settings:
   rdf_featured:
     label: 'Featured site-wide'
     datasource_id: 'entity:rdf_entity'
-    property_path: 'featured:entity:field_featured:entity:id'
+    property_path: 'featured:entity:field_featured'
     type: string
     dependencies:
       module:
@@ -547,8 +547,8 @@ field_settings:
     configuration:
       type: union
       fields:
-        - 'entity:node/field_site_featured'
-        - 'entity:rdf_entity/field_site_featured'
+        - 'entity:node/featured:entity:field_featured'
+        - 'entity:rdf_entity/featured:entity:field_featured'
   site_pinned:
     label: 'Site pinned'
     property_path: aggregated_field
