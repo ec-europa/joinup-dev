@@ -231,7 +231,10 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
 
         // Dive deeper and check whether there are more referenced entities but
         // not for licences and solutions.
-        if ($referenced_entity instanceof RdfInterface && !in_array($referenced_entity->bundle(), ['licence', 'solution'])) {
+        if (
+          $referenced_entity instanceof RdfInterface
+          && !in_array($referenced_entity->bundle(), ['licence', 'solution'])
+        ) {
           $this->buildSolutionDependencyTree($referenced_entity, $parent_id);
         }
 

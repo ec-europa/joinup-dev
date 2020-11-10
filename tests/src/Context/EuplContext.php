@@ -442,7 +442,10 @@ class EuplContext extends RawDrupalContext {
   public function cleanEuplData(): void {
     /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
     $entity_repository = \Drupal::service('entity.repository');
-    foreach (['3bee8b04-75fd-46a8-94b3-af0d8f5a4c41', '431f631f-e973-4fae-8368-c31f346a9616'] as $uuid) {
+    foreach ([
+      '3bee8b04-75fd-46a8-94b3-af0d8f5a4c41',
+      '431f631f-e973-4fae-8368-c31f346a9616',
+    ] as $uuid) {
       $entity_repository->loadEntityByUuid('node', $uuid)->delete();
     }
 

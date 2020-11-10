@@ -438,7 +438,10 @@ function joinup_views_pre_execute(ViewExecutable $view) {
 
   if (
     !isset($facets['event_date']) ||
-    empty(array_intersect($facets['event_date']->getActiveItems(), ['upcoming_events', 'past_events']))
+    empty(array_intersect(
+      $facets['event_date']->getActiveItems(),
+      ['upcoming_events', 'past_events']
+    ))
   ) {
     return;
   }

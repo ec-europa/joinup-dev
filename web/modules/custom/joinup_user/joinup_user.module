@@ -386,7 +386,10 @@ function joinup_user_search_api_query_search_api_field_field_user_content_alter(
  * @see \Drupal\user\Controller\UserController::userTitle()
  */
 function joinup_user_canonical_title(?UserInterface $user = NULL) {
-  return $user ? ['#markup' => $user->getDisplayName(), '#allowed_tags' => Xss::getHtmlTagList()] : '';
+  return $user ? [
+    '#markup' => $user->getDisplayName(),
+    '#allowed_tags' => Xss::getHtmlTagList(),
+  ] : '';
 }
 
 /**
@@ -545,7 +548,13 @@ function joinup_user_user_cancel(array $edit, JoinupUserInterface $account, stri
       _user_mail_notify('status_canceled', $account);
     }
     \Drupal::messenger()->addStatus(t('%name has been deleted.', ['%name' => $account->getDisplayName()]));
-    \Drupal::logger('user')->notice('Deleted user: %name %email.', ['%name' => $account->getAccountName(), '%email' => '<' . $account->getEmail() . '>']);
+    \Drupal::logger('user')->notice(
+      'Deleted user: %name %email.',
+      [
+        '%name' => $account->getAccountName(),
+        '%email' => '<' . $account->getEmail() . '>',
+      ]
+    );
 
     // Actually cancel the user account.
     $account->cancel()->save();
