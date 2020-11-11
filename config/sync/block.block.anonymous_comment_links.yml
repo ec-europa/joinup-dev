@@ -1,0 +1,43 @@
+uuid: 87c7d2e9-1f16-40c0-bbd5-3266e3adb9df
+langcode: en
+status: true
+dependencies:
+  config:
+    - simple_block.simple_block.anonymous_comment_links
+  module:
+    - ctools
+    - eif
+    - simple_block
+    - user
+  theme:
+    - joinup_theme
+id: anonymous_comment_links
+theme: joinup_theme
+region: content
+weight: -20
+provider: null
+plugin: 'simple_block:anonymous_comment_links'
+settings:
+  id: 'simple_block:anonymous_comment_links'
+  label: 'Anonymous comment links'
+  provider: simple_block
+  label_display: '0'
+visibility:
+  user_role:
+    id: user_role
+    roles:
+      anonymous: anonymous
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      discussion: discussion
+      document: document
+      event: event
+      news: news
+      video: video
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
