@@ -268,7 +268,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    *
    * The comment is identified by its '1 based' number. Numbers are starting
    * from 1 and are assigned in the order comments are shown on the page,
-   * regardless of their indent.
+   * regardless of their indentation.
    *
    * @param string $comment_number
    *   The '1 based' number of the comment in the page.
@@ -284,16 +284,16 @@ class JoinupCommunityContentContext extends RawDrupalContext {
   }
 
   /**
-   * Asserts that a comment has given indent.
+   * Asserts that a comment has the given indentation.
    *
    * The comment is identified by its '1 based' number. Numbers are starting
    * from 1 and are assigned in the order comments are shown on the page,
-   * regardless of their indent. The indent is a '0 based' integer.
+   * regardless of their indentation. The indentation is a '0 based' integer.
    *
    * @param string $comment_number
    *   The '1 based' number of the comment in the page.
    * @param string $indent
-   *   The '0 based' indent value.
+   *   The '0 based' indentation value.
    *
    * @Then (the )comment #:comment_number indent is :indent
    */
@@ -308,7 +308,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    *
    * The comment is identified by its '1 based' number. Numbers are starting
    * from 1 and are assigned in the order comments are shown on the page,
-   * regardless of their indent.
+   * regardless of their indentation.
    *
    * @param string $label
    *   The link's text.
@@ -328,7 +328,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    *
    * The comment is identified by its '1 based' number. Numbers are starting
    * from 1 and are assigned in the order comments are shown on the page,
-   * regardless of their indent.
+   * regardless of their indentation.
    *
    * @param string $label
    *   The link's text.
@@ -348,7 +348,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    *
    * The comment is identified by its '1 based' number. Numbers are starting
    * from 1 and are assigned in the order comments are shown on the page,
-   * regardless of their indent.
+   * regardless of their indentation.
    *
    * @param string $label
    *   The link's text.
