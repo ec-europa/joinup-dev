@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b4b5d41d286c0da3edc8aa127b0b77ce",
+    "content-hash": "3996c0eb07bfaa858b5439121f06a651",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6520,7 +6520,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Subpaths with redirect not resolved @see https://www.drupal.org/project/subpathauto/issues/3175637": "https://www.drupal.org/files/issues/2020-11-12/3175637-26-D8.patch"
+                    "Subpaths with redirect not resolved @see https://www.drupal.org/project/subpathauto/issues/3175637": "https://git.drupalcode.org/project/subpathauto/-/merge_requests/1/diffs.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
