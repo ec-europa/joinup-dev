@@ -6,3 +6,58 @@
  */
 
 declare(strict_types = 1);
+
+use Drupal\Core\Cache\Cache;
+use Drupal\meta_entity\Entity\MetaEntityInterface;
+use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * Make sure that when an entity is (un)featured it is reindexed and its caches
+ * are invalidated, so that the facets that allow to show only featured content
+ * work, and the "star" icon shows up on tiles.
+ */
+function joinup_featured_meta_entity_update(MetaEntityInterface $entity): void {
+  if ($entity->bundle() === 'featured') {
+    $featured_entity = $entity->getTargetEntity();
+    if (empty($featured_entity)) {
+      // If the parent entity no longer exists nothing needs to be done. This
+      // can happen if this is called via joinup_featured_meta_entity_delete()
+      // as part of an orphan cleanup.
+      return;
+    }
+
+    // Invalidate the entity storage cache of the featured entity, this ensures
+    // that we are reindexing the updated values of the parent entity.
+    \Drupal::entityTypeManager()->getStorage($featured_entity->getEntityTypeId())->resetCache([$featured_entity->id()]);
+
+    // Reindex the featured entity since the featured status affects the
+    // filtering of search results using the "Featured content" facets.
+    ContentEntity::indexEntity($featured_entity);
+
+    // Invalidate caches of the featured entity so that the "star" icon will be
+    // shown or hidden according to the new featured status.
+    // @todo Remove this workaround once Meta Entity clears list cache tags.
+    // @see https://www.drupal.org/project/meta_entity/issues/3169560
+    Cache::invalidateTags($featured_entity->getCacheTagsToInvalidate());
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ *
+ * @see joinup_featured_meta_entity_update()
+ */
+function joinup_featured_meta_entity_insert(MetaEntityInterface $entity): void {
+  joinup_featured_meta_entity_update($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * @see joinup_featured_meta_entity_update()
+ */
+function joinup_featured_meta_entity_delete(MetaEntityInterface $entity): void {
+  joinup_featured_meta_entity_update($entity);
+}
