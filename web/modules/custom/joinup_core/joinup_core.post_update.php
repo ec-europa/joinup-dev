@@ -7,25 +7,44 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Url;
+use Drupal\sparql_entity_storage\UriEncoder;
+
 /**
  * Re-run the update aliases for entities with the old alias.
  */
-function joinup_core_post_update_0106600(?array &$sandbox = NULL): string {
+function joinup_core_post_update_0106601(?array &$sandbox = NULL): string {
   $rdf_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
   if (empty($sandbox['entity_ids'])) {
-    // We process first the collections, solutions and releases because they're
-    // parents for the rest of entities and their alias is used in children
-    // alias computing.
-    $sandbox['entity_ids']['rdf_entity'] = $rdf_storage->getQuery()->condition('rid', 'collection')->execute();
-    $sandbox['entity_ids']['rdf_entity'] += $rdf_storage->getQuery()->condition('rid', 'solution')->execute();
-    $sandbox['entity_ids']['rdf_entity'] += $rdf_storage->getQuery()->condition('rid', 'asset_release')->execute();
-    $sandbox['entity_ids']['rdf_entity'] += $rdf_storage->getQuery()->condition('rid', [
-      'collection',
-      'solution',
-      'asset_release',
-    ], 'NOT IN')->execute();
-    $sandbox['entity_ids']['node'] = $node_storage->getQuery()->execute();
+    $results = \Drupal::database()->query("SELECT `path`, `alias` FROM {path_alias} p WHERE `p`.`alias` LIKE '/solution/%';")->fetchAll();
+    $rdf_ids = $node_ids = [];
+    foreach ($results as $result) {
+      $url = Url::fromUri('internal:' . $result->path);
+      if (!$url->isRouted()) {
+        continue;
+      }
+      if (isset($url->getRouteParameters()['rdf_entity'])) {
+        $entity_id = UriEncoder::decodeUrl($url->getRouteParameters()['rdf_entity']);
+        $entity = $rdf_storage->load($entity_id);
+        if (in_array($entity->bundle(), [
+          'collection',
+          'solution',
+          'asset_release',
+        ])) {
+          $rdf_ids[$entity->bundle()][] = $entity_id;
+        }
+        else {
+          $rdf_ids['ids'][] = $entity_id;
+        }
+      }
+      else {
+        $entity_id = $url->getRouteParameters()['node'];
+        $node_ids[] = $entity_id;
+      }
+    }
+    $sandbox['entity_ids']['rdf_entity'] = ($rdf_ids['collection'] ?? []) + ($rdf_ids['solution'] ?? []) + ($rdf_ids['asset_release'] ?? []) + $rdf_ids['ids'];
+    $sandbox['entity_ids']['node'] = $node_ids ?? [];
     $sandbox['count'] = 0;
     $sandbox['max'] = count($sandbox['entity_ids']['rdf_entity']) + count($sandbox['entity_ids']['node']);
   }
