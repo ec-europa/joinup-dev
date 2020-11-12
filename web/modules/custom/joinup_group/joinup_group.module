@@ -273,7 +273,9 @@ function joinup_group_meta_entity_update(MetaEntityInterface $entity): void {
   if ($entity->bundle() === 'pinned_in') {
     $parent_entity = $entity->getTargetEntity();
     if (empty($parent_entity)) {
-      // If the parent entity no longer exists nothing needs to be done.
+      // If the parent entity no longer exists nothing needs to be done. This
+      // can happen if this is called via joinup_group_meta_entity_delete() as
+      // part of an orphan cleanup.
       return;
     }
 
