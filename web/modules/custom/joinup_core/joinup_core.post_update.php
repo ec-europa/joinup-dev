@@ -7,70 +7,85 @@
 
 declare(strict_types = 1);
 
-use Drupal\Core\Url;
 use Drupal\sparql_entity_storage\UriEncoder;
 
 /**
  * Re-run the update aliases for entities with the old alias.
  */
-function joinup_core_post_update_0106601(?array &$sandbox = NULL): string {
-  $rdf_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
-  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+function joinup_core_post_update_0106600(?array &$sandbox = NULL): string {
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $storage = [
+    'rdf_entity' => $entity_type_manager->getStorage('rdf_entity'),
+    'node' => $entity_type_manager->getStorage('node'),
+  ];
+  $alias_generator = \Drupal::getContainer()->get('pathauto.generator');
+
   if (empty($sandbox['entity_ids'])) {
-    $results = \Drupal::database()->query("SELECT `path`, `alias` FROM {path_alias} p WHERE `p`.`alias` LIKE '/solution/%';")->fetchAll();
-    $rdf_ids = $node_ids = [];
+    $rdf_bundles = [
+      'collection',
+      'solution',
+      'asset_release',
+      'asset_distribution',
+    ];
+    $results = \Drupal::database()
+      ->query("SELECT path, alias FROM {path_alias} p WHERE p.alias LIKE '/solution/%'")
+      ->fetchAll();
+
+    $entity_ids = [
+      'rdf_entity' => array_fill_keys($rdf_bundles, []),
+      'node' => [],
+    ];
+
     foreach ($results as $result) {
-      $url = Url::fromUri('internal:' . $result->path);
-      if (!$url->isRouted()) {
+      [$entity_type_id, $entity_id] = explode('/', ltrim($result->path, '/'), 2);
+      if ($entity_type_id === 'rdf_entity') {
+        // RDF entity IDs are URI encoded.
+        $entity_id = UriEncoder::decodeUrl($entity_id);
+      }
+      elseif ($entity_type_id !== 'node') {
+        // Not RDF entity, not node.
         continue;
       }
-      if (isset($url->getRouteParameters()['rdf_entity'])) {
-        $entity_id = UriEncoder::decodeUrl($url->getRouteParameters()['rdf_entity']);
-        $entity = $rdf_storage->load($entity_id);
-        if (in_array($entity->bundle(), [
-          'collection',
-          'solution',
-          'asset_release',
-        ])) {
-          $rdf_ids[$entity->bundle()][] = $entity_id;
-        }
-        else {
-          $rdf_ids['ids'][] = $entity_id;
-        }
-      }
-      else {
-        $entity_id = $url->getRouteParameters()['node'];
-        $node_ids[] = $entity_id;
+
+      // Only store the ID if the entity exists.
+      if ($entity = $storage[$entity_type_id]->load($entity_id)) {
+        $entity_ids[$entity_type_id][$entity->bundle()][] = $entity_id;
       }
     }
-    $sandbox['entity_ids']['rdf_entity'] = ($rdf_ids['collection'] ?? []) + ($rdf_ids['solution'] ?? []) + ($rdf_ids['asset_release'] ?? []) + $rdf_ids['ids'];
-    $sandbox['entity_ids']['node'] = $node_ids ?? [];
+
+    $sandbox['entity_ids'] = [];
+    foreach ($entity_ids as $entity_type_id => $bundles) {
+      foreach ($bundles as $entity_ids_per_bundle) {
+        foreach ($entity_ids_per_bundle as $id) {
+          $sandbox['entity_ids'][$id] = $entity_type_id;
+        }
+      }
+    }
     $sandbox['count'] = 0;
-    $sandbox['max'] = count($sandbox['entity_ids']['rdf_entity']) + count($sandbox['entity_ids']['node']);
+    $sandbox['max'] = count($sandbox['entity_ids']);
   }
 
-  if (empty($sandbox['entity_ids']['rdf_entity'])) {
-    $storage = $node_storage;
-    $entity_ids = array_splice($sandbox['entity_ids']['node'], 0, 100);
-  }
-  else {
-    $storage = $rdf_storage;
-    $entity_ids = array_splice($sandbox['entity_ids']['rdf_entity'], 0, 100);
+  $entity_ids = array_splice($sandbox['entity_ids'], 0, 100);
+  $ids_per_entity_type = [];
+  // Re-arrange back per entity-type.
+  foreach ($entity_ids as $id => $entity_type_id) {
+    $ids_per_entity_type[$entity_type_id][] = $id;
   }
 
-  $alias_generator = \Drupal::getContainer()->get('pathauto.generator');
-  foreach ($storage->loadMultiple($entity_ids) as $entity) {
-    if ($entity->bundle() === 'asset_release' && $entity->field_isr_release_number->isEmpty()) {
-      // There are a number of releases that do not have a release number, even
-      // though it is a mandatory field. Aliases fail to be created for these
-      // entities. These will be handled in ISAICP-6217.
-      // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6217
-      continue;
+  foreach ($ids_per_entity_type as $entity_type_id => $ids) {
+    foreach ($storage[$entity_type_id]->loadMultiple($ids) as $entity) {
+      if ($entity->bundle() === 'asset_release' && $entity->field_isr_release_number->isEmpty()) {
+        // There are a number of releases that do not have a release number,
+        // even though it is a mandatory field. Aliases fail to be created for
+        // these entities. These will be handled in ISAICP-6217.
+        // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6217
+        continue;
+      }
+      $alias_generator->updateEntityAlias($entity, 'bulkupdate');
     }
-    $alias_generator->updateEntityAlias($entity, 'bulkupdate');
   }
 
   $sandbox['count'] += count($entity_ids);
-  $sandbox['#finished'] = (int) (empty($sandbox['entity_ids']['rdf_entity']) && empty($sandbox['entity_ids']['node']));
+  $sandbox['#finished'] = (int) empty($sandbox['entity_ids']);
   return "Processed {$sandbox['count']}/{$sandbox['max']}";
 }
