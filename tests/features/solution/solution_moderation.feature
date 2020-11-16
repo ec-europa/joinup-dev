@@ -50,12 +50,12 @@ Feature: Solution moderation
       # Facilitator of all the solutions.
       | William Curtis   |           |
     And the following solutions:
-      | title                      | description                | logo     | banner     | owner          | contact information | state            |
-      | Azure Ship                 | Azure ship                 | logo.png | banner.jpg | Angelos Agathe | Placide             | draft            |
-      | The Last Illusion          | The Last Illusion          | logo.png | banner.jpg | Angelos Agathe | Placide             | proposed         |
-      | Rose of Doors              | Rose of Doors              | logo.png | banner.jpg | Angelos Agathe | Placide             | validated        |
-      | The Guardian of the Stream | The Guardian of the Stream | logo.png | banner.jpg | Angelos Agathe | Placide             | needs update     |
-      | Flames in the Swords       | Flames in the Swords       | logo.png | banner.jpg | Angelos Agathe | Placide             | blacklisted      |
+      | title                      | description                | logo     | banner     | owner          | contact information | state        |
+      | Azure Ship                 | Azure ship                 | logo.png | banner.jpg | Angelos Agathe | Placide             | draft        |
+      | The Last Illusion          | The Last Illusion          | logo.png | banner.jpg | Angelos Agathe | Placide             | proposed     |
+      | Rose of Doors              | Rose of Doors              | logo.png | banner.jpg | Angelos Agathe | Placide             | validated    |
+      | The Guardian of the Stream | The Guardian of the Stream | logo.png | banner.jpg | Angelos Agathe | Placide             | needs update |
+      | Flames in the Swords       | Flames in the Swords       | logo.png | banner.jpg | Angelos Agathe | Placide             | blacklisted  |
     And the following solution user memberships:
       | solution                   | user            | roles       |
       | Azure Ship                 | Franklin Walker | owner       |
@@ -97,7 +97,7 @@ Feature: Solution moderation
       # testes as shown.
       | Azure Ship                 | William Curtis   | Save as draft, Propose                                      |
       | The Last Illusion          | William Curtis   | Propose, Save as draft                                      |
-      | Rose of Doors              | William Curtis   | Publish, Save as draft, Propose                                      |
+      | Rose of Doors              | William Curtis   | Publish, Save as draft, Propose                             |
       | The Guardian of the Stream | William Curtis   | Save as draft, Propose                                      |
       | Flames in the Swords       | William Curtis   | Save as draft, Propose                                      |
       | Azure Ship                 | Isabel Banks     |                                                             |
@@ -113,7 +113,7 @@ Feature: Solution moderation
 
     # The 'Delete' action is not a button but a link leading to a confirmation
     # page that is styled as a button. It should only be available to the owner
-    # and a moderator on a validated solution.
+    # and a moderator.
     And the visibility of the delete link should be as follows for these users in these solutions:
       | solution                   | user             | delete link |
       | Azure Ship                 | Franklin Walker  | no          |
@@ -131,11 +131,11 @@ Feature: Solution moderation
       | Rose of Doors              | Isabel Banks     | no          |
       | The Guardian of the Stream | Isabel Banks     | no          |
       | Flames in the Swords       | Isabel Banks     | no          |
-      | Azure Ship                 | Tyrone Underwood | no          |
-      | The Last Illusion          | Tyrone Underwood | no          |
+      | Azure Ship                 | Tyrone Underwood | yes         |
+      | The Last Illusion          | Tyrone Underwood | yes         |
       | Rose of Doors              | Tyrone Underwood | yes         |
-      | The Guardian of the Stream | Tyrone Underwood | no          |
-      | Flames in the Swords       | Tyrone Underwood | no          |
+      | The Guardian of the Stream | Tyrone Underwood | yes         |
+      | Flames in the Swords       | Tyrone Underwood | yes         |
 
     # Authentication sample checks.
     Given I am logged in as "William Curtis"
@@ -167,4 +167,4 @@ Feature: Solution moderation
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request changes, Blacklist"
-    And I should not see the link "Delete"
+    And I should see the link "Delete"
