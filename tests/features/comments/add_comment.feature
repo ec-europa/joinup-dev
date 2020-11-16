@@ -135,6 +135,13 @@ Feature: Add comments
     # The reply to reply has the same indent as the deepest comment.
     And comment #5 indent is 2
 
+    Given I am an anonymous user
+    When I go to the content page of the type "<content type>" with the title "<title>"
+    # For anonymous users we display this message at the bottom of comment list.
+    Then I should see the text "Login or create an account to comment."
+    # But we don't show the Drupal core login/register links on each comment.
+    But I should not see the text "Log in or register to post comments"
+
     Examples:
       | content type | title               | state     |
       | news         | Scandalous news     | validated |
