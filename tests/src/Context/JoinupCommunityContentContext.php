@@ -268,7 +268,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    *
    * The comment is identified by its '1 based' number. Numbers are starting
    * from 1 and are assigned in the order comments are shown on the page,
-   * regardless of their indent.
+   * regardless of their indentation.
    *
    * @param string $comment_number
    *   The '1 based' number of the comment in the page.
@@ -284,23 +284,23 @@ class JoinupCommunityContentContext extends RawDrupalContext {
   }
 
   /**
-   * Asserts that a comment has given indent.
+   * Asserts that a comment has the given indentation.
    *
    * The comment is identified by its '1 based' number. Numbers are starting
    * from 1 and are assigned in the order comments are shown on the page,
-   * regardless of their indent. The indent is a '0 based' integer.
+   * regardless of their indentation. The indentation is a '0 based' integer.
    *
-   * @param string $comment_number
+   * @param int $comment_number
    *   The '1 based' number of the comment in the page.
-   * @param string $indent
-   *   The '0 based' indent value.
+   * @param int $indent
+   *   The '0 based' indentation value.
    *
    * @Then (the )comment #:comment_number indent is :indent
    */
-  public function assertCommentIndent(string $comment_number, string $indent): void {
+  public function assertCommentIndent(int $comment_number, int $indent): void {
     $comment = $this->getNumberedComment($comment_number - 1);
     $nested_comments = $comment->findAll('xpath', '/ancestor::div[contains(concat(" ", @class, " "), " indented ")]');
-    Assert::assertCount((int) $indent, $nested_comments);
+    Assert::assertCount($indent, $nested_comments);
   }
 
   /**
@@ -308,16 +308,16 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    *
    * The comment is identified by its '1 based' number. Numbers are starting
    * from 1 and are assigned in the order comments are shown on the page,
-   * regardless of their indent.
+   * regardless of their indentation.
    *
    * @param string $label
    *   The link's text.
-   * @param string $comment_number
+   * @param int $comment_number
    *   The '1 based' number of the comment in the page.
    *
    * @Then I should see the link :label in comment #:comment_number
    */
-  public function assertCommentContainsLink(string $label, string $comment_number): void {
+  public function assertCommentContainsLink(string $label, int $comment_number): void {
     if (!$this->getNumberedComment($comment_number - 1)->findLink($label)) {
       throw new ElementNotFoundException($this->getSession(), 'link', 'text', $label);
     }
@@ -328,16 +328,16 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    *
    * The comment is identified by its '1 based' number. Numbers are starting
    * from 1 and are assigned in the order comments are shown on the page,
-   * regardless of their indent.
+   * regardless of their indentation.
    *
    * @param string $label
    *   The link's text.
-   * @param string $comment_number
+   * @param int $comment_number
    *   The '1 based' number of the comment in the page.
    *
    * @Then I should not see the link :label in comment #:comment_number
    */
-  public function assertCommentNotContainsLink(string $label, string $comment_number): void {
+  public function assertCommentNotContainsLink(string $label, int $comment_number): void {
     if ($this->getNumberedComment($comment_number - 1)->findLink($label)) {
       throw new ExpectationFailedException("Link '{$label}' exists in comment #{$comment_number} but it should not.");
     }
@@ -348,16 +348,16 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    *
    * The comment is identified by its '1 based' number. Numbers are starting
    * from 1 and are assigned in the order comments are shown on the page,
-   * regardless of their indent.
+   * regardless of their indentation.
    *
    * @param string $label
    *   The link's text.
-   * @param string $comment_number
+   * @param int $comment_number
    *   The '1 based' number of the comment in the page.
    *
    * @Then I click :label in comment #:comment_number
    */
-  public function clickCommentLink(string $label, string $comment_number): void {
+  public function clickCommentLink(string $label, int $comment_number): void {
     $comment = $this->getNumberedComment($comment_number - 1);
     $comment->clickLink($label);
   }

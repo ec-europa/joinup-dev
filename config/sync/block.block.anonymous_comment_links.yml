@@ -6,7 +6,6 @@ dependencies:
     - simple_block.simple_block.anonymous_comment_links
   module:
     - ctools
-    - eif
     - simple_block
     - user
   theme:
