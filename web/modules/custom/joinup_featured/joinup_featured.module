@@ -26,6 +26,7 @@ use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
  * dependency between the two modules. The code is trivial and most can be
  * removed when the cache of the parent entity is invalidated automatically by
  * the Meta Entity module.
+ *
  * @see https://www.drupal.org/project/meta_entity/issues/3169560
  */
 function joinup_featured_meta_entity_update(MetaEntityInterface $entity): void {
