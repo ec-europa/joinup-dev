@@ -6,13 +6,21 @@ Feature: Add comments
     Given the following collections:
       | title             | state     | closed |
       | Gossip collection | validated | no     |
-      | Shy collection    | validated | yes    |
-    And solutions:
+    And users:
+      | Username        | E-mail                 | Roles | First name | Family name |
+      | Miss tell tales | tell.tales@example.com |       | Miss       | Tales       |
+
+  # This scenario uses javascript to work as regression test for a bug that
+  # makes CKEditor unusable upon a page load.
+  # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3612
+  @javascript
+  Scenario Outline: Make an authenticated comment, skips moderation.
+
+    Given solutions:
       | title                | collection        | state     |
       | Gossip girl solution | Gossip collection | validated |
     And users:
       | Username          | E-mail                        | Roles     | First name | Family name |
-      | Miss tell tales   | tell.tales@example.com        |           | Miss       | Tales       |
       | Comment moderator | comment.moderator@example.com | moderator | Comment    | Moderator   |
       | Layonel Sarok     | layonel.sarok@example.com     |           | Layonel    | Sarok       |
       | Korma Salya       | korma.salya@example.com       |           | Korma      | Salya       |
@@ -24,13 +32,7 @@ Feature: Add comments
       | solution             | user          | roles                      |
       | Gossip girl solution | Layonel Sarok | administrator, facilitator |
       | Gossip girl solution | Korma Salya   | facilitator                |
-
-  # This scenario uses javascript to work as regression test for a bug that
-  # makes CKEditor unusable upon a page load.
-  # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3612
-  @javascript
-  Scenario Outline: Make an authenticated comment, skips moderation.
-    Given <content type> content:
+    And <content type> content:
       | title   | body                                                | <parent>       | state   |
       | <title> | How could this ever happen? Moral panic on its way! | <parent title> | <state> |
     Given I am logged in as "Miss tell tales"
@@ -82,21 +84,63 @@ Feature: Add comments
       # Add an example also for solutions to ensure the variables are properly replaced.
       | news         | Scandalous news     | validated | solution   | Gossip girl solution |
 
+  Scenario Outline: Posting comments.
 
-  Scenario Outline: Authenticated users can insert <p> and <br> tags in the comment body.
     Given <content type> content:
       | title   | body                                                | collection        | state   |
       | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <state> |
     Given I am logged in as "Miss tell tales"
     And all e-mails have been sent
     When I go to the content page of the type "<content type>" with the title "<title>"
+    # Authenticated users can insert <p> and <br> tags in the comment body.
     And I fill in "Create comment" with "<p>Mr scandal was doing something<br />weird the other day.<p/>"
     And I wait for the spam protection time limit to pass
     Then I press "Post comment"
     Then I should not see the following success messages:
       | success messages                                                                                     |
       | Your comment has been queued for review by site administrators and will be published after approval. |
-    And the page should contain the html text "<p>Mr scandal was doing something<br>weird the other day.</p>"
+    And comment #1 should contain the markup "<p>Mr scandal was doing something<br>weird the other day.</p>"
+    And comment #1 indent is 0
+
+    When I click "Reply" in comment #1
+    And I fill in "Create comment" with "Comment indent 1"
+    And I wait for the spam protection time limit to pass
+    When I press "Post comment"
+    Then comment #2 should contain the markup "Comment indent 1"
+    And comment #2 indent is 1
+
+    When I click "Reply" in comment #2
+    And I fill in "Create comment" with "Comment indent 2"
+    And I wait for the spam protection time limit to pass
+    When I press "Post comment"
+    # This comment hit the maximum deep.
+    Then comment #3 should contain the markup "Comment indent 2"
+    And comment #3 indent is 2
+
+    # Reply to the deepest comment.
+    When I click "Reply" in comment #3
+    And I fill in "Create comment" with "Reply to #3"
+    And I wait for the spam protection time limit to pass
+    When I press "Post comment"
+    Then comment #4 should contain the markup "Reply to #3"
+    # The reply has the same indent as the parent comment.
+    And comment #4 indent is 2
+
+    # Reply to reply.
+    When I click "Reply" in comment #4
+    And I fill in "Create comment" with "Reply to reply"
+    And I wait for the spam protection time limit to pass
+    When I press "Post comment"
+    Then comment #5 should contain the markup "Reply to reply"
+    # The reply to reply has the same indent as the deepest comment.
+    And comment #5 indent is 2
+
+    Given I am an anonymous user
+    When I go to the content page of the type "<content type>" with the title "<title>"
+    # For anonymous users we display this message at the bottom of comment list.
+    Then I should see the text "Login or create an account to comment."
+    # But we don't show the Drupal core login/register links on each comment.
+    But I should not see the text "Log in or register to post comments"
 
     Examples:
       | content type | title               | state     |
@@ -106,7 +150,11 @@ Feature: Add comments
       | document     | Wikileaks           | validated |
 
   Scenario Outline: Comments are disallowed for anonymous users.
-    Given <content type> content:
+
+    Given the following collections:
+      | title          | state     | closed |
+      | Shy collection | validated | yes    |
+    And <content type> content:
       | title   | body                                                | collection   | state   |
       | <title> | How could this ever happen? Moral panic on its way! | <collection> | <state> |
 
