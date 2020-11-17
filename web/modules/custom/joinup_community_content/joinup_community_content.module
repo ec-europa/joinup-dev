@@ -273,7 +273,7 @@ function joinup_community_content_form_comment_form_alter(array &$form, FormStat
  * Implements hook_preprocess_HOOK().
  */
 function joinup_community_content_preprocess_links__comment(array &$variables): void {
-  // Foe anonymous users, don't show the comment forbidden link on each comment.
+  // For anonymous users, don't show the comment forbidden link on each comment.
   // We display one for all comments at the bottom of the list.
   if (\Drupal::currentUser()->isAnonymous()) {
     unset($variables['links']['comment-forbidden']);
