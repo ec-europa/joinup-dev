@@ -8,6 +8,9 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\joinup_featured\FeaturedContentInterface;
 use Drupal\meta_entity\Entity\MetaEntityInterface;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 
@@ -67,4 +70,18 @@ function joinup_featured_meta_entity_insert(MetaEntityInterface $entity): void {
  */
 function joinup_featured_meta_entity_delete(MetaEntityInterface $entity): void {
   joinup_featured_meta_entity_update($entity);
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ *
+ * Adds metadata for the featured state of an entity, so that contextual links
+ * are refreshed when an entity is (un)featured.
+ */
+function joinup_featured_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display): void {
+  if ($entity instanceof FeaturedContentInterface) {
+    // Note: the 'entity' contextual link group is added by the Joinup profile.
+    // @see joinup_entity_view_alter()
+    $build['#contextual_links']['entity']['metadata']['is_featured'] = (int) $entity->isFeatured();
+  }
 }
