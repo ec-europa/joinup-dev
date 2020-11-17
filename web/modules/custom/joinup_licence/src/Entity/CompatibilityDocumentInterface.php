@@ -48,7 +48,7 @@ interface CompatibilityDocumentInterface extends ContentEntityInterface {
    *
    * @return \Drupal\Component\Render\FormattableMarkup
    *   The description, with actual licence names as replacement arguments for
-   *   '@use-licence' and '@redistribute-as-licence'.
+   *   '@inbound-licence' and '@outbound-licence'.
    */
   public function getDescription(): FormattableMarkup;
 

@@ -66,7 +66,7 @@ interface LicenceInterface extends RdfInterface {
    * the current licence can be used in a project which is going to be
    * distributed under the passed in licence.
    *
-   * @param \Drupal\joinup_licence\Entity\LicenceInterface $redistribute_as_licence
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface $outbound_licence
    *   The licence under which the current code or data is going to be
    *   redistributed.
    *
@@ -76,7 +76,7 @@ interface LicenceInterface extends RdfInterface {
    *   returned, which is the ID of the document explaining the licences are
    *   incompatible.
    */
-  public function getCompatibilityDocumentId(LicenceInterface $redistribute_as_licence): string;
+  public function getCompatibilityDocumentId(LicenceInterface $outbound_licence): string;
 
   /**
    * Returns the document that details how the licence can be redistributed.
@@ -85,14 +85,14 @@ interface LicenceInterface extends RdfInterface {
    * distributed under the current licence can be used in a project which is
    * going to be distributed under the passed in licence.
    *
-   * @param \Drupal\joinup_licence\Entity\LicenceInterface $redistribute_as_licence
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface $outbound_licence
    *   The licence under which the current code or data is going to be
    *   redistributed.
    *
    * @return \Drupal\joinup_licence\Entity\CompatibilityDocumentInterface
    *   The compatibility document that contains the requested information.
    */
-  public function getCompatibilityDocument(LicenceInterface $redistribute_as_licence): CompatibilityDocumentInterface;
+  public function getCompatibilityDocument(LicenceInterface $outbound_licence): CompatibilityDocumentInterface;
 
   /**
    * Returns the Licence entity that corresponds to the given SPDX ID.
