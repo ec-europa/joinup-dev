@@ -21,7 +21,7 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  */
 class T07GplCompatibleLicencesAreCompatibleWithGpl extends JoinupLicenceCompatibilityRulePluginBase {
 
-  const USE_CRITERIA = [
+  const INBOUND_CRITERIA = [
     'SPDX' => [
       'AGPL-3.0-only',
       'GPL-2.0+',
@@ -30,7 +30,7 @@ class T07GplCompatibleLicencesAreCompatibleWithGpl extends JoinupLicenceCompatib
       'GPL-3.0-or-later',
     ],
   ];
-  const REDISTRIBUTE_AS_CRITERIA = [
+  const OUTBOUND_CRITERIA = [
     'Compatible' => [
       'GPL',
     ],

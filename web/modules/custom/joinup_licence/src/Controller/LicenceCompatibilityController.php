@@ -17,18 +17,18 @@ class LicenceCompatibilityController extends ControllerBase {
   /**
    * Renders a page that contains a licence compatibility check.
    *
-   * @param \Drupal\joinup_licence\Entity\LicenceInterface $use_licence
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface $inbound_licence
    *   The licence used for code or data that is intended to be redistributed as
    *   part of another project.
-   * @param \Drupal\joinup_licence\Entity\LicenceInterface $redistribute_as_licence
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface $outbound_licence
    *   The licence under which the code or data is intended to be redistributed.
    *
    * @return array
    *   A render array.
    */
-  public function check(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): array {
+  public function check(LicenceInterface $inbound_licence, LicenceInterface $outbound_licence): array {
     try {
-      $compatibility_document = $use_licence->getCompatibilityDocument($redistribute_as_licence);
+      $compatibility_document = $inbound_licence->getCompatibilityDocument($outbound_licence);
     }
     catch (\Exception $e) {
       throw new NotFoundHttpException();
@@ -43,8 +43,8 @@ class LicenceCompatibilityController extends ControllerBase {
     $cache_metadata = new CacheableMetadata();
     $cache_metadata
       ->addCacheableDependency($compatibility_document)
-      ->addCacheableDependency($use_licence)
-      ->addCacheableDependency($redistribute_as_licence)
+      ->addCacheableDependency($inbound_licence)
+      ->addCacheableDependency($outbound_licence)
       ->applyTo($build);
 
     return $build;
@@ -53,20 +53,20 @@ class LicenceCompatibilityController extends ControllerBase {
   /**
    * Title callback.
    *
-   * @param \Drupal\joinup_licence\Entity\LicenceInterface $use_licence
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface $inbound_licence
    *   The licence used for code or data that is intended to be redistributed as
    *   part of another project.
-   * @param \Drupal\joinup_licence\Entity\LicenceInterface $redistribute_as_licence
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface $outbound_licence
    *   The licence under which the code or data is intended to be redistributed.
    *
    * @return array
    *   The title as a render array.
    */
-  public function getTitle(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): array {
+  public function getTitle(LicenceInterface $inbound_licence, LicenceInterface $outbound_licence): array {
     return [
-      '#markup' => $this->t('Can %use_licence be redistributed as %redistribute_as_licence?', [
-        '%use_licence' => $use_licence->label(),
-        '%redistribute_as_licence' => $redistribute_as_licence->label(),
+      '#markup' => $this->t('Compatibility between the %inbound (inbound licence) and the %outbound (outbound licence).', [
+        '%inbound' => $inbound_licence->label(),
+        '%outbound' => $outbound_licence->label(),
       ]),
     ];
   }

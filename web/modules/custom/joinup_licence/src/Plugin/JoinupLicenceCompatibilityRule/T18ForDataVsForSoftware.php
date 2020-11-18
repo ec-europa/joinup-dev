@@ -21,12 +21,12 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  */
 class T18ForDataVsForSoftware extends JoinupLicenceCompatibilityRulePluginBase {
 
-  const USE_CRITERIA = [
+  const INBOUND_CRITERIA = [
     'Compatible' => [
       'For data',
     ],
   ];
-  const REDISTRIBUTE_AS_CRITERIA = [
+  const OUTBOUND_CRITERIA = [
     'Compatible' => [
       'For software',
     ],

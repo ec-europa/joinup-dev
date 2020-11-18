@@ -21,12 +21,12 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  */
 class T10Eupl12CanBeRelicensedAsGplAndOthers extends JoinupLicenceCompatibilityRulePluginBase {
 
-  const USE_CRITERIA = [
+  const INBOUND_CRITERIA = [
     'SPDX' => [
       'EUPL-1.2',
     ],
   ];
-  const REDISTRIBUTE_AS_CRITERIA = [
+  const OUTBOUND_CRITERIA = [
     'SPDX' => [
       'AGPL-3.0-only',
       'CC-BY-SA-4.0',

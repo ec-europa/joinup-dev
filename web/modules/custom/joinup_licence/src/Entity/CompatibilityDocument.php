@@ -92,13 +92,13 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['use_licence'] = BaseFieldDefinition::create('entity_reference')
+    $fields['inbound_licence'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Use licence'))
       ->setDescription(t('The licence of the project that is being used as part of a new project.'))
       ->setComputed(TRUE)
       ->setClass(CompatibilityDocumentLicenceFieldItemList::class);
 
-    $fields['redistribute_as_licence'] = BaseFieldDefinition::create('entity_reference')
+    $fields['outbound_licence'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Redistribute as licence'))
       ->setDescription(t('The licence under which the new project will be distributed.'))
       ->setComputed(TRUE)
@@ -145,7 +145,7 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
     foreach ($missing_entity_ids as $entity_id) {
       $storage->create([
         'id' => $entity_id,
-        'description' => 'Compatibility document comparing @use-licence with @redistribute-as-licence.',
+        'description' => 'Compatibility document comparing @inbound-licence with @outbound-licence.',
       ])->save();
     }
 
@@ -160,7 +160,7 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
    * {@inheritdoc}
    */
   public function setUseLicence(LicenceInterface $licence): CompatibilityDocumentInterface {
-    $this->set('use_licence', $licence);
+    $this->set('inbound_licence', $licence);
     return $this;
   }
 
@@ -168,7 +168,7 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
    * {@inheritdoc}
    */
   public function setRedistributeAsLicence(LicenceInterface $licence): CompatibilityDocumentInterface {
-    $this->set('redistribute_as_licence', $licence);
+    $this->set('outbound_licence', $licence);
     return $this;
   }
 
@@ -176,14 +176,14 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
    * {@inheritdoc}
    */
   public function getUseLicence(): ?LicenceInterface {
-    return $this->getLicence('use_licence');
+    return $this->getLicence('inbound_licence');
   }
 
   /**
    * {@inheritdoc}
    */
   public function getRedistributeAsLicence(): ?LicenceInterface {
-    return $this->getLicence('redistribute_as_licence');
+    return $this->getLicence('outbound_licence');
   }
 
   /**
@@ -208,14 +208,14 @@ class CompatibilityDocument extends ContentEntityBase implements CompatibilityDo
    */
   public function getDescription(): FormattableMarkup {
     $description = $this->getMainPropertyValue('description') ?? '';
-    $use_licence = $this->getUseLicence();
-    $use_licence_id = $use_licence ? $use_licence->getSpdxLicenceId() ?? $this->t('Unknown') : $this->t('Unknown');
-    $redistribute_as_licence = $this->getRedistributeAsLicence();
-    $redistribute_as_licence_id = $redistribute_as_licence ? $redistribute_as_licence->getSpdxLicenceId() ?? $this->t('Unknown') : $this->t('Unknown');
+    $inbound_licence = $this->getUseLicence();
+    $inbound_licence_id = $inbound_licence ? $inbound_licence->getSpdxLicenceId() ?? $this->t('Unknown') : $this->t('Unknown');
+    $outbound_licence = $this->getRedistributeAsLicence();
+    $outbound_licence_id = $outbound_licence ? $outbound_licence->getSpdxLicenceId() ?? $this->t('Unknown') : $this->t('Unknown');
 
     return new FormattableMarkup($description, [
-      '@use-licence' => $use_licence_id,
-      '@redistribute-as-licence' => $redistribute_as_licence_id,
+      '@inbound-licence' => $inbound_licence_id,
+      '@outbound-licence' => $outbound_licence_id,
     ]);
   }
 
