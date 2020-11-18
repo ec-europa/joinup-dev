@@ -20,7 +20,7 @@ use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
-use Drupal\joinup_subscription\JoinupSubscriptionsInterface;
+use Drupal\joinup_subscription\JoinupSubscriptionsHelper;
 use Drupal\message_digest\Traits\MessageDigestTrait;
 use Drupal\og\OgMembershipInterface;
 use Drupal\user\Entity\User;
@@ -121,7 +121,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
       $user = $this->getUserByName($values['user']);
       $membership = $this->getMembershipByGroupAndUser($collection, $user, OgMembershipInterface::ALL_STATES);
       $subscriptions = [];
-      $subscription_bundles = $bundle === 'collection' ? JoinupSubscriptionsInterface::COLLECTION_BUNDLES : JoinupSubscriptionsInterface::SOLUTION_BUNDLES;
+      $subscription_bundles = $bundle === 'collection' ? JoinupSubscriptionsHelper::COLLECTION_BUNDLES : JoinupSubscriptionsHelper::SOLUTION_BUNDLES;
       foreach ($this->explodeCommaSeparatedStepArgument(strtolower($values['subscriptions'])) as $subscription_bundle) {
         $entity_type = NULL;
         foreach ($subscription_bundles as $entity_type_id => $bundles) {
@@ -331,7 +331,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
     foreach ($subscription_options->getRowsHash() as $group_label => $expected_bundle_ids) {
       $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
       $group = self::getRdfEntityByLabel($group_label, $bundle);
-      $subscription_bundles = $bundle === 'collection' ? JoinupSubscriptionsInterface::COLLECTION_BUNDLES : JoinupSubscriptionsInterface::SOLUTION_BUNDLES;
+      $subscription_bundles = $bundle === 'collection' ? JoinupSubscriptionsHelper::COLLECTION_BUNDLES : JoinupSubscriptionsHelper::SOLUTION_BUNDLES;
       foreach ($subscription_bundles as $entity_type_id => $bundle_ids) {
         foreach ($bundle_ids as $bundle_id) {
           $key = implode('|', [$entity_type_id, $bundle_id]);

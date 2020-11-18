@@ -20,8 +20,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * Form that allows the user to unsubscribe from all groups.
  */
-class UnsubscribeFromAll
-CollectionsForm extends ConfirmFormBase {
+class UnsubscribeFromAllForm extends ConfirmFormBase {
 
   /**
    * The entity type manager service.
@@ -52,7 +51,7 @@ CollectionsForm extends ConfirmFormBase {
   protected $bundle;
 
   /**
-   * Constructs an UnsubscribeFromAllCollectionsForm.
+   * Constructs an UnsubscribeFromAllForm.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
@@ -107,13 +106,15 @@ CollectionsForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return Url::fromRoute('joinup_subscription.my_subscriptions');
+    return Url::fromRoute('joinup_subscription.my_subscriptions', [
+      'subscription_type' => $this->bundle,
+    ]);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, string $bundle = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?string $bundle = NULL) {
     $this->bundle = $bundle;
     if ($memberships_ids = $this->getUserMembershipIds($this->bundle)) {
       $memberships = $this->entityTypeManager->getStorage('og_membership')->loadMultiple($memberships_ids);
@@ -137,20 +138,22 @@ CollectionsForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $membership_ids = $this->getUserMembershipIds();
+    $membership_ids = $this->getUserMembershipIds($this->bundle);
     $redirect_url = $this->getCancelUrl();
     $form_state->setRedirect($redirect_url->getRouteName(), $redirect_url->getRouteParameters());
 
     $operations = [];
     foreach ($membership_ids as $membership_id) {
       $operations[] = [
-        UnsubscribeFromAllCollectionsForm::class . '::membershipUnsubscribe',
+        UnsubscribeFromAllForm::class . '::membershipUnsubscribe',
         [$membership_id],
       ];
     }
 
     $batch = [
-      'title' => $this->t('Unsubscribe from collections'),
+      'title' => $this->t('Unsubscribe from :bundles', [
+        ':bundle' => $this->bundle,
+      ]),
       'operations' => $operations,
       'finished' => [$this, 'membershipUnsubscribeFinish'],
       'init_message' => $this->t('Initiating...'),
@@ -206,9 +209,10 @@ CollectionsForm extends ConfirmFormBase {
       $count = count($results);
       $arguments = [
         '@count' => $count,
+        ':bundle' => $this->bundle,
         '@items' => $this->renderer->render($list),
       ];
-      $message = $this->formatPlural($count, 'You will no longer receive notifications for the following collection:<br />@items', 'You will no longer receive notifications for the following @count collections:<br />@items', $arguments);
+      $message = $this->formatPlural($count, 'You will no longer receive notifications for the following :bundle:<br />@items', 'You will no longer receive notifications for the following @count :bundles:<br />@items', $arguments);
       $this->messenger()->addStatus($message);
     }
     else {

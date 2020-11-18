@@ -17,7 +17,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_core\Plugin\Field\FieldType\EntityBundlePairItem;
 use Drupal\joinup_group\JoinupGroupManagerInterface;
-use Drupal\joinup_subscription\JoinupSubscriptionsInterface;
+use Drupal\joinup_subscription\JoinupSubscriptionsHelper;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -153,7 +153,7 @@ class MySubscriptionsForm extends FormBase {
     // to subscribe to.
     $form['groups']['#tree'] = TRUE;
     $bundle_info = [];
-    $active_subscription_bundles = $this->subscriptionType === 'collection' ? JoinupSubscriptionsInterface::COLLECTION_BUNDLES : JoinupSubscriptionsInterface::SOLUTION_BUNDLES;
+    $active_subscription_bundles = $this->subscriptionType === 'collection' ? JoinupSubscriptionsHelper::COLLECTION_BUNDLES : JoinupSubscriptionsHelper::SOLUTION_BUNDLES;
     foreach (array_keys($active_subscription_bundles) as $entity_type_id) {
       $bundle_info[$entity_type_id] = $this->entityTypeBundleInfo->getBundleInfo($entity_type_id);
     }
@@ -199,7 +199,7 @@ class MySubscriptionsForm extends FormBase {
       $subscription_status = [];
 
       $active_subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
-      $subscription_bundles = $this->subscriptionType === 'collection' ? JoinupSubscriptionsInterface::COLLECTION_BUNDLES : JoinupSubscriptionsInterface::SOLUTION_BUNDLES;
+      $subscription_bundles = $this->subscriptionType === 'collection' ? JoinupSubscriptionsHelper::COLLECTION_BUNDLES : JoinupSubscriptionsHelper::SOLUTION_BUNDLES;
       foreach ($subscription_bundles as $entity_type_id => $bundle_ids) {
         foreach ($bundle_ids as $bundle_id) {
           $key = static::getSubscriptionKey($entity_type_id, $bundle_id);
@@ -259,6 +259,7 @@ class MySubscriptionsForm extends FormBase {
       '#title' => $this->t('Unsubscribe from all'),
       '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
         'user' => $user->id(),
+        'bundle' => $this->subscriptionType,
       ]),
       '#access' => $user_is_subscribed,
     ];
@@ -346,7 +347,7 @@ class MySubscriptionsForm extends FormBase {
 
     // Change status of checkboxes.
     $subscription_status = [];
-    $subscription_bundles = $this->subscriptionType === 'collection' ? JoinupSubscriptionsInterface::COLLECTION_BUNDLES : JoinupSubscriptionsInterface::SOLUTION_BUNDLES;
+    $subscription_bundles = $this->subscriptionType === 'collection' ? JoinupSubscriptionsHelper::COLLECTION_BUNDLES : JoinupSubscriptionsHelper::SOLUTION_BUNDLES;
     foreach ($subscription_bundles as $entity_type_id => $bundle_ids) {
       foreach ($bundle_ids as $bundle_id) {
         $key = static::getSubscriptionKey($entity_type_id, $bundle_id);

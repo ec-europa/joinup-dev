@@ -6,8 +6,8 @@ namespace Drupal\solution\Form;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
-use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_group\Form\JoinGroupFormBase;
+use Drupal\joinup_subscription\JoinupSubscriptionsHelper;
 use Drupal\og\OgMembershipInterface;
 
 /**
@@ -62,10 +62,7 @@ class JoinSolutionForm extends JoinGroupFormBase {
    */
   protected function createMembership(string $state, array $roles): OgMembershipInterface {
     $membership = parent::createMembership($state, $roles);
-    $membership->set('subscription_bundles', array_map(function (string $bundle): array {
-      return ['entity_type' => 'node', 'bundle' => $bundle];
-    }, CommunityContentHelper::BUNDLES));
-
+    $membership->set('subscription_bundles', JoinupSubscriptionsHelper::getSolutionBundlesDefaultValue());
     return $membership;
   }
 

@@ -24,12 +24,13 @@ joinup_subscription.my_subscriptions:
     subscription_type: '(collection|solution)'
 
 joinup_subscription.unsubscribe_all:
-  path: '/user/{user}/unsubscribe-all'
+  path: '/user/{user}/unsubscribe-all/{bundle}'
   defaults:
-    _form: '\Drupal\joinup_subscription\Form\UnsubscribeFromAllCollectionsForm'
+    _form: '\Drupal\joinup_subscription\Form\UnsubscribeFromAllForm'
     _title: 'Unsubscribe from all groups'
   requirements:
-    _custom_access: '\Drupal\joinup_subscription\Form\UnsubscribeFromAllCollectionsForm::access'
+    _custom_access: '\Drupal\joinup_subscription\Form\UnsubscribeFromAllForm::access'
+    bundle: '(collection|solution)'
   options:
     parameters:
       user:
