@@ -20,7 +20,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * Form that allows the user to unsubscribe from all groups.
  */
-class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
+class UnsubscribeFromAll
+CollectionsForm extends ConfirmFormBase {
 
   /**
    * The entity type manager service.
@@ -42,6 +43,13 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
    * @var \Drupal\Core\Render\Renderer
    */
   protected $renderer;
+
+  /**
+   * The membership group bundle.
+   *
+   * @var string
+   */
+  protected $bundle;
 
   /**
    * Constructs an UnsubscribeFromAllCollectionsForm.
@@ -74,21 +82,25 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'unsubscribe_from_all_collections_form';
+    return 'unsubscribe_from_all_form';
   }
 
   /**
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t('Unsubscribe from all collections');
+    return $this->t('Unsubscribe from all :bundles', [
+      ':bundle' => $this->bundle,
+    ]);
   }
 
   /**
    * {@inheritdoc}
    */
   public function getDescription() {
-    return $this->t('Are you sure you want to unsubscribe from all collections?<br />You will stop receiving news and updates from all collections (including the pending memberships).<br />In the future you will not be notified for the following collections:');
+    return $this->bundle === 'collection'
+      ? $this->t('Are you sure you want to unsubscribe from all collections?<br />You will stop receiving news and updates from all collections (including the pending memberships).<br />In the future you will not be notified for the following collections:')
+      : $this->t('Are you sure you want to unsubscribe from all solutions?<br />You will stop receiving news and updates from all solutions.<br />In the future you will not be notified for the following solutions:');
   }
 
   /**
@@ -101,8 +113,9 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    if ($memberships_ids = $this->getUserMembershipIds()) {
+  public function buildForm(array $form, FormStateInterface $form_state, string $bundle = NULL) {
+    $this->bundle = $bundle;
+    if ($memberships_ids = $this->getUserMembershipIds($this->bundle)) {
       $memberships = $this->entityTypeManager->getStorage('og_membership')->loadMultiple($memberships_ids);
       $labels = array_map(function (OgMembershipInterface $membership): ?string {
         $group = $membership->getGroup();
@@ -217,31 +230,36 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
    *
    * @param \Drupal\Core\Session\AccountInterface $account_proxy
    *   The user from the route.
+   * @param string $bundle
+   *   The bundle of the group.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result object.
    */
-  public function access(AccountInterface $account_proxy): AccessResultInterface {
+  public function access(AccountInterface $account_proxy, string $bundle): AccessResultInterface {
     // Deny access if the user is not logged in.
     if ($account_proxy->isAnonymous()) {
       return AccessResult::forbidden();
     }
 
-    return AccessResult::allowedIf($this->getUser()->id() === $account_proxy->id() && $this->getUserMembershipIds());
+    return AccessResult::allowedIf($this->getUser()->id() === $account_proxy->id() && $this->getUserMembershipIds($bundle));
   }
 
   /**
    * Returns an array of membership IDs that the user has active subscriptions.
    *
+   * @param string $bundle
+   *   The bundle of the group.
+   *
    * @return int[]
    *   An array of memberships.
    */
-  protected function getUserMembershipIds(): array {
+  protected function getUserMembershipIds(string $bundle): array {
     $query = $this->entityTypeManager
       ->getStorage('og_membership')
       ->getQuery()
       ->condition('uid', $this->getUser()->id())
-      ->condition('entity_bundle', 'collection')
+      ->condition('entity_bundle', $bundle)
       ->exists('subscription_bundles');
     return $query->execute();
   }
