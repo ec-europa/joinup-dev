@@ -21,13 +21,13 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  */
 class T14CopyLeftCanBeDistributedAsPermissiveIfUnchanged extends JoinupLicenceCompatibilityRulePluginBase {
 
-  const USE_CRITERIA = [
+  const INBOUND_CRITERIA = [
     'Must' => [
       'Copyleft/Share a.',
       'Lesser copyleft',
     ],
   ];
-  const REDISTRIBUTE_AS_CRITERIA = [
+  const OUTBOUND_CRITERIA = [
     'Compatible' => [
       'Permissive',
     ],

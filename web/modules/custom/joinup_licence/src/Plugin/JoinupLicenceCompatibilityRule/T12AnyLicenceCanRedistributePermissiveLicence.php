@@ -25,8 +25,8 @@ class T12AnyLicenceCanRedistributePermissiveLicence extends JoinupLicenceCompati
   /**
    * {@inheritdoc}
    */
-  public function isVerified(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool {
-    return $use_licence->hasLegalType('Compatible', 'Permissive');
+  public function isVerified(LicenceInterface $inbound_licence, LicenceInterface $outbound_licence): bool {
+    return $inbound_licence->hasLegalType('Compatible', 'Permissive');
   }
 
 }
