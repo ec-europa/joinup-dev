@@ -69,6 +69,10 @@
   border-left: 4px solid lighten($color-grey-light, 4%);
 }
 
+.comment-item__content {
+  margin-bottom: -20px;
+}
+
 .comment-item__stats {
   text-align: right;
 }
@@ -219,6 +223,7 @@
 
   > .indented,
   > .comment-item {
+    padding-bottom: 20px;
     &:after {
       content: "";
       position: absolute;
