@@ -45,7 +45,7 @@ class JoinupController extends ControllerBase {
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createAssetReleaseAccess(RdfEntityTypeInterface $rdf_type) {
+  public function createAccess(RdfEntityTypeInterface $rdf_type) {
     if ($rdf_type->id() !== 'collection') {
       return AccessResult::forbidden();
     }

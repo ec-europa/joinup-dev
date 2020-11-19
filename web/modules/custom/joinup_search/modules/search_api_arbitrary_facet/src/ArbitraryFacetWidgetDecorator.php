@@ -11,6 +11,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\facets\FacetInterface;
 use Drupal\facets\Widget\WidgetPluginInterface;
+use Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -44,32 +45,29 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface, ContainerF
    *   The plugin ID for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Component\Plugin\PluginManagerInterface $arbitrary_facet_plugin_manager
-   *   The Arbitrary Facets plugin manager.
+   * @param \Drupal\Core\Cache\Context\CacheContextsManager $cache_contexts_manager
+   *   The cache contexts manager service.
+   * @param \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetManager $arbitrary_facet_manager
+   *   The arbitrary facet plugin manager.
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The dependency injection container.
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, PluginManagerInterface $arbitrary_facet_plugin_manager) {
-    $this->arbitraryFacetManager = $arbitrary_facet_plugin_manager;
-
-    // Instantiate the decorated object. This needs to be done directly rather
-    // than through the Facets widget plugin manager to avoid an endless loop.
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, CacheContextsManager $cache_contexts_manager, ArbitraryFacetManager $arbitrary_facet_manager, ContainerInterface $container) {
+    // Instantiate the decorated object.
     $class = $plugin_definition['decorated_class'];
-    if (is_subclass_of($class, 'Drupal\Core\Plugin\ContainerFactoryPluginInterface')) {
-      $this->original = $class::create(\Drupal::getContainer(), $configuration, $plugin_id, $plugin_definition);
+
+    // If the plugin provides a factory method, pass the container to it.
+    if (is_subclass_of($class, ContainerFactoryPluginInterface::class)) {
+      $this->original = $class::create($container, $configuration, $plugin_id, $plugin_definition);
     }
     else {
-      $this->original = new $class($configuration, $plugin_id, $plugin_definition);
+      $this->original = new $class($configuration, $plugin_id, $plugin_definition, $cache_contexts_manager);
     }
-  }
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('plugin.manager.arbitrary_facet')
+    $this->arbitraryFacetManager = $arbitrary_facet_manager;
+      $container->get('cache_contexts_manager'),
+      $container->get('plugin.manager.arbitrary_facet'),
+      $container
     );
   }
 

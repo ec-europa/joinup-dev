@@ -5,8 +5,12 @@ declare(strict_types = 1);
 namespace Drupal\joinup\Context;
 
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\DrupalExtension\Hook\Scope\AfterNodeCreateScope;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\TraversingTrait;
+use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
+use Drupal\joinup_group\Exception\MissingGroupException;
+use Drupal\node\Entity\Node;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -212,6 +216,48 @@ class JoinupCommunityContentContext extends RawDrupalContext {
     $this->getNodeByTitle($title, $bundle)
       ->set($field_name, $time)
       ->save();
+  }
+
+  /**
+   * Pins newly created nodes.
+   *
+   * This checks if the "Pinned" property is set for a newly created node, and
+   * sets the pinned status accordingly. This is not done as part of the regular
+   * node creation since this data is not part of the node but is stored in a
+   * metadata entity.
+   *
+   * @param \Drupal\DrupalExtension\Hook\Scope\AfterNodeCreateScope $scope
+   *   The Behat hook scope object containing the metadata of the node that was
+   *   created.
+   *
+   * @throws \Exception
+   *   Thrown when the node is marked to be pinned but is not associated with a
+   *   group.
+   *
+   * @AfterNodeCreate
+   */
+  public function pinCommunityContentInGroup(AfterNodeCreateScope $scope) {
+    $node = $scope->getEntity();
+
+    $is_pinned = in_array(strtolower((string) ($node->pinned ?? '')), [
+      'y',
+      'yes',
+    ]);
+    $nid = $node->nid ?? NULL;
+    if ($is_pinned && $nid) {
+      /** @var \Drupal\node\NodeInterface $entity */
+      if ($entity = Node::load((int) $nid)) {
+        if ($entity instanceof PinnableGroupContentInterface) {
+          try {
+            $group = $entity->getGroup();
+            $entity->pin($group);
+          }
+          catch (MissingGroupException $e) {
+            throw new \Exception("The '{$node->title}' community content cannot be pinned since it does not belong to a group.");
+          }
+        }
+      }
+    }
   }
 
 }

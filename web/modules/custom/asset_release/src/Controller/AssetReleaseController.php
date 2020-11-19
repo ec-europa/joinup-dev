@@ -83,7 +83,7 @@ class AssetReleaseController extends ControllerBase {
       throw new NotFoundHttpException();
     }
 
-    return $this->ogAccess->userAccessEntity('create', $this->createNewAssetRelease($rdf_entity), $account);
+    return $this->ogAccess->userAccessEntityOperation('create', $this->createNewAssetRelease($rdf_entity), $account);
   }
 
   /**
@@ -103,7 +103,7 @@ class AssetReleaseController extends ControllerBase {
         ->setStatusCode(404)
         ->addCacheableDependency($rdf_entity);
     }
-    $entities = $this->sortEntitiesByCreationDate($field->referencedEntities());
+    $entities = $field->referencedEntities();
 
     // Put a flag on the standalone distributions so they can be identified for
     // theming purposes.
@@ -189,30 +189,6 @@ class AssetReleaseController extends ControllerBase {
       'field_isr_is_version_of' => $rdf_entity->id(),
     ]);
     return $release;
-  }
-
-  /**
-   * Sorts a list of releases and distributions by date.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface[] $entities
-   *   The RDF entities to sort.
-   *
-   * @return \Drupal\rdf_entity\RdfInterface[]
-   *   The sorted RDF entities.
-   */
-  protected function sortEntitiesByCreationDate(array $entities): array {
-    usort($entities, function (RdfInterface $entity1, RdfInterface $entity2): int {
-      // Sort entries without a creation date on the bottom so they don't stick
-      // to the top for all eternity.
-      $ct1 = $entity1->getCreatedTime() ?: 0;
-      $ct2 = $entity2->getCreatedTime() ?: 0;
-      if ($ct1 == $ct2) {
-        return 0;
-      }
-      return ($ct1 < $ct2) ? 1 : -1;
-    });
-
-    return $entities;
   }
 
 }

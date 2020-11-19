@@ -19,13 +19,12 @@ trait GroupContentTrait {
    * {@inheritdoc}
    */
   public function getGroup(): GroupInterface {
-    /** @var \Drupal\joinup_group\Entity\GroupInterface[] $groups */
-    $groups = $this->getReferencedEntities(OgGroupAudienceHelperInterface::DEFAULT_FIELD);
-    if (empty($groups)) {
+    $group = $this->getFirstReferencedEntity(OgGroupAudienceHelperInterface::DEFAULT_FIELD);
+    if (empty($group) || !$group instanceof GroupInterface) {
       throw new MissingGroupException();
     }
 
-    return reset($groups);
+    return $group;
   }
 
 }

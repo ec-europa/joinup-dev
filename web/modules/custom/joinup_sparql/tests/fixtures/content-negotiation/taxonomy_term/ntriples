@@ -1,0 +1,3 @@
+<http://example.com/citrus-fruits> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://example.com/citrus-fruits> <http://www.w3.org/2004/02/skos/core#inScheme> <http://example.com/fruit-type> .
+<http://example.com/citrus-fruits> <http://www.w3.org/2004/02/skos/core#prefLabel> "Citrus fruits"@en .

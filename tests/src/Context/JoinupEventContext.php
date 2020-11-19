@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup\Context;
 
-use Behat\Behat\Hook\Scope\AfterFeatureScope;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Drupal\Core\Site\Settings;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
@@ -88,16 +88,16 @@ class JoinupEventContext extends RawDrupalContext {
    * @throws \Exception
    *   Thrown when the Webtools Geocoding results are not being cached.
    *
-   * @BeforeFeature @api
+   * @BeforeScenario @api
    */
-  public static function beforeFeature(): void {
+  public static function trackCachedFiles(): void {
     $cache_settings = Settings::get('cache');
 
     $geocoder_cache_backend = $cache_settings['bins']['geocoder'] ?? '';
     $geocoder_cache_directory = self::getWebtoolsGeocodingCacheDirectory();
 
     if ($geocoder_cache_backend !== 'cache.backend.file_system' || empty($geocoder_cache_directory)) {
-      throw new \Exception('The Webtools Geocoding cache should be enabled. Please run ./vendor/bin/phing enable-webtools-geocoding-cache');
+      throw new \Exception('The Webtools Geocoding cache should be enabled. Please run ./vendor/bin/run drupal:settings site-clean');
     }
 
     // Keep track of the number of files that are present in the file cache.
@@ -115,9 +115,9 @@ class JoinupEventContext extends RawDrupalContext {
    *   Thrown when live requests were done to the Webtools Geocoding service
    *   during the test.
    *
-   * @AfterFeature @api
+   * @AfterScenario @api
    */
-  public static function afterFeature(AfterFeatureScope $scope): void {
+  public static function checkCachedFiles(AfterScenarioScope $scope): void {
     $expected_count = self::$webtoolsGeocodingCacheCount;
 
     if ($expected_count !== NULL && $expected_count != self::getWebtoolsGeocodingCacheCount()) {

@@ -40,7 +40,7 @@ function joinup_event_entity_bundle_info_alter(&$bundles) {
  * Implements hook_entity_type_alter().
  */
 function joinup_event_entity_type_alter(array &$entity_types): void {
-  /* @var $entity_types \Drupal\Core\Entity\EntityTypeInterface */
+  /** @var \Drupal\Core\Entity\EntityTypeInterface $entity_types */
   if (isset($entity_types['node'])) {
     $entity_types['node']->addConstraint('EventLocationConstraint');
   }

@@ -21,11 +21,13 @@ Feature:
 
     Given I am logged in as a facilitator of the "Some EIF solution" solution
     When I go to the "Some EIF solution" solution edit form
-    Then the following fields should not be present "EIF reference"
+    Then the following fields should not be present "EIF reference, EIF category"
 
     Given I am logged in as a moderator
     When I go to the "Some EIF solution" solution edit form
-    Then the following fields should be present "EIF reference"
+    Then the following fields should be present "EIF reference, EIF category"
+
+    When I press "Publish"
 
   Scenario: EIF recommendations are not visible to the end user.
     Given collection:
@@ -36,6 +38,7 @@ Feature:
       | state         | validated         |
       | collection    | EIF Toolbox       |
       | eif reference | Recommendation 1  |
+      | eif category  | Common services   |
 
     When I go to the "Some EIF solution" solution
     Then I should not see the text "EIF reference"

@@ -21,8 +21,8 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 /**
  * Access handler for entities with a workflow.
  *
- * @todo: More information should be inserted here.
- * @todo: If we are going with a unified way, a readme should include the
+ * @todo More information should be inserted here.
+ * @todo If we are going with a unified way, a readme should include the
  *   workflow creation process.
  *
  * All parameters for the permissions are described in the permission scheme.
@@ -204,7 +204,7 @@ class CommunityContentWorkflowAccessControlHandler {
     $view_scheme = $this->getPermissionScheme('view');
     $workflow_id = $this->getEntityWorkflowId($content);
     $state = $this->getEntityState($content);
-    // @todo: Shouldn't we return AccessResult::neutral() instead of
+    // @todo Shouldn't we return AccessResult::neutral() instead of
     // AccessResult::allowed() and only AccessResult::forbidden() should have
     // cacheable metadata? Neutral means we don't make any opinion but the
     // default view access on node is to allow.
@@ -233,7 +233,7 @@ class CommunityContentWorkflowAccessControlHandler {
       // There is no check whether the transition is allowed as only allowed
       // transitions are mapped in the permission scheme configuration object.
       if ($this->workflowHelper->userHasRoles($content, $account, $ownership_data)) {
-        // @todo: Shouldn't we return AccessResult::neutral() instead of
+        // @todo Shouldn't we return AccessResult::neutral() instead of
         // AccessResult::allowed()? Neutral means we don't make any opinion but
         // the default access rules will apply.
         // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6007
@@ -259,7 +259,7 @@ class CommunityContentWorkflowAccessControlHandler {
     if (empty($allowed_states)) {
       return AccessResult::forbidden()->addCacheableDependency($content);
     }
-    // @todo: Shouldn't we return AccessResult::neutral() instead of
+    // @todo Shouldn't we return AccessResult::neutral() instead of
     // AccessResult::allowed()? Neutral means we don't make any opinion but the
     // the default access rules will apply.
     // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6007
@@ -283,7 +283,7 @@ class CommunityContentWorkflowAccessControlHandler {
     $state = $this->getEntityState($content);
 
     if (isset($delete_scheme[$workflow_id][$state]) && $this->workflowHelper->userHasOwnAnyRoles($content, $account, $delete_scheme[$workflow_id][$state])) {
-      // @todo: Shouldn't we return AccessResult::neutral() instead of
+      // @todo Shouldn't we return AccessResult::neutral() instead of
       // AccessResult::allowed()? Neutral means we don't make any opinion but
       // the default access rules will apply.
       // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6007

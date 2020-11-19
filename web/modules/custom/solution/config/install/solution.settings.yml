@@ -49,8 +49,6 @@ transitions:
     blacklisted:
       - moderator
       - rdf_entity-solution-facilitator
-    deletion_request:
-      - moderator
   proposed:
     __new__:
       - authenticated
@@ -70,8 +68,6 @@ transitions:
     blacklisted:
       - moderator
       - rdf_entity-solution-facilitator
-    deletion_request:
-      - moderator
   # In the following to-state, the facilitator will not actually have permission to execute the transition if there is
   # not already a published version of the solution.
   validated:
@@ -90,11 +86,6 @@ transitions:
       - moderator
     needs_update:
       - moderator
-    deletion_request:
-      - moderator
-  deletion_request:
-    validated:
-      - rdf_entity-solution-administrator
   needs_update:
     validated:
       - moderator

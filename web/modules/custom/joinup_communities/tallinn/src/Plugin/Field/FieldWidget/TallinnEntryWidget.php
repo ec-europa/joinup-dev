@@ -44,7 +44,10 @@ class TallinnEntryWidget extends WidgetBase {
       '#label' => $this->fieldDefinition->getLabel(),
       '#open' => TRUE,
     ];
-    $element['#element_validate'][] = [get_called_class(), 'validateFormElement'];
+    $element['#element_validate'][] = [
+      get_called_class(),
+      'validateFormElement',
+    ];
 
     $wrapper = [
       '#prefix' => '<div class="js-form-wrapper form-wrapper">',
@@ -86,7 +89,10 @@ class TallinnEntryWidget extends WidgetBase {
   public static function validateFormElement($element, FormStateInterface $form_state, $form) {
     $status = $element['status']['#value'];
     $explanation = $element['explanation']['value']['#value'];
-    if (in_array($status, ['in_progress', 'completed']) && empty($explanation)) {
+    if (
+      in_array($status, ['in_progress', 'completed'])
+      && empty($explanation)
+    ) {
       $arguments = [
         '@title' => $element['#label'],
         '%status' => TallinnEntryItem::getStatusOptions()[$status],

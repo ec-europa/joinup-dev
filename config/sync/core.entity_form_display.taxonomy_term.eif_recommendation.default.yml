@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.taxonomy_term.eif_recommendation.field_eif_identifier
     - field.field.taxonomy_term.eif_recommendation.field_eif_related_term
     - taxonomy.vocabulary.eif_recommendation
   module:
@@ -21,6 +22,13 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_eif_identifier:
+    weight: 103
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
   field_eif_related_term:
     weight: 101
     settings:

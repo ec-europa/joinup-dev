@@ -34,10 +34,12 @@ use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og\OgRoleInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\search_api\Entity\Server;
 use GuzzleHttp\Client;
@@ -103,6 +105,21 @@ class JoinupContext extends RawDrupalContext {
     $message = sprintf('The text "%s" was not found anywhere in the text of the current page.', $text);
 
     Assert::assertRegExp($regex, $actual, $message);
+  }
+
+  /**
+   * Checks that a given text appears a certain number of times.
+   *
+   * @param string $text
+   *   The text that should have a particular number of appearances.
+   * @param int $count
+   *   The number of appearances.
+   *
+   * @Then the text :text should appear :count time(s)
+   */
+  public function assertTextCount(string $text, int $count): void {
+    $xpath = '//*[contains(text(), "' . $text . '")]';
+    $this->assertSession()->elementsCount('xpath', $xpath, $count);
   }
 
   /**
@@ -241,11 +258,15 @@ class JoinupContext extends RawDrupalContext {
     if (empty($membership)) {
       return FALSE;
     }
-    if ($roles == $membership->getRolesIds()) {
-      return FALSE;
-    }
+    $expected_roles_ids = array_map(function (OgRoleInterface $role): string {
+      return $role->id();
+    }, $roles);
+    $actual_roles_ids = $membership->getRolesIds();
 
-    return TRUE;
+    sort($expected_roles_ids);
+    sort($actual_roles_ids);
+
+    return $expected_roles_ids === $actual_roles_ids;
   }
 
   /**
@@ -265,8 +286,8 @@ class JoinupContext extends RawDrupalContext {
     }
 
     // Submit form, waiting for Honeypot protection delay to pass.
-    /** @var \HoneypotSubContext $honeypot */
-    $honeypot = $this->getContext('\HoneypotSubContext');
+    /** @var \Drupal\Tests\honeypot\Behat\HoneypotContext $honeypot */
+    $honeypot = $this->getContext('\Drupal\Tests\honeypot\Behat\HoneypotContext');
     $honeypot->waitForTimeLimit();
 
     $this->getSession()->getPage()->pressButton("Create new account");
@@ -409,7 +430,7 @@ class JoinupContext extends RawDrupalContext {
     $options = $this->explodeCommaSeparatedStepArgument($optgroups);
 
     foreach ($options as $option) {
-      Assert::assertContains($option, $available_optgroups, TRUE, "The '{$select}' select doesn't contain the option '{$option}''.");
+      Assert::assertContains($option, $available_optgroups, "The '{$select}' select doesn't contain the option '{$option}''.", TRUE);
     }
   }
 
@@ -584,9 +605,8 @@ class JoinupContext extends RawDrupalContext {
    *   for creating the node as properties on the object.
    *
    * @throws \Exception
-   *   Thrown when the term "sticky" is used instead of "pinned" in test data.
-   * @throws \UnexpectedValueException
-   *   Thrown when the values for the status and sticky fields are not correct.
+   *   Thrown when a logo could not be uploaded, e.g. because the file could not
+   *   be found.
    *
    * @BeforeNodeCreate
    */
@@ -652,10 +672,6 @@ class JoinupContext extends RawDrupalContext {
       $node->field_state = self::translateWorkflowStateAlias($node->field_state);
     }
 
-    if (isset($node->sticky)) {
-      throw new \Exception('Please use "pinned" instead of "sticky".');
-    }
-
     if (property_exists($node, 'visit_count')) {
       $node->visit_count = MetaEntity::create([
         'type' => 'visit_count',
@@ -697,10 +713,6 @@ class JoinupContext extends RawDrupalContext {
     }
 
     // Replace the human-readable values for multiple fields.
-    self::convertObjectPropertyValues($node, 'pinned', [
-      'yes' => 1,
-      'no' => 0,
-    ], 'sticky');
     self::convertObjectPropertyValues($node, 'field_site_featured', [
       'yes' => 1,
       'no' => 0,
@@ -1199,6 +1211,26 @@ class JoinupContext extends RawDrupalContext {
     $headings_in_page = array_keys($this->getTiles());
     $headings_expected = $titles_table->getColumn(0);
     Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found or were not in the proper order.');
+  }
+
+  /**
+   * Asserts that a certain link is present in a tile.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   * @param string $link
+   *   The text of the link.
+   *
+   * @throws \Exception
+   *   Thrown when the tile or the link are not found.
+   *
+   * @Then I( should) see the link :text in the :heading tile
+   */
+  public function assertTileContainsLink($heading, $link) {
+    $element = $this->getTileByHeading($heading);
+    if (!$element->findLink($link)) {
+      throw new \Exception("The link '$link' was not found in the tile '$heading'.");
+    }
   }
 
   /**
@@ -1735,7 +1767,7 @@ class JoinupContext extends RawDrupalContext {
    * @Then I should see a banner on the header
    */
   public function assertExistingBanner() {
-    $xpath = '//div[@class="featured__outer-wrapper"]/@style';
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " featured__outer-wrapper ")]/@style';
     $results = $this->getSession()->getPage()->find('xpath', $xpath);
     // If the preg_match get a match, it means that the background image is
     // empty.
@@ -2346,10 +2378,7 @@ class JoinupContext extends RawDrupalContext {
     }
     $entity = static::getEntityByLabel($entity_type_id, $heading);
 
-    /** @var \Drupal\joinup\PinServiceInterface $pin_service */
-    $pin_service = \Drupal::service('joinup.pin_service');
-
-    if ($pin_service->isEntityPinned($entity)) {
+    if ($entity instanceof PinnableGroupContentInterface && $entity->isPinned()) {
       throw new \Exception("The tile '$heading' is marked as featured, but it shouldn't be.");
     }
   }
@@ -3015,6 +3044,29 @@ JS;
       throw new \Exception("The {$current_url} does not contain an anchor.");
     }
     $this->assertHtmlText("id=\"{$url_parts['fragment']}\"");
+  }
+
+  /**
+   * Asserts that a menu link is in the active trail.
+   *
+   * @param string $link_label
+   *   The label of the link to be tested.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   When the link doesn't exist.
+   *
+   * @Then the( menu) link :link_label is in the active trail
+   */
+  public function assertLinkIsInActiveTrail(string $link_label): void {
+    $session = $this->getSession();
+    $page = $session->getPage();
+    if (!$page->findLink($link_label)) {
+      throw new ElementNotFoundException($session->getDriver(), 'Link', 'label', $link_label);
+    }
+    $xpath = "//ul/li[contains(concat(' ', @class, ' '), ' menu-item--active-trail ')]/descendant::a/descendant-or-self::*[text()='{$link_label}']";
+    if (!$page->find('xpath', $xpath)) {
+      throw new ExpectationFailedException("The '{$link_label}' link is not in the active trail but it should.");
+    }
   }
 
 }

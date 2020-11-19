@@ -4,16 +4,19 @@ declare(strict_types = 1);
 
 namespace Drupal\eif;
 
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+
 /**
  * A helper class for EIF.
  */
-class Eif {
+class Eif implements EifInterface {
 
   /**
-   * The EIF toolbox solution ID.
-   *
-   * @var string
+   * {@inheritdoc}
    */
-  public const EIF_ID = 'http://data.europa.eu/w21/405d8980-3f06-4494-b34a-46c388a38651';
+  public static function getCategories(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+    return static::EIF_CATEGORIES;
+  }
 
 }

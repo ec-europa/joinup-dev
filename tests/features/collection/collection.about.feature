@@ -47,6 +47,14 @@ Feature: About page
     And I should not see the text "E-health"
     And I should not see the text "Belgium"
 
+    # There should be a section explaining how the collection is moderated.
+    And I should see the heading "Moderation"
+    And I should see the text "Open collection"
+    And I should see the text "Only members can create content."
+    And I should see the text "Non moderated"
+    # Regression test for the "Moderation" label appearing twice.
+    And the text "Moderation" should appear 1 time
+
     # When there is no abstract, the description should be shown in the homepage.
     When I am logged in as a "moderator"
     And I go to the "Fitness at work" collection edit form

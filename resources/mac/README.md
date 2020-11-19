@@ -67,43 +67,22 @@ Redis](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-
 1. Clone the respository of this project
 
    ```bash
-   $ git clone https://github.com/ec-europa/Joinup-dev.git
+   $ git clone https://github.com/ec-europa/joinup-dev.git
    ```
 
-2. Create file **build.properties.local** in the project with content
-   ```
-   # The location of the Composer binary.
-   composer.bin = /usr/local/bin/composer
+1. Create a local task runner configuration file
 
-   # Database settings.
-   drupal.db.name = joinup
-   drupal.db.user = root
-   drupal.db.password =
+    In order to override any configuration of the task runner
+    (`./vendor/bin/run`), create a `runner.yml` file in the project's top
+    directory. You can override there any default runner configuration, or any
+    other declared in `./resources/runner` files or in `runner.yml.dist`. Note
+    that the `runner.yml` file is not under VCS control.
 
-   # Admin user.
-   drupal.admin.username = admin
-   drupal.admin.password = admin
+1. Setup environment variables
 
-   # The base URL to use in Behat tests.
-   behat.base_url = http://joinup.test/
-   drupal.base_url = http://joinup.test/
-
-   # Paths
-   isql.bin = /usr/local/bin/isql
-   sparql.dsn = localhost
-   sparql.user = dba
-   sparql.password = dba
-
-   # Piwik configuration
-   piwik.db.password = password
-   piwik.port = 80
-   piwik.website_id = 1
-   piwik.url.http = http://piwik.test/
-
-   exports.s3.bucket = ''
-   exports.s3.key = ''
-   exports.s3.secret = ''
-   ```
+Sensitive data will be stored in [environment variables](
+https://en.wikipedia.org/wiki/Environment_variable). See `.env.dist` for
+details.
 
 **! Important: For the ASDA settings please contact your local developer !**  
 
@@ -113,10 +92,10 @@ Redis](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-
    $ composer install
    ```
 
-4. Run `build-dev`
+4. Run `toolkit:build-dev`
 
    ```bash
-   $ ./vendor/bin/phing build-dev
+   $ ./vendor/bin/run toolkit:build-dev
    ```
 
 5. Install and/or relink
@@ -134,15 +113,14 @@ Redis](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-
    ```bash
    $ ./vendor/bin/run virtuoso:setup
    $ ./vendor/bin/run virtuoso:start
-   $ ./vendor/bin/phing setup-virtuoso-permissions
    ```
 
   [Check Virtuoso](http://localhost:8890/sparql)
 
-7. Run `install-dev`
+7. Run `toolkit:install-clean`
 
    ```bash
-   $ ./vendor/bin/phing install-dev
+   $ ./vendor/bin/run toolkit:install-clean
    ```
 
 8. Setup Solr and check if it's running
@@ -165,18 +143,6 @@ Redis](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-
    $ ./vendor/bin/run toolkit:install-clone
    ```
 
-11. Enable developers settings
-
-   ```bash
-   $ ./vendor/bin/phing setup-dev
-   ```
-
-   **WARNING** If you get an error: "Your site configuration active store is
-   currently locked.”, comment this line in **/web/sites/default/settings.php**:
-   ```php
-   $settings['config_readonly'] = !file_exists(getcwd() . '/../disable-config-readonly');
-   ```
-
 12. Unblock the admin user
 
    ```bash
@@ -195,6 +161,7 @@ This is needed when you'll have to switch a branch and keep your content up to
 date:
 
 ```bash
-$ ./vendor/bin/phing build-dev
+$ ./vendor/bin/composer install
+$ ./vendor/bin/run toolkit:build-dev
 $ ./vendor/bin/run toolkit:install-clone
 ```

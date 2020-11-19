@@ -51,4 +51,11 @@ class JoinupUser extends User implements JoinupUserInterface {
     return $this->get('status')->value == -1;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function isModerator(): bool {
+    return $this->hasRole('moderator');
+  }
+
 }

@@ -88,7 +88,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
    *   A list of collection IDs where the solution host entity is affiliated.
    */
   protected function getAffiliation(): array {
-    return array_values(\Drupal::service('entity_type.manager')
+    return array_values(\Drupal::getContainer()->get('entity_type.manager')
       ->getStorage('rdf_entity')
       ->getQuery()
       ->condition('rid', 'collection')
@@ -114,7 +114,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
     $field_handler = \Drupal::service('sparql.field_handler');
     $field_uri = $field_handler->getFieldPredicates('rdf_entity', 'field_ar_affiliates')['collection'];
 
-    // Generate a list of new ids that the solution references as an affiliate.
+    // Generate a list of new IDs that the solution references as an affiliate.
     $new_ids = array_map(function (EntityReferenceItem $field_item): string {
       return $field_item->target_id;
     }, $this->list);
@@ -148,7 +148,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
     // Collect the ids of the collections that were affected by changes.
     $affected_ids += array_unique(array_merge($new_ids, $existing_ids));
 
-    $connection->query($this->getDeleteQuery($graph_uris, $field_uri, $solution, $new_ids));
+    $connection->query($this->getDeleteQuery($graph_uris, $field_uri, $solution));
     $connection->query($this->getInsertQuery($graph_uris, $field_uri, $solution, $new_ids));
 
     if ($affected_ids) {
@@ -174,7 +174,9 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
   }
 
   /**
-   * Returns the graph ids that the collection exists in.
+   * Returns the graph IDs that the collections exists in.
+   *
+   * Not to be confused with the final graphs the values will be inserted in.
    *
    * @return array
    *   An array of graph URIs that the collection exists in indexed by graph id.
@@ -216,13 +218,11 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
    *   The field predicate.
    * @param \Drupal\rdf_entity\RdfInterface $solution
    *   The solution entity.
-   * @param array $new_ids
-   *   The new affiliates list.
    *
    * @return string
    *   The query string that updates the values.
    */
-  protected function getDeleteQuery(array $graph_uris, string $field_predicate, RdfInterface $solution, array $new_ids): string {
+  protected function getDeleteQuery(array $graph_uris, string $field_predicate, RdfInterface $solution): string {
     $query_parts = [];
     $query_parts[] = "DELETE {";
     foreach ($graph_uris as $uri) {
@@ -268,14 +268,21 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
    *   The query string that updates the values.
    */
   protected function getInsertQuery(array $graph_uris, string $field_predicate, RdfInterface $solution, array $new_ids): string {
-    $query_parts = [];
+    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $rdf_storage */
+    $rdf_storage = \Drupal::getContainer()->get('entity_type.manager')->getStorage('rdf_entity');
     $query_parts[] = 'INSERT {';
     foreach ($graph_uris as $uri) {
-      $query_parts[] = "GRAPH <{$uri}> {";
+      $insert_parts = [];
       foreach ($new_ids as $id) {
-        $query_parts[] = "<{$id}> <{$field_predicate}> <{$solution->id()}> .";
+        if ($rdf_storage->idExists($id, $uri)) {
+          $insert_parts[] = "<{$id}> <{$field_predicate}> <{$solution->id()}> .";
+        }
       }
-      $query_parts[] = '}';
+      if (!empty($insert_parts)) {
+        $query_parts[] = "GRAPH <{$uri}> {";
+        $query_parts[] = implode("\n", $insert_parts);
+        $query_parts[] = '}';
+      }
     }
     $query_parts[] = '}';
     return implode("\n", $query_parts);

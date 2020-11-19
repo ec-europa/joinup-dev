@@ -29,4 +29,12 @@ interface JoinupUserInterface extends UserInterface {
    */
   public function isCancelled(): bool;
 
+  /**
+   * Whether or not the user is a moderator.
+   *
+   * @return bool
+   *   TRUE if the user is a moderator, FALSE otherwise.
+   */
+  public function isModerator(): bool;
+
 }

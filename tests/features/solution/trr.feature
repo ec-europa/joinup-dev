@@ -22,6 +22,8 @@ Feature: Creating a test (solution) in the TRR collection.
     Given I go to the homepage of the "Friends of the test repository" collection
     And I open the plus button menu
     And I click "Add solution"
+    And I check the "I have read and accept the legal notice and I commit to manage my solution on a regular basis." material checkbox
+    And I press "Yes"
     And I should see the text "Add solution"
 
     # Fill in basic solution data.

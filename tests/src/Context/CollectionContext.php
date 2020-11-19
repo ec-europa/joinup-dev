@@ -19,6 +19,7 @@ use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup_collection\JoinupCollectionHelper;
+use Drupal\joinup_group\ContentCreationOptions;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
@@ -170,9 +171,9 @@ class CollectionContext extends RawDrupalContext {
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | content creation                      | featured | logo | moderation | modification date | owner | state                                                               |
-   * | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users | yes      |      | yes        |                   |       |                                                                     |
-   * | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users | no       |      | no         |                   |       | draft|proposed|validated|archival request|deletion request|archived |
+   * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | content creation                      | featured | logo | moderation | modification date | owner | state                                              |
+   * | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users | yes      |      | yes        |                   |       |                                                    |
+   * | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users | no       |      | no         |                   |       | draft|proposed|validated|archival request|archived |
    * @codingStandardsIgnoreEnd
    *
    * Only the title field is required.
@@ -249,9 +250,9 @@ class CollectionContext extends RawDrupalContext {
     $mapped_values = [
       'field_ar_moderation' => ['no' => 0, 'yes' => 1],
       'field_ar_content_creation' => [
-        'facilitators' => 'only_facilitators',
-        'members' => 'only_members',
-        'registered users' => 'any_user',
+        'facilitators and authors' => ContentCreationOptions::FACILITATORS_AND_AUTHORS,
+        'members' => ContentCreationOptions::MEMBERS,
+        'registered users' => ContentCreationOptions::REGISTERED_USERS,
       ],
       'field_ar_closed' => ['no' => 0, 'yes' => 1],
       'field_ar_state' => [
@@ -259,7 +260,6 @@ class CollectionContext extends RawDrupalContext {
         'proposed' => 'proposed',
         'validated' => 'validated',
         'archival request' => 'archival_request',
-        'deletion request' => 'deletion_request',
         'archived' => 'archived',
       ],
       'field_site_featured' => ['no' => 0, 'yes' => 1],
@@ -326,15 +326,15 @@ class CollectionContext extends RawDrupalContext {
    *
    * @codingStandardsIgnoreStart
    * Table format:
-   * | title            | Open Data Initiative                                                |
-   * | author           | Mightily Oats                                                       |
-   * | logo             | logo.png                                                            |
-   * | featured         | yes|no                                                              |
-   * | moderation       | yes|no                                                              |
-   * | closed           | yes|no                                                              |
-   * | content creation | facilitators|members|registered users                               |
-   * | metadata url     | https://ec.europa.eu/my/url                                         |
-   * | state            | draft|proposed|validated|archival request|deletion request|archived |
+   * | title            | Open Data Initiative                               |
+   * | author           | Mightily Oats                                      |
+   * | logo             | logo.png                                           |
+   * | featured         | yes|no                                             |
+   * | moderation       | yes|no                                             |
+   * | closed           | yes|no                                             |
+   * | content creation | facilitators|members|registered users              |
+   * | metadata url     | https://ec.europa.eu/my/url                        |
+   * | state            | draft|proposed|validated|archival request|archived |
    * @codingStandardsIgnoreEnd
    *
    * Only the title field is required.
@@ -565,7 +565,7 @@ class CollectionContext extends RawDrupalContext {
   /**
    * Removes any created collections.
    *
-   * @AfterScenario
+   * @AfterScenario @api
    */
   public function cleanCollections(): void {
     if (empty($this->collections)) {
@@ -603,7 +603,7 @@ class CollectionContext extends RawDrupalContext {
    * @throws \Exception
    *    Thrown when the user does not exist.
    *
-   * @todo: Maybe there is a better definition available here like 'The
+   * @todo Maybe there is a better definition available here like 'The
    * following state buttons should be available for the user on the
    * collection'.
    *
@@ -624,6 +624,31 @@ class CollectionContext extends RawDrupalContext {
       $this->visitCollectionForm($values['collection'], 'edit');
       $buttons = $this->explodeCommaSeparatedStepArgument($values['buttons']);
       $this->assertSubmitButtonsVisible($buttons);
+    }
+  }
+
+  /**
+   * Checks that a user has access to the delete button on the collection form.
+   *
+   * Table format:
+   * | collection   | user | delete link |
+   * | Collection A | John | yes         |
+   * | Collection B | Jack | no          |
+   *
+   * @param \Behat\Gherkin\Node\TableNode $check_table
+   *   The table with the triplets collection-user-link visibility.
+   *
+   * @throws \Exception
+   *    Thrown when the user does not exist.
+   *
+   * @Then the visibility of the delete link should be as follows for these users in these collections:
+   */
+  public function verifyDeleteLinkVisibility(TableNode $check_table): void {
+    foreach ($check_table->getColumnsHash() as $values) {
+      $user = $this->getUserByName($values['user']);
+      $collection = $this->getCollectionByName($values['collection']);
+      $visible = $values['delete link'] === 'yes';
+      $this->assertGroupEntityOperation($visible, 'delete', $collection, $user);
     }
   }
 
@@ -703,7 +728,7 @@ class CollectionContext extends RawDrupalContext {
   /**
    * Creates the standard 'Joinup' collection.
    *
-   * @beforeScenario @joinup_collection
+   * @BeforeScenario @joinup_collection&&@api
    *
    * @see joinup_collection.module
    */

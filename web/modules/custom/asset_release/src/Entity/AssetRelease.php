@@ -24,13 +24,12 @@ class AssetRelease extends Rdf implements AssetReleaseInterface {
    * {@inheritdoc}
    */
   public function getGroup(): GroupInterface {
-    /** @var \Drupal\joinup_group\Entity\GroupInterface[] $groups */
-    $groups = $this->getReferencedEntities('field_isr_is_version_of');
-    if (empty($groups)) {
+    $group = $this->getFirstReferencedEntity('field_isr_is_version_of');
+    if (empty($group) || !$group instanceof GroupInterface) {
       throw new MissingGroupException();
     }
 
-    return reset($groups);
+    return $group;
   }
 
   /**
@@ -38,6 +37,28 @@ class AssetRelease extends Rdf implements AssetReleaseInterface {
    */
   public function getWorkflowStateFieldName(): string {
     return 'field_isr_state';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isLatestRelease(): bool {
+    return $this->id() === $this->getSolution()->getLatestReleaseId();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getVersion(): ?string {
+    /** @var \Drupal\Core\Field\FieldItemListInterface $field */
+    $field = $this->get('field_isr_release_number');
+    if ($field->isEmpty() || !($field->first()->value)) {
+      // @todo Replace the deprecation error with an exception in ISAICP-6217.
+      // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6217
+      @trigger_error('A release without version number is deprecated. The version number is required in ISAICP-6217.', E_USER_DEPRECATED);
+      return '';
+    }
+    return $field->first()->value;
   }
 
 }

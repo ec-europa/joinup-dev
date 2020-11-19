@@ -1,0 +1,1 @@
+[{"@id":"http://example.com/apple","http://example.com/fruit/label":[{"@value":"Apple","@language":"en"}],"http://example.com/fruit/uid":[{"@value":0}],"@type":["http://example.com/type/fruit"]},{"@id":"http://example.com/type/fruit"}]

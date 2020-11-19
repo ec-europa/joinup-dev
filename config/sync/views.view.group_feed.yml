@@ -1658,6 +1658,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: entity_created
           plugin_id: search_api
         entity_changed:
           id: entity_changed
@@ -1670,6 +1671,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: entity_changed
           plugin_id: search_api
       header: {  }
       footer: {  }

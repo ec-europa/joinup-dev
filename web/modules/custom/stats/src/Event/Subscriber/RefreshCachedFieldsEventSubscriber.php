@@ -15,6 +15,7 @@ use Drupal\cached_computed_field\EventSubscriber\RefreshExpiredFieldsSubscriberB
 use Drupal\cached_computed_field\ExpiredItemCollection;
 use Drupal\cached_computed_field\ExpiredItemInterface;
 use Drupal\file_url\Entity\RemoteFile;
+use Drupal\joinup_stats\Entity\StatisticsAwareInterface;
 use Drupal\matomo_reporting_api\MatomoQueryFactoryInterface;
 use Drupal\meta_entity\Entity\MetaEntityInterface;
 use Drupal\meta_entity\Entity\MetaEntityType;
@@ -374,7 +375,8 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   protected function getSettingsForMetaEntity(MetaEntityInterface $meta_entity): array {
     if (!isset($this->metaEntityTypeSettings)) {
       $this->metaEntityTypeSettings = [];
-      foreach (MetaEntityType::loadMultiple() as $type => $meta_entity_type) {
+      $statistics_types = array_values(StatisticsAwareInterface::STATISTICS_FIELDS);
+      foreach (MetaEntityType::loadMultiple($statistics_types) as $type => $meta_entity_type) {
         $this->metaEntityTypeSettings[$type] = $meta_entity_type->getThirdPartySettings('joinup_stats');
 
         // Ensure configuration integrity.

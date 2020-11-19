@@ -4,56 +4,48 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_invite\Form;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
-use Drupal\og\MembershipManagerInterface;
-use Drupal\rdf_entity\RdfInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\joinup_invite\Entity\InvitationInterface;
+use Drupal\og\OgMembershipInterface;
+use Drupal\user\UserInterface;
 
 /**
- * Form to add a member with a certain role in a rdf entity group.
+ * Form to invite a member with a certain role in a rdf entity group.
  */
-class InviteToGroupForm extends InviteFormBase {
+class InviteToGroupForm extends GroupFormBase {
 
   /**
-   * The group where to invite users.
+   * The status value for an invitation that has been accepted.
    *
-   * @var \Drupal\rdf_entity\RdfInterface
+   * @var string
    */
-  protected $rdfEntity;
+  const STATUS_MEMBERSHIP_PENDING = 'membership_pending';
 
   /**
-   * The og membership manager service.
+   * The severity of the messages displayed to the user, keyed by result type.
    *
-   * @var \Drupal\og\MembershipManagerInterface
+   * @var string[]
    */
-  protected $ogMembershipManager;
+  const INVITATION_MESSAGE_TYPES = [
+    self::RESULT_SUCCESS => 'status',
+    self::RESULT_FAILED => 'error',
+    self::RESULT_RESENT => 'status',
+    self::RESULT_ACCEPTED => 'status',
+    self::RESULT_REJECTED => 'status',
+    self::STATUS_MEMBERSHIP_PENDING => 'error',
+  ];
 
   /**
-   * Constructs a new InviteToGroupForm object.
+   * The message templates to use for the notification mail.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager service.
-   * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
-   *   The og membership manager service.
+   * @var string
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, MembershipManagerInterface $og_membership_manager) {
-    parent::__construct($entityTypeManager);
-
-    $this->ogMembershipManager = $og_membership_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('entity_type.manager'),
-      $container->get('og.membership_manager')
-    );
-  }
+  const TEMPLATES = [
+    'collection' => 'collection_membership_invitation',
+    'solution' => 'solution_membership_invitation',
+  ];
 
   /**
    * {@inheritdoc}
@@ -66,7 +58,14 @@ class InviteToGroupForm extends InviteFormBase {
    * {@inheritdoc}
    */
   protected function getSubmitButtonText(): TranslatableMarkup {
-    return $this->t('Add members');
+    return $this->t('Invite members');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getTemplateId(): string {
+    return self::TEMPLATES[$this->entity->bundle()];
   }
 
   /**
@@ -74,57 +73,102 @@ class InviteToGroupForm extends InviteFormBase {
    */
   protected function getCancelButtonUrl(): Url {
     return new Url('entity.rdf_entity.member_overview', [
-      'rdf_entity' => $this->rdfEntity->id(),
+      'rdf_entity' => $this->entity->id(),
     ]);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL) {
-    $this->rdfEntity = $rdf_entity;
-
-    $form['role'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Role'),
-      '#required' => TRUE,
-      '#options' => [
-        'member' => $this->t('Member'),
-        'facilitator' => $this->t('Facilitator'),
-      ],
-      '#default_value' => 'member',
-    ];
-
-    return parent::build($form, $form_state);
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $users = $this->getUserList($form_state);
     $role_id = implode('-', [
-      $this->rdfEntity->getEntityTypeId(),
-      $this->rdfEntity->bundle(),
+      $this->entity->getEntityTypeId(),
+      $this->entity->bundle(),
       $form_state->getValue('role'),
     ]);
-    $role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
+    $this->role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
 
-    foreach ($users as $user) {
-      $membership = $this->ogMembershipManager->getMembership($this->rdfEntity, $user->id());
-      if (empty($membership)) {
-        $membership = $this->ogMembershipManager->createMembership($this->rdfEntity, $user);
-      }
-      $membership->addRole($role);
-      $membership->save();
+    $form_state->setRedirect('entity.rdf_entity.member_overview', [
+      'rdf_entity' => $this->entity->id(),
+    ]);
+
+    parent::submitForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function createInvitation(UserInterface $user): InvitationInterface {
+    /** @var \Drupal\joinup_invite\Entity\InvitationInterface $invitation */
+    $invitation = $this->entityTypeManager->getStorage('invitation')->create([
+      'bundle' => $this->getInvitationType(),
+    ]);
+    $invitation
+      ->setRecipient($user)
+      ->setEntity($this->entity)
+      ->set('field_invitation_og_role', $this->role)
+      ->save();
+
+    return $invitation;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getInvitationType(): string {
+    return 'group_membership';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function processUser(UserInterface $user): string {
+    $membership = $this->ogMembershipManager->getMembership($this->entity, $user->id(), OgMembershipInterface::ALL_STATES);
+    // If a pending membership exists, then do not do anything.
+    if (!empty($membership) && $membership->getState() === OgMembershipInterface::STATE_PENDING) {
+      return self::STATUS_MEMBERSHIP_PENDING;
     }
 
-    $this->messenger()->addMessage($this->t('Successfully added the role %role to the selected users.', [
-      '%role' => $role->label(),
-    ]));
-    $form_state->setRedirect('entity.rdf_entity.member_overview', [
-      'rdf_entity' => $this->rdfEntity->id(),
-    ]);
+    return parent::processUser($user);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function processResults(array $results): void {
+    foreach (array_filter($results) as $result => $count) {
+      $type = self::INVITATION_MESSAGE_TYPES[$result];
+      $args = [':count' => $count];
+      switch ($result) {
+        case self::RESULT_SUCCESS:
+          $message = $this->formatPlural($count, '1 user has been invited to this group.', ':count users have been invited to this group.', $args);
+          break;
+
+        case self::RESULT_FAILED:
+          $message = $this->formatPlural($count, 'The invitation could not be sent to 1 user. Please try again later.', 'The invitation could not be sent for :count users. Please try again later.', $args);
+          break;
+
+        case self::RESULT_RESENT:
+          $message = $this->formatPlural($count, "The invitation was resent to 1 user who was already invited previously but hasn't yet accepted the invitation.", "The invitation was resent to :count users that were already invited previously but haven't yet accepted the invitation.", $args);
+          break;
+
+        case self::RESULT_ACCEPTED:
+          $message = $this->formatPlural($count, '1 user was already subscribed to the group. No new invitation was sent.', ':count users were already subscribed to the group. No new invitation was sent.', $args);
+          break;
+
+        case self::RESULT_REJECTED:
+          $message = $this->formatPlural($count, '1 user has previously rejected the invitation. No new invitation was sent.', ':count users have previously rejected the invitation. No new invitation was sent.', $args);
+          break;
+
+        case self::STATUS_MEMBERSHIP_PENDING:
+          $message = $this->formatPlural($count, '1 user has a pending membership. Please, approve their membership request and assign the roles.', ':count users have a pending membership. Please, approve their membership requests and assign the roles.', $args);
+          break;
+
+        default:
+          throw new \Exception("Unknown result type '$result'.");
+      }
+      $this->messenger()->addMessage($message, $type);
+    }
   }
 
 }

@@ -92,7 +92,7 @@ trait UserTrait {
       $values['pass'] = $values['name'];
     }
     if (!isset($values['mail'])) {
-      $values['mail'] = $values['name'] . '@example.com';
+      $values['mail'] = str_replace(' ', '', $values['name']) . '@example.com';
     }
 
     $user = (object) $values;

@@ -130,7 +130,7 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
     '#weight' => -99,
     '#type' => 'html_tag',
     '#tag' => 'p',
-    '#value' => t('Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page <a href="https://webgate.ec.europa.eu/cas/eim/external/restricted/edit.cgi" rel="nofollow" target="_blank">here</a>. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup.'),
+    '#value' => t('Your name and E-mail are inherited from EU Login. To update this information, you can visit <a href="https://webgate.ec.europa.eu/cas/eim/external/restricted/edit.cgi" rel="nofollow" target="_blank">your EU Login account page</a>. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup.'),
   ];
 
   $form['account']['mail']['#description'] = t('Your e-mail address is not made public. We will only send you necessary system notifications and you can opt in later if you wish to receive additional notifications about content you are subscribed to.');
@@ -256,5 +256,17 @@ function joinup_eulogin_module_implements_alter(&$implementations, $hook): void 
   if ($hook === 'menu_links_discovered_alter') {
     // @see cas_menu_links_discovered_alter()
     unset($implementations['cas']);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function joinup_eulogin_preprocess_menu(&$variables) {
+  if ($variables['menu_name'] !== 'account') {
+    return;
+  }
+  if (\Drupal::currentUser()->isAuthenticated() && isset($variables['items']['joinup_eulogin.eu_login_info'])) {
+    unset($variables['items']['joinup_eulogin.eu_login_info']);
   }
 }

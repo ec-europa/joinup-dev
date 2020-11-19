@@ -5,11 +5,13 @@ requests. While running tests we will use these cached responses rather than
 querying the live service.
 
 This works by using the File Cache module and configuring it to store the cache
-for Geocoder as files. This can be activated by executing the following
-command:
+for Geocoder as files. This can be activated by enabling the 'filecache' module
+and ensuring the following lines in settings.php:
 
 ```
-$ ./vendor/bin/phing enable-webtools-geocoding-cache
+$settings['cache']['bins']['geocoder'] = 'cache.backend.file_system';
+$settings['filecache']['directory']['bins']['geocoder'] = '../tests/fixtures/webtools_geocoding_cache';
+$settings['filecache']['strategy']['bins']['geocoder'] = 'persist';
 ```
 
 Any requests that are done to the service will then be cached here. When

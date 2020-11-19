@@ -90,7 +90,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
   public function setUp(): void {
     parent::setUp();
 
-    $this->workflowAccess = \Drupal::service('joinup_community_content.community_content_workflow_access');
+    $this->workflowAccess = $this->container->get('joinup_community_content.community_content_workflow_access');
     $this->userOwner = $this->createUser();
     $this->userAnonymous = new AnonymousUserSession();
     $this->userAuthenticated = $this->createUser();
@@ -149,7 +149,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
   /**
    * Tests the 'view' (read) operation access.
    *
-   * @todo: Add test for unpublished parent.
+   * @todo Add test for unpublished parent.
    */
   protected function readOperationTest() {
     $test_roles = array_diff($this->getAvailableUsers(), ['userOwner']);
@@ -306,7 +306,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
     return [
       'collection' => [
         CommunityContentWorkflowAccessControlHandler::PRE_MODERATION => [
-          ContentCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS_AND_AUTHORS => [
             'userModerator' => [
               'draft',
               'proposed',
@@ -364,7 +364,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
           ],
         ],
         CommunityContentWorkflowAccessControlHandler::POST_MODERATION => [
-          ContentCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS_AND_AUTHORS => [
             'userModerator' => [
               'draft',
               'validated',
@@ -418,7 +418,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
       ],
       'solution' => [
         CommunityContentWorkflowAccessControlHandler::PRE_MODERATION => [
-          ContentCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS_AND_AUTHORS => [
             'userModerator' => [
               'draft',
               'proposed',
@@ -456,7 +456,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
           ],
         ],
         CommunityContentWorkflowAccessControlHandler::POST_MODERATION => [
-          ContentCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS_AND_AUTHORS => [
             'userModerator' => [
               'draft',
               'validated',

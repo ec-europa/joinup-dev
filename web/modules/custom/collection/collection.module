@@ -205,7 +205,6 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
   elseif (in_array($state, [
     'validated',
     'archival_request',
-    'deletion_request',
     'archived',
   ])) {
     $entity->set('graph', SparqlGraphInterface::DEFAULT);

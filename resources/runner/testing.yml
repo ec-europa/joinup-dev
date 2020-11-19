@@ -1,0 +1,69 @@
+# Testing configs and commands.
+
+behat:
+  screenshots:
+    local:
+      dir: ${toolkit.tmp_folder}/behat
+  # Either 'firefox' or 'chrome'.
+  browser_name: chrome
+  formatter:
+    name: progress
+
+phpcs:
+  file:
+    config: ${joinup.dir}/phpcs.xml
+    standard: ${joinup.dir}/phpcs-ruleset.xml.dist
+    global: ${joinup.dir}/vendor/squizlabs/php_codesniffer/CodeSniffer.conf
+  check:
+    extensions:
+      - css
+      - inc
+      - info
+      - install
+      - js
+      - module
+      - php
+      - profile
+      - test
+      - theme
+    files:
+      - ${joinup.dir}/tests/src
+      - ${joinup.dir}/src
+      - ${joinup.site_dir}/modules
+      - ${joinup.site_dir}/profiles
+      - ${joinup.site_dir}/themes
+  ignore:
+    - ${joinup.site_dir}/modules/contrib
+    - ${joinup.site_dir}/themes/joinup/scss
+    - ${joinup.site_dir}/themes/joinup/node_modules
+    - ${joinup.site_dir}/modules/custom/joinup_communities/tallinn/lib
+  report: full
+  options:
+    # Show the progress of the run.
+    - p
+  # Set this config to `false` in your `runner.yml` in order to disable running
+  # PHP coding standards on Git push.
+  run_on_push: true
+
+commands:
+
+  # Sets-up the tests/behat.yml file.
+  testing:behat-setup:
+    - task: process
+      source: ${joinup.dir}/tests/behat.yml.dist
+      destination: ${joinup.dir}/tests/behat.yml
+
+  # Adds a Git hook that enforces coding standards check on push.
+  testing:phpcs-git-hook:
+    - task: remove
+      file: ${joinup.dir}/.git/hooks/pre-push
+    - task: exec
+      command: (test "${phpcs.run_on_push}" = "1" && ln -s ${joinup.dir}/vendor/pfrenssen/phpcs-pre-push/pre-push ${joinup.dir}/.git/hooks/pre-push) || true
+
+  # Scans the code base for deprecated code.
+  testing:check-deprecated-code:
+    - task: exec
+      command: php -d memory_limit=-1 ${phpstan.bin} --no-progress analyse src tests/src web/modules/custom web/profiles web/themes
+  testing:check-deprecated-code-contrib:
+    - task: exec
+      command: php -d memory_limit=-1 ${phpstan.bin} --no-progress analyse web/modules/contrib

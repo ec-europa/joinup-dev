@@ -15,7 +15,6 @@ module:
   collection: 0
   comment: 0
   config: 0
-  config_filter: 0
   config_ignore: 0
   config_readonly: 0
   contact_form: 0
@@ -83,6 +82,7 @@ module:
   joinup_notification: 0
   joinup_paragraphs: 0
   joinup_rdf: 0
+  joinup_rdf_graph: 0
   joinup_rss: 0
   joinup_search: 0
   joinup_seo: 0
@@ -125,6 +125,7 @@ module:
   options: 0
   owner: 0
   page_cache: 0
+  paragraphs_jquery_ui_accordion: 0
   paragraphs_type_permissions: 0
   password_policy: 0
   password_policy_character_types: 0
@@ -154,6 +155,7 @@ module:
   search_api_solr: 0
   semic: 0
   serialization: 0
+  simple_block: 0
   simple_sitemap: 0
   simplenews: 0
   site_alert: 0
@@ -182,6 +184,7 @@ module:
   video_embed_field: 0
   video_embed_wysiwyg: 0
   view_unpublished: 0
+  views_autosubmit: 0
   views_bulk_operations: 0
   views_data_export: 0
   whats_new: 0

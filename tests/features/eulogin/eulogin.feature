@@ -10,8 +10,7 @@ Feature: Log in through EU Login
       | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    |
 
     Given I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
 
     # The user gets redirected to the CAS server.
     Then I should see the heading "Sign in to continue"
@@ -60,8 +59,7 @@ Feature: Log in through EU Login
       | chuck_the_local_hero | 12345    | chuck_the_local_hero@example.com | LocalChick | LocalNorris | ACME         |
 
     Given I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
 
     # The user gets redirected to the CAS server.
     Then I should see the heading "Sign in to continue"
@@ -86,8 +84,15 @@ Feature: Log in through EU Login
     When I press "Sign in"
     Then I should see the error message "Unrecognized username or password. Forgot your password?"
 
+    # Check that user can still reset their password.
+    When I click "reset your password"
+    Then I should see the heading "Reset your password"
+    And the following fields should be present "Email"
+    And I should see "Password reset instructions will be sent to your registered email address."
+
     # Successful login.
-    Given I fill in "Email or username" with "chuck_the_local_hero"
+    Given I move backward one page
+    And I fill in "Email or username" with "chuck_the_local_hero"
     And I fill in "Password" with "12345"
     When I press "Sign in"
     Then I should see the success message "Your EU Login account chucknorris has been successfully linked to your local account Chuck Norris."
@@ -143,8 +148,7 @@ Feature: Log in through EU Login
     And I should see the link "EU Login"
 
     Given I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     Then I should see the heading "Sign in to continue"
     And I fill in "E-mail address" with "007@mi6.eu"
     When I fill in "Password" with "shaken_not_stirred"
@@ -174,8 +178,7 @@ Feature: Log in through EU Login
       | other_user | 007.changed@mi6.eu |
 
     Given I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     Then I should see the heading "Sign in to continue"
     When I fill in "E-mail address" with "007.changed@mi6.eu"
     And I fill in "Password" with "shaken_not_stirred"
@@ -189,8 +192,7 @@ Feature: Log in through EU Login
       | jb007    | uniq@example.com | shaken_not_stirred | James      | Bond      | jb007_local    |
 
     When I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     Then I should see the heading "Sign in to continue"
     When I fill in "E-mail address" with "uniq@example.com"
     And I fill in "Password" with "shaken_not_stirred"
@@ -216,8 +218,7 @@ Feature: Log in through EU Login
       | jclocal  | dragonne | jcvd@gmail.com | JC         | VD          |
 
     Given I am on the homepage
-    And I click "Sign in"
-    And I click "EU Login"
+    And I click "Sign in with EU Login"
     And I fill in "E-mail address" with "muscles@brussels.be"
     And I fill in "Password" with "dragon12"
     And I press the "Log in" button
@@ -239,8 +240,7 @@ Feature: Log in through EU Login
     And I click "Sign out"
 
     Given I am on the homepage
-    And I click "Sign in"
-    And I click "EU Login"
+    And I click "Sign in with EU Login"
     And I fill in "E-mail address" with "muscles@brussels.be"
     And I fill in "Password" with "dragon12"
     And I press the "Log in" button
@@ -266,8 +266,7 @@ Feature: Log in through EU Login
 
     # User with full profile data.
     Given I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     When I fill in "E-mail address" with "f@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -281,7 +280,7 @@ Feature: Log in through EU Login
     And I should not see "full_cas_profile"
     And I should see the following lines of text:
       | Account information                                                                                                                                                                                                       |
-      | Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup. |
+      | Your name and E-mail are inherited from EU Login. To update this information, you can visit your EU Login account page. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup. |
       | Your e-mail address is not made public. We will only send you necessary system notifications and you can opt in later if you wish to receive additional notifications about content you are subscribed to.                         |
       | Your first name is publicly visible.                                                                                                                                                                                               |
       | Your last name is publicly visible.                                                                                                                                                                                                |
@@ -292,8 +291,7 @@ Feature: Log in through EU Login
     # User with partial profile data.
     Given I am an anonymous user
     And I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     When I fill in "E-mail address" with "p@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -306,7 +304,7 @@ Feature: Log in through EU Login
     And the following fields should be disabled "Family name"
     But I should not see "Username"
     And I should not see "partial_cas_profile"
-    And I should see "Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup."
+    And I should see "Your name and E-mail are inherited from EU Login. To update this information, you can visit your EU Login account page. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup."
     But I should not see "Fail - Password length must be at least 8 characters."
     And I should not see "Password character length of at least 8"
     And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
@@ -319,8 +317,7 @@ Feature: Log in through EU Login
     # User with no profile data.
     Given I am an anonymous user
     And I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     When I fill in "E-mail address" with "n@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -333,7 +330,7 @@ Feature: Log in through EU Login
     But I should not see "Username"
     # The username appears in the page header because this use has no first and
     # last name. But we check the absence of "Username" and this is enough.
-    And I should see "Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup."
+    And I should see "Your name and E-mail are inherited from EU Login. To update this information, you can visit your EU Login account page. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup."
     But I should not see "Fail - Password length must be at least 8 characters."
     And I should not see "Password character length of at least 8"
     And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
@@ -362,13 +359,6 @@ Feature: Log in through EU Login
     When I press "Save"
     Then I should see the error message "First name field is required."
     And I should see the error message "Family name field is required."
-
-  Scenario: The Drupal login form shows a warning message.
-    When I visit "/user/login"
-    Then I should see the warning message "Starting from 02/03/2020, signing in to Joinup is handled by EU Login, the European Commission Authentication Service."
-    And I should see the link "EU Login"
-    But the following fields should not be present "Email or username, Password"
-    And I should not see the "Sign in" button
 
   Scenario: A new user tries to register with an existing Email.
     Given users:
@@ -404,8 +394,7 @@ Feature: Log in through EU Login
       | joe      | joe.cas@example.com | 123      |
 
     Given I am on the homepage
-    And I click "Sign in"
-    When I click "EU Login"
+    And I click "Sign in with EU Login"
     When I fill in "E-mail address" with "joe.cas@example.com"
     When I fill in "Password" with "123"
     And I press the "Log in" button
@@ -462,8 +451,7 @@ Feature: Log in through EU Login
 
     Given I am an anonymous user
     And I am on the homepage
-    And I click "Sign in"
-    And I click "EU Login"
+    And I click "Sign in with EU Login"
     And I fill in "E-mail address" with "Joe_Case_Insensitive@example.com"
     And I fill in "Password" with "123"
     When I press the "Log in" button

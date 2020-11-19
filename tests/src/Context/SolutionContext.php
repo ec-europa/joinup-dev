@@ -9,6 +9,7 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\eif\EifInterface;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\EntityTrait;
@@ -19,9 +20,11 @@ use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\TraversingTrait;
+use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup_group\ContentCreationOptions;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
@@ -43,6 +46,7 @@ class SolutionContext extends RawDrupalContext {
   use RdfEntityTrait;
   use SearchTrait;
   use TraversingTrait;
+  use UserTrait;
   use UtilityTrait;
   use WorkflowTrait;
 
@@ -127,9 +131,9 @@ class SolutionContext extends RawDrupalContext {
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | title        | description            | state                                                              | collection      | documentation | closed | creation date    | content creation | featured | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
-   * | Foo solution | This is a foo solution | draft|proposed|validated|deletion request|needs update|blacklisted | Some collection | text.pdf      | yes    | 28-01-1995 12:05 | no               | yes      | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
-   * | Bar solution | This is a bar solution | validated                                                          |                 | text.pdf      | no     | 28-01-1995 12:06 | yes              | no       | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
+   * | title        | description            | state                                             | collection      | documentation | closed | creation date    | content creation | featured | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
+   * | Foo solution | This is a foo solution | draft|proposed|validated|needs update|blacklisted | Some collection | text.pdf      | yes    | 28-01-1995 12:05 | no               | yes      | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
+   * | Bar solution | This is a bar solution | validated                                         |                 | text.pdf      | no     | 28-01-1995 12:06 | yes              | no       | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
    * @codingStandardsIgnoreEnd
    *
    * Fields title, description, state and content creation are mandatory.
@@ -335,7 +339,8 @@ class SolutionContext extends RawDrupalContext {
    *   A new solution entity.
    *
    * @throws \Exception
-   *   Thrown when a given image is not found.
+   *   Thrown when a given image is not found, or when a solution is being
+   *   pinned in a non-existing group.
    */
   protected function createSolution(array $values) {
     $file_fields = [
@@ -352,8 +357,19 @@ class SolutionContext extends RawDrupalContext {
       }
     }
 
+    /** @var \Drupal\solution\Entity\SolutionInterface $solution */
     $solution = $this->createRdfEntity('solution', $values);
     $this->rdfEntities[$solution->id()] = $solution;
+
+    if (!empty($values['pinned_in_collection'])) {
+      foreach (explode(',', $values['pinned_in_collection']) as $group_label) {
+        $group = self::getRdfEntityByLabel(trim($group_label));
+        if (!$group instanceof GroupInterface) {
+          throw new \Exception("Cannot pin solution {$solution->label()} in $group_label since it does not exist or is not a group.");
+        }
+        $solution->pin($group);
+      }
+    }
 
     return $solution;
   }
@@ -470,18 +486,6 @@ class SolutionContext extends RawDrupalContext {
   }
 
   /**
-   * Tracks solutions that are manually deleted and don't need cleaning up.
-   *
-   * @param string $solution
-   *   The name of the solution.
-   *
-   * @Given the :solution solution will be deleted manually
-   */
-  public function skipCleaningOfSolution($solution) {
-    unset($this->rdfEntities[$this->getSolutionByName($solution)->id()]);
-  }
-
-  /**
    * Remove any created entities.
    *
    * @AfterScenario
@@ -532,6 +536,7 @@ class SolutionContext extends RawDrupalContext {
       'description' => 'field_is_description',
       'documentation' => 'field_is_documentation',
       'eif reference' => 'field_is_eif_recommendation',
+      'eif category' => 'field_is_eif_category',
       'keywords' => 'field_keywords',
       'landing page' => 'field_is_landing_page',
       'language' => 'field_is_language',
@@ -558,7 +563,7 @@ class SolutionContext extends RawDrupalContext {
       'collections' => 'collection',
       'featured' => 'field_site_featured',
       'pinned to front page' => 'field_site_pinned',
-      'pinned in' => 'field_is_pinned_in',
+      'pinned in' => 'pinned_in_collection',
       'shared on' => 'field_is_shared_in',
     ];
   }
@@ -579,8 +584,7 @@ class SolutionContext extends RawDrupalContext {
     $mapped_values = [
       'field_is_moderation' => ['no' => 0, 'yes' => 1],
       'field_is_content_creation' => [
-        'facilitators' => ContentCreationOptions::FACILITATORS,
-        'members' => ContentCreationOptions::MEMBERS,
+        'facilitators and authors' => ContentCreationOptions::FACILITATORS_AND_AUTHORS,
         'registered users' => ContentCreationOptions::REGISTERED_USERS,
       ],
       'field_is_webdav_creation' => ['no' => 0, 'yes' => 1],
@@ -588,7 +592,6 @@ class SolutionContext extends RawDrupalContext {
         'draft' => 'draft',
         'proposed' => 'proposed',
         'validated' => 'validated',
-        'deletion request' => 'deletion_request',
         'needs update' => 'needs_update',
         'blacklisted' => 'blacklisted',
       ],
@@ -596,6 +599,16 @@ class SolutionContext extends RawDrupalContext {
       'field_site_pinned' => ['no' => 0, 'yes' => 1],
       'field_is_show_eira_related' => ['no' => 0, 'yes' => 1],
     ];
+
+    $eif_categories = array_flip(EifInterface::EIF_CATEGORIES);
+    if (isset($fields['field_is_eif_category'])) {
+      $labels = $this->explodeCommaSeparatedStepArgument($fields['field_is_eif_category']);
+      $values = [];
+      foreach ($labels as $label) {
+        $values[] = $eif_categories[$label];
+      }
+      $fields['field_is_eif_category'] = implode(',', $values);
+    }
 
     foreach ($fields as $field => $value) {
       if (isset($mapped_values[$field])) {
@@ -636,7 +649,7 @@ class SolutionContext extends RawDrupalContext {
    * @throws \Exception
    *    Thrown when the user does not exist.
    *
-   * @todo: Maybe there is a better definition available here like 'The
+   * @todo Maybe there is a better definition available here like 'The
    * following state buttons should be available for the user on the
    * solution'.
    *
@@ -657,6 +670,31 @@ class SolutionContext extends RawDrupalContext {
       $this->visitEditSolution($values['solution']);
       $buttons = $this->explodeCommaSeparatedStepArgument($values['buttons']);
       $this->assertSubmitButtonsVisible($buttons);
+    }
+  }
+
+  /**
+   * Checks that a user has access to the delete button on the solution form.
+   *
+   * Table format:
+   * | solution   | user | delete link |
+   * | Solution A | John | yes         |
+   * | Solution B | Jack | no          |
+   *
+   * @param \Behat\Gherkin\Node\TableNode $check_table
+   *   The table with the triplets solution-user-link visibility.
+   *
+   * @throws \Exception
+   *    Thrown when the user does not exist.
+   *
+   * @Then the visibility of the delete link should be as follows for these users in these solutions:
+   */
+  public function verifyDeleteLinkVisibility(TableNode $check_table): void {
+    foreach ($check_table->getColumnsHash() as $values) {
+      $user = $this->getUserByName($values['user']);
+      $solution = $this->getSolutionByName($values['solution']);
+      $visible = $values['delete link'] === 'yes';
+      $this->assertGroupEntityOperation($visible, 'delete', $solution, $user);
     }
   }
 

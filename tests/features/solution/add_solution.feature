@@ -11,6 +11,8 @@ Feature: "Add solution" visibility options.
     And I am logged in as a facilitator of the "Language parsers" collection
     And I go to the homepage of the "Language parsers" collection
     And I click "Add solution"
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
 
     # Submit the incomplete form, so error messages about missing fields will
     # be shown.
@@ -71,13 +73,15 @@ Feature: "Add solution" visibility options.
     And I am logged in as "Wendell Silva"
     And I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner, Name, E-mail address, Website URL"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation, Motivation"
     # Regression test for ensuring that obsolete content creation value is removed.
     # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3567
     And I should not see the text "Only members can create content"
-    And I should see the text "Only facilitators can create content"
+    And I should see the text "Only facilitators and authors can create content"
     # Regression test to endure that the language terms "Multilingual Code" are not present.
     And the available options in the "Language" select should not include the "Multilingual Code"
     And I should see the description "For best result the image must be larger than 2400x345 pixels." for the "Banner" field
@@ -128,9 +132,9 @@ Feature: "Add solution" visibility options.
     And I should see the text "This is a test text"
     # Most solution fields are not shown in the overview but in the "about" page.
     # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3224
-    And I should not see the link "Demography"
     And I should not see the link "Belgium"
     And I should not see the link "Flemish"
+    But I should see the link "Demography"
     And the following email should have been sent:
       | recipient | Wendell Silva                                                                                               |
       | subject   | Joinup: Your solution has been accepted                                                                     |
@@ -140,6 +144,8 @@ Feature: "Add solution" visibility options.
     # Make sure that when another solution is added, both are affiliated.
     When I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     When I fill in the following:
       | Title                 | V60 filter coffee solution                                             |
       | Description           | This is a test text                                                    |
@@ -184,6 +190,8 @@ Feature: "Add solution" visibility options.
     When I am logged in as a facilitator of the "Language parsers" collection
     And I go to the homepage of the "Language parsers" collection
     And I click "Add solution"
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     And I fill in the following:
       | Title       | PHP comments parser                             |
       | Description | A simple parser that goes through PHP comments. |
@@ -207,7 +215,7 @@ Feature: "Add solution" visibility options.
     Then I should see the button "Save as draft"
     And I should see the button "Propose"
     # The owner entity state buttons should not be shown.
-    But I should not see the button "Request deletion"
+    But I should not see the link "Delete"
     And I should not see the button "Update"
 
   @terms
@@ -229,6 +237,8 @@ Feature: "Add solution" visibility options.
     Given I am logged in as a member of the "Ocean studies" collection
     When I go to the homepage of the "Ocean studies" collection
     And I click "Add solution" in the plus button menu
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     And I fill in "Title" with "Climate change tracker"
     And I press "Propose"
     Then I should see the error message "A solution titled Climate change tracker already exists in this collection. Please choose a different title."
@@ -239,6 +249,8 @@ Feature: "Add solution" visibility options.
     Given I am logged in as a member of the "Glacier monitoring" collection
     When I go to the homepage of the "Glacier monitoring" collection
     And I click "Add solution" in the plus button menu
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     And I fill in the following:
       | Title                 | Climate change tracker                      |
       | Description           | Logs retreat of 40 glaciers in Switzerland. |

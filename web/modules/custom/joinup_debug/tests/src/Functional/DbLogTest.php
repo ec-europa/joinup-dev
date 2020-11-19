@@ -24,7 +24,7 @@ class DbLogTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'dblog',
     'field',
     'filter',
@@ -34,6 +34,13 @@ class DbLogTest extends KernelTestBase {
     'text',
     'user',
   ];
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
 
   /**
    * {@inheritdoc}
@@ -51,6 +58,7 @@ class DbLogTest extends KernelTestBase {
       'name' => 'Basic page',
       'display_submitted' => FALSE,
     ]);
+    $this->entityTypeManager = $this->container->get('entity_type.manager');
   }
 
   /**
@@ -58,7 +66,7 @@ class DbLogTest extends KernelTestBase {
    */
   public function testDbLogRevisionUpdate() {
     /** @var \Drupal\node\NodeStorageInterface $node_storage */
-    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+    $node_storage = $this->entityTypeManager->getStorage('node');
     $watchdog_query = "SELECT COUNT(wid) FROM {watchdog} WHERE type = 'joinup_debug'";
 
     /** @var \Drupal\node\NodeInterface $node */
@@ -70,7 +78,7 @@ class DbLogTest extends KernelTestBase {
     $revision_id = $node->getRevisionId();
 
     $count = Database::getConnection()->query($watchdog_query)->fetchField();
-    $this->assertEquals(0, $count, $this->t('No entries should have been created due to the wrong revision being saved.'));
+    $this->assertEquals(0, $count, 'No entries should have been created due to the wrong revision being saved.');
 
     // Create a new version.
     $node->setNewRevision();
@@ -80,7 +88,7 @@ class DbLogTest extends KernelTestBase {
 
     $this->assertNotEquals($revision_id, $new_revision_id);
     $count = Database::getConnection()->query($watchdog_query)->fetchField();
-    $this->assertEquals(0, $count, $this->t('No entries should have been created due to the wrong revision being saved.'));
+    $this->assertEquals(0, $count, 'No entries should have been created due to the wrong revision being saved.');
 
     // Update the previous revision.
     $initial_revision = $node_storage->loadRevision($revision_id);
@@ -88,7 +96,7 @@ class DbLogTest extends KernelTestBase {
     $initial_revision->save();
 
     $count = Database::getConnection()->query($watchdog_query)->fetchField();
-    $this->assertEquals(2, $count, $this->t('2 Entries should have been created due to the wrong revision being saved.'));
+    $this->assertEquals(2, $count, '2 Entries should have been created due to the wrong revision being saved.');
   }
 
 }

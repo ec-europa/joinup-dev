@@ -1,2 +1,9 @@
-'view licence overview page':
+view compatibility documents:
+  title: 'View compatibility documents'
+administer compatibility document types:
+  title: 'Administer compatibility document types'
+  restrict access: true
+access compatibility document overview:
+  title: 'Access compatibility document overview page'
+view licence overview page:
   title: Access licence overview page

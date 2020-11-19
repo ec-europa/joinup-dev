@@ -225,7 +225,7 @@
     ],
     "field_is_content_creation": [
         {
-            "value": "only_facilitators"
+            "value": "facilitators_and_authors"
         }
     ],
     "field_is_moderation": [
