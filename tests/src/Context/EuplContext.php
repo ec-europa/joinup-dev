@@ -236,7 +236,7 @@ class EuplContext extends RawDrupalContext {
    * @When I choose :spdx_id as the :label licence
    */
   public function selectRadioButtonForLicenceCompatibilityCheck(string $spdx_id, string $label): void {
-    assert(in_array($label, ['Use', 'Distribute']), 'The purpose should be either "Use" or "Distribute".');
+    assert(in_array($label, ['Inbound', 'Outbound']), 'The purpose should be either "Use" or "Distribute".');
     $licence = $this->findLicenceTile($spdx_id);
     $this->selectMaterialDesignRadioButton($label, $licence);
   }
@@ -350,14 +350,14 @@ class EuplContext extends RawDrupalContext {
     /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginManager $plugin_manager */
     $plugin_manager = \Drupal::service('plugin.manager.joinup_licence_compatibility_rule');
     foreach ($table->getColumnsHash() as $test_case) {
-      $use_label = $test_case['use'];
-      $redistribute_as_label = $test_case['redistribute as'];
+      $use_label = $test_case['inbound'];
+      $redistribute_as_label = $test_case['outbound'];
       $expected_result = $test_case['document ID'];
 
-      $use_licence = static::loadLicenceByLabel($use_label);
-      $redistribute_as_licence = static::loadLicenceByLabel($redistribute_as_label);
+      $inbound_licence = static::loadLicenceByLabel($use_label);
+      $outbound_licence = static::loadLicenceByLabel($redistribute_as_label);
 
-      $result = $plugin_manager->getCompatibilityDocumentId($use_licence, $redistribute_as_licence);
+      $result = $plugin_manager->getCompatibilityDocumentId($inbound_licence, $outbound_licence);
 
       // Check that the returned document ID matches the expected ID.
       if ($expected_result !== $result) {
