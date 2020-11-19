@@ -51,9 +51,9 @@ class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
    * the current licence can be used in a project which is going to be
    * distributed under the passed in licence.
    *
-   * @param \Drupal\joinup_licence\Entity\LicenceInterface $use_licence
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface $inbound_licence
    *   The licence of an existing project of which the code or data is used.
-   * @param \Drupal\joinup_licence\Entity\LicenceInterface $redistribute_as_licence
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface $outbound_licence
    *   The licence under which the modified or extended code or data is going to
    *   be redistributed.
    *
@@ -65,11 +65,11 @@ class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    *   If the plugin being created is missing.
    */
-  public function getCompatibilityDocumentId(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): string {
+  public function getCompatibilityDocumentId(LicenceInterface $inbound_licence, LicenceInterface $outbound_licence): string {
     foreach ($this->getDefinitions() as $plugin_id => $plugin_definition) {
       /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRuleInterface $rule */
       $rule = $this->createInstance($plugin_id);
-      if ($rule->isVerified($use_licence, $redistribute_as_licence)) {
+      if ($rule->isVerified($inbound_licence, $outbound_licence)) {
         // Return the first compatible result. Note that the plugin definitions
         // were already sorted by their weight after discovery.
         return $plugin_id;
