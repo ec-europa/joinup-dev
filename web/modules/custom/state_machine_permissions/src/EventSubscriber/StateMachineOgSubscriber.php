@@ -55,10 +55,7 @@ class StateMachineOgSubscriber implements EventSubscriberInterface {
     return [
       OgPermissionEventInterface::EVENT_NAME => [
         ['ogGroupStateMachinePermissions'],
-        ['ogGroupContentStateMachineCreatePermissions'],
-        ['ogGroupContentStateMachineViewPermissions'],
         ['ogGroupContentStateMachineUpdatePermissions'],
-        ['ogGroupContentStateMachineDeletePermissions'],
       ],
     ];
   }
@@ -95,86 +92,6 @@ class StateMachineOgSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Generate group content state create permissions.
-   *
-   * @param \Drupal\og\Event\PermissionEventInterface $event
-   *   The OG permission event.
-   */
-  public function ogGroupContentStateMachineCreatePermissions(OgPermissionEventInterface $event): void {
-    $content_creation_options = [
-      ContentCreationOptions::REGISTERED_USERS => 'any user',
-      ContentCreationOptions::MEMBERS => 'only members',
-      ContentCreationOptions::FACILITATORS => 'only facilitator',
-    ];
-
-    foreach ($event->getGroupContentBundleIds() as $entity_type_id => $bundles) {
-      foreach ($bundles as $bundle) {
-        $workflows = $this->permissionsHelper->getPossibleWorkflowsForBundle($entity_type_id, $bundle, []);
-        $permissions = [];
-        foreach ($workflows as $workflow) {
-          foreach ($workflow->getStates() as $state) {
-            foreach ($content_creation_options as $key => $description) {
-              $permission_string = StateMachinePermissionStringConstructor::constructGroupContentStateCreatePermission($entity_type_id, $bundle, $workflow, $state->getId(), $key);
-              $permissions[$permission_string] = new GroupContentOperationPermission([
-                'name' => $permission_string,
-                'title' => $this->t('@workflow_label (:workflow_id): Create :bundle :entity_type_id in :state state when :creation_option can create content', [
-                  '@workflow_label' => $workflow->getLabel(),
-                  ':workflow_id' => $workflow->getId(),
-                  ':bundle' => $bundle,
-                  ':entity_type_id' => $entity_type_id,
-                  ':state' => lcfirst($state->getLabel()),
-                  ':creation_option' => $description,
-                ]),
-                'entity type' => $entity_type_id,
-                'bundle' => $bundle,
-                'operation' => $permission_string,
-              ]);
-            }
-          }
-        }
-        $event->setPermissions($permissions);
-      }
-    }
-  }
-
-  /**
-   * Generate group content state view permissions.
-   *
-   * @param \Drupal\og\Event\PermissionEventInterface $event
-   *   The OG permission event.
-   */
-  public function ogGroupContentStateMachineViewPermissions(OgPermissionEventInterface $event): void {
-    foreach ($event->getGroupContentBundleIds() as $entity_type_id => $bundles) {
-      foreach ($bundles as $bundle) {
-        $workflows = $this->permissionsHelper->getPossibleWorkflowsForBundle($entity_type_id, $bundle, []);
-        $permissions = [];
-        foreach ($workflows as $workflow) {
-          foreach ($workflow->getStates() as $state) {
-            foreach (['own' => FALSE, 'any' => TRUE] as $key => $permission) {
-              $permission_string = StateMachinePermissionStringConstructor::constructGroupContentStateViewPermission($entity_type_id, $bundle, $workflow, $state->getId(), $permission);
-              $permissions[$permission_string] = new GroupContentOperationPermission([
-                'name' => $permission_string,
-                'title' => $this->t('@workflow_label (:workflow_id): View :key :bundle :entity_type_id in :state state', [
-                  '@workflow_label' => $workflow->getLabel(),
-                  ':workflow_id' => $workflow->getId(),
-                  ':key' => $key,
-                  ':bundle' => $bundle,
-                  ':entity_type_id' => $entity_type_id,
-                  ':state' => $state->getLabel(),
-                ]),
-                'entity type' => $entity_type_id,
-                'bundle' => $bundle,
-                'operation' => $permission_string,
-              ]);
-            }
-          }
-        }
-        $event->setPermissions($permissions);
-      }
-    }
-  }
-
-  /**
    * Generate group content state update permissions.
    *
    * @param \Drupal\og\Event\PermissionEventInterface $event
@@ -208,43 +125,6 @@ class StateMachineOgSubscriber implements EventSubscriberInterface {
                   'operation' => $permission_string,
                 ]);
               }
-            }
-          }
-        }
-        $event->setPermissions($permissions);
-      }
-    }
-  }
-
-  /**
-   * Generate group content state delete permissions.
-   *
-   * @param \Drupal\og\Event\PermissionEventInterface $event
-   *   The OG permission event.
-   */
-  public function ogGroupContentStateMachineDeletePermissions(OgPermissionEventInterface $event): void {
-    foreach ($event->getGroupContentBundleIds() as $entity_type_id => $bundles) {
-      foreach ($bundles as $bundle) {
-        $workflows = $this->permissionsHelper->getPossibleWorkflowsForBundle($entity_type_id, $bundle, []);
-        $permissions = [];
-        foreach ($workflows as $workflow) {
-          foreach ($workflow->getStates() as $state) {
-            foreach (['own' => FALSE, 'any' => TRUE] as $key => $permission) {
-              $permission_string = StateMachinePermissionStringConstructor::constructGroupContentStateDeletePermission($entity_type_id, $bundle, $workflow, $state->getId(), $permission);
-              $permissions[$permission_string] = new GroupContentOperationPermission([
-                'name' => $permission_string,
-                'title' => $this->t('@workflow_label (:workflow_id): Delete :key :bundle :entity_type_id in :state state', [
-                  '@workflow_label' => $workflow->getLabel(),
-                  ':workflow_id' => $workflow->getId(),
-                  ':key' => $key,
-                  ':bundle' => $bundle,
-                  ':entity_type_id' => $entity_type_id,
-                  ':state' => $state->getLabel(),
-                ]),
-                'entity type' => $entity_type_id,
-                'bundle' => $bundle,
-                'operation' => $permission_string,
-              ]);
             }
           }
         }

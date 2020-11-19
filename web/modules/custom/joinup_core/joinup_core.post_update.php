@@ -14,7 +14,7 @@ use Drupal\user\Entity\Role;
 /**
  * Updates the permissions of the groups.
  */
-function _joinup_core_post_update_update_group_user_permissions() {
+function joinup_core_post_update_update_group_user_permissions() {
   $keywords = ['collection', 'solution'];
   foreach ($keywords as $group_keyword) {
     $collection_settings = \Drupal::config("{$group_keyword}.settings");
@@ -55,115 +55,9 @@ function _joinup_core_post_update_update_group_user_permissions() {
 }
 
 /**
- * Assign view permissions for community content.
- */
-function _joinup_core_post_update_view_community_content_state_permissions() {
-  $roles = [
-    'roles' => [
-      'anonymous' => Role::load('anonymous'),
-      'authenticated' => Role::load('authenticated'),
-      'moderator' => Role::load('moderator'),
-    ],
-    'og_roles' => [
-      'rdf_entity-collection-member' => OgRole::load('rdf_entity-collection-member'),
-      'rdf_entity-collection-facilitator' => OgRole::load('rdf_entity-collection-facilitator'),
-      'rdf_entity-collection-administrator' => OgRole::load('rdf_entity-collection-administrator'),
-      'rdf_entity-solution-member' => OgRole::load('rdf_entity-solution-member'),
-      'rdf_entity-solution-facilitator' => OgRole::load('rdf_entity-solution-facilitator'),
-      'rdf_entity-solution-administrator' => OgRole::load('rdf_entity-solution-administrator'),
-    ],
-  ];
-  $view_permission_scheme = \Drupal::config("joinup_community_content.permission_scheme")->get('view');
-  /** @var \Drupal\state_machine\WorkflowManagerInterface $workflow_manager */
-  $workflow_manager = \Drupal::service('plugin.manager.workflow');
-
-  foreach (['document', 'discussion', 'event', 'news'] as $bundle) {
-    foreach ($view_permission_scheme as $workflow_id => $states) {
-      // Skip the rest of the workflows for discussions and the discussion
-      // workflow for the rest of the content.
-      if (($bundle === 'discussion' && $workflow_id !== 'node:discussion:post_moderated') || ($bundle !== 'discussion' && $workflow_id === 'node:discussion:post_moderated')) {
-        continue;
-      }
-      /** @var \Drupal\state_machine\Plugin\Workflow\Workflow $workflow */
-      $workflow = $workflow_manager->createInstance($workflow_id);
-      foreach ($states as $state_id => $own_any_scheme) {
-        foreach ($own_any_scheme as $own_any_key => $role_scheme) {
-          $permission_string = StateMachinePermissionStringConstructor::constructGroupContentStateViewPermission('node', $bundle, $workflow, $state_id, $own_any_key === 'any');
-          $role_scheme += ['roles' => [], 'og_roles' => []];
-          foreach (['roles', 'og_roles'] as $role_type) {
-            foreach ($role_scheme[$role_type] as $role) {
-              $roles[$role_type][$role]->grantPermission($permission_string);
-            }
-          }
-        }
-      }
-    }
-  }
-
-  foreach (['roles', 'og_roles'] as $role_type) {
-    foreach ($roles[$role_type] as $role) {
-      $role->save();
-    }
-  }
-}
-
-/**
- * Assign create permissions for community content.
- */
-function _joinup_core_post_update_create_community_content_state_permissions() {
-  $roles = [
-    'roles' => [
-      'anonymous' => Role::load('anonymous'),
-      'authenticated' => Role::load('authenticated'),
-      'moderator' => Role::load('moderator'),
-    ],
-    'og_roles' => [
-      'rdf_entity-collection-member' => OgRole::load('rdf_entity-collection-member'),
-      'rdf_entity-collection-facilitator' => OgRole::load('rdf_entity-collection-facilitator'),
-      'rdf_entity-collection-administrator' => OgRole::load('rdf_entity-collection-administrator'),
-      'rdf_entity-solution-member' => OgRole::load('rdf_entity-solution-member'),
-      'rdf_entity-solution-facilitator' => OgRole::load('rdf_entity-solution-facilitator'),
-      'rdf_entity-solution-administrator' => OgRole::load('rdf_entity-solution-administrator'),
-    ],
-  ];
-  $view_permission_scheme = \Drupal::config("joinup_community_content.permission_scheme")->get('create');
-  /** @var \Drupal\state_machine\WorkflowManagerInterface $workflow_manager */
-  $workflow_manager = \Drupal::service('plugin.manager.workflow');
-
-  foreach (['document', 'discussion', 'event', 'news'] as $bundle) {
-    foreach ($view_permission_scheme as $workflow_id => $content_creation_options) {
-      // Skip the rest of the workflows for discussions and the discussion
-      // workflow for the rest of the content.
-      if (($bundle === 'discussion' && $workflow_id !== 'node:discussion:post_moderated') || ($bundle !== 'discussion' && $workflow_id === 'node:discussion:post_moderated')) {
-        continue;
-      }
-      /** @var \Drupal\state_machine\Plugin\Workflow\Workflow $workflow */
-      $workflow = $workflow_manager->createInstance($workflow_id);
-      foreach ($content_creation_options as $content_creation_option => $states) {
-        foreach ($states as $state_id => $role_scheme) {
-          $permission_string = StateMachinePermissionStringConstructor::constructGroupContentStateCreatePermission('node', $bundle, $workflow, $state_id, $content_creation_option);
-          $role_scheme += ['roles' => [], 'og_roles' => []];
-          foreach (['roles', 'og_roles'] as $role_type) {
-            foreach ($role_scheme[$role_type] as $role) {
-              $roles[$role_type][$role]->grantPermission($permission_string);
-            }
-          }
-        }
-      }
-    }
-  }
-
-  foreach (['roles', 'og_roles'] as $role_type) {
-    foreach ($roles[$role_type] as $role) {
-      $role->save();
-    }
-  }
-}
-
-/**
  * Assign update permissions for community content.
  */
-function _joinup_core_post_update_update_community_content_state_permissions() {
+function joinup_core_post_update_update_community_content_state_permissions() {
   $roles = [
     'roles' => [
       'anonymous' => Role::load('anonymous'),
@@ -172,9 +66,11 @@ function _joinup_core_post_update_update_community_content_state_permissions() {
     ],
     'og_roles' => [
       'rdf_entity-collection-member' => OgRole::load('rdf_entity-collection-member'),
+      'rdf_entity-collection-author' => OgRole::load('rdf_entity-collection-author'),
       'rdf_entity-collection-facilitator' => OgRole::load('rdf_entity-collection-facilitator'),
       'rdf_entity-collection-administrator' => OgRole::load('rdf_entity-collection-administrator'),
       'rdf_entity-solution-member' => OgRole::load('rdf_entity-solution-member'),
+      'rdf_entity-solution-author' => OgRole::load('rdf_entity-solution-author'),
       'rdf_entity-solution-facilitator' => OgRole::load('rdf_entity-solution-facilitator'),
       'rdf_entity-solution-administrator' => OgRole::load('rdf_entity-solution-administrator'),
     ],
@@ -201,59 +97,6 @@ function _joinup_core_post_update_update_community_content_state_permissions() {
               foreach ($role_scheme[$role_type] as $role) {
                 $roles[$role_type][$role]->grantPermission($permission_string);
               }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  foreach (['roles', 'og_roles'] as $role_type) {
-    foreach ($roles[$role_type] as $role) {
-      $role->save();
-    }
-  }
-}
-
-/**
- * Assign delete permissions for community content.
- */
-function _joinup_core_post_update_delete_community_content_state_permissions() {
-  $roles = [
-    'roles' => [
-      'anonymous' => Role::load('anonymous'),
-      'authenticated' => Role::load('authenticated'),
-      'moderator' => Role::load('moderator'),
-    ],
-    'og_roles' => [
-      'rdf_entity-collection-member' => OgRole::load('rdf_entity-collection-member'),
-      'rdf_entity-collection-facilitator' => OgRole::load('rdf_entity-collection-facilitator'),
-      'rdf_entity-collection-administrator' => OgRole::load('rdf_entity-collection-administrator'),
-      'rdf_entity-solution-member' => OgRole::load('rdf_entity-solution-member'),
-      'rdf_entity-solution-facilitator' => OgRole::load('rdf_entity-solution-facilitator'),
-      'rdf_entity-solution-administrator' => OgRole::load('rdf_entity-solution-administrator'),
-    ],
-  ];
-  $view_permission_scheme = \Drupal::config("joinup_community_content.permission_scheme")->get('delete');
-  /** @var \Drupal\state_machine\WorkflowManagerInterface $workflow_manager */
-  $workflow_manager = \Drupal::service('plugin.manager.workflow');
-
-  foreach (['document', 'discussion', 'event', 'news'] as $bundle) {
-    foreach ($view_permission_scheme as $workflow_id => $states) {
-      // Skip the rest of the workflows for discussions and the discussion
-      // workflow for the rest of the content.
-      if (($bundle === 'discussion' && $workflow_id !== 'node:discussion:post_moderated') || ($bundle !== 'discussion' && $workflow_id === 'node:discussion:post_moderated')) {
-        continue;
-      }
-      /** @var \Drupal\state_machine\Plugin\Workflow\Workflow $workflow */
-      $workflow = $workflow_manager->createInstance($workflow_id);
-      foreach ($states as $state_id => $own_any_scheme) {
-        foreach ($own_any_scheme as $own_any_key => $role_scheme) {
-          $permission_string = StateMachinePermissionStringConstructor::constructGroupContentStateDeletePermission('node', $bundle, $workflow, $state_id, $own_any_key === 'any');
-          $role_scheme += ['roles' => [], 'og_roles' => []];
-          foreach (['roles', 'og_roles'] as $role_type) {
-            foreach ($role_scheme[$role_type] as $role) {
-              $roles[$role_type][$role]->grantPermission($permission_string);
             }
           }
         }
