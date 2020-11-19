@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\rdf_schema_field_validation\Kernel;
 
+use Drupal\Tests\joinup_test\Kernel\JoinupKernelTestBase;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
-use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
 use EasyRdf\Graph;
 
 /**
@@ -16,7 +18,7 @@ class RdfSchemaFieldValidationTest extends JoinupKernelTestBase {
   /**
    * The SPARQL connection.
    *
-   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface
    */
   protected $spaqlEndpoint;
 
@@ -55,10 +57,10 @@ class RdfSchemaFieldValidationTest extends JoinupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
-    $this->spaqlEndpoint = $this->container->get('sparql_endpoint');
+    $this->spaqlEndpoint = $this->container->get('sparql.endpoint');
     $this->entityTypeManger = $this->container->get('entity_type.manager');
     $this->schemaFieldValidator = $this->container->get('rdf_schema_field_validation.schema_field_validator');
 
@@ -86,7 +88,7 @@ class RdfSchemaFieldValidationTest extends JoinupKernelTestBase {
   /**
    * Asserts that fields belong or don't belong to a defined schema.
    */
-  public function testFieldSchema() {
+  public function testFieldSchema(): void {
     $this->assertTrue($this->schemaFieldValidator->isDefinedInSchema('rdf_entity', 'dummy', 'field_text'));
     $this->assertFalse($this->schemaFieldValidator->isDefinedInSchema('rdf_entity', 'dummy', 'field_text', 'format'));
     $this->assertFalse($this->schemaFieldValidator->isDefinedInSchema('rdf_entity', 'dummy', 'label'));
@@ -95,7 +97,7 @@ class RdfSchemaFieldValidationTest extends JoinupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function tearDown() {
+  public function tearDown(): void {
     $query = <<<EndOfQuery
 DELETE {
   GRAPH <{$this->definitionUri}> {

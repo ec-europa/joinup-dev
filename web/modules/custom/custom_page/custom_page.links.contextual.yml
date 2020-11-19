@@ -1,0 +1,4 @@
+custom_page.group_menu_block.add_custom_page:
+  route_name: joinup_group.add_content
+  group: group_menu_block
+  title: Add new page

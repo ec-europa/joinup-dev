@@ -102,7 +102,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL): array {
+  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL): array {
     // Store the collection on the object so it can be reused.
     $this->collection = $rdf_entity;
 
@@ -165,13 +165,13 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-    $user = $this->currentUser();
+    $user_id = $this->currentUser()->id();
 
-    $membership = $this->membershipManager->getMembership($this->collection, $user);
+    $membership = $this->membershipManager->getMembership($this->collection, $user_id);
     $membership->delete();
 
     // Also remove the user authorship, if case.
-    if ($this->collection->getOwnerId() === $user->id()) {
+    if ($this->collection->getOwnerId() === $user_id) {
       $this->collection->skip_notification = TRUE;
       $this->collection->setOwnerId(0)->save();
     }
@@ -193,11 +193,6 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    *   The access result object.
    */
   public static function access(RdfInterface $rdf_entity): AccessResultInterface {
-    // Deny access if the entity is not a 'collection'.
-    if ($rdf_entity->bundle() !== 'collection') {
-      return AccessResult::forbidden();
-    }
-
     /** @var \Drupal\Core\Session\AccountProxyInterface $account_proxy */
     $account_proxy = \Drupal::service('current_user');
 

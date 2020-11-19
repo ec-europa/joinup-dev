@@ -13,6 +13,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Element\TraversableElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
@@ -32,8 +33,10 @@ use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup_core\JoinupVersionInterface;
+use Joinup\TaskRunner\Traits\TaskRunnerTrait;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 use WebDriver\Exception;
 use WebDriver\Key;
 
@@ -50,6 +53,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use PageCacheTrait;
   use SearchTrait;
   use TagTrait;
+  use TaskRunnerTrait;
   use TraversingTrait;
   use UserTrait;
   use UtilityTrait;
@@ -62,6 +66,13 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @var string|bool
    */
   protected $version;
+
+  /**
+   * The latest file ID.
+   *
+   * @var int
+   */
+  protected static $lastFileId;
 
   /**
    * Checks that a 200 OK response occurred.
@@ -606,33 +617,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Checks the status of the given user.
-   *
-   * @param string $username
-   *   The name of the user to statusilize.
-   * @param string $status
-   *   The expected status, can be either 'active' or 'blocked'.
-   *
-   * @throws \Exception
-   *   Thrown when the user does not exist or doesn't have the expected status.
-   *
-   * @Then the account for :username should be :status
-   */
-  public function assertUserStatus(string $username, string $status): void {
-    /** @var \Drupal\user\UserInterface $user */
-    $user = $this->getUserByName($username);
-    $expected_status = $status === 'active';
-
-    if (empty($user)) {
-      throw new \Exception("Unable to load expected user $username.");
-    }
-
-    if ($user->isActive() !== $expected_status) {
-      throw new \Exception("The user does not have the $status status.");
-    }
-  }
-
-  /**
    * Deletes the user account with the given name.
    *
    * This intended to be used for user accounts that are created through the UI
@@ -910,7 +894,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * Limitation: It creates terms with maximum 2 level hierarchy.
    *
-   * @beforeScenario @terms
+   * @BeforeScenario @terms&&@api
    */
   public function provideTestingTerms(): void {
     $fixture = file_get_contents(__DIR__ . '/../../fixtures/testing_terms.yml');
@@ -1369,6 +1353,24 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Checks a material design checkbox.
+   *
+   * To be used for Javascript based tests.
+   *
+   * @param string $text
+   *   The checkbox text.
+   *
+   * @Given I check the :text material checkbox
+   */
+  public function checkMaterialCheckbox(string $text): void {
+    $checkbox = $this->getSession()->getPage()->findField($text);
+    if ($checkbox && $checkbox->isChecked()) {
+      throw new \Exception("Checkbox with text {$text} is already checked.");
+    }
+    $this->toggleMaterialDesignCheckbox('', $checkbox->getParent());
+  }
+
+  /**
    * Searches the page for a row that includes the given text.
    *
    * @param string $text
@@ -1396,6 +1398,41 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
 
     return $row;
+  }
+
+  /**
+   * Asserts that a checkbox/radio exists in a row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox or radio button.
+   *
+   * @Then the :text table row contains a checkbox/radio
+   */
+  public function assertCheckboxOrRadioExistsInRow(string $text): void {
+    $this->getCheckboxOrRadioByRowText($text);
+  }
+
+  /**
+   * Asserts that a checkbox/radio doesn't exists in a row with given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox or radio button.
+   *
+   * @Then the :text table row doesn't contain a checkbox/radio
+   */
+  public function assertCheckboxOrRadioNotExistsInRow(string $text): void {
+    $row = $this->getRowByRowText($text);
+    if ($row->find('css', 'input[type="checkbox"],input[type="radio"]')) {
+      throw new ExpectationFailedException("The row '$text' contains a checkbox/radio but it should not.");
+    }
   }
 
   /**
@@ -1573,7 +1610,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * perform asserts before creating any content of their own, since the search
    * index might still contain stale content from the previous scenario.
    *
-   * @BeforeScenario @commitSearchIndex
+   * @BeforeScenario @commitSearchIndex&&@api
    */
   public function commitSearchIndexBeforeScenario(): void {
     $this->commitSearchIndex();
@@ -1582,30 +1619,32 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Installs the testing module for scenarios tagged with @errorPage.
    *
-   * @BeforeScenario @errorPage
+   * @BeforeScenario @errorPage&&@api
    */
   public function beforeErrorPageTesting(): void {
     static::toggleModule('install', 'error_page_test');
 
     // Pipe error log entries to a file rather than to standard PHP log.
+    static::runCommand('drupal:settings error_page_test --root=' . static::getPath('web') . ' --sites-subdir=default');
     $settings = Settings::getAll();
     $settings['error_page']['log']['method'] = 3;
-    $settings['error_page']['log']['destination'] = 'temporary://testing.log';
+    $settings['error_page']['log']['destination'] = 'php://temp';
     new Settings($settings);
   }
 
   /**
    * Uninstalls the testing module for scenarios tagged with @errorPage.
    *
-   * @AfterScenario @errorPage
+   * @AfterScenario @errorPage&&@api
    */
   public function afterErrorPageTesting(): void {
     static::toggleModule('uninstall', 'error_page_test');
 
     // Restore piping error log entries to the standard PHP log.
     $settings = Settings::getAll();
-    unset($settings['error_page']);
+    unset($settings['error_page']['log']);
     new Settings($settings);
+    static::runCommand('drupal:settings behat --root=' . static::getPath('web') . ' --sites-subdir=default');
 
     // Restore the site's error logging verbosity.
     $this->setSiteErrorLevel();
@@ -1665,47 +1704,24 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * the form is submitted. This would make most of Behat tests to fail. We
    * disable Antibot functionality during Behat tests run.
    *
-   * @BeforeSuite
+   * If a scenario wants to have Antibot functionality enabled, it should be
+   * tagged with @antibot.
+   *
+   * @BeforeScenario ~@antibot&&@api
    */
-  public static function disableAntibotForSuite(): void {
+  public static function disableAntibotBeforeScenarioStarts(): void {
     static::disableAntibot();
   }
 
   /**
    * Restores the Antibot functionality after tests run.
    *
-   * @AfterSuite
+   * @AfterScenario ~@antibot&&@api
    *
-   * @see self::disableAntibotForSuite()
+   * @see self::disableAntibot()
    */
-  public static function restoreAntibotForSuite(): void {
+  public static function restoreAntibotAfterScenarioEnds(): void {
     static::restoreAntibot();
-  }
-
-  /**
-   * Restores Antibot functionality in the scope of @antibot tagged scenarios.
-   *
-   * The Antibot functionality is disabled for the whole test suite run, in
-   * self::disableAntibotForSuite(). However, if a scenario wants run its test
-   * with Antibot functionality enabled, it should be tagged with @antibot.
-   *
-   * @BeforeScenario @antibot
-   *
-   * @see self::disableAntibotForSuite()
-   */
-  public function restoreAntibotForScenario(): void {
-    self::restoreAntibot();
-  }
-
-  /**
-   * Disables Antibot functionality after @antibot tagged scenarios.
-   *
-   * @AfterScenario @antibot
-   *
-   * @see self::restoreAntibotForScenario()
-   */
-  public function disableAntibotForScenario(): void {
-    static::disableAntibot();
   }
 
   /**
@@ -1749,7 +1765,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Cleans up the existing list of entities before the scenario starts.
    *
-   * @BeforeScenario @messageCleanup
+   * @BeforeScenario @messageCleanup&&@api
    */
   public function cleanupMessageEntities(): void {
     $message_storage = \Drupal::entityTypeManager()->getStorage('message');
@@ -1762,7 +1778,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * Tests that interact with the version file should be tagged with `@version`.
    *
-   * @BeforeScenario @version
+   * @BeforeScenario @version&&@api
    */
   public function backupJoinupVersion(): void {
     $filename = DRUPAL_ROOT . '/../VERSION';
@@ -1772,7 +1788,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Restores the backup of the Joinup `VERSION` file.
    *
-   * @AfterScenario @version
+   * @AfterScenario @version&&@api
    */
   public function restoreJoinupVersion(): void {
     if ($this->version === FALSE) {
@@ -1808,6 +1824,135 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     // doesn't employ a cache context. In order to make the version show up on
     // previously cached pages we need to invalidate the render cache manually.
     Cache::invalidateTags(['rendered']);
+  }
+
+  /**
+   * Asserts that a file downloaded from a link contains a list of strings.
+   *
+   * IMPORTANT NOTE: This step definition is not performing any file access
+   * check. The file content is read directly from the file system. The user
+   * access to the file should be tested in separate Behat steps.
+   *
+   * @param string $link_label
+   *   The link from where to download the file.
+   * @param \Behat\Gherkin\Node\TableNode $strings_table
+   *   A table with a single column. Each row contains a string.
+   *
+   * @throws \Exception
+   *   If the link has no href attribute or the file content cannot be loaded.
+   *
+   * @Then the file downloaded from the :link_label link contains the following strings:
+   */
+  public function assertDownloadedFileContainsStrings(string $link_label, TableNode $strings_table): void {
+    if (!$link = $this->getSession()->getPage()->findLink($link_label)) {
+      throw new ElementNotFoundException($this->getSession()->getDriver(), 'Link', NULL, $link_label);
+    }
+    if (!$url = $link->getAttribute('href')) {
+      throw new \Exception("The link '${link_label}' misses an 'href' attribute.");
+    }
+
+    // Get the path part from the URL.
+    $path = trim(parse_url($url, PHP_URL_PATH), '/');
+
+    // Drupal private file.
+    if (strpos($path, 'system/files') === 0) {
+      $path = Settings::get('file_private_path') . '/' . substr($path, 12);
+    }
+    // Webserver accessible file.
+    else {
+      $path = DRUPAL_ROOT . "/{$path}";
+    }
+
+    if (($content = file_get_contents($path)) === FALSE) {
+      throw new \Exception("Cannot read '{$path}' file.");
+    }
+
+    if (!$content) {
+      throw new \Exception("The downloaded file has no content.");
+    }
+
+    $not_found = array_filter($strings_table->getColumn(0), function (string $text) use ($content): bool {
+      return strpos($content, $text) === FALSE;
+    });
+
+    if ($not_found) {
+      throw new ExpectationFailedException("Following strings were not found in the downloaded file:\n- " . implode("\n- ", $not_found));
+    }
+  }
+
+  /**
+   * Tests that the given entity has a creation date.
+   *
+   * @param string $title
+   *   The entity title.
+   * @param string $bundle
+   *   The entity bundle.
+   *
+   * @Given the :title :bundle has a creation date set
+   */
+  public function assertEntityCreationDate(string $title, string $bundle): void {
+    $rdf_bundles = [
+      'collection',
+      'solution',
+      'asset_release',
+      'asset_distribution',
+    ];
+    $type = in_array($bundle, $rdf_bundles) ? 'rdf_entity' : 'node';
+    $entity = $this->getEntityByLabel($type, $title, $bundle);
+
+    Assert::assertNotEmpty($entity->getCreatedTime());
+  }
+
+  /**
+   * Stores the ID of the latest file entity created before the scenario.
+   *
+   * @BeforeScenario @api
+   */
+  public static function storeLastFileId(): void {
+    static::$lastFileId = \Drupal::database()->query("SELECT MAX(fid) FROM {file_managed}")->fetchField() ?: 0;
+  }
+
+  /**
+   * Removes files created during test scenarios.
+   *
+   * Since Drupal 8.4.0, files that have no remaining usages are no longer
+   * deleted by default, see https://www.drupal.org/node/2891902. Even the host
+   * entities are deleted after test, the files attached via UI are not cleared
+   * at the end of the test scenario. This might cause some scenarios, creating
+   * the same file, to fail because the file will get a different, incremental,
+   * file base name. Note that files created via API are handled in
+   * FileTrait::cleanFiles().
+   *
+   * @see https://www.drupal.org/node/2891902
+   * @see \Drupal\joinup\Traits\FileTrait::cleanFiles()
+   *
+   * @AfterScenario @api
+   */
+  public static function staleFilesCleanup(): void {
+    $fids = \Drupal::database()->query("SELECT fid FROM {file_managed} WHERE fid > :fid", [':fid' => static::$lastFileId])->fetchCol();
+    if ($fids) {
+      /** @var \Drupal\file\FileStorageInterface $storage */
+      $storage = \Drupal::entityTypeManager()->getStorage('file');
+      $storage->delete($storage->loadMultiple($fids));
+    }
+  }
+
+  /**
+   * Switch to Behat specific Drupal settings during the test suite.
+   *
+   * @BeforeSuite
+   */
+  public static function addBehatSpecificDrupalSettings(): void {
+    static::runCommand('drupal:settings behat --root=' . static::getPath('web') . ' --sites-subdir=default');
+  }
+
+  /**
+   * Restore the original Drupal settings.
+   *
+   * @AfterSuite
+   */
+  public static function restoreDrupalSettings(): void {
+    static::runCommand('drupal:settings site-clean --root=' . static::getPath('web') . ' --sites-subdir=default');
   }
 
 }

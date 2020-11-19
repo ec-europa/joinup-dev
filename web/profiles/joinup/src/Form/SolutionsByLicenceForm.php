@@ -9,7 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Pager\PagerManagerInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\LinkGeneratorInterface;
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -26,7 +26,7 @@ class SolutionsByLicenceForm extends FormBase {
   /**
    * The SPARQL connection.
    *
-   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface
    */
   protected $connection;
 
@@ -52,9 +52,9 @@ class SolutionsByLicenceForm extends FormBase {
   }
 
   /**
-   * SolutionsByLicenceController constructor.
+   * Constructs a SolutionsByLicenceController.
    *
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $connection
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $connection
    *   The SPARQL connection.
    * @param \Drupal\Core\Pager\PagerManagerInterface $pagerManager
    *   The pager manager.
@@ -72,7 +72,7 @@ class SolutionsByLicenceForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('sparql_endpoint'),
+      $container->get('sparql.endpoint'),
       $container->get('pager.manager'),
       $container->get('link_generator')
     );
@@ -169,13 +169,13 @@ QUERY;
   /**
    * Returns the query that counts total of the results.
    *
-   * @param string $licence_id
+   * @param string|null $licence_id
    *   (Optional) A licence id to narrow down the results with.
    *
    * @return string
    *   The count query.
    */
-  protected function getCountQuery(string $licence_id = NULL): string {
+  protected function getCountQuery(?string $licence_id = NULL): string {
     $query = <<<QUERY
 SELECT COUNT(*) AS ?total
 WHERE {
@@ -215,13 +215,13 @@ QUERY;
    *
    * @param int $offset
    *   The offset number.
-   * @param string $licence_id
+   * @param string|null $licence_id
    *   (Optional) A licence id to narrow down the results with.
    *
    * @return string
    *   The query string.
    */
-  protected function getQuery(int $offset, string $licence_id = NULL): string {
+  protected function getQuery(int $offset, ?string $licence_id = NULL): string {
     $query = <<<QUERY
 SELECT DISTINCT ?solution ?licence_label ?licence ?solution_label
 WHERE {

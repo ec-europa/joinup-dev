@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\rdf_schema_field_validation;
 
 /**
- * Interface SchemaFieldValidatorInterface.
+ * Interface for services that validate that fields are defined in a schema.
  */
 interface SchemaFieldValidatorInterface {
 

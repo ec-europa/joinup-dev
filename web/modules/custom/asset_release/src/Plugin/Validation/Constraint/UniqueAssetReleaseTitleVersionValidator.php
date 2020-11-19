@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\asset_release\Plugin\Validation\Constraint;
 
 use Symfony\Component\Validator\Constraint;
@@ -25,13 +27,13 @@ class UniqueAssetReleaseTitleVersionValidator extends ConstraintValidator {
       return;
     }
 
-    /** @var \Drupal\rdf_entity\RdfInterface $entity */
+    /** @var \Drupal\asset_release\Entity\AssetReleaseInterface $entity */
     $entity = $items->getEntity();
 
     if (!asset_release_title_version_is_unique($entity)) {
       $this->context->addViolation($constraint->message, [
         '%title' => $entity->label(),
-        '%version' => $entity->get('field_isr_release_number')->first()->getValue()['value'],
+        '%version' => $entity->getVersion(),
       ]);
     }
   }

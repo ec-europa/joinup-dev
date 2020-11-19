@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\joinup_core\Traits;
 
-use Drupal\file\Entity\File;
 use Drupal\Tests\TestFileCreationTrait;
+use Drupal\file\Entity\File;
 
 /**
  * Functions regarding the file URL manipulation.

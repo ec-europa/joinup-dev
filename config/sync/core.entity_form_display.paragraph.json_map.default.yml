@@ -1,0 +1,25 @@
+uuid: 0c661373-c907-4ffc-a4a2-9ba76feb2ee0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.json_map.field_json
+    - paragraphs.paragraphs_type.json_map
+  module:
+    - json_field
+id: paragraph.json_map.default
+targetEntityType: paragraph
+bundle: json_map
+mode: default
+content:
+  field_json:
+    weight: 0
+    settings:
+      rows: 7
+      placeholder: ''
+    third_party_settings: {  }
+    type: json_textarea
+    region: content
+hidden:
+  created: true
+  status: true

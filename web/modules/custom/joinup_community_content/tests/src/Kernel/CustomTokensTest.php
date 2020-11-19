@@ -6,9 +6,9 @@ namespace Drupal\Tests\joinup_community_content\Kernel;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Url;
+use Drupal\Tests\system\Kernel\Token\TokenReplaceKernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
-use Drupal\Tests\system\Kernel\Token\TokenReplaceKernelTestBase;
 
 /**
  * Tests the tokens provided by the joinup_community_content module.
@@ -21,15 +21,20 @@ class CustomTokensTest extends TokenReplaceKernelTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
-    'comment',
     'diff',
     'joinup_community_content',
-    'message_notify',
+    'joinup_workflow',
     'node',
     'og',
-    'state_machine',
     'workflow_state_permission',
   ];
+
+  /**
+   * The plugin manager for diff layouts.
+   *
+   * @var \Drupal\diff\DiffLayoutManager
+   */
+  protected $diffLayoutManager;
 
   /**
    * {@inheritdoc}
@@ -37,9 +42,8 @@ class CustomTokensTest extends TokenReplaceKernelTestBase {
   public function register(ContainerBuilder $container) {
     parent::register($container);
 
-    // Register a few services directly to avoid having to enable a long chain
+    // Register a this service directly to avoid having to enable a long chain
     // of module dependencies.
-    $this->container->register('joinup_core.workflow.helper', '\Drupal\joinup_core\WorkflowHelper');
     $this->container->register('joinup_notification.message_delivery', '\Drupal\joinup_notification\JoinupMessageDelivery');
   }
 
@@ -51,6 +55,8 @@ class CustomTokensTest extends TokenReplaceKernelTestBase {
 
     $this->installConfig(['node', 'diff']);
     $this->installSchema('node', 'node_access');
+
+    $this->diffLayoutManager = $this->container->get('plugin.manager.diff.layout');
 
     $node_type = NodeType::create([
       'type' => 'article',
@@ -65,12 +71,17 @@ class CustomTokensTest extends TokenReplaceKernelTestBase {
    * Creates a node, then tests the token replacement.
    */
   public function testTokenReplacement() {
-    /* @var $node \Drupal\node\NodeInterface */
+    /** @var \Drupal\node\NodeInterface $node */
     $node = Node::create([
       'type' => 'article',
       'tnid' => 0,
       'title' => 'A very original title',
-      'body' => [['value' => 'A more than original body.', 'format' => 'plain_text']],
+      'body' => [
+        [
+          'value' => 'A more than original body.',
+          'format' => 'plain_text',
+        ],
+      ],
     ]);
     $node->save();
 
@@ -90,7 +101,7 @@ class CustomTokensTest extends TokenReplaceKernelTestBase {
       'node' => $node->id(),
       'left_revision' => $original_revision_id,
       'right_revision' => $node->getRevisionId(),
-      'filter' => \Drupal::service('plugin.manager.diff.layout')->getDefaultLayout(),
+      'filter' => $this->diffLayoutManager->getDefaultLayout(),
     ])->setAbsolute()->toString();
 
     $output = $this->tokenService->replace($input, ['node' => $node], ['langcode' => $this->interfaceLanguage->getId()]);

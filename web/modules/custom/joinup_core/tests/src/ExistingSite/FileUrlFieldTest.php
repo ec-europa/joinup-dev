@@ -6,14 +6,15 @@ namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
+use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
+use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
+use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use Drupal\file\FileInterface;
 use Drupal\file_url\FileUrlHandler;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\sparql_entity_storage\UriEncoder;
-use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
-use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
-use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
-use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use weitzman\LoginTrait\LoginTrait;
 
 /**
@@ -52,7 +53,7 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
 
     $this->fileSystem = $this->container->get('file_system');
     // @todo This will no longer be needed once ISAICP-3392 is fixed.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
     $this->sparqlStorage = $this->container->get('entity_type.manager')->getStorage('rdf_entity');
   }
 
@@ -88,6 +89,7 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
       'og_audience' => $solution->id(),
       'field_ad_licence' => $licence->id(),
       'field_ad_description' => $this->randomString(),
+      'parent' => $solution,
     ]);
 
     $field_name = 'field_ad_access_url';
@@ -120,7 +122,7 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
 
     // @todo We should not need cache clearing here. The cache should have been
     //   wiped out at this point. Fix this regression in ISAICP-3392.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
     $this->sparqlStorage->resetCache([$distribution->id()]);
 
     // Check that the file has been uploaded to the file URL field.
@@ -149,7 +151,7 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
 
     // @todo We should not need cache clearing here. The cache should have been
     //   wiped out at this point. Fix this regression in ISAICP-3392.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
     $this->sparqlStorage->resetCache([$distribution->id()]);
 
     // Check that the remote URL replaced the uploaded file.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\eu_sic\Plugin\pipeline\Pipeline;
 
 use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;

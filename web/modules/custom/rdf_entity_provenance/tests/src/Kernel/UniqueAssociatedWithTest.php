@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\rdf_entity_provenance\Kernel;
 
 use Drupal\Core\Validation\Plugin\Validation\Constraint\UniqueFieldConstraint;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\Tests\rdf_entity\Kernel\RdfKernelTestBase;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Provides unit testing the provenance_associated_with constraint.
@@ -23,7 +25,7 @@ class UniqueAssociatedWithTest extends RdfKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->installConfig(['rdf_entity_provenance']);
   }
@@ -31,7 +33,7 @@ class UniqueAssociatedWithTest extends RdfKernelTestBase {
   /**
    * Tests the unique field group constraint.
    */
-  public function testUniqueAssociatedWith() {
+  public function testUniqueAssociatedWith(): void {
     $first_entity = Rdf::create([
       'rid' => 'dummy',
       'id' => 'http://example.com/1',

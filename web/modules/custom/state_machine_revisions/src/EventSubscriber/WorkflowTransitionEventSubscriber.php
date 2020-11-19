@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\state_machine_revisions\EventSubscriber;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
@@ -83,7 +85,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
       // @see \Drupal\Core\Entity\ContentEntityStorageBase::invokeHook()
       // @see \Drupal\Core\Entity\EntityFieldManager::getFieldDefinitions()
       // @see \Drupal\publication_date\Plugin\Field\FieldType\PublicationDateItem::preSave()
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5544
+      // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5544
       if ($entity->isNew()) {
         // In case it is a new entity, apply the default value (clear out the
         // values) because it might have already been set with the wrong status.

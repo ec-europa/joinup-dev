@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\solution\Controller;
 
 use Drupal\Core\Access\AccessResult;
@@ -8,7 +10,7 @@ use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Class SolutionController.
+ * Controller for solution forms.
  *
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.
@@ -58,9 +60,9 @@ class SolutionController extends ControllerBase {
       return AccessResult::neutral();
     }
 
-    // Users with 'administer group' permission should have access since this
-    // page can only be called from within a group.
-    if ($user->hasPermission('administer group')) {
+    // Users with 'administer organic groups' permission should have access
+    // since this page can only be called from within a group.
+    if ($user->hasPermission('administer organic groups')) {
       return AccessResult::allowed();
     }
 

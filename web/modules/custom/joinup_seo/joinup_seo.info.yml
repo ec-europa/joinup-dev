@@ -15,6 +15,8 @@ config_devel:
     - metatag.metatag_defaults.global
     - metatag.metatag_defaults.node
     - metatag.metatag_defaults.node__discussion
+    - metatag.metatag_defaults.node__document
+    - metatag.metatag_defaults.node__event
     - metatag.metatag_defaults.node__news
     - simple_sitemap.bundle_settings.default.node.custom_page
     - simple_sitemap.bundle_settings.default.node.discussion

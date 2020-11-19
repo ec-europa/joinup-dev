@@ -45,10 +45,10 @@ To start on macOS without Docker, please, check the separated [README file](reso
 
 #### Dependency management and builds
 
-We use Drupal composer as a template for the project.  For the most up-to-date
-information on how to use Composer, build the project using Phing, or on how to
-run the Behat test, please refer directly to the documention of
-[drupal-composer](https://github.com/drupal-composer/drupal-project).
+We use Drupal composer as a template for the project. For the most up-to-date
+information on how to use Composer, build the project using the Task Runner, or
+on how to run the Behat test, please refer directly to the documentation of each
+used tool.
 
 #### Initial setup
 
@@ -68,12 +68,13 @@ run the Behat test, please refer directly to the documention of
 * Install Solr. If you already have Solr installed you can configure it manually
   by [following the installation
   instructions](http://cgit.drupalcode.org/search_api_solr/plain/INSTALL.txt?h=8.x-1.x)
-  from the Search API Solr module. Or you can execute the following command to
+  from the Search API Solr module. Or you can execute the following commands to
   download and configure a local instance of Solr. It will be installed in the
   folder `./vendor/apache/solr`.
 
     ```
-    $ ./vendor/bin/phing setup-apache-solr
+    $ ./vendor/bin/run solr:download-bin
+    $ ./vendor/bin/run solr:config
     ```
 
 * Install Virtuoso. For basic instructions, see [setting up
@@ -106,61 +107,65 @@ using your favourite text editor:
 $ vim build.properties.local
 ```
 
-This file will contain configuration which is unique to your development
+This file will contain the configuration which is unique to your development
 machine. This is mainly useful for specifying your database credentials and the
-username and password of the Drupal admin user so they can be used during the
+username and password of the Drupal admin user, so they can be used during the
 installation.
 
 Because these settings are personal they should not be shared with the rest of
 the team. Make sure you never commit this file!
 
-All options you can use can be found in the `build.properties.dist` file. Just
-copy the lines you want to override and change their values. Do not copy the
-entire `build.properties.dist` file, since this would override all options.
+All options you can use can be found in the `build.properties` file. Just copy
+the lines you want to override and change their values. Do not copy the entire
+`build.properties` file, since this would override all options.
 
-Example `build.properties.local`:
 
+#### Create a local task runner configuration file
+
+In order to override any configuration of the task runner (`./vendor/bin/run`),
+create a `runner.yml` file in the project's top directory. You can override
+there any default runner configuration, or any other declared in
+`./resources/runner` files or in `runner.yml.dist`. Note that the `runner.yml`
+file is not under VCS control.
+
+#### Setup environment variables
+
+Sensitive data will be stored in [environment variables](
+https://en.wikipedia.org/wiki/Environment_variable). See `.env.dist` for
+details. To adapt these values to your own environment, create a `.env` file
+that contains only the overridden values. For a local development environment
+this could look like the following:
+
+```bash
+DRUPAL_BASE_URL=http://my-base-url.local
+DRUPAL_DATABASE_USERNAME=my-database-username
+DRUPAL_DATABASE_PASSWORD=my-database-password
+DRUPAL_DATABASE_HOST=localhost
+DRUPAL_HASH_SALT=some-unique-random-string-like-37h+2BQEQx83YLa/uFdsfG55
+
+SOLR_CORE_PUBLISHED_URL=http://localhost:8983/solr
+SOLR_CORE_UNPUBLISHED_URL=http://localhost:8983/solr
+
+SPARQL_HOST=localhost
+REDIS_HOST=localhost
+
+SIMPLETEST_BASE_URL=http://my-base-url.local
+SIMPLETEST_DB=mysql://root@localhost:3306/joinup
+SIMPLETEST_SPARQL_DB=sparql://localhost:8890
+MINK_DRIVER_ARGS_WEBDRIVER=""
+DTT_BASE_URL=http://my-base-url.local
+DTT_API_URL=http://localhost:4444/wd/hub
+DTT_MINK_DRIVER_ARGS="['chrome', null, 'http://localhost:4444/wd/hub']"
 ```
-# The location of the Composer binary.
-composer.bin = /usr/bin/composer
-
-# The location of the Virtuoso console (Debian / Ubuntu).
-isql.bin = /usr/bin/virtuoso-isql
-# The location of the Virtuoso console (Arch Linux).
-isql.bin = /usr/bin/virtuoso-isql
-# The location of the Virtuoso console (Redhat / Fedora / OSX with Homebrew).
-isql.bin = /usr/local/bin/isql
-
-# SQL database settings.
-drupal.db.name = my_database
-drupal.db.user = root
-drupal.db.password = hunter2
-
-# SPARQL database settings.
-sparql.dsn = localhost
-sparql.user = my_username
-sparql.password = qwerty123
-
-# Admin user.
-drupal.admin.username = admin
-drupal.admin.password = admin
-
-# The base URL to use in tests.
-drupal.base_url = http://joinup.local
-
-# Verbosity of Drush commands. Set to 'yes' for verbose output.
-drush.verbose = yes
-```
-
 
 #### Build the project
 
-Execute the [Phing](https://www.phing.info/) target `build-dev` to build a
-development instance, then install the site with `install-dev`:
+Execute the Task Runner command `toolkit:build-dev` to build a development
+instance, then install the site with `toolkit:install-clean`:
 
 ```
-$ ./vendor/bin/phing build-dev
-$ ./vendor/bin/phing install-dev
+$ ./vendor/bin/run toolkit:build-dev
+$ ./vendor/bin/run toolkit:install-clean
 ```
 
 
@@ -197,6 +202,40 @@ $ ../vendor/bin/phpunit
 ### Frontend development
 
 See the [readme](web/themes/joinup/README.md) in the theme folder.
+
+
+### Upgrade process
+
+Joinup offers only _contiguous upgrades_. For instance, if you project is
+currently on Joinup `v1.39.2`, and the latest stable version is `v1.42.0`, then
+you cannot upgrade directly to the latest version. Instead, you should upgrade
+first to `v1.40.0`, second to `v1.40.1` (if exists) and, finally, to `v1.42.0`.
+
+The Joinup update and post-update scripts naming is following this pattern:
+
+`function mymodule_update_0106100() {...}`
+
+or
+
+`function mymodule_post_update_0207503() {...}`
+
+The (post)updated identifier (the numeric part consists in seven digits with the
+following meaning:
+
+* The first two digits are the Joinup major version.
+* The following three digits are the Joinup minor version.
+* The last two digits are an integer that sets the weight within updates or
+  post updates from the same extension (module or profile). `00` is the first
+  (post)update that applies.
+
+For the above example:
+
+* `function mymodule_update_0106100() {...}`: Was applied in Joinup `v1.61.x` as
+  the first update of the `mymodule` module (`01` major version, `061` minor
+  version, `00` update weight within the module).
+* `function mymodule_post_update_0207503() {...}`: Was applied in Joinup
+  `v2.75.x` as the fourth post update of the `mymodule` module (`02` major
+  version, `075` minor version, `03` update weight within the module).
 
 
 ### Technical details

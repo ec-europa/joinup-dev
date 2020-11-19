@@ -14,6 +14,8 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
+    - field.field.rdf_entity.solution.field_is_eif_category
+    - field.field.rdf_entity.solution.field_is_eif_recommendation
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
     - field.field.rdf_entity.solution.field_is_issue_tracker
@@ -23,7 +25,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_owner
-    - field.field.rdf_entity.solution.field_is_pinned_in
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
     - field.field.rdf_entity.solution.field_is_shared_in
@@ -40,6 +41,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_wiki
     - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_policy_domain
+    - field.field.rdf_entity.solution.field_short_id
     - field.field.rdf_entity.solution.field_site_featured
     - field.field.rdf_entity.solution.field_site_pinned
     - field.field.rdf_entity.solution.field_spatial_coverage
@@ -48,9 +50,9 @@ dependencies:
   module:
     - field_group
     - file_url
-    - joinup
     - link
     - options
+    - template_suggestion
     - text
     - user
 third_party_settings:
@@ -73,6 +75,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Categorisation
+      region: content
     group_moderation:
       children:
         - field_is_content_creation
@@ -90,6 +93,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Moderation
+      region: content
     group_owner_contact_information:
       children:
         - field_is_owner
@@ -107,6 +111,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Owner/Contact Information'
+      region: content
     group_documentation:
       children:
         - field_is_documentation
@@ -123,6 +128,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Documentation
+      region: content
     group_trr_information:
       children:
         - field_is_test_resource_type
@@ -143,6 +149,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'TRR Information'
+      region: content
     group_solution_external_links:
       children:
         - field_is_landing_page
@@ -160,6 +167,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Solution external reference information'
+      region: content
 id: rdf_entity.solution.about
 targetEntityType: rdf_entity
 bundle: solution
@@ -173,7 +181,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_business_process:
     type: entity_reference_label
@@ -183,7 +191,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_contact_information:
     weight: 7
@@ -192,7 +200,7 @@ content:
       view_mode: about
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: two_columns
     type: entity_reference_entity_view
     region: content
@@ -203,7 +211,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_description:
     type: text_default
@@ -220,7 +228,7 @@ content:
     settings:
       mode: link
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_landing_page:
     type: link_separate
@@ -234,7 +242,7 @@ content:
       url_plain: false
       rel: '0'
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
   field_is_language:
     type: entity_reference_label
@@ -244,7 +252,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_metrics_page:
     type: link_separate
@@ -258,7 +266,7 @@ content:
       url_plain: false
       rel: '0'
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: ''
   field_is_moderation:
     type: boolean
@@ -270,7 +278,7 @@ content:
       format_custom_true: ''
       format_custom_false: ''
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_owner:
     weight: 6
@@ -279,7 +287,7 @@ content:
       view_mode: about
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: two_columns
     type: entity_reference_entity_view
     region: content
@@ -291,7 +299,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_solution_type:
     type: entity_reference_label
@@ -301,7 +309,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_standardization_level:
     type: entity_reference_label
@@ -311,7 +319,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_is_test_resource_type:
     type: entity_reference_label
@@ -321,7 +329,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   field_status:
     type: entity_reference_label
@@ -331,7 +339,7 @@ content:
     settings:
       link: false
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
   share_link:
     weight: 7
@@ -347,11 +355,12 @@ hidden:
   field_is_banner: true
   field_is_content: true
   field_is_distribution: true
+  field_is_eif_category: true
+  field_is_eif_recommendation: true
   field_is_has_version: true
   field_is_included_asset: true
   field_is_issue_tracker: true
   field_is_logo: true
-  field_is_pinned_in: true
   field_is_related_solutions: true
   field_is_shared_in: true
   field_is_show_eira_related: true
@@ -364,6 +373,7 @@ hidden:
   field_is_wiki: true
   field_keywords: true
   field_policy_domain: true
+  field_short_id: true
   field_site_featured: true
   field_site_pinned: true
   field_spatial_coverage: true

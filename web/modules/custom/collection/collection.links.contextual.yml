@@ -1,4 +1,0 @@
-collection.group_menu_block.add_custom_page:
-  route_name: custom_page.group_custom_page.add
-  group: group_menu_block
-  title: Add new page

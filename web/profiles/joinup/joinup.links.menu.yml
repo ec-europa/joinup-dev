@@ -1,3 +1,10 @@
+joinup.admin_reporting:
+  route_name: joinup.admin_reporting
+  parent: system.admin
+  description: 'Access Joinup reports.'
+  title: 'Reporting'
+  weight: 75
+
 joinup.export_user_list:
   title: 'Export user list'
   route_name: joinup.export_user_list
@@ -6,12 +13,12 @@ joinup.export_user_list:
   weight: 0
 
 joinup.group_administrators_report:
-  title: 'Collection administrators'
+  title: 'Group administrators and facilitators'
   route_name: joinup.group_administrators_report
   route_parameters:
     entity_type_id: 'rdf_entity'
     bundle_id: 'collection'
-  description: 'Table containing all collection owners and facilitators'
+  description: 'Export group administrators and facilitators in a csv format.'
   parent: joinup.admin_reporting
   weight: -1
 
@@ -20,10 +27,3 @@ joinup.solutions_by_licences_report:
   route_name: joinup.solutions_by_licences_report
   parent: joinup.admin_reporting
   weight: 2
-
-joinup.admin_reporting:
-  route_name: joinup.admin_reporting
-  parent: system.admin
-  description: 'Access Joinup reports.'
-  title: 'Reporting'
-  weight: 75

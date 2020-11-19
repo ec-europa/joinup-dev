@@ -1,0 +1,7 @@
+type: module
+name: RDF Graph
+description: Allows storing triples in the datastore under a specific graph.
+core_version_requirement: ^8.9.0 || ^9.0
+package: Joinup
+dependencies:
+  - rdf_entity:rdf_entity

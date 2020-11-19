@@ -5,9 +5,11 @@
  * Contains helper functions related to duplicates of the CTT community.
  */
 
+declare(strict_types = 1);
+
 use Drupal\og\OgGroupAudienceHelperInterface;
-use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 
 /**
  * Create original entities for CTT.
@@ -112,7 +114,7 @@ function _spain_ctt_duplicates_collection_relations() {
   $collection->skip_notification = TRUE;
   $collection->save();
 
-  $connection = \Drupal::service('sparql_endpoint');
+  $connection = \Drupal::service('sparql.endpoint');
   // Update all other references.
   foreach (_span_ctt_get_duplicated_ids() as $original_id => $duplicate_ids) {
     $ids = SparqlArg::serializeUris($duplicate_ids, ' ');

@@ -24,7 +24,7 @@ trait EntityTrait {
    *   The entity type to check.
    * @param string $label
    *   The label to check.
-   * @param string $bundle
+   * @param string|null $bundle
    *   Optional bundle to check. If omitted, the entity can be of any bundle.
    *
    * @return \Drupal\Core\Entity\EntityInterface
@@ -34,7 +34,7 @@ trait EntityTrait {
    *   Thrown when an entity with the given type, label and bundle does not
    *   exist.
    */
-  protected static function getEntityByLabel(string $entity_type_id, string $label, string $bundle = NULL): EntityInterface {
+  protected static function getEntityByLabel(string $entity_type_id, string $label, ?string $bundle = NULL): EntityInterface {
     $entity_type_manager = \Drupal::entityTypeManager();
     try {
       $storage = $entity_type_manager->getStorage($entity_type_id);
@@ -74,7 +74,10 @@ trait EntityTrait {
    */
   protected static function entityTypeAliases(): array {
     return [
+      'collection' => 'rdf_entity',
       'content' => 'node',
+      'group' => 'rdf_entity',
+      'solution' => 'rdf_entity',
     ];
   }
 
@@ -120,8 +123,13 @@ trait EntityTrait {
     if (empty($menu_links)) {
       throw new \Exception("The menu link with title '{$title}' was not found.");
     }
+    // If there are more that one results, we pick up the newest in order to
+    // avoid leftovers produced by previous tests.
+    krsort($menu_links);
+    /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menu_link */
+    $menu_link = reset($menu_links);
 
-    return reset($menu_links);
+    return $menu_link;
   }
 
   /**

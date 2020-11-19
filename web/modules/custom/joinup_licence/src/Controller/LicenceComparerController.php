@@ -4,26 +4,27 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_licence\Controller;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\joinup_licence\LicenceComparerHelper;
 
 /**
- * Provides a page controller callbacks.
+ * Controller for the Joinup Licensing Assistant (JLA).
  */
 class LicenceComparerController extends ControllerBase {
 
   /**
    * An ordered list of Joinup licence entities keyed by their SPDX ID.
    *
-   * @var \Drupal\rdf_entity\RdfInterface[]
+   * @var \Drupal\joinup_licence\Entity\LicenceInterface[]
    */
   protected $licences = [];
 
   /**
    * Responds to a request made to 'joinup_licence.comparer' route.
    *
-   * @param \Drupal\rdf_entity\RdfInterface[] $licences
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface[] $licences
    *   An ordered list of Joinup licence entities keyed by their SPDX ID.
    *
    * @return array
@@ -33,7 +34,7 @@ class LicenceComparerController extends ControllerBase {
     $this->licences = $licences;
 
     // Build the raw data structure.
-    $data = $this->getComparisionData();
+    $data = $this->getComparisonData();
 
     // Populate the table rows.
     $rows = [];
@@ -45,12 +46,20 @@ class LicenceComparerController extends ControllerBase {
       }
     }
 
-    // Collect cache metadata from dependencies.
     $cache_metadata = new CacheableMetadata();
-    foreach ($this->licences as $licence) {
+    $data = [];
+    foreach ($this->licences as $spdx_id => $licence) {
+      // Collect cache metadata from dependencies.
       $cache_metadata
         ->addCacheableDependency($licence)
-        ->addCacheableDependency($licence->field_licence_spdx_licence->entity);
+        ->addCacheableDependency($licence->getSpdxLicenceEntity());
+
+      // Build licence data to be attached as Json to the page.
+      $data[$spdx_id] = [
+        'title' => $licence->label(),
+        'description' => check_markup($licence->field_licence_description->value, 'content_editor'),
+        'spdxUrl' => $licence->getSpdxLicenceRdfId(),
+      ];
     }
 
     $build = [
@@ -62,6 +71,25 @@ class LicenceComparerController extends ControllerBase {
           'class' => ['licence-comparer'],
         ],
       ],
+      '#attached' => [
+        'html_head' => [
+          [
+            [
+              '#type' => 'html_tag',
+              '#tag' => 'script',
+              '#value' => Json::encode($data),
+              '#attributes' => [
+                'type' => 'application/json',
+                'data-drupal-selector' => 'licence-comparer-data',
+              ],
+            ],
+            'licence_comparer_data',
+          ],
+        ],
+        'library' => [
+          'joinup_licence/licence-compare',
+        ],
+      ],
     ];
 
     $cache_metadata
@@ -71,7 +99,7 @@ class LicenceComparerController extends ControllerBase {
       // combinations and that would flood the cache backend. As updating or
       // deleting licences is a very rare event, the cached items may be stored
       // for a long period of time. We ensure a life time for cached licence
-      // comparision of two months: 2 * 60s * 60m * 24h * 30d = 5184000s.
+      // comparison of two months: 2 * 60s * 60m * 24h * 30d = 5184000s.
       ->setCacheMaxAge(5184000)
       ->applyTo($build);
 
@@ -101,24 +129,16 @@ class LicenceComparerController extends ControllerBase {
    *   ]
    *   @endcode
    */
-  protected function getComparisionData(): array {
+  protected function getComparisonData(): array {
     $legal_types = $this->getLegalTypeStructure();
 
     $data = [];
     foreach ($legal_types as $parent_label => $terms) {
       $data[$parent_label] = [];
-      foreach ($terms as $tid => $label) {
+      foreach ($terms as $label) {
         $data[$parent_label][$label] = [];
         foreach ($this->licences as $spdx_id => $licence) {
-          $has_term = FALSE;
-          /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $type_item */
-          foreach ($licence->get('field_licence_legal_type') as $type_item) {
-            if ($type_item->target_id === $tid) {
-              $has_term = TRUE;
-              break;
-            }
-          }
-          $data[$parent_label][$label][$spdx_id] = $has_term;
+          $data[$parent_label][$label][$spdx_id] = $licence->hasLegalType($parent_label, $label);
         }
       }
     }
@@ -190,14 +210,20 @@ class LicenceComparerController extends ControllerBase {
 
     foreach (array_keys($this->licences) as $spdx_id) {
       $row[] = [
-        'data' => $spdx_id,
+        'data' => [
+          '#markup' => '<span>' . $spdx_id . '</span><span class="icon icon--info"></span>',
+        ],
         'class' => [
           'licence-comparer__header',
         ],
+        'data-licence-id' => $spdx_id,
       ];
     }
 
-    $this->padWithEmptyCells($row, ['licence-comparer__header', 'licence-comparer__empty']);
+    $this->padWithEmptyCells($row, [
+      'licence-comparer__header',
+      'licence-comparer__empty',
+    ]);
 
     return $row;
   }

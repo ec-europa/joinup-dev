@@ -36,19 +36,21 @@ Feature: Add distribution through the UI
     And the "Licence" field should contain the "WTFPL" options
     But the "Licence" field should not contain the "Deprecated licence" options
 
+    When I press "Save"
+    Then I should see the following error messages:
+      | error messages             |
+      | Title field is required.   |
+      | Licence field is required. |
+
     # @todo: The link has to be changed to the legal contact form.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
     And I should see the link "contacting us"
     When I fill in "Title" with "Linux x86-64 SDK"
     And I enter "<p>The full software development kit for systems based on the x86-64 architecture.</p>" in the "Description" wysiwyg editor
     And I upload the file "test.zip" to "Access URL"
     And I select "GNU zip" from "Format"
     And I select "Web Ontology Language Full/DL/Lite" from "Representation technique"
-    And I press "Save"
-    # Regression test for required field.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3064
-    Then I should see the error message "Licence field is required."
-    When I select "WTFPL" from "Licence"
+    And I select "WTFPL" from "Licence"
     And I press "Save"
     Then I should have 1 distribution
     And the "Linux x86-64 SDK" distribution should have the link of the "test.zip" in the access URL field
@@ -107,7 +109,7 @@ Feature: Add distribution through the UI
     Then I should see the heading "Add Distribution"
     And the following fields should be present "Title, Description, Access URL, Licence, Format, Representation technique"
     # @todo: The link has to be changed to the legal contact form.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
     And I should see the link "contacting us"
     When I fill in "Title" with "Source tarball"
     And I enter "<p>The full source code.</p>" in the "Description" wysiwyg editor

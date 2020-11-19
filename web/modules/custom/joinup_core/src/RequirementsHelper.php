@@ -12,20 +12,20 @@ use Drupal\Core\Database\Connection;
 class RequirementsHelper {
 
   /**
-   * The connection class for the primary database storage.
+   * The SQL connection class for the primary database storage.
    *
    * @var \Drupal\Core\Database\Connection
    */
-  protected $connection;
+  protected $sqlConnection;
 
   /**
-   * RequirementsHelper constructor.
+   * Constructs a new RequirementsHelper.
    *
    * @param \Drupal\Core\Database\Connection $connection
-   *   The connection class for the primary database storage.
+   *   The SQL connection class for the primary database storage.
    */
   public function __construct(Connection $connection) {
-    $this->connection = $connection;
+    $this->sqlConnection = $connection;
   }
 
   /**
@@ -74,7 +74,7 @@ ON n.nid = nfd.nid
 WHERE nr.vid > n.vid
 GROUP BY nid, latest_vid
 QUERY;
-    return $this->connection->query($query)->fetchAllAssoc('nid');
+    return $this->sqlConnection->query($query)->fetchAllAssoc('nid');
   }
 
 }

@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - serialization
+    - user
+id: entity.rdf_entity
+plugin_id: 'entity:rdf_entity'
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - jsonld
+    - rdfxml
+    - ntriples
+    - turtle
+    - n3
+  authentication:
+    - cookie

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_invite\Event;
 
 /**
@@ -24,5 +26,14 @@ final class InvitationEvents {
    * @var string
    */
   const REJECT_INVITATION_EVENT = 'joinup_invite.reject';
+
+  /**
+   * An event that fires when an invitation is accepted.
+   *
+   * @Event
+   *
+   * @var string
+   */
+  const NOT_PENDING_EVENT = 'joinup_invite.not_pending';
 
 }

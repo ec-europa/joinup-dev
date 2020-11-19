@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\custom_page\Plugin\Menu\LocalAction;
 
 use Drupal\Core\Menu\LocalActionDefault;
@@ -30,6 +32,9 @@ class CustomPageAdd extends LocalActionDefault {
       else {
         throw new ResourceNotFoundException();
       }
+    }
+    if (empty($parameters['node_type'])) {
+      $parameters['node_type'] = 'custom_page';
     }
 
     return $parameters;

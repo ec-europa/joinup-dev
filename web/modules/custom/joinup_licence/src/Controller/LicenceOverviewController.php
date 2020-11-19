@@ -7,9 +7,9 @@ namespace Drupal\joinup_licence\Controller;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\rdf_entity\Entity\Rdf;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Entity\EntityTypeManager;
 
 /**
  * Displays an overview of the licence entities to the user.
@@ -71,7 +71,7 @@ class LicenceOverviewController extends ControllerBase {
     $cacheable_metadata = (new CacheableMetadata())
       // Tag the response cache with rdf_entity_list:licence so that this page
       // cache is invalidated when a new licence is added.
-      // @see joinup_core_rdf_entity_insert()
+      // @see joinup_group_rdf_entity_insert()
       ->addCacheTags(['rdf_entity_list:licence']);
 
     $rows = [];
@@ -120,13 +120,16 @@ class LicenceOverviewController extends ControllerBase {
   /**
    * Builds a table row for a licence rdf_entity.
    *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity for which to build a table row.
+   *
    * @return array
    *   A table row.
    *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    */
-  public function buildRow(EntityInterface $entity) {
-    /* @var $entity \Drupal\rdf_entity\Entity\Rdf */
+  public function buildRow(EntityInterface $entity): array {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
     $row['id'] = $entity->toLink()->toString();
     $row['rid'] = $entity->bundle();
     return $row;

@@ -8,6 +8,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Url;
 use Drupal\og\OgContextInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -73,6 +74,14 @@ class GlobalSearchBlock extends BlockBase implements ContainerFactoryPluginInter
         'tags' => $this->getCacheTags(),
       ],
     ];
+
+    $build['advanced_search'] = [
+      '#type' => 'link',
+      '#title' => $this->t('Advanced search'),
+      '#url' => Url::fromRoute('view.search.page_1'),
+      '#attributes' => ['class' => ['advanced-search--header']],
+    ];
+
     return $build;
   }
 

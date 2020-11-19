@@ -6,6 +6,7 @@ namespace Drupal\joinup_discussion\EventSubscriber;
 
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\Event\InvitationEventInterface;
 use Drupal\joinup_invite\Event\InvitationEvents;
 use Drupal\joinup_subscription\Exception\UserAlreadySubscribedException;
@@ -49,11 +50,34 @@ class InvitationSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() : array {
+  public static function getSubscribedEvents(): array {
+    $events[InvitationEvents::NOT_PENDING_EVENT] = ['notPendingInvitation'];
     $events[InvitationEvents::ACCEPT_INVITATION_EVENT] = ['acceptInvitation'];
     $events[InvitationEvents::REJECT_INVITATION_EVENT] = ['rejectInvitation'];
 
     return $events;
+  }
+
+  /**
+   * Invitation is already accepted or rejected.
+   *
+   * @param \Drupal\joinup_invite\Event\InvitationEventInterface $event
+   *   The event that was fired.
+   */
+  public function notPendingInvitation(InvitationEventInterface $event): void {
+    $invitation = $event->getInvitation();
+
+    // Ignore invitations to other content entities.
+    if ($invitation->bundle() !== 'discussion') {
+      return;
+    }
+
+    if ($invitation->getStatus() === InvitationInterface::STATUS_ACCEPTED) {
+      $this->messenger->addMessage($this->t('You were already subscribed to this discussion.'));
+    }
+    elseif ($invitation->getStatus() === InvitationInterface::STATUS_REJECTED) {
+      $this->messenger->addMessage($this->t('You have already rejected the invitation to this discussion.'));
+    }
   }
 
   /**
@@ -62,7 +86,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
    * @param \Drupal\joinup_invite\Event\InvitationEventInterface $event
    *   The event that was fired.
    */
-  public function acceptInvitation(InvitationEventInterface $event) : void {
+  public function acceptInvitation(InvitationEventInterface $event): void {
     $invitation = $event->getInvitation();
 
     // Ignore invitations to other content entities.
@@ -75,13 +99,14 @@ class InvitationSubscriber implements EventSubscriberInterface {
     try {
       $result = $this->joinupSubscription->subscribe($invitation->getRecipient(), $invitation->getEntity(), 'subscribe_discussions');
       if ($result) {
-        $this->messenger->addMessage($this->t('You have been subscribed to this discussion.'));
+        $this->messenger->addMessage($this->t('You are now following this discussion.'));
       }
       else {
         $this->messenger->addMessage($this->t('Your subscription request could not be processed. Please try again later.'));
       }
     }
     catch (UserAlreadySubscribedException $e) {
+      // This should never happen unless there is a race condition.
       $this->messenger->addMessage($this->t('You were already subscribed to this discussion.'));
     }
   }
@@ -92,7 +117,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
    * @param \Drupal\joinup_invite\Event\InvitationEventInterface $event
    *   The event that was fired.
    */
-  public function rejectInvitation(InvitationEventInterface $event) : void {
+  public function rejectInvitation(InvitationEventInterface $event): void {
     $invitation = $event->getInvitation();
 
     // Ignore invitations to other content entities.

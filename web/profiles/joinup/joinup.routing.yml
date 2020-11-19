@@ -8,7 +8,7 @@ rdf_entity.propose_form:
     _controller: '\Drupal\joinup\Controller\JoinupController::proposeRdfEntity'
     _title: 'Propose an Rdf entity'
   requirements:
-    _custom_access: '\Drupal\joinup\Controller\JoinupController::createAssetReleaseAccess'
+    _custom_access: '\Drupal\joinup\Controller\JoinupController::createAccess'
   options:
     parameters:
       rdf_type:
@@ -51,14 +51,12 @@ joinup.export_user_list_download:
     _admin_route: TRUE
 
 joinup.group_administrators_report:
-  path: '/admin/reporting/group-administrators/{entity_type_id}/{bundle_id}/{format}'
+  path: '/admin/reporting/group-administrators/export'
   defaults:
-    _controller: '\Drupal\joinup\Controller\GroupAdministratorsController::report'
-    _title_callback: '\Drupal\joinup\Controller\GroupAdministratorsController::reportTitle'
-    format: 'html'
+    _form: '\Drupal\joinup\Form\ExportGroupAdministratorsForm'
+    _title: 'Group administrators and facilitators'
   requirements:
-    _custom_access: '\Drupal\joinup\Controller\GroupAdministratorsController::access'
-    _permission: 'administer group'
+    _permission: 'administer users'
   options:
     _admin_route: TRUE
 

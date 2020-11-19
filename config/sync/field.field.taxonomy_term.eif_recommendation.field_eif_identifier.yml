@@ -1,0 +1,23 @@
+uuid: ad3286cd-6d9e-4536-88b5-c6902cf1f3f1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_eif_identifier
+    - taxonomy.vocabulary.eif_recommendation
+id: taxonomy_term.eif_recommendation.field_eif_identifier
+field_name: field_eif_identifier
+entity_type: taxonomy_term
+bundle: eif_recommendation
+label: Identifier
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

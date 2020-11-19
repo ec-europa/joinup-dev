@@ -84,20 +84,25 @@ class InvitationController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   The redirect response.
    */
-  public function updateInvitation(InvitationInterface $invitation, string $action, string $hash) : RedirectResponse {
-    switch ($action) {
-      case self::ACTION_ACCEPT:
-        $invitation->accept()->save();
-        $this->eventDispatcher->dispatch(InvitationEvents::ACCEPT_INVITATION_EVENT, $this->getEvent($invitation, $action));
-        break;
+  public function updateInvitation(InvitationInterface $invitation, string $action, string $hash): RedirectResponse {
+    if ($invitation->getStatus() !== InvitationInterface::STATUS_PENDING) {
+      $this->eventDispatcher->dispatch(InvitationEvents::NOT_PENDING_EVENT, $this->getEvent($invitation, $action));
+    }
+    else {
+      switch ($action) {
+        case self::ACTION_ACCEPT:
+          $invitation->accept()->save();
+          $this->eventDispatcher->dispatch(InvitationEvents::ACCEPT_INVITATION_EVENT, $this->getEvent($invitation, $action));
+          break;
 
-      case self::ACTION_REJECT:
-        $invitation->reject()->save();
-        $this->eventDispatcher->dispatch(InvitationEvents::REJECT_INVITATION_EVENT, $this->getEvent($invitation, $action));
-        break;
+        case self::ACTION_REJECT:
+          $invitation->reject()->save();
+          $this->eventDispatcher->dispatch(InvitationEvents::REJECT_INVITATION_EVENT, $this->getEvent($invitation, $action));
+          break;
 
-      default:
-        throw new \InvalidArgumentException("Unknow action '$action'.");
+        default:
+          throw new \InvalidArgumentException("Unknow action '$action'.");
+      }
     }
 
     $url = $invitation->getEntity()->toUrl();
@@ -121,8 +126,11 @@ class InvitationController extends ControllerBase {
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function access(InvitationInterface $invitation, string $action, string $hash) : AccessResultInterface {
-    $valid_action = in_array($action, [self::ACTION_ACCEPT, self::ACTION_REJECT]);
+  public function access(InvitationInterface $invitation, string $action, string $hash): AccessResultInterface {
+    $valid_action = in_array(
+      $action,
+      [self::ACTION_ACCEPT, self::ACTION_REJECT]
+    );
     return AccessResult::allowedIf($valid_action && static::generateHash($invitation, $action) === $hash);
   }
 
@@ -140,7 +148,7 @@ class InvitationController extends ControllerBase {
    *   A unique hash consisting of 8 lowercase alphanumeric characters, dashes
    *   and underscores.
    */
-  public static function generateHash(InvitationInterface $invitation, string $action) : string {
+  public static function generateHash(InvitationInterface $invitation, string $action): string {
     $data = $invitation->id();
     $data .= $action;
     return strtolower(substr(Crypt::hmacBase64($data, Settings::getHashSalt()), 0, 8));
@@ -157,7 +165,7 @@ class InvitationController extends ControllerBase {
    * @return \Drupal\joinup_invite\Event\InvitationEventInterface
    *   The event.
    */
-  protected function getEvent(InvitationInterface $invitation, string $action) : InvitationEventInterface {
+  protected function getEvent(InvitationInterface $invitation, string $action): InvitationEventInterface {
     return (new InvitationEvent())
       ->setInvitation($invitation)
       ->setAction($action);

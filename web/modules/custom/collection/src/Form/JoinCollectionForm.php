@@ -109,7 +109,7 @@ class JoinCollectionForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, AccountInterface $user = NULL, RdfInterface $collection = NULL): array {
+  public function buildForm(array $form, FormStateInterface $form_state, ?AccountInterface $user = NULL, ?RdfInterface $collection = NULL): array {
     $form['#access'] = $this->access();
 
     $user = $this->loadUser((int) $user->id());
@@ -205,8 +205,7 @@ class JoinCollectionForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $collection = $this->loadCollection($form_state->getValue('collection_id'));
     $user = $this->loadUser((int) $form_state->getValue('user_id'));
-    $role_id = $collection->getEntityTypeId() . '-' . $collection->bundle() . '-' . OgRoleInterface::AUTHENTICATED;
-    $og_role = $this->loadOgRole($role_id);
+    $og_roles = [$this->loadOgRole($collection->getEntityTypeId() . '-' . $collection->bundle() . '-' . OgRoleInterface::AUTHENTICATED)];
     $state = $collection->get('field_ar_closed')->first()->value ? OgMembershipInterface::STATE_PENDING : OgMembershipInterface::STATE_ACTIVE;
 
     /** @var \Drupal\og\OgMembershipInterface $membership */
@@ -217,7 +216,7 @@ class JoinCollectionForm extends FormBase {
       ->setOwner($user)
       ->setGroup($collection)
       ->setState($state)
-      ->setRoles([$og_role])
+      ->setRoles($og_roles)
       ->save();
 
     $parameters = ['%collection' => $collection->getName()];

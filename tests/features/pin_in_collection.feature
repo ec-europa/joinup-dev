@@ -75,19 +75,25 @@ Feature: Pinning entities inside collections
 
     When I click the contextual link "Unpin" in the "Very important" tile
     Then I should see the success message "<label> Very important has been unpinned in the collection Orange Wrench."
-    And I should see the following tiles in the correct order:
-      | What is the HEX for orange? |
-      | Useful information          |
-      | Very important              |
+    # Todo: Due to an environment related issue on CPHP this is causing random
+    #   failures which cannot be replicated in production. Re-enable this check
+    #   once we have updated to a more recent version of Solr. See ISAICP-6245.
+    # And I should see the following tiles in the correct order:
+    #   | What is the HEX for lemon? |
+    #   | Useful information         |
+    #   | Very important             |
     And I should see the contextual link "Pin" in the "Very important" tile
     But I should not see the contextual link "Unpin" in the "Very important" tile
 
     When I click the contextual link "Pin" in the "Useful information" tile
     Then I should see the success message "<label> Useful information has been pinned in the collection Orange Wrench."
-    And I should see the following tiles in the correct order:
-      | Useful information          |
-      | What is the HEX for orange? |
-      | Very important              |
+    # Todo: Due to an environment related issue on CPHP this is causing random
+    #   failures which cannot be replicated in production. Re-enable this check
+    #   once we have updated to a more recent version of Solr. See ISAICP-6245.
+    # And I should see the following tiles in the correct order:
+    #   | Useful information         |
+    #   | What is the HEX for lemon? |
+    #   | Very important             |
     And I should see the contextual link "Unpin" in the "Useful information" tile
     But I should not see the contextual link "Pin" in the "Useful information" tile
 
@@ -201,6 +207,53 @@ Feature: Pinning entities inside collections
     When I am at "/search"
     Then I should not see the contextual links "Pin, Unpin" in the "Wrench catalogue" tile
     And I should not see the contextual links "Pin, Unpin" in the "Orange estimator" tile
+
+  @javascript
+  Scenario: Last update time of a solution is not affected by (un)pinning.
+    Given discussion content:
+      | title                        | collection    | state     | pinned | created    |
+      | What kind of wrench is this? | Orange Wrench | validated | no     | 2017-11-20 |
+    And solutions:
+      | title                | collection    | state     | pinned in     | creation date |
+      | Drop forged wrenches | Orange Wrench | validated | Orange Wrench | 2017-10-12    |
+    And I am logged in as "Rozanne Minett"
+
+    # Pinning and unpinning items should not affect the "last update" timestamp.
+    # Before changing the pinned status, let's check that the solution is in the
+    # expected position when searching for content ordered by last updated time.
+    When I visit the search page
+    And I select "Last Updated Date" from "Sort by"
+    And I enter "wrench" in the search bar and press enter
+    Then I should see the following tiles in the correct order:
+      | Orange Wrench                |
+      | What kind of wrench is this? |
+      | Drop forged wrenches         |
+
+    When I go to the homepage of the "Orange Wrench" collection
+    When I click the contextual link "Unpin" in the "Drop forged wrenches" tile
+    Then I should see the success message "Solution Drop forged wrenches has been unpinned in the collection Orange Wrench."
+
+    When I visit the search page
+    And I select "Last Updated Date" from "Sort by"
+    And I enter "wrench" in the search bar and press enter
+    Then I should see the following tiles in the correct order:
+      | Orange Wrench                |
+      | What kind of wrench is this? |
+      | Drop forged wrenches         |
+
+    When I go to the homepage of the "Orange Wrench" collection
+    When I click the contextual link "Pin" in the "Drop forged wrenches" tile
+    Then I should see the success message "Solution Drop forged wrenches has been pinned in the collection Orange Wrench."
+
+    # Check that the "last update" timestamp has not been affected. We can check
+    # this in the search page.
+    When I visit the search page
+    And I select "Last Updated Date" from "Sort by"
+    And I enter "wrench" in the search bar and press enter
+    Then I should see the following tiles in the correct order:
+      | Orange Wrench                |
+      | What kind of wrench is this? |
+      | Drop forged wrenches         |
 
   @javascript
   Scenario Outline: Pinned content tiles should show a visual cue only in their collection homepage.

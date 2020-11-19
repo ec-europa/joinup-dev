@@ -127,7 +127,7 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
     // We indicate that a menu administrator is running the menu access check.
     $this->getRequest()->attributes->set('_menu_admin', TRUE);
     $manipulators = [
-      ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+      ['callable' => 'menu_ui.menu_tree_manipulators:checkAccess'],
       ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
     ];
     $tree = $this->menuTree->transform($tree, $manipulators);
@@ -208,7 +208,10 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
           $element['title'],
         ];
         $form['links'][$id]['enabled'] = $element['enabled'];
-        $form['links'][$id]['enabled']['#wrapper_attributes']['class'] = ['checkbox', 'menu-enabled'];
+        $form['links'][$id]['enabled']['#wrapper_attributes']['class'] = [
+          'checkbox',
+          'menu-enabled',
+        ];
 
         $form['links'][$id]['weight'] = $element['weight'];
 

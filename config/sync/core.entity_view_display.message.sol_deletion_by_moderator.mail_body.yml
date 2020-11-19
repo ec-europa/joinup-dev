@@ -1,0 +1,19 @@
+uuid: 01062480-759e-486e-b60c-56f58d82268d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.sol_deletion_by_moderator
+id: message.sol_deletion_by_moderator.mail_body
+targetEntityType: message
+bundle: sol_deletion_by_moderator
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

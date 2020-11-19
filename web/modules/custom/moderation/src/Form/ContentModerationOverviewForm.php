@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\moderation\Form;
 
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -73,7 +76,7 @@ class ContentModerationOverviewForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL) {
     $result = $this->getModerationItems($rdf_entity);
     $count = $this->getModerationItemCount($result);
 
@@ -89,7 +92,7 @@ class ContentModerationOverviewForm extends FormBase {
         ->viewMultiple($result, 'moderation');
     }
     else {
-      $form['wrapper']['content'] = $this->buildNoResultsForm();;
+      $form['wrapper']['content'] = $this->buildNoResultsForm();
     }
 
     return $form;
@@ -116,10 +119,10 @@ class ContentModerationOverviewForm extends FormBase {
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The collection or solution that is being moderated.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result object.
    */
-  public static function access(RdfInterface $rdf_entity) {
+  public static function access(RdfInterface $rdf_entity): AccessResultInterface {
     /** @var \Drupal\Core\Session\AccountProxyInterface $user */
     $user = \Drupal::service('current_user');
 
@@ -153,7 +156,7 @@ class ContentModerationOverviewForm extends FormBase {
    * @return array
    *   An associative array of select options, keyed by content type.
    */
-  protected function getTypeFilterOptions(array $content_count) {
+  protected function getTypeFilterOptions(array $content_count): array {
     $options = [];
     $total_count = 0;
 
@@ -165,7 +168,9 @@ class ContentModerationOverviewForm extends FormBase {
       $options[$type] = node_type_get_names()[$type] . " ($type_count)";
     }
 
-    return ['all' => $this->t("All (@count)", ['@count' => $total_count])] + $options;
+    return [
+      'all' => $this->t("All (@count)", ['@count' => $total_count]),
+    ] + $options;
   }
 
   /**
@@ -174,7 +179,7 @@ class ContentModerationOverviewForm extends FormBase {
    * @param array $content_count
    *   An associative array keyed by content type, each value an associative
    *   array keyed by moderation state, with the number of items as value.
-   * @param string $content_type
+   * @param string|null $content_type
    *   Optional content type for which to return the select options. If this is
    *   omitted or 'all', the select options for all content types will be
    *   returned.
@@ -182,7 +187,7 @@ class ContentModerationOverviewForm extends FormBase {
    * @return array
    *   An associative array of select options, keyed by moderation state.
    */
-  protected function getStateFilterOptions(array $content_count, $content_type = NULL) {
+  protected function getStateFilterOptions(array $content_count, ?string $content_type = NULL) {
     $options = [];
     $total_count = 0;
 
@@ -205,7 +210,9 @@ class ContentModerationOverviewForm extends FormBase {
       $value = Unicode::ucfirst(strtr($state, ['_' => ' '])) . " ($value)";
     });
 
-    return ['all' => $this->t("All (@count)", ['@count' => $total_count])] + $options;
+    return [
+      'all' => $this->t("All (@count)", ['@count' => $total_count]),
+    ] + $options;
   }
 
   /**
@@ -213,17 +220,17 @@ class ContentModerationOverviewForm extends FormBase {
    *
    * @param \Drupal\Core\Entity\EntityInterface[] $entities
    *   An array of entities.
-   * @param string $type_filter
+   * @param string|null $type_filter
    *   Optional content type for which to return the count. If this is omitted
    *   or 'all', the count for all content types will be returned.
-   * @param string $state_filter
+   * @param string|null $state_filter
    *   Optional workflow state for which to return the count. If this is omitted
    *   or 'all', the count for all workflow states will be returned.
    *
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   The filtered array.
    */
-  protected function filterCountedItems(array $entities, $type_filter = NULL, $state_filter = NULL) {
+  protected function filterCountedItems(array $entities, ?string $type_filter = NULL, ?string $state_filter = NULL) {
     if (!empty($type_filter) && $type_filter !== 'all') {
       $entities = array_filter($entities, function (EntityInterface $entity) use ($type_filter) {
         return $entity->bundle() === $type_filter;
@@ -239,19 +246,20 @@ class ContentModerationOverviewForm extends FormBase {
   }
 
   /**
-   * Builds the filers on content type and state.
+   * Builds the filters on content type and state.
    *
    * @param array $count
    *   An associative array keyed by content type, each value an associative
    *   array keyed by moderation state, with the number of items as value.
-   * @param string $type_filter
-   *   The active content type filter.
+   * @param string|null $type_filter
+   *   The active content type filter. If omitted select options for all content
+   *   types will be included.
    *
    * @return array
    *   The form array with the content type and state filters.
    */
-  protected function buildSelectForm(array $count, $type_filter) {
-    $form = [
+  protected function buildSelectForm(array $count, ?string $type_filter): array {
+    return [
       'wrapper' => [
         '#type' => 'container',
         '#attributes' => ['id' => 'ajax-wrapper'],
@@ -281,7 +289,6 @@ class ContentModerationOverviewForm extends FormBase {
         ],
       ],
     ];
-    return $form;
   }
 
   /**
@@ -293,7 +300,7 @@ class ContentModerationOverviewForm extends FormBase {
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   The related entities.
    */
-  protected function getModerationItems(RdfInterface $rdf_entity) {
+  protected function getModerationItems(RdfInterface $rdf_entity): array {
     $entities = $this->nodeStorage->getQuery()
       ->condition('og_audience.target_id', $rdf_entity->id())
       ->condition('field_state', CommunityContentHelper::getModeratorAttentionNeededStates(), 'IN')
@@ -321,7 +328,7 @@ class ContentModerationOverviewForm extends FormBase {
    * @return mixed
    *   The revision id or null.
    */
-  public function getLatestRevisionId($entity_id) {
+  public function getLatestRevisionId(string $entity_id) {
     if ($storage = $this->entityTypeManager->getStorage('node')) {
       $revision_ids = $storage->getQuery()
         ->allRevisions()
@@ -338,7 +345,7 @@ class ContentModerationOverviewForm extends FormBase {
   /**
    * Checks if the passed revision is the latest one.
    *
-   * @param string $revision_id
+   * @param int $revision_id
    *   The revision id.
    * @param string $entity_id
    *   The entity id.
@@ -346,7 +353,7 @@ class ContentModerationOverviewForm extends FormBase {
    * @return bool
    *   Whether the revision is the latest.
    */
-  public function isLatestRevision($revision_id, $entity_id) {
+  public function isLatestRevision(int $revision_id, string $entity_id): bool {
     return $revision_id == $this->getLatestRevisionId($entity_id);
   }
 
@@ -365,7 +372,7 @@ class ContentModerationOverviewForm extends FormBase {
    *   associative array having the moderation state as a key and the count as
    *   a value.
    */
-  protected function getModerationItemCount(array $result) {
+  protected function getModerationItemCount(array $result): array {
     // Turn the count query result into a hierarchical array, keyed by bundle.
     $count = array_reduce($result, function ($count, EntityInterface $row) {
       $bundle = $row->bundle();
@@ -383,7 +390,7 @@ class ContentModerationOverviewForm extends FormBase {
   /**
    * Builds the content of the form when no entities need moderation.
    */
-  protected function buildNoResultsForm() {
+  protected function buildNoResultsForm(): array {
     return [
       '#type' => 'html_tag',
       '#tag' => 'p',

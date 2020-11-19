@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\adms_validator;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use EasyRdf\Sparql\Result;
 
 /**
@@ -29,17 +29,17 @@ class AdmsValidationResult {
    *   The result of the validation query.
    * @param string $graph_uri
    *   The graph URI.
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparql
    *   The SPARQL endpoint.
    *
    * @todo Remove $graph_uri, $sparql params in ISAICP-4296.
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
+   * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
    */
   public function __construct(Result $result, $graph_uri, ConnectionInterface $sparql) {
     $skipped_rules = [100, 101, 102, 103];
     foreach ($result as $error) {
       // @todo Remove this hack in ISAICP-4296.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
+      // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
       if (!in_array($error->Rule_ID->getValue(), $skipped_rules)) {
         $this->errors[] = new SchemaError($error);
       }
@@ -53,7 +53,7 @@ class AdmsValidationResult {
    * @return array
    *   Renderable data.
    */
-  public function toRows() : array {
+  public function toRows(): array {
     return array_map(function ($error) {
       return (array) $error;
     }, $this->errors);
@@ -65,7 +65,7 @@ class AdmsValidationResult {
    * @return int
    *   Error count.
    */
-  public function errorCount() : int {
+  public function errorCount(): int {
     return count($this->errors);
   }
 
@@ -108,11 +108,11 @@ class AdmsValidationResult {
    *
    * @param string $graph_uri
    *   The graph URI.
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparql
    *   The SPARQL endpoint.
    *
    * @todo Remove this hack in ISAICP-4296.
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
+   * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
    */
   protected function applyRules100To103($graph_uri, ConnectionInterface $sparql) {
     $rules = [

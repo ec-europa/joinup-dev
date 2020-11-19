@@ -6,6 +6,8 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\asset_release\Entity\AssetReleaseInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
@@ -299,16 +301,19 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
    * {@inheritdoc}
    */
   protected function generateArguments(EntityInterface $entity): array {
+    // PHP does not support covariance on arguments so we cannot narrow the type
+    // hint to only asset release entities. Let's assert the type instead.
+    assert($entity instanceof AssetReleaseInterface, __METHOD__ . ' only supports asset release entities.');
+
     $arguments = parent::generateArguments($entity);
+    /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = $arguments['@actor:field_user_first_name'];
-    $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
     $arguments['@transition:motivation'] = $motivation;
-    $arguments['@entity:field_isr_release_number'] = !empty($entity->get('field_isr_release_number')->first()->value) ? $entity->get('field_isr_release_number')->first()->value : '';
+    $arguments['@entity:field_isr_release_number'] = $entity->getVersion();
 
     // Add arguments related to the parent collection or solution.
-    $parent = $this->relationManager->getParent($entity);
+    $parent = JoinupGroupHelper::getGroup($entity);
     if (!empty($parent)) {
       $arguments += MessageArgumentGenerator::getGroupArguments($parent);
       if (empty($arguments['@actor:role'])) {
@@ -325,7 +330,7 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
             $arguments['@actor:role'] = $this->t('Facilitator');
           }
         }
-        $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
+        $arguments['@actor:full_name'] = $actor->getDisplayName();
       }
     }
 

@@ -3,12 +3,20 @@
  * @file
  * Default theme implementation for the global search bar.
  *
- * Available variables:
- * - filters: the search filters, to be displayed as chips.
+ * In order to provide a custom design and a custom search button, we overwrite and do not render the entire form
+ * rather only the form.keys and the form.sort_by.
  *
- * @see template_preprocess_joinup_search_global_search()
+ * The form is overridden in form--joinup-exposed-search.html.twig.
+ *
+ * Available variables:
+ * - form: Contains the form element that can be printed. The form element contains the keys:
+ *   - keys: The filters of the exposed form.
+ *   - sort_by: The sort by form if exists.
+ *
+ * @see joinup_theme_form_alter()
  *
  * @ingroup themeable
  */
 #}
 {{ form.keys }}
+{{ form.sort_by }}

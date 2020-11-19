@@ -1,0 +1,166 @@
+<?php
+
+/**
+ * @file
+ * Contains functions and hooks for the whats_new module.
+ */
+
+declare (strict_types = 1);
+
+use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_entity_prepare_view().
+ *
+ * Flags the entity for the current user if the entity is listed in any of the
+ * support menu's links that have the flagging enabled.
+ */
+function whats_new_entity_prepare_view(string $entity_type_id, array $entities, array $displays, string $view_mode): void {
+  if ($entity_type_id !== 'node' || $view_mode !== 'full' || \Drupal::getContainer()->get('current_user')->isAnonymous()) {
+    return;
+  }
+
+  // The only case in Joinup that the entity is presented in full view is the
+  // entity's canonical page.
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = reset($entities);
+
+  $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
+  if (empty($whats_new_helper->getFlagEnabledMenuLinks($entity))) {
+    return;
+  }
+
+  if (!$whats_new_helper->userHasViewedEntity($entity)) {
+    $whats_new_helper->setUserHasViewedEntity($entity);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function whats_new_preprocess_menu(array &$variables): void {
+  if ($variables['menu_name'] !== 'support' || \Drupal::getContainer()->get('current_user')->isAnonymous()) {
+    return;
+  }
+
+  $menu_link_storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
+  /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link */
+  foreach ($variables['items'] as $menu_link_id => $menu_link_data) {
+    /** @var \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent $menu_link */
+    $menu_link_definition = $menu_link_data['original_link']->getPluginDefinition();
+    if (empty($menu_link_definition['metadata']['entity_id'])) {
+      continue;
+    }
+    $menu_link = $menu_link_storage->load($menu_link_definition['metadata']['entity_id']);
+    if (empty($menu_link) || !$menu_link->getUrlObject()->isRouted()) {
+      continue;
+    }
+    if (!$menu_link->get('live_link')->first() || !$menu_link->get('live_link')->first()->getValue()) {
+      continue;
+    }
+    if (empty($menu_link->getUrlObject()->getRouteParameters()['node'])) {
+      continue;
+    }
+
+    // For each menu item that the flagging is set to TRUE, check if the user
+    // has viewed the entity (if the flag exists) and if not, add a special
+    // class to the menu item.
+    $node = $node_storage->load($menu_link->getUrlObject()->getRouteParameters()['node']);
+    if (empty($node)) {
+      // Node was deleted? This should never happen.
+      continue;
+    }
+
+    if (!$whats_new_helper->userHasViewedEntity($node)) {
+      $variables['attributes']['class'][] = 'whats_new';
+      /** @var \Drupal\Core\Template\Attribute $attributes */
+      $attributes = $variables['items'][$menu_link_id]['attributes'];
+      $attributes->addClass('whats_new');
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function whats_new_entity_base_field_info(EntityTypeInterface $entity_type): array {
+  $fields = [];
+
+  if (($entity_type->id() === 'menu_link_content')) {
+    $fields['live_link'] = BaseFieldDefinition::create('boolean')
+      ->setName('live_link')
+      ->setLabel(t('Live link'))
+      ->setDescription(t('If checked <strong>and</strong> the link points to a content entity, it will appear as featured as long as the user has not visited the page.'))
+      ->setDefaultValue(0)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function whats_new_form_menu_link_content_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link_content */
+  $menu_link_content = $form_state->getBuildInfo()['callback_object']->getEntity();
+  $menu_name = $menu_link_content->getMenuName();
+  if ($menu_name === 'support') {
+    $form['#validate'][] = 'whats_new_menu_link_content_form_validate';
+  }
+  else {
+    // To avoid confusion, do not allow the flagging to be set in any link of a
+    // different menu.
+    $form['live_link']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Validation callback for the menu_link_content page.
+ *
+ * Ensures that if the flagging field is set to TRUE, the link the user provided
+ * refers to a content entity.
+ */
+function whats_new_menu_link_content_form_validate(array &$form, FormStateInterface $form_state): void {
+  if (!$form_state->getValue('live_link')['value']) {
+    return;
+  }
+
+  $link_value = $form_state->getValue('link')[0]['uri'];
+  $error_message = t('Live links are allowed only for internal URLs pointing to content within the website.');
+  if (!UrlHelper::isValid($link_value) || UrlHelper::isExternal($link_value)) {
+    $form_state->setErrorByName('live_link', $error_message);
+    return;
+  }
+
+  $url = Url::fromUri($link_value);
+  if (!$url->isRouted() || $url->getRouteName() !== 'entity.node.canonical') {
+    // This could work for all entities by dynamically creating a flag type if a
+    // flag type for the requested entity type does not exist.
+    // However, since the config are meant to be read-only, this is not allowed.
+    $form_state->setErrorByName('live_link', $error_message);
+    return;
+  }
+
+  $whats_new_helper = \Drupal::getContainer()->get('whats_new.helper');
+  /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link_content */
+  $menu_link_content = $form_state->getBuildInfo()['callback_object']->getEntity();
+  $menu_link_ids = $whats_new_helper->getFlagEnabledMenuLinks();
+  $menu_link_id = reset($menu_link_ids);
+  if (!empty($menu_link_ids) && ($menu_link_content->isNew() || $menu_link_content->id() !== $menu_link_id)) {
+    $form_state->setErrorByName('live_link', t('There is already a live link. Please, disable the other one before creating a new one.'));
+  }
+
+}

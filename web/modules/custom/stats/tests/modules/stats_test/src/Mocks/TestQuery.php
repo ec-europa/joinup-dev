@@ -17,9 +17,10 @@ use Matomo\ReportingApi\QueryResult;
 class TestQuery extends Query {
 
   /**
-   * TestQuery constructor.
+   * Constructs a new TestQuery.
    */
-  public function __construct() {}
+  public function __construct() {
+  }
 
   /**
    * {@inheritdoc}
@@ -37,6 +38,10 @@ class TestQuery extends Query {
    *   Mocked array response.
    */
   protected function getMockedResponseArray(): array {
+    // We are accessing a Drupal service inside a test class which is not a
+    // Drupal service. Ignore PHPStan's requirement for using dependency
+    // injection in classes.
+    // @phpstan-ignore-next-line
     $increment = \Drupal::state()->get('joinup_stats_test.increment', []);
     $default = [
       'http://example.com/distro/1' => 55,

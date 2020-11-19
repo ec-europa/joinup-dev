@@ -74,14 +74,14 @@ class DeleteGroupMembership extends DeleteOgMembership {
   /**
    * {@inheritdoc}
    */
-  public function execute(OgMembership $membership = NULL): void {
+  public function execute(?OgMembership $membership = NULL): void {
     $this->executeMultiple([$membership]);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function access($membership, AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($membership, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     /** @var \Drupal\og\Entity\OgMembership $membership */
     // 'Joinup' collection membership cannot be revoked.
     if ($membership->getGroupId() === JoinupCollectionHelper::getCollectionId()) {

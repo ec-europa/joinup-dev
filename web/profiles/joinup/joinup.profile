@@ -5,19 +5,19 @@
  * Enables modules and site configuration for the Joinup profile.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Installer\InstallerKernel;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\views\ViewExecutable;
@@ -145,46 +145,22 @@ function joinup_sparql_apply_default_fields_alter($type, &$values) {
 }
 
 /**
- * Implements hook_og_user_access_alter().
- */
-function joinup_og_user_access_alter(&$permissions, &$cacheable_metadata, $context) {
-  // Moderators should have access to view, create, edit and delete all group
-  // content in collections.
-  /** @var \Drupal\Core\Session\AccountProxyInterface $user */
-  $user = $context['user'];
-  $operation = $context['operation'];
-  $group = $context['group'];
-
-  $is_moderator = in_array('moderator', $user->getRoles());
-  $is_collection = $group->bundle() === 'collection';
-  $operation_allowed = in_array($operation, [
-    'view',
-    'create',
-    'update',
-    'delete',
-  ]);
-
-  if ($is_moderator && $is_collection && $operation_allowed) {
-    $permissions[] = $operation;
-  }
-}
-
-/**
  * Implements hook_entity_access().
  */
 function joinup_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  // Moderators have the 'administer group' permission so they can manage all
-  // group content across all groups. However since the OG Menu entities are
-  // also group content moderators are also granted access to the OG Menu
-  // administration pages. Let's specifically deny access to these, since we are
-  // handling the menu items transparently whenever custom pages are created or
-  // deleted. Moderators and collection facilitators should only have access to
-  // the edit form of an OG Menu instance so they can rearrange the custom
-  // pages, but not to the entity forms of the menu items themselves.
+  // Moderators have the 'administer organic groups' permission so they can
+  // manage all group content across all groups. However since the OG Menu
+  // entities are also group content moderators are also granted access to the
+  // OG Menu administration pages. Let's specifically deny access to these,
+  // since we are handling the menu items transparently whenever custom pages
+  // are created or deleted. Moderators and collection facilitators should only
+  // have access to the edit form of an OG Menu instance so they can rearrange
+  // the custom pages, but not to the entity forms of the menu items themselves.
   // In fact, nobody should have access to these pages except UID 1.
   if ($entity->getEntityTypeId() === 'ogmenu_instance' && $operation !== 'update') {
     return AccessResult::forbidden();
   }
+
   return AccessResult::neutral();
 }
 
@@ -253,67 +229,6 @@ function joinup_form_node_form_alter(&$form, FormStateInterface $form_state, $fo
 }
 
 /**
- * Implements hook_field_formatter_third_party_settings_form().
- *
- * Allow adding template suggestions for each field.
- */
-function joinup_field_formatter_third_party_settings_form(FormatterInterface $plugin, FieldDefinitionInterface $field_definition, $view_mode, $form, FormStateInterface $form_state) {
-  $element = [];
-
-  $element['template_suggestion'] = [
-    '#type' => 'textfield',
-    '#title' => t('Template suggestion'),
-    '#size' => 64,
-    '#field_prefix' => 'field__',
-    '#default_value' => $plugin->getThirdPartySetting('joinup', 'template_suggestion'),
-  ];
-
-  return $element;
-}
-
-/**
- * Implements hook_theme_suggestions_field_alter().
- *
- * Add template suggestions based on the configuration added in the formatter.
- */
-function joinup_theme_suggestions_field_alter(array &$suggestions, array &$variables) {
-  $element = $variables['element'];
-
-  if (!empty($element['#entity_type']) && !empty($element['#bundle']) && !empty($element['#field_name'])) {
-    $entity_type = $element['#entity_type'];
-    $bundle = $element['#bundle'];
-    $field_name = $element['#field_name'];
-    // View mode is not strictly required for the functionality.
-    $view_mode = !empty($element['#view_mode']) ? $element['#view_mode'] : 'default';
-
-    // Load the related display. If not found, try to load the default as
-    // fallback. This is needed because displays like the "full" one might not
-    // be enabled but still used for rendering.
-    // @see \Drupal\Core\Entity\Entity\EntityViewDisplay::collectRenderDisplays()
-    $display = EntityViewDisplay::load($entity_type . '.' . $bundle . '.' . $view_mode);
-    if (empty($display) && $view_mode !== 'default') {
-      $display = EntityViewDisplay::load($entity_type . '.' . $bundle . '.default');
-    }
-
-    if (!empty($display)) {
-      $component = $display->getComponent($field_name);
-      if (!empty($component['third_party_settings']['joinup']['template_suggestion'])) {
-        $suggestion = 'field__' . $component['third_party_settings']['joinup']['template_suggestion'];
-        $suggestions[] = $suggestion;
-        $suggestions[] = $suggestion . '__' . $entity_type;
-        $suggestions[] = $suggestion . '__' . $entity_type . '__' . $bundle;
-        $suggestions[] = $suggestion . '__' . $entity_type . '__' . $bundle . '__' . $field_name;
-        $suggestions[] = $suggestion . '__' . $entity_type . '__' . $bundle . '__' . $field_name . '__' . $view_mode;
-
-        // Add the custom template suggestion back in the element to allow other
-        // modules to have this information.
-        $variables['element']['#joinup_template_suggestion'] = $suggestion;
-      }
-    }
-  }
-}
-
-/**
  * Implements hook_theme().
  */
 function joinup_theme($existing, $type, $theme, $path) {
@@ -354,6 +269,9 @@ function joinup_preprocess_menu__main(&$variables) {
 
 /**
  * Implements hook_entity_view_alter().
+ *
+ * Adds metadata needed to show relevant contextual links whenever entities are
+ * displayed.
  */
 function joinup_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
   if (in_array($entity->getEntityTypeId(), ['node', 'rdf_entity'])) {
@@ -367,26 +285,27 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
     ];
   }
 
-  if (!JoinupGroupHelper::isSolution($entity) && !CommunityContentHelper::isCommunityContent($entity)) {
+  if (!$entity instanceof PinnableGroupContentInterface) {
     return;
   }
 
-  // The contextual links need to vary per user roles and per user og roles.
+  // The contextual links vary per user roles (since moderators are able to pin
+  // content) and per OG roles (since facilitators are able to pin content).
   // Core already takes care of varying by roles by applying the
   // user.permissions cache context and applying the permission hash in the
   // contextual links. We need to include the corresponding data deriving from
-  // the og role cache context.
+  // the og_role cache context.
   /** @var \Drupal\og\Cache\Context\OgRoleCacheContext $cache_service */
   $cache_service = \Drupal::service('cache_context.og_role');
   $roles_hash = $cache_service->getContext();
 
-  // The rendered entity needs to vary by og group context.
+  // The rendered entity needs to vary by OG group context.
   $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], [
     'og_role',
     'og_group_context',
   ]);
 
-  /** @var \Drupal\rdf_entity\RdfInterface $group */
+  /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
   $group = \Drupal::service('og.context')->getGroup();
 
   // The existence of the group context contextual links helps with enforcing
@@ -407,6 +326,7 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
     'metadata' => [
       'changed' => $entity->getChangedTime(),
       'og_roles_hash' => $roles_hash,
+      'pin_status' => $entity->isPinned($group),
     ],
   ];
 
@@ -446,7 +366,10 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
   }
 
   /** @var \Drupal\Core\Entity\ContentEntityBase $entity */
-  $entity = $variables[$variables['elements']['#entity_type']];
+  $entity = $variables[$variables['elements']['#entity_type']] ?? NULL;
+  if (empty($entity)) {
+    return;
+  }
 
   // If the entity has the site-wide featured field, enable the related js
   // library.
@@ -461,19 +384,12 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
     $group = $context['og']->getContextValue();
   }
 
-  /** @var \Drupal\joinup\PinServiceInterface $pin_service */
-  $pin_service = \Drupal::service('joinup.pin_service');
-  if ($pin_service->isEntityPinned($entity, $group)) {
+  if ($entity instanceof PinnableGroupContentInterface && $entity->isPinned($group)) {
     $variables['attributes']['class'][] = 'is-pinned';
     $variables['#attached']['library'][] = 'joinup/pinned_entities';
 
-    if (JoinupGroupHelper::isSolution($entity) || CommunityContentHelper::isCommunityContent($entity)) {
-      $group_ids = [];
-      foreach ($pin_service->getGroupsWherePinned($entity) as $group) {
-        $group_ids[] = $group->id();
-      }
-      $variables['attributes']['data-drupal-pinned-in'] = implode(',', $group_ids);
-    }
+    $group_ids = $entity->getPinnedGroupIds();
+    $variables['attributes']['data-drupal-pinned-in'] = implode(',', $group_ids);
   }
 }
 
@@ -511,7 +427,10 @@ function joinup_views_pre_execute(ViewExecutable $view) {
 
   if (
     !isset($facets['event_date']) ||
-    empty(array_intersect($facets['event_date']->getActiveItems(), ['upcoming_events', 'past_events']))
+    empty(array_intersect(
+      $facets['event_date']->getActiveItems(),
+      ['upcoming_events', 'past_events']
+    ))
   ) {
     return;
   }

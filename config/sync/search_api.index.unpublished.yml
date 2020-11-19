@@ -2,6 +2,16 @@ uuid: 65b311ba-c63c-4f45-951e-11c101e528fc
 langcode: en
 status: true
 dependencies:
+  module:
+    - search_api_solr
+    - node
+    - rdf_entity
+    - paragraphs
+    - user
+    - search_api
+    - asset_distribution
+    - custom_page
+    - joinup_search
   config:
     - field.storage.node.body
     - field.storage.rdf_entity.field_ad_description
@@ -10,7 +20,6 @@ dependencies:
     - field.storage.node.field_event_agenda
     - field.storage.node.field_event_date
     - field.storage.rdf_entity.field_is_description
-    - field.storage.rdf_entity.field_is_pinned_in
     - field.storage.rdf_entity.field_is_solution_type
     - field.storage.rdf_entity.field_isr_description
     - field.storage.rdf_entity.field_isr_release_notes
@@ -26,19 +35,25 @@ dependencies:
     - field.storage.user.field_user_organisation
     - field.storage.rdf_entity.field_is_contact_information
     - field.storage.rdf_entity.field_ci_name
+    - field.storage.rdf_entity.field_isr_contact_information
+    - field.storage.rdf_entity.field_ad_description
+    - field.storage.rdf_entity.field_ar_description
+    - field.storage.rdf_entity.field_is_description
+    - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_licence_description
+    - field.storage.rdf_entity.field_is_eif_recommendation
     - field.storage.rdf_entity.field_is_owner
     - field.storage.rdf_entity.field_owner_name
     - field.storage.rdf_entity.field_isr_contact_information
     - field.storage.rdf_entity.field_isr_owner
+    - field.storage.node.field_paragraphs_body
+    - field.storage.paragraph.field_body
     - search_api.server.solr_unpublished
-  module:
-    - node
-    - rdf_entity
-    - user
-    - search_api
-    - joinup_search
-    - search_api_solr
-    - asset_distribution
+third_party_settings:
+  search_api_solr:
+    finalize: false
+    commit_before_finalize: false
+    commit_after_finalize: false
 id: unpublished
 name: 'Unpublished entities index'
 description: ''
@@ -146,14 +161,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_is_description
-  field_is_pinned_in:
-    label: 'Pinned in'
+  field_is_eif_recommendation:
+    label: 'EIF reference'
     datasource_id: 'entity:rdf_entity'
-    property_path: field_is_pinned_in
+    property_path: field_is_eif_recommendation
     type: string
     dependencies:
       config:
-        - field.storage.rdf_entity.field_is_pinned_in
+        - field.storage.rdf_entity.field_is_eif_recommendation
   field_is_solution_type:
     label: 'Solution type'
     datasource_id: 'entity:rdf_entity'
@@ -346,6 +361,17 @@ field_settings:
       fields:
         - 'entity:node/field_policy_domain'
         - 'entity:rdf_entity/field_policy_domain'
+  processed:
+    label: 'Body » Paragraph » Body » Processed text'
+    datasource_id: 'entity:node'
+    property_path: 'field_paragraphs_body:entity:field_body:processed'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_paragraphs_body
+        - field.storage.paragraph.field_body
+      module:
+        - paragraphs
   rdf_changed:
     label: Changed
     datasource_id: 'entity:rdf_entity'
@@ -426,18 +452,30 @@ field_settings:
 datasource_settings:
   'entity:node':
     bundles:
-      default: true
-      selected: {  }
+      default: false
+      selected:
+        - custom_page
+        - discussion
+        - document
+        - event
+        - glossary
+        - news
+        - newsletter
+        - tallinn_report
+        - video
     languages:
       default: true
       selected: {  }
   'entity:rdf_entity':
     bundles:
-      default: true
+      default: false
       selected:
-        - contact_information
-        - owner
-        - provenance_activity
+        - asset_distribution
+        - asset_release
+        - collection
+        - licence
+        - solution
+        - spdx_licence
     languages:
       default: true
       selected: {  }
@@ -495,8 +533,11 @@ processor_settings:
       - label
       - title
     weights:
-      preprocess_index: -49
+      preprocess_index: -48
       preprocess_query: -50
+  include_custom_page_content:
+    weights:
+      preprocess_index: -49
   index_distribution_data:
     weights:
       preprocess_index: -50
@@ -563,7 +604,7 @@ processor_settings:
       - will
       - with
     weights:
-      preprocess_index: -46
+      preprocess_index: -45
       preprocess_query: -47
   tokenizer:
     all_fields: false
@@ -596,7 +637,7 @@ processor_settings:
     overlap_cjk: 1
     minimum_word_size: '3'
     weights:
-      preprocess_index: -48
+      preprocess_index: -47
       preprocess_query: -49
   transliteration:
     all_fields: false
@@ -624,7 +665,7 @@ processor_settings:
       - label
       - title
     weights:
-      preprocess_index: -47
+      preprocess_index: -46
       preprocess_query: -48
   type_boost:
     boosts:
@@ -649,7 +690,7 @@ processor_settings:
       'entity:user':
         datasource_boost: !!float 0
     weights:
-      preprocess_index: -41
+      preprocess_index: -42
 tracker_settings:
   default:
     indexing_order: fifo

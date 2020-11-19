@@ -9,7 +9,7 @@ Feature: Collection homepage
       | Username | Status | Roles     |
       | Frodo    | active |           |
       | Boromir  | active |           |
-      | Legoloas | active |           |
+      | Legolas  | active |           |
       | Gimli    | active |           |
       | Samwise  | active | moderator |
     And the following owner:
@@ -32,14 +32,14 @@ Feature: Collection homepage
       | title            | Bilbo's book          |
       | collection       | Middle earth daily    |
       | description      | Bilbo's autobiography |
-      | content creation | members               |
+      | content creation | registered users      |
       | creation date    | 2014-10-17 8:32am     |
       | state            | validated             |
     And the following collection user memberships:
-      | collection         | user     | roles       |
-      | Middle earth daily | Frodo    | facilitator |
-      | Middle earth daily | Boromir  |             |
-      | Middle earth daily | Legoloas |             |
+      | collection         | user    | roles       |
+      | Middle earth daily | Frodo   | facilitator |
+      | Middle earth daily | Boromir |             |
+      | Middle earth daily | Legolas |             |
     And news content:
       | title                                             | body                | policy domain     | collection         | state     | created           | changed  |
       | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated | 2014-10-17 8:34am | 2017-7-5 |
@@ -120,11 +120,15 @@ Feature: Collection homepage
     When I click the News content tab
     # Verify the policy domain inline facet.
     Then "all policy domains" should be selected in the "collection policy domain" inline facet
-    And the "collection policy domain" inline facet should allow selecting the following values "Supplier exchange (2), Finance in EU (1)"
+    And the "collection policy domain" inline facet should allow selecting the following values:
+      | Supplier exchange (2) |
+      | Finance in EU (1)     |
 
     When I click "Supplier exchange" in the "collection policy domain" inline facet
     Then "Supplier exchange (2)" should be selected in the "collection policy domain" inline facet
-    And the "collection policy domain" inline facet should allow selecting the following values "Finance in EU (1), all policy domains"
+    And the "collection policy domain" inline facet should allow selecting the following values:
+      | Finance in EU (1)  |
+      | all policy domains |
     Then I should see the following tiles in the correct order:
       | Big hobbit feast - fireworks at midnight          |
       | Breaking: Gandalf supposedly plans his retirement |
@@ -133,20 +137,24 @@ Feature: Collection homepage
     # Verify that the inline widget reset link doesn't break other active facets.
     When I click the News content tab
     Then "Supplier exchange (1)" should be selected in the "collection policy domain" inline facet
-    And the "collection policy domain" inline facet should allow selecting the following values "Finance in EU (1), all policy domains"
+    And the "collection policy domain" inline facet should allow selecting the following values:
+      | Finance in EU (1)  |
+      | all policy domains |
     And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
     But I should not see the "Big hobbit feast - fireworks at midnight" tile
     And I should not see the "Rohirrim make extraordinary deal" tile
     # Reset the policy domain selection.
     When I click "all policy domains" in the "collection policy domain" inline facet
     Then "all policy domains" should be selected in the "collection policy domain" inline facet
-    And the "collection policy domain" inline facet should allow selecting the following values "Finance in EU (1), Supplier exchange (1)"
+    And the "collection policy domain" inline facet should allow selecting the following values:
+      | Finance in EU (1)     |
+      | Supplier exchange (1) |
     And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
     And I should see the "Rohirrim make extraordinary deal" tile
     But I should not see the "Big hobbit feast - fireworks at midnight" tile
 
   # Regression test to ensure that related community content does not appear in the draft view.
-  # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
+  # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
   Scenario: The related content should not be shown in the draft view version as part of the content.
     When I am logged in as a facilitator of the "Middle earth daily" collection
     And I go to the homepage of the "Middle earth daily" collection

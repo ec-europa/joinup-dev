@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\search_api_field\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Utility\Html;
@@ -748,7 +750,10 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       if (!empty($values[$delta]['wrapper']['query_builder']['filters'])) {
         $filter_values = $values[$delta]['wrapper']['query_builder']['filters'];
         // Re-order values in case JS is not used.
-        uasort($filter_values, ['Drupal\Component\Utility\SortArray', 'sortByWeightElement']);
+        uasort(
+          $filter_values,
+          ['Drupal\Component\Utility\SortArray', 'sortByWeightElement']
+        );
 
         foreach (array_keys($filter_values) as $plugin_delta) {
           $plugin_config = $field_state['query_builder'][$delta]['filters'][$plugin_delta];

@@ -1,7 +1,9 @@
 uuid: 93388b00-ff9a-40fb-98a5-4519f87cd7a1
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: col_req_arch_del
 label: 'Collection request archival/deletion'
 description: 'Template id 8'

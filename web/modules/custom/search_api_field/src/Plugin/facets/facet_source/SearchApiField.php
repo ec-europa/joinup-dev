@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\search_api_field\Plugin\facets\facet_source;
 
 use Drupal\Core\Path\CurrentPathStack;
@@ -66,13 +68,6 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
 
     $this->currentPathStack = $current_path_stack;
     $this->requestStack = $request_stack;
-
-    // Load facet plugin definition and depending on those settings; load the
-    // corresponding search api page and load its index.
-    $field_id = $plugin_definition['search_api_field'];
-    $field = FieldStorageConfig::load($field_id);
-    $index = $field->getSetting('index');
-    $this->index = Index::load($index);
   }
 
   /**
@@ -102,14 +97,14 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
     // again. This happens when a page or block is cached, so Search API has
     // not fired an actual search.
     if (!$results) {
-      /* @var $search_api_index \Drupal\search_api\IndexInterface */
+      /** @var \Drupal\search_api\IndexInterface $search_api_index */
       $search_api_index = $this->getIndex();
       $current_request = $this->requestStack->getCurrentRequest();
 
       // Create the query.
       $options = [
         'parse_mode' => 'direct',
-        // @Todo Fix limit, get it from field settings.
+        // @todo Fix limit, get it from field settings.
         'limit' => 10,
         'offset' => $current_request->get('page', 0),
       ];
@@ -174,7 +169,12 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
    * {@inheritdoc}
    */
   public function getIndex() {
-    return $this->index;
+    // Load facet plugin definition and depending on those settings; load the
+    // corresponding search api page and load its index.
+    $field_id = $this->pluginDefinition['search_api_field'];
+    $field = FieldStorageConfig::load($field_id);
+    $index = $field->getSetting('index');
+    return Index::load($index);
   }
 
   /**

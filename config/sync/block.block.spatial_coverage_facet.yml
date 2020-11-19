@@ -12,7 +12,7 @@ dependencies:
 id: spatial_coverage_facet
 theme: joinup_theme
 region: sidebar_left
-weight: -9
+weight: -15
 provider: null
 plugin: 'facet_block:spatial_coverage'
 settings:

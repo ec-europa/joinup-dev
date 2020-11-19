@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_invite\Entity;
 
-use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedTrait;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\user\UserInterface;
 
@@ -83,7 +83,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    * {@inheritdoc}
    */
   public function getOwnerId(): int {
-    return $this->get('uid')->target_id;
+    return (int) $this->get('uid')->target_id;
   }
 
   /**
@@ -107,12 +107,12 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   public function getEntity(): ContentEntityInterface {
     $entity_type = $this->get('entity_type')->value;
     $entity_id = $this->get('entity_id')->value;
+    assert(!empty($entity_type) && !empty($entity_id), 'InvitationInterface::getEntity() should not be called if the related entity has not been set.');
 
-    if (empty($entity_type) || empty($entity_id)) {
-      return NULL;
-    }
+    $entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id);
+    assert($entity instanceof ContentEntityInterface, 'Invitations can only be associated with fieldable entities.');
 
-    return \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id);
+    return $entity;
   }
 
   /**
@@ -142,7 +142,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    * {@inheritdoc}
    */
   public function getRecipientId(): int {
-    return $this->get('recipient_id')->target_id;
+    return (int) $this->get('recipient_id')->target_id;
   }
 
   /**
@@ -279,7 +279,10 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
     // Only allow to change the recipient or the entity on new invitations. An
     // invitation is bound to these parameters and they should not be changed
     // once the invitation is saved. Instead a new invitation should be created.
-    if (in_array($name, ['recipient_id', 'entity_type', 'entity_id']) && !$this->isNew()) {
+    if (in_array(
+      $name,
+      ['recipient_id', 'entity_type', 'entity_id']
+    ) && !$this->isNew()) {
       throw new \RuntimeException("The '$name' cannot be changed for an existing invitation.");
     }
     return parent::set($name, $value, $notify);

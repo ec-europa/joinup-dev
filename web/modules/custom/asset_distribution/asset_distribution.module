@@ -7,16 +7,27 @@
 
 declare(strict_types = 1);
 
-use Drupal\asset_distribution\DistributionParentFieldItemList;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\asset_distribution\DistributionParentFieldItemList;
+use Drupal\asset_distribution\Entity\AssetDistribution;
+use Drupal\asset_distribution\Entity\AssetDistributionInterface;
 use Drupal\file_url\FileUrlHandler;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function asset_distribution_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['rdf_entity']['asset_distribution'])) {
+    $bundles['rdf_entity']['asset_distribution']['class'] = AssetDistribution::class;
+  }
+}
 
 /**
  * Implements hook_entity_bundle_field_info().
@@ -62,10 +73,14 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
   // Since this form is only intended to be used in the context of a solution or
   // release, there is no field provided for it. Without a solution or a release
   // the asset distribution will be dangling and won't be reachable.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4581
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4581
   // @todo Implement this by subscribing to RDF entity rdf_entity.rdf_add route
   // and deny the access for asset_distribution, in ISAICP-4581.
-  if (!$rdf || !$rdf instanceof RdfInterface || !in_array($rdf->bundle(), ['asset_release', 'solution'])) {
+  if (
+    !$rdf
+    || !$rdf instanceof RdfInterface
+    || !in_array($rdf->bundle(), ['asset_release', 'solution']
+  )) {
     throw new AccessDeniedHttpException('Distributions can only be created in context of a solution or an asset release.');
   }
 }
@@ -164,31 +179,12 @@ function asset_distribution_invalidate_solution_cache(RdfInterface $distribution
 
 /**
  * Implements hook_preprocess_HOOK().
- *
- * Provides a promoted link for each distribution on the release overview page
- * because there is only one 'Download' button displayed.
- *
- * @todo: The behavior of the multi value file field is recorded and will be
- * implemented in https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2925.
  */
-function asset_distribution_preprocess_rdf_entity(&$variables) {
-  /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
-  $rdf_entity = $variables['rdf_entity'];
-  if ($rdf_entity->bundle() !== 'asset_distribution') {
-    return;
-  }
-
-  // Make some alterations for the Release download page.
-  // @see \Drupal\asset_release\Controller\AssetReleaseController::overview()
-  if ($variables['view_mode'] === 'compact') {
-    // There is only one available download link so we set the one available
-    // here.
-    if (!empty($rdf_entity->field_ad_access_url->first()->uri)) {
-      $variables['content']['promoted_download'] = $rdf_entity->field_ad_access_url->first()->uri;
-    }
-
+function asset_distribution_preprocess_rdf_entity(array &$variables): void {
+  $distribution = $variables['rdf_entity'];
+  if ($distribution instanceof AssetDistributionInterface && $variables['view_mode'] === 'compact') {
     // Provide a flag if this is a standalone distribution.
-    $variables['is_standalone'] = !empty($rdf_entity->standalone);
+    $variables['is_standalone'] = $distribution->isStandalone();
   }
 }
 
@@ -202,8 +198,8 @@ function asset_distribution_preprocess_rdf_entity(&$variables) {
  *   The term ID as URI or NULL, if the term doesn't exists.
  */
 function asset_distribution_get_file_type_term_by_mime($mime_type) {
-  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql */
-  $sparql = \Drupal::service('sparql_endpoint');
+  /** @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparql */
+  $sparql = \Drupal::service('sparql.endpoint');
 
   $query = <<<QUERY
 SELECT ?entity_id
@@ -234,7 +230,10 @@ QUERY;
  */
 function asset_distribution_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Act on distribution create and update form.
-  if (!in_array($form_id, ['rdf_entity_asset_distribution_edit_form', 'rdf_entity_asset_distribution_form'])) {
+  if (!in_array($form_id, [
+    'rdf_entity_asset_distribution_edit_form',
+    'rdf_entity_asset_distribution_form',
+  ])) {
     return;
   }
   $solution = NULL;

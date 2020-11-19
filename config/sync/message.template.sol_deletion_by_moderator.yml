@@ -1,0 +1,22 @@
+uuid: f7ebe0b2-3360-4fc0-8fcb-d0e8c1cf757d
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.full_html
+template: sol_deletion_by_moderator
+label: 'Solution deleted by moderator'
+description: 'Template 17: Moderator deletes a solution'
+text:
+  -
+    value: 'Joinup: Your solution has been deleted by the moderation team'
+    format: full_html
+  -
+    value: '<p>The Joinup moderation team deleted the interoperability solution @entity:title.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

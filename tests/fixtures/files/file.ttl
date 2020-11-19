@@ -1,0 +1,11 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<http://joinup.eu/whatever>
+    a skos:Concept ;
+    skos:inScheme <http://joinup.eu/type> ;
+    skos:prefLabel "Air cylinders"@en .
+
+<http://joinup.eu/something-else>
+    a skos:Concept ;
+    skos:inScheme <http://joinup.eu/different-type> ;
+    skos:prefLabel "Oil cylinders"@en .

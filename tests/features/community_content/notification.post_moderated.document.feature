@@ -4,7 +4,7 @@ Feature: Notification test for the document transitions on a post moderated pare
   As an owner of the collection
   I want to receive a notification when an entity is proposed.
 
-  Scenario: Notifications should be sent whenever a document is going through a relevant transition.
+  Scenario Outline: Notifications should be sent whenever a document is going through a relevant transition.
     Given users:
       | Username         | Roles     | E-mail                      | First name | Family name |
       | Notify moderator | moderator | notify_moderator@test.com   | Notify     | Moderator   |
@@ -12,13 +12,13 @@ Feature: Notification test for the document transitions on a post moderated pare
       | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator |
       | CC member        |           | notify_member@test.com      | CC         | Member      |
     And collections:
-      | title              | state     | content creation | moderation |
-      | CC post collection | validated | members          | no         |
+      | title              | state     | content creation | moderation   |
+      | CC post collection | validated | members          | <moderation> |
     And the following collection user memberships:
       | collection         | user           | roles       |
       | CC post collection | CC owner       | owner       |
       | CC post collection | CC facilitator | facilitator |
-      | CC post collection | CC member      |             |
+      | CC post collection | CC member      | <roles>     |
     And document content:
       | title                                | author    | body | document type | collection         | field_state  |
       | CC notify post publish               | CC member | body | Document      | CC post collection | draft        |
@@ -38,8 +38,8 @@ Feature: Notification test for the document transitions on a post moderated pare
     And I select "Document" from "Type"
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                                                                                  |
-      | subject   | Joinup: Content has been published                                                                                                                                        |
+      | recipient | CC owner                                                                                                                                                                 |
+      | subject   | Joinup: Content has been published                                                                                                                                       |
       | body      | CC Member has published the new document - "CC notify create publish" in the collection: "CC post collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
@@ -85,8 +85,8 @@ Feature: Notification test for the document transitions on a post moderated pare
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                      |
-      | subject   | Joinup: Content has been updated                                                                                                                               |
+      | recipient | CC member                                                                                                                                                             |
+      | subject   | Joinup: Content has been updated                                                                                                                                      |
       | body      | the Facilitator, CC Facilitator has approved your request of publication of the document - "CC notify post approve proposed" in the collection: "CC post collection". |
 
     # Test 'delete' operation.
@@ -100,3 +100,8 @@ Feature: Notification test for the document transitions on a post moderated pare
       | recipient | CC member                                                                                                              |
       | subject   | Joinup: Content has been deleted                                                                                       |
       | body      | Facilitator CC Facilitator has deleted the document - "CC notify post delete" in the collection: "CC post collection". |
+
+    Examples:
+      | moderation | roles  |
+      | no         |        |
+      | yes        | author |

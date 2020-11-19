@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\Condition;
 
 use Drupal\Core\Condition\ConditionPluginBase;
@@ -15,6 +17,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "request_route",
  *   label = @Translation("Request route"),
  * )
+ *
+ * @todo Replace this with the Route Condition module.
+ *
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6062
+ * @see https://www.drupal.org/project/route_condition
  */
 class RequestRouteCondition extends ConditionPluginBase implements ContainerFactoryPluginInterface {
 

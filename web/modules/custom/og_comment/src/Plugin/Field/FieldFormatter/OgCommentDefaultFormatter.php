@@ -4,18 +4,18 @@ declare(strict_types = 1);
 
 namespace Drupal\og_comment\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityFormBuilderInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\CommentManagerInterface;
 use Drupal\comment\Plugin\Field\FieldFormatter\CommentDefaultFormatter;
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
-use Drupal\Core\Database\Connection;
-use Drupal\Core\Entity\EntityFormBuilderInterface;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;

@@ -16,6 +16,7 @@ dependencies:
   module:
     - asset_distribution
     - digital_size_formatter
+    - template_suggestion
     - user
 id: rdf_entity.asset_distribution.view_mode_tile
 targetEntityType: rdf_entity
@@ -30,9 +31,9 @@ content:
     settings:
       hosted_files_title: Download
       remote_files_title: External
-      show_remote_files: false
+      show_remote_files: true
     third_party_settings:
-      joinup:
+      template_suggestion:
         template_suggestion: no_wrappers
   field_ad_file_size:
     type: digital_size

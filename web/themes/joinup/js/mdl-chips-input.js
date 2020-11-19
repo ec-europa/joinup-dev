@@ -18,18 +18,18 @@
     window['MaterialChipInput'] = MaterialChipInput;
 
     MaterialChipInput.prototype.addChip_ = function (id, text) {
-        var currentChipIds = this.getChipIds();
+        let currentChipIds = this.getChipIds();
         if (currentChipIds.indexOf(id) > -1) {
             // Ignore duplicates.
             return;
         }
-        var chip = document.createElement('span');
-        chip.classList = 'mdl-chip mdl-chip--deletable';
+        let chip = document.createElement('span');
+        chip.setAttribute('class', 'mdl-chip mdl-chip--deletable');
         chip.innerHTML =
             '<span class="mdl-chip__text" data-id="' + id + '">' + text + '</span>' +
             '<button type="button" class="mdl-chip__action">' +
             '<i class="material-icons">close</i></button>';
-        var update = this.updateTargets_.bind(this);
+        let update = this.updateTargets_.bind(this);
         chip.getElementsByClassName('mdl-chip__action')[0].onclick = function () {
             chip.remove();
             update();
@@ -75,10 +75,6 @@
         }
     };
 
-    MaterialChipInput.prototype.mouseDown_ = function (event) {
-        this.input_.focus();
-    };
-
     MaterialChipInput.prototype.keyDown_ = function (event) {
         var code = event.which || event.keyCode;
         if (code === 8 && !this.input_.value) {
@@ -97,9 +93,6 @@
             this.input_ = this.element_.getElementsByClassName('mdl-textfield__input')[0];
             this.input_.addEventListener('keydown', this.keyDown_.bind(this));
             this.targets_ = this.element_.getElementsByClassName('mdl-chipfield__input');
-
-            // Let the whole element look like a input field.
-            this.element_.addEventListener('click', this.mouseDown_.bind(this));
 
             // Set the default options.
             this.options_ = {

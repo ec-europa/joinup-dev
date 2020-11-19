@@ -1,0 +1,4 @@
+services:
+  joinup_workflow.workflow_helper:
+    class: Drupal\joinup_workflow\WorkflowHelper
+    arguments: ['@current_user', '@account_switcher', '@entity_field.manager', '@og.membership_manager', '@workflow_state_permission.workflow_state_permission']
