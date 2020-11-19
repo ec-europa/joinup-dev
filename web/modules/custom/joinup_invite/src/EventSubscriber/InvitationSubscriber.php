@@ -109,9 +109,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
     $role = $invitation->field_invitation_og_role->entity;
     if (empty($role)) {
       // This might happen if the role is deleted in the meantime.
-      throw new \RuntimeException($this->t('Role with ID "!role_id" was not found in the system.', [
-        '!role_id' => $invitation->field_invitation_og_role->target_id,
-      ]));
+      throw new \RuntimeException(sprintf('Role with ID "%s" was not found in the system.', $invitation->field_invitation_og_role->target_id));
     }
 
     $membership->addRole($role);

@@ -30,7 +30,7 @@
         "drupal/embed_block": "^1.0",
         "drupal/entity_legal": "^3",
         "drupal/error_page": "^1.0",
-        "drupal/facets": "~1.4",
+        "drupal/facets": "~1.6",
         "drupal/field_group": "^1.0",
         "drupal/field_permissions": "^1.0",
         "drupal/file_url": "~2.0",
@@ -108,7 +108,7 @@
         "composer/composer": "^1.10",
         "drupal/admin_toolbar": "~2.0",
         "drupal/cas_mock_server": "^1.0",
-        "drupal/coder": "8.3.8",
+        "drupal/coder": "^8.3.11",
         "drupal/config_devel": "~1.6",
         "drupal/config_filter": "^1.5",
         "drupal/config_inspector": "^1.0",
@@ -272,8 +272,7 @@
                 "FieldException during config import @see https://www.drupal.org/project/entity_legal/issues/2980786": "https://www.drupal.org/files/issues/2019-07-26/entity_legal-skip_field_creation_during_config_import-2980786-4.patch"
             },
             "drupal/facets": {
-                "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
-                "Notice: Undefined index: #attributes @see https://www.drupal.org/project/facets/issues/3160570": "https://www.drupal.org/files/issues/2020-07-23/undefined-index-attributes-3160570-4.patch"
+                "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
             },
             "drupal/honeypot": {
                 "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2020-09-09/3059040-31.patch"

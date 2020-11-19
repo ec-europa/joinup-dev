@@ -308,7 +308,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @return bool
    *   Whether the entity has a published version.
    */
-  protected  function hasPublishedVersion(EntityInterface $entity) {
+  protected function hasPublishedVersion(EntityInterface $entity) {
     if ($entity->isNew()) {
       return FALSE;
     }

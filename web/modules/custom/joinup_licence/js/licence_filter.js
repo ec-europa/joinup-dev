@@ -220,11 +220,11 @@
 
       // Change compatible elements if the radio is clicked.
       $(this).on('click', function () {
-        var use_licence = $("input[name='use-licence']:checked").attr('data-licence-name');
-        var distribute_licence = $("input[name='distribute-as-licence']:checked").attr('data-licence-name');
+        var inbound_licence = $("input[name='inbound-licence']:checked").attr('data-licence-name');
+        var distribute_licence = $("input[name='outbound-licence']:checked").attr('data-licence-name');
 
-        if(use_licence && distribute_licence) {
-          var compatible_url = drupalSettings.path.baseUrl + "licence/compatibility-check/" + use_licence + "/" + distribute_licence;
+        if(inbound_licence && distribute_licence) {
+          var compatible_url = drupalSettings.path.baseUrl + "licence/compatibility-check/" + inbound_licence + "/" + distribute_licence;
           $('.licence-tile__button--compatible').attr('href', compatible_url);
           enableButtons(true);
         }

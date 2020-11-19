@@ -220,7 +220,10 @@ class LicenceComparerController extends ControllerBase {
       ];
     }
 
-    $this->padWithEmptyCells($row, ['licence-comparer__header', 'licence-comparer__empty']);
+    $this->padWithEmptyCells($row, [
+      'licence-comparer__header',
+      'licence-comparer__empty',
+    ]);
 
     return $row;
   }
