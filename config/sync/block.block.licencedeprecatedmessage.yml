@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - joinup_core
     - joinup_licence
   theme:
     - joinup_theme

@@ -5,6 +5,7 @@ dependencies:
   module:
     - ctools
     - joinup_core
+    - joinup_group
   theme:
     - joinup_theme
 _core:

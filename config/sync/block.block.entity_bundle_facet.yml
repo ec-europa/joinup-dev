@@ -12,14 +12,15 @@ dependencies:
 id: entity_bundle_facet
 theme: joinup_theme
 region: sidebar_left
-weight: -12
+weight: -20
 provider: null
 plugin: 'facet_block:type'
 settings:
   id: 'facet_block:type'
   label: 'Content types'
   provider: facets
-  label_display: '1'
+  label_display: visible
+  block_id: entity_bundle_facet
 visibility:
   request_route:
     id: request_route
