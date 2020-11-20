@@ -21,13 +21,13 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  */
 class T11GovernmentalLicencesCanBeRelicensedAsEupl extends JoinupLicenceCompatibilityRulePluginBase {
 
-  const USE_CRITERIA = [
+  const INBOUND_CRITERIA = [
     'SPDX' => [
       'CECILL-2.1',
       'LiLiQ-Rplus-1.1',
     ],
   ];
-  const REDISTRIBUTE_AS_CRITERIA = [
+  const OUTBOUND_CRITERIA = [
     'SPDX' => [
       'EUPL-1.1',
       'EUPL-1.2',

@@ -30,7 +30,7 @@ joinup_licence.comparer:
         type: spdx_ids_list
 
 joinup_licence.compatibility_check:
-  path: '/licence/compatibility-check/{use_licence}/{redistribute_as_licence}'
+  path: '/licence/compatibility-check/{inbound_licence}/{outbound_licence}'
   defaults:
     _controller: 'Drupal\joinup_licence\Controller\LicenceCompatibilityController::check'
     _title_callback: 'Drupal\joinup_licence\Controller\LicenceCompatibilityController::getTitle'
@@ -38,9 +38,9 @@ joinup_licence.compatibility_check:
     _permission: 'view compatibility documents'
   options:
     parameters:
-      use_licence:
+      inbound_licence:
         type: licence_spdx_id
-      redistribute_as_licence:
+      outbound_licence:
         type: licence_spdx_id
 
 entity.compatibility_document.collection:

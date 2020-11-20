@@ -21,12 +21,12 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  */
 class T13GplIsCompatibleWithGplCompatibleLicences extends JoinupLicenceCompatibilityRulePluginBase {
 
-  const USE_CRITERIA = [
+  const INBOUND_CRITERIA = [
     'Compatible' => [
       'GPL',
     ],
   ];
-  const REDISTRIBUTE_AS_CRITERIA = [
+  const OUTBOUND_CRITERIA = [
     'SPDX' => [
       'AGPL-3.0-only',
       'GPL-2.0+',
