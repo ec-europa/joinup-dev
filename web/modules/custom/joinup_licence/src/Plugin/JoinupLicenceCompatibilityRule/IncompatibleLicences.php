@@ -19,7 +19,7 @@ class IncompatibleLicences extends JoinupLicenceCompatibilityRulePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function isVerified(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool {
+  public function isVerified(LicenceInterface $inbound_licence, LicenceInterface $outbound_licence): bool {
     return TRUE;
   }
 

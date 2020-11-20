@@ -21,12 +21,12 @@ use Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginBase;
  */
 class T16CopyLeftCanBeDistributedAsLesserCopyLeft extends JoinupLicenceCompatibilityRulePluginBase {
 
-  const USE_CRITERIA = [
+  const INBOUND_CRITERIA = [
     'Must' => [
       'Copyleft/Share a.',
     ],
   ];
-  const REDISTRIBUTE_AS_CRITERIA = [
+  const OUTBOUND_CRITERIA = [
     'Must' => [
       'Lesser copyleft',
     ],
