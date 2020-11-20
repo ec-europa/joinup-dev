@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d012d563e6b5d6c70c1ea2e78430e607",
+    "content-hash": "dafff4882a44895d029cd6e0e86597f1",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2907,8 +2907,8 @@
                     "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-65.patch",
                     "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2019-04-04/2730631_85_0.patch",
                     "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2018-06-11/2765065-93.patch",
-                    "Use comment access handler instead of hardcoding permissions @see https://www.drupal.org/project/drupal/issues/2879087": "https://www.drupal.org/files/issues/2020-10-31/2879087-96.patch",
-                    "EntityAccessControlHandler::createAccess() should take whole context array into account when caching @see https://www.drupal.org/project/drupal/issues/2886800": "https://www.drupal.org/files/issues/2020-10-29/2886800-10.patch",
+                    "Use comment access handler instead of hardcoding permissions @see https://www.drupal.org/project/drupal/issues/2879087": "https://www.drupal.org/files/issues/2020-11-08/2879087-106.patch",
+                    "Add thread depth configuration to comments @see https://www.drupal.org/project/drupal/issues/2786587": "https://www.drupal.org/files/issues/2020-11-10/2786587-47-unofficial-8.9.x.patch",
                     "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-12-03/2895352-42-8.8.x.patch",
                     "Views exposed sort identifiers are not configurable @see https://www.drupal.org/project/drupal/issues/2897638": "https://www.drupal.org/files/issues/2020-09-06/2897638-33-8.9.x.patch",
                     "Pass current route parameters to the confirmation form route @see https://www.drupal.org/project/drupal/issues/2901412": "https://www.drupal.org/files/issues/2020-02-25/2901412-13.patch",
