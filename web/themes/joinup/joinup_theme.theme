@@ -425,8 +425,13 @@ function joinup_theme_preprocess_page(&$variables) {
     $variables['custom_content_title'] = $title;
   }
 
-  // Set a variable that identifies the search page.
-  if ($route_name == 'view.search.page_1') {
+  // Set a variable that identifies search pages.
+  $search_pages_routes = [
+    'view.search.page_1',
+    'view.collections.page_1',
+    'view.solutions.page_1',
+  ];
+  if (in_array($route_name, $search_pages_routes)) {
     $variables['is_search_page'] = TRUE;
   }
 }
