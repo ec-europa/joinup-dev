@@ -1,0 +1,69 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for 'joinup_rdf_graph' module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Site\Settings;
+use Drupal\joinup_rdf_graph\Entity\RdfGraph;
+use Drupal\joinup_rdf_graph\Entity\RdfGraphInterface;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function joinup_rdf_graph_entity_bundle_info_alter(array &$bundles): void {
+  if (!empty($bundles['rdf_entity']['rdf_graph'])) {
+    $bundles['rdf_entity']['rdf_graph']['class'] = RdfGraph::class;
+  }
+}
+
+/**
+ * Implements hook_entity_operation_alter().
+ */
+function joinup_rdf_graph_entity_operation_alter(array &$operations, EntityInterface $rdf_graph): void {
+  if ($rdf_graph instanceof RdfGraphInterface) {
+    // RDF graph bundle doesn't support drafts.
+    unset($operations['draft']);
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function joinup_rdf_graph_entity_base_field_info_alter(array &$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === 'rdf_entity') {
+    $fields['label']->addConstraint('RdfGraphLabel', []);
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function joinup_rdf_graph_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if (in_array($form_id, ['rdf_entity_rdf_graph_add_form', 'rdf_entity_rdf_graph_edit_form'], TRUE)) {
+    $form['actions']['submit']['#submit'][] = 'joinup_rdf_graph_form_success_message';
+  }
+}
+
+/**
+ * Shows a success message on RDF graph entity form submission.
+ *
+ * @param array $form
+ *   The form API form render array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form API form state object.
+ */
+function joinup_rdf_graph_form_success_message(array $form, FormStateInterface $form_state): void {
+  /** @var \Drupal\joinup_rdf_graph\Entity\RdfGraphInterface $rdf_graph */
+  $rdf_graph = $form_state->getFormObject()->getEntity();
+  \Drupal::messenger()->addStatus(t('The RDF graph %label triples were imported in the Joinup triplestore. However, it might take up to 24 hours until the changes will be queryable at our <a href=":url">SPARQL public endpoint</a>.', [
+    '%label' => $rdf_graph->label(),
+    ':url' => Settings::get('joinup')['sparql_public_endpoint'],
+  ]));
+}

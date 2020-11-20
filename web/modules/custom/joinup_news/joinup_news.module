@@ -9,13 +9,14 @@ declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\joinup_news\Entity\News;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
  */
 function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle): void {
   // @todo Add test coverage for these constraints.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2500
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2500
   if ($entity_type->id() == 'node' && $bundle == 'news') {
     if (!empty($fields['field_news_headline'])) {
       $fields['field_news_headline']->addConstraint('UniqueFieldInBundle', ['bundles' => ['news']]);
@@ -39,5 +40,14 @@ function joinup_news_form_alter(&$form, FormStateInterface $form_state, $form_id
 
   if (isset($form['title']['widget'][0]['value'])) {
     $form['title']['widget'][0]['value']['#maxlength'] = 66;
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function joinup_news_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['node']['news'])) {
+    $bundles['node']['news']['class'] = News::class;
   }
 }

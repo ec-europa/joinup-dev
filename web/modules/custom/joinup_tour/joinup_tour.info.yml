@@ -1,0 +1,8 @@
+name: 'Joinup Tour'
+type: module
+description: 'Contains tours for Joinup.'
+core: 8.x
+package: Joinup
+
+dependencies:
+  - 'drupal:tour'

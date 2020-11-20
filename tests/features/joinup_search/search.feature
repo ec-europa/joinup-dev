@@ -1,11 +1,11 @@
-@api @terms
+@api @terms @group-b
 Feature: Global search
   As a user of the site I can find content through the global search.
 
   # Todo: This test runs with javascript enabled because in a non-javascript
   # environment, the dropdown facet is simply a list of links. Remove the
   # `@javascript` tag when the upstream issue in the Facets module is fixed.
-  # Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5739
+  # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5739
   # Ref. https://www.drupal.org/project/facets/issues/2937191
   @javascript
   Scenario: Anonymous user can find items
@@ -26,7 +26,7 @@ Feature: Global search
 
     Given I am logged in as a user with the "authenticated" role
     # @todo The search page cache should be cleared when new content is added.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
     And the cache has been cleared
     When I visit the search page
     # All content is visible.
@@ -89,15 +89,14 @@ Feature: Global search
     Then I should see the text "Content types" in the "Left sidebar" region
 
     # Select link in the 'type' facet.
-
     When I check the "News (1)" checkbox from the "Content types" facet
     Then the "News" content checkbox item should be selected
-    And the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Challenge (1), News (1)"
+    And the "Content types" checkbox facet should allow selecting the following values "Challenge (1), Solutions (2), News (1)"
 
     When I check the "Solutions (2)" checkbox from the "Content types" facet
     Then the "Solutions" content checkbox item should be selected
     And the "News" content checkbox item should be selected
-    Then the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Challenge (1), News (1)"
+    Then the "Content types" checkbox facet should allow selecting the following values "Challenge (1), Solutions (2), News (1)"
     And the "policy domain" select facet should contain the following options:
       | Any domain                    |
       | Demography   (1)              |
@@ -127,11 +126,12 @@ Feature: Global search
       | name  | Go-to contact     |
       | email | go-to@example.com |
     And the following collections:
-      | title            | description                                                  | abstract                       | state     |
-      | Collection alpha | <p>This is the collection <strong>beta</strong> description. | The collection gamma abstract. | validated |
+      | title            | description                                          | abstract                       | state     |
+      | Collection alpha | <p>collection <strong>beta</strong> description.</p> | The collection gamma abstract. | validated |
+      | Col for Sol      | <p>collection for the solution.</p>                  | The col for sol abstract.      | validated |
     And the following solutions:
-      | title          | description                                                | keywords | owner             | contact information | state     |
-      | Solution alpha | <p>This is the solution <strong>beta</strong> description. | Alphabet | Responsible owner | Go-to contact       | validated |
+      | title          | description                                                | keywords | owner             | contact information | collection  | state     |
+      | Solution alpha | <p>This is the solution <strong>beta</strong> description. | Alphabet | Responsible owner | Go-to contact       | Col for Sol | validated |
     And the following releases:
       | title         | release number | release notes                               | keywords | is version of  | owner             | contact information | state     |
       | Release Alpha | 1              | <p>Release notes for <em>beta</em> changes. | Alphabet | Solution alpha | Responsible owner | Go-to contact       | validated |
@@ -156,21 +156,27 @@ Feature: Global search
       | Discussion omega | <p>Does anybody has idea why this <em>epsilon</em> is everywhere? | Solution alpha | validated |
     # Currently no UI path allows the creation of newsletters. Search for migrated D6 newsletters instead.
     # Ignore all steps related to newsletters in this test in UAT.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2256
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2256
     And newsletter content:
       | title            | body                                  | status    |
       | Newsletter omega | Talking about these epsilon contents. | published |
     And custom_page content:
       | title      | body                                     | collection       |
       | Page omega | This is just an epsilon but should work. | Collection alpha |
+    And video content:
+      | title       | body          | field_video                                 | collection       |
+      | Video alpha | Slap like now | https://www.youtube.com/watch?v=JhGf8ZY0tN8 | Collection alpha |
     And users:
       | Username     | E-mail                      | First name | Family name | Organisation |
       | jenlyle      | jenessa.carlyle@example.com | Jenessa    | Carlyle     | Clyffco      |
       | ulyssesfrees | ulysses.freeman@example.com | Ulysses    | Freeman     | Omero snc    |
 
+    When I visit the search page
+    Then the "Content types" checkbox facet should allow selecting the following values "Collections (2), Solution (1), News (1), Events (2), Document (1), Discussion (1), Release (1), Custom page (1), Licence (1), Video (1)"
+
     # "Alpha" is used in all the rdf entities titles.
     When I enter "Alpha" in the search bar and press enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha"
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha, Video alpha"
     And I should not see the text "Newsletter omega"
 
     # "Omega" is used in all the node entities titles. Since the content of
@@ -235,6 +241,17 @@ Feature: Global search
     Then the page should show the tiles "Jenessa Carlyle"
     When I enter "Omero+snc" in the search bar and press enter
     Then the page should show the tiles "Ulysses Freeman"
+
+  Scenario: Advanced search
+    # An advanced search link is shown in the header, except on the home page
+    # and the search page.
+    Given I am on the homepage
+    Then I should not see the link "Advanced search"
+    Given I visit the collection overview
+    Then I should see the link "Advanced search"
+    When I click "Advanced search"
+    Then I should be on the advanced search page
+    But I should not see the link "Advanced search"
 
   Scenario: Collections and solutions are shown first in search results with the same relevance.
     Given collections:
@@ -471,3 +488,37 @@ Feature: Global search
 
     When I enter "unique" in the search bar and press enter
     Then the page should show only the tiles "Collection sample"
+
+  @javascript
+  Scenario: Users are able to select the sort order.
+    Given collections:
+      | title             | description       | state     |
+      | Custom collection | Some custom data. | validated |
+    And news content:
+      | title                              | body                                                              | collection        | state     | created    | changed    |
+      | Relativity is the word             | No one cares about the body.                                      | Custom collection | validated | 01/01/2019 | 03/08/2019 |
+      | Relativity news: Relativity theory | I do care about the relativity keyword in the body.               | Custom collection | validated | 02/01/2019 | 02/08/2019 |
+      | Absolutely nonesense               | Some news are not worth it but I will add relativity here anyway. | Custom collection | validated | 03/01/2019 | 01/08/2019 |
+
+    When I am on the homepage
+    And I enter "Relativity" in the search bar and press enter
+    Then the option "Relevance" should be selected
+    And I should see the following tiles in the correct order:
+      | Relativity news: Relativity theory |
+      | Relativity is the word             |
+      | Absolutely nonesense               |
+    And I should be on "/search?keys=Relativity&sort_by=relevance"
+
+    Given I select "Creation Date" from "Sort by"
+    Then I should see the following tiles in the correct order:
+      | Absolutely nonesense               |
+      | Relativity news: Relativity theory |
+      | Relativity is the word             |
+    And I should be on "/search?keys=Relativity&sort_by=creation-date"
+
+    Given I select "Last Updated Date" from "Sort by"
+    Then I should see the following tiles in the correct order:
+      | Relativity is the word             |
+      | Relativity news: Relativity theory |
+      | Absolutely nonesense               |
+    And I should be on "/search?keys=Relativity&sort_by=last-updated-date"

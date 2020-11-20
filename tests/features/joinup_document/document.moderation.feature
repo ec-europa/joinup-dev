@@ -106,7 +106,7 @@ Feature: Document moderation
     And I click "A not so amazing document"
 
     # Regression check that the revision page loads properly.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4671
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4671
     When I click "Revisions" in the "Entity actions" region
     Then I should see the heading "Revisions for A not so amazing document"
 

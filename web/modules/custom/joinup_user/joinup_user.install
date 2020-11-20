@@ -7,14 +7,40 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\file\Entity\File;
+use Drupal\joinup_user\Entity\JoinupUser;
+use Drupal\joinup_user\JoinupUserViewsData;
 
 /**
  * Implements hook_install().
  */
 function joinup_user_install() {
   joinup_user_setup_default_avatar();
+
+  // Update some classes for the 'user' entity type.
+  $manager = \Drupal::entityDefinitionUpdateManager();
+  $entity_type = $manager->getEntityType('user');
+  $entity_type
+    ->setClass(JoinupUser::class)
+    ->setHandlerClass('views_data', JoinupUserViewsData::class);
+  $manager->updateEntityType($entity_type);
+
+  // Uninstall and recreate the field definition.
+  $definition = $manager->getFieldStorageDefinition('status', 'user');
+  $manager->uninstallFieldStorageDefinition($definition);
+  $definition = BaseFieldDefinition::create('integer')
+    ->setLabel(t('User status'))
+    ->setDescription(t('Whether the user is active, blocked or cancelled.'))
+    ->setSetting('size', 'tiny')
+    ->setDefaultValue(0);
+  $manager->installFieldStorageDefinition('status', 'user', 'user', $definition);
+  // The anonymous account was created before.
+  \Drupal::database()->update('users_field_data')
+    ->fields(['status' => 0])
+    ->condition('uid', 0)
+    ->execute();
 }
 
 /**

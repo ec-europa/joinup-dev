@@ -24,7 +24,7 @@ Feature: Validate an ADMS-AP file through the UI
     And I press "Upload"
     Then I should see the text "No errors found during validation."
 
-    # Fix this in https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4880
+    # Fix this in https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4880
     # # Check incorrect file.
     # When I attach the file "empty.rdf" to "File"
     # And I wait for the spam protection time limit to pass

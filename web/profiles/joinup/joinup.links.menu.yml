@@ -6,12 +6,12 @@ joinup.export_user_list:
   weight: 0
 
 joinup.group_administrators_report:
-  title: 'Challenge administrators'
+  title: 'Group administrators and facilitators'
   route_name: joinup.group_administrators_report
   route_parameters:
     entity_type_id: 'rdf_entity'
     bundle_id: 'collection'
-  description: 'Table containing all collection owners and facilitators'
+  description: 'Export group administrators and facilitators in a csv format.'
   parent: joinup.admin_reporting
   weight: -1
 

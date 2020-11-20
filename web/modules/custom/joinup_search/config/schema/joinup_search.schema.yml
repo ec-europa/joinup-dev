@@ -1,10 +1,10 @@
-search_api_field.plugin.filter.node_entity_autocomplete:
-  type: joinup_search_filter_plugin_entity_autocomplete
-  label: 'Node entity label autocomplete'
-
-search_api_field.plugin.filter.rdf_entity_autocomplete:
-  type: joinup_search_filter_plugin_entity_autocomplete
-  label: 'Rdf entity label autocomplete'
+facet.widget.config.type:
+  type: facet.widget.default_config
+  label: 'Search API content listing'
+  mapping:
+    tabs:
+      type: integer
+      label: 'Number of tabs'
 
 joinup_search_filter_plugin_entity_autocomplete:
   type: search_api_field_plugin_filter
@@ -12,6 +12,23 @@ joinup_search_filter_plugin_entity_autocomplete:
     target_id:
       type: string
       label: 'Target id'
+
+plugin.plugin_configuration.search_api_processor.joinup_entity_status:
+  type: search_api.default_processor_configuration
+  label: 'Joinup entity status processor'
+  mapping:
+    inverse:
+      type: boolean
+      label: 'Inverse'
+    roles:
+
+search_api_field.plugin.filter.node_entity_autocomplete:
+  type: joinup_search_filter_plugin_entity_autocomplete
+  label: 'Node entity label autocomplete'
+
+search_api_field.plugin.filter.rdf_entity_autocomplete:
+  type: joinup_search_filter_plugin_entity_autocomplete
+  label: 'Rdf entity label autocomplete'
 
 views.field.search_api_entity_link:
   type: views.field.entity_link

@@ -11,7 +11,7 @@ _core:
 id: groupheader
 theme: joinup_theme
 region: featured
-weight: -17
+weight: -21
 provider: null
 plugin: group_header_block
 settings:

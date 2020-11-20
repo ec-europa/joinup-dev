@@ -8,17 +8,16 @@
  * - children: The child elements of the form.
  *
  * @see template_preprocess_form()
+ * @see joinup_theme_preprocess_form()
  */
 #}
 {{ attach_library('joinup_theme/global-search') }}
 <div class="inputs">
-  <label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon" for="search-bar__input">
-    <span class="search-bar__icon icon icon--search"></span>
-  </label>
-  <form{{ attributes.addClass('search-bar__input-container mdl-textfield__expandable-holder') }}>
+  <form{{ attributes.addClass('search-bar__input-container') }}>
     {% for id, filter in filters %}
       <input type="hidden" class="mdl-chipfield__input" name="f[]" value="group:{{ id }}" data-description="{{ filter }}">
     {% endfor %}
     {{ children }}
+    <button type="submit" class="search-bar__submit views-auto-submit-click">{{ 'Search'|trans }}</button>
   </form>
 </div>

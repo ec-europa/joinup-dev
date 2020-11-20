@@ -7,6 +7,7 @@ Feature: Collections Overview
     Then I should see the link "Challenges"
     When I click "Challenges"
     Then I should see the heading "Challenges"
+    And I should see the text "Challenges are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community."
     # Check that all logged in users can see and access the link as well.
     Given I am logged in as a user with the "authenticated user" role
     Then I should see the link "Challenges"
@@ -32,6 +33,7 @@ Feature: Collections Overview
     And I am on the homepage
     Then I should see the link "Challenges"
     And I click "Challenges"
+    And I should see the text "Challenges are the main collaborative space"
     And the page should be cacheable
 
     # Check page for authenticated users.
@@ -145,8 +147,10 @@ Feature: Collections Overview
       | featured | no                 |
 
     When I am logged in as "Yiannis Parios"
-    And I click "Challenges"
-    Then the "My challenges content" inline facet should allow selecting the following values "My challenges (3), Featured challenges (2)"
+    And I click "Collections"
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | My challenges (3)       |
+      | Featured challenges (2) |
     And the page should be cacheable
 
     When I click "My challenges" in the "My challenges content" inline facet
@@ -154,53 +158,67 @@ Feature: Collections Overview
       | Yiannis Parios collection 1 |
       | Yiannis Parios collection 2 |
       | Yiannis Parios collection 3 |
-    And the "My challenges content" inline facet should allow selecting the following values "Featured challenges (2), All challenges"
+    And the "My collections content" inline facet should allow selecting the following values:
+      | Featured challenges (2) |
+      | All challenges          |
     And the page should be cacheable
 
     # Regression test to ensure that the facets are cached by user.
     # Subsequent page loads of the collections page would lead to cached facets
     # to be leaked to other users.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
-    When I click "All challenges" in the "My challenges content" inline facet
-    Then the "My challenges content" inline facet should allow selecting the following values "My challenges (3), Featured challenges (2)"
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
+    When I click "All collections" in the "My collections content" inline facet
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | My collections (3)       |
+      | Featured collections (2) |
     And the page should be cacheable
 
     When I am logged in as "Carolina Mercedes"
     When I click "Challenges"
-    Then the "My challenges content" inline facet should allow selecting the following values "Featured challenges (2), My challenges (1)"
+    Then the "My challenges content" inline facet should allow selecting the following values:
+      | Featured challenges (2) |
+      | My challenges (1)       |
     And the page should be cacheable
 
     When I click "My challenges" in the "My challenges content" inline facet
     Then I should see the following tiles in the correct order:
       | Fed up meatlovers |
-    And the "My challenges content" inline facet should allow selecting the following values "Featured challenges (2), All challenges"
+    And the "My challenges content" inline facet should allow selecting the following values:
+      | Featured challenges (2) |
+      | All challenges          |
     And the page should be cacheable
     # Verify that the facets are cached for the correct user by visiting again
     # the collections page without any facet filter.
     When I click "All challenges" in the "My challenges content" inline facet
-    Then the "My challenges content" inline facet should allow selecting the following values "Featured challenges (2), My challenges (1)"
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | Featured challenges (2) |
+      | My challenges (1)       |
     And the page should be cacheable
 
     When I am an anonymous user
     And I click "Challenges"
     # The anonymous user has no access to the "My collections" facet entry.
     Then the "My challenges content" inline facet should allow selecting the following values "Featured challenges (2)"
+    Then the "My challenges content" inline facet should allow selecting the following values:
+      | Featured challenges (2) |
     And the page should be cacheable
 
-    When I click "Featured challenges" in the "My challenges content" inline facet
+    When I click "Featured collections" in the "My collections content" inline facet
     Then I should see the following tiles in the correct order:
       | Enemies of the state |
       | Ugly farmers         |
-    And the "My challenges content" inline facet should allow selecting the following values "All challenges"
+    And the "My collections content" inline facet should allow selecting the following values:
+      | All collections |
     And the page should be cacheable
 
-    When I click "All challenges" in the "My challenges content" inline facet
-    Then the "My challenges content" inline facet should allow selecting the following values "Featured challenges (2)"
+    When I click "All collections" in the "My collections content" inline facet
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | Featured collections (2) |
     And the page should be cacheable
 
     When I am logged in as "Carolina Mercedes"
-    And I click "Challenges"
-    And I click "Featured challenges" in the "My challenges content" inline facet
+    And I click "Collections"
+    And I click "Featured collections" in the "My collections content" inline facet
     Then I should see the following tiles in the correct order:
       | Enemies of the state |
       | Ugly farmers         |

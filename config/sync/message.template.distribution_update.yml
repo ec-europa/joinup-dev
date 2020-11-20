@@ -1,7 +1,9 @@
 uuid: 222e74bf-06da-4128-a3ef-481ac41922c1
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: qS1vSKZ9WBHLQfsLwcsDxZUaxy3EJym3-rRNBPMwknk
 template: distribution_update

@@ -12,9 +12,19 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\owner\Entity\Owner;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function owner_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['rdf_entity']['owner'])) {
+    $bundles['rdf_entity']['owner']['class'] = Owner::class;
+  }
+}
 
 /**
  * Implements hook_ENTITY_TYPE_create().

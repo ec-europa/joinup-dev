@@ -14,6 +14,8 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
+    - field.field.rdf_entity.solution.field_is_eif_category
+    - field.field.rdf_entity.solution.field_is_eif_recommendation
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
     - field.field.rdf_entity.solution.field_is_issue_tracker
@@ -40,6 +42,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_wiki
     - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_policy_domain
+    - field.field.rdf_entity.solution.field_short_id
     - field.field.rdf_entity.solution.field_site_featured
     - field.field.rdf_entity.solution.field_site_pinned
     - field.field.rdf_entity.solution.field_spatial_coverage
@@ -73,6 +76,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Categorisation
+      region: content
     group_moderation:
       children:
         - field_is_content_creation
@@ -90,6 +94,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Moderation
+      region: content
     group_owner_contact_information:
       children:
         - field_is_owner
@@ -107,6 +112,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Owner/Contact Information'
+      region: content
     group_documentation:
       children:
         - field_is_documentation
@@ -123,6 +129,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Documentation
+      region: content
     group_trr_information:
       children:
         - field_is_test_resource_type
@@ -143,6 +150,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'TRR Information'
+      region: content
     group_solution_external_links:
       children:
         - field_is_landing_page
@@ -160,6 +168,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Solution external reference information'
+      region: content
 id: rdf_entity.solution.about
 targetEntityType: rdf_entity
 bundle: solution
@@ -347,6 +356,8 @@ hidden:
   field_is_banner: true
   field_is_content: true
   field_is_distribution: true
+  field_is_eif_category: true
+  field_is_eif_recommendation: true
   field_is_has_version: true
   field_is_included_asset: true
   field_is_issue_tracker: true
@@ -364,6 +375,7 @@ hidden:
   field_is_wiki: true
   field_keywords: true
   field_policy_domain: true
+  field_short_id: true
   field_site_featured: true
   field_site_pinned: true
   field_spatial_coverage: true

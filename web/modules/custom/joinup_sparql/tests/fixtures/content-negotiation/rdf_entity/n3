@@ -1,0 +1,6 @@
+@prefix ns0: <http://example.com/fruit/> .
+
+<http://example.com/apple>
+  ns0:label "Apple"@en ;
+  ns0:uid 0 ;
+  a <http://example.com/type/fruit> .

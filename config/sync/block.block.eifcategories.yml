@@ -1,0 +1,26 @@
+uuid: 8d9bdcb2-d36e-4d61-afe0-fbec26e857a4
+langcode: en
+status: true
+dependencies:
+  module:
+    - eif
+  theme:
+    - joinup_theme
+id: eifcategories
+theme: joinup_theme
+region: content
+weight: -17
+provider: null
+plugin: eif_categories
+settings:
+  id: eif_categories
+  label: 'EIF categories'
+  provider: eif
+  label_display: '0'
+  context_mapping: {  }
+visibility:
+  eif_solutions_page:
+    id: eif_solutions_page
+    eif_solutions: 1
+    negate: false
+    context_mapping: {  }

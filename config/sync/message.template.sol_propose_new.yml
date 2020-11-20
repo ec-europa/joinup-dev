@@ -1,7 +1,9 @@
 uuid: 5d944652-ee56-4bc7-8e62-a8e6e1b126dc
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 _core:
   default_config_hash: PDTK5gloYLKYe525BWUGUSbKf70iRnyJ4z_WjsqtpsY
 template: sol_propose_new

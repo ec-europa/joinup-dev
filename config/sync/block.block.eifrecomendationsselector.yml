@@ -1,0 +1,25 @@
+uuid: e3510edd-6a8a-41b4-b6f2-dfb2b8f155fc
+langcode: en
+status: true
+dependencies:
+  module:
+    - eif
+  theme:
+    - joinup_theme
+id: eifrecomendationsselector
+theme: joinup_theme
+region: content
+weight: 0
+provider: null
+plugin: eif_recommendation_selector
+settings:
+  id: eif_recommendation_selector
+  label: 'EIF recomendations selector'
+  provider: eif
+  label_display: '0'
+visibility:
+  eif_solutions_page:
+    id: eif_solutions_page
+    eif_solutions: 1
+    negate: false
+    context_mapping: {  }

@@ -9,7 +9,7 @@ label: 'Community content'
 type: 'canonical_entities:node'
 pattern: '[node:og_audience:entity:bundle_singular]/[node:og_audience:entity:label]/[node:content-type]/[node:title]'
 selection_criteria:
-  68832b83-2ccd-45eb-ac1e-fce770ca3185:
+  e81cba7c-6aff-40f9-a77f-ce6bf5fc9e25:
     id: node_type
     bundles:
       discussion: discussion
@@ -19,7 +19,7 @@ selection_criteria:
     negate: false
     context_mapping:
       node: node
-    uuid: 68832b83-2ccd-45eb-ac1e-fce770ca3185
+    uuid: e81cba7c-6aff-40f9-a77f-ce6bf5fc9e25
 selection_logic: and
 weight: -5
 relationships: {  }

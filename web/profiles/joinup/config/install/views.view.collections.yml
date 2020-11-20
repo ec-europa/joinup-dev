@@ -1,5 +1,5 @@
 # @todo: this view should be moved into the `collection` module.
-# @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5176
+# @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5176
 langcode: en
 status: true
 dependencies:

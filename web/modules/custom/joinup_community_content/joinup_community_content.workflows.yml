@@ -106,6 +106,7 @@ node:post_moderated:
       to: proposed
 # The workflow of the discussion entity for a post moderated parent.
 # Discussions include an archived state so a separate workflow is defined.
+# TODO: Should be moved into the 'joinup_discussion' module.
 node:discussion:post_moderated:
   id: discussion
   label: "Discussion (Post moderated)"

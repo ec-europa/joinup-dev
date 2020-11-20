@@ -70,7 +70,7 @@ class DbLogTest extends KernelTestBase {
     $revision_id = $node->getRevisionId();
 
     $count = Database::getConnection()->query($watchdog_query)->fetchField();
-    $this->assertEquals(0, $count, $this->t('No entries should have been created due to the wrong revision being saved.'));
+    $this->assertEquals(0, $count, 'No entries should have been created due to the wrong revision being saved.');
 
     // Create a new version.
     $node->setNewRevision();
@@ -80,7 +80,7 @@ class DbLogTest extends KernelTestBase {
 
     $this->assertNotEquals($revision_id, $new_revision_id);
     $count = Database::getConnection()->query($watchdog_query)->fetchField();
-    $this->assertEquals(0, $count, $this->t('No entries should have been created due to the wrong revision being saved.'));
+    $this->assertEquals(0, $count, 'No entries should have been created due to the wrong revision being saved.');
 
     // Update the previous revision.
     $initial_revision = $node_storage->loadRevision($revision_id);
@@ -88,7 +88,7 @@ class DbLogTest extends KernelTestBase {
     $initial_revision->save();
 
     $count = Database::getConnection()->query($watchdog_query)->fetchField();
-    $this->assertEquals(2, $count, $this->t('2 Entries should have been created due to the wrong revision being saved.'));
+    $this->assertEquals(2, $count, '2 Entries should have been created due to the wrong revision being saved.');
   }
 
 }

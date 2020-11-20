@@ -1,7 +1,9 @@
 uuid: 16c081e2-4a1c-41f0-b9f4-5f173c2733dd
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.content_editor
 template: contact_form_submission
 label: 'Contact form submission'
 description: 'Message to the moderators when the contact form is submitted.'

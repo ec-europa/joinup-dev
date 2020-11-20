@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.simple_paragraph.field_body
+    - paragraphs.paragraphs_type.simple_paragraph
+  module:
+    - text
+id: paragraph.simple_paragraph.default
+targetEntityType: paragraph
+bundle: simple_paragraph
+mode: default
+content:
+  field_body:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+hidden: {  }

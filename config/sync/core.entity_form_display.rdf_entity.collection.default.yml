@@ -20,6 +20,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_short_id
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
@@ -50,9 +51,11 @@ third_party_settings:
         classes: ''
         direction: vertical
       label: General
+      region: content
     group_main:
       children:
         - label
+        - field_short_id
         - field_ar_description
         - field_policy_domain
         - field_ar_owner
@@ -70,6 +73,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Main fields'
+      region: content
     group_description:
       children:
         - field_ar_abstract
@@ -93,6 +97,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Additional fields'
+      region: content
 id: rdf_entity.collection.default
 targetEntityType: rdf_entity
 bundle: collection
@@ -100,7 +105,7 @@ mode: default
 content:
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 6
+    weight: 7
     region: content
     settings:
       title: 'Current workflow state'
@@ -142,7 +147,7 @@ content:
       display_label: false
     third_party_settings: {  }
   field_ar_contact_information:
-    weight: 5
+    weight: 6
     settings:
       form_mode: inline
       override_labels: true
@@ -165,7 +170,7 @@ content:
     type: options_buttons
     region: content
   field_ar_description:
-    weight: 2
+    weight: 3
     settings:
       rows: 5
       placeholder: ''
@@ -191,7 +196,7 @@ content:
     type: boolean_checkbox
     region: content
   field_ar_owner:
-    weight: 4
+    weight: 5
     settings:
       form_mode: inline
       override_labels: true
@@ -236,10 +241,18 @@ content:
     type: oe_newsroom_newsletter_default
     region: content
   field_policy_domain:
-    weight: 3
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
+  field_short_id:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: 'Minimum 4 characters required.'
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_spatial_coverage:
     weight: 14
@@ -260,7 +273,7 @@ content:
     third_party_settings: {  }
     region: content
   transition_motivation:
-    weight: 7
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
