@@ -1,0 +1,29 @@
+uuid: b58675c2-9910-477a-be7d-1100f2d8b712
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.solutions_geographical_coverage
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - joinup_theme
+id: geographicalcoverage_2
+theme: joinup_theme
+region: sidebar_left
+weight: 0
+provider: null
+plugin: 'facet_block:solutions_geographical_coverage'
+settings:
+  id: 'facet_block:solutions_geographical_coverage'
+  label: 'Solutions - Geographical coverage'
+  provider: facets
+  label_display: '0'
+  block_id: geographicalcoverage_2
+visibility:
+  request_route:
+    id: request_route
+    routes: view.solutions.page_1
+    negate: false
+    context_mapping: {  }
