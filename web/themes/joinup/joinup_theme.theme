@@ -430,6 +430,7 @@ function joinup_theme_preprocess_page(&$variables) {
     'view.search.page_1',
     'view.collections.page_1',
     'view.solutions.page_1',
+    'view.search.page_2',
   ];
   if (in_array($route_name, $search_pages_routes)) {
     $variables['is_search_page'] = TRUE;

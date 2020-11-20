@@ -12,7 +12,7 @@ dependencies:
 id: domains
 theme: joinup_theme
 region: sidebar_left
-weight: 0
+weight: -16
 provider: null
 plugin: 'facet_block:challenge_policy_domain'
 settings:
