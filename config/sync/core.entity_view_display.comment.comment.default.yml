@@ -5,6 +5,8 @@ dependencies:
   config:
     - comment.type.comment
     - field.field.comment.comment.field_body
+  module:
+    - text
 _core:
   default_config_hash: 1pqbtJl4kPoWoUVg305Sq43ImIeCrjxJg2H1-GTrepU
 id: comment.comment.default
@@ -13,12 +15,16 @@ bundle: comment
 mode: default
 content:
   field_body:
-    weight: 3
+    weight: 0
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
+  links:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   langcode: true
-  links: true

@@ -17,7 +17,6 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\block\Entity\Block;
-use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup_core\Controller\IdRedirect;
@@ -856,40 +855,11 @@ function joinup_theme_preprocess_field(&$variables) {
 /**
  * Implements hook_preprocess_HOOK() for field--comment.html.twig.
  */
-function joinup_theme_preprocess_field__comment(&$variables) {
-  // Get entity url needed for login and register routes.
+function joinup_theme_preprocess_field__comment(array &$variables): void {
+  /** @var \Drupal\joinup_community_content\Entity\CommunityContentInterface $entity */
   $entity = $variables['element']['#object'];
-  $variables['entity_bundle'] = mb_strtolower($entity->type->entity->label());
-
-  // Get the comment status from the entity itself.
-  $comments_status = $variables['element']['#items']->status;
-
-  // Anonymous users are not allowed to post comments.
-  /** @var \Drupal\rdf_entity\RdfInterface $parent */
-  $user = \Drupal::currentUser();
-  if ($user->isAnonymous()) {
-    $comments_status = 'authentication_required';
-  }
-
-  switch ($comments_status) {
-    case 'authentication_required':
-      $variables['comments_status'] = 'authentication_required';
-      break;
-
-    case CommentItemInterface::OPEN:
-      $variables['comments_status'] = 'open';
-      break;
-
-    case CommentItemInterface::CLOSED:
-      $variables['comments_status'] = 'closed';
-      break;
-
-    case CommentItemInterface::HIDDEN:
-      $variables['comments_status'] = 'hidden';
-      break;
-  }
-
-  $variables['login_path'] = Url::fromRoute('user.login')->toString();
+  $variables['entity_bundle'] = $entity->get('type')->entity->getSingularLabel();
+  $variables['login_path'] = Url::fromRoute('cas.login')->toString();
   $variables['register_path'] = Url::fromRoute('user.register')->toString();
 }
 
