@@ -63,14 +63,17 @@
   }
 
   // Enable or disable all compare buttons.
-  function enableCompareButton(state) {
+  function enableButtons(state) {
+    var btnSelector = $( ".licence-tile__button--compatible" ).length ?
+                      '.licence-tile__button--compatible' :
+                      '.licence-tile__button--compare';
     if (state) {
-      $('.licence-tile__button--compare.licence-tile__button--disabled').each(function () {
+      $(btnSelector + '.licence-tile__button--disabled').each(function () {
         $(this).removeClass('licence-tile__button--disabled');
       });
     }
     else {
-      $('.licence-tile__button--compare').each(function () {
+      $(btnSelector).each(function () {
         $(this).addClass('licence-tile__button--disabled');
       });
     }
@@ -96,7 +99,7 @@
         }
 
         if (licencesArray.length >= 2) {
-          enableCompareButton(true);
+          enableButtons(true);
         }
       }
     });
@@ -138,11 +141,18 @@
     // Also, uncheck any selected licences checked for comparison and disable
     // the "Compare" buttons. The 'data-licence-compare' attribute which is set
     // to [], is the attribute that stores the licences set-up for comparison.
-    $('.licence-tile .mdl-js-checkbox').each(function () {
-      $(this)[0].MaterialCheckbox.uncheck();
-    });
+
+    if ($('.licence-tile__button--compatible').length) {
+      $('.licence-tile .mdl-js-radio').each(function (event, element) {
+        $(this)[0].MaterialRadio.uncheck();
+      });
+    } else {
+      $('.licence-tile .mdl-js-checkbox').each(function () {
+        $(this)[0].MaterialCheckbox.uncheck();
+      });
+    }
     $('.listing--licences').attr('data-licence-compare', '[]');
-    enableCompareButton(false);
+    enableButtons(false);
   });
 
   // Change compare elements if the checkbox is clicked.
@@ -167,7 +177,7 @@
         }
 
         if (licencesArray.length === 2) {
-          enableCompareButton(true);
+          enableButtons(true);
         }
       }
       else {
@@ -184,7 +194,7 @@
         }
 
         if (licencesArray.length < 2) {
-          enableCompareButton(false);
+          enableButtons(false);
         }
       }
 
@@ -203,10 +213,30 @@
     });
   });
 
+  function initCompatibleRadios() {
+    $('.listing__item--compatibility .mdl-js-radio').each(function () {
+      // UnCheck radios on page load.
+      $(this).find('input').prop('checked', false);
+
+      // Change compatible elements if the radio is clicked.
+      $(this).on('click', function () {
+        var inbound_licence = $("input[name='inbound-licence']:checked").attr('data-licence-name');
+        var distribute_licence = $("input[name='outbound-licence']:checked").attr('data-licence-name');
+
+        if(inbound_licence && distribute_licence) {
+          var compatible_url = drupalSettings.path.baseUrl + "licence/compatibility-check/" + inbound_licence + "/" + distribute_licence;
+          $('.licence-tile__button--compatible').attr('href', compatible_url);
+          enableButtons(true);
+        }
+      });
+    });
+  }
+
   // Filter on window load. Needed for licence search filter.
   $(window).on('load', function () {
     checkLicenceCategories();
     checkCompareStatus();
+    initCompatibleRadios();
   });
 
 })(jQuery, drupalSettings);

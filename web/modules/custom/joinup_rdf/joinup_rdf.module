@@ -74,7 +74,8 @@ function joinup_rdf_entity_type_alter(array &$entity_types) {
   $link_templates = [
     'about-page' => '/rdf_entity/{rdf_entity}/about',
     'member-overview' => '/rdf_entity/{rdf_entity}/members',
-    'add-facilitator' => '/rdf_entity/{rdf_entity}/members/invite',
+    'member-add' => '/rdf_entity/{rdf_entity}/members/add',
+    'member-invite' => '/rdf_entity/{rdf_entity}/members/invite',
   ];
   foreach ($link_templates as $key => $path) {
     $entity_types['rdf_entity']->setLinkTemplate($key, $path);
@@ -90,8 +91,8 @@ function joinup_rdf_entity_type_alter(array &$entity_types) {
  * get cached in the 'cache_entity' bin, avoiding performance issues.
  */
 function joinup_rdf_taxonomy_term_storage_load(array $terms) {
-  $sparql = \Drupal::service('sparql_endpoint');
-  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql */
+  $sparql = \Drupal::service('sparql.endpoint');
+  /** @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparql */
 
   $query = <<<QUERY
 SELECT ?extension ?mime_type

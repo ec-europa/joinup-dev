@@ -1625,9 +1625,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     static::toggleModule('install', 'error_page_test');
 
     // Pipe error log entries to a file rather than to standard PHP log.
+    static::runCommand('drupal:settings error_page_test --root=' . static::getPath('web') . ' --sites-subdir=default');
     $settings = Settings::getAll();
     $settings['error_page']['log']['method'] = 3;
-    $settings['error_page']['log']['destination'] = 'temporary://testing.log';
+    $settings['error_page']['log']['destination'] = 'php://temp';
     new Settings($settings);
   }
 
@@ -1641,8 +1642,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     // Restore piping error log entries to the standard PHP log.
     $settings = Settings::getAll();
-    unset($settings['error_page']);
+    unset($settings['error_page']['log']);
     new Settings($settings);
+    static::runCommand('drupal:settings behat --root=' . static::getPath('web') . ' --sites-subdir=default');
 
     // Restore the site's error logging verbosity.
     $this->setSiteErrorLevel();
@@ -1876,6 +1878,29 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if ($not_found) {
       throw new ExpectationFailedException("Following strings were not found in the downloaded file:\n- " . implode("\n- ", $not_found));
     }
+  }
+
+  /**
+   * Tests that the given entity has a creation date.
+   *
+   * @param string $title
+   *   The entity title.
+   * @param string $bundle
+   *   The entity bundle.
+   *
+   * @Given the :title :bundle has a creation date set
+   */
+  public function assertEntityCreationDate(string $title, string $bundle): void {
+    $rdf_bundles = [
+      'collection',
+      'solution',
+      'asset_release',
+      'asset_distribution',
+    ];
+    $type = in_array($bundle, $rdf_bundles) ? 'rdf_entity' : 'node';
+    $entity = $this->getEntityByLabel($type, $title, $bundle);
+
+    Assert::assertNotEmpty($entity->getCreatedTime());
   }
 
   /**

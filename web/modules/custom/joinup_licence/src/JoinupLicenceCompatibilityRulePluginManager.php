@@ -4,15 +4,22 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_licence;
 
+use Drupal\Component\Utility\SortArray;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
+use Drupal\joinup_licence\Annotation\JoinupLicenceCompatibilityRule;
 use Drupal\joinup_licence\Entity\LicenceInterface;
 
 /**
- * JoinupLicenceCompatibilityRule plugin manager.
+ * Plugin manager for JoinupLicenceCompatibilityRule plugins.
  */
 class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
+
+  /**
+   * The ID of the compatibility document for incompatible licences.
+   */
+  const INCOMPATIBLE_DOCUMENT_ID = 'INCOMPATIBLE';
 
   /**
    * Constructs a JoinupLicenceCompatibilityRulePluginManager.
@@ -30,8 +37,8 @@ class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
       'Plugin/JoinupLicenceCompatibilityRule',
       $namespaces,
       $module_handler,
-      'Drupal\joinup_licence\JoinupLicenceCompatibilityRuleInterface',
-      'Drupal\joinup_licence\Annotation\JoinupLicenceCompatibilityRule'
+      JoinupLicenceCompatibilityRuleInterface::class,
+      JoinupLicenceCompatibilityRule::class
     );
     $this->alterInfo('joinup_licence_compatibility_rule_info');
     $this->setCacheBackend($cache_backend, 'joinup_licence_compatibility_rule_plugins');
@@ -44,30 +51,52 @@ class JoinupLicenceCompatibilityRulePluginManager extends DefaultPluginManager {
    * the current licence can be used in a project which is going to be
    * distributed under the passed in licence.
    *
-   * @param \Drupal\joinup_licence\Entity\LicenceInterface $use_licence
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface $inbound_licence
    *   The licence of an existing project of which the code or data is used.
-   * @param \Drupal\joinup_licence\Entity\LicenceInterface $redistribute_as_licence
+   * @param \Drupal\joinup_licence\Entity\LicenceInterface $outbound_licence
    *   The licence under which the modified or extended code or data is going to
    *   be redistributed.
    *
-   * @return string|null
+   * @return string
    *   The document ID of the compatibility document that contains the requested
-   *   information. If the licences are not compatible NULL is returned.
+   *   information. If the licences are not compatible, the 'INCOMPATIBLE' is
+   *   returned.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
+   *   If the plugin being created is missing.
    */
-  public function getCompatibilityDocumentId(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): ?string {
-    // Sort the plugins by weight and return the first result.
-    $plugin_definitions = $this->getDefinitions();
-    uasort($plugin_definitions, ['Drupal\Component\Utility\SortArray', 'sortByWeightElement']);
-
-    foreach ($plugin_definitions as $plugin_definition) {
-      /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRuleInterface $plugin */
-      $plugin = $this->createInstance($plugin_definition['id']);
-      if ($plugin->isCompatible($use_licence, $redistribute_as_licence)) {
-        return $plugin->getDocumentId();
+  public function getCompatibilityDocumentId(LicenceInterface $inbound_licence, LicenceInterface $outbound_licence): string {
+    foreach ($this->getDefinitions() as $plugin_id => $plugin_definition) {
+      /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRuleInterface $rule */
+      $rule = $this->createInstance($plugin_id);
+      if ($rule->isVerified($inbound_licence, $outbound_licence)) {
+        // Return the first compatible result. Note that the plugin definitions
+        // were already sorted by their weight after discovery.
+        return $plugin_id;
       }
     }
+  }
 
-    return NULL;
+  /**
+   * {@inheritdoc}
+   */
+  protected function findDefinitions(): array {
+    $plugin_definitions = parent::findDefinitions();
+
+    // Extract the incompatible licence plugin from the list.
+    if (!isset($plugin_definitions[static::INCOMPATIBLE_DOCUMENT_ID])) {
+      throw new \RuntimeException("A plugin with ID '" . static::INCOMPATIBLE_DOCUMENT_ID . "' should exist, but is missed.");
+    }
+    $incompatible_plugin_definition = $plugin_definitions[static::INCOMPATIBLE_DOCUMENT_ID];
+    unset($plugin_definitions[static::INCOMPATIBLE_DOCUMENT_ID]);
+
+    // Sort the plugins by weight.
+    uasort($plugin_definitions, [SortArray::class, 'sortByWeightElement']);
+
+    // The 'INCOMPATIBLE' rule plugin is at the end, regardless of its weight.
+    $plugin_definitions[static::INCOMPATIBLE_DOCUMENT_ID] = $incompatible_plugin_definition;
+
+    return $plugin_definitions;
   }
 
 }

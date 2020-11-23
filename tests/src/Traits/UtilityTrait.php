@@ -112,7 +112,10 @@ trait UtilityTrait {
     // visible portion of the element. This css property works only when the
     // "position" property is set either to fixed or absolute.
     $webdriver_element = $driver->getWebDriverSession()->element('xpath', $element->getXpath());
-    $is_clipped = in_array($webdriver_element->css('position'), ['fixed', 'absolute']);
+    $is_clipped = in_array(
+      $webdriver_element->css('position'),
+      ['fixed', 'absolute']
+    );
 
     return $is_visible && !$is_clipped;
   }
@@ -165,6 +168,26 @@ trait UtilityTrait {
     } while (microtime(TRUE) < $end && !$result);
 
     return $result;
+  }
+
+  /**
+   * Converts an ordinal number (1st, 2nd, 17th etc) to a normal number.
+   *
+   * @param string $number
+   *   The ordinal number.
+   *
+   * @return int
+   *   The number.
+   *
+   * @throws \Exception
+   *   Thrown if the number is not an ordinal.
+   */
+  protected function convertOrdinalToNumber(string $number): int {
+    $return = preg_replace('/\\b(\d+)(?:st|nd|rd|th)\\b/', '$1', $number);
+    if (!is_numeric($return)) {
+      throw new \Exception("Could not convert {$number} to a number.");
+    }
+    return (int) $return;
   }
 
 }

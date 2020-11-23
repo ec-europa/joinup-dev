@@ -70,7 +70,6 @@ Feature:
 
   @javascript
   Scenario: Test the licence comparer trigger.
-
     Given SPDX licences:
       | uri                              | title      | ID         |
       | http://joinup.eu/spdx/Apache-2.0 | Apache-2.0 | Apache-2.0 |
@@ -128,7 +127,6 @@ Feature:
     And the url should match "/licence/compare/Apache-2.0;GPL-2.0\+;BSL-1.0;0BSD;LGPL-2.1"
 
   Scenario: Test the licence comparer.
-
     Given SPDX licences:
       | uri                              | title      | ID         |
       | http://joinup.eu/spdx/Apache-2.0 | Apache-2.0 | Apache-2.0 |
@@ -142,7 +140,7 @@ Feature:
       | http://joinup.eu/licence/apache20 | Apache License, Version 2.0              | Apache-2.0   | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce | Apache-2.0 descr |
       | http://joinup.eu/licence/gpl2plus | GNU General Public License v2.0 or later | GPL-2.0+     | Distribute                                                            | GPL-2.0+ descr   |
 
-    # Test the page when the comparision list is missed.
+    # Test the page when the comparison list is missed.
     When I am on "/licence/compare"
     Then I should get a 404 HTTP response
 

@@ -1,0 +1,22 @@
+uuid: 314802f8-3769-48a8-a0a5-d4d7b869dfd7
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.full_html
+template: solution_membership_invitation
+label: 'Solution membership invitation'
+description: 'Sent when a user is invited to join a solution.'
+text:
+  -
+    value: '<p>Invitation from @actor:full_name to join @entity:bundle @entity:title.<p>'
+    format: full_html
+  -
+    value: "You have been invited by @actor:full_name to join the @entity:bundle <a href=\"@entity:url\">@entity:title</a> as a @invitation:role.\r\nIf you wish to do so, you can click <a href=\"@invitation:accept_url\">@invitation:accept_url</a>."
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }

@@ -5,6 +5,9 @@ declare(strict_types = 1);
 namespace Drupal\joinup_group\Plugin\Validation\Constraint;
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -14,7 +17,33 @@ use Symfony\Component\Validator\ConstraintValidator;
  * The validation is case insensitive. Works only for RDF entities. This
  * constraint was created explicitly for the RDF entity "Short ID" field.
  */
-class UniqueShortIdInsensitiveValidator extends ConstraintValidator {
+class UniqueShortIdInsensitiveValidator extends ConstraintValidator implements ContainerInjectionInterface {
+
+  /**
+   * The SPARQL database connection.
+   *
+   * @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface
+   */
+  protected $connection;
+
+  /**
+   * Creates a new UniqueShortIdInsensitiveValidator.
+   *
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $connection
+   *   The SPARQL database connection.
+   */
+  public function __construct(ConnectionInterface $connection) {
+    $this->connection = $connection;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('sparql.endpoint')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -55,7 +84,7 @@ WHERE {
   $entity_id_where
 }
 QUERY;
-    $count = \Drupal::getContainer()->get('sparql.endpoint')->query($query)->count();
+    $count = $this->connection->query($query)->count();
 
     if ($count) {
       $this->context->addViolation($constraint->message, [

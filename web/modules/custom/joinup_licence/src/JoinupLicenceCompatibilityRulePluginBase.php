@@ -15,28 +15,21 @@ abstract class JoinupLicenceCompatibilityRulePluginBase extends PluginBase imple
   /**
    * The criteria to which the use licence should adhere.
    */
-  const USE_CRITERIA = [];
+  const INBOUND_CRITERIA = [];
 
   /**
    * The criteria to which the use redistribute as licence should adhere.
    */
-  const REDISTRIBUTE_AS_CRITERIA = [];
+  const OUTBOUND_CRITERIA = [];
 
   /**
    * {@inheritdoc}
    */
-  public function getDocumentId(): string {
-    return (string) $this->pluginDefinition['document_id'];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isCompatible(LicenceInterface $use_licence, LicenceInterface $redistribute_as_licence): bool {
+  public function isVerified(LicenceInterface $inbound_licence, LicenceInterface $outbound_licence): bool {
     /** @var \Drupal\joinup_licence\Entity\LicenceInterface $licence */
     foreach ([
-      [$use_licence, static::USE_CRITERIA],
-      [$redistribute_as_licence, static::REDISTRIBUTE_AS_CRITERIA],
+      [$inbound_licence, static::INBOUND_CRITERIA],
+      [$outbound_licence, static::OUTBOUND_CRITERIA],
     ] as [$licence, $criteria]) {
       foreach ($criteria as $type => $matches) {
         switch ($type) {

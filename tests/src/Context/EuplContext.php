@@ -14,6 +14,7 @@ use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup_licence\Entity\CompatibilityDocument;
 use Drupal\joinup_licence\Entity\LicenceInterface;
 use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -65,7 +66,7 @@ class EuplContext extends RawDrupalContext {
       'field_is_state' => 'validated',
     ])->save();
 
-    // The 'Implementation monitoring' standard custom page.
+    // The 'Joinup Licencing Assistant' standard custom page.
     Node::create([
       'nid' => 701805,
       'type' => 'custom_page',
@@ -73,6 +74,18 @@ class EuplContext extends RawDrupalContext {
       'title' => 'JLA',
       'og_audience' => Eupl::JLA_SOLUTION,
     ])->save();
+
+    // The 'Joinup Licencing Compatibility Check' standard custom page.
+    Node::create([
+      'nid' => 703242,
+      'type' => 'custom_page',
+      'uuid' => '431f631f-e973-4fae-8368-c31f346a9616',
+      'title' => 'JLC',
+      'og_audience' => Eupl::JLA_SOLUTION,
+    ])->save();
+
+    // Populate the compatibility documents.
+    CompatibilityDocument::populate();
   }
 
   /**
@@ -124,7 +137,7 @@ class EuplContext extends RawDrupalContext {
    */
   public function assertLegalTypeTagsCategoriesAndOrder(string $spdx, TableNode $table): void {
     $expected = $table->getColumn(0);
-    $xpath = "//div[@data-spdx='{$spdx}']//div[contains(concat(' ', normalize-space(@class), ' '), ' listing__inner-tile--wider ')]//span[contains(concat(' ', normalize-space(@class), ' '), ' licence-tile__label ')]";
+    $xpath = '//div[@data-spdx="' . $spdx . '"]//div[contains(concat(" ", normalize-space(@class), " "), " listing__inner-tile--wider ")]//span[contains(concat(" ", normalize-space(@class), " "), " licence-tile__label ")]';
     $this->assertCategoriesAndOrder($xpath, $expected);
   }
 
@@ -138,7 +151,7 @@ class EuplContext extends RawDrupalContext {
    */
   public function assertFilterCategoriesAndOrder(TableNode $table): void {
     $expected = $table->getColumn(0);
-    $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' licence-filter ')]//div[contains(concat(' ', normalize-space(@class), ' '), ' licence-filter__header ')]";
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " licence-filter ")]//div[contains(concat(" ", normalize-space(@class), " "), " licence-filter__header ")]';
     $this->assertCategoriesAndOrder($xpath, $expected);
   }
 
@@ -210,8 +223,29 @@ class EuplContext extends RawDrupalContext {
   }
 
   /**
-   * Asserts that Compare buttons are enabled or disabled.
+   * Selects a radio button for a licence compatibility check.
    *
+   * @param string $spdx_id
+   *   The SPDX ID of the licence to select.
+   * @param string $label
+   *   The label of the radio button. Can be either 'Use' or 'Distribute'.
+   *
+   * @throws \Exception
+   *   Thrown when the radio button or licence is not found in the page.
+   *
+   * @When I choose :spdx_id as the :label licence
+   */
+  public function selectRadioButtonForLicenceCompatibilityCheck(string $spdx_id, string $label): void {
+    assert(in_array($label, ['Inbound', 'Outbound']), 'The purpose should be either "Use" or "Distribute".');
+    $licence = $this->findLicenceTile($spdx_id);
+    $this->selectMaterialDesignRadioButton($label, $licence);
+  }
+
+  /**
+   * Asserts that Compare / Check compatibility buttons are enabled or disabled.
+   *
+   * @param string $label
+   *   The button labels. Either "Compare" or "Check compatibility".
    * @param string $status
    *   Either 'enabled' or 'disabled'.
    *
@@ -220,24 +254,32 @@ class EuplContext extends RawDrupalContext {
    *   - No 'Compare' buttons were found in page.
    *   - The expectancy is not satisfied.
    *
-   * @Then the Compare buttons are :status
+   * @Then the :label buttons are :status
+   * @Then the :label buttons should be :status
    */
-  public function assertCompareButtonDisableStatus(string $status): void {
+  public function assertLicenceButtonStatus(string $label, string $status): void {
     \assert(in_array($status, ['enabled', 'disabled']), 'The $status parameter should take one of the values "enabled" or "disabled" but "' . $status . '" was given.');
 
+    $mapping = [
+      'Compare' => 'licence-tile__button--compare',
+      'Check compatibility' => 'licence-tile__button--compatible',
+    ];
+    \assert(array_key_exists($label, $mapping), 'The label should be one of ' . implode(',', array_keys($mapping)) . ' but "' . $label . '" was given.');
+
     $page = $this->getSession()->getPage();
-    $xpath = '//a[text()="Compare" and contains(concat(" ", normalize-space(@class), " "), " licence-tile__button--compare ")]';
-    if (!$buttons = $page->find('xpath', $xpath)) {
-      throw new \Exception("No 'Compare' buttons found in page.");
+    $xpath = '//a[text()="' . $label . '" and contains(concat(" ", normalize-space(@class), " "), " ' . $mapping[$label] . ' ")]';
+    $buttons = $page->findAll('xpath', $xpath);
+    if (empty($buttons)) {
+      throw new \Exception("No '$label' buttons found in the page.");
     }
 
     /** @var \Behat\Mink\Element\NodeElement[] $buttons */
     foreach ($buttons as $button) {
       if ($status === 'disabled' && !$button->hasClass('licence-tile__button--disabled')) {
-        throw new \Exception("'Compare' buttons should be disabled but are enabled.");
+        throw new \Exception("'$label' buttons should be disabled but are enabled.");
       }
       elseif ($status === 'enabled' && $button->hasClass('licence-tile__button--disabled')) {
-        throw new \Exception("'Compare' buttons should be enabled but are disabled.");
+        throw new \Exception("'$label' buttons should be enabled but are disabled.");
       }
     }
   }
@@ -308,19 +350,46 @@ class EuplContext extends RawDrupalContext {
     /** @var \Drupal\joinup_licence\JoinupLicenceCompatibilityRulePluginManager $plugin_manager */
     $plugin_manager = \Drupal::service('plugin.manager.joinup_licence_compatibility_rule');
     foreach ($table->getColumnsHash() as $test_case) {
-      $use_label = $test_case['use'];
-      $redistribute_as_label = $test_case['redistribute as'];
+      $use_label = $test_case['inbound'];
+      $redistribute_as_label = $test_case['outbound'];
       $expected_result = $test_case['document ID'];
 
-      $use_licence = static::loadLicenceByLabel($use_label);
-      $redistribute_as_licence = static::loadLicenceByLabel($redistribute_as_label);
+      $inbound_licence = static::loadLicenceByLabel($use_label);
+      $outbound_licence = static::loadLicenceByLabel($redistribute_as_label);
 
-      $result = $plugin_manager->getCompatibilityDocumentId($use_licence, $redistribute_as_licence) ?? 'incompatible';
+      $result = $plugin_manager->getCompatibilityDocumentId($inbound_licence, $outbound_licence);
 
       // Check that the returned document ID matches the expected ID.
       if ($expected_result !== $result) {
         throw new \Exception("Licences $use_label and $redistribute_as_label are expected to match the $expected_result rule but they match $result.");
       }
+    }
+  }
+
+  /**
+   * Navigates to the compatibility document overview.
+   *
+   * @When I go to the compatibility document overview
+   */
+  public function visitCompatibilityDocumentOverview(): void {
+    $this->visitPath('admin/content/compatibility-document');
+  }
+
+  /**
+   * Creates compatibility documents using the data provided in a table.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   A table with columns 'id' and 'description'.
+   *
+   * @Given compatibility documents:
+   */
+  public function createCompatibilityDocuments(TableNode $table): void {
+    $this->cleanCompatibilityDocuments();
+    foreach ($table->getColumnsHash() as $document) {
+      CompatibilityDocument::create([
+        'id' => $document['id'],
+        'description' => $document['description'],
+      ])->save();
     }
   }
 
@@ -356,7 +425,7 @@ class EuplContext extends RawDrupalContext {
    *   When the licence tile is not found on the page.
    */
   protected function findLicenceTile(string $spdx_id): NodeElement {
-    if ($licence = $this->getSession()->getPage()->find('css', "div[data-spdx='{$spdx_id}']")) {
+    if ($licence = $this->getSession()->getPage()->find('css', 'div[data-spdx="' . $spdx_id . '"]')) {
       return $licence;
     }
     throw new \Exception("Can't find the '$spdx_id' licence on the page.");
@@ -373,7 +442,12 @@ class EuplContext extends RawDrupalContext {
   public function cleanEuplData(): void {
     /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
     $entity_repository = \Drupal::service('entity.repository');
-    $entity_repository->loadEntityByUuid('node', '3bee8b04-75fd-46a8-94b3-af0d8f5a4c41')->delete();
+    foreach ([
+      '3bee8b04-75fd-46a8-94b3-af0d8f5a4c41',
+      '431f631f-e973-4fae-8368-c31f346a9616',
+    ] as $uuid) {
+      $entity_repository->loadEntityByUuid('node', $uuid)->delete();
+    }
 
     $collection = Rdf::load(Eupl::EUPL_COMMUNITY_ID);
     $collection->skip_notification = TRUE;
@@ -384,6 +458,18 @@ class EuplContext extends RawDrupalContext {
     $solution->delete();
 
     Rdf::load('http://example.com/owner')->delete();
+
+    $this->cleanCompatibilityDocuments();
+  }
+
+  /**
+   * Cleans up the compatibility documents.
+   *
+   * @Then all compatibility documents are cleaned up
+   */
+  public function cleanCompatibilityDocuments(): void {
+    $compatibility_document_storage = \Drupal::entityTypeManager()->getStorage('compatibility_document');
+    $compatibility_document_storage->delete($compatibility_document_storage->loadMultiple());
   }
 
   /**

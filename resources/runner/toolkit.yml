@@ -51,6 +51,8 @@ commands:
     - task: run
       command: solr:empty
     - task: run
+      command: redis:flush-all
+    - task: run
       command: drupal:settings
       arguments:
         - install

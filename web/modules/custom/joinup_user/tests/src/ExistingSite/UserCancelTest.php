@@ -28,11 +28,11 @@ class UserCancelTest extends JoinupExistingSiteTestBase {
    */
   public function testUserCancellation(): void {
     /** @var \Drupal\externalauth\AuthmapInterface $authmap */
-    $authmap = \Drupal::service('externalauth.authmap');
+    $authmap = $this->container->get('externalauth.authmap');
     /** @var \Drupal\og\MembershipManagerInterface $og_membership */
-    $og_membership = \Drupal::service('og.membership_manager');
+    $og_membership = $this->container->get('og.membership_manager');
     /** @var \Drupal\user\UserDataInterface $user_data */
-    $user_data = \Drupal::service('user.data');
+    $user_data = $this->container->get('user.data');
 
     $collection = $this->createRdfEntity([
       'rid' => 'collection',
@@ -46,7 +46,7 @@ class UserCancelTest extends JoinupExistingSiteTestBase {
       'field_is_state' => 'validated',
     ]);
 
-    $photo_field_definition = \Drupal::service('entity_field.manager')->getFieldDefinitions('user', 'user')['field_user_photo'];
+    $photo_field_definition = $this->container->get('entity_field.manager')->getFieldDefinitions('user', 'user')['field_user_photo'];
     $photo_value = ImageItem::generateSampleValue($photo_field_definition);
 
     /** @var \Drupal\file\FileInterface $photo_file */
@@ -112,7 +112,7 @@ class UserCancelTest extends JoinupExistingSiteTestBase {
     // Add some user data.
     $user_data->set('joinup_user', $account->id(), 'foo', 'bar');
 
-    // Store the hashed password for later comparision.
+    // Store the hashed password so we can compare it later.
     $password_hash = $account->getEmail();
 
     // Cancel the account.
@@ -132,7 +132,7 @@ class UserCancelTest extends JoinupExistingSiteTestBase {
     $this->assertSame(LanguageInterface::LANGCODE_NOT_SPECIFIED, $account->language()->getId());
     $this->assertSame(LanguageInterface::LANGCODE_NOT_SPECIFIED, $account->get('preferred_langcode')->value);
     $this->assertSame(LanguageInterface::LANGCODE_NOT_SPECIFIED, $account->get('preferred_admin_langcode')->value);
-    $this->assertSame(\Drupal::config('system.date')->get('timezone.default'), $account->getTimeZone());
+    $this->assertSame($this->container->get('config.factory')->get('system.date')->get('timezone.default'), $account->getTimeZone());
     $this->assertEmpty($account->getRoles(TRUE));
     $this->assertTrue($account->get('field_social_media')->isEmpty());
     $this->assertNull($account->get('field_user_business_title')->value);

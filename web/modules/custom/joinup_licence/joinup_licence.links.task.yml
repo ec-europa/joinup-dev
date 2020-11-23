@@ -1,0 +1,8 @@
+entity.compatibility_document.edit_form:
+  title: Edit
+  route_name: entity.compatibility_document.edit_form
+  base_route: entity.compatibility_document.canonical
+entity.compatibility_document.collection:
+  title: List
+  route_name: entity.compatibility_document.collection
+  base_route: entity.compatibility_document.collection

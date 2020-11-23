@@ -39,6 +39,7 @@ use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og\OgRoleInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\search_api\Entity\Server;
 use GuzzleHttp\Client;
@@ -104,6 +105,21 @@ class JoinupContext extends RawDrupalContext {
     $message = sprintf('The text "%s" was not found anywhere in the text of the current page.', $text);
 
     Assert::assertRegExp($regex, $actual, $message);
+  }
+
+  /**
+   * Checks that a given text appears a certain number of times.
+   *
+   * @param string $text
+   *   The text that should have a particular number of appearances.
+   * @param int $count
+   *   The number of appearances.
+   *
+   * @Then the text :text should appear :count time(s)
+   */
+  public function assertTextCount(string $text, int $count): void {
+    $xpath = '//*[contains(text(), "' . $text . '")]';
+    $this->assertSession()->elementsCount('xpath', $xpath, $count);
   }
 
   /**
@@ -242,11 +258,15 @@ class JoinupContext extends RawDrupalContext {
     if (empty($membership)) {
       return FALSE;
     }
-    if ($roles == $membership->getRolesIds()) {
-      return FALSE;
-    }
+    $expected_roles_ids = array_map(function (OgRoleInterface $role): string {
+      return $role->id();
+    }, $roles);
+    $actual_roles_ids = $membership->getRolesIds();
 
-    return TRUE;
+    sort($expected_roles_ids);
+    sort($actual_roles_ids);
+
+    return $expected_roles_ids === $actual_roles_ids;
   }
 
   /**
