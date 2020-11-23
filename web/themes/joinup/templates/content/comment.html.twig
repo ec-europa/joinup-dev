@@ -74,6 +74,9 @@
   ]
 %}
 <div{{ attributes.addClass('js-comment comment-item comment-item--default contextual-region')}}>
+  <div class="comment-item__user-picture">
+    {{user_picture}}
+  </div>
   <div class="mdl-grid">
     <div class="comment-item__details details mdl-cell mdl-cell--12-col">
       {{ title_prefix }}{{ title_suffix }}
@@ -84,11 +87,7 @@
         <div class="value gray">{{ created }}</div>
       </div>
     </div>
-    {% if profile_icon %}
-      <div class="comment-item__avatar center mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone">
-        <img class="avatar avatar--70" src="{{ profile_icon }}">
-      </div>
-    {% endif %}
+
     <div class="{{ content_classes|join(' ') }}">
       <div class="comment-item__field">
         <p class="comment-item__teaser">{{ content }}</p>
