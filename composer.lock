@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d2aa45c899801fd34fb246942e258fef",
+    "content-hash": "d04bead36187cb13c2c9e034e301f0cf",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3822,7 +3822,8 @@
                     "dev-8.x-1.x": "1.x-dev"
                 },
                 "patches_applied": {
-                    "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
+                    "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
+                    "Render using theme input and select instead of lists with links for checkboxes and dropdown @see https://www.drupal.org/project/facets/issues/2937191": "https://git.drupalcode.org/project/facets/-/merge_requests/2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9890,7 +9891,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-10-26T14:41:29+00:00"
+            "time": "2020-08-03T19:59:39+00:00"
         },
         {
             "name": "stack/builder",

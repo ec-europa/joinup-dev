@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\search_api_arbitrary_facet;
 
-use Drupal\Core\Cache\Context\CacheContextsManager;
+use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -65,16 +65,6 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface, ContainerF
     }
 
     $this->arbitraryFacetManager = $arbitrary_facet_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
       $container->get('cache_contexts_manager'),
       $container->get('plugin.manager.arbitrary_facet'),
       $container
