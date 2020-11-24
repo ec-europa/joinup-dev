@@ -51,6 +51,7 @@ function easme_pledge_rdf_entity_view(array &$build, RdfInterface $entity, Entit
       '#title' => t('Pledge'),
       '#url' => Url::fromRoute('easme_pledge.rdf_entity_pledge.add', [
         'rdf_entity' => $entity->id(),
+        'node_type' => 'pledge',
       ]),
     ];
   }
