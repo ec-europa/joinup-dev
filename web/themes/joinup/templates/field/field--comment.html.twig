@@ -21,7 +21,6 @@
  * - field_name: The name of the field.
  * - field_type: The type of the field.
  * - label_display: The display settings for the label.
- * - comments_status: Indicates if comments are open, closed or hidden.
  *
  * @see template_preprocess_field()
  * @see comment_preprocess_field()
@@ -38,15 +37,9 @@
 
   {% if comment_form %}
     {{ comment_form }}
-  {% elseif comments_status == 'closed' %}
+  {% elseif logged_in %}
     <div class="comment-form comment-form--unavailable center mdl-cell mdl-cell--12-col">
       <div class="comment">{% trans %}Comments are disabled for this {{ entity_bundle }}.{% endtrans %}</div>
-    </div>
-  {% elseif comments_status == 'authentication_required' %}
-    <div class="comment-form comment-form--unavailable center mdl-cell mdl-cell--12-col">
-      <div class="comment">
-        {% trans %}<a href="{{ login_path }}">Login</a> or <a href="{{ register_path }}">create an account</a> to comment.{% endtrans %}
-      </div>
     </div>
   {% endif %}
 

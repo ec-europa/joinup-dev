@@ -4,6 +4,3 @@ package: Joinup
 
 core: 8.x
 type: module
-
-dependencies:
-  - joinup:og_comment

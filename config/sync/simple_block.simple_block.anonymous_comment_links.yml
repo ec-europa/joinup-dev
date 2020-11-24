@@ -1,0 +1,11 @@
+uuid: 04adf1f1-d724-4489-8d03-46716e4e3c50
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.content_editor
+id: anonymous_comment_links
+title: 'Anonymous comment links'
+content:
+  value: '<a href="/caslogin">Login</a> or <a href="/user/register">create an account</a> to comment.'
+  format: content_editor
