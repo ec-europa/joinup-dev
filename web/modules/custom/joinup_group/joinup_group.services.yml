@@ -15,6 +15,7 @@ services:
     lazy: true
   joinup_group.og_subscriber:
     class: Drupal\joinup_group\EventSubscriber\JoinupGroupOgSubscriber
+    arguments: [ '@current_user', '@workflow_state_permission.workflow_state_permission' ]
     tags:
       - name: event_subscriber
   joinup_group.route_subscriber:
