@@ -173,6 +173,18 @@ interface WorkflowHelperInterface {
   public function findTransitionOnUpdate(EntityInterface $entity, ?string $state_field_name = NULL): ?WorkflowTransition;
 
   /**
+   * Checks if the user has OG permission.
+   *
+   * @param string $permissions
+   *   The permission string.
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *   The group entity.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *   The user entity.
+   */
+  public function hasOgPermission(string $permissions, EntityInterface $group, AccountInterface $user): bool;
+
+  /**
    * Checks whether the user has at least one of the provided roles.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity

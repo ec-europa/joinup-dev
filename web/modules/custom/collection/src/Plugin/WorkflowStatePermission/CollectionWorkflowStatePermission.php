@@ -9,7 +9,10 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
+use Drupal\state_machine_permissions\StateMachinePermissionStringConstructor;
 use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -44,6 +47,13 @@ class CollectionWorkflowStatePermission extends PluginBase implements WorkflowSt
   protected $membershipManager;
 
   /**
+   * The workflow helper service.
+   *
+   * @var \Drupal\joinup_workflow\WorkflowHelperInterface
+   */
+  protected $workflowHelper;
+
+  /**
    * Constructs a CollectionWorkflowStatePermissions object.
    *
    * @param array $configuration
@@ -56,11 +66,14 @@ class CollectionWorkflowStatePermission extends PluginBase implements WorkflowSt
    *   The config factory.
    * @param \Drupal\og\MembershipManagerInterface $membershipManager
    *   The OG membership manager.
+   * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflowHelper
+   *   The workflow helper service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, MembershipManagerInterface $membershipManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, MembershipManagerInterface $membershipManager, WorkflowHelperInterface $workflowHelper) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->configFactory = $configFactory;
     $this->membershipManager = $membershipManager;
+    $this->workflowHelper = $workflowHelper;
   }
 
   /**
@@ -72,7 +85,8 @@ class CollectionWorkflowStatePermission extends PluginBase implements WorkflowSt
       $plugin_id,
       $plugin_definition,
       $container->get('config.factory'),
-      $container->get('og.membership_manager')
+      $container->get('og.membership_manager'),
+      $container->get('joinup_workflow.workflow_helper')
     );
   }
 
@@ -86,28 +100,13 @@ class CollectionWorkflowStatePermission extends PluginBase implements WorkflowSt
   /**
    * {@inheritdoc}
    */
-  public function isStateUpdatePermitted(AccountInterface $account, EntityInterface $entity, string $from_state, string $to_state): bool {
-    $allowed_conditions = $this->configFactory->get('collection.settings')->get('transitions');
-
+  public function isStateUpdatePermitted(AccountInterface $account, EntityInterface $entity, WorkflowInterface $workflow, string $from_state, string $to_state): bool {
     if ($account->hasPermission($entity->getEntityType()->getAdminPermission())) {
       return TRUE;
     }
 
-    // Check if the user has one of the allowed system roles.
-    $authorized_roles = isset($allowed_conditions[$to_state][$from_state]) ? $allowed_conditions[$to_state][$from_state] : [];
-    if (array_intersect($authorized_roles, $account->getRoles())) {
-      return TRUE;
-    }
-
-    // Do not allow the facilitator to publish changes if the collection has not
-    // already been published in the past.
-    if ($to_state === 'validated' && $from_state !== 'validated' && $found = array_search('rdf_entity-collection-facilitator', $authorized_roles) && !$entity->hasGraph('default')) {
-      unset($authorized_roles[$found]);
-    }
-
-    // Check if the user has one of the allowed group roles.
-    $membership = $this->membershipManager->getMembership($entity, $account->id());
-    return $membership && array_intersect($authorized_roles, $membership->getRolesIds());
+    $permission = StateMachinePermissionStringConstructor::constructGroupStateUpdatePermission($workflow, $from_state, $to_state);
+    return $account->hasPermission($permission) || $this->workflowHelper->hasOgPermission($permission, $entity, $account);
   }
 
 }

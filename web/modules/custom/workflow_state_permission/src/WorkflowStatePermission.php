@@ -6,6 +6,7 @@ namespace Drupal\workflow_state_permission;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 
 /**
  * Service to check if changing workflow states is permitted for a given user.
@@ -32,12 +33,12 @@ class WorkflowStatePermission implements WorkflowStatePermissionInterface {
   /**
    * {@inheritdoc}
    */
-  public function isStateUpdatePermitted(AccountInterface $account, EntityInterface $entity, string $from_state, string $to_state): bool {
+  public function isStateUpdatePermitted(AccountInterface $account, EntityInterface $entity, WorkflowInterface $workflow, string $from_state, string $to_state): bool {
     foreach ($this->pluginManager->getDefinitions() as $definition) {
       /** @var \Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface $plugin */
       $plugin = $this->pluginManager->createInstance($definition['id']);
       if ($plugin->applies($entity)) {
-        $result = $plugin->isStateUpdatePermitted($account, $entity, $from_state, $to_state);
+        $result = ($to_state !== '__new__') && $plugin->isStateUpdatePermitted($account, $entity, $workflow, $from_state, $to_state);
         // Stop iterating as soon as any plugin denies access.
         if (!$result) {
           return FALSE;

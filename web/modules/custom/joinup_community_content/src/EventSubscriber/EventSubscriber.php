@@ -163,7 +163,8 @@ class EventSubscriber implements EventSubscriberInterface {
     }
 
     $state = $event->getState();
-    $permitted = $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $event->getEntity(), $state, $state);
+    $workflow = $entity->get('field_state')->first()->getWorkflow();
+    $permitted = $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $event->getEntity(), $workflow, $state, $state);
     $access = AccessResult::forbiddenIf(!$permitted);
     $access->addCacheContexts(['user.roles', 'og_role']);
     $event->setAccess($access);

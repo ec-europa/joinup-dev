@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\state_machine_permissions;
 
 /**
- * Interface StateMachinePermissionsHelperInterface.
+ * Provides an interface for the state machine helper service.
  */
 interface StateMachinePermissionsHelperInterface {
 

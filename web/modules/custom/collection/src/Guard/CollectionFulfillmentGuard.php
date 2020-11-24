@@ -61,8 +61,7 @@ class CollectionFulfillmentGuard implements GuardInterface {
     }
 
     $from_state = $this->getState($entity);
-
-    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $from_state, $to_state);
+    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $workflow, $from_state, $to_state);
   }
 
   /**

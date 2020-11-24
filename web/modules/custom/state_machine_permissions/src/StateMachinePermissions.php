@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\state_machine_permissions;
 
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Dynamic permissions provider.
  */
-class StateMachinePermissions {
+class StateMachinePermissions implements ContainerInjectionInterface {
 
   use StringTranslationTrait;
 
@@ -20,9 +24,19 @@ class StateMachinePermissions {
 
   /**
    * Constructs a state machine permissions object.
+   *
+   * @param \Drupal\state_machine_permissions\StateMachinePermissionsHelperInterface $permissionsHelper
+   *   The permission helper service.
    */
-  public function __construct() {
-    $this->permissionsHelper = \Drupal::service('state_machine_permissions.helper');
+  public function __construct(StateMachinePermissionsHelperInterface $permissionsHelper) {
+    $this->permissionsHelper = $permissionsHelper;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static($container->get('state_machine_permissions.helper'));
   }
 
   /**
