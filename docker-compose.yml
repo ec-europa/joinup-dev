@@ -55,23 +55,23 @@ services:
     build:
       context: ./resources/docker/solr
     ports:
-     - "8982:8983"
+      - "8982:8983"
     entrypoint:
-     - docker-entrypoint.sh
-     - solr-precreate
-     - drupal_published
-     - "/opt/docker-solr/configsets/drupal"
+      - docker-entrypoint.sh
+      - solr-precreate
+      - drupal_published
+      - "/opt/docker-solr/configsets/drupal"
 
   solr_unpublished:
     build:
       context: ./resources/docker/solr
     ports:
-     - "8983:8983"
+      - "8983:8983"
     entrypoint:
-     - docker-entrypoint.sh
-     - solr-precreate
-     - drupal_unpublished
-     - "/opt/docker-solr/configsets/drupal"
+      - docker-entrypoint.sh
+      - solr-precreate
+      - drupal_unpublished
+      - "/opt/docker-solr/configsets/drupal"
 
 volumes:
   virtuoso:

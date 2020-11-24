@@ -1,27 +1,26 @@
-uuid: 645004cd-62d2-42db-9b1c-09ef67737a45
+uuid: 6bd00b90-6351-461c-b549-4488098bd35f
 langcode: en
 status: true
 dependencies:
   module:
+    - easme_covid19
     - joinup_core
   theme:
     - joinup_theme
-id: joinup_user_local_tasks
+id: covid19content
 theme: joinup_theme
 region: content
-weight: -24
+weight: -21
 provider: null
-plugin: local_tasks_block
+plugin: covid19_content
 settings:
-  id: local_tasks_block
-  label: 'User local actions tabs'
-  provider: core
+  id: covid19_content
+  label: 'Covid 19 content'
+  provider: easme_covid19
   label_display: '0'
-  primary: true
-  secondary: true
 visibility:
   request_route:
     id: request_route
-    routes: "user.login\nuser.pass\nuser.register"
+    routes: view.search.page_2
     negate: false
     context_mapping: {  }
