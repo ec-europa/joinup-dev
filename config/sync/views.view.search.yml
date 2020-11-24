@@ -345,6 +345,56 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: search_api_string
+        entity_created:
+          id: entity_created
+          table: search_api_index_published
+          field: entity_created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: between
+          value:
+            min: ''
+            max: ''
+            value: ''
+            type: date
+          group: 1
+          exposed: true
+          expose:
+            operator_id: entity_created_op
+            label: 'Created on'
+            description: ''
+            use_operator: false
+            operator: entity_created_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: created
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              licence_manager: '0'
+              anonymous: '0'
+              moderator: '0'
+              administrator: '0'
+              rdf_graph_manager: '0'
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: search_api_date
       sorts:
         search_api_relevance:
           id: search_api_relevance
@@ -429,6 +479,53 @@ display:
       defaults:
         cache: false
       exposed_block: true
+      display_description: ''
+      enabled: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - 'url.query_args:sort_by'
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
+        - 'search_api_list:published'
+  search:
+    display_plugin: page
+    id: search
+    display_title: Search
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: search
+      cache:
+        type: none
+      defaults:
+        cache: false
+      exposed_block: true
+      display_description: ''
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - 'url.query_args:sort_by'
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
+        - 'search_api_list:published'
+  shadow:
+    display_plugin: block
+    id: shadow
+    display_title: Block
+    position: 3
+    display_options:
+      display_extenders: {  }
     cache_metadata:
       max-age: -1
       contexts:

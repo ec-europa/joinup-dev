@@ -115,7 +115,7 @@ class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
    *   Response event.
    */
   public function setSearchData(AnalyticsEventInterface $event) {
-    if ($this->routeMatch->getRouteName() !== 'view.search.page_1') {
+    if ($this->routeMatch->getRouteName() !== 'view.search.search') {
       return;
     }
 

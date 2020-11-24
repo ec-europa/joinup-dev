@@ -321,7 +321,7 @@ function joinup_theme_preprocess_html(&$variables) {
   }
 
   // Set a variable that identifies the search page.
-  if ($route_name == 'view.search.page_1') {
+  if ($route_name == 'view.search.search') {
     $variables['is_search_page'] = TRUE;
   }
 }
@@ -424,7 +424,7 @@ function joinup_theme_preprocess_page(&$variables) {
   }
 
   // Set a variable that identifies the search page.
-  if ($route_name == 'view.search.page_1') {
+  if ($route_name == 'view.search.search') {
     $variables['is_search_page'] = TRUE;
   }
 }
@@ -578,7 +578,7 @@ function joinup_theme_preprocess_block(&$variables) {
       case 'entity.node.canonical':
       case 'asset_release.solution_asset_release.overview':
       case 'view.collections.page_1':
-      case 'view.search.page_1':
+      case 'view.search.search':
       case 'view.solutions.page_1':
       case 'view.content_overview.page_1':
       case 'entity.rdf_entity.member_overview':
@@ -876,7 +876,7 @@ function joinup_theme_preprocess_form(&$variables) {
   }
 
   // Get group parameter on the search page.
-  if ($variables['element']['#id'] == 'views-exposed-form-search-page-1') {
+  if ($variables['element']['#id'] == 'views-exposed-form-search-search') {
     $param = \Drupal::request()->get('f');
     if (isset($param[0])) {
       $id = str_replace('group:', '', $param[0], $count);
@@ -1423,7 +1423,7 @@ function joinup_theme_theme_suggestions_form_alter(array &$suggestions, array $v
   $suggestions[] = 'form__' . str_replace('-', '_', $variables['element']['#form_id']);
 
   // Add suggestion for search form in the header.
-  if ($variables['element']['#id'] == 'views-exposed-form-search-page-1') {
+  if ($variables['element']['#id'] == 'views-exposed-form-search-search') {
     $suggestions[] = 'form__joinup_exposed_search';
   }
 }
@@ -1596,7 +1596,7 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
   }
 
   // Add suggestion for search form in the header.
-  if ($form['#id'] == 'views-exposed-form-search-page-1') {
+  if ($form['#id'] == 'views-exposed-form-search-search') {
     $form['#theme'] = ['joinup_exposed_search'];
     $form['keys']['#extra_suggestion'] = 'joinup_exposed_search';
   }

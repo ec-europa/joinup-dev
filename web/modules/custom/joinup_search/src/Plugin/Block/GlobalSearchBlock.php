@@ -78,7 +78,7 @@ class GlobalSearchBlock extends BlockBase implements ContainerFactoryPluginInter
     $build['advanced_search'] = [
       '#type' => 'link',
       '#title' => $this->t('Advanced search'),
-      '#url' => Url::fromRoute('view.search.page_1'),
+      '#url' => Url::fromRoute('view.search.search'),
       '#attributes' => ['class' => ['advanced-search--header']],
     ];
 

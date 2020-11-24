@@ -14,9 +14,9 @@ theme: joinup_theme
 region: content_top
 weight: -17
 provider: null
-plugin: 'views_exposed_filter_block:search-page_1'
+plugin: 'views_exposed_filter_block:search-search'
 settings:
-  id: 'views_exposed_filter_block:search-page_1'
+  id: 'views_exposed_filter_block:search-search'
   label: ''
   provider: views
   label_display: '0'
@@ -24,6 +24,6 @@ settings:
 visibility:
   request_route:
     id: request_route
-    routes: view.search.page_1
+    routes: view.search.search
     negate: false
     context_mapping: {  }

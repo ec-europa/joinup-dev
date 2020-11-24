@@ -23,6 +23,6 @@ settings:
 visibility:
   request_route:
     id: request_route
-    routes: view.search.page_1
+    routes: view.search.search
     negate: false
     context_mapping: {  }
