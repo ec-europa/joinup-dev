@@ -7,7 +7,7 @@ dependencies:
 id: primaryadminactions
 theme: joinup_theme
 region: content
-weight: -23
+weight: -25
 provider: null
 plugin: local_actions_block
 settings:
