@@ -1,4 +1,4 @@
-@group-a
+@api @group-a
 Feature: User authentication
   In order to protect the integrity of the website
   As a product owner
@@ -21,43 +21,46 @@ Feature: User authentication
     Then I should see the heading "Sign in to continue"
 
     Examples:
-      | path                                                           |
-      | admin                                                          |
-      | admin/config                                                   |
-      | admin/config/search/redirect                                   |
-      | admin/content                                                  |
-      | admin/content/rdf                                              |
-      | admin/legal-notice                                             |
-      | admin/legal-notice/add                                         |
-      | admin/people                                                   |
-      | admin/reporting/distribution-downloads                         |
-      | admin/reporting/export-user-list                               |
-      | admin/reporting/group-administrators/rdf_entity/collection     |
-      | admin/reporting/group-administrators/rdf_entity/collection/csv |
-      | admin/reporting/solutions-by-licences                          |
-      | admin/reporting/solutions-by-type                              |
-      | admin/structure                                                |
-      | admin/structure/views                                          |
-      | dashboard                                                      |
-      | licence                                                        |
-      | licence/add                                                    |
-      | node                                                           |
-      | node/add                                                       |
-      | node/add/custom_page                                           |
-      | node/add/discussion                                            |
-      | node/add/document                                              |
-      | node/add/event                                                 |
-      | node/add/news                                                  |
-      | propose/challenge                                              |
-      | rdf_entity/add                                                 |
-      | rdf_entity/add/asset_distribution                              |
-      | rdf_entity/add/asset_release                                   |
-      | rdf_entity/add/collection                                      |
-      | rdf_entity/add/contact_information                             |
-      | rdf_entity/add/licence                                         |
-      | rdf_entity/add/owner                                           |
-      | rdf_entity/add/solution                                        |
-      | user/subscriptions                                             |
+      | path                                        |
+      | admin                                       |
+      | admin/config                                |
+      | admin/config/search/redirect                |
+      | admin/content                               |
+      | admin/content/rdf                           |
+      | admin/legal-notice                          |
+      | admin/legal-notice/add                      |
+      | admin/people                                |
+      | admin/reporting/distribution-downloads      |
+      | admin/reporting/export-user-list            |
+      | admin/reporting/group-administrators/export |
+      | admin/reporting/solutions-by-licences       |
+      | admin/reporting/solutions-by-type           |
+      | admin/structure                             |
+      | admin/structure/views                       |
+      | dashboard                                   |
+      | licence                                     |
+      | licence/add                                 |
+      | node/add                                    |
+      | node/add/custom_page                        |
+      | node/add/discussion                         |
+      | node/add/document                           |
+      | node/add/event                              |
+      | node/add/glossary                           |
+      | node/add/news                               |
+      | propose/challenge                           |
+      | propose/solution                            |
+      | rdf_entity/add                              |
+      | rdf_entity/add/asset_distribution           |
+      | rdf_entity/add/asset_release                |
+      | rdf_entity/add/collection                   |
+      | rdf_entity/add/contact_information          |
+      | rdf_entity/add/licence                      |
+      | rdf_entity/add/owner                        |
+      | rdf_entity/add/rdf_graph                    |
+      | rdf_entity/add/solution                     |
+      | rdf-graph                                   |
+      | rdf-graph/add                               |
+      | user/subscriptions                          |
 
   Scenario Outline: Anonymous user cannot access restricted non-HTML URLs.
     Given I am not logged in
@@ -68,7 +71,6 @@ Feature: User authentication
       | path                                       |
       | admin/reporting/distribution-downloads/csv |
 
-  @api
   Scenario Outline: Authenticated user can access pages they are authorized to
     Given I am logged in as a user with the "authenticated" role
     Then I visit "<path>"
@@ -80,49 +82,50 @@ Feature: User authentication
       | user               |
       | user/subscriptions |
 
-  @api
   Scenario Outline: Authenticated user cannot access site administration
     Given I am logged in as a user with the "authenticated" role
     When I go to "<path>"
     Then I should get an access denied error
 
     Examples:
-      | path                                                           |
-      | admin                                                          |
-      | admin/config                                                   |
-      | admin/content                                                  |
-      | admin/content/rdf                                              |
-      | admin/legal-notice                                             |
-      | admin/legal-notice/add                                         |
-      | admin/people                                                   |
-      | admin/reporting/distribution-downloads                         |
-      | admin/reporting/export-user-list                               |
-      | admin/reporting/group-administrators/rdf_entity/collection     |
-      | admin/reporting/group-administrators/rdf_entity/collection/csv |
-      | admin/reporting/solutions-by-licences                          |
-      | admin/reporting/solutions-by-type                              |
-      | admin/structure                                                |
-      | admin/structure/views                                          |
-      | dashboard                                                      |
-      | licence                                                        |
-      | licence/add                                                    |
-      | node                                                           |
-      | node/add                                                       |
-      | node/add/custom_page                                           |
-      | node/add/discussion                                            |
-      | node/add/document                                              |
-      | node/add/event                                                 |
-      | node/add/news                                                  |
-      | rdf_entity/add                                                 |
-      | rdf_entity/add/asset_distribution                              |
-      | rdf_entity/add/asset_release                                   |
-      | rdf_entity/add/collection                                      |
-      | rdf_entity/add/contact_information                             |
-      | rdf_entity/add/licence                                         |
-      | rdf_entity/add/owner                                           |
-      | rdf_entity/add/solution                                        |
+      | path                                        |
+      | admin                                       |
+      | admin/config                                |
+      | admin/content                               |
+      | admin/content/rdf                           |
+      | admin/legal-notice                          |
+      | admin/legal-notice/add                      |
+      | admin/people                                |
+      | admin/reporting/distribution-downloads      |
+      | admin/reporting/export-user-list            |
+      | admin/reporting/group-administrators/export |
+      | admin/reporting/solutions-by-licences       |
+      | admin/reporting/solutions-by-type           |
+      | admin/structure                             |
+      | admin/structure/views                       |
+      | dashboard                                   |
+      | propose/solution                            |
+      | licence                                     |
+      | licence/add                                 |
+      | node/add                                    |
+      | node/add/custom_page                        |
+      | node/add/discussion                         |
+      | node/add/document                           |
+      | node/add/event                              |
+      | node/add/glossary                           |
+      | node/add/news                               |
+      | rdf_entity/add                              |
+      | rdf_entity/add/asset_distribution           |
+      | rdf_entity/add/asset_release                |
+      | rdf_entity/add/collection                   |
+      | rdf_entity/add/contact_information          |
+      | rdf_entity/add/licence                      |
+      | rdf_entity/add/owner                        |
+      | rdf_entity/add/rdf_graph                    |
+      | rdf_entity/add/solution                     |
+      | rdf-graph                                   |
+      | rdf-graph/add                               |
 
-  @api
   Scenario Outline: Authenticated user cannot access restricted non-HTML URLs.
     Given I am logged in as a user with the "authenticated" role
     When I go to "<path>"
@@ -132,30 +135,27 @@ Feature: User authentication
       | path                                       |
       | admin/reporting/distribution-downloads/csv |
 
-  @api
   Scenario Outline: Moderator can access pages they are authorized to
     Given I am logged in as a user with the "moderator" role
     Then I visit "<path>"
 
     Examples:
-      | path                                                           |
-      | admin/people                                                   |
-      | admin/content/rdf                                              |
-      | admin/legal-notice                                             |
-      | admin/legal-notice/add                                         |
-      | admin/reporting/distribution-downloads                         |
-      | admin/reporting/distribution-downloads/csv                     |
-      | admin/reporting/export-user-list                               |
-      | admin/reporting/group-administrators/rdf_entity/collection     |
-      | admin/reporting/group-administrators/rdf_entity/collection/csv |
-      | admin/reporting/solutions-by-licences                          |
-      | admin/reporting/solutions-by-type                              |
-      | dashboard                                                      |
-      | licence                                                        |
-      | licence/add                                                    |
-      | propose/challenge                                              |
+      | path                                        |
+      | admin/people                                |
+      | admin/content/rdf                           |
+      | admin/legal-notice                          |
+      | admin/legal-notice/add                      |
+      | admin/reporting/distribution-downloads      |
+      | admin/reporting/distribution-downloads/csv  |
+      | admin/reporting/export-user-list            |
+      | admin/reporting/group-administrators/export |
+      | admin/reporting/solutions-by-licences       |
+      | admin/reporting/solutions-by-type           |
+      | dashboard                                   |
+      | licence                                     |
+      | licence/add                                 |
+      | propose/challenge                           |
 
-  @api
   Scenario Outline: Moderator cannot access restricted pages
     Given I am logged in as a user with the "moderator" role
     When I go to "<path>"
@@ -169,12 +169,13 @@ Feature: User authentication
       | admin/content                      |
       | admin/structure                    |
       | admin/structure/views              |
-      | node                               |
+      | propose/solution                   |
       | node/add                           |
       | node/add/custom_page               |
       | node/add/discussion                |
       | node/add/document                  |
       | node/add/event                     |
+      | node/add/glossary                  |
       | node/add/news                      |
       | rdf_entity/add                     |
       | rdf_entity/add/asset_distribution  |
@@ -183,9 +184,11 @@ Feature: User authentication
       | rdf_entity/add/contact_information |
       | rdf_entity/add/licence             |
       | rdf_entity/add/owner               |
+      | rdf_entity/add/rdf_graph           |
       | rdf_entity/add/solution            |
+      | rdf-graph                          |
+      | rdf-graph/add                      |
 
-  @api
   Scenario Outline: Administrator can access pages they are authorized to
     Given I am logged in as a user with the "administrator" role
     Then I visit "<path>"
@@ -197,7 +200,6 @@ Feature: User authentication
       | admin/reporting/distribution-downloads/csv |
       | challenges                                 |
 
-  @api
   Scenario Outline: Administrator cannot access pages intended for site building and development
     Given I am logged in as a user with the "administrator" role
     When I go to "<path>"
@@ -213,7 +215,6 @@ Feature: User authentication
       | admin/legal-notice/add             |
       | admin/people                       |
       | admin/structure                    |
-      | node                               |
       | node/add                           |
       | node/add/custom_page               |
       | node/add/discussion                |
@@ -227,4 +228,7 @@ Feature: User authentication
       | rdf_entity/add/contact_information |
       | rdf_entity/add/licence             |
       | rdf_entity/add/owner               |
+      | rdf_entity/add/rdf_graph           |
       | rdf_entity/add/solution            |
+      | rdf-graph                          |
+      | rdf-graph/add                      |

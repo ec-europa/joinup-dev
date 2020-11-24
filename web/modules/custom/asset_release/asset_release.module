@@ -14,6 +14,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\asset_release\Entity\AssetRelease;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\SparqlGraphInterface;
@@ -26,6 +27,15 @@ use Drupal\sparql_entity_storage\SparqlGraphInterface;
  */
 function asset_release_entity_type_alter(array &$entity_types) {
   $entity_types['rdf_entity']->setLinkTemplate('solution-releases', '/rdf_entity/{rdf_entity}/releases');
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function asset_release_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['rdf_entity']['asset_release'])) {
+    $bundles['rdf_entity']['asset_release']['class'] = AssetRelease::class;
+  }
 }
 
 /**
@@ -125,7 +135,7 @@ function asset_release_preprocess_rdf_entity(&$variables) {
   elseif ($parent_solution) {
     // @todo Find a better way of marking the latest release that doesn't
     //   involve performing a database query in the theme layer.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
     $latest_release = solution_get_latest_release($parent_solution);
     if ($latest_release && $latest_release->id() === $rdf_entity->id()) {
       $is_latest_release = TRUE;

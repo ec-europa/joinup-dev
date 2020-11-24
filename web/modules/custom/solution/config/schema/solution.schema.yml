@@ -2,6 +2,39 @@ solution.settings:
   type: config_object
   label: 'Solution workflow permission settings'
   mapping:
+    # The array of allowed conditions for solution workflow transitions.
+    # Format of array:
+    # @code
+    # [
+    #   <target state> => [
+    #     <source state> => [
+    #       <role1>
+    #       <role2>
+    #       .
+    #       .
+    #     ]
+    #   ]
+    # ]
+    # @endcode
+    #
+    # The array is a three dimensions array. The first level is the target state
+    # the entity transits to. Each target state is an array of allowed source
+    # states which in every check, is the current state of the entity. Finally,
+    # the source states are arrays of roles that are allowed to perform this
+    # action.
+    #
+    # The reverse indexing here (source states keyed by the target state) is to
+    # follow the state_machines module logic of indexing states.
+    #
+    # For creating a solution, we also allow the role
+    # rdf_entity-collection-facilitator which we will filter in the Guard class
+    # to be the facilitator of the current collection. For all the other states,
+    # the solution facilitator is responsible.
+    #
+    # For example, a user who is a collection facilitator, can create a solution
+    # and put it either in draft, or in proposed state. But if he selects
+    # 'draft', then he can move it to a 'proposed' state only as a solution
+    # facilitator.
     transitions:
       type: sequence
       label: 'Allowed transitions'

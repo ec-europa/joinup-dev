@@ -26,6 +26,8 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\solution\Entity\Solution;
+use Drupal\solution\Entity\SolutionInterface;
 use Drupal\solution\SolutionAffiliationFieldItemList;
 use Drupal\solution\SolutionReleasesAndDistributionsFieldItemList;
 use Drupal\sparql_entity_storage\SparqlGraphInterface;
@@ -93,6 +95,15 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
   // A distribution can be referenced only by a single parent.
   if (!empty($fields['field_is_distribution'])) {
     $fields['field_is_distribution']->addConstraint('DistributionSingleParent');
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function solution_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['rdf_entity']['solution'])) {
+    $bundles['rdf_entity']['solution']['class'] = Solution::class;
   }
 }
 
@@ -249,6 +260,21 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
         '#url' => Url::fromRoute('asset_release.solution_asset_release.overview', [
           'rdf_entity' => $solution->id(),
         ]),
+        '#attributes' => [
+          'role' => 'button',
+          'class' => [
+            // @todo Move the Material Design classes in the theme layer.
+            // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5731
+            'featured__form-button',
+            'button',
+            'button--blue-light',
+            'mdl-button',
+            'mdl-js-button',
+            'mdl-button--raised',
+            'mdl-js-ripple-effect',
+            'mdl-button--accent',
+          ],
+        ],
         '#cache' => [
           // The 'group_header_block' block cache will have different versions
           // for the 'asset_release.solution_asset_release.overview' route
@@ -268,7 +294,7 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
   // Attach the download total of all distributions in this solution.
   // @todo Add the `og-group-content` cache tag because the downloads are
   //   contained in the distribution entities which is group content.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5200
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5200
   if ($display->getComponent('download_total')) {
     $total = 0;
     if (!$solution->isNew()) {
@@ -307,7 +333,7 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
 
   // Show the collection the solution belongs to. A solution can be affiliated
   // to multiple collections, but for now we show only the first one.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3635
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3635
   if ($display->getComponent('collections') && !$solution->get('collection')->isEmpty()) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
     $collection = $solution->get('collection')->first()->entity;
@@ -457,7 +483,7 @@ function solution_rdf_entity_presave(RdfInterface $entity) {
   if (in_array($state, ['draft', 'proposed', 'needs_update', 'blacklisted'])) {
     $entity->set('graph', 'draft');
   }
-  elseif (in_array($state, ['validated', 'deletion_request'])) {
+  elseif ($state === 'validated') {
     $entity->set('graph', SparqlGraphInterface::DEFAULT);
   }
   elseif (empty($state)) {
@@ -546,16 +572,45 @@ function solution_rdf_entity_update(EntityInterface $entity) {
     return;
   }
 
+  assert($entity instanceof SolutionInterface);
+
   // @todo: Maybe we can avoid the attempt to delete from graph if there is no
   // transition made. This should move to an event subscriber.
-  $state = $entity->field_is_state->value;
-  if (in_array($state, ['validated', 'deletion_request'])) {
+  $state = $entity->getWorkflowState();
+  if ($state === 'validated') {
     \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'draft');
   }
   if ($state == 'blacklisted') {
     \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'default');
   }
   solution_invalidate_collection($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * When a published solution is deleted, the parent collections should have
+ * their changed timestamp updated.
+ */
+function solution_rdf_entity_delete(RdfInterface $solution) {
+  if (!$solution instanceof SolutionInterface || $solution->getWorkflowState() !== 'validated') {
+    return;
+  }
+
+  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  $ids = $storage->getQuery()
+    ->condition('rid', 'collection')
+    ->condition('field_ar_affiliates', $solution->id())
+    ->execute();
+  if ($ids) {
+    // Touch the parent collections in order to update their changed timestamp.
+    $request_time = \Drupal::time()->getRequestTime();
+    /** @var \Drupal\rdf_entity\RdfInterface $collection */
+    foreach ($storage->loadMultiple($ids) as $collection) {
+      $collection->skip_notification = TRUE;
+      $collection->setChangedTime($request_time)->save();
+    }
+  }
 }
 
 /**
@@ -578,25 +633,15 @@ function solution_get_latest_release(RdfInterface $solution) {
       ->condition('rid', 'asset_release')
       ->condition('field_isr_is_version_of', $solution->id())
       ->sort('created', 'DESC')
+      ->range(0, 1)
       ->execute();
 
     $cache[$solution->id()] = NULL;
     if (!empty($ids)) {
-      // @todo: Sorting is not yet working in SPARQL, we're fetching all results
-      // and doing the sorting in PHP right now. Once sorting is working we
-      // should limit the result set to 1 item.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
-      $releases = Rdf::loadMultiple($ids);
-      usort($releases, function ($release1, $release2) {
-        $ct1 = $release1->getCreatedTime();
-        $ct2 = $release2->getCreatedTime();
-        if (empty($ct1) || empty($ct2) || $ct1 == $ct2) {
-          return 0;
-        }
-        return ($ct1 < $ct2) ? 1 : -1;
-      });
-
-      $cache[$solution->id()] = reset($releases);
+      $id = key($ids);
+      if ($release = Rdf::load($id)) {
+        $cache[$solution->id()] = $release;
+      }
     }
   }
 

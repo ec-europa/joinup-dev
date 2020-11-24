@@ -1,0 +1,29 @@
+uuid: 39ad2210-82f0-4617-ab18-ded44e7e247c
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.category
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - joinup_theme
+id: category
+theme: joinup_theme
+region: content
+weight: -22
+provider: null
+plugin: 'facet_block:category'
+settings:
+  id: 'facet_block:category'
+  label: 'EIF category'
+  provider: facets
+  label_display: '0'
+  block_id: category
+visibility:
+  request_route:
+    id: request_route
+    routes: view.eif_recommendation.page
+    negate: false
+    context_mapping: {  }

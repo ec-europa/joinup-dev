@@ -6,29 +6,33 @@ Feature: Asset release "delete" functionality.
 
   Background:
     Given the following owner:
-      | name               |
+      | name              |
       | Yet another owner |
     And the following contact:
-      | name        | Yet another contact |
+      | name        | Yet another contact           |
       | email       | yetanothercontact@example.com |
-      | Website URL | http://example.com         |
+      | Website URL | http://example.com            |
+    And the following collection:
+      | title | Yet another collection |
+      | state | validated              |
     And the following solution:
-      | title               | Yet another solution |
-      | description         | Bored of finding new texts     |
-      | documentation       | text.pdf                |
+      | title               | Yet another solution       |
+      | description         | Bored of finding new texts |
+      | documentation       | text.pdf                   |
       | owner               | Yet another owner          |
       | contact information | Yet another contact        |
-      | state               | validated               |
-    And the following release:
-      | title               | Yet another release |
-      | description         | A sample release           |
-      | documentation       | text.pdf                   |
-      | release number      | 1                          |
-      | release notes       | Changed release            |
-      | is version of       | Yet another solution |
-      | owner               | Yet another owner       |
-      | contact information | Yet another contact          |
+      | collection          | Yet another collection     |
       | state               | validated                  |
+    And the following release:
+      | title               | Yet another release  |
+      | description         | A sample release     |
+      | documentation       | text.pdf             |
+      | release number      | 1                    |
+      | release notes       | Changed release      |
+      | is version of       | Yet another solution |
+      | owner               | Yet another owner    |
+      | contact information | Yet another contact  |
+      | state               | validated            |
 
   Scenario: "Delete" action should redirect users to the parent solution.
     # Navigating through UI should redirect the user to the solution homepage.
@@ -36,4 +40,4 @@ Feature: Asset release "delete" functionality.
     And I go to the "Yet another release" release edit form
     And I click "Delete"
     And I press "Delete"
-    Then I should be on "/solution/yet-another-solution"
+    Then I should be on "/collection/yet-another-collection/solution/yet-another-solution"

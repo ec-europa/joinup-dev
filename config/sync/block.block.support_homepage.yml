@@ -12,7 +12,7 @@ dependencies:
 id: support_homepage
 theme: joinup_theme
 region: featured
-weight: -18
+weight: -22
 provider: null
 plugin: 'system_menu_block:support'
 settings:

@@ -20,6 +20,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_short_id
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
@@ -51,6 +52,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: Moderation
+      region: content
     group_owner_contact_information:
       children:
         - field_ar_owner
@@ -68,6 +70,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Owner/Contact Information'
+      region: content
 id: rdf_entity.collection.about
 targetEntityType: rdf_entity
 bundle: collection
@@ -169,6 +172,7 @@ hidden:
   field_keywords: true
   field_newsletter: true
   field_policy_domain: true
+  field_short_id: true
   field_site_featured: true
   field_site_pinned: true
   field_spatial_coverage: true

@@ -239,7 +239,7 @@ Feature: Pinning content to the front page
 
     # Todo: the following test fails due to an infrastructure problem on CPHP.
     #   It should be enabled again after moving to the new CI infrastructure.
-    # Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5763
+    # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5763
     # Then I should see the following tiles in the correct order:
     # | Some low visit news  |
     # | D minor              |

@@ -6,25 +6,29 @@ services:
     ports:
       - "8080:80"
     volumes:
+      - ~/.ssh:/root/.ssh
       - .:/var/www/html
       - ./build.docker.main.xml:/var/www/html/build.xml
+    env_file:
+      - .env.dist
     environment:
       DOCUMENT_ROOT: "/var/www/html/web"
       PHP_XDEBUG_ENABLED: "1"
       PHP_IDE_CONFIG: "serverName=Docker"
       PHP_SENDMAIL_PATH: "/usr/sbin/sendmail -t -i -S mail:1025"
 
-  gulp:
-    image: huli/gulp
-    volumes:
-      - $PWD/web/themes/joinup:/srv
-    working_dir: /srv/prototype
-    entrypoint:
-      - /entrypoint.sh
-      - default
+#  gulp:
+#    image: huli/gulp
+#    volumes:
+#      - $PWD/web/themes/joinup:/srv
+#    working_dir: /srv/prototype
+#    entrypoint:
+#      - /entrypoint.sh
+#      - default
 
   mysql:
     image: mysql:5.6
+    command: --max_allowed_packet=32505856
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "no"
       MYSQL_USER: 'db_user'
@@ -36,8 +40,8 @@ services:
     environment:
       - SPARQL_UPDATE=true
       - DBA_PASSWORD=dba
-    volumes:
-      - "virtuoso:/data"
+#    volumes:
+#      - "virtuoso:/data"
     ports:
       - "8890:8890"
 
@@ -80,5 +84,5 @@ services:
      - drupal_unpublished
      - "/opt/docker-solr/configsets/drupal"
 
-volumes:
-  virtuoso:
+#volumes:
+#  virtuoso:

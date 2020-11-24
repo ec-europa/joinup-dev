@@ -343,8 +343,12 @@ trait TraversingTrait {
       'My challenges content' => 'collection_my_content',
       'My content' => 'content_my_content',
       'Event date' => 'event_date',
+      'EIF recommendations' => 'category',
       'Collection event date' => 'collection_event_type',
       'Content types' => 'type',
+      'eif principle' => 'principle',
+      'eif interoperability layer' => 'interoperability_layer',
+      'eif conceptual model' => 'conceptual_model',
     ];
 
     if (!isset($mappings[$alias])) {
@@ -410,6 +414,7 @@ trait TraversingTrait {
    *   The date or time component element.
    */
   protected function findDisabledField(string $label): ?NodeElement {
+    /** @var \Behat\Mink\Element\DocumentElement $page */
     $page = $this->getSession()->getPage();
     // The *[self::div|self::fieldset] is because ief sets the class 'form-item'
     // in a fieldset rather than a div.
@@ -419,6 +424,10 @@ trait TraversingTrait {
       // by setting the class 'form-disabled' to the wrapper div and not in the
       // input.
       $element = $page->find('xpath', "//div[contains(normalize-space(@class), 'form-disabled') and contains(., '{$label}')]");
+    }
+    if (!$element) {
+      // Try again to find a button.
+      $element = $page->findButton($label);
     }
     return $element;
   }

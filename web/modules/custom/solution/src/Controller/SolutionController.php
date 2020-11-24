@@ -60,9 +60,9 @@ class SolutionController extends ControllerBase {
       return AccessResult::neutral();
     }
 
-    // Users with 'administer group' permission should have access since this
-    // page can only be called from within a group.
-    if ($user->hasPermission('administer group')) {
+    // Users with 'administer organic groups' permission should have access
+    // since this page can only be called from within a group.
+    if ($user->hasPermission('administer organic groups')) {
       return AccessResult::allowed();
     }
 

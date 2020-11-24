@@ -51,20 +51,6 @@ class ScreenshotContext extends RawMinkContext {
   protected $s3Bucket;
 
   /**
-   * The key to use to authenticate with Amazon S3.
-   *
-   * @var string
-   */
-  protected $s3Key;
-
-  /**
-   * The secret to use to authenticate with Amazon S3.
-   *
-   * @var string
-   */
-  protected $s3Secret;
-
-  /**
    * Constructs a new ScreenshotContext context.
    *
    * @param string|null $localDir
@@ -79,22 +65,14 @@ class ScreenshotContext extends RawMinkContext {
    * @param string|null $s3Bucket
    *   Optional name of the Amazon S3 bucket where screenshots will be uploaded.
    *   If omitted, the screenshots will not be uploaded to AWS S3.
-   * @param string|null $s3Key
-   *   The key to use to authenticate with Amazon S3. If omitted, the key will
-   *   be taken from the environment variables.
-   * @param string|null $s3Secret
-   *   The secret to use to authenticate with Amazon S3. If omitted, the secret
-   *   will be taken from the environment variables.
    *
    * @see tests/behat.yml.dist
    */
-  public function __construct(?string $localDir = NULL, ?string $s3Dir = NULL, ?string $s3Region = NULL, ?string $s3Bucket = NULL, ?string $s3Key = NULL, ?string $s3Secret = NULL) {
+  public function __construct(?string $localDir = NULL, ?string $s3Dir = NULL, ?string $s3Region = NULL, ?string $s3Bucket = NULL) {
     $this->localDir = $localDir;
     $this->s3Dir = $s3Dir;
     $this->s3Region = $s3Region;
     $this->s3Bucket = $s3Bucket;
-    $this->s3Key = $s3Key;
-    $this->s3Secret = $s3Secret;
   }
 
   /**
@@ -296,19 +274,10 @@ class ScreenshotContext extends RawMinkContext {
    *   The client.
    */
   protected function getS3Client(): S3ClientInterface {
-    $options = [
+    return new S3Client([
       'version' => 'latest',
       'region' => $this->s3Region,
-    ];
-    // If not set, credentials will be retrieved from the environment.
-    // @see \Aws\Credentials\CredentialProvider
-    if (!empty($this->s3Key) && !empty($this->s3Secret)) {
-      $options['credentials'] = [
-        'key' => $this->s3Key,
-        'secret' => $this->s3Secret,
-      ];
-    }
-    return new S3Client($options);
+    ]);
   }
 
 }

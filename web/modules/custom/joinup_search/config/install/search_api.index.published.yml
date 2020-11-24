@@ -3,6 +3,8 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_event_agenda
+    - field.storage.node.field_paragraphs_body
+    - field.storage.paragraph.field_body
     - field.storage.node.body
     - field.storage.node.field_event_date
     - field.storage.node.field_news_headline
@@ -33,11 +35,14 @@ dependencies:
     - search_api.server.solr_published
   module:
     - node
+    - paragraphs
     - publication_date
     - meta_entity
     - rdf_entity
     - user
     - search_api
+    - asset_distribution
+    - custom_page
     - joinup_search
     - search_api_solr
 id: published
@@ -367,6 +372,17 @@ field_settings:
       fields:
         - 'entity:node/field_policy_domain'
         - 'entity:rdf_entity/field_policy_domain'
+  processed:
+    label: 'Body » Paragraph » Body » Processed text'
+    datasource_id: 'entity:node'
+    property_path: 'field_paragraphs_body:entity:field_body:processed'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_paragraphs_body
+        - field.storage.paragraph.field_body
+      module:
+        - paragraphs
   published_at:
     label: 'Published on'
     datasource_id: 'entity:node'
@@ -507,7 +523,7 @@ processor_settings:
       h3: 2
       strong: 2
     weights:
-      preprocess_index: -15
+      preprocess_index: -43
       preprocess_query: -15
   ignorecase:
     all_fields: false
@@ -533,13 +549,21 @@ processor_settings:
       - label
       - title
     weights:
-      preprocess_index: -50
+      preprocess_index: -48
       preprocess_query: -50
+  include_custom_page_content:
+    weights:
+      preprocess_index: -49
+  index_distribution_data:
+    weights:
+      preprocess_index: -50
   joinup_entity_published_revision: {  }
   joinup_entity_status:
     inverse: false
   rendered_item: {  }
-  solr_date_range: {  }
+  solr_date_range:
+    weights:
+      preprocess_index: 0
   stopwords:
     all_fields: false
     fields:
@@ -595,7 +619,7 @@ processor_settings:
       - will
       - with
     weights:
-      preprocess_index: -47
+      preprocess_index: -45
       preprocess_query: -47
   tokenizer:
     all_fields: false
@@ -627,7 +651,7 @@ processor_settings:
     overlap_cjk: 1
     minimum_word_size: '3'
     weights:
-      preprocess_index: -49
+      preprocess_index: -47
       preprocess_query: -49
   transliteration:
     all_fields: false
@@ -655,7 +679,7 @@ processor_settings:
       - label
       - title
     weights:
-      preprocess_index: -48
+      preprocess_index: -46
       preprocess_query: -48
   type_boost:
     boosts:
@@ -677,7 +701,7 @@ processor_settings:
       'entity:user':
         datasource_boost: !!float 0
     weights:
-      preprocess_index: 0
+      preprocess_index: -42
 tracker_settings:
   default:
     indexing_order: fifo

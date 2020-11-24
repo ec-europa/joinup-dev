@@ -1,0 +1,11 @@
+uuid: 33e1581e-52ba-40dc-a9dc-ba55050903cc
+langcode: en
+status: true
+dependencies: {  }
+third_party_settings:
+  rdf_taxonomy:
+    locked: false
+name: 'EIF Recommendation'
+vid: eif_recommendation
+description: 'Terms that represent a recommendation of the EIF Toolbox.'
+weight: 0

@@ -83,7 +83,7 @@ class AssetReleaseController extends ControllerBase {
       throw new NotFoundHttpException();
     }
 
-    return $this->ogAccess->userAccessEntity('create', $this->createNewAssetRelease($rdf_entity), $account);
+    return $this->ogAccess->userAccessEntityOperation('create', $this->createNewAssetRelease($rdf_entity), $account);
   }
 
   /**

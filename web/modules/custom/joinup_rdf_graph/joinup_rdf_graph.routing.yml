@@ -1,0 +1,18 @@
+joinup_rdf_graph.add:
+  path: /rdf-graph/add
+  defaults:
+    _title: Add RDF graph
+    _controller: Drupal\rdf_entity\Controller\RdfController::add
+    rdf_type: rdf_graph
+  requirements:
+    _entity_create_access: rdf_entity:rdf_graph
+
+joinup_rdf_graph.collection:
+  path: 'rdf-graph'
+  defaults:
+    _controller: Drupal\joinup_rdf_graph\Controller\RdfGraphCollectionController::collection
+    _title: 'RDF graphs'
+  requirements:
+    _permission: 'edit rdf_graph rdf entity'
+  options:
+    _admin_route: TRUE

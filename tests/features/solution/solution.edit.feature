@@ -47,7 +47,7 @@ Feature: Solution editing.
     And I attach the file "banner.jpg" to "Banner"
     And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
     And I select "EU and European Policies" from "Domains"
-    And I select "Product" from "Solution type"
+    And I select "Citizen" from "Solution type"
 
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
@@ -60,7 +60,7 @@ Feature: Solution editing.
     And I should see the link "Edit"
     When I go to the "Solution A" solution edit form
     Then I should see the heading "Edit Solution Solution A"
-    Then the fields "Logo, Banner, Upload a new file or enter a URL, Geographical coverage, Keywords, Related Solutions, Status, Languages, Landing page, Metrics page" should be correctly ordered in the region "Management solution vertical tab"
+    Then the fields "Logo, Banner, Upload a new file or enter a URL, Geographical coverage, Keywords, Related solutions, Status, Languages, Landing page, Metrics page" should be correctly ordered in the region "Management solution vertical tab"
     Then the fields "Title, Description, Contact information, Domains, Owner, Solution type, Moderated, Content creation" should be correctly ordered in the region "Main solution vertical tab"
 
     And the following fields should not be present "Issue tracker, Wiki, Langcode, Translation"
@@ -94,7 +94,7 @@ Feature: Solution editing.
       | contact information | Seward Shawn  |
       | owner               | Acme inc.     |
       | state               | validated     |
-      | solution type       | Product       |
+      | solution type       | Citizen       |
     When I am logged in as a facilitator of the "Solution B" solution
     And I go to the homepage of the "Solution B" solution
     Then I should see the link "Edit"

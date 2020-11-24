@@ -11,7 +11,7 @@ dependencies:
 id: support
 theme: joinup_theme
 region: header
-weight: -18
+weight: -21
 provider: null
 plugin: 'system_menu_block:support'
 settings:

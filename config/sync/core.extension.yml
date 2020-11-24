@@ -8,13 +8,13 @@ module:
   breakpoint: 0
   cached_computed_field: 0
   cas: 0
+  cas_account_link: 0
   cas_attributes: 0
   changed_fields: 0
   ckeditor: 0
   collection: 0
   comment: 0
   config: 0
-  config_filter: 0
   config_ignore: 0
   config_readonly: 0
   contact_form: 0
@@ -29,6 +29,7 @@ module:
   dblog: 0
   diff: 0
   digital_size_formatter: 0
+  dpsi: 0
   dynamic_entity_reference: 0
   dynamic_page_cache: 0
   easme_covid19: 0
@@ -38,11 +39,13 @@ module:
   email_registration: 0
   embed_block: 0
   entity_legal: 0
+  entity_reference_revisions: 0
   error_page: 0
   external_links_footer: 0
   facets: 0
   field: 0
   field_group: 0
+  field_permissions: 0
   file: 0
   file_url: 0
   filter: 0
@@ -57,6 +60,7 @@ module:
   inline_entity_form: 0
   isa2_analytics: 0
   joinup_bundle_class: 0
+  joinup_collection: 0
   joinup_comment: 0
   joinup_community_content: 0
   joinup_core: 0
@@ -71,21 +75,26 @@ module:
   joinup_invite: 0
   joinup_legal: 0
   joinup_licence: 0
+  joinup_material_design: 0
   joinup_menu: 0
   joinup_news: 0
   joinup_newsletter: 0
   joinup_notification: 0
+  joinup_paragraphs: 0
   joinup_rdf: 0
+  joinup_rdf_graph: 0
   joinup_rss: 0
   joinup_search: 0
   joinup_seo: 0
   joinup_sparql: 0
   joinup_stats: 0
   joinup_subscription: 0
+  joinup_tour: 0
   joinup_user: 0
   joinup_validation: 0
   joinup_video: 0
   joinup_workflow: 0
+  json_field: 0
   language: 0
   layout_discovery: 0
   link: 0
@@ -115,6 +124,7 @@ module:
   options: 0
   owner: 0
   page_cache: 0
+  paragraphs_type_permissions: 0
   password_policy: 0
   password_policy_character_types: 0
   password_policy_characters: 0
@@ -144,6 +154,7 @@ module:
   serialization: 0
   simple_sitemap: 0
   simplenews: 0
+  site_alert: 0
   smart_trim: 0
   social_media_links: 0
   social_media_links_field: 0
@@ -166,8 +177,10 @@ module:
   video_embed_field: 0
   video_embed_wysiwyg: 0
   view_unpublished: 0
+  views_autosubmit: 0
   views_bulk_operations: 0
   views_data_export: 0
+  whats_new: 0
   workflow_state_permission: 0
   menu_admin_per_menu: 1
   menu_link_content: 1
@@ -175,6 +188,7 @@ module:
   content_translation: 10
   externalauth: 10
   views: 10
+  paragraphs: 11
   publication_date: 99
   joinup: 1000
   joinup_debug: 1001

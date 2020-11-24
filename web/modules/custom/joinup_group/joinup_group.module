@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains the main functionality of Joinup Group module.
+ * Hook implementations for the Joinup Group module.
  */
 
 declare(strict_types = 1);
@@ -10,15 +10,20 @@ declare(strict_types = 1);
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
+use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_group\Event\GroupMenuLinksEvent;
 use Drupal\joinup_group\Form\RdfDeleteForm;
 use Drupal\joinup_group\JoinupGroupHelper;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\og\Og;
+use Drupal\og\OgAccess;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
@@ -29,6 +34,21 @@ use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\Plugin\views\query\Sql;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function joinup_group_entity_bundle_field_info_alter(array &$fields, EntityTypeInterface $entity_type, string $bundle): void {
+  if ($entity_type->id() === 'rdf_entity' && in_array($bundle, JoinupGroupHelper::GROUP_BUNDLES)) {
+    if (!empty($fields['field_short_id'])) {
+      /** @var \Drupal\field\Entity\FieldConfig[] $fields */
+      $fields['field_short_id']->addPropertyConstraints('value', [
+        'Regex' => ['pattern' => '/^[a-z0-9-]{4,26}$/'],
+      ]);
+      $fields['field_short_id']->addConstraint('UniqueShortIdInsensitive');
+    }
+  }
+}
 
 /**
  * Implements hook_preprocess_page().
@@ -73,14 +93,24 @@ function joinup_group_entity_type_alter(array &$entity_types) {
 function joinup_group_form_rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   /** @var \Drupal\rdf_entity\Form\RdfForm $form_object */
   $form_object = $form_state->getFormObject();
-  /** @var \Drupal\rdf_entity\RdfInterface $rdf */
-  $rdf = $form_object->getEntity();
+  /** @var \Drupal\rdf_entity\RdfInterface $entity */
+  $entity = $form_object->getEntity();
 
   // Add submit callback when the current bundle is in the list and when we are
   // in an affected operation type.
   $operation_types = ['add', 'default', 'propose'];
-  if (JoinupGroupHelper::isGroup($rdf) && in_array($form_object->getOperation(), $operation_types)) {
+  if (JoinupGroupHelper::isGroup($entity) && in_array($form_object->getOperation(), $operation_types)) {
     $form['actions']['submit']['#submit'][] = 'joinup_group_propose_message_submit';
+  }
+
+  if (JoinupGroupHelper::isGroup($entity)) {
+    // If the entity has been published, only moderators can edit the short ID.
+    // @todo Implement the EntityPublishedInterface for collections and
+    //   solutions once we have the bundle classes in.
+    $has_published_version = $entity->hasGraph('default');
+    if (isset($form['field_short_id']) && $has_published_version && !\Drupal::currentUser()->hasPermission('edit short id after publication')) {
+      $form['field_short_id']['widget'][0]['value']['#attributes']['disabled'] = 'disabled';
+    }
   }
 }
 
@@ -135,49 +165,27 @@ function joinup_group_entity_graph_access(EntityInterface $entity, string $opera
 /**
  * Implements hook_ENTITY_TYPE_insert() for RDF entities.
  */
-function joinup_group_rdf_entity_insert(RdfInterface $entity): void {
-  // When a collection or solution is created, create a new navigation menu and
-  // associate it with the new collection or solution. This menu can be used to
-  // link to custom pages, member overviews, an about page etc.
-  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && in_array($entity->bundle(), ['collection', 'solution'])) {
-    $values = [
-      'type' => 'navigation',
-      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $entity->id(),
-    ];
-    $og_menu_instance = OgMenuInstance::create($values);
-    $og_menu_instance->save();
-
-    // Automatically add a link to the overview and about pages of the
-    // collection entity.
-    $menu_name = 'ogmenu-' . $og_menu_instance->id();
-    $link = MenuLinkContent::create([
-      'title' => t('Overview'),
-      'menu_name' => $menu_name,
-      'link' => ['uri' => $entity->toUrl()->toUriString()],
-      'weight' => -10,
-    ]);
-    $link->save();
-
-    $link = MenuLinkContent::create([
-      'title' => t('Members'),
-      'menu_name' => $menu_name,
-      'link' => ['uri' => $entity->toUrl('member-overview')->toUriString()],
-      'weight' => -9,
-    ]);
-    $link->save();
-
-    $link = MenuLinkContent::create([
-      'title' => t('About'),
-      'menu_name' => $menu_name,
-      'link' => ['uri' => $entity->toUrl('about-page')->toUriString()],
-      'weight' => -8,
-    ]);
-    $link->save();
+function joinup_group_rdf_entity_insert(RdfInterface $group): void {
+  if (!JoinupGroupHelper::isGroup($group)) {
+    return;
   }
 
-  // Invalidate all list caches tagged with the affected bundle so the that
-  // they will be regenerated.
-  Cache::invalidateTags(["rdf_entity_list:{$entity->bundle()}"]);
+  // When a group is created, create a new navigation menu and associate it with
+  // the new collection or solution. This menu can be used to link to custom
+  // pages, member overviews, an about page, etc.
+  $og_menu_instance = OgMenuInstance::create([
+    'type' => 'navigation',
+    OgGroupAudienceHelperInterface::DEFAULT_FIELD => $group->id(),
+  ]);
+  $og_menu_instance->save();
+  $menu_name = 'ogmenu-' . $og_menu_instance->id();
+
+  /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher */
+  $event_dispatcher = \Drupal::service('event_dispatcher');
+
+  // Allow third-party to add group menu links.
+  $event = new GroupMenuLinksEvent($group, $menu_name, \Drupal::entityTypeManager());
+  $event_dispatcher->dispatch($event::ADD_LINKS, $event);
 }
 
 /**
@@ -252,6 +260,43 @@ function joinup_group_rdf_entity_update(EntityInterface $entity) {
       ContentEntity::indexEntity($node);
     }
   }
+}
+
+/**
+ * Implements hook_og_user_access_alter().
+ */
+function joinup_group_og_user_access_alter(array &$permissions, CacheableMetadata &$cacheable_metadata, array $context): void {
+  $group = $context['group'];
+  $user = $context['user'];
+
+  // Group owners are allowed to delete their own groups when they are in
+  // validated state.
+  // @todo Also allow groups to be deleted in any state other than 'archived'.
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6088
+  $permission = $context['permission'];
+  if ($permission !== OgAccess::DELETE_GROUP_PERMISSION) {
+    return;
+  }
+
+  // Only act on entities that are groups and subject to workflow.
+  if (!$group instanceof GroupInterface || !$group instanceof EntityWorkflowStateInterface) {
+    return;
+  }
+
+  // Skip if the group is not in validated state.
+  if ($group->getWorkflowState() !== 'validated') {
+    return;
+  }
+
+  // Check if the user is the group owner and bail out if this is not the case.
+  $membership = $group->getMembership((int) $user->id());
+  $role_id = "{$group->getEntityTypeId()}-{$group->bundle()}-administrator";
+  if (!$membership instanceof OgMembershipInterface || !$membership->hasRole($role_id)) {
+    return;
+  }
+
+  // All conditions are met. Grant permission to delete the group.
+  $permissions[] = OgAccess::DELETE_GROUP_PERMISSION;
 }
 
 /**

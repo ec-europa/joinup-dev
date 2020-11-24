@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup\Traits;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Element\TraversableElement;
 use Drupal\joinup\KeyboardEventKeyCodes as Key;
 
 /**
@@ -41,6 +42,8 @@ trait TabledragTrait {
    *
    * @param int $position
    *   The position of the row to retrieve. Positions are 1-based indexed.
+   * @param \Behat\Mink\Element\TraversableElement $region
+   *   The region to search into.
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The row element.
@@ -48,9 +51,9 @@ trait TabledragTrait {
    * @throws \Exception
    *   Thrown when the given table row cannot be found in the page.
    */
-  protected function findDraggableTableRowByPosition(int $position): NodeElement {
+  protected function findDraggableTableRowByPosition(int $position, TraversableElement $region): NodeElement {
     $xpath = '//tr[@class and contains(concat(" ", normalize-space(@class), " "), " draggable ")][' . $position . ']';
-    $row = $this->getSession()->getPage()->find('xpath', $xpath);
+    $row = $region->find('xpath', $xpath);
 
     if (!$row) {
       throw new \Exception("Cannot find row with position $position.");

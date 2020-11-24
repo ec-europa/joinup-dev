@@ -6,8 +6,11 @@ namespace Drupal\joinup;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
+use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\solution\Entity\SolutionInterface;
 
 /**
  * A service to handle pinned entities.
@@ -76,11 +79,17 @@ class PinService implements PinServiceInterface {
    * {@inheritdoc}
    */
   public function getGroupsWherePinned(ContentEntityInterface $entity) {
-    if (JoinupGroupHelper::isSolution($entity)) {
+    if ($entity instanceof SolutionInterface) {
       return $entity->get(self::SOLUTION_PIN_FIELD)->referencedEntities();
     }
-    elseif (CommunityContentHelper::isCommunityContent($entity) && $entity->isSticky()) {
-      return [JoinupGroupHelper::getGroup($entity)];
+    elseif ($entity instanceof CommunityContentInterface && $entity->isSticky()) {
+      try {
+        return [$entity->getGroup()];
+      }
+      catch (MissingGroupException $e) {
+        // The group the content was pinned in has been deleted.
+        return [];
+      }
     }
 
     return [];

@@ -1,0 +1,20 @@
+uuid: 9cabaf9d-0805-48e3-852c-d967117be09a
+langcode: en
+status: true
+dependencies:
+  module:
+    - json_field
+    - paragraphs
+id: paragraph.field_json
+field_name: field_json
+entity_type: paragraph
+type: json
+settings:
+  size: 16777216
+module: json_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -35,6 +35,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Licence wrapper'
+      region: content
 id: rdf_entity.licence.default
 targetEntityType: rdf_entity
 bundle: licence

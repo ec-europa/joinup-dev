@@ -77,7 +77,7 @@ class EventsArbitraryFacet extends ArbitraryFacetBase implements ContainerFactor
     $today_midnight = $this->facetDateHandler->isoDate((new DrupalDateTime('today'))->getTimestamp());
     $definition = [
       'upcoming_events' => [
-        'field_name' => 'field_event_date',
+        'field_name' => 'field_event_date_end',
         'field_condition' => $today_midnight,
         'field_operator' => '>=',
         'label' => $this->t('Upcoming events'),
@@ -94,7 +94,7 @@ class EventsArbitraryFacet extends ArbitraryFacetBase implements ContainerFactor
 
     $definition += [
       'past_events' => [
-        'field_name' => 'field_event_date',
+        'field_name' => 'field_event_date_end',
         'field_condition' => $today_midnight,
         'field_operator' => '<=',
         'label' => $this->t('Past events'),

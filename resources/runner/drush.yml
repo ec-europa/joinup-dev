@@ -1,0 +1,5 @@
+# Drush configs and commands
+
+drush:
+  # Drush binary location.
+  bin: ${joinup.dir}/vendor/bin/drush
