@@ -6,12 +6,11 @@ namespace Drupal\state_machine_permissions\EventSubscriber;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\joinup_group\ContentCreationOptions;
 use Drupal\og\Event\PermissionEventInterface as OgPermissionEventInterface;
 use Drupal\og\GroupContentOperationPermission;
 use Drupal\og\GroupPermission;
-use Drupal\state_machine_permissions\StateMachinePermissionsHelperInterface;
 use Drupal\state_machine_permissions\StateMachinePermissionStringConstructor;
+use Drupal\state_machine_permissions\StateMachinePermissionsHelperInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -106,8 +105,29 @@ class StateMachineOgSubscriber implements EventSubscriberInterface {
           $transitions = $workflow->getTransitions();
           foreach ($transitions as $transition) {
             $to_state = $transition->getToState();
-            foreach ($transition->getFromStates() as $from_state) {
-              foreach (['own' => FALSE, 'any' => TRUE] as $key => $permission) {
+            foreach (['own' => FALSE, 'any' => TRUE] as $key => $permission) {
+              // Create a fake transition permission to consistently manage all
+              // changes to the entity since it is not supported in
+              // state_machine.
+              $permission_string = StateMachinePermissionStringConstructor::constructTransitionPermission($entity_type_id, $bundle, $workflow, $to_state->getId(), $to_state->getId(), $permission);
+              $permissions[$permission_string] = new GroupContentOperationPermission([
+                'name' => $permission_string,
+                'title' => $this->t('@workflow_label (:workflow_id): Transition from @from_state to @to_state - :key :bundle :entity_type_id entity', [
+                  '@workflow_label' => $workflow->getLabel(),
+                  ':workflow_id' => $workflow->getId(),
+                  '@from_state' => $to_state->getLabel(),
+                  '@to_state' => $to_state->getLabel(),
+                  ':key' => $key,
+                  ':bundle' => $bundle,
+                  ':entity_type_id' => $entity_type_id,
+                ]),
+                'entityType' => $entity_type_id,
+                'bundle' => $bundle,
+                'operation' => $permission_string,
+                'owner' => $key === 'own',
+              ]);
+
+              foreach ($transition->getFromStates() as $from_state) {
                 $permission_string = StateMachinePermissionStringConstructor::constructTransitionPermission($entity_type_id, $bundle, $workflow, $from_state->getId(), $to_state->getId(), $permission);
                 $permissions[$permission_string] = new GroupContentOperationPermission([
                   'name' => $permission_string,
@@ -120,9 +140,10 @@ class StateMachineOgSubscriber implements EventSubscriberInterface {
                     ':bundle' => $bundle,
                     ':entity_type_id' => $entity_type_id,
                   ]),
-                  'entity type' => $entity_type_id,
+                  'entityType' => $entity_type_id,
                   'bundle' => $bundle,
                   'operation' => $permission_string,
+                  'owner' => $key === 'own',
                 ]);
               }
             }
