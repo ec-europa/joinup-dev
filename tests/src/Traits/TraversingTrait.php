@@ -421,12 +421,12 @@ trait TraversingTrait {
     $page = $this->getSession()->getPage();
     // The *[self::div|self::fieldset] is because ief sets the class 'form-item'
     // in a fieldset rather than a div.
-    $element = $page->find('xpath', "//*[self::div|self::fieldset][contains(normalize-space(@class), 'form-item') and contains(., '{$label}')]//input[@disabled and @disabled='disabled']");
+    $element = $page->find('xpath', "//*[self::div|self::fieldset][contains(concat(' ', normalize-space(@class), ' '), ' form-item ') and contains(., '{$label}')]//input[@disabled and @disabled='disabled']");
     if (empty($element)) {
       // Try again to fetch fields with textareas. These are marked as disabled
       // by setting the class 'form-disabled' to the wrapper div and not in the
       // input.
-      $element = $page->find('xpath', "//div[contains(normalize-space(@class), 'form-disabled') and contains(., '{$label}')]");
+      $element = $page->find('xpath', "//div[contains(concat(' ', normalize-space(@class), ' '), ' form-disabled ') and contains(., '{$label}')]");
     }
     if (!$element) {
       // Try again to find a button.
