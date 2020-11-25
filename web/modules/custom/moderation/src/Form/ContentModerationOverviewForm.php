@@ -7,12 +7,14 @@ namespace Drupal\moderation\Form;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -123,27 +125,28 @@ class ContentModerationOverviewForm extends FormBase {
    *   The access result object.
    */
   public static function access(RdfInterface $rdf_entity): AccessResultInterface {
+    // The content moderation overview is accessible by moderators and]
+    // facilitators, so access varies by user role and OG role.
+    $cache_metadata = (new CacheableMetadata())->addCacheContexts(['og_role', 'user.permissions']);
+
+    // Check if the user has global permission to access all content moderation
+    // overviews (this is granted to moderators).
     /** @var \Drupal\Core\Session\AccountProxyInterface $user */
     $user = \Drupal::service('current_user');
+    $access = $user->hasPermission('access content moderation overview');
 
-    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-    $membership_manager = \Drupal::service('og.membership_manager');
-
-    $access = FALSE;
-
-    // Only allow access if the current user is a moderator or a facilitator.
-    if (in_array('moderator', $user->getRoles())) {
-      $access = TRUE;
-    }
-    elseif ($membership_manager->isMember($rdf_entity, $user->id())) {
+    // If the user doesn't have global permission, check if they have permission
+    // inside the group.
+    if (!$access) {
+      /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+      $membership_manager = \Drupal::service('og.membership_manager');
       $membership = $membership_manager->getMembership($rdf_entity, $user->id());
-      $role = $rdf_entity->bundle() === 'collection' ? 'rdf_entity-collection-facilitator' : 'rdf_entity-solution-facilitator';
-      if (in_array($role, $membership->getRolesIds())) {
-        $access = TRUE;
+      if ($membership instanceof OgMembershipInterface) {
+        $access = $membership->hasPermission('access content moderation overview');
       }
     }
 
-    return AccessResult::allowedIf($access);
+    return AccessResult::allowedIf($access)->addCacheableDependency($cache_metadata);
   }
 
   /**
