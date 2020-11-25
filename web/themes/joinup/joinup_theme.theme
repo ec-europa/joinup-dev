@@ -289,10 +289,6 @@ function joinup_theme_theme($existing, $type, $theme, $path) {
       'render element' => 'form',
       'path' => $path . '/templates/form',
     ],
-    'joinup_exposed_search' => [
-      'render element' => 'form',
-      'path' => $path . '/templates/form',
-    ],
     'social_share' => [
       'variables' => ['entity' => NULL],
       'path' => $path . '/templates/parts',
@@ -1596,8 +1592,7 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
   }
 
   // Add suggestion for search form in the header.
-  if ($form['#id'] == 'views-exposed-form-search-search') {
-    $form['#theme'] = ['joinup_exposed_search'];
+  if ($form['#id'] === 'views-exposed-form-search-search') {
     $form['keys']['#extra_suggestion'] = 'joinup_exposed_search';
   }
 
