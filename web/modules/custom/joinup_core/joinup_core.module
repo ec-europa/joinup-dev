@@ -201,3 +201,25 @@ function joinup_core_module_implements_alter(array &$implementations, $hook) {
       break;
   }
 }
+
+/**
+ * Implements hook_page_attachments_alter().
+ *
+ * Avoid to show the global banner and the cookie consent kit when the page is
+ * viewed as an iframe. Both of these components will be available in the parent
+ * page.
+ */
+function joinup_core_page_attachments_alter(array &$attachments) {
+  if (\Drupal::request()->get('iframe') === '1' && ($libraries = $attachments['#attached']['library'])) {
+    $to_remove = [
+      'oe_webtools/drupal.webtools-smartloader',
+      'oe_webtools_cookie_consent/oe_webtools_cookie_consent.cck',
+    ];
+
+    foreach ($libraries as $index => $library) {
+      if (in_array($library, $to_remove)) {
+        unset($attachments['#attached']['library'][$index]);
+      }
+    }
+  }
+}
