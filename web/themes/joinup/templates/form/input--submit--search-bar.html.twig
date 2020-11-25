@@ -10,15 +10,4 @@
  * @see template_preprocess_input()
  */
 #}
-{%
-  set classes = [
-    'button',
-    'button--blue',
-    'mdl-button',
-    'mdl-js-button',
-    'mdl-button--raised',
-    'mdl-js-ripple-effect',
-    'mdl-button--accent',
-  ]
-%}
 <input{{ attributes.removeClass('button').addClass('search-bar__button') }} />{{ children }}
