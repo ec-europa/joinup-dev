@@ -548,7 +548,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    *
    * @see joinup_notification_rdf_entity_presave()
    */
-  protected function hasPublishedVersion(EntityInterface $entity) {
+  protected function hasPublishedVersion(EntityInterface $entity): bool {
     if (isset($entity->hasPublished)) {
       return ($entity->hasPublished);
     }
