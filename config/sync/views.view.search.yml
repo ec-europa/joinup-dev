@@ -395,6 +395,56 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: search_api_date
+        entity_changed:
+          id: entity_changed
+          table: search_api_index_published
+          field: entity_changed
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: between
+          value:
+            min: ''
+            max: ''
+            value: ''
+            type: date
+          group: 1
+          exposed: true
+          expose:
+            operator_id: entity_changed_op
+            label: 'Last update'
+            description: ''
+            use_operator: false
+            operator: entity_changed_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: updated
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              licence_manager: '0'
+              anonymous: '0'
+              moderator: '0'
+              administrator: '0'
+              rdf_graph_manager: '0'
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: search_api_date
       sorts:
         search_api_relevance:
           id: search_api_relevance

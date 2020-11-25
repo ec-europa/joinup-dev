@@ -418,6 +418,8 @@ function joinup_search_form_views_exposed_form_alter(array &$form, FormStateInte
     if ($display['id'] === 'search') {
       $form['created']['min']['#type'] = 'hidden';
       $form['created']['max']['#type'] = 'hidden';
+      $form['updated']['min']['#type'] = 'hidden';
+      $form['updated']['max']['#type'] = 'hidden';
     }
     elseif ($display['id'] === 'shadow') {
       $form['keys']['#type'] = 'hidden';
