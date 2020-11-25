@@ -520,12 +520,17 @@ display:
         - 'config:search_api.index.published'
         - 'search_api_list:published'
   shadow:
-    display_plugin: block
+    display_plugin: page
     id: shadow
-    display_title: Block
-    position: 3
+    display_title: Shadow
+    position: 4
     display_options:
       display_extenders: {  }
+      display_description: ''
+      path: search
+      always_use_admin_theme: false
+      exposed_block: true
+      enabled: false
     cache_metadata:
       max-age: -1
       contexts:
