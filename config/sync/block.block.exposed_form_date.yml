@@ -1,25 +1,26 @@
-uuid: cf94fd0f-8d17-4fbf-9f2f-388da1a3db5b
+uuid: 7311969e-591b-4723-9fbb-f72fa9a96c94
 langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.group
+    - views.view.search
   module:
-    - facets
     - joinup_core
+    - views
   theme:
     - joinup_theme
-id: group_facet
+id: exposed_form_date
 theme: joinup_theme
 region: sidebar_left
-weight: -16
+weight: -17
 provider: null
-plugin: 'facet_block:group'
+plugin: 'views_exposed_filter_block:search-shadow'
 settings:
-  id: 'facet_block:group'
-  label: 'Search page - Group facet'
-  provider: facets
+  id: 'views_exposed_filter_block:search-shadow'
+  label: ''
+  provider: views
   label_display: '0'
+  views_label: ''
 visibility:
   request_route:
     id: request_route

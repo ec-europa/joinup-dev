@@ -12,7 +12,7 @@ dependencies:
 id: exposed_form_search_page
 theme: joinup_theme
 region: content_top
-weight: -17
+weight: 0
 provider: null
 plugin: 'views_exposed_filter_block:search-search'
 settings:
