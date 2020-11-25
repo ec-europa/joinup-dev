@@ -22,7 +22,7 @@ Feature: Edit a comment
     And all e-mails have been sent
     When I go to the "Paying with cash" news
     # Sons' comment is the only comment available.
-    And I click the contextual link "Edit comment" in the "Comment" region
+    And I click "Edit" in comment #1
     And I fill in "Create comment" with "Cracking the web."
     And I wait for the spam protection time limit to pass
     And I press "Post comment"

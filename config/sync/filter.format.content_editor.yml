@@ -2,6 +2,10 @@ uuid: 76737fd1-feb3-4d21-b0b8-7e6dbc102686
 langcode: en
 status: true
 dependencies:
+  config:
+    - image.style.wysiwyg_full_width
+    - image.style.wysiwyg_half_width
+    - image.style.wysiwyg_one_third_width
   module:
     - collection
     - editor
@@ -84,9 +88,9 @@ filters:
     weight: -40
     settings:
       allowed_styles:
-        wysiwyg_full_width: wysiwyg_full_width
-        wysiwyg_half_width: wysiwyg_half_width
-        wysiwyg_one_third_width: wysiwyg_one_third_width
+        - wysiwyg_full_width
+        - wysiwyg_half_width
+        - wysiwyg_one_third_width
   filter_html_escape:
     id: filter_html_escape
     provider: filter
