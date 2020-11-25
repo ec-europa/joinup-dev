@@ -362,7 +362,7 @@ display:
           exposed: true
           expose:
             operator_id: entity_created_op
-            label: 'Created on'
+            label: 'Created between'
             description: ''
             use_operator: false
             operator: entity_created_op
@@ -412,7 +412,7 @@ display:
           exposed: true
           expose:
             operator_id: entity_changed_op
-            label: 'Last update'
+            label: 'Last updated between'
             description: ''
             use_operator: false
             operator: entity_changed_op
