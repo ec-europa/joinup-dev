@@ -38,7 +38,7 @@ function joinup_notification_node_insert(EntityInterface $entity) {
  * This workaround comes because the $entity->original property points to the
  * latest published version instead of the latest revision.
  *
- * @see: https://www.drupal.org/node/2833084
+ * @see https://www.drupal.org/node/2833084
  */
 function joinup_notification_node_presave(EntityInterface $entity) {
   if ($entity->isNew() || !CommunityContentHelper::isCommunityContent($entity)) {

@@ -546,7 +546,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * @return bool
    *   Whether the entity has a published version.
    *
-   * @see: joinup_notification_rdf_entity_presave()
+   * @see joinup_notification_rdf_entity_presave()
    */
   protected function hasPublishedVersion(EntityInterface $entity) {
     if (isset($entity->hasPublished)) {
@@ -562,7 +562,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * @param array $user_data
    *    The user data array.
    *
-   * @see: ::getUsersMessages() for more information on the array.
+   * @see ::getUsersMessages() for more information on the array.
    */
   protected function getUsersAndSend(array $user_data) {
     $user_data = $this->getUsersMessages($user_data);

@@ -242,7 +242,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
    * @param array $user_data
    *   The user data array.
    *
-   * @see: ::getUsersMessages() for more information on the array.
+   * @see ::getUsersMessages() for more information on the array.
    */
   protected function getUsersAndSend(array $user_data) {
     $user_data = $this->getUsersMessages($user_data);

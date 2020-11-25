@@ -456,7 +456,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * @return bool
    *   Whether the entity has a published version.
    *
-   * @see: joinup_notification_rdf_entity_presave()
+   * @see joinup_notification_rdf_entity_presave()
    */
   protected function hasPublishedVersion(EntityInterface $entity) {
     if (isset($entity->hasPublished)) {
@@ -475,7 +475,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    *   (optional) A list of users to pass as bcc. The template must have the
    *   field_message_bcc field.
    *
-   * @see: ::getUsersMessages() for more information on the array.
+   * @see ::getUsersMessages() for more information on the array.
    */
   protected function getUsersAndSend(array $user_data, array $bcc_data = []) {
     $message_values = [];
