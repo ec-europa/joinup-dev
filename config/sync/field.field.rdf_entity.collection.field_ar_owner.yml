@@ -14,7 +14,7 @@ entity_type: rdf_entity
 bundle: collection
 label: Owner
 description: 'The Owner is the organisation that owns this entity and is the only responsible for it.'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
