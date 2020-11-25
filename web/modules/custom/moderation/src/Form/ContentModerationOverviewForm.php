@@ -127,7 +127,9 @@ class ContentModerationOverviewForm extends FormBase {
   public static function access(RdfInterface $rdf_entity): AccessResultInterface {
     // The content moderation overview is accessible by moderators and]
     // facilitators, so access varies by user role and OG role.
-    $cache_metadata = (new CacheableMetadata())->addCacheContexts(['og_role', 'user.permissions']);
+    $cache_metadata = (new CacheableMetadata())->addCacheContexts(
+      ['og_role', 'user.permissions']
+    );
 
     // Check if the user has global permission to access all content moderation
     // overviews (this is granted to moderators).
