@@ -71,14 +71,14 @@ class ContentModerationOverviewForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'content_moderation_overview_form';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL): array {
     $result = $this->getModerationItems($rdf_entity);
     $count = $this->getModerationItemCount($result);
 
@@ -103,7 +103,7 @@ class ContentModerationOverviewForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
   }
 
   /**
@@ -111,7 +111,7 @@ class ContentModerationOverviewForm extends FormBase {
    *
    * This returns the updated form after changing the filter options.
    */
-  public static function updateForm(array $form, FormStateInterface $form_state) {
+  public static function updateForm(array $form, FormStateInterface $form_state): array {
     return $form['wrapper'];
   }
 
@@ -235,7 +235,7 @@ class ContentModerationOverviewForm extends FormBase {
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   The filtered array.
    */
-  protected function filterCountedItems(array $entities, ?string $type_filter = NULL, ?string $state_filter = NULL) {
+  protected function filterCountedItems(array $entities, ?string $type_filter = NULL, ?string $state_filter = NULL): array {
     if (!empty($type_filter) && $type_filter !== 'all') {
       $entities = array_filter($entities, function (EntityInterface $entity) use ($type_filter) {
         return $entity->bundle() === $type_filter;
@@ -325,15 +325,15 @@ class ContentModerationOverviewForm extends FormBase {
   }
 
   /**
-   * Returns the latest revision id of an entity.
+   * Returns the latest revision ID of a node.
    *
    * @param string $entity_id
-   *   The entity id.
+   *   The entity ID.
    *
-   * @return mixed
-   *   The revision id or null.
+   * @return int|null
+   *   The revision ID or null if the entity is not found in the database.
    */
-  public function getLatestRevisionId(string $entity_id) {
+  public function getLatestRevisionId(string $entity_id): ?int {
     if ($storage = $this->entityTypeManager->getStorage('node')) {
       $revision_ids = $storage->getQuery()
         ->allRevisions()
