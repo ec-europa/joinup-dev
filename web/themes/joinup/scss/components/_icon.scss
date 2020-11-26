@@ -235,7 +235,7 @@ $waat-icons-font-path: "../fonts/waat-icons/waat-icons";
 }
 
 .icon--mime-pdf:before {
-  content: "";
+  content: "";
 }
 
 .icon--mime-png:before {
@@ -256,6 +256,10 @@ $waat-icons-font-path: "../fonts/waat-icons/waat-icons";
 
 .icon--mime-svg:before {
   content: "";
+}
+
+.icon--mime-txt:before {
+  content: "";
 }
 
 .icon--mime-xls:before {
