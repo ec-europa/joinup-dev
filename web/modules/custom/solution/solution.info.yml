@@ -15,6 +15,7 @@ dependencies:
   - 'joinup:asset_release'
   - 'joinup:collection'
   - 'joinup:contact_information'
+  - 'joinup:joinup_featured'
   - 'joinup:joinup_group'
   - 'joinup:joinup_workflow'
   - 'joinup:owner'
@@ -33,13 +34,6 @@ config_devel:
     - sparql_entity_storage.mapping.rdf_entity.solution
     - system.action.change_collection
   optional:
-    - core.entity_form_display.rdf_entity.solution.default
-    - core.entity_view_display.rdf_entity.solution.about
-    - core.entity_view_display.rdf_entity.solution.default
-    - core.entity_view_display.rdf_entity.solution.group_header
-    - core.entity_view_display.rdf_entity.solution.rdf_draft
-    - core.entity_view_display.rdf_entity.solution.view_mode_featured
-    - core.entity_view_display.rdf_entity.solution.view_mode_tile
     - facets.facet.solution_content_bundle
     - facets.facet_source.search_api_field__rdf_entity.field_is_content
     - field.field.rdf_entity.solution.field_is_actor
@@ -79,7 +73,6 @@ config_devel:
     - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_short_id
-    - field.field.rdf_entity.solution.field_site_featured
     - field.field.rdf_entity.solution.field_site_pinned
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status

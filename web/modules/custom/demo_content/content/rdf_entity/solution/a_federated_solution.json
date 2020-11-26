@@ -264,15 +264,5 @@
             "title": null,
             "options": []
         }
-    ],
-    "field_site_featured": [
-        {
-            "value": false
-        }
-    ],
-    "field_site_pinned": [
-        {
-            "value": false
-        }
     ]
 }

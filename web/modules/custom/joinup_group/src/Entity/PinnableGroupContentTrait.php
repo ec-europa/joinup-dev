@@ -66,6 +66,12 @@ trait PinnableGroupContentTrait {
     if ($this->isPinned($group)) {
       $meta_entity = $this->getMetaEntity('pinned_in');
 
+      // If no meta entity exists, the entity is not pinned and nothing needs to
+      // be done.
+      if (empty($meta_entity)) {
+        return $this;
+      }
+
       /** @var \Drupal\joinup_federation\RdfEntityReferenceFieldItemList $item_list */
       $item_list = $meta_entity->get('field_pinned_in');
 

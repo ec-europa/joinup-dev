@@ -1,13 +1,3 @@
-joinup_front_page.site_feature:
-  title: Feature
-  route_name: joinup_front_page.site_feature
-  group: entity
-
-joinup_front_page.site_unfeature:
-  title: 'Remove from featured'
-  route_name: joinup_front_page.site_unfeature
-  group: entity
-
 joinup_front_page.site_pin:
   title: 'Pin to front page'
   route_name: joinup_front_page.site_pin
