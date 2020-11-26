@@ -5,6 +5,7 @@ dependencies:
   module:
     - asset_distribution
     - custom_page
+    - joinup_featured
     - joinup_search
     - meta_entity
     - node
@@ -18,6 +19,7 @@ dependencies:
     - user
   config:
     - field.storage.meta_entity.count
+    - field.storage.meta_entity.field_featured
     - field.storage.meta_entity.field_pinned_in
     - field.storage.node.body
     - field.storage.node.field_event_agenda
@@ -415,6 +417,17 @@ field_settings:
     dependencies:
       module:
         - node
+  node_featured:
+    label: 'Featured site-wide'
+    datasource_id: 'entity:node'
+    property_path: 'featured:entity:field_featured'
+    type: string
+    dependencies:
+      module:
+        - meta_entity
+        - node
+      config:
+        - field.storage.meta_entity.field_featured
   node_pinned_in:
     label: 'Pinned in'
     datasource_id: 'entity:node'
@@ -478,6 +491,17 @@ field_settings:
     dependencies:
       module:
         - rdf_entity
+  rdf_featured:
+    label: 'Featured site-wide'
+    datasource_id: 'entity:rdf_entity'
+    property_path: 'featured:entity:field_featured'
+    type: string
+    dependencies:
+      module:
+        - meta_entity
+        - rdf_entity
+      config:
+        - field.storage.meta_entity.field_featured
   rdf_pinned_in:
     label: 'Pinned in'
     datasource_id: 'entity:rdf_entity'
@@ -523,8 +547,8 @@ field_settings:
     configuration:
       type: union
       fields:
-        - 'entity:node/field_site_featured'
-        - 'entity:rdf_entity/field_site_featured'
+        - 'entity:node/featured:entity:field_featured'
+        - 'entity:rdf_entity/featured:entity:field_featured'
   site_pinned:
     label: 'Site pinned'
     property_path: aggregated_field
