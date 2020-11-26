@@ -21,7 +21,6 @@ dependencies:
 config_devel:
   install:
     - comment.type.comment
-    - core.entity_view_display.comment.comment.default
     - core.entity_view_display.taxonomy_term.eira.default
     - core.entity_view_mode.node.moderation
     - core.entity_view_mode.node.view_mode_featured

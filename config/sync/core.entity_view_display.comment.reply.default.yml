@@ -6,6 +6,8 @@ dependencies:
     - comment.type.reply
     - field.field.comment.reply.field_attachment
     - field.field.comment.reply.field_body
+  module:
+    - text
 _core:
   default_config_hash: 8APsY4agDzWtGRFsi6z-0NK63NlxjvOgO4yi3MGURmA
 id: comment.reply.default
@@ -20,7 +22,11 @@ content:
     third_party_settings: {  }
     type: basic_string
     region: content
+  links:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_attachment: true
   langcode: true
-  links: true
