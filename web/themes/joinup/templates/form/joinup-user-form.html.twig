@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Template to render the user form.
+ *
+ * The primary and secondary information are grouped into two separate sections,
+ * and the action buttons are shown outside of the sections that contain fields.
+ *
+ * Available variables:
+ * - form: the form build array.
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="form__content form-item-group-primary">
+  {{ form.header }}
+  {{ form.header_description }}
+  {{ form.field_user_first_name }}
+  {{ form.field_user_family_name }}
+  {{ form.account }}
+</div>
+<div class="form__content form-item-group-secondary">
+  {{ form|without('actions', 'header', 'header_description', 'field_user_first_name', 'field_user_family_name', 'account') }}
+</div>
+{{ form.actions }}

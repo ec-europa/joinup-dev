@@ -23,11 +23,6 @@ dependencies:
 config_devel:
   install:
     - core.base_field_override.node.event.title
-    - core.entity_form_display.node.event.default
-    - core.entity_view_display.node.event.default
-    - core.entity_view_display.node.event.moderation
-    - core.entity_view_display.node.event.view_mode_featured
-    - core.entity_view_display.node.event.view_mode_tile
     - field.field.node.event.body
     - field.field.node.event.field_attachment
     - field.field.node.event.field_comments
@@ -47,7 +42,6 @@ config_devel:
     - field.field.node.event.field_scope
     - field.field.node.event.field_shared_in
     - field.field.node.event.field_short_title
-    - field.field.node.event.field_site_featured
     - field.field.node.event.field_site_pinned
     - field.field.node.event.field_state
     - field.field.node.event.og_audience

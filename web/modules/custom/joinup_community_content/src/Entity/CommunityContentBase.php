@@ -6,6 +6,7 @@ namespace Drupal\joinup_community_content\Entity;
 
 use Drupal\collection\Entity\NodeCollectionContentTrait;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
+use Drupal\joinup_featured\FeaturedContentTrait;
 use Drupal\joinup_group\Entity\PinnableGroupContentTrait;
 use Drupal\joinup_stats\Entity\StatisticsAwareTrait;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
@@ -20,6 +21,7 @@ use Drupal\node\Entity\Node;
 abstract class CommunityContentBase extends Node implements CommunityContentInterface {
 
   use EntityWorkflowStateTrait;
+  use FeaturedContentTrait;
   use NodeCollectionContentTrait;
   use JoinupBundleClassMetaEntityTrait;
   use PinnableGroupContentTrait;

@@ -71,7 +71,7 @@ class CollectionContext extends RawDrupalContext {
     'policy domain' => 'field_policy_domain',
     'spatial coverage' => 'field_spatial_coverage',
     'state' => 'field_ar_state',
-    'featured' => 'field_site_featured',
+    'featured' => 'feature',
     'pinned to front page' => 'field_site_pinned',
   ];
 
@@ -262,7 +262,6 @@ class CollectionContext extends RawDrupalContext {
         'archival request' => 'archival_request',
         'archived' => 'archived',
       ],
-      'field_site_featured' => ['no' => 0, 'yes' => 1],
       'field_site_pinned' => ['no' => 0, 'yes' => 1],
     ];
 
@@ -305,7 +304,20 @@ class CollectionContext extends RawDrupalContext {
       }
     }
 
+    // If the collection is featured we need to create the meta entity that
+    // stores this information after creating the collection.
+    $is_featured = in_array(strtolower((string) ($values['feature'] ?? '')), [
+      'y',
+      'yes',
+    ]);
+
+    /** @var \Drupal\collection\Entity\CollectionInterface $collection */
     $collection = $this->createRdfEntity('collection', $values);
+
+    if ($is_featured) {
+      $collection->feature();
+    }
+
     $this->collections[$collection->id()] = $collection;
 
     // We have to force reindex of affiliated solutions so the relationship
