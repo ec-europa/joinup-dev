@@ -24,8 +24,9 @@ trait JoinupBundleClassMetaEntityTrait {
    * @param string $field_name
    *   The name of the computed field that references the meta entity.
    *
-   * @return \Drupal\meta_entity\Entity\MetaEntityInterface
-   *   The meta entity.
+   * @return \Drupal\meta_entity\Entity\MetaEntityInterface|null
+   *   The meta entity, or NULL if no meta entity is referenced by the given
+   *   field.
    *
    * @throws \InvalidArgumentException
    *   Thrown when the field does not reference a meta entity.

@@ -17,6 +17,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Installer\InstallerKernel;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_featured\FeaturedContentInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\search_api\Query\QueryInterface;
@@ -275,14 +276,19 @@ function joinup_preprocess_menu__main(&$variables) {
  */
 function joinup_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
   if (in_array($entity->getEntityTypeId(), ['node', 'rdf_entity'])) {
-    // Add the "entity" contextual links group.
-    $build['#contextual_links']['entity'] = [
-      'route_parameters' => [
-        'entity_type' => $entity->getEntityTypeId(),
-        'entity' => $entity->id(),
-      ],
-      'metadata' => ['changed' => $entity->getChangedTime()],
-    ];
+    // Add the "entity" contextual links group. Avoid overwriting any existing
+    // data that might have been added by other modules. Because of a bug in
+    // Drupal core we cannot alter the running order of hook_entity_view_alter()
+    // when it is executed as an "extra hook" for hook_rdf_entity_view_alter().
+    // This means that we cannot use hook_module_implements_alter() to define a
+    // proper running order for this hook, so let's make sure that we do not
+    // lose any data set by other modules which are supposed to run after us.
+    // @see joinup_featured_entity_view_alter()
+    // @see joinup_front_page_entity_view_alter()
+    // @see https://www.drupal.org/project/drupal/issues/3120298
+    $build['#contextual_links']['entity']['route_parameters']['entity_type'] = $entity->getEntityTypeId();
+    $build['#contextual_links']['entity']['route_parameters']['entity'] = $entity->id();
+    $build['#contextual_links']['entity']['metadata']['changed'] = $entity->getChangedTime();
   }
 
   if (!$entity instanceof PinnableGroupContentInterface) {
@@ -371,9 +377,8 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
     return;
   }
 
-  // If the entity has the site-wide featured field, enable the related js
-  // library.
-  if ($entity->hasField('field_site_featured') && $entity->get('field_site_featured')->value) {
+  // If the entity is featured site-wide, enable the related JS library.
+  if ($entity instanceof FeaturedContentInterface && $entity->isFeatured()) {
     $variables['attributes']['data-drupal-featured'][] = TRUE;
     $variables['#attached']['library'][] = 'joinup/site_wide_featured';
   }
