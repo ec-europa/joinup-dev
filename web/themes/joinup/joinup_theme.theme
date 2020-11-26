@@ -281,15 +281,19 @@ function _joinup_theme_get_file_extension(File $file) {
  */
 function joinup_theme_theme($existing, $type, $theme, $path) {
   return [
-    'share_content_form' => [
-      'render element' => 'form',
-      'path' => $path . '/templates/form',
-    ],
     'buttons_separated_form' => [
       'render element' => 'form',
       'path' => $path . '/templates/form',
     ],
     'joinup_exposed_search' => [
+      'render element' => 'form',
+      'path' => $path . '/templates/form',
+    ],
+    'joinup_user_form' => [
+      'render element' => 'form',
+      'path' => $path . '/templates/form',
+    ],
+    'share_content_form' => [
       'render element' => 'form',
       'path' => $path . '/templates/form',
     ],
@@ -1574,7 +1578,6 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
     'message_contact_form_submission_form',
     'adms_validator_form',
     'user_login_form',
-    'user_form',
     'user_pass',
     'simplenews_subscriber_account_form',
     'ogmenu_instance_navigation_edit_form',
@@ -1601,9 +1604,15 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
     $form['keys']['#extra_suggestion'] = 'joinup_exposed_search';
   }
 
-  // Change markup in an username field.
-  if ($form_id == 'user_form' && isset($form['user_name'])) {
-    $form['user_name']['#template'] = '<div class="form-wrapper"><div class="form__label">{{ "Username"|t }}</div><div class="form__text">{{ name }}</div></div>';
+  if ($form_id === 'user_form') {
+    // Set a custom layout for the user form, having fields grouped in separate
+    // sections.
+    $form['#theme'][] = 'joinup_user_form';
+
+    // Change markup of the username field.
+    if (isset($form['user_name'])) {
+      $form['user_name']['#template'] = '<div class="form-wrapper"><div class="form__label">{{ "Username"|t }}</div><div class="form__text">{{ name }}</div></div>';
+    }
   }
 
   $link_button_classes = [

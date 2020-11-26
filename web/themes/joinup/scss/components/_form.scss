@@ -226,6 +226,7 @@
   .form-item-current-pass,
   .form-item-cas-enabled,
   .form-item-cas-username,
+  .form-item-group-primary,
   .form-item-mail,
   .form-item-name {
     margin-bottom: 25px;
@@ -253,7 +254,7 @@
     font-size: 16px;
     font-family: "Helvetica","Arial",sans-serif;
     width: 100%;
-      
+
     &:focus {
       box-shadow: 0;
       border: 1px solid #4f93e3;

@@ -2240,7 +2240,7 @@ class JoinupContext extends RawDrupalContext {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
     /** @var \Behat\Mink\Element\Element $regionObj */
     $regionObj = $this->getRegion($region);
-    $labels = $regionObj->findAll('xpath', "/.//*[contains(@class, 'form-wrapper')]//label");
+    $labels = $regionObj->findAll('xpath', "/.//*[contains(concat(' ', normalize-space(@class), ' '), ' form-wrapper ')]//label");
     $labels_on_page = [];
     /** @var \Behat\Mink\Element\NodeElement $label */
     foreach ($labels as $label) {
