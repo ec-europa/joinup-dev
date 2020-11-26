@@ -7,10 +7,9 @@
 
 declare(strict_types = 1);
 
-use EasyRdf\Graph;
-use EasyRdf\GraphStore;
-
 use Drupal\joinup_featured\FeaturedContentInterface;
+use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
+use EasyRdf\Graph;
 
 /**
  * Migrate site wide featured content to meta entities.
@@ -59,11 +58,9 @@ QUERY;
 
   $graph_name = 'http://eira_skos';
   $connection->query("DEFINE sql:log-enable 3 CLEAR GRAPH <$graph_name>;");
-  $connection_options = $connection->getConnectionOptions();
-  $connect_string = "http://{$connection_options['host']}:{$connection_options['port']}/sparql-graph-crud";
-  $graph_store = new GraphStore($connect_string);
-  $filepath = __DIR__ . '/../../../../resources/fixtures/EIRA_SKOS.rdf';
+  $graph_store = SparqlGraphStoreTrait::createGraphStore();
+  $filepath = realpath(__DIR__ . '/../../../../resources/fixtures/EIRA_SKOS.rdf');
   $graph = new Graph($graph_name);
-  $graph->parse(file_get_contents($filepath));
+  $graph->parseFile($filepath);
   $graph_store->insert($graph);
 }
