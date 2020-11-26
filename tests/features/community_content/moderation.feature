@@ -6,8 +6,10 @@ Feature: Moderate community content
 
   Scenario: Content moderation overview
     Given the following collection:
-      | title | Black hole research |
-      | state | validated           |
+      | title            | Black hole research |
+      | state            | validated           |
+      | content creation | members             |
+      | moderation       | yes                 |
     And the following solution:
       | title | Survey For Supernovae |
       | state | validated             |
@@ -307,17 +309,17 @@ Feature: Moderate community content
       | state | validated     |
 
     And discussion content:
-      | title                       | body                  | collection    | state         |
-      | Rotation-powered pulsations | Millisecond pulsars   | Neutron stars | proposed      |
-      | The Recycling concept       | An epoch of accretion | Neutron stars | proposed      |
+      | title                       | body                  | collection    | state    |
+      | Rotation-powered pulsations | Millisecond pulsars   | Neutron stars | proposed |
+      | The Recycling concept       | An epoch of accretion | Neutron stars | proposed |
     And document content:
       | title          | body                          | collection    | state            |
       | Donor star     | Spun up to millisecond period | Neutron stars | proposed         |
       | High frequency | Slow 1.2 second spin          | Neutron stars | deletion request |
       | Cluster        | Eddington luminosity          | Neutron stars | deletion request |
     And event content:
-      | title      | body        | collection    | state            |
-      | Accelerate | Wide binary | Neutron stars | proposed         |
+      | title      | body        | collection    | state    |
+      | Accelerate | Wide binary | Neutron stars | proposed |
     And news content:
       | title                   | body                             | collection    | state            |
       | Metal-rich star cluster | Standard pulsar recycling theory | Neutron stars | deletion request |
@@ -345,9 +347,9 @@ Feature: Moderate community content
     And the available options in the "in state" select should be "All (3), Deletion request (2), Proposed (1)"
     And the option "All (3)" should be selected
     And I should see the following headings:
-      | Donor star                  |
-      | High frequency              |
-      | Cluster                     |
+      | Donor star     |
+      | High frequency |
+      | Cluster        |
     And I should not see the following headings:
       | Rotation-powered pulsations |
       | The Recycling concept       |
@@ -361,7 +363,7 @@ Feature: Moderate community content
     And the available options in the "in state" select should be "All (3), Deletion request (2), Proposed (1)"
     And the option "Proposed (1)" should be selected
     And I should see the following headings:
-      | Donor star                  |
+      | Donor star |
     And I should not see the following headings:
       | Rotation-powered pulsations |
       | The Recycling concept       |
