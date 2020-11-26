@@ -2,17 +2,17 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\collection;
+namespace Drupal\solution;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\collection\Form\JoinCollectionForm;
+use Drupal\solution\Form\JoinSolutionForm;
 
 /**
  * Defines a service for #lazy_builder callbacks for the Collection module.
  */
-class CollectionLazyBuilders {
+class SolutionLazyBuilders {
 
   /**
    * The entity type manager service.
@@ -54,15 +54,15 @@ class CollectionLazyBuilders {
   /**
    * Lazy builder callback; builds the Join Collection form.
    *
-   * @param string $collection_id
-   *   The collection ID.
+   * @param string $solution_id
+   *   The solution ID.
    *
    * @return array
    *   A renderable array containing the comment form.
    */
-  public function renderJoinCollectionForm($collection_id) {
-    $collection = $this->entityTypeManager->getStorage('rdf_entity')->load($collection_id);
-    return $this->formBuilder->getForm(JoinCollectionForm::class, $this->currentUser, $collection);
+  public function renderJoinSolutionForm($solution_id) {
+    $solution = $this->entityTypeManager->getStorage('rdf_entity')->load($solution_id);
+    return $this->formBuilder->getForm(JoinSolutionForm::class, $this->currentUser, $solution);
   }
 
 }

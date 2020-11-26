@@ -50,7 +50,7 @@ function joinup_subscription_entity_base_field_info(EntityTypeInterface $entity_
 /**
  * Implements hook_message_digest_aggregate_alter().
  *
- * Reorders the messages in the collection content subscription digest to be
+ * Reorders the messages in the content subscription digest to be
  * grouped by collection. The collections will be sorted alphabetically and also
  * the community content items within each collection is sorted alphabetically.
  */

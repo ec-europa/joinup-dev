@@ -73,6 +73,8 @@ Feature: My subscriptions
     And I open the account menu
     And I click "My subscriptions"
     Then I should see the heading "My subscriptions"
+    And I should see the link "Collections"
+    And I should see the link "Solutions"
     And I should see the text "No collection memberships yet. Join one or more collections to subscribe to their content!"
     But I should not see the link "Unsubscribe from all"
     And I should not see the text "Alpha Centauri"
@@ -221,7 +223,7 @@ Feature: My subscriptions
     # rendered.
     # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5723
     And the cache has been cleared
-    Then the <frequency> collection content subscription digest for "Auric Goldfinger" should match the following message:
+    Then the <frequency> content subscription digest for "Auric Goldfinger" should match the following message:
       | Water supply |
 
     Examples:
