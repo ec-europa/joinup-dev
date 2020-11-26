@@ -475,7 +475,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    *   (optional) A list of users to pass as bcc. The template must have the
    *   field_message_bcc field.
    *
-   * @see ::getUsersMessages() for more information on the array.
+   * @see ::getUsersMessages()
    */
   protected function getUsersAndSend(array $user_data, array $bcc_data = []) {
     $message_values = [];
