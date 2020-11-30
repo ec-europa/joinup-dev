@@ -1,0 +1,26 @@
+uuid: 394df6fa-47d8-441d-bbdf-ad0de6f87a76
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.discussion
+    - node.type.document
+    - node.type.event
+    - node.type.news
+    - rdf_entity.rdfentity.collection
+    - rdf_entity.rdfentity.solution
+  module:
+    - node
+    - rdf_entity
+id: featured
+label: 'Featured site wide'
+description: 'A flag which indicates that the entity is flagged by a moderator to be featured site wide.'
+mapping:
+  node:
+    discussion: featured
+    document: featured
+    event: featured
+    news: featured
+  rdf_entity:
+    collection: featured
+    solution: featured

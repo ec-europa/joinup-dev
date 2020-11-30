@@ -1,0 +1,52 @@
+uuid: 9db8c85b-06d5-48e3-903c-ffae5118501f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.meta_entity.featured.field_featured
+    - meta_entity.type.featured
+id: meta_entity.featured.default
+targetEntityType: meta_entity
+bundle: featured
+mode: default
+content:
+  changed:
+    label: inline
+    type: timestamp
+    weight: 22
+    region: content
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+  created:
+    label: inline
+    type: timestamp
+    weight: 20
+    region: content
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+  field_featured:
+    weight: 23
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  label:
+    label: hidden
+    type: string
+    weight: -5
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  target: true

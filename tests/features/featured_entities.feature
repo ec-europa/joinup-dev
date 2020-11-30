@@ -122,16 +122,6 @@ Feature: Featuring content site-wide
     Then I should see the success message "<label> <unfeatured> has been set as featured content."
     And the "<featured>" tile should be marked as featured
 
-    # Due to the bug described in ISAICP-4352, we have to temporary add the next
-    # two lines. Manually testing or running this Behat test locally doesn't
-    # require this cache clear but it fails on the Continuous PHP bot for some
-    # obscure reasons that are very hard to be tracked.
-    # TODO: Remove these two lines in ISAICP-4849.
-    # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4352.
-    # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4849.
-    And the cache has been cleared
-    And I reload the page
-
     And I click the contextual link "Remove from featured" in the "<unfeatured>" tile
     Then I should see the success message "<label> <unfeatured> has been removed from the featured contents."
     And the "<unfeatured>" <content type> tile should not be marked as featured
