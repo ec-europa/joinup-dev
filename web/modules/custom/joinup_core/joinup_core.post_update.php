@@ -64,3 +64,11 @@ QUERY;
   $graph->parseFile($filepath);
   $graph_store->insert($graph);
 }
+
+/**
+ * Ensure node access records are marked to be rebuilt.
+ */
+function joinup_core_post_update_0106602(): void {
+  // There are new node access grants offered by the joinup_group module.
+  node_access_needs_rebuild(TRUE);
+}
