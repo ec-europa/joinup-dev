@@ -13,6 +13,9 @@ Feature: Moderate community content
     And the following solution:
       | title | Survey For Supernovae |
       | state | validated             |
+    And users:
+      | Username       | E-mail                   | First name | Family name |
+      | Marco Farfarer | marco.farfar@example.com | Marco      | Farfarer    |
 
     # Before adding content, check that the 'empty message' is displayed on the
     # content moderation overview.
@@ -30,15 +33,15 @@ Feature: Moderate community content
     # Add community content of all possible types in all possible states, to
     # both the collection and solution.
     Given discussion content:
-      | title                         | body                 | collection          | solution              | state         |
-      | The information paradox       | Info Paradox         | Black hole research |                       | needs update  |
-      | Black-body spectrum radiation | Hawking radiation    | Black hole research |                       | proposed      |
-      | The holographic principle     | String theory        | Black hole research |                       | validated     |
-      | Relation with host galaxies   | Supermassive         | Black hole research |                       | archived      |
-      | Tidal disruption events       | Spaghettification    |                     | Survey For Supernovae | needs update  |
-      | Cataclysmic variables         | Irregular brightness |                     | Survey For Supernovae | proposed      |
-      | Stellar flares                | Dim red dwarfs       |                     | Survey For Supernovae | validated     |
-      | Upgrading CCD cameras         | Liquid cooled        |                     | Survey For Supernovae | archived      |
+      | title                         | body                 | collection          | solution              | state        | author         |
+      | The information paradox       | Info Paradox         | Black hole research |                       | needs update | Marco Farfarer |
+      | Black-body spectrum radiation | Hawking radiation    | Black hole research |                       | proposed     | Marco Farfarer |
+      | The holographic principle     | String theory        | Black hole research |                       | validated    | Marco Farfarer |
+      | Relation with host galaxies   | Supermassive         | Black hole research |                       | archived     | Marco Farfarer |
+      | Tidal disruption events       | Spaghettification    |                     | Survey For Supernovae | needs update | Marco Farfarer |
+      | Cataclysmic variables         | Irregular brightness |                     | Survey For Supernovae | proposed     | Marco Farfarer |
+      | Stellar flares                | Dim red dwarfs       |                     | Survey For Supernovae | validated    | Marco Farfarer |
+      | Upgrading CCD cameras         | Liquid cooled        |                     | Survey For Supernovae | archived     | Marco Farfarer |
     And document content:
       | title                         | body                          | collection          | solution              | state            |
       | A multiwavelength study       | Optical and infrared          | Black hole research |                       | draft            |
