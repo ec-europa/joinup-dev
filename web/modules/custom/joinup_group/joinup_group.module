@@ -708,6 +708,8 @@ function joinup_group_user_update(UserInterface $user) {
  * permission.
  */
 function joinup_group_node_access_records(NodeInterface $node) {
+  /** @var \Drupal\joinup_group\JoinupGroupNodeAccessGrantsInterface $access_grants_helper */
+  $access_grants_helper = \Drupal::service('joinup_group.node_access_grants');
   $grants = [];
 
   foreach ($node->getTranslationLanguages(TRUE) as $langcode => $language) {
@@ -717,7 +719,7 @@ function joinup_group_node_access_records(NodeInterface $node) {
         $group = $translated_node->getGroup();
         $grants[] = [
           'realm' => 'joinup_group_view_unpublished',
-          'gid' => $group->getEntityTypeId() . ':' . $group->id(),
+          'gid' => $access_grants_helper->getNodeAccessGrantId($group),
           'grant_view' => 1,
           'grant_update' => 0,
           'grant_delete' => 0,
@@ -742,9 +744,15 @@ function joinup_group_node_grants(AccountInterface $account, $op) {
   if ($op === 'view') {
     /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
     $membership_manager = \Drupal::service('og.membership_manager');
+    /** @var \Drupal\joinup_group\JoinupGroupNodeAccessGrantsInterface $access_grants_helper */
+    $access_grants_helper = \Drupal::service('joinup_group.node_access_grants');
+
     foreach ($membership_manager->getMemberships($account->id()) as $membership) {
       if ($membership->hasPermission('view any unpublished content')) {
-        $grants['joinup_group_view_unpublished'][] = $membership->getGroupEntityType() . ':' . $membership->getGroupId();
+        $group = $membership->getGroup();
+        if ($group instanceof GroupInterface) {
+          $grants['joinup_group_view_unpublished'][] = $access_grants_helper->getNodeAccessGrantId($group);
+        }
       }
     }
   }
