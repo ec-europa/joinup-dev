@@ -161,6 +161,7 @@
             "web/modules/contrib/error_page/src/ErrorPageErrorHandler.php",
             "web/modules/contrib/sparql_entity_storage/src/Driver/Database/sparql/ConnectionInterface.php",
             "web/modules/custom/joinup_featured/src/FeaturedContentInterface.php",
+            "web/modules/custom/joinup_featured/src/FeaturedContentTrait.php",
             "web/modules/custom/joinup_sparql/src/Driver/Database/joinup_sparql/Connection.php"
         ],
         "psr-4": {
