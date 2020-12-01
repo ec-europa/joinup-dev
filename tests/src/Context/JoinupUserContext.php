@@ -119,7 +119,7 @@ class JoinupUserContext extends RawDrupalContext {
     $parts = pathinfo($filename);
     $host = \Drupal::request()->getSchemeAndHttpHost();
     $filename = $parts['filename'];
-    $xpath = "//div[contains(@class, 'featured__logo') and contains(@style, 'background-image: url({$host}/sites/default/files/{$filename}')]";
+    $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' featured__logo ') and contains(@style, 'background-image: url({$host}/sites/default/files/{$filename}')]";
     $this->assertSession()->elementExists('xpath', $xpath);
   }
 

@@ -35,7 +35,6 @@ config_devel:
     - core.date_format.date_only
     - core.date_format.date_only_text_month
     - core.entity_form_display.ogmenu_instance.navigation.default
-    - core.entity_form_display.rdf_entity.collection.propose
     - core.entity_form_display.user.user.register
     - core.entity_form_display.user.user.subscription_settings
     - core.entity_form_mode.node.collection_custom_page
@@ -70,7 +69,6 @@ config_devel:
     - language.content_settings.rdf_entity.licence
     - language.content_settings.rdf_entity.solution
     - language.types
-    - og_comment.settings
     - og_menu.ogmenu.navigation
     - password_policy.password_policy.generic_policy
     - system.menu.support

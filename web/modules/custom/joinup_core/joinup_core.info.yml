@@ -21,7 +21,6 @@ dependencies:
 config_devel:
   install:
     - comment.type.comment
-    - core.entity_view_display.comment.comment.default
     - core.entity_view_display.taxonomy_term.eira.default
     - core.entity_view_mode.node.moderation
     - core.entity_view_mode.node.view_mode_featured
@@ -32,7 +31,6 @@ config_devel:
     - field.field.taxonomy_term.file_type.mime_type
     - field.storage.comment.field_body
     - field.storage.node.field_shared_in
-    - field.storage.node.field_site_featured
     - field.storage.node.field_site_pinned
     - field.storage.node.og_audience
     - field.storage.taxonomy_term.extension

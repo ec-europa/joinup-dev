@@ -61,13 +61,13 @@ module:
   isa2_analytics: 0
   joinup_bundle_class: 0
   joinup_collection: 0
-  joinup_comment: 0
   joinup_community_content: 0
   joinup_core: 0
   joinup_discussion: 0
   joinup_document: 0
   joinup_eulogin: 0
   joinup_event: 0
+  joinup_featured: 0
   joinup_federation: 0
   joinup_front_page: 0
   joinup_group: 0
@@ -120,7 +120,6 @@ module:
   oe_webtools_globan: 0
   oe_webtools_maps: 0
   og: 0
-  og_comment: 0
   og_menu: 0
   options: 0
   owner: 0

@@ -1,0 +1,23 @@
+uuid: 5d81f982-0e35-4893-a872-6803f10983be
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.meta_entity.featured.field_featured
+    - meta_entity.type.featured
+id: meta_entity.featured.default
+targetEntityType: meta_entity
+bundle: featured
+mode: default
+content:
+  label:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  field_featured: true
+  target: true

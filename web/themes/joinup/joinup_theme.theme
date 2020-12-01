@@ -17,7 +17,6 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\block\Entity\Block;
-use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup_core\Controller\IdRedirect;
@@ -250,15 +249,19 @@ function _joinup_theme_get_file_extension(File $file) {
  */
 function joinup_theme_theme($existing, $type, $theme, $path) {
   return [
-    'share_content_form' => [
-      'render element' => 'form',
-      'path' => $path . '/templates/form',
-    ],
     'buttons_separated_form' => [
       'render element' => 'form',
       'path' => $path . '/templates/form',
     ],
     'joinup_exposed_search' => [
+      'render element' => 'form',
+      'path' => $path . '/templates/form',
+    ],
+    'joinup_user_form' => [
+      'render element' => 'form',
+      'path' => $path . '/templates/form',
+    ],
+    'share_content_form' => [
       'render element' => 'form',
       'path' => $path . '/templates/form',
     ],
@@ -824,40 +827,11 @@ function joinup_theme_preprocess_field(&$variables) {
 /**
  * Implements hook_preprocess_HOOK() for field--comment.html.twig.
  */
-function joinup_theme_preprocess_field__comment(&$variables) {
-  // Get entity url needed for login and register routes.
+function joinup_theme_preprocess_field__comment(array &$variables): void {
+  /** @var \Drupal\joinup_community_content\Entity\CommunityContentInterface $entity */
   $entity = $variables['element']['#object'];
-  $variables['entity_bundle'] = mb_strtolower($entity->type->entity->label());
-
-  // Get the comment status from the entity itself.
-  $comments_status = $variables['element']['#items']->status;
-
-  // Anonymous users are not allowed to post comments.
-  /** @var \Drupal\rdf_entity\RdfInterface $parent */
-  $user = \Drupal::currentUser();
-  if ($user->isAnonymous()) {
-    $comments_status = 'authentication_required';
-  }
-
-  switch ($comments_status) {
-    case 'authentication_required':
-      $variables['comments_status'] = 'authentication_required';
-      break;
-
-    case CommentItemInterface::OPEN:
-      $variables['comments_status'] = 'open';
-      break;
-
-    case CommentItemInterface::CLOSED:
-      $variables['comments_status'] = 'closed';
-      break;
-
-    case CommentItemInterface::HIDDEN:
-      $variables['comments_status'] = 'hidden';
-      break;
-  }
-
-  $variables['login_path'] = Url::fromRoute('user.login')->toString();
+  $variables['entity_bundle'] = $entity->get('type')->entity->getSingularLabel();
+  $variables['login_path'] = Url::fromRoute('cas.login')->toString();
   $variables['register_path'] = Url::fromRoute('user.register')->toString();
 }
 
@@ -1551,7 +1525,6 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
     'message_contact_form_submission_form',
     'adms_validator_form',
     'user_login_form',
-    'user_form',
     'user_pass',
     'simplenews_subscriber_account_form',
     'ogmenu_instance_navigation_edit_form',
@@ -1578,9 +1551,15 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
     $form['keys']['#extra_suggestion'] = 'joinup_exposed_search';
   }
 
-  // Change markup in an username field.
-  if ($form_id == 'user_form' && isset($form['user_name'])) {
-    $form['user_name']['#template'] = '<div class="form-wrapper"><div class="form__label">{{ "Username"|t }}</div><div class="form__text">{{ name }}</div></div>';
+  if ($form_id === 'user_form') {
+    // Set a custom layout for the user form, having fields grouped in separate
+    // sections.
+    $form['#theme'][] = 'joinup_user_form';
+
+    // Change markup of the username field.
+    if (isset($form['user_name'])) {
+      $form['user_name']['#template'] = '<div class="form-wrapper"><div class="form__label">{{ "Username"|t }}</div><div class="form__text">{{ name }}</div></div>';
+    }
   }
 
   $link_button_classes = [

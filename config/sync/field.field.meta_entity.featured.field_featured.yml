@@ -1,0 +1,27 @@
+uuid: ce996418-9182-435d-8e7a-a945752b9aea
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.meta_entity.field_featured
+    - meta_entity.type.featured
+  module:
+    - cached_computed_field
+id: meta_entity.featured.field_featured
+field_name: field_featured
+entity_type: meta_entity
+bundle: featured
+label: Featured
+description: 'Featured content will be shown at the top of lists and their tiles show an icon to indicate that their importance.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+    expire: null
+default_value_callback: ''
+settings:
+  on_label: Featured
+  off_label: 'Not featured'
+  cache-max-age: 86400
+field_type: cached_computed_boolean

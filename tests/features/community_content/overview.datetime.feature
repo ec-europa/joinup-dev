@@ -39,6 +39,22 @@ Feature:
     Then I should see the text "Published on: 25/12/2019"
     And I should see the text "Last update: 26/12/2019"
 
+    # Featuring and unfeaturing also should not change the update timestamp.
+    Given I am logged in as a moderator
+    When I go to the homepage of the "Gravitational wave detectors" collection
+    And I click the contextual link "Feature" in the "LIGO" tile
+    Then I should see the success message "LIGO has been set as featured content."
+    When I go to the "LIGO" <type>
+    Then I should see the text "Published on: 25/12/2019"
+    And I should see the text "Last update: 26/12/2019"
+
+    When I go to the homepage of the "Gravitational wave detectors" collection
+    And I click the contextual link "Remove from featured" in the "LIGO" tile
+    Then I should see the success message "LIGO has been removed from the featured contents."
+    When I go to the "LIGO" <type>
+    Then I should see the text "Published on: 25/12/2019"
+    And I should see the text "Last update: 26/12/2019"
+
     Examples:
       # Events are excluded since they do not show the updated timestamp to the end user.
       | type       | publication field name    |

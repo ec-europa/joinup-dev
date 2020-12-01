@@ -9,7 +9,7 @@ dependencies:
 id: horizontal_tabs
 theme: joinup_theme
 region: content
-weight: -23
+weight: -24
 provider: null
 plugin: local_tasks_block
 settings:
