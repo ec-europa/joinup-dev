@@ -25,8 +25,8 @@ subscription manually. See the following files for more info:
 Collection content subscriptions
 --------------------------------
 
-A user can subscribe to content in collections and will be notified when new
-content is published in the collections they are a member of. The user can
+A user can subscribe to content in collections and solutions and will be notified 
+when new content is published in the group they are a member of. The user can
 subscribe to collections through the "My subscriptions" link in the user profile
 menu. This leads to the `SubscriptionDashboardForm` where the user can choose
 for which content bundles they want to receive notifications.
@@ -34,16 +34,22 @@ for which content bundles they want to receive notifications.
 When a user joins a collection they will be presented with a modal dialog that
 allows them to subscribe immediately after joining. This modal dialog can be
 found in the Collection module.
+For solutions, a user sees a button to subscribe instead but becomes a member
+nonetheless.
 
 For a full description of the functionality, see the following scenarios:
 
-- [`subscriptions_manage.feature`](../../../../tests/features/joinup_subscription/subscriptions_manage.feature)
+- [`collection.content.subscription.feature`](../../../../tests/features/joinup_subscription/collection.content.subscription.feature)
+- [`solution.content.subscription.feature`](../../../../tests/features/joinup_subscription/solution.content.subscription.feature)
+- [`subscriptions_manage.feature`](../../../../tests/features/joinup_subscription/collection.content.subscription.feature)
 - [`subscribe-on-join.feature`](../../../../tests/features/joinup_subscription/subscribe-on-join.feature)
 - [`unsubscribe.feature`](../../../../tests/features/joinup_subscription/unsubscribe.feature)
 
-The collection content subscriptions are stored in the `subscription_bundles`
+The group content subscriptions are stored in the `subscription_bundles`
 base field on the `OgMembership` entity. This is added in
 `joinup_subscription_entity_base_field_info()`.
+The `subscription_bundles` property also stores the entity type along with the bundle
+as collections also send digest messages for solutions as well.
 
 There is no helper service at the moment to handle storing and retrieving this
 data since it is handled trivially through the Field API:
@@ -56,6 +62,7 @@ $subscriptions = $membership->get('subscription_bundles');
 $subscription_bundles = [
   ['entity_type' => 'node', 'bundle' => 'event'],
   ['entity_type' => 'node', 'bundle' => 'news'],
+  ['entity_type' => 'rdf_entity', 'bundle' => 'solution'],
 ];
 $membership->set('subscription_bundles', $subscription_bundles)->save();
 ```
@@ -63,6 +70,8 @@ $membership->set('subscription_bundles', $subscription_bundles)->save();
 The messages are included in the digests by the
 `CollectionContentSubscriptionSubscriber` event listener which acts on solutions
 and community content being created or updated.
+For solutions, `SolutionContentSubscriptionSubscriber` performs the equivalent task but only
+for community content.
 
 Digests
 -------
