@@ -92,5 +92,4 @@ class CollectionContentSubscriptionSubscriber extends GroupContentSubscriptionSu
     return DigestFormatter::DIGEST_TEMPLATE_IDS['collection'];
   }
 
-
 }

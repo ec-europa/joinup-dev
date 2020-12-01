@@ -52,5 +52,4 @@ class SolutionContentSubscriptionSubscriber extends GroupContentSubscriptionSubs
     return DigestFormatter::DIGEST_TEMPLATE_IDS['solution'];
   }
 
-
 }
