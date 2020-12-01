@@ -1,0 +1,13 @@
+diff --git a/src/Plugin/search_api/backend/SearchApiSolrBackend.php b/src/Plugin/search_api/backend/SearchApiSolrBackend.php
+index ecee032b..be73a616 100644
+--- a/src/Plugin/search_api/backend/SearchApiSolrBackend.php
++++ b/src/Plugin/search_api/backend/SearchApiSolrBackend.php
+@@ -2803,7 +2803,7 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
+       foreach ($keys as $key_nr => $key) {
+         // We cannot use \Drupal\Core\Render\Element::children() anymore because
+         // $keys is not a valid render array.
+-        if ($key_nr[0] === '#' || !$key) {
++        if ((is_string($key_nr) && $key_nr[0] === '#') || !$key) {
+           continue;
+         }
+         if (is_array($key)) {

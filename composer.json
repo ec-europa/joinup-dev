@@ -318,6 +318,9 @@
                 "Add a static method that knows to index a given entity @see https://www.drupal.org/project/search_api/issues/3106342": "https://www.drupal.org/files/issues/2020-01-14/3106342-6.patch",
                 "Bulk Form field for SAPI @see https://www.drupal.org/project/search_api/issues/3117171": "https://www.drupal.org/files/issues/2020-04-01/3117171-13.patch"
             },
+            "drupal/search_api_solr": {
+                "Trying to access array offset on value of type int. @see https://www.drupal.org/project/search_api_solr/issues/3173950": "resources/patch/search-api-solr-3173950-8.x-2.2.patch"
+            },
             "drupal/site_alert": {
                 "Add drush commands @see https://www.drupal.org/project/site_alert/issues/3118800": "https://www.drupal.org/files/issues/2020-10-26/3118800-44.patch"
             },

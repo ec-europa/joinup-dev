@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2af71b61df31a314109368f9557c099b",
+    "content-hash": "b8ec7d4f147b1c2a08e42019f1729bf5",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6038,6 +6038,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Trying to access array offset on value of type int. @see https://www.drupal.org/project/search_api_solr/issues/3173950": "resources/patch/search-api-solr-3173950-8.x-2.2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9940,7 +9943,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-10-26T14:41:29+00:00"
+            "time": "2020-08-03T19:59:39+00:00"
         },
         {
             "name": "stack/builder",
