@@ -35,7 +35,7 @@
   padding: 0;
   border-bottom: 1px solid $color-grey-light;
 
-  @include justify-content(center);
+  @include justify-content(start);
   @include flex;
   @include flex-direction(column);
   @include flex-wrap(nowrap);
@@ -193,6 +193,7 @@
   &.is-active {
     font-weight: $font-weight-medium;
     border-bottom: 1px solid #fff;
+    border-top: 3px solid $color-orange;
     background-color: #fff;
   }
 }
@@ -218,49 +219,6 @@
       border-top: 4px solid $color-orange;
       border-right: 4px solid transparent;
       border-left: 4px solid transparent;
-    }
-  }
-}
-
-// EIF recommendations category tabs
-// --------------------------------------------------
-#block-category {
-  ul.item-list__links {
-    @include flex;
-    @include flex-wrap(wrap);
-    @include justify-content(space-between);
-    list-style: none;
-    padding: 0;
-    margin: -13px -4px 14px 0;
-
-    li {
-      flex-grow: 1;
-      text-align: center;
-      padding-right: 4px;
-
-      a {
-        display: block;
-        width: 100%;
-        padding: 15px 0;
-        margin-top: 4px;
-        background: #fff;
-        text-decoration: none;
-        color: $color-base;
-        @include breakpoint(tablet) {
-          font-size: $font-size-base;
-        }
-
-        &:hover,
-        &.is-active {
-          background: #f4f6f7;
-          border-top: solid 4px #ee8917;
-          margin-top: 0;
-        }
-      }
-
-      .facet-item__status {
-        display: none;
-      }
     }
   }
 }

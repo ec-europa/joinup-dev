@@ -26,7 +26,8 @@ settings:
 visibility:
   request_route:
     id: request_route
-    routes: entity.rdf_entity.canonical
+    routes:
+      - entity.rdf_entity.canonical
     negate: false
     context_mapping: {  }
   'entity_bundle:rdf_entity':

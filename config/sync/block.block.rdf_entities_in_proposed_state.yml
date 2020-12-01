@@ -24,7 +24,8 @@ settings:
 visibility:
   request_route:
     id: request_route
-    routes: dashboard.page
+    routes:
+      - dashboard.page
     negate: false
     context_mapping: {  }
   user_role:

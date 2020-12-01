@@ -12,7 +12,7 @@ use Drupal\joinup_subscription\DigestFormatter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Subscriber for compiling collection content subscription digest messages .
+ * Subscriber for compiling content subscription digest messages.
  */
 class CollectionContentSubscriptionSubscriber extends GroupContentSubscriptionSubscriberBase implements EventSubscriberInterface {
 

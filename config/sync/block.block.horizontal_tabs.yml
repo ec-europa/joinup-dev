@@ -1,0 +1,35 @@
+uuid: 645004cd-62d2-42db-9b1c-09ef67737a45
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+  theme:
+    - joinup_theme
+id: horizontal_tabs
+theme: joinup_theme
+region: content
+weight: -24
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Horizontal tabs'
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - user.login
+      - user.pass
+      - view.eif_recommendation.all
+      - view.eif_recommendation.principle
+      - view.eif_recommendation.interoperability_layer
+      - view.eif_recommendation.conceptual_model
+      - joinup_subscription.my_subscriptions
+      - joinup_subscription.subscriptions
+    negate: false
+    context_mapping: {  }

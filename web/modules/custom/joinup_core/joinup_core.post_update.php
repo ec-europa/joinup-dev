@@ -12,9 +12,18 @@ use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
 use EasyRdf\Graph;
 
 /**
+ * Fix the EIF recommendation menu link route.
+ */
+function joinup_core_post_update_0106600(): void {
+  \Drupal::entityTypeManager()->getStorage('menu_link_content')->load(11390)
+    ->set('link', 'route:view.eif_recommendation.all;rdf_entity=http_e_f_fdata_ceuropa_ceu_fw21_f405d8980_b3f06_b4494_bb34a_b46c388a38651')
+    ->save();
+}
+
+/**
  * Migrate site wide featured content to meta entities.
  */
-function joinup_core_post_update_0106600(): string {
+function joinup_core_post_update_0106601(): string {
   $count = [];
   $entity_type_manager = \Drupal::entityTypeManager();
 
@@ -40,7 +49,7 @@ function joinup_core_post_update_0106600(): string {
 /**
  * Update the EIRA SKOS file and its references.
  */
-function joinup_core_post_update_0106601(array &$sandbox): void {
+function joinup_core_post_update_0106602(array &$sandbox): void {
   $graphs = [
     'http://joinup.eu/solution/draft',
     'http://joinup.eu/solution/published',
