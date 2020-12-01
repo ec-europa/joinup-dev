@@ -28,6 +28,7 @@ joinup_subscription.unsubscribe_all:
   defaults:
     _form: '\Drupal\joinup_subscription\Form\UnsubscribeFromAllForm'
     _title: 'Unsubscribe from all groups'
+    bundle: 'collection'
   requirements:
     _custom_access: '\Drupal\joinup_subscription\Form\UnsubscribeFromAllForm::access'
     bundle: '(collection|solution)'
