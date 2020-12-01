@@ -29,6 +29,7 @@ default:
         - Drupal\joinup\Context\JoinupDocumentContext
         - Drupal\joinup\Context\JoinupEuLoginContext
         - Drupal\joinup\Context\JoinupEventContext
+        - Drupal\joinup\Context\JoinupFeaturedContext
         - Drupal\joinup\Context\JoinupFrontPageContext
         - Drupal\joinup\Context\JoinupGroupContext
         - Drupal\joinup\Context\JoinupInviteContext

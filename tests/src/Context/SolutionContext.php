@@ -357,8 +357,20 @@ class SolutionContext extends RawDrupalContext {
       }
     }
 
+    // If the solution is featured we need to create the meta entity that stores
+    // this information after creating the solution.
+    $is_featured = in_array(strtolower((string) ($values['feature'] ?? '')), [
+      'y',
+      'yes',
+    ]);
+
     /** @var \Drupal\solution\Entity\SolutionInterface $solution */
     $solution = $this->createRdfEntity('solution', $values);
+
+    if ($is_featured) {
+      $solution->feature();
+    }
+
     $this->rdfEntities[$solution->id()] = $solution;
 
     if (!empty($values['pinned_in_collection'])) {
@@ -561,7 +573,7 @@ class SolutionContext extends RawDrupalContext {
       'state' => 'field_is_state',
       'collection' => 'collection',
       'collections' => 'collection',
-      'featured' => 'field_site_featured',
+      'featured' => 'feature',
       'pinned to front page' => 'field_site_pinned',
       'pinned in' => 'pinned_in_collection',
       'shared on' => 'field_is_shared_in',
@@ -595,7 +607,6 @@ class SolutionContext extends RawDrupalContext {
         'needs update' => 'needs_update',
         'blacklisted' => 'blacklisted',
       ],
-      'field_site_featured' => ['no' => 0, 'yes' => 1],
       'field_site_pinned' => ['no' => 0, 'yes' => 1],
       'field_is_show_eira_related' => ['no' => 0, 'yes' => 1],
     ];
@@ -784,7 +795,7 @@ class SolutionContext extends RawDrupalContext {
    */
   public function assertTileContainsDownloadCount(string $heading, int $count): void {
     $tile = $this->getTileByHeading($heading);
-    $elements = $tile->findAll('xpath', '//span[contains(@class, "stats__text") and text() = "' . $count . '"]');
+    $elements = $tile->findAll('xpath', '//span[contains(concat(" ", normalize-space(@class), " "), " stats__text ") and text() = "' . $count . '"]');
     Assert::assertCount(1, $elements);
   }
 
@@ -801,7 +812,7 @@ class SolutionContext extends RawDrupalContext {
    */
   public function assertTileNotContainsDownloadIcon(string $heading): void {
     $tile = $this->getTileByHeading($heading);
-    $elements = $tile->findAll('xpath', '//span[contains(@class, "icon--download")]');
+    $elements = $tile->findAll('xpath', '//span[contains(concat(" ", normalize-space(@class), " "), " icon--download ")]');
     Assert::assertEmpty($elements);
   }
 
