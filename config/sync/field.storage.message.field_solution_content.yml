@@ -1,0 +1,27 @@
+uuid: b085e177-69d2-45fe-b252-53491029ddcd
+langcode: en
+status: true
+dependencies:
+  module:
+    - dynamic_entity_reference
+    - field_permissions
+    - message
+    - node
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: message.field_solution_content
+field_name: field_solution_content
+entity_type: message
+type: dynamic_entity_reference
+settings:
+  exclude_entity_types: false
+  entity_type_ids:
+    node: node
+module: dynamic_entity_reference
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

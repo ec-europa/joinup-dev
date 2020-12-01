@@ -1,0 +1,24 @@
+uuid: 8481522d-2706-4597-9c36-aeea7d53521b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.solution_content_subscription.field_solution_content
+    - message.template.solution_content_subscription
+  module:
+    - dynamic_entity_reference
+id: message.solution_content_subscription.default
+targetEntityType: message
+bundle: solution_content_subscription
+mode: default
+content:
+  field_solution_content:
+    weight: 0
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: dynamic_entity_reference_label
+    region: content
+hidden:
+  partial_0: true

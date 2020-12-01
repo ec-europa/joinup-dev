@@ -1,0 +1,19 @@
+uuid: 19bac874-ff71-47cd-93ef-55b9640bf1fa
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.full_html
+template: solution_content_subscription
+label: 'Solution content subscription'
+description: 'Digest message sent when new content is published in a user''s subscribed solutions.'
+text:
+  -
+    value: '<p>[message:field_solution_content:entity]</p>.'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }

@@ -1,0 +1,17 @@
+uuid: 09dc533e-0755-4265-b2b6-9afb8d793614
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - field.field.message.solution_content_subscription.field_solution_content
+    - message.template.solution_content_subscription
+id: message.solution_content_subscription.mail_subject
+targetEntityType: message
+bundle: solution_content_subscription
+mode: mail_subject
+content: {  }
+hidden:
+  field_solution_content: true
+  partial_0: true
+  partial_1: true
