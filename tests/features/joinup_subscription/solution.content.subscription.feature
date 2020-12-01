@@ -105,7 +105,7 @@ Feature: Subscribing to community content in solutions
 
     # Check that the messages are formatted correctly.
     Given all message digests have been delivered
-    Then the solution content subscription digest sent to hristo contains the following sections:
+    And the solution content subscription digest sent to hristo contains the following sections:
       | title                |
       | Cities of Bulgaria   |
       | Plovdiv              |
@@ -114,7 +114,9 @@ Feature: Subscribing to community content in solutions
       | Duck liver           |
       | Rose oil             |
       | Sunflower seeds      |
-    And the solution content subscription digest sent to hristo should have the subject "Joinup: Daily digest message"
+    And the email sent to "hristo" with subject "Joinup: Daily Solution digest message" contains the following lines of text:
+      | text                                                   |
+      | New content published in Solution Products of Bulgaria |
 
     And the solution content subscription digest sent to bisera contains the following sections:
       | title                |
@@ -125,7 +127,9 @@ Feature: Subscribing to community content in solutions
       | Products of Bulgaria |
       | Canned cherries      |
       | Rose oil             |
-    And the solution content subscription digest sent to bisera should have the subject "Joinup: Weekly digest message"
+    And the email sent to "bisera" with subject "Joinup: Weekly Solution digest message" contains the following lines of text:
+      | text                                                   |
+      | New content published in Solution Products of Bulgaria |
 
     And the solution content subscription digest sent to kalin contains the following sections:
       | title                |
@@ -136,7 +140,9 @@ Feature: Subscribing to community content in solutions
       | Products of Bulgaria |
       | Canned cherries      |
       | Sunflower seeds      |
-    And the solution content subscription digest sent to kalin should have the subject "Joinup: Monthly digest message"
+    And the email sent to "kalin" with subject "Joinup: Monthly Solution digest message" contains the following lines of text:
+      | text                                                   |
+      | New content published in Solution Products of Bulgaria |
 
     # Clean out the message queue for the next test.
     And the mail collector cache is empty

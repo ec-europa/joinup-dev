@@ -572,6 +572,8 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * | Arctic  |
    * | Sea ice |
    *
+   * @param string $type
+   *   The group bundle.
    * @param string $username
    *   The name of the user to whom the digest mail is sent.
    * @param \Behat\Gherkin\Node\TableNode $table
@@ -580,10 +582,10 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @throws \Exception
    *   Throws an exception when a parameter is not the expected one.
    *
-   * @Then the collection content subscription digest sent to :username contains the following sections:
-   * @Then the solution content subscription digest sent to :username contains the following sections:
+   * @Then the :type content subscription digest sent to :username contains the following sections:
    */
-  public function assertGroupContentSubscriptionEmailSections(string $username, TableNode $table): void {
+  public function assertGroupContentSubscriptionEmailSections(string $type, string $username, TableNode $table): void {
+    Assert::assertContains($type, ['collection', 'solution'], 'Only "collection" and "solution" are allowed for parameter $type.');
     $this->assertEmailTagPresent();
 
     // Remove the table header from the array.
@@ -592,7 +594,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
 
     $user = user_load_by_name($username);
     $email_address = $user->getEmail();
-    $emails = $this->getGroupSubscriptionEmailsByEmail($email_address);
+    $emails = $this->getGroupSubscriptionEmailsByEmail($email_address, $type);
 
     Assert::assertCount(1, $emails, "Expected 1 digest message for user $username, found " . count($emails) . ' messages.');
 
@@ -616,44 +618,12 @@ class JoinupSubscriptionContext extends RawDrupalContext {
   }
 
   /**
-   * Checks that the digest mail sent to the given user has the right title.
-   *
-   * This will check that there is exactly 1 digest mail in the collector for
-   * the given user, and that the mail has the expected title. The title follows
-   * a predefined pattern so we could automate this check without requiring a
-   * separate step definition but this is provided for the benefit of the
-   * business stakeholders who can validate that their chosen format is present.
-   *
-   * @param string $username
-   *   The name of the user to whom the digest mail is sent.
-   * @param string $subject
-   *   The expected subject for the digest mail.
-   *
-   * @throws \Exception
-   *   Throws an exception when the user doesn't exist, has no digest message or
-   *   the message subject is incorrect.
-   *
-   * @Then the collection content subscription digest sent to :username should have the subject :subject
-   * @Then the solution content subscription digest sent to :username should have the subject :subject
-   */
-  public function assertGroupContentSubscriptionEmailSubject(string $username, string $subject): void {
-    $this->assertEmailTagPresent();
-
-    $user = user_load_by_name($username);
-    $email_address = $user->getEmail();
-    $emails = $this->getGroupSubscriptionEmailsByEmail($email_address);
-
-    Assert::assertCount(1, $emails, "Expected 1 digest message for user $username, found " . count($emails) . ' messages.');
-
-    $email = reset($emails);
-    Assert::assertEquals($subject, $email['subject']);
-  }
-
-  /**
    * Returns the sent group subscription digest messages for the user.
    *
    * @param string $email_address
    *   The email of the recipient.
+   * @param string $type
+   *   The group bundle.
    *
    * @return array
    *   An array of emails found.
@@ -661,11 +631,12 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @throws \Exception
    *   Thrown if no emails are found or no user exists with the given data.
    */
-  protected function getGroupSubscriptionEmailsByEmail(string $email_address): array {
+  protected function getGroupSubscriptionEmailsByEmail(string $email_address, string $type): array {
     $emails = [];
+    $type = ucfirst($type);
 
     foreach (self::MESSAGE_INTERVALS as $interval) {
-      $emails = array_merge($emails, $this->getEmailsBySubjectAndMail("Joinup: $interval digest message", $email_address, FALSE));
+      $emails = array_merge($emails, $this->getEmailsBySubjectAndMail("Joinup: $interval $type digest message", $email_address, FALSE));
     }
 
     return $emails;
