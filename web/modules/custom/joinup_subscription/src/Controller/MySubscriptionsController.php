@@ -8,6 +8,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Session\AccountProxy;
+use Drupal\joinup_subscription\Form\MySubscriptionsForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -53,7 +54,7 @@ class MySubscriptionsController extends ControllerBase {
    *   The subscription settings form array.
    */
   public function build(): array {
-    return $this->formBuilder()->getForm('Drupal\joinup_subscription\Form\MySubscriptionsForm', $this->currentUser());
+    return $this->formBuilder()->getForm(MySubscriptionsForm::class, $this->currentUser());
   }
 
   /**
