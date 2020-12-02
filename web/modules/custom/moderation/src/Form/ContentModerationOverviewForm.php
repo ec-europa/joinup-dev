@@ -14,6 +14,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -45,17 +46,30 @@ class ContentModerationOverviewForm extends FormBase {
   protected $nodeStorage;
 
   /**
+   * The OG membership manager service.
+   *
+   * @var \Drupal\og\MembershipManagerInterface
+   */
+  protected $membershipManager;
+
+  /**
    * Constructs a new ContentModerationOverviewForm object.
    *
    * @param \Drupal\Core\Database\Connection $connection
    *   The database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
+   * @param \Drupal\og\MembershipManagerInterface $membership_manager
+   *   The OG membership manager service.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(Connection $connection, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(Connection $connection, EntityTypeManagerInterface $entityTypeManager, MembershipManagerInterface $membership_manager) {
     $this->connection = $connection;
     $this->entityTypeManager = $entityTypeManager;
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
+    $this->membershipManager = $membership_manager;
   }
 
   /**
@@ -64,7 +78,8 @@ class ContentModerationOverviewForm extends FormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('database'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('og.membership_manager')
     );
   }
 
@@ -124,7 +139,7 @@ class ContentModerationOverviewForm extends FormBase {
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result object.
    */
-  public static function access(RdfInterface $rdf_entity): AccessResultInterface {
+  public function access(RdfInterface $rdf_entity): AccessResultInterface {
     // The content moderation overview is accessible by moderators and]
     // facilitators, so access varies by user role and OG role.
     $cache_metadata = (new CacheableMetadata())->addCacheContexts(
@@ -140,9 +155,7 @@ class ContentModerationOverviewForm extends FormBase {
     // If the user doesn't have global permission, check if they have permission
     // inside the group.
     if (!$access) {
-      /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-      $membership_manager = \Drupal::service('og.membership_manager');
-      $membership = $membership_manager->getMembership($rdf_entity, $user->id());
+      $membership = $this->membershipManager->getMembership($rdf_entity, $user->id());
       if ($membership instanceof OgMembershipInterface) {
         $access = $membership->hasPermission('access content moderation overview');
       }
