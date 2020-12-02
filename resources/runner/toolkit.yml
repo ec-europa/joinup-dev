@@ -158,5 +158,10 @@ commands:
       options:
         yes: null
         root: ${joinup.site_dir}
+    - task: exec
+      command: ${drush.bin}
+      arguments:
+        - php:eval
+        - if (node_access_needs_rebuild()) { node_access_rebuild(); }
     - task: run
       command: config-readonly:enable
