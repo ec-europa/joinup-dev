@@ -72,8 +72,8 @@ class JoinupGroupNodeAccessGrants implements JoinupGroupNodeAccessGrantsInterfac
         ->condition('entity_id', $group->id())
         ->range(0, 1);
 
-      $records = $query->execute()->fetchAll();
-      $gid = empty($records) ? $this->createRecord($group) : (int) reset($records)->gid;
+      $record = $query->execute()->fetch();
+      $gid = empty($record) ? $this->createRecord($group) : (int) $record->gid;
       $this->staticCache->set($cid, $gid, Cache::PERMANENT, $group->getCacheTagsToInvalidate());
     }
 
