@@ -92,10 +92,10 @@ Feature: Proposing a collection
     When I click the contextual link "Add new page" in the "Left sidebar" region
     Then I should see the heading "Add custom page"
     When I fill in the following:
-      | Title | About                                                          |
+      | Title | About this group                                               |
       | Body  | <p>Some more<em>information</em><br />about the collection.<p> |
     And I press "Save"
-    Then I should see the success message "Custom page About has been created."
+    Then I should see the success message "Custom page About this group has been created."
     And the page should contain the html text "<p>Some more<em>information</em><br>about the collection.</p>"
 
     # Clean up the collection that was created.
