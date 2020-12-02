@@ -6,8 +6,10 @@ Feature: Moderate community content
 
   Scenario: Content moderation overview
     Given the following collection:
-      | title | Black hole research |
-      | state | validated           |
+      | title            | Black hole research |
+      | state            | validated           |
+      | content creation | members             |
+      | moderation       | yes                 |
     And the following solution:
       | title | Survey For Supernovae |
       | state | validated             |
