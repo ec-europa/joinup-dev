@@ -195,7 +195,7 @@ function template_preprocess_advanced_search_pseudo_facet(array &$variables) {
   $variables['link'] = [
     '#type' => 'link',
     '#title' => t('Advanced search'),
-    '#url' => Url::fromRoute('view.search.page_1', [], $options),
+    '#url' => Url::fromRoute('view.search.search', [], $options),
     '#attributes' => ['rel' => 'nofollow'],
   ];
 }

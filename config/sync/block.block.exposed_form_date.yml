@@ -1,3 +1,4 @@
+uuid: 7311969e-591b-4723-9fbb-f72fa9a96c94
 langcode: en
 status: true
 dependencies:
@@ -8,14 +9,14 @@ dependencies:
     - views
   theme:
     - joinup_theme
-id: exposed_form_search_page
+id: exposed_form_date
 theme: joinup_theme
-region: header
+region: sidebar_left
 weight: -17
 provider: null
-plugin: 'views_exposed_filter_block:search-page_1'
+plugin: 'views_exposed_filter_block:search-shadow'
 settings:
-  id: 'views_exposed_filter_block:search-page_1'
+  id: 'views_exposed_filter_block:search-shadow'
   label: ''
   provider: views
   label_display: '0'
@@ -23,6 +24,6 @@ settings:
 visibility:
   request_route:
     id: request_route
-    routes: view.search.page_1
+    routes: view.search.search
     negate: false
     context_mapping: {  }

@@ -24,6 +24,7 @@ module:
   ctools: 0
   custom_page: 0
   dashboard: 0
+  date_popup: 0
   datetime: 0
   datetime_range: 0
   diff: 0

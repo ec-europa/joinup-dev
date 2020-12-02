@@ -12,6 +12,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\search_api\IndexInterface;
@@ -394,4 +395,35 @@ function joinup_search_views_pre_execute(ViewExecutable $view) {
   // method to ensure legacy support.
   // Selecting the entity_created option itself won't affect the query.
   $view->getQuery()->sort('entity_created', 'DESC');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_search_form_views_exposed_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $form_state->get('view');
+  if ($view->id() === 'search') {
+    // We're displaying the 'search' view exposed form block twice, on the same
+    // page. For this reason, beside the main view display ('search'), we've
+    // created a second shadow disabled display, so that we can distinguish
+    // between the two and show them in different blocks:
+    // - The 'exposed_form_search_page' block, based on 'search' view display,
+    //   shows only the keywords text field and the sort selector. This block is
+    //   placed in the "Content top" (content_top) region.
+    // - The 'exposed_form_date' block, based on 'shadow' view display, shows
+    //   only the created/changed date exposed filters and is placed in the
+    //   "Sidebar left" (sidebar_left) region.
+    $display = $form_state->get('display');
+    if ($display['id'] === 'search') {
+      $form['created']['min']['#type'] = 'hidden';
+      $form['created']['max']['#type'] = 'hidden';
+      $form['updated']['min']['#type'] = 'hidden';
+      $form['updated']['max']['#type'] = 'hidden';
+    }
+    elseif ($display['id'] === 'shadow') {
+      $form['keys']['#type'] = 'hidden';
+      $form['sort_by']['#type'] = 'hidden';
+    }
+  }
 }
