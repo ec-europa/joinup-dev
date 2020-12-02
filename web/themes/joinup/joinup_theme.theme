@@ -265,6 +265,7 @@ function _joinup_theme_get_file_extension(File $file) {
     'pptx',
     'rar',
     'svg',
+    'txt',
     'xls',
     'xlsx',
     'zip',
