@@ -122,9 +122,6 @@ function joinup_core_update_0106600(): void {
       ],
     ],
     'primary key' => ['gid'],
-    'indexes' => [
-      'gid' => ['gid'],
-    ],
     'unique keys' => [
       'entity_type_id' => ['entity_type', 'entity_id'],
     ],

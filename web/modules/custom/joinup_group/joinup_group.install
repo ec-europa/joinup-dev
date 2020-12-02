@@ -37,9 +37,6 @@ function joinup_group_schema() {
         ],
       ],
       'primary key' => ['gid'],
-      'indexes' => [
-        'gid' => ['gid'],
-      ],
       'unique keys' => [
         'entity_type_id' => ['entity_type', 'entity_id'],
       ],
