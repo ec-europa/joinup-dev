@@ -20,7 +20,7 @@ class ModerationEventSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     return [
       PermissionEventInterface::EVENT_NAME => 'provideOgPermission',
     ];
@@ -32,7 +32,7 @@ class ModerationEventSubscriber implements EventSubscriberInterface {
    * @param \Drupal\og\Event\PermissionEventInterface $event
    *   The OG permission event.
    */
-  public function provideOgPermission(PermissionEventInterface $event) {
+  public function provideOgPermission(PermissionEventInterface $event): void {
     if ($event->getGroupEntityTypeId() === 'rdf_entity' && in_array($event->getGroupBundleId(), JoinupGroupHelper::GROUP_BUNDLES)) {
       $event->setPermission(new GroupPermission([
         'name' => 'access content moderation overview',

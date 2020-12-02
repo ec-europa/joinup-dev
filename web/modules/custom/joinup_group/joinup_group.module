@@ -717,7 +717,7 @@ function joinup_group_user_update(UserInterface $user) {
  * them to be viewed by group members with the 'view any unpublished content'
  * permission.
  */
-function joinup_group_node_access_records(NodeInterface $node) {
+function joinup_group_node_access_records(NodeInterface $node): array {
   /** @var \Drupal\joinup_group\JoinupGroupNodeAccessGrantsInterface $access_grants_helper */
   $access_grants_helper = \Drupal::service('joinup_group.node_access_grants');
   $grants = [];
@@ -748,7 +748,7 @@ function joinup_group_node_access_records(NodeInterface $node) {
 /**
  * Implements hook_node_grants().
  */
-function joinup_group_node_grants(AccountInterface $account, $op) {
+function joinup_group_node_grants(AccountInterface $account, string $op): array {
   $grants = [];
 
   if ($op === 'view') {
