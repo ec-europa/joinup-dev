@@ -8,7 +8,9 @@
 declare(strict_types = 1);
 
 use Drupal\joinup_featured\FeaturedContentInterface;
+use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
 use Drupal\sparql_entity_storage\UriEncoder;
+use EasyRdf\Graph;
 
 /**
  * Migrate site wide featured content to meta entities.
@@ -37,9 +39,37 @@ function joinup_core_post_update_0106600(): string {
 }
 
 /**
+ * Update the EIRA SKOS file and its references.
+ */
+function joinup_core_post_update_0106601(array &$sandbox): void {
+  $graphs = [
+    'http://joinup.eu/solution/draft',
+    'http://joinup.eu/solution/published',
+  ];
+  $connection = \Drupal::getContainer()->get('sparql.endpoint');
+  foreach ($graphs as $graph) {
+    $update_query = <<<QUERY
+WITH <{$graph}>
+DELETE { ?entity_id <http://purl.org/dc/terms/type> <http://data.europa.eu/dr8/Ontologies> }
+INSERT { ?entity_id <http://purl.org/dc/terms/type> <http://data.europa.eu/dr8/Ontology> }
+WHERE { ?entity_id <http://purl.org/dc/terms/type> <http://data.europa.eu/dr8/Ontologies> }
+QUERY;
+    $connection->query($update_query);
+  }
+
+  $graph_name = 'http://eira_skos';
+  $connection->query("DEFINE sql:log-enable 3 CLEAR GRAPH <$graph_name>;");
+  $graph_store = SparqlGraphStoreTrait::createGraphStore();
+  $filepath = realpath(__DIR__ . '/../../../../resources/fixtures/EIRA_SKOS.rdf');
+  $graph = new Graph($graph_name);
+  $graph->parseFile($filepath);
+  $graph_store->insert($graph);
+}
+
+/**
  * Re-run the update aliases for entities with the old alias.
  */
-function joinup_core_post_update_0106601(?array &$sandbox = NULL): string {
+function joinup_core_post_update_0106602(?array &$sandbox = NULL): string {
   $entity_type_manager = \Drupal::entityTypeManager();
   $storage = [
     'rdf_entity' => $entity_type_manager->getStorage('rdf_entity'),
@@ -55,9 +85,7 @@ function joinup_core_post_update_0106601(?array &$sandbox = NULL): string {
       'asset_distribution',
     ];
     $results = \Drupal::database()
-      ->query(
-        "SELECT path, alias FROM {path_alias} p WHERE p.alias LIKE '/solution/%'"
-      )
+      ->query("SELECT path, alias FROM {path_alias} p WHERE p.alias LIKE '/solution/%'")
       ->fetchAll();
 
     $entity_ids = [
