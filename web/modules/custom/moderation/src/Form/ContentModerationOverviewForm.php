@@ -148,8 +148,7 @@ class ContentModerationOverviewForm extends FormBase {
 
     // Check if the user has global permission to access all content moderation
     // overviews (this is granted to moderators).
-    /** @var \Drupal\Core\Session\AccountProxyInterface $user */
-    $user = \Drupal::service('current_user');
+    $user = $this->currentUser();
     $access = $user->hasPermission('access content moderation overview');
 
     // If the user doesn't have global permission, check if they have permission
