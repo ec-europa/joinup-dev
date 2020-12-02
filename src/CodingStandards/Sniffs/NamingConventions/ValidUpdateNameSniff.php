@@ -19,13 +19,18 @@ use PHP_CodeSniffer\Files\File;
  * upgrade first to `v1.40.0`, second to `v1.40.1` (if exists) and, finally, to
  * `v1.42.0`.
  *
- * The Joinup update and post-update scripts naming is following this pattern:
+ * The Joinup update, post-update and deploy scripts naming is following this
+ * pattern:
  * @code
  * function mymodule_update_0106100() {...}
  * @endcode
  * or
  * @code
  * function mymodule_post_update_0207503() {...}
+ * @endcode
+ * or
+ * @code
+ * function mymodule_deploy_0208101() {...}
  * @endcode
  * The (post)updated identifier (the numeric part consists in seven digits with
  * the following meaning:
@@ -76,17 +81,17 @@ class ValidUpdateNameSniff extends ValidFunctionNameSniff {
   protected function processTokenOutsideScope(File $phpcsFile, $stackPtr) {
     $functionName = $phpcsFile->getDeclarationName($stackPtr);
 
-    if ($functionName === NULL || !preg_match('#_(post_)?update_#', $functionName)) {
+    if ($functionName === NULL || !preg_match('#_((post_)?update|deploy)_#', $functionName)) {
       // Ignore closures and functions that cannot be (post)updates.
       return;
     }
 
     $match = FALSE;
     foreach (static::getEnabledExtensions() as $extension) {
-      if (preg_match("#^{$extension}_(post_)?update_(.*)$#", $functionName, $found)) {
+      if (preg_match("#^{$extension}_((post_)?update|deploy)_(.*)$#", $functionName, $found)) {
         $match = TRUE;
-        $name = $found[2];
-        $updateType = empty($found[1]) ? 'update' : 'post update';
+        $name = $found[3];
+        $updateType = !empty($found[2]) ? 'post update' : $found[1];
         break;
       }
     }
