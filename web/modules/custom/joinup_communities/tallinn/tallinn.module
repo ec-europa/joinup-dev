@@ -14,7 +14,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\tallinn\Tallinn;
 use Drupal\user\Entity\User;
@@ -58,19 +57,10 @@ function tallinn_module_implements_alter(&$implementations, $hook) {
  * Implements hook_form_BASE_FORM_ID_alter().
  */
 function tallinn_form_node_tallinn_report_edit_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  $access = FALSE;
-  $current_user = \Drupal::currentUser();
-  if ($current_user->hasPermission('administer nodes')) {
-    $access = TRUE;
-  }
-  elseif ($tallinn_collection = Rdf::load(Tallinn::TALLINN_COMMUNITY_ID)) {
-    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-    $membership_manager = \Drupal::service('og.membership_manager');
-    $membership = $membership_manager->getMembership($tallinn_collection, $current_user->id());
-    $access = $membership && $membership->hasRole('rdf_entity-collection-facilitator');
-  }
+  /** @var \Drupal\node\NodeInterface $entity */
+  $entity = $form_state->getBuildInfo()['callback_object']->getEntity();
 
-  $form['uid']['#access'] = $access;
+  $form['uid']['#access'] = $entity->access('change tallinn report ownership');
   $form['#validate'][] = 'tallinn_report_author_uniqueness';
 }
 
