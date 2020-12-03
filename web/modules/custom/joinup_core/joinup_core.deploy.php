@@ -157,3 +157,13 @@ function joinup_core_deploy_0106602(?array &$sandbox = NULL): string {
   $sandbox['#finished'] = (int) empty($sandbox['entity_ids']);
   return "Processed {$sandbox['count']}/{$sandbox['max']}";
 }
+
+/**
+ * Run EIRA specific post import queries.
+ */
+function joinup_core_deploy_0106603(): void {
+  $connection = \Drupal::getContainer()->get('sparql.endpoint');
+  $connection->query('WITH <http://eira_skos> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
+  $connection->query('WITH <http://eira_skos> INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { ?subject a skos:Concept .};');
+  $connection->query('WITH <http://eira_skos> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
+}
