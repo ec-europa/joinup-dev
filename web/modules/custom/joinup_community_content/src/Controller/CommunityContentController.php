@@ -32,10 +32,10 @@ class CommunityContentController extends GroupNodeController {
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
-   * @param \Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler $workflow_access_control_handler
-   *   The node workflow access control handler.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info
    *   The entity type bundle info service.
+   * @param \Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler $workflow_access_control_handler
+   *   The node workflow access control handler.
    */
   public function __construct(OgAccessInterface $og_access, EntityTypeBundleInfoInterface $bundle_info, CommunityContentWorkflowAccessControlHandler $workflow_access_control_handler) {
     parent::__construct($og_access, $bundle_info);

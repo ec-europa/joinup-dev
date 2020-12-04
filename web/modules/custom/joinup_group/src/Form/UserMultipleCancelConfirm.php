@@ -100,9 +100,7 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
           $group_data[$group->bundle()][] = $group->toLink($group->label());
         }
 
-        $rdf_storage = $this->entityTypeManager->getStorage('rdf_type');
         foreach (['collection', 'solution'] as $bundle) {
-          $bundle_type = $rdf_storage->load($bundle);
           if (!empty($group_data[$bundle])) {
             $build[$account->id()][$bundle] = [
               '#theme' => 'item_list',
