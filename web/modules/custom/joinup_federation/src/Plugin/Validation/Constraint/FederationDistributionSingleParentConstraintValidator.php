@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation\Plugin\Validation\Constraint;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\asset_distribution\Plugin\Validation\Constraint\DistributionSingleParentValidator;
 use Drupal\joinup_federation\StagingCandidateGraphsInterface;
@@ -28,11 +29,13 @@ class FederationDistributionSingleParentConstraintValidator extends Distribution
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info
+   *   The entity type bundle info service.
    * @param \Drupal\joinup_federation\StagingCandidateGraphsInterface $staging_candidate_graphs
    *   The staging candidate graphs service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, StagingCandidateGraphsInterface $staging_candidate_graphs) {
-    parent::__construct($entity_type_manager);
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $bundle_info, StagingCandidateGraphsInterface $staging_candidate_graphs) {
+    parent::__construct($entity_type_manager, $bundle_info);
     $this->stagingCandidateGraphs = $staging_candidate_graphs;
   }
 
@@ -42,6 +45,7 @@ class FederationDistributionSingleParentConstraintValidator extends Distribution
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_type.manager'),
+      $container->get('entity_type.bundle.info'),
       $container->get('joinup_federation.staging_candidate_graphs')
     );
   }

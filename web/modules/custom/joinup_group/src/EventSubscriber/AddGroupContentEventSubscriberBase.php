@@ -56,7 +56,7 @@ abstract class AddGroupContentEventSubscriberBase implements EventSubscriberInte
    */
   public function addLinks(AddGroupContentEvent $event): void {
     foreach ($this->getBundles() as $entity_type_id => $bundle_ids) {
-      $bundle_info = $this->bundleInfo[$entity_type_id];
+      $bundle_info = $this->bundleInfo->getBundleInfo($entity_type_id);
       foreach ($bundle_ids as $bundle_id) {
         $route_parameters = $this->getRouteParameters($event, $entity_type_id, $bundle_id);
         $this->addOneLink($bundle_info[$bundle_id]['label_singular'], $route_parameters, $event);

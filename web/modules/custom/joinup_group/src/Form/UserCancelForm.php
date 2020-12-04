@@ -42,7 +42,6 @@ class UserCancelForm extends CoreUserCancelForm {
    */
   public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info, TimeInterface $time, JoinupGroupManagerInterface $group_manager) {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time);
-
     $this->groupManager = $group_manager;
   }
 
@@ -71,14 +70,12 @@ class UserCancelForm extends CoreUserCancelForm {
         $group_data[$group->bundle()][] = $group->toLink($group->label());
       }
 
-      $rdf_storage = $this->entityTypeManager->getStorage('rdf_type');
       foreach (['collection', 'solution'] as $bundle) {
-        $bundle_type = $rdf_storage->load($bundle);
         if (!empty($group_data[$bundle])) {
           $form[$bundle] = [
             '#theme' => 'item_list',
             '#items' => $group_data[$bundle],
-            '#title' => $bundle_type->getCountLabel(count($group_data[$bundle])),
+            '#title' => $this->entityTypeBundleInfo->getBundleCountLabel('rdf_entity', $bundle, count($group_data[$bundle]), 0),
           ];
         }
       }

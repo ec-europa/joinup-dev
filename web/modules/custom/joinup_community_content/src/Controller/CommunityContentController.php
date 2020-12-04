@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_community_content\Controller;
 
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
@@ -33,9 +34,11 @@ class CommunityContentController extends GroupNodeController {
    *   The OG access handler.
    * @param \Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler $workflow_access_control_handler
    *   The node workflow access control handler.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info
+   *   The entity type bundle info service.
    */
-  public function __construct(OgAccessInterface $og_access, CommunityContentWorkflowAccessControlHandler $workflow_access_control_handler) {
-    parent::__construct($og_access);
+  public function __construct(OgAccessInterface $og_access, EntityTypeBundleInfoInterface $bundle_info, CommunityContentWorkflowAccessControlHandler $workflow_access_control_handler) {
+    parent::__construct($og_access, $bundle_info);
     $this->workflowAccessControlHandler = $workflow_access_control_handler;
   }
 
@@ -45,6 +48,7 @@ class CommunityContentController extends GroupNodeController {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('og.access'),
+      $container->get('entity_type.bundle.info'),
       $container->get('joinup_community_content.community_content_workflow_access')
     );
   }
