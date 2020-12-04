@@ -162,20 +162,30 @@ function joinup_core_deploy_0106602(?array &$sandbox = NULL): string {
 /**
  * Ensure that all collection|solution owners also have the Facilitator role.
  */
-function joinup_core_deploy_0106603(): void {
+function joinup_core_deploy_0106603(): string {
   /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
   $entity_type_manager = \Drupal::entityTypeManager();
 
+  $affected = [];
   foreach (['collection', 'solution'] as $group_bundle) {
     // Retrieve all memberships which have the administrator role but are
     // lacking the facilitator role.
     $admin_role_id = "rdf_entity-$group_bundle-administrator";
     $facilitator_role_id = "rdf_entity-$group_bundle-facilitator";
+
+    // First get all membership IDs for facilitators.
+    $query = $entity_type_manager
+      ->getStorage('og_membership')
+      ->getQuery()
+      ->condition('roles', $facilitator_role_id, '=');
+    $facilitator_ids = $query->execute();
+
+    // Now get all membership IDs of owners that are not a facilitator.
     $query = $entity_type_manager
       ->getStorage('og_membership')
       ->getQuery()
       ->condition('roles', $admin_role_id, '=')
-      ->condition('roles', $facilitator_role_id, '!=');
+      ->condition('id', $facilitator_ids, 'NOT IN');
     $membership_ids = $query->execute();
 
     if (!empty($membership_ids)) {
@@ -184,8 +194,16 @@ function joinup_core_deploy_0106603(): void {
       $facilitator_role = OgRole::getRole('rdf_entity', $group_bundle, 'facilitator');
       /** @var \Drupal\og\OgMembershipInterface $membership */
       foreach ($memberships as $membership) {
+        // Sanity check. Skip if the group no longer exists, we have some stale
+        // memberships in the database.
+        if (empty($membership->getGroup())) {
+          continue;
+        }
         $membership->addRole($facilitator_role)->save();
+        $affected[] = $membership->getGroup()->label();
       }
     }
   }
+
+  return 'Updated groups: ' . implode(', ', $affected);
 }
