@@ -1,0 +1,18 @@
+uuid: 1dc84e83-7502-451a-9b92-3935a342b3fd
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - easme_helper
+    - serialization
+id: easme_user_update_rest_resource
+plugin_id: easme_user_update_rest_resource
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth

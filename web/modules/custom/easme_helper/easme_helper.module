@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Contains easme_helper.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\easme_helper\Controller\SubRequestController;
+
+/**
+ * Implements hook_help().
+ */
+function easme_helper_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the easme_helper module.
+    case 'help.page.easme_helper':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Helper module for the Challenge platform') . '</p>';
+      return $output;
+
+    default:
+  }
+}

@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - easme_helper
+    - serialization
+id: easme_user_update_rest_resource
+plugin_id: easme_user_update_rest_resource
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth
