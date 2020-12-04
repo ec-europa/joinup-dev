@@ -229,20 +229,24 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
     ]);
     // Revoke 'owner' role from existing group owners but grant them the
     // facilitator role, as a compensation, if missed.
-    $facilitator = OgRole::loadByGroupAndName($group, 'facilitator');
+    $facilitator_role = OgRole::loadByGroupAndName($group, 'facilitator');
     $bundle = $group->bundle();
     foreach ($memberships as $membership) {
       $membership->revokeRoleById("rdf_entity-$bundle-administrator");
       // Add the facilitator role, if missed.
-      if (!$membership->hasRole($facilitator->id())) {
-        $membership->addRole($facilitator);
+      if (!$membership->hasRole($facilitator_role->id())) {
+        $membership->addRole($facilitator_role);
       }
       $membership->save();
     }
 
-    // Add the 'owner' role.
-    $role = OgRole::loadByGroupAndName($group, 'administrator');
-    $this->membership->addRole($role)->save();
+    // Add the 'owner' role, and also the 'facilitator' role, since in Joinup
+    // every owner is also a facilitator.
+    $administrator_role = OgRole::loadByGroupAndName($group, 'administrator');
+    $this->membership
+      ->addRole($administrator_role)
+      ->addRole($facilitator_role)
+      ->save();
 
     // Make this user also author of the group.
     $group->skip_notification = TRUE;
