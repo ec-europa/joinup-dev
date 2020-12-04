@@ -15,14 +15,17 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Test\Exception\MissingGroupException;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
+use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Event\GroupMenuLinksEvent;
 use Drupal\joinup_group\Form\RdfDeleteForm;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\meta_entity\Entity\MetaEntityInterface;
+use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 use Drupal\og\OgAccess;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -705,4 +708,64 @@ function joinup_group_user_update(UserInterface $user) {
   }
 
   Cache::invalidateTags($tags);
+}
+
+/**
+ * Implements hook_node_access_records().
+ *
+ * Creates access records for unpublished nodes that are group content, to allow
+ * them to be viewed by group members with the 'view any unpublished content'
+ * permission.
+ */
+function joinup_group_node_access_records(NodeInterface $node): array {
+  /** @var \Drupal\joinup_group\JoinupGroupNodeAccessGrantsInterface $access_grants_helper */
+  $access_grants_helper = \Drupal::service('joinup_group.node_access_grants');
+  $grants = [];
+
+  foreach ($node->getTranslationLanguages(TRUE) as $langcode => $language) {
+    $translated_node = $node->getTranslation($langcode);
+    if ($translated_node instanceof GroupContentInterface && !$translated_node->isPublished()) {
+      try {
+        $group = $translated_node->getGroup();
+        $grants[] = [
+          'realm' => 'joinup_group_view_unpublished',
+          'gid' => $access_grants_helper->getNodeAccessGrantId($group),
+          'grant_view' => 1,
+          'grant_update' => 0,
+          'grant_delete' => 0,
+          'priority' => 0,
+          'langcode' => $langcode,
+        ];
+      }
+      catch (MissingGroupException $e) {
+      }
+    }
+  }
+
+  return $grants;
+}
+
+/**
+ * Implements hook_node_grants().
+ */
+function joinup_group_node_grants(AccountInterface $account, string $op): array {
+  $grants = [];
+
+  if ($op === 'view') {
+    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+    $membership_manager = \Drupal::service('og.membership_manager');
+    /** @var \Drupal\joinup_group\JoinupGroupNodeAccessGrantsInterface $access_grants_helper */
+    $access_grants_helper = \Drupal::service('joinup_group.node_access_grants');
+
+    foreach ($membership_manager->getMemberships($account->id()) as $membership) {
+      if ($membership->hasPermission('view any unpublished content')) {
+        $group = $membership->getGroup();
+        if ($group instanceof GroupInterface) {
+          $grants['joinup_group_view_unpublished'][] = $access_grants_helper->getNodeAccessGrantId($group);
+        }
+      }
+    }
+  }
+
+  return $grants;
 }

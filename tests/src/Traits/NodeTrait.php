@@ -30,6 +30,7 @@ trait NodeTrait {
   public function getNodeByTitle(string $title, ?string $bundle = NULL): ?NodeInterface {
     $query = \Drupal::entityQuery('node')
       ->condition('title', $title)
+      ->accessCheck(FALSE)
       ->range(0, 1);
     if (!empty($bundle)) {
       $query->condition('type', $bundle);
@@ -71,6 +72,7 @@ trait NodeTrait {
     // @see: https://www.drupal.org/project/drupal/issues/2766135
     $query = \Drupal::entityQuery('node')
       ->allRevisions()
+      ->accessCheck(FALSE)
       ->condition('type', $bundle);
     if ($published !== NULL) {
       $published = (int) $published;
