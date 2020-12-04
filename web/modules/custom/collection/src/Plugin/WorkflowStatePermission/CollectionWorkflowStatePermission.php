@@ -27,8 +27,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @WorkflowStatePermission(
  *   id = "collection",
  * )
- *
- * @see collection.settings.yml
  */
 class CollectionWorkflowStatePermission extends PluginBase implements WorkflowStatePermissionPluginInterface, ContainerFactoryPluginInterface {
 

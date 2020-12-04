@@ -29,8 +29,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @WorkflowStatePermission(
  *   id = "community_content",
  * )
- *
- * @see joinup_community_content.permission_scheme.yml
  */
 class CommunityContentWorkflowStatePermission extends PluginBase implements WorkflowStatePermissionPluginInterface, ContainerFactoryPluginInterface {
 
