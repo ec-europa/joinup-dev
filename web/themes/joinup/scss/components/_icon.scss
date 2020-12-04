@@ -207,49 +207,71 @@ $waat-icons-font-path: "../fonts/waat-icons/waat-icons";
 // File mime icons:
 // --------------------------------------------------
 .icon--mime-default:before {
-  content: "";
+  content: "";
 }
 
-.icon--mime-doc:before,
+.icon--mime-csv:before {
+  content: "";
+}
+
+.icon--mime-doc:before {
+  content: "";
+}
+
 .icon--mime-docx:before {
-  content: "";
+  content: "";
 }
 
 .icon--mime-exe:before {
-  content: "";
+  content: "";
 }
 
 .icon--mime-gif:before {
-  content: "";
+  content: "";
 }
 
 .icon--mime-jpg:before {
-  content: "";
+  content: "";
 }
 
 .icon--mime-pdf:before {
-  content: "";
+  content: "";
 }
 
 .icon--mime-png:before {
-  content: "";
+  content: "";
 }
 
 .icon--mime-ppt:before {
-  content: "";
+  content: "";
+}
+
+.icon--mime-pptx:before {
+  content: "";
 }
 
 .icon--mime-rar:before {
-  content: "";
+  content: "";
 }
 
-.icon--mime-xls:before,
+.icon--mime-svg:before {
+  content: "";
+}
+
+.icon--mime-txt:before {
+  content: "";
+}
+
+.icon--mime-xls:before {
+  content: "";
+}
+
 .icon--mime-xlsx:before {
-  content: "";
+  content: "";
 }
 
 .icon--mime-zip:before {
-  content: "";
+  content: "";
 }
 
 // Navigation
