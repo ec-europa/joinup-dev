@@ -132,3 +132,22 @@ Feature: As a group (collection or solution) owner or site moderator
     And I go to the homepage of the "Babylon" collection
     Given I click "Members"
     Then the available options in the "Action" select should not include the "Transfer the ownership of the solution to the selected member" options
+
+  # In Joinup every owner is also a facilitator, so if a normal member is
+  # promoted to owner, they should also become a facilitator.
+  Scenario Outline: If ownership is transferred to a normal member, it should also include the facilitator role
+    Given I am logged in as "light"
+    And I go to the homepage of the "<title>" <group type>
+    And I click "Members"
+    And I select the "loner" row
+    And I select "Transfer the ownership of the <group type> to the selected member" from "Action"
+    When I press "Apply to selected items"
+    Then I should see "Are you sure you want to transfer the ownership of <title> <group type> to Freyja Stefánsdóttir?"
+    When I press "Confirm"
+    Then I should see "Ownership of <title> <group type> transferred from users Finnur Robertsson, Edda Agnarsdóttir to Freyja Stefánsdóttir."
+    And I should see the text "<type capitalized> owner, <type capitalized> facilitator" in the "loner" row
+
+    Examples:
+      | group type | type capitalized | title                       |
+      | collection | Collection       | Intensive Language Learning |
+      | solution   | Solution         | Learn German in 1 Month     |
