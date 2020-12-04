@@ -4,6 +4,6 @@ services:
     arguments: ["@entity_type.manager", "@og.membership_manager"]
   asset_distribution.group_add_content.subscriber:
     class: Drupal\asset_distribution\EventSubscriber\DistributionGroupSubscriber
-    arguments: ['@entity_type.manager', '@asset_release.asset_release_route_context']
+    arguments: ['@entity_type.bundle.info', '@asset_release.asset_release_route_context']
     tags:
       - { name: event_subscriber }

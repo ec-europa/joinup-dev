@@ -862,7 +862,7 @@ function joinup_theme_preprocess_field(&$variables) {
 function joinup_theme_preprocess_field__comment(array &$variables): void {
   /** @var \Drupal\joinup_community_content\Entity\CommunityContentInterface $entity */
   $entity = $variables['element']['#object'];
-  $variables['entity_bundle'] = $entity->get('type')->entity->getSingularLabel();
+  $variables['entity_bundle'] = \Drupal::service('entity_type.bundle.info')->getBundleInfo($entity->getEntityTypeId())[$entity->bundle()]['label_singular'];
   $variables['login_path'] = Url::fromRoute('cas.login')->toString();
   $variables['register_path'] = Url::fromRoute('user.register')->toString();
 }

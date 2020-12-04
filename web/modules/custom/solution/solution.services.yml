@@ -26,7 +26,7 @@ services:
     arguments: ['@entity_type.manager', '@sparql.graph_handler']
   solution.group_add_content.subscriber:
     class: Drupal\solution\EventSubscriber\SolutionGroupSubscriber
-    arguments: ['@entity_type.manager']
+    arguments: ['@entity_type.bundle.info']
     tags:
       - { name: event_subscriber }
   solution.group_menu_links:

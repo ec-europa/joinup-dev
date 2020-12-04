@@ -6,6 +6,7 @@ namespace Drupal\joinup_group\Plugin\Action;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Action\ActionBase;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -44,6 +45,13 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
   protected $currentUser;
 
   /**
+   * The entity type bundle info service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   */
+  protected $bundleInfo;
+
+  /**
    * Messages collector in case of warnings or errors.
    *
    * @var array[]
@@ -63,11 +71,14 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
    *   The tempstore factory.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info
+   *   The entity type bundle info service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, PrivateTempStoreFactory $temp_store_factory, AccountInterface $current_user) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, PrivateTempStoreFactory $temp_store_factory, AccountInterface $current_user, EntityTypeBundleInfoInterface $bundle_info) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->tempStore = $temp_store_factory->get('joinup_transfer_group_ownership');
     $this->currentUser = $current_user;
+    $this->bundleInfo = $bundle_info;
   }
 
   /**
@@ -79,7 +90,8 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
       $plugin_id,
       $plugin_definition,
       $container->get('tempstore.private'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('entity_type.bundle.info')
     );
   }
 
@@ -89,9 +101,11 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
   public function executeMultiple(array $memberships): void {
     // We only allow one user to pickup the membership.
     if (count($memberships) > 1) {
+      /** @var \Drupal\og\OgMembershipInterface $membership */
       $membership = reset($memberships);
+      $label = $this->bundleInfo->getBundleInfo('rdf_entity')[$membership->getGroup()->bundle()]['label_singular'];
       $this->messages['warning'][] = $this->t('You cannot transfer the @label ownership to more than one user. Please select a single user.', [
-        '@label' => $membership->getGroup()->get('rid')->entity->getSingularLabel(),
+        '@label' => $label,
       ]);
     }
     parent::executeMultiple($memberships);
@@ -109,7 +123,7 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
       $this->messages['warning'][] = $this->t('Member %member is already the owner of %group @label. Please select other user.', [
         '%member' => $membership->getOwner()->label(),
         '%group' => $group->label(),
-        '@label' => $group->get('rid')->entity->getSingularLabel(),
+        '@label' => $this->bundleInfo->getBundleInfo('rdf_entity')[$group->bundle()]['label_singular'],
       ]);
     }
 

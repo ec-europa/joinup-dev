@@ -12,6 +12,6 @@ services:
       - { name: event_subscriber }
   custom_page.group_add_content.subscriber:
     class: Drupal\custom_page\EventSubscriber\CustomPageGroupSubscriber
-    arguments: ['@entity_type.manager']
+    arguments: ['@entity_type.bundle.info']
     tags:
       - { name: event_subscriber }

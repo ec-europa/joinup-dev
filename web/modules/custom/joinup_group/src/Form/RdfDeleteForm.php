@@ -23,7 +23,7 @@ class RdfDeleteForm extends OriginalForm {
     $entity = $this->getEntity();
     if ($entity->bundle() !== 'collection' || empty($this->getAffiliates($entity))) {
       return $this->t('Are you sure you want to delete @type %name?', [
-        '@type' => $entity->get('rid')->entity->getSingularLabel(),
+        '@type' => $this->entityTypeBundleInfo->getBundleInfo('rdf_entity')[$entity->bundle()]['label_singular'],
         '%name' => $entity->label(),
       ]);
     }

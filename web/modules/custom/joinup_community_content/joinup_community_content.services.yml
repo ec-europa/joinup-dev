@@ -18,6 +18,6 @@ services:
       - { name: 'event_subscriber' }
   joinup_community_content.group_add_content.subscriber:
     class: Drupal\joinup_community_content\EventSubscriber\CommunityContentGroupSubscriber
-    arguments: ['@entity_type.manager']
+    arguments: ['@entity_type.bundle.info']
     tags:
       - { name: event_subscriber }

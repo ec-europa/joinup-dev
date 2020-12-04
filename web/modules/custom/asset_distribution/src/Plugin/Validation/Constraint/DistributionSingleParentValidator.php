@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\asset_distribution\Plugin\Validation\Constraint;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlQueryInterface;
@@ -40,20 +41,33 @@ class DistributionSingleParentValidator extends ConstraintValidator implements C
   protected $query;
 
   /**
+   * The entity type bundle info service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   */
+  protected $bundleInfo;
+
+  /**
    * Creates a new validator.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info
+   *   The entity type bundle info service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $bundle_info) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->bundleInfo = $bundle_info;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('entity_type.manager'));
+    return new static(
+      $container->get('entity_type.manager'),
+      $container->get('entity_type.bundle.info')
+    );
   }
 
   /**
@@ -87,10 +101,11 @@ class DistributionSingleParentValidator extends ConstraintValidator implements C
       if ($ids) {
         /** @var \Drupal\rdf_entity\RdfInterface $parent */
         foreach ($this->loadMultiple($ids) as $parent) {
+          $bundle_label = $this->bundleInfo->getBundleInfo('rdf_entity')[$parent->bundle()]['label_singular'];
           $this->context->addViolation($constraint->message, [
             '%label' => $this->buildLabel($distribution),
             '%parent' => $this->buildLabel($parent),
-            '@bundle' => $parent->get('rid')->entity->getSingularLabel(),
+            '@bundle' => $bundle_label,
           ]);
         }
       }

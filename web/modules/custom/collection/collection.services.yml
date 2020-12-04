@@ -29,7 +29,7 @@ services:
       - { name: access_check, applies_to: _archived_collection }
   collection.group_add_content.subscriber:
     class: Drupal\collection\EventSubscriber\CollectionGroupSubscriber
-    arguments: ['@entity_type.manager']
+    arguments: ['@entity_type.bundle.info']
     tags:
       - { name: event_subscriber }
   collection.group_menu_links:

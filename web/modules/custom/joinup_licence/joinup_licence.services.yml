@@ -10,7 +10,7 @@ services:
       - { name: paramconverter }
   joinup_licence.group_add_content.subscriber:
     class: Drupal\joinup_licence\EventSubscriber\LicenceGroupSubscriber
-    arguments: ['@entity_type.manager']
+    arguments: ['@entity_type.bundle.info']
     tags:
       - { name: event_subscriber }
   plugin.manager.joinup_licence_compatibility_rule:

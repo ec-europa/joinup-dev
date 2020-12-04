@@ -7,6 +7,7 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepInterface;
@@ -63,6 +64,13 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
   protected $time;
 
   /**
+   * The entity type bundle info service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   */
+  protected $bundleInfo;
+
+  /**
    * Creates a new pipeline step plugin instance.
    *
    * @param array $configuration
@@ -81,12 +89,15 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
    *   The field validator service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The time service.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info
+   *   The entity type bundle info service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $field_validator, TimeInterface $time) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $field_validator, TimeInterface $time, EntityTypeBundleInfoInterface $bundle_info) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql, $entity_type_manager);
     $this->entityFieldManager = $entity_field_manager;
     $this->fieldValidator = $field_validator;
     $this->time = $time;
+    $this->bundleInfo = $bundle_info;
   }
 
   /**
@@ -101,7 +112,8 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
       $container->get('entity_type.manager'),
       $container->get('entity_field.manager'),
       $container->get('rdf_schema_field_validation.schema_field_validator'),
-      $container->get('datetime.time')
+      $container->get('datetime.time'),
+      $container->get('entity_type.bundle.info')
     );
   }
 
@@ -155,10 +167,11 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
       if ($entity_exists) {
         // Check for bundle mismatch between the incoming and the local entity.
         if ($incoming_entity->bundle() !== $local_entities[$id]->bundle()) {
+          $bundle_info = $this->bundleInfo->getBundleInfo('rdf_entity');
           $arguments = [
             '%id' => $id,
-            '@incoming' => $incoming_entity->get('rid')->entity->getSingularLabel(),
-            '@local' => $local_entities[$id]->get('rid')->entity->getSingularLabel(),
+            '@incoming' => $bundle_info[$incoming_entity->bundle()]['label_singular'],
+            '@local' => $bundle_info[$local_entities[$id]->bundle()]['label_singular'],
           ];
           return [
             '#markup' => $this->t("The imported @incoming with the ID '%id' tries to override a local @local with the same ID.", $arguments),

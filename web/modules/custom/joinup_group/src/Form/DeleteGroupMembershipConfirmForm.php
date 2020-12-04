@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_group\Form;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -57,6 +58,20 @@ class DeleteGroupMembershipConfirmForm extends ConfirmFormBase {
   protected $group;
 
   /**
+   * The entity type bundle info service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfo
+   */
+  protected $bundleInfo;
+
+  /**
+   * The memberships group type singular label.
+   *
+   * @var string
+   */
+  protected $groupTypeSingularLabel;
+
+  /**
    * Constructs a new form instance.
    *
    * @param \Drupal\og\OgAccessInterface $og_access
@@ -65,11 +80,14 @@ class DeleteGroupMembershipConfirmForm extends ConfirmFormBase {
    *   The private tempstore factory service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info
+   *   The entity type bundle info service.
    */
-  public function __construct(OgAccessInterface $og_access, PrivateTempStoreFactory $private_temp_store_factory, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(OgAccessInterface $og_access, PrivateTempStoreFactory $private_temp_store_factory, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $bundle_info) {
     $this->ogAccess = $og_access;
     $this->privateTempStore = $private_temp_store_factory->get('joinup_group.og_membership_delete_action');
     $this->entityTypeManager = $entity_type_manager;
+    $this->bundleInfo = $bundle_info;
   }
 
   /**
@@ -79,7 +97,8 @@ class DeleteGroupMembershipConfirmForm extends ConfirmFormBase {
     return new static(
       $container->get('og.access'),
       $container->get('tempstore.private'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('entity_type.bundle.info')
     );
   }
 
@@ -100,7 +119,7 @@ class DeleteGroupMembershipConfirmForm extends ConfirmFormBase {
         '#markup' => $this->t("The member %member will be deleted from the '%name' @type.", [
           '%member' => $membership->getOwner()->getDisplayName(),
           '%name' => $this->getGroup()->label(),
-          '@type' => $this->getGroup()->get('rid')->entity->getSingularLabel(),
+          '@type' => $this->getGroupTypeSingularLabel(),
         ]),
         '#prefix' => '<p>',
         '#suffix' => '</p>',
@@ -123,7 +142,7 @@ class DeleteGroupMembershipConfirmForm extends ConfirmFormBase {
         [
           '#markup' => $this->t("will be deleted from the '%name' @type.", [
             '%name' => $this->getGroup()->label(),
-            '@type' => $this->getGroup()->get('rid')->entity->getSingularLabel(),
+            '@type' => $this->getGroupTypeSingularLabel(),
           ]),
           '#prefix' => '<p>',
           '#suffix' => '</p>',
@@ -153,7 +172,7 @@ class DeleteGroupMembershipConfirmForm extends ConfirmFormBase {
       [
         '%member' => $names,
         '%name' => $this->getGroup()->label(),
-        '@type' => $this->getGroup()->get('rid')->entity->getSingularLabel(),
+        '@type' => $this->getGroupTypeSingularLabel(),
       ]
     );
 
@@ -177,7 +196,7 @@ class DeleteGroupMembershipConfirmForm extends ConfirmFormBase {
       "Are you sure you want to delete the selected memberships from the '%name' @type?",
       [
         '%name' => $this->getGroup()->label(),
-        '@type' => $this->getGroup()->get('rid')->entity->getSingularLabel(),
+        '@type' => $this->getGroupTypeSingularLabel(),
       ]
     );
   }
@@ -255,6 +274,19 @@ class DeleteGroupMembershipConfirmForm extends ConfirmFormBase {
     }
 
     return $this->group;
+  }
+
+  /**
+   * Returns and caches the membership group type singular label.
+   *
+   * @return string
+   *   The membership group type singular label.
+   */
+  protected function getGroupTypeSingularLabel(): string {
+    if (!isset($this->groupTypeSingularLabel)) {
+      $this->bundleInfo->getBundleInfo('rdf_entity')[$this->getGroup()->bundle()]['label_singular'];
+    }
+    return $this->groupTypeSingularLabel;
   }
 
   /**

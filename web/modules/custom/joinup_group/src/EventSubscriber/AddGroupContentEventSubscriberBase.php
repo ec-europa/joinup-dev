@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group\EventSubscriber;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\joinup_group\Event\AddGroupContentEvent;
@@ -18,20 +18,20 @@ abstract class AddGroupContentEventSubscriberBase implements EventSubscriberInte
   use StringTranslationTrait;
 
   /**
-   * The entity type manager service.
+   * The entity type bundle info service.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
    */
-  protected $entityTypeManager;
+  protected $bundleInfo;
 
   /**
    * Constructs a new event subscriber instance.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager service.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info
+   *   The entity type bundle info service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
-    $this->entityTypeManager = $entity_type_manager;
+  public function __construct(EntityTypeBundleInfoInterface $bundle_info) {
+    $this->bundleInfo = $bundle_info;
   }
 
   /**
@@ -56,12 +56,10 @@ abstract class AddGroupContentEventSubscriberBase implements EventSubscriberInte
    */
   public function addLinks(AddGroupContentEvent $event): void {
     foreach ($this->getBundles() as $entity_type_id => $bundle_ids) {
-      $bundle_entity_type_id = $this->entityTypeManager->getDefinition($entity_type_id)->getBundleEntityType();
-      /** @var \Drupal\Core\Config\Entity\EntityBundleWithPluralLabelsInterface[] $bundles */
-      $bundles = $this->entityTypeManager->getStorage($bundle_entity_type_id)->loadMultiple($bundle_ids);
-      foreach ($bundles as $bundle_id => $bundle) {
+      $bundle_info = $this->bundleInfo[$entity_type_id];
+      foreach ($bundle_ids as $bundle_id) {
         $route_parameters = $this->getRouteParameters($event, $entity_type_id, $bundle_id);
-        $this->addOneLink($bundle->getSingularLabel(), $route_parameters, $event);
+        $this->addOneLink($bundle_info[$bundle_id]['label_singular'], $route_parameters, $event);
       }
     }
   }

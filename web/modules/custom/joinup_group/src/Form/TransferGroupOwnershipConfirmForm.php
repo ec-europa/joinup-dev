@@ -7,6 +7,7 @@ namespace Drupal\joinup_group\Form;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Action\ActionManager;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
@@ -74,6 +75,20 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
   protected $messenger;
 
   /**
+   * The entity type bundle info service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   */
+  protected $bundleInfo;
+
+  /**
+   * The memberships group type singular label.
+   *
+   * @var string
+   */
+  protected $groupTypeSingularLabel;
+
+  /**
    * Constructs a new confirmation form object.
    *
    * @param \Drupal\Core\Session\AccountInterface $current_user
@@ -88,17 +103,20 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
    *   The tempstore factory.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info
+   *   The entity type bundle info service.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    *   If the entity storage of 'og_membership' is not found.
    */
-  public function __construct(AccountInterface $current_user, RendererInterface $renderer, ActionManager $action_plugin_manager, MembershipManagerInterface $membership_manager, PrivateTempStoreFactory $temp_store_factory, MessengerInterface $messenger) {
+  public function __construct(AccountInterface $current_user, RendererInterface $renderer, ActionManager $action_plugin_manager, MembershipManagerInterface $membership_manager, PrivateTempStoreFactory $temp_store_factory, MessengerInterface $messenger, EntityTypeBundleInfoInterface $bundle_info) {
     $this->currentUser = $current_user;
     $this->renderer = $renderer;
     $this->actionPluginManager = $action_plugin_manager;
     $this->membershipManager = $membership_manager;
     $this->tempStore = $temp_store_factory->get('joinup_transfer_group_ownership');
     $this->messenger = $messenger;
+    $this->bundleInfo = $bundle_info;
 
     if ($data = $this->tempStore->get($this->currentUser->id())) {
       if (!$this->membership = OgMembership::load($data['membership'])) {
@@ -117,7 +135,8 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
       $container->get('plugin.manager.action'),
       $container->get('og.membership_manager'),
       $container->get('tempstore.private'),
-      $container->get('messenger')
+      $container->get('messenger'),
+      $container->get('entity_type.bundle.info')
     );
   }
 
@@ -125,11 +144,9 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    /** @var \Drupal\rdf_entity\RdfInterface $group */
-    $group = $this->membership->getGroup();
     return $this->t('Are you sure you want to transfer the ownership of %group @label to %user?', [
-      '%group' => $group->label(),
-      '@label' => $group->get('rid')->entity->getSingularLabel(),
+      '%group' => $this->membership->getGroup()->label(),
+      '@label' => $this->getGroupTypeSingularLabel(),
       '%user' => $this->membership->getOwner()->getDisplayName(),
     ]);
   }
@@ -138,9 +155,6 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getDescription() {
-    /** @var \Drupal\rdf_entity\RdfInterface $group */
-    $group = $this->membership->getGroup();
-
     $memberships = $this->membershipManager->getGroupMembershipsByRoleNames($this->membership->getGroup(), [
       'administrator',
     ]);
@@ -153,8 +167,8 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
     }, $memberships);
 
     $args = [
-      '%group' => $group->label(),
-      '@label' => $group->get('rid')->entity->getSingularLabel(),
+      '%group' => $this->membership->getGroup()->label(),
+      '@label' => $this->getGroupTypeSingularLabel(),
       '%user' => $this->membership->getOwner()->getDisplayName(),
     ];
 
@@ -240,7 +254,7 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
 
     $args = [
       '%group' => $group->label(),
-      '@label' => $group->get('rid')->entity->getSingularLabel(),
+      '@label' => $this->getGroupTypeSingularLabel(),
       '%user' => $this->membership->getOwner()->getDisplayName(),
       '@users' => implode(', ', $former_owners),
     ];
@@ -282,6 +296,19 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
     /** @var \Drupal\joinup_group\Plugin\Action\TransferGroupOwnershipAction $action */
     $action = $this->actionPluginManager->createInstance('joinup_transfer_group_ownership');
     return $action->access($this->membership, $this->currentUser, TRUE);
+  }
+
+  /**
+   * Returns and caches the membership group type singular label.
+   *
+   * @return string
+   *   The membership group type singular label.
+   */
+  protected function getGroupTypeSingularLabel(): string {
+    if (!isset($this->groupTypeSingularLabel)) {
+      $this->bundleInfo->getBundleInfo('rdf_entity')[$this->membership->getGroup()->bundle()]['label_singular'];
+    }
+    return $this->groupTypeSingularLabel;
   }
 
 }

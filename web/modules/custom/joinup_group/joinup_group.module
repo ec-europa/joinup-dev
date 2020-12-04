@@ -126,7 +126,9 @@ function joinup_group_propose_message_submit(&$form, FormStateInterface $form_st
   $state = JoinupGroupHelper::getState($entity);
 
   if ($state === 'proposed') {
-    \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $entity->get('rid')->entity->getSingularLabel()]));
+    \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', [
+      '@entity_label' => \Drupal::service('entity_type.bundle.info')->getBundleInfo($entity->getEntityTypeId())[$entity->bundle()]['label_singular'],
+    ]));
   }
 }
 
@@ -551,7 +553,9 @@ function joinup_group_form_views_form_og_members_overview_default_alter(&$form, 
   }
 
   // Alter the action label in order to reflect the bundle of the group.
-  $args = ['@label' => $group->get('rid')->entity->getSingularLabel()];
+  $args = [
+    '@label' => \Drupal::service('entity_type.bundle.info')->getBundleInfo('rdf_entity')[$group->bundle()]['label_singular'],
+  ];
   $form['header']['og_membership_bulk_form']['action']['#options']['joinup_transfer_group_ownership'] = t('Transfer the ownership of the @label to the selected member', $args);
   $form['#validate'][] = 'joinup_group_form_views_form_og_members_overview_default_validate';
 

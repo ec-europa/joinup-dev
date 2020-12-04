@@ -1,0 +1,1788 @@
+diff --git a/core/config/schema/core.entity.schema.yml b/core/config/schema/core.entity.schema.yml
+index 8850d40ef7..aa64a5655b 100644
+--- a/core/config/schema/core.entity.schema.yml
++++ b/core/config/schema/core.entity.schema.yml
+@@ -375,6 +375,24 @@ field.formatter.settings.entity_reference_label:
+       type: boolean
+       label: 'Link label to the referenced entity'
+ 
++bundle_entity_with_plural_labels:
++  type: config_entity
++  label: 'Bundle'
++  mapping:
++    label_singular:
++      type: label
++      label: 'Indefinite singular name'
++    label_plural:
++      type: label
++      label: 'Indefinite plural name'
++    label_count:
++      type: sequence
++      nullable: true
++      label: 'Count labels'
++      sequence:
++        type: plural_label
++        label: 'Count label'
++
+ block.settings.field_block:*:*:*:
+   type: block_settings
+   mapping:
+diff --git a/core/lib/Drupal/Core/Config/Entity/ConfigEntityStorage.php b/core/lib/Drupal/Core/Config/Entity/ConfigEntityStorage.php
+index 5569dd0989..4346a04ac3 100644
+--- a/core/lib/Drupal/Core/Config/Entity/ConfigEntityStorage.php
++++ b/core/lib/Drupal/Core/Config/Entity/ConfigEntityStorage.php
+@@ -225,7 +225,8 @@ protected function doLoadMultiple(array $ids = NULL) {
+   protected function doCreate(array $values) {
+     // Set default language to current language if not provided.
+     $values += [$this->langcodeKey => $this->languageManager->getCurrentLanguage()->getId()];
+-    $entity = new $this->entityClass($values, $this->entityTypeId);
++    $entity_class = $this->getEntityClass();
++    $entity = new $entity_class($values, $this->entityTypeId);
+ 
+     return $entity;
+   }
+diff --git a/core/lib/Drupal/Core/Config/Entity/EntityBundleWithPluralLabelsInterface.php b/core/lib/Drupal/Core/Config/Entity/EntityBundleWithPluralLabelsInterface.php
+new file mode 100644
+index 0000000000..1be187211c
+--- /dev/null
++++ b/core/lib/Drupal/Core/Config/Entity/EntityBundleWithPluralLabelsInterface.php
+@@ -0,0 +1,40 @@
++<?php
++
++namespace Drupal\Core\Config\Entity;
++
++/**
++ * Allows bundle configuration entities to support label plural variants.
++ */
++interface EntityBundleWithPluralLabelsInterface {
++
++  /**
++   * Sets the singular label of the bundle.
++   *
++   * @param string $singular_label
++   *   The singular label.
++   *
++   * @return $this
++   */
++  public function setSingularLabel(string $singular_label): self;
++
++  /**
++   * Sets the plural label of the bundle.
++   *
++   * @param string $plural_label
++   *   The plural label.
++   *
++   * @return $this
++   */
++  public function setPluralLabel(string $plural_label): self;
++
++  /**
++   * Sets the count label.
++   *
++   * @param string[] $count_label
++   *   The list of count label variants.
++   *
++   * @return $this
++   */
++  public function setCountLabel(array $count_label): self;
++
++}
+diff --git a/core/lib/Drupal/Core/Config/Entity/EntityBundleWithPluralLabelsTrait.php b/core/lib/Drupal/Core/Config/Entity/EntityBundleWithPluralLabelsTrait.php
+new file mode 100644
+index 0000000000..86a520aff4
+--- /dev/null
++++ b/core/lib/Drupal/Core/Config/Entity/EntityBundleWithPluralLabelsTrait.php
+@@ -0,0 +1,83 @@
++<?php
++
++namespace Drupal\Core\Config\Entity;
++
++use Drupal\Component\Gettext\PoItem;
++
++/**
++ * Allows bundle configuration entities to support label plural variants.
++ */
++trait EntityBundleWithPluralLabelsTrait {
++
++  /**
++   * The indefinite singular name of the bundle.
++   *
++   * @var string|null
++   */
++  protected $label_singular;
++
++  /**
++   * The indefinite plural name of the bundle.
++   *
++   * @var string|null
++   */
++  protected $label_plural;
++
++  /**
++   * A list of definite singular/plural count label variants.
++   *
++   * Unlimited definite singular/plural count labels can be defined in order to
++   * cover various contexts where they are used. The array keys are strings or
++   * integers, identifying the count label variant. For instance, a site might
++   * need two or more versions of the count labels:
++   * - singular '1 article', plural '@count article',
++   * - singular '1 article was found', plural '@count articles were found'.
++   * For this case the value of this property is:
++   * @code
++   * [
++   *   'default' => "1 article\x03@count article",
++   *   'items_found' => "1 article was found\x03@count articles were found",
++   * ]
++   * @endcode
++   * Note that the context ('default', 'items_found') is an arbitrary string
++   * identifier used to retrieve the desired version. If the array keys are
++   * missed, the array item integer index is used as variant ID:
++   * @code
++   * [
++   *   "1 item\x03@count items",
++   * ]
++   * @endcode
++   * Each value is a definite singular/plural count label with the plural
++   * variants separated by ETX (PoItem::DELIMITER).
++   *
++   * @var string[]|null
++   *
++   * @see \Drupal\Component\Gettext\PoItem::DELIMITER
++   */
++  protected $label_count;
++
++  /**
++   * {@inheritdoc}
++   */
++  public function setSingularLabel(string $singular_label): EntityBundleWithPluralLabelsInterface {
++    $this->label_singular = $singular_label;
++    return $this;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function setPluralLabel(string $plural_label): EntityBundleWithPluralLabelsInterface {
++    $this->label_plural = $plural_label;
++    return $this;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function setCountLabel(array $count_label): EntityBundleWithPluralLabelsInterface {
++    $this->label_count = $count_label;
++    return $this;
++  }
++
++}
+diff --git a/core/lib/Drupal/Core/Entity/BundleEntityStorageInterface.php b/core/lib/Drupal/Core/Entity/BundleEntityStorageInterface.php
+new file mode 100644
+index 0000000000..9ba915fabd
+--- /dev/null
++++ b/core/lib/Drupal/Core/Entity/BundleEntityStorageInterface.php
+@@ -0,0 +1,33 @@
++<?php
++
++namespace Drupal\Core\Entity;
++
++/**
++ * A storage that supports entities with bundle specific classes.
++ */
++interface BundleEntityStorageInterface {
++
++  /**
++   * Retrieves the bundle name for a provided class name.
++   *
++   * @param string $class_name
++   *   The class name to check.
++   *
++   * @return string|null
++   *   The bundle name of the class provided or NULL if unable to determine the
++   *   bundle from the provided class.
++   *
++   * @throws \Drupal\Core\Entity\Exception\AmbiguousBundleClassException
++   *   Thrown when multiple bundles are using the provided class.
++   */
++  public function getBundleFromClass($class_name);
++
++  /**
++   * Retrieves the entity bundle key.
++   *
++   * @return bool|string
++   *   The entity bundle key.
++   */
++  public function getBundleKey();
++
++}
+diff --git a/core/lib/Drupal/Core/Entity/ContentEntityBase.php b/core/lib/Drupal/Core/Entity/ContentEntityBase.php
+index 5ca737ffbf..e1e0395a7c 100644
+--- a/core/lib/Drupal/Core/Entity/ContentEntityBase.php
++++ b/core/lib/Drupal/Core/Entity/ContentEntityBase.php
+@@ -1125,6 +1125,23 @@ public function __unset($name) {
+     }
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(array $values = []) {
++    $entity_type_repository = \Drupal::service('entity_type.repository');
++    $entity_type_manager = \Drupal::entityTypeManager();
++    $class_name = get_called_class();
++    $storage = $entity_type_manager->getStorage($entity_type_repository->getEntityTypeFromClass($class_name));
++
++    // Always explicitly specify the bundle if the entity has a bundle class.
++    if ($storage instanceof ContentEntityStorageBase && ($bundle = $storage->getBundleFromClass($class_name))) {
++      $values[$storage->getBundleKey()] = $bundle;
++    }
++
++    return $storage->create($values);
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+diff --git a/core/lib/Drupal/Core/Entity/ContentEntityStorageBase.php b/core/lib/Drupal/Core/Entity/ContentEntityStorageBase.php
+index 509a8bcaa4..6e701dfcee 100644
+--- a/core/lib/Drupal/Core/Entity/ContentEntityStorageBase.php
++++ b/core/lib/Drupal/Core/Entity/ContentEntityStorageBase.php
+@@ -6,6 +6,8 @@
+ use Drupal\Core\Cache\CacheBackendInterface;
+ use Drupal\Core\Cache\MemoryCache\MemoryCacheInterface;
+ use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
++use Drupal\Core\Entity\Exception\AmbiguousBundleClassException;
++use Drupal\Core\Entity\Exception\BundleClassInheritanceException;
+ use Drupal\Core\Field\FieldDefinitionInterface;
+ use Drupal\Core\Field\FieldStorageDefinitionInterface;
+ use Drupal\Core\Language\LanguageInterface;
+@@ -15,7 +17,7 @@
+ /**
+  * Base class for content entity storage handlers.
+  */
+-abstract class ContentEntityStorageBase extends EntityStorageBase implements ContentEntityStorageInterface, DynamicallyFieldableEntityStorageInterface {
++abstract class ContentEntityStorageBase extends EntityStorageBase implements ContentEntityStorageInterface, DynamicallyFieldableEntityStorageInterface, BundleEntityStorageInterface {
+   use DeprecatedServicePropertyTrait;
+ 
+   /**
+@@ -84,6 +86,34 @@ public function __construct(EntityTypeInterface $entity_type, EntityFieldManager
+     $this->entityTypeBundleInfo = $entity_type_bundle_info;
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function create(array $values = []) {
++    // In some cases the entity bundle may be provided by the ::preCreate()
++    // method in the entity class. If a bundle is truly required an exception
++    // will be thrown in ::doCreate() so there's no need to throw one here.
++    $bundle = $this->getBundleFromValues($values, FALSE);
++    $entity_class = $this->getEntityClass($bundle);
++    $entity_class::preCreate($this, $values);
++
++    // Assign a new UUID if there is none yet.
++    if ($this->uuidKey && $this->uuidService && !isset($values[$this->uuidKey])) {
++      $values[$this->uuidKey] = $this->uuidService->generate();
++    }
++
++    $entity = $this->doCreate($values);
++    $entity->enforceIsNew();
++
++    $entity->postCreate($this);
++
++    // Modules might need to add or change the data initially held by the new
++    // entity object, for instance to fill-in default values.
++    $this->invokeHook('create', $entity);
++
++    return $entity;
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -101,34 +131,105 @@ public static function createInstance(ContainerInterface $container, EntityTypeI
+    * {@inheritdoc}
+    */
+   protected function doCreate(array $values) {
+-    // We have to determine the bundle first.
+-    $bundle = FALSE;
++    $bundle = $this->getBundleFromValues($values);
++    $entity_class = $this->getEntityClass($bundle);
++    $entity = new $entity_class([], $this->entityTypeId, $bundle);
++    $this->initFieldValues($entity, $values);
++    return $entity;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function getBundleFromClass($class_name) {
++    $class_bundles = array_filter($this->entityTypeBundleInfo->getBundleInfo($this->entityTypeId), function ($bundle_info) use ($class_name) {
++      return !empty($bundle_info['class']) && $bundle_info['class'] === $class_name;
++    });
++
++    if (empty($class_bundles)) {
++      return NULL;
++    }
++
++    if (count($class_bundles) > 1) {
++      throw new AmbiguousBundleClassException($class_name);
++    }
++
++    reset($class_bundles);
++    return key($class_bundles);
++  }
++
++  /**
++   * Retrieves the bundle from an array of values.
++   *
++   * @param array $values
++   *   An array of values to set, keyed by property name.
++   * @param bool $throw_exception
++   *   Flag indicating whether to throw an exception if corresponding bundle
++   *   cannot be found and is expected.
++   *
++   * @return string|null
++   *   The bundle or NULL if not set.
++   *
++   * @throws \Drupal\Core\Entity\EntityStorageException
++   *   When a corresponding bundle cannot be found and is expected.
++   */
++  protected function getBundleFromValues(array $values, $throw_exception = TRUE) {
++    $bundle = NULL;
+     if ($this->bundleKey) {
+-      if (!isset($values[$this->bundleKey])) {
++      if (isset($values[$this->bundleKey])) {
++        // Normalize the bundle value. This is an optimized version of
++        // \Drupal\Core\Field\FieldInputValueNormalizerTrait::normalizeValue()
++        // because we just need the scalar value.
++        $bundle_value = $values[$this->bundleKey];
++        if (!is_array($bundle_value)) {
++          // The bundle value is a scalar, use it as-is.
++          $bundle = $bundle_value;
++        }
++        elseif (is_numeric(array_keys($bundle_value)[0])) {
++          // The bundle value is a field item list array, keyed by delta.
++          $bundle = reset($bundle_value[0]);
++        }
++        else {
++          // The bundle value is a field item array, keyed by the field's main
++          // property name.
++          $bundle = reset($bundle_value);
++        }
++      }
++      elseif ($throw_exception) {
+         throw new EntityStorageException('Missing bundle for entity type ' . $this->entityTypeId);
+       }
++    }
++    return $bundle;
++  }
+ 
+-      // Normalize the bundle value. This is an optimized version of
+-      // \Drupal\Core\Field\FieldInputValueNormalizerTrait::normalizeValue()
+-      // because we just need the scalar value.
+-      $bundle_value = $values[$this->bundleKey];
+-      if (!is_array($bundle_value)) {
+-        // The bundle value is a scalar, use it as-is.
+-        $bundle = $bundle_value;
+-      }
+-      elseif (is_numeric(array_keys($bundle_value)[0])) {
+-        // The bundle value is a field item list array, keyed by delta.
+-        $bundle = reset($bundle_value[0]);
+-      }
+-      else {
+-        // The bundle value is a field item array, keyed by the field's main
+-        // property name.
+-        $bundle = reset($bundle_value);
++  /**
++   * {@inheritdoc}
++   */
++  public function getBundleKey() {
++    return $this->bundleKey;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function getEntityClass($bundle = NULL) {
++    $entity_class = parent::getEntityClass();
++
++    if (!empty($bundle)) {
++      // Return the bundle class if it has been defined for this bundle.
++      $bundle_info = $this->entityTypeBundleInfo->getBundleInfo($this->entityTypeId);
++      $bundle_class = $bundle_info[$bundle]['class'] ?? NULL;
++
++      // Bundle classes should extend the main entity class.
++      if ($bundle_class) {
++        if (!is_subclass_of($bundle_class, $entity_class)) {
++          throw new BundleClassInheritanceException($bundle_class, $entity_class);
++        }
++        return $bundle_class;
+       }
+     }
+-    $entity = new $this->entityClass([], $this->entityTypeId, $bundle);
+-    $this->initFieldValues($entity, $values);
+-    return $entity;
++
++    return $entity_class;
+   }
+ 
+   /**
+diff --git a/core/lib/Drupal/Core/Entity/EntityStorageBase.php b/core/lib/Drupal/Core/Entity/EntityStorageBase.php
+index 067b08acb5..89f1316fbb 100644
+--- a/core/lib/Drupal/Core/Entity/EntityStorageBase.php
++++ b/core/lib/Drupal/Core/Entity/EntityStorageBase.php
+@@ -104,6 +104,20 @@ public function __construct(EntityTypeInterface $entity_type, MemoryCacheInterfa
+     $this->memoryCacheTag = 'entity.memory_cache:' . $this->entityTypeId;
+   }
+ 
++  /**
++   * Retrieves the class name used to create the entity.
++   *
++   * @param string|null $bundle
++   *   (optional) A specific entity type bundle identifier. Can be omitted in
++   *   the case of entity types without bundles, like User.
++   *
++   * @return string
++   *   The class name.
++   */
++  protected function getEntityClass($bundle = NULL) {
++    return $this->entityClass;
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -210,7 +224,7 @@ protected function invokeHook($hook, EntityInterface $entity) {
+    * {@inheritdoc}
+    */
+   public function create(array $values = []) {
+-    $entity_class = $this->entityClass;
++    $entity_class = $this->getEntityClass();
+     $entity_class::preCreate($this, $values);
+ 
+     // Assign a new UUID if there is none yet.
+@@ -239,7 +253,8 @@ public function create(array $values = []) {
+    * @return \Drupal\Core\Entity\EntityInterface
+    */
+   protected function doCreate(array $values) {
+-    return new $this->entityClass($values, $this->entityTypeId);
++    $entity_class = $this->getEntityClass();
++    return new $entity_class($values, $this->entityTypeId);
+   }
+ 
+   /**
+@@ -358,17 +373,22 @@ protected function preLoad(array &$ids = NULL) {
+    *   Associative array of query results, keyed on the entity ID.
+    */
+   protected function postLoad(array &$entities) {
+-    $entity_class = $this->entityClass;
+-    $entity_class::postLoad($this, $entities);
+-    // Call hook_entity_load().
+-    foreach ($this->moduleHandler()->getImplementations('entity_load') as $module) {
+-      $function = $module . '_entity_load';
+-      $function($entities, $this->entityTypeId);
+-    }
+-    // Call hook_TYPE_load().
+-    foreach ($this->moduleHandler()->getImplementations($this->entityTypeId . '_load') as $module) {
+-      $function = $module . '_' . $this->entityTypeId . '_load';
+-      $function($entities);
++    $entity_classes = $this->getEntityClasses($entities);
++
++    foreach ($entity_classes as $entity_class => &$items) {
++      $entity_class::postLoad($this, $entities);
++
++      // Call hook_entity_load().
++      foreach ($this->moduleHandler()->getImplementations('entity_load') as $module) {
++        $function = $module . '_entity_load';
++        $function($items, $this->entityTypeId);
++      }
++
++      // Call hook_TYPE_load().
++      foreach ($this->moduleHandler()->getImplementations($this->entityTypeId . '_load') as $module) {
++        $function = $module . '_' . $this->entityTypeId . '_load';
++        $function($items);
++      }
+     }
+   }
+ 
+@@ -384,7 +404,9 @@ protected function postLoad(array &$entities) {
+   protected function mapFromStorageRecords(array $records) {
+     $entities = [];
+     foreach ($records as $record) {
+-      $entity = new $this->entityClass($record, $this->entityTypeId);
++      $entity_class = $this->getEntityClass();
++      /* @var $entity \Drupal\Core\Entity\EntityInterface */
++      $entity = new $entity_class($record, $this->entityTypeId);
+       $entities[$entity->id()] = $entity;
+     }
+     return $entities;
+@@ -399,6 +421,7 @@ protected function mapFromStorageRecords(array $records) {
+    *   The entity being saved.
+    *
+    * @return bool
++   *   TRUE if this entity exists in storage, FALSE otherwise.
+    */
+   abstract protected function has($id, EntityInterface $entity);
+ 
+@@ -417,21 +440,24 @@ public function delete(array $entities) {
+       $keyed_entities[$entity->id()] = $entity;
+     }
+ 
++    $entity_classes = $this->getEntityClasses($keyed_entities);
++
+     // Allow code to run before deleting.
+-    $entity_class = $this->entityClass;
+-    $entity_class::preDelete($this, $keyed_entities);
+-    foreach ($keyed_entities as $entity) {
+-      $this->invokeHook('predelete', $entity);
+-    }
++    foreach ($entity_classes as $entity_class => &$items) {
++      $entity_class::preDelete($this, $items);
++      foreach ($items as $entity) {
++        $this->invokeHook('predelete', $entity);
++      }
+ 
+-    // Perform the delete and reset the static cache for the deleted entities.
+-    $this->doDelete($keyed_entities);
+-    $this->resetCache(array_keys($keyed_entities));
++      // Perform the delete and reset the static cache for the deleted entities.
++      $this->doDelete($items);
++      $this->resetCache(array_keys($items));
+ 
+-    // Allow code to run after deleting.
+-    $entity_class::postDelete($this, $keyed_entities);
+-    foreach ($keyed_entities as $entity) {
+-      $this->invokeHook('delete', $entity);
++      // Allow code to run after deleting.
++      $entity_class::postDelete($this, $items);
++      foreach ($items as $entity) {
++        $this->invokeHook('delete', $entity);
++      }
+     }
+   }
+ 
+@@ -614,4 +640,27 @@ public function getAggregateQuery($conjunction = 'AND') {
+    */
+   abstract protected function getQueryServiceName();
+ 
++  /**
++   * Indexes the given array of entities by their class name and ID.
++   *
++   * @param \Drupal\Core\Entity\EntityInterface[] $entities
++   *   The array of entities to index.
++   *
++   * @return array
++   *   An array of the passed-in entities, indexed by their class name and ID.
++   */
++  protected function getEntityClasses(array $entities) {
++    $entity_classes = [];
++
++    foreach ($entities as $id => $entity) {
++      $entity_class = get_class($entity);
++      if (!isset($entity_classes[$entity_class])) {
++        $entity_classes[$entity_class] = [];
++      }
++      $entity_classes[$entity_class][$id] = $entity;
++    }
++
++    return $entity_classes;
++  }
++
+ }
+diff --git a/core/lib/Drupal/Core/Entity/EntityTypeBundleInfo.php b/core/lib/Drupal/Core/Entity/EntityTypeBundleInfo.php
+index aa917c845c..4f268cc96d 100644
+--- a/core/lib/Drupal/Core/Entity/EntityTypeBundleInfo.php
++++ b/core/lib/Drupal/Core/Entity/EntityTypeBundleInfo.php
+@@ -2,9 +2,12 @@
+ 
+ namespace Drupal\Core\Entity;
+ 
++use Drupal\Component\Gettext\PoItem;
++use Drupal\Component\Render\FormattableMarkup;
+ use Drupal\Core\Cache\Cache;
+ use Drupal\Core\Cache\CacheBackendInterface;
+ use Drupal\Core\Cache\UseCacheBackendTrait;
++use Drupal\Core\Config\Entity\EntityBundleWithPluralLabelsInterface;
+ use Drupal\Core\Extension\ModuleHandlerInterface;
+ use Drupal\Core\Language\LanguageManagerInterface;
+ use Drupal\Core\TypedData\TypedDataManagerInterface;
+@@ -98,6 +101,13 @@ public function getAllBundleInfo() {
+           if ($bundle_entity_type = $entity_type->getBundleEntityType()) {
+             foreach ($this->entityTypeManager->getStorage($bundle_entity_type)->loadMultiple() as $entity) {
+               $this->bundleInfo[$type][$entity->id()]['label'] = $entity->label();
++              if ($entity instanceof EntityBundleWithPluralLabelsInterface) {
++                $this->bundleInfo[$type][$entity->id()] += [
++                  'label_singular' => $entity->get('label_singular'),
++                  'label_plural' => $entity->get('label_plural'),
++                  'label_count' => $entity->get('label_count'),
++                ];
++              }
+             }
+           }
+           // If entity type bundles are not supported and
+@@ -125,4 +135,62 @@ public function clearCachedBundles() {
+     $this->typedDataManager->clearCachedDefinitions();
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getBundleCountLabel(string $entity_type_id, string $bundle, int $count, $variant): ?string {
++    if (!$bundles_info = $this->getBundleInfo($entity_type_id)) {
++      throw new \InvalidArgumentException("The '{$entity_type_id}' doesn't exist.");
++    }
++    $bundle_info = $bundles_info[$bundle] ?? NULL;
++    if (!$bundle_info) {
++      throw new \InvalidArgumentException("The '{$entity_type_id}' entity type bundle '{$bundle}' doesn't exist.");
++    }
++
++    if (!empty($bundle_info['label_count'])) {
++      if (empty($bundle_info['label_count'][$variant])) {
++        throw new \InvalidArgumentException("There's no variant '{$variant}' defined in label_count for bundle '{$bundle}' of '{$entity_type_id}' entity type.");
++      }
++
++      $index = static::getPluralIndex($count);
++      if ($index === -1) {
++        // If the index cannot be computed, fallback to a single plural variant.
++        $index = $count > 1 ? 1 : 0;
++      }
++
++      $label_count = explode(PoItem::DELIMITER, $bundle_info['label_count'][$variant]);
++      if (!empty($label_count[$index])) {
++        return new FormattableMarkup($label_count[$index], ['@count' => $count]);
++      }
++    }
++
++    return NULL;
++  }
++
++  /**
++   * Gets the plural index through the gettext formula.
++   *
++   * @param int $count
++   *   Number to return plural for.
++   *
++   * @return int
++   *   The numeric index of the plural variant to use for the current language
++   *   and the given $count number or -1 if the language was not found or does
++   *   not have a plural formula.
++   *
++   * @todo Remove this method when https://www.drupal.org/node/2766857 gets in.
++   */
++  protected static function getPluralIndex(int $count): int {
++    // We have to test both if the function and the service exist since in
++    // certain situations it is possible that locale code might be loaded but
++    // the service does not exist. For example, where the parent test site has
++    // locale installed but the child site does not.
++    // @todo Refactor in https://www.drupal.org/node/2660338 so this code does
++    //   not depend on knowing that the Locale module exists.
++    if (function_exists('locale_get_plural') && \Drupal::hasService('locale.plural.formula')) {
++      return locale_get_plural($count);
++    }
++    return -1;
++  }
++
+ }
+diff --git a/core/lib/Drupal/Core/Entity/EntityTypeBundleInfoInterface.php b/core/lib/Drupal/Core/Entity/EntityTypeBundleInfoInterface.php
+index 2789b651e5..7baea06b5e 100644
+--- a/core/lib/Drupal/Core/Entity/EntityTypeBundleInfoInterface.php
++++ b/core/lib/Drupal/Core/Entity/EntityTypeBundleInfoInterface.php
+@@ -37,4 +37,30 @@ public function getBundleInfo($entity_type_id);
+    */
+   public function clearCachedBundles();
+ 
++  /**
++   * Gets the count label for a given bundle.
++   *
++   * @param string $entity_type_id
++   *   The bundle's entity type ID.
++   * @param string $bundle
++   *   The bundle.
++   * @param int $count
++   *   The item count to display if the plural form was requested.
++   * @param string|int $variant
++   *   The variant of the count label. This is actually the, string or integer,
++   *   array item key corresponding to the count label variant. A bundle can
++   *   define unlimited definite singular/plural count labels in order to cover
++   *   various contexts where they are used. Pass the variant, as a string or
++   *   integer identifier, to get the appropriate version of the count label.
++   *
++   * @return string|null
++   *   The count label. NULL is returned in one of the following cases:
++   *   - The bundle didn't define a 'label_count' variant list.
++   *   - There's no plural formula for the given $count.
++   *
++   * @throws \InvalidArgumentException
++   *   If the passed entity type, bundle or count label variant doesn't exist.
++   */
++  public function getBundleCountLabel(string $entity_type_id, string $bundle, int $count, $variant): ?string;
++
+ }
+diff --git a/core/lib/Drupal/Core/Entity/EntityTypeRepository.php b/core/lib/Drupal/Core/Entity/EntityTypeRepository.php
+index f63965a8b3..5930a249d1 100644
+--- a/core/lib/Drupal/Core/Entity/EntityTypeRepository.php
++++ b/core/lib/Drupal/Core/Entity/EntityTypeRepository.php
+@@ -2,6 +2,7 @@
+ 
+ namespace Drupal\Core\Entity;
+ 
++use Drupal\Core\Entity\Exception\AmbiguousBundleClassException;
+ use Drupal\Core\Entity\Exception\AmbiguousEntityClassException;
+ use Drupal\Core\Entity\Exception\NoCorrespondingEntityClassException;
+ use Drupal\Core\StringTranslation\StringTranslationTrait;
+@@ -80,7 +81,8 @@ public function getEntityTypeFromClass($class_name) {
+ 
+     $same_class = 0;
+     $entity_type_id = NULL;
+-    foreach ($this->entityTypeManager->getDefinitions() as $entity_type) {
++    $definitions = $this->entityTypeManager->getDefinitions();
++    foreach ($definitions as $entity_type) {
+       if ($entity_type->getOriginalClass() == $class_name  || $entity_type->getClass() == $class_name) {
+         $entity_type_id = $entity_type->id();
+         if ($same_class++) {
+@@ -89,6 +91,20 @@ public function getEntityTypeFromClass($class_name) {
+       }
+     }
+ 
++    // If no match was found check if it is a bundle class. This needs to be in
++    // a separate loop to avoid false positives, since an entity class can
++    // subclass another entity class.
++    if (!$entity_type_id) {
++      foreach ($definitions as $entity_type) {
++        if (is_subclass_of($class_name, $entity_type->getOriginalClass()) || is_subclass_of($class_name, $entity_type->getClass())) {
++          $entity_type_id = $entity_type->id();
++          if ($same_class++) {
++            throw new AmbiguousBundleClassException($class_name);
++          }
++        }
++      }
++    }
++
+     // Return the matching entity type ID if there is one.
+     if ($entity_type_id) {
+       $this->classNameEntityTypeMap[$class_name] = $entity_type_id;
+diff --git a/core/lib/Drupal/Core/Entity/EntityTypeRepositoryInterface.php b/core/lib/Drupal/Core/Entity/EntityTypeRepositoryInterface.php
+index 80b96e477a..5f4c2ccf15 100644
+--- a/core/lib/Drupal/Core/Entity/EntityTypeRepositoryInterface.php
++++ b/core/lib/Drupal/Core/Entity/EntityTypeRepositoryInterface.php
+@@ -34,6 +34,8 @@ public function getEntityTypeLabels($group = FALSE);
+    *
+    * @throws \Drupal\Core\Entity\Exception\AmbiguousEntityClassException
+    *   Thrown when multiple subclasses correspond to the called class.
++   * @throws \Drupal\Core\Entity\Exception\AmbiguousBundleClassException
++   *   Thrown when multiple subclasses correspond to the called bundle class.
+    * @throws \Drupal\Core\Entity\Exception\NoCorrespondingEntityClassException
+    *   Thrown when no entity class corresponds to the called class.
+    *
+diff --git a/core/lib/Drupal/Core/Entity/Exception/AmbiguousBundleClassException.php b/core/lib/Drupal/Core/Entity/Exception/AmbiguousBundleClassException.php
+new file mode 100644
+index 0000000000..d830880f71
+--- /dev/null
++++ b/core/lib/Drupal/Core/Entity/Exception/AmbiguousBundleClassException.php
+@@ -0,0 +1,23 @@
++<?php
++
++namespace Drupal\Core\Entity\Exception;
++
++/**
++ * Exception thrown if a bundle class is defined for multiple bundles.
++ *
++ * @see \Drupal\Core\Entity\ContentEntityStorageBase::getBundleFromClass()
++ */
++class AmbiguousBundleClassException extends \Exception {
++
++  /**
++   * Constructs an AmbiguousBundleClassException.
++   *
++   * @param string $class
++   *   The bundle class which is defined for multiple bundles.
++   */
++  public function __construct(string $class) {
++    $message = sprintf('Multiple bundles are using the bundle class %s.', $class);
++    parent::__construct($message);
++  }
++
++}
+diff --git a/core/lib/Drupal/Core/Entity/Exception/BundleClassInheritanceException.php b/core/lib/Drupal/Core/Entity/Exception/BundleClassInheritanceException.php
+new file mode 100644
+index 0000000000..4f0d1fd2ba
+--- /dev/null
++++ b/core/lib/Drupal/Core/Entity/Exception/BundleClassInheritanceException.php
+@@ -0,0 +1,25 @@
++<?php
++
++namespace Drupal\Core\Entity\Exception;
++
++/**
++ * Exception thrown if a bundle class does not extend the main entity class.
++ *
++ * @see \Drupal\Core\Entity\ContentEntityStorageBase::getEntityClass()
++ */
++class BundleClassInheritanceException extends \Exception {
++
++  /**
++   * Constructs a BundleClassInheritanceException.
++   *
++   * @param string $bundle_class
++   *   The bundle class which should extend the entity class.
++   * @param string $entity_class
++   *   The entity class which should be extended.
++   */
++  public function __construct(string $bundle_class, string $entity_class) {
++    $message = sprintf('Bundle class %s does not extend entity class %s.', $bundle_class, $entity_class);
++    parent::__construct($message);
++  }
++
++}
+diff --git a/core/lib/Drupal/Core/Entity/KeyValueStore/KeyValueEntityStorage.php b/core/lib/Drupal/Core/Entity/KeyValueStore/KeyValueEntityStorage.php
+index 113f630787..959cf1e93a 100644
+--- a/core/lib/Drupal/Core/Entity/KeyValueStore/KeyValueEntityStorage.php
++++ b/core/lib/Drupal/Core/Entity/KeyValueStore/KeyValueEntityStorage.php
+@@ -93,7 +93,8 @@ public static function createInstance(ContainerInterface $container, EntityTypeI
+   public function doCreate(array $values = []) {
+     // Set default language to site default if not provided.
+     $values += [$this->getEntityType()->getKey('langcode') => $this->languageManager->getDefaultLanguage()->getId()];
+-    $entity = new $this->entityClass($values, $this->entityTypeId);
++    $entity_class = $this->getEntityClass();
++    $entity = new $entity_class($values, $this->entityTypeId);
+ 
+     // @todo This is handled by ContentEntityStorageBase, which assumes
+     //   FieldableEntityInterface. The current approach in
+diff --git a/core/lib/Drupal/Core/Entity/Sql/SqlContentEntityStorage.php b/core/lib/Drupal/Core/Entity/Sql/SqlContentEntityStorage.php
+index 083ce84ccf..75508b6c69 100644
+--- a/core/lib/Drupal/Core/Entity/Sql/SqlContentEntityStorage.php
++++ b/core/lib/Drupal/Core/Entity/Sql/SqlContentEntityStorage.php
+@@ -527,7 +527,8 @@ protected function mapFromStorageRecords(array $records, $load_from_revision = F
+     foreach ($values as $id => $entity_values) {
+       $bundle = $this->bundleKey ? $entity_values[$this->bundleKey][LanguageInterface::LANGCODE_DEFAULT] : FALSE;
+       // Turn the record into an entity class.
+-      $entities[$id] = new $this->entityClass($entity_values, $this->entityTypeId, $bundle, array_keys($translations[$id]));
++      $entity_class = $this->getEntityClass($bundle);
++      $entities[$id] = new $entity_class($entity_values, $this->entityTypeId, $bundle, array_keys($translations[$id]));
+     }
+ 
+     return $entities;
+diff --git a/core/lib/Drupal/Core/Entity/entity.api.php b/core/lib/Drupal/Core/Entity/entity.api.php
+index 0b163dc3a0..76fd69c07f 100644
+--- a/core/lib/Drupal/Core/Entity/entity.api.php
++++ b/core/lib/Drupal/Core/Entity/entity.api.php
+@@ -840,18 +840,55 @@ function hook_entity_view_mode_info_alter(&$view_modes) {
+  *   An associative array of all entity bundles, keyed by the entity
+  *   type name, and then the bundle name, with the following keys:
+  *   - label: The human-readable name of the bundle.
++ *   - label_singular: (optional) A translated string with the indefinite
++ *     singular label of the bundle. This is typically a lowercase label but it
++ *     can be also translated as a capitalized label for languages such as
++ *     German. For instance, given a bundle with the ID 'fruit', the singular
++ *     label would be 'fruit' but for German translation will be capitalized as
++ *     'Obst'.
++ *   - label_plural: (optional)  A translated string with the indefinite plural
++ *     label of the bundle. The same capitalization rules should be applied as
++ *     for 'label_singular'.
++ *   - label_count: (optional) An array containing one or more count label
++ *     variants for this bundle. Depending on context a site might need
++ *     different versions of the count label. For instance, a site will define
++ *     the following variants, depending on the use-case:
++ *     - On a regular page: @code 1 article\x03@count articles @endcode.
++ *     - On a search results page: @code 1 article was found\x03@count articles
++ *       were found @encode. Note that we cannot build this version by deriving
++ *       the first one because of the was/were forms.
++ *     - On a different page: @code <span>1</span>
++ *       article\x03<span>@count</span> articles @endcode.
++ *     - On other pages the count might be displayed in a different @code <div>
++ *       @encode or even in a different theme hook, so it needs a variant
++ *       without the count part: @code Article\x03Articles @encode.
++ *     A meaningful key may be added to each variant in order to allow a more
++ *     developer friendly identification. If the key is missed, the array index
++ *     value should be used to identify which count plural variant to be used.
+  *   - uri_callback: (optional) The same as the 'uri_callback' key defined for
+  *     the entity type in the EntityTypeManager, but for the bundle only. When
+  *     determining the URI of an entity, if a 'uri_callback' is defined for both
+  *     the entity type and the bundle, the one for the bundle is used.
+  *   - translatable: (optional) A boolean value specifying whether this bundle
+  *     has translation support enabled. Defaults to FALSE.
++ *   - class: (optional) The fully qualified class name for this bundle. If
++ *     omitted the class from the entity type definition will be used.
+  *
+  * @see \Drupal\Core\Entity\EntityTypeBundleInfo::getBundleInfo()
+  * @see hook_entity_bundle_info_alter()
+  */
+ function hook_entity_bundle_info() {
+   $bundles['user']['user']['label'] = t('User');
++  $bundles['user']['user']['label_singular'] = t('user');
++  $bundles['user']['user']['label_plural'] = t('users');
++  $bundles['user']['user']['label_count'] = [
++    // This variant misses a key and is identifiable by its array delta.
++    t('1 user\x03@count users'),
++    // The following variants have a meaningful identifier as key.
++    'search results' => t('1 user is found\x03@count users were found'),
++    'with_markup' => t('<span>1</span> user\x03<span>@count</span> users'),
++    'no count' => t('User\x03Users'),
++  ];
+   return $bundles;
+ }
+ 
+@@ -859,13 +896,18 @@ function hook_entity_bundle_info() {
+  * Alter the bundles for entity types.
+  *
+  * @param array $bundles
+- *   An array of bundles, keyed first by entity type, then by bundle name.
++ *   An array of bundles, keyed first by entity type, then by bundle name. Each
++ *   value is an array with the same structure as the hook_entity_bundle_info()
++ *   return array element.
+  *
+  * @see Drupal\Core\Entity\EntityTypeBundleInfo::getBundleInfo()
+  * @see hook_entity_bundle_info()
+  */
+ function hook_entity_bundle_info_alter(&$bundles) {
+   $bundles['user']['user']['label'] = t('Full account');
++  $bundles['user']['user']['label_count']['search results'] = t('1 user is registered\x03@count users are registered');
++  // Override the bundle class for the "article" node type in a custom module.
++  $bundles['node']['article']['class'] = 'Drupal\mymodule\Entity\Article';
+ }
+ 
+ /**
+diff --git a/core/modules/book/config/optional/node.type.book.yml b/core/modules/book/config/optional/node.type.book.yml
+index 0c07a79e8f..ada815bb6d 100644
+--- a/core/modules/book/config/optional/node.type.book.yml
++++ b/core/modules/book/config/optional/node.type.book.yml
+@@ -11,3 +11,7 @@ help: ''
+ new_revision: true
+ preview_mode: 1
+ display_submitted: true
++label_singular: 'book page'
++label_plural: 'book pages'
++label_count:
++  - "1 book page\x03@count book pages"
+diff --git a/core/modules/forum/config/optional/node.type.forum.yml b/core/modules/forum/config/optional/node.type.forum.yml
+index 8ed965df3f..5e0db03df4 100644
+--- a/core/modules/forum/config/optional/node.type.forum.yml
++++ b/core/modules/forum/config/optional/node.type.forum.yml
+@@ -11,3 +11,7 @@ help: ''
+ new_revision: false
+ preview_mode: 1
+ display_submitted: true
++label_singular: 'forum topic'
++label_plural: 'forum topics'
++label_count:
++  - "1 forum topic\x03@count forum topics"
+diff --git a/core/modules/jsonapi/tests/src/Functional/NodeTypeTest.php b/core/modules/jsonapi/tests/src/Functional/NodeTypeTest.php
+index c7bc3e2223..85a9afe77b 100644
+--- a/core/modules/jsonapi/tests/src/Functional/NodeTypeTest.php
++++ b/core/modules/jsonapi/tests/src/Functional/NodeTypeTest.php
+@@ -91,6 +91,9 @@ protected function getExpectedDocument() {
+           'display_submitted' => TRUE,
+           'help' => NULL,
+           'langcode' => 'en',
++          'label_count' => NULL,
++          'label_plural' => NULL,
++          'label_singular' => NULL,
+           'name' => 'Camelids',
+           'new_revision' => TRUE,
+           'preview_mode' => 1,
+diff --git a/core/modules/node/config/schema/node.schema.yml b/core/modules/node/config/schema/node.schema.yml
+index 2a831d7678..0fa84e78be 100644
+--- a/core/modules/node/config/schema/node.schema.yml
++++ b/core/modules/node/config/schema/node.schema.yml
+@@ -9,7 +9,7 @@ node.settings:
+       label: 'Use administration theme when editing or creating content'
+ 
+ node.type.*:
+-  type: config_entity
++  type: bundle_entity_with_plural_labels
+   label: 'Content type'
+   mapping:
+     name:
+diff --git a/core/modules/node/migrations/d6_node_type.yml b/core/modules/node/migrations/d6_node_type.yml
+index 3afe4bc475..063fb16fb8 100644
+--- a/core/modules/node/migrations/d6_node_type.yml
++++ b/core/modules/node/migrations/d6_node_type.yml
+@@ -8,6 +8,7 @@ source:
+   constants:
+     preview: 1 # DRUPAL_OPTIONAL
+     create_body: false
++    null_value: null
+ process:
+   type: type
+   name: name
+@@ -23,5 +24,8 @@ process:
+   create_body_label: body_label
+   'third_party_settings/menu_ui/available_menus': available_menus
+   'third_party_settings/menu_ui/parent': parent
++  label_singular: 'constants/null_value'
++  label_plural: 'constants/null_value'
++  label_count: 'constants/null_value'
+ destination:
+   plugin: entity:node_type
+diff --git a/core/modules/node/migrations/d7_node_type.yml b/core/modules/node/migrations/d7_node_type.yml
+index 1be9cd1ccc..23deba9c82 100644
+--- a/core/modules/node/migrations/d7_node_type.yml
++++ b/core/modules/node/migrations/d7_node_type.yml
+@@ -7,6 +7,7 @@ source:
+   plugin: d7_node_type
+   constants:
+     preview: 1 # DRUPAL_OPTIONAL
++    null_value: null
+ process:
+   type: type
+   name: name
+@@ -20,5 +21,8 @@ process:
+   create_body_label: body_label
+   'third_party_settings/menu_ui/available_menus': available_menus
+   'third_party_settings/menu_ui/parent': parent
++  label_singular: 'constants/null_value'
++  label_plural: 'constants/null_value'
++  label_count: 'constants/null_value'
+ destination:
+   plugin: entity:node_type
+diff --git a/core/modules/node/node.post_update.php b/core/modules/node/node.post_update.php
+index 913137757c..ab24dc40f7 100644
+--- a/core/modules/node/node.post_update.php
++++ b/core/modules/node/node.post_update.php
+@@ -5,7 +5,9 @@
+  * Post update functions for Node.
+  */
+ 
++use Drupal\Core\Config\Entity\ConfigEntityUpdater;
+ use Drupal\Core\Entity\Entity\EntityFormDisplay;
++use Drupal\node\NodeTypeInterface;
+ 
+ /**
+ * Load all form displays for nodes, add status with these settings, save.
+@@ -34,3 +36,16 @@ function node_post_update_configure_status_field_widget() {
+ function node_post_update_node_revision_views_data() {
+   // Empty post-update hook.
+ }
++
++/**
++ * Add plural label variants to node-type entities.
++ */
++function node_post_update_plural_variants(array &$sandbox): void {
++  \Drupal::classResolver(ConfigEntityUpdater::class)->update($sandbox, 'node_type', function (NodeTypeInterface $node_type): bool {
++    $node_type
++      ->set('label_singular', NULL)
++      ->set('label_plural', NULL)
++      ->set('label_count', NULL);
++    return TRUE;
++  });
++}
+diff --git a/core/modules/node/src/Entity/NodeType.php b/core/modules/node/src/Entity/NodeType.php
+index 60bfc7df77..69c187ecf9 100644
+--- a/core/modules/node/src/Entity/NodeType.php
++++ b/core/modules/node/src/Entity/NodeType.php
+@@ -3,6 +3,7 @@
+ namespace Drupal\node\Entity;
+ 
+ use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
++use Drupal\Core\Config\Entity\EntityBundleWithPluralLabelsTrait;
+ use Drupal\Core\Entity\EntityStorageInterface;
+ use Drupal\node\NodeTypeInterface;
+ 
+@@ -48,11 +49,16 @@
+  *     "new_revision",
+  *     "preview_mode",
+  *     "display_submitted",
++ *     "label_singular",
++ *     "label_plural",
++ *     "label_count",
+  *   }
+  * )
+  */
+ class NodeType extends ConfigEntityBundleBase implements NodeTypeInterface {
+ 
++  use EntityBundleWithPluralLabelsTrait;
++
+   /**
+    * The machine name of this node type.
+    *
+diff --git a/core/modules/node/src/NodeTypeInterface.php b/core/modules/node/src/NodeTypeInterface.php
+index 17dcd63db2..39b7b6f154 100644
+--- a/core/modules/node/src/NodeTypeInterface.php
++++ b/core/modules/node/src/NodeTypeInterface.php
+@@ -3,12 +3,13 @@
+ namespace Drupal\node;
+ 
+ use Drupal\Core\Config\Entity\ConfigEntityInterface;
++use Drupal\Core\Config\Entity\EntityBundleWithPluralLabelsInterface;
+ use Drupal\Core\Entity\RevisionableEntityBundleInterface;
+ 
+ /**
+  * Provides an interface defining a node type entity.
+  */
+-interface NodeTypeInterface extends ConfigEntityInterface, RevisionableEntityBundleInterface {
++interface NodeTypeInterface extends ConfigEntityInterface, RevisionableEntityBundleInterface, EntityBundleWithPluralLabelsInterface {
+ 
+   /**
+    * Determines whether the node type is locked.
+diff --git a/core/modules/node/tests/src/Functional/Rest/NodeTypeResourceTestBase.php b/core/modules/node/tests/src/Functional/Rest/NodeTypeResourceTestBase.php
+index d74824dd13..dbc36cfc08 100644
+--- a/core/modules/node/tests/src/Functional/Rest/NodeTypeResourceTestBase.php
++++ b/core/modules/node/tests/src/Functional/Rest/NodeTypeResourceTestBase.php
+@@ -59,6 +59,9 @@ protected function getExpectedNormalizedEntity() {
+       'description' => 'Camelids are large, strictly herbivorous animals with slender necks and long legs.',
+       'display_submitted' => TRUE,
+       'help' => NULL,
++      'label_count' => NULL,
++      'label_plural' => NULL,
++      'label_singular' => NULL,
+       'langcode' => 'en',
+       'name' => 'Camelids',
+       'new_revision' => TRUE,
+diff --git a/core/modules/node/tests/src/Functional/Update/NodeUpdateBundlePluralLabelsTest.php b/core/modules/node/tests/src/Functional/Update/NodeUpdateBundlePluralLabelsTest.php
+new file mode 100644
+index 0000000000..b828451048
+--- /dev/null
++++ b/core/modules/node/tests/src/Functional/Update/NodeUpdateBundlePluralLabelsTest.php
+@@ -0,0 +1,47 @@
++<?php
++
++namespace Drupal\Tests\node\Functional\Update;
++
++use Drupal\Core\Entity\Entity\EntityFormDisplay;
++use Drupal\FunctionalTests\Update\UpdatePathTestBase;
++
++/**
++ * Tests node_post_update_plural_variants().
++ *
++ * @group node
++ * @group legacy
++ */
++class NodeUpdateBundlePluralLabelsTest extends UpdatePathTestBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setDatabaseDumpFiles() {
++    $this->databaseDumpFiles[] = __DIR__ . '/../../../../../system/tests/fixtures/update/drupal-8.8.0.bare.standard.php.gz';
++  }
++
++  /**
++   * Tests node_post_update_plural_variants().
++   *
++   * @see node_post_update_plural_variants()
++   */
++  public function testPostUpdatePluralVariants() {
++    $properties = ['label_singular', 'label_plural', 'label_count'];
++
++    // Check that plural label variant properties are not present before update.
++    $node_type = $this->config('node.type.page')->getRawData();
++    foreach ($properties as $property) {
++      $this->assertArrayNotHasKey($property, $node_type);
++    }
++
++    $this->runUpdates();
++
++    // Check that plural label variant properties were added as NULL.
++    $node_type = $this->config('node.type.page')->getRawData();
++    foreach ($properties as $property) {
++      $this->assertArrayHasKey($property, $node_type);
++      $this->assertNull($node_type[$property]);
++    }
++  }
++
++}
+diff --git a/core/modules/system/tests/modules/entity_bundle_test/entity_bundle_test.info.yml b/core/modules/system/tests/modules/entity_bundle_test/entity_bundle_test.info.yml
+new file mode 100644
+index 0000000000..660bf0c41e
+--- /dev/null
++++ b/core/modules/system/tests/modules/entity_bundle_test/entity_bundle_test.info.yml
+@@ -0,0 +1,4 @@
++name: 'Entity bundle test'
++type: module
++description: 'Provides support for testing entity bundles.'
++package: Testing
+diff --git a/core/modules/system/tests/modules/entity_bundle_test/entity_bundle_test.module b/core/modules/system/tests/modules/entity_bundle_test/entity_bundle_test.module
+new file mode 100644
+index 0000000000..bc85eb9027
+--- /dev/null
++++ b/core/modules/system/tests/modules/entity_bundle_test/entity_bundle_test.module
+@@ -0,0 +1,60 @@
++<?php
++
++/**
++ * @file
++ * entity_bundle.module
++ */
++
++/**
++ * Implements hook_entity_type_alter().
++ */
++function entity_bundle_test_entity_type_alter(array &$entity_types): void {
++  // Use 'entity_test_bundle_plural_labels' as bundle entity for
++  // 'entity_test_with_bundle' in order to test bundle plural labels.
++  // @see \Drupal\KernelTests\Core\Entity\EntityTypeBundleInfoPluralLabelTest
++  $entity_types['entity_test_with_bundle']->set('bundle_entity_type', 'entity_test_bundle_plural_labels');
++}
++
++/**
++ * Implements hook_entity_bundle_info().
++ */
++function entity_bundle_test_entity_bundle_info(): array {
++  return [
++    'entity_test' => [
++      'artist' => [
++        'label' => t('Artist'),
++        'label_singular' => t('artist'),
++        'label_plural' => t('artists'),
++        'label_count' => [
++          "1 artist\x03@count artists",
++          'search results' => "1 artist was awarded\x03@count artists were awarded",
++        ],
++      ],
++    ],
++  ];
++}
++
++/**
++ * Implements hook_entity_bundle_info_alter().
++ */
++function entity_bundle_test_entity_bundle_info_alter(array &$bundles): void {
++  // Allow the test to trigger altering.
++  // @see \Drupal\KernelTests\Core\Entity\EntityTypeBundleInfoPluralLabelTest
++  if (\Drupal::state()->get('entity_bundle_test.allow_alter', FALSE)) {
++    // Bundle defined via config entity.
++    $bundles['entity_test_with_bundle']['article']['label_singular'] = 'article item';
++    $bundles['entity_test_with_bundle']['article']['label_plural'] = 'article items';
++    $bundles['entity_test_with_bundle']['article']['label_count'] = [
++      "1 article item\x03@count article items",
++      'search results' =>  "1 article item was found\x03@count article items were found",
++    ];
++
++    // Bundle defined via hook_entity_bundle_info().
++    $bundles['entity_test']['artist']['label_singular'] = 'creator';
++    $bundles['entity_test']['artist']['label_plural'] = 'creators';
++    $bundles['entity_test']['artist']['label_count'] = [
++      "1 creator\x03@count creators",
++      'search results' =>  "1 creator was awarded\x03@count creators were awarded",
++    ];
++  }
++}
+diff --git a/core/modules/system/tests/modules/entity_test/config/schema/entity_test.schema.yml b/core/modules/system/tests/modules/entity_test/config/schema/entity_test.schema.yml
+index d34d94940d..2c57636cbb 100644
+--- a/core/modules/system/tests/modules/entity_test/config/schema/entity_test.schema.yml
++++ b/core/modules/system/tests/modules/entity_test/config/schema/entity_test.schema.yml
+@@ -27,3 +27,13 @@ entity_test.entity_test_bundle.*:
+     description:
+       type: text
+       label: 'Description'
++
++entity_test.entity_test_bundle_plural_labels.*:
++  type: bundle_entity_with_plural_labels
++  mapping:
++    label:
++      type: label
++      label: 'Label'
++    id:
++      type: string
++      label: 'Machine-readable name'
+diff --git a/core/modules/system/tests/modules/entity_test/src/Entity/EntityTestBundleWithPluralLabels.php b/core/modules/system/tests/modules/entity_test/src/Entity/EntityTestBundleWithPluralLabels.php
+new file mode 100644
+index 0000000000..93a7a19349
+--- /dev/null
++++ b/core/modules/system/tests/modules/entity_test/src/Entity/EntityTestBundleWithPluralLabels.php
+@@ -0,0 +1,33 @@
++<?php
++
++
++namespace Drupal\entity_test\Entity;
++
++use Drupal\Core\Config\Entity\EntityBundleWithPluralLabelsInterface;
++use Drupal\Core\Config\Entity\EntityBundleWithPluralLabelsTrait;
++
++/**
++ * Defines the Test entity bundle with plural labels configuration entity.
++ *
++ * @ConfigEntityType(
++ *   id = "entity_test_bundle_plural_labels",
++ *   bundle_of = "entity_test_with_bundle",
++ *   config_prefix = "entity_test_bundle_plural_labels",
++ *   entity_keys = {
++ *     "id" = "id",
++ *     "label" = "label",
++ *   },
++ *   config_export = {
++ *     "id",
++ *     "label",
++ *     "label_singular",
++ *     "label_plural",
++ *     "label_count",
++ *   },
++ * )
++ */
++class EntityTestBundleWithPluralLabels extends EntityTestBundle implements EntityBundleWithPluralLabelsInterface {
++
++  use EntityBundleWithPluralLabelsTrait;
++
++}
+diff --git a/core/modules/system/tests/modules/entity_test_bundle_class/entity_test_bundle_class.info.yml b/core/modules/system/tests/modules/entity_test_bundle_class/entity_test_bundle_class.info.yml
+new file mode 100644
+index 0000000000..f295db0241
+--- /dev/null
++++ b/core/modules/system/tests/modules/entity_test_bundle_class/entity_test_bundle_class.info.yml
+@@ -0,0 +1,8 @@
++name: 'Entity Bundle Class Test'
++type: module
++description: 'Support module for testing entity bundle classes.'
++package: Testing
++version: VERSION
++core: 8.x
++dependencies:
++  - entity_test
+diff --git a/core/modules/system/tests/modules/entity_test_bundle_class/entity_test_bundle_class.module b/core/modules/system/tests/modules/entity_test_bundle_class/entity_test_bundle_class.module
+new file mode 100644
+index 0000000000..576143a4c1
+--- /dev/null
++++ b/core/modules/system/tests/modules/entity_test_bundle_class/entity_test_bundle_class.module
+@@ -0,0 +1,26 @@
++<?php
++
++/**
++ * @file
++ * Support module for testing entity bundle classes.
++ */
++
++use Drupal\entity_test_bundle_class\Entity\EntityTestBundleClass;
++use Drupal\entity_test_bundle_class\Entity\NonInheritingBundleClass;
++
++/**
++ * Implements hook_entity_bundle_info_alter().
++ */
++function entity_test_bundle_class_entity_bundle_info_alter(&$bundles) {
++  if (!empty($bundles['entity_test']['bundle_class'])) {
++    $bundles['entity_test']['bundle_class']['class'] = EntityTestBundleClass::class;
++  }
++
++  if (\Drupal::state()->get('entity_test_bundle_class_enable_ambiguous_entity_types', FALSE)) {
++    $bundles['entity_test']['entity_test_no_label']['class'] = EntityTestBundleClass::class;
++  }
++
++  if (\Drupal::state()->get('entity_test_bundle_class_non_inheriting', FALSE)) {
++    $bundles['entity_test']['bundle_class']['class'] = NonInheritingBundleClass::class;
++  }
++}
+diff --git a/core/modules/system/tests/modules/entity_test_bundle_class/src/Entity/EntityTestBundleClass.php b/core/modules/system/tests/modules/entity_test_bundle_class/src/Entity/EntityTestBundleClass.php
+new file mode 100644
+index 0000000000..56291da832
+--- /dev/null
++++ b/core/modules/system/tests/modules/entity_test_bundle_class/src/Entity/EntityTestBundleClass.php
+@@ -0,0 +1,11 @@
++<?php
++
++namespace Drupal\entity_test_bundle_class\Entity;
++
++use Drupal\entity_test\Entity\EntityTest;
++
++/**
++ * The bundle class for the bundle_class bundle of the entity_test entity.
++ */
++class EntityTestBundleClass extends EntityTest {
++}
+diff --git a/core/modules/system/tests/modules/entity_test_bundle_class/src/Entity/NonInheritingBundleClass.php b/core/modules/system/tests/modules/entity_test_bundle_class/src/Entity/NonInheritingBundleClass.php
+new file mode 100644
+index 0000000000..1ad9b67fd5
+--- /dev/null
++++ b/core/modules/system/tests/modules/entity_test_bundle_class/src/Entity/NonInheritingBundleClass.php
+@@ -0,0 +1,9 @@
++<?php
++
++namespace Drupal\entity_test_bundle_class\Entity;
++
++/**
++ * An invalid bundle class which does not inherit the main entity class.
++ */
++class NonInheritingBundleClass {
++}
+diff --git a/core/profiles/demo_umami/config/install/node.type.article.yml b/core/profiles/demo_umami/config/install/node.type.article.yml
+index 1fd439ce71..13de4e6d33 100644
+--- a/core/profiles/demo_umami/config/install/node.type.article.yml
++++ b/core/profiles/demo_umami/config/install/node.type.article.yml
+@@ -8,3 +8,7 @@ help: ''
+ new_revision: true
+ preview_mode: 1
+ display_submitted: true
++label_singular: article
++label_plural: articles
++label_count:
++  - "1 article\x03@count articles"
+diff --git a/core/profiles/demo_umami/config/install/node.type.page.yml b/core/profiles/demo_umami/config/install/node.type.page.yml
+index 57dcc0c992..01dd16a83d 100644
+--- a/core/profiles/demo_umami/config/install/node.type.page.yml
++++ b/core/profiles/demo_umami/config/install/node.type.page.yml
+@@ -8,3 +8,7 @@ help: ''
+ new_revision: true
+ preview_mode: 1
+ display_submitted: false
++label_singular: page
++label_plural: pages
++label_count:
++  - "1 page\x03@count pages"
+diff --git a/core/profiles/demo_umami/config/install/node.type.recipe.yml b/core/profiles/demo_umami/config/install/node.type.recipe.yml
+index 89ed3215c7..6076968d0c 100644
+--- a/core/profiles/demo_umami/config/install/node.type.recipe.yml
++++ b/core/profiles/demo_umami/config/install/node.type.recipe.yml
+@@ -14,3 +14,7 @@ help: ''
+ new_revision: true
+ preview_mode: 1
+ display_submitted: false
++label_singular: recipe
++label_plural: recipes
++label_count:
++  - "1 recipe\x03@count recipes"
+diff --git a/core/profiles/standard/config/install/node.type.article.yml b/core/profiles/standard/config/install/node.type.article.yml
+index 1fd439ce71..13de4e6d33 100644
+--- a/core/profiles/standard/config/install/node.type.article.yml
++++ b/core/profiles/standard/config/install/node.type.article.yml
+@@ -8,3 +8,7 @@ help: ''
+ new_revision: true
+ preview_mode: 1
+ display_submitted: true
++label_singular: article
++label_plural: articles
++label_count:
++  - "1 article\x03@count articles"
+diff --git a/core/profiles/standard/config/install/node.type.page.yml b/core/profiles/standard/config/install/node.type.page.yml
+index 57dcc0c992..01dd16a83d 100644
+--- a/core/profiles/standard/config/install/node.type.page.yml
++++ b/core/profiles/standard/config/install/node.type.page.yml
+@@ -8,3 +8,7 @@ help: ''
+ new_revision: true
+ preview_mode: 1
+ display_submitted: false
++label_singular: page
++label_plural: pages
++label_count:
++  - "1 page\x03@count pages"
+diff --git a/core/tests/Drupal/KernelTests/Core/Entity/BundleClassTest.php b/core/tests/Drupal/KernelTests/Core/Entity/BundleClassTest.php
+new file mode 100644
+index 0000000000..2713c4841a
+--- /dev/null
++++ b/core/tests/Drupal/KernelTests/Core/Entity/BundleClassTest.php
+@@ -0,0 +1,89 @@
++<?php
++
++namespace Drupal\KernelTests\Core\Entity;
++
++use Drupal\Core\Entity\Exception\AmbiguousBundleClassException;
++use Drupal\Core\Entity\Exception\BundleClassInheritanceException;
++use Drupal\entity_test_bundle_class\Entity\EntityTestBundleClass;
++
++/**
++ * Tests entity bundle classes.
++ *
++ * @group Entity
++ */
++class BundleClassTest extends EntityKernelTestBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  public static $modules = ['entity_test_bundle_class'];
++
++  /**
++   * The entity storage.
++   *
++   * @var \Drupal\Core\Entity\EntityStorageInterface
++   */
++  protected $storage;
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp() {
++    parent::setUp();
++    $this->storage = $this->entityTypeManager->getStorage('entity_test');
++  }
++
++  /**
++   * Tests making use of a custom bundle field.
++   */
++  public function testEntitySubclass() {
++    entity_test_create_bundle('bundle_class');
++
++    // Verify statically created entity with bundle class returns correct class.
++    $entity = EntityTestBundleClass::create();
++    $this->assertTrue($entity instanceof EntityTestBundleClass);
++
++    // Verify statically created entity with bundle class returns correct
++    // bundle.
++    $entity = EntityTestBundleClass::create(['type' => 'custom']);
++    $this->assertTrue($entity instanceof EntityTestBundleClass);
++    $this->assertEquals('bundle_class', $entity->bundle());
++
++    // Verify that the entity storage creates the entity using the proper class.
++    $entity = $this->storage->create(['type' => 'bundle_class']);
++    $this->assertTrue($entity instanceof EntityTestBundleClass);
++
++    // Verify that loading an entity returns the proper class.
++    $entity->save();
++    $id = $entity->id();
++    $this->storage->resetCache();
++    $entity = $this->storage->load($id);
++    $this->assertTrue($entity instanceof EntityTestBundleClass);
++  }
++
++  /**
++   * Checks exception is thrown if multiple classes implement the same bundle.
++   */
++  public function testAmbiguousBundleClassException() {
++    $this->container->get('state')->set('entity_test_bundle_class_enable_ambiguous_entity_types', TRUE);
++    $this->entityTypeManager->clearCachedDefinitions();
++    $this->expectException(AmbiguousBundleClassException::class);
++    entity_test_create_bundle('bundle_class');
++
++    // Since we now have two entity types that returns the same class for the
++    // same bundle, we expect this to throw an exception.
++    EntityTestBundleClass::create();
++  }
++
++  /**
++   * Checks exception thrown if a bundle class doesn't extend the entity class.
++   */
++  public function testBundleClassShouldExtendEntityClass() {
++    $this->container->get('state')->set('entity_test_bundle_class_non_inheriting', TRUE);
++    $this->entityTypeManager->clearCachedDefinitions();
++    $this->expectException(BundleClassInheritanceException::class);
++    entity_test_create_bundle('bundle_class');
++    $this->storage->create(['type' => 'bundle_class']);
++  }
++
++}
+diff --git a/core/tests/Drupal/KernelTests/Core/Entity/EntityTypeBundleInfoPluralLabelTest.php b/core/tests/Drupal/KernelTests/Core/Entity/EntityTypeBundleInfoPluralLabelTest.php
+new file mode 100644
+index 0000000000..fac8c59c50
+--- /dev/null
++++ b/core/tests/Drupal/KernelTests/Core/Entity/EntityTypeBundleInfoPluralLabelTest.php
+@@ -0,0 +1,232 @@
++<?php
++
++namespace Drupal\KernelTests\Core\Entity;
++
++use Drupal\entity_test\Entity\EntityTestBundleWithPluralLabels;
++use Drupal\KernelTests\KernelTestBase;
++
++/**
++ * Tests bundle singular, plural and count labels.
++ *
++ * @coversDefaultClass \Drupal\Core\Entity\EntityTypeBundleInfo
++ * @group Entity
++ */
++class EntityTypeBundleInfoPluralLabelTest extends KernelTestBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = [
++    'entity_bundle_test',
++    'entity_test',
++  ];
++
++  /**
++   * The entity type bundle info service.
++   *
++   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
++   */
++  protected $bundleInfo;
++
++  /**
++   * The tested entity type ID.
++   *
++   * @var string
++   */
++  protected $entityTypeId;
++
++  /**
++   * The tested bundle.
++   *
++   * @var string
++   */
++  protected $bundle;
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp(): void {
++    parent::setUp();
++    $this->bundleInfo = $this->container->get('entity_type.bundle.info');
++  }
++
++  /**
++   * Tests singular, plural and count labels for bundles as config entities.
++   *
++   * @covers ::getAllBundleInfo
++   */
++  public function testLabelsForBundlesAsConfigEntities(): void {
++    // Test bundles stored in config entities.
++    $this->setBundle('entity_test_with_bundle', 'article');
++
++    $bundle_entity = EntityTestBundleWithPluralLabels::create([
++      'id' => 'article',
++      'label' => 'Article',
++    ]);
++    $bundle_entity->save();
++
++    // Check that bundle info returns no label with bundle undefined labels.
++    $this->assertSingularLabel(NULL);
++    $this->assertPluralLabel(NULL);
++    $this->assertCountLabel(1, 0, NULL);
++    $this->assertCountLabel(100, 0, NULL);
++    $this->assertCountLabel(1, 'search results', NULL);
++    $this->assertCountLabel(100, 'search results', NULL);
++
++    // Set singular, plural and count labels on the bundle entity.
++    $bundle_entity
++      ->setSingularLabel('article')
++      ->setPluralLabel('articles')
++      ->setCountLabel([
++        "1 article\x03@count articles",
++        'search results' => "1 article was found\x03@count articles were found",
++      ])
++      ->save();
++
++    // Check that labels are correctly returned.
++    $this->assertSingularLabel('article');
++    $this->assertPluralLabel('articles');
++    $this->assertCountLabel(1, 0, '1 article');
++    $this->assertCountLabel(100, 0, '100 articles');
++    $this->assertCountLabel(1, 'search results', '1 article was found');
++    $this->assertCountLabel(100, 'search results', '100 articles were found');
++
++    // Allow altering the labels via hook_entity_bundle_info_alter().
++    // @see \entity_bundle_test_entity_bundle_info_alter()
++    \Drupal::state()->set('entity_bundle_test.allow_alter', TRUE);
++    // Also, clear the bundle info cache, to get fresh bundle definitions.
++    $this->bundleInfo->clearCachedBundles();
++
++    // Check that altered labels are correctly returned.
++    $this->assertSingularLabel('article item');
++    $this->assertPluralLabel('article items');
++    $this->assertCountLabel(1, 0, '1 article item');
++    $this->assertCountLabel(100, 0, '100 article items');
++    $this->assertCountLabel(1, 'search results', '1 article item was found');
++    $this->assertCountLabel(100, 'search results', '100 article items were found');
++  }
++
++  /**
++   * Tests singular, plural and count labels for bundles defined in code.
++   *
++   * @covers ::getAllBundleInfo
++   */
++  public function testLabelsForBundlesWithoutConfigEntities(): void {
++    // Test entities with bundles not stored in config entities.
++    // @see entity_bundle_test_entity_bundle_info()
++    $this->setBundle('entity_test', 'artist');
++
++    // Check that labels are correctly returned.
++    $this->assertSingularLabel('artist');
++    $this->assertPluralLabel('artists');
++    $this->assertCountLabel(1, 0, '1 artist');
++    $this->assertCountLabel(100, 0, '100 artists');
++    $this->assertCountLabel(1, 'search results', '1 artist was awarded');
++    $this->assertCountLabel(100, 'search results', '100 artists were awarded');
++
++    // Allow altering the labels via hook_entity_bundle_info_alter().
++    // @see \entity_bundle_test_entity_bundle_info_alter()
++    \Drupal::state()->set('entity_bundle_test.allow_alter', TRUE);
++    // Also, clear the bundle info cache, to get fresh bundle definitions.
++    $this->bundleInfo->clearCachedBundles();
++
++    // Check that altered labels are correctly returned.
++    $this->assertSingularLabel('creator');
++    $this->assertPluralLabel('creators');
++    $this->assertCountLabel(1, 0, '1 creator');
++    $this->assertCountLabel(100, 0, '100 creators');
++    $this->assertCountLabel(1, 'search results', '1 creator was awarded');
++    $this->assertCountLabel(100, 'search results', '100 creators were awarded');
++  }
++
++  /**
++   * Test passing a wrong entity type to ::getBundleCountLabel().
++   *
++   * @covers ::getBundleCountLabel
++   */
++  public function testGetBundleCountLabelWithWrongEntityType(): void {
++    $this->expectExceptionObject(new \InvalidArgumentException("The 'nonexistent_entity_type' doesn't exist."));
++    $this->bundleInfo->getBundleCountLabel('nonexistent_entity_type', 'article', 123, 'default');
++  }
++
++  /**
++   * Test passing a wrong bundle type to ::getBundleCountLabel().
++   *
++   * @covers ::getBundleCountLabel
++   */
++  public function testGetBundleCountLabelWithWrongBundle(): void {
++    $this->expectExceptionObject(new \InvalidArgumentException("The 'entity_test' entity type bundle 'nonexistent_bundle' doesn't exist."));
++    $this->bundleInfo->getBundleCountLabel('entity_test', 'nonexistent_bundle', 123, 'default');
++  }
++
++  /**
++   * Test passing a wrong bundle count label variant to ::getBundleCountLabel().
++   *
++   * @covers ::getBundleCountLabel
++   */
++  public function testGetBundleCountLabelWithWrongVariant(): void {
++    EntityTestBundleWithPluralLabels::create([
++      'id' => 'article',
++      'label' => 'Article',
++      'label_count' => [
++        'default' => "1 item\x03@count items",
++      ],
++    ])->save();
++
++    $this->expectExceptionObject(new \InvalidArgumentException("There's no variant 'nonexistent_variant' defined in label_count for bundle 'article' of 'entity_test_with_bundle' entity type."));
++    $this->bundleInfo->getBundleCountLabel('entity_test_with_bundle', 'article', 123, 'nonexistent_variant');
++  }
++
++  /**
++   * Asserts that a given bundle has an expected singular label.
++   *
++   * @param string|null $expected_singular_label
++   *   The expected bundle singular label.
++   */
++  protected function assertSingularLabel(?string $expected_singular_label): void {
++    $bundle_info = $this->bundleInfo->getBundleInfo($this->entityTypeId)[$this->bundle];
++    $this->assertEquals($expected_singular_label, $bundle_info['label_singular']);
++  }
++
++  /**
++   * Asserts that a given bundle has an expected plural label.
++   *
++   * @param string|null $expected_plural_label
++   *   The expected bundle plural label.
++   *
++   * @throws \Exception
++   */
++  protected function assertPluralLabel(?string $expected_plural_label): void {
++    $bundle_info = $this->bundleInfo->getBundleInfo($this->entityTypeId)[$this->bundle];
++    $this->assertEquals($expected_plural_label, $bundle_info['label_plural']);
++  }
++
++  /**
++   * Asserts an expected count label on a given bundle, count and variant.
++   *
++   * @param int $count
++   *   The count.
++   * @param string|int $variant
++   *   The count label variant ID.
++   * @param string|null $expected_count_label
++   *   The expected count label.
++   */
++  protected function assertCountLabel(int $count, $variant, ?string $expected_count_label): void {
++    $actual_count_label = $this->bundleInfo->getBundleCountLabel($this->entityTypeId, $this->bundle, $count, $variant);
++    $this->assertEquals($expected_count_label, $actual_count_label);
++  }
++
++  /**
++   * Sets the bundle being tested.
++   *
++   * @param string $entity_type_id
++   *   The bundle's entity type ID.
++   * @param string $bundle
++   *   The bundle.
++   */
++  protected function setBundle(string $entity_type_id, string $bundle): void {
++    $this->entityTypeId = $entity_type_id;
++    $this->bundle = $bundle;
++  }
++
++}

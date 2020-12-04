@@ -7,6 +7,7 @@ namespace Drupal\joinup_group\Controller;
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeTypeInterface;
 use Drupal\og\OgAccessInterface;
@@ -27,20 +28,33 @@ class GroupNodeController extends ControllerBase {
   protected $ogAccess;
 
   /**
+   * The entity type bundle info service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   */
+  protected $bundleInfo;
+
+  /**
    * Constructs a new controller instance.
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info
+   *   The entity type bundle info service.
    */
-  public function __construct(OgAccessInterface $og_access) {
+  public function __construct(OgAccessInterface $og_access, EntityTypeBundleInfoInterface $bundle_info) {
     $this->ogAccess = $og_access;
+    $this->bundleInfo = $bundle_info;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('og.access'));
+    return new static(
+      $container->get('og.access'),
+      $container->get('entity_type.bundle.info')
+    );
   }
 
   /**
@@ -55,7 +69,9 @@ class GroupNodeController extends ControllerBase {
    *   The title as a markup object.
    */
   public function addTitle(RdfInterface $rdf_entity, NodeTypeInterface $node_type): MarkupInterface {
-    return $this->t('Add @type', ['@type' => $node_type->getSingularLabel()]);
+    return $this->t('Add @type', [
+      '@type' => $this->bundleInfo->getBundleInfo('node')[$node_type->id()]['label_singular'],
+    ]);
   }
 
   /**

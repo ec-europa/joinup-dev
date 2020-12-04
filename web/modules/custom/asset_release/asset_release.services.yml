@@ -24,6 +24,6 @@ services:
     arguments: ['@entity_type.manager', '@og.membership_manager']
   asset_release.group_add_content.subscriber:
     class: Drupal\asset_release\EventSubscriber\ReleaseGroupSubscriber
-    arguments: ['@entity_type.manager']
+    arguments: ['@entity_type.bundle.info']
     tags:
       - { name: event_subscriber }
