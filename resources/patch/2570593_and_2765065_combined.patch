@@ -89,15 +89,13 @@ index 0000000000..1be187211c
 +}
 diff --git a/core/lib/Drupal/Core/Config/Entity/EntityBundleWithPluralLabelsTrait.php b/core/lib/Drupal/Core/Config/Entity/EntityBundleWithPluralLabelsTrait.php
 new file mode 100644
-index 0000000000..86a520aff4
+index 0000000000..5e8c4e3de5
 --- /dev/null
 +++ b/core/lib/Drupal/Core/Config/Entity/EntityBundleWithPluralLabelsTrait.php
-@@ -0,0 +1,83 @@
+@@ -0,0 +1,81 @@
 +<?php
 +
 +namespace Drupal\Core\Config\Entity;
-+
-+use Drupal\Component\Gettext\PoItem;
 +
 +/**
 + * Allows bundle configuration entities to support label plural variants.
@@ -428,6 +426,23 @@ index 509a8bcaa4..6e701dfcee 100644
    }
  
    /**
+diff --git a/core/lib/Drupal/Core/Entity/EntityManager.php b/core/lib/Drupal/Core/Entity/EntityManager.php
+index 5860fb2b14..16ade59b87 100644
+--- a/core/lib/Drupal/Core/Entity/EntityManager.php
++++ b/core/lib/Drupal/Core/Entity/EntityManager.php
+@@ -912,4 +912,12 @@ public function getFormDisplay($entity_type, $bundle, $form_mode = self::DEFAULT
+     return $this->container->get('entity_display.repository')->getFormDisplay($entity_type, $bundle, $form_mode);
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getBundleCountLabel(string $entity_type_id, string $bundle, int $count, $variant): ?string {
++    @trigger_error('EntityManager::getBundleCountLabel() is deprecated in drupal:8.9.0 and will be removed before Drupal 9.2.0. Use \Drupal::service(\'entity_type.bundle.info\')->getBundleCountLabel() instead.', E_USER_DEPRECATED);
++    return $this->container->get('entity_type.bundle.info')->getBundleCountLabel($entity_type_id, $bundle, $count, $variant);
++  }
++
+ }
 diff --git a/core/lib/Drupal/Core/Entity/EntityStorageBase.php b/core/lib/Drupal/Core/Entity/EntityStorageBase.php
 index 067b08acb5..89f1316fbb 100644
 --- a/core/lib/Drupal/Core/Entity/EntityStorageBase.php
@@ -1131,15 +1146,14 @@ index d74824dd13..dbc36cfc08 100644
        'new_revision' => TRUE,
 diff --git a/core/modules/node/tests/src/Functional/Update/NodeUpdateBundlePluralLabelsTest.php b/core/modules/node/tests/src/Functional/Update/NodeUpdateBundlePluralLabelsTest.php
 new file mode 100644
-index 0000000000..b828451048
+index 0000000000..68c787e2c4
 --- /dev/null
 +++ b/core/modules/node/tests/src/Functional/Update/NodeUpdateBundlePluralLabelsTest.php
-@@ -0,0 +1,47 @@
+@@ -0,0 +1,46 @@
 +<?php
 +
 +namespace Drupal\Tests\node\Functional\Update;
 +
-+use Drupal\Core\Entity\Entity\EntityFormDisplay;
 +use Drupal\FunctionalTests\Update\UpdatePathTestBase;
 +
 +/**
@@ -1194,7 +1208,7 @@ index 0000000000..660bf0c41e
 +package: Testing
 diff --git a/core/modules/system/tests/modules/entity_bundle_test/entity_bundle_test.module b/core/modules/system/tests/modules/entity_bundle_test/entity_bundle_test.module
 new file mode 100644
-index 0000000000..bc85eb9027
+index 0000000000..78dc155ae8
 --- /dev/null
 +++ b/core/modules/system/tests/modules/entity_bundle_test/entity_bundle_test.module
 @@ -0,0 +1,60 @@
@@ -1246,7 +1260,7 @@ index 0000000000..bc85eb9027
 +    $bundles['entity_test_with_bundle']['article']['label_plural'] = 'article items';
 +    $bundles['entity_test_with_bundle']['article']['label_count'] = [
 +      "1 article item\x03@count article items",
-+      'search results' =>  "1 article item was found\x03@count article items were found",
++      'search results' => "1 article item was found\x03@count article items were found",
 +    ];
 +
 +    // Bundle defined via hook_entity_bundle_info().
@@ -1254,7 +1268,7 @@ index 0000000000..bc85eb9027
 +    $bundles['entity_test']['artist']['label_plural'] = 'creators';
 +    $bundles['entity_test']['artist']['label_count'] = [
 +      "1 creator\x03@count creators",
-+      'search results' =>  "1 creator was awarded\x03@count creators were awarded",
++      'search results' => "1 creator was awarded\x03@count creators were awarded",
 +    ];
 +  }
 +}
@@ -1278,12 +1292,11 @@ index d34d94940d..2c57636cbb 100644
 +      label: 'Machine-readable name'
 diff --git a/core/modules/system/tests/modules/entity_test/src/Entity/EntityTestBundleWithPluralLabels.php b/core/modules/system/tests/modules/entity_test/src/Entity/EntityTestBundleWithPluralLabels.php
 new file mode 100644
-index 0000000000..93a7a19349
+index 0000000000..d5b0d1d3f5
 --- /dev/null
 +++ b/core/modules/system/tests/modules/entity_test/src/Entity/EntityTestBundleWithPluralLabels.php
-@@ -0,0 +1,33 @@
+@@ -0,0 +1,32 @@
 +<?php
-+
 +
 +namespace Drupal\entity_test\Entity;
 +
