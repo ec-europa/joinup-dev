@@ -15,6 +15,7 @@
 declare(strict_types = 1);
 
 use Drupal\joinup_featured\FeaturedContentInterface;
+use Drupal\og\Entity\OgRole;
 use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
 use Drupal\sparql_entity_storage\UriEncoder;
 use EasyRdf\Graph;
@@ -166,4 +167,53 @@ function joinup_core_deploy_0106603(): void {
   $connection->query('WITH <http://eira_skos> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
   $connection->query('WITH <http://eira_skos> INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { ?subject a skos:Concept .};');
   $connection->query('WITH <http://eira_skos> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
+}
+
+/**
+ * Ensure that all collection|solution owners also have the Facilitator role.
+ */
+function joinup_core_deploy_0106604(): string {
+  /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  $affected = [];
+  foreach (['collection', 'solution'] as $group_bundle) {
+    // Retrieve all memberships which have the administrator role but are
+    // lacking the facilitator role.
+    $admin_role_id = "rdf_entity-$group_bundle-administrator";
+    $facilitator_role_id = "rdf_entity-$group_bundle-facilitator";
+
+    // First get all membership IDs for facilitators.
+    $query = $entity_type_manager
+      ->getStorage('og_membership')
+      ->getQuery()
+      ->condition('roles', $facilitator_role_id, '=');
+    $facilitator_ids = $query->execute();
+
+    // Now get all membership IDs of owners that are not a facilitator.
+    $query = $entity_type_manager
+      ->getStorage('og_membership')
+      ->getQuery()
+      ->condition('roles', $admin_role_id, '=')
+      ->condition('id', $facilitator_ids, 'NOT IN');
+    $membership_ids = $query->execute();
+
+    if (!empty($membership_ids)) {
+      // Assign the facilitator role.
+      $memberships = $entity_type_manager->getStorage('og_membership')->loadMultiple($membership_ids);
+      $facilitator_role = OgRole::getRole('rdf_entity', $group_bundle, 'facilitator');
+      /** @var \Drupal\og\OgMembershipInterface $membership */
+      foreach ($memberships as $membership) {
+        // Sanity check. Skip if the group no longer exists, we have some stale
+        // memberships in the database.
+        if (empty($membership->getGroup())) {
+          continue;
+        }
+        $membership->addRole($facilitator_role)->save();
+        $affected[] = $membership->getGroup()->label();
+      }
+    }
+  }
+
+  return 'Updated groups: ' . implode(', ', $affected);
 }
