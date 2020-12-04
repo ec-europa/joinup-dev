@@ -160,9 +160,19 @@ function joinup_core_deploy_0106602(?array &$sandbox = NULL): string {
 }
 
 /**
+ * Run EIRA specific post import queries.
+ */
+function joinup_core_deploy_0106603(): void {
+  $connection = \Drupal::getContainer()->get('sparql.endpoint');
+  $connection->query('WITH <http://eira_skos> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
+  $connection->query('WITH <http://eira_skos> INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { ?subject a skos:Concept .};');
+  $connection->query('WITH <http://eira_skos> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
+}
+
+/**
  * Ensure that all collection|solution owners also have the Facilitator role.
  */
-function joinup_core_deploy_0106603(): string {
+function joinup_core_deploy_0106604(): string {
   /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
   $entity_type_manager = \Drupal::entityTypeManager();
 
