@@ -12,6 +12,7 @@ use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\joinup_group\JoinupGroupManagerInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
@@ -45,16 +46,26 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
   protected $entityTypeManager;
 
   /**
+   * The group manager service.
+   *
+   * @var \Drupal\joinup_group\JoinupGroupManagerInterface
+   */
+  protected $groupManager;
+
+  /**
    * Constructs a LeaveCollectionConfirmForm.
    *
    * @param \Drupal\og\MembershipManagerInterface $membershipManager
    *   The membership manager service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
+   * @param \Drupal\joinup_group\JoinupGroupManagerInterface $groupManager
+   *   The group manager service.
    */
-  public function __construct(MembershipManagerInterface $membershipManager, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(MembershipManagerInterface $membershipManager, EntityTypeManagerInterface $entityTypeManager, JoinupGroupManagerInterface $groupManager) {
     $this->membershipManager = $membershipManager;
     $this->entityTypeManager = $entityTypeManager;
+    $this->groupManager = $groupManager;
   }
 
   /**
@@ -63,7 +74,8 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
   public static function create(ContainerInterface $container): self {
     return new static(
       $container->get('og.membership_manager'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('joinup_group.group_manager')
     );
   }
 
@@ -107,17 +119,10 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
     $this->collection = $rdf_entity;
 
     $form = parent::buildForm($form, $form_state);
-    $user = $this->currentUser();
-
-    if ($membership = $this->membershipManager->getMembership($this->collection, $user->id())) {
-      $admin_role_id = $this->collection->getEntityTypeId() . '-' . $this->collection->bundle() . '-' . 'administrator';
-      if ($membership->hasRole($admin_role_id)) {
-        $administrators = $this->membershipManager->getGroupMembershipsByRoleNames($this->collection, ['administrator']);
-        if (count($administrators) === 1 && $user->id() === $membership->getOwnerId()) {
-          $form['description']['#markup'] = $this->t('You are owner of this collection. Before you leave this collection, you should transfer the ownership to another member.');
-          $form['actions']['submit']['#access'] = FALSE;
-        }
-      }
+    $group_owners = $this->groupManager->getGroupOwners($this->collection);
+    if (count($group_owners) === 1 && isset($group_owners[$this->currentUser()->id()])) {
+      $form['description']['#markup'] = $this->t('You are owner of this collection. Before you leave this collection, you should transfer the ownership to another member.');
+      $form['actions']['submit']['#access'] = FALSE;
     }
 
     // In case of a modal dialog, set the cancel button to simply close the

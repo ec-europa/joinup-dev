@@ -10,8 +10,8 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
+use Drupal\joinup_group\JoinupGroupManagerInterface;
 use Drupal\og\Entity\OgMembership;
-use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -44,6 +44,13 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
   protected $currentUser;
 
   /**
+   * The group manager service.
+   *
+   * @var \Drupal\joinup_group\JoinupGroupManagerInterface
+   */
+  protected $groupManager;
+
+  /**
    * Messages collector in case of warnings or errors.
    *
    * @var array[]
@@ -63,11 +70,14 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
    *   The tempstore factory.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user.
+   * @param \Drupal\joinup_group\JoinupGroupManagerInterface $group_manager
+   *   The group manager service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, PrivateTempStoreFactory $temp_store_factory, AccountInterface $current_user) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, PrivateTempStoreFactory $temp_store_factory, AccountInterface $current_user, JoinupGroupManagerInterface $group_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->tempStore = $temp_store_factory->get('joinup_transfer_group_ownership');
     $this->currentUser = $current_user;
+    $this->groupManager = $group_manager;
   }
 
   /**
@@ -79,7 +89,8 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
       $plugin_id,
       $plugin_definition,
       $container->get('tempstore.private'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('joinup_group.group_manager')
     );
   }
 
@@ -103,11 +114,12 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
   public function execute(?OgMembership $membership = NULL): void {
     /** @var \Drupal\rdf_entity\RdfInterface $group */
     $group = $membership->getGroup();
+    $user = $membership->getOwner();
 
     // Is the selected member already the owner?
-    if ($membership->hasRole("rdf_entity-{$group->bundle()}-administrator")) {
+    if ($this->groupManager->isGroupOwner($group, $user)) {
       $this->messages['warning'][] = $this->t('Member %member is already the owner of %group @label. Please select other user.', [
-        '%member' => $membership->getOwner()->label(),
+        '%member' => $user->label(),
         '%group' => $group->label(),
         '@label' => $group->get('rid')->entity->getSingularLabel(),
       ]);
@@ -154,26 +166,7 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
     // The user has proper site-wide permission for this operation.
     return $account->hasPermission("administer {$group->bundle()} ownership") ||
       // Or the user is the current group owner.
-      $this->isGroupOwner($group, $account);
-  }
-
-  /**
-   * Finds out if the given account is owner of the given group.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $group
-   *   The group.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The use account.
-   *
-   * @return bool
-   *   If the given account is owner of the given group.
-   */
-  protected function isGroupOwner(RdfInterface $group, AccountInterface $account): bool {
-    $membership = Og::getMembership($group, $account);
-    if ($membership) {
-      return $membership->hasRole("rdf_entity-{$group->bundle()}-administrator");
-    }
-    return FALSE;
+      $this->groupManager->isGroupOwner($group, $account);
   }
 
 }
