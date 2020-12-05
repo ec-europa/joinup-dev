@@ -348,9 +348,7 @@ function joinup_group_og_user_access_alter(array &$permissions, CacheableMetadat
   }
 
   // Check if the user is the group owner and bail out if this is not the case.
-  $membership = $group->getMembership((int) $user->id());
-  $role_id = "{$group->getEntityTypeId()}-{$group->bundle()}-administrator";
-  if (!$membership instanceof OgMembershipInterface || !$membership->hasRole($role_id)) {
+  if (!\Drupal::getContainer()->get('joinup_group.group_manager')->isGroupOwner($group, $user)) {
     return;
   }
 
