@@ -47,6 +47,7 @@ permissions:
   - 'create rdf entity news'
   - 'create solution releases'
   - 'delete any document content'
+  - 'delete asset_release rdf entity'
   - 'delete contact_information rdf entity'
   - 'delete licence rdf entity'
   - 'delete owner rdf entity'
