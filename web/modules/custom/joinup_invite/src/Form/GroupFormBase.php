@@ -73,23 +73,15 @@ abstract class GroupFormBase extends InviteFormBase {
     $this->entity = $rdf_entity;
     $form = parent::build($form, $form_state);
 
-    $options = [
-      'collection' => [
-        'member' => $this->t('Member'),
-        'author' => $this->t('Author'),
-        'facilitator' => $this->t('Facilitator'),
-      ],
-      'solution' => [
-        'author' => $this->t('Author'),
-        'facilitator' => $this->t('Facilitator'),
-      ],
-    ];
-
     $form['role'] = [
       '#type' => 'select',
       '#title' => $this->t('Role'),
       '#required' => TRUE,
-      '#options' => $options[$this->entity->bundle()],
+      '#options' => [
+        'member' => $this->t('Member'),
+        'author' => $this->t('Author'),
+        'facilitator' => $this->t('Facilitator'),
+      ],
       '#default_value' => 'member',
     ];
 
