@@ -11,5 +11,6 @@ is_admin: null
 group_type: rdf_entity
 group_bundle: collection
 group_id: null
-permissions: {  }
+permissions:
+  - 'bypass group moderation'
 role_type: required

@@ -127,6 +127,7 @@ function joinup_community_content_workflow_selector(EntityInterface $entity): ?s
   }
 
   $parent_entity = JoinupGroupHelper::getGroup($entity);
+  $current_user = \Drupal::currentUser();
 
   // If the entity doesn't have a parent group we cannot determine the workflow.
   // This can happen e.g. when deleting orphaned group content.
@@ -134,19 +135,27 @@ function joinup_community_content_workflow_selector(EntityInterface $entity): ?s
     return NULL;
   }
 
-  $user_id = \Drupal::currentUser()->id();
-  /** @var \Drupal\og\OgMembershipInterface $membership */
-  if ($membership = \Drupal::getContainer()->get('og.membership_manager')->getMembership($parent_entity, $user_id)) {
-    if ($membership->hasRole($parent_entity->getEntityTypeId() . '-' . $parent_entity->bundle() . '-author')) {
-      // The author role is able to directly publish in the group regardless of
-      // the moderation state, as a trusted user. Return the post moderated
-      // workflow to allow them to publish content.
-      return 'node:post_moderated';
-    }
+  $moderation = JoinupGroupHelper::getModeration($parent_entity);
+  if ($moderation === CommunityContentWorkflowAccessControlHandler::POST_MODERATION) {
+    return 'node:post_moderated';
   }
 
-  $moderation = JoinupGroupHelper::getModeration($parent_entity);
-  return $moderation == CommunityContentWorkflowAccessControlHandler::PRE_MODERATION ? 'node:pre_moderated' : 'node:post_moderated';
+  // Roles with the `bypass group moderation` permission are able to directly
+  // publish in the group regardless of the moderation state, as a trusted user.
+  //
+  // As with workflows, we only check for permissions here because we don't want
+  // users with admin permissions to always go through the post moderated
+  // workflow.
+  if ($current_user->hasPermission('bypass group moderation')) {
+    return 'node:post_moderated';
+  }
+
+  $membership = \Drupal::getContainer()->get('og.membership_manager')->getMembership($parent_entity, $current_user->id());
+  if ($membership && $membership->hasPermission('bypass group moderation')) {
+    return 'node:post_moderated';
+  }
+
+  return 'node:pre_moderated';
 }
 
 /**
