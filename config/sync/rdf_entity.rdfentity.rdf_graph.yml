@@ -5,6 +5,6 @@ dependencies: {  }
 name: 'RDF Graph'
 rid: rdf_graph
 description: ''
-label_singular: null
+label_singular: RDF graph
 label_plural: null
 label_count: null
