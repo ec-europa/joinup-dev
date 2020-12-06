@@ -71,14 +71,12 @@ class UserCancelForm extends CoreUserCancelForm {
         $group_data[$group->bundle()][] = $group->toLink($group->label());
       }
 
-      $rdf_storage = $this->entityTypeManager->getStorage('rdf_type');
       foreach (['collection', 'solution'] as $bundle) {
-        $bundle_type = $rdf_storage->load($bundle);
         if (!empty($group_data[$bundle])) {
           $form[$bundle] = [
             '#theme' => 'item_list',
             '#items' => $group_data[$bundle],
-            '#title' => $bundle_type->getCountLabel(count($group_data[$bundle])),
+            '#title' => $this->entityTypeBundleInfo->getBundleCountLabel('rdf_entity', $bundle, count($group_data[$bundle]), 'no_count_capitalize'),
           ];
         }
       }

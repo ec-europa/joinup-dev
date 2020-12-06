@@ -6,5 +6,6 @@ name: 'RDF Graph'
 rid: rdf_graph
 description: ''
 label_singular: RDF graph
-label_plural: null
-label_count: null
+label_plural: RDF graphs
+label_count:
+  default: "1 RDF graph\x03@count RDF graphs"
