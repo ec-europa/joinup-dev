@@ -7,8 +7,6 @@ upgrade_commands:
   default:
     - ./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer --yes
     - touch disable-config-readonly
-    - ./vendor/bin/drush updatedb --no-post-updates --yes
-    - ./vendor/bin/drush config:import --yes
-    - ./vendor/bin/drush updatedb --yes
+    - ./vendor/bin/drush deploy --yes
     - rm disable-config-readonly
     - ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer --yes

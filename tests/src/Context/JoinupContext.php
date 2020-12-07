@@ -568,6 +568,7 @@ class JoinupContext extends RawDrupalContext {
 
     $revision_count = \Drupal::entityTypeManager()->getStorage('node')->getQuery()
       ->allRevisions()
+      ->accessCheck(FALSE)
       ->condition('nid', $node->id())
       ->count()
       ->execute();

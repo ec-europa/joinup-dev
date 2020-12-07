@@ -6,11 +6,16 @@ Feature: Moderate community content
 
   Scenario: Content moderation overview
     Given the following collection:
-      | title | Black hole research |
-      | state | validated           |
+      | title            | Black hole research |
+      | state            | validated           |
+      | content creation | members             |
+      | moderation       | yes                 |
     And the following solution:
       | title | Survey For Supernovae |
       | state | validated             |
+    And users:
+      | Username       | E-mail                   | First name | Family name |
+      | Marco Farfarer | marco.farfar@example.com | Marco      | Farfarer    |
 
     # Before adding content, check that the 'empty message' is displayed on the
     # content moderation overview.
@@ -28,15 +33,15 @@ Feature: Moderate community content
     # Add community content of all possible types in all possible states, to
     # both the collection and solution.
     Given discussion content:
-      | title                         | body                 | collection          | solution              | state         |
-      | The information paradox       | Info Paradox         | Black hole research |                       | needs update  |
-      | Black-body spectrum radiation | Hawking radiation    | Black hole research |                       | proposed      |
-      | The holographic principle     | String theory        | Black hole research |                       | validated     |
-      | Relation with host galaxies   | Supermassive         | Black hole research |                       | archived      |
-      | Tidal disruption events       | Spaghettification    |                     | Survey For Supernovae | needs update  |
-      | Cataclysmic variables         | Irregular brightness |                     | Survey For Supernovae | proposed      |
-      | Stellar flares                | Dim red dwarfs       |                     | Survey For Supernovae | validated     |
-      | Upgrading CCD cameras         | Liquid cooled        |                     | Survey For Supernovae | archived      |
+      | title                         | body                 | collection          | solution              | state        | author         |
+      | The information paradox       | Info Paradox         | Black hole research |                       | needs update | Marco Farfarer |
+      | Black-body spectrum radiation | Hawking radiation    | Black hole research |                       | proposed     | Marco Farfarer |
+      | The holographic principle     | String theory        | Black hole research |                       | validated    | Marco Farfarer |
+      | Relation with host galaxies   | Supermassive         | Black hole research |                       | archived     | Marco Farfarer |
+      | Tidal disruption events       | Spaghettification    |                     | Survey For Supernovae | needs update | Marco Farfarer |
+      | Cataclysmic variables         | Irregular brightness |                     | Survey For Supernovae | proposed     | Marco Farfarer |
+      | Stellar flares                | Dim red dwarfs       |                     | Survey For Supernovae | validated    | Marco Farfarer |
+      | Upgrading CCD cameras         | Liquid cooled        |                     | Survey For Supernovae | archived     | Marco Farfarer |
     And document content:
       | title                         | body                          | collection          | solution              | state            |
       | A multiwavelength study       | Optical and infrared          | Black hole research |                       | draft            |
@@ -307,17 +312,17 @@ Feature: Moderate community content
       | state | validated     |
 
     And discussion content:
-      | title                       | body                  | collection    | state         |
-      | Rotation-powered pulsations | Millisecond pulsars   | Neutron stars | proposed      |
-      | The Recycling concept       | An epoch of accretion | Neutron stars | proposed      |
+      | title                       | body                  | collection    | state    |
+      | Rotation-powered pulsations | Millisecond pulsars   | Neutron stars | proposed |
+      | The Recycling concept       | An epoch of accretion | Neutron stars | proposed |
     And document content:
       | title          | body                          | collection    | state            |
       | Donor star     | Spun up to millisecond period | Neutron stars | proposed         |
       | High frequency | Slow 1.2 second spin          | Neutron stars | deletion request |
       | Cluster        | Eddington luminosity          | Neutron stars | deletion request |
     And event content:
-      | title      | body        | collection    | state            |
-      | Accelerate | Wide binary | Neutron stars | proposed         |
+      | title      | body        | collection    | state    |
+      | Accelerate | Wide binary | Neutron stars | proposed |
     And news content:
       | title                   | body                             | collection    | state            |
       | Metal-rich star cluster | Standard pulsar recycling theory | Neutron stars | deletion request |
@@ -345,9 +350,9 @@ Feature: Moderate community content
     And the available options in the "in state" select should be "All (3), Deletion request (2), Proposed (1)"
     And the option "All (3)" should be selected
     And I should see the following headings:
-      | Donor star                  |
-      | High frequency              |
-      | Cluster                     |
+      | Donor star     |
+      | High frequency |
+      | Cluster        |
     And I should not see the following headings:
       | Rotation-powered pulsations |
       | The Recycling concept       |
@@ -361,7 +366,7 @@ Feature: Moderate community content
     And the available options in the "in state" select should be "All (3), Deletion request (2), Proposed (1)"
     And the option "Proposed (1)" should be selected
     And I should see the following headings:
-      | Donor star                  |
+      | Donor star |
     And I should not see the following headings:
       | Rotation-powered pulsations |
       | The Recycling concept       |

@@ -47,7 +47,7 @@ Feature: Solution membership administration
 
     # Add a facilitator.
     When I click "Add members"
-    Then the available options in the "Role" select should be "Author, Facilitator"
+    Then the available options in the "Role" select should be "Member, Author, Facilitator"
     When I fill in "E-mail" with "marcia_garcia@example.com"
     And I press "Add"
     Then the page should show the following chips in the Content region:
