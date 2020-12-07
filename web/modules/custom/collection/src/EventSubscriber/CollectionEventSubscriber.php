@@ -7,7 +7,7 @@ namespace Drupal\collection\EventSubscriber;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent;
 use Drupal\og\Event\PermissionEventInterface;
 use Drupal\og\GroupPermission;
@@ -116,7 +116,7 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
    */
   public function onUnchangedWorkflowStateUpdate(UnchangedWorkflowStateUpdateEvent $event): void {
     $entity = $event->getEntity();
-    if (!JoinupGroupHelper::isGroup($entity)) {
+    if (!$entity instanceof GroupInterface) {
       return;
     }
 

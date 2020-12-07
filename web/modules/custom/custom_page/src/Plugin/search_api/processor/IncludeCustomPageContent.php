@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\custom_page\Plugin\search_api\processor;
 
 use Drupal\custom_page\CustomPageProviderInterface;
-use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -86,7 +86,7 @@ class IncludeCustomPageContent extends ProcessorPluginBase {
       $entity = $item->getOriginalObject()->getValue();
 
       // Only process groups.
-      if (!JoinupGroupHelper::isGroup($entity)) {
+      if (!$entity instanceof GroupInterface) {
         continue;
       }
 

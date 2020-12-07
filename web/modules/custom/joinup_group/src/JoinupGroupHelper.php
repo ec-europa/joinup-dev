@@ -7,7 +7,6 @@ namespace Drupal\joinup_group;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\og\OgGroupAudienceHelperInterface;
-use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Static helper methods for dealing with groups in Joinup.
@@ -45,20 +44,6 @@ class JoinupGroupHelper {
     'collection' => 'field_ar_state',
     'solution' => 'field_is_state',
   ];
-
-  /**
-   * Returns whether the entity is one of the rdf groups.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity to check.
-   *
-   * @return bool
-   *   True if the entity is an rdf of bundle collection or solution, false
-   *   otherwise.
-   */
-  public static function isGroup(EntityInterface $entity): bool {
-    return $entity instanceof RdfInterface && isset(self::GROUP_BUNDLES[$entity->bundle()]);
-  }
 
   /**
    * Returns the group the entity belongs to.
