@@ -4,12 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_subscription\EventSubscriber;
 
-use Drupal\collection\Entity\CollectionContentInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\collection\Entity\CollectionContentInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\NotificationEvents;
