@@ -127,19 +127,4 @@ class JoinupGroupHelper {
     return $entity->{self::GROUP_CONTENT_CREATION[$entity->bundle()]}->first()->value;
   }
 
-  /**
-   * Returns whether the entity is an rdf entity of a specific bundle.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity to check.
-   * @param string $bundle
-   *   The bundle the entity should be.
-   *
-   * @return bool
-   *   True if the entity is an rdf of bundle collection, false otherwise.
-   */
-  protected static function isRdfEntityOfBundle(EntityInterface $entity, $bundle): bool {
-    return $entity instanceof RdfInterface && $entity->bundle() === $bundle;
-  }
-
 }
