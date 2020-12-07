@@ -7,7 +7,6 @@ namespace Drupal\joinup_search\Plugin\search_api\processor;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
-use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\IndexInterface;
@@ -120,7 +119,7 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
           // on the copy that is present in $object->og_audience->entity since
           // this might be stale. This ensures that if the parent has been
           // published in this request we will act on the actual updated state.
-          $parent_id = $object->get(JoinupGroupHelper::getGroupField($object))->target_id;
+          $parent_id = $object->getGroup()->id();
           if (!empty($parent_id)) {
             $parent = $rdf_storage->load($parent_id);
             if (!empty($parent) && $parent->isPublished()) {

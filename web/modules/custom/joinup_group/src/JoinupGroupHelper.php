@@ -6,7 +6,9 @@ namespace Drupal\joinup_group;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\comment\CommentInterface;
-use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\joinup_group\Entity\GroupContentInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_group\Exception\MissingGroupException;
 
 /**
  * Static helper methods for dealing with groups in Joinup.
@@ -55,30 +57,22 @@ class JoinupGroupHelper {
    *   The entity for which to return the group. Comment entities are also
    *   supported.
    *
-   * @return \Drupal\Core\Entity\EntityInterface|null
+   * @return \Drupal\joinup_group\Entity\GroupInterface|null
    *   The group entity, or NULL if the entity doesn't have a group.
    */
-  public static function getGroup(EntityInterface $entity): ?EntityInterface {
+  public static function getGroup(EntityInterface $entity): ?GroupInterface {
     if ($entity instanceof CommentInterface) {
       $entity = $entity->getCommentedEntity();
     }
-    $group_field = self::getGroupField($entity);
-    return $entity->get($group_field)->entity;
-  }
 
-  /**
-   * Returns the name of the group field for the given entity.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity for which to return the group field name.
-   *
-   * @return string
-   *   The field name.
-   */
-  public static function getGroupField(EntityInterface $entity): string {
-    // Asset releases use the ADMS-AP dictated name for the group field, while
-    // all others use the default name.
-    return $entity->bundle() === 'asset_release' ? 'field_isr_is_version_of' : OgGroupAudienceHelperInterface::DEFAULT_FIELD;
+    if ($entity instanceof GroupContentInterface) {
+      try {
+        return $entity->getGroup();
+      }
+      catch (MissingGroupException $e) {
+      }
+    }
+    return NULL;
   }
 
   /**
