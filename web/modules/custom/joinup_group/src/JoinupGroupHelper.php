@@ -61,19 +61,6 @@ class JoinupGroupHelper {
   }
 
   /**
-   * Returns whether the entity is an rdf solution.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity to check.
-   *
-   * @return bool
-   *   True if the entity is an rdf of bundle solution, false otherwise.
-   */
-  public static function isSolution(EntityInterface $entity): bool {
-    return self::isRdfEntityOfBundle($entity, 'solution');
-  }
-
-  /**
    * Returns the group the entity belongs to.
    *
    * This relies on the fact that in Joinup every group entity only belongs to a

@@ -12,6 +12,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\collection\Entity\CollectionInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
+use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
@@ -167,15 +168,15 @@ class PinEntityController extends ControllerBase {
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
    *   A list of groups the entity is related, keyed by group id.
+   *
+   * @zeprecated
+   *   Call GroupContentInterface::getGroup() instead
    */
   protected function getGroups(ContentEntityInterface $entity) {
     $groups = [];
 
-    if (JoinupGroupHelper::isSolution($entity)) {
-      $groups = $entity->get('collection')->referencedEntities();
-    }
-    elseif (CommunityContentHelper::isCommunityContent($entity)) {
-      $groups = [JoinupGroupHelper::getGroup($entity)];
+    if ($entity instanceof GroupContentInterface) {
+      $groups = [$entity->getGroup()];
     }
 
     $list = [];

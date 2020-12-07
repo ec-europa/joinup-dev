@@ -14,6 +14,7 @@ use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgMembershipInterface;
+use Drupal\solution\Entity\SolutionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -124,7 +125,7 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     $entity = $event->getEntity();
     if (
-      !JoinupGroupHelper::isSolution($entity) ||
+      !$entity instanceof SolutionInterface ||
       $entity->get('collection')->isEmpty() ||
       !$entity->isPublished() ||
       // Note: the `->hasPublished` property is a hack that will be removed once
