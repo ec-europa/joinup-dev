@@ -59,7 +59,7 @@ abstract class GroupContentSubscriptionSubscriberBase {
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The event object.
    */
-  public function notifyOnCommunityContentCreation(NotificationEvent $event) {
+  public function notifyOnCommunityContentCreation(NotificationEvent $event): void {
     /** @var \Drupal\node\NodeInterface $entity */
     $entity = $event->getEntity();
 
@@ -77,7 +77,7 @@ abstract class GroupContentSubscriptionSubscriberBase {
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The event object.
    */
-  public function notifyOnCommunityContentPublication(NotificationEvent $event) {
+  public function notifyOnCommunityContentPublication(NotificationEvent $event): void {
     /** @var \Drupal\node\NodeInterface $entity */
     $entity = $event->getEntity();
 

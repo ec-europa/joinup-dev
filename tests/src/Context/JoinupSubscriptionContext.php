@@ -115,7 +115,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *
    * @Given (the following ):type content subscriptions:
    */
-  public function subscribeToCollectionContent(TableNode $subscription_table, string $type): void {
+  public function subscribeToGroupContent(TableNode $subscription_table, string $type): void {
     foreach ($subscription_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values[$type], $type);
       $user = $this->getUserByName($values['user']);
@@ -633,7 +633,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    */
   protected function getGroupSubscriptionEmailsByEmail(string $email_address, string $type): array {
     $emails = [];
-    $type = ucfirst($type);
+    $type = \Drupal::entityTypeManager()->getStorage('rdf_type')->load($type)->label();
 
     foreach (self::MESSAGE_INTERVALS as $interval) {
       $emails = array_merge($emails, $this->getEmailsBySubjectAndMail("Joinup: $interval $type digest message", $email_address, FALSE));

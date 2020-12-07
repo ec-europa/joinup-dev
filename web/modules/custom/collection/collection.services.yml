@@ -42,3 +42,8 @@ services:
   logger.channel.collection:
     parent: logger.channel_base
     arguments: ['collection']
+  collection.collection_content_subscription_subscriber:
+    class: Drupal\collection\EventSubscriber\CollectionContentSubscriptionSubscriber
+    arguments: ['@entity_type.manager', '@joinup_notification.message_delivery', '@logger.factory']
+    tags:
+    - { name: 'event_subscriber' }

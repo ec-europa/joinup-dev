@@ -2,13 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_subscription\EventSubscriber;
+namespace Drupal\collection\EventSubscriber;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_subscription\DigestFormatter;
+use Drupal\joinup_subscription\EventSubscriber\GroupContentSubscriptionSubscriberBase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -61,21 +62,10 @@ class CollectionContentSubscriptionSubscriber extends GroupContentSubscriptionSu
   }
 
   /**
-   * Returns the entity ID of the collection the given entity belongs to.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity for which to return the collection ID.
-   *
-   * @return string
-   *   The collection ID.
+   * {@inheritdoc}
    */
   protected function getGroupId(ContentEntityInterface $entity): string {
-    $collection = $entity->getCollection();
-    if (empty($collection)) {
-      throw new \RuntimeException('The entity does not belong to a collection.');
-    }
-
-    return $collection->id();
+    return $entity->getCollection()->id();
   }
 
   /**

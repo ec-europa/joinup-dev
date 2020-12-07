@@ -87,10 +87,7 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
     // function so it is safe to assume that values do exist.
     //
     // @see \joinup_subscription_mail_alter()
-    $notifier->bundle_label = ucfirst($message->get($fields[$message->getTemplate()->id()])
-      ->first()->entity
-      ->getGroup()->get('rid')->entity
-      ->getSingularLabel());
+    $notifier->bundle_label = $message->get($fields[$message->getTemplate()->id()])->first()->entity->getGroup()->get('rid')->entity->label();
   }
 
   // If all content in the message was deleted, prevent an empty digest from
