@@ -17,9 +17,8 @@ grep -Fqx '$settings['\''config_readonly'\''] = !file_exists(getcwd() . '\''/../
 echo "Disabling config_readonly."
 touch disable-config-readonly || exit 1
 
-./vendor/bin/drush updatedb --yes --no-post-updates || exit 1
-./vendor/bin/drush config:import --yes || exit 1
-./vendor/bin/drush updatedb --yes || exit 1
+echo "Performing database updates."
+./vendor/bin/drush deploy --yes || exit 1
 ./vendor/bin/drush search-api:reset-tracker --yes || exit 1
 
 echo "Rebuilding node access records."

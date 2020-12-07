@@ -221,6 +221,7 @@ function _joinup_theme_get_file_extension(File $file) {
 
   // List of available icons.
   $available_icons = [
+    'csv',
     'doc',
     'docx',
     'exe',
@@ -229,7 +230,10 @@ function _joinup_theme_get_file_extension(File $file) {
     'pdf',
     'png',
     'ppt',
+    'pptx',
     'rar',
+    'svg',
+    'txt',
     'xls',
     'xlsx',
     'zip',
