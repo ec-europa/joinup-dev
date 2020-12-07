@@ -61,19 +61,6 @@ class JoinupGroupHelper {
   }
 
   /**
-   * Returns whether the entity is an rdf collection.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity to check.
-   *
-   * @return bool
-   *   True if the entity is an rdf of bundle collection, false otherwise.
-   */
-  public static function isCollection(EntityInterface $entity): bool {
-    return self::isRdfEntityOfBundle($entity, 'collection');
-  }
-
-  /**
    * Returns whether the entity is an rdf solution.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
