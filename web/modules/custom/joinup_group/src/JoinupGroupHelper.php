@@ -154,19 +154,6 @@ class JoinupGroupHelper {
   }
 
   /**
-   * Returns the workflow state for the given group.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group for which to return the workflow state.
-   *
-   * @return string
-   *   The workflow state.
-   */
-  public static function getState(EntityInterface $entity): string {
-    return $entity->{self::GROUP_STATE_FIELDS[$entity->bundle()]}->first()->value;
-  }
-
-  /**
    * Returns whether the entity is an rdf entity of a specific bundle.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity

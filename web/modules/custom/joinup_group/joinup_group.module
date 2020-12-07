@@ -126,10 +126,10 @@ function joinup_group_form_rdf_entity_form_alter(&$form, FormStateInterface $for
 function joinup_group_propose_message_submit(&$form, FormStateInterface $form_state) {
   $form_object = $form_state->getFormObject();
   $entity = $form_object->getEntity();
-  $state = JoinupGroupHelper::getState($entity);
-
-  if ($state === 'proposed') {
-    \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $entity->get('rid')->entity->getSingularLabel()]));
+  if ($entity instanceof EntityWorkflowStateInterface) {
+    if ($entity->getWorkflowState() === 'proposed') {
+      \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $entity->get('rid')->entity->getSingularLabel()]));
+    }
   }
 }
 

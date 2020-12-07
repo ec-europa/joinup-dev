@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\node\NodeStorageInterface;
 use Drupal\og\Entity\OgMembership;
@@ -155,8 +156,8 @@ class CommunityContentWorkflowAccessControlHandler {
         return $this->entityDeleteAccess($content, $account);
 
       case 'post comments':
-        $parent = $content->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->entity;
-        $parent_state = JoinupGroupHelper::getState($parent);
+        $parent = $content->getGroup();
+        $parent_state = $parent instanceof EntityWorkflowStateInterface ? $parent->getWorkflowState() : '';
         $entity_state = $this->getEntityState($content);
 
         // Commenting on content of an archived group is not allowed.
@@ -315,9 +316,12 @@ class CommunityContentWorkflowAccessControlHandler {
    *
    * @return string
    *   The id of the workflow to use.
+   *
+   * @zeprecated
+   *   Call EntityWorkflowStateInterface::getWorkflowState() instead.
    */
   protected function getEntityState(CommunityContentInterface $content): string {
-    return $content->{self::STATE_FIELD}->first()->value;
+    return $content->getWorkflowState();
   }
 
   /**
