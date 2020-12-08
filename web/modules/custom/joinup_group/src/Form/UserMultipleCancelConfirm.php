@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group\Form;
 
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfirmFormHelper;
 use Drupal\Core\Form\FormStateInterface;
@@ -30,6 +31,13 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
   protected $groupManager;
 
   /**
+   * The entity type bundle info service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   */
+  protected $bundleInfo;
+
+  /**
    * Constructs a new UserMultipleCancelConfirm.
    *
    * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
@@ -40,10 +48,13 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
    *   The entity type manager.
    * @param \Drupal\joinup_group\JoinupGroupManagerInterface $joinup_group_manager
    *   The Joinup group manager.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info
+   *   The entity type bundle info service.
    */
-  public function __construct(PrivateTempStoreFactory $temp_store_factory, UserStorageInterface $user_storage, EntityTypeManagerInterface $entity_type_manager, JoinupGroupManagerInterface $joinup_group_manager) {
+  public function __construct(PrivateTempStoreFactory $temp_store_factory, UserStorageInterface $user_storage, EntityTypeManagerInterface $entity_type_manager, JoinupGroupManagerInterface $joinup_group_manager, EntityTypeBundleInfoInterface $bundle_info) {
     parent::__construct($temp_store_factory, $user_storage, $entity_type_manager);
     $this->groupManager = $joinup_group_manager;
+    $this->bundleInfo = $bundle_info;
   }
 
   /**
@@ -54,7 +65,8 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
       $container->get('tempstore.private'),
       $container->get('entity_type.manager')->getStorage('user'),
       $container->get('entity_type.manager'),
-      $container->get('joinup_group.group_manager')
+      $container->get('joinup_group.group_manager'),
+      $container->get('entity_type.bundle.info')
     );
   }
 
@@ -88,13 +100,11 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
           $group_data[$group->bundle()][] = $group->toLink($group->label());
         }
 
-        $rdf_storage = $this->entityTypeManager->getStorage('rdf_type');
         foreach (['collection', 'solution'] as $bundle) {
-          $bundle_type = $rdf_storage->load($bundle);
           if (!empty($group_data[$bundle])) {
             $build[$account->id()][$bundle] = [
               '#theme' => 'item_list',
-              '#title' => $bundle_type->getCountLabel(count($group_data[$bundle])),
+              '#title' => $this->bundleInfo->getBundleCountLabel('rdf_entity', $bundle, count($group_data[$bundle]), 'no_count_capitalize'),
               '#items' => $group_data[$bundle],
             ];
           }
