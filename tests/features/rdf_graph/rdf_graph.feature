@@ -58,7 +58,7 @@ Feature: As a user with 'RDF graph manager' role I want to be able to upload RDF
     # Deletion.
     When I click "RDF graphs"
     And I click "Delete" in the "Arbitrary graph" row
-    Then I should see the heading "Are you sure you want to delete rdf graph Arbitrary graph?"
+    Then I should see the heading "Are you sure you want to delete RDF graph Arbitrary graph?"
     When I press "Delete"
     Then I should see the heading "RDF graphs"
     And I should not see the link "Arbitrary graph"
