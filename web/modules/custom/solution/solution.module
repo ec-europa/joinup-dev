@@ -564,6 +564,7 @@ function solution_invalidate_collection(EntityInterface $entity) {
  *   The collection IDs.
  *
  * @see solution_rdf_entity_load()
+ * @see \Drupal\solution\SolutionAffiliationFieldItemList
  */
 function solution_get_collection_ids(RdfInterface $solution) {
   if (\Drupal::moduleHandler()->moduleExists('collection')) {

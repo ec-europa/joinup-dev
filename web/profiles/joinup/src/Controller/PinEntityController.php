@@ -11,7 +11,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\collection\Entity\CollectionInterface;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
-use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\og\OgAccessInterface;
@@ -119,7 +118,7 @@ class PinEntityController extends ControllerBase {
     /** @var \Drupal\joinup_group\Entity\PinnableGroupContentInterface $entity */
     /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
     if (
-      !array_key_exists($group->id(), $this->getGroups($entity)) ||
+      !in_array($group->id(), $entity->getPinnableGroupIds()) ||
       $entity->isPinned($group)
     ) {
       return AccessResult::forbidden()->addCacheableDependency($group)->addCacheableDependency($entity);
@@ -149,40 +148,13 @@ class PinEntityController extends ControllerBase {
     /** @var \Drupal\joinup_group\Entity\PinnableGroupContentInterface $entity */
     /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
     if (
-      !array_key_exists($group->id(), $this->getGroups($entity)) ||
+      !in_array($group->id(), $entity->getPinnableGroupIds()) ||
       !$entity->isPinned($group)
     ) {
       return AccessResult::forbidden()->addCacheableDependency($group)->addCacheableDependency($entity);
     }
 
     return $this->ogAccess->userAccess($group, 'unpin group content', $account)->addCacheableDependency($entity);
-  }
-
-  /**
-   * Gets the groups an entity is related to.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The content entity.
-   *
-   * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of groups the entity is related, keyed by group id.
-   *
-   * @zeprecated
-   *   Call GroupContentInterface::getGroup() instead
-   */
-  protected function getGroups(ContentEntityInterface $entity) {
-    $groups = [];
-
-    if ($entity instanceof GroupContentInterface) {
-      $groups = [$entity->getGroup()];
-    }
-
-    $list = [];
-    foreach ($groups as $group) {
-      $list[$group->id()] = $group;
-    }
-
-    return $list;
   }
 
   /**

@@ -65,6 +65,17 @@ class Solution extends Rdf implements SolutionInterface {
   /**
    * {@inheritdoc}
    */
+  public function getGroupId(): string {
+    $ids = $this->getReferencedEntityIds('collection');
+    if (empty($ids['rdf_entity'])) {
+      throw new MissingGroupException();
+    }
+    return array_shift($ids['rdf_entity']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getWorkflowStateFieldName(): string {
     return 'field_is_state';
   }
@@ -81,6 +92,38 @@ class Solution extends Rdf implements SolutionInterface {
    */
   public function getLatestRelease(): ?AssetReleaseInterface {
     return $this->get('latest_release')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAffiliatedCollections(): array {
+    $collections = [];
+    foreach ($this->getReferencedEntities('collection') as $collection) {
+      $collections[$collection->id()] = $collection;
+    }
+    return $collections;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAffiliatedCollectionIds(): array {
+    return $this->getReferencedEntityIds('collection')['rdf_entity'] ?? [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPinnableGroups(): array {
+    return $this->getAffiliatedCollections();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPinnableGroupIds(): array {
+    return $this->getAffiliatedCollectionIds();
   }
 
 }

@@ -34,4 +34,20 @@ interface SolutionInterface extends RdfInterface, CollectionContentInterface, Fe
    */
   public function getLatestRelease(): ?AssetReleaseInterface;
 
+  /**
+   * Returns the collections this solution is affiliated with.
+   *
+   * @return \Drupal\collection\Entity\CollectionInterface[]
+   *   The affiliated collections, keyed by collection ID.
+   */
+  public function getAffiliatedCollections(): array;
+
+  /**
+   * Returns the IDs of the collections this solution is affiliated with.
+   *
+   * @return string[]
+   *   The affiliated collection IDs.
+   */
+  public function getAffiliatedCollectionIds(): array;
+
 }
