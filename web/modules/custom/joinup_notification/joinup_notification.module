@@ -12,6 +12,7 @@ use Drupal\Core\Render\Markup;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
+use Drupal\easme_helper\Utility\NotificationsHelper;
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
@@ -168,9 +169,11 @@ function joinup_notification_mail_alter(array &$message): void {
     // email.
     $user = user_load_by_mail($message['to']);
     if ($user) {
-      $first_name = !empty($user->get('field_user_first_name')->value) ? $user->get('field_user_first_name')->value : 'Joinup user';
+      $site_config = \Drupal::config('system.site');
+      $unnamed_user = t('@site_name user', ['@site_name' => $site_config->get('name')]);
+      $first_name = !empty($user->get('field_user_first_name')->value) ? $user->get('field_user_first_name')->value : $unnamed_user;
       $prefix = t('<p>Dear @first_name,</p>', ['@first_name' => $first_name]);
-      $suffix = t('<p>Kind regards,</p><p>The COVID-19 Challenge Support Team</p>');
+      $suffix = \Drupal::service('easme_helper.notifications_helper')->getNotificationsSignature();
       $message['body'] = array_merge([$prefix], $message['body'], [$suffix]);
     }
 
