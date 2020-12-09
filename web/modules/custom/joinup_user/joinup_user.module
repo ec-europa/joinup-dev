@@ -339,6 +339,7 @@ function joinup_user_user_form_submit(array $form, FormStateInterface $form_stat
 function joinup_user_search_api_query_search_api_field_field_user_content_alter(QueryInterface &$query) {
   /** @var \Drupal\user\Entity\User $user */
   $user = $query->getOption('search_api_field entity');
+  $current_user = \Drupal::currentUser();
 
   // Do not show contact information and owner entities as they are not
   // relevant for the user content, and they are visualised in the related
@@ -354,7 +355,10 @@ function joinup_user_search_api_query_search_api_field_field_user_content_alter(
     if (count($groups) > 100) {
       $subset = array_chunk($groups, 100);
       $groups = reset($subset);
-      \Drupal::messenger()->addMessage(t('You are a member of high number of collections and/or solutions.<br /> The results displayed here are limited to the content of the first 100 groups.'), 'warning');
+      // If the user is the owner of the profile, show a warning message.
+      if ($user->id() === $current_user->id()) {
+        \Drupal::messenger()->addMessage(t('You are a member of high number of collections and/or solutions.<br /> The results displayed here are limited to the content of the first 100 groups.'), 'warning');
+      }
     }
     $or = $query->createConditionGroup('OR');
 
