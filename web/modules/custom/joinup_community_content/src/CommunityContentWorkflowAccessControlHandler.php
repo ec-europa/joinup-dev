@@ -135,7 +135,7 @@ class CommunityContentWorkflowAccessControlHandler {
     if (
       !$account->hasPermission('access draft community content')
       && !$this->hasPublishedVersion($content)
-      && $this->getEntityState($content) === 'draft'
+      && $content->getWorkflowState() === 'draft'
       && $content->getOwnerId() !== $account->id()
     ) {
       return AccessResult::forbidden()->addCacheableDependency($content);
@@ -157,7 +157,7 @@ class CommunityContentWorkflowAccessControlHandler {
       case 'post comments':
         $parent = $content->getGroup();
         $parent_state = $parent instanceof EntityWorkflowStateInterface ? $parent->getWorkflowState() : '';
-        $entity_state = $this->getEntityState($content);
+        $entity_state = $content->getWorkflowState();
 
         // Commenting on content of an archived group is not allowed.
         if ($parent_state === 'archived' || $entity_state === 'archived') {
@@ -203,7 +203,7 @@ class CommunityContentWorkflowAccessControlHandler {
   protected function entityViewAccess(CommunityContentInterface $content, AccountInterface $account): AccessResultInterface {
     $view_scheme = $this->getPermissionScheme('view');
     $workflow_id = $this->getEntityWorkflowId($content);
-    $state = $this->getEntityState($content);
+    $state = $content->getWorkflowState();
     // @todo Shouldn't we return AccessResult::neutral() instead of
     // AccessResult::allowed() and only AccessResult::forbidden() should have
     // cacheable metadata? Neutral means we don't make any opinion but the
@@ -280,7 +280,7 @@ class CommunityContentWorkflowAccessControlHandler {
   protected function entityDeleteAccess(CommunityContentInterface $content, AccountInterface $account): AccessResultInterface {
     $delete_scheme = $this->getPermissionScheme('delete');
     $workflow_id = $this->getEntityWorkflowId($content);
-    $state = $this->getEntityState($content);
+    $state = $content->getWorkflowState();
 
     if (isset($delete_scheme[$workflow_id][$state]) && $this->workflowHelper->userHasOwnAnyRoles($content, $account, $delete_scheme[$workflow_id][$state])) {
       // @todo Shouldn't we return AccessResult::neutral() instead of
@@ -305,22 +305,6 @@ class CommunityContentWorkflowAccessControlHandler {
   protected function getEntityWorkflowId(CommunityContentInterface $content): string {
     $workflow = $content->{self::STATE_FIELD}->first()->getWorkflow();
     return $workflow->getId();
-  }
-
-  /**
-   * Returns the appropriate workflow to use for the passed entity.
-   *
-   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
-   *   The group content entity.
-   *
-   * @return string
-   *   The id of the workflow to use.
-   *
-   * @zeprecated
-   *   Call EntityWorkflowStateInterface::getWorkflowState() instead.
-   */
-  protected function getEntityState(CommunityContentInterface $content): string {
-    return $content->getWorkflowState();
   }
 
   /**
