@@ -50,8 +50,15 @@ class JoinupGroupHelper {
   /**
    * Returns the group the entity belongs to.
    *
-   * This relies on the fact that in Joinup every group entity only belongs to a
-   * single group.
+   * This relies on the fact that in Joinup every group content entity only
+   * belongs to a single group.
+   *
+   * Call this only if you transparently need to support both comment entities
+   * and standard group content. If you are dealing only with group content,
+   * then call `GroupContentInterface::getGroup()` instead.
+   *
+   * @todo Find the cases where this is called by comment entities and refactor
+   *   them, so this can be removed.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity for which to return the group. Comment entities are also

@@ -315,9 +315,12 @@ class CommunityContentWorkflowAccessControlHandler {
    *
    * @return string
    *   The content creation option value.
+   *
+   * @throws \Drupal\joinup_group\Exception\MissingGroupException
+   *   Thrown when the entity doesn't have a parent group.
    */
   protected function getParentContentCreationOption(CommunityContentInterface $content): string {
-    $parent = JoinupGroupHelper::getGroup($content);
+    $parent = $content->getGroup();
     return JoinupGroupHelper::getContentCreation($parent);
   }
 
