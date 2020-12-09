@@ -2,19 +2,19 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\solution\EventSubscriber;
+namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\joinup_notification\GroupContentDigestSubscriberBase;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_subscription\DigestFormatter;
-use Drupal\joinup_subscription\EventSubscriber\GroupContentSubscriptionSubscriberBase;
 use Drupal\solution\Entity\SolutionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Subscriber for compiling solution content subscription digest messages .
  */
-class SolutionContentSubscriptionSubscriber extends GroupContentSubscriptionSubscriberBase implements EventSubscriberInterface {
+class SolutionDigestSubscriber extends GroupContentDigestSubscriberBase implements EventSubscriberInterface {
 
   /**
    * {@inheritdoc}

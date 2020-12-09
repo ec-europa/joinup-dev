@@ -2,20 +2,19 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_subscription\EventSubscriber;
+namespace Drupal\joinup_notification;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
-use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\og\OgMembershipInterface;
 
 /**
  * Provides a base class for the group content subscription subscriber classe.
  */
-abstract class GroupContentSubscriptionSubscriberBase {
+abstract class GroupContentDigestSubscriberBase {
   /**
    * The entity type manager.
    *
