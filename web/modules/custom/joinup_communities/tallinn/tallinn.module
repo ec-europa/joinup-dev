@@ -16,6 +16,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\tallinn\Entity\TallinnReport;
 use Drupal\tallinn\Tallinn;
 use Drupal\user\Entity\User;
 
@@ -205,4 +206,13 @@ function tallinn_entity_view_alter(array &$build, EntityInterface $entity, Entit
   // Since the entities are only viewable by their authors the content listing
   // varies by user.
   $build['field_cp_content_listing']['#cache']['contexts'][] = 'user';
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function tallinn_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['node']['tallinn_report'])) {
+    $bundles['node']['tallinn_report']['class'] = TallinnReport::class;
+  }
 }
