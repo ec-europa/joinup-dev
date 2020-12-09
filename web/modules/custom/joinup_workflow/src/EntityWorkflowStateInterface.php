@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_workflow;
 
+use Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 
 /**
@@ -48,6 +49,14 @@ interface EntityWorkflowStateInterface {
    *   case occurs under unusual circumstances (e.g. data corruption).
    */
   public function getWorkflow(): WorkflowInterface;
+
+  /**
+   * Returns the workflow state field item for this entity.
+   *
+   * @return \Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface
+   *   The workflow state field item.
+   */
+  public function getWorkflowStateField(): StateItemInterface;
 
   /**
    * Returns the machine name of the workflow state field.

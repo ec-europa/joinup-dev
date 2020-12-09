@@ -26,7 +26,7 @@ trait EntityWorkflowStateTrait {
    * {@inheritdoc}
    */
   public function setWorkflowState(string $state): EntityWorkflowStateInterface {
-    $this->getWorkflowField()->setValue($state);
+    $this->getWorkflowStateField()->setValue($state);
     return $this;
   }
 
@@ -34,7 +34,7 @@ trait EntityWorkflowStateTrait {
    * {@inheritdoc}
    */
   public function getWorkflow(): WorkflowInterface {
-    $workflow = $this->getWorkflowField()->getWorkflow();
+    $workflow = $this->getWorkflowStateField()->getWorkflow();
     if (!$workflow instanceof WorkflowInterface) {
       throw new \UnexpectedValueException(sprintf('No workflow object returned for entity of type %s with ID %s.', $this->getEntityTypeId(), (string) $this->id()));
     }
@@ -42,12 +42,12 @@ trait EntityWorkflowStateTrait {
   }
 
   /**
-   * Returns the workflow field item for this entity.
+   * Returns the workflow state field item for this entity.
    *
    * @return \Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface
-   *   The workflow field item.
+   *   The workflow state field item.
    */
-  protected function getWorkflowField(): StateItemInterface {
+  public function getWorkflowStateField(): StateItemInterface {
     assert(method_exists($this, 'getWorkflowStateFieldName'), __TRAIT__ . ' depends on EntityWorkflowStateInterface. Please implement it in your class.');
     return $this->get($this->getWorkflowStateFieldName())->first();
   }
