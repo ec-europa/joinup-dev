@@ -42,14 +42,14 @@ trait EntityWorkflowStateTrait {
   }
 
   /**
-   * Returns the workflow field item fot this entity.
+   * Returns the workflow field item for this entity.
    *
    * @return \Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface
    *   The workflow field item.
    */
   protected function getWorkflowField(): StateItemInterface {
     assert(method_exists($this, 'getWorkflowStateFieldName'), __TRAIT__ . ' depends on EntityWorkflowStateInterface. Please implement it in your class.');
-    return $this->get($this->getWorkflowStateFieldName());
+    return $this->get($this->getWorkflowStateFieldName())->first();
   }
 
 }
