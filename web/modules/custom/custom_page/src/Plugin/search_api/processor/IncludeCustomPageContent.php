@@ -100,9 +100,9 @@ class IncludeCustomPageContent extends ProcessorPluginBase {
         $body_field = $item->getField($body_field_name);
 
         // The search_api indexes fields for each entity (there is an HTML
-        // output but it is used differently). For paragraphs, since this is a
-        // reference field, we are indexing the field_body field. The paragraph
-        // itself is referenced by the custom page through the
+        // output but it is used differently). For simple paragraphs, since this
+        // is a reference field, we are indexing the field_body field. The
+        // paragraph itself is referenced by the custom page through the
         // field_paragraphs_body field. Iterate through all items in the field
         // and add the markup to the group description.
         //
@@ -111,10 +111,12 @@ class IncludeCustomPageContent extends ProcessorPluginBase {
         if (!$custom_page->get('field_paragraphs_body')->isEmpty()) {
           /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
           foreach ($custom_page->get('field_paragraphs_body')->referencedEntities() as $paragraph) {
-            $custom_page_paragraph_body_list = $paragraph->get('field_body');
-            foreach ($custom_page_paragraph_body_list as $list_item) {
-              if (!$list_item->isEmpty()) {
-                $body_field->addValue(check_markup($list_item->value, $list_item->format));
+            if ($paragraph->hasField('field_body')) {
+              $custom_page_paragraph_body_list = $paragraph->get('field_body');
+              foreach ($custom_page_paragraph_body_list as $list_item) {
+                if (!$list_item->isEmpty()) {
+                  $body_field->addValue(check_markup($list_item->value, $list_item->format));
+                }
               }
             }
           }
