@@ -23,3 +23,12 @@ function easme_helper_help($route_name, RouteMatchInterface $route_match) {
     default:
   }
 }
+
+/**
+ * Implements template_preprocess_message_digest().
+ */
+function easme_helper_preprocess_message_digest(&$variables) {
+  // Add EASME custom variables.
+  $easme_helper_config = \Drupal::config('easme_helper.settings');
+  $variables['notification_site_name'] = $easme_helper_config->get('notifications.site_name');
+}
