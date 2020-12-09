@@ -114,15 +114,15 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
    */
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
-    if ($this->entity->bundle() !== 'asset_release') {
+    if (!$this->entity instanceof AssetReleaseInterface) {
       return;
     }
 
     $this->event = $event;
     $this->stateField = 'field_isr_state';
     $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
-    $this->fromState = isset($this->entity->original) ? $this->entity->original->get($this->stateField)->first()->value : '__new__';
-    $this->toState = $this->entity->get($this->stateField)->first()->value;
+    $this->fromState = isset($this->entity->original) ? $this->entity->original->getWorkflowState() : '__new__';
+    $this->toState = $this->entity->getWorkflowState();
     $this->transition = $this->workflow->findTransition($this->fromState, $this->toState);
     $this->motivation = empty($this->entity->motivation) ? '' : $this->entity->motivation;
   }
