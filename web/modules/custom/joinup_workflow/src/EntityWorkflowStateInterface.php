@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_workflow;
 
+use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
+
 /**
  * Interface for bundle classes that are subject to workflows.
  */
@@ -32,6 +34,20 @@ interface EntityWorkflowStateInterface {
    * @see https://3v4l.org/e3aT1
    */
   public function setWorkflowState(string $state): EntityWorkflowStateInterface;
+
+  /**
+   * Returns the workflow object.
+   *
+   * @return \Drupal\state_machine\Plugin\Workflow\WorkflowInterface
+   *   The workflow object.
+   *
+   * @throws \UnexpectedValueException
+   *   Thrown if the workflow object cannot be instantiated because an invalid
+   *   workflow ID has been set on the field. This is not expected to occur in
+   *   normal usage. This is thrown to ensure that we have a log entry if this
+   *   case occurs under unusual circumstances (e.g. data corruption).
+   */
+  public function getWorkflow(): WorkflowInterface;
 
   /**
    * Returns the machine name of the workflow state field.
