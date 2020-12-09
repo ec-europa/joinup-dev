@@ -127,7 +127,8 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
             try {
               $parent_id = $object->getGroupId();
             }
-            catch (MissingGroupException $e) {}
+            catch (MissingGroupException $e) {
+            }
 
             if (!empty($parent_id)) {
               $parent = $rdf_storage->load($parent_id);
