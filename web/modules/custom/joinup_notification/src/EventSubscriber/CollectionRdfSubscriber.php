@@ -462,15 +462,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    *   Whether the event applies.
    */
   protected function appliesOnCollections() {
-    if ($this->entity->getEntityTypeId() !== 'rdf_entity') {
-      return FALSE;
-    }
-
-    if ($this->entity->bundle() !== 'collection') {
-      return FALSE;
-    }
-
-    return TRUE;
+    return $this->entity instanceof CollectionInterface;
   }
 
   /**
