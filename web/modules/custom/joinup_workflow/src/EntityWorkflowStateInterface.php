@@ -37,6 +37,18 @@ interface EntityWorkflowStateInterface {
   public function setWorkflowState(string $state): EntityWorkflowStateInterface;
 
   /**
+   * Returns whether or not a workflow object is associated with the entity.
+   *
+   * Normally calling code can rely on a workflow object being available, except
+   * if the entity is orphaned. Call this method if your code is running as part
+   * of the orphan cleanup (e.g. in a entity delete hook).
+   *
+   * @return bool
+   *   TRUE if a workflow state is set, FALSE if not.
+   */
+  public function hasWorkflow(): bool;
+
+  /**
    * Returns the workflow object.
    *
    * @return \Drupal\state_machine\Plugin\Workflow\WorkflowInterface
@@ -44,9 +56,11 @@ interface EntityWorkflowStateInterface {
    *
    * @throws \UnexpectedValueException
    *   Thrown if the workflow object cannot be instantiated because an invalid
-   *   workflow ID has been set on the field. This is not expected to occur in
-   *   normal usage. This is thrown to ensure that we have a log entry if this
-   *   case occurs under unusual circumstances (e.g. data corruption).
+   *   workflow ID has been set on the field. During normal usage this will only
+   *   occur during the cleanup of orphaned group content which is triggered
+   *   after a group is deleted. If your code is running as part of the orphan
+   *   cleanup (e.g. in a entity delete hook) then it is recommended to call
+   *   ::hasWorkflow() first.
    */
   public function getWorkflow(): WorkflowInterface;
 

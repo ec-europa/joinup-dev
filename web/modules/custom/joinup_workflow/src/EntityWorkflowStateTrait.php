@@ -33,6 +33,13 @@ trait EntityWorkflowStateTrait {
   /**
    * {@inheritdoc}
    */
+  public function hasWorkflow(): bool {
+    return $this->getWorkflowStateField()->getWorkflow() instanceof WorkflowInterface;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getWorkflow(): WorkflowInterface {
     $workflow = $this->getWorkflowStateField()->getWorkflow();
     if (!$workflow instanceof WorkflowInterface) {
