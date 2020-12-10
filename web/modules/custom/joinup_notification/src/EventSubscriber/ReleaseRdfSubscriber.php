@@ -63,13 +63,6 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
   protected $workflow;
 
   /**
-   * The state field name of the entity object.
-   *
-   * @var string
-   */
-  protected $stateField;
-
-  /**
    * The motivation text passed in the entity.
    *
    * @var string
@@ -119,8 +112,7 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
     }
 
     $this->event = $event;
-    $this->stateField = 'field_isr_state';
-    $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
+    $this->workflow = $this->entity->getWorkflow();
     $this->fromState = isset($this->entity->original) ? $this->entity->original->getWorkflowState() : '__new__';
     $this->toState = $this->entity->getWorkflowState();
     $this->transition = $this->workflow->findTransition($this->fromState, $this->toState);
@@ -348,16 +340,6 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
   protected function getUsersAndSend(array $user_data) {
     $user_data = $this->getUsersMessages($user_data);
     $this->sendUserDataMessages($user_data);
-  }
-
-  /**
-   * Returns the state of the release related to the event.
-   *
-   * @return string
-   *   The current state.
-   */
-  protected function getReleaseState() {
-    return $this->entity->get('field_is_state')->first()->value;
   }
 
 }
