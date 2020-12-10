@@ -8,7 +8,6 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\joinup_group\Entity\GroupInterface;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
 use Drupal\sparql_entity_storage\UriEncoder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
