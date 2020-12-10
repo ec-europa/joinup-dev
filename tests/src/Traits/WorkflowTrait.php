@@ -104,26 +104,6 @@ trait WorkflowTrait {
   }
 
   /**
-   * Returns the StateItem field for a given entity.
-   *
-   * In the current project every entity with a state has only one state field
-   * so this method returns the first available field definitions of the
-   * entity's field definitions.
-   *
-   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
-   *   The entity for which to return the state field.
-   *
-   * @return \Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface
-   *   The state field.
-   *
-   * @throws \Exception
-   *   Thrown when the entity does not have a state field.
-   */
-  protected function getEntityStateField(FieldableEntityInterface $entity) {
-    return $this->getWorkflowHelper()->getEntityStateField($entity);
-  }
-
-  /**
    * Returns the workflow helper service.
    *
    * @return \Drupal\joinup_workflow\WorkflowHelperInterface
