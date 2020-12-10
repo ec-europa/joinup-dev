@@ -27,6 +27,17 @@ class NotificationsHelper {
   }
 
   /**
+   * Provides the site name for notifications.
+   *
+   * @return string
+   *   The site name.
+   */
+  public function getSiteName() {
+    $easme_helper_config = $this->configFactory->get('easme_helper.settings');
+    return $easme_helper_config->get('notifications.site_name');
+  }
+
+  /**
    * Provides the general notifications' signature.
    *
    * @return string

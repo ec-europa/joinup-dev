@@ -143,7 +143,7 @@ function joinup_user_mail_alter(&$message) {
     $moderation_text = '</p><p>';
   }
   else {
-    $moderation_text = '</p><p>This action has been done in the framework of moderation activities regularly conducted on the COVID-19 Challenge platform.</p><p>';
+    $moderation_text = '</p><p>This action has been done in the framework of moderation activities regularly conducted on the EIC Challenge platform.</p><p>';
   }
 
   $message['body'] = array_map(function ($text) use ($moderation_text) {

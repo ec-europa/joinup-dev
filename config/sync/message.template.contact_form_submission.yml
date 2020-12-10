@@ -9,7 +9,7 @@ label: 'Contact form submission'
 description: 'Message to the moderators when the contact form is submitted.'
 text:
   -
-    value: '<p>COVID-19 Challenge - Contact form submission</p>'
+    value: '<p>[easme:notifications-site-name] - Contact form submission</p>'
     format: content_editor
 settings:
   'token options':

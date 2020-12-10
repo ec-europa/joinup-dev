@@ -12,11 +12,11 @@ text:
     value: '[easme:notifications-site-name]:  Your solution has been deleted by the moderation team'
     format: full_html
   -
-    value: '<p>The COVID-19 Challenge moderation team deleted the interoperability solution @entity:title.</p>'
+    value: '<p>The [easme:notifications-site-name] moderation team deleted the interoperability solution @entity:title.</p>'
     format: full_html
 settings:
   'token options':
     clear: false
-    'token replace': false
+    'token replace': true
   purge_override: false
   purge_methods: {  }

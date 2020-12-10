@@ -31,18 +31,14 @@ function easme_helper_token_info() {
  * Implements hook_tokens().
  */
 function easme_helper_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
-  $token_service = \Drupal::token();
-
   $replacements = [];
 
   if ($type == 'easme') {
-    $easme_helper_config = \Drupal::config('easme_helper.settings');
-
     foreach ($tokens as $name => $original) {
       switch ($name) {
         // Simple key values on the node.
         case 'notifications-site-name':
-          $replacements[$original] = $easme_helper_config->get('notifications.site_name');
+          $replacements[$original] = \Drupal::service('easme_helper.notifications_helper')->getSiteName();
           break;
       }
     }
