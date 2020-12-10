@@ -8,7 +8,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
@@ -97,24 +96,6 @@ interface WorkflowHelperInterface {
    *   found.
    */
   public function getEntityStateFieldDefinition(string $entity_type_id, string $bundle_id): ?FieldDefinitionInterface;
-
-  /**
-   * Returns the StateItem field for a given entity.
-   *
-   * In the current project every entity with a state has only one state field
-   * so this method returns the first available field definitions of the
-   * entity's field definitions.
-   *
-   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
-   *   The entity for which to return the state field.
-   *
-   * @return \Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface
-   *   The state field.
-   *
-   * @throws \Exception
-   *   Thrown when the entity does not have a state field.
-   */
-  public function getEntityStateField(FieldableEntityInterface $entity): StateItemInterface;
 
   /**
    * Returns whether the entity has a state field and supports workflow.
