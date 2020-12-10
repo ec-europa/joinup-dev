@@ -17,7 +17,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Installer\InstallerKernel;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\collection\Entity\CollectionInterface;
-use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_featured\FeaturedContentInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\search_api\Query\QueryInterface;
@@ -340,7 +340,7 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
   // The next check asserts that the group is either a collection or a solution
   // but for solutions, only community content are allowed to be pinned, not
   // related solutions.
-  if ($group && ($group instanceof CollectionInterface || CommunityContentHelper::isCommunityContent($entity) && $group instanceof SolutionInterface)) {
+  if ($group && ($group instanceof CollectionInterface || $entity instanceof CommunityContentInterface && $group instanceof SolutionInterface)) {
     // Used by the contextual links for pinning/unpinning entity in group.
     // @see: joinup.pin_entity, joinup.unpin_entity routes.
     $build['#contextual_links']['group_context']['route_parameters']['group'] = $group->id();
