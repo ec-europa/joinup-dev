@@ -106,7 +106,9 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
 
-    if ($this->entity instanceof EntityWorkflowStateInterface) {
+    // Only initialize the workflow if it is available. It is unavailable when
+    // the entity is being deleted during cleanup of orphaned group content.
+    if ($this->entity instanceof EntityWorkflowStateInterface && $this->entity->hasWorkflow()) {
       $from_state = isset($this->entity->field_state_initial_value) ? $this->entity->field_state_initial_value : 'draft';
       $to_state = $this->entity->getWorkflowState();
 

@@ -132,7 +132,10 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    */
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
-    if (!$this->entity instanceof SolutionInterface) {
+
+    // Only initialize the workflow if available. It is not available when the
+    // entity is being deleted during cleanup of orphaned group content.
+    if (!$this->entity instanceof SolutionInterface || !$this->entity->hasWorkflow()) {
       return;
     }
 

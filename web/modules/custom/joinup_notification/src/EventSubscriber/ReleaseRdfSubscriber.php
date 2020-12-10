@@ -107,7 +107,10 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
    */
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
-    if (!$this->entity instanceof AssetReleaseInterface) {
+
+    // Only initialize the workflow if it is available. It is unavailable when
+    // the entity is being deleted during cleanup of orphaned group content.
+    if (!$this->entity instanceof AssetReleaseInterface || !$this->entity->hasWorkflow()) {
       return;
     }
 
