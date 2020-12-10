@@ -186,39 +186,6 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getWorkflow(EntityInterface $entity, ?string $state_field_name = NULL): ?WorkflowInterface {
-    if ($entity instanceof EntityWorkflowStateInterface) {
-      return $entity->getWorkflow();
-    }
-    return NULL;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function findTransitionOnUpdate(EntityInterface $entity, ?string $state_field_name = NULL): ?WorkflowTransition {
-    if (!$entity instanceof EntityWorkflowStateInterface) {
-      return NULL;
-    }
-
-    // If there is no original version, then it is not an update.
-    if (empty($entity->original)) {
-      return NULL;
-    }
-
-    $workflow = $entity->getWorkflow();
-    $original_state = $entity->original->getWorkflowState();
-    $target_state = $entity->getWorkflowState();
-    if ($original_state !== $target_state) {
-      return NULL;
-    }
-
-    return $workflow->findTransition($original_state, $target_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function userHasOwnAnyRoles(EntityInterface $entity, AccountInterface $account, array $roles): bool {
     $own = $entity->getOwnerId() === $account->id();
     if (isset($roles['any']) && $this->userHasRoles($entity, $account, $roles['any'])) {

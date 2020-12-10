@@ -9,7 +9,6 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
-use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
  * Interface for services that provide workflow related helper methods.
@@ -113,32 +112,6 @@ interface WorkflowHelperInterface {
    *   retrieve the publication state from the workflow states.
    */
   public function isWorkflowStatePublished(string $state_id, WorkflowInterface $workflow): bool;
-
-  /**
-   * Returns the workflow related to an entity.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity object.
-   * @param string|null $state_field_name
-   *   (optional) The state field name. If not passed, it will be searched.
-   *
-   * @return \Drupal\workflows\WorkflowInterface|null
-   *   The workflow object or null if it was not found.
-   */
-  public function getWorkflow(EntityInterface $entity, ?string $state_field_name = NULL): ?WorkflowInterface;
-
-  /**
-   * Finds the transition given an entity that is being updated.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity object.
-   * @param string|null $state_field_name
-   *   (optional) The state field name. If not passed, it will be searched.
-   *
-   * @return \Drupal\state_machine\Plugin\Workflow\WorkflowTransition|null
-   *   The transition object or null if it was not found.
-   */
-  public function findTransitionOnUpdate(EntityInterface $entity, ?string $state_field_name = NULL): ?WorkflowTransition;
 
   /**
    * Checks whether the user has at least one of the provided roles.
