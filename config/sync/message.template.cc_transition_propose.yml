@@ -11,7 +11,7 @@ label: 'Community content on Propose'
 description: 'Template id 3'
 text:
   -
-    value: '<p>COVID-19 Challenge: Content has been proposed</p>'
+    value: '<p>[easme:notifications-site-name]: Content has been proposed</p>'
     format: full_html
   -
     value: '<p>@actor:full_name has submitted @entity:hasPublished:status @entity:bundle - "@entity:title" for publication in the @group:bundle: "@group:title".</p><p>You can access the proposed new content at the following link: <a href="@entity:url">@entity:url</a>.</p><p>If you think this action is not clear or not due, please contact the [easme:notifications-site-name] team at <a href="@site:contact_url">@site:contact_url</a>.</p>'

@@ -9,7 +9,7 @@ label: 'Group membership rejection'
 description: 'Group privileged user rejects a membership request.'
 text:
   -
-    value: '<p>COVID-19 Challenge: Your request to join the @entity:bundle @entity:title was rejected</p>'
+    value: '<p>[easme:notifications-site-name]: Your request to join the @entity:bundle @entity:title was rejected</p>'
     format: full_html
   -
     value: '<p>@actor:full_name has rejected your request to join the "@entity:title" @entity:bundle.</p>'
@@ -17,6 +17,6 @@ text:
 settings:
   'token options':
     clear: false
-    'token replace': false
+    'token replace': true
   purge_override: false
   purge_methods: {  }
