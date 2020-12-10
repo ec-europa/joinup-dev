@@ -9,7 +9,7 @@ label: 'Solution blacklist'
 description: 'Template 13: Blacklist a solution'
 text:
   -
-    value: 'COVID-19 Challenge: Your interoperability solution is blacklisted'
+    value: '[easme:notifications-site-name]:  Your interoperability solution is blacklisted'
     format: full_html
   -
     value: "<p>the moderator has blacklisted your interoperability solution - @entity:title, you can contact the moderation team to resolve the issue.</p>\n<p>We suggest you to read our guidelines at&nbsp; <a href=\"@site:legal_notice_url\">@site:legal_notice_url</a>.</p>"

@@ -11,7 +11,7 @@ label: 'Solution distribution update'
 description: 'Template 21: Distribution update'
 text:
   -
-    value: 'COVID-19 Challenge: A distribution has been updated'
+    value: '[easme:notifications-site-name]:  A distribution has been updated'
     format: full_html
   -
     value: 'The distribution @entity:title @release:info:with_version of the solution @group:title was successfully updated.'

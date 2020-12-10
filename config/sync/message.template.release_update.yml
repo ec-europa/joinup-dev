@@ -11,7 +11,7 @@ label: 'Solution release update'
 description: 'Template 18: Solution release update'
 text:
   -
-    value: 'COVID-19 Challenge: A release has been updated'
+    value: '[easme:notifications-site-name]:  A release has been updated'
     format: full_html
   -
     value: '<p>The release @entity:title, @entity:field_isr_release_number of the solution @group:title was updated.</p>'
