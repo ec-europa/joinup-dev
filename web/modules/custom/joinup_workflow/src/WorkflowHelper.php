@@ -169,13 +169,6 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function hasEntityStateField(string $entity_type_id, string $bundle_id): bool {
-    return (bool) $this->getEntityStateFieldDefinitions($entity_type_id, $bundle_id);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function isWorkflowStatePublished(string $state_id, WorkflowInterface $workflow): bool {
     // We rely on being able to inspect the plugin definition. Throw an error if
     // this is not the case.

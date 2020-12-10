@@ -98,19 +98,6 @@ interface WorkflowHelperInterface {
   public function getEntityStateFieldDefinition(string $entity_type_id, string $bundle_id): ?FieldDefinitionInterface;
 
   /**
-   * Returns whether the entity has a state field and supports workflow.
-   *
-   * @param string $entity_type_id
-   *   The entity type ID for which to check if a state field exists.
-   * @param string $bundle_id
-   *   The bundle ID for which to check if a state field exists.
-   *
-   * @return bool
-   *   TRUE if the entity has a state field. FALSE otherwise.
-   */
-  public function hasEntityStateField(string $entity_type_id, string $bundle_id): bool;
-
-  /**
    * Checks if a state is set as published in a certain workflow.
    *
    * @param string $state_id
