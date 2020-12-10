@@ -123,18 +123,13 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
           // this might be stale. This ensures that if the parent has been
           // published in this request we will act on the actual updated state.
           if ($object instanceof GroupContentInterface) {
-            $parent_id = NULL;
             try {
-              $parent_id = $object->getGroupId();
-            }
-            catch (MissingGroupException $e) {
-            }
-
-            if (!empty($parent_id)) {
-              $parent = $rdf_storage->load($parent_id);
+              $parent = $rdf_storage->load($object->getGroupId());
               if ($parent instanceof EntityPublishedInterface && $parent->isPublished()) {
                 $enabled = TRUE;
               }
+            }
+            catch (MissingGroupException $e) {
             }
           }
         }
