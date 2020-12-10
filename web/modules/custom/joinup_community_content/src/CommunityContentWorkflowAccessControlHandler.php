@@ -32,11 +32,6 @@ use Drupal\og\MembershipManagerInterface;
 class CommunityContentWorkflowAccessControlHandler {
 
   /**
-   * The state field machine name.
-   */
-  const STATE_FIELD = 'field_state';
-
-  /**
    * Flag for pre-moderated groups.
    */
   const PRE_MODERATION = 1;
@@ -202,7 +197,7 @@ class CommunityContentWorkflowAccessControlHandler {
    */
   protected function entityViewAccess(CommunityContentInterface $content, AccountInterface $account): AccessResultInterface {
     $view_scheme = $this->getPermissionScheme('view');
-    $workflow_id = $this->getEntityWorkflowId($content);
+    $workflow_id = $content->getWorkflow()->getId();
     $state = $content->getWorkflowState();
     // @todo Shouldn't we return AccessResult::neutral() instead of
     // AccessResult::allowed() and only AccessResult::forbidden() should have
@@ -226,7 +221,7 @@ class CommunityContentWorkflowAccessControlHandler {
    */
   protected function entityCreateAccess(CommunityContentInterface $content, AccountInterface $account): AccessResultInterface {
     $create_scheme = $this->getPermissionScheme('create');
-    $workflow_id = $this->getEntityWorkflowId($content);
+    $workflow_id = $content->getWorkflow()->getId();
     $content_creation = $this->getParentContentCreationOption($content);
 
     foreach ($create_scheme[$workflow_id][$content_creation] as $ownership_data) {
@@ -279,7 +274,7 @@ class CommunityContentWorkflowAccessControlHandler {
    */
   protected function entityDeleteAccess(CommunityContentInterface $content, AccountInterface $account): AccessResultInterface {
     $delete_scheme = $this->getPermissionScheme('delete');
-    $workflow_id = $this->getEntityWorkflowId($content);
+    $workflow_id = $content->getWorkflow()->getId();
     $state = $content->getWorkflowState();
 
     if (isset($delete_scheme[$workflow_id][$state]) && $this->workflowHelper->userHasOwnAnyRoles($content, $account, $delete_scheme[$workflow_id][$state])) {
@@ -291,20 +286,6 @@ class CommunityContentWorkflowAccessControlHandler {
     }
 
     return AccessResult::forbidden()->addCacheableDependency($content);
-  }
-
-  /**
-   * Returns the appropriate workflow to use for the passed entity.
-   *
-   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
-   *   The group content entity.
-   *
-   * @return string
-   *   The id of the workflow to use.
-   */
-  protected function getEntityWorkflowId(CommunityContentInterface $content): string {
-    $workflow = $content->{self::STATE_FIELD}->first()->getWorkflow();
-    return $workflow->getId();
   }
 
   /**
