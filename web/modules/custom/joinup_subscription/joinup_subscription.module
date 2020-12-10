@@ -79,9 +79,9 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
     // Message digest does not carry over any information other than the
     // notifier and even this, is very limited in capabilities.
     // Set the bundle label as a temporary variable in the notifier as a dynamic
-    // property since it does provide any methods to cary information over.
-    // This will allow us to alter the mail subject and include the group bundle
-    // in it.
+    // property since it does not provide any methods to carry information over
+    // either. This will allow us to alter the mail subject and include the
+    // group bundle in it.
     //
     // We are accessing information the same way as we do later in the sorting
     // function so it is safe to assume that values do exist.

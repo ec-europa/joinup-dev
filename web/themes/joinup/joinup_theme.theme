@@ -1630,7 +1630,7 @@ function joinup_theme_preprocess_rdf_entity(&$variables) {
  */
 function joinup_theme_preprocess_rdf_entity__collection__digest_message_header(&$variables) {
   $variables['url'] = $variables['rdf_entity']->toUrl('canonical', ['absolute' => TRUE])->toString();
-  $variables['bundle_label'] = $variables['rdf_entity']->get('rid')->entity->getSingularLabel();
+  $variables['bundle_label'] = $variables['rdf_entity']->get('rid')->entity->label();
 }
 
 /**
