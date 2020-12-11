@@ -14,6 +14,7 @@ use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
+use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManager;
@@ -41,13 +42,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @var \Drupal\state_machine\Plugin\Workflow\Workflow
    */
   protected $workflow;
-
-  /**
-   * The state field name of the entity object.
-   *
-   * @var string
-   */
-  protected $stateField;
 
   /**
    * The motivation text passed in the entity.
@@ -112,13 +106,13 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
 
-    $state_item = $this->workflowHelper->getEntityStateFieldDefinition($this->entity->getEntityTypeId(), $this->entity->bundle());
-    if (!empty($state_item)) {
-      $this->stateField = $state_item->getName();
+    // Only initialize the workflow if it is available. It is unavailable when
+    // the entity is being deleted during cleanup of orphaned group content.
+    if ($this->entity instanceof EntityWorkflowStateInterface && $this->entity->hasWorkflow()) {
       $from_state = isset($this->entity->field_state_initial_value) ? $this->entity->field_state_initial_value : 'draft';
-      $to_state = $this->entity->get($this->stateField)->first()->value;
+      $to_state = $this->entity->getWorkflowState();
 
-      $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
+      $this->workflow = $this->entity->getWorkflow();
       // In some cases the workflow cannot be determined, for example when
       // deleting orphaned group content that has a workflow that depends on the
       // parent entity's content moderation status.
@@ -163,7 +157,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     }
 
     // If any of the workflow related properties are empty, return early.
-    if (empty($this->stateField) || empty($this->workflow) || empty($this->transition)) {
+    if (!$this->entity instanceof EntityWorkflowStateInterface || empty($this->workflow) || empty($this->transition)) {
       return FALSE;
     }
 
@@ -203,7 +197,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     }
 
     // If any of the workflow related properties are empty, return early.
-    if (empty($this->stateField) || empty($this->workflow) || empty($this->transition)) {
+    if (!$this->entity instanceof EntityWorkflowStateInterface || empty($this->workflow) || empty($this->transition)) {
       return FALSE;
     }
 
@@ -225,8 +219,9 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     // The storage class passes the loaded entity to the hooks when a delete
     // operation occurs. This returns the wrong state of the entity so the
     // latest revision is forced here.
+    /** @var \Drupal\joinup_workflow\EntityWorkflowStateInterface $latest_revision */
     if ($latest_revision = $this->revisionManager->loadLatestRevision($this->entity)) {
-      $state = $latest_revision->get($this->stateField)->first()->value;
+      $state = $latest_revision->getWorkflowState();
       if (empty($this->workflow) || empty($this->config[$this->workflow->getId()][$state])) {
         return;
       }
@@ -246,7 +241,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    */
   protected function appliesOnDelete() {
     // If any of the workflow related properties are empty, return early.
-    if (empty($this->stateField)) {
+    if (!$this->entity instanceof EntityWorkflowStateInterface) {
       return FALSE;
     }
 

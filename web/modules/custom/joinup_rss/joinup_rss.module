@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Url;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\sparql_entity_storage\UriEncoder;
 
@@ -53,7 +54,7 @@ function joinup_rss_page_attachments(array &$attachments): void {
 
   /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
   $entity = $route->getParameter('rdf_entity');
-  if (!in_array($entity->bundle(), ['collection', 'solution'])) {
+  if (!$entity instanceof GroupInterface) {
     return;
   }
 

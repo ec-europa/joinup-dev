@@ -78,4 +78,26 @@ interface PinnableGroupContentInterface extends GroupContentInterface {
    */
   public function getPinnedGroupIds(): array;
 
+  /**
+   * Returns a list of groups the given entity can be pinned in.
+   *
+   * Community content can only be pinned in their parent collection or
+   * solution. Solutions can be pinned in any of their affiliated collections.
+   *
+   * @return \Drupal\joinup_group\Entity\GroupInterface[]
+   *   A list of groups the entity can be pinned in, keyed by group ID.
+   */
+  public function getPinnableGroups(): array;
+
+  /**
+   * Returns a list of IDs of groups the given entity can be pinned in.
+   *
+   * Community content can only be pinned in their parent collection or
+   * solution. Solutions can be pinned in any of their affiliated collections.
+   *
+   * @return string[]
+   *   A list of IDs of groups the entity can be pinned in.
+   */
+  public function getPinnableGroupIds(): array;
+
 }

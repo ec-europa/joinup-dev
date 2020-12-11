@@ -8,10 +8,11 @@ use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\joinup_group\Entity\GroupContentInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgRoleManagerInterface;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\SparqlEntityStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -186,19 +187,18 @@ abstract class ShareFormBase extends FormBase {
    * For nodes, this is the parent group. For rdf entities, it is the affiliated
    * collection of the solution.
    *
-   * @return \Drupal\rdf_entity\RdfInterface|null
+   * @return \Drupal\joinup_group\Entity\GroupInterface|null
    *   The affiliated or parent collection, if one exists.
-   *
-   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
-   *   Thrown when the group reference is not populated on the entity.
    */
-  protected function getExcludedParent(): ?RdfInterface {
-    if ($this->entity->getEntityTypeId() === 'node') {
-      return JoinupGroupHelper::getGroup($this->entity);
+  protected function getExcludedParent(): ?GroupInterface {
+    if ($this->entity instanceof GroupContentInterface) {
+      try {
+        return $this->entity->getGroup();
+      }
+      catch (MissingGroupException $e) {
+      }
     }
-    else {
-      return $this->entity->get('collection')->isEmpty() ? NULL : $this->entity->get('collection')->first()->entity;
-    }
+    return NULL;
   }
 
 }

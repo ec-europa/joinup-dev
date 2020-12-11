@@ -468,7 +468,7 @@ function solution_build_related_solutions_list(array $ids) {
  * Default graph is published. Draft graph is draft.
  */
 function solution_rdf_entity_presave(RdfInterface $entity) {
-  if ($entity->bundle() !== 'solution' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'solution', 'draft')) {
+  if (!$entity instanceof SolutionInterface || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'solution', 'draft')) {
     return;
   }
 
@@ -480,7 +480,7 @@ function solution_rdf_entity_presave(RdfInterface $entity) {
     return;
   }
 
-  $state = $entity->field_is_state->value;
+  $state = $entity->getWorkflowState();
   if (in_array($state, ['draft', 'proposed', 'needs_update', 'blacklisted'])) {
     $entity->set('graph', 'draft');
   }
@@ -549,6 +549,7 @@ function solution_invalidate_collection(EntityInterface $entity) {
  *   The collection IDs.
  *
  * @see solution_rdf_entity_load()
+ * @see \Drupal\solution\SolutionAffiliationFieldItemList
  */
 function solution_get_collection_ids(RdfInterface $solution) {
   if (\Drupal::moduleHandler()->moduleExists('collection')) {

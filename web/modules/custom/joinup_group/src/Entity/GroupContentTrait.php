@@ -27,4 +27,15 @@ trait GroupContentTrait {
     return $group;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getGroupId(): string {
+    $ids = $this->getReferencedEntityIds(OgGroupAudienceHelperInterface::DEFAULT_FIELD);
+    if (empty($ids['rdf_entity'])) {
+      throw new MissingGroupException();
+    }
+    return array_shift($ids['rdf_entity']);
+  }
+
 }
