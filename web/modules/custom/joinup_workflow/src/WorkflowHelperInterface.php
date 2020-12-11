@@ -114,7 +114,10 @@ interface WorkflowHelperInterface {
   public function isWorkflowStatePublished(string $state_id, WorkflowInterface $workflow): bool;
 
   /**
-   * Checks if the user has OG permission.
+   * Checks if the user has at least one role with the given OG permission.
+   *
+   * This just returns the permission information and should not be used for
+   * access checks. Use OgAccess to check access.
    *
    * @param string $permissions
    *   The permission string.
@@ -122,6 +125,10 @@ interface WorkflowHelperInterface {
    *   The group entity.
    * @param \Drupal\Core\Session\AccountInterface $user
    *   The user entity.
+   *
+   * @return bool
+   *   TRUE if the permission is present in at least one of the user's role in
+   *   the group.
    */
   public function hasOgPermission(string $permissions, EntityInterface $group, AccountInterface $user): bool;
 
