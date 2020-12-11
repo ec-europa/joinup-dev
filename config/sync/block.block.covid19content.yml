@@ -7,10 +7,12 @@ dependencies:
     - joinup_core
   theme:
     - joinup_theme
+_core:
+  default_config_hash: 5RA-tsszRNxHnswCRXiks8fuRJyTj7c71KTIM0EG46Q
 id: covid19content
 theme: joinup_theme
 region: content
-weight: -21
+weight: -23
 provider: null
 plugin: covid19_content
 settings:

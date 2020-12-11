@@ -1,25 +1,25 @@
-uuid: c43d699a-d0be-4b58-ae91-061a3eb6c191
 langcode: en
 status: true
 dependencies:
   module:
+    - easme_covid19
     - joinup_core
   theme:
     - joinup_theme
-id: pagetitle
+id: covid19content
 theme: joinup_theme
 region: content
-weight: -28
+weight: -23
 provider: null
-plugin: page_title_block
+plugin: covid19_content
 settings:
-  id: page_title_block
-  label: 'Page title'
-  provider: core
+  id: covid19_content
+  label: 'Covid 19 content'
+  provider: easme_covid19
   label_display: '0'
 visibility:
   request_route:
     id: request_route
-    routes: "entity.user.canonical\nentity.user.edit_form"
-    negate: true
+    routes: view.search.page_2
+    negate: false
     context_mapping: {  }
