@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\collection\EventSubscriber;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\og\Event\PermissionEventInterface;
 use Drupal\og\GroupPermission;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

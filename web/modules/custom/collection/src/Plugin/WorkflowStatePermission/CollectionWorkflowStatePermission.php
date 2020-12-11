@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\collection\Entity\CollectionInterface;
 use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
@@ -92,7 +93,7 @@ class CollectionWorkflowStatePermission extends PluginBase implements WorkflowSt
    * {@inheritdoc}
    */
   public function applies(EntityInterface $entity): bool {
-    return $entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'collection';
+    return $entity instanceof CollectionInterface;
   }
 
   /**

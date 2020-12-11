@@ -9,7 +9,7 @@ declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Render\Markup;
-use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 
@@ -19,7 +19,7 @@ use Drupal\joinup_notification\NotificationEvents;
  * Sends notifications when community content is updated.
  */
 function joinup_notification_node_insert(EntityInterface $entity) {
-  if (!CommunityContentHelper::isCommunityContent($entity)) {
+  if (!$entity instanceof CommunityContentInterface) {
     return;
   }
   joinup_notification_dispatch_notification('create', NotificationEvents::COMMUNITY_CONTENT_CREATE, $entity);
@@ -41,7 +41,7 @@ function joinup_notification_node_insert(EntityInterface $entity) {
  * @see https://www.drupal.org/node/2833084
  */
 function joinup_notification_node_presave(EntityInterface $entity) {
-  if ($entity->isNew() || !CommunityContentHelper::isCommunityContent($entity)) {
+  if ($entity->isNew() || !$entity instanceof CommunityContentInterface) {
     return;
   }
   $entity->field_state_initial_value = $entity->get('field_state')->first()->getOriginalId();
@@ -53,7 +53,7 @@ function joinup_notification_node_presave(EntityInterface $entity) {
  * Sends notifications when community content is updated.
  */
 function joinup_notification_node_update(EntityInterface $entity) {
-  if (!CommunityContentHelper::isCommunityContent($entity)) {
+  if (!$entity instanceof CommunityContentInterface) {
     return;
   }
   joinup_notification_dispatch_notification('update', NotificationEvents::COMMUNITY_CONTENT_UPDATE, $entity);
@@ -68,7 +68,7 @@ function joinup_notification_node_update(EntityInterface $entity) {
  * into the delete hooks which can lead into false data e.g. wrong state.
  */
 function joinup_notification_node_predelete(EntityInterface $entity) {
-  if (!CommunityContentHelper::isCommunityContent($entity)) {
+  if (!$entity instanceof CommunityContentInterface) {
     return;
   }
   joinup_notification_dispatch_notification('delete', NotificationEvents::COMMUNITY_CONTENT_DELETE, $entity);

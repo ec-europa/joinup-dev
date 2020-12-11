@@ -5,8 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\joinup_community_content;
 
 use Drupal\Component\Render\MarkupInterface;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\node\NodeInterface;
 
 /**
  * Contains helper methods for dealing with community content.
@@ -17,19 +15,6 @@ class CommunityContentHelper {
    * An array of node bundles that are considered community content.
    */
   const BUNDLES = ['discussion', 'document', 'event', 'news'];
-
-  /**
-   * Returns whether the entity is a community content node.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity to check.
-   *
-   * @return bool
-   *   True if the entity is a community content node, false otherwise.
-   */
-  public static function isCommunityContent(EntityInterface $entity): bool {
-    return $entity instanceof NodeInterface && \in_array($entity->bundle(), self::BUNDLES);
-  }
 
   /**
    * Returns the workflow states that require attention from a moderator.

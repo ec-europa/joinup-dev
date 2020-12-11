@@ -11,7 +11,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
@@ -105,7 +105,7 @@ class CommunityContentWorkflowStatePermission extends PluginBase implements Work
    * {@inheritdoc}
    */
   public function applies(EntityInterface $entity): bool {
-    return CommunityContentHelper::isCommunityContent($entity);
+    return $entity instanceof CommunityContentInterface;
   }
 
   /**

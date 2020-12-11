@@ -22,8 +22,19 @@ interface GroupContentInterface extends ContentEntityInterface {
    *   The parent group.
    *
    * @throws \Drupal\joinup_group\Exception\MissingGroupException
-   *   The the parent group is missing.
+   *   Thrown when the parent group is missing.
    */
   public function getGroup(): GroupInterface;
+
+  /**
+   * Returns the ID of the group to which this entity belongs.
+   *
+   * @return string
+   *   The parent group ID.
+   *
+   * @throws \Drupal\joinup_group\Exception\MissingGroupException
+   *   Thrown when the parent group is missing.
+   */
+  public function getGroupId(): string;
 
 }

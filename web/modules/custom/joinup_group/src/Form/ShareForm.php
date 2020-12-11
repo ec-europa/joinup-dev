@@ -11,7 +11,6 @@ use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -166,9 +165,6 @@ abstract class ShareForm extends ShareFormBase {
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
    *   A list of collections where the current entity can be shared on.
-   *
-   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
-   *   Thrown when the group reference is not populated.
    */
   protected function getShareableCollections(): array {
     // Being part also for the access check, do not allow the user to access
@@ -184,27 +180,6 @@ abstract class ShareForm extends ShareFormBase {
     }
 
     return array_diff_key($user_collections, array_flip($this->getAlreadySharedCollectionIds()));
-  }
-
-  /**
-   * Returns a list of groups that the entity cannot be shared on.
-   *
-   * For nodes, this is the parent group. For rdf entities, it is the affiliated
-   * collections of the solution.
-   *
-   * @return \Drupal\rdf_entity\RdfInterface|null
-   *   The affiliated or parent collection, if one exists.
-   *
-   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
-   *   Thrown when the group reference is not populated.
-   */
-  protected function getExcludedParent(): ?RdfInterface {
-    if ($this->entity->getEntityTypeId() === 'node') {
-      return JoinupGroupHelper::getGroup($this->entity);
-    }
-    else {
-      return $this->entity->get('collection')->isEmpty() ? NULL : $this->entity->get('collection')->first()->entity;
-    }
   }
 
   /**
