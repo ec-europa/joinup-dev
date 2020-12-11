@@ -9,7 +9,7 @@ use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
 use weitzman\LoginTrait\LoginTrait;
 
 /**
- * Tests user cancellation.
+ * Tests that a warning is shown on the user profile of users with many groups.
  *
  * @group joinup_user
  */
@@ -67,6 +67,8 @@ class ProfileOverviewTest extends JoinupExistingSiteTestBase {
     ]);
     $this->owner->save();
 
+    // Sign a user up for more than 100 groups in total. Also the owner will
+    // transparently become a member of all these groups.
     for ($count = 0; $count < 52; $count++) {
       $collection = $this->createRdfEntity([
         'rid' => 'collection',
@@ -95,33 +97,33 @@ class ProfileOverviewTest extends JoinupExistingSiteTestBase {
     $this->drupalLogin($this->owner);
     $this->drupalGet("/user/{$this->owner->id()}");
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContainsOnce('You are a member of high number of collections and/or solutions.');
+    $this->assertSession()->pageTextContainsOnce('You have joined a large number of collections and solutions.');
 
     // Assert the user does not see the same message on another user's profile
     // that is also a member of too many groups.
     $this->drupalGet("/user/{$this->member->id()}");
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextNotContains('You are a member of high number of collections and/or solutions.');
+    $this->assertSession()->pageTextNotContains('You have joined a large number of collections and solutions.');
 
     // Assert that changing to the member user and visiting their own profile
     // will show the warning (ensure lack of message is not cached).
     $this->drupalLogin($this->member);
     $this->drupalGet("/user/{$this->member->id()}");
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContainsOnce('You are a member of high number of collections and/or solutions.');
+    $this->assertSession()->pageTextContainsOnce('You have joined a large number of collections and solutions.');
 
     // Assert that the user that is logged in does not see their message in
     // other profiles without many groups.
     $this->drupalGet("/user/{$this->authenticated->id()}");
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextNotContains('You are a member of high number of collections and/or solutions.');
+    $this->assertSession()->pageTextNotContains('You have joined a large number of collections and solutions.');
 
     // Assert anonymous users cannot see the message in a profile with many
     // groups.
     $this->drupalLogout();
     $this->drupalGet("/user/{$this->owner->id()}");
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextNotContains('You are a member of high number of collections and/or solutions.');
+    $this->assertSession()->pageTextNotContains('You have joined a large number of collections and solutions.');
   }
 
 }
