@@ -16,7 +16,6 @@ use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\joinup_workflow\WorkflowHelperInterface;
-use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManager;
 use Drupal\og\OgRoleInterface;
 use Drupal\state_machine_revisions\RevisionManagerInterface;
@@ -73,8 +72,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   The config factory service.
    * @param \Drupal\Core\Session\AccountProxy $current_user
    *   The current user service.
-   * @param \Drupal\og\GroupTypeManager $og_group_type_manager
-   *   The og group type manager service.
    * @param \Drupal\og\MembershipManager $og_membership_manager
    *   The og membership manager service.
    * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper
@@ -84,8 +81,8 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
    *   The revision manager service.
    */
-  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelperInterface $workflow_helper, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
-    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_group_type_manager, $og_membership_manager, $workflow_helper, $message_delivery);
+  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, MembershipManager $og_membership_manager, WorkflowHelperInterface $workflow_helper, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
+    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_membership_manager, $workflow_helper, $message_delivery);
     $this->revisionManager = $revision_manager;
   }
 

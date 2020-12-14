@@ -7,7 +7,8 @@ namespace Drupal\joinup_group\EventSubscriber;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent;
 use Drupal\og\Event\PermissionEventInterface as OgPermissionEventInterface;
 use Drupal\og\GroupPermission;
@@ -85,12 +86,11 @@ class JoinupGroupOgSubscriber implements EventSubscriberInterface {
    */
   public function onUnchangedWorkflowStateUpdate(UnchangedWorkflowStateUpdateEvent $event): void {
     $entity = $event->getEntity();
-    if (!JoinupGroupHelper::isGroup($entity)) {
+    if (!$entity instanceof GroupInterface || !$entity instanceof EntityWorkflowStateInterface) {
       return;
     }
 
-    $field_name = $entity->bundle() === 'collection' ? 'field_ar_state' : 'field_is_state';
-    $workflow = $entity->get($field_name)->first()->getWorkflow();
+    $workflow = $entity->getWorkflow();
     $state = $event->getState();
     $permitted = $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $event->getEntity(), $workflow, $state, $state);
     $access = AccessResult::forbiddenIf(!$permitted);

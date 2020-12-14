@@ -10,7 +10,7 @@ declare(strict_types = 1);
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\og\Og;
+use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
@@ -82,7 +82,7 @@ function joinup_paragraphs_get_access(AccessResultInterface $access_result, stri
   /** @var \Drupal\joinup_group\Entity\GroupContentInterface $parent_entity */
   if ($paragraph && ($parent_entity = $paragraph->getParentEntity())) {
     // If there is a saved parent entity, we try to determine the group.
-    if (Og::isGroupContent($parent_entity->getEntityTypeId(), $parent_entity->bundle())) {
+    if ($parent_entity instanceof GroupContentInterface) {
       $group = $parent_entity->getGroup();
     }
   }

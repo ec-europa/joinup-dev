@@ -19,7 +19,6 @@ class JoinupCommunityContentServiceProvider extends ServiceProviderBase {
   public function alter(ContainerBuilder $container) {
     $definition = $container->getDefinition('access_check.node.revision');
     $definition->setClass('Drupal\joinup_community_content\Access\NodeRevisionAccessCheck');
-    $definition->addArgument(new Reference('og.group_type_manager'));
     $definition->addArgument(new Reference('og.access'));
     $definition->addArgument(new Reference('config.factory'));
   }
