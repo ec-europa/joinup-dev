@@ -120,7 +120,7 @@ class CommunityContentWorkflowStatePermission extends PluginBase implements Work
     $own_permission = StateMachinePermissionStringConstructor::constructTransitionPermission($entity->getEntityTypeId(), $entity->bundle(), $workflow, $from_state, $to_state, FALSE);
     $has_access = $account->hasPermission($any_permission) || (($entity->getOwnerId() === $account->id()) && $account->hasPermission($own_permission));
     if ($has_access) {
-      return AccessResult::allowed()->cachePerUser()->cachePerPermissions()->addCacheableDependency($entity)->isAllowed();
+      return TRUE;
     }
 
     // No access has been given by the account permissions, check OG permissions
