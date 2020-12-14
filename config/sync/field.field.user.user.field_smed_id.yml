@@ -1,0 +1,20 @@
+uuid: 294a5930-6063-4a15-b244-e2ab14d5077c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_smed_id
+  module:
+    - user
+id: user.user.field_smed_id
+field_name: field_smed_id
+entity_type: user
+bundle: user
+label: 'SME Dashboard ID'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

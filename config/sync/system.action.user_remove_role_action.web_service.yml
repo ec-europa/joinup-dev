@@ -1,0 +1,15 @@
+uuid: 9e3a784f-ab14-4b6c-9e4d-03358a92721a
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.web_service
+  module:
+    - user
+id: user_remove_role_action.web_service
+label: 'Remove the Web service role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+weight: 0
+configuration:
+  rid: web_service

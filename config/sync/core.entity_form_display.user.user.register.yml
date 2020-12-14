@@ -6,6 +6,7 @@ dependencies:
     - core.entity_form_mode.user.register
     - field.field.user.user.field_last_password_reset
     - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_smed_id
     - field.field.user.user.field_social_media
     - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_content
@@ -64,6 +65,7 @@ content:
 hidden:
   field_last_password_reset: true
   field_password_expiration: true
+  field_smed_id: true
   field_social_media: true
   field_user_business_title: true
   field_user_content: true
