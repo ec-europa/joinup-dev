@@ -118,8 +118,8 @@ class StateMachinePermissionsHelper implements StateMachinePermissionsHelperInte
   public function getEntityStateFieldDefinitions(string $entity_type_id, string $bundle_id, array $field_names = []): array {
     return array_filter($this->entityFieldManager->getFieldDefinitions($entity_type_id, $bundle_id), function (FieldDefinitionInterface $field_definition) use ($field_names) {
       return empty($field_names) ?
-        $field_definition->getType() == 'state' :
-        $field_definition->getType() == 'state' && in_array($field_definition->getName(), $field_names);
+        $field_definition->getType() === 'state' :
+        $field_definition->getType() === 'state' && in_array($field_definition->getName(), $field_names);
     });
   }
 
