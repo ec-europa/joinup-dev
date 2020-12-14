@@ -109,6 +109,8 @@ class StateMachineOgSubscriber implements EventSubscriberInterface {
               // Create a fake transition permission to consistently manage all
               // changes to the entity since it is not supported in
               // state_machine.
+              // @todo Replace this with dedicated permissions.
+              // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6316
               $permission_string = StateMachinePermissionStringConstructor::constructTransitionPermission($entity_type_id, $bundle, $workflow, $to_state->getId(), $to_state->getId(), $permission);
               $permissions[$permission_string] = new GroupContentOperationPermission([
                 'name' => $permission_string,

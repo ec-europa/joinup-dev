@@ -15,9 +15,9 @@ class StateMachinePermissionStringConstructor {
    * Constructs a transition permission.
    *
    * @param string $entity_type_id
-   *   The entity type id.
+   *   The entity type ID.
    * @param string $bundle
-   *   The bundle id.
+   *   The bundle ID.
    * @param \Drupal\state_machine\Plugin\Workflow\WorkflowInterface $workflow
    *   The workflow.
    * @param string $from_state_id
@@ -37,7 +37,7 @@ class StateMachinePermissionStringConstructor {
   }
 
   /**
-   * Constructs a state update permission for an og group.
+   * Constructs a state update permission for an OG group.
    *
    * @param \Drupal\state_machine\Plugin\Workflow\WorkflowInterface $workflow
    *   The workflow plugin.

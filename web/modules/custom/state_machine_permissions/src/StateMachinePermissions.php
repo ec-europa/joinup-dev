@@ -64,7 +64,7 @@ class StateMachinePermissions implements ContainerInjectionInterface {
    * Returns an array of permissions per transmission for the given bundle.
    *
    * @param string $entity_type_id
-   *   The entity type id.
+   *   The entity type ID.
    * @param string $bundle
    *   The entity bundle.
    * @param array $field_names
