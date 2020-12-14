@@ -111,7 +111,7 @@ function joinup_subscription_mail_alter(array &$message): void {
     $notifier = $message['params']['notifier'] ?? NULL;
     if ($notifier instanceof MessageNotifierInterface) {
       $interval = $notifier->getPluginDefinition()['title'];
-      $message['subject'] = t('COVID-19 Challenge: @interval digest message', [
+      $message['subject'] = t('EIC Challenge: @interval digest message', [
         '@interval' => $interval,
       ]);
     }
