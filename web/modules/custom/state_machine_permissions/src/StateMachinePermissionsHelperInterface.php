@@ -13,7 +13,7 @@ interface StateMachinePermissionsHelperInterface {
    * Returns a list of state field definitions.
    *
    * @return array
-   *   An associative array where level 0 is the entity type id, level 1 are
+   *   An associative array where level 0 is the entity type ID, level 1 are
    *   the bundles with a state field and each bundle is an array of state
    *   fields that are attached to the entity.
    */
@@ -26,10 +26,10 @@ interface StateMachinePermissionsHelperInterface {
    * because in some cases, the state field can use a callback to retrieve the
    * workflow to use.
    * In these case, the method will return all workflows related to the given
-   * entity type id.
+   * entity type ID.
    *
    * @param string $entity_type_id
-   *   The entity type id that the bundle belongs to.
+   *   The entity type ID that the bundle belongs to.
    * @param string $bundle
    *   The entity bundle.
    * @param array $field_names
@@ -43,10 +43,10 @@ interface StateMachinePermissionsHelperInterface {
   public function getPossibleWorkflowsForBundle(string $entity_type_id, string $bundle, array $field_names = []): array;
 
   /**
-   * Returns a list of possible workflows for the entity type id.
+   * Returns a list of possible workflows for the entity type ID.
    *
    * @param string $entity_type_id
-   *   The entity type id.
+   *   The entity type ID.
    *
    * @return array
    *   The array of possible workflow definition arrays.
@@ -57,7 +57,7 @@ interface StateMachinePermissionsHelperInterface {
    * Returns a list of state field definitions.
    *
    * @param string $entity_type_id
-   *   The entity type id.
+   *   The entity type ID.
    * @param string $bundle_id
    *   The entity bundle.
    * @param array $field_names
