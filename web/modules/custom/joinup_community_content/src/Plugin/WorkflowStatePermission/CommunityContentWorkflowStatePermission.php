@@ -118,25 +118,25 @@ class CommunityContentWorkflowStatePermission extends PluginBase implements Work
 
     $any_permission = StateMachinePermissionStringConstructor::constructTransitionPermission($entity->getEntityTypeId(), $entity->bundle(), $workflow, $from_state, $to_state, TRUE);
     $own_permission = StateMachinePermissionStringConstructor::constructTransitionPermission($entity->getEntityTypeId(), $entity->bundle(), $workflow, $from_state, $to_state, FALSE);
-    $access_result = $account->hasPermission($any_permission) || (($entity->getOwnerId() === $account->id()) && $account->hasPermission($own_permission));
-    if ($access_result) {
+    $has_access = $account->hasPermission($any_permission) || (($entity->getOwnerId() === $account->id()) && $account->hasPermission($own_permission));
+    if ($has_access) {
       return AccessResult::allowed()->cachePerUser()->cachePerPermissions()->addCacheableDependency($entity)->isAllowed();
     }
 
     // No access has been given by the account permissions, check OG permissions
     // next.
     $group = $entity->getGroup();
-    $access_result = $this->workflowHelper->hasOgPermission($any_permission, $group, $account)
+    $has_access = $this->workflowHelper->hasOgPermission($any_permission, $group, $account)
       || ($entity->getOwnerId() === $account->id() && $this->workflowHelper->hasOgPermission($own_permission, $group, $account));
 
     // If the user has access to the 'request_deletion' transition but also has
     // delete permission to the entity, revoke the permission to request
     // deletion.
-    if ($access_result && $to_state === 'deletion_request') {
-      $access_result = !$entity->access('delete');
+    if ($has_access && $to_state === 'deletion_request') {
+      $has_access = !$entity->access('delete');
     }
 
-    return $access_result;
+    return $has_access;
   }
 
 }
