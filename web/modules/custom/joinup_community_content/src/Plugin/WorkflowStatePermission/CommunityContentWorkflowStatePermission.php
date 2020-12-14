@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_community_content\Plugin\WorkflowStatePermission;
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
