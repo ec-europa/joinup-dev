@@ -304,7 +304,7 @@ abstract class NotificationSubscriberBase {
    *   - Actor first name
    *   - Actor family name
    *   - Actor role
-   *   - Actor full name (This will be 'The COVID-19 Challenge Support Team' if
+   *   - Actor full name (This will be 'The EIC Challenge Support Team' if
    *   the user has the moderator role)
    *
    * @throws \Drupal\Core\Entity\EntityMalformedException

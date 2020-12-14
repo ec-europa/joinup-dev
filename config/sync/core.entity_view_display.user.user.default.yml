@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.user.user.field_last_password_reset
     - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_smed_id
     - field.field.user.user.field_social_media
     - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_content
@@ -23,6 +24,14 @@ targetEntityType: user
 bundle: user
 mode: default
 content:
+  field_smed_id:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_user_content:
     weight: 1
     label: hidden

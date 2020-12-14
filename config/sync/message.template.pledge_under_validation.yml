@@ -7,7 +7,7 @@ label: 'Pledge - Under publication'
 description: 'Notification to the pledge owner that their pledge is assigned for validation.'
 text:
   -
-    value: 'COVID-19 Challenge: Your pledge in "@group:title" @group:bundle is under validation'
+    value: '[easme:notifications-site-name]:  Your pledge in "@group:title" @group:bundle is under validation'
     format: full_html
   -
     value: '<p>A member of our staff has been assigned to verify the eligibility of your pledge and might contact you to complete the process. You will be notified for the conclusion of the validation process.</p>'

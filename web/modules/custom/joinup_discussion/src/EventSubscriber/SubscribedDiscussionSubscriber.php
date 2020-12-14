@@ -185,7 +185,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
     $actor = $this->getCurrentUser();
 
     if ($actor->hasRole('moderator')) {
-      $arguments['@actor:full_name'] = 'The COVID-19 Challenge Support Team';
+      $arguments['@actor:full_name'] = 'The EIC Challenge Team';
     }
     else {
       $arguments['@actor:full_name'] = $actor->getDisplayName();

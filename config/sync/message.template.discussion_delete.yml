@@ -9,7 +9,7 @@ label: 'Discussion deletion'
 description: 'Sent when a discussion has been deleted.'
 text:
   -
-    value: 'COVID-19 Challenge: The discussion "@entity:title" was deleted in the space of "@group:title"'
+    value: '[easme:notifications-site-name]:  The discussion "@entity:title" was deleted in the space of "@group:title"'
     format: full_html
   -
     value: 'for your information, the discussion "@entity:title" was deleted from the "@group:title" @group:bundle.'

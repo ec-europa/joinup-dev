@@ -85,7 +85,7 @@
               <td align="left" valign="top">
                 {% trans %}
                   <b>Kind regards,</b><br/>
-                  <small>The COVID-19 Challenge Support Team</small>
+                  <small>The {{ notification_site_name }} Support Team</small>
                 {% endtrans %}
               </td>
             </tr>
@@ -122,7 +122,7 @@
       <tr>
         <td height="100" align="center" valign="middle" bgcolor="#ffffff">
           {% trans %}
-            You received this email because you opted in for Joinup digest messages.<br/>
+            You received this email because you opted in for {{ notification_site_name }} digest messages.<br/>
             <a href="{{ subscription_url }}">Manage</a> your subscription notifications or <a href="{{ unsubscription_url }}">unsubscribe</a> from all.<br/>
             <a href="{{ contact_url }}">Contact us</a>.
           {% endtrans %}

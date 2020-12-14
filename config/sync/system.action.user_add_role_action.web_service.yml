@@ -1,0 +1,15 @@
+uuid: 7d8324ec-ba30-46cd-b5d0-2fc04fd3287e
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.web_service
+  module:
+    - user
+id: user_add_role_action.web_service
+label: 'Add the Web service role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+weight: 0
+configuration:
+  rid: web_service

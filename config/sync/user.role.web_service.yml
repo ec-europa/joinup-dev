@@ -1,0 +1,11 @@
+uuid: d6eca205-38a0-47ef-8f18-84c259d5588a
+langcode: en
+status: true
+dependencies: {  }
+id: web_service
+label: 'Web service'
+weight: 6
+is_admin: null
+permissions:
+  - 'administer users'
+  - 'restful post easme_user_update_rest_resource'
