@@ -74,7 +74,7 @@ class StateMachinePermissions implements ContainerInjectionInterface {
    *   An array of permissions keyed by the permission id where each entry
    *   contains the 'label' key and the description.
    */
-  public function generateWorkflowPermissionsForBundle($entity_type_id, $bundle, array $field_names) {
+  protected function generateWorkflowPermissionsForBundle(string $entity_type_id, string $bundle, array $field_names): array {
     $workflows = $this->permissionsHelper->getPossibleWorkflowsForBundle($entity_type_id, $bundle, $field_names);
 
     $permissions = [];
