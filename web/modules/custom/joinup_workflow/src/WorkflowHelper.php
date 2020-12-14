@@ -104,7 +104,8 @@ class WorkflowHelper implements WorkflowHelperInterface {
     }, $allowed_transitions);
 
     $current_state = $entity->getWorkflowState();
-    if ($this->workflowStatePermission->isStateUpdatePermitted($account, $entity, $current_state, $current_state)) {
+    $workflow = $entity->getWorkflow();
+    if ($this->workflowStatePermission->isStateUpdatePermitted($account, $entity, $workflow, $current_state, $current_state)) {
       $allowed_states[$current_state] = $current_state;
     }
 
@@ -240,6 +241,19 @@ class WorkflowHelper implements WorkflowHelperInterface {
     }
 
     return reset($groups['rdf_entity']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasOgPermission(string $permission, EntityInterface $group, AccountInterface $user): bool {
+    $actual_permissions = [];
+    if ($membership = $this->membershipManager->getMembership($group, $user->id())) {
+      foreach ($membership->getRoles() as $role) {
+        $actual_permissions = array_merge($actual_permissions, $role->getPermissions());
+      }
+    }
+    return in_array($permission, array_unique($actual_permissions));
   }
 
 }

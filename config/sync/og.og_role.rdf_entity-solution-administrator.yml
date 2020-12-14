@@ -16,4 +16,5 @@ group_id: null
 permissions:
   - 'message notification on validate'
   - 'request solution deletion'
+  - 'solution - solution_workflow - transition from validated to deletion_request'
 role_type: null

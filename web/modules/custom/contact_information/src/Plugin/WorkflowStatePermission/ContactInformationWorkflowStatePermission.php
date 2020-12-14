@@ -13,6 +13,7 @@ use Drupal\contact_information\ContactInformationRelationInfoInterface;
 use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -106,7 +107,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
   /**
    * {@inheritdoc}
    */
-  public function isStateUpdatePermitted(AccountInterface $account, EntityInterface $entity, string $from_state, string $to_state): bool {
+  public function isStateUpdatePermitted(AccountInterface $account, EntityInterface $entity, WorkflowInterface $workflow, string $from_state, string $to_state): bool {
     if ($account->hasPermission('administer rdf entity')) {
       return TRUE;
     }

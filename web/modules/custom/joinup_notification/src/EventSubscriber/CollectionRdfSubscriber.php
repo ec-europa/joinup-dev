@@ -479,8 +479,6 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
     $arguments = parent::generateArguments($entity);
     /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = $arguments['@actor:field_user_first_name'];
-    $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
     $arguments['@transition:motivation'] = $motivation;
 
@@ -533,9 +531,9 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * @return bool
    *   Whether the entity has a published version.
    *
-   * @see: joinup_notification_rdf_entity_presave()
+   * @see joinup_notification_rdf_entity_presave()
    */
-  protected function hasPublishedVersion(EntityInterface $entity) {
+  protected function hasPublishedVersion(EntityInterface $entity): bool {
     if (isset($entity->hasPublished)) {
       return ($entity->hasPublished);
     }
@@ -549,7 +547,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * @param array $user_data
    *    The user data array.
    *
-   * @see: ::getUsersMessages() for more information on the array.
+   * @see ::getUsersMessages() for more information on the array.
    */
   protected function getUsersAndSend(array $user_data) {
     $user_data = $this->getUsersMessages($user_data);

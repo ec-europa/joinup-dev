@@ -50,7 +50,7 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
     /** @var \Drupal\joinup_workflow\EntityWorkflowStateInterface $entity */
     $from_state = $entity->getWorkflowState();
     $to_state = $transition->getToState()->getId();
-    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $from_state, $to_state);
+    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $workflow, $from_state, $to_state);
   }
 
 }

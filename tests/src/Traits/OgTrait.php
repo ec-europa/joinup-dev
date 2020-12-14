@@ -6,6 +6,7 @@ namespace Drupal\joinup\Traits;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
@@ -23,8 +24,8 @@ trait OgTrait {
    *
    * @param \Drupal\Core\Session\AccountInterface $user
    *   The user to be assigned as a group member.
-   * @param \Drupal\Core\Entity\EntityInterface $group
-   *   The organic group entity.
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
+   *   The Joinup group entity.
    * @param \Drupal\og\Entity\OgRole[] $roles
    *   An array of OgRoles to be passed to the membership.
    * @param string|null $state
@@ -39,11 +40,7 @@ trait OgTrait {
    *    Throws an exception when the user is anonymous or the entity is not a
    *    group.
    */
-  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $group, array $roles = [], ?string $state = NULL, ?int $created = NULL): void {
-    if (!Og::isGroup($group->getEntityTypeId(), $group->bundle())) {
-      throw new \Exception("The {$group->label()} is not a group.");
-    }
-
+  protected function subscribeUserToGroup(AccountInterface $user, GroupInterface $group, array $roles = [], ?string $state = NULL, ?int $created = NULL): void {
     // If a membership already exists, load it. Otherwise create a new one.
     /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
     $membership_manager = \Drupal::service('og.membership_manager');
