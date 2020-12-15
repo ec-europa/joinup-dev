@@ -103,11 +103,11 @@ function joinup_group_form_rdf_entity_form_alter(&$form, FormStateInterface $for
   // Add submit callback when the current bundle is in the list and when we are
   // in an affected operation type.
   $operation_types = ['add', 'default', 'propose'];
-  if (JoinupGroupHelper::isGroup($entity) && in_array($form_object->getOperation(), $operation_types)) {
+  if ($entity instanceof GroupInterface && in_array($form_object->getOperation(), $operation_types)) {
     $form['actions']['submit']['#submit'][] = 'joinup_group_propose_message_submit';
   }
 
-  if (JoinupGroupHelper::isGroup($entity)) {
+  if ($entity instanceof GroupInterface) {
     // If the entity has been published, only moderators can edit the short ID.
     // @todo Implement the EntityPublishedInterface for collections and
     //   solutions once we have the bundle classes in.
@@ -126,10 +126,10 @@ function joinup_group_form_rdf_entity_form_alter(&$form, FormStateInterface $for
 function joinup_group_propose_message_submit(&$form, FormStateInterface $form_state) {
   $form_object = $form_state->getFormObject();
   $entity = $form_object->getEntity();
-  $state = JoinupGroupHelper::getState($entity);
-
-  if ($state === 'proposed') {
-    \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $entity->get('rid')->entity->getSingularLabel()]));
+  if ($entity instanceof EntityWorkflowStateInterface) {
+    if ($entity->getWorkflowState() === 'proposed') {
+      \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $entity->get('rid')->entity->getSingularLabel()]));
+    }
   }
 }
 
@@ -143,7 +143,7 @@ function joinup_group_propose_message_submit(&$form, FormStateInterface $form_st
  * @todo hook api definition is needed.
  */
 function joinup_group_entity_graph_access(EntityInterface $entity, string $operation, AccountInterface $account, string $graph_name): AccessResult {
-  if (!$entity || !JoinupGroupHelper::isGroup($entity) || $operation != 'view' || $graph_name == 'default') {
+  if (!$entity || !$entity instanceof GroupInterface || $operation != 'view' || $graph_name == 'default') {
     return AccessResult::neutral();
   }
 
@@ -170,7 +170,7 @@ function joinup_group_entity_graph_access(EntityInterface $entity, string $opera
  * Implements hook_ENTITY_TYPE_insert() for RDF entities.
  */
 function joinup_group_rdf_entity_insert(RdfInterface $group): void {
-  if (!JoinupGroupHelper::isGroup($group)) {
+  if (!$group instanceof GroupInterface) {
     return;
   }
 
@@ -205,7 +205,7 @@ function joinup_group_rdf_entity_insert(RdfInterface $group): void {
  * empty.
  */
 function joinup_group_rdf_entity_presave(EntityInterface $entity) {
-  if (!JoinupGroupHelper::isGroup($entity)) {
+  if (!$entity instanceof GroupInterface) {
     return;
   }
 
@@ -250,7 +250,7 @@ function joinup_group_rdf_entity_presave(EntityInterface $entity) {
  * @see \joinup_group_rdf_entity_presave()
  */
 function joinup_group_rdf_entity_update(EntityInterface $entity) {
-  if (!JoinupGroupHelper::isGroup($entity)) {
+  if (!$entity instanceof GroupInterface) {
     return;
   }
 

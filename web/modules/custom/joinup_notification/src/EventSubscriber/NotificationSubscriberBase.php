@@ -9,12 +9,12 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Url;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_workflow\WorkflowHelperInterface;
-use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\user\Entity\User;
@@ -68,13 +68,6 @@ abstract class NotificationSubscriberBase {
   protected $currentUser;
 
   /**
-   * The group type manager.
-   *
-   * @var \Drupal\og\GroupTypeManager
-   */
-  protected $groupTypeManager;
-
-  /**
    * The membership manager service.
    *
    * @var \Drupal\og\MembershipManagerInterface
@@ -104,8 +97,6 @@ abstract class NotificationSubscriberBase {
    *   The config factory service.
    * @param \Drupal\Core\Session\AccountProxy $current_user
    *   The current user service.
-   * @param \Drupal\og\GroupTypeManager $og_group_type_manager
-   *   The og group type manager service.
    * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
    *   The og membership manager service.
    * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper
@@ -113,11 +104,10 @@ abstract class NotificationSubscriberBase {
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The message delivery service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManagerInterface $og_membership_manager, WorkflowHelperInterface $workflow_helper, JoinupMessageDeliveryInterface $message_delivery) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, MembershipManagerInterface $og_membership_manager, WorkflowHelperInterface $workflow_helper, JoinupMessageDeliveryInterface $message_delivery) {
     $this->entityTypeManager = $entity_type_manager;
     $this->configFactory = $config_factory;
     $this->currentUser = $current_user;
-    $this->groupTypeManager = $og_group_type_manager;
     $this->membershipManager = $og_membership_manager;
     $this->workflowHelper = $workflow_helper;
     $this->messageDelivery = $message_delivery;
@@ -269,7 +259,7 @@ abstract class NotificationSubscriberBase {
    *   An array of user ids.
    */
   protected function getRecipientIdsByOgRole(EntityInterface $entity, OgRoleInterface $role): array {
-    if (!$this->groupTypeManager->isGroup($entity->getEntityTypeId(), $entity->bundle())) {
+    if (!$entity instanceof GroupInterface) {
       $entity = JoinupGroupHelper::getGroup($entity);
     }
     if (empty($entity)) {

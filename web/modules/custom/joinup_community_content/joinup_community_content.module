@@ -16,7 +16,9 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_community_content\JoinupCommunityContentCommentAccessControlHandler;
+use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\node\NodeInterface;
 
@@ -57,7 +59,7 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
  * Implements hook_node_access().
  */
 function joinup_community_content_node_access(NodeInterface $entity, string $operation, AccountInterface $account): AccessResult {
-  if (!CommunityContentHelper::isCommunityContent($entity)) {
+  if (!$entity instanceof CommunityContentInterface) {
     return AccessResult::neutral();
   }
   return \Drupal::service('joinup_community_content.community_content_workflow_access')->entityAccess($entity, $operation, $account);
@@ -122,16 +124,17 @@ function joinup_community_content_attachment_file_process($element, FormStateInt
  */
 function joinup_community_content_workflow_selector(EntityInterface $entity): ?string {
   $bundles = ['document', 'event', 'news'];
-  if ($entity->getEntityTypeId() !== 'node' || !in_array($entity->bundle(), $bundles)) {
+  if (!$entity instanceof CommunityContentInterface || !in_array($entity->bundle(), $bundles)) {
+    // @todo Document why this doesn't apply to discussions.
     throw new \InvalidArgumentException('This function can only be called for community content apart from discussion.');
   }
 
-  $parent_entity = JoinupGroupHelper::getGroup($entity);
-  $current_user = \Drupal::currentUser();
-
-  // If the entity doesn't have a parent group we cannot determine the workflow.
-  // This can happen e.g. when deleting orphaned group content.
-  if (empty($parent_entity)) {
+  try {
+    $parent_entity = $entity->getGroup();
+  }
+  catch (MissingGroupException $e) {
+    // If the entity doesn't have a parent group we cannot determine the
+    // workflow. This can happen e.g. when deleting orphaned group content.
     return NULL;
   }
 
@@ -146,6 +149,7 @@ function joinup_community_content_workflow_selector(EntityInterface $entity): ?s
   // As with workflows, we only check for permissions here because we don't want
   // users with admin permissions to always go through the post moderated
   // workflow.
+  $current_user = \Drupal::currentUser();
   if ($current_user->hasPermission('bypass group moderation')) {
     return 'node:post_moderated';
   }

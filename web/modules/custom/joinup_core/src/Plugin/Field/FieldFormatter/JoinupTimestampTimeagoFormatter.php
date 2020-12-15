@@ -13,7 +13,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\TimestampFormatter;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Serialization\Yaml;
-use Drupal\og\Og;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -182,7 +182,7 @@ class JoinupTimestampTimeagoFormatter extends TimestampFormatter {
 
     $tags = [];
     // If the entity is a OG group, add the cache tag of its group content.
-    if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle())) {
+    if ($entity instanceof GroupInterface) {
       // Add all the node group content once.
       $tags = Cache::mergeTags($tags, Cache::buildTags('og-group-content', $entity->getCacheTagsToInvalidate()));
     }

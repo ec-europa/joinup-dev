@@ -13,7 +13,6 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\og\MembershipManagerInterface;
-use Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
@@ -97,14 +96,16 @@ class WorkflowHelper implements WorkflowHelperInterface {
    * {@inheritdoc}
    */
   public function getAvailableTargetStates(FieldableEntityInterface $entity, ?AccountInterface $account = NULL): array {
+    /** @var \Drupal\joinup_workflow\EntityWorkflowStateInterface $entity */
     $allowed_transitions = $this->getAvailableTransitions($entity, $account);
 
     $allowed_states = array_map(function (WorkflowTransition $transition) {
       return (string) $transition->getToState()->getId();
     }, $allowed_transitions);
 
-    $current_state = $this->getEntityStateField($entity)->value;
-    if ($this->workflowStatePermission->isStateUpdatePermitted($account, $entity, $current_state, $current_state)) {
+    $current_state = $entity->getWorkflowState();
+    $workflow = $entity->getWorkflow();
+    if ($this->workflowStatePermission->isStateUpdatePermitted($account, $entity, $workflow, $current_state, $current_state)) {
       $allowed_states[$current_state] = $current_state;
     }
 
@@ -115,6 +116,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
    * {@inheritdoc}
    */
   public function getAvailableTransitions(FieldableEntityInterface $entity, ?AccountInterface $account = NULL): array {
+    /** @var \Drupal\joinup_workflow\EntityWorkflowStateInterface $entity */
     // Set the current user so that states available are retrieved for the
     // specific account.
     // The proper solution would be to pass the account to the state_machine
@@ -127,24 +129,13 @@ class WorkflowHelper implements WorkflowHelperInterface {
       $account_switched = TRUE;
     }
 
-    $transitions = $this->getEntityStateField($entity)->getTransitions();
+    $transitions = $entity->getWorkflowStateField()->getTransitions();
 
     if ($account_switched) {
       $this->accountSwitcher->switchBack();
     }
 
     return $transitions;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getEntityStateField(FieldableEntityInterface $entity): StateItemInterface {
-    $field_definition = $this->getEntityStateFieldDefinition($entity->getEntityTypeId(), $entity->bundle());
-    if ($field_definition === NULL) {
-      throw new \Exception('No state fields were found in the entity.');
-    }
-    return $entity->{$field_definition->getName()}->first();
   }
 
   /**
@@ -179,13 +170,6 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function hasEntityStateField(string $entity_type_id, string $bundle_id): bool {
-    return (bool) $this->getEntityStateFieldDefinitions($entity_type_id, $bundle_id);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function isWorkflowStatePublished(string $state_id, WorkflowInterface $workflow): bool {
     // We rely on being able to inspect the plugin definition. Throw an error if
     // this is not the case.
@@ -198,50 +182,6 @@ class WorkflowHelper implements WorkflowHelperInterface {
     // are stored there.
     $raw_workflow_definition = $workflow->getPluginDefinition();
     return !empty($raw_workflow_definition['states'][$state_id]['published']);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getWorkflow(EntityInterface $entity, ?string $state_field_name = NULL): ?WorkflowInterface {
-    if (empty($state_field_name)) {
-      $state_field_item = $this->getEntityStateField($entity);
-      if (empty($state_field_item)) {
-        return NULL;
-      }
-      $state_field_name = $state_field_item->getName();
-    }
-
-    return $entity->get($state_field_name)->first()->getWorkflow();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function findTransitionOnUpdate(EntityInterface $entity, ?string $state_field_name = NULL): ?WorkflowTransition {
-    if (empty($state_field_name)) {
-      $state_field_item = $this->getEntityStateField($entity);
-      if (empty($state_field_item)) {
-        return NULL;
-      }
-      $state_field_name = $state_field_item->getName();
-    }
-
-    // If there is no original version, then it is not an update.
-    if (empty($entity->original)) {
-      return NULL;
-    }
-
-    /** @var \Drupal\state_machine\Plugin\Workflow\WorkflowInterface $workflow */
-    $workflow = $entity->get($state_field_name)->first()->getWorkflow();
-    $original_state = $entity->original->get($state_field_name)->first()->value;
-    $target_state = $entity->get($state_field_name)->first()->value;
-    if ($original_state !== $target_state) {
-      return NULL;
-    }
-
-    $transition = $workflow->findTransition($original_state, $target_state);
-    return $transition;
   }
 
   /**
@@ -301,6 +241,19 @@ class WorkflowHelper implements WorkflowHelperInterface {
     }
 
     return reset($groups['rdf_entity']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasOgPermission(string $permission, EntityInterface $group, AccountInterface $user): bool {
+    $actual_permissions = [];
+    if ($membership = $this->membershipManager->getMembership($group, $user->id())) {
+      foreach ($membership->getRoles() as $role) {
+        $actual_permissions = array_merge($actual_permissions, $role->getPermissions());
+      }
+    }
+    return in_array($permission, array_unique($actual_permissions));
   }
 
 }

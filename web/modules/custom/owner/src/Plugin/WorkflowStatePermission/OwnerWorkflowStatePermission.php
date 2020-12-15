@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -73,7 +74,7 @@ class OwnerWorkflowStatePermission extends PluginBase implements WorkflowStatePe
   /**
    * {@inheritdoc}
    */
-  public function isStateUpdatePermitted(AccountInterface $account, EntityInterface $entity, string $from_state, string $to_state): bool {
+  public function isStateUpdatePermitted(AccountInterface $account, EntityInterface $entity, WorkflowInterface $workflow, string $from_state, string $to_state): bool {
     $allowed_conditions = $this->configFactory->get('owner.settings')->get('transitions');
 
     if ($account->hasPermission('administer rdf entity')) {

@@ -118,7 +118,7 @@ class ValidUpdateNameSniff extends ValidFunctionNameSniff {
         $data = [$functionName, $minorVersionTag];
       }
       else {
-        $nextVersionCandidates = static::getNextVersionCandidates($majorVersion, $minorVersion);
+        $nextVersionCandidates = static::getNextVersionCandidates();
         if (!in_array(substr($name, 0, 5), $nextVersionCandidates)) {
           $error = "Invalid '%s' identifier. The first 5 digits should be '%s' or '%s'";
           $data = [$name, $nextVersionCandidates[0], $nextVersionCandidates[1]];

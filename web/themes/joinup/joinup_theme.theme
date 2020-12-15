@@ -1799,6 +1799,27 @@ function joinup_theme_preprocess_rdf_entity__solution__listing_item(&$variables)
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for rdf-entity--solution--group-header.html.twig.
+ */
+function joinup_theme_preprocess_rdf_entity__solution__group_header(&$variables) {
+  if (isset($variables['content']['releases_overview'])) {
+    $variables['content']['releases_overview']['#attributes'] = [
+      'role' => 'button',
+      'class' => [
+        'featured__form-button',
+        'button',
+        'button--blue-light',
+        'mdl-button',
+        'mdl-js-button',
+        'mdl-button--raised',
+        'mdl-js-ripple-effect',
+        'mdl-button--accent',
+      ],
+    ];
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for node--discussion--listing-item.html.twig.
  *
  * Provides the comment count as a variable.
