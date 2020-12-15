@@ -4,12 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_notification;
 
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\collection\Entity\CollectionContentInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\og\OgMembershipInterface;
+use Drupal\solution\Entity\SolutionInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Provides a base class for the group content subscription subscriber classe.
@@ -63,7 +65,7 @@ abstract class GroupContentDigestSubscriberBase {
     $entity = $event->getEntity();
 
     // Only notify if the newly created content is published.
-    if (!$entity->isPublished()) {
+    if (!$entity instanceof CollectionContentInterface || !$entity->isPublished()) {
       return;
     }
 
@@ -81,7 +83,7 @@ abstract class GroupContentDigestSubscriberBase {
     $entity = $event->getEntity();
 
     // Only notify if the content is being published for the first time.
-    if (!$entity->isPublished() || empty($entity->original) || $entity->original->isPublished() || !$this->isFirstPublishedRevision($entity)) {
+    if (!$entity instanceof CollectionContentInterface || !$entity->isPublished() || empty($entity->original) || $entity->original->isPublished() || !$this->isFirstPublishedRevision($entity)) {
       return;
     }
 
@@ -97,12 +99,12 @@ abstract class GroupContentDigestSubscriberBase {
    * @return \Drupal\user\UserInterface[]
    *   The list of subscribers as an array of user accounts, keyed by user ID.
    */
-  protected function getSubscribers(ContentEntityInterface $entity): array {
+  protected function getSubscribers(CollectionContentInterface $entity): array {
     $membership_storage = $this->entityTypeManager->getStorage('og_membership');
     $membership_ids = $membership_storage
       ->getQuery()
       ->condition('entity_type', 'rdf_entity')
-      ->condition('entity_id', $this->getGroupId($entity))
+      ->condition('entity_id', $entity->getCollection()->id())
       ->condition('state', OgMembershipInterface::STATE_ACTIVE)
       ->condition('subscription_bundles', $entity->bundle())
       ->execute();

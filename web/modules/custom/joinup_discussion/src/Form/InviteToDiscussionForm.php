@@ -10,7 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
-use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\joinup_discussion\Entity\DiscussionInterface;
 use Drupal\joinup_invite\Form\InviteFormBase;
 use Drupal\joinup_invite\InvitationMessageHelperInterface;
 use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
@@ -182,14 +182,13 @@ class InviteToDiscussionForm extends InviteFormBase {
     $access = FALSE;
 
     // The node should be a published discussion.
-    if ($node->bundle() === 'discussion' && $node->isPublished()) {
+    if ($node instanceof DiscussionInterface && $node->isPublished()) {
       // Only allow access if the current user is a group administrator (a.k.a.
       // the user is a moderator), has permission to invite users to discussions
       // in the solution or collection that contains the discussion (a.k.a. the
       // user is a facilitator), or the author of the discussion itself.
       $user = $account->getAccount();
-      /** @var \Drupal\rdf_entity\Entity\Rdf $group */
-      $group = JoinupGroupHelper::getGroup($node);
+      $group = $node->getGroup();
 
       $is_group_administrator = $user->hasPermission('administer organic groups');
       $is_owner = $user->id() == $node->getOwnerId();

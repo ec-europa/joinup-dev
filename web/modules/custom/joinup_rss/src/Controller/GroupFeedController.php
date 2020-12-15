@@ -7,7 +7,7 @@ namespace Drupal\joinup_rss\Controller;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\rdf_entity\RdfInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
 use Drupal\sparql_entity_storage\UriEncoder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -55,8 +55,7 @@ class GroupFeedController extends ControllerBase {
   public function access(string $rdf_entity): AccessResultInterface {
     $loaded_entity = $this->sparqlStorage->load(UriEncoder::decodeUrl($rdf_entity));
     return AccessResult::allowedIf(
-      $loaded_entity instanceof RdfInterface &&
-      in_array($loaded_entity->bundle(), ['collection', 'solution']) &&
+      $loaded_entity instanceof GroupInterface &&
       $loaded_entity->isPublished()
     )->addCacheableDependency($loaded_entity);
   }

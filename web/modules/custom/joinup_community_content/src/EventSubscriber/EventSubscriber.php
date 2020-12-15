@@ -8,7 +8,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent;
 use Drupal\og\Event\PermissionEventInterface as OgPermissionEventInterface;
 use Drupal\og\GroupContentOperationPermission;
@@ -158,12 +158,13 @@ class EventSubscriber implements EventSubscriberInterface {
    */
   public function onUnchangedWorkflowStateUpdate(UnchangedWorkflowStateUpdateEvent $event): void {
     $entity = $event->getEntity();
-    if (!CommunityContentHelper::isCommunityContent($entity)) {
+    if (!$entity instanceof CommunityContentInterface) {
       return;
     }
 
     $state = $event->getState();
-    $permitted = $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $event->getEntity(), $state, $state);
+    $workflow = $entity->get('field_state')->first()->getWorkflow();
+    $permitted = $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $event->getEntity(), $workflow, $state, $state);
     $access = AccessResult::forbiddenIf(!$permitted);
     $access->addCacheContexts(['user.roles', 'og_role']);
     $event->setAccess($access);

@@ -212,7 +212,7 @@ function asset_release_rdf_entity_access(EntityInterface $release, $operation, A
  * Default graph is published. Draft graph is draft.
  */
 function asset_release_rdf_entity_presave(EntityInterface $entity) {
-  if ($entity->bundle() !== 'asset_release') {
+  if (!$entity instanceof AssetReleaseInterface) {
     // Act only on releases.
     return;
   }
@@ -234,7 +234,7 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
     return;
   }
 
-  $state = $entity->field_isr_state->value;
+  $state = $entity->getWorkflowState();
   if (in_array($state, ['draft', 'needs_update'])) {
     $entity->set('graph', 'draft');
   }
@@ -242,10 +242,10 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
     $entity->set('graph', SparqlGraphInterface::DEFAULT);
   }
   elseif (empty($state)) {
-    throw new \Exception("State field not found while trying to get the appropriate graph.");
+    throw new \Exception('State field not found while trying to get the appropriate graph.');
   }
   else {
-    throw new \Exception("State field value is invalid. Current value found: " . $state);
+    throw new \Exception("State field value is invalid. Current value found: $state");
   }
 }
 
