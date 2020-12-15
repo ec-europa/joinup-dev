@@ -4,14 +4,13 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_notification;
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\collection\Entity\CollectionContentInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\og\OgMembershipInterface;
-use Drupal\solution\Entity\SolutionInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Provides a base class for the group content subscription subscriber classe.
@@ -160,7 +159,7 @@ abstract class GroupContentDigestSubscriberBase {
   /**
    * Returns whether the passed in entity is the first published revision.
    *
-   * @param \Drupal\Core\Entity\EntityPublishedInterface $entity
+   * @param \Drupal\Core\Entity\EntityPublishedInterface|\Drupal\Core\Entity\RevisionableInterface $entity
    *   The entity to check.
    *
    * @return bool
