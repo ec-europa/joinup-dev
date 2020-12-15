@@ -7,7 +7,6 @@ package: Joinup
 dependencies:
   - drupal:options
   - flag:flag
-  - joinup:joinup_core
   - joinup:joinup_group
   - message_digest:message_digest
 
