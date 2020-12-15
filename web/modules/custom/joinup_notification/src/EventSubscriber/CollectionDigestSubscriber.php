@@ -5,11 +5,11 @@ declare(strict_types = 1);
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\GroupContentDigestSubscriberBase;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_subscription\DigestFormatter;
+use Drupal\solution\Entity\SolutionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -47,7 +47,7 @@ class CollectionDigestSubscriber extends GroupContentDigestSubscriberBase implem
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     $entity = $event->getEntity();
     if (
-      !JoinupGroupHelper::isSolution($entity) ||
+      !$entity instanceof SolutionInterface ||
       $entity->get('collection')->isEmpty() ||
       !$entity->isPublished() ||
       // Note: the `->hasPublished` property is a hack that will be removed once
