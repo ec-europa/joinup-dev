@@ -17,6 +17,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\collection\Entity\Collection;
+use Drupal\collection\Entity\CollectionInterface;
 use Drupal\collection\Entity\GlossaryTerm;
 use Drupal\collection\Plugin\Field\FieldType\LastUpdatedFieldItemList;
 use Drupal\node\NodeInterface;
@@ -171,7 +172,7 @@ function collection_rdf_entity_access(EntityInterface $entity, $operation, Accou
  * Default graph is published. Draft graph is draft.
  */
 function collection_rdf_entity_presave(RdfInterface $entity) {
-  if ($entity->bundle() !== 'collection') {
+  if (!$entity instanceof CollectionInterface) {
     return;
   }
 
@@ -189,7 +190,7 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
     return;
   }
 
-  $state = $entity->field_ar_state->value;
+  $state = $entity->getWorkflowState();
   if (in_array($state, ['draft', 'proposed'])) {
     $entity->set('graph', 'draft');
   }
@@ -215,11 +216,11 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
  * - When the entity is saved into the default graph, the draft must be deleted.
  */
 function collection_rdf_entity_update(EntityInterface $entity) {
-  if ($entity->bundle() !== 'collection' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
+  if (!$entity instanceof CollectionInterface || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
     return;
   }
 
-  if ($entity->field_ar_state->value === 'validated') {
+  if ($entity->getWorkflowState() === 'validated') {
     \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'draft');
   }
 }

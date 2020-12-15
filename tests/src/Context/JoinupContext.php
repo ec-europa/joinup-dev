@@ -995,8 +995,9 @@ class JoinupContext extends RawDrupalContext {
    * @Then the :title :type content should have the :state state
    */
   public function assertNodeWorkflowState(string $title, string $type, string $state): void {
+    /** @var \Drupal\joinup_workflow\EntityWorkflowStateInterface $node */
     $node = $this->getNodeByTitle($title, $type);
-    $actual = $this->getEntityStateField($node)->get('value')->getString();
+    $actual = $node->getWorkflowState();
     Assert::assertEquals($state, $actual, "The $title $type content has the expected state '$state' (actual: '$actual')");
   }
 
@@ -1018,8 +1019,9 @@ class JoinupContext extends RawDrupalContext {
    */
   public function updateWorkflowState(string $title, string $entity_type, string $state): void {
     $entity_type = self::translateEntityTypeAlias($entity_type);
+    /** @var \Drupal\joinup_workflow\EntityWorkflowStateInterface|\Drupal\Core\Entity\EntityInterface $entity */
     $entity = $this->getEntityByLabel($entity_type, $title);
-    $this->getEntityStateField($entity)->set('value', $state);
+    $entity->setWorkflowState($state);
 
     // Only create a new revision if the entity type supports it.
     if ($entity->getEntityType()->isRevisionable()) {

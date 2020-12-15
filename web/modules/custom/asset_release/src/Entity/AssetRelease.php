@@ -35,6 +35,17 @@ class AssetRelease extends Rdf implements AssetReleaseInterface {
   /**
    * {@inheritdoc}
    */
+  public function getGroupId(): string {
+    $ids = $this->getReferencedEntityIds('field_isr_is_version_of');
+    if (empty($ids['rdf_entity'])) {
+      throw new MissingGroupException();
+    }
+    return array_shift($ids['rdf_entity']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getWorkflowStateFieldName(): string {
     return 'field_isr_state';
   }

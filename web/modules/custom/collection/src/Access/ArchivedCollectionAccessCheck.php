@@ -39,7 +39,7 @@ class ArchivedCollectionAccessCheck implements AccessInterface {
     $collection = $route_match->getParameter('rdf_entity');
 
     // If the collection is archived, content creation is not allowed.
-    if ($collection instanceof CollectionInterface && $collection->get('field_ar_state')->value === 'archived') {
+    if ($collection instanceof CollectionInterface && $collection->getWorkflowState() === 'archived') {
       return AccessResult::forbidden();
     }
 

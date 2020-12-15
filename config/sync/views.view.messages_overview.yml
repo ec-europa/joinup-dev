@@ -428,7 +428,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          delta: ''
+          delta: null
           entity_type: message
           plugin_id: get_text
         nothing:

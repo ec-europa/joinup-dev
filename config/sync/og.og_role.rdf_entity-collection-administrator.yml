@@ -15,4 +15,5 @@ group_bundle: collection
 group_id: null
 permissions:
   - 'request collection deletion'
+  - 'transition group from validated to archival_request using the collection - collection_workflow workflow'
 role_type: null

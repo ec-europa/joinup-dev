@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_workflow;
 
+use Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface;
+use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
+
 /**
  * Reusable methods for entities that have a workflow state field.
  */
@@ -23,9 +26,37 @@ trait EntityWorkflowStateTrait {
    * {@inheritdoc}
    */
   public function setWorkflowState(string $state): EntityWorkflowStateInterface {
-    assert(method_exists($this, 'getWorkflowStateFieldName'), __TRAIT__ . ' depends on EntityWorkflowStateInterface. Please implement it in your class.');
-    $this->get($this->getWorkflowStateFieldName())->setValue($state);
+    $this->getWorkflowStateField()->setValue($state);
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasWorkflow(): bool {
+    return $this->getWorkflowStateField()->getWorkflow() instanceof WorkflowInterface;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWorkflow(): WorkflowInterface {
+    $workflow = $this->getWorkflowStateField()->getWorkflow();
+    if (!$workflow instanceof WorkflowInterface) {
+      throw new \UnexpectedValueException(sprintf('No workflow object returned for entity of type %s with ID %s.', $this->getEntityTypeId(), (string) $this->id()));
+    }
+    return $workflow;
+  }
+
+  /**
+   * Returns the workflow state field item for this entity.
+   *
+   * @return \Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface
+   *   The workflow state field item.
+   */
+  public function getWorkflowStateField(): StateItemInterface {
+    assert(method_exists($this, 'getWorkflowStateFieldName'), __TRAIT__ . ' depends on EntityWorkflowStateInterface. Please implement it in your class.');
+    return $this->get($this->getWorkflowStateFieldName())->first();
   }
 
 }

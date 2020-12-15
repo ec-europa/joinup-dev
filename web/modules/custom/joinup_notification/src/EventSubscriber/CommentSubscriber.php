@@ -6,6 +6,8 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\joinup_group\Entity\GroupContentInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\MessageArgumentGenerator;
@@ -75,10 +77,10 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
     $comment = $this->entity;
     $this->parent = $comment->getCommentedEntity();
     if (!empty($this->parent)) {
-      if ($this->groupTypeManager->isGroup($this->parent->getEntityTypeId(), $this->parent->bundle())) {
+      if ($this->parent instanceof GroupInterface) {
         $this->group = $this->parent;
       }
-      elseif ($this->groupTypeManager->isGroupContent($this->parent->getEntityTypeId(), $this->parent->bundle())) {
+      elseif ($this->parent instanceof GroupContentInterface) {
         $this->group = JoinupGroupHelper::getGroup($this->parent);
       }
     }

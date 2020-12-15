@@ -12,11 +12,11 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\node\NodeStorageInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\MembershipManagerInterface;
-use Drupal\og\OgGroupAudienceHelperInterface;
 
 /**
  * Access handler for entities with a workflow.
@@ -30,11 +30,6 @@ use Drupal\og\OgGroupAudienceHelperInterface;
  * @see joinup_community_content.permission_scheme.yml
  */
 class CommunityContentWorkflowAccessControlHandler {
-
-  /**
-   * The state field machine name.
-   */
-  const STATE_FIELD = 'field_state';
 
   /**
    * Flag for pre-moderated groups.
@@ -135,7 +130,7 @@ class CommunityContentWorkflowAccessControlHandler {
     if (
       !$account->hasPermission('access draft community content')
       && !$this->hasPublishedVersion($content)
-      && $this->getEntityState($content) === 'draft'
+      && $content->getWorkflowState() === 'draft'
       && $content->getOwnerId() !== $account->id()
     ) {
       return AccessResult::forbidden()->addCacheableDependency($content);
@@ -155,9 +150,9 @@ class CommunityContentWorkflowAccessControlHandler {
         return $this->entityDeleteAccess($content, $account);
 
       case 'post comments':
-        $parent = $content->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->entity;
-        $parent_state = JoinupGroupHelper::getState($parent);
-        $entity_state = $this->getEntityState($content);
+        $parent = $content->getGroup();
+        $parent_state = $parent instanceof EntityWorkflowStateInterface ? $parent->getWorkflowState() : '';
+        $entity_state = $content->getWorkflowState();
 
         // Commenting on content of an archived group is not allowed.
         if ($parent_state === 'archived' || $entity_state === 'archived') {
@@ -202,8 +197,8 @@ class CommunityContentWorkflowAccessControlHandler {
    */
   protected function entityViewAccess(CommunityContentInterface $content, AccountInterface $account): AccessResultInterface {
     $view_scheme = $this->getPermissionScheme('view');
-    $workflow_id = $this->getEntityWorkflowId($content);
-    $state = $this->getEntityState($content);
+    $workflow_id = $content->getWorkflow()->getId();
+    $state = $content->getWorkflowState();
     // @todo Shouldn't we return AccessResult::neutral() instead of
     // AccessResult::allowed() and only AccessResult::forbidden() should have
     // cacheable metadata? Neutral means we don't make any opinion but the
@@ -226,7 +221,7 @@ class CommunityContentWorkflowAccessControlHandler {
    */
   protected function entityCreateAccess(CommunityContentInterface $content, AccountInterface $account): AccessResultInterface {
     $create_scheme = $this->getPermissionScheme('create');
-    $workflow_id = $this->getEntityWorkflowId($content);
+    $workflow_id = $content->getWorkflow()->getId();
     $content_creation = $this->getParentContentCreationOption($content);
 
     foreach ($create_scheme[$workflow_id][$content_creation] as $ownership_data) {
@@ -279,8 +274,8 @@ class CommunityContentWorkflowAccessControlHandler {
    */
   protected function entityDeleteAccess(CommunityContentInterface $content, AccountInterface $account): AccessResultInterface {
     $delete_scheme = $this->getPermissionScheme('delete');
-    $workflow_id = $this->getEntityWorkflowId($content);
-    $state = $this->getEntityState($content);
+    $workflow_id = $content->getWorkflow()->getId();
+    $state = $content->getWorkflowState();
 
     if (isset($delete_scheme[$workflow_id][$state]) && $this->workflowHelper->userHasOwnAnyRoles($content, $account, $delete_scheme[$workflow_id][$state])) {
       // @todo Shouldn't we return AccessResult::neutral() instead of
@@ -294,33 +289,6 @@ class CommunityContentWorkflowAccessControlHandler {
   }
 
   /**
-   * Returns the appropriate workflow to use for the passed entity.
-   *
-   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
-   *   The group content entity.
-   *
-   * @return string
-   *   The id of the workflow to use.
-   */
-  protected function getEntityWorkflowId(CommunityContentInterface $content): string {
-    $workflow = $content->{self::STATE_FIELD}->first()->getWorkflow();
-    return $workflow->getId();
-  }
-
-  /**
-   * Returns the appropriate workflow to use for the passed entity.
-   *
-   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
-   *   The group content entity.
-   *
-   * @return string
-   *   The id of the workflow to use.
-   */
-  protected function getEntityState(CommunityContentInterface $content): string {
-    return $content->{self::STATE_FIELD}->first()->value;
-  }
-
-  /**
    * Returns the content creation option value of the parent of an entity.
    *
    * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
@@ -328,9 +296,12 @@ class CommunityContentWorkflowAccessControlHandler {
    *
    * @return string
    *   The content creation option value.
+   *
+   * @throws \Drupal\joinup_group\Exception\MissingGroupException
+   *   Thrown when the entity doesn't have a parent group.
    */
   protected function getParentContentCreationOption(CommunityContentInterface $content): string {
-    $parent = JoinupGroupHelper::getGroup($content);
+    $parent = $content->getGroup();
     return JoinupGroupHelper::getContentCreation($parent);
   }
 
