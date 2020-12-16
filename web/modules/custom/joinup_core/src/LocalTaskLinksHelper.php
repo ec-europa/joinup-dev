@@ -30,11 +30,11 @@ class LocalTaskLinksHelper implements LocalTaskLinksHelperInterface {
   /**
    * Constructs a new service instance.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_mype_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_mype_manager) {
-    $this->entityTypeManager = $entity_mype_manager;
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
