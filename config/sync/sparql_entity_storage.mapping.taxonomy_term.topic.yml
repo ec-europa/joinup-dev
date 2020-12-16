@@ -1,0 +1,75 @@
+uuid: 47ebc328-a94c-4b7f-aff7-1c3343ea45e2
+langcode: en
+status: true
+dependencies:
+  config:
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.topic
+id: taxonomy_term.topic
+entity_type_id: taxonomy_term
+bundle: topic
+rdf_type: 'http://joinup.eu/topic'
+graph:
+  default: 'http://topic'
+base_fields_mapping:
+  uuid:
+    value:
+      predicate: ''
+      format: ''
+  revision_id:
+    value:
+      predicate: ''
+      format: ''
+  langcode:
+    value:
+      predicate: ''
+      format: ''
+  vid:
+    target_id:
+      predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
+      format: resource
+  status:
+    value:
+      predicate: ''
+      format: ''
+  name:
+    value:
+      predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+      format: t_literal
+  description:
+    format:
+      predicate: ''
+      format: ''
+  weight:
+    value:
+      predicate: ''
+      format: ''
+  parent:
+    target_id:
+      predicate: 'http://www.w3.org/2004/02/skos/core#broaderTransitive'
+      format: resource
+  changed:
+    value:
+      predicate: ''
+      format: ''
+  default_langcode:
+    value:
+      predicate: ''
+      format: ''
+  revision_default:
+    value:
+      predicate: ''
+      format: ''
+  revision_translation_affected:
+    value:
+      predicate: ''
+      format: ''
+  metatag:
+    value:
+      predicate: ''
+      format: ''
+  graph:
+    target_id:
+      predicate: ''
+      format: ''
+entity_id_plugin: default
