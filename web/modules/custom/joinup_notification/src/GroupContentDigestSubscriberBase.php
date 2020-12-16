@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\collection\Entity\CollectionContentInterface;
+use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\og\OgMembershipInterface;
 
@@ -92,18 +93,18 @@ abstract class GroupContentDigestSubscriberBase {
   /**
    * Returns the list of subscribers.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The content entity for which to return the subscribers.
+   * @param \Drupal\joinup_group\Entity\GroupContentInterface $entity
+   *   The group content entity for which to return the subscribers.
    *
    * @return \Drupal\user\UserInterface[]
    *   The list of subscribers as an array of user accounts, keyed by user ID.
    */
-  protected function getSubscribers(CollectionContentInterface $entity): array {
+  protected function getSubscribers(GroupContentInterface $entity): array {
     $membership_storage = $this->entityTypeManager->getStorage('og_membership');
     $membership_ids = $membership_storage
       ->getQuery()
       ->condition('entity_type', 'rdf_entity')
-      ->condition('entity_id', $entity->getCollection()->id())
+      ->condition('entity_id', $this->getGroupId($entity))
       ->condition('state', OgMembershipInterface::STATE_ACTIVE)
       ->condition('subscription_bundles', $entity->bundle())
       ->execute();
