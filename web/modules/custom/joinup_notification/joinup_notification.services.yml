@@ -44,14 +44,3 @@ services:
     parent: joinup_notification.notification_subscriber_base
     tags:
       - { name: event_subscriber }
-  joinup_notification.collection_content_subscription_subscriber:
-    class: Drupal\joinup_notification\EventSubscriber\CollectionDigestSubscriber
-    arguments: ['@entity_type.manager', '@joinup_notification.message_delivery', '@logger.factory']
-    tags:
-    - { name: 'event_subscriber' }
-
-  solution.solution_content_subscription_subscriber:
-    class: Drupal\joinup_notification\EventSubscriber\SolutionDigestSubscriber
-    arguments: ['@entity_type.manager', '@joinup_notification.message_delivery', '@logger.factory']
-    tags:
-    - { name: 'event_subscriber' }

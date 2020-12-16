@@ -2,11 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_notification\EventSubscriber;
+namespace Drupal\joinup_subscription\EventSubscriber;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
-use Drupal\joinup_notification\GroupContentDigestSubscriberBase;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_subscription\DigestFormatter;
 use Drupal\solution\Entity\SolutionInterface;
