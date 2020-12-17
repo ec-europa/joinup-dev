@@ -2,9 +2,8 @@
   title: 'View any Tallinn report content'
   description: 'Allows user to access all tallinn reports. By default, view access is denied.'
 
-'change tallinn report ownership':
-  title: 'Change Tallinn report authorship'
-  description: 'Allow to override the owner/author of a Tallinn report.'
+'change tallinn report author':
+  title: 'Change the author of a Tallinn report'
 
 'administer tallinn settings':
   title: 'Administer Tallinn settings'

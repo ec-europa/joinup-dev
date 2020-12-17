@@ -64,7 +64,7 @@ function tallinn_form_node_tallinn_report_edit_form_alter(array &$form, FormStat
   // The user has access if they have the global permission to change the author
   // or if they have this permission inside the Tallinn collection.
   $user = \Drupal::currentUser();
-  $permission = 'change tallinn report ownership';
+  $permission = 'change tallinn report author';
   if (!$has_access = $user->hasPermission($permission)) {
     /** @var \Drupal\og\OgAccessInterface $og_access */
     $og_access = \Drupal::service('og.access');

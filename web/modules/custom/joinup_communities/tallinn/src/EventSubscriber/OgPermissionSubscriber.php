@@ -33,9 +33,8 @@ class OgPermissionSubscriber implements EventSubscriberInterface {
    */
   public function provideTallinnOgPermissions(PermissionEventInterface $event) {
     $permission = new GroupContentOperationPermission([
-      'name' => 'change tallinn report ownership',
-      'title' => $this->t('Change Tallinn report authorship'),
-      'operation' => 'change tallinn report ownership',
+      'name' => 'change tallinn report author',
+      'title' => $this->t('Change the author of a Tallinn report'),
       'entity type' => 'node',
       'bundle' => 'tallinn_report',
     ]);
