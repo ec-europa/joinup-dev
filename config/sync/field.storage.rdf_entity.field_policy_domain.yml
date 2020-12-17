@@ -3,7 +3,9 @@ langcode: en
 status: true
 dependencies:
   module:
+    - field_permissions
     - rdf_entity
+    - sparql_entity_storage
     - taxonomy
 third_party_settings:
   sparql_entity_storage:
@@ -11,6 +13,8 @@ third_party_settings:
       target_id:
         predicate: 'http://policy_domain'
         format: resource
+  field_permissions:
+    permission_type: custom
 id: rdf_entity.field_policy_domain
 field_name: field_policy_domain
 entity_type: rdf_entity

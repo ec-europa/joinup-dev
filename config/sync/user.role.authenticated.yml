@@ -41,6 +41,8 @@ permissions:
   - 'use text format content_editor'
   - 'use text format glossary_html'
   - 'use text format simple_html'
+  - 'view field_policy_domain'
+  - 'view own field_policy_domain'
   - 'view own unpublished content'
   - 'view paragraph content json_map'
   - 'view paragraph content simple_paragraph'
