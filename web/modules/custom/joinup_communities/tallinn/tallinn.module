@@ -56,12 +56,23 @@ function tallinn_module_implements_alter(&$implementations, $hook) {
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * - Controls access to the "authored by" field on the Tallinn Report edit form.
+ * - Ensures that each report has a different author.
  */
 function tallinn_form_node_tallinn_report_edit_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  /** @var \Drupal\node\NodeInterface $entity */
-  $entity = $form_state->getBuildInfo()['callback_object']->getEntity();
-
-  $form['uid']['#access'] = $entity->access('change tallinn report ownership');
+  // The user has access if they have the global permission to change the author
+  // or if they have this permission inside the Tallinn collection.
+  $user = \Drupal::currentUser();
+  $permission = 'change tallinn report ownership';
+  if (!$has_access = $user->hasPermission($permission)) {
+    /** @var \Drupal\og\OgAccessInterface $og_access */
+    $og_access = \Drupal::service('og.access');
+    /** @var \Drupal\node\NodeInterface $entity */
+    $entity = $form_state->getBuildInfo()['callback_object']->getEntity();
+    $has_access = $og_access->userAccessEntity($permission, $entity, $user)->isAllowed();
+  }
+  $form['uid']['#access'] = $has_access;
   $form['#validate'][] = 'tallinn_report_author_uniqueness';
 }
 
