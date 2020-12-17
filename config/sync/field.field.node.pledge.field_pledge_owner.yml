@@ -12,7 +12,7 @@ entity_type: node
 bundle: pledge
 label: 'Pledge owner'
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
