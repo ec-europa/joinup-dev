@@ -1,4 +1,2 @@
-'bypass group moderation':
-  title: 'Bypass the group moderation'
-  description: 'When the group is moderated, this permission will allow the user to directly publish community content.'
-
+'publish content in moderated groups':
+  title: 'Publish community content in moderated groups'

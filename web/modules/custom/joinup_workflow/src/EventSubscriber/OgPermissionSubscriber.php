@@ -34,9 +34,8 @@ class OgPermissionSubscriber implements EventSubscriberInterface {
   public function provideWorkflowOgPermissions(PermissionEventInterface $event) {
     $event->setPermission(
       new GroupPermission([
-        'name' => 'bypass group moderation',
-        'title' => $this->t('Bypass the group moderation'),
-        'description' => $this->t('When the group is moderated, this permission will allow the user to directly publish community content.'),
+        'name' => 'publish content in moderated groups',
+        'title' => $this->t('Publish community content in moderated groups.'),
         'default roles' => ['author'],
       ])
     );
