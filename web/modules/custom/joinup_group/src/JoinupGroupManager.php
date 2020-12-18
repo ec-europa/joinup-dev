@@ -6,13 +6,11 @@ namespace Drupal\joinup_group;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
-use Drupal\og\OgRoleInterface;
 
 /**
  * Helper methods related to the Joinup groups.
@@ -94,43 +92,6 @@ class JoinupGroupManager implements JoinupGroupManagerInterface {
     $result = $query->execute();
 
     return $storage->loadMultiple($result);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isGroupOwner(EntityInterface $group, AccountInterface $user): bool {
-    $membership = $this->membershipManager->getMembership($group, $user->id());
-    if (empty($membership)) {
-      return FALSE;
-    }
-
-    // OG provides a flag in OG roles called 'is_admin'. We could have used this
-    // flag and iterate over the roles to search for admin roles of the user but
-    // this flag is apparently meant for create a UID 1 like role which always
-    // has access to anything since even the ::hasPermission returns always
-    // TRUE for admin roles. That is something we do not want.
-    // Thus, admin is considered a user with the administrator role instead.
-    $administrator_role = $membership->getGroupEntityType() . '-' . $membership->getGroupBundle() . '-' . OgRoleInterface::ADMINISTRATOR;
-    return $membership->hasRole($administrator_role);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getGroupOwners(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
-    $memberships = $this->membershipManager->getGroupMembershipsByRoleNames($entity, ['administrator'], $states);
-
-    $users = [];
-    /** @var \Drupal\og\OgMembershipInterface $membership */
-    foreach ($memberships as $membership) {
-      $user = $membership->getOwner();
-      if (!empty($user)) {
-        $users[$user->id()] = $user;
-      }
-    }
-
-    return $users;
   }
 
   /**

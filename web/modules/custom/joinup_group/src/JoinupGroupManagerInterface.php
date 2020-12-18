@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group;
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\OgMembershipInterface;
 
@@ -58,34 +57,5 @@ interface JoinupGroupManagerInterface {
    *   An array of OG memberships that match the criteria.
    */
   public function getUserMembershipsByRole(AccountInterface $user, string $role, array $states = [OgMembershipInterface::STATE_ACTIVE]): array;
-
-  /**
-   * Returns whether the user is a group admin.
-   *
-   * In Joinup, a group admin is not the author of the group but the user that
-   * has a role that is admin, normally the administrator role.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $group
-   *   The group entity.
-   * @param \Drupal\Core\Session\AccountInterface $user
-   *   The user entity.
-   *
-   * @return bool
-   *   Whether the user is a group admin.
-   */
-  public function isGroupOwner(EntityInterface $group, AccountInterface $user): bool;
-
-  /**
-   * Retrieves all the users that have the administrator role in a group.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group entity.
-   * @param array $states
-   *   (optional) An array of membership states to retrieve. Defaults to active.
-   *
-   * @return array
-   *   An array of users that are administrators of the entity group.
-   */
-  public function getGroupOwners(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array;
 
 }

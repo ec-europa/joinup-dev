@@ -99,23 +99,6 @@ namespace Drupal\joinup_group\ProxyClass {
             return $this->lazyLoadItself()->getUserMembershipsByRole($user, $role, $states);
         }
 
-      /**
-       * {@inheritdoc}
-       */
-        public function isGroupOwner(EntityInterface $group, AccountInterface $user): bool {
-          return $this->lazyLoadItself()->isGroupOwner($group, $user);
-        }
-
-      /**
-         * {@inheritdoc}
-         */
-        public function getGroupOwners(\Drupal\Core\Entity\EntityInterface $entity, array $states = array (
-          0 => 'active',
-        )) : array
-        {
-            return $this->lazyLoadItself()->getGroupOwners($entity, $states);
-        }
-
     }
 
 }
