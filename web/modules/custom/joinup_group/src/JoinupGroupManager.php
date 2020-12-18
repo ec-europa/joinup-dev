@@ -56,9 +56,9 @@ class JoinupGroupManager implements JoinupGroupManagerInterface {
 
       // Prepare a list of groups where the user is the sole owner.
       foreach ($memberships as $membership) {
+        /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
         $group = $membership->getGroup();
-        $owners = $this->getGroupOwners($group);
-        if (count($owners) === 1 && array_key_exists($user->id(), $owners)) {
+        if ($group->isSoleGroupOwner((int) $user->id())) {
           $groups[$group->id()] = $group;
         }
       }
@@ -84,7 +84,7 @@ class JoinupGroupManager implements JoinupGroupManagerInterface {
    * {@inheritdoc}
    */
   public function getUserMembershipsByRole(AccountInterface $user, string $role, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
-    $storage = $this->entityTypeManager->getStorage('og_membership');
+    $storage = $this->getOgMembershipStorage();
 
     // Fetch all the memberships of the user, filtered by role and state.
     $query = $storage->getQuery();
