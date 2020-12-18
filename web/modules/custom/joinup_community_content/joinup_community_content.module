@@ -155,7 +155,7 @@ function joinup_community_content_workflow_selector(EntityInterface $entity): ?s
     return 'node:post_moderated';
   }
 
-  $membership = \Drupal::getContainer()->get('og.membership_manager')->getMembership($parent_entity, $current_user->id());
+  $membership = $parent_entity->getMembership($current_user->id());
   if ($membership && $membership->hasPermission('publish content in moderated groups')) {
     return 'node:post_moderated';
   }
