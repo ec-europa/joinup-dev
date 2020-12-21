@@ -7,8 +7,6 @@
 
 namespace Drupal\joinup_group\ProxyClass {
 
-  use Drupal\Core\Entity\EntityInterface;
-  use Drupal\Core\Session\AccountInterface;
   use Drupal\og\OgMembershipInterface;
 
   /**
