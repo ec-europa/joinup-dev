@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_subscription\EventSubscriber;
 
-use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_subscription\DigestFormatter;
 use Drupal\solution\Entity\SolutionInterface;
@@ -28,10 +28,10 @@ class SolutionDigestSubscriber extends GroupContentDigestSubscriberBase implemen
   /**
    * {@inheritdoc}
    */
-  protected function getGroupId(ContentEntityInterface $entity): string {
+  protected function getGroupId(GroupContentInterface $entity): string {
     $solution = $entity->getGroup();
 
-    if (!($solution instanceof SolutionInterface)) {
+    if (!$solution instanceof SolutionInterface) {
       throw new \InvalidArgumentException('Parent group is not a solution.');
     }
 

@@ -200,13 +200,13 @@ abstract class GroupContentDigestSubscriberBase {
   /**
    * Returns the entity ID of the group the given entity belongs to.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   * @param \Drupal\joinup_group\Entity\GroupContentInterface $entity
    *   The entity for which to return the group ID.
    *
    * @return string
    *   The collection or solution ID.
    */
-  abstract protected function getGroupId(ContentEntityInterface $entity): string;
+  abstract protected function getGroupId(GroupContentInterface $entity): string;
 
   /**
    * Returns the name of the field that references the entities in templates.

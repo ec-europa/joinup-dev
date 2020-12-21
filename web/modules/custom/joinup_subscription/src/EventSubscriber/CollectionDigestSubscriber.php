@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_subscription\EventSubscriber;
 
-use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\collection\Entity\CollectionContentInterface;
+use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_subscription\DigestFormatter;
@@ -63,7 +64,8 @@ class CollectionDigestSubscriber extends GroupContentDigestSubscriberBase implem
   /**
    * {@inheritdoc}
    */
-  protected function getGroupId(ContentEntityInterface $entity): string {
+  protected function getGroupId(GroupContentInterface $entity): string {
+    assert($entity instanceof CollectionContentInterface);
     return $entity->getCollection()->id();
   }
 
