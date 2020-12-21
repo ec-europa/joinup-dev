@@ -36,14 +36,13 @@ interface GroupInterface extends ContentEntityInterface {
   public function getMembership(int $uid, array $states = [OgMembershipInterface::STATE_ACTIVE]): ?OgMembershipInterface;
 
   /**
-   * Returns the group owner.
+   * Returns the group owners.
    *
    * In Joinup every new group has exactly one owner. However there are still a
-   * number of solutions which were migrated from the previous platform which
-   * have multiple owners. Since we enforce a single owner when an ownership
-   * transfer is initiated, the number of groups with multiple owners will
-   * reduce over time. For the moment though we still need to account for
-   * multiple owners.
+   * number of solutions which were migrated from the legacy platform which have
+   * multiple owners. Since we enforce a single owner when an ownership transfer
+   * is initiated, the number of groups with multiple owners will reduce over
+   * time. For the moment though we still need to account for multiple owners.
    *
    * During some special operations it is possible that no group owner is
    * assigned. For example when the group is initially created, during transfer
@@ -58,11 +57,10 @@ interface GroupInterface extends ContentEntityInterface {
    * Returns the user IDs of the group owners.
    *
    * In Joinup every new group has exactly one owner. However there are still a
-   * number of solutions which were migrated from the previous platform which
-   * have multiple owners. Since we enforce a single owner when an ownership
-   * transfer is initiated, the number of groups with multiple owners will
-   * reduce over time. For the moment though we still need to account for
-   * multiple owners.
+   * number of solutions which were migrated from the legacy platform which have
+   * multiple owners. Since we enforce a single owner when an ownership transfer
+   * is initiated, the number of groups with multiple owners will reduce over
+   * time. For the moment though we still need to account for multiple owners.
    *
    * During some special operations it is possible that no group owner is
    * assigned. For example when the group is initially created, during transfer
@@ -74,7 +72,7 @@ interface GroupInterface extends ContentEntityInterface {
   public function getGroupOwnerIds(): array;
 
   /**
-   * Returns whether the user with the given ID is the group owner.
+   * Returns whether the user with the given ID is a group owner.
    *
    * @param int $uid
    *   The user ID.
@@ -88,9 +86,9 @@ interface GroupInterface extends ContentEntityInterface {
    * Returns whether the user with the given ID is the sole group owner.
    *
    * In Joinup every new group has exactly one owner. However there are still a
-   * number of solutions which were migrated from the previous platform which
-   * have multiple owners. In some cases (such as transferring group ownership)
-   * we need to be able to ascertain that a user is the sole owner of a group.
+   * number of solutions which were migrated from the legacy platform which have
+   * multiple owners. In some cases (such as transferring group ownership) we
+   * need to be able to ascertain that a user is the sole owner of a group.
    *
    * @param int $uid
    *   The user ID.

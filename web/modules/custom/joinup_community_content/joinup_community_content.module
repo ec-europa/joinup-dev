@@ -146,10 +146,9 @@ function joinup_community_content_workflow_selector(EntityInterface $entity): ?s
   // Roles with the `publish content in moderated groups` permission are able to
   // directly publish in the group regardless of the moderation state, as a
   // trusted user.
-  //
-  // As with workflows, we only check for permissions here because we don't want
-  // users with admin permissions to always go through the post moderated
-  // workflow.
+  // We check the available permissions directly instead of using OgAccess
+  // because we don't want users with admin permissions to always go through the
+  // post moderated workflow.
   $current_user = \Drupal::currentUser();
   if ($current_user->hasPermission('publish content in moderated groups')) {
     return 'node:post_moderated';

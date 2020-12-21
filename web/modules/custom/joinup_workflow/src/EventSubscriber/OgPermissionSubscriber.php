@@ -10,7 +10,7 @@ use Drupal\og\GroupPermission;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Event subscribers for Organic Groups.
+ * Provides permissions to perform workflow related actions in groups.
  */
 class OgPermissionSubscriber implements EventSubscriberInterface {
 
