@@ -154,7 +154,7 @@ function joinup_community_content_workflow_selector(EntityInterface $entity): ?s
     return 'node:post_moderated';
   }
 
-  $membership = $parent_entity->getMembership($current_user->id());
+  $membership = $parent_entity->getMembership((int) $current_user->id());
   if ($membership && $membership->hasPermission('publish content in moderated groups')) {
     return 'node:post_moderated';
   }
