@@ -45,7 +45,7 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendMessageToMultipleUsers(MessageInterface $message, array $accounts, array $notifier_options = []): bool {
+  public function sendMessageToMultipleUsers(MessageInterface $message, array $accounts, array $notifier_options = [], bool $digest = FALSE): bool {
     $recipients_metadata = [];
     /** @var \Drupal\user\UserInterface $account */
     foreach ($accounts as $account) {
@@ -66,7 +66,7 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
           'save on success' => FALSE,
           'mail' => $mail,
         ],
-        'notifier' => 'email',
+        'notifier' => $digest ? $this->getNotifierId($account) : 'email',
       ];
     }
 
@@ -97,9 +97,9 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendMessageTemplateToMultipleUsers(string $message_template, array $arguments, array $accounts, array $notifier_options = [], array $message_values = []): bool {
+  public function sendMessageTemplateToMultipleUsers(string $message_template, array $arguments, array $accounts, array $notifier_options = [], array $message_values = [], bool $digest = FALSE): bool {
     $message = $this->createMessage($message_template, $message_values, $arguments);
-    return $this->sendMessageToMultipleUsers($message, $accounts, $notifier_options);
+    return $this->sendMessageToMultipleUsers($message, $accounts, $notifier_options, $digest);
   }
 
   /**

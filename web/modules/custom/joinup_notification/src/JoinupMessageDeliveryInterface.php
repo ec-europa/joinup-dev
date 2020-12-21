@@ -48,6 +48,10 @@ interface JoinupMessageDeliveryInterface {
    * @param array $notifier_options
    *   An optional associative array of options to pass to the Email notifier
    *   plugin.
+   * @param bool $digest
+   *   Optional flag indicating whether the message should be included in a
+   *   digest. If set to FALSE the message will be sent immediately. Defaults to
+   *   FALSE.
    *
    * @return bool
    *   Whether or not the messages were sent successfully.
@@ -56,7 +60,7 @@ interface JoinupMessageDeliveryInterface {
    *   Thrown when a message is attempted to be sent to a user which doesn't
    *   have an e-mail address.
    */
-  public function sendMessageToMultipleUsers(MessageInterface $message, array $accounts, array $notifier_options = []): bool;
+  public function sendMessageToMultipleUsers(MessageInterface $message, array $accounts, array $notifier_options = [], bool $digest = FALSE): bool;
 
   /**
    * Sends the given Message entity to the given e-mail addresses.
@@ -126,11 +130,15 @@ interface JoinupMessageDeliveryInterface {
    *   plugin.
    * @param array $message_values
    *   Optional array of field values to send on the message entity.
+   * @param bool $digest
+   *   Optional flag indicating whether the message should be included in a
+   *   digest. If set to FALSE the message will be sent immediately. Defaults to
+   *   FALSE.
    *
    * @return bool
    *   Whether or not the messages were sent successfully.
    */
-  public function sendMessageTemplateToMultipleUsers(string $message_template, array $arguments, array $accounts, array $notifier_options = [], array $message_values = []): bool;
+  public function sendMessageTemplateToMultipleUsers(string $message_template, array $arguments, array $accounts, array $notifier_options = [], array $message_values = [], bool $digest = FALSE): bool;
 
   /**
    * Sends a Message based on the given message template to the given addresses.
