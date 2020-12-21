@@ -6,7 +6,7 @@ namespace Drupal\tallinn\EventSubscriber;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\og\Event\PermissionEventInterface;
-use Drupal\og\GroupContentOperationPermission;
+use Drupal\og\GroupPermission;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -32,11 +32,12 @@ class OgPermissionSubscriber implements EventSubscriberInterface {
    *   The OG permission event.
    */
   public function provideTallinnOgPermissions(PermissionEventInterface $event) {
-    $permission = new GroupContentOperationPermission([
+    $permission = new GroupPermission([
       'name' => 'change tallinn report author',
       'title' => $this->t('Change the author of a Tallinn report'),
-      'entity type' => 'node',
-      'bundle' => 'tallinn_report',
+      'description' => $this->t('Manage group members and content in the group.'),
+      'default roles' => [],
+      'restrict access' => TRUE,
     ]);
 
     $event->setPermission($permission);
