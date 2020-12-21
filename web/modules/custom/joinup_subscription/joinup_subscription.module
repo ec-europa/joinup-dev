@@ -10,6 +10,8 @@ declare(strict_types = 1);
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\field\FieldStorageConfigInterface;
+use Drupal\joinup_subscription\Entity\CollectionContentSubscription;
+use Drupal\joinup_subscription\Entity\SolutionContentSubscription;
 use Drupal\message\MessageInterface;
 use Drupal\message_notify\Plugin\Notifier\MessageNotifierInterface;
 use Drupal\user\UserInterface;
@@ -45,6 +47,18 @@ function joinup_subscription_entity_base_field_info(EntityTypeInterface $entity_
   }
 
   return $fields;
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function joinup_subscription_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['message']['collection_content_subscription'])) {
+    $bundles['message']['collection_content_subscription']['class'] = CollectionContentSubscription::class;
+  }
+  if (!empty($bundles['message']['solution_content_subscription'])) {
+    $bundles['message']['solution_content_subscription']['class'] = SolutionContentSubscription::class;
+  }
 }
 
 /**

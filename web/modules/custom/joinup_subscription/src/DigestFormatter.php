@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_subscription;
 
+use Drupal\joinup_subscription\Entity\GroupContentSubscriptionInterface;
 use Drupal\message\MessageInterface;
 use Drupal\message_digest\DigestFormatter as OriginalFormatter;
 use Drupal\rdf_entity\RdfInterface;
@@ -69,7 +70,7 @@ class DigestFormatter extends OriginalFormatter {
   /**
    * Checks whether the digest is a group content subscription digest.
    *
-   * @param array $digest
+   * @param \Drupal\message\MessageInterface[] $digest
    *   The array of digest messages.
    *
    * @return bool
@@ -77,9 +78,8 @@ class DigestFormatter extends OriginalFormatter {
    *   messages.
    */
   protected function isGroupContentSubscriptionDigest(array $digest): bool {
-    /** @var \Drupal\message\MessageInterface $message */
     foreach ($digest as $message) {
-      if (!in_array($message->getTemplate()->id(), self::DIGEST_TEMPLATE_IDS)) {
+      if (!$message instanceof GroupContentSubscriptionInterface) {
         return FALSE;
       }
     }
