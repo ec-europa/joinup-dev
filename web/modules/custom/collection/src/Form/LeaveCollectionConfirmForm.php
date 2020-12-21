@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\collection\Form;
 
-use Drupal\collection\Entity\CollectionInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
@@ -12,6 +11,7 @@ use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\collection\Entity\CollectionInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
