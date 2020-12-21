@@ -95,6 +95,11 @@ Feature: Asset distribution overview on solution.
       | The Child of the Past 1 |
       | Thief in the Angels 2   |
     And the "The Child of the Past" release should be marked as the latest release
+    When I click "Thief in the Angels 2"
+    Then I should see the heading "Thief in the Angels 2"
+    When I click "Switch to the latest release"
+    Then I should see the heading "The Child of the Past 1"
+    And I should see the text "Latest release"
 
     # Publish the release as a solution facilitator.
     # @todo Unpublished releases are no longer visible for facilitators.
