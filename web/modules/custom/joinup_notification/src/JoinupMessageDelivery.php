@@ -76,6 +76,13 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   /**
    * {@inheritdoc}
    */
+  public function sendMessageToUser(MessageInterface $message, UserInterface $account, array $notifier_options = [], bool $digest = FALSE): bool {
+    return $this->sendMessageToMultipleUsers($message, [$account], $notifier_options, $digest);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function sendMessageToEmailAddresses(MessageInterface $message, array $mails, array $notifier_options = []): bool {
     $recipients_metadata = [];
 

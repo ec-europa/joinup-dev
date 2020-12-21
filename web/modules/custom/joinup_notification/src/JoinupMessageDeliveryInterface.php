@@ -63,6 +63,33 @@ interface JoinupMessageDeliveryInterface {
   public function sendMessageToMultipleUsers(MessageInterface $message, array $accounts, array $notifier_options = [], bool $digest = FALSE): bool;
 
   /**
+   * Sends the given Message entity to the given user.
+   *
+   * If the message entity is not saved, the service will take care to save it
+   * prior to delivery.
+   *
+   * @param \Drupal\message\MessageInterface $message
+   *   The message to be delivered.
+   * @param \Drupal\user\UserInterface $account
+   *   The user account of the recipient.
+   * @param array $notifier_options
+   *   An optional associative array of options to pass to the Email notifier
+   *   plugin.
+   * @param bool $digest
+   *   Optional flag indicating whether the message should be included in a
+   *   digest. If set to FALSE the message will be sent immediately. Defaults to
+   *   FALSE.
+   *
+   * @return bool
+   *   Whether or not the message was sent successfully.
+   *
+   * @throws \LogicException
+   *   Thrown when a message is attempted to be sent to a user which doesn't
+   *   have an e-mail address.
+   */
+  public function sendMessageToUser(MessageInterface $message, UserInterface $account, array $notifier_options = [], bool $digest = FALSE): bool;
+
+  /**
    * Sends the given Message entity to the given e-mail addresses.
    *
    * If the message entity is not saved, the service will take care to save it
