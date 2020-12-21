@@ -105,7 +105,7 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
     $user = $membership->getOwner();
 
     // Is the selected member already the owner?
-    if ($group->isGroupOwner($user->id())) {
+    if ($group->isGroupOwner((int) $user->id())) {
       $this->messages['warning'][] = $this->t('Member %member is already the owner of %group @label. Please select other user.', [
         '%member' => $user->label(),
         '%group' => $group->label(),
