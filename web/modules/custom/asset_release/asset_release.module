@@ -201,6 +201,13 @@ function asset_release_rdf_entity_access(EntityInterface $release, $operation, A
       $workflow_helper = \Drupal::service('joinup_workflow.workflow_helper');
       $allowed_states = $workflow_helper->getAvailableTargetStates($release, $account);
       return AccessResult::forbiddenIf(empty($allowed_states));
+
+    case 'delete':
+      // In Joinup, only moderators can delete releases. The following check
+      // will add a forbidden opinion in the delete access check if the user
+      // does not have a global delete permission to override OG group admin
+      // privileges.
+      return AccessResult::forbiddenIf(!$account->hasPermission('delete asset_release rdf entity'));
   }
 
   return AccessResult::neutral();

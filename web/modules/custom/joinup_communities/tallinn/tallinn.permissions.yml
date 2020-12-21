@@ -2,6 +2,9 @@
   title: 'View any Tallinn report content'
   description: 'Allows user to access all tallinn reports. By default, view access is denied.'
 
+'change tallinn report author':
+  title: 'Change the author of a Tallinn report'
+
 'administer tallinn settings':
   title: 'Administer Tallinn settings'
   description: 'Allows users granted with this permission to administer Tallinn settings.'

@@ -149,19 +149,25 @@ create:
         roles:
           - moderator
         og_roles:
+          - rdf_entity-collection-author
           - rdf_entity-collection-facilitator
+          - rdf_entity-solution-author
           - rdf_entity-solution-facilitator
       propose:
         roles:
           - moderator
         og_roles:
+          - rdf_entity-collection-author
           - rdf_entity-collection-facilitator
+          - rdf_entity-solution-author
           - rdf_entity-solution-facilitator
       publish:
         roles:
           - moderator
         og_roles:
+          - rdf_entity-collection-author
           - rdf_entity-collection-facilitator
+          - rdf_entity-solution-author
           - rdf_entity-solution-facilitator
     only_members:
       save_as_draft:

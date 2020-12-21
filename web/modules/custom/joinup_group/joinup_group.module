@@ -351,9 +351,7 @@ function joinup_group_og_user_access_alter(array &$permissions, CacheableMetadat
   }
 
   // Check if the user is the group owner and bail out if this is not the case.
-  $membership = $group->getMembership((int) $user->id());
-  $role_id = "{$group->getEntityTypeId()}-{$group->bundle()}-administrator";
-  if (!$membership instanceof OgMembershipInterface || !$membership->hasRole($role_id)) {
+  if (!$group->isGroupOwner((int) $user->id())) {
     return;
   }
 
@@ -538,7 +536,7 @@ function joinup_group_get_og_members_overview_sort_handlers_info(string $order):
  * Implements hook_form_BASE_FORM_ID_alter().
  */
 function joinup_group_form_views_form_og_members_overview_default_alter(&$form, FormStateInterface $form_state, $form_id): void {
-  if (!$group = \Drupal::routeMatch()->getParameter('rdf_entity')) {
+  if (!($group = \Drupal::routeMatch()->getParameter('rdf_entity')) || !$group instanceof GroupInterface) {
     throw new \RuntimeException('Called from a wrong page.');
   }
 
