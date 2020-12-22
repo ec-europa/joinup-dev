@@ -7,5 +7,5 @@ namespace Drupal\joinup_subscription\Entity;
 /**
  * Interface for collection content subscription messages.
  */
-interface CollectionContentSubscriptionInterface extends GroupContentSubscriptionInterface {
+interface CollectionContentSubscriptionMessageInterface extends GroupContentSubscriptionMessageInterface {
 }

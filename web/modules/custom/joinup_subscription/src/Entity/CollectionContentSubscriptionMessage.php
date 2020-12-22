@@ -9,5 +9,5 @@ use Drupal\message\Entity\Message;
 /**
  * A collection content subscription message.
  */
-class CollectionContentSubscription extends Message {
+class CollectionContentSubscriptionMessage extends Message implements CollectionContentSubscriptionMessageInterface {
 }

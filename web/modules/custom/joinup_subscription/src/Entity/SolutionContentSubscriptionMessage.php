@@ -9,5 +9,5 @@ use Drupal\message\Entity\Message;
 /**
  * A solution content subscription message.
  */
-class SolutionContentSubscription extends Message {
+class SolutionContentSubscriptionMessage extends Message implements SolutionContentSubscriptionMessageInterface {
 }

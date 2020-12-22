@@ -9,5 +9,5 @@ use Drupal\message\MessageInterface;
 /**
  * Interface for group content subscription messages.
  */
-interface GroupContentSubscriptionInterface extends MessageInterface {
+interface GroupContentSubscriptionMessageInterface extends MessageInterface {
 }
