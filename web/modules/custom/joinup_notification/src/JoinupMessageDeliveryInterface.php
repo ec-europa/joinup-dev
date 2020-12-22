@@ -41,6 +41,11 @@ interface JoinupMessageDeliveryInterface {
    * If the message entity is not saved, the service will take care to save it
    * prior to delivery.
    *
+   * This is intended for messages that are intended to be broadcast to a wide
+   * audience and do not need multiple copies of the message stored in the
+   * database for each individual recipient. For example this should be used for
+   * notifications that are sent when a new comment is posted in a discussion.
+   *
    * @param \Drupal\message\MessageInterface $message
    *   The message to be delivered.
    * @param \Drupal\user\UserInterface[] $accounts
@@ -48,10 +53,6 @@ interface JoinupMessageDeliveryInterface {
    * @param array $notifier_options
    *   An optional associative array of options to pass to the Email notifier
    *   plugin.
-   * @param bool $digest
-   *   Optional flag indicating whether the message should be included in a
-   *   digest. If set to FALSE the message will be sent immediately. Defaults to
-   *   FALSE.
    *
    * @return bool
    *   Whether or not the messages were sent successfully.
@@ -60,13 +61,16 @@ interface JoinupMessageDeliveryInterface {
    *   Thrown when a message is attempted to be sent to a user which doesn't
    *   have an e-mail address.
    */
-  public function sendMessageToMultipleUsers(MessageInterface $message, array $accounts, array $notifier_options = [], bool $digest = FALSE): bool;
+  public function sendMessageToMultipleUsers(MessageInterface $message, array $accounts, array $notifier_options = []): bool;
 
   /**
    * Sends the given Message entity to the given user.
    *
    * If the message entity is not saved, the service will take care to save it
    * prior to delivery.
+   *
+   * This is intended for messages that need to have a record in the database
+   * which references the user to which the message is delivered.
    *
    * @param \Drupal\message\MessageInterface $message
    *   The message to be delivered.
@@ -115,6 +119,9 @@ interface JoinupMessageDeliveryInterface {
   /**
    * Sends a Message based on the given message template to the given user.
    *
+   * This is intended for messages that need to have a record in the database
+   * which references the user to which the message is delivered.
+   *
    * @param string $message_template
    *   The message template ID.
    * @param array $arguments
@@ -143,6 +150,11 @@ interface JoinupMessageDeliveryInterface {
   /**
    * Sends a Message based on the given message template to multiple users.
    *
+   * This is intended for messages that are intended to be broadcast to a wide
+   * audience and do not need multiple copies of the message stored in the
+   * database for each individual recipient. For example this should be used for
+   * notifications that are sent when a new comment is posted in a discussion.
+   *
    * This will create a single Message entity and resend it multiple times to
    * different users using the Email notifier plugin from Message Notify.
    *
@@ -157,15 +169,11 @@ interface JoinupMessageDeliveryInterface {
    *   plugin.
    * @param array $message_values
    *   Optional array of field values to send on the message entity.
-   * @param bool $digest
-   *   Optional flag indicating whether the message should be included in a
-   *   digest. If set to FALSE the message will be sent immediately. Defaults to
-   *   FALSE.
    *
    * @return bool
    *   Whether or not the messages were sent successfully.
    */
-  public function sendMessageTemplateToMultipleUsers(string $message_template, array $arguments, array $accounts, array $notifier_options = [], array $message_values = [], bool $digest = FALSE): bool;
+  public function sendMessageTemplateToMultipleUsers(string $message_template, array $arguments, array $accounts, array $notifier_options = [], array $message_values = []): bool;
 
   /**
    * Sends a Message based on the given message template to the given addresses.

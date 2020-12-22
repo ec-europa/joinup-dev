@@ -49,22 +49,14 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
     $recipients_metadata = [];
     /** @var \Drupal\user\UserInterface $account */
     foreach ($accounts as $account) {
-      // Throw an exception when attempting to send mails to anonymous users or
-      // users that for some reason do not have an e-mail address set.
-      if ($account->isAnonymous()) {
-        throw new \LogicException('Cannot send mail to an anonymous user.');
-      }
-      $mail = $account->getEmail();
-      if (empty($mail)) {
-        throw new \LogicException('Cannot send mail to a user that does not have an e-mail address.');
-      }
+      $this->validateAccount($account);
 
       // By keying on the user ID we can avoid that a user might get the message
       // more than once.
       $recipients_metadata[$account->id()] = [
         'options' => $notifier_options + [
           'save on success' => FALSE,
-          'mail' => $mail,
+          'mail' => $account->getEmail(),
         ],
         'notifier' => $digest ? $this->getNotifierId($account) : 'email',
       ];
@@ -77,7 +69,14 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
    * {@inheritdoc}
    */
   public function sendMessageToUser(MessageInterface $message, UserInterface $account, array $notifier_options = [], bool $digest = FALSE): bool {
-    return $this->sendMessageToMultipleUsers($message, [$account], $notifier_options, $digest);
+    $this->validateAccount($account);
+    $message->setOwner($account);
+    $recipient_metadata = [
+      'options' => $notifier_options,
+      'notifier' => $digest ? $this->getNotifierId($account) : 'email',
+    ];
+
+    return $this->sendMessage($message, [$recipient_metadata]);
   }
 
   /**
@@ -104,9 +103,9 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendMessageTemplateToMultipleUsers(string $message_template, array $arguments, array $accounts, array $notifier_options = [], array $message_values = [], bool $digest = FALSE): bool {
+  public function sendMessageTemplateToMultipleUsers(string $message_template, array $arguments, array $accounts, array $notifier_options = [], array $message_values = []): bool {
     $message = $this->createMessage($message_template, $message_values, $arguments);
-    return $this->sendMessageToMultipleUsers($message, $accounts, $notifier_options, $digest);
+    return $this->sendMessageToMultipleUsers($message, $accounts, $notifier_options);
   }
 
   /**
@@ -121,7 +120,8 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
    * {@inheritdoc}
    */
   public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = [], array $message_values = [], bool $digest = FALSE): bool {
-    return $this->sendMessageTemplateToMultipleUsers($message_template, $arguments, [$account], $notifier_options, $message_values, $digest);
+    $message = $this->createMessage($message_template, $message_values, $arguments);
+    return $this->sendMessageToUser($message, $account, $notifier_options, $digest);
   }
 
   /**
@@ -192,6 +192,27 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
     $message = Message::create($values);
     $message->setArguments($arguments);
     return $message;
+  }
+
+  /**
+   * Checks that the passed in user account is able to receive e-mail.
+   *
+   * @param \Drupal\user\UserInterface $account
+   *   The account to check.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the user is anonymous or doesn't have an e-mail address.
+   */
+  protected function validateAccount(UserInterface $account) {
+    // Throw an exception when attempting to send mails to anonymous users or
+    // users that for some reason do not have an e-mail address set.
+    if ($account->isAnonymous()) {
+      throw new \InvalidArgumentException('Cannot send mail to an anonymous user.');
+    }
+    $mail = $account->getEmail();
+    if (empty($mail)) {
+      throw new \InvalidArgumentException('Cannot send mail to a user that does not have an e-mail address.');
+    }
   }
 
 }
