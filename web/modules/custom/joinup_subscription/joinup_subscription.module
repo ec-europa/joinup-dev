@@ -89,7 +89,7 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
     }
   }
 
-  if (!empty($message)) {
+  if (!empty($messages)) {
     // Message digest does not carry over any information other than the
     // notifier and even this, is very limited in capabilities.
     // Set the bundle label as a temporary variable in the notifier as a dynamic
@@ -101,6 +101,7 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
     // function so it is safe to assume that values do exist.
     //
     // @see \joinup_subscription_mail_alter()
+    $message = reset($messages);
     $notifier->bundle_label = $message->get($fields[$message->getTemplate()->id()])->first()->entity->getGroup()->get('rid')->entity->label();
   }
 
