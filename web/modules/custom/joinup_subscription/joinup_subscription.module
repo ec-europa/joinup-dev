@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\field\FieldStorageConfigInterface;
 use Drupal\joinup_subscription\Entity\CollectionContentSubscriptionMessage;
+use Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessageInterface;
 use Drupal\joinup_subscription\Entity\SolutionContentSubscriptionMessage;
 use Drupal\message\MessageInterface;
 use Drupal\message_notify\Plugin\Notifier\MessageNotifierInterface;
@@ -69,11 +70,13 @@ function joinup_subscription_entity_bundle_info_alter(&$bundles) {
  * the community content items within each group is sorted alphabetically.
  */
 function joinup_subscription_message_digest_aggregate_alter(array &$context, UserInterface $account, MessageNotifierInterface $notifier): void {
-  // Only act on the group community content digest. This can be recognized
-  // because it is not linked to any entity type or entity ID.
-  if (!empty($context['entity_type']) || !empty($context['entity_id'])) {
+  // Only act on the group community content digest. Bail out if this contains
+  // any other message.
+  if (!array_reduce($context['messages'], function (bool $carry, MessageInterface $message): bool {
+    return $carry && $message instanceof GroupContentSubscriptionMessageInterface;
+  }, TRUE)) {
     return;
-  }
+  };
 
   $fields = [
     'collection_content_subscription' => 'field_collection_content',
