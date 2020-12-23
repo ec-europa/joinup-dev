@@ -101,7 +101,7 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
     //
     // @see \joinup_subscription_mail_alter()
     $message = reset($messages);
-    $notifier->bundle_label = $message->getSubscribedGroupContent()->getGroup()->get('rid')->entity->label();
+    $notifier->bundle_label = $message->getSubscribedGroup()->get('rid')->entity->label();
   }
 
   // If all content in the message was deleted, prevent an empty digest from
@@ -116,9 +116,7 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
   uasort($messages, function (GroupContentSubscriptionMessageInterface $a, GroupContentSubscriptionMessageInterface $b) {
     // Find the groups by resolving the entity references from the message
     // to the community content to the group.
-    /** @var \Drupal\joinup_group\Entity\GroupContentInterface $a_content */
     $a_content = $a->getSubscribedGroupContent();
-    /** @var \Drupal\joinup_group\Entity\GroupContentInterface $b_content */
     $b_content = $b->getSubscribedGroupContent();
     $a_group = $a_content->getGroup();
     $b_group = $b_content->getGroup();

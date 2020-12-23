@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_subscription\Entity;
 
-use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
-use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\message\Entity\Message;
 
 /**
@@ -13,18 +11,11 @@ use Drupal\message\Entity\Message;
  */
 class CollectionContentSubscriptionMessage extends Message implements CollectionContentSubscriptionMessageInterface {
 
-  use JoinupBundleClassFieldAccessTrait;
-
   /**
-   * {@inheritdoc}
+   * The name of the field that references the group content for this message.
    */
-  public function getSubscribedGroupContent(): ?GroupContentInterface {
-    $referenced_entity = $this->getFirstReferencedEntity('field_collection_content');
-    if ($referenced_entity instanceof GroupContentInterface) {
-      return $referenced_entity;
-    }
+  const GROUP_CONTENT_REFERENCE_FIELD = 'field_collection_content';
 
-    return NULL;
-  }
+  use GroupContentSubscriptionMessageTrait;
 
 }

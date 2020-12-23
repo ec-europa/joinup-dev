@@ -4,10 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_subscription;
 
-use Drupal\joinup_group\Entity\GroupContentInterface;
-use Drupal\joinup_group\Entity\GroupInterface;
-use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessageInterface;
+use Drupal\joinup_subscription\Exception\OrphanedGroupContentSubscriptionMessageException;
 use Drupal\message_digest\DigestFormatter as OriginalFormatter;
 use Drupal\user\UserInterface;
 
@@ -44,9 +42,11 @@ class DigestFormatter extends OriginalFormatter {
     foreach ($digest as $message) {
       // Output a group header if the list of content we're rendering belongs to
       // a new parent group.
-      $group = $this->getGroup($message);
-      if (empty($group)) {
-        // Skip orphaned content. This can happen if the subscribed/ content (or
+      try {
+        $group = $message->getSubscribedGroup();
+      }
+      catch (OrphanedGroupContentSubscriptionMessageException $e) {
+        // Skip orphaned content. This can happen if the subscribed content (or
         // the group to which the content belongs) has been removed in the
         // period since the last digest was sent.
         continue;
@@ -92,29 +92,6 @@ class DigestFormatter extends OriginalFormatter {
       }
     }
     return TRUE;
-  }
-
-  /**
-   * Returns the group from the content in the message.
-   *
-   * @param \Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessageInterface $message
-   *   The message that contains the group content for which to return the
-   *   group.
-   *
-   * @return \Drupal\joinup_group\Entity\GroupInterface|null
-   *   The group entity, or NULL if the message doesn't have a group or is
-   *   orphaned.
-   */
-  protected function getGroup(GroupContentSubscriptionMessageInterface $message): ?GroupInterface {
-    $entity = $message->getSubscribedGroupContent();
-    if ($entity instanceof GroupContentInterface) {
-      try {
-        return $entity->getGroup();
-      }
-      catch (MissingGroupException $e) {
-      }
-    }
-    return NULL;
   }
 
 }
