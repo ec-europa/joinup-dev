@@ -38,4 +38,12 @@ interface GroupContentSubscriptionMessageInterface extends MessageInterface {
    */
   public function getSubscribedGroup(): GroupInterface;
 
+  /**
+   * Returns whether the subscription message is orphaned.
+   *
+   * @return bool
+   *   TRUE if orphaned.
+   */
+  public function isOrphanedGroupContentSubscriptionMessage(): bool;
+
 }

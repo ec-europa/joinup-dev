@@ -41,4 +41,17 @@ trait GroupContentSubscriptionMessageTrait {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function isOrphanedGroupContentSubscriptionMessage(): bool {
+    try {
+      $this->getSubscribedGroup();
+      return FALSE;
+    }
+    catch (OrphanedGroupContentSubscriptionMessageException $e) {
+      return TRUE;
+    }
+  }
+
 }

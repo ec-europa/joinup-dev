@@ -82,8 +82,7 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
   /** @var \Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessageInterface[] $messages */
   $messages = &$context['messages'];
   foreach ($messages as $key => $message) {
-    $content = $message->getSubscribedGroupContent();
-    if (empty($content)) {
+    if ($message->isOrphanedGroupContentSubscriptionMessage()) {
       unset($messages[$key]);
     }
   }
