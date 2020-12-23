@@ -4,10 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_subscription;
 
+use Drupal\joinup_group\Entity\GroupContentInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessageInterface;
-use Drupal\message\MessageInterface;
 use Drupal\message_digest\DigestFormatter as OriginalFormatter;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\UserInterface;
 
 /**
@@ -44,6 +45,13 @@ class DigestFormatter extends OriginalFormatter {
       // Output a group header if the list of content we're rendering belongs to
       // a new parent group.
       $group = $this->getGroup($message);
+      if (empty($group)) {
+        // Skip orphaned content. This can happen if the subscribed/ content (or
+        // the group to which the content belongs) has been removed in the
+        // period since the last digest was sent.
+        continue;
+      }
+
       if ($group->id() !== $current_group_id) {
         $current_group_id = $group->id();
         $output[] = $this->entityTypeManager->getViewBuilder('rdf_entity')->view($group, 'digest_message_header');
@@ -89,24 +97,24 @@ class DigestFormatter extends OriginalFormatter {
   /**
    * Returns the group from the content in the message.
    *
-   * @param \Drupal\message\MessageInterface $message
+   * @param \Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessageInterface $message
    *   The message that contains the group content for which to return the
    *   group.
    *
-   * @return \Drupal\rdf_entity\RdfInterface
-   *   The group entity.
+   * @return \Drupal\joinup_group\Entity\GroupInterface|null
+   *   The group entity, or NULL if the message doesn't have a group or is
+   *   orphaned.
    */
-  protected function getGroup(MessageInterface $message): RdfInterface {
-    // Find the groups by resolving the entity references from the message
-    // to the group content to the collection.
-    /** @var \Drupal\collection\Entity\CollectionContentInterface $entity */
-    $fields = [
-      'collection_content_subscription' => 'field_collection_content',
-      'solution_content_subscription' => 'field_solution_content',
-    ];
-
-    $entity = $message->get($fields[$message->getTemplate()->id()])->first()->entity;
-    return $entity->getGroup();
+  protected function getGroup(GroupContentSubscriptionMessageInterface $message): ?GroupInterface {
+    $entity = $message->getSubscribedGroupContent();
+    if ($entity instanceof GroupContentInterface) {
+      try {
+        return $entity->getGroup();
+      }
+      catch (MissingGroupException $e) {
+      }
+    }
+    return NULL;
   }
 
 }

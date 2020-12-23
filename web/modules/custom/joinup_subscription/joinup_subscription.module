@@ -78,15 +78,11 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
     return;
   };
 
-  $fields = [
-    'collection_content_subscription' => 'field_collection_content',
-    'solution_content_subscription' => 'field_solution_content',
-  ];
-
   // Filter out any messages that are referring to deleted content.
+  /** @var \Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessageInterface[] $messages */
   $messages = &$context['messages'];
   foreach ($messages as $key => $message) {
-    $content = $message->get($fields[$message->getTemplate()->id()])->first()->entity ?? NULL;
+    $content = $message->getSubscribedGroupContent();
     if (empty($content)) {
       unset($messages[$key]);
     }
@@ -105,7 +101,7 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
     //
     // @see \joinup_subscription_mail_alter()
     $message = reset($messages);
-    $notifier->bundle_label = $message->get($fields[$message->getTemplate()->id()])->first()->entity->getGroup()->get('rid')->entity->label();
+    $notifier->bundle_label = $message->getSubscribedGroupContent()->getGroup()->get('rid')->entity->label();
   }
 
   // If all content in the message was deleted, prevent an empty digest from
@@ -117,13 +113,13 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
 
   // Put the messages in the right order in which they will be displayed in the
   // digest message.
-  uasort($messages, function (MessageInterface $a, MessageInterface $b) use ($fields) {
+  uasort($messages, function (GroupContentSubscriptionMessageInterface $a, GroupContentSubscriptionMessageInterface $b) {
     // Find the groups by resolving the entity references from the message
     // to the community content to the group.
     /** @var \Drupal\joinup_group\Entity\GroupContentInterface $a_content */
-    $a_content = $a->get($fields[$a->getTemplate()->id()])->first()->entity;
+    $a_content = $a->getSubscribedGroupContent();
     /** @var \Drupal\joinup_group\Entity\GroupContentInterface $b_content */
-    $b_content = $b->get($fields[$b->getTemplate()->id()])->first()->entity;
+    $b_content = $b->getSubscribedGroupContent();
     $a_group = $a_content->getGroup();
     $b_group = $b_content->getGroup();
 
