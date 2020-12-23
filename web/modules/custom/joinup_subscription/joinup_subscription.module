@@ -66,8 +66,8 @@ function joinup_subscription_entity_bundle_info_alter(&$bundles) {
  * Implements hook_message_digest_aggregate_alter().
  *
  * Reorders the messages in the group content subscription digest to be grouped
- * by the parent group. The groups will be sorted alphabetically and also
- * the community content items within each group is sorted alphabetically.
+ * by the parent group. The groups will be sorted alphabetically and also the
+ * community content items within each group are sorted alphabetically.
  */
 function joinup_subscription_message_digest_aggregate_alter(array &$context, UserInterface $account, MessageNotifierInterface $notifier): void {
   // Only act on the group community content digest. Bail out if this contains

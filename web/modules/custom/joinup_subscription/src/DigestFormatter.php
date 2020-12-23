@@ -34,6 +34,7 @@ class DigestFormatter extends OriginalFormatter {
       return parent::format($digest, $view_modes, $recipient);
     }
 
+    /** @var \Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessageInterface[] $digest */
     $output = [
       '#theme' => 'message_digest',
       '#messages' => [],
