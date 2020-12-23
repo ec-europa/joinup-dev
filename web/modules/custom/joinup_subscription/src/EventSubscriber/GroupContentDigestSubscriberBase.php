@@ -153,7 +153,7 @@ abstract class GroupContentDigestSubscriberBase {
     }
     catch (\Exception $e) {
       $context = ['exception' => $e];
-      $this->loggerFactory->get('mail')->critical('Unexpected exception thrown when sending a collection content subscription message.', $context);
+      $this->loggerFactory->get('mail')->critical('Unexpected ' . get_class($e) .' thrown in ' . $e->getFile() . ' on line ' . $e->getLine() .' when sending a collection content subscription message.', $context);
       return FALSE;
     }
   }
