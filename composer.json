@@ -236,7 +236,7 @@
                 "Properly fetch submit handlers @see https://www.drupal.org/project/cas/issues/3179292": "https://www.drupal.org/files/issues/2020-10-27/properly_fetch_submit_handlers.patch"
             },
             "drupal/config_devel": {
-                "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2020-05-15/2392929-11.patch"
+                "Add a Drush command for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://git.drupalcode.org/project/config_devel/-/merge_requests/4.diff"
             },
             "drupal/core": {
                 "Use email verification when changing user email addresses @see https://www.drupal.org/project/drupal/issues/85494": "https://www.drupal.org/files/issues/2020-06-18/email-change.85494-312.patch",

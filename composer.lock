@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4db4d0bdd71bc91211f30d49fa1a6bb7",
+    "content-hash": "50d4f622b4ca28a8233f7d164c99a370",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -13612,33 +13612,30 @@
         },
         {
             "name": "drupal/config_devel",
-            "version": "1.7.0",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/config_devel.git",
-                "reference": "8.x-1.7"
+                "reference": "8.x-1.8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_devel-8.x-1.7.zip",
-                "reference": "8.x-1.7",
-                "shasum": "4ebcf4fb2a2842232b9bf9b0855e3728df918fc7"
+                "url": "https://ftp.drupal.org/files/projects/config_devel-8.x-1.8.zip",
+                "reference": "8.x-1.8",
+                "shasum": "325caa6c6d0ee39e938807892f9ec509e71b5fb7"
             },
             "require": {
-                "drupal/core": "^8"
+                "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.7",
-                    "datestamp": "1590070764",
+                    "version": "8.x-1.8",
+                    "datestamp": "1609324318",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
-                },
-                "patches_applied": {
-                    "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2020-05-15/2392929-11.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
