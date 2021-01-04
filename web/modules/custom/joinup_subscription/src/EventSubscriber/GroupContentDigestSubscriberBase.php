@@ -139,6 +139,7 @@ abstract class GroupContentDigestSubscriberBase {
       // Create individual messages for each subscriber so that we can honor the
       // user's chosen digest frequency.
       foreach ($this->getSubscribers($entity) as $subscriber) {
+        // @todo Set the data directly on the message.
         $message_values = [
           $this->getTemplateFieldName() => [
             0 => [

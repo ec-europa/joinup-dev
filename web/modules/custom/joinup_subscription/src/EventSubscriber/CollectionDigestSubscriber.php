@@ -73,6 +73,7 @@ class CollectionDigestSubscriber extends GroupContentDigestSubscriberBase implem
    * {@inheritdoc}
    */
   protected function getTemplateFieldName(): string {
+    // @todo Remove this method, handle using bundle classes.
     return 'field_collection_content';
   }
 
@@ -80,6 +81,7 @@ class CollectionDigestSubscriber extends GroupContentDigestSubscriberBase implem
    * {@inheritdoc}
    */
   protected function getTemplateId(): string {
+    // @todo Remove this method, use a single digest message.
     return DigestFormatter::DIGEST_TEMPLATE_IDS['collection'];
   }
 
