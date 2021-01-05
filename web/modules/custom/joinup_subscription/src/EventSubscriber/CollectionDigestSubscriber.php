@@ -81,7 +81,6 @@ class CollectionDigestSubscriber extends GroupContentDigestSubscriberBase implem
    * {@inheritdoc}
    */
   protected function getTemplateId(): string {
-    // @todo Remove this method, use a single digest message.
     return DigestFormatter::DIGEST_TEMPLATE_IDS['collection'];
   }
 
