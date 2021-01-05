@@ -2,3 +2,7 @@ services:
   tallinn.dashboard.access:
     class: 'Drupal\tallinn\DashboardAccess'
     arguments: ['@state', '@og.access', '@og.membership_manager']
+  tallinn.og_permission_subscriber:
+    class: 'Drupal\tallinn\EventSubscriber\OgPermissionSubscriber'
+    tags:
+    - { name: 'event_subscriber' }

@@ -219,10 +219,7 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
     $bundle = $group->bundle();
     foreach ($memberships as $membership) {
       $membership->revokeRoleById("rdf_entity-$bundle-administrator");
-      // Add the facilitator role, if missed.
-      if (!$membership->hasRole($facilitator_role->id())) {
-        $membership->addRole($facilitator_role);
-      }
+      $membership->addRole($facilitator_role);
       $membership->save();
     }
 
