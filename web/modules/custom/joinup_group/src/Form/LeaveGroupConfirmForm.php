@@ -6,12 +6,12 @@ namespace Drupal\joinup_group\Form;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
@@ -26,7 +26,7 @@ class LeaveGroupConfirmForm extends ConfirmFormBase {
   /**
    * The group that is about to be abandoned by the user.
    *
-   * @var \Drupal\rdf_entity\RdfInterface
+   * @var \Drupal\collection\Entity\CollectionInterface
    */
   protected $group;
 
@@ -38,23 +38,13 @@ class LeaveGroupConfirmForm extends ConfirmFormBase {
   protected $membershipManager;
 
   /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
    * Constructs a LeaveCollectionConfirmForm.
    *
    * @param \Drupal\og\MembershipManagerInterface $membershipManager
    *   The membership manager service.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
    */
-  public function __construct(MembershipManagerInterface $membershipManager, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(MembershipManagerInterface $membershipManager) {
     $this->membershipManager = $membershipManager;
-    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -62,8 +52,7 @@ class LeaveGroupConfirmForm extends ConfirmFormBase {
    */
   public static function create(ContainerInterface $container): self {
     return new static(
-      $container->get('og.membership_manager'),
-      $container->get('entity_type.manager')
+      $container->get('og.membership_manager')
     );
   }
 
@@ -105,22 +94,17 @@ class LeaveGroupConfirmForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL): array {
+  public function buildForm(array $form, FormStateInterface $form_state, ?GroupInterface $rdf_entity = NULL): array {
+    // Store the group on the object so it can be reused.
     $this->group = $rdf_entity;
-    $form = parent::buildForm($form, $form_state);
-    $user = $this->currentUser();
 
-    if ($membership = $this->membershipManager->getMembership($this->group, $user->id())) {
-      $admin_role_id = $this->group->getEntityTypeId() . '-' . $this->group->bundle() . '-' . 'administrator';
-      if ($membership->hasRole($admin_role_id)) {
-        $administrators = $this->membershipManager->getGroupMembershipsByRoleNames($this->group, ['administrator']);
-        if (count($administrators) === 1 && $user->id() === $membership->getOwnerId()) {
-          $form['description']['#markup'] = $this->t('You are owner of this :type. Before you leave this :type, you should transfer the ownership to another member.', [
-            ':type' => $this->group->bundle(),
-          ]);
-          $form['actions']['submit']['#access'] = FALSE;
-        }
-      }
+    $form = parent::buildForm($form, $form_state);
+
+    if ($this->group->isSoleGroupOwner((int) $this->currentUser()->id())) {
+      $form['description']['#markup'] = $this->t('You are owner of this :type. Before you leave this :type, you should transfer the ownership to another member.', [
+        ':type' => $this->group->bundle(),
+      ]);
+      $form['actions']['submit']['#access'] = FALSE;
     }
 
     // In case of a modal dialog, set the cancel button to simply close the

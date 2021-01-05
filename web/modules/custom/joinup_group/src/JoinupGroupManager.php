@@ -6,7 +6,6 @@ namespace Drupal\joinup_group;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -55,9 +54,9 @@ class JoinupGroupManager implements JoinupGroupManagerInterface {
 
       // Prepare a list of groups where the user is the sole owner.
       foreach ($memberships as $membership) {
+        /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
         $group = $membership->getGroup();
-        $owners = $this->getGroupOwners($group);
-        if (count($owners) === 1 && array_key_exists($user->id(), $owners)) {
+        if ($group->isSoleGroupOwner((int) $user->id())) {
           $groups[$group->id()] = $group;
         }
       }
@@ -83,7 +82,7 @@ class JoinupGroupManager implements JoinupGroupManagerInterface {
    * {@inheritdoc}
    */
   public function getUserMembershipsByRole(AccountInterface $user, string $role, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
-    $storage = $this->entityTypeManager->getStorage('og_membership');
+    $storage = $this->getOgMembershipStorage();
 
     // Fetch all the memberships of the user, filtered by role and state.
     $query = $storage->getQuery();
@@ -93,23 +92,6 @@ class JoinupGroupManager implements JoinupGroupManagerInterface {
     $result = $query->execute();
 
     return $storage->loadMultiple($result);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getGroupOwners(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
-    $memberships = $this->membershipManager->getGroupMembershipsByRoleNames($entity, ['administrator'], $states);
-
-    $users = [];
-    foreach ($memberships as $membership) {
-      $user = $membership->getOwner();
-      if (!empty($user)) {
-        $users[$user->id()] = $user;
-      }
-    }
-
-    return $users;
   }
 
   /**

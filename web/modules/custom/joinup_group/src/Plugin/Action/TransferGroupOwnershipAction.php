@@ -10,9 +10,8 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\og\Entity\OgMembership;
-use Drupal\og\Og;
-use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -101,13 +100,14 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
    * {@inheritdoc}
    */
   public function execute(?OgMembership $membership = NULL): void {
-    /** @var \Drupal\rdf_entity\RdfInterface $group */
+    /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
     $group = $membership->getGroup();
+    $user = $membership->getOwner();
 
     // Is the selected member already the owner?
-    if ($membership->hasRole("rdf_entity-{$group->bundle()}-administrator")) {
+    if ($group->isGroupOwner((int) $user->id())) {
       $this->messages['warning'][] = $this->t('Member %member is already the owner of %group @label. Please select other user.', [
-        '%member' => $membership->getOwner()->label(),
+        '%member' => $user->label(),
         '%group' => $group->label(),
         '@label' => $group->get('rid')->entity->getSingularLabel(),
       ]);
@@ -129,7 +129,7 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
    */
   public function access($membership, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    /** @var \Drupal\rdf_entity\RdfInterface $group */
+    /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
     $group = $membership->getGroup();
     $can_transfer_ownership = $this->canTransferOwnership($group, $account);
     return $return_as_object ? ($can_transfer_ownership ? AccessResult::allowed() : AccessResult::forbidden()) : $can_transfer_ownership;
@@ -142,7 +142,7 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
    * a user that has site-wide permissions for such operations or the user is
    * the current owner of the group.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $group
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
    *   The group whom ownership is about to be transferred.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account to be checked.
@@ -150,30 +150,11 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
    * @return bool
    *   If the user is allowed to transfer the ownership of the group.
    */
-  public function canTransferOwnership(RdfInterface $group, AccountInterface $account): bool {
+  public function canTransferOwnership(GroupInterface $group, AccountInterface $account): bool {
     // The user has proper site-wide permission for this operation.
     return $account->hasPermission("administer {$group->bundle()} ownership") ||
       // Or the user is the current group owner.
-      $this->isGroupOwner($group, $account);
-  }
-
-  /**
-   * Finds out if the given account is owner of the given group.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $group
-   *   The group.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The use account.
-   *
-   * @return bool
-   *   If the given account is owner of the given group.
-   */
-  protected function isGroupOwner(RdfInterface $group, AccountInterface $account): bool {
-    $membership = Og::getMembership($group, $account);
-    if ($membership) {
-      return $membership->hasRole("rdf_entity-{$group->bundle()}-administrator");
-    }
-    return FALSE;
+      $group->isGroupOwner((int) $account->id());
   }
 
 }
