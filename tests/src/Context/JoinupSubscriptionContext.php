@@ -19,6 +19,7 @@ use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessageInterface;
 use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
 use Drupal\joinup_subscription\JoinupSubscriptionsHelper;
 use Drupal\message_digest\Traits\MessageDigestTrait;
@@ -457,7 +458,10 @@ class JoinupSubscriptionContext extends RawDrupalContext {
     $user = user_load_by_name($username);
     $actual_messages = $this->getUserMessagesByNotifier($notifier, $user->id(), $entity_type, $label);
     if ($scope !== 'include') {
-      Assert::assertEquals(count($expected_messages), count($actual_messages), sprintf('Expected %d messages in the %s digest for user %s, found %d messages.', count($expected_messages), $interval, $username, count($actual_messages)));
+      $actual_message_labels = array_map(function (GroupContentSubscriptionMessageInterface $message): string {
+        return $message->getSubscribedGroupContent()->label();
+      }, $actual_messages);
+      Assert::assertEquals(count($expected_messages), count($actual_messages), sprintf('Expected %d messages in the %s digest for user %s, found %d messages: %s.', count($expected_messages), $interval, $username, count($actual_messages), implode(', ', $actual_message_labels)));
     }
 
     $found_messages = [];

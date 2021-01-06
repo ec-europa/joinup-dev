@@ -14,7 +14,7 @@ class SolutionContentSubscriptionMessage extends Message implements SolutionCont
   /**
    * The name of the field that references the group content for this message.
    */
-  const GROUP_CONTENT_REFERENCE_FIELD = 'field_collection_content';
+  const GROUP_CONTENT_REFERENCE_FIELD = 'field_solution_content';
 
   use GroupContentSubscriptionMessageTrait;
 
