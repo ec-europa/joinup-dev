@@ -4,6 +4,7 @@ Feature: Unsubscribe from collections
   As a user of the website
   I need to be able to easily unsubscribe from collections.
 
+  @wip
   Scenario Outline: Unsubscribe from all groups
     Given user:
       | Username | Eric Cartman             |
