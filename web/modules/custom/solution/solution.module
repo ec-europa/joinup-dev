@@ -38,11 +38,11 @@ use Drupal\user\Entity\User;
  * Implements hook_entity_access().
  */
 function solution_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($entity->getEntityTypeId() != 'rdf_entity' || $entity->bundle() != 'solution' || $account->isAnonymous() || $operation != 'view') {
+  if (!$entity instanceof SolutionInterface || $account->isAnonymous() || $operation != 'view') {
     return AccessResult::neutral();
   }
 
-  $membership = Og::getMembership($entity, $account);
+  $membership = $entity->getMembership((int) $account->id());
   if (empty($membership)) {
     return AccessResult::neutral();
   }
