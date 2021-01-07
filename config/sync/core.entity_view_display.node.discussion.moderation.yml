@@ -11,14 +11,13 @@ dependencies:
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_site_featured
-    - field.field.node.discussion.field_site_pinned
     - field.field.node.discussion.field_state
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
-    - template_suggestion
     - options
     - smart_trim
+    - template_suggestion
     - user
 _core:
   default_config_hash: uVBh4xkB7tYExBaYbBXxlt_WyA15t5xMJdgPPlA2ByQ
@@ -61,7 +60,6 @@ hidden:
   field_replies: true
   field_shared_in: true
   field_site_featured: true
-  field_site_pinned: true
   flag_subscribe_discussions: true
   invite_link: true
   langcode: true
