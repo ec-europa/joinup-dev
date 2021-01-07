@@ -22,3 +22,12 @@ easme_helper.update_user:
     parameters:
       user:
         type: entity:user
+
+# Defines the route to be used when user is returning back from the Community
+# site after profile update.
+easme_helper.redirect_from_community_site:
+  path: '/user/edit/smed'
+  defaults:
+    _controller: '\Drupal\easme_helper\Controller\GeneralController::redirectFromCommunitySite'
+  requirements:
+    _role: 'authenticated'
