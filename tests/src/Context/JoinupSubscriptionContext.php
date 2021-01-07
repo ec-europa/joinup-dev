@@ -115,9 +115,10 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    */
   public function subscribeToCollectionContent(TableNode $subscription_table): void {
     foreach ($subscription_table->getColumnsHash() as $values) {
+      /** @var \Drupal\collection\Entity\CollectionInterface $collection */
       $collection = $this->getRdfEntityByLabel($values['collection'], 'collection');
       $user = $this->getUserByName($values['user']);
-      $membership = $this->getMembershipByGroupAndUser($collection, $user, OgMembershipInterface::ALL_STATES);
+      $membership = $collection->getMembership((int) $user->id(), OgMembershipInterface::ALL_STATES);
       $subscriptions = [];
       foreach ($this->explodeCommaSeparatedStepArgument(strtolower($values['subscriptions'])) as $bundle) {
         $entity_type = NULL;
@@ -364,8 +365,9 @@ class JoinupSubscriptionContext extends RawDrupalContext {
     $account = User::load($user->uid);
 
     foreach ($subscriptions->getRowsHash() as $collection_label => $expected_bundle_ids) {
-      $collection = self::getRdfEntityByLabel($collection_label);
-      $membership = $this->getMembershipByGroupAndUser($collection, $account, OgMembershipInterface::ALL_STATES);
+      /** @var \Drupal\collection\Entity\CollectionInterface $collection */
+      $collection = self::getRdfEntityByLabel($collection_label, 'collection');
+      $membership = $collection->getMembership((int) $account->id(), OgMembershipInterface::ALL_STATES);
       $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
 
       $actual_bundle_ids = array_map(function (array $item): string {
@@ -393,8 +395,9 @@ class JoinupSubscriptionContext extends RawDrupalContext {
   public function assertNoCollectionContentSubscriptions(string $label): void {
     $user = $this->getUserManager()->getCurrentUser();
     $account = User::load($user->uid);
-    $collection = self::getRdfEntityByLabel($label);
-    $membership = $this->getMembershipByGroupAndUser($collection, $account, OgMembershipInterface::ALL_STATES);
+    /** @var \Drupal\collection\Entity\CollectionInterface $collection */
+    $collection = self::getRdfEntityByLabel($label, 'collection');
+    $membership = $collection->getMembership((int) $account->id(), OgMembershipInterface::ALL_STATES);
     Assert::assertEmpty($membership->get('subscription_bundles')->getValue());
   }
 

@@ -42,9 +42,7 @@ trait OgTrait {
    */
   protected function subscribeUserToGroup(AccountInterface $user, GroupInterface $group, array $roles = [], ?string $state = NULL, ?int $created = NULL): void {
     // If a membership already exists, load it. Otherwise create a new one.
-    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-    $membership_manager = \Drupal::service('og.membership_manager');
-    $membership = $membership_manager->getMembership($group, $user->id(), OgMembershipInterface::ALL_STATES);
+    $membership = $group->getMembership((int) $user->id(), OgMembershipInterface::ALL_STATES);
     if (!$membership) {
       $membership = OgMembership::create()
         ->setOwner($user)
@@ -256,36 +254,6 @@ trait OgTrait {
     $state = !empty($values['state']) ? $values['state'] : NULL;
     $timestamp = !empty($values['created']) ? strtotime($values['created']) : NULL;
     $this->subscribeUserToGroup($member, $group, $roles, $state, $timestamp);
-  }
-
-  /**
-   * Returns the group membership for a given user and group.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $group
-   *   The group to get the membership for.
-   * @param \Drupal\Core\Session\AccountInterface $user
-   *   The user to get the membership for.
-   * @param array $states
-   *   (optional) Array with the state to return. Defaults to active.
-   *
-   * @return \Drupal\og\OgMembershipInterface
-   *   The OgMembership entity.
-   *
-   * @throws \Exception
-   *   Thrown if a membership with the given criteria is not found.
-   */
-  protected function getMembershipByGroupAndUser(EntityInterface $group, AccountInterface $user, array $states = [OgMembershipInterface::STATE_ACTIVE]): OgMembershipInterface {
-    // Make sure we don't get false positives on previously cached results.
-    self::resetCache();
-
-    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-    $membership_manager = \Drupal::service('og.membership_manager');
-    $membership = $membership_manager->getMembership($group, $user->id(), $states);
-    if (empty($membership)) {
-      throw new \Exception("Og membership for user {$user->getDisplayName()} in group {$group->label()} was not found.");
-    }
-
-    return $membership;
   }
 
   /**
