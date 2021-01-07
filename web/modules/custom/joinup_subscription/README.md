@@ -22,14 +22,14 @@ subscription manually. See the following files for more info:
 - [`JoinupDiscussionSubscriptionInterface](src/JoinupDiscussionSubscriptionInterface.php):
   The service to manage discussion subscriptions.
 
-Collection content subscriptions
---------------------------------
+Group content subscriptions
+---------------------------
 
-A user can subscribe to content in collections and solutions and will be notified 
-when new content is published in the group they are a member of. The user can
-subscribe to collections through the "My subscriptions" link in the user profile
-menu. This leads to the `SubscriptionDashboardForm` where the user can choose
-for which content bundles they want to receive notifications.
+A user can subscribe to content in collections and solutions and will be
+notified when new content is published in the group they are a member of. The
+user can subscribe to groups through the "My subscriptions" link in the user
+profile menu. This leads to the `SubscriptionDashboardForm` where the user can
+choose for which content bundles they want to receive notifications.
 
 When a user joins a collection they will be presented with a modal dialog that
 allows them to subscribe immediately after joining. This modal dialog can be
@@ -70,8 +70,8 @@ $membership->set('subscription_bundles', $subscription_bundles)->save();
 The messages are included in the digests by the
 `CollectionContentSubscriptionSubscriber` event listener which acts on solutions
 and community content being created or updated.
-For solutions, `SolutionContentSubscriptionSubscriber` performs the equivalent task but only
-for community content.
+For solutions, `SolutionContentSubscriptionSubscriber` performs the equivalent
+task but only for community content.
 
 Digests
 -------
