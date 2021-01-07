@@ -164,8 +164,7 @@ function contact_information_rdf_entity_access(EntityInterface $entity, $operati
     $relation_info = \Drupal::service('contact_information.relation_info');
     if ($groups = $relation_info->getContactInformationRelatedGroups($entity)) {
       $group = reset($groups);
-      $membership = \Drupal::service('og.membership_manager')->getMembership($group, $account->id());
-      if ($membership && $membership->hasPermission('delete contact_information rdf entity')) {
+      if ($group->hasGroupPermission((int) $account->id(), 'delete contact_information rdf entity')) {
         return AccessResult::allowed();
       }
     }
