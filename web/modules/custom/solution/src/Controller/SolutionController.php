@@ -11,10 +11,7 @@ use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Controller for solution forms.
- *
- * Handles the form to perform actions when it is called by a route that
- * includes an rdf_entity id.
+ * Controller providing the form to add a new solution inside a collection.
  */
 class SolutionController extends ControllerBase {
 
