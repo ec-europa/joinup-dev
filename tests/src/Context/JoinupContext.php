@@ -712,12 +712,6 @@ class JoinupContext extends RawDrupalContext {
       $node->{"field_paragraphs_body:target_revision_id"} = $paragraph->getRevisionId();
       unset($node->field_paragraphs_body);
     }
-
-    // Replace the human-readable values for multiple fields.
-    self::convertObjectPropertyValues($node, 'field_site_pinned', [
-      'yes' => 1,
-      'no' => 0,
-    ]);
   }
 
   /**
@@ -789,7 +783,6 @@ class JoinupContext extends RawDrupalContext {
         'policy domain' => 'field_policy_domain',
         'shared on' => 'field_shared_in',
         'visits' => 'visit_count',
-        'pinned to front page' => 'field_site_pinned',
       ],
     ];
 
