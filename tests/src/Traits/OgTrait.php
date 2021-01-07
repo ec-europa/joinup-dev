@@ -251,6 +251,34 @@ trait OgTrait {
   }
 
   /**
+   * Returns the group membership for a given user and group.
+   *
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
+   *   The group to get the membership for.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *   The user to get the membership for.
+   * @param array $states
+   *   (optional) Array with the state to return. Defaults to active.
+   *
+   * @return \Drupal\og\OgMembershipInterface
+   *   The OgMembership entity.
+   *
+   * @throws \Exception
+   *   Thrown if a membership with the given criteria is not found.
+   */
+  protected function getMembershipByGroupAndUser(GroupInterface $group, AccountInterface $user, array $states = [OgMembershipInterface::STATE_ACTIVE]): OgMembershipInterface {
+    // Make sure we don't get false positives on previously cached results.
+    self::resetCache();
+
+    $membership = $group->getMembership((int) $user->id(), $states);
+    if (empty($membership)) {
+      throw new \Exception("Og membership for user {$user->getDisplayName()} in group {$group->label()} was not found.");
+    }
+
+    return $membership;
+  }
+
+  /**
    * Checks that the user has permission to perform the operation on the group.
    *
    * @param bool $expected_result

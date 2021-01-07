@@ -118,7 +118,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
       /** @var \Drupal\collection\Entity\CollectionInterface $collection */
       $collection = $this->getRdfEntityByLabel($values['collection'], 'collection');
       $user = $this->getUserByName($values['user']);
-      $membership = $collection->getMembership((int) $user->id(), OgMembershipInterface::ALL_STATES);
+      $membership = $this->getMembershipByGroupAndUser($collection, $user, OgMembershipInterface::ALL_STATES);
       $subscriptions = [];
       foreach ($this->explodeCommaSeparatedStepArgument(strtolower($values['subscriptions'])) as $bundle) {
         $entity_type = NULL;
@@ -367,7 +367,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
     foreach ($subscriptions->getRowsHash() as $collection_label => $expected_bundle_ids) {
       /** @var \Drupal\collection\Entity\CollectionInterface $collection */
       $collection = self::getRdfEntityByLabel($collection_label, 'collection');
-      $membership = $collection->getMembership((int) $account->id(), OgMembershipInterface::ALL_STATES);
+      $membership = $this->getMembershipByGroupAndUser($collection, $account, OgMembershipInterface::ALL_STATES);
       $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
 
       $actual_bundle_ids = array_map(function (array $item): string {
@@ -397,7 +397,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
     $account = User::load($user->uid);
     /** @var \Drupal\collection\Entity\CollectionInterface $collection */
     $collection = self::getRdfEntityByLabel($label, 'collection');
-    $membership = $collection->getMembership((int) $account->id(), OgMembershipInterface::ALL_STATES);
+    $membership = $this->getMembershipByGroupAndUser($collection, $account, OgMembershipInterface::ALL_STATES);
     Assert::assertEmpty($membership->get('subscription_bundles')->getValue());
   }
 
