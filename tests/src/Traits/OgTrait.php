@@ -92,23 +92,17 @@ trait OgTrait {
    *
    * @param \Drupal\Core\Session\AccountInterface $user
    *   The user to be checked.
-   * @param \Drupal\rdf_entity\RdfInterface $group
-   *   The group entity. In this project, only rdf entities are groups.
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
+   *   The group entity.
    * @param array $roles
    *   An array of roles to be checked. Roles must be passed as simple names
    *    and not as full IDs. Names will be converted accordingly to IDs.
    *
    * @throws \Exception
-   *    Throws exception when the user is not a member or is not an owner.
+   *    Throws exception when the user is not the group owner.
    */
-  protected function assertOgGroupOwnership(AccountInterface $user, RdfInterface $group, array $roles): void {
-    $membership = Og::getMembership($group, $user);
-    if (empty($membership)) {
-      throw new \Exception("User {$user->getAccountName()} is not a member of the {$group->label()} group.");
-    }
-
-    $roles = $this->convertOgRoleNamesToIds($roles, $group);
-    if (array_intersect($roles, $membership->getRolesIds()) != $roles) {
+  protected function assertOgGroupOwnership(AccountInterface $user, GroupInterface $group, array $roles): void {
+    if (!$group->isGroupOwner((int) $user->id())) {
       throw new \Exception("User {$user->getAccountName()} is not the owner of the {$group->label()} group.");
     }
   }
