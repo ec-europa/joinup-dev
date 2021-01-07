@@ -4,15 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_community_content\Plugin\WorkflowStatePermission;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_workflow\WorkflowHelperInterface;
-use Drupal\og\MembershipManagerInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine_permissions\StateMachinePermissionStringConstructor;
 use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
@@ -32,32 +29,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CommunityContentWorkflowStatePermission extends PluginBase implements WorkflowStatePermissionPluginInterface, ContainerFactoryPluginInterface {
 
   /**
-   * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
-   * The OG membership manager.
-   *
-   * @var \Drupal\og\MembershipManagerInterface
-   */
-  protected $membershipManager;
-
-  /**
    * The workflow helper service.
    *
    * @var \Drupal\joinup_workflow\WorkflowHelperInterface
    */
   protected $workflowHelper;
-
-  /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
 
   /**
    * Constructs a CollectionWorkflowStatePermissions object.
@@ -68,21 +44,12 @@ class CommunityContentWorkflowStatePermission extends PluginBase implements Work
    *   The plugin ID for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The config factory.
-   * @param \Drupal\og\MembershipManagerInterface $membershipManager
-   *   The OG membership manager.
    * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflowHelper
    *   The workflow helper service.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, MembershipManagerInterface $membershipManager, WorkflowHelperInterface $workflowHelper, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, WorkflowHelperInterface $workflowHelper) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->configFactory = $configFactory;
-    $this->membershipManager = $membershipManager;
     $this->workflowHelper = $workflowHelper;
-    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -93,10 +60,7 @@ class CommunityContentWorkflowStatePermission extends PluginBase implements Work
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('config.factory'),
-      $container->get('og.membership_manager'),
-      $container->get('joinup_workflow.workflow_helper'),
-      $container->get('entity_type.manager')
+      $container->get('joinup_workflow.workflow_helper')
     );
   }
 
