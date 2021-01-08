@@ -12,6 +12,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Service to provide information about contact information entity relations.
+ *
+ * @todo Move this into the ContactInformation bundle class.
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6327
  */
 class ContactInformationRelationInfo implements ContactInformationRelationInfoInterface, ContainerInjectionInterface {
 
