@@ -10,6 +10,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\collection\Entity\CollectionInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\solution\Entity\SolutionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Controller providing the form to add a new solution inside a collection.
@@ -23,33 +24,36 @@ class SolutionController extends ControllerBase {
    * that include the rdf_entity id in the url so that the og audience field
    * is auto completed.
    *
-   * @param \Drupal\collection\Entity\CollectionInterface $collection
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The collection.
    *
    * @return array
    *   Return the form array to be rendered.
    */
-  public function add(CollectionInterface $collection): array {
-    $solution = $this->createNewSolution($collection);
+  public function add(RdfInterface $rdf_entity): array {
+    if (!$rdf_entity instanceof CollectionInterface) {
+      throw new NotFoundHttpException();
+    }
+    $solution = $this->createNewSolution($rdf_entity);
 
     // Pass the collection to the form state so that the parent connection is
     // established.
     // @see solution_add_form_parent_submit()
-    return $this->entityFormBuilder()->getForm($solution, 'default', ['collection' => $collection->id()]);
+    return $this->entityFormBuilder()->getForm($solution, 'default', ['collection' => $rdf_entity->id()]);
   }
 
   /**
    * Handles access to the solution add form through collection pages.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $collection
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The collection in which the solution is created.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result object.
    */
-  public function createSolutionAccess(RdfInterface $collection): AccessResultInterface {
+  public function createSolutionAccess(RdfInterface $rdf_entity): AccessResultInterface {
     // If the collection is archived, content creation is not allowed.
-    if (!$collection instanceof CollectionInterface || $collection->getWorkflowState() === 'archived') {
+    if (!$rdf_entity instanceof CollectionInterface || $rdf_entity->getWorkflowState() === 'archived') {
       return AccessResult::forbidden();
     }
 
@@ -60,7 +64,7 @@ class SolutionController extends ControllerBase {
       return AccessResult::allowed();
     }
 
-    return $collection->hasGroupPermission((int) $user->id(), 'create solution rdf_entity') ? AccessResult::allowed() : AccessResult::forbidden();
+    return $rdf_entity->hasGroupPermission((int) $user->id(), 'create solution rdf_entity') ? AccessResult::allowed() : AccessResult::forbidden();
   }
 
   /**
