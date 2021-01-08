@@ -128,63 +128,6 @@ Feature: Pinning content to the front page
       | discussion   | Discussion |
       | news         | News       |
 
-  Scenario Outline: Moderators can pin and unpin collections and solutions to the front page.
-    When I am an anonymous user
-    And I am on the homepage
-    And I click "<header link>" in the "Header" region
-    Then I should see the following tiles in the correct order:
-      | <pinned>   |
-      | <unpinned> |
-    And I should not see the contextual link "Pin to front page" in the "<pinned>" tile
-    And I should not see the contextual link "Unpin from front page" in the "<unpinned>" tile
-
-    When I am logged in as an "authenticated user"
-    And I click "<header link>"
-    Then I should see the following tiles in the correct order:
-      | <pinned>   |
-      | <unpinned> |
-    And I should not see the contextual link "Pin to front page" in the "<pinned>" tile
-    And I should not see the contextual link "Unpin from front page" in the "<unpinned>" tile
-
-    # Facilitators cannot use the pin to front page functionality.
-    When I am logged in as "Burke Abraham"
-    And I click "<header link>"
-    Then I should see the following tiles in the correct order:
-      | <pinned>   |
-      | <unpinned> |
-    And I should not see the contextual link "Pin to front page" in the "<pinned>" tile
-    And I should not see the contextual link "Unpin from front page" in the "<unpinned>" tile
-
-    When I am logged in as a moderator
-    And I click "<header link>"
-    Then I should see the following tiles in the correct order:
-      | <pinned>   |
-      | <unpinned> |
-    And I should see the contextual link "Pin to front page" in the "<unpinned>" tile
-    And I should see the contextual link "Unpin from front page" in the "<pinned>" tile
-    But I should not see the contextual link "Unpin from front page" in the "<unpinned>" tile
-    And I should not see the contextual link "Pin to front page" in the "<pinned>" tile
-
-    When I click the contextual link "Unpin from front page" in the "<pinned>" tile
-    Then I should see the success message "<label> <pinned> has been removed from the pinned contents."
-    When I click "<header link>"
-    # Both the contents are unpinned now, so they are sorted by creation date descending.
-    Then I should see the following tiles in the correct order:
-      | <unpinned> |
-      | <pinned>   |
-
-    When I click the contextual link "Pin to front page" in the "<unpinned>" tile
-    Then I should see the success message "<label> <unpinned> has been set as pinned content."
-    When I click "<header link>"
-    Then I should see the following tiles in the correct order:
-      | <unpinned> |
-      | <pinned>   |
-
-    Examples:
-      | header link | pinned      | unpinned         | label      |
-      | Collections | Risky Sound | Tuna Moving      | Collection |
-      | Solutions   | D minor     | Migration routes | Solution   |
-
   Scenario: Front page menu access.
     Given I am logged in as a user with the "authenticated" role
     When I am on the homepage
