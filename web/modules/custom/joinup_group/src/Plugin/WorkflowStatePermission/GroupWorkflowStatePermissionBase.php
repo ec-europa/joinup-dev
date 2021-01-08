@@ -15,7 +15,7 @@ use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Base class for workflow state permission plugins for group entities.
+ * Base class for workflow state permission plugins for group related entities.
  */
 abstract class GroupWorkflowStatePermissionBase extends PluginBase implements WorkflowStatePermissionPluginInterface, ContainerFactoryPluginInterface {
 
@@ -27,7 +27,7 @@ abstract class GroupWorkflowStatePermissionBase extends PluginBase implements Wo
   protected $workflowHelper;
 
   /**
-   * Constructs a SolutionWorkflowStatePermissions object.
+   * Constructs a workflow state permission plugin for group related entities.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
