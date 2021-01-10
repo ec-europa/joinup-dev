@@ -161,19 +161,19 @@ class MySubscriptionsForm extends FormBase {
     // Keep track of the groups with subscriptions in order to properly show or
     // hide the 'Unsubscribe from all' button in the end of the page.
     foreach ($memberships as $membership) {
+      /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
       $group = $membership->getGroup();
       if ($group === NULL) {
         continue;
       }
       $clean_group_id = Html::cleanCssIdentifier($group->id());
-      $logo = $group->hasField('field_ar_logo') ? $group->field_ar_logo : $group->field_is_logo;
       $form['groups'][$group->id()] = [
         '#type' => 'container',
         '#id' => 'group-' . $clean_group_id,
         '#attributes' => [
           'class' => ['group-subscription'],
         ],
-        'logo' => $logo->view([
+        'logo' => $group->getLogoAsRenderArray([
           'label' => 'hidden',
           'type' => 'image',
           'settings' => [
