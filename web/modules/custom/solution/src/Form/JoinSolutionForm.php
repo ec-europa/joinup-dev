@@ -62,7 +62,7 @@ class JoinSolutionForm extends JoinGroupFormBase {
    */
   protected function createMembership(string $state, array $roles): OgMembershipInterface {
     $membership = parent::createMembership($state, $roles);
-    $membership->set('subscription_bundles', JoinupSubscriptionsHelper::getSolutionBundlesDefaultValue());
+    $membership->set('subscription_bundles', JoinupSubscriptionsHelper::getSubscriptionBundlesDefaultValue('solution'));
     return $membership;
   }
 

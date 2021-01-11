@@ -179,7 +179,7 @@ class SubscribeToCollectionForm extends FormBase {
     $collection = $this->loadCollection($form_state->getValue('collection_id'));
 
     $membership = $this->getUserNonBlockedMembership($collection);
-    $membership->set('subscription_bundles', JoinupSubscriptionsHelper::getCollectionBundlesDefaultValue())->save();
+    $membership->set('subscription_bundles', JoinupSubscriptionsHelper::getSubscriptionBundlesDefaultValue('collection'))->save();
 
     // Check if the user is pending, so we can adapt the messages for the user.
     $is_pending = !empty($membership) && $membership->isPending();

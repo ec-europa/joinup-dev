@@ -122,7 +122,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
       $user = $this->getUserByName($values['user']);
       $membership = $this->getMembershipByGroupAndUser($group, $user, OgMembershipInterface::ALL_STATES);
       $subscriptions = [];
-      $subscription_bundles = $bundle === 'collection' ? JoinupSubscriptionsHelper::COLLECTION_BUNDLES : JoinupSubscriptionsHelper::SOLUTION_BUNDLES;
+      $subscription_bundles = JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES[$bundle];
       foreach ($this->explodeCommaSeparatedStepArgument(strtolower($values['subscriptions'])) as $subscription_bundle) {
         $entity_type = NULL;
         foreach ($subscription_bundles as $entity_type_id => $bundles) {
@@ -332,7 +332,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
     foreach ($subscription_options->getRowsHash() as $group_label => $expected_bundle_ids) {
       $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
       $group = self::getRdfEntityByLabel($group_label, $bundle);
-      $subscription_bundles = $bundle === 'collection' ? JoinupSubscriptionsHelper::COLLECTION_BUNDLES : JoinupSubscriptionsHelper::SOLUTION_BUNDLES;
+      $subscription_bundles = JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES[$bundle];
       foreach ($subscription_bundles as $entity_type_id => $bundle_ids) {
         foreach ($bundle_ids as $bundle_id) {
           $key = implode('|', [$entity_type_id, $bundle_id]);
