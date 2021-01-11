@@ -1,77 +1,106 @@
-version: '3.4'
+# Any value can be overridden in docker-compose.override.yml, a file that is not
+# under VCS control. See docker-compose.override.yml.dist for more details.
+version: '3'
 services:
   web:
-    build:
-      context: ./resources/docker/web
+    image: fpfis/httpd-php-dev:7.1
+    working_dir: /var/www/html
     ports:
-      - "8080:80"
+      - '8080:8080'
+    # macOS users should override 'volumes:' in docker-compose.override.yml.
+    # See docker-compose.override.yml.dist.
     volumes:
-      - .:/var/www/html
-      - ./build.docker.main.xml:/var/www/html/build.xml
+      - ${PWD}:/var/www/html
     env_file:
       - .env.dist
     environment:
       DOCUMENT_ROOT: "/var/www/html/web"
-      PHP_XDEBUG_ENABLED: "1"
-      PHP_IDE_CONFIG: "serverName=Docker"
-      PHP_SENDMAIL_PATH: "/usr/sbin/sendmail -t -i -S mail:1025"
+#      PHP_XDEBUG_ENABLED: "0"
+#      PHP_IDE_CONFIG: "serverName=Docker"
+#      PHP_SENDMAIL_PATH: "/usr/sbin/sendmail -t -i -S mail:1025"
+      SMTP_SERVER: mail
+      SMTP_PORT: 1025
+      SMTP_FROM: contact@example.com
+      # Environment variables without a value will receive the values from the
+      # host machine, if they are set.
+      # See https://docs.docker.com/compose/environment-variables/#pass-environment-variables-to-containers
+      DRUPAL_HASH_SALT:
+      ASDA_URL:
+      ASDA_USER:
+      ASDA_PASSWORD:
+    depends_on:
+      - mysql
+      - virtuoso
+      - solr
+      - redis
+      - mail
+      - selenium
 
   mysql:
-    image: mysql:5.6
+    image: percona/percona-server:5.7
+    # macOS users should override 'volumes:' in docker-compose.override.yml.
+    # See docker-compose.override.yml.dist.
+    volumes:
+      - ./resources/docker/mysql/config:/etc/mysql/conf.d
+    ports:
+      # Avoid port collision with a potential host machine instance of MySQL.
+      - '3307:3306'
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
-      MYSQL_USER: 'db_user'
-      MYSQL_PASSWORD: 'db_pass'
-      MYSQL_DATABASE: 'db_name'
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
 
   virtuoso:
     image: tenforce/virtuoso
     environment:
       - SPARQL_UPDATE=true
-      - DBA_PASSWORD=dba
-    volumes:
-      - "virtuoso:/data"
+      # Virtuoso .ini overrides. Pattern: VIRT_$SECTION_$KEY=$VALUE
+      # See https://hub.docker.com/r/tenforce/virtuoso
+      - VIRT_Parameters_O_DIRECT=1
+      - VIRT_Parameters_ThreadCleanupInterval=1
+      - VIRT_Parameters_NumberOfBuffers=340000
+      - VIRT_Parameters_MaxDirtyBuffers=250000
+      - VIRT_Replication_ServerEnable=0
+      - VIRT_SPARQL_ResultSetMaxRows=1000000
     ports:
-      - "8890:8890"
+      # Avoid port collision with a potential host machine instance of Virtuoso.
+      - '8891:8890'
+
+  solr:
+    image: solr:6
+    ports:
+      # Avoid port collision with a potential host machine instance of Solr.
+      - '8984:8983'
+    # macOS users should override 'volumes:' in docker-compose.override.yml.
+    # See docker-compose.override.yml.dist.
+    volumes:
+      - ./tmp/solr:/solr-snapshot
+      - ./web/modules/contrib/search_api_solr/solr-conf/6.x:/solr-conf
+    entrypoint:
+      - docker-entrypoint.sh
+      - bash
+      - '-c'
+      - 'mkdir -p /opt/docker-solr/drupal/conf; cp -r /solr-conf/* /opt/docker-solr/drupal/conf/; sed -i "/solr.install.dir=/c\solr.install.dir=/opt/solr" /opt/docker-solr/drupal/conf/solrcore.properties; precreate-core drupal_published /opt/docker-solr/drupal; precreate-core drupal_unpublished /opt/docker-solr/drupal; exec solr -f'
+
+  redis:
+    image: redis
+    ports:
+      # Avoid port collision with a potential host machine instance of Redis.
+      - '6380:6379'
 
   mail:
     image: mailhog/mailhog
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      # Avoid port collision with a potential host machine instance of Mailhog.
+      - "1026:1025"
+      - '8026:8025'
 
+  # Spawn a Selenium server, including also a VNC server on localhost:5900 (the
+  # password is "secret")
   selenium:
-    image: selenium/standalone-chrome-debug:3.11
+    image: selenium/standalone-chrome-debug
+    environment:
+      - DISPLAY=:99
+      - SE_OPTS=-debug
     ports:
-      - "5900:5900"
+      - '5900:5900'
     expose:
-      - "4440"
-    volumes:
-      # Needed due to chrome having issues with memory usage. Firefox does not face this issue.
-      # @see: https://github.com/elgalu/docker-selenium/issues/20
-      - "/dev/shm:/dev/shm"
-
-  solr_published:
-    build:
-      context: ./resources/docker/solr
-    ports:
-     - "8982:8983"
-    entrypoint:
-     - docker-entrypoint.sh
-     - solr-precreate
-     - drupal_published
-     - "/opt/docker-solr/configsets/drupal"
-
-  solr_unpublished:
-    build:
-      context: ./resources/docker/solr
-    ports:
-     - "8983:8983"
-    entrypoint:
-     - docker-entrypoint.sh
-     - solr-precreate
-     - drupal_unpublished
-     - "/opt/docker-solr/configsets/drupal"
-
-volumes:
-  virtuoso:
+      - '4444'

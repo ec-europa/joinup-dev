@@ -47,10 +47,8 @@
 /tmp/
 /VERSION
 
-# Ignore local docker-compose file.
-docker-compose.local.yml
-docker-compose.*.local.yml
-/resources/docker/local
+# Ignore local docker compose file.
+/docker-compose.override.yml
 
 # CPHP Behat files.
 /tests/behat-*
