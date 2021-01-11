@@ -114,7 +114,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *   Thrown if a membership is not found for a given user in a given
    *   collection.
    *
-   * @Given (the following ):type content subscriptions:
+   * @Given (the following ):bundle content subscriptions:
    */
   public function subscribeToGroupContent(TableNode $subscription_table, string $bundle): void {
     foreach ($subscription_table->getColumnsHash() as $values) {

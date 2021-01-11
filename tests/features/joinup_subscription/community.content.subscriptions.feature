@@ -65,7 +65,9 @@ Feature: Subscribing to community content in collections and solutions
       | Deflected rays         |
       | Newtonian context      |
 
-    # Check that the messages are formatted correctly.
+    # Check that the message is formatted correctly. It should contain the
+    # groups in alphabetical order, underneath which the group content is shown,
+    # also in alphabetical order.
     Given all message digests have been delivered
     Then the group content subscription digest sent to jpluminet contains the following sections:
       | title                  |

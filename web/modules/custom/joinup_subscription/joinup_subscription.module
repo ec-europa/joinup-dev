@@ -94,8 +94,6 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
   // Put the messages in the right order in which they will be displayed in the
   // digest message.
   uasort($messages, function (GroupContentSubscriptionMessageInterface $a, GroupContentSubscriptionMessageInterface $b) {
-    // Find the groups by resolving the entity references from the message
-    // to the community content to the group.
     $a_content = $a->getSubscribedGroupContent();
     $b_content = $b->getSubscribedGroupContent();
     $a_group = $a_content->getGroup();
