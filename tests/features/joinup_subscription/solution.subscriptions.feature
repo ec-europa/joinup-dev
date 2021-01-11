@@ -26,7 +26,7 @@ Feature: Subscribing to a solution
     Then I should see the button "Subscribe to this solution"
 
     When I press "Subscribe to this solution"
-    Then I should see the success message "You have subscribed to this solution and will receive notifications for it. You can manage your subscriptions at My subscriptions"
+    Then I should see the success message "You have subscribed to this solution and will receive notifications for it. To manage your subscriptions go to My subscriptions in your user menu."
 
     When I open the account menu
     And I click "My subscriptions"
