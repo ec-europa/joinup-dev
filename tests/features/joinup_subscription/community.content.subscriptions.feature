@@ -53,19 +53,17 @@ Feature: Subscribing to community content in collections and solutions
       | The periastron    | Jacobian elliptic integral | Black hole imaging |                       | validated | bisera |
       | Newtonian context | Projecting ellipses        |                    | Bolometric appearance | validated | hristo |
 
-    # The collection digest should only contain the content posted directly in
-    # the collection itself.
+    # The group content digest should contain the content posted in the
+    # collection and the solution.
     Then the daily group content subscription digest for jpluminet should match the following messages:
       | Active galactic nuclei |
       | Doppler effect         |
       | Effective potential    |
       | The periastron         |
-    # The solution digest should only contain content posted in solutions.
-    Then the daily group content subscription digest for jpluminet should match the following messages:
-      | Light diffusion   |
-      | Distant observers |
-      | Deflected rays    |
-      | Newtonian context |
+      | Light diffusion        |
+      | Distant observers      |
+      | Deflected rays         |
+      | Newtonian context      |
 
     # Check that the messages are formatted correctly.
     Given all message digests have been delivered
@@ -76,27 +74,9 @@ Feature: Subscribing to community content in collections and solutions
       | Doppler effect         |
       | Effective potential    |
       | The periastron         |
-    And the email sent to "jpluminet" with subject "Joinup: Daily Collection digest message" contains the following lines of text:
-      | text                                                   |
-      | New content published in Collection Black hole imaging |
-    And the email sent to "jpluminet" with subject "Joinup: Daily Collection digest message" should not contain the following lines of text:
-      | text                                                    |
-      | New content published in Solution Null geodesics        |
-      | New content published in Solution Bolometric appearance |
-
-    And the group content subscription digest sent to jpluminet contains the following sections:
-      | title                 |
-      | Null geodesics        |
-      | Light diffusion       |
-      | Deflected rays        |
-      | Bolometric appearance |
-      | Distant observers     |
-      | Newtonian context     |
-    And the email sent to "jpluminet" with subject "Joinup: Daily Solution digest message" contains the following lines of text:
-      | text                                                    |
-      | New content published in Solution Null geodesics        |
-      | New content published in Solution Bolometric appearance |
-    And the email sent to "jpluminet" with subject "Joinup: Daily Solution digest message" should not contain the following lines of text:
-      | text                                                   |
-      | New content published in Collection Black hole imaging |
-
+      | Bolometric appearance  |
+      | Distant observers      |
+      | Newtonian context      |
+      | Null geodesics         |
+      | Deflected rays         |
+      | Light diffusion        |
