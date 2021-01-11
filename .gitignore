@@ -44,7 +44,7 @@
 /disable-config-readonly
 
 # Ignore temporary and auto-generated files.
-/tmp
+/tmp/
 /VERSION
 
 # Ignore local docker-compose file.
