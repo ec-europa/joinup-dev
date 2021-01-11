@@ -583,7 +583,6 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @Then the group content subscription digest sent to :username contains the following sections:
    */
   public function assertGroupContentSubscriptionEmailSections(string $username, TableNode $table): void {
-    Assert::assertContains($type, ['collection', 'solution'], 'Only "collection" and "solution" are allowed for parameter $type.');
     $this->assertEmailTagPresent();
 
     // Remove the table header from the array.
@@ -592,7 +591,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
 
     $user = user_load_by_name($username);
     $email_address = $user->getEmail();
-    $emails = $this->getGroupSubscriptionEmailsByEmail($email_address, $type);
+    $emails = $this->getGroupSubscriptionEmailsByEmail($email_address);
 
     Assert::assertCount(1, $emails, "Expected 1 digest message for user $username, found " . count($emails) . ' messages.');
 
@@ -653,8 +652,6 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *
    * @param string $email_address
    *   The email of the recipient.
-   * @param string $type
-   *   The group bundle.
    *
    * @return array
    *   An array of emails found.
@@ -662,12 +659,11 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @throws \Exception
    *   Thrown if no emails are found or no user exists with the given data.
    */
-  protected function getGroupSubscriptionEmailsByEmail(string $email_address, string $type): array {
+  protected function getGroupSubscriptionEmailsByEmail(string $email_address): array {
     $emails = [];
-    $type = \Drupal::entityTypeManager()->getStorage('rdf_type')->load($type)->label();
 
     foreach (self::MESSAGE_INTERVALS as $interval) {
-      $emails = array_merge($emails, $this->getEmailsBySubjectAndMail("Joinup: $interval $type digest message", $email_address, FALSE));
+      $emails = array_merge($emails, $this->getEmailsBySubjectAndMail("Joinup: $interval digest message", $email_address, FALSE));
     }
 
     return $emails;
