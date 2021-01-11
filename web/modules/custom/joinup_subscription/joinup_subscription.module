@@ -73,7 +73,7 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
     return $carry && $message instanceof GroupContentSubscriptionMessageInterface;
   }, TRUE)) {
     return;
-  };
+  }
 
   // Filter out any messages that are referring to deleted content.
   /** @var \Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessageInterface[] $messages */
