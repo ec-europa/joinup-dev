@@ -15,7 +15,7 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Url;
-use Drupal\joinup_subscription\JoinupSubscriptionsHelper;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -179,7 +179,9 @@ class SubscribeToCollectionForm extends FormBase {
     $collection = $this->loadCollection($form_state->getValue('collection_id'));
 
     $membership = $this->getUserNonBlockedMembership($collection);
-    $membership->set('subscription_bundles', JoinupSubscriptionsHelper::getSubscriptionBundlesDefaultValue('collection'))->save();
+    $membership->set('subscription_bundles', array_map(function (string $bundle): array {
+      return ['entity_type' => 'node', 'bundle' => $bundle];
+    }, CommunityContentHelper::BUNDLES))->save();
 
     // Check if the user is pending, so we can adapt the messages for the user.
     $is_pending = !empty($membership) && $membership->isPending();

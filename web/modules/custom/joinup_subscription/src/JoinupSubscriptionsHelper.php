@@ -28,21 +28,4 @@ class JoinupSubscriptionsHelper {
     ],
   ];
 
-  /**
-   * Returns the default value for the collection membership subscriptions.
-   *
-   * @return array
-   *   A list of entries, each of which contains an entity type and a bundle
-   *   value.
-   */
-  public static function getSubscriptionBundlesDefaultValue(string $subscription_bundle): array {
-    $bundles_value = [];
-    foreach (JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES[$subscription_bundle] as $entity_type => $bundles) {
-      foreach ($bundles as $bundle) {
-        $bundles_value[] = ['entity_type' => $entity_type, 'bundle' => $bundle];
-      }
-    }
-    return $bundles_value;
-  }
-
 }
