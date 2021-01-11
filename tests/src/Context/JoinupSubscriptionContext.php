@@ -369,7 +369,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *
    * @Then I should have the following :bundle content subscriptions:
    */
-  public function assertCollectionContentSubscriptions(TableNode $subscriptions, string $bundle): void {
+  public function assertGroupContentSubscriptions(TableNode $subscriptions, string $bundle): void {
     $user = $this->getUserManager()->getCurrentUser();
     /** @var \Drupal\Core\Session\AccountInterface $account */
     $account = User::load($user->uid);
@@ -403,7 +403,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *
    * @Then I should not be subscribed to the :label :bundle
    */
-  public function assertNoCollectionContentSubscriptions(string $label, string $bundle): void {
+  public function assertNoGroupContentSubscriptions(string $label, string $bundle): void {
     $user = $this->getUserManager()->getCurrentUser();
     $account = User::load($user->uid);
     $group = self::getRdfEntityByLabel($label, $bundle);
@@ -441,10 +441,8 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @param string|null $entity_type
    *   Optional entity type of an entity that is related to the message.
    *
-   * @Then the :interval collection content subscription digest for :username should :scope the following message(s) for the :label :entity_type:
-   * @Then the :interval solution content subscription digest for :username should :scope the following message(s) for the :label :entity_type:
-   * @Then the :interval collection content subscription digest for :username should :scope the following message(s):
-   * @Then the :interval solution content subscription digest for :username should :scope the following message(s):
+   * @Then the :interval group content subscription digest for :username should :scope the following message(s) for the :label :entity_type:
+   * @Then the :interval group content subscription digest for :username should :scope the following message(s):
    */
   public function assertDigestContains(TableNode $table, string $interval, string $username, string $scope, $label = NULL, $entity_type = NULL): void {
     Assert::assertContains($scope, ['match', 'include'], sprintf('Unknown scope %s.', $scope));
@@ -504,10 +502,8 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @param string|null $entity_type
    *   Optional entity type of an entity that is related to the message.
    *
-   * @Then the :interval collection content subscription digest for :username should not contain the following message(s) for the :label :entity_type:
-   * @Then the :interval solution content subscription digest for :username should not contain the following message(s) for the :label :entity_type:
-   * @Then the :interval collection content subscription digest for :username should not contain the following message(s):
-   * @Then the :interval solution content subscription digest for :username should not contain the following message(s):
+   * @Then the :interval group content subscription digest for :username should not contain the following message(s) for the :label :entity_type:
+   * @Then the :interval group content subscription digest for :username should not contain the following message(s):
    */
   public function assertDigestNotContains(TableNode $table, string $interval, string $username, $label = NULL, $entity_type = NULL): void {
     // Check that the notifier for the requested interval includes the view
@@ -576,8 +572,6 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * | Arctic  |
    * | Sea ice |
    *
-   * @param string $type
-   *   The group bundle.
    * @param string $username
    *   The name of the user to whom the digest mail is sent.
    * @param \Behat\Gherkin\Node\TableNode $table
@@ -586,9 +580,9 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @throws \Exception
    *   Throws an exception when a parameter is not the expected one.
    *
-   * @Then the :type content subscription digest sent to :username contains the following sections:
+   * @Then the group content subscription digest sent to :username contains the following sections:
    */
-  public function assertGroupContentSubscriptionEmailSections(string $type, string $username, TableNode $table): void {
+  public function assertGroupContentSubscriptionEmailSections(string $username, TableNode $table): void {
     Assert::assertContains($type, ['collection', 'solution'], 'Only "collection" and "solution" are allowed for parameter $type.');
     $this->assertEmailTagPresent();
 

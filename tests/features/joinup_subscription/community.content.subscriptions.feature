@@ -55,13 +55,13 @@ Feature: Subscribing to community content in collections and solutions
 
     # The collection digest should only contain the content posted directly in
     # the collection itself.
-    Then the daily collection content subscription digest for jpluminet should match the following messages:
+    Then the daily group content subscription digest for jpluminet should match the following messages:
       | Active galactic nuclei |
       | Doppler effect         |
       | Effective potential    |
       | The periastron         |
     # The solution digest should only contain content posted in solutions.
-    Then the daily solution content subscription digest for jpluminet should match the following messages:
+    Then the daily group content subscription digest for jpluminet should match the following messages:
       | Light diffusion   |
       | Distant observers |
       | Deflected rays    |
@@ -69,7 +69,7 @@ Feature: Subscribing to community content in collections and solutions
 
     # Check that the messages are formatted correctly.
     Given all message digests have been delivered
-    Then the collection content subscription digest sent to jpluminet contains the following sections:
+    Then the group content subscription digest sent to jpluminet contains the following sections:
       | title                  |
       | Black hole imaging     |
       | Active galactic nuclei |
@@ -84,7 +84,7 @@ Feature: Subscribing to community content in collections and solutions
       | New content published in Solution Null geodesics        |
       | New content published in Solution Bolometric appearance |
 
-    And the solution content subscription digest sent to jpluminet contains the following sections:
+    And the group content subscription digest sent to jpluminet contains the following sections:
       | title                 |
       | Null geodesics        |
       | Light diffusion       |

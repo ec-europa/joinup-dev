@@ -57,20 +57,20 @@ Feature: Subscribing to community content in solutions
       | Rose oil | A widely used essential oil | Products of Bulgaria | validated | bisera |
       | Burgas   | City of dreams              | Cities of Bulgaria   | validated | hristo |
 
-    Then the daily solution content subscription digest for hristo should match the following messages:
+    Then the daily group content subscription digest for hristo should match the following messages:
       | Duck liver      |
       | Sunflower seeds |
       | Rose oil        |
       | Plovdiv         |
       | Stara Zagora    |
-    And the weekly solution content subscription digest for bisera should match the following message:
+    And the weekly group content subscription digest for bisera should match the following message:
       | Duck liver      |
       | Canned cherries |
       | Rose oil        |
       | Sofia           |
       | Stara Zagora    |
       | Burgas          |
-    And the monthly solution content subscription digest for kalin should match the following message:
+    And the monthly group content subscription digest for kalin should match the following message:
       | Canned cherries |
       | Sunflower seeds |
       | Sofia           |
@@ -86,26 +86,26 @@ Feature: Subscribing to community content in solutions
     And the weekly digest for kalin should not contain any messages
 
     # The digest should not include news about content that is not published.
-    And the daily solution content subscription digest for hristo should not contain the following messages:
+    And the daily group content subscription digest for hristo should not contain the following messages:
       | Varna |
-    And the weekly solution content subscription digest for bisera should not contain the following message:
+    And the weekly group content subscription digest for bisera should not contain the following message:
       | Ruse  |
       | Varna |
-    And the monthly solution content subscription digest for kalin should not contain the following message:
+    And the monthly group content subscription digest for kalin should not contain the following message:
       | Ruse |
 
     # Publish an existing unpublished community content. It should be included
     # in the next digest.
     When the workflow state of the "Ruse" content is changed to "validated"
 
-    Then the weekly solution content subscription digest for bisera should include the following message:
+    Then the weekly group content subscription digest for bisera should include the following message:
       | Ruse |
-    And the monthly solution content subscription digest for kalin should include the following message:
+    And the monthly group content subscription digest for kalin should include the following message:
       | Ruse |
 
     # Check that the messages are formatted correctly.
     Given all message digests have been delivered
-    And the solution content subscription digest sent to hristo contains the following sections:
+    And the group content subscription digest sent to hristo contains the following sections:
       | title                |
       | Cities of Bulgaria   |
       | Plovdiv              |
@@ -118,7 +118,7 @@ Feature: Subscribing to community content in solutions
       | text                                                   |
       | New content published in Solution Products of Bulgaria |
 
-    And the solution content subscription digest sent to bisera contains the following sections:
+    And the group content subscription digest sent to bisera contains the following sections:
       | title                |
       | Cities of Bulgaria   |
       | Burgas               |
@@ -131,7 +131,7 @@ Feature: Subscribing to community content in solutions
       | text                                                   |
       | New content published in Solution Products of Bulgaria |
 
-    And the solution content subscription digest sent to kalin contains the following sections:
+    And the group content subscription digest sent to kalin contains the following sections:
       | title                |
       | Cities of Bulgaria   |
       | Burgas               |
@@ -150,12 +150,12 @@ Feature: Subscribing to community content in solutions
     # Check that if community content is published a second time it is not
     # included in the next digest.
     When the workflow state of the "Ruse" content is changed to "draft"
-    Then the weekly solution content subscription digest for bisera should not contain the following message:
+    Then the weekly group content subscription digest for bisera should not contain the following message:
       | Ruse |
-    And the monthly solution content subscription digest for kalin should not contain the following message:
+    And the monthly group content subscription digest for kalin should not contain the following message:
       | Ruse |
     When the workflow state of the "Ruse" content is changed to "validated"
-    Then the weekly solution content subscription digest for bisera should not contain the following message:
+    Then the weekly group content subscription digest for bisera should not contain the following message:
       | Ruse |
-    And the monthly solution content subscription digest for kalin should not contain the following message:
+    And the monthly group content subscription digest for kalin should not contain the following message:
       | Ruse |
