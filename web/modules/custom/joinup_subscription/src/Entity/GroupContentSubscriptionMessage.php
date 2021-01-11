@@ -9,13 +9,19 @@ use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_subscription\Exception\OrphanedGroupContentSubscriptionMessageException;
+use Drupal\message\Entity\Message;
 
 /**
- * Contains common logic for group content subscription message classes.
+ * A group content subscription message.
  */
-trait GroupContentSubscriptionMessageTrait {
+class GroupContentSubscriptionMessage extends Message implements GroupContentSubscriptionMessageInterface {
 
   use JoinupBundleClassFieldAccessTrait;
+
+  /**
+   * The name of the field that references the group content for this message.
+   */
+  const GROUP_CONTENT_REFERENCE_FIELD = 'field_collection_content';
 
   /**
    * {@inheritdoc}

@@ -10,9 +10,8 @@ declare(strict_types = 1);
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\field\FieldStorageConfigInterface;
-use Drupal\joinup_subscription\Entity\CollectionContentSubscriptionMessage;
+use Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessage;
 use Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessageInterface;
-use Drupal\joinup_subscription\Entity\SolutionContentSubscriptionMessage;
 use Drupal\message\MessageInterface;
 use Drupal\message_notify\Plugin\Notifier\MessageNotifierInterface;
 use Drupal\user\UserInterface;
@@ -55,7 +54,7 @@ function joinup_subscription_entity_base_field_info(EntityTypeInterface $entity_
  */
 function joinup_subscription_entity_bundle_info_alter(&$bundles) {
   if (!empty($bundles['message']['collection_content_subscription'])) {
-    $bundles['message']['collection_content_subscription']['class'] = CollectionContentSubscriptionMessage::class;
+    $bundles['message']['collection_content_subscription']['class'] = GroupContentSubscriptionMessage::class;
   }
 }
 
