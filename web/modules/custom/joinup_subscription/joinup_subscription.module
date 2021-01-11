@@ -87,22 +87,6 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
     }
   }
 
-  if (!empty($messages)) {
-    // Message digest does not carry over any information other than the
-    // notifier and even this, is very limited in capabilities.
-    // Set the bundle label as a temporary variable in the notifier as a dynamic
-    // property since it does not provide any methods to carry information over
-    // either. This will allow us to alter the mail subject and include the
-    // group bundle in it.
-    //
-    // We are accessing information the same way as we do later in the sorting
-    // function so it is safe to assume that values do exist.
-    //
-    // @see \joinup_subscription_mail_alter()
-    $message = reset($messages);
-    $notifier->bundle_label = $message->getSubscribedGroup()->get('rid')->entity->label();
-  }
-
   // If all content in the message was deleted, prevent an empty digest from
   // being delivered.
   if (empty($context['messages'])) {
@@ -142,9 +126,8 @@ function joinup_subscription_mail_alter(array &$message): void {
     $notifier = $message['params']['notifier'] ?? NULL;
     if ($notifier instanceof MessageNotifierInterface) {
       $interval = $notifier->getPluginDefinition()['title'];
-      $message['subject'] = t('Joinup: @interval:bundle_label digest message', [
+      $message['subject'] = t('Joinup: @interval digest message', [
         '@interval' => $interval,
-        ':bundle_label' => ' ' . $notifier->bundle_label ?? '',
       ]);
     }
   }
