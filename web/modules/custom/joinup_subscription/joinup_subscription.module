@@ -57,9 +57,6 @@ function joinup_subscription_entity_bundle_info_alter(&$bundles) {
   if (!empty($bundles['message']['collection_content_subscription'])) {
     $bundles['message']['collection_content_subscription']['class'] = CollectionContentSubscriptionMessage::class;
   }
-  if (!empty($bundles['message']['solution_content_subscription'])) {
-    $bundles['message']['solution_content_subscription']['class'] = SolutionContentSubscriptionMessage::class;
-  }
 }
 
 /**
