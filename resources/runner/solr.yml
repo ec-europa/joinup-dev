@@ -63,8 +63,6 @@ commands:
 
   # Empties the Solr backed.
   solr:empty:
-    - task: run
-      command: solr:start
     - task: exec
       command: curl
       arguments:
