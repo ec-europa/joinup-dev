@@ -1,18 +1,23 @@
 # MySQL configs and commands.
 
+mysql:
+  dump_dir: ${joinup.db_dir}/mysql
+
 commands:
 
   # Downloads, unpacks and prepares the MySQL dump.
   mysql:download-dump:
     # Cleanup any stale data.
     - task: remove
-      file: ${toolkit.tmp_folder}/mysql.sql
+      file: ${toolkit.clone.dumpfile}.gz
+    - task: remove
+      file: ${toolkit.clone.dumpfile}
     # Download and unpack the archive.
     - task: run
       command: toolkit:download-dump
       options:
         asda-url: ${env.ASDA_URL}/mysql
-        dumpfile: ${toolkit.tmp_folder}/mysql.sql
+        dumpfile: ${toolkit.clone.dumpfile}
     # Remove the MySQL trigger definer.
     - task: exec
-      command: perl -i -pe 's/DEFINER="[^"]+"@"[^"]+"//g' ${toolkit.tmp_folder}/mysql.sql
+      command: perl -i -pe 's/DEFINER="[^"]+"@"[^"]+"//g' ${toolkit.clone.dumpfile}

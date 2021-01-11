@@ -5,6 +5,8 @@ virtuoso:
   root: ${runner.working_dir}/vendor/ec-europa/virtuoso
   db: ${virtuoso.root}/db
   backup_prefix: JOINUP_FULL_DUMP_
+  backup_dir: ${joinup.db_dir}/virtuoso
+  snapshot_dir: ${virtuoso.backup_dir}/snapshot
 
 isql:
   bin: /usr/bin/isql-vt
@@ -21,29 +23,35 @@ commands:
   virtuoso:download-snapshot:
     # Cleanup any stale data.
     - task: remove
-      file: ${toolkit.tmp_folder}/virtuoso.tar
+      file: ${virtuoso.backup_dir}/virtuoso.tar.gz
+    - task: remove
+      file: ${virtuoso.backup_dir}/virtuoso.tar
+    - task: remove
+      file: ${virtuoso.backup_dir}/virtuoso_dump
+    - task: remove
+      file: ${virtuoso.snapshot_dir}
     # Download and unpack the archive.
     - task: run
       command: toolkit:download-dump
       options:
         asda-url: ${env.ASDA_URL}/virtuoso
-        dumpfile: ${toolkit.tmp_folder}/virtuoso.tar
-    - task: remove
-      file: ${toolkit.tmp_folder}/virtuoso
+        dumpfile: ${virtuoso.backup_dir}/virtuoso.tar
     # Unpack and organize.
     - task: exec
       command: tar
       arguments:
         - xvf
-        - ${toolkit.tmp_folder}/virtuoso.tar
+        - ${virtuoso.backup_dir}/virtuoso.tar
       options:
-        directory: ${toolkit.tmp_folder}
+        directory: ${virtuoso.backup_dir}
     - task: rename
-      from: ${toolkit.tmp_folder}/virtuoso_dump
-      to: ${toolkit.tmp_folder}/virtuoso
+      from: ${virtuoso.backup_dir}/virtuoso_dump
+      to: ${virtuoso.snapshot_dir}
     # Cleanup.
     - task: remove
-      file: ${toolkit.tmp_folder}/virtuoso.tar
+      file: ${virtuoso.backup_dir}/virtuoso.tar
+    - task: remove
+      file: ${virtuoso.backup_dir}/virtuoso_dump
 
   # Restores the Virtuoso database from a snapshot.
   virtuoso:restore:
@@ -53,7 +61,7 @@ commands:
       command: virtuoso:setup
     - task: exec
       command: ${virtuoso.bin} +configfile ${virtuoso.db}/virtuoso.ini +restore-backup ${virtuoso.backup_prefix}
-      dir: ${toolkit.tmp_folder}/virtuoso
+      dir: ${virtuoso.snapshot_dir}
     - task: run
       command: virtuoso:start
 
