@@ -105,7 +105,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *
    * @param \Behat\Gherkin\Node\TableNode $subscription_table
    *   A table with the data for subscribing the users.
-   * @param string $type
+   * @param string $bundle
    *   The group bundle.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
@@ -116,13 +116,13 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *
    * @Given (the following ):type content subscriptions:
    */
-  public function subscribeToGroupContent(TableNode $subscription_table, string $type): void {
+  public function subscribeToGroupContent(TableNode $subscription_table, string $bundle): void {
     foreach ($subscription_table->getColumnsHash() as $values) {
-      $group = $this->getRdfEntityByLabel($values[$type], $type);
+      $group = $this->getRdfEntityByLabel($values[$bundle], $bundle);
       $user = $this->getUserByName($values['user']);
       $membership = $this->getMembershipByGroupAndUser($group, $user, OgMembershipInterface::ALL_STATES);
       $subscriptions = [];
-      $subscription_bundles = $type === 'collection' ? JoinupSubscriptionsHelper::COLLECTION_BUNDLES : JoinupSubscriptionsHelper::SOLUTION_BUNDLES;
+      $subscription_bundles = $bundle === 'collection' ? JoinupSubscriptionsHelper::COLLECTION_BUNDLES : JoinupSubscriptionsHelper::SOLUTION_BUNDLES;
       foreach ($this->explodeCommaSeparatedStepArgument(strtolower($values['subscriptions'])) as $subscription_bundle) {
         $entity_type = NULL;
         foreach ($subscription_bundles as $entity_type_id => $bundles) {
