@@ -17,7 +17,7 @@ use Drupal\og\OgMembershipInterface;
 /**
  * Provides a base class for group content subscription event subscribers.
  */
-abstract class GroupContentDigestSubscriberBase {
+class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
   /**
    * The entity type manager.
    *
