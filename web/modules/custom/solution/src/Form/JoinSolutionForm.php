@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\solution\Form;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_group\Form\JoinGroupFormBase;
 use Drupal\og\OgMembershipInterface;
