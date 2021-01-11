@@ -17,9 +17,8 @@ interface ContactInformationRelationInfoInterface {
    * @param \Drupal\rdf_entity\RdfInterface $entity
    *   The contact information entity.
    *
-   * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of rdf entities that reference the given contact information
-   *   entity.
+   * @return \Drupal\joinup_group\Entity\GroupInterface[]
+   *   A list of groups that reference the given contact information entity.
    */
   public function getContactInformationRelatedGroups(RdfInterface $entity): array;
 

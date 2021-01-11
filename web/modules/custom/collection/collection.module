@@ -143,13 +143,13 @@ function collection_rdf_entity_insert(EntityInterface $entity) {
  * node.
  */
 function collection_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($entity->bundle() != 'collection' || $account->isAnonymous() || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
+  if (!$entity instanceof CollectionInterface || $account->isAnonymous() || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
     return AccessResult::neutral();
   }
 
   switch ($operation) {
     case 'view':
-      $membership = Og::getMembership($entity, $account);
+      $membership = $entity->getMembership((int) $account->id());
       if (empty($membership)) {
         return AccessResult::neutral();
       }

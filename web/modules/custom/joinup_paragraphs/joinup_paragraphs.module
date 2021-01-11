@@ -95,15 +95,10 @@ function joinup_paragraphs_get_access(AccessResultInterface $access_result, stri
     $group = $og_context->getGroup();
   }
 
-  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-  $membership_manager = \Drupal::service('og.membership_manager');
-
-  if ($membership = $membership_manager->getMembership($group, $account->id())) {
-    if ($membership->hasPermission($permission)) {
-      $access_result = AccessResult::neutral()
-        ->addCacheableDependency($membership)
-        ->cachePerPermissions();
-    }
+  if ($group->hasGroupPermission((int) $account->id(), $permission)) {
+    $access_result = AccessResult::neutral()
+      ->addCacheableDependency($group->getMembership((int) $account->id()))
+      ->cachePerPermissions();
   }
 
   return $access_result;

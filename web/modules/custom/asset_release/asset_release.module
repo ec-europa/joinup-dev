@@ -16,7 +16,6 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\asset_release\Entity\AssetRelease;
 use Drupal\asset_release\Entity\AssetReleaseInterface;
-use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\SparqlGraphInterface;
 
@@ -184,7 +183,7 @@ function asset_release_rdf_entity_access(EntityInterface $release, $operation, A
         return AccessResult::forbidden();
       }
 
-      $membership = Og::getMembership($parent, $account);
+      $membership = $parent->getMembership((int) $account->id());
       if (empty($membership)) {
         return AccessResult::neutral();
       }
