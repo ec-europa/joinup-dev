@@ -4,9 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_message_from_service
     - field.field.user.user.field_password_expiration
     - field.field.user.user.field_smed_id
     - field.field.user.user.field_social_media
+    - field.field.user.user.field_updated_profile_by_service
     - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
@@ -16,13 +18,32 @@ dependencies:
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
+    - field.field.user.user.field_user_status
     - image.style.thumbnail
   module:
+    - field_group
     - image
     - path
     - search_api_field
     - social_media_links_field
     - user
+third_party_settings:
+  field_group:
+    group_smed_service_info:
+      children:
+        - field_smed_id
+        - field_updated_profile_by_service
+        - field_user_status
+        - field_message_from_service
+      parent_name: ''
+      weight: 20
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: true
+      label: 'SMED Service Information'
 id: user.user.default
 targetEntityType: user
 bundle: user
@@ -33,6 +54,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_message_from_service:
+    weight: 14
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
   field_smed_id:
     weight: 11
     settings:
@@ -46,6 +75,12 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: social_media_links_field_default
+    region: content
+  field_updated_profile_by_service:
+    weight: 12
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_timestamp
     region: content
   field_user_business_title:
     type: string_textfield
@@ -110,6 +145,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_user_status:
+    weight: 13
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   legal_legal_notice:
     weight: -4
     settings: {  }

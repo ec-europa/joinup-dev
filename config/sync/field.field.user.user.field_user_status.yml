@@ -1,0 +1,21 @@
+uuid: 1670a136-f645-45cd-a26a-b17203ffdb3a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_user_status
+  module:
+    - options
+    - user
+id: user.user.field_user_status
+field_name: field_user_status
+entity_type: user
+bundle: user
+label: 'User status'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

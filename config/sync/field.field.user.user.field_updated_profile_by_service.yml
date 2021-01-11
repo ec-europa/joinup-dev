@@ -1,0 +1,22 @@
+uuid: d99594b6-00c5-4161-a067-9019e9ac7fdb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_updated_profile_by_service
+  module:
+    - user
+id: user.user.field_updated_profile_by_service
+field_name: field_updated_profile_by_service
+entity_type: user
+bundle: user
+label: 'Updated profile by service'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1610379864
+default_value_callback: ''
+settings: {  }
+field_type: timestamp
