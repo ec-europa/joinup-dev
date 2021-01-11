@@ -616,6 +616,39 @@ class JoinupSubscriptionContext extends RawDrupalContext {
   }
 
   /**
+   * Checks that the digest mail sent to the given user has the right title.
+   *
+   * This will check that there is exactly 1 digest mail in the collector for
+   * the given user, and that the mail has the expected title. The title follows
+   * a predefined pattern so we could automate this check without requiring a
+   * separate step definition but this is provided for the benefit of the
+   * business stakeholders who can validate that their chosen format is present.
+   *
+   * @param string $username
+   *   The name of the user to whom the digest mail is sent.
+   * @param string $subject
+   *   The expected subject for the digest mail.
+   *
+   * @throws \Exception
+   *   Throws an exception when the user doesn't exist, has no digest message or
+   *   the message subject is incorrect.
+   *
+   * @Then the content subscription digest sent to :username should have the subject :subject
+   */
+  public function assertGroupContentSubscriptionEmailSubject(string $username, string $subject): void {
+    $this->assertEmailTagPresent();
+
+    $user = user_load_by_name($username);
+    $email_address = $user->getEmail();
+    $emails = $this->getGroupSubscriptionEmailsByEmail($email_address);
+
+    Assert::assertCount(1, $emails, "Expected 1 digest message for user $username, found " . count($emails) . ' messages.');
+
+    $email = reset($emails);
+    Assert::assertEquals($subject, $email['subject']);
+  }
+
+  /**
    * Returns the sent group subscription digest messages for the user.
    *
    * @param string $email_address
