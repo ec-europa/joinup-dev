@@ -19,11 +19,6 @@ use Drupal\user\UserInterface;
  */
 class DigestFormatter extends OriginalFormatter {
 
-  const DIGEST_TEMPLATE_IDS = [
-    'collection' => 'collection_content_subscription',
-    'solution' => 'solution_content_subscription',
-  ];
-
   /**
    * {@inheritdoc}
    */
