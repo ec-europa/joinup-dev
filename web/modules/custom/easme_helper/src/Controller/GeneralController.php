@@ -60,7 +60,7 @@ class GeneralController extends ControllerBase {
    *   Returns a redirect to the Community site contact page.
    */
   public function contactPage() {
-    return new TrustedRedirectResponse($this->easme_config->get('urls.community_site') . '/contact');
+    return new TrustedRedirectResponse($this->easme_config->get('urls.community_site') . '/contact?back_to=challenge');
   }
 
 }
