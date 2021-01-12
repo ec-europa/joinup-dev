@@ -40,16 +40,36 @@ class Collection extends Rdf implements CollectionInterface {
   /**
    * {@inheritdoc}
    */
-  public function getSolutions(): array {
-    return $this->getReferencedEntities('field_ar_affiliates');
+  public function getSolutions(bool $published = TRUE): array {
+    $ids = $this->getSolutionIds($published);
+    if (empty($ids)) {
+      return $ids;
+    }
+    return $this
+      ->entityTypeManager()
+      ->getStorage('rdf_entity')
+      ->loadMultiple($ids);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getSolutionIds(): array {
-    $ids = $this->getReferencedEntityIds('field_ar_affiliates');
-    return $ids['rdf_entity'] ?? [];
+  public function getSolutionIds(bool $published = TRUE): array {
+    $ids = $this->getReferencedEntityIds('field_ar_affiliates')['rdf_entity'] ?? [];
+
+    if ($ids && $published) {
+      // Published solutions are stored in the 'default' graph.
+      $ids = $this->entityTypeManager()
+        ->getStorage('rdf_entity')
+        ->getQuery()
+        ->graphs(['default'])
+        ->condition('rid', 'solution')
+        ->condition('id', $ids, 'IN')
+        ->execute();
+      $ids = array_values($ids);
+    }
+
+    return $ids;
   }
 
   /**
