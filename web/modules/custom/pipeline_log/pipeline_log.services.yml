@@ -1,0 +1,6 @@
+services:
+  pipeline_log.event_subscriber:
+    class: Drupal\pipeline_log\EventSubscriber\PipelineLogSubscriber
+    arguments: ['@keyvalue', '@datetime.time']
+    tags:
+      - { name: event_subscriber }
