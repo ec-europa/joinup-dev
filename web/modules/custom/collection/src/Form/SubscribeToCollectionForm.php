@@ -15,7 +15,7 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Url;
-use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_subscription\JoinupSubscriptionsHelper;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -27,6 +27,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * This form is shown in a modal dialog after the user joins a collection.
  *
+ * @todo Move this into the joinup_subscription module to solve a circular
+ *   dependency.
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6330
  * @see \Drupal\collection\Form\JoinCollectionForm::showSubscribeDialog()
  */
 class SubscribeToCollectionForm extends FormBase {
@@ -178,10 +181,15 @@ class SubscribeToCollectionForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $collection = $this->loadCollection($form_state->getValue('collection_id'));
 
+    $subscription_bundles = [];
+    foreach (JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES['collection'] as $entity_type => $bundles) {
+      foreach ($bundles as $bundle) {
+        $subscription_bundles[] = ['entity_type' => $entity_type, 'bundle' => $bundle];
+      }
+    }
+
     $membership = $this->getUserNonBlockedMembership($collection);
-    $membership->set('subscription_bundles', array_map(function (string $bundle): array {
-      return ['entity_type' => 'node', 'bundle' => $bundle];
-    }, CommunityContentHelper::BUNDLES))->save();
+    $membership->set('subscription_bundles', $subscription_bundles)->save();
 
     // Check if the user is pending, so we can adapt the messages for the user.
     $is_pending = !empty($membership) && $membership->isPending();

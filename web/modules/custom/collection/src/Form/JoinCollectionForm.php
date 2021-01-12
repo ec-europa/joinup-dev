@@ -46,6 +46,9 @@ class JoinCollectionForm extends JoinGroupFormBase {
   public function buildForm(array $form, FormStateInterface $form_state, ?AccountProxyInterface $user = NULL, ?RdfInterface $group = NULL): array {
     $form = parent::buildForm($form, $form_state, $user, $group);
 
+    // @todo Move this into the joinup_subscription module to solve a circular
+    //   dependency.
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6330
     $membership = $this->getUserNonBlockedMembership($user, $group);
     if (empty($membership)) {
       // Show the subscription dialog in a modal on join.
