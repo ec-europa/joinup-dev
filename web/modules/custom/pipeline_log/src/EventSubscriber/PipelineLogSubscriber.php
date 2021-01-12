@@ -6,8 +6,8 @@ namespace Drupal\pipeline_log\EventSubscriber;
 
 use Drupal\Component\Datetime\Time;
 use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
-use Drupal\joinup_federation\Event\PipelineCompleteEvent;
-use Drupal\joinup_federation\JoinupFederationEvents;
+use Drupal\pipeline\Event\PipelineCompleteEvent;
+use Drupal\pipeline\PipelineEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -48,7 +48,7 @@ class PipelineLogSubscriber implements EventSubscriberInterface {
   /**
    * Acts on pipeline completion.
    *
-   * @param \Drupal\joinup_federation\Event\PipelineCompleteEvent $event
+   * @param \Drupal\pipeline\Event\PipelineCompleteEvent $event
    *   The pipeline event.
    */
   public function onPipelineComplete(PipelineCompleteEvent $event): void {
@@ -66,7 +66,7 @@ class PipelineLogSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     return [
-      JoinupFederationEvents::PIPELINE_COMPLETE => ['onPipelineComplete'],
+      PipelineEvents::PIPELINE_COMPLETE => ['onPipelineComplete'],
     ];
   }
 
