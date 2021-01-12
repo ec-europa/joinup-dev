@@ -23,6 +23,8 @@ Feature:
       | /admin/reporting/solutions-by-type           | moderator     | 200  |
       | /admin/reporting/solutions-by-licences       | authenticated | 403  |
       | /admin/reporting/solutions-by-licences       | moderator     | 200  |
+      | /admin/reporting/pipeline-log                | authenticated | 403  |
+      | /admin/reporting/pipeline-log                | moderator     | 200  |
 
   Scenario: Links should be visible on the reporting page for a moderator.
     Given I am logged in as a user with the moderator role
@@ -32,6 +34,7 @@ Feature:
       | Export user list                      |
       | Solutions by solution type            |
       | Solutions by licences                 |
+      | Pipeline report                       |
       | Legal notice report                   |
 
   # This scenario is a light test to avoid regressions.

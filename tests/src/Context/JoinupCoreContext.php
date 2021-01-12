@@ -36,7 +36,8 @@ class JoinupCoreContext extends RawDrupalContext {
    *    Thrown when the region is not found.
    *
    * @Then the page should show( only) the( following) chip(s):
-   * @Then the page should show( only) the( following) chip(s) in the :region region:
+   * @Then the page should show( only) the( following) chip(s) in the :region
+   *   region:
    */
   public function assertChipElements(TableNode $table, ?string $region = NULL): void {
     $chips = $this->getChips($region);
@@ -279,6 +280,33 @@ class JoinupCoreContext extends RawDrupalContext {
     $links = $this->getSession()->getPage()->findAll('named', $locator);
     $link = end($links);
     $link->click();
+  }
+
+  /**
+   * Sets the last execution time of a pipeline.
+   *
+   * @param string $pipeline_label
+   *   The pipeline label.
+   * @param string $days
+   *   The amount of days since the last execution of the pipeline.
+   *
+   * @Given the :pipeline pipeline was last executed :days days ago
+   */
+  public function givenPipelineRanTimeAgo(string $pipeline_label, string $days): void {
+    $pipeline_manager = \Drupal::getContainer()->get('plugin.manager.pipeline_pipeline');
+    $pipeline = NULL;
+    /**  @var \Drupal\pipeline\Plugin\PipelinePipelineInterface $pipeline_id */
+    foreach ($pipeline_manager->getDefinitions() as $definition) {
+      if ($definition['label'] == $pipeline_label) {
+        $pipeline = $definition;
+        break;
+      }
+    }
+
+    Assert::assertNotEmpty($pipeline, "Pipeline {$pipeline_label} was not found.");
+    $time = \Drupal::getContainer()->get('datetime.time');
+    $collection = \Drupal::getContainer()->get('keyvalue')->get('pipeline_log');
+    $collection->set($pipeline['id'], $time->getRequestTime() - ($days * 24 * 60 * 60));
   }
 
 }
