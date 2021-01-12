@@ -519,10 +519,7 @@ function solution_invalidate_collection(EntityInterface $entity) {
   // For this reason, we clear the collection group cache tags whenever a
   // solution is saved.
   if (\Drupal::moduleHandler()->moduleExists('collection')) {
-    $ids = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'collection')
-      ->condition('field_ar_affiliates', $entity->id())
-      ->execute();
+    $ids = solution_get_collection_ids($entity);
     if ($ids) {
       $tags = [];
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
@@ -600,10 +597,7 @@ function solution_rdf_entity_delete(RdfInterface $solution) {
   }
 
   $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
-  $ids = $storage->getQuery()
-    ->condition('rid', 'collection')
-    ->condition('field_ar_affiliates', $solution->id())
-    ->execute();
+  $ids = solution_get_collection_ids($solution);
   if ($ids) {
     // Touch the parent collections in order to update their changed timestamp.
     $request_time = \Drupal::time()->getRequestTime();
