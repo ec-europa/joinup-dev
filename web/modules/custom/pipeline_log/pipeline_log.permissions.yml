@@ -1,0 +1,3 @@
+access pipeline report:
+  title: 'Access pipeline report'
+  description: 'View the report page that includes the last execution time of the pipelines.'
