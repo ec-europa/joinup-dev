@@ -402,7 +402,7 @@ function solution_get_related_solutions_ids(EntityInterface $entity) {
     }
   }
 
-  // Get all solutions that are reference directly.
+  // Get all solutions that are referenced directly.
   $related_ids = [];
   foreach ($entity->get('field_is_related_solutions')->getValue() as $field) {
     $related_ids[$field['target_id']] = $field['target_id'];
