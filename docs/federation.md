@@ -9,7 +9,6 @@ TODO
 
 ## Architecture
 * Architecture principles
-    * EIF recommendations
     * General
         * __Common Use Solutions__
         Cross-silo solutions are preferred over duplicative silo specific applications, systems and tools.
@@ -111,8 +110,6 @@ Not applicable
 To be defined
 
 ### Tasks (To plan)
-* Validate architecture conformance to the architecture principles and the EIF.
-
 * Document eligibility criteria and technical specifications for federation.
 
 * System development planning: User stories
