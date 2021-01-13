@@ -4,7 +4,8 @@ Feature: In order to help moderators manage effectively imported contet
   I need to show status messages if a pipeline has not run for too long.
 
   Scenario: Show a status message to moderators upon login for pipelines that have not run for too long.
-    Given the "Joinup collection" pipeline was last executed 89 days ago
+    Given no pipelines have run
+    When the "Joinup collection" pipeline was last executed 89 days ago
     And the "Slovenian Interoperability Portal - NIO" pipeline was last executed 92 days ago
     When I am logged in as a moderator
     Then I should not see the warning message "Pipeline Joinup collection has not been executed for 89 days."

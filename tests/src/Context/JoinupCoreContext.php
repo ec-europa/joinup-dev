@@ -308,4 +308,18 @@ class JoinupCoreContext extends RawDrupalContext {
     $collection->set($pipeline['id'], $time->getRequestTime() - ($days * 24 * 60 * 60));
   }
 
+  /**
+   * Deletes all execution dates of pipelines.
+   *
+   * In order to be able to not have random failures in tests, e.g. when another
+   * test runs a pipeline before this, this step will clean up the history so
+   * that we can test in a clean state.
+   *
+   * @Given no pipelines have run
+   */
+  public function givenNoPipelineRanYet(): void {
+    $collection = \Drupal::getContainer()->get('keyvalue')->get('pipeline_log');
+    $collection->deleteAll();
+  }
+
 }
