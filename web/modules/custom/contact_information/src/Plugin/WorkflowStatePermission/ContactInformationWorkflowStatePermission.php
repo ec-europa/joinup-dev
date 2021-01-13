@@ -9,8 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\contact_information\ContactInformationRelationInfoInterface;
-use Drupal\rdf_entity\RdfInterface;
+use Drupal\contact_information\Entity\ContactInformationInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -34,13 +33,6 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
   protected $configFactory;
 
   /**
-   * The relation info service.
-   *
-   * @var \Drupal\contact_information\ContactInformationRelationInfo
-   */
-  protected $relationInfo;
-
-  /**
    * Constructs a CollectionWorkflowStatePermissions object.
    *
    * @param array $configuration
@@ -51,13 +43,10 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
    *   The plugin implementation definition.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
-   * @param \Drupal\contact_information\ContactInformationRelationInfoInterface $relation_info
-   *   The relation info service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, ContactInformationRelationInfoInterface $relation_info) {
+  public function __construct(array $configuration, string $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->configFactory = $configFactory;
-    $this->relationInfo = $relation_info;
   }
 
   /**
@@ -68,8 +57,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('config.factory'),
-      $container->get('contact_information.relation_info')
+      $container->get('config.factory')
     );
   }
 
@@ -77,7 +65,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
    * {@inheritdoc}
    */
   public function applies(EntityInterface $entity): bool {
-    return $entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'contact_information';
+    return $entity instanceof ContactInformationInterface;
   }
 
   /**
@@ -105,7 +93,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
   /**
    * Checks if the user has any required roles globally or in the parents.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $entity
+   * @param \Drupal\contact_information\Entity\ContactInformationInterface $entity
    *   The contact information entity.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account object.
@@ -116,7 +104,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
    * @return bool
    *   The access result as boolean.
    */
-  protected function userHasOwnAnyRoles(RdfInterface $entity, AccountInterface $account, array $roles): bool {
+  protected function userHasOwnAnyRoles(ContactInformationInterface $entity, AccountInterface $account, array $roles): bool {
     $own = $entity->getOwnerId() === $account->id();
 
     if (isset($roles['any']['roles'])) {
@@ -137,10 +125,10 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
       return FALSE;
     }
 
-    foreach ($this->relationInfo->getContactInformationRelatedGroups($entity) as $group) {
+    if ($group = $entity->getRelatedGroup()) {
       $membership = $group->getMembership((int) $account->id());
       if (empty($membership)) {
-        continue;
+        return FALSE;
       }
 
       $role_ids = $membership->getRolesIds();
