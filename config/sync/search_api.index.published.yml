@@ -27,21 +27,22 @@ dependencies:
     - field.storage.node.field_short_title
     - field.storage.meta_entity.count
     - field.storage.rdf_entity.field_ar_abstract
-    - field.storage.rdf_entity.field_isr_contact_information
-    - field.storage.rdf_entity.field_ci_name
     - field.storage.rdf_entity.field_is_contact_information
+    - field.storage.rdf_entity.field_ci_name
+    - field.storage.rdf_entity.field_isr_contact_information
     - field.storage.rdf_entity.field_licence_spdx_licence
-    - field.storage.rdf_entity.field_licence_description
     - field.storage.rdf_entity.field_ad_description
+    - field.storage.rdf_entity.field_ar_description
     - field.storage.rdf_entity.field_is_description
     - field.storage.rdf_entity.field_isr_description
-    - field.storage.rdf_entity.field_ar_description
+    - field.storage.rdf_entity.field_licence_description
     - field.storage.rdf_entity.field_is_owner
     - field.storage.rdf_entity.field_owner_name
     - field.storage.rdf_entity.field_isr_owner
     - field.storage.rdf_entity.field_is_pinned_in
     - field.storage.rdf_entity.field_isr_release_notes
     - field.storage.rdf_entity.field_is_solution_type
+    - field.storage.rdf_entity.field_topic
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_organisation
@@ -265,6 +266,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_short_title
+  field_topic:
+    label: Topics
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_topic
+    type: string
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_topic
   field_user_family_name:
     label: 'Family name'
     datasource_id: 'entity:user'

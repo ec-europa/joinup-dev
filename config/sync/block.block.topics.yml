@@ -1,0 +1,29 @@
+uuid: ce89c49d-59f6-462f-acf8-367040f3fab9
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.topics
+  module:
+    - facets
+    - system
+  theme:
+    - joinup_theme
+id: topics
+theme: joinup_theme
+region: sidebar_left
+weight: 0
+provider: null
+plugin: 'facet_block:topics'
+settings:
+  id: 'facet_block:topics'
+  label: Topics
+  provider: facets
+  label_display: visible
+  block_id: topics
+visibility:
+  request_path:
+    id: request_path
+    pages: /challenges
+    negate: false
+    context_mapping: {  }
