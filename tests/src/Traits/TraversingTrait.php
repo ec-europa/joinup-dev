@@ -343,12 +343,8 @@ trait TraversingTrait {
       'My challenges content' => 'collection_my_content',
       'My content' => 'content_my_content',
       'Event date' => 'event_date',
-      'EIF recommendations' => 'category',
       'Collection event date' => 'collection_event_type',
       'Content types' => 'type',
-      'eif principle' => 'principle',
-      'eif interoperability layer' => 'interoperability_layer',
-      'eif conceptual model' => 'conceptual_model',
     ];
 
     if (!isset($mappings[$alias])) {
