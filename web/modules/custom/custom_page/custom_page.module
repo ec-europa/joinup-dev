@@ -18,7 +18,6 @@ use Drupal\custom_page\Entity\CustomPageInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\node\NodeInterface;
-use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Drupal\search_api\Query\QueryInterface;
@@ -248,7 +247,7 @@ function custom_page_node_access(NodeInterface $node, $op, AccountInterface $acc
     // Anonymous users do not have access to content of non published groups.
     return AccessResult::forbiddenIf($account->isAnonymous() || $node->getOwnerId() !== $account->id());
   }
-  $membership = Og::getMembership($parent, $account);
+  $membership = $parent->getMembership((int) $account->id());
   if (empty($membership)) {
     return AccessResult::neutral();
   }

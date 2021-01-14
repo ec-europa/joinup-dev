@@ -26,7 +26,6 @@ use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\meta_entity\Entity\MetaEntityInterface;
 use Drupal\node\NodeInterface;
-use Drupal\og\Og;
 use Drupal\og\OgAccess;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
@@ -163,7 +162,7 @@ function joinup_group_entity_graph_access(EntityInterface $entity, string $opera
     return AccessResult::neutral();
   }
 
-  $membership = Og::getMembership($entity, $account);
+  $membership = $entity->getMembership((int) $account->id());
   if (empty($membership)) {
     return AccessResult::neutral();
   }

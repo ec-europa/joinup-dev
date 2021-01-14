@@ -6,11 +6,15 @@ namespace Drupal\contact_information;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Service to provide information about contact information entity relations.
+ *
+ * @todo Move this into the ContactInformation bundle class.
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6327
  */
 class ContactInformationRelationInfo implements ContactInformationRelationInfoInterface, ContainerInjectionInterface {
 
@@ -57,6 +61,7 @@ class ContactInformationRelationInfo implements ContactInformationRelationInfoIn
     $condition_or->condition('field_ar_contact_information', $entity->id());
     $condition_or->condition('field_is_contact_information', $entity->id());
     $query->condition($condition_or);
+    $query->condition('rid', JoinupGroupHelper::GROUP_BUNDLES, 'IN');
     $ids = $query->execute();
 
     return empty($ids) ? [] : $this->entityTypeManager->getStorage('rdf_entity')->loadMultiple($ids);
