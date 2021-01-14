@@ -119,12 +119,6 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
       }
     }
 
-    // When the user creates a group, they do not have any roles in the group
-    // yet. There is no need to have a check for groups when the entity is new.
-    if ($entity->isNew()) {
-      return FALSE;
-    }
-
     if ($group = $entity->getRelatedGroup()) {
       $membership = $group->getMembership((int) $account->id());
       if (empty($membership)) {

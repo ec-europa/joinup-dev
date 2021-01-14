@@ -29,6 +29,13 @@ class ContactInformation extends Rdf implements ContactInformationInterface {
    * {@inheritdoc}
    */
   public function getRelatedGroup(): ?GroupInterface {
+    // If this is a newly created contact information it cannot yet be
+    // associated with any groups. Only when the entity is saved it gets an ID
+    // which can be referenced by groups.
+    if ($this->isNew()) {
+      return NULL;
+    }
+
     $query = $this->entityTypeManager()->getStorage('rdf_entity')->getQuery();
     $condition_or = $query->orConditionGroup();
     // Contact entities are also referenced by asset releases but the same
