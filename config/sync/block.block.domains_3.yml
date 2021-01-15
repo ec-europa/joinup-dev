@@ -12,7 +12,7 @@ dependencies:
 id: domains_3
 theme: joinup_theme
 region: sidebar_left
-weight: -12
+weight: -13
 provider: null
 plugin: 'facet_block:covid_19_policy_domain'
 settings:

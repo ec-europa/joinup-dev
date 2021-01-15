@@ -1,29 +1,29 @@
-uuid: bec66dcb-6800-40d9-9b5c-3c3e120328dc
+uuid: 5097098a-09d0-41a0-bd57-ba50e8af03ee
 langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.solutions_policy_domain
+    - facets.facet.topics
   module:
     - facets
     - joinup_core
   theme:
     - joinup_theme
-id: domains_2
+id: topics_3
 theme: joinup_theme
 region: sidebar_left
-weight: -10
+weight: -19
 provider: null
-plugin: 'facet_block:solutions_policy_domain'
+plugin: 'facet_block:topics'
 settings:
-  id: 'facet_block:solutions_policy_domain'
-  label: 'Solutions - Domains'
+  id: 'facet_block:topics'
+  label: 'Search page - Topics'
   provider: facets
   label_display: '0'
-  block_id: domains_2
+  block_id: topics_3
 visibility:
   request_route:
     id: request_route
-    routes: view.solutions.page_1
+    routes: view.search.page_1
     negate: false
     context_mapping: {  }

@@ -1,20 +1,20 @@
-uuid: cc16c115-067c-48cb-96ae-f27de68f5eac
+uuid: 3aae1988-3cc4-4265-a780-b683f61f5df3
 langcode: en
 status: true
 dependencies:
   config:
     - search_api.index.published
-    - views.view.search
+    - views.view.collections
   module:
     - search_api
-id: topics
+id: challenge_topics
 name: Topics
-url_alias: topics
+url_alias: challenge_topics
 weight: 0
 min_count: 1
 show_only_one_result: true
 field_identifier: field_topic
-facet_source_id: 'search_api:views_page__search__page_1'
+facet_source_id: 'search_api:views_page__collections__page_1'
 widget:
   type: dropdown
   config:
