@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "abff2ad7be3fa86c5853cd159c85a804",
+    "content-hash": "7c0e2c18befd9b2339b7ebfc5b3d2be7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5662,7 +5662,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...ea8f6af001fca732e89a4be0e29643953f49a88f.diff"
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...ea8f6af001fca732e89a4be0e29643953f49a88f.diff",
+                    "Do not run sparql tests anymore @see https://github.com/ec-europa/rdf_entity/pull/106": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/106.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9892,7 +9893,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-08-03T19:59:39+00:00"
+            "time": "2020-11-25T21:59:37+00:00"
         },
         {
             "name": "stack/builder",
