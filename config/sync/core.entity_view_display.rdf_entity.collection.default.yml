@@ -115,14 +115,6 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_topic:
-    weight: 6
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   label:
     label: hidden
     type: string
@@ -165,6 +157,7 @@ hidden:
   field_site_featured: true
   field_site_pinned: true
   field_spatial_coverage: true
+  field_topic: true
   join_collection: true
   langcode: true
   last_update: true
