@@ -45,6 +45,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_site_pinned
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
+    - field.field.rdf_entity.solution.field_topic
     - rdf_entity.rdfentity.solution
   module:
     - joinup
@@ -131,6 +132,7 @@ hidden:
   field_site_pinned: true
   field_spatial_coverage: true
   field_status: true
+  field_topic: true
   langcode: true
   og_group: true
   pledge: true
