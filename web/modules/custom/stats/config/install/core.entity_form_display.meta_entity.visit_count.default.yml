@@ -26,6 +26,7 @@ content:
       match_operator: CONTAINS
       size: 40
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
 hidden:
   label: true

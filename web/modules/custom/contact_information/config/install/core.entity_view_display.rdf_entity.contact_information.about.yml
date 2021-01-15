@@ -9,8 +9,8 @@ dependencies:
     - field.field.rdf_entity.contact_information.field_ci_webpage
     - rdf_entity.rdfentity.contact_information
   module:
-    - ds
     - link
+    - template_suggestion
     - user
 id: rdf_entity.contact_information.about
 targetEntityType: rdf_entity
@@ -22,15 +22,7 @@ content:
     label: above
     settings: {  }
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
     type: email_mailto
     region: content
@@ -41,15 +33,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
     region: content
   field_ci_webpage:
@@ -62,15 +46,7 @@ content:
       url_plain: false
       rel: '0'
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
     type: link
     region: content

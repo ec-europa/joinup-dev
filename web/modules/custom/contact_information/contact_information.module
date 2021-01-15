@@ -5,15 +5,32 @@
  * Provides functionality for the contact information module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\contact_information\Entity\ContactInformation;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function contact_information_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['rdf_entity']['contact_information'])) {
+    $bundles['rdf_entity']['contact_information']['class'] = ContactInformation::class;
+  }
+}
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
  */
 function contact_information_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  // During the development of the contact information functionality we were
+  // helpfully supplied by the business analysts with a regular expression to
+  // validate the email addresses, and they were insistent to use this. So we
+  // use a bespoke regex instead of \Drupal\Component\Utility\EmailValidator.
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2404
   if ($entity_type->id() == 'rdf_entity' && $bundle == 'contact_information' && !empty($fields['field_ci_email'])) {
     $fields['field_ci_email']->addConstraint('JoinupEmail');
   }
@@ -112,29 +129,46 @@ function contact_information_entity_auto_label(EntityInterface $entity) {
  * Implements hook_ENTITY_TYPE_access().
  */
 function contact_information_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  // Access being checked for a contact information.
-  if ($entity->getEntityTypeId() != 'rdf_entity') {
+  if ($entity->bundle() !== 'contact_information') {
     return AccessResult::neutral();
   }
-  if ($entity->bundle() != 'contact_information') {
-    return AccessResult::neutral();
+
+  // Inline entity form module is using the 'update' but rdf_entity is still
+  // using 'edit' for the edit operation. Rename the operation until it is
+  // fixed in rdf_entity.
+  // @see https://github.com/ec-europa/rdf_entity/issues/110
+  if ($operation === 'update') {
+    $operation = 'edit';
   }
-  // Only revoke access for anonymous users.
-  if ($account->isAuthenticated()) {
-    return AccessResult::neutral();
+
+  // For anonymous users, deny access to the canonical route.
+  if ($account->isAnonymous()) {
+    $route_name = \Drupal::routeMatch()->getRouteName();
+    if ($route_name === 'entity.rdf_entity.canonical') {
+      return AccessResult::forbidden('Anonymous users should not see contact information on the canonical route.');
+    }
   }
-  // Get entity from route.
-  $route = \Drupal::routeMatch();
-  $route_name = $route->getRouteName();
-  if ($route_name != 'entity.rdf_entity.canonical') {
-    return AccessResult::neutral();
+  elseif ($operation == 'edit') {
+    /** @var \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper */
+    $workflow_helper = \Drupal::service('joinup_workflow.workflow_helper');
+    $available_target_states = $workflow_helper->getAvailableTargetStates($entity, $account);
+    return empty($available_target_states) ? AccessResult::forbidden() : AccessResult::allowed();
   }
-  $route_entity = $route->getParameter('rdf_entity');
-  if (empty($route_entity)) {
-    return AccessResult::neutral();
+  // Use an elseif to avoid checking memberships for anonymous users.
+  elseif ($operation === 'delete') {
+    // The contact information is not a group content. It is tied to other
+    // entities by a simple reference field.
+    // To grant access to group owner/facilitators, we need to identify first
+    // which groups reference the contact information.
+    /** @var \Drupal\contact_information\ContactInformationRelationInfoInterface $relation_info */
+    $relation_info = \Drupal::service('contact_information.relation_info');
+    if ($groups = $relation_info->getContactInformationRelatedGroups($entity)) {
+      $group = reset($groups);
+      if ($group->hasGroupPermission((int) $account->id(), 'delete contact_information rdf entity')) {
+        return AccessResult::allowed();
+      }
+    }
   }
-  if ($entity->id() == $route_entity->id()) {
-    return AccessResult::forbidden('Anonymous users should not see contact information on the canonical route.');
-  }
+
   return AccessResult::neutral();
 }

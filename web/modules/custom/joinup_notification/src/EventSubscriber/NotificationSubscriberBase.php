@@ -9,11 +9,12 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Url;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
-use Drupal\joinup_core\WorkflowHelperInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
-use Drupal\og\GroupTypeManager;
+use Drupal\joinup_notification\MessageArgumentGenerator;
+use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\user\Entity\User;
@@ -67,13 +68,6 @@ abstract class NotificationSubscriberBase {
   protected $currentUser;
 
   /**
-   * The group type manager.
-   *
-   * @var \Drupal\og\GroupTypeManager
-   */
-  protected $groupTypeManager;
-
-  /**
    * The membership manager service.
    *
    * @var \Drupal\og\MembershipManagerInterface
@@ -83,16 +77,9 @@ abstract class NotificationSubscriberBase {
   /**
    * The workflow helper service.
    *
-   * @var \Drupal\joinup_core\WorkflowHelperInterface
+   * @var \Drupal\joinup_workflow\WorkflowHelperInterface
    */
   protected $workflowHelper;
-
-  /**
-   * The relation manager service.
-   *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
-   */
-  protected $relationManager;
 
   /**
    * The message delivery service.
@@ -110,25 +97,19 @@ abstract class NotificationSubscriberBase {
    *   The config factory service.
    * @param \Drupal\Core\Session\AccountProxy $current_user
    *   The current user service.
-   * @param \Drupal\og\GroupTypeManager $og_group_type_manager
-   *   The og group type manager service.
    * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
    *   The og membership manager service.
-   * @param \Drupal\joinup_core\WorkflowHelperInterface $joinup_core_workflow_helper
+   * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $joinup_core_relations_manager
-   *   The relation manager service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The message delivery service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManagerInterface $og_membership_manager, WorkflowHelperInterface $joinup_core_workflow_helper, JoinupRelationManagerInterface $joinup_core_relations_manager, JoinupMessageDeliveryInterface $message_delivery) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, MembershipManagerInterface $og_membership_manager, WorkflowHelperInterface $workflow_helper, JoinupMessageDeliveryInterface $message_delivery) {
     $this->entityTypeManager = $entity_type_manager;
     $this->configFactory = $config_factory;
     $this->currentUser = $current_user;
-    $this->groupTypeManager = $og_group_type_manager;
     $this->membershipManager = $og_membership_manager;
-    $this->workflowHelper = $joinup_core_workflow_helper;
-    $this->relationManager = $joinup_core_relations_manager;
+    $this->workflowHelper = $workflow_helper;
     $this->messageDelivery = $message_delivery;
   }
 
@@ -153,13 +134,13 @@ abstract class NotificationSubscriberBase {
    * @param array $user_data
    *   A structured array of user ownership and roles and their corresponding
    *   message ids.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface|null $entity
    *   Optionally alter the entity to be checked.
    *
    * @return array
    *   An array of message ids that every key is an array of user ids.
    */
-  protected function getUsersMessages(array $user_data, EntityInterface $entity = NULL) {
+  protected function getUsersMessages(array $user_data, ?EntityInterface $entity = NULL) {
     $entity = $entity ?: $this->entity;
     // Ensure proper loops.
     $user_data += [
@@ -278,8 +259,8 @@ abstract class NotificationSubscriberBase {
    *   An array of user ids.
    */
   protected function getRecipientIdsByOgRole(EntityInterface $entity, OgRoleInterface $role): array {
-    if (!$this->groupTypeManager->isGroup($entity->getEntityTypeId(), $entity->bundle())) {
-      $entity = $this->relationManager->getParent($entity);
+    if (!$entity instanceof GroupInterface) {
+      $entity = JoinupGroupHelper::getGroup($entity);
     }
     if (empty($entity)) {
       return [];
@@ -315,39 +296,23 @@ abstract class NotificationSubscriberBase {
    *   - Actor role
    *   - Actor full name (This will be 'The Joinup Support Team' if the user
    *   has the moderator role)
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   Thrown when the URL for the entity cannot be generated.
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the first name or last name of the current user is not known.
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     $arguments = [];
-    /** @var \Drupal\user\UserInterface $actor */
-    $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = !empty($actor->get('field_user_first_name')->first()->value) ? $actor->get('field_user_first_name')->first()->value : '';
-    $actor_family_name = !empty($actor->get('field_user_family_name')->first()->value) ? $actor->get('field_user_family_name')->first()->value : '';
 
     $arguments['@entity:title'] = $entity->label();
     $arguments['@entity:bundle'] = $entity->bundle();
-    $arguments['@entity:url'] = $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
-    $arguments['@actor:field_user_first_name'] = $actor_first_name;
-    $arguments['@actor:field_user_family_name'] = $actor_family_name;
+    $arguments['@entity:url'] = $entity->toUrl('canonical')->setAbsolute()->toString();
+    $arguments['@user:my_subscriptions'] = Url::fromRoute('joinup_subscription.my_subscriptions')->setAbsolute()->toString();
 
-    if ($actor->isAnonymous()) {
-      // If an anonymous is creating content, set the first name to also be 'the
-      // Joinup Moderation Team' because some emails use only the first name
-      // instead of the full name.
-      $arguments['@actor:role'] = 'moderator';
-      $arguments['@actor:full_name'] = $arguments['@actor:field_user_first_name'] = 'the Joinup Moderation Team';
-    }
-    elseif ($actor->hasRole('moderator')) {
-      /** @var \Drupal\user\RoleInterface $role */
-      $role = $this->entityTypeManager->getStorage('user_role')->load('moderator');
-      $arguments['@actor:role'] = $role->label();
-      $arguments['@actor:full_name'] = 'The Joinup Support Team';
-    }
-    elseif (!$actor->isAnonymous()) {
-      $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ?
-        $actor_first_name . ' ' . $actor_family_name :
-        $actor->get('full_name')->value;
-    }
-    $arguments['@site:contact_url'] = Url::fromRoute('contact_form.contact_page', [], ['absolute' => TRUE])->toString();
+    $arguments += MessageArgumentGenerator::getActorArguments();
+    $arguments += MessageArgumentGenerator::getContactFormUrlArgument();
+
     $arguments['@site:legal_notice_url'] = Url::fromRoute('entity.entity_legal_document.canonical', ['entity_legal_document' => 'legal_notice'], ['absolute' => TRUE])->toString();
 
     return $arguments;
@@ -360,23 +325,21 @@ abstract class NotificationSubscriberBase {
    *   An array of user ids and their corresponding messages.
    * @param array $arguments
    *   (optional) Additional arguments to be passed to the message.
-   * @param string[] $bcc_emails
-   *   (optional) A list of emails to be passed as Bcc.
+   * @param array $notifier_options
+   *   An optional associative array of options to pass to the Email notifier
+   *   plugin.
+   * @param array $message_values
+   *   Optional array of field values to send on the message entity.
    *
    * @return bool
    *   Whether or not the messages were sent successfully.
    */
-  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $bcc_emails = []): bool {
+  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $notifier_options = [], array $message_values = []): bool {
     $arguments += $this->generateArguments($this->entity);
 
     $success = TRUE;
     foreach ($user_data as $template_id => $user_ids) {
-      $success = $success && $this->messageDelivery
-        ->createMessage($template_id)
-        ->setArguments($arguments)
-        ->setRecipients(User::loadMultiple($user_ids))
-        ->addBccRecipients($bcc_emails)
-        ->sendMail();
+      $success = $this->messageDelivery->sendMessageTemplateToMultipleUsers($template_id, $arguments, User::loadMultiple($user_ids), $notifier_options, $message_values) && $success;
     }
     return $success;
   }

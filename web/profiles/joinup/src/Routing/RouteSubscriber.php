@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Routing;
 
 use Drupal\Core\Routing\RouteSubscriberBase;
@@ -37,14 +39,6 @@ class RouteSubscriber extends RouteSubscriberBase {
       if ($route = $collection->get($route)) {
         $route->addRequirements(['_uid_1_only' => 'TRUE']);
       }
-    }
-
-    // Override the confirmation form to delete multiple users with our version
-    // that prevents deletion of users that are sole owners of collections.
-    if ($route = $collection->get('user.multiple_cancel_confirm')) {
-      $route->addDefaults([
-        '_form' => '\Drupal\joinup\Form\UserMultipleCancelConfirm',
-      ]);
     }
   }
 

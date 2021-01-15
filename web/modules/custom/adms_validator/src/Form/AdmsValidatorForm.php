@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\adms_validator\Form;
 
-use Drupal\adms_validator\AdmsValidatorInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\adms_validator\AdmsValidatorInterface;
 use Drupal\file\FileInterface;
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -34,7 +34,7 @@ class AdmsValidatorForm extends FormBase {
   /**
    * The SPARQL endpoint.
    *
-   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface
    */
   protected $sparql;
 
@@ -56,7 +56,7 @@ class AdmsValidatorForm extends FormBase {
    *   The ADMS validator service.
    * @param \Symfony\Component\HttpFoundation\Session\Session $session
    *   The current user session.
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparql
    *   The SPARQL endpoint.
    */
   public function __construct(AdmsValidatorInterface $adms_validator, Session $session, ConnectionInterface $sparql) {
@@ -99,7 +99,11 @@ class AdmsValidatorForm extends FormBase {
       $form['table'] = $validation_errors->toTable();
     }
 
-    honeypot_add_form_protection($form, $form_state, ['honeypot', 'time_restriction']);
+    honeypot_add_form_protection(
+      $form,
+      $form_state,
+      ['honeypot', 'time_restriction']
+    );
 
     return $form;
   }
@@ -135,10 +139,10 @@ class AdmsValidatorForm extends FormBase {
     $this->sparql->query("CLEAR GRAPH <$uri>");
 
     if ($schema_errors->isSuccessful()) {
-      drupal_set_message($this->t('No errors found during validation.'));
+      $this->messenger()->addMessage($this->t('No errors found during validation.'));
     }
     else {
-      drupal_set_message($this->t('%count schema error(s) were found while validating.', ['%count' => $schema_errors->errorCount()]), 'warning');
+      $this->messenger()->addMessage($this->t('%count schema error(s) were found while validating.', ['%count' => $schema_errors->errorCount()]), 'warning');
     }
     $form_state->set('validation_errors', $schema_errors);
   }

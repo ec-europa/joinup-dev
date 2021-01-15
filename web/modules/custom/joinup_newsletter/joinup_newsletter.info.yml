@@ -1,24 +1,26 @@
 type: module
-name: Joinup Newsletter
-description: Provides newsletter functionality to Joinup
+name: 'Joinup Newsletter'
+description: 'Provides newsletter functionality to Joinup'
 core: 8.x
 package: Joinup
 
 dependencies:
-  - joinup:joinup_community_content
-  - joinup:oe_newsroom_newsletter
-  - simplenews:simplenews
-  - smart_trim:smart_trim
+  - 'joinup:joinup_community_content'
+  - 'joinup:oe_newsroom_newsletter'
+  - 'simplenews:simplenews'
+  - 'smart_trim:smart_trim'
 
 config_devel:
-  - core.entity_form_display.node.newsletter.default
-  - core.entity_view_display.node.newsletter.default
-  - core.entity_view_display.node.newsletter.view_mode_tile
-  - core.entity_view_display.node.newsletter.email_html
-  - core.entity_view_display.node.newsletter.email_plain
-  - core.entity_view_display.node.newsletter.email_textalt
-  - core.entity_view_display.node.newsletter.teaser
-  - field.field.node.newsletter.body
-  - field.field.node.newsletter.newsletter
-  - field.storage.node.newsletter
-  - node.type.newsletter
+  install:
+    - core.entity_form_display.node.newsletter.default
+    - core.entity_view_display.node.newsletter.default
+    - core.entity_view_display.node.newsletter.email_html
+    - core.entity_view_display.node.newsletter.email_plain
+    - core.entity_view_display.node.newsletter.email_textalt
+    - core.entity_view_display.node.newsletter.teaser
+    - core.entity_view_display.node.newsletter.view_mode_tile
+    - field.field.node.newsletter.body
+    - field.field.node.newsletter.og_audience
+    - field.field.node.newsletter.simplenews_issue
+    - field.storage.node.simplenews_issue
+    - node.type.newsletter

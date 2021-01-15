@@ -1,12 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\asset_distribution\Entity\AssetDistributionInterface;
+use Drupal\asset_release\Entity\AssetReleaseInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
+use Drupal\solution\Exception\MissingSolutionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -180,28 +186,28 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
+    // PHP does not support covariance on arguments so we cannot narrow the type
+    // hint to only asset release entities. Let's assert the type instead.
+    assert($entity instanceof AssetDistributionInterface, __METHOD__ . ' only supports asset distribution entities.');
+
     $arguments = parent::generateArguments($entity);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = $arguments['@actor:field_user_first_name'];
-    $actor_last_name = $arguments['@actor:field_user_family_name'];
+    /** @var \Drupal\user\UserInterface $actor */
     $arguments['@release:info:with_version'] = '';
 
     // Add arguments related to the parent collection or solution.
-    $parent = $entity->parent->entity;
-    $solution = (!empty($parent) && $parent->bundle() === 'solution') ? $parent : $this->relationManager->getParent($entity);
-    if (!empty($parent) && $parent->bundle() === 'asset_release') {
-      // Some legacy releases exist without a version. Thus, a check for
-      // existence is needed.
-      $version = empty($parent->get('field_isr_release_number')->first()->value) ? '' : $parent->get('field_isr_release_number')->first()->value;
+    $parent = $entity->getParent();
+    if (!empty($parent) && $parent instanceof AssetReleaseInterface) {
       $arguments['@release:info:with_version'] = $this->t('of the release @release, @version', [
         '@release' => $parent->label(),
-        '@version' => $version,
+        '@version' => $parent->getVersion(),
       ]);
     }
-    if (!empty($solution)) {
-      $arguments['@group:title'] = $solution->label();
-      $arguments['@group:bundle'] = $solution->bundle();
+
+    try {
+      $solution = $entity->getSolution();
+      $arguments += MessageArgumentGenerator::getGroupArguments($solution);
       if (empty($arguments['@actor:role'])) {
         $membership = $this->membershipManager->getMembership($solution, $actor->id());
         if (!empty($membership)) {
@@ -216,8 +222,15 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
             $arguments['@actor:role'] = $this->t('Facilitator');
           }
         }
-        $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
+        $arguments['@actor:full_name'] = $actor->getDisplayName();
       }
+    }
+    catch (MissingSolutionException $e) {
+      // @todo This shouldn't occur in normal usage, but at the moment there are
+      //   some orphaned distributions remaining in the database. Once these are
+      //   cleaned up we can transform the MissingSolutionException to a runtime
+      //   exception and this try-catch block is no longer required.
+      // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6218
     }
 
     return $arguments;
@@ -229,7 +242,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
    * @param array $user_data
    *   The user data array.
    *
-   * @see: ::getUsersMessages() for more information on the array.
+   * @see ::getUsersMessages()
    */
   protected function getUsersAndSend(array $user_data) {
     $user_data = $this->getUsersMessages($user_data);

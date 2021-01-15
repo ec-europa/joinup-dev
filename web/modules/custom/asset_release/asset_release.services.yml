@@ -9,6 +9,11 @@ services:
     arguments: ['@request_stack']
     tags:
       - { name: cache.context }
+  cache_context.route.name.is_download_releases_route:
+    class: Drupal\asset_release\Cache\DownloadReleasesCacheContext
+    arguments: ['@current_route_match']
+    tags:
+      - { name: cache.context }
   asset_release.fulfillment_guard:
     class: Drupal\asset_release\Guard\AssetReleaseFulfillmentGuard
     arguments: ['@current_user', '@workflow_state_permission.workflow_state_permission']
@@ -17,3 +22,8 @@ services:
   asset_release.relations:
     class: Drupal\asset_release\AssetReleaseRelations
     arguments: ['@entity_type.manager', '@og.membership_manager']
+  asset_release.group_add_content.subscriber:
+    class: Drupal\asset_release\EventSubscriber\ReleaseGroupSubscriber
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: event_subscriber }

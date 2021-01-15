@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: "Add event" visibility options.
   In order to manage events
   As a solution member
@@ -47,8 +47,8 @@ Feature: "Add event" visibility options.
     When I go to the homepage of the "The Luscious Bridges" solution
     And I click "Add event" in the plus button menu
     Then I should see the heading "Add event"
-    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Contact email, Website, Policy domain, Add a new file, Scope, Spatial coverage"
-    And the following fields should not be present "Shared in, Motivation"
+    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Contact email, Website, Policy domain, Add a new file, Scope, Geographical coverage"
+    And the following fields should not be present "Shared on, Motivation"
 
     # Check required fields.
     And I attach the file "test.zip" to "Add a new file"
@@ -79,7 +79,7 @@ Feature: "Add event" visibility options.
     And I press "Save as draft"
     Then I should see the heading "An amazing event"
     And I should see the success message "Event An amazing event has been created."
-    And I should see the text "29 August 2018"
+    And I should see the text "29/08/2018"
     And the "The Luscious Bridges" solution has a event titled "An amazing event"
     # Check that the link to the event is visible on the solution page.
     When I go to the homepage of the "The Luscious Bridges" solution

@@ -4,19 +4,20 @@ status: true
 dependencies:
   module:
     - joinup_subscription
+    - node
 id: subscribe_discussions
-label: 'Subscribe discussions'
+label: 'Follow discussions'
 bundles:
   - discussion
 entity_type: node
 global: false
 weight: 0
-flag_short: Subscribe
+flag_short: Follow
 flag_long: ''
-flag_message: 'You have been subscribed to the discussion.'
-unflag_short: Unsubscribe
+flag_message: 'You are now following this discussion and you will receive notifications when someone posts a comment.'
+unflag_short: Unfollow
 unflag_long: ''
-unflag_message: 'You have been unsubscribed from the discussion.'
+unflag_message: 'You are no longer following the discussion.'
 unflag_denied_text: ''
 flag_type: 'entity:node'
 link_type: safe_unflag
@@ -28,8 +29,8 @@ flagTypeConfig:
   extra_permissions:
     owner: '0'
 linkTypeConfig:
-  flag_confirmation: 'Subscribe to this discussion?'
-  unflag_confirmation: 'Unsubscribe from this discussion?'
-  flag_create_button: Subscribe
-  flag_delete_button: Unsubscribe
+  flag_confirmation: 'Follow this discussion?'
+  unflag_confirmation: 'Stop following this discussion?'
+  flag_create_button: Follow
+  flag_delete_button: Unfollow
   form_behavior: modal

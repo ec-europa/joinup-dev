@@ -14,6 +14,10 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
+use Drupal\joinup_licence\Entity\Licence;
+use Drupal\joinup_licence\Entity\LicenceInterface;
+use Drupal\joinup_licence\Entity\LicenceLegalType;
+use Drupal\joinup_licence\Entity\SpdxLicence;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -31,6 +35,31 @@ function joinup_licence_entity_bundle_field_info_alter(array &$fields, EntityTyp
   }
   if (!empty($fields['field_licence_spdx_licence'])) {
     $fields['field_licence_spdx_licence']->addConstraint('UniqueFieldInBundle', ['bundles' => ['licence']]);
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ *
+ * Declares the bundle classes for Licence entities, SPDX Licence entities and
+ * Licence Legal Type taxonomy terms.
+ */
+function joinup_licence_entity_bundle_info_alter(&$bundles) {
+  $class_mapping = [
+    'rdf_entity' => [
+      'licence' => Licence::class,
+      'spdx_licence' => SpdxLicence::class,
+    ],
+    'taxonomy_term' => [
+      'legal_type' => LicenceLegalType::class,
+    ],
+  ];
+  foreach ($class_mapping as $entity_type_id => $bundle_mapping) {
+    foreach ($bundle_mapping as $bundle => $class) {
+      if (!empty($bundles[$entity_type_id][$bundle])) {
+        $bundles[$entity_type_id][$bundle]['class'] = $class;
+      }
+    }
   }
 }
 
@@ -96,12 +125,11 @@ function joinup_licence_entity_extra_field_info(): array {
  *   entity.
  */
 function joinup_licence_rdf_entity_view(array &$build, RdfInterface $entity, EntityViewDisplayInterface $display, string $view_mode): void {
-  if ($entity->bundle() != 'licence') {
+  if (!$entity instanceof LicenceInterface) {
     return;
   }
 
-  $spdx_licence = $entity->get('field_licence_spdx_licence')->referencedEntities()[0] ?? NULL;
-  if ($spdx_licence) {
+  if ($spdx_licence = $entity->getSpdxLicenceEntity()) {
     if ($display->getComponent('spdx_licence_label')) {
       $field_item_list = $spdx_licence->get('label');
       $build['spdx_licence_label'] = $field_item_list->view();
@@ -177,41 +205,4 @@ function joinup_licence_theme($existing, $type, $theme, $path) {
       'path' => $path . '/templates/parts',
     ],
   ];
-}
-
-/**
- * Implements hook_preprocess_node().
- *
- * Adds extension and file size to the available variables when rendering a
- * document node.
- */
-function joinup_licence_preprocess_node(&$variables) {
-  /** @var \Drupal\node\NodeInterface $node */
-  $node = $variables['node'];
-
-  // Add bundle class in listing templates.
-  if ($variables['view_mode'] == 'view_mode_tile' || $variables['view_mode'] == 'view_mode_featured') {
-    $bundle_class = 'listing__card--' . str_replace('_', '-', $node->bundle());
-    $variables['attributes']['class'][] = $bundle_class;
-  }
-
-  // Getting the node creation from the node object.
-  if ($node->bundle() == 'news') {
-    $variables['created'] = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
-  }
-
-  if ($node->bundle() !== 'document' || $node->get('field_file')->isEmpty()) {
-    return;
-  }
-
-  /** @var \Drupal\file\FileInterface $file */
-  $file = $node->get('field_file')->first()->entity;
-  $is_remote = \Drupal::service('file_url.handler')->isRemote($file);
-
-  if (!$is_remote) {
-    $variables['extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-  }
-  else {
-    $variables['extension'] = t('External');
-  }
 }

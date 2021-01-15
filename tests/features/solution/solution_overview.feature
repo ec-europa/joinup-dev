@@ -134,12 +134,12 @@ Feature: Solutions Overview
     When I go to the add solution form of the "Pikachu, I choose you" collection
     Then I should see the heading "Add Solution"
     When I fill in the following:
-      | Title            | Colonies in Earth                                                      |
-      | Description      | Some space mumbo jumbo description.                                    |
-      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
-      | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
-      | Name             | Ambrosio Morison                                                       |
-      | E-mail address   | ambrosio.morison@example.com                                           |
+      | Title                 | Colonies in Earth                                                      |
+      | Description           | Some space mumbo jumbo description.                                    |
+      | Geographical coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
+      | Language              | http://publications.europa.eu/resource/authority/language/VLS          |
+      | Name                  | Ambrosio Morison                                                       |
+      | E-mail address        | ambrosio.morison@example.com                                           |
     Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
     And I select "Demography" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
@@ -195,51 +195,66 @@ Feature: Solutions Overview
 
     When I am logged in as "Joann Womack"
     And I click "Solutions"
-    Then the "My solutions content" inline facet should allow selecting the following values "My solutions (3), Featured solutions (2)"
+    Then the "My solutions content" inline facet should allow selecting the following values:
+      | My solutions (3)       |
+      | Featured solutions (2) |
     And the page should be cacheable
     When I click "My solutions" in the "My solutions content" inline facet
     Then I should see the following tiles in the correct order:
       | Lost Yard           |
       | Lost Scattered Fish |
       | Silver Gravel       |
-    And the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2), All solutions"
+    And the "My solutions content" inline facet should allow selecting the following values:
+      | Featured solutions (2) |
+      | All solutions          |
     And the page should be cacheable
     # Regression test to ensure that the facets are cached by user.
     # Subsequent page loads of the collections page would lead to cached facets
     # to be leaked to other users.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
     When I click "All solutions" in the "My solutions content" inline facet
-    Then the "My solutions content" inline facet should allow selecting the following values "My solutions (3), Featured solutions (2)"
+    Then the "My solutions content" inline facet should allow selecting the following values:
+      | My solutions (3)       |
+      | Featured solutions (2) |
     And the page should be cacheable
 
     When I am logged in as "Ryker Brandon"
     When I click "Solutions"
-    Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2), My solutions (1)"
+    Then the "My solutions content" inline facet should allow selecting the following values:
+      | Featured solutions (2) |
+      | My solutions (1)       |
     And the page should be cacheable
     When I click "My solutions" in the "My solutions content" inline facet
     Then I should see the following tiles in the correct order:
       | Long Tungsten |
-    And the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2), All solutions"
+    And the "My solutions content" inline facet should allow selecting the following values:
+      | Featured solutions (2) |
+      | All solutions          |
     And the page should be cacheable
     # Verify that the facets are cached for the correct user by visiting again
     # the collections page without any facet filter.
     When I click "All solutions" in the "My solutions content" inline facet
-    Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2), My solutions (1)"
+    Then the "My solutions content" inline facet should allow selecting the following values:
+      | Featured solutions (2) |
+      | My solutions (1)       |
     And the page should be cacheable
 
     When I am an anonymous user
     And I click "Solutions"
     # The anonymous user has no access to the "My solutions" facet entry.
-    Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2)"
+    Then the "My solutions content" inline facet should allow selecting the following values:
+      | Featured solutions (2) |
     And the page should be cacheable
     When I click "Featured solutions" in the "My solutions content" inline facet
     Then I should see the following tiles in the correct order:
       | Subdivision Morbid           |
       | Hungry Disappointed Tungsten |
-    And the "My solutions content" inline facet should allow selecting the following values "All solutions"
+    And the "My solutions content" inline facet should allow selecting the following values:
+      | All solutions |
     And the page should be cacheable
     When I click "All solutions" in the "My solutions content" inline facet
-    Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2)"
+    Then the "My solutions content" inline facet should allow selecting the following values:
+      | Featured solutions (2) |
     And the page should be cacheable
 
     When I am logged in as "Ryker Brandon"

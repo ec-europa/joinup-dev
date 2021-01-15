@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Element;
 
-use Drupal\Core\Datetime\Element\Datetime as CoreDatetime;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Datetime\Element\Datetime as CoreDatetime;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -44,7 +46,16 @@ class Datetime extends CoreDatetime {
       // If there's empty input and the field is required, set an error. A
       // reminder of the required format in the message provides a good UX.
       elseif (empty($input['date']) && empty($input['time']) && $element['#required']) {
-        $form_state->setError($element, t('The %field date is required. Please enter a date in the format %format.', ['%field' => $title, '%format' => static::formatExample($format)]));
+        $form_state->setError(
+          $element,
+          t(
+            'The %field date is required. Please enter a date in the format %format.',
+            [
+              '%field' => $title,
+              '%format' => static::formatExample($format),
+            ]
+          )
+        );
       }
       else {
         // If the date is valid, set it.
@@ -53,14 +64,23 @@ class Datetime extends CoreDatetime {
           $form_state->setValueForElement($element, $date);
         }
         // If only one of the two fields are filled, set an error.
-        // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3194.
+        // @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3194.
         elseif (isset($input['date']) && isset($input['time']) && (empty($input['date']) xor empty($input['time']))) {
           $form_state->setError($element, t('The date and time should both be entered in the %field field.', ['%field' => $title]));
         }
         // If the date is invalid, set an error. A reminder of the required
         // format in the message provides a good UX.
         else {
-          $form_state->setError($element, t('The %field date is invalid. Please enter a date in the format %format.', ['%field' => $title, '%format' => static::formatExample($format)]));
+          $form_state->setError(
+            $element,
+            t(
+              'The %field date is invalid. Please enter a date in the format %format.',
+              [
+                '%field' => $title,
+                '%format' => static::formatExample($format),
+              ]
+            )
+          );
         }
       }
     }

@@ -12,7 +12,12 @@ dependencies:
   - drupal:taxonomy
   - drupal:text
   - joinup:joinup_core
+  - joinup:joinup_featured
+  - joinup:joinup_group
+  - joinup:joinup_stats
+  - joinup:joinup_workflow
   - joinup:workflow_state_permission
+  - publication_date:publication_date
   - state_machine:state_machine
 
 config_devel:
@@ -23,4 +28,3 @@ config_devel:
   - field.storage.node.field_policy_domain
   - field.storage.node.field_short_title
   - field.storage.node.field_state
-  - joinup_community_content.permission_scheme

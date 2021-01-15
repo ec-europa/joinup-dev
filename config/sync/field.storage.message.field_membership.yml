@@ -1,0 +1,20 @@
+uuid: fa362eaf-5ff2-4803-be4d-637bd8b4c707
+langcode: en
+status: true
+dependencies:
+  module:
+    - message
+    - og
+id: message.field_membership
+field_name: field_membership
+entity_type: message
+type: entity_reference
+settings:
+  target_type: og_membership
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

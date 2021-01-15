@@ -1,13 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\Field\FieldFormatter;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\TimestampFormatter;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Serialization\Yaml;
-use Drupal\og\Og;
+use Drupal\joinup_group\Entity\GroupInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a formatter displaying a timestamp as a dynamic "time ago" string.
@@ -35,6 +42,60 @@ use Drupal\og\Og;
 class JoinupTimestampTimeagoFormatter extends TimestampFormatter {
 
   /**
+   * The time service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $time;
+
+  /**
+   * Constructs a new JoinupTimestampTimeagoFormatter.
+   *
+   * @param string $plugin_id
+   *   The plugin_id for the formatter.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
+   *   The definition of the field to which the formatter is associated.
+   * @param array $settings
+   *   The formatter settings.
+   * @param string $label
+   *   The formatter label display setting.
+   * @param string $view_mode
+   *   The view mode.
+   * @param array $third_party_settings
+   *   Third party settings.
+   * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
+   *   The date formatter service.
+   * @param \Drupal\Core\Entity\EntityStorageInterface $date_format_storage
+   *   The date format storage.
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   The time service.
+   */
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, DateFormatterInterface $date_formatter, EntityStorageInterface $date_format_storage, TimeInterface $time) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $date_formatter, $date_format_storage);
+    $this->time = $time;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['label'],
+      $configuration['view_mode'],
+      $configuration['third_party_settings'],
+      $container->get('date.formatter'),
+      $container->get('entity_type.manager')->getStorage('date_format'),
+      $container->get('datetime.time')
+    );
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
@@ -59,7 +120,7 @@ class JoinupTimestampTimeagoFormatter extends TimestampFormatter {
     foreach ($this->dateFormatStorage->loadMultiple() as $machine_name => $value) {
       $date_formats[$machine_name] = $this->t('@name format: @date', [
         '@name' => $value->label(),
-        '@date' => $this->dateFormatter->format(\Drupal::time()->getRequestTime(), $machine_name),
+        '@date' => $this->dateFormatter->format($this->time->getRequestTime(), $machine_name),
       ]);
     }
     $date_formats['custom'] = $this->t('Custom');
@@ -121,7 +182,7 @@ class JoinupTimestampTimeagoFormatter extends TimestampFormatter {
 
     $tags = [];
     // If the entity is a OG group, add the cache tag of its group content.
-    if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle())) {
+    if ($entity instanceof GroupInterface) {
       // Add all the node group content once.
       $tags = Cache::mergeTags($tags, Cache::buildTags('og-group-content', $entity->getCacheTagsToInvalidate()));
     }

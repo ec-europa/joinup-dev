@@ -1,0 +1,612 @@
+// Component
+// --------------------------------------------------
+// .form
+
+// Elements
+// --------------------------------------------------
+.form__actions {
+  margin-top: 25px;
+  margin-right: 10px;
+  margin-bottom: 0 !important;
+}
+
+.form__label {
+  font-size: 16px;
+  font-weight: 600;
+  color: $color-blue-dark;
+  margin-bottom: 15px;
+}
+
+.form__label {
+  font-size: 16px;
+  font-weight: 600;
+  color: $color-blue-dark;
+  margin-bottom: 15px;
+}
+
+.form__text {
+  font-size: 16px;
+}
+
+.form__legend {
+  margin-bottom: 15px;
+
+  .form__label {
+    margin-bottom: 0;
+  }
+}
+
+.form__field-container {
+  margin-bottom: 25px;
+}
+
+.form__cell {
+  margin: 0;
+
+  @include breakpoint(tablet) {
+    margin: 8px;
+  }
+}
+
+.form__actions_inner {
+  @include inline-flex;
+  @include flex-wrap(wrap);
+
+  .button {
+    @extend .button-inline;
+  }
+}
+
+.form-item-persistent-login {
+  margin-bottom: 20px;
+}
+
+.form-select {
+  background-color: #fff;
+  border: 1px #a0a1a2 solid;
+  font-size: 16px;
+  height: 35px;
+  max-width: 100%;
+
+  &[multiple="multiple"] {
+    height: auto;
+    min-height: 200px;
+    padding: 5px;
+
+    option {
+      padding: 2px 5px;
+    }
+  }
+}
+
+.form-type-date {
+  display: inline-block;
+
+  input[type="date"],
+  input[type="time"] {
+    border: none;
+    border-bottom: 1px #a0a1a2 solid;
+    font: inherit;
+    font-size: 16px;
+  }
+
+  .form__label {
+    margin-bottom: 0;
+  }
+}
+
+.form__content {
+  @extend .white-box;
+}
+
+.form__description {
+  font-size: $font-size-xsmall;
+  font-weight: $font-weight-thin;
+  display: block;
+  margin-top: 6px;
+  color: lighten($color-grey-medium, 10%);
+
+  ul {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 30px;
+  }
+
+  li {
+    font-size: $font-size-xsmall;
+    font-weight: $font-weight-thin;
+    color: lighten($color-grey-medium, 10%);
+  }
+}
+
+.form-wrapper {
+  margin-bottom: $form-margin;
+
+  &.form__actions-wrapper {
+    margin-bottom: 0;
+  }
+}
+
+// Asterisk is added for all required fields except collection and solution forms.
+.form__with-asterisk {
+  label.form-required {
+    position: relative;
+
+    &:before {
+      position: absolute;
+      right: -15px;
+      content: "*";
+      color: $color-error;
+    }
+  }
+}
+
+.form__with-asterisk .mdl-checkbox__label label.form-required {
+  &:before {
+    display: none;
+  }
+
+  &:after {
+    display: inline-block;
+    content: "*";
+    color: #eb5b5c;
+    margin: 0 0 0 5px;
+  }
+}
+
+.form__exposed-form {
+  select, .form-item {
+    width: 100%;
+  }
+
+  .form__actions input {
+    margin: 0;
+  }
+}
+
+.form__margin-top {
+  margin-top: $form-margin;
+}
+
+// Styling for members overview
+.form__member-actions {
+  .form-wrapper {
+    .form-item,
+    .form-actions {
+      display: inline-block;
+      vertical-align: bottom;
+      width: 100%;
+    }
+
+    @include breakpoint(lg-desktop) {
+      .form-item {
+        width: 60%;
+      }
+
+      .form-actions {
+        width: 35%;
+        margin-left: $form-margin;
+        margin-top: 0;
+
+        input {
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+.form__add-more-wrapper {
+  margin-top: $table-margin;
+
+  .form-item,
+  .button {
+    display: inline-block;
+    vertical-align: bottom;
+  }
+
+  .form-item {
+    margin-right: 20px;
+  }
+
+  select {
+    min-width: 200px;
+    height: 50px;
+  }
+}
+
+// Modifiers
+// --------------------------------------------------
+.form__description--checkbox {
+  margin-left: 25px;
+}
+.node-form,
+.user-form,
+.rdf-entity-form {
+  .form-item-current-pass,
+  .form-item-cas-enabled,
+  .form-item-cas-username,
+  .form-item-group-primary,
+  .form-item-mail,
+  .form-item-name {
+    margin-bottom: 25px;
+  }
+
+  .form__label:not(.mdl-checkbox__label) {
+    font-size: 18px;
+    color: #2875cf;
+    margin-bottom: 10px;
+  }
+
+  input[type=text],
+  input[type=url],
+  input[type=email],
+  input[type=password],
+  input[type=number],
+  textarea,
+  select {
+    height: auto;
+    padding: 10px;
+    background-color: white;
+    @include box-sizing(border-box);
+    outline: none;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    font-family: "Helvetica","Arial",sans-serif;
+    width: 100%;
+
+    &:focus {
+      box-shadow: 0;
+      border: 1px solid #4f93e3;
+    }
+    &:disabled {
+      background: #f3f3f3;
+    }
+  }
+  input[type=number],
+  textarea,
+  select {
+    width: auto;
+  }
+
+  input.form-autocomplete {
+    background-position: 99% center;
+  }
+  select[multiple]:focus option:checked {
+    background: #2875cf linear-gradient(0deg, #2875cf 0%, #2875cf 100%);
+  }
+  .field-multiple-table {
+    tbody tr:nth-child(odd) {
+      background-color: #e9edee;
+    }
+    & + .description {
+      text-align: right;
+    }
+  }
+  .field--type-entity-reference {
+    .ief-entity-table {
+      border: 1px solid #ccc;
+    }
+    .ief-form {
+      background-color: #f4f6f7;
+      padding: 15px;
+
+      .form__legend {
+        display: none;
+      }
+    }
+  }
+  .tabledrag-changed-warning {
+    margin-bottom: 10px;
+  }
+  .form-table__button {
+    margin: 10px 0 0 0;
+    text-align: right;
+  }
+  .field--type-current-workflow-state {
+    margin-top: 25px;
+  }
+
+  div[class*="form-item-field-social"] {
+    @include breakpoint(tablet) {
+      margin-top: 15px;
+      .field-prefix {
+        display: inline-block;
+        width: 29%;
+      }
+      input {
+        float: right;
+        width: 60%;
+        margin-top: -10px;
+      }
+    }
+  }
+}
+
+// Paragraphs
+// --------------------------------------------------
+#edit-field-paragraphs-body-wrapper {
+  .field-multiple-drag {
+    width: 30px;
+    .tabledrag-handle {
+      min-width: auto;
+      margin: 3px 0 0 10px;
+    }
+    .tabledrag-changed {
+      padding-left: 10px;
+    }
+  }
+  .form-wrapper {
+    margin-bottom: 10px;
+    .paragraphs-icon-button {
+      padding: 5px 10px;
+      font-size: 10px;
+      background: #c5c5c5 !important;
+      border-color: #c5c5c5 !important;
+    }
+  }
+  .form-table__cell {
+    padding-right: 10px;
+    label {
+      font-size: 15px;
+    }
+  }
+  .paragraph-top {
+    -ms-grid-columns: auto auto 1fr auto;
+    grid-template-columns: auto auto 1fr auto;
+  }
+  .paragraphs-dropdown-actions {
+    padding: 5px;
+    background-color: #fff;
+    .icon {
+      display: none;
+    }
+    .button--small {
+      font-size: 11px;
+      background: transparent !important;
+      padding: 0;
+      box-shadow: initial;
+      color: #a0a1a2;
+    }
+  }
+  .form-table__button {
+    text-align: left;
+    .field-add-more-submit {
+      font-size: 12px;
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 1px;
+      padding: 10px 15px;
+    }
+    .dropbutton-multiple {
+      background: #2875CF;
+      border-radius: 3px;
+      overflow: hidden;
+      li {
+        &.dropbutton-toggle {
+          background: #2861a2;
+          .dropbutton-arrow {
+            top: 22px;
+            color: #fff;
+          }
+        }
+      }
+      .field-add-more-submit {
+        border-radius: 0;
+      }
+      &.open {
+        li {
+          &.dropbutton-toggle {
+            .dropbutton-arrow {
+              top: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .field--name-field-accordion-item {
+    tr {
+      background-color: transparent;
+
+      .field--name-field-paragraphs-item-content {
+        background: white;
+        border: 1px solid #ccc;
+
+        .form-table__button {
+          margin: 0 0 30px 40px;
+        }
+      }
+    }
+  }
+}
+
+// Dependencies
+// --------------------------------------------------
+.form__actions {
+  .dropbutton-wrapper {
+    float: none;
+    width: auto;
+  }
+
+  .dropbutton-multiple {
+    @extend .button-inline;
+
+    &.open {
+      .dropbutton-arrow {
+        top: 40%;
+      }
+    }
+
+    .dropbutton-widget {
+      padding-right: 0;
+    }
+  }
+
+  .dropbutton-action {
+    .button {
+      margin: 0;
+    }
+
+    &.secondary-action {
+      position: absolute;
+      white-space: nowrap;
+
+      .button {
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .dropbutton-widget {
+    .dropbutton {
+      overflow: visible;
+    }
+  }
+
+  .dropbutton-toggle {
+    .dropbutton-arrow {
+      color: #fff;
+    }
+  }
+}
+
+.form__actions--no-margin {
+  margin: 0;
+
+  .button {
+    margin: 0;
+  }
+
+  .form__actions_inner {
+    width: 100%;
+  }
+}
+
+.form-wrapper {
+  .form__label {
+    &.mdl-checkbox__label {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// Elements with validation errors
+.form-item {
+  input.error,
+  textarea.error,
+  select.error,
+  textarea.error + .cke {
+    border-width: 1px;
+    border-color: $color-error;
+  }
+}
+
+// My subscriptions form
+.form__subscribe-types {
+  margin-bottom: 0;
+
+  .form-item {
+    flex: 1 100%;
+    margin-bottom: $tile-margin;
+
+    select {
+      width: 100%;
+    }
+  }
+
+  .form__subscribe-save {
+    flex: 1 100%;
+    max-width: 100%;
+  }
+
+  @include breakpoint(mobile) {
+    .form-item {
+      flex: 1 50%;
+    }
+  }
+
+
+  @include breakpoint(desktop) {
+    .form__subscribe-save {
+      flex: 1 100%;
+    }
+  }
+
+
+  @include breakpoint(lg-desktop) {
+    .form-item {
+      flex: 0 1 auto;
+      margin-bottom: 0;
+      margin-right: $tile-margin;
+    }
+
+    .form__subscribe-save {
+      flex: 0 1 auto;
+      margin-left: auto;
+    }
+  }
+}
+
+.form__subscribe-types-inner {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+
+  .form__label {
+    font-size: 14px;
+    font-weight: normal;
+  }
+}
+
+.form__subscribe-frequency {
+  .form-item {
+    margin-bottom: $field-margin;
+  }
+
+  @include breakpoint(lg-desktop) {
+    display: flex;
+    align-items: flex-end;
+
+    .form-item {
+      flex: 1 72%;
+      max-width: 72%;
+      margin-bottom: 0;
+    }
+
+    .form__subscribe-save {
+      flex: 1 28%;
+      max-width: 28%;
+      text-align: right;
+    }
+  }
+}
+
+.form__subscribe-actions {
+  text-align: right;
+  margin-right: 0;
+
+  .button {
+    margin-right: 0;
+  }
+}
+
+// Add red asterisk in a cas form.
+.cas-account-link-form.form__with-asterisk {
+  .mdl-textfield {
+    label {
+      position: relative;
+
+      &:before {
+        position: absolute;
+        right: -15px;
+        content: "*";
+        color: $color-error;
+      }
+    }
+  }
+}
+
+// States
+// --------------------------------------------------

@@ -13,8 +13,8 @@
       $(this).removeClass('is-hidden');
     });
 
-    // Check every active filter item
-    // and hide tiles which don't contain proper data-licence-category
+    // Check every active filter item and hide tiles which don't contain proper
+    // data-licence-category.
     $('.licence-filter__item a.is-active').each(function () {
       var currentlicenceCategory = $(this).attr('data-licence-category');
       if (typeof currentlicenceCategory !== 'undefined') {
@@ -30,8 +30,8 @@
       }
     });
 
-    // Check licence search field value
-    // and hide tiles which don't contain proper data-spdx
+    // Check licence search field value and hide tiles which don't contain
+    // proper data-spdx.
     var licenceTiles = 0;
     var currentSpdxId = $('#licence-search').val().toLowerCase();
     $licenceTile.each(function () {
@@ -48,7 +48,7 @@
       }
     });
 
-    // Show calculated number of tiles
+    // Show calculated number of tiles.
     $('.licence-counter__number').text(licenceTiles);
   }
 
@@ -63,14 +63,17 @@
   }
 
   // Enable or disable all compare buttons.
-  function enableCompareButton(state) {
+  function enableButtons(state) {
+    var btnSelector = $( ".licence-tile__button--compatible" ).length ?
+                      '.licence-tile__button--compatible' :
+                      '.licence-tile__button--compare';
     if (state) {
-      $('.licence-tile__button--compare.licence-tile__button--disabled').each(function () {
+      $(btnSelector + '.licence-tile__button--disabled').each(function () {
         $(this).removeClass('licence-tile__button--disabled');
       });
     }
     else {
-      $('.licence-tile__button--compare').each(function () {
+      $(btnSelector).each(function () {
         $(this).addClass('licence-tile__button--disabled');
       });
     }
@@ -96,7 +99,7 @@
         }
 
         if (licencesArray.length >= 2) {
-          enableCompareButton(true);
+          enableButtons(true);
         }
       }
     });
@@ -115,8 +118,8 @@
     });
   });
 
-  // Cancel the 'Enter' key of the filter input.
-  // Entered key is cancelled on keypress, not on keyup.
+  // Cancel the 'Enter' key of the filter input. Entered key is cancelled on
+  // keypress, not on keyup.
   $('#licence-search').on('keypress', function (event) {
     var keyCode = event.keyCode || event.which;
     if (keyCode === 13) {
@@ -129,12 +132,27 @@
     checkLicenceCategories();
   });
 
-  // Reset licence listing
+  // Reset licence listing.
   $('#licence-reset').on('click', function (event) {
     $('.licence-filter__item a.is-active').removeClass('is-active');
     $('.licence-search__input input').val('');
     $('.licence-search__input .mdl-js-textfield')[0].MaterialTextfield.checkDirty();
     checkLicenceCategories();
+    // Also, uncheck any selected licences checked for comparison and disable
+    // the "Compare" buttons. The 'data-licence-compare' attribute which is set
+    // to [], is the attribute that stores the licences set-up for comparison.
+
+    if ($('.licence-tile__button--compatible').length) {
+      $('.licence-tile .mdl-js-radio').each(function (event, element) {
+        $(this)[0].MaterialRadio.uncheck();
+      });
+    } else {
+      $('.licence-tile .mdl-js-checkbox').each(function () {
+        $(this)[0].MaterialCheckbox.uncheck();
+      });
+    }
+    $('.listing--licences').attr('data-licence-compare', '[]');
+    enableButtons(false);
   });
 
   // Change compare elements if the checkbox is clicked.
@@ -159,13 +177,13 @@
         }
 
         if (licencesArray.length === 2) {
-          enableCompareButton(true);
+          enableButtons(true);
         }
       }
       else {
         if (licencesArray.length > 0) {
           licencesArray = JSON.parse(licences);
-          licencesArray = licencesArray.filter(function(value){
+          licencesArray = licencesArray.filter(function (value) {
             return value !== licenceName;
           });
           licencesString = JSON.stringify(licencesArray);
@@ -176,7 +194,7 @@
         }
 
         if (licencesArray.length < 2) {
-          enableCompareButton(false);
+          enableButtons(false);
         }
       }
 
@@ -195,11 +213,30 @@
     });
   });
 
-  // Filter on window load
-  // Needed for licence search filter.
-  $(window).on('load', function() {
+  function initCompatibleRadios() {
+    $('.listing__item--compatibility .mdl-js-radio').each(function () {
+      // UnCheck radios on page load.
+      $(this).find('input').prop('checked', false);
+
+      // Change compatible elements if the radio is clicked.
+      $(this).on('click', function () {
+        var inbound_licence = $("input[name='inbound-licence']:checked").attr('data-licence-name');
+        var distribute_licence = $("input[name='outbound-licence']:checked").attr('data-licence-name');
+
+        if(inbound_licence && distribute_licence) {
+          var compatible_url = drupalSettings.path.baseUrl + "licence/compatibility-check/" + inbound_licence + "/" + distribute_licence;
+          $('.licence-tile__button--compatible').attr('href', compatible_url);
+          enableButtons(true);
+        }
+      });
+    });
+  }
+
+  // Filter on window load. Needed for licence search filter.
+  $(window).on('load', function () {
     checkLicenceCategories();
     checkCompareStatus();
+    initCompatibleRadios();
   });
 
 })(jQuery, drupalSettings);

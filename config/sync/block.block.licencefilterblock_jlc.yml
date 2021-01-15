@@ -1,0 +1,27 @@
+uuid: 1b355e80-3c98-47de-bcb9-dbe2bfe1affa
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_licence
+    - system
+  theme:
+    - joinup_theme
+id: licencefilterblock_jlc
+theme: joinup_theme
+region: content
+weight: -18
+provider: null
+plugin: licence_filter_block
+settings:
+  id: licence_filter_block
+  label: 'Licence filter block (JLC)'
+  provider: joinup_licence
+  label_display: '0'
+  show_terms: false
+visibility:
+  request_path:
+    id: request_path
+    pages: /node/703242
+    negate: false
+    context_mapping: {  }

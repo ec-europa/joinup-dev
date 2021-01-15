@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactory;
@@ -7,19 +9,20 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
-use Drupal\joinup_core\WorkflowHelper;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
-use Drupal\og\GroupTypeManager;
+use Drupal\joinup_workflow\EntityWorkflowStateInterface;
+use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\og\MembershipManager;
 use Drupal\og\OgRoleInterface;
 use Drupal\state_machine_revisions\RevisionManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class CommunityContentSubscriber.
+ * Handles notifications related to community content.
  */
 class CommunityContentSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 
@@ -38,13 +41,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @var \Drupal\state_machine\Plugin\Workflow\Workflow
    */
   protected $workflow;
-
-  /**
-   * The state field name of the entity object.
-   *
-   * @var string
-   */
-  protected $stateField;
 
   /**
    * The motivation text passed in the entity.
@@ -76,21 +72,17 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   The config factory service.
    * @param \Drupal\Core\Session\AccountProxy $current_user
    *   The current user service.
-   * @param \Drupal\og\GroupTypeManager $og_group_type_manager
-   *   The og group type manager service.
    * @param \Drupal\og\MembershipManager $og_membership_manager
    *   The og membership manager service.
-   * @param \Drupal\joinup_core\WorkflowHelper $joinup_core_workflow_helper
+   * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $joinup_core_relations_manager
-   *   The relation manager service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The message deliver service.
    * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
    *   The revision manager service.
    */
-  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupRelationManagerInterface $joinup_core_relations_manager, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
-    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_group_type_manager, $og_membership_manager, $joinup_core_workflow_helper, $joinup_core_relations_manager, $message_delivery);
+  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, MembershipManager $og_membership_manager, WorkflowHelperInterface $workflow_helper, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
+    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_membership_manager, $workflow_helper, $message_delivery);
     $this->revisionManager = $revision_manager;
   }
 
@@ -111,13 +103,19 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
 
-    $state_item = $this->workflowHelper->getEntityStateFieldDefinition($this->entity->getEntityTypeId(), $this->entity->bundle());
-    if (!empty($state_item)) {
-      $this->stateField = $state_item->getName();
-      $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
+    // Only initialize the workflow if it is available. It is unavailable when
+    // the entity is being deleted during cleanup of orphaned group content.
+    if ($this->entity instanceof EntityWorkflowStateInterface && $this->entity->hasWorkflow()) {
       $from_state = isset($this->entity->field_state_initial_value) ? $this->entity->field_state_initial_value : 'draft';
-      $to_state = $this->entity->get($this->stateField)->first()->value;
-      $this->transition = $this->workflow->findTransition($from_state, $to_state);
+      $to_state = $this->entity->getWorkflowState();
+
+      $this->workflow = $this->entity->getWorkflow();
+      // In some cases the workflow cannot be determined, for example when
+      // deleting orphaned group content that has a workflow that depends on the
+      // parent entity's content moderation status.
+      if ($this->workflow) {
+        $this->transition = $this->workflow->findTransition($from_state, $to_state);
+      }
     }
     $this->motivation = empty($this->entity->motivation) ? '' : $this->entity->motivation;
     $this->hasPublished = $this->hasPublishedVersion($this->entity);
@@ -150,17 +148,13 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   Whether the event applies.
    */
   protected function appliesOnCreate() {
-    if (!$this->appliesOnCommunityContent()) {
-      return FALSE;
-    }
-
     // If there is no original version, then it is not an update.
     if (isset($this->entity->original)) {
       return FALSE;
     }
 
     // If any of the workflow related properties are empty, return early.
-    if (empty($this->stateField) || empty($this->workflow) || empty($this->transition)) {
+    if (!$this->entity instanceof EntityWorkflowStateInterface || empty($this->workflow) || empty($this->transition)) {
       return FALSE;
     }
 
@@ -194,17 +188,13 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   Whether the event applies.
    */
   protected function appliesOnUpdate() {
-    if (!$this->appliesOnCommunityContent()) {
-      return FALSE;
-    }
-
     // If there is no original version, then it is not an update.
     if ($this->entity->isNew()) {
       return FALSE;
     }
 
     // If any of the workflow related properties are empty, return early.
-    if (empty($this->stateField) || empty($this->workflow) || empty($this->transition)) {
+    if (!$this->entity instanceof EntityWorkflowStateInterface || empty($this->workflow) || empty($this->transition)) {
       return FALSE;
     }
 
@@ -226,9 +216,10 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     // The storage class passes the loaded entity to the hooks when a delete
     // operation occurs. This returns the wrong state of the entity so the
     // latest revision is forced here.
+    /** @var \Drupal\joinup_workflow\EntityWorkflowStateInterface $latest_revision */
     if ($latest_revision = $this->revisionManager->loadLatestRevision($this->entity)) {
-      $state = $latest_revision->get($this->stateField)->first()->value;
-      if (empty($this->config[$this->workflow->getId()][$state])) {
+      $state = $latest_revision->getWorkflowState();
+      if (empty($this->workflow) || empty($this->config[$this->workflow->getId()][$state])) {
         return;
       }
 
@@ -246,31 +237,8 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   Whether the event applies.
    */
   protected function appliesOnDelete() {
-    if (!$this->appliesOnCommunityContent()) {
-      return FALSE;
-    }
-
     // If any of the workflow related properties are empty, return early.
-    if (empty($this->stateField)) {
-      return FALSE;
-    }
-
-    return TRUE;
-  }
-
-  /**
-   * Checks if the event applies for the update operation.
-   *
-   * @return bool
-   *   Whether the event applies.
-   */
-  protected function appliesOnCommunityContent() {
-    if ($this->entity->getEntityTypeId() !== 'node') {
-      return FALSE;
-    }
-
-    $community_bundles = ['discussion', 'document', 'event', 'news'];
-    if (!in_array($this->entity->bundle(), $community_bundles)) {
+    if (!$this->entity instanceof EntityWorkflowStateInterface) {
       return FALSE;
     }
 
@@ -287,22 +255,20 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     $arguments = parent::generateArguments($entity);
+    /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = $arguments['@actor:field_user_first_name'];
-    $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
 
-    $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
+    $arguments['@actor:full_name'] = $actor->getDisplayName();
     $arguments['@transition:motivation'] = $motivation;
     $arguments['@entity:hasPublished:status'] = $this->hasPublished ? 'an update of the' : 'a new';
 
     // Add arguments related to the parent collection or solution.
-    $parent = $this->relationManager->getParent($entity);
+    $parent = JoinupGroupHelper::getGroup($entity);
     if (!empty($parent)) {
-      $arguments['@group:title'] = $parent->label();
-      $arguments['@group:bundle'] = $parent->bundle();
+      $arguments += MessageArgumentGenerator::getGroupArguments($parent);
 
       // If the role is not yet set, get it from the parent collection|solution.
       if (empty($arguments['@actor:role'])) {
@@ -334,7 +300,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @return bool
    *   Whether the entity has a published version.
    */
-  protected  function hasPublishedVersion(EntityInterface $entity) {
+  protected function hasPublishedVersion(EntityInterface $entity) {
     if ($entity->isNew()) {
       return FALSE;
     }

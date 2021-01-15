@@ -18,6 +18,18 @@ services:
     arguments: ['@current_user', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: solution }
+  solution.requirements_helper:
+    class: Drupal\solution\RequirementsHelper
+    arguments: ['@sparql.endpoint']
   solution.title_duplicate_helper:
     class: 'Drupal\solution\SolutionTitleDuplicateHelper'
     arguments: ['@entity_type.manager', '@sparql.graph_handler']
+  solution.group_add_content.subscriber:
+    class: Drupal\solution\EventSubscriber\SolutionGroupSubscriber
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: event_subscriber }
+  solution.group_menu_links:
+    class: Drupal\solution\EventSubscriber\SolutionGroupMenuLinksSubscriber
+    tags:
+      - { name: event_subscriber }

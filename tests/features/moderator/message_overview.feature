@@ -1,5 +1,5 @@
 # The test is marked as @wip as there is a failure in our current CI that needs to be debugged.
-# @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5665
+# @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5665
 @api @wip
 Feature: Solutions message overview
   As a moderator of the site

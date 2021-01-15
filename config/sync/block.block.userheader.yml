@@ -11,7 +11,7 @@ _core:
 id: userheader
 theme: joinup_theme
 region: featured
-weight: -16
+weight: -20
 provider: null
 plugin: user_header_block
 settings:

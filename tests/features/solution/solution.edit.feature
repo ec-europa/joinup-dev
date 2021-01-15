@@ -37,6 +37,8 @@ Feature: Solution editing.
     When I am logged in as "Yancy Burton"
     And I go to the homepage of the "Collection example" collection
     And I click "Add solution"
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     Then I should see the heading "Add Solution"
     When I fill in the following:
       | Title          | Solution A         |
@@ -60,11 +62,11 @@ Feature: Solution editing.
     And I should see the link "Edit"
     When I go to the "Solution A" solution edit form
     Then I should see the heading "Edit Solution Solution A"
-    Then the fields "Logo, Banner, Upload a new file or enter a URL, Spatial coverage, Keywords, Related Solutions, Status, Languages, Landing page, Metrics page" should be correctly ordered in the region "Management solution vertical tab"
-    Then the fields "Title, Description, Contact information, Policy domain, Owner, Solution type, Moderated, eLibrary creation" should be correctly ordered in the region "Main solution vertical tab"
+    Then the fields "Logo, Banner, Upload a new file or enter a URL, Geographical coverage, Keywords, Related solutions, Status, Languages, Landing page, Metrics page" should be correctly ordered in the region "Management solution vertical tab"
+    Then the fields "Title, Description, Contact information, Policy domain, Owner, Solution type, Moderated, Content creation" should be correctly ordered in the region "Main solution vertical tab"
 
     And the following fields should not be present "Issue tracker, Wiki, Langcode, Translation"
-    And the following fieldsets should be present "Contact information, Owner, eLibrary creation"
+    And the following fieldsets should be present "Contact information, Owner, Content creation"
     # Logo and banner fields are required, so they are filled up during
     # the creation of the solution. Unfortunately, file fields with a file
     # already attached cannot be found by named xpath, so we look for the

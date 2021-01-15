@@ -23,7 +23,7 @@ Feature: Homepage feature
       | An Explosion in Space     | An Explosion in Space     | E-health          | Legion Constitution | validated | 5064   | 2015-04-07 16:00 |
       # Create a news with the same number of visits but with a more recent creation date.
       # The node needs to be created in this order, so it's placed later in the Solr index.
-      # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3963
+      # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3963
       | Magenta Mountain          | Magenta Mountain          | E-health          | Legion Constitution | validated | 5064   | 2017-11-30 16:00 |
       | Lightning Lass' Powers    | Lightning Lass' Powers    | Demography        | Legion Constitution | validated | 2951   | 2016-09-22 16:00 |
     And the following collection user memberships:
@@ -57,7 +57,7 @@ Feature: Homepage feature
     When I am logged in as a facilitator of the "The Sacred Future" collection
     And I go to the homepage of the "The Sacred Future" collection
     And I click "Add document" in the plus button menu
-    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared in"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared on"
     And I fill in the following:
       | Title       | The Sacred Future documentation |
       | Short title | The Sacred Future documentation |
@@ -86,7 +86,7 @@ Feature: Homepage feature
 
     When I am logged in as a moderator
     And I go to the homepage
-    Then I click the contextual link "Pin site-wide" in the "Magenta Mountain" tile
+    Then I click the contextual link "Pin to front page" in the "Magenta Mountain" tile
 
     Given I am not logged in
     And I am on the homepage
@@ -102,7 +102,7 @@ Feature: Homepage feature
     # sorting by visits and creation date.
     When I am logged in as a moderator
     And I go to the homepage
-    Then I click the contextual link "Unpin site-wide" in the "Magenta Mountain" tile
+    Then I click the contextual link "Unpin from front page" in the "Magenta Mountain" tile
 
     Given I am not logged in
     And I am on the homepage

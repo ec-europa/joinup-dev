@@ -1,18 +1,24 @@
 uuid: 9388643e-522b-48ee-beb8-d43de79ef3c1
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - joinup_licence
+    - system
+  theme:
+    - joinup_theme
 id: licencefilterblock
 theme: joinup_theme
 region: content
-weight: -15
+weight: -19
 provider: null
 plugin: licence_filter_block
 settings:
   id: licence_filter_block
-  label: 'Licence filter block'
-  provider: eupl
+  label: 'Licence filter block (JLA)'
+  provider: joinup_licence
   label_display: '0'
+  show_terms: true
 visibility:
   request_path:
     id: request_path

@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the EIF Toolbox solutions page categories.
+ *
+ * Variables:
+ * - all_link: The link that points to all categories.
+ * - category_links: A list of category links.
+ *
+ * @ingroup themeable
+ */
+#}
+{% if category_links|length > 1 %}
+  {{ all_link }}
+  {% for link in category_links %}
+    {{ link }}
+  {% endfor %}
+{% endif %}

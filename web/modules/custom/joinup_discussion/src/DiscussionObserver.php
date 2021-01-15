@@ -4,13 +4,15 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_discussion;
 
-use Drupal\changed_fields\ObserverInterface;
 use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Drupal\changed_fields\ObserverInterface;
 use Drupal\joinup_discussion\Event\DiscussionEvents;
 use Drupal\joinup_discussion\Event\DiscussionUpdateEvent;
 
 /**
- * Defines an observer for discussion node changes.
+ * Triggers a DiscussionUpdateEvent when fields in a discussion are updated.
+ *
+ * @see \Drupal\changed_fields\ObserverInterface
  */
 class DiscussionObserver implements ObserverInterface {
 

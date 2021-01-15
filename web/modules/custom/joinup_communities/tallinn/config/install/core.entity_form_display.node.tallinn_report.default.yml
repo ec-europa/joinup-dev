@@ -27,9 +27,11 @@ dependencies:
     - field.field.node.tallinn_report.field_tallinn_action_7
     - field.field.node.tallinn_report.field_tallinn_action_8
     - field.field.node.tallinn_report.field_tallinn_action_9
+    - field.field.node.tallinn_report.og_audience
     - node.type.tallinn_report
   module:
     - field_group
+    - tallinn
 third_party_settings:
   field_group:
     group_tallinn_tabs_group:
@@ -300,6 +302,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  published_at:
+    type: publication_date_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
     weight: 1
@@ -307,15 +315,17 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     region: content
     third_party_settings: {  }
 hidden:
-  title: true
   created: true
   current_workflow_state: true
   langcode: true
+  og_audience: true
   path: true
   promote: true
   status: true
   sticky: true
+  title: true
   url_redirects: true

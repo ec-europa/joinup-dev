@@ -14,10 +14,10 @@ interface JoinupFederationPipelineInterface extends PipelinePipelineInterface {
   /**
    * Returns the uri of the collection that the pipeline is related to.
    *
-   * @return string|null
-   *   The uri of the collection.
+   * @return string
+   *   The URI of the collection.
    */
-  public function getCollection(): ?string;
+  public function getCollection(): string;
 
   /**
    * Returns the graph URI for a specific federation graph.

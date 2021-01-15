@@ -13,7 +13,7 @@ use Drupal\pipeline\PipelineStateManager;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginBase;
 use Drupal\pipeline\Plugin\PipelineStepPluginManager;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -26,7 +26,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * The SPARQL connection.
    *
-   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface
    */
   protected $sparql;
 
@@ -73,14 +73,14 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    *   The pipeline state manager service.
    * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user.
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Core\TempStore\SharedTempStoreFactory $shared_tempstore_factory
    *   The shared temp store factory service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, AccountProxyInterface $current_user, ConnectionInterface $sparql, SharedTempStoreFactory $shared_tempstore_factory, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, string $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, AccountProxyInterface $current_user, ConnectionInterface $sparql, SharedTempStoreFactory $shared_tempstore_factory, EntityTypeManagerInterface $entity_type_manager) {
     $this->currentUser = $current_user;
 
     parent::__construct($configuration, $plugin_id, $plugin_definition, $step_plugin_manager, $state_manager);
@@ -101,7 +101,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
       $container->get('plugin.manager.pipeline_step'),
       $container->get('pipeline.state_manager'),
       $container->get('current_user'),
-      $container->get('sparql_endpoint'),
+      $container->get('sparql.endpoint'),
       $container->get('joinup_federation.tempstore.shared'),
       $container->get('entity_type.manager')
     );
@@ -110,8 +110,12 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): ?string {
-    return NULL;
+  public function getCollection(): string {
+    // Allow also to set the pipeline collection ID from pipeline annotation.
+    if (!empty($this->getPluginDefinition()['collection'])) {
+      return $this->getPluginDefinition()['collection'];
+    }
+    return '';
   }
 
   /**
@@ -137,6 +141,12 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    * {@inheritdoc}
    */
   public function prepare() {
+    if (empty($this->getCollection())) {
+      return $this->t('The %pipeline import pipeline is not linked to any collection. Contact the site administrator.', [
+        '%pipeline' => $this->getPluginDefinition()['label'],
+      ]);
+    }
+
     if (!$this->lock()) {
       $arguments = ['@pipeline' => $this->getPluginDefinition()['label']];
       return $this->t("There's another ongoing import process run by other user. You cannot run '@pipeline' right now.", $arguments);
@@ -212,7 +222,10 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
       }
     }
 
-    $header = $non_critical_violations ? [$this->t('Field'), $this->t('Warning')] : [$this->t('Entities')];
+    $header = $non_critical_violations ? [
+      $this->t('Field'),
+      $this->t('Warning'),
+    ] : [$this->t('Entities')];
     $build[] = [
       '#theme' => 'table',
       '#header' => $header,

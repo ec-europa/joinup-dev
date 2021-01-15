@@ -2,12 +2,13 @@ uuid: 8209390f-5227-4eb0-9700-972e45a22c68
 langcode: en
 status: true
 dependencies:
-  config:
-    - og_menu.ogmenu.navigation
   module:
-    - collection
+    - custom_page
+    - joinup_core
     - node
     - og
+  theme:
+    - joinup_theme
 id: table_of_contents
 theme: joinup_theme
 region: content_bottom

@@ -11,6 +11,18 @@ solution.collection_solution.add:
       rdf_entity:
         type: entity:rdf_entity
 
+solution.collection_solution.tca:
+  path: 'rdf_entity/{rdf_entity}/solution/tca'
+  defaults:
+    _form: '\Drupal\solution\Form\TcaForm'
+    _title: 'Terms of agreement'
+  requirements:
+    _custom_access: '\Drupal\solution\Controller\SolutionController::createSolutionAccess'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+
 solution.share_form:
   path: '/rdf_entity/{rdf_entity}/share'
   defaults:
@@ -22,6 +34,8 @@ solution.share_form:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
+        bundle:
+          - solution
 
 solution.unshare_form:
   path: '/rdf_entity/{rdf_entity}/unshare'
@@ -30,6 +44,21 @@ solution.unshare_form:
     _title_callback: '\Drupal\solution\Form\UnshareForm::getTitle'
   requirements:
     _custom_access: '\Drupal\solution\Form\UnshareForm::access'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+        bundle:
+          - solution
+
+solution.change_collection:
+  path: '/rdf_entity/{rdf_entity}/change-collection'
+  defaults:
+    _form: Drupal\solution\Form\ChangeCollectionForm
+    _title: 'Select a destination collection'
+  requirements:
+    _permission: 'manage solutions'
+    _joinup_group: 'collection'
   options:
     parameters:
       rdf_entity:

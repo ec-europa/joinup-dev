@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_invite\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
@@ -63,7 +65,10 @@ class UserAutoCompleteController extends ControllerBase {
       $users = $this->entityTypeManager->getStorage('user')->loadMultiple($results);
 
       foreach ($users as $user) {
-        $values[] = ['value' => $user->getEmail(), 'label' => $this->getAccountName($user)];
+        $values[] = [
+          'value' => $user->getEmail(),
+          'label' => $this->getAccountName($user),
+        ];
       }
     }
     return new JsonResponse($values);
@@ -80,7 +85,7 @@ class UserAutoCompleteController extends ControllerBase {
    */
   protected function getAccountName(UserInterface $user) {
     return $this->t('@name (@username)', [
-      '@name' => $user->get('full_name')->value,
+      '@name' => $user->getDisplayName(),
       '@username' => $user->getAccountName(),
     ]);
   }

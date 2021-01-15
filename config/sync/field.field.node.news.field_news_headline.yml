@@ -12,7 +12,7 @@ field_name: field_news_headline
 entity_type: node
 bundle: news
 label: Headline
-description: 'Headline of the news.'
+description: 'Add a title for the article, it will be shown on the news page.'
 required: true
 translatable: false
 default_value: {  }

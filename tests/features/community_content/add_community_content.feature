@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Add community content
   In order to introduce my wisdom in my collections
   As a member of a collection
@@ -84,7 +84,7 @@ Feature: Add community content
     When I am logged in as "Publisher"
     And I go to the "Sample <content type>" <content type>
     Then the "Sample <content type>" <content type> should not have a publication date
-    And I should see the text "01/01/2010"
+    And I should see the text "Published on: 01/01/2010"
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
@@ -120,7 +120,7 @@ Feature: Add community content
     And I click "Add discussion" in the plus button menu
     And I fill in the following:
       | Title   | Published community discussion |
-      | Content | Publihed community discussion  |
+      | Content | Published community discussion |
     And I press "Publish"
     Then I should see the heading "Published community discussion"
     And the publication date of the "Published community discussion" discussion should be equal to the created date
@@ -140,6 +140,7 @@ Feature: Add community content
     # Create a published event.
     When I go to the homepage of the "CC container" collection
     And I click "Add event" in the plus button menu
+    Then the following field should not be present "Summary"
     And I fill in the following:
       | Title       | Published community event |
       | Short title | Published community event |
@@ -154,16 +155,17 @@ Feature: Add community content
     Then I should see the heading "Published community event"
     # We are not testing events as behat assigns a slightly different publication date than the creation date.
     # e.g. if the creation date is 1147483647, the publication date assigned will be 1147483645.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5679
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5679
     # And the publication date of the "Published community event" event should be equal to the created date
 
     # Create a published news.
     When I go to the homepage of the "CC container" collection
     And I click "Add news" in the plus button menu
+    Then the following field should not be present "Summary"
     And I fill in the following:
-      | Kicker   | Published community news |
-      | Headline | Published community news |
-      | Content  | Published community news |
+      | Short title | Published community news |
+      | Headline    | Published community news |
+      | Content     | Published community news |
     And I press "Publish"
     Then I should see the heading "Published community news"
     And the publication date of the "Published community news" news should be equal to the created date

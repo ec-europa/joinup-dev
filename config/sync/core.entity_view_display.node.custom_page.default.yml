@@ -3,20 +3,19 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.custom_page.body
     - field.field.node.custom_page.field_attachment
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.field_custom_page_logo
+    - field.field.node.custom_page.field_paragraphs_body
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
-    - ds
+    - entity_reference_revisions
     - field_group
     - file
-    - joinup
     - link
     - search_api_field
-    - text
+    - template_suggestion
     - user
 third_party_settings:
   field_group:
@@ -37,6 +36,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: Attachments
+      region: content
 _core:
   default_config_hash: ZZ0APhON-5FpA-vKXTwx_A1Bz6FHZzw2XG7t7MvvXO8
 id: node.custom_page.default
@@ -44,28 +44,13 @@ targetEntityType: node
 bundle: custom_page
 mode: default
 content:
-  body:
-    label: hidden
-    type: text_default
-    weight: 1
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_attachment:
     weight: 51
     label: hidden
     settings:
       use_description_as_link_text: true
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset__show_more
     type: file_default
     region: content
@@ -75,6 +60,15 @@ content:
     region: content
     label: hidden
     settings: {  }
+    third_party_settings: {  }
+  field_paragraphs_body:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
     third_party_settings: {  }
   links:
     weight: 0

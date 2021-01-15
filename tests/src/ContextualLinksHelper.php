@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Element\TraversableElement;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\TraversingTrait;
@@ -65,13 +66,13 @@ class ContextualLinksHelper {
    * data from the Drupal site by emulating the requests that are done by the JS
    * code and returning the results.
    *
-   * @param \Behat\Mink\Element\NodeElement $element
+   * @param \Behat\Mink\Element\TraversableElement $element
    *   The element to check.
    *
    * @return array
    *   An array of link paths found keyed by title.
    */
-  public function findContextualLinkPaths(NodeElement $element): array {
+  public function findContextualLinkPaths(TraversableElement $element): array {
     if (!$this->browserSupportsJavaScript()) {
       return $this->generateContextualLinks($element);
     }
@@ -91,13 +92,13 @@ class ContextualLinksHelper {
    * Contextual links are retrieved on the browser side through the use
    * of javascript, but that is not applicable for non-javascript browsers.
    *
-   * @param \Behat\Mink\Element\NodeElement $element
+   * @param \Behat\Mink\Element\TraversableElement $element
    *   The name of the element to check.
    *
    * @return array
    *   An array of links found keyed by title.
    */
-  protected function generateContextualLinks(NodeElement $element): array {
+  protected function generateContextualLinks(TraversableElement $element): array {
     // We want to make an extra request to the website, using all the cookies
     // from the current logged in user, but doing so will change the last page
     // output, possibly breaking other steps. This can be prevented by cloning
@@ -140,13 +141,13 @@ class ContextualLinksHelper {
   /**
    * Returns the contextual link elements that exist in the given element.
    *
-   * @param \Behat\Mink\Element\NodeElement $element
+   * @param \Behat\Mink\Element\TraversableElement $element
    *   The element that contains the contextual links.
    *
    * @return \Behat\Mink\Element\NodeElement[]
    *   The link elements.
    */
-  protected function findContextualLinkElements(NodeElement $element): array {
+  protected function findContextualLinkElements(TraversableElement $element): array {
     // If the contextual link placeholder element is not there already, it
     // means that no links are available.
     if (!$element->find('css', '[data-contextual-id]')) {
@@ -175,7 +176,7 @@ class ContextualLinksHelper {
   /**
    * Returns the contextual link element with the given link text.
    *
-   * @param \Behat\Mink\Element\NodeElement $element
+   * @param \Behat\Mink\Element\TraversableElement $element
    *   The element in which the contextual links reside.
    * @param string $link_text
    *   The link text of the link element to return.
@@ -187,7 +188,7 @@ class ContextualLinksHelper {
    *   Thrown when no contextual link with the given link text is found in the
    *   given element.
    */
-  protected function findContextualLinkElement(NodeElement $element, string $link_text): NodeElement {
+  protected function findContextualLinkElement(TraversableElement $element, string $link_text): NodeElement {
     foreach ($this->findContextualLinkElements($element) as $link_element) {
       if (trim($link_element->getText()) === trim($link_text)) {
         return $link_element;
@@ -204,10 +205,10 @@ class ContextualLinksHelper {
    * method should only be called by code that is intended to run in browsers
    * that support JS.
    *
-   * @param \Behat\Mink\Element\NodeElement $element
+   * @param \Behat\Mink\Element\TraversableElement $element
    *   The element that contains the contextual links to open.
    */
-  protected function openContextualLinksMenu(NodeElement $element): void {
+  protected function openContextualLinksMenu(TraversableElement $element): void {
     if (!$this->browserSupportsJavaScript()) {
       throw new \LogicException('Cannot open the contextual link menu on a browser that doesn\'t support JavaScript.');
     }
@@ -238,12 +239,12 @@ class ContextualLinksHelper {
   /**
    * Clicks the contextual link with the given title in the given element.
    *
-   * @param \Behat\Mink\Element\NodeElement $element
+   * @param \Behat\Mink\Element\TraversableElement $element
    *   The element that contains the contextual link menu.
    * @param string $link
    *   The link title.
    */
-  public function clickContextualLink(NodeElement $element, string $link): void {
+  public function clickContextualLink(TraversableElement $element, string $link): void {
     $links = $this->findContextualLinkPaths($element);
 
     if (!isset($links[$link])) {

@@ -10,10 +10,10 @@ use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
-use Drupal\rdf_entity\RdfInterface;
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -60,7 +60,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
@@ -70,7 +70,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
    *   The RDF schema field validator service.
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql, $entity_type_manager);
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->rdfSchemaFieldValidator = $rdf_schema_field_validator;
@@ -84,7 +84,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('sparql_endpoint'),
+      $container->get('sparql.endpoint'),
       $container->get('entity_type.manager'),
       $container->get('entity_field.manager'),
       $container->get('rdf_schema_field_validation.schema_field_validator')

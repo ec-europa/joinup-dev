@@ -9,8 +9,8 @@ id: rdf_entity.asset_release.field_spatial_coverage
 field_name: field_spatial_coverage
 entity_type: rdf_entity
 bundle: asset_release
-label: 'Spatial coverage'
-description: ''
+label: 'Geographical coverage'
+description: 'Add a country name relevant to this release.'
 required: false
 translatable: false
 default_value: {  }

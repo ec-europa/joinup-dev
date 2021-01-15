@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-a
 Feature: Collection content
   As a user of the website
   I want to access the content of a collection
@@ -13,20 +13,20 @@ Feature: Collection content
       | collection | Turin Egyptian Collection   |
       | state      | validated                   |
     And discussion content:
-      | title                                 | body                                                                                                    | state     | collection                |
-      | Bigger than Egyptian Museum of Cairo? | value: <p><a href="#link">Link to the museum</a> web<strong>site</strong>.</p> - format: content_editor | validated | Turin Egyptian Collection |
+      | title                                 | body                                                                    | state     | collection                |
+      | Bigger than Egyptian Museum of Cairo? | <p><a href="#link">Link to the museum</a> web<strong>site</strong>.</p> | validated | Turin Egyptian Collection |
     And document content:
-      | title           | body                                                                             | state     | collection                |
-      | Upper Floor Map | value: <p>A sample <a href="#link">map</a> example.</p> - format: content_editor | validated | Turin Egyptian Collection |
+      | title           | body                                             | state     | collection                |
+      | Upper Floor Map | <p>A sample <a href="#link">map</a> example.</p> | validated | Turin Egyptian Collection |
     And event content:
       | title                                     | state     | collection                |
       | Opening of the Hellenistic Period Section | validated | Turin Egyptian Collection |
     And news content:
-      | title                          | body                                                                                           | state     | collection                |
-      | Turin Egyptian Museum Reopened | value: <p>After <em>more than</em> <a href="#link">two years</a>.</p> - format: content_editor | validated | Turin Egyptian Collection |
+      | title                          | body                                                           | state     | collection                |
+      | Turin Egyptian Museum Reopened | <p>After <em>more than</em> <a href="#link">two years</a>.</p> | validated | Turin Egyptian Collection |
     And newsletter content:
-      | title                                                | body                                                                                                                         | state     | collection                |
-      | Stay informed about this year events and exhibitions | value: <p><a href="#link">Subscribe to the newsletter</a> to stay <strong>up-to-date!</strong>.</p> - format: content_editor | validated | Turin Egyptian Collection |
+      | title                                                | body                                                                                         | state     | collection                |
+      | Stay informed about this year events and exhibitions | <p><a href="#link">Subscribe to the newsletter</a> to stay <strong>up-to-date!</strong>.</p> | validated | Turin Egyptian Collection |
     And video content:
       | title                                  | state     | collection                |
       | Watch the mummy conservation technique | validated | Turin Egyptian Collection |
@@ -36,7 +36,7 @@ Feature: Collection content
       | name             | type                  |
       | Particle sweeper | Private Individual(s) |
 
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4436
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4436
     Given I am logged in as a moderator
     And I go to the homepage of the "Turin Egyptian Collection" collection
 
@@ -45,12 +45,14 @@ Feature: Collection content
     And I see the text "1 Solution" in the "Header" region
 
     When I click "Add solution" in the plus button menu
+    And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
+    And I press "Yes"
     And I fill in the following:
-      | Title            | Solution from draft to validated                                    |
-      | Description      | Testing that publishing a solution, updates the collection content. |
-      | Spatial coverage | Switzerland                                                         |
-      | Name             | Costas Papazoglou                                                   |
-      | E-mail address   | CostasPapazoglou@example.com                                        |
+      | Title                 | Solution from draft to validated                                    |
+      | Description           | Testing that publishing a solution, updates the collection content. |
+      | Geographical coverage | Switzerland                                                         |
+      | Name                  | Costas Papazoglou                                                   |
+      | E-mail address        | CostasPapazoglou@example.com                                        |
     And I select "Data gathering, data processing" from "Policy domain"
     And I select "Logging Service" from "Solution type"
     And I press "Add existing" at the "Owner" field
@@ -67,7 +69,7 @@ Feature: Collection content
     And I should see the link "2 Solutions"
 
     # Create a draft version of the solution to verify that counters are not affected.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4436
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4436
     When I go to the homepage of the "Solution from draft to validated" solution
     And I click "Edit" in the "Entity actions" region
     And I fill in "Title" with "Solution from draft to validated but draft"
@@ -114,7 +116,7 @@ Feature: Collection content
       | Understand the restoration process | validated | Turin Egyptian Collection |
 
     # @todo Remove this line as part of ISAICP-4280.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4280
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4280
     Given the cache has been cleared
 
     Given I reload the page
@@ -132,7 +134,7 @@ Feature: Collection content
     # Check the discussion tile.
     Then I should see the "Bigger than Egyptian Museum of Cairo?" tile
     # Check into the HTML so that we assert that actually the HTML has been stripped.
-    And the page should contain the html text "Link to the museum web site ."
+    And the page should contain the html text "Link to the museum website."
     And I should not see the link "Link to the museum"
     # Check the document tile.
     And I should see the "Upper Floor Map" tile
@@ -142,5 +144,5 @@ Feature: Collection content
     And I should see the "Turin Egyptian Museum Reopened" tile
     # Check the newsletter tile.
     And I should see the "Stay informed about this year events and exhibitions" tile
-    And the page should contain the html text "Subscribe to the newsletter to stay up-to-date! ."
+    And the page should contain the html text "Subscribe to the newsletter to stay up-to-date!."
     And I should not see the link "Subscribe to the newsletter"

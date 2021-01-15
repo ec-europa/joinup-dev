@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Export collection metadata
   As a user of Joinup I am able to retrieve the content of entities in a machine readable format.
 

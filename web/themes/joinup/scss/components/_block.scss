@@ -1,0 +1,38 @@
+// Block
+//
+
+// Component
+// --------------------------------------------------
+//.block
+
+// Elements
+// --------------------------------------------------
+.block__title {
+  margin: 30px 0;
+}
+
+// Modifiers
+// --------------------------------------------------
+.block--separated {
+  margin-top: 40px;
+  border-top: 1px solid $color-grey-light;
+}
+
+.block-facet--checkbox {
+  h2 {
+    margin-top: 8px;
+    margin-bottom: $tile-margin;
+  }
+
+  .item-list__checkbox {
+    list-style: none;
+    margin-top: 0;
+    padding: 0;
+  }
+
+  .mdl-checkbox__label {
+    color: $color-base;
+    font-size: $font-size-small;
+    font-weight: $font-weight;
+  }
+}

@@ -5,13 +5,13 @@ declare(strict_types = 1);
 namespace Drupal\Tests\solution\Kernel;
 
 use Drupal\Core\Serialization\Yaml;
+use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
-use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Tests solution affiliation.
@@ -26,41 +26,17 @@ class SolutionAffiliationTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'allowed_formats',
-    'cached_computed_field',
-    'comment',
-    'contact_information',
-    'ds',
-    'facets',
     'field',
-    'field_group',
-    'file',
-    'file_url',
-    'image',
-    'inline_entity_form',
-    'joinup_core',
-    'joinup_sparql',
-    'link',
-    'matomo_reporting_api',
-    'node',
-    'oe_newsroom_newsletter',
+    'joinup_rdf',
     'og',
-    'options',
-    'owner',
     'rdf_schema_field_validation',
     'rdf_draft',
     'rdf_entity',
-    'rdf_taxonomy',
-    'search_api',
-    'search_api_field',
-    'smart_trim',
     'solution',
     'sparql_entity_storage',
     'state_machine',
     'system',
     'taxonomy',
-    'text',
-    'tour',
     'user',
     'workflow_state_permission',
   ];
@@ -68,23 +44,25 @@ class SolutionAffiliationTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
+    $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
-    $this->setUpSparql();
 
     RdfEntityType::create(['rid' => 'collection'])->save();
 
     $this->installEntitySchema('user');
-    $this->installEntitySchema('file');
-    $this->installSchema('file', ['file_usage']);
     $this->installEntitySchema('rdf_entity');
     $this->installConfig([
-      'joinup_core',
+      'joinup_rdf',
       'rdf_draft',
-      'rdf_entity',
       'solution',
-      'contact_information',
-      'owner',
       'sparql_entity_storage',
     ]);
 
@@ -112,13 +90,16 @@ class SolutionAffiliationTest extends KernelTestBase {
 
   /**
    * Tests orphan solutions.
+   *
+   * @dataProvider affiliationProvider
    */
-  public function testAffiliation(): void {
+  public function testAffiliation(string $collection_state, string $solution_state): void {
     foreach (range(1, 3) as $delta) {
       Rdf::create([
         'rid' => 'collection',
         'id' => "http://example.com/collection/{$delta}",
         'label' => "Collection {$delta}",
+        'field_ar_state' => $collection_state,
       ])->save();
       // Warm the cache.
       Rdf::load("http://example.com/collection/{$delta}");
@@ -133,7 +114,7 @@ class SolutionAffiliationTest extends KernelTestBase {
         'http://example.com/collection/1',
         'http://example.com/collection/2',
       ],
-      'field_is_state' => 'validated',
+      'field_is_state' => $solution_state,
     ]);
     $solution->save();
 
@@ -189,6 +170,58 @@ class SolutionAffiliationTest extends KernelTestBase {
     $this->assertSame('http://example.com/solution', $affiliates->target_id);
     $affiliates = Rdf::load('http://example.com/collection/3')->get('field_ar_affiliates');
     $this->assertTrue($affiliates->isEmpty());
+  }
+
+  /**
+   * Data provider for the testAffiliation test.
+   *
+   * @return array
+   *   A list of tests for the testAffiliation test.
+   */
+  public function affiliationProvider(): array {
+    return [
+      ['validated', 'validated'],
+      ['validated', 'draft'],
+      ['draft', 'validated'],
+      ['draft', 'draft'],
+    ];
+  }
+
+  /**
+   * Tests that adding a solution only adds a relation to the appropriate graph.
+   */
+  public function testNoOrphans(): void {
+    Rdf::create([
+      'rid' => 'collection',
+      'id' => "http://example.com/collection/1",
+      'label' => "Collection 1",
+      'field_ar_state' => 'validated',
+    ])->save();
+
+    $solution = Rdf::create([
+      'rid' => 'solution',
+      'id' => 'http://example.com/solution',
+      'label' => 'Test solution',
+      'collection' => [
+        'http://example.com/collection/1',
+        'http://example.com/collection/2',
+      ],
+      'field_is_state' => 'draft',
+    ]);
+    $solution->save();
+
+    $query = <<<QUERY
+SELECT COUNT(*) as ?count
+WHERE {
+  GRAPH ?g {
+    ?s ?p <{$solution->id()}> .
+    FILTER NOT EXISTS { ?s a ?type } .
+  }
+}
+QUERY;
+
+    $results = $this->container->get('sparql.endpoint')->query($query);
+    $this->assertSame(0, $results[0]->count->getValue());
   }
 
   /**

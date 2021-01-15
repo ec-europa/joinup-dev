@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.og_membership_role_change
+id: message.og_membership_role_change.mail_subject
+targetEntityType: message
+bundle: og_membership_role_change
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+hidden:
+  partial_1: true

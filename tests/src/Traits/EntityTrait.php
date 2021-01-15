@@ -5,8 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\joinup\Traits;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\menu_link_content\MenuLinkContentInterface;
+use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 
 /**
  * Helper methods to deal with entities.
@@ -22,7 +24,7 @@ trait EntityTrait {
    *   The entity type to check.
    * @param string $label
    *   The label to check.
-   * @param string $bundle
+   * @param string|null $bundle
    *   Optional bundle to check. If omitted, the entity can be of any bundle.
    *
    * @return \Drupal\Core\Entity\EntityInterface
@@ -32,18 +34,19 @@ trait EntityTrait {
    *   Thrown when an entity with the given type, label and bundle does not
    *   exist.
    */
-  protected static function getEntityByLabel(string $entity_type_id, string $label, string $bundle = NULL): EntityInterface {
-    $entity_manager = \Drupal::entityTypeManager();
+  protected static function getEntityByLabel(string $entity_type_id, string $label, ?string $bundle = NULL): EntityInterface {
+    $entity_type_manager = \Drupal::entityTypeManager();
     try {
-      $storage = $entity_manager->getStorage($entity_type_id);
+      $storage = $entity_type_manager->getStorage($entity_type_id);
     }
     catch (InvalidPluginDefinitionException $e) {
       throw new \RuntimeException('Storage not found', NULL, $e);
     }
-    $entity = $entity_manager->getDefinition($entity_type_id);
+    $entity = $entity_type_manager->getDefinition($entity_type_id);
 
     $query = $storage->getQuery()
       ->condition($entity->getKey('label'), $label)
+      ->accessCheck(FALSE)
       ->range(0, 1);
 
     // Optionally filter by bundle.
@@ -55,6 +58,9 @@ trait EntityTrait {
 
     if ($result) {
       $result = reset($result);
+      // Make sure we get a fresh entity from the database, to avoid testing
+      // with stale data.
+      $storage->resetCache([$result]);
       return $storage->load($result);
     }
 
@@ -69,7 +75,10 @@ trait EntityTrait {
    */
   protected static function entityTypeAliases(): array {
     return [
+      'collection' => 'rdf_entity',
       'content' => 'node',
+      'group' => 'rdf_entity',
+      'solution' => 'rdf_entity',
     ];
   }
 
@@ -115,29 +124,31 @@ trait EntityTrait {
     if (empty($menu_links)) {
       throw new \Exception("The menu link with title '{$title}' was not found.");
     }
+    // If there are more that one results, we pick up the newest in order to
+    // avoid leftovers produced by previous tests.
+    krsort($menu_links);
+    /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menu_link */
+    $menu_link = reset($menu_links);
 
-    return reset($menu_links);
+    return $menu_link;
   }
 
   /**
    * Forces a reindex of the entity in search_api.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity to reindex.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown if the entity type doesn't exist.
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    *   Thrown when an entity with a non-existing storage is passed.
    */
-  protected function forceSearchApiReindex(EntityInterface $entity): void {
+  protected function forceSearchApiReindex(ContentEntityInterface $entity): void {
     // Invalidate any static cache, so that all computed fields are calculated
-    // with updated values.
-    // For example, the "collection" computed field of solutions.
+    // with updated values (e.g. the "collection" computed field of solutions).
     \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->resetCache([$entity->id()]);
-    // In order to avoid copying code from search_api_entity_update(), we
-    // need to fake an update event. Said function requires the "original"
-    // property to be populated, so just fill it with the entity itself.
-    $entity->original = $entity;
-    search_api_entity_update($entity);
+    ContentEntity::indexEntity($entity);
   }
 
 }

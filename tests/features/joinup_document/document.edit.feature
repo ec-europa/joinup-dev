@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: "Document page" editing.
   In order to manage documents
   As an owner of the document

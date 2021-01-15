@@ -6,9 +6,10 @@ joinup_user.mail:
   email_admin_update:
     type: mail
     label: 'Account updated by administrator confirmation'
-  og_roles_changed:
-    type: mail
-    label: 'Og roles changed'
   password_reset_confirm:
     type: mail
     label: 'Password reset confirmation'
+
+views.filter.user_tristate_status:
+  type: views.filter.in_operator
+  label: 'User tristate status'

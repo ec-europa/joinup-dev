@@ -1,0 +1,23 @@
+{#
+/**
+ * @file
+ * Theme override for a 'form' element.
+ *
+ * Available variables
+ * - attributes: A list of HTML attributes for the wrapper element.
+ * - children: The child elements of the form.
+ *
+ * @see template_preprocess_form()
+ * @see joinup_theme_preprocess_form()
+ */
+#}
+{{ attach_library('joinup_theme/global-search') }}
+<div class="inputs">
+  <form{{ attributes.addClass('search-bar__input-container') }}>
+    {% for id, filter in filters %}
+      <input type="hidden" class="mdl-chipfield__input" name="f[]" value="group:{{ id }}" data-description="{{ filter }}">
+    {% endfor %}
+    {{ children }}
+    <button type="submit" class="search-bar__submit views-auto-submit-click">{{ 'Search'|trans }}</button>
+  </form>
+</div>

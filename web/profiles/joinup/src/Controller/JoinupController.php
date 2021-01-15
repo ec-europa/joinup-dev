@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Controller;
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\rdf_entity\RdfEntityTypeInterface;
@@ -30,7 +31,7 @@ class JoinupController extends ControllerBase {
 
     $form = $this->entityFormBuilder()->getForm($rdf_entity, 'propose');
     $form['#title'] = $this->t('Propose @type', [
-      '@type' => Unicode::strtolower($rdf_type->label()),
+      '@type' => mb_strtolower($rdf_type->label()),
     ]);
     return $form;
   }
@@ -44,22 +45,11 @@ class JoinupController extends ControllerBase {
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createAssetReleaseAccess(RdfEntityTypeInterface $rdf_type) {
+  public function createAccess(RdfEntityTypeInterface $rdf_type) {
     if ($rdf_type->id() !== 'collection') {
       return AccessResult::forbidden();
     }
     return AccessResult::allowedIf($this->currentUser()->hasPermission("propose {$rdf_type->id()} rdf entity"));
-  }
-
-  /**
-   * Provides empty homepage..
-   *
-   * @return array
-   *   A render array for the homepage.
-   */
-  public function homepageContent() {
-    $build = [];
-    return $build;
   }
 
   /**

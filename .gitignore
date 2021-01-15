@@ -8,10 +8,13 @@
 /web/profiles/contrib/
 /web/themes/contrib/
 
+# Ignore dist build location
+/dist/
+
 # Ignore sensitive information
 /web/sites/sites.php
 /web/sites/*/settings.php
-/web/sites/*/settings.local.php
+/web/sites/*/settings.override.php
 
 # Ignore Drupal's file directories.
 /web/sites/*/files/
@@ -21,19 +24,16 @@
 /web/sites/simpletest/
 
 # Ignore environment specific settings
-/build.common.xml
-/build.local.xml
-/build.properties.local
-/drush/drush.yml
+/.env
+/grumphp.yml
 /phpcs.xml
+/runner.yml
 /tests/behat.yml
-/web/phpunit.xml
 /web/sites/default/services.yml
 
-# Ignore compiled CSS and SASS cache.
-.sass-cache/
+# Ignore compiled CSS.
 /web/themes/joinup/css
-/web/themes/joinup/prototype/css/*.css
+
 # Ignore theme libraries
 /web/themes/joinup/vendor
 
@@ -43,10 +43,18 @@
 # Ignore the config_readonly killswitch.
 /disable-config-readonly
 
-# Ignore temporary files
+# Ignore temporary and auto-generated files.
 /tmp
+/VERSION
 
 # Ignore local docker-compose file.
 docker-compose.local.yml
 docker-compose.*.local.yml
 /resources/docker/local
+
+# CPHP Behat files.
+/tests/behat-*
+
+# Ignore project specific temporary generated files.
+/latest.sh1
+/temporary_inputfile.txt

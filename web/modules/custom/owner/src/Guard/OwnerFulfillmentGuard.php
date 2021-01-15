@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\owner\Guard;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -50,7 +52,7 @@ class OwnerFulfillmentGuard implements GuardInterface {
     $to_state = $transition->getToState()->getId();
     $from_state = $this->getState($entity);
 
-    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $from_state, $to_state);
+    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $workflow, $from_state, $to_state);
   }
 
   /**

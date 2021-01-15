@@ -5,16 +5,60 @@
  * Provides functionality for the Joinup search module.
  */
 
+declare(strict_types = 1);
+
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Template\Attribute;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Query\ConditionGroupInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\search_api\Utility\Utility;
+use Drupal\views\ViewExecutable;
 use Solarium\Core\Query\QueryInterface as SolariumQueryInterface;
 use Solarium\QueryType\Select\Query\Query;
+
+/**
+ * Implements hook_theme().
+ */
+function joinup_search_theme($existing, $type, $theme, $path) {
+  return [
+    'facet_widget_links_inline' => [
+      'variables' => [
+        'active' => [],
+        'items' => [],
+        'attributes' => [],
+        'prefix_text' => '',
+        'suffix_text' => '',
+      ],
+    ],
+    'joinup_search_global_search' => [
+      'variables' => ['filters' => []],
+    ],
+  ];
+}
+
+/**
+ * Prepares variables for the facet widget "links inline" template.
+ *
+ * Default template: facet-widget-links-inline.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - active: an array of active facet items.
+ *   - items: an array of inactive facet items.
+ *   - attributes: HTML attributes for the main facet wrapper.
+ */
+function template_preprocess_facet_widget_links_inline(array &$variables) {
+  $variables['button_attributes'] = new Attribute([
+    'id' => Html::getUniqueId('filter-button'),
+    'class' => ['filter__icon', 'icon', 'icon--arrow-down'],
+  ]);
+}
 
 /**
  * Implements hook_entity_field_access().
@@ -22,7 +66,7 @@ use Solarium\QueryType\Select\Query\Query;
  * Grant access to fields of type search only to moderators except from
  * custom_page pages.
  */
-function joinup_search_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
+function joinup_search_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, ?FieldItemListInterface $items = NULL) {
   // Limit access to search fields only on edit.
   if ($operation !== 'edit' || $field_definition->getType() !== 'search_api_field') {
     return AccessResult::neutral();
@@ -62,11 +106,14 @@ function joinup_search_module_implements_alter(&$implementations, $hook) {
  *
  * Sets a default search ordering for the content displayed in the collections'
  * and solutions' overview page as well as the custom pages.
+ *
+ * @throws \Drupal\search_api\SearchApiException
+ *   Thrown when the Search API server instance could not be loaded.
  */
-function joinup_search_search_api_query_alter(QueryInterface &$query) {
+function joinup_search_search_api_query_alter(QueryInterface $query) {
   if ($query->getSearchId() === 'rdf_entity.field_collection_content') {
     // In case the user has filtered by event, first sort by the event date.
-    // @todo: This will be generic when event calendar will be implemented for
+    // @todo This will be generic when event calendar will be implemented for
     // the rdf_entity.field_is_content and the node.field_cp_content_listing
     // instances of the search api field listing.
     if (_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
@@ -78,16 +125,16 @@ function joinup_search_search_api_query_alter(QueryInterface &$query) {
     }
   }
 
+  // Sort collection content by creation date, newest first.
   $search_ids = [
     'rdf_entity.field_collection_content',
     'rdf_entity.field_is_content',
     'node.field_cp_content_listing',
   ];
 
-  if (!in_array($query->getSearchId(), $search_ids)) {
-    return;
+  if (in_array($query->getSearchId(), $search_ids)) {
+    $query->sort('entity_created', 'DESC');
   }
-  $query->sort('entity_created', 'DESC');
 }
 
 /**
@@ -120,6 +167,22 @@ function _joinup_search_search_api_has_condition($conditions, $field, $value, $o
 }
 
 /**
+ * Implements hook_search_api_index_items_alter().
+ *
+ * Do not index any content not written in English.
+ */
+function joinup_search_search_api_index_items_alter(IndexInterface $index, array &$items): void {
+  foreach ($items as $item_id => $item) {
+    [, $raw_id] = Utility::splitCombinedId($item_id);
+    [, $langcode] = Utility::splitPropertyPath($raw_id);
+    // Unset non-english content from the index.
+    if ($langcode != 'en') {
+      unset($items[$item_id]);
+    }
+  }
+}
+
+/**
  * Implements hook_search_api_solr_documents_alter().
  *
  * By default, solr server configuration has a property named sortMissingLast
@@ -137,8 +200,12 @@ function joinup_search_search_api_solr_documents_alter(&$documents, IndexInterfa
     if (empty($document->getFields()['bs_sticky'])) {
       $document->setField('bs_sticky', FALSE);
     }
-    if (!isset($document->getFields()['bs_site_pinned'])) {
-      $document->setField('bs_site_pinned', FALSE);
+    if (!empty($document->getFields()['ss_search_api_id'])) {
+      /** @var \Drupal\search_api\Item\Item[] $items */
+      $id = $document->getFields()['ss_search_api_id'];
+      $entity = $items[$id]->getOriginalObject()->getValue();
+      $value = $entity->hasField('front_page_pinned') ? $entity->get('front_page_pinned')->value : 0;
+      $document->setField('bs_site_pinned', $value);
     }
   }
 }
@@ -185,7 +252,7 @@ function joinup_search_search_api_solr_query_alter(SolariumQueryInterface $solar
 function _joinup_search_apply_global_search_api_solr_settings(SolariumQueryInterface $solarium_query, QueryInterface $query): void {
   // Keep the edismax parser to allow document boosting to work properly.
   // @todo remove when document boosting is reimplemented by search_api_solr
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4907
+  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4907
   $solarium_query->addParam('defType', 'edismax');
 
   /** @var \Drupal\search_api_field\Plugin\Field\FieldType\SearchItem $item */
@@ -281,8 +348,8 @@ function _joinup_search_apply_listing_content_query_settings(SolariumQueryInterf
   // infinite.
   // Example:
   // @codingStandardsIgnoreStart
-  // "or(and(bs_sticky, query({!v='sm_entity_groups:<id>'},0)), query({!v='sm_field_is_pinned_in:<id>'},0))"
-  // "query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_field_is_pinned_in:<id>)'})"
+  // "or(and(bs_sticky, query({!v='sm_entity_groups:<id>'},0)), query({!v='sm_rdf_pinned_in:<id>'},0))"
+  // "query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_rdf_pinned_in:<id>)'})"
   // @codingStandardsIgnoreEnd
   // The and() operator will return false when the subquery score is lower than
   // 1, so both of the above will fail the sorting.
@@ -290,8 +357,8 @@ function _joinup_search_apply_listing_content_query_settings(SolariumQueryInterf
   // than y. By using gt(), any positive score can be transformed to true.
   // Example:
   // @codingStandardsIgnoreStart
-  // "or(and(bs_sticky, gt(query({!v='sm_entity_groups:<id>'},0),0)), gt(query({!v='sm_field_is_pinned_in:<id>'},0),0))"
-  // "gt(query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_field_is_pinned_in:<id>)'}),0)"
+  // "or(and(bs_sticky, gt(query({!v='sm_entity_groups:<id>'},0),0)), gt(query({!v='sm_rdf_pinned_in:<id>'},0),0))"
+  // "gt(query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_rdf_pinned_in:<id>)'}),0)"
   // @codingStandardsIgnoreEnd
   // Unfortunately, Solr 5.x doesn't support the gt() function.
   // Both Solr versions support the termfreq() function, which will return the
@@ -300,11 +367,11 @@ function _joinup_search_apply_listing_content_query_settings(SolariumQueryInterf
   // the query() function, but it looks more expensive.
   // Example:
   // @codingStandardsIgnoreLine
-  // "or(and(bs_sticky,exists(query({!v='sm_entity_groups:<id>'},0))),exists(query({!v='sm_field_is_pinned_in:<id>'},0)))"
+  // "or(and(bs_sticky,exists(query({!v='sm_entity_groups:<id>'},0))),exists(query({!v='sm_rdf_pinned_in:<id>'},0)))"
   // @see https://lucene.apache.org/solr/guide/6_6/function-queries.html#function-queries
   // @see http://archive.apache.org/dist/lucene/solr/ref-guide/apache-solr-ref-guide-5.5.pdf
   $computed_sort = sprintf(
-    "or(and(bs_sticky,termfreq(sm_entity_groups,%1\$s)),termfreq(sm_field_is_pinned_in,%1\$s))",
+    "or(termfreq(sm_node_pinned_in,%1\$s),termfreq(sm_rdf_pinned_in,%1\$s))",
     $solarium_query->getHelper()->escapePhrase($entity->id())
   );
   $solarium_query->setSorts([
@@ -312,4 +379,19 @@ function _joinup_search_apply_listing_content_query_settings(SolariumQueryInterf
     'score' => 'desc',
     'ds_entity_created' => 'desc',
   ]);
+}
+
+/**
+ * Implements hook_views_pre_execute().
+ */
+function joinup_search_views_pre_execute(ViewExecutable $view) {
+  if ($view->id() !== 'search') {
+    return;
+  }
+
+  // Having exposed sort options mean that only one option is passed in the
+  // query. Regardless of the case, add the entity_created as a secondary sort
+  // method to ensure legacy support.
+  // Selecting the entity_created option itself won't affect the query.
+  $view->getQuery()->sort('entity_created', 'DESC');
 }

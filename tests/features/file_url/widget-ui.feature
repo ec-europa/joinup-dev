@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: User interface for the File URL field
   In order to be able to upload files or refer to external files
   As an authenticated user

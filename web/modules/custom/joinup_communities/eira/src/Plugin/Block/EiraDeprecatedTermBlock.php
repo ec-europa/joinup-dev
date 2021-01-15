@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\eira\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a 'EiraDeprecatedTermBlock' block.
+ * Provides a block showing information about deprecated EIRA building blocks.
  *
  * @Block(
- *  id = "eira_derprecated_term_block",
+ *  id = "eira_deprecated_term_block",
  *  admin_label = @Translation("Eira deprecated term message"),
  * )
  */
@@ -34,7 +36,7 @@ class EiraDeprecatedTermBlock extends BlockBase implements ContainerFactoryPlugi
   protected $entityTypeManager;
 
   /**
-   * Constructs a new OverviewMessageBlock object.
+   * Constructs a new EiraDeprecatedTermBlock.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -103,7 +105,7 @@ class EiraDeprecatedTermBlock extends BlockBase implements ContainerFactoryPlugi
       ]);
     }
 
-    $build = [
+    return [
       '#theme' => 'status_messages',
       '#message_list' => [
         'warning' => [$message],
@@ -112,8 +114,6 @@ class EiraDeprecatedTermBlock extends BlockBase implements ContainerFactoryPlugi
         'warning' => $this->t('Warning message'),
       ],
     ];
-
-    return $build;
   }
 
   /**

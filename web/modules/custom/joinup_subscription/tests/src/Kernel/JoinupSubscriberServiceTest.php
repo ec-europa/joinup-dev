@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\joinup_subscription\Kernel;
 
 use Drupal\Core\Session\AccountInterface;
-use Drupal\entity_test\Entity\EntityTest;
-use Drupal\flag\Entity\Flag;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\entity_test\Entity\EntityTest;
+use Drupal\flag\Entity\Flag;
 use PHPUnit\Framework\Assert;
 
 /**
- * Tests the JoinupSubscription service.
+ * Tests the JoinupDiscussionSubscription service.
  *
- * @coversDefaultClass \Drupal\joinup_subscription\JoinupSubscription
- *
+ * @coversDefaultClass \Drupal\joinup_subscription\JoinupDiscussionSubscription
  * @group joinup
  */
 class JoinupSubscriberServiceTest extends KernelTestBase {
@@ -51,7 +52,7 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
   /**
    * The subscription service. This is the system under test.
    *
-   * @var \Drupal\joinup_subscription\JoinupSubscriptionInterface
+   * @var \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface
    */
   protected $subscriptionService;
 
@@ -68,9 +69,16 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
   public static $modules = [
     'entity_test',
     'flag',
+    'joinup_notification',
     'joinup_subscription',
+    'joinup_workflow',
+    'message_digest',
+    'message_notify',
+    'og',
+    'state_machine_revisions',
     'system',
     'user',
+    'workflow_state_permission',
   ];
 
   /**
@@ -85,7 +93,7 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
     $this->installEntitySchema('entity_test');
     $this->installEntitySchema('flagging');
 
-    $this->subscriptionService = $this->container->get('joinup_subscription.subscription');
+    $this->subscriptionService = $this->container->get('joinup_subscription.discussion_subscription');
     $this->flagService = $this->container->get('flag');
 
     $this->flag = Flag::create([
@@ -165,7 +173,7 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
    * @return \Drupal\Core\Session\AccountInterface[]
    *   The subscribed users.
    */
-  protected function createSubscribedUsers(int $count = 3) : array {
+  protected function createSubscribedUsers(int $count = 3): array {
     $users = [];
     for ($i = 0; $i < $count; $i++) {
       $users[$i] = $this->createUser();
@@ -180,7 +188,7 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
    * @param \Drupal\Core\Session\AccountInterface[] $expected_subscribers
    *   The subscribers that are expected to be present.
    */
-  protected function assertSubscribers(array $expected_subscribers) : void {
+  protected function assertSubscribers(array $expected_subscribers): void {
     $actual_subscribers = $this->subscriptionService->getSubscribers($this->entity, $this->testFlagId);
     foreach ($expected_subscribers as $expected_subscriber) {
       // Check that an entry with the subscriber ID is present in the list.

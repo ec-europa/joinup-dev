@@ -1,0 +1,8 @@
+uuid: 1aa5d46b-85c2-49a8-97c5-11f952e7d070
+langcode: en
+status: true
+dependencies: {  }
+id: daily
+label: Daily
+interval: '1 day'
+description: 'Sends messages in 1 day intervals.'

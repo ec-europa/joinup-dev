@@ -1,0 +1,12 @@
+joinup_eulogin.eulogin:
+  title: 'Sign in with EU Login'
+  menu_name: account
+  route_name: cas.login
+  class: Drupal\joinup_eulogin\Plugin\Menu\EuLoginMenuLink
+  weight: -21
+
+joinup_eulogin.eu_login_info:
+  title: 'More about EU Login'
+  menu_name: account
+  url: 'internal:/node/702253'
+  weight: 1

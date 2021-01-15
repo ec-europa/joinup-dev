@@ -1,0 +1,10 @@
+uuid: dad55614-e1b5-4f3a-b494-16cb4e5dae24
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+id: rdf_entity.digest_message_header
+label: 'Digest message header'
+targetEntityType: rdf_entity
+cache: true

@@ -5,6 +5,8 @@
  * Builds placeholder replacement tokens for community content related data.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Url;
 
@@ -21,7 +23,7 @@ function joinup_community_content_token_info_alter(&$info) {
 /**
  * Implements hook_tokens().
  */
-function joinup_community_content_tokens($type, array $tokens, array $data = [], array $options = [], BubbleableMetadata $bubbleable_metadata = NULL) {
+function joinup_community_content_tokens($type, array $tokens, array $data = [], array $options = [], ?BubbleableMetadata $bubbleable_metadata = NULL) {
   $replacements = [];
 
   if ($type == 'node' && !empty($data['node'])) {
@@ -37,7 +39,7 @@ function joinup_community_content_tokens($type, array $tokens, array $data = [],
           $node_storage = \Drupal::entityTypeManager()->getStorage('node');
           $revision_ids = $node_storage->revisionIds($node);
           if (count($revision_ids) > 1) {
-            list($left_revision, $right_revision) = array_slice($revision_ids, -2, 2);
+            [$left_revision, $right_revision] = array_slice($revision_ids, -2, 2);
 
             $replacements[$original] = Url::fromRoute('diff.revisions_diff', [
               'node' => $node->id(),
@@ -46,6 +48,8 @@ function joinup_community_content_tokens($type, array $tokens, array $data = [],
               'filter' => \Drupal::service('plugin.manager.diff.layout')->getDefaultLayout(),
             ])->setAbsolute()->toString();
           }
+          break;
+
       }
     }
   }

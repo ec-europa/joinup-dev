@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
+use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\og\OgRoleInterface;
-use Drupal\rdf_entity\RdfInterface;
+use Drupal\solution\Entity\SolutionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -31,19 +34,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *   Source state: validate
  *   Actor: Moderator
  *   Recipients: owner
- * Template 10: sol_request_deletion
- *   Operation: update
- *   Transition: request_deletion
- *   Recipients: moderator
- * Template 11: sol_deletion_approved
- *   Operation: delete
- *   Source state: deletion_request
- *   Recipients: owner
- * Template 12: sol_deletion_reject
- *   Operation: update
- *   Transition: validate
- *   Source state: deletion_request
- *   Recipients: owner
  * Template 13: sol_blacklist
  *   Operation: update
  *   Transition: blacklist
@@ -62,7 +52,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *   Transition: propose
  *   Source state: needs_update
  *   Recipients: moderator
- * Template 17: sol_deletion_no_approval
+ * Template 17: sol_deletion_by_moderator
  *   Operation: delete
  *   Source state: validated, proposed
  *   Actor: moderator
@@ -75,15 +65,12 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
 
   const TEMPLATE_APPROVE = 'sol_approve_proposed';
   const TEMPLATE_BLACKLIST = 'sol_blacklist';
-  const TEMPLATE_DELETION_APPROVE = 'sol_deletion_approved';
-  const TEMPLATE_DELETION_NO_APPROVAL = 'sol_deletion_no_approval';
-  const TEMPLATE_DELETION_REJECT = 'sol_deletion_reject';
+  const TEMPLATE_DELETION_BY_MODERATOR = 'sol_deletion_by_moderator';
   const TEMPLATE_PROPOSE_CHANGES = 'sol_propose_changes';
   const TEMPLATE_PROPOSE_NEW = 'sol_propose_new';
   const TEMPLATE_PROPOSE_FROM_REQUEST_CHANGES = 'sol_propose_requested_changes';
   const TEMPLATE_PUBLISH_BLACKLISTED = 'sol_publish_backlisted';
   const TEMPLATE_REQUEST_CHANGES = 'sol_request_changes';
-  const TEMPLATE_REQUEST_DELETION = 'sol_request_deletion';
 
   /**
    * The transition object.
@@ -98,13 +85,6 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * @var \Drupal\state_machine\Plugin\Workflow\Workflow
    */
   protected $workflow;
-
-  /**
-   * The state field name of the entity object.
-   *
-   * @var string
-   */
-  protected $stateField;
 
   /**
    * The motivation text passed in the entity.
@@ -152,15 +132,17 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    */
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
-    if ($this->entity->bundle() !== 'solution') {
+
+    // Only initialize the workflow if available. It is not available when the
+    // entity is being deleted during cleanup of orphaned group content.
+    if (!$this->entity instanceof SolutionInterface || !$this->entity->hasWorkflow()) {
       return;
     }
 
     $this->event = $event;
-    $this->stateField = 'field_is_state';
-    $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
-    $this->fromState = isset($this->entity->original) ? $this->entity->original->get($this->stateField)->first()->value : '__new__';
-    $to_state = $this->entity->get($this->stateField)->first()->value;
+    $this->workflow = $this->entity->getWorkflow();
+    $this->fromState = isset($this->entity->original) ? $this->entity->original->getWorkflowState() : '__new__';
+    $to_state = $this->entity->getWorkflowState();
     $this->transition = $this->workflow->findTransition($this->fromState, $to_state);
     $this->motivation = empty($this->entity->motivation) ? '' : $this->entity->motivation;
     $this->hasPublished = $this->hasPublishedVersion($this->entity);
@@ -230,18 +212,6 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
         $this->notificationValidate();
         break;
 
-      // Notification ids handled: 10.
-      case 'request_deletion':
-        $user_data = [
-          'roles' => [
-            'moderator' => [
-              self::TEMPLATE_REQUEST_DELETION,
-            ],
-          ],
-        ];
-        $this->getUsersAndSend($user_data);
-        break;
-
       // Notification ids handled: 13.
       case 'blacklist':
         $user_data = [
@@ -293,7 +263,6 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
       'propose',
       'validate',
       'needs_update',
-      'request_deletion',
       'blacklist',
     ];
     if (!in_array($this->transition->getId(), $transitions_with_notification)) {
@@ -345,7 +314,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   /**
    * Sends a notification for publishing a solution.
    *
-   * Notification ids handled: 2, 12, 14.
+   * Notification IDs handled: 2, 14.
    */
   protected function notificationValidate() {
     switch ($this->fromState) {
@@ -354,16 +323,6 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
           'og_roles' => [
             'rdf_entity-solution-administrator' => [
               self::TEMPLATE_APPROVE,
-            ],
-          ],
-        ];
-        break;
-
-      case 'deletion_request':
-        $user_data = [
-          'og_roles' => [
-            'rdf_entity-solution-administrator' => [
-              self::TEMPLATE_DELETION_REJECT,
             ],
           ],
         ];
@@ -389,7 +348,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   /**
    * Sends notification when a solution is deleted.
    *
-   * Notifications handled: 11, 17.
+   * Notification handled: 17.
    *
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event.
@@ -400,7 +359,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
       return;
     }
 
-    $template_id = $this->entity->get($this->stateField)->first()->value === 'deletion_request' ? self::TEMPLATE_DELETION_APPROVE : self::TEMPLATE_DELETION_NO_APPROVAL;
+    $template_id = self::TEMPLATE_DELETION_BY_MODERATOR;
     $user_data = [
       'og_roles' => [
         'rdf_entity-solution-administrator' => [
@@ -457,11 +416,10 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     $arguments = parent::generateArguments($entity);
+    /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = $arguments['@actor:field_user_first_name'];
-    $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
     $arguments['@transition:motivation'] = $motivation;
 
@@ -479,17 +437,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
           $arguments['@actor:role'] = $this->t('Facilitator');
         }
       }
-      $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
-    }
-
-    // For deletion requests, the titles of the affiliated collections are
-    // provided.
-    if (!empty($this->transition) && $this->transition->getId() === 'request_deletion') {
-      $collection_ids = solution_get_collection_ids($this->entity);
-      $collections = $this->entityTypeManager->getStorage('rdf_entity')->loadMultiple($collection_ids);
-      $arguments['@solution:parents:title'] = implode(', ', array_map(function (RdfInterface $collection) {
-        return $collection->label();
-      }, $collections));
+      $arguments['@actor:full_name'] = $actor->getDisplayName();
     }
 
     return $arguments;
@@ -504,7 +452,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * @return bool
    *   Whether the entity has a published version.
    *
-   * @see: joinup_notification_rdf_entity_presave()
+   * @see joinup_notification_rdf_entity_presave()
    */
   protected function hasPublishedVersion(EntityInterface $entity) {
     if (isset($entity->hasPublished)) {
@@ -523,51 +471,35 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    *   (optional) A list of users to pass as bcc. The template must have the
    *   field_message_bcc field.
    *
-   * @see: ::getUsersMessages() for more information on the array.
+   * @see ::getUsersMessages()
    */
   protected function getUsersAndSend(array $user_data, array $bcc_data = []) {
+    $message_values = [];
     $user_data = $this->getUsersMessages($user_data);
     if (!empty($bcc_data)) {
       $ids_to_skip = [];
       foreach ($user_data as $user_ids) {
         $ids_to_skip += $user_ids;
       }
-      $bcc_data = $this->getBccEmails($this->entity, $bcc_data, $ids_to_skip);
+      $message_values['field_message_bcc'] = $this->getBccEmails($this->entity, $bcc_data, $ids_to_skip);
     }
 
-    $this->sendUserDataMessages($user_data, [], $bcc_data);
-  }
-
-  /**
-   * Returns the state of the solution related to the event.
-   *
-   * @return string
-   *   The current state.
-   */
-  protected function getSolutionState() {
-    return $this->entity->get('field_is_state')->first()->value;
+    $this->sendUserDataMessages($user_data, [], [], $message_values);
   }
 
   /**
    * Checks whether the action is requested.
    *
-   * Applies only for archival and deletion request.
+   * Applies only for archival request.
    *
    * @return bool
-   *   Whether the action is requested. Returns true if the current state is
-   *    deletion_request and the operation is delete or if the current state is
-   *    archival_request and the transition is archive. False otherwise.
+   *   Whether the action is requested. Returns TRUE if the transition is
+   *   caused by a moderator approving the requested archival of a solution.
    */
-  protected function isTransitionRequested() {
-    $state = $this->getSolutionState();
-    if ($this->operation === 'delete') {
-      return $state === 'deletion_request';
-    }
-    elseif ($state === 'archived') {
-      return $this->transition->getId() === 'archive';
-    }
-
-    return FALSE;
+  protected function isTransitionRequested(): bool {
+    assert($this->entity instanceof EntityWorkflowStateInterface);
+    $state = $this->entity->getWorkflowState();
+    return $state === 'archived' && $this->transition->getId() === 'archive';
   }
 
 }

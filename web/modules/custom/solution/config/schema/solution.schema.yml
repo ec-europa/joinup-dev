@@ -1,16 +1,3 @@
-solution.settings:
-  type: config_object
-  label: 'Solution workflow permission settings'
-  mapping:
-    transitions:
-      type: sequence
-      label: 'Allowed transitions'
-      sequence:
-        type: sequence
-        label: 'Target state'
-        sequence:
-          type: sequence
-          label: 'Source state'
-          sequence:
-            type: string
-            label: 'Role'
+action.configuration.change_collection:
+  type: mapping
+  label: 'Change collection action configuration'

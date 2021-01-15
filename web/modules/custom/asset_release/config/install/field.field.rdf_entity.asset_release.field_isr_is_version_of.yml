@@ -23,5 +23,4 @@ settings:
       solution: solution
     sort:
       field: _none
-  access_override: false
 field_type: og_standard_reference

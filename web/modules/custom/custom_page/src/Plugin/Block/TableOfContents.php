@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\custom_page\Plugin\Block;
 
 use Drupal\Core\Menu\MenuTreeParameters;
-use Drupal\joinup_core\Plugin\Block\GroupMenuBlock;
+use Drupal\joinup_group\Plugin\Block\GroupMenuBlock;
 
 /**
  * Table-Of-Contents for top-level custom pages.

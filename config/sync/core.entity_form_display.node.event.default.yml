@@ -35,9 +35,8 @@ dependencies:
     - field_group
     - file
     - image
-    - joinup_core
+    - joinup_workflow
     - link
-    - publication_date
     - text
 third_party_settings:
   field_group:
@@ -55,6 +54,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Event Location'
+      region: content
 id: node.event.default
 targetEntityType: node
 bundle: event
@@ -67,6 +67,7 @@ content:
       rows: 9
       placeholder: ''
       summary_rows: 3
+      show_summary: false
     third_party_settings:
       allowed_formats:
         hide_help: '0'
@@ -138,6 +139,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
@@ -227,6 +229,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   url_redirects:
     weight: 22

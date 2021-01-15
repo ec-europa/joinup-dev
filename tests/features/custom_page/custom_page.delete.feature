@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: "Custom page" deleteing.
   In order to manage custom pages
   As a moderator or group facilitator
@@ -47,7 +47,7 @@ Feature: "Custom page" deleteing.
     When I am logged in as "Mickey Mouse"
     And I go to the "Buena Vista Distribution Company" custom page
     And I click "Delete"
-    Then I should see the heading "Are you sure you want to delete the content Buena Vista Distribution Company?"
+    Then I should see the heading "Are you sure you want to delete the content item Buena Vista Distribution Company?"
     And I press "Delete"
     Then I should see the success message "The Custom page Buena Vista Distribution Company has been deleted."
 

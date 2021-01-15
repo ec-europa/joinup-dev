@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature:
   As a site moderator/administrator
   When I'm logged in
@@ -10,29 +10,29 @@ Feature:
     Then I should get a <code> HTTP response
 
     Examples:
-      | url                                                         | role          | code |
-      | /admin/reporting                                            | authenticated | 403  |
-      | /admin/reporting                                            | moderator     | 200  |
-      | /admin/reporting/legal-notice-report                        | authenticated | 403  |
-      | /admin/reporting/legal-notice-report                        | moderator     | 200  |
-      | /admin/reporting/group-administrators/rdf_entity/collection | authenticated | 403  |
-      | /admin/reporting/group-administrators/rdf_entity/collection | moderator     | 200  |
-      | /admin/reporting/export-user-list                           | authenticated | 403  |
-      | /admin/reporting/export-user-list                           | moderator     | 200  |
-      | /admin/reporting/solutions-by-type                          | authenticated | 403  |
-      | /admin/reporting/solutions-by-type                          | moderator     | 200  |
-      | /admin/reporting/solutions-by-licences                      | authenticated | 403  |
-      | /admin/reporting/solutions-by-licences                      | moderator     | 200  |
+      | url                                          | role          | code |
+      | /admin/reporting                             | authenticated | 403  |
+      | /admin/reporting                             | moderator     | 200  |
+      | /admin/reporting/legal-notice-report         | authenticated | 403  |
+      | /admin/reporting/legal-notice-report         | moderator     | 200  |
+      | /admin/reporting/group-administrators/export | authenticated | 403  |
+      | /admin/reporting/group-administrators/export | moderator     | 200  |
+      | /admin/reporting/export-user-list            | authenticated | 403  |
+      | /admin/reporting/export-user-list            | moderator     | 200  |
+      | /admin/reporting/solutions-by-type           | authenticated | 403  |
+      | /admin/reporting/solutions-by-type           | moderator     | 200  |
+      | /admin/reporting/solutions-by-licences       | authenticated | 403  |
+      | /admin/reporting/solutions-by-licences       | moderator     | 200  |
 
   Scenario: Links should be visible on the reporting page for a moderator.
     Given I am logged in as a user with the moderator role
     And I am on "/admin/reporting"
     Then I should see the following links:
-      | Collection administrators  |
-      | Export user list           |
-      | Solutions by solution type |
-      | Solutions by licences      |
-      | Legal notice report        |
+      | Group administrators and facilitators |
+      | Export user list                      |
+      | Solutions by solution type            |
+      | Solutions by licences                 |
+      | Legal notice report                   |
 
   # This scenario is a light test to avoid regressions.
   Scenario: Moderators can access the list of published solutions and filter them by dates and type.
@@ -54,7 +54,7 @@ Feature:
     And I should see the link "Long Artificial"
     And I should see the link "Beta Frozen"
     # Verify that the dates are shown in a human readable format.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4924
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4924
     And I should see the following lines of text:
       | Fri, 31/01/2003 - 23:00 |
       | Mon, 07/12/2015 - 13:57 |
@@ -80,8 +80,8 @@ Feature:
     And I should not see the text "Restless Burst"
     # Verify that the CSV link is present.
     # Note: the link is rendered as icon in a real browser.
-    And I should see the link "Subscribe to Moderator: Solutions by type"
-    When I click "Subscribe to Moderator: Solutions by type"
+    And I should see the link "Download CSV"
+    When I click "Download CSV"
     Then I should get a valid web page
 
     # Verify that access to the CSV endpoint is forbidden for anonymous and normal users.

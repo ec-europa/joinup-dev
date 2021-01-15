@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Discussion API
   In order to manage discussion entities programmatically
   As a backend developer

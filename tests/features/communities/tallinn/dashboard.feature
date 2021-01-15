@@ -30,9 +30,7 @@ Feature:
     When I go to "/api/v1/communities/tallinn/report"
     Then I should get an access denied error
     When I go to "/admin/config/content/tallinn"
-    Then I should see the following error message:
-      | error messages                                     |
-      | Access denied. You must sign in to view this page. |
+    Then I should see the heading "Sign in to continue"
 
     Given I am logged in as Dinesh
     When I go to "/api/v1/communities/tallinn/report"
@@ -143,5 +141,5 @@ Feature:
     Given I am an anonymous user
     When I go to "/api/v1/communities/tallinn/report"
     # Due to a bug the report is not accessible for anonymous users.
-    # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5509
+    # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5509
     # Then the response status code should be 200

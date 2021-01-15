@@ -1,0 +1,11 @@
+uuid: 1cf631ee-bc3e-4667-9add-595a1a7fcd25
+langcode: en
+status: true
+dependencies: {  }
+name: 'RDF Graph'
+rid: rdf_graph
+description: ''
+label_singular: RDF graph
+label_plural: RDF graphs
+label_count:
+  default: "1 RDF graph\x03@count RDF graphs"

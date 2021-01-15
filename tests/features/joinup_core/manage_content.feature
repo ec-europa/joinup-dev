@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature:
   As a moderator
   In order to better organize the content
@@ -58,7 +58,7 @@ Feature:
     Then I should see "Manage content" in the Header
 
     # Download the list as CSV.
-    When I click "Subscribe to Manage content"
+    When I click "Download CSV"
     Then the response should contain "Type;Title;\"Created on\";\"Last update\";Published;URL"
     And the response should contain "Document;\"The Panama Papers\";"
     And the response should contain "/document/panama-papers"

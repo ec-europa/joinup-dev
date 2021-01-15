@@ -1,10 +1,10 @@
-@api @email
+@api @email @group-b
 Feature: Notification test for the news transitions on a post moderated parent.
   In order to manage my collections
   As an owner of the collection
   I want to receive a notification when an entity is proposed.
 
-  Scenario: Notifications should be sent whenever a news is going through a relevant transition.
+  Scenario Outline: Notifications should be sent whenever a news is going through a relevant transition.
     Given users:
       | Username         | Roles     | E-mail                      | First name | Family name |
       | Notify moderator | moderator | notify_moderator@test.com   | Notify     | Moderator   |
@@ -12,13 +12,13 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator |
       | CC member        |           | notify_member@test.com      | CC         | Member      |
     And collections:
-      | title              | state     | elibrary creation | moderation |
-      | CC post collection | validated | members           | no         |
+      | title              | state     | content creation | moderation   |
+      | CC post collection | validated | members          | <moderation> |
     And the following collection user memberships:
       | collection         | user           | roles       |
       | CC post collection | CC owner       | owner       |
       | CC post collection | CC facilitator | facilitator |
-      | CC post collection | CC member      |             |
+      | CC post collection | CC member      | <roles>     |
     And news content:
       | title                          | author    | body | headline                       | collection         | field_state  |
       | CCN post publish               | CC member | body | CCN post publish               | CC post collection | draft        |
@@ -33,7 +33,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
     And I am logged in as "CC member"
     And I go to the "CC post collection" collection
     And I click "Add news" in the plus button menu
-    And I fill in "Kicker" with "CCN create publish"
+    And I fill in "Short title" with "CCN create publish"
     And I fill in "Headline" with "CCN create publish"
     And I fill in "Content" with "CCN create publish"
     And I press "Publish"
@@ -100,3 +100,8 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | recipient | CC member                                                                                                    |
       | subject   | Joinup: Content has been deleted                                                                             |
       | body      | Facilitator CC Facilitator has deleted the news - "CCN post delete" in the collection: "CC post collection". |
+
+    Examples:
+      | moderation | roles  |
+      | no         |        |
+      | yes        | author |

@@ -1,4 +1,4 @@
-@api @email
+@api @email @group-a
 Feature: Collection moderation
   In order to manage collections programmatically
   As a user of the website
@@ -9,12 +9,14 @@ Feature: Collection moderation
     When I am logged in as an "authenticated user"
     And I go to the propose collection form
     Then the following buttons should be present "Save as draft, Propose"
-    And the following buttons should not be present "Publish, Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Publish, Request archival, Archive"
+    And I should not see the link "Delete"
 
     When I am logged in as a user with the "moderator" role
     And I go to the propose collection form
     Then the following buttons should be present "Save as draft, Propose, Publish"
-    And the following buttons should not be present "Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Request archival, Archive"
+    And I should not see the link "Delete"
 
   Scenario: Test the available buttons in every stage of the editorial workflow
     Given the following owner:
@@ -39,7 +41,6 @@ Feature: Collection moderation
       | The Licking Silence     | The Licking Silence     | logo.png | banner.jpg | Simon Sandoval | Francis             | proposed         |
       | Person of Wizards       | Person of Wizards       | logo.png | banner.jpg | Simon Sandoval | Francis             | validated        |
       | The Shard's Hunter      | The Shard's Hunter      | logo.png | banner.jpg | Simon Sandoval | Francis             | archival request |
-      | The Dreams of the Mists | The Dreams of the Mists | logo.png | banner.jpg | Simon Sandoval | Francis             | deletion request |
       | Luck in the Abyss       | Luck in the Abyss       | logo.png | banner.jpg | Simon Sandoval | Francis             | archived         |
     And the following collection user memberships:
       | collection              | user         | roles       |
@@ -47,13 +48,11 @@ Feature: Collection moderation
       | The Licking Silence     | Erika Reid   | owner       |
       | Person of Wizards       | Erika Reid   | owner       |
       | The Shard's Hunter      | Erika Reid   | owner       |
-      | The Dreams of the Mists | Erika Reid   | owner       |
       | Luck in the Abyss       | Erika Reid   | owner       |
       | Deep Past               | Carole James | facilitator |
       | The Licking Silence     | Carole James | facilitator |
       | Person of Wizards       | Carole James | facilitator |
       | The Shard's Hunter      | Carole James | facilitator |
-      | The Dreams of the Mists | Carole James | facilitator |
       | Luck in the Abyss       | Carole James | facilitator |
 
     # The following table tests the allowed transitions in a collection.
@@ -66,38 +65,61 @@ Feature: Collection moderation
     # When I click the "Edit" link
     # Then the state field should have only the given states available.
     Then for the following collection, the corresponding user should have the corresponding available state buttons:
-      | collection              | user            | buttons                                                    |
+      | collection              | user            | buttons                                           |
 
-      # The owner is also a facilitator so the only
-      # UATable part of the owner is that he has the ability to request deletion
-      # or archival when the collection is validated.
-      | Deep Past               | Erika Reid      | Save as draft, Propose                                     |
-      | The Licking Silence     | Erika Reid      | Propose, Save as draft                                     |
-      | Person of Wizards       | Erika Reid      | Save as draft, Propose, Request archival, Request deletion |
-      | The Shard's Hunter      | Erika Reid      |                                                            |
-      | The Dreams of the Mists | Erika Reid      |                                                            |
-      | Luck in the Abyss       | Erika Reid      |                                                            |
+      # The owner is also a facilitator so the only UATable part of the owner is that they have the ability to
+      # request archival and delete the collection when the collection is validated.
+      | Deep Past               | Erika Reid      | Save as draft, Propose                            |
+      | The Licking Silence     | Erika Reid      | Propose, Save as draft                            |
+      # Person of Wizards has a published version so the facilitator can publish directly.
+      # The facilitator can still save as draft or propose for internal checking between eligible users.
+      # Note that the 'Delete' action is represented as a link rather than a button and has a dedicated test below.
+      | Person of Wizards       | Erika Reid      | Publish, Save as draft, Propose, Request archival |
+      | The Shard's Hunter      | Erika Reid      |                                                   |
+      | Luck in the Abyss       | Erika Reid      |                                                   |
 
       # The following collections do not follow the rule above and should be
-      # testes as shown.
-      | Deep Past               | Carole James    | Save as draft, Propose                                     |
-      | The Licking Silence     | Carole James    | Propose, Save as draft                                     |
-      | Person of Wizards       | Carole James    | Save as draft, Propose                                     |
-      | The Shard's Hunter      | Carole James    |                                                            |
-      | The Dreams of the Mists | Carole James    |                                                            |
-      | Luck in the Abyss       | Carole James    |                                                            |
-      | Deep Past               | Velma Smith     |                                                            |
-      | The Licking Silence     | Velma Smith     |                                                            |
-      | Person of Wizards       | Velma Smith     |                                                            |
-      | The Shard's Hunter      | Velma Smith     |                                                            |
-      | The Dreams of the Mists | Velma Smith     |                                                            |
-      | Luck in the Abyss       | Velma Smith     |                                                            |
-      | Deep Past               | Lena Richardson | Save as draft, Propose, Publish                            |
-      | The Licking Silence     | Lena Richardson | Propose, Save as draft, Publish                            |
-      | Person of Wizards       | Lena Richardson | Publish, Save as draft, Propose                            |
-      | The Shard's Hunter      | Lena Richardson | Publish, Archive                                           |
-      | The Dreams of the Mists | Lena Richardson | Publish                                                    |
-      | Luck in the Abyss       | Lena Richardson |                                                            |
+      # tested as shown.
+      | Deep Past               | Carole James    | Save as draft, Propose                            |
+      | The Licking Silence     | Carole James    | Propose, Save as draft                            |
+      | Person of Wizards       | Carole James    | Publish, Save as draft, Propose                   |
+      | The Shard's Hunter      | Carole James    |                                                   |
+      | Luck in the Abyss       | Carole James    |                                                   |
+      | Deep Past               | Velma Smith     |                                                   |
+      | The Licking Silence     | Velma Smith     |                                                   |
+      | Person of Wizards       | Velma Smith     |                                                   |
+      | The Shard's Hunter      | Velma Smith     |                                                   |
+      | Luck in the Abyss       | Velma Smith     |                                                   |
+      | Deep Past               | Lena Richardson | Save as draft, Propose, Publish                   |
+      | The Licking Silence     | Lena Richardson | Propose, Save as draft, Publish                   |
+      | Person of Wizards       | Lena Richardson | Publish, Save as draft, Propose                   |
+      | The Shard's Hunter      | Lena Richardson | Publish, Archive                                  |
+      | Luck in the Abyss       | Lena Richardson |                                                   |
+
+    # The 'Delete' action is not a button but a link leading to a confirmation
+    # page that is styled as a button. It should only be available to the owner
+    # of a validated collection.
+    And the visibility of the delete link should be as follows for these users in these collections:
+      | collection              | user            | delete link |
+      | Person of Wizards       | Erika Reid      | yes         |
+      | The Shard's Hunter      | Erika Reid      | no          |
+      | Luck in the Abyss       | Erika Reid      | no          |
+      | Deep Past               | Carole James    | no          |
+      | The Licking Silence     | Carole James    | no          |
+      | Person of Wizards       | Carole James    | no          |
+      | The Shard's Hunter      | Carole James    | no          |
+      | Luck in the Abyss       | Carole James    | no          |
+      | Deep Past               | Velma Smith     | no          |
+      | The Licking Silence     | Velma Smith     | no          |
+      | Person of Wizards       | Velma Smith     | no          |
+      | The Shard's Hunter      | Velma Smith     | no          |
+      | Luck in the Abyss       | Velma Smith     | no          |
+      # A moderator can also see the delete link.
+      | Deep Past               | Lena Richardson | yes         |
+      | The Licking Silence     | Lena Richardson | yes         |
+      | Person of Wizards       | Lena Richardson | yes         |
+      | The Shard's Hunter      | Lena Richardson | yes         |
+      | Luck in the Abyss       | Lena Richardson | yes         |
 
     # Authentication sample checks.
     Given I am logged in as "Carole James"
@@ -108,7 +130,8 @@ Feature: Collection moderation
     When I click "Edit"
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose"
-    And the following buttons should not be present "Publish, Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Publish, Request archival, Archive"
+    And I should not see the link "Delete"
 
     # Expected access.
     When I go to the "The Licking Silence" collection
@@ -116,7 +139,8 @@ Feature: Collection moderation
     When I click "Edit"
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose"
-    And the following buttons should not be present "Publish, Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Publish, Request archival, Archive"
+    And I should not see the link "Delete"
 
     # One check for the moderator.
     Given I am logged in as "Lena Richardson"
@@ -126,9 +150,21 @@ Feature: Collection moderation
     When I click "Edit"
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose, Publish"
-    And the following buttons should not be present "Request archival, Request deletion, Archive"
+    And the following buttons should not be present "Request archival, Archive"
     # The delete button is actually a link that is styled to look like a button.
     And I should see the link "Delete"
+
+    # Check that the owner can delete their own collection.
+    Given I am logged in as "Erika Reid"
+    And I go to the "Person of Wizards" collection
+    When I click "Edit"
+    And I click "Delete"
+    Then I should see the heading "Are you sure you want to delete collection Person of Wizards?"
+    And I should see "This action cannot be undone."
+    When I press "Delete"
+    # @todo: check that a success message is shown.
+    # @see ISAICP-6140
+    Then I should be on the homepage
 
   @terms
   Scenario: Published collections should be shown in the collections overview page.
@@ -172,12 +208,19 @@ Feature: Collection moderation
   @terms @javascript
   Scenario: Moderate an open collection
     # Regression test for a bug that caused the slider that controls the
-    # eLibrary creation setting to revert to default state when the form is
+    # content creation setting to revert to default state when the form is
     # resubmitted, as happens during moderation. Ref. ISAICP-3200.
+    # Note that this is an issue that affected the legacy eLibrary slider which
+    # has been replaced with the Content creation radio buttons, but we are
+    # keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
     # Propose a collection, filling in the required fields.
     When I go to the propose collection form
-    And I fill in "Title" with "Spectres in fog"
+    And I fill in the following:
+      | Title  | Spectres in fog        |
+      # Contact information data.
+      | Name   | A secretary in the fog |
+      | E-mail | fog@example.com        |
     And I enter "The samurai are attacking the railroads" in the "Description" wysiwyg editor
     And I select "Employment and Support Allowance" from "Policy domain"
     And I press "Add new" at the "Owner" field
@@ -189,19 +232,19 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
+    And I select the radio button "Any user can create content."
 
-    # Configure eLibrary creation for all registered users.
-    When I move the "eLibrary creation" slider to the right
-    Then the option "Any registered user can create new content." should be selected
-
-    # Regression test for a bug that caused the eLibrary creation setting to be
+    # Regression test for a bug that caused the content creation setting to be
     # lost when adding an item to a multivalue field. Ref. ISAICP-3200.
+    # Note that this is an issue that affected the legacy eLibrary slider which
+    # has been replaced with the Content creation radio buttons, but we are
+    # keeping the coverage for now.
     When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
-    Then the option "Any registered user can create new content." should be selected
+    Then the radio button "Any user can create content." from field "Content creation" should be selected
 
     # Submit the form and approve it as a moderator. This should not cause the
-    # eLibrary creation option to change.
+    # content creation option to change.
     When I press "Propose"
     Then I should see the heading "Spectres in fog"
     When I am logged in as a user with the "moderator" role
@@ -209,26 +252,34 @@ Feature: Collection moderation
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the option "Any registered user can create new content." should be selected
-    # Also when saving and reopening the edit form the eLibrary creation option
+    Then the radio button "Any user can create content." from field "Content creation" should be selected
+    # Also when saving and reopening the edit form the content creation option
     # should remain unchanged.
     When I press "Publish"
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the option "Any registered user can create new content." should be selected
+    Then the radio button "Any user can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "Spectres in fog" collection
-    Then I delete the "Katsumoto" owner
+    And I delete the "Katsumoto" owner
+    And I delete the "A secretary in the fog" contact information
 
   @terms @javascript
-  Scenario: Changing eLibrary creation value - regression #1
-    # Regression test for a bug that happens when a change on the eLibrary
+  Scenario: Changing Content creation value - regression #1
+    # Regression test for a bug that happens when a change on the content
     # creation setting happens after an ajax callback.
+    # Note that this is an issue that affected the legacy eLibrary slider which
+    # has been replaced with the Content creation radio buttons, but we are
+    # keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
-    And I fill in "Title" with "Domestic bovins"
+    And I fill in the following:
+      | Title  | Domestic bovins    |
+      # Contact information data.
+      | Name   | Domestic secretary |
+      | E-mail | ds@example.com     |
     And I enter "Yaks and goats are friendly pets." in the "Description" wysiwyg editor
     And I select "Statistics and Analysis" from "Policy domain"
     # An ajax callback is executed now.
@@ -241,10 +292,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
-
-    # Configure eLibrary creation for all registered users.
-    When I move the "eLibrary creation" slider to the right
-    Then the option "Any registered user can create new content." should be selected
+    And I select the radio button "Any user can create content."
 
     # Save the collection.
     When I press "Propose"
@@ -253,19 +301,27 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the option "Any registered user can create new content." should be selected
+    Then the radio button "Any user can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "Domestic bovins" collection
-    Then I delete the "Garnett Clifton" owner
+    And I delete the "Garnett Clifton" owner
+    And I delete the "Domestic secretary" contact information
 
   @terms @javascript
-  Scenario: Changing eLibrary creation value - regression #2
-    # Regression test for a bug that causes the wrong eLibrary creation value
+  Scenario: Changing Content creation value - regression #2
+    # Regression test for a bug that causes the wrong content creation value
     # to be saved after the "Closed collection" checkbox is checked.
+    # Note that the "Closed collection" option no longer exists and that the
+    # legacy eLibrary slider has been replaced with the Content creation radio
+    # buttons, but we are keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
-    And I fill in "Title" with "Theft of Body"
+    And I fill in the following:
+      | Title  | Theft of Body        |
+      # Contact information data.
+      | Name   | Secretary of thieves |
+      | E-mail | st@example.com       |
     And I enter "Kleptomaniac to the bone." in the "Description" wysiwyg editor
     And I select "Supplier exchange" from "Policy domain"
     # An ajax callback is executed now.
@@ -278,13 +334,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
-
-    When I check "Closed collection"
-    And I wait for AJAX to finish
-
-    # Configure eLibrary creation for all registered users.
-    When I move the "eLibrary creation" slider to the right
-    Then the option "Only collection facilitators can create new content." should be selected
+    And I select the radio button "Only facilitators and authors can create content."
 
     # Save the collection.
     When I press "Propose"
@@ -293,21 +343,28 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the option "Only collection facilitators can create new content." should be selected
+    Then the radio button "Only facilitators and authors can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "Theft of Body" collection
-    Then I delete the "Coretta Simonson" owner
+    And I delete the "Coretta Simonson" owner
+    And I delete the "Secretary of thieves" contact information
 
   @terms @javascript
-  Scenario: Changing eLibrary creation value - regression #3
+  Scenario: Changing Content creation value - regression #3
     # Regression test for a bug that happens when an "Add more" button on a
     # multi-value widget is clicked and then the "Closed collection" checkbox
     # is checked.
     # @see collection_form_rdf_entity_form_alter()
+    # Note that the "Closed collection" option no longer exists but we are
+    # keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
-    And I fill in "Title" with "Silken Emperor"
+    And I fill in the following:
+      | Title  | Silken Emperor    |
+      # Contact information data.
+      | Name   | Secretary of Silk |
+      | E-mail | ss@example.com    |
     And I enter "So smooth." in the "Description" wysiwyg editor
     And I select "Data gathering, data processing" from "Policy domain"
     # An ajax callback is executed now.
@@ -322,13 +379,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
-
-    When I check "Closed collection"
-    And I wait for AJAX to finish
-
-    # Configure eLibrary creation for all registered users.
-    When I move the "eLibrary creation" slider to the right
-    Then the option "Only collection facilitators can create new content." should be selected
+    And I select the radio button "Only facilitators and authors can create content."
 
     # Save the collection.
     When I press "Propose"
@@ -337,20 +388,27 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the option "Only collection facilitators can create new content." should be selected
+    Then the radio button "Only facilitators and authors can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "Silken Emperor" collection
-    Then I delete the "Terrance Nash" owner
+    And I delete the "Terrance Nash" owner
+    And I delete the "Secretary of Silk" contact information
 
   @terms @javascript
-  Scenario: Changing eLibrary creation value - regression #4
+  Scenario: Changing Content creation value - regression #4
     # Regression test for a bug that happens when the "Closed collection" checkbox
     # is checked and then an "Add more" button on a multi-value widget is clicked.
     # @see collection_form_rdf_entity_form_alter()
+    # Note that the "Closed collection" option no longer exists but we are
+    # keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
-    And I fill in "Title" with "The blue ships"
+    And I fill in the following:
+      | Title  | The blue ships          |
+      # Contact information data.
+      | Name   | Secretary of the harbor |
+      | E-mail | sh@example.com          |
     And I enter "Invisible ships on deep sea." in the "Description" wysiwyg editor
     And I select "Employment and Support Allowance" from "Policy domain"
     # An ajax callback is executed now.
@@ -363,13 +421,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
-
-    When I check "Closed collection"
-    And I wait for AJAX to finish
-
-    # Configure eLibrary creation for all registered users.
-    When I move the "eLibrary creation" slider to the right
-    Then the option "Only collection facilitators can create new content." should be selected
+    And I select the radio button "Only facilitators and authors can create content."
 
     When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
@@ -381,8 +433,9 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the option "Only collection facilitators can create new content." should be selected
+    Then the radio button "Only facilitators and authors can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "The blue ships" collection
-    Then I delete the "Mable Pelley" owner
+    And I delete the "Mable Pelley" owner
+    And I delete the "Secretary of the harbor" contact information

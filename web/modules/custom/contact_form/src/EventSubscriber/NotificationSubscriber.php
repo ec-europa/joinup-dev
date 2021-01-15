@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\contact_form\EventSubscriber;
 
-use Drupal\contact_form\ContactFormEvents;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
+use Drupal\contact_form\ContactFormEvents;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\EventSubscriber\NotificationSubscriberBase;
-use Drupal\user\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -46,10 +47,8 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     $recipient = $this->configFactory->get('contact_form.settings')->get('default_recipient');
     /** @var \Drupal\message\MessageInterface $message */
     $message = $event->getEntity();
-    $event->setSuccess($this->messageDelivery
-      ->setMessage($message)
-      ->setRecipientsAsEmails([$recipient])
-      ->sendMail());
+    $result = $this->messageDelivery->sendMessageToEmailAddresses($message, [$recipient]);
+    $event->setSuccess($result);
   }
 
   /**
@@ -127,15 +126,12 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
    *
    * Skip generating the arguments during the sending process.
    */
-  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $bcc_emails = []): bool {
+  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $notifier_options = [], array $message_values = []): bool {
+    $user_storage = $this->entityTypeManager->getStorage('user');
+
     $success = TRUE;
     foreach ($user_data as $template_id => $user_ids) {
-      $success = $success && $this->messageDelivery
-        ->createMessage($template_id)
-        ->setArguments($arguments)
-        ->setRecipients(User::loadMultiple($user_ids))
-        ->addBccRecipients($bcc_emails)
-        ->sendMail();
+      $success = $this->messageDelivery->sendMessageTemplateToMultipleUsers($template_id, $arguments, $user_storage->loadMultiple($user_ids), $notifier_options, $message_values) && $success;
     }
     return $success;
   }
@@ -196,7 +192,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     return [];
   }
 

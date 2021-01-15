@@ -12,33 +12,14 @@
     }
   };
 
-  Drupal.behaviors.silderSelect = {
-    attach: function (context, settings) {
-      $(context).find('.slider__select').once('sliderSelect').each(function () {
-        var $select = $(this);
-        var selectLength = $select.find('option').length;
-
-        var $slider = $("<div id='slider' class='slider__slider'></div>").insertAfter($select).slider({
-          min: 1,
-          max: selectLength,
-          range: "min",
-          value: $select[ 0 ].selectedIndex + 1,
-          change: function (event, ui) {
-            $select.find('option').removeAttr('selected');
-            $($select.find('option')[ui.value - 1]).attr('selected', 'selected');
-          }
-        });
-      });
-    }
-  };
-
   // Fix vertical tabs on the form pages.
   Drupal.behaviors.verticalTabsGrid = {
     attach: function (context, settings) {
       $(context).find('.vertical-tabs').once('verticalTabsGrid').each(function () {
         // Add mdl grid classes.
-        $(this).find('.vertical-tabs__menu').addClass('mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-cell--order-2-phone');
-        $(this).find('.vertical-tabs__panes').addClass('mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phones mdl-cell--order-1-phone');
+        var firstCellSize = ($(this).parent().hasClass('field-group-tabs-wrapper')) ? 2 : 4;
+        $(this).find('.vertical-tabs__menu').addClass('mdl-cell mdl-cell--' + firstCellSize + '-col mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-cell--order-2-phone');
+        $(this).find('.vertical-tabs__panes').addClass('mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phone mdl-cell--order-1-phone');
         $(this).addClass('mdl-grid mdl-grid--no-spacing');
 
         // Move description from pane to tab.

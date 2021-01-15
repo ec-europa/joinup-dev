@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\contact_information\Guard;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -48,7 +50,7 @@ class ContactInformationFulfillmentGuard implements GuardInterface {
   public function allowed(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
     $from_state = $this->getState($entity);
     $to_state = $transition->getToState()->getId();
-    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $from_state, $to_state);
+    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $workflow, $from_state, $to_state);
   }
 
   /**

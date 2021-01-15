@@ -1,9 +1,9 @@
+@api @group-a
 Feature: Site menus
   In order to navigate through the sections of the site
   As a user
   I want to have access to site-wide menus
 
-  @api
   Scenario: Main menu items should be active based on the current page.
     Given collection:
       | title | Hungry Firecracker |
@@ -56,3 +56,22 @@ Feature: Site menus
     Then "Solutions" should be the active item in the "Header menu" menu
     When I click "First movement"
     Then "Solutions" should be the active item in the "Header menu" menu
+
+  Scenario: Tooltip text should be set for important menu items.
+    Given collection:
+      | title | Some collection |
+      | state | validated |
+
+    When I am on the homepage
+    Then I see the "a" element with the "title" attribute set to "Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community." in the "Statistics" region
+    And I see the "a" element with the "title" attribute set to "A Solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories." in the "Statistics" region
+    And I see the "a" element with the "title" attribute set to "KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Collections and Solutions." in the "Statistics" region
+
+    When I go to "/collections"
+    Then I see the "a" element with the "title" attribute set to "Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community." in the "Header menu" region
+    And I see the "a" element with the "title" attribute set to "A Solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories." in the "Header menu" region
+    And I see the "a" element with the "title" attribute set to "KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Collections and Solutions." in the "Header menu" region
+
+    When I am logged in as a user with the facilitator role of the "Some collection" collection
+    And I go to the "Some collection" collection
+    Then I see the "button" element with the "title" attribute set to "Create content" in the "Plus button menu" region

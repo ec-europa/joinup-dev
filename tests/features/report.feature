@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Report inappropriate content
   In order to outsource the discovery of inappropriate content on the site
   As a moderator
@@ -6,8 +6,8 @@ Feature: Report inappropriate content
 
   Scenario Outline: Report inappropriate community content
     Given collection:
-      | title  | Deployment tools |
-      | state  | validated        |
+      | title | Deployment tools |
+      | state | validated        |
     And "<type>" content:
       | title   | body   | collection       | state     |
       | <title> | <body> | Deployment tools | validated |

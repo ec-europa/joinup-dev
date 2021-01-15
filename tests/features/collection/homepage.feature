@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-a
 Feature: Collection homepage
   In order find content around a topic
   As a user of the website
@@ -9,33 +9,37 @@ Feature: Collection homepage
       | Username | Status | Roles     |
       | Frodo    | active |           |
       | Boromir  | active |           |
-      | Legoloas | active |           |
+      | Legolas  | active |           |
       | Gimli    | active |           |
       | Samwise  | active | moderator |
-    Given the following owner:
+    And the following owner:
       | name          |
       | Bilbo Baggins |
-    Given the following collection:
-      | title             | Middle earth daily               |
-      | description       | Middle earth daily               |
-      | owner             | Bilbo Baggins                    |
-      | logo              | logo.png                         |
-      | moderation        | yes                              |
-      | elibrary creation | members                          |
-      | state             | validated                        |
-      | policy domain     | Employment and Support Allowance |
+    And the following contact:
+      | name  | Kalikatoura             |
+      | email | kalikatoura@example.com |
+    And the following collection:
+      | title               | Middle earth daily               |
+      | description         | Middle earth daily               |
+      | owner               | Bilbo Baggins                    |
+      | contact information | Kalikatoura                      |
+      | logo                | logo.png                         |
+      | moderation          | yes                              |
+      | content creation    | members                          |
+      | state               | validated                        |
+      | policy domain       | Employment and Support Allowance |
     And the following solution:
-      | title             | Bilbo's book          |
-      | collection        | Middle earth daily    |
-      | description       | Bilbo's autobiography |
-      | elibrary creation | members               |
-      | creation date     | 2014-10-17 8:32am     |
-      | state             | validated             |
+      | title            | Bilbo's book          |
+      | collection       | Middle earth daily    |
+      | description      | Bilbo's autobiography |
+      | content creation | registered users      |
+      | creation date    | 2014-10-17 8:32am     |
+      | state            | validated             |
     And the following collection user memberships:
-      | collection         | user     | roles       |
-      | Middle earth daily | Frodo    | facilitator |
-      | Middle earth daily | Boromir  |             |
-      | Middle earth daily | Legoloas |             |
+      | collection         | user    | roles       |
+      | Middle earth daily | Frodo   | facilitator |
+      | Middle earth daily | Boromir |             |
+      | Middle earth daily | Legolas |             |
     And news content:
       | title                                             | body                | policy domain     | collection         | state     | created           | changed  |
       | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated | 2014-10-17 8:34am | 2017-7-5 |
@@ -116,11 +120,15 @@ Feature: Collection homepage
     When I click the News content tab
     # Verify the policy domain inline facet.
     Then "all policy domains" should be selected in the "collection policy domain" inline facet
-    And the "collection policy domain" inline facet should allow selecting the following values "Supplier exchange (2), Finance in EU (1)"
+    And the "collection policy domain" inline facet should allow selecting the following values:
+      | Supplier exchange (2) |
+      | Finance in EU (1)     |
 
     When I click "Supplier exchange" in the "collection policy domain" inline facet
     Then "Supplier exchange (2)" should be selected in the "collection policy domain" inline facet
-    And the "collection policy domain" inline facet should allow selecting the following values "Finance in EU (1), all policy domains"
+    And the "collection policy domain" inline facet should allow selecting the following values:
+      | Finance in EU (1)  |
+      | all policy domains |
     Then I should see the following tiles in the correct order:
       | Big hobbit feast - fireworks at midnight          |
       | Breaking: Gandalf supposedly plans his retirement |
@@ -129,48 +137,24 @@ Feature: Collection homepage
     # Verify that the inline widget reset link doesn't break other active facets.
     When I click the News content tab
     Then "Supplier exchange (1)" should be selected in the "collection policy domain" inline facet
-    And the "collection policy domain" inline facet should allow selecting the following values "Finance in EU (1), all policy domains"
+    And the "collection policy domain" inline facet should allow selecting the following values:
+      | Finance in EU (1)  |
+      | all policy domains |
     And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
     But I should not see the "Big hobbit feast - fireworks at midnight" tile
     And I should not see the "Rohirrim make extraordinary deal" tile
     # Reset the policy domain selection.
     When I click "all policy domains" in the "collection policy domain" inline facet
     Then "all policy domains" should be selected in the "collection policy domain" inline facet
-    And the "collection policy domain" inline facet should allow selecting the following values "Finance in EU (1), Supplier exchange (1)"
+    And the "collection policy domain" inline facet should allow selecting the following values:
+      | Finance in EU (1)     |
+      | Supplier exchange (1) |
     And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
     And I should see the "Rohirrim make extraordinary deal" tile
     But I should not see the "Big hobbit feast - fireworks at midnight" tile
 
-  Scenario: Forward search facets to the search page (Advanced search)
-    Given I go to the homepage of the "Middle earth daily" collection
-    When I click the News content tab
-    And I click "Supplier exchange" in the "collection policy domain" inline facet
-    And I click "Advanced search"
-    Then I should be on the search page
-    Then the News content tab should be selected
-    And "Middle earth daily (1)" should be selected in the "from" inline facet
-    And "Supplier exchange (1)" should be selected in the "policy domain" inline facet
-    Then I should see the following tiles in the correct order:
-      | Breaking: Gandalf supposedly plans his retirement |
-
-  Scenario: Forward search facets to the search page are ordered properly
-    Given I go to the homepage of the "Middle earth daily" collection
-    When I click the News content tab
-    And I click "Advanced search"
-    Then I should be on the search page
-    Then the News content tab should be selected
-    Then I should see the following tiles in the correct order:
-      | Rohirrim make extraordinary deal                  |
-      | Breaking: Gandalf supposedly plans his retirement |
-
-  Scenario: Search engines and link crawlers should not follow advanced search link.
-    Given I go to the homepage of the "Middle earth daily" collection
-    Then search engines should be discouraged to follow the link "Advanced search"
-    When I click "Supplier exchange" in the "collection policy domain" inline facet
-    Then search engines should be discouraged to follow the link "Advanced search"
-
   # Regression test to ensure that related community content does not appear in the draft view.
-  # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
+  # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
   Scenario: The related content should not be shown in the draft view version as part of the content.
     When I am logged in as a facilitator of the "Middle earth daily" collection
     And I go to the homepage of the "Middle earth daily" collection
@@ -180,6 +164,7 @@ Feature: Collection homepage
     And I click "View draft" in the "Entity actions" region
     Then I should see the text "Moderated"
     And I should see the text "Open collection"
+    And I should see the text "Only members can create content."
     And I should see the text "Bilbo Baggins"
     And I should see the text "Employment and Support Allowance"
     And I should see the heading "Middle earth nightly"

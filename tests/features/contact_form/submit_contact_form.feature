@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Submit the contact form
   In order to gather feedback from the users
   As a moderator
@@ -27,6 +27,7 @@ Feature: Submit the contact form
       | Other                          |
     # The honeypot field that needs to be empty on submission.
     Then the following fields should be present "user_homepage"
+    And I should see the text "Submissions of this form are processed by a contractor of the European Commission."
 
     When I fill in the following:
       | First name     | Oswine                      |
@@ -43,28 +44,30 @@ Feature: Submit the contact form
 
     # Both moderators should have received the notification e-mail.
     Then the following email should have been sent:
-      | template           | Contact form submission           |
-      | from               | digit-joinup@ec.europa.eu         |
-      | recipient_mail     | DIGIT-JOINUP-SUPPORT@ec.europa.eu |
-      | subject            | Joinup - Contact form submission  |
-      | body               | Dear sir, madam, ...              |
-      | signature_required | no                                |
+      | template           | Contact form submission                       |
+      | from               | digit-joinup@ec.europa.eu                     |
+      | recipient_mail     | DIGIT-JOINUP-SUPPORT-EXT-FORWARD@ec.europa.eu |
+      | subject            | Joinup - Contact form submission              |
+      | body               | Dear sir, madam, ...                          |
+      | signature_required | no                                            |
     And I should see the following success messages:
       | success messages                                              |
       | Your message has been submitted. Thank you for your feedback. |
-    When I click the link for the "logo.png" attachment in the contact form email sent to "DIGIT-JOINUP-SUPPORT@ec.europa.eu"
+    When I click the link for the "logo.png" attachment in the contact form email sent to "DIGIT-JOINUP-SUPPORT-EXT-FORWARD@ec.europa.eu"
     # For anonymous users, the file should not be accessible.
-    # The redirection to the login page returns a 200 code instead of a 403 so check for the error message instead.
-    Then I should see the text "Access denied. You must sign in to view this page."
+    # The redirection to the EU login page returns a 200 code instead of a 403
+    # so check for the page header instead.
+    Then I should see the heading "Sign in to continue"
     When I am logged in as a moderator
     # Private files from contact forms are stored in
     # "<base url>/<private system path>/contact_form/<year>_<month>/<file>"
-    And I click the link for the "logo.png" attachment in the contact form email sent to "DIGIT-JOINUP-SUPPORT@ec.europa.eu"
+    And I click the link for the "logo.png" attachment in the contact form email sent to "DIGIT-JOINUP-SUPPORT-EXT-FORWARD@ec.europa.eu"
     # The server responds with an image.
     Then the content type of the response should be 'image/png'
 
   Scenario: Check required fields
     When I am on the contact form
+    And I wait for the spam protection time limit to pass
     And I press "Submit"
     Then I should see the following error messages:
       | error messages                    |

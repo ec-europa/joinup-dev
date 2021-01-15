@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature:
   As a moderator of the website
   in order to better manage all content
@@ -12,8 +12,8 @@ Feature:
     And I go to the "Revisions collection" collection
     And I click "Add news" in the plus button menu
     And I fill in the following:
-      | Kicker   | Revisions collection published          |
-      | Headline | Revisions collection has been published |
+      | Short title | Revisions collection published          |
+      | Headline    | Revisions collection has been published |
     And I enter "We are proud to announce another useless test entity." in the "Content" wysiwyg editor
     And I press "Save as draft"
 
@@ -32,3 +32,28 @@ Feature:
     And I go to the homepage of the "Revisions collection" collection
     Then I should not see the link "Revisions" in the "Entity actions" region
 
+  @javascript
+  Scenario: Only solutions should have the share contextual link available.
+    Given collection:
+      | title | Share collection |
+      | state | validated        |
+    And contact:
+      | name  | Somebody             |
+      | email | somebody@example.com |
+    And owner:
+      | name       |
+      | Some owner |
+    And solution:
+      | title               | Share solution   |
+      | state               | validated        |
+      | collection          | Share collection |
+      | contact information | Somebody         |
+      | owner               | Some owner       |
+
+    When I am logged in as a user with the "moderator" role
+    And I go to the "Share solution" solution
+    And I click "About"
+    Then I should not see the contextual link "Share"
+
+    When I click "Collections"
+    Then I should not see the contextual link "Share"

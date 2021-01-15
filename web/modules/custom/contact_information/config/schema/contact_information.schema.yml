@@ -3,14 +3,39 @@ contact_information.settings:
   label: 'Contact information workflow permission settings'
   mapping:
     transitions:
-      type: sequence
       label: 'Allowed transitions'
+      type: sequence
       sequence:
+        label: 'Target state'
         type: sequence
-        label: 'Transition ID'
         sequence:
-          type: sequence
           label: 'Source state'
-          sequence:
-            type: string
-            label: 'Roles'
+          type: contact_information.workflow_ownership_settings
+
+contact_information.workflow_ownership_settings:
+  label: 'Ownership settings'
+  type: mapping
+  mapping:
+    own:
+      label: 'Own content'
+      type: contact_information.workflow_role_settings
+    any:
+      label: 'Any content'
+      type: contact_information.workflow_role_settings
+
+contact_information.workflow_role_settings:
+  label: 'Role settings'
+  type: mapping
+  mapping:
+    roles:
+      label: 'System roles'
+      type: sequence
+      sequence:
+        label: 'Role id'
+        type: string
+    og_roles:
+      label: 'Og roles'
+      type: sequence
+      sequence:
+        label: 'Role id'
+        type: string

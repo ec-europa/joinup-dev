@@ -1,0 +1,16 @@
+# Config readonly settings and commands.
+
+# Set this config to `false` in your runner.yml to permanently disable the
+# config read-only feature on your development environment.
+config_readonly: true
+
+commands:
+
+  # Config readonly kill-switch.
+  config-readonly:enable:
+    - task: exec
+      command: (test "${config_readonly}" = "1" && rm -f ${joinup.dir}/disable-config-readonly) || true
+
+  config-readonly:disable:
+    - task: touch
+      file: ${joinup.dir}/disable-config-readonly

@@ -1,0 +1,247 @@
+// Component
+// --------------------------------------------------
+
+// Elements
+// --------------------------------------------------
+.comment-item {
+  position: relative;
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 0;
+  width: 100%;
+  overflow: hidden;
+
+  .mdl-grid {
+    width: 100%;
+    padding: 15px 0 8px 8px;
+  }
+
+  &:first-of-type {
+    border-top: none;
+  }
+}
+
+.comment-item__user-picture {
+  a {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 15px 0 0 10px;
+    overflow: hidden;
+    background-color: #d4d3d3;
+    text-align: center;
+
+    img {
+      width: 100%;
+      height: auto;
+
+      &[src*="user_icon.png"] {
+        width: 80%;
+        margin-top: 12px;
+      }
+    }
+  }
+
+  &::after {
+    content: "";
+    display: inline-block;
+    width: 2px;
+    background-color: $color-grey-bg;
+    height: 100%;
+    margin: 10px 0 0 34px;
+  }
+}
+
+.comment-item__field {
+  margin-bottom: 15px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.comment-item__blockquote {
+  font-weight: $font-weight-thin;
+  font-style: italic;
+  padding-left: 26px;
+  color: darken($color-grey-light, 8%);
+  border-left: 4px solid lighten($color-grey-light, 4%);
+}
+
+.comment-item__content {
+  margin-bottom: -20px;
+  margin-right: 20px;
+}
+
+.comment-item__stats {
+  text-align: right;
+}
+
+.comment-item__text {
+  @extend .listing__text;
+}
+
+.comment-item__icon {
+  @extend .listing__icon;
+}
+
+.comment-form {
+  @include hidden-print;
+
+  margin-top: 70px;
+  margin-bottom: 0;
+  padding-top: 50px;
+  padding-right: 20px;
+  padding-bottom: 50px;
+  padding-left: 20px;
+  background-color: #fff;
+
+  .form__actions {
+    width: 100%;
+    text-align: right;
+  }
+
+  .button {
+    margin: 0;
+  }
+
+  @include breakpoint(tablet) {
+    padding-right: 60px;
+    padding-left: 60px;
+  }
+}
+
+.comment-item {
+  .links.inline {
+    list-style: none;
+    padding-left: 0;
+    li {
+      display: inline-block;
+      a {
+        font-size: 12px;
+        font-weight: 600;
+        margin-right: 10px;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: #211b38;
+
+        &:before {
+          @extend .icon;
+          font-size: 15px;
+          line-height: 99%;
+          vertical-align: middle;
+          display: inline-block;
+          margin-right: 5px;
+        }
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      &.comment-delete {
+        a:before {
+          content: "\e657";
+        }
+      }
+      &.comment-edit {
+        a:before {
+          content: "\e63b";
+        }
+      }
+      &.comment-reply {
+        a:before {
+          content: "\e785";
+        }
+      }
+    }
+  }
+}
+
+// Modifiers
+// --------------------------------------------------
+.comment-item--default {
+  padding: 7px;
+  background-color: #fff;
+}
+
+.comment-item--load-more {
+  min-height: 70px;
+  border: 5px solid darken($color-grey-light, 1%);
+  background-color: $color-grey-bg;
+}
+
+.comment-form--unavailable {
+  margin-top: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+}
+
+.comment-form--disabled {
+  margin-top: 4px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.comment-item, .comment-form {
+  .details__element a {
+    color: $color-grey-medium;
+  }
+}
+
+.comments-section {
+  .indented {
+    position: relative;
+    padding-left: 40px;
+    background: white;
+    overflow: hidden;
+    z-index: 1;
+
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 41px;
+      display: inline-block;
+      width: 2px;
+      background-color: $color-grey-bg;
+      height: 100%;
+      z-index: 2;
+    }
+
+    .comment-item {
+      margin-top: 0;
+
+      .comment-item__user-picture {
+        a {
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+
+  > .indented,
+  > .comment-item {
+    padding-bottom: 40px;
+    &:after {
+      content: "";
+      position: absolute;
+      display: inline-block;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      height: 20px;
+      z-index: 2;
+    }
+  }
+ 
+  > .comment-item + .indented {
+    margin-top: -30px;
+    z-index: 10;
+  }
+}

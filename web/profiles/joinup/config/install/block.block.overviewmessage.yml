@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - joinup_core
+    - joinup_group
     - system
   theme:
     - joinup_theme
@@ -15,7 +15,7 @@ plugin: overview_message_block
 settings:
   id: overview_message_block
   label: 'Overview message'
-  provider: joinup_core
+  provider: joinup_group
   label_display: '0'
 visibility:
   request_path:

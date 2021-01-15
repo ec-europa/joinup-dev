@@ -56,7 +56,7 @@ Feature: User profile
     And I should not see the link "Youtube" in the "Header" region
     And I should not see the link "Vimeo" in the "Header" region
     # @todo The nationality will be rendered as flag image.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3175
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3175
     # And I should see the link "Italy"
     # A user should not be able to edit the profile page of another user.
     When I go to the public profile of "Domenico Ghirlandaio"
@@ -65,8 +65,8 @@ Feature: User profile
     When I go to the public profile of "Leonardo Da Vinci"
     Then I should see the text "Country of origin: Italy" in the "Header" region
 
-  @terms
-  Scenario: A moderator can navigate to any users profile and edit it.
+  @terms @email
+  Scenario: A moderator can navigate to any user's profile and edit it.
     Given users:
       | Username          | E-mail                | Roles     |
       | Leonardo Da Vinci | leonardo@example.com  |           |
@@ -90,9 +90,11 @@ Feature: User profile
     And I fill in "Country of origin" with "Italy"
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
-    # This message is typical shown when the mail server is not responding. This is just a smoke test
-    # to see that all is fine and dandy, and mails are being delivered.
-    Then I should not see the error message "Unable to send email. Contact the site administrator if the problem persists."
+    And I should see the success message "The user has been notified that their account has been updated."
+    And the following email should have been sent:
+      | recipient | Leonardo Da Vinci                                                                                         |
+      | subject   | The Joinup Support Team updated your account for you at Joinup                                            |
+      | body      | A moderator has edited your user profile on Joinup. Please check your profile to verify the changes done. |
 
   # Regression test: the wrong profile picture was showing due to a caching problem.
   Scenario: The user's profile picture should be shown in the page header.
@@ -189,7 +191,7 @@ Feature: User profile
     # the full name as header title and in the page title tag.
     When I go to the public profile of cgarnett67
     Then I should see the heading "Callista Garnett" in the "Header" region
-    And the HTML title tag should contain the text "Callista Garnett"
+    And the HTML title of the page should be "Callista Garnett"
     # The title should not be duplicated.
     And I should not see the "Page title" region
     And I should not see the heading "cgarnett67"
@@ -197,7 +199,7 @@ Feature: User profile
     # The full name fall backs to the user name when the fields are not filled.
     When I go to the public profile of delwin999
     Then I should see the heading delwin999 in the "Header" region
-    And the HTML title tag should contain the text delwin999
+    And the HTML title of the page should be delwin999
     And I should not see the "Page title" region
 
   Scenario: The user profile page is updated when the user joins or leaves a collection
@@ -254,7 +256,7 @@ Feature: User profile
     When I am logged in as an "authenticated user"
     And I am on the homepage
     And I click "My account"
-    Then I should not see the link "Subscription Settings"
+    Then I should not see the link "Subscription settings"
     And I should not see the link "Persistent Logins"
     And I should not see the link "Newsletters"
 

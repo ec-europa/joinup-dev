@@ -18,7 +18,7 @@ trait NodeTrait {
    *
    * @param string $title
    *   The node's title.
-   * @param string $bundle
+   * @param string|null $bundle
    *   Optional content entity bundle.
    *
    * @return \Drupal\node\NodeInterface
@@ -27,9 +27,10 @@ trait NodeTrait {
    * @throws \InvalidArgumentException
    *   Thrown when a node with the given name does not exist.
    */
-  public function getNodeByTitle(string $title, string $bundle = NULL): ?NodeInterface {
+  public function getNodeByTitle(string $title, ?string $bundle = NULL): ?NodeInterface {
     $query = \Drupal::entityQuery('node')
       ->condition('title', $title)
+      ->accessCheck(FALSE)
       ->range(0, 1);
     if (!empty($bundle)) {
       $query->condition('type', $bundle);
@@ -58,19 +59,20 @@ trait NodeTrait {
    *   The title of the node.
    * @param string $bundle
    *   The type of the node.
-   * @param bool $published
+   * @param bool|null $published
    *   Whether to request the last published or last unpublished verion.
    *
    * @return array
    *   A list of revision IDs.
    */
-  public function getNodeRevisionIdsList(string $title, string $bundle, bool $published = NULL): array {
+  public function getNodeRevisionIdsList(string $title, string $bundle, ?bool $published = NULL): array {
     $current_revision = $this->getNodeByTitle($title, $bundle);
     // We gather all revisions and then filter out the one we want as filtering
     // by vid will lead in false results.
     // @see: https://www.drupal.org/project/drupal/issues/2766135
     $query = \Drupal::entityQuery('node')
       ->allRevisions()
+      ->accessCheck(FALSE)
       ->condition('type', $bundle);
     if ($published !== NULL) {
       $published = (int) $published;

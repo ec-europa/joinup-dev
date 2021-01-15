@@ -15,7 +15,6 @@ description: ''
 tag: ''
 base_table: message_field_data
 base_field: mid
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -429,7 +428,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          delta: ''
+          delta: null
           entity_type: message
           plugin_id: get_text
         nothing:
@@ -510,6 +509,8 @@ display:
               moderator: '0'
               administrator: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -553,6 +554,8 @@ display:
               moderator: '0'
               administrator: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -667,12 +670,8 @@ display:
         - 'config:core.entity_view_display.message.sol_approve_proposed.mail_subject'
         - 'config:core.entity_view_display.message.sol_blacklist.mail_body'
         - 'config:core.entity_view_display.message.sol_blacklist.mail_subject'
-        - 'config:core.entity_view_display.message.sol_deletion_approved.mail_body'
-        - 'config:core.entity_view_display.message.sol_deletion_approved.mail_subject'
-        - 'config:core.entity_view_display.message.sol_deletion_no_approval.mail_body'
-        - 'config:core.entity_view_display.message.sol_deletion_no_approval.mail_subject'
-        - 'config:core.entity_view_display.message.sol_deletion_reject.mail_body'
-        - 'config:core.entity_view_display.message.sol_deletion_reject.mail_subject'
+        - 'config:core.entity_view_display.message.sol_deletion_by_moderator.mail_body'
+        - 'config:core.entity_view_display.message.sol_deletion_by_moderator.mail_subject'
         - 'config:core.entity_view_display.message.sol_propose_changes.mail_body'
         - 'config:core.entity_view_display.message.sol_propose_changes.mail_subject'
         - 'config:core.entity_view_display.message.sol_propose_new.mail_body'
@@ -683,8 +682,6 @@ display:
         - 'config:core.entity_view_display.message.sol_publish_backlisted.mail_subject'
         - 'config:core.entity_view_display.message.sol_request_changes.mail_body'
         - 'config:core.entity_view_display.message.sol_request_changes.mail_subject'
-        - 'config:core.entity_view_display.message.sol_request_deletion.mail_body'
-        - 'config:core.entity_view_display.message.sol_request_deletion.mail_subject'
   page_1:
     display_plugin: page
     id: page_1
@@ -793,12 +790,8 @@ display:
         - 'config:core.entity_view_display.message.sol_approve_proposed.mail_subject'
         - 'config:core.entity_view_display.message.sol_blacklist.mail_body'
         - 'config:core.entity_view_display.message.sol_blacklist.mail_subject'
-        - 'config:core.entity_view_display.message.sol_deletion_approved.mail_body'
-        - 'config:core.entity_view_display.message.sol_deletion_approved.mail_subject'
-        - 'config:core.entity_view_display.message.sol_deletion_no_approval.mail_body'
-        - 'config:core.entity_view_display.message.sol_deletion_no_approval.mail_subject'
-        - 'config:core.entity_view_display.message.sol_deletion_reject.mail_body'
-        - 'config:core.entity_view_display.message.sol_deletion_reject.mail_subject'
+        - 'config:core.entity_view_display.message.sol_deletion_by_moderator.mail_body'
+        - 'config:core.entity_view_display.message.sol_deletion_by_moderator.mail_subject'
         - 'config:core.entity_view_display.message.sol_propose_changes.mail_body'
         - 'config:core.entity_view_display.message.sol_propose_changes.mail_subject'
         - 'config:core.entity_view_display.message.sol_propose_new.mail_body'
@@ -809,5 +802,3 @@ display:
         - 'config:core.entity_view_display.message.sol_publish_backlisted.mail_subject'
         - 'config:core.entity_view_display.message.sol_request_changes.mail_body'
         - 'config:core.entity_view_display.message.sol_request_changes.mail_subject'
-        - 'config:core.entity_view_display.message.sol_request_deletion.mail_body'
-        - 'config:core.entity_view_display.message.sol_request_deletion.mail_subject'

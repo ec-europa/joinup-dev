@@ -10,10 +10,12 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_content
+    - field.field.rdf_entity.solution.field_is_content_creation
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
-    - field.field.rdf_entity.solution.field_is_elibrary_creation
+    - field.field.rdf_entity.solution.field_is_eif_category
+    - field.field.rdf_entity.solution.field_is_eif_recommendation
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
     - field.field.rdf_entity.solution.field_is_issue_tracker
@@ -23,10 +25,10 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_owner
-    - field.field.rdf_entity.solution.field_is_pinned_in
     - field.field.rdf_entity.solution.field_is_product_type
-    - field.field.rdf_entity.solution.field_is_show_eira_related
     - field.field.rdf_entity.solution.field_is_related_solutions
+    - field.field.rdf_entity.solution.field_is_shared_in
+    - field.field.rdf_entity.solution.field_is_show_eira_related
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
@@ -39,6 +41,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_wiki
     - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_policy_domain
+    - field.field.rdf_entity.solution.field_short_id
     - field.field.rdf_entity.solution.field_site_featured
     - field.field.rdf_entity.solution.field_site_pinned
     - field.field.rdf_entity.solution.field_spatial_coverage
@@ -51,7 +54,7 @@ dependencies:
     - file_url
     - image
     - inline_entity_form
-    - joinup_core
+    - joinup_workflow
     - link
     - text
 third_party_settings:
@@ -68,16 +71,18 @@ third_party_settings:
         classes: ''
         direction: vertical
       label: General
+      region: content
     group_main:
       children:
         - label
+        - field_short_id
         - field_is_description
         - field_is_contact_information
         - field_policy_domain
         - field_is_owner
         - field_is_solution_type
         - field_is_moderation
-        - field_is_elibrary_creation
+        - field_is_content_creation
         - field_is_test_resource_type
         - field_is_actor
         - field_is_business_process
@@ -97,6 +102,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Main fields'
+      region: content
     group_management:
       children:
         - field_is_logo
@@ -110,6 +116,8 @@ third_party_settings:
         - field_is_language
         - field_is_landing_page
         - field_is_metrics_page
+        - field_is_eif_recommendation
+        - field_is_eif_category
       parent_name: group_general
       weight: 21
       format_type: tab
@@ -121,6 +129,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Additional fields'
+      region: content
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
 bundle: solution
@@ -128,7 +137,7 @@ mode: default
 content:
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 14
+    weight: 15
     region: content
     settings:
       title: 'Current workflow state'
@@ -137,7 +146,7 @@ content:
     third_party_settings: {  }
   field_is_actor:
     type: options_select
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -151,16 +160,17 @@ content:
     region: content
   field_is_business_process:
     type: entity_reference_autocomplete
-    weight: 11
+    weight: 12
     region: content
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   field_is_contact_information:
     type: inline_entity_form_complex
-    weight: 3
+    weight: 4
     settings:
       form_mode: inline
       override_labels: true
@@ -172,10 +182,17 @@ content:
       collapsed: false
       allow_existing: false
       allow_duplicate: false
+      revision: false
     third_party_settings: {  }
     region: content
+  field_is_content_creation:
+    weight: 9
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
   field_is_description:
-    weight: 2
+    weight: 3
     settings:
       rows: 5
       placeholder: ''
@@ -193,11 +210,17 @@ content:
     third_party_settings: {  }
     type: file_url_generic
     region: content
-  field_is_elibrary_creation:
-    weight: 8
+  field_is_eif_category:
+    weight: 16
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
+    region: content
+  field_is_eif_recommendation:
+    weight: 15
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_is_landing_page:
     weight: 13
@@ -230,7 +253,7 @@ content:
     type: link_default
     region: content
   field_is_moderation:
-    weight: 7
+    weight: 8
     settings:
       display_label: false
     third_party_settings: {  }
@@ -238,7 +261,7 @@ content:
     region: content
   field_is_owner:
     type: inline_entity_form_complex
-    weight: 5
+    weight: 6
     settings:
       form_mode: inline
       override_labels: true
@@ -250,16 +273,18 @@ content:
       collapsible: false
       collapsed: false
       allow_duplicate: false
+      revision: false
     third_party_settings: {  }
     region: content
   field_is_product_type:
     type: entity_reference_autocomplete
-    weight: 12
+    weight: 13
     region: content
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   field_is_related_solutions:
     weight: 9
@@ -267,6 +292,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
@@ -279,26 +305,26 @@ content:
     region: content
   field_is_solution_type:
     type: options_select
-    weight: 6
+    weight: 7
     settings: {  }
     third_party_settings: {  }
     region: content
   field_is_standardization_level:
     type: options_select
-    weight: 13
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
   field_is_state:
     type: state_machine_buttons
-    weight: 15
+    weight: 16
     settings:
       use_transition_label: 1
     third_party_settings: {  }
     region: content
   field_is_test_resource_type:
     type: options_select
-    weight: 9
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -312,9 +338,17 @@ content:
     third_party_settings: {  }
   field_policy_domain:
     type: options_select
-    weight: 4
+    weight: 5
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_short_id:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: 'Minimum 4 characters required.'
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_spatial_coverage:
     type: entity_reference_autocomplete
@@ -323,6 +357,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     region: content
   field_status:
@@ -340,7 +375,7 @@ content:
     third_party_settings: {  }
     region: content
   transition_motivation:
-    weight: 16
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -352,7 +387,6 @@ hidden:
   field_is_has_version: true
   field_is_included_asset: true
   field_is_issue_tracker: true
-  field_is_pinned_in: true
   field_is_shared_in: true
   field_is_source_code_repository: true
   field_is_translation: true

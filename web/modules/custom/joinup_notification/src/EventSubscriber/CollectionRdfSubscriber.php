@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\collection\Entity\CollectionInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
+use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\og\OgRoleInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class CommunityContentSubscriber.
+ * Handles notifications related to collections.
  */
 class CollectionRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 
@@ -21,6 +25,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   const TEMPLATE_ARCHIVE_DELETE_REJECT = 'col_arc_del_rej';
   const TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ALL = 'col_arc_del_sol_generic';
   const TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ORPHANED = 'col_arc_del_sol_no_affiliates';
+  const TEMPLATE_DELETION_BY_MODERATOR = 'col_deletion_by_moderator';
   const TEMPLATE_PROPOSE_EDIT_MODERATORS = 'col_propose_edit_mod';
   const TEMPLATE_PROPOSE_EDIT_OWNER = 'col_propose_edit_own';
   const TEMPLATE_PROPOSE_NEW = 'col_propose_new';
@@ -39,13 +44,6 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * @var \Drupal\state_machine\Plugin\Workflow\Workflow
    */
   protected $workflow;
-
-  /**
-   * The state field name of the entity object.
-   *
-   * @var string
-   */
-  protected $stateField;
 
   /**
    * The motivation text passed in the entity.
@@ -96,15 +94,14 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    */
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
-    if ($this->entity->bundle() !== 'collection') {
+    if (!$this->entity instanceof CollectionInterface) {
       return;
     }
 
     $this->event = $event;
-    $this->stateField = 'field_ar_state';
-    $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
-    $this->fromState = isset($this->entity->original) ? $this->entity->original->get($this->stateField)->first()->value : '__new__';
-    $to_state = $this->entity->get($this->stateField)->first()->value;
+    $this->workflow = $this->entity->getWorkflow();
+    $this->fromState = isset($this->entity->original) ? $this->entity->original->getWorkflowState() : '__new__';
+    $to_state = $this->entity->getWorkflowState();
     $this->transition = $this->workflow->findTransition($this->fromState, $to_state);
     $this->motivation = empty($this->entity->motivation) ? '' : $this->entity->motivation;
     $this->hasPublished = $this->hasPublishedVersion($this->entity);
@@ -176,13 +173,12 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
         if ($this->fromState === 'proposed') {
           $this->notificationValidate();
         }
-        elseif (in_array($this->fromState, ['archival_request', 'deletion_request'])) {
+        elseif ($this->fromState === 'archival_request') {
           $this->notificationRejectArchivalDeletion();
         }
         break;
 
       case 'request_archival':
-      case 'request_deletion':
         $this->notificationRequestArchivalDeletion();
         break;
 
@@ -216,7 +212,6 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
       'propose',
       'validate',
       'request_archival',
-      'request_deletion',
       'archive',
     ];
     if (!in_array($this->transition->getId(), $transitions_with_notification)) {
@@ -323,7 +318,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   }
 
   /**
-   * Sends a notification on archival/deletion request.
+   * Sends a notification on archival request.
    *
    * Notification id 8.
    */
@@ -334,7 +329,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   }
 
   /**
-   * Sends a notification on rejecting an archival/deletion request.
+   * Sends a notification on rejecting an archival request.
    *
    * Notification id 10.
    */
@@ -355,15 +350,24 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    *
    * Notification id 9, 13, 14.
    *
-   * Notification 9 notifies the owner that his request to archive/delete a
+   * Notification 9 notifies the owner that their request to archive/delete a
    * collection was approved.
-   * Notification 13 notifies the owner that his collection has been archived/
-   * deleted without prior request.
+   * Notification 13 notifies the owner that their collection has been archived
+   * or deleted without prior request.
    * Only one of both are sent depending on the current state of the collection.
    */
   protected function notificationArchiveDelete() {
     // Template id 9. Notify the owner.
     $template_id = $this->isTransitionRequested() ? self::TEMPLATE_ARCHIVE_DELETE_APPROVE_OWNER : self::TEMPLATE_ARCHIVE_DELETE_NO_REQUEST;
+
+    // Send a custom notification to the owner if their collection was deleted
+    // by a moderator.
+    /** @var \Drupal\joinup_user\Entity\JoinupUser $actor */
+    $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
+    if ($actor->isModerator() && $this->operation === 'delete') {
+      $template_id = self::TEMPLATE_DELETION_BY_MODERATOR;
+    }
+
     $user_data = [
       'og_roles' => [
         'rdf_entity-collection-administrator' => [
@@ -458,15 +462,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    *   Whether the event applies.
    */
   protected function appliesOnCollections() {
-    if ($this->entity->getEntityTypeId() !== 'rdf_entity') {
-      return FALSE;
-    }
-
-    if ($this->entity->bundle() !== 'collection') {
-      return FALSE;
-    }
-
-    return TRUE;
+    return $this->entity instanceof CollectionInterface;
   }
 
   /**
@@ -479,11 +475,10 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     $arguments = parent::generateArguments($entity);
+    /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = $arguments['@actor:field_user_first_name'];
-    $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
     $arguments['@transition:motivation'] = $motivation;
 
@@ -501,10 +496,10 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
           $arguments['@actor:role'] = t('Facilitator');
         }
       }
-      $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
+      $arguments['@actor:full_name'] = $actor->getDisplayName();
     }
 
-    if ($this->operation === 'delete' || $this->transition->getId() === 'request_deletion' || ($this->transition->getId() === 'validate' && $this->fromState === 'deletion_request')) {
+    if ($this->operation === 'delete') {
       $arguments['@transition:request_action'] = 'delete';
       $arguments['@transition:request_action:past'] = 'deleted';
       $arguments['@transition:archive:extra:owner'] = '';
@@ -536,9 +531,9 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * @return bool
    *   Whether the entity has a published version.
    *
-   * @see: joinup_notification_rdf_entity_presave()
+   * @see joinup_notification_rdf_entity_presave()
    */
-  protected function hasPublishedVersion(EntityInterface $entity) {
+  protected function hasPublishedVersion(EntityInterface $entity): bool {
     if (isset($entity->hasPublished)) {
       return ($entity->hasPublished);
     }
@@ -552,7 +547,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * @param array $user_data
    *    The user data array.
    *
-   * @see: ::getUsersMessages() for more information on the array.
+   * @see ::getUsersMessages() for more information on the array.
    */
   protected function getUsersAndSend(array $user_data) {
     $user_data = $this->getUsersMessages($user_data);
@@ -560,35 +555,18 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   }
 
   /**
-   * Returns the state of the collection related to the event.
-   *
-   * @return string
-   *    The current state.
-   */
-  protected function getCollectionState() {
-    return $this->entity->get('field_ar_state')->first()->value;
-  }
-
-  /**
    * Checks whether the action is requested.
    *
-   * Applies only for archival and deletion request.
+   * Applies only for archival request.
    *
    * @return bool
-   *    Whether the action is requested. Returns true if the current state is
-   *    deletion_request and the operation is delete or if the current state is
-   *    archival_request and the transition is archive. False otherwise.
+   *    Whether the action is requested. Returns TRUE if the transition is
+   *    caused by a moderator approving the requested archival of a collection.
    */
-  protected function isTransitionRequested() {
-    $state = $this->getCollectionState();
-    if ($this->operation === 'delete') {
-      return $state === 'deletion_request';
-    }
-    elseif ($state === 'archived') {
-      return $this->transition->getId() === 'archive';
-    }
-
-    return FALSE;
+  protected function isTransitionRequested(): bool {
+    assert($this->entity instanceof EntityWorkflowStateInterface);
+    $state = $this->entity->getWorkflowState();
+    return $state === 'archived' && $this->transition->getId() === 'archive';
   }
 
 }

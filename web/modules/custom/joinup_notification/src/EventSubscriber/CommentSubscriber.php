@@ -1,15 +1,21 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\joinup_group\Entity\GroupContentInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class CommentSubscriber.
+ * Handles notifications related to comments.
  */
 class CommentSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 
@@ -18,6 +24,19 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
   const TEMPLATE_CREATE = 'comment_create';
   const TEMPLATE_UPDATE = 'comment_update';
   const TEMPLATE_DELETE = 'comment_delete';
+  const RECIPIENTS = [
+    'create' => [
+      'roles' => ['moderator' => [self::TEMPLATE_CREATE]],
+      'og_roles' => [
+        'rdf_entity-collection-administrator' => [self::TEMPLATE_CREATE],
+        'rdf_entity-solution-administrator' => [self::TEMPLATE_CREATE],
+        'rdf_entity-collection-facilitator' => [self::TEMPLATE_CREATE],
+        'rdf_entity-solution-facilitator' => [self::TEMPLATE_CREATE],
+      ],
+    ],
+    'update' => ['roles' => ['moderator' => [self::TEMPLATE_UPDATE]]],
+    'delete' => ['owner' => [self::TEMPLATE_DELETE]],
+  ];
 
   /**
    * The entity that the comment belongs to.
@@ -58,11 +77,11 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
     $comment = $this->entity;
     $this->parent = $comment->getCommentedEntity();
     if (!empty($this->parent)) {
-      if ($this->groupTypeManager->isGroup($this->parent->getEntityTypeId(), $this->parent->bundle())) {
+      if ($this->parent instanceof GroupInterface) {
         $this->group = $this->parent;
       }
-      elseif ($this->groupTypeManager->isGroupContent($this->parent->getEntityTypeId(), $this->parent->bundle())) {
-        $this->group = $this->relationManager->getParent($this->parent);
+      elseif ($this->parent instanceof GroupContentInterface) {
+        $this->group = JoinupGroupHelper::getGroup($this->parent);
       }
     }
   }
@@ -79,7 +98,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
       return;
     }
 
-    $user_data = ['roles' => ['moderator' => [self::TEMPLATE_CREATE]]];
+    $user_data = self::RECIPIENTS['create'];
     $user_data = $this->getUsersMessages($user_data);
     $this->sendUserDataMessages($user_data);
   }
@@ -114,7 +133,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
       return;
     }
 
-    $user_data = ['roles' => ['moderator' => [self::TEMPLATE_UPDATE]]];
+    $user_data = self::RECIPIENTS['update'];
     $user_data = $this->getUsersMessages($user_data);
     $this->sendUserDataMessages($user_data);
   }
@@ -149,7 +168,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
       return;
     }
 
-    $user_data = ['owner' => [self::TEMPLATE_DELETE]];
+    $user_data = self::RECIPIENTS['delete'];
     $user_data = $this->getUsersMessages($user_data);
     $this->sendUserDataMessages($user_data);
   }
@@ -201,7 +220,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     // The parent is passed here instead so that the entity url will retrieve
     // the parent entity's url as the comments do not have one.
     $arguments = parent::generateArguments($this->parent);
@@ -221,9 +240,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
     $arguments['@parent:bundle'] = $this->parent->bundle();
     $arguments['@parent:url'] = $this->parent->toUrl('canonical', ['absolute' => TRUE])->toString();
 
-    $arguments['@group:title'] = $this->group->label();
-    $arguments['@group:bundle'] = $this->group->bundle();
-    $arguments['@group:url'] = $this->group->toUrl('canonical', ['absolute' => TRUE])->toString();
+    $arguments += MessageArgumentGenerator::getGroupArguments($this->group);
 
     if ($this->currentUser->isAnonymous() || empty($arguments['@actor:full_name'])) {
       $arguments['@actor:full_name'] = $this->currentUser->isAnonymous() ? $this->t('an anonymous user') : $this->t('a Joinup user');

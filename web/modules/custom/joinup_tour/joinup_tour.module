@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the Joinup Tour module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_link_alter().
+ */
+function joinup_tour_link_alter(&$variables) {
+  // Such links are used to trigger the tour.
+  if (isset($variables['options']['attributes']['data-drupal-tour-link'])) {
+    $route_path = ltrim(\Drupal::routeMatch()->getRouteObject()->getPath(), '/');
+    if (strpos($route_path, 'admin/structure/menu/') === FALSE) {
+      // Add the tour trigger but not on menu administrative pages.
+      $variables['options']['attributes']['class'][] = 'js-tour-start-button';
+    }
+  }
+}

@@ -11,7 +11,7 @@ dependencies:
 id: authoredon
 theme: joinup_theme
 region: sidebar_left
-weight: -16
+weight: -21
 provider: null
 plugin: 'facet_block:authoredon'
 settings:

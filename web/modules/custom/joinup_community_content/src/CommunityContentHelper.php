@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_community_content;
 
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\node\NodeInterface;
+use Drupal\Component\Render\MarkupInterface;
 
 /**
  * Contains helper methods for dealing with community content.
@@ -13,27 +12,9 @@ use Drupal\node\NodeInterface;
 class CommunityContentHelper {
 
   /**
-   * Returns an array of node bundles that are considered community content.
-   *
-   * @return array
-   *   An array of node bundle IDs.
+   * An array of node bundles that are considered community content.
    */
-  public static function getBundles(): array {
-    return ['discussion', 'document', 'event', 'news'];
-  }
-
-  /**
-   * Returns whether the entity is a community content node.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity to check.
-   *
-   * @return bool
-   *   True if the entity is a community content node, false otherwise.
-   */
-  public static function isCommunityContent(EntityInterface $entity): bool {
-    return $entity instanceof NodeInterface && \in_array($entity->bundle(), self::getBundles());
-  }
+  const BUNDLES = ['discussion', 'document', 'event', 'news'];
 
   /**
    * Returns the workflow states that require attention from a moderator.
@@ -73,6 +54,18 @@ class CommunityContentHelper {
     return array_reduce($states, function ($all_states, $bundle_states) {
       return array_unique(array_merge($all_states, $bundle_states));
     }, []);
+  }
+
+  /**
+   * Returns a generic description of community content.
+   *
+   * This description is used in various places, in the user interface.
+   *
+   * @return \Drupal\Component\Render\MarkupInterface
+   *   A translated markup.
+   */
+  public static function getCommunityContentDescription(): MarkupInterface {
+    return t('KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Collections and Solutions.');
   }
 
 }

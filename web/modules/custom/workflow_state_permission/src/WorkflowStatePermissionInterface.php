@@ -6,6 +6,7 @@ namespace Drupal\workflow_state_permission;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 
 /**
  * Interface for services that determine permission to update workflow states.
@@ -32,6 +33,8 @@ interface WorkflowStatePermissionInterface {
    *   The user to check.
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity on which to perform the workflow state change.
+   * @param \Drupal\state_machine\Plugin\Workflow\WorkflowInterface $workflow
+   *   The workflow that the entity is checked against.
    * @param string $from_state
    *   The initial workflow state.
    * @param string $to_state
@@ -40,8 +43,8 @@ interface WorkflowStatePermissionInterface {
    * @return bool
    *   TRUE if the transition is allowed, FALSE if it is not.
    *
-   * @see \Drupal\joinup_core\WorkflowHelperInterface::getAvailableTargetStates()
+   * @see \Drupal\joinup_workflow\WorkflowHelperInterface::getAvailableTargetStates()
    */
-  public function isStateUpdatePermitted(AccountInterface $account, EntityInterface $entity, string $from_state, string $to_state): bool;
+  public function isStateUpdatePermitted(AccountInterface $account, EntityInterface $entity, WorkflowInterface $workflow, string $from_state, string $to_state): bool;
 
 }

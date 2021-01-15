@@ -33,6 +33,7 @@ trait UserTrait {
       'Organisation' => 'field_user_organisation',
       'Nationality' => 'field_user_nationality',
       'Professional domain' => 'field_user_professional_domain',
+      'Notification frequency' => 'field_user_frequency',
       // @todo Social network
     ];
   }
@@ -91,7 +92,7 @@ trait UserTrait {
       $values['pass'] = $values['name'];
     }
     if (!isset($values['mail'])) {
-      $values['mail'] = $values['name'] . '@example.com';
+      $values['mail'] = str_replace(' ', '', $values['name']) . '@example.com';
     }
 
     $user = (object) $values;

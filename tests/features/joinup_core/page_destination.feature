@@ -1,4 +1,4 @@
-@api @javascript @casMockServer
+@api @javascript @casMockServer @group-b
 Feature:
   As a user of the website
   When I try to login
@@ -7,7 +7,6 @@ Feature:
   Background:
     Given user:
       | Username    | Mr Redirect             |
-      | Password    | Mr Redirect             |
       | First name  | Mr                      |
       | Family name | Redirect                |
       | E-mail      | mr.redirect@example.com |

@@ -5,16 +5,17 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Behat\Mink\Exception\ElementNotFoundException;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
+use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
+use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
+use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use Drupal\file\FileInterface;
 use Drupal\file_url\FileUrlHandler;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\sparql_entity_storage\UriEncoder;
-use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
-use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
-use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
-use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
+use weitzman\LoginTrait\LoginTrait;
 
 /**
  * Provides methods specifically for testing File module's field handling.
@@ -25,6 +26,7 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
 
   use EntityUtilityTrait;
   use FileUrlTrait;
+  use LoginTrait;
   use RdfEntityCreationTrait;
   use SparqlConnectionTrait;
   use StringTranslationTrait;
@@ -51,7 +53,7 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
 
     $this->fileSystem = $this->container->get('file_system');
     // @todo This will no longer be needed once ISAICP-3392 is fixed.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
     $this->sparqlStorage = $this->container->get('entity_type.manager')->getStorage('rdf_entity');
   }
 
@@ -87,6 +89,7 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
       'og_audience' => $solution->id(),
       'field_ad_licence' => $licence->id(),
       'field_ad_description' => $this->randomString(),
+      'parent' => $solution,
     ]);
 
     $field_name = 'field_ad_access_url';
@@ -119,7 +122,7 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
 
     // @todo We should not need cache clearing here. The cache should have been
     //   wiped out at this point. Fix this regression in ISAICP-3392.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
     $this->sparqlStorage->resetCache([$distribution->id()]);
 
     // Check that the file has been uploaded to the file URL field.
@@ -148,7 +151,7 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
 
     // @todo We should not need cache clearing here. The cache should have been
     //   wiped out at this point. Fix this regression in ISAICP-3392.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
     $this->sparqlStorage->resetCache([$distribution->id()]);
 
     // Check that the remote URL replaced the uploaded file.
@@ -198,28 +201,6 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
     elseif ($file_mode === 'remote') {
       $wrapper->fillField('Remote URL', $value);
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   *
-   * When 'joinup_core' module is enabled, the login button has 'Sign in' as
-   * value, thus we cannot use the original method because that searches for the
-   * login button with 'Log in' as value.
-   */
-  protected function drupalLogin(AccountInterface $account): void {
-    if ($this->loggedInUser) {
-      $this->drupalLogout();
-    }
-
-    $this->drupalGet('user/login');
-    $this->submitForm([
-      'name' => $account->getUsername(),
-      'pass' => $account->passRaw,
-    ], $this->t('Sign in'));
-
-    $this->loggedInUser = $account;
-    $this->container->get('current_user')->setAccount($account);
   }
 
 }

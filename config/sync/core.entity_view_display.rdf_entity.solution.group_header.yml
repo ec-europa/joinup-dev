@@ -10,10 +10,12 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_content
+    - field.field.rdf_entity.solution.field_is_content_creation
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
-    - field.field.rdf_entity.solution.field_is_elibrary_creation
+    - field.field.rdf_entity.solution.field_is_eif_category
+    - field.field.rdf_entity.solution.field_is_eif_recommendation
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
     - field.field.rdf_entity.solution.field_is_issue_tracker
@@ -23,9 +25,9 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_owner
-    - field.field.rdf_entity.solution.field_is_pinned_in
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
+    - field.field.rdf_entity.solution.field_is_shared_in
     - field.field.rdf_entity.solution.field_is_show_eira_related
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
@@ -39,6 +41,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_wiki
     - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_policy_domain
+    - field.field.rdf_entity.solution.field_short_id
     - field.field.rdf_entity.solution.field_site_featured
     - field.field.rdf_entity.solution.field_site_pinned
     - field.field.rdf_entity.solution.field_spatial_coverage
@@ -47,10 +50,9 @@ dependencies:
     - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.solution
   module:
-    - ds
     - image
-    - joinup
     - joinup_core
+    - template_suggestion
     - user
 id: rdf_entity.solution.group_header
 targetEntityType: rdf_entity
@@ -58,12 +60,12 @@ bundle: solution
 mode: group_header
 content:
   collections:
-    weight: 7
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   download_total:
-    weight: 5
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -73,14 +75,7 @@ content:
     label: hidden
     settings:
       image_style: banner
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
   field_is_logo:
     type: image
@@ -90,16 +85,22 @@ content:
       image_style: image_style_collection_logo
       image_link: ''
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
+  field_policy_domain:
+    type: entity_reference_custom_link
+    weight: 4
+    region: content
+    label: inline
+    settings:
+      path: 'internal:/search'
+      label: '[term:name]'
+      query_parameters: "f[0]|policy_domain:[term:tid]\r\nf[1]|type:solution"
+      limit: 7
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: solution_header_policy_domain
   label:
     label: hidden
     type: string
@@ -107,18 +108,11 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
   releases_overview:
-    weight: 6
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -130,10 +124,12 @@ hidden:
   field_is_business_process: true
   field_is_contact_information: true
   field_is_content: true
+  field_is_content_creation: true
   field_is_description: true
   field_is_distribution: true
   field_is_documentation: true
-  field_is_elibrary_creation: true
+  field_is_eif_category: true
+  field_is_eif_recommendation: true
   field_is_has_version: true
   field_is_included_asset: true
   field_is_issue_tracker: true
@@ -142,7 +138,6 @@ hidden:
   field_is_metrics_page: true
   field_is_moderation: true
   field_is_owner: true
-  field_is_pinned_in: true
   field_is_product_type: true
   field_is_related_solutions: true
   field_is_shared_in: true
@@ -158,7 +153,7 @@ hidden:
   field_is_webdav_url: true
   field_is_wiki: true
   field_keywords: true
-  field_policy_domain: true
+  field_short_id: true
   field_site_featured: true
   field_site_pinned: true
   field_spatial_coverage: true

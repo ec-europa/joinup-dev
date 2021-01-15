@@ -10,7 +10,7 @@ field_name: field_user_first_name
 entity_type: user
 bundle: user
 label: 'First name'
-description: ''
+description: 'Your first name is publicly visible.'
 required: true
 translatable: false
 default_value: {  }

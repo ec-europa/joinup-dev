@@ -1,0 +1,15 @@
+uuid: a2cfe4d6-b73d-40a6-bdfb-24d2be6aaa5b
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.rdf_graph_manager
+  module:
+    - user
+id: user_remove_role_action.rdf_graph_manager
+label: 'Remove the RDF graph manager role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+weight: 0
+configuration:
+  rid: rdf_graph_manager

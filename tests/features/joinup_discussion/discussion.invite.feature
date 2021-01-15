@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Invite members to subscribe to discussions
   In order to promote discussion of topics
   As a discussion author or moderator
@@ -137,12 +137,12 @@ Feature: Invite members to subscribe to discussions
     And I should not see the text "Shaquila Paternoster (paternoster)"
 
     When I fill in "E-mail" with "gloruskin.hr@example.com"
-    And I hit enter in the keyboard on the field "E-mail"
+    And I hit "enter" in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show only the chips:
       | Glory Ruskin |
     When I fill in "E-mail" with "lcrawford@example.com"
-    And I hit enter in the keyboard on the field "E-mail"
+    And I hit "enter" in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show the chips:
       | Lynwood Crawford |
@@ -156,7 +156,7 @@ Feature: Invite members to subscribe to discussions
 
     # Add another one.
     When I fill in "E-mail" with "shaquila.paternoster@example.com"
-    And I hit enter in the keyboard on the field "E-mail"
+    And I hit "enter" in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show the chips:
       | Shaquila Paternoster |
@@ -167,41 +167,41 @@ Feature: Invite members to subscribe to discussions
     And I press "Invite to discussion"
     Then I should see the success message "2 user(s) have been invited to this discussion."
     And the following email should have been sent:
-      | recipient | Glory Ruskin                                                                                    |
-      | subject   | You are invited to subscribe to a discussion.                                                   |
-      | body      | Lynwood Crawford invites you to participate in the discussion Concerned about dissolved gases?. |
+      | recipient | Glory Ruskin                                                                                              |
+      | subject   | Lynwood Crawford invited you to follow a discussion on Joinup.                                            |
+      | body      | Lynwood Crawford invited you to participate in the discussion Concerned about dissolved gases? on Joinup. |
     And the following email should have been sent:
-      | recipient | paternoster                                                                                     |
-      | subject   | You are invited to subscribe to a discussion.                                                   |
-      | body      | Lynwood Crawford invites you to participate in the discussion Concerned about dissolved gases?. |
+      | recipient | paternoster                                                                                               |
+      | subject   | Lynwood Crawford invited you to follow a discussion on Joinup.                                            |
+      | body      | Lynwood Crawford invited you to participate in the discussion Concerned about dissolved gases? on Joinup. |
     And 2 e-mails should have been sent
 
     # Try if it is possible to resend an invitation.
     Given the mail collector cache is empty
     When I fill in "E-mail" with "gloruskin.hr@example.com"
-    And I hit enter in the keyboard on the field "E-mail"
+    And I hit "enter" in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show only the chips:
       | Glory Ruskin |
     When I press "Invite to discussion"
     Then I should see the success message "The invitation was resent to 1 user(s) that were already invited previously but haven't yet accepted the invitation."
     And the following email should have been sent:
-      | recipient | Glory Ruskin                                                                                    |
-      | subject   | You are invited to subscribe to a discussion.                                                   |
-      | body      | Lynwood Crawford invites you to participate in the discussion Concerned about dissolved gases?. |
+      | recipient | Glory Ruskin                                                                                              |
+      | subject   | Lynwood Crawford invited you to follow a discussion on Joinup.                                            |
+      | body      | Lynwood Crawford invited you to participate in the discussion Concerned about dissolved gases? on Joinup. |
 
     # Accept an invitation by clicking on the link in the e-mail.
     # Initially there should not be any subscriptions.
     And the "Concerned about dissolved gases?" discussion should have 0 subscribers
     Given I am logged in as "Glory Ruskin"
-    When I accept the invitation for the "Concerned about dissolved gases?" discussion
+    When I accept the invitation for the "Concerned about dissolved gases?" discussion content
     Then I should see the heading "Concerned about dissolved gases?"
-    And I should see the success message "You have been subscribed to this discussion."
+    And I should see the success message "You are now following this discussion."
     And the "Concerned about dissolved gases?" discussion should have 1 subscriber
 
     # Try to accept the invitation a second time. An appropriate message should
     # be shown.
-    When I accept the invitation for the "Concerned about dissolved gases?" discussion
+    When I accept the invitation for the "Concerned about dissolved gases?" discussion content
     Then I should see the heading "Concerned about dissolved gases?"
     And I should see the success message "You were already subscribed to this discussion."
     And the "Concerned about dissolved gases?" discussion should have 1 subscriber
@@ -213,7 +213,7 @@ Feature: Invite members to subscribe to discussions
     When I go to the "Concerned about dissolved gases?" discussion
     And I click "Invite"
     And I fill in "E-mail" with "gloruskin.hr@example.com"
-    And I hit enter in the keyboard on the field "E-mail"
+    And I hit "enter" in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show only the chips:
       | Glory Ruskin |

@@ -4,17 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_community_content\Plugin\WorkflowStatePermission;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_core\NodeWorkflowAccessControlHandler;
-use Drupal\joinup_core\WorkflowHelperInterface;
-use Drupal\og\MembershipManagerInterface;
-use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
+use Drupal\joinup_group\Plugin\WorkflowStatePermission\GroupWorkflowStatePermissionBase;
+use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
+use Drupal\state_machine_permissions\StateMachinePermissionStringConstructor;
 
 /**
  * Checks whether changing workflow states is permitted for a given user.
@@ -26,97 +21,45 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @WorkflowStatePermission(
  *   id = "community_content",
  * )
- *
- * @see joinup_community_content.permission_scheme.yml
  */
-class CommunityContentWorkflowStatePermission extends PluginBase implements WorkflowStatePermissionPluginInterface, ContainerFactoryPluginInterface {
-
-  /**
-   * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
-   * The OG membership manager.
-   *
-   * @var \Drupal\og\MembershipManagerInterface
-   */
-  protected $membershipManager;
-
-  /**
-   * The workflow helper service.
-   *
-   * @var \Drupal\joinup_core\WorkflowHelperInterface
-   */
-  protected $workflowHelper;
-
-  /**
-   * Constructs a CollectionWorkflowStatePermissions object.
-   *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The config factory.
-   * @param \Drupal\og\MembershipManagerInterface $membershipManager
-   *   The OG membership manager.
-   * @param \Drupal\joinup_core\WorkflowHelperInterface $workflowHelper
-   *   The workflow helper service.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, MembershipManagerInterface $membershipManager, WorkflowHelperInterface $workflowHelper) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->configFactory = $configFactory;
-    $this->membershipManager = $membershipManager;
-    $this->workflowHelper = $workflowHelper;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('config.factory'),
-      $container->get('og.membership_manager'),
-      $container->get('joinup_core.workflow.helper')
-    );
-  }
+class CommunityContentWorkflowStatePermission extends GroupWorkflowStatePermissionBase {
 
   /**
    * {@inheritdoc}
    */
   public function applies(EntityInterface $entity): bool {
-    return CommunityContentHelper::isCommunityContent($entity);
+    return $entity instanceof CommunityContentInterface;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function isStateUpdatePermitted(AccountInterface $account, EntityInterface $entity, string $from_state, string $to_state): bool {
-    $permission_scheme = $this->configFactory->get('joinup_community_content.permission_scheme')->get('update');
-    $access = FALSE;
-
-    $workflow_id = $entity->{NodeWorkflowAccessControlHandler::STATE_FIELD}->first()->getWorkflow()->getId();
-    $matrix = $permission_scheme[$workflow_id][$to_state][$from_state] ?? NULL;
-    if (!empty($matrix) && $this->workflowHelper->userHasOwnAnyRoles($entity, $account, $matrix)) {
-      $access = TRUE;
+  public function isStateUpdatePermitted(AccountInterface $account, EntityInterface $entity, WorkflowInterface $workflow, string $from_state, string $to_state): bool {
+    if ($account->hasPermission($entity->getEntityType()->getAdminPermission())) {
+      return TRUE;
     }
+
+    $any_permission = StateMachinePermissionStringConstructor::constructTransitionPermission($entity->getEntityTypeId(), $entity->bundle(), $workflow, $from_state, $to_state, TRUE);
+    $own_permission = StateMachinePermissionStringConstructor::constructTransitionPermission($entity->getEntityTypeId(), $entity->bundle(), $workflow, $from_state, $to_state, FALSE);
+    $has_access = $account->hasPermission($any_permission) || (($entity->getOwnerId() === $account->id()) && $account->hasPermission($own_permission));
+    if ($has_access) {
+      return TRUE;
+    }
+
+    // No access has been given by the account permissions, check OG permissions
+    // next.
+    $group = $entity->getGroup();
+    $has_access = $this->workflowHelper->hasOgPermission($any_permission, $group, $account)
+      || ($entity->getOwnerId() === $account->id() && $this->workflowHelper->hasOgPermission($own_permission, $group, $account));
 
     // If the user has access to the 'request_deletion' transition but also has
     // delete permission to the entity, revoke the permission to request
     // deletion.
-    if ($access && $to_state === 'deletion_request') {
-      $access = !$entity->access('delete');
+    if ($has_access && $to_state === 'deletion_request') {
+      $has_access = !$entity->access('delete');
     }
 
-    return $access;
+    return $has_access;
   }
 
 }

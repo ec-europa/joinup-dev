@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Collections Overview
 
   Scenario: Check visibility of "Collections" menu link.
@@ -19,13 +19,13 @@ Feature: Collections Overview
     Given users:
       | Username      | E-mail                       |
       | Madam Shirley | i.see.the.future@example.com |
-    Given collections:
+    And collections:
     # As of ISAICP-3618 descriptions should not be visible in regular tiles.
       | title             | description                    | creation date     | state     |
       | E-health          | Supports health-related fields | 2018-10-04 8:31am | validated |
       | Open Data         | Facilitate access to data sets | 2018-10-04 8:33am | validated |
       | Connecting Europe | Reusable tools and services    | 2018-10-04 8:32am | validated |
-    Given the following owner:
+    And the following owner:
       | name                 | type                    |
       | Organisation example | Non-Profit Organisation |
     # Check that visiting as an anonymous does not create cache for all users.
@@ -33,7 +33,7 @@ Feature: Collections Overview
     And I am on the homepage
     Then I should see the link "Collections"
     And I click "Collections"
-    Then I should see the text "Collections are the main collaborative space"
+    And I should see the text "Collections are the main collaborative space"
     And the page should be cacheable
 
     # Check page for authenticated users.
@@ -70,7 +70,10 @@ Feature: Collections Overview
     When I fill in the following:
       | Title       | Colonies in space                   |
       | Description | Some space mumbo jumbo description. |
-    When I select "Employment and Support Allowance" from "Policy domain"
+      # Contact information data.
+      | Name        | Overviewer contact                  |
+      | E-mail      | overviewer@example.com              |
+    And I select "Employment and Support Allowance" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing owner.
@@ -97,6 +100,7 @@ Feature: Collections Overview
 
     # Clean up the collection that was created manually.
     Then I delete the "Colonies in space" collection
+    And I delete the "Overviewer contact" contact information
 
   @terms
   Scenario: Custom pages should not be visible on the overview page
@@ -144,7 +148,9 @@ Feature: Collections Overview
 
     When I am logged in as "Yiannis Parios"
     And I click "Collections"
-    Then the "My collections content" inline facet should allow selecting the following values "My collections (3), Featured collections (2)"
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | My collections (3)       |
+      | Featured collections (2) |
     And the page should be cacheable
 
     When I click "My collections" in the "My collections content" inline facet
@@ -152,48 +158,61 @@ Feature: Collections Overview
       | Yiannis Parios collection 1 |
       | Yiannis Parios collection 2 |
       | Yiannis Parios collection 3 |
-    And the "My collections content" inline facet should allow selecting the following values "Featured collections (2), All collections"
+    And the "My collections content" inline facet should allow selecting the following values:
+      | Featured collections (2) |
+      | All collections          |
     And the page should be cacheable
 
     # Regression test to ensure that the facets are cached by user.
     # Subsequent page loads of the collections page would lead to cached facets
     # to be leaked to other users.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
+    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
     When I click "All collections" in the "My collections content" inline facet
-    Then the "My collections content" inline facet should allow selecting the following values "My collections (3), Featured collections (2)"
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | My collections (3)       |
+      | Featured collections (2) |
     And the page should be cacheable
 
     When I am logged in as "Carolina Mercedes"
     When I click "Collections"
-    Then the "My collections content" inline facet should allow selecting the following values "Featured collections (2), My collections (1)"
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | Featured collections (2) |
+      | My collections (1)       |
     And the page should be cacheable
 
     When I click "My collections" in the "My collections content" inline facet
     Then I should see the following tiles in the correct order:
       | Fed up meatlovers |
-    And the "My collections content" inline facet should allow selecting the following values "Featured collections (2), All collections"
+    And the "My collections content" inline facet should allow selecting the following values:
+      | Featured collections (2) |
+      | All collections          |
     And the page should be cacheable
     # Verify that the facets are cached for the correct user by visiting again
     # the collections page without any facet filter.
     When I click "All collections" in the "My collections content" inline facet
-    Then the "My collections content" inline facet should allow selecting the following values "Featured collections (2), My collections (1)"
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | Featured collections (2) |
+      | My collections (1)       |
     And the page should be cacheable
 
     When I am an anonymous user
     And I click "Collections"
     # The anonymous user has no access to the "My collections" facet entry.
-    Then the "My collections content" inline facet should allow selecting the following values "Featured collections (2)"
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | Featured collections (2) |
     And the page should be cacheable
 
     When I click "Featured collections" in the "My collections content" inline facet
     Then I should see the following tiles in the correct order:
       | Enemies of the state |
       | Ugly farmers         |
-    And the "My collections content" inline facet should allow selecting the following values "All collections"
+    And the "My collections content" inline facet should allow selecting the following values:
+      | All collections |
     And the page should be cacheable
 
     When I click "All collections" in the "My collections content" inline facet
-    Then the "My collections content" inline facet should allow selecting the following values "Featured collections (2)"
+    Then the "My collections content" inline facet should allow selecting the following values:
+      | Featured collections (2) |
     And the page should be cacheable
 
     When I am logged in as "Carolina Mercedes"

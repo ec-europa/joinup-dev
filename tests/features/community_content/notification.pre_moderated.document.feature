@@ -1,4 +1,4 @@
-@api @email
+@api @email @group-b
 Feature: Notification test for the document transitions on a pre moderated parent.
   In order to manage my collections
   As an owner of the collection
@@ -12,8 +12,8 @@ Feature: Notification test for the document transitions on a pre moderated paren
       | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator |
       | CC member        |           | notify_member@test.com      | CC         | Member      |
     And collections:
-      | title             | state     | elibrary creation | moderation |
-      | CC pre collection | validated | members           | yes        |
+      | title             | state     | content creation | moderation |
+      | CC pre collection | validated | members          | yes        |
     And the following collection user memberships:
       | collection        | user           | roles       |
       | CC pre collection | CC owner       | owner       |

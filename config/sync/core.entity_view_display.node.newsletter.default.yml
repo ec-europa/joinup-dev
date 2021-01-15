@@ -8,8 +8,7 @@ dependencies:
     - field.field.node.newsletter.simplenews_issue
     - node.type.newsletter
   module:
-    - ds
-    - joinup
+    - template_suggestion
     - text
     - user
 _core:
@@ -39,14 +38,7 @@ content:
     settings:
       link: true
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: fieldset
 hidden:
   langcode: true

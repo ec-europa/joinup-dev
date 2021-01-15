@@ -1,0 +1,34 @@
+uuid: d2b61a93-8073-4092-8d25-5160cfd59fd0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.accordion.field_accordion_item
+    - paragraphs.paragraphs_type.accordion
+  module:
+    - paragraphs_jquery_ui_accordion
+    - template_suggestion
+id: paragraph.accordion.default
+targetEntityType: paragraph
+bundle: accordion
+mode: default
+content:
+  field_accordion_item:
+    type: paragraphs_jquery_ui_accordion_formatter
+    weight: 0
+    label: hidden
+    settings:
+      bundle: accordion
+      title: field_paragraphs_item_label
+      content: field_paragraphs_item_content
+      view_mode: default
+      autoscroll_offset: ''
+      active: 0
+      simple_id: 0
+      autoscroll: 0
+      autoscroll_offset_toolbar: 0
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+    region: content
+hidden: {  }

@@ -6,11 +6,13 @@ namespace Drupal\joinup\Traits;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
+use PHPUnit\Framework\Assert;
 
 /**
  * Contains helper methods regarding the organic groups.
@@ -22,31 +24,25 @@ trait OgTrait {
    *
    * @param \Drupal\Core\Session\AccountInterface $user
    *   The user to be assigned as a group member.
-   * @param \Drupal\Core\Entity\EntityInterface $group
-   *   The organic group entity.
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
+   *   The Joinup group entity.
    * @param \Drupal\og\Entity\OgRole[] $roles
    *   An array of OgRoles to be passed to the membership.
-   * @param string $state
+   * @param string|null $state
    *   Optional state to assign to the membership. Can be one of:
    *   - OgMembershipInterface::STATE_ACTIVE
    *   - OgMembershipInterface::STATE_PENDING
    *   - OgMembershipInterface::STATE_BLOCKED.
-   * @param int $created
+   * @param int|null $created
    *   (Optional) The created time of the membership.
    *
    * @throws \Exception
    *    Throws an exception when the user is anonymous or the entity is not a
    *    group.
    */
-  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $group, array $roles = [], string $state = NULL, int $created = NULL): void {
-    if (!Og::isGroup($group->getEntityTypeId(), $group->bundle())) {
-      throw new \Exception("The {$group->label()} is not a group.");
-    }
-
+  protected function subscribeUserToGroup(AccountInterface $user, GroupInterface $group, array $roles = [], ?string $state = NULL, ?int $created = NULL): void {
     // If a membership already exists, load it. Otherwise create a new one.
-    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-    $membership_manager = \Drupal::service('og.membership_manager');
-    $membership = $membership_manager->getMembership($group, $user->id(), OgMembershipInterface::ALL_STATES);
+    $membership = $group->getMembership((int) $user->id(), OgMembershipInterface::ALL_STATES);
     if (!$membership) {
       $membership = OgMembership::create()
         ->setOwner($user)
@@ -96,23 +92,17 @@ trait OgTrait {
    *
    * @param \Drupal\Core\Session\AccountInterface $user
    *   The user to be checked.
-   * @param \Drupal\rdf_entity\RdfInterface $group
-   *   The group entity. In this project, only rdf entities are groups.
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
+   *   The group entity.
    * @param array $roles
    *   An array of roles to be checked. Roles must be passed as simple names
    *    and not as full IDs. Names will be converted accordingly to IDs.
    *
    * @throws \Exception
-   *    Throws exception when the user is not a member or is not an owner.
+   *    Throws exception when the user is not the group owner.
    */
-  protected function assertOgGroupOwnership(AccountInterface $user, RdfInterface $group, array $roles): void {
-    $membership = Og::getMembership($group, $user);
-    if (empty($membership)) {
-      throw new \Exception("User {$user->getAccountName()} is not a member of the {$group->label()} group.");
-    }
-
-    $roles = $this->convertOgRoleNamesToIds($roles, $group);
-    if (array_intersect($roles, $membership->getRolesIds()) != $roles) {
+  protected function assertOgGroupOwnership(AccountInterface $user, GroupInterface $group, array $roles): void {
+    if (!$group->isGroupOwner((int) $user->id())) {
       throw new \Exception("User {$user->getAccountName()} is not the owner of the {$group->label()} group.");
     }
   }
@@ -263,7 +253,7 @@ trait OgTrait {
   /**
    * Returns the group membership for a given user and group.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $group
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
    *   The group to get the membership for.
    * @param \Drupal\Core\Session\AccountInterface $user
    *   The user to get the membership for.
@@ -276,15 +266,48 @@ trait OgTrait {
    * @throws \Exception
    *   Thrown if a membership with the given criteria is not found.
    */
-  protected function getMembershipByGroupAndUser(EntityInterface $group, AccountInterface $user, array $states = [OgMembershipInterface::STATE_ACTIVE]): OgMembershipInterface {
-    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-    $membership_manager = \Drupal::service('og.membership_manager');
-    $membership = $membership_manager->getMembership($group, $user->id(), $states);
+  protected function getMembershipByGroupAndUser(GroupInterface $group, AccountInterface $user, array $states = [OgMembershipInterface::STATE_ACTIVE]): OgMembershipInterface {
+    // Make sure we don't get false positives on previously cached results.
+    self::resetCache();
+
+    $membership = $group->getMembership((int) $user->id(), $states);
     if (empty($membership)) {
       throw new \Exception("Og membership for user {$user->getDisplayName()} in group {$group->label()} was not found.");
     }
 
     return $membership;
+  }
+
+  /**
+   * Checks that the user has permission to perform the operation on the group.
+   *
+   * @param bool $expected_result
+   *   Whether or not the user should have permission to perform the operation.
+   * @param string $operation
+   *   The operation to perform.
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *   The group on which to perform the operation.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *   The user performing the operation.
+   *
+   * @throws \Exception
+   *   When the access to perform the operation is not as expected.
+   */
+  protected function assertGroupEntityOperation(bool $expected_result, string $operation, EntityInterface $group, AccountInterface $user): void {
+    $user_name = $user->getAccountName();
+    $group_name = $group->label();
+    $message = "The $operation operation should " . ($expected_result ? '' : 'not ') . "be accessible for $user_name in $group_name";
+    Assert::assertEquals($expected_result, $group->access($operation, $user), $message);
+  }
+
+  /**
+   * Clears the OG related caches.
+   */
+  protected function resetCache(): void {
+    \Drupal::entityTypeManager()->getStorage('og_membership')->resetCache();
+    Og::reset();
+    parent::clearStaticCaches();
+    \Drupal::service('cache.static')->deleteAll();
   }
 
 }

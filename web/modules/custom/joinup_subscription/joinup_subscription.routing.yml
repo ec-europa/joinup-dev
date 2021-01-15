@@ -1,10 +1,32 @@
-joinup_subscription.subscription_settings:
-  path: '/user/{user}/subscription_settings'
+joinup_subscription.subscriptions:
+  path: '/user/{user}/subscriptions'
   defaults:
-    _controller: '\Drupal\joinup_subscription\Controller\SubscriptionSettings::build'
+    _form: '\Drupal\joinup_subscription\Form\MySubscriptionsForm'
+    # Since this route is for viewing other people's subscriptions, this is not
+    # titled 'My subscriptions' but 'Subscription settings'.
     _title: 'Subscription settings'
   requirements:
-    _custom_access: '\Drupal\joinup_subscription\Controller\SubscriptionSettings::access'
+    _custom_access: '\Drupal\joinup_subscription\Controller\MySubscriptionsController::access'
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+joinup_subscription.my_subscriptions:
+  path: '/user/subscriptions'
+  defaults:
+    _controller: '\Drupal\joinup_subscription\Controller\MySubscriptionsController::build'
+    _title: 'My subscriptions'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+
+joinup_subscription.unsubscribe_all:
+  path: '/user/{user}/unsubscribe-all'
+  defaults:
+    _form: '\Drupal\joinup_subscription\Form\UnsubscribeFromAllCollectionsForm'
+    _title: 'Unsubscribe from all groups'
+  requirements:
+    _custom_access: '\Drupal\joinup_subscription\Form\UnsubscribeFromAllCollectionsForm::access'
   options:
     parameters:
       user:

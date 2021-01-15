@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Contact information access
   In order to see contextualized information
   As a visitor
@@ -11,7 +11,7 @@ Feature: Contact information access
       | Website URL | http://shield.gov       |
     When I am an anonymous user
     When I go to the "Phil Coulson" contact information page
-    Then I should see the text "Access denied. You must sign in to view this page. "
+    Then I should see the heading "Sign in to continue"
 
   Scenario: Facilitator can edit contact information
     Given the following owner:

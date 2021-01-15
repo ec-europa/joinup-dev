@@ -16,10 +16,10 @@ use Drupal\pipeline\Plugin\PipelineStepWithClientRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity_provenance\ProvenanceHelperInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
+use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -76,7 +76,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
@@ -90,7 +90,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   The RDF schema field validator service.
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, ProvenanceHelperInterface $rdf_entity_provenance_helper, DateFormatterInterface $date_formatter, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql, $entity_type_manager);
     $this->entityTypeManager = $entity_type_manager;
     $this->provenanceHelper = $rdf_entity_provenance_helper;
     $this->dateFormatter = $date_formatter;
@@ -106,7 +106,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('sparql_endpoint'),
+      $container->get('sparql.endpoint'),
       $container->get('entity_type.manager'),
       $container->get('rdf_entity_provenance.provenance_helper'),
       $container->get('date.formatter'),

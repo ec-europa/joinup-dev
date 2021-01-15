@@ -1,27 +1,26 @@
-@api
+@api @group-a
 Feature: Proposing a collection
   In order to create a new collection on Joinup
   As the product owner of a collection of software solutions
   I need to be able to propose a collection for inclusion on Joinup
-
-  # Todo: It still needs to be decided on which pages the "Propose collection"
-  # button will be shown. It might be removed from the homepage in the future.
-  # Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2298
 
   # An anonymous user should be shown the option to add a collection, so that
   # the user will be aware that collections can be added by the public, even
   # though you need to sign in to do so.
   Scenario: Anonymous user needs to sign in before creating a collection
     Given users:
-      | Username      | Password |
-      | Cecil Clapman | claps    |
+      | Username      | E-mail           |
+      | Cecil Clapman | cecil@example.eu |
+    Given CAS users:
+      | Username | E-mail                | Password  | First name | Last name | Local username |
+      | cclapman | clapman@ec.example.eu | abc123!#$ | Cecil J    | Clapman   | Cecil Clapman  |
     Given I am an anonymous user
     When I go to the propose collection form
-    Then I should see the error message "Access denied. You must sign in to view this page."
+    Then I should see the heading "Sign in to continue"
     When I fill in the following:
-      | Email or username | Cecil Clapman |
-      | Password          | claps         |
-    And I press "Sign in"
+      | E-mail address | clapman@ec.example.eu |
+      | Password       | abc123!#$             |
+    And I press "Log in"
     Then I should see the heading "Propose collection"
 
   @terms
@@ -35,17 +34,32 @@ Feature: Proposing a collection
     And the following fields should not be present "Current workflow state, Langcode, Translation, Motivation"
     And the following field widgets should be present "Contact information, Owner"
     # Ensure that the description for the "Access url" is shown.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3196
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3196
     And I should see the description "Web page for the external Repository." for the "Access URL" field
     And I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
     And I should see the description "For best result the image must be larger than 2400x345 pixels." for the "Banner" field
+
+    # Check that validations errors are shown for required fields.
+    When I press "Propose"
+    Then I should see the following error messages:
+      | error messages                    |
+      | Title field is required.          |
+      | Description field is required.    |
+      | Policy domain field is required.  |
+      | Owner field is required.          |
+      | Name field is required.           |
+      | E-mail address field is required. |
+
     When I fill in the following:
-      | Title            | Ancient and Classical Mythology                                                                      |
-      | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
+      | Title                 | Ancient and Classical Mythology                                                                      |
+      | Description           | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
       | Geographical coverage | Belgium                                                                                              |
+      # Contact information data.
+      | Name                  | Contact person                                                                                       |
+      | E-mail                | contact_person@example.com                                                                           |
+      | Keywords              | Some keyword                                                                                         |
     When I select "HR" from "Policy domain"
-    And I check "Closed collection"
-    And I select "Only members can create new content." from "eLibrary creation"
+    And I select the radio button "Only members can create content."
     And I check "Moderated"
     # The owner field should have a help text.
     And I should see the text "The Owner is the organisation that owns this entity and is the only responsible for it."
@@ -54,12 +68,15 @@ Feature: Proposing a collection
     And I fill in "Owner" with "Organisation example"
     And I press "Propose"
     # Regression test for setting the Logo and Banner fields as optional.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3215
+    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3215
     Then I should not see the following error messages:
       | error messages           |
       | Field Logo is required   |
       | Field Banner is required |
     And I should see the heading "Ancient and Classical Mythology"
+    # Regression test for the keywords field in the about page.
+    And I should not see the text "Keywords" in the "Content" region
+    And I should not see the text "Some keyword" in the "Content" region
     And I should see a logo on the header
     And I should see a banner on the header
     And I should see "Thank you for proposing a collection. Your request is currently pending approval by the site administrator."
@@ -75,14 +92,15 @@ Feature: Proposing a collection
     When I click the contextual link "Add new page" in the "Left sidebar" region
     Then I should see the heading "Add custom page"
     When I fill in the following:
-      | Title | About                                                          |
+      | Title | About this group                                               |
       | Body  | <p>Some more<em>information</em><br />about the collection.<p> |
     And I press "Save"
-    Then I should see the success message "Custom page About has been created."
+    Then I should see the success message "Custom page About this group has been created."
     And the page should contain the html text "<p>Some more<em>information</em><br>about the collection.</p>"
 
     # Clean up the collection that was created.
     Then I delete the "Ancient and Classical Mythology" collection
+    And I delete the "Contact person" contact information
 
   Scenario: Propose a collection with a duplicate name
     Given the following collection:
@@ -93,6 +111,9 @@ Feature: Proposing a collection
     And I fill in the following:
       | Title       | The Ratcatcher's Guild                                            |
       | Description | A guild of serious men with sacks in which things are struggling. |
+      # Contact information data.
+      | Name        | Some contact                                                      |
+      | E-mail      | some.contact@example.com                                          |
     And I press "Save as draft"
     Then I should see the error message "Content with title The Ratcatcher's Guild already exists. Please choose a different title."
 
@@ -100,56 +121,16 @@ Feature: Proposing a collection
   # This is a regression test for a bug in which the label texts of the options
   # vanished after performing an AJAX request in a different element on the
   # page.
-  # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
-  Scenario: E-library options should not vanish after AJAX request.
+  # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
+  Scenario: Content creation options should not vanish after AJAX request.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
     And I click the "Additional fields" tab
     And I attach the file "banner1.jpg" to "Banner"
     And I wait for AJAX to finish
     Then I should see the link "banner1.jpg"
-    And I should see the text "Only members can create new content."
-    And I should see the text "Any registered user can create new content."
-
-  @javascript
-  Scenario: eLibrary creation options should adapt to the state of the 'closed collection' option
-    Given I am logged in as a user with the "authenticated" role
-    When I go to the propose collection form
-    And I click the "Additional fields" tab
-
-    # Initially the collection is open, check if the eLibrary options are OK.
-    Then the option "Only members can create new content." should be selected
-    And the option "Any registered user can create new content." should not be selected
-    And I should not see the text "Only collection facilitators can create new content."
-
-    When I move the "eLibrary creation" slider to the right
-    Then the option "Any registered user can create new content." should be selected
-    And the option "Only members can create new content." should not be selected
-
-    # When toggling to closed, the option 'any registered user' should disappear
-    # and the option for facilitators should appear.
-    When I check "Closed collection"
-    And I wait for AJAX to finish
-    Then the option "Only members can create new content." should be selected
-    And the option "Only collection facilitators can create new content." should not be selected
-    And I should not see the text "Any registered user can create new content."
-
-    # Check if moving the slider selects the correct option. Visually the handle
-    # of the slider moves underneath the other option.
-    When I move the "eLibrary creation" slider to the right
-    Then the option "Only collection facilitators can create new content." should be selected
-    And the option "Only members can create new content." should not be selected
-
-    # This is a regression test for a bug in which the both the previous option
-    # and the default option were selected after cycling the collection
-    # checkbox status open-closed-open-closed.
-    # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
-    When I uncheck "Closed collection"
-    And I wait for AJAX to finish
-    And I check "Closed collection"
-    And I wait for AJAX to finish
-    Then the option "Only members can create new content." should be selected
-    And the option "Only collection facilitators can create new content." should not be selected
+    And I should see the text "Only members can create content."
+    And I should see the text "Any user can create content."
 
   @javascript
   Scenario: Propose collection form fields should be organized in tabs.
@@ -157,23 +138,23 @@ Feature: Proposing a collection
     When I go to the propose collection form
     Then the following fields should be visible "Title, Description, Policy domain"
     And the following field widgets should be visible "Owner"
-    And the following fields should not be visible "Closed collection, eLibrary creation, Moderated, Abstract, Geographical coverage"
+    And the following fields should not be visible "Moderated, Abstract, Content creation, Geographical coverage"
     And the following fields should not be present "Affiliates"
-    And the following field widgets should not be visible "Contact information"
+    And the following field widgets should be visible "Contact information"
 
     When I click "Additional fields" tab
     Then the following fields should not be visible "Title, Description, Policy domain"
     And the following field widgets should not be visible "Owner"
-    And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Geographical coverage"
+    And the following fields should be visible "Content creation, Moderated, Abstract, Geographical coverage"
     And the following fields should not be present "Affiliates"
-    And the following field widgets should be visible "Contact information"
+    And the following field widgets should not be visible "Contact information"
 
   @javascript @terms
   # This is a regression test for a bug where nothing was happening when
   # submitting the collection form after not filling some of the required
   # fields. This was due the HTML5 constraint validation not being able to
   # focus the wanted element because it was hidden by css.
-  # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3057
+  # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3057
   Scenario: Browser validation errors should focus the correct field group.
     Given I am logged in as an "authenticated user"
     When I go to the propose collection form
@@ -185,8 +166,11 @@ Feature: Proposing a collection
     # Our code should have changed the active tab now. A browser message will
     # be shown to the user.
     Then the "Main fields" tab should be active
-    # Fill the required field.
+    # Fill the required fields.
     When I select "HR" from "Policy domain"
+    And I fill in the following:
+      | Name   | Contact person             |
+      | E-mail | contact_person@example.com |
     And I press "Propose"
     # The backend-side validation will kick in now.
     Then I should see the error message "Description field is required."

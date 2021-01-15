@@ -2,45 +2,63 @@ uuid: 9d306815-7061-4a72-a695-1d548b1d577c
 langcode: en
 status: true
 dependencies:
+  module:
+    - asset_distribution
+    - custom_page
+    - joinup_featured
+    - joinup_search
+    - meta_entity
+    - node
+    - paragraphs
+    - publication_date
+    - rdf_entity
+    - rdf_taxonomy
+    - search_api
+    - search_api_solr
+    - taxonomy
+    - user
   config:
-    - field.storage.node.field_event_agenda
+    - field.storage.meta_entity.count
+    - field.storage.meta_entity.field_featured
+    - field.storage.meta_entity.field_pinned_in
     - field.storage.node.body
+    - field.storage.node.field_event_agenda
     - field.storage.node.field_event_date
-    - field.storage.node.field_news_headline
     - field.storage.node.field_location
+    - field.storage.node.field_news_headline
     - field.storage.node.field_organisation
+    - field.storage.node.field_paragraphs_body
     - field.storage.node.field_scope
     - field.storage.node.field_short_title
-    - field.storage.meta_entity.count
+    - field.storage.paragraph.field_body
+    - field.storage.rdf_entity.field_ad_description
     - field.storage.rdf_entity.field_ar_abstract
-    - field.storage.rdf_entity.field_isr_contact_information
+    - field.storage.rdf_entity.field_ar_description
     - field.storage.rdf_entity.field_ci_name
     - field.storage.rdf_entity.field_is_contact_information
-    - field.storage.rdf_entity.field_licence_spdx_licence
-    - field.storage.rdf_entity.field_licence_description
-    - field.storage.rdf_entity.field_ad_description
     - field.storage.rdf_entity.field_is_description
-    - field.storage.rdf_entity.field_isr_description
-    - field.storage.rdf_entity.field_ar_description
+    - field.storage.rdf_entity.field_is_eif_category
+    - field.storage.rdf_entity.field_is_eif_recommendation
     - field.storage.rdf_entity.field_is_owner
-    - field.storage.rdf_entity.field_owner_name
-    - field.storage.rdf_entity.field_isr_owner
-    - field.storage.rdf_entity.field_is_pinned_in
-    - field.storage.rdf_entity.field_isr_release_notes
     - field.storage.rdf_entity.field_is_solution_type
+    - field.storage.rdf_entity.field_isr_contact_information
+    - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_isr_owner
+    - field.storage.rdf_entity.field_isr_release_notes
+    - field.storage.rdf_entity.field_licence_description
+    - field.storage.rdf_entity.field_licence_spdx_licence
+    - field.storage.rdf_entity.field_owner_name
+    - field.storage.taxonomy_term.field_eif_identifier
+    - field.storage.taxonomy_term.field_eif_related_term
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_organisation
     - search_api.server.solr_published
-  module:
-    - node
-    - publication_date
-    - meta_entity
-    - rdf_entity
-    - user
-    - search_api
-    - joinup_search
-    - search_api_solr
+third_party_settings:
+  search_api_solr:
+    finalize: false
+    commit_before_finalize: false
+    commit_after_finalize: false
 id: published
 name: 'Published entities index'
 description: ''
@@ -134,6 +152,22 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_ar_description
+  field_eif_identifier:
+    label: Identifier
+    datasource_id: 'entity:taxonomy_term'
+    property_path: field_eif_identifier
+    type: text
+    dependencies:
+      config:
+        - field.storage.taxonomy_term.field_eif_identifier
+  field_eif_related_term:
+    label: 'Related term'
+    datasource_id: 'entity:taxonomy_term'
+    property_path: field_eif_related_term
+    type: text
+    dependencies:
+      config:
+        - field.storage.taxonomy_term.field_eif_related_term
   field_event_agenda:
     label: 'Agenda » Processed text'
     datasource_id: 'entity:node'
@@ -150,6 +184,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_event_date
+  field_event_date_end:
+    label: 'Event date: end'
+    datasource_id: 'entity:node'
+    property_path: 'field_event_date:end_value'
+    type: date
+    dependencies:
+      config:
+        - field.storage.node.field_event_date
   field_is_description:
     label: 'Description » Processed text'
     datasource_id: 'entity:rdf_entity'
@@ -158,14 +200,22 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_is_description
-  field_is_pinned_in:
-    label: 'Pinned in'
+  field_is_eif_category:
+    label: 'EIF category'
     datasource_id: 'entity:rdf_entity'
-    property_path: field_is_pinned_in
+    property_path: field_is_eif_category
     type: string
     dependencies:
       config:
-        - field.storage.rdf_entity.field_is_pinned_in
+        - field.storage.rdf_entity.field_is_eif_category
+  field_is_eif_recommendation:
+    label: 'EIF reference'
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_is_eif_recommendation
+    type: string
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_is_eif_recommendation
   field_is_solution_type:
     label: 'Solution type'
     datasource_id: 'entity:rdf_entity'
@@ -351,6 +401,14 @@ field_settings:
     dependencies:
       module:
         - rdf_entity
+  name:
+    label: Name
+    datasource_id: 'entity:taxonomy_term'
+    property_path: name
+    type: text
+    dependencies:
+      module:
+        - taxonomy
   nid:
     label: ID
     datasource_id: 'entity:node'
@@ -359,6 +417,36 @@ field_settings:
     dependencies:
       module:
         - node
+  node_featured:
+    label: 'Featured site-wide'
+    datasource_id: 'entity:node'
+    property_path: 'featured:entity:field_featured'
+    type: string
+    dependencies:
+      module:
+        - meta_entity
+        - node
+      config:
+        - field.storage.meta_entity.field_featured
+  node_pinned_in:
+    label: 'Pinned in'
+    datasource_id: 'entity:node'
+    property_path: 'pinned_in:entity:field_pinned_in:entity:id'
+    type: string
+    dependencies:
+      module:
+        - meta_entity
+        - rdf_entity
+      config:
+        - field.storage.meta_entity.field_pinned_in
+  parent:
+    label: 'Term Parents'
+    datasource_id: 'entity:taxonomy_term'
+    property_path: parent
+    type: string
+    dependencies:
+      module:
+        - taxonomy
   policy_domain:
     label: 'Policy domain'
     property_path: aggregated_field
@@ -368,6 +456,17 @@ field_settings:
       fields:
         - 'entity:node/field_policy_domain'
         - 'entity:rdf_entity/field_policy_domain'
+  processed:
+    label: 'Body » Paragraph » Body » Processed text'
+    datasource_id: 'entity:node'
+    property_path: 'field_paragraphs_body:entity:field_body:processed'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_paragraphs_body
+        - field.storage.paragraph.field_body
+      module:
+        - paragraphs
   published_at:
     label: 'Published on'
     datasource_id: 'entity:node'
@@ -392,6 +491,38 @@ field_settings:
     dependencies:
       module:
         - rdf_entity
+  rdf_featured:
+    label: 'Featured site-wide'
+    datasource_id: 'entity:rdf_entity'
+    property_path: 'featured:entity:field_featured'
+    type: string
+    dependencies:
+      module:
+        - meta_entity
+        - rdf_entity
+      config:
+        - field.storage.meta_entity.field_featured
+  rdf_pinned_in:
+    label: 'Pinned in'
+    datasource_id: 'entity:rdf_entity'
+    property_path: 'pinned_in:entity:field_pinned_in:entity:id'
+    type: string
+    dependencies:
+      module:
+        - meta_entity
+        - rdf_entity
+      config:
+        - field.storage.meta_entity.field_pinned_in
+  reverse_eif_related_term_tid:
+    label: 'Reverse » Related term » Term ID'
+    datasource_id: 'entity:taxonomy_term'
+    property_path: 'search_api_reverse_entity_references_taxonomy_term__field_eif_related_term:tid'
+    type: text
+  reverse_field_eif_identifier:
+    label: 'Reverse » Related term » Identifier'
+    datasource_id: 'entity:taxonomy_term'
+    property_path: 'search_api_reverse_entity_references_taxonomy_term__field_eif_related_term:field_eif_identifier'
+    type: text
   rid:
     label: 'Rdf Type'
     datasource_id: 'entity:rdf_entity'
@@ -401,7 +532,7 @@ field_settings:
       module:
         - rdf_entity
   shared_in:
-    label: 'Shared in'
+    label: 'Shared on'
     property_path: aggregated_field
     type: string
     configuration:
@@ -416,8 +547,8 @@ field_settings:
     configuration:
       type: union
       fields:
-        - 'entity:node/field_site_featured'
-        - 'entity:rdf_entity/field_site_featured'
+        - 'entity:node/featured:entity:field_featured'
+        - 'entity:rdf_entity/featured:entity:field_featured'
   site_pinned:
     label: 'Site pinned'
     property_path: aggregated_field
@@ -428,7 +559,7 @@ field_settings:
         - 'entity:node/field_site_pinned'
         - 'entity:rdf_entity/field_site_pinned'
   spatial_coverage:
-    label: 'Spatial coverage'
+    label: 'Geographical coverage'
     property_path: aggregated_field
     type: string
     configuration:
@@ -445,6 +576,14 @@ field_settings:
     dependencies:
       module:
         - node
+  tid:
+    label: 'Term ID'
+    datasource_id: 'entity:taxonomy_term'
+    property_path: tid
+    type: string
+    dependencies:
+      module:
+        - rdf_taxonomy
   title:
     label: Title
     datasource_id: 'entity:node'
@@ -462,21 +601,59 @@ field_settings:
     dependencies:
       module:
         - user
+  vid:
+    label: Vocabulary
+    datasource_id: 'entity:taxonomy_term'
+    property_path: vid
+    type: string
+    dependencies:
+      module:
+        - taxonomy
+  weight:
+    label: Weight
+    datasource_id: 'entity:taxonomy_term'
+    property_path: weight
+    type: integer
+    dependencies:
+      module:
+        - taxonomy
 datasource_settings:
   'entity:node':
     bundles:
-      default: true
-      selected: {  }
+      default: false
+      selected:
+        - custom_page
+        - discussion
+        - document
+        - event
+        - news
+        - newsletter
+        - tallinn_report
+        - video
     languages:
       default: true
       selected: {  }
   'entity:rdf_entity':
     bundles:
-      default: true
+      default: false
       selected:
-        - contact_information
-        - owner
-        - provenance_activity
+        - asset_distribution
+        - asset_release
+        - collection
+        - licence
+        - solution
+        - spdx_licence
+    languages:
+      default: true
+      selected: {  }
+  'entity:taxonomy_term':
+    bundles:
+      default: false
+      selected:
+        - eif_conceptual_model
+        - eif_interoperability_layer
+        - eif_principle
+        - eif_recommendation
     languages:
       default: true
       selected: {  }
@@ -508,7 +685,7 @@ processor_settings:
       h3: 2
       strong: 2
     weights:
-      preprocess_index: -15
+      preprocess_index: -43
       preprocess_query: -15
   ignorecase:
     all_fields: false
@@ -534,13 +711,22 @@ processor_settings:
       - label
       - title
     weights:
-      preprocess_index: -50
+      preprocess_index: -48
       preprocess_query: -50
+  include_custom_page_content:
+    weights:
+      preprocess_index: -49
+  index_distribution_data:
+    weights:
+      preprocess_index: -50
   joinup_entity_published_revision: {  }
   joinup_entity_status:
     inverse: false
   rendered_item: {  }
-  solr_date_range: {  }
+  reverse_entity_references: {  }
+  solr_date_range:
+    weights:
+      preprocess_index: 0
   stopwords:
     all_fields: false
     fields:
@@ -596,7 +782,7 @@ processor_settings:
       - will
       - with
     weights:
-      preprocess_index: -47
+      preprocess_index: -45
       preprocess_query: -47
   tokenizer:
     all_fields: false
@@ -628,7 +814,7 @@ processor_settings:
     overlap_cjk: 1
     minimum_word_size: '3'
     weights:
-      preprocess_index: -49
+      preprocess_index: -47
       preprocess_query: -49
   transliteration:
     all_fields: false
@@ -656,7 +842,7 @@ processor_settings:
       - label
       - title
     weights:
-      preprocess_index: -48
+      preprocess_index: -46
       preprocess_query: -48
   type_boost:
     boosts:
@@ -675,10 +861,12 @@ processor_settings:
         bundle_boosts:
           collection: !!float 21
           solution: !!float 13
+      'entity:taxonomy_term':
+        datasource_boost: !!float 1
       'entity:user':
         datasource_boost: !!float 0
     weights:
-      preprocess_index: 0
+      preprocess_index: -42
 tracker_settings:
   default:
     indexing_order: fifo

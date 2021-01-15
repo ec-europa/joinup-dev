@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Submit the contact form
   In order to avoid having inappropriate content on the website
   As a moderator, group administrator or content owner

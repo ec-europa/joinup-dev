@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup\Traits;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Element\TraversableElement;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\ContextualLinksHelper;
 
@@ -40,13 +41,13 @@ trait ContextualLinksTrait {
   /**
    * Returns the paths for all the contextual links in the given element.
    *
-   * @param \Behat\Mink\Element\NodeElement $element
+   * @param \Behat\Mink\Element\TraversableElement $element
    *   The element to check.
    *
    * @return array
    *   An array of link paths found keyed by title.
    */
-  protected function findContextualLinkPaths(NodeElement $element): array {
+  protected function findContextualLinkPaths(TraversableElement $element): array {
     return $this->getContextualLinksHelper()->findContextualLinkPaths($element);
   }
 
@@ -57,19 +58,19 @@ trait ContextualLinksTrait {
    * not click the contextual link but redirect the browser to the corresponding
    * page if the browser doesn't support JavaScript.
    *
-   * @param \Behat\Mink\Element\NodeElement $element
+   * @param \Behat\Mink\Element\TraversableElement $element
    *   The element that contains the contextual links.
    * @param string $link
    *   The link title.
    */
-  protected function clickContextualLink(NodeElement $element, string $link): void {
+  protected function clickContextualLink(TraversableElement $element, string $link): void {
     $this->getContextualLinksHelper()->clickContextualLink($element, $link);
   }
 
   /**
    * Returns the contextual links button that is present in the given element.
    *
-   * @param \Behat\Mink\Element\NodeElement $element
+   * @param \Behat\Mink\Element\TraversableElement $element
    *   The element in which the contextual links button is expected to reside.
    *
    * @return \Behat\Mink\Element\NodeElement
@@ -79,7 +80,7 @@ trait ContextualLinksTrait {
    *   Thrown when the region or the contextual links button was not found on
    *   the page.
    */
-  protected function findContextualLinkButton(NodeElement $element): NodeElement {
+  protected function findContextualLinkButton(TraversableElement $element): NodeElement {
     // Check if the wrapper for the contextual links is present on the page.
     // Since the button is appended by the contextual.js script, we might need
     // to wait a bit before the button itself is visible.

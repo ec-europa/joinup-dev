@@ -15,7 +15,7 @@ track:
   colorbox: true
   userid: false
   messages: {  }
-  site_search: false
+  site_search: true
 privacy:
   donottrack: true
 custom:

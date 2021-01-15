@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature:
   As a privileged user
   I want to create custom pages inside unpublished collections or solutions
@@ -17,14 +17,14 @@ Feature:
     # An anonymous user can see only the custom pages of the published
     # groups.
     When I am on the homepage
-    And I enter "About" in the header search bar and hit enter
+    And I enter "About" in the search bar and press enter
     Then I should see the "About places" tile
     But I should not see the "About means" tile
 
     # Facilitators can see the content created inside their respective group
     # but not in the search because the content are not indexed.
     When I am logged in as a facilitator of the "Drafty things" <group>
-    And I enter "About" in the header search bar and hit enter
+    And I enter "About" in the search bar and press enter
     Then I should see the "About places" tile
     And I should not see the "About means" tile
 

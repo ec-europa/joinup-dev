@@ -13,7 +13,6 @@ description: ''
 tag: ''
 base_table: search_api_index_published
 base_field: search_api_id
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -72,6 +71,11 @@ display:
               licence: view_mode_search_list_item
               solution: default
               spdx_licence: default
+            'entity:taxonomy_term':
+              eif_conceptual_model: default
+              eif_interoperability_layer: default
+              eif_principle: default
+              eif_recommendation: default
             'entity:user':
               user: default
       fields:
@@ -160,6 +164,8 @@ display:
             placeholder: ''
             min_placeholder: ''
             max_placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -202,6 +208,8 @@ display:
             placeholder: ''
             min_placeholder: ''
             max_placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -227,6 +235,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: label
           plugin_id: search_api
       title: 'Licence list'
       header:
@@ -249,18 +258,75 @@ display:
       max-age: -1
       contexts:
         - 'languages:language_interface'
-        - user
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
+        - 'search_api_list:published'
   licence_list_block:
     display_plugin: block
     id: licence_list_block
-    display_title: Block
+    display_title: 'Block (JLA)'
     position: 1
     display_options:
       display_extenders: {  }
+      display_description: ''
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_interface'
-        - user
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
+        - 'search_api_list:published'
+  licence_list_block_jlc:
+    display_plugin: block
+    id: licence_list_block_jlc
+    display_title: 'Block (JLC)'
+    position: 1
+    display_options:
+      display_extenders: {  }
+      display_description: ''
+      style:
+        type: default
+        options:
+          row_class: ''
+          default_row_class: false
+          uses_fields: false
+      defaults:
+        style: false
+        row: false
+      row:
+        type: search_api
+        options:
+          view_modes:
+            'entity:node':
+              custom_page: default
+              discussion: default
+              document: default
+              event: default
+              news: default
+              newsletter: default
+              tallinn_report: default
+              video: default
+            'entity:rdf_entity':
+              asset_distribution: default
+              asset_release: default
+              collection: default
+              licence: compatibility_check
+              solution: default
+              spdx_licence: default
+            'entity:taxonomy_term':
+              eif_conceptual_model: default
+              eif_interoperability_layer: default
+              eif_principle: default
+              eif_recommendation: default
+            'entity:user':
+              user: default
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
+        - 'search_api_list:published'

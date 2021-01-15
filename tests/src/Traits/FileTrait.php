@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
 
 use Drupal\file\Entity\File;
@@ -21,7 +23,7 @@ trait FileTrait {
    *
    * @param string $filename
    *   The file name given by the user.
-   * @param string $files_path
+   * @param string|null $files_path
    *   The path of the directory where the file is located. Defaults to the path
    *   configured in the 'files_path' parameter in behat.yml.
    *
@@ -31,7 +33,7 @@ trait FileTrait {
    * @throws \Exception
    *   Throws an exception when the file is not found.
    */
-  protected function createFile($filename, $files_path = NULL) {
+  protected function createFile(string $filename, ?string $files_path = NULL) {
     // Default to the 'files_path' mink parameter defined in behat.yml.
     if (empty($files_path)) {
       $files_path = $this->getMinkParameter('files_path');
@@ -43,7 +45,7 @@ trait FileTrait {
     // Copy the file into the public files folder and turn it into a File
     // entity before linking it to the collection.
     $uri = 'public://' . $filename;
-    $destination = file_unmanaged_copy($path, $uri);
+    $destination = \Drupal::service('file_system')->copy($path, $uri);
     $file = File::create(['uri' => $destination, 'filename' => $filename]);
     $file->save();
 
@@ -94,7 +96,7 @@ trait FileTrait {
   /**
    * Remove any created files.
    *
-   * @AfterScenario
+   * @AfterScenario @api
    */
   public function cleanFiles() {
     // Remove the image entities that were attached to the collections.

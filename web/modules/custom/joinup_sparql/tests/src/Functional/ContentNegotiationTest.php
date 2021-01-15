@@ -6,10 +6,10 @@ namespace Drupal\Tests\joinup_sparql\Functional;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_taxonomy\Entity\RdfTerm;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_taxonomy\Entity\RdfTerm;
 use EasyRdf\Format;
 
 /**
@@ -52,17 +52,22 @@ class ContentNegotiationTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'joinup_sparql',
+    'joinup_content_negotiation_test',
     'page_cache',
-    'rdf_taxonomy',
-    'sparql_entity_serializer_test',
   ];
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function bootEnvironment() {
+    parent::bootEnvironment();
     $this->setUpSparql();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp() {
     parent::setUp();
     user_role_grant_permissions(AccountInterface::ANONYMOUS_ROLE, ['view rdf entity']);
   }
@@ -132,7 +137,7 @@ class ContentNegotiationTest extends BrowserTestBase {
    *
    * This is a complex/composite assertion that performs a GET request to the
    * $entity canonical page, by sending $accept_header as 'Accept' header value.
-   * Three elements are checked twice, first for the non-cached page and second
+   * Three elements are checked twice, once for the non-cached page and twice
    * for the cached version:
    * - If the page has been retrieved from the backend or from cache.
    * - The response 'Content-Type' header.
@@ -171,7 +176,7 @@ class ContentNegotiationTest extends BrowserTestBase {
 
     // Check that the page was cached.
     $this->assertEquals('HIT', $session->getResponseHeader('X-Drupal-Cache'));
-    // Check that we don't get the cache from othjer format.
+    // Check that we don't get the cache from other format.
     $this->assertStringStartsWith($this->getMimeType($expected_format), $session->getResponseHeader('Content-Type'));
     // Check the response body. On 'text/html', we only check the first part
     // that always is a standard HTML.
@@ -214,10 +219,10 @@ class ContentNegotiationTest extends BrowserTestBase {
    */
   protected function getExpectedBody(string $format_name, ContentEntityInterface $entity): string {
     if (!isset($this->expectedBody)) {
-      $fixtures_dir = drupal_get_path('module', 'sparql_entity_storage') . '/tests/fixtures/content-negotiation';
+      $fixtures_dir = __DIR__ . '/../../fixtures/content-negotiation';
       foreach (static::FORMATS as $format) {
         foreach (['rdf_entity', 'taxonomy_term'] as $entity_type_id) {
-          $path = DRUPAL_ROOT . "/$fixtures_dir/$entity_type_id/$format";
+          $path = realpath("$fixtures_dir/$entity_type_id/$format");
           $this->expectedBody[$entity_type_id][$format] = trim(file_get_contents($path));
         }
       }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_user\Routing;
 
 use Drupal\Core\Routing\RouteSubscriberBase;
@@ -19,6 +21,11 @@ class RouteSubscriber extends RouteSubscriberBase {
         '_title_callback' => 'joinup_user_canonical_title',
       ]);
     }
+
+    $collection->get('entity.user.cancel_form')->addRequirements([
+      // Only active and blocked accounts can be cancelled.
+      '_user_status' => 'active,blocked',
+    ]);
   }
 
 }

@@ -10,7 +10,7 @@ Feature:
 
     Given I am an anonymous user
     When I go to "/admin/structure/menu/manage/<menu>"
-    Then I should see the error message "Access denied. You must sign in to view this page."
+    Then I should see the heading "Sign in to continue"
 
     Given I am logged in as an "authenticated user"
     When I go to "/admin/structure/menu/manage/<menu>"
@@ -77,6 +77,18 @@ Feature:
     And I fill in "Link" with "http://example.com"
     And I press "Save"
     Then I should see the link "Arbitrary support menu link"
+
+    When I click "Edit" in the "Arbitrary support menu link" row
+    Then I should see the heading "Edit menu link"
+    And the following fields should be present "Menu link title,Link,Enabled,Description,Show as expanded,Parent link,Weight"
+    When I press "Save"
+    Then I should see the success message "The menu link has been saved."
+
+    When I click "Edit" in the "Take a tour" row
+    Then I should see the heading "Edit menu link Take a tour"
+    But I move backward one page
+    When I click "Edit" in the "Contact support" row
+    Then I should see the heading "Edit menu link Contact support"
 
     When I am on the homepage
     Then I should see the link "Contact support"

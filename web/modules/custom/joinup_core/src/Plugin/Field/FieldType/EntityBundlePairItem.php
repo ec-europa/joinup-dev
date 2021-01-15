@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\Field\FieldType;
 
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -35,6 +37,32 @@ class EntityBundlePairItem extends FieldItemBase {
       ->setRequired(TRUE);
 
     return $properties;
+  }
+
+  /**
+   * Returns the entity type ID of this entity bundle pair.
+   *
+   * @return string
+   *   The entity type ID.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the data is not yet set.
+   */
+  public function getEntityTypeId(): string {
+    return $this->get('entity_type')->getValue();
+  }
+
+  /**
+   * Returns the bundle ID of this entity bundle pair.
+   *
+   * @return string
+   *   The bundle ID.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the data is not yet set.
+   */
+  public function getBundleId(): string {
+    return $this->get('bundle')->getValue();
   }
 
   /**

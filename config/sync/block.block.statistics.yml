@@ -3,23 +3,21 @@ langcode: en
 status: true
 dependencies:
   module:
-    - joinup_core
+    - joinup_front_page
     - system
     - user
   theme:
     - joinup_theme
-_core:
-  default_config_hash: BAp2EWGxFvtlaSYXP8oa99T-gPKU4fwoFEUOIaaDxAA
 id: statistics
 theme: joinup_theme
 region: featured
-weight: -13
+weight: -18
 provider: null
 plugin: statistics
 settings:
   id: broken
   label: 'Statistics block'
-  provider: joinup_core
+  provider: joinup_front_page
   label_display: '0'
 visibility:
   request_path:

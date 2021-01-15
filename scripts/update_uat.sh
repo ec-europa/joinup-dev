@@ -12,10 +12,8 @@ cd ${PROJECT_ROOT}
 echo "Disabling config_readonly."
 touch disable-config-readonly
 
-./vendor/bin/phing redis-flush
-./vendor/bin/drush updatedb --yes --no-post-updates
-./vendor/bin/drush config:import --yes
-./vendor/bin/drush updatedb --yes
+./vendor/bin/run redis:flush-all
+./vendor/bin/drush deploy
 ./vendor/bin/drush pm:enable stage_file_proxy --yes
 
 echo "Rebuilding node access records."

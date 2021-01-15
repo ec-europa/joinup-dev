@@ -1,0 +1,129 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace Drupal\solution\Entity;
+
+use Drupal\asset_release\Entity\AssetReleaseInterface;
+use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Exception\MissingCollectionException;
+use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
+use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
+use Drupal\joinup_bundle_class\ShortIdTrait;
+use Drupal\joinup_featured\FeaturedContentTrait;
+use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_group\Entity\GroupTrait;
+use Drupal\joinup_group\Entity\PinnableGroupContentTrait;
+use Drupal\joinup_group\Exception\MissingGroupException;
+use Drupal\joinup_workflow\EntityWorkflowStateTrait;
+use Drupal\rdf_entity\Entity\Rdf;
+
+/**
+ * Entity subclass for the 'solution' bundle.
+ */
+class Solution extends Rdf implements SolutionInterface {
+
+  use EntityWorkflowStateTrait;
+  use FeaturedContentTrait;
+  use GroupTrait;
+  use JoinupBundleClassFieldAccessTrait;
+  use JoinupBundleClassMetaEntityTrait;
+  use PinnableGroupContentTrait;
+  use ShortIdTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCollection(): CollectionInterface {
+    try {
+      /** @var \Drupal\collection\Entity\CollectionInterface $group */
+      $group = $this->getGroup();
+    }
+    catch (MissingGroupException $exception) {
+      throw new MissingCollectionException($exception->getMessage(), 0, $exception);
+    }
+    return $group;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getGroup(): GroupInterface {
+    $field_item = $this->getFirstItem('collection');
+    if (!$field_item || $field_item->isEmpty()) {
+      throw new MissingGroupException();
+    }
+    $collection = $field_item->entity;
+    if (empty($collection)) {
+      // The collection entity can be empty in case it has been deleted and the
+      // affiliated solutions have not yet been garbage collected.
+      throw new MissingGroupException();
+    }
+    return $collection;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getGroupId(): string {
+    $ids = $this->getReferencedEntityIds('collection');
+    if (empty($ids['rdf_entity'])) {
+      throw new MissingGroupException();
+    }
+    return array_shift($ids['rdf_entity']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWorkflowStateFieldName(): string {
+    return 'field_is_state';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLatestReleaseId(): ?string {
+    return $this->get('latest_release')->target_id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLatestRelease(): ?AssetReleaseInterface {
+    return $this->get('latest_release')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAffiliatedCollections(): array {
+    $collections = [];
+    foreach ($this->getReferencedEntities('collection') as $collection) {
+      $collections[$collection->id()] = $collection;
+    }
+    return $collections;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAffiliatedCollectionIds(): array {
+    return $this->getReferencedEntityIds('collection')['rdf_entity'] ?? [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPinnableGroups(): array {
+    return $this->getAffiliatedCollections();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPinnableGroupIds(): array {
+    return $this->getAffiliatedCollectionIds();
+  }
+
+}

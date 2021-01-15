@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_community_content\EventSubscriber;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent;
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
+use Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent;
 use Drupal\og\Event\PermissionEventInterface as OgPermissionEventInterface;
 use Drupal\og\GroupContentOperationPermission;
 use Drupal\og\GroupPermission;
@@ -65,7 +67,7 @@ class EventSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     return [
       OgPermissionEventInterface::EVENT_NAME => [['provideOgRevisionPermissions']],
-      UnchangedWorkflowStateUpdateEvent::EVENT_NAME => 'onUnchangedWorkflowStateUpdate',
+      'joinup_workflow.unchanged_workflow_state_update' => 'onUnchangedWorkflowStateUpdate',
     ];
   }
 
@@ -131,7 +133,7 @@ class EventSubscriber implements EventSubscriberInterface {
           ]),
           new GroupContentOperationPermission([
             'name' => "share $bundle_id content",
-            'title' => $this->t('%bundle: Share into a group', ['%bundle' => $bundle_label]),
+            'title' => $this->t('%bundle: Share onto a group', ['%bundle' => $bundle_label]),
             'operation' => 'share',
             'entity type' => 'node',
             'bundle' => $bundle_id,
@@ -151,17 +153,18 @@ class EventSubscriber implements EventSubscriberInterface {
   /**
    * Determines if the content be updated without changing workflow state.
    *
-   * @param \Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent $event
+   * @param \Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent $event
    *   The event.
    */
   public function onUnchangedWorkflowStateUpdate(UnchangedWorkflowStateUpdateEvent $event): void {
     $entity = $event->getEntity();
-    if (!CommunityContentHelper::isCommunityContent($entity)) {
+    if (!$entity instanceof CommunityContentInterface) {
       return;
     }
 
     $state = $event->getState();
-    $permitted = $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $event->getEntity(), $state, $state);
+    $workflow = $entity->get('field_state')->first()->getWorkflow();
+    $permitted = $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $event->getEntity(), $workflow, $state, $state);
     $access = AccessResult::forbiddenIf(!$permitted);
     $access->addCacheContexts(['user.roles', 'og_role']);
     $event->setAccess($access);

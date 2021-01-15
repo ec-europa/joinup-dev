@@ -1,7 +1,9 @@
 uuid: ed364590-6324-42b6-b864-f7b058487eb7
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: col_propose_edit_own
 label: 'Collection propose after edit - Owner'
 description: 'Template id 5'

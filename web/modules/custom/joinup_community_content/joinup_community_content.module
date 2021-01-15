@@ -7,13 +7,20 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_core\NodeWorkflowAccessControlHandler;
+use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
+use Drupal\joinup_community_content\Entity\CommunityContentInterface;
+use Drupal\joinup_community_content\JoinupCommunityContentCommentAccessControlHandler;
+use Drupal\joinup_group\Exception\MissingGroupException;
+use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -21,7 +28,7 @@ use Drupal\joinup_core\NodeWorkflowAccessControlHandler;
 function joinup_community_content_entity_extra_field_info() {
   $fields = [];
 
-  foreach (CommunityContentHelper::getBundles() as $bundle) {
+  foreach (CommunityContentHelper::BUNDLES as $bundle) {
     $fields['node'][$bundle]['display']['share_link'] = [
       'label' => t('Share'),
       'description' => t('A link to share the content'),
@@ -40,7 +47,7 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
     return;
   }
 
-  $build['share_link'] = joinup_core_generate_share_link($entity, 'joinup_community_content.share_content_form');
+  $build['share_link'] = joinup_group_generate_share_link($entity, 'joinup_community_content.share_content_form');
   $build['#cache'] = [
     'contexts' => [
       'og_role',
@@ -49,12 +56,22 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
 }
 
 /**
+ * Implements hook_node_access().
+ */
+function joinup_community_content_node_access(NodeInterface $entity, string $operation, AccountInterface $account): AccessResult {
+  if (!$entity instanceof CommunityContentInterface) {
+    return AccessResult::neutral();
+  }
+  return \Drupal::service('joinup_community_content.community_content_workflow_access')->entityAccess($entity, $operation, $account);
+}
+
+/**
  * Implements hook_form_BASE_FORM_ID_alter().
  */
 function joinup_community_content_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Skip if we are not on a community content form.
   $community_content_form_ids = [];
-  foreach (CommunityContentHelper::getBundles() as $bundle) {
+  foreach (CommunityContentHelper::BUNDLES as $bundle) {
     $community_content_form_ids[] = "node_{$bundle}_form";
     $community_content_form_ids[] = "node_{$bundle}_edit_form";
   }
@@ -97,23 +114,52 @@ function joinup_community_content_attachment_file_process($element, FormStateInt
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The community content entity.
  *
- * @return string
- *   The id of the workflow to use.
+ * @return string|null
+ *   The id of the workflow to use, or NULL if the workflow cannot be
+ *   determined.
  *
- * @throws Exception
+ * @throws \InvalidArgumentException
  *    Thrown when the function is called for bundles that do not refer to
  *    community content.
  */
-function joinup_community_content_workflow_selector(EntityInterface $entity) {
+function joinup_community_content_workflow_selector(EntityInterface $entity): ?string {
   $bundles = ['document', 'event', 'news'];
-  if ($entity->getEntityTypeId() !== 'node' || !in_array($entity->bundle(), $bundles)) {
-    throw new Exception('This function can only be called for community content apart from discussion.');
+  if (!$entity instanceof CommunityContentInterface || !in_array($entity->bundle(), $bundles)) {
+    // @todo Document why this doesn't apply to discussions.
+    throw new \InvalidArgumentException('This function can only be called for community content apart from discussion.');
   }
 
-  /** @var \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager */
-  $relation_manager = \Drupal::service('joinup_core.relations_manager');
-  $moderation = $relation_manager->getParentModeration($entity);
-  return $moderation == NodeWorkflowAccessControlHandler::PRE_MODERATION ? 'node:pre_moderated' : 'node:post_moderated';
+  try {
+    $parent_entity = $entity->getGroup();
+  }
+  catch (MissingGroupException $e) {
+    // If the entity doesn't have a parent group we cannot determine the
+    // workflow. This can happen e.g. when deleting orphaned group content.
+    return NULL;
+  }
+
+  $moderation = JoinupGroupHelper::getModeration($parent_entity);
+  if ($moderation === CommunityContentWorkflowAccessControlHandler::POST_MODERATION) {
+    return 'node:post_moderated';
+  }
+
+  // Roles with the `publish content in moderated groups` permission are able to
+  // directly publish in the group regardless of the moderation state, as a
+  // trusted user.
+  // We check the available permissions directly instead of using OgAccess
+  // because we don't want users with admin permissions to always go through the
+  // post moderated workflow.
+  $current_user = \Drupal::currentUser();
+  if ($current_user->hasPermission('publish content in moderated groups')) {
+    return 'node:post_moderated';
+  }
+
+  $membership = $parent_entity->getMembership((int) $current_user->id());
+  if ($membership && $membership->hasPermission('publish content in moderated groups')) {
+    return 'node:post_moderated';
+  }
+
+  return 'node:pre_moderated';
 }
 
 /**
@@ -121,9 +167,6 @@ function joinup_community_content_workflow_selector(EntityInterface $entity) {
  */
 function joinup_community_content_theme($existing, $type, $theme, $path) {
   return [
-    'advanced_search_pseudo_facet' => [
-      'variables' => ['entity' => NULL],
-    ],
     'link_icon' => [
       'variables' => [
         'attributes' => [],
@@ -178,7 +221,10 @@ function joinup_community_content_theme_suggestions_container_alter(array &$sugg
   // collections and solutions so that a fake "Advanced search" facet can be
   // appended to the inline facets.
   if ($variables['theme_hook_original'] === 'container__facet_region__inline_facets') {
-    if (in_array($variables['element']['#entity']->bundle(), ['collection', 'solution'])) {
+    if (in_array(
+      $variables['element']['#entity']->bundle(),
+      ['collection', 'solution']
+    )) {
       $suggestions[] = $variables['theme_hook_original'] . '__with_advanced_search';
     }
   }
@@ -209,11 +255,40 @@ function joinup_community_content_translate_facet_arguments(array $arguments) {
   ];
 
   foreach ($arguments as &$argument) {
-    list($facet_id, $value) = explode(':', $argument, 2);
+    [$facet_id, $value] = explode(':', $argument, 2);
     if (array_key_exists($facet_id, $mapping)) {
       $argument = implode(':', [$mapping[$facet_id], $value]);
     }
   }
 
   return $arguments;
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_community_content_entity_type_alter(array &$entity_types): void {
+  // Swap out access handler for comments.
+  if (isset($entity_types['comment'])) {
+    $entity_types['comment']->setAccessClass(JoinupCommunityContentCommentAccessControlHandler::class);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_community_content_form_comment_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  // Updates the submit button text of the comment form to be more clear.
+  $form['actions']['submit']['#value'] = t('Post comment');
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function joinup_community_content_preprocess_links__comment(array &$variables): void {
+  // For anonymous users, don't show the comment forbidden link on each comment.
+  // We display one for all comments at the bottom of the list.
+  if (\Drupal::currentUser()->isAnonymous()) {
+    unset($variables['links']['comment-forbidden']);
+  }
 }

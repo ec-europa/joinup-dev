@@ -5,6 +5,8 @@
  * Contains functions and hook implementations for the tallinn module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -12,8 +14,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\tallinn\Entity\TallinnReport;
 use Drupal\tallinn\Tallinn;
 use Drupal\user\Entity\User;
 
@@ -54,21 +56,23 @@ function tallinn_module_implements_alter(&$implementations, $hook) {
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * - Controls access to the "authored by" field on the Tallinn Report edit form.
+ * - Ensures that each report has a different author.
  */
 function tallinn_form_node_tallinn_report_edit_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  $access = FALSE;
-  $current_user = \Drupal::currentUser();
-  if ($current_user->hasPermission('administer nodes')) {
-    $access = TRUE;
+  // The user has access if they have the global permission to change the author
+  // or if they have this permission inside the Tallinn collection.
+  $user = \Drupal::currentUser();
+  $permission = 'change tallinn report author';
+  if (!$has_access = $user->hasPermission($permission)) {
+    /** @var \Drupal\og\OgAccessInterface $og_access */
+    $og_access = \Drupal::service('og.access');
+    /** @var \Drupal\node\NodeInterface $entity */
+    $entity = $form_state->getBuildInfo()['callback_object']->getEntity();
+    $has_access = $og_access->userAccessEntity($permission, $entity, $user)->isAllowed();
   }
-  elseif ($tallinn_collection = Rdf::load(Tallinn::TALLINN_COMMUNITY_ID)) {
-    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-    $membership_manager = \Drupal::service('og.membership_manager');
-    $membership = $membership_manager->getMembership($tallinn_collection, $current_user->id());
-    $access = $membership && $membership->hasRole('rdf_entity-collection-facilitator');
-  }
-
-  $form['uid']['#access'] = $access;
+  $form['uid']['#access'] = $has_access;
   $form['#validate'][] = 'tallinn_report_author_uniqueness';
 }
 
@@ -149,8 +153,14 @@ function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account
     }
   }
 
-  $access = $node->access('view any tallinn_report content', $account);
-  return $access ? AccessResult::allowed() : AccessResult::forbidden();
+  /** @var \Drupal\og\OgAccessInterface $og_access */
+  $og_access = \Drupal::service('og.access');
+  $access = $og_access->userAccessEntity('view any tallinn_report content', $node, $account);
+  if ($access->isAllowed()) {
+    return $access;
+  }
+
+  return AccessResult::forbidden()->inheritCacheability($access);
 }
 
 /**
@@ -197,4 +207,13 @@ function tallinn_entity_view_alter(array &$build, EntityInterface $entity, Entit
   // Since the entities are only viewable by their authors the content listing
   // varies by user.
   $build['field_cp_content_listing']['#cache']['contexts'][] = 'user';
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function tallinn_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['node']['tallinn_report'])) {
+    $bundles['node']['tallinn_report']['class'] = TallinnReport::class;
+  }
 }

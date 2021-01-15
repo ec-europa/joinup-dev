@@ -1,16 +1,18 @@
 uuid: 3a39037f-b02a-4975-ba5b-3d22c1f83da1
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
 template: discussion_delete
 label: 'Discussion deletion'
 description: 'Sent when a discussion has been deleted.'
 text:
   -
-    value: 'Joinup: The discussion "@entity:title" was deleted in the space of "@group:label"'
+    value: 'Joinup: The discussion "@entity:title" was deleted in the space of "@group:title"'
     format: full_html
   -
-    value: 'for your information, the discussion "@entity:title" was deleted from the "@group:label" @group:bundle.'
+    value: 'for your information, the discussion "@entity:title" was deleted from the "@group:title" @group:bundle.'
     format: full_html
 settings:
   'token options':

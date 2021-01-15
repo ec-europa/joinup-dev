@@ -6,17 +6,17 @@ dependencies:
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_first_name
   module:
-    - joinup_core
+    - joinup_material_design
+    - joinup_user
     - og
     - user
 id: members_overview
 label: 'Members overview (public)'
 module: views
-description: 'The public list of members of a collection'
+description: 'The public list of members of a collection or solution'
 tag: ''
 base_table: og_membership
 base_field: id
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -351,6 +351,8 @@ display:
               moderator: '0'
               administrator: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: 'Combine fields filter'
@@ -387,6 +389,8 @@ display:
             description: null
             use_operator: false
             operator: roles_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: roles_target_id
             required: false
             remember: false
@@ -422,6 +426,10 @@ display:
                 title: Facilitator
                 operator: '='
                 value: rdf_entity-solution-facilitator
+              5:
+                title: Author
+                operator: '='
+                value: rdf_entity-collection-author
           entity_type: og_membership
           entity_field: roles
           plugin_id: string
@@ -448,6 +456,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -470,8 +480,9 @@ display:
           relationship: uid
           group_type: group
           admin_label: ''
-          operator: '='
-          value: '1'
+          operator: in
+          value:
+            1: '1'
           group: 1
           exposed: false
           expose:
@@ -480,12 +491,15 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -500,7 +514,7 @@ display:
             group_items: {  }
           entity_type: user
           entity_field: status
-          plugin_id: boolean
+          plugin_id: user_tristate_status
       sorts:
         field_user_first_name_value:
           id: field_user_first_name_value
@@ -513,6 +527,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: field_user_first_name_value
           plugin_id: standard
         field_user_family_name_value:
           id: field_user_family_name_value
@@ -525,6 +540,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: field_user_family_name_value
           plugin_id: standard
       title: 'Collection members'
       header: {  }

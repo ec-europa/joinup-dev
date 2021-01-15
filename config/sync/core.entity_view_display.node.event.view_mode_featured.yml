@@ -31,10 +31,9 @@ dependencies:
     - node.type.event
   module:
     - datetime_range
-    - ds
     - image
-    - joinup
     - smart_trim
+    - template_suggestion
     - user
 id: node.event.view_mode_featured
 targetEntityType: node
@@ -55,15 +54,10 @@ content:
       trim_options:
         text: false
       more_class: more-link
+      wrap_output: false
+      wrap_class: trimmed
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
     region: content
   field_event_date:
@@ -76,14 +70,7 @@ content:
       format_type: date_only
       separator: '-'
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
   field_event_logo:
     weight: 1
@@ -91,14 +78,7 @@ content:
     settings:
       image_style: vertical_medium_image
       image_link: content
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     type: image
     region: content
   field_short_title:

@@ -21,10 +21,9 @@ dependencies:
     - field.field.node.document.og_audience
     - node.type.document
   module:
-    - ds
-    - joinup
     - options
     - smart_trim
+    - template_suggestion
     - user
 _core:
   default_config_hash: ya7qEZX__MVn1wob63oqr-eqZ2laaIdoK1d5NF0O4VI
@@ -48,15 +47,10 @@ content:
       trim_options:
         text: false
       more_class: more-link
+      wrap_output: false
+      wrap_class: trimmed
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
+      template_suggestion:
         template_suggestion: ''
   field_state:
     type: list_default

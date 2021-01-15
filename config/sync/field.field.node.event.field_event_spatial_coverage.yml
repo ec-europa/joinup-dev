@@ -12,8 +12,8 @@ id: node.event.field_event_spatial_coverage
 field_name: field_event_spatial_coverage
 entity_type: node
 bundle: event
-label: 'Spatial coverage'
-description: ''
+label: 'Geographical coverage'
+description: 'Add a country name relevant to this event.'
 required: false
 translatable: false
 default_value: {  }

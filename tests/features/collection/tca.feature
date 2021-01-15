@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Collection TCA agreement
   In order to ensure activity by facilitators
   As a site owner
@@ -15,7 +15,7 @@ Feature: Collection TCA agreement
     When I am not logged in
     And I visit "/collections"
     And I click "Create collection"
-    Then I should see the error message "Access denied. You must sign in to view this page."
+    Then I should see the heading "Sign in to continue"
 
   Scenario: Authenticated users can access the TCA agreement page.
     When I am logged in as a user with the "authenticated" role
@@ -30,7 +30,7 @@ Feature: Collection TCA agreement
     And I press "Yes"
     # No javascript test.
     Then I should see the error message "You have to agree that you will manage your collection on a regular basis."
-    When I check the box "I understand and I commit to manage my collection on a regular basis."
+    When I check the box "I have read and accept the legal notice and I commit to manage my collection on a regular basis."
     And I press "Yes"
     Then I should see the heading "Propose collection"
 

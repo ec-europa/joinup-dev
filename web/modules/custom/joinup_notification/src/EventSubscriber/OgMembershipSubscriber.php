@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -10,12 +12,14 @@ use Drupal\og\OgMembershipInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class OgMembershipSubscriber.
+ * Handles notifications related to changes in group memberships.
  */
 class OgMembershipSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 
   const TEMPLATE_REQUEST_MEMBERSHIP = 'og_membership_request';
-  const TEMPLATE_APPROVE_REJECT_MEMBERSHIP = 'og_membership_decision';
+  const TEMPLATE_APPROVE_MEMBERSHIP = 'og_membership_approve';
+  const TEMPLATE_REJECT_MEMBERSHIP = 'og_membership_reject';
+  const TEMPLATE_APPROVE_MEMBERSHIP_WITH_SUBSCRIPTION = 'og_membership_subscribed_approve';
 
   /**
    * The membership object.
@@ -109,8 +113,12 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
     }
 
     $recipient_id = $this->membership->getOwnerId();
+    $template = $this->membership->get('subscription_bundles')->isEmpty() ?
+      self::TEMPLATE_APPROVE_MEMBERSHIP :
+      self::TEMPLATE_APPROVE_MEMBERSHIP_WITH_SUBSCRIPTION;
+
     $user_data = [
-      self::TEMPLATE_APPROVE_REJECT_MEMBERSHIP => [
+      $template => [
         $recipient_id => $recipient_id,
       ],
     ];
@@ -156,7 +164,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
 
     $recipient_id = $this->membership->getOwnerId();
     $user_data = [
-      self::TEMPLATE_APPROVE_REJECT_MEMBERSHIP => [
+      self::TEMPLATE_REJECT_MEMBERSHIP => [
         $recipient_id => $recipient_id,
       ],
     ];
@@ -199,7 +207,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $message) {
+  protected function generateArguments(EntityInterface $message): array {
     $arguments = parent::generateArguments($message);
     $actor_first_name = $arguments['@actor:field_user_first_name'];
     $actor_last_name = $arguments['@actor:field_user_family_name'];
@@ -209,23 +217,13 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
       $arguments['@actor:full_name'] = 'A Joinup user';
     }
     else {
-      $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
+      /** @var \Drupal\user\UserInterface $actor */
+      $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
+      $arguments['@actor:full_name'] = $actor->getDisplayName();
     }
 
-    // Calculate extra arguments per case.
-    switch ($this->operation) {
-      case 'create':
-        $arguments['@group:members_page:url'] = $this->getMembersUrl();
-        break;
-
-      case 'update':
-        $arguments['@membership:decision:state'] = 'approved';
-        break;
-
-      case 'delete':
-        $arguments['@membership:decision:state'] = 'rejected';
-        break;
-
+    if ($this->operation === 'create') {
+      $arguments['@group:members_page:url'] = $this->getMembersUrl();
     }
 
     return $arguments;

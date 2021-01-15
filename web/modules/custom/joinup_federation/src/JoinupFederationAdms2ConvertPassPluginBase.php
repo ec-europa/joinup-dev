@@ -16,7 +16,7 @@ abstract class JoinupFederationAdms2ConvertPassPluginBase extends PluginBase imp
   /**
    * The SPARQL database connection.
    *
-   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface
    */
   protected $sparql;
 
@@ -182,7 +182,7 @@ QUERY;
    *
    * @todo Consider using \EasyRdf\Graph.
    */
-  protected function insertTriples(string $graph_uri, array $triples):void {
+  protected function insertTriples(string $graph_uri, array $triples): void {
     $expanded_triples = [];
     foreach ($triples as $subject => $predicates) {
       foreach ($predicates as $predicate => $objects) {

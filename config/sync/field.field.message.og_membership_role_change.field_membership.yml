@@ -1,0 +1,28 @@
+uuid: e9e07ac3-193b-43fe-94e0-d79ad84be291
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_membership
+    - message.template.og_membership_role_change
+    - og.og_membership_type.default
+id: message.og_membership_role_change.field_membership
+field_name: field_membership
+entity_type: message
+bundle: og_membership_role_change
+label: 'Membership reference'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:og_membership'
+  handler_settings:
+    target_bundles:
+      default: default
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

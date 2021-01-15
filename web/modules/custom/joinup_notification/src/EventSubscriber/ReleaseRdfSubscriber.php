@@ -6,7 +6,10 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\asset_release\Entity\AssetReleaseInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
@@ -60,13 +63,6 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
   protected $workflow;
 
   /**
-   * The state field name of the entity object.
-   *
-   * @var string
-   */
-  protected $stateField;
-
-  /**
    * The motivation text passed in the entity.
    *
    * @var string
@@ -111,15 +107,17 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
    */
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
-    if ($this->entity->bundle() !== 'asset_release') {
+
+    // Only initialize the workflow if it is available. It is unavailable when
+    // the entity is being deleted during cleanup of orphaned group content.
+    if (!$this->entity instanceof AssetReleaseInterface || !$this->entity->hasWorkflow()) {
       return;
     }
 
     $this->event = $event;
-    $this->stateField = 'field_isr_state';
-    $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
-    $this->fromState = isset($this->entity->original) ? $this->entity->original->get($this->stateField)->first()->value : '__new__';
-    $this->toState = $this->entity->get($this->stateField)->first()->value;
+    $this->workflow = $this->entity->getWorkflow();
+    $this->fromState = isset($this->entity->original) ? $this->entity->original->getWorkflowState() : '__new__';
+    $this->toState = $this->entity->getWorkflowState();
     $this->transition = $this->workflow->findTransition($this->fromState, $this->toState);
     $this->motivation = empty($this->entity->motivation) ? '' : $this->entity->motivation;
   }
@@ -297,20 +295,22 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
+    // PHP does not support covariance on arguments so we cannot narrow the type
+    // hint to only asset release entities. Let's assert the type instead.
+    assert($entity instanceof AssetReleaseInterface, __METHOD__ . ' only supports asset release entities.');
+
     $arguments = parent::generateArguments($entity);
+    /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = $arguments['@actor:field_user_first_name'];
-    $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
     $arguments['@transition:motivation'] = $motivation;
-    $arguments['@entity:field_isr_release_number'] = !empty($entity->get('field_isr_release_number')->first()->value) ? $entity->get('field_isr_release_number')->first()->value : '';
+    $arguments['@entity:field_isr_release_number'] = $entity->getVersion();
 
     // Add arguments related to the parent collection or solution.
-    $parent = $this->relationManager->getParent($entity);
+    $parent = JoinupGroupHelper::getGroup($entity);
     if (!empty($parent)) {
-      $arguments['@group:title'] = $parent->label();
-      $arguments['@group:bundle'] = $parent->bundle();
+      $arguments += MessageArgumentGenerator::getGroupArguments($parent);
       if (empty($arguments['@actor:role'])) {
         $membership = $this->membershipManager->getMembership($parent, $actor->id());
         if (!empty($membership)) {
@@ -325,7 +325,7 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
             $arguments['@actor:role'] = $this->t('Facilitator');
           }
         }
-        $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
+        $arguments['@actor:full_name'] = $actor->getDisplayName();
       }
     }
 
@@ -338,21 +338,11 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
    * @param array $user_data
    *   The user data array.
    *
-   * @see: ::getUsersMessages() for more information on the array.
+   * @see ::getUsersMessages()
    */
   protected function getUsersAndSend(array $user_data) {
     $user_data = $this->getUsersMessages($user_data);
     $this->sendUserDataMessages($user_data);
-  }
-
-  /**
-   * Returns the state of the release related to the event.
-   *
-   * @return string
-   *   The current state.
-   */
-  protected function getReleaseState() {
-    return $this->entity->get('field_is_state')->first()->value;
   }
 
 }

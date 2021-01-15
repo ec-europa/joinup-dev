@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_community_content\Access;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\node\Access\NodeRevisionAccessCheck as CoreNodeRevisionAccessCheck;
 use Drupal\node\NodeInterface;
-use Drupal\og\GroupTypeManager;
 use Drupal\og\OgAccessInterface;
 use Symfony\Component\Routing\Route;
 
@@ -25,13 +28,6 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
   protected $configFactory;
 
   /**
-   * The OG group manager.
-   *
-   * @var \Drupal\og\GroupTypeManager
-   */
-  protected $groupTypeManager;
-
-  /**
    * The OG access service.
    *
    * @var \Drupal\og\OgAccessInterface
@@ -42,18 +38,15 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
    * Constructs a new NodeRevisionAccessCheck.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity manager.
-   * @param \Drupal\og\GroupTypeManager $group_type_manager
-   *   The OG group manager.
+   *   The entity type manager.
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, GroupTypeManager $group_type_manager, OgAccessInterface $og_access, ConfigFactoryInterface $config_factory) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, OgAccessInterface $og_access, ConfigFactoryInterface $config_factory) {
     parent::__construct($entity_type_manager);
 
-    $this->groupTypeManager = $group_type_manager;
     $this->ogAccess = $og_access;
     $this->configFactory = $config_factory;
   }
@@ -61,7 +54,7 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
   /**
    * {@inheritdoc}
    */
-  public function access(Route $route, AccountInterface $account, $node_revision = NULL, NodeInterface $node = NULL) {
+  public function access(Route $route, AccountInterface $account, $node_revision = NULL, ?NodeInterface $node = NULL) {
     if ($node_revision) {
       $node = $this->nodeStorage->loadRevision($node_revision);
     }
@@ -91,11 +84,12 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function checkOgAccess(NodeInterface $node, AccountInterface $account, $operation) {
-    if (!$this->groupTypeManager->isGroupContent('node', $node->bundle())) {
+  public function checkOgAccess(NodeInterface $node, AccountInterface $account, string $operation): AccessResultInterface {
+    if (!$node instanceof GroupContentInterface) {
       return AccessResult::neutral();
     }
 
+    // Map entity operations to group level permissions.
     $map = [
       'view' => 'view all revisions',
     ];
@@ -127,7 +121,7 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
     }
 
     // Check if the user has either the "all" or the type-specific permission.
-    // We cannot use orIf() to join them, as Og returns denied when the
+    // We cannot use orIf() to join them, as OG returns access denied when the
     // permission is not present for the user in a group, and orIf() returns
     // forbidden if any of the parameters is forbidden.
     $all_access = $this->ogAccess->userAccessEntity($map[$operation], $node, $account);

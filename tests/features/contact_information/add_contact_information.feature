@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Creation of contact information
   In order to add contact information
   As a facilitator
@@ -7,10 +7,15 @@ Feature: Creation of contact information
   Scenario: Create a contact information
     Given I am logged in as an "authenticated user"
     And I go to the propose collection form
-    And I click the "Additional fields" tab
-    And I press "Add new" at the "Contact information" field
-    # Also check that the help text for the website field is visible.
+    # Check that the help text for the website field is visible.
     Then I should see the description "This must be an external URL such as http://example.com." for the "Website URL" field
+
+    When I press "Create contact information"
+    Then I should see the following error messages:
+      | error messages                    |
+      | Name field is required.           |
+      | E-mail address field is required. |
+
     When I fill in the following:
       | E-mail | foo@bar                     |
       | Name   | Contact information example |

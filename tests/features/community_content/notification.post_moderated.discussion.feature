@@ -1,24 +1,24 @@
-@api @email
+@api @email @group-b
 Feature: Notification test for the discussion transitions on a post moderated parent.
   In order to manage my collections
   As an owner of the collection
   I want to receive a notification when an entity is proposed.
 
-  Scenario: Notifications should be sent whenever a discussion is going through a relevant transition.
+  Scenario Outline: Notifications should be sent whenever a discussion is going through a relevant transition.
     Given users:
-      | Username         | Roles     | E-mail                      | First name | Family name |
-      | Notify moderator | moderator | notify_moderator@test.com   | Notify     | Moderator   |
-      | CC owner         |           | notify_owner@test.com       | CC         | Owner       |
-      | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator |
-      | CC member        |           | notify_member@test.com      | CC         | Member      |
+      | Username         | Roles     | E-mail                      | First name | Family name | Notification frequency |
+      | Notify moderator | moderator | notify_moderator@test.com   | Notify     | Moderator   | immediate              |
+      | CC owner         |           | notify_owner@test.com       | CC         | Owner       | immediate              |
+      | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator | immediate              |
+      | CC member        |           | notify_member@test.com      | CC         | Member      | immediate              |
     And collections:
-      | title              | state     | elibrary creation | moderation |
-      | CC post collection | validated | members           | no         |
+      | title              | state     | content creation | moderation   |
+      | CC post collection | validated | members          | <moderation> |
     And the following collection user memberships:
       | collection         | user           | roles       |
       | CC post collection | CC owner       | owner       |
       | CC post collection | CC facilitator | facilitator |
-      | CC post collection | CC member      |             |
+      | CC post collection | CC member      | <roles>     |
     And discussion content:
       | title                                | author    | body | collection         | field_state  |
       | CC notify post publish               | CC member | body | CC post collection | draft        |
@@ -107,3 +107,8 @@ Feature: Notification test for the discussion transitions on a post moderated pa
       | recipient | CC member                                                                                                          |
       | subject   | Joinup: The discussion "CC notify post delete" was deleted in the space of "CC post collection"                    |
       | body      | for your information, the discussion "CC notify post delete" was deleted from the "CC post collection" collection. |
+
+    Examples:
+      | moderation | roles  |
+      | no         |        |
+      | yes        | author |

@@ -1,21 +1,50 @@
 transitions:
   validated:
     __new__:
-      - authenticated
-      - moderator
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
     deletion_request:
-      - moderator
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
     needs_update:
-      - moderator
+      any:
+        roles:
+          - moderator
     validated:
-      - authenticated
-      - moderator
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
   needs_update:
     validated:
-      - moderator
+      any:
+        roles:
+          - moderator
     needs_update:
-      - authenticated
-      - moderator
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
   deletion_request:
     validated:
-      - authenticated
+      own:
+        roles:
+          - authenticated
