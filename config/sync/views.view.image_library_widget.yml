@@ -267,6 +267,7 @@ display:
           exposed: false
           expose:
             label: ''
+            identifier: created
           granularity: second
       title: 'Image Library Widget'
       header: {  }

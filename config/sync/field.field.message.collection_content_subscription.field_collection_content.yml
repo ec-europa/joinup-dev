@@ -254,4 +254,10 @@ settings:
   compatibility_document:
     handler: 'default:compatibility_document'
     handler_settings: {  }
+  media_type:
+    handler: 'default:media_type'
+    handler_settings: {  }
+  media:
+    handler: 'default:media'
+    handler_settings: {  }
 field_type: dynamic_entity_reference
