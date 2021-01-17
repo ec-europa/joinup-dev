@@ -61,3 +61,18 @@ function joinup_core_deploy_0106700(&$sandbox): TranslatableMarkup {
     '@percentage' => Percentage::format($sandbox['total'], $sandbox['current']),
   ]);
 }
+
+/**
+ * Verify site in Google search console.
+ */
+function joinup_core_deploy_0106701(&$sandbox): TranslatableMarkup {
+  \Drupal::database()->insert('site_verify')
+    ->fields([
+      'engine' => 'google',
+      'file' => 'google49574b354ced8b03.html',
+      'file_contents' => 'google-site-verification: google49574b354ced8b03.html',
+      'meta' => '',
+    ])
+    ->execute();
+  return t('Google site verification through file has been set.');
+}
