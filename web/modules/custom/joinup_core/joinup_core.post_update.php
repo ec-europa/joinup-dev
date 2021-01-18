@@ -20,7 +20,7 @@ use Drupal\node\Entity\Node;
 /**
  * Convert 'newsletter' nodes into 'document' nodes.
  */
-function joinup_core_post_update_0106800(): void {
+function joinup_core_post_update_0106700(): void {
   // Run this as post-update, in order to fix content before deleting the node
   // type, in config synchronization. Avoid performance issues by running direct
   // DB queries, instead of using entity API.

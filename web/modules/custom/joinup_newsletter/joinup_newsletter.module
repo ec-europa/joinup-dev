@@ -7,8 +7,8 @@
 
 declare(strict_types = 1);
 
-use Drupal\collection\Entity\CollectionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\collection\Entity\CollectionInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
