@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\contact_information\Entity\ContactInformation;
+use Drupal\contact_information\Entity\ContactInformationInterface;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -129,7 +130,7 @@ function contact_information_entity_auto_label(EntityInterface $entity) {
  * Implements hook_ENTITY_TYPE_access().
  */
 function contact_information_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($entity->bundle() !== 'contact_information') {
+  if (!$entity instanceof ContactInformationInterface) {
     return AccessResult::neutral();
   }
 
@@ -159,11 +160,8 @@ function contact_information_rdf_entity_access(EntityInterface $entity, $operati
     // The contact information is not a group content. It is tied to other
     // entities by a simple reference field.
     // To grant access to group owner/facilitators, we need to identify first
-    // which groups reference the contact information.
-    /** @var \Drupal\contact_information\ContactInformationRelationInfoInterface $relation_info */
-    $relation_info = \Drupal::service('contact_information.relation_info');
-    if ($groups = $relation_info->getContactInformationRelatedGroups($entity)) {
-      $group = reset($groups);
+    // which group references the contact information.
+    if ($group = $entity->getRelatedGroup()) {
       if ($group->hasGroupPermission((int) $account->id(), 'delete contact_information rdf entity')) {
         return AccessResult::allowed();
       }
