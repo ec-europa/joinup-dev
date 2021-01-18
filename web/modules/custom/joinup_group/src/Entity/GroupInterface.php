@@ -99,4 +99,21 @@ interface GroupInterface extends ContentEntityInterface, LogoInterface {
    */
   public function isSoleGroupOwner(int $uid): bool;
 
+  /**
+   * Checks if the user has at least one role with the given OG permission.
+   *
+   * This is a simple wrapper around OgMembershipInterface::hasPermission() and
+   * should not be relied on for access checks. Use OgAccess to check access.
+   *
+   * @param int $uid
+   *   The ID of the user to check.
+   * @param string $permission
+   *   The permission string.
+   *
+   * @return bool
+   *   TRUE if the permission is present in at least one of the user's roles in
+   *   the group.
+   */
+  public function hasGroupPermission(int $uid, string $permission): bool;
+
 }

@@ -10,7 +10,6 @@ declare(strict_types = 1);
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_collection\JoinupCollectionHelper;
 use Drupal\og\Entity\OgMembership;
-use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\user\UserInterface;
@@ -21,9 +20,10 @@ use Drupal\user\UserInterface;
  * Add the 'Joinup' collection membership to every new user.
  */
 function joinup_collection_user_insert(UserInterface $account): void {
+  /** @var \Drupal\collection\Entity\CollectionInterface $joinup_collection */
   if ($joinup_collection = Rdf::load(JoinupCollectionHelper::getCollectionId())) {
     // Add the membership only it doesn't exist yet.
-    if (!$membership = Og::getMembership($joinup_collection, $account, [])) {
+    if (!$membership = $joinup_collection->getMembership((int) $account->id(), [])) {
       OgMembership::create()
         ->setGroup($joinup_collection)
         ->setOwner($account)

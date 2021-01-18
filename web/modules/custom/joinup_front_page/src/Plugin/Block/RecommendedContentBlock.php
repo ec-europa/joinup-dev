@@ -126,7 +126,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
         '#type' => 'inline_template',
         // Warning: when changing this text, also update the metatags to match.
         // See `metatag.metatag_defaults.front.yml`.
-        '#template' => '<p>{% trans %}Joinup is a collaborative platform created by the European Commission and funded by the European Union via the <a href="https://ec.europa.eu/isa2/">Interoperability solutions for public administrations, businesses and citizens</a> (ISA<sup>2</sup>) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions.{% endtrans %}</p>',
+        '#template' => '<p>{% trans %}Joinup is a collaborative platform created by the European Commission and funded by the European Union via the <a target="_blank" href="https://ec.europa.eu/isa2/">Interoperability solutions for public administrations, businesses and citizens</a> (ISA<sup>2</sup>) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions.{% endtrans %}</p>',
       ],
     ];
 
