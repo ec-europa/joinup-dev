@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\owner\Entity\OwnerInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -68,7 +69,7 @@ class OwnerWorkflowStatePermission extends PluginBase implements WorkflowStatePe
    * {@inheritdoc}
    */
   public function applies(EntityInterface $entity): bool {
-    return $entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'owner';
+    return $entity instanceof OwnerInterface;
   }
 
   /**

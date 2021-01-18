@@ -108,7 +108,10 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
       return $result->addCacheableDependency($cache_metadata);
     }
 
-    $pattern = '/\b(' . implode('|', array_keys($replacements)) . ')\b/i';
+    $escaped_replacements = array_map(function (string $replacement): string {
+      return preg_quote($replacement, '/');
+    }, array_keys($replacements));
+    $pattern = '/\b(' . implode('|', $escaped_replacements) . ')\b/i';
 
     // First, do a bird-eye check for glossary terms so that we avoid a heavy
     // processing if the text contains no term.

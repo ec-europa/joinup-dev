@@ -19,17 +19,23 @@ interface CollectionInterface extends RdfInterface, EntityWorkflowStateInterface
   /**
    * Returns the solutions that are affiliated with this collection.
    *
+   * @param bool $published
+   *   When TRUE, only published solutions will be returned. Defaults to TRUE.
+   *
    * @return \Drupal\solution\Entity\SolutionInterface[]
    *   The solutions.
    */
-  public function getSolutions(): array;
+  public function getSolutions(bool $published = TRUE): array;
 
   /**
    * Returns the IDs of the solutions that are affiliated with this collection.
    *
+   * @param bool $published
+   *   When TRUE, only published solutions will be returned. Defaults to TRUE.
+   *
    * @return string[]
    *   The solutions.
    */
-  public function getSolutionIds(): array;
+  public function getSolutionIds(bool $published = TRUE): array;
 
 }
