@@ -1,0 +1,91 @@
+uuid: 66ab847b-9064-459e-961c-28fa2bfab68c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - field.field.message.group_content_subscription.field_group_content
+    - message.template.group_content_subscription
+  module:
+    - dynamic_entity_reference
+    - joinup
+id: message.group_content_subscription.mail_body
+targetEntityType: message
+bundle: group_content_subscription
+mode: mail_body
+content:
+  field_group_content:
+    type: dynamic_entity_reference_entity_view
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      node:
+        view_mode: digest_message
+      rdf_entity:
+        view_mode: digest_message
+      comment:
+        view_mode: default
+        link: false
+      menu_link_content:
+        view_mode: default
+        link: false
+      download_event:
+        view_mode: default
+        link: false
+      file:
+        view_mode: default
+        link: false
+      flagging:
+        view_mode: default
+        link: false
+      invitation:
+        view_mode: default
+        link: false
+      entity_legal_document_acceptance:
+        view_mode: default
+        link: false
+      entity_legal_document_version:
+        view_mode: default
+        link: false
+      message:
+        view_mode: default
+        link: false
+      meta_entity:
+        view_mode: default
+        link: false
+      ogmenu_instance:
+        view_mode: default
+        link: false
+      og_membership:
+        view_mode: default
+        link: false
+      redirect:
+        view_mode: default
+        link: false
+      remote_file:
+        view_mode: default
+        link: false
+      search_api_task:
+        view_mode: default
+        link: false
+      simplenews_subscriber:
+        view_mode: default
+        link: false
+      taxonomy_term:
+        view_mode: default
+        link: false
+      path_alias:
+        view_mode: default
+        link: false
+      user:
+        view_mode: default
+        link: false
+    third_party_settings:
+      joinup:
+        template_suggestion: ''
+  partial_1:
+    weight: 0
+    region: content
+hidden:
+  partial_0: true
