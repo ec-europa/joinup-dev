@@ -2,12 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\pipeline_log\EventSubscriber;
+namespace Drupal\joinup_pipeline_log\EventSubscriber;
 
 use Drupal\Component\Datetime\Time;
 use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
-use Drupal\pipeline\Event\PipelineCompleteEvent;
-use Drupal\pipeline\PipelineEvents;
+use Drupal\pipeline\Event\PipelineSuccessEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -16,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * The sole purpose of this subscriber is to note down when was the last time
  * each pipeline was ran.
  */
-class PipelineLogSubscriber implements EventSubscriberInterface {
+class JoinupPipelineLogSubscriber implements EventSubscriberInterface {
 
   /**
    * The key value factory service.
@@ -48,16 +47,12 @@ class PipelineLogSubscriber implements EventSubscriberInterface {
   /**
    * Acts on pipeline completion.
    *
-   * @param \Drupal\pipeline\Event\PipelineCompleteEvent $event
+   * @param \Drupal\pipeline\Event\PipelineSuccessEvent $event
    *   The pipeline event.
    */
-  public function onPipelineComplete(PipelineCompleteEvent $event): void {
-    if (!$event->isSuccess()) {
-      // We do not care about failed attempts.
-      return;
-    }
+  public function onPipelineSuccess(PipelineSuccessEvent $event): void {
     $pipeline_id = $event->getPipeline()->getPluginId();
-    $collection = $this->keyValue->get('pipeline_log');
+    $collection = $this->keyValue->get('joinup_pipeline_log');
     $collection->set($pipeline_id, $this->time->getRequestTime());
   }
 
@@ -66,7 +61,7 @@ class PipelineLogSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     return [
-      PipelineEvents::PIPELINE_COMPLETE => ['onPipelineComplete'],
+      PipelineSuccessEvent::class => ['onPipelineSuccess'],
     ];
   }
 

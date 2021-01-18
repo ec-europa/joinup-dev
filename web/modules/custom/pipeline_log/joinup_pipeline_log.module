@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Primary module hooks for Pipeline logging module.
+ * Primary module hooks for Joinup pipeline logging module.
  */
 
 declare(strict_types = 1);
@@ -12,18 +12,16 @@ use Drupal\user\UserInterface;
 /**
  * Implements hook_user_login().
  */
-function pipeline_log_user_login(UserInterface $account) {
+function joinup_pipeline_log_user_login(UserInterface $account) {
   if (!$account->hasPermission('access pipeline selector')) {
     // If the user does not have access to run a pipeline, they should not
     // receive warnings about them either.
     return;
   }
-
   $time = \Drupal::getContainer()->get('datetime.time');
   $pipeline_manager = \Drupal::getContainer()->get('plugin.manager.pipeline_pipeline');
-  // 90 days of interval.
-  $interval = 60 * 60 * 24 * 30 * 3;
-  foreach (\Drupal::getContainer()->get('keyvalue')->get('pipeline_log')->getAll() as $pipeline_id => $last_execute) {
+  $interval = \Drupal::getContainer()->get('config.factory')->get('joinup_pipeline_log.settings')->get('last_run_interval');
+  foreach (\Drupal::getContainer()->get('keyvalue')->get('joinup_pipeline_log')->getAll() as $pipeline_id => $last_execute) {
     if (!$account->hasPermission("execute {$pipeline_id} pipeline")) {
       // Only show information about pipelines they have the ability to execute.
       continue;
@@ -34,7 +32,8 @@ function pipeline_log_user_login(UserInterface $account) {
       $pipeline = $pipeline_manager->getDefinition($pipeline_id);
       Drupal::messenger()->addWarning(t('Pipeline :pipeline has not been executed for :days days.', [
         ':pipeline' => $pipeline['label'],
-        ':days' => floor($time_since_last_run / 60 / 60 / 24),
+        // Convert to days.
+        ':days' => floor($time_since_last_run / 86400),
       ]));
     }
   }

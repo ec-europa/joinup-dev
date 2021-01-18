@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\pipeline_log\Controller;
+namespace Drupal\joinup_pipeline_log\Controller;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Controller\ControllerBase;
@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Returns responses for Pipeline log routes.
  */
-class PipelineLogController extends ControllerBase {
+class JoinupPipelineLogController extends ControllerBase {
 
   /**
    * The current user.
@@ -58,7 +58,7 @@ class PipelineLogController extends ControllerBase {
    */
   public function __construct(AccountInterface $current_user, KeyValueFactoryInterface $key_value, PipelinePipelinePluginManager $plugin_manager_pipeline_pipeline, TimeInterface $time) {
     $this->currentUser = $current_user;
-    $this->pipelineCollection = $key_value->get('pipeline_log');
+    $this->pipelineCollection = $key_value->get('joinup_pipeline_log');
     $this->pipelineManager = $plugin_manager_pipeline_pipeline;
     $this->time = $time;
   }
@@ -87,7 +87,7 @@ class PipelineLogController extends ControllerBase {
       }
       $last_execute_time = $this->pipelineCollection->get($plugin_id);
       // Convert to days or set to 'N/A'.
-      $last_execute_time = $last_execute_time ? floor(($this->time->getRequestTime() - $last_execute_time) / 60 / 60 / 24) : 'Never';
+      $last_execute_time = $last_execute_time ? floor(($this->time->getRequestTime() - $last_execute_time) / 86400) : 'Never';
       $rows[] = [
         $definition['label'],
         $last_execute_time,
@@ -102,7 +102,7 @@ class PipelineLogController extends ControllerBase {
       ],
       '#rows' => $rows,
       '#attributes' => [
-        'class' => ['pipeline-log-table'],
+        'class' => ['joinup-pipeline-log-table'],
       ],
     ];
 

@@ -81,6 +81,7 @@ module:
   joinup_newsletter: 0
   joinup_notification: 0
   joinup_paragraphs: 0
+  joinup_pipeline_log: 0
   joinup_rdf: 0
   joinup_rdf_graph: 0
   joinup_rss: 0
@@ -133,7 +134,6 @@ module:
   path: 0
   path_alias: 0
   pipeline: 0
-  pipeline_log: 0
   rdf_draft: 0
   rdf_entity: 0
   rdf_entity_provenance: 0

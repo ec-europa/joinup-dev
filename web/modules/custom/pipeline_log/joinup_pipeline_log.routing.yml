@@ -1,7 +1,7 @@
-pipeline_log.report:
+joinup_pipeline_log.report:
   path: '/admin/reporting/pipeline-log'
   defaults:
     _title: 'Pipeline report'
-    _controller: '\Drupal\pipeline_log\Controller\PipelineLogController::build'
+    _controller: '\Drupal\joinup_pipeline_log\Controller\JoinupPipelineLogController::build'
   requirements:
     _permission: 'access pipeline report'

@@ -1,4 +1,4 @@
-name: Pipeline log
+name: Joinup pipeline log
 type: module
 description: Logs the last execute time of the pipeline and warns users.
 core: 8.x
