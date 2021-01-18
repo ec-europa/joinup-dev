@@ -1707,12 +1707,55 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Creates testing media items.
+   *
+   * @BeforeScenario @generateMedia
+   */
+  public function generateMedia(): void {
+    $media_type_ids = [
+      'collection_banner',
+      'collection_logo',
+      'solution_banner',
+      'solution_logo',
+      'event_logo',
+      'news_logo',
+    ];
+    foreach ($media_type_ids as $media_type_id) {
+      $definition = \Drupal::service('entity_field.manager')->getFieldDefinitions('media', $media_type_id)['image_library_widget_image'];
+      for ($i = 0; $i < 15; $i++) {
+        $media = Media::create([
+          'bundle' => $media_type_id,
+          'name' => $this->getRandom()->string(),
+          'image_library_widget_image' => ImageItem::generateSampleValue($definition),
+        ]);
+        $media->save();
+        $this->entities['media'][$media->id()] = $media;
+      }
+    }
+  }
+
+  /**
+   * Clears testing media items.
+   *
+   * @AfterScenario @generateMedia
+   */
+  public function clearMedia(): void {
+    if (!empty($this->entities['media'])) {
+      /** @var \Drupal\media\MediaStorage $media_storage */
+      $media_storage = \Drupal::entityTypeManager()->getStorage('media');
+      $media_storage->delete($this->entities['media']);
+      unset($this->entities['media']);
+    }
+    \Drupal::state()->delete('image_library_widget.clicks');
+  }
+
+  /**
    * Disables the Antibot functionality during tests run.
    *
-   * Antibot module blocks all form submissions the for browsers without
-   * JavaScript support or when there's no keyboard or mouse interaction before
-   * the form is submitted. This would make most of Behat tests to fail. We
-   * disable Antibot functionality during Behat tests run.
+   * Antibot module blocks all form submissions for browsers without JavaScript
+   * support or when there's no keyboard or mouse interaction before the form is
+   * submitted. This would make most of Behat tests to fail. We disable Antibot
+   * functionality during Behat tests run.
    *
    * If a scenario wants to have Antibot functionality enabled, it should be
    * tagged with @antibot.
@@ -2191,49 +2234,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     // Get the field wrapper.
     $field = $label->find('xpath', './ancestor::*[contains(concat(" ", @class, " "), " form-item ")][1]');
     $field->findButton('Remove')->press();
-  }
-
-  /**
-   * Creates testing media items.
-   *
-   * @BeforeScenario @generateMedia
-   */
-  public function generateMedia(): void {
-    $media_type_ids = [
-      'collection_banner',
-      'collection_logo',
-      'solution_banner',
-      'solution_logo',
-      'event_logo',
-      'news_logo',
-    ];
-    foreach ($media_type_ids as $media_type_id) {
-      $definition = \Drupal::service('entity_field.manager')->getFieldDefinitions('media', $media_type_id)['image_library_widget_image'];
-      for ($i = 0; $i < 15; $i++) {
-        $media = Media::create([
-          'bundle' => $media_type_id,
-          'name' => $this->getRandom()->string(),
-          'image_library_widget_image' => ImageItem::generateSampleValue($definition),
-        ]);
-        $media->save();
-        $this->entities['media'][$media->id()] = $media;
-      }
-    }
-  }
-
-  /**
-   * Clears testing media items.
-   *
-   * @AfterScenario @generateMedia
-   */
-  public function clearMedia(): void {
-    if (!empty($this->entities['media'])) {
-      /** @var \Drupal\media\MediaStorage $media_storage */
-      $media_storage = \Drupal::entityTypeManager()->getStorage('media');
-      $media_storage->delete($this->entities['media']);
-      unset($this->entities['media']);
-    }
-    \Drupal::state()->delete('image_library_widget.clicks');
   }
 
 }
