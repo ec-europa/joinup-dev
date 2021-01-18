@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\collection\Entity\CollectionInterface;
 use Drupal\joinup_newsletter\Entity\Newsletter;
 
 /**
