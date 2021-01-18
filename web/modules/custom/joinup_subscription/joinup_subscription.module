@@ -53,8 +53,8 @@ function joinup_subscription_entity_base_field_info(EntityTypeInterface $entity_
  * Implements hook_entity_bundle_info_alter().
  */
 function joinup_subscription_entity_bundle_info_alter(&$bundles) {
-  if (!empty($bundles['message']['collection_content_subscription'])) {
-    $bundles['message']['collection_content_subscription']['class'] = GroupContentSubscriptionMessage::class;
+  if (!empty($bundles['message']['group_content_subscription'])) {
+    $bundles['message']['group_content_subscription']['class'] = GroupContentSubscriptionMessage::class;
   }
 }
 

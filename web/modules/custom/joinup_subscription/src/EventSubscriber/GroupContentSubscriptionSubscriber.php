@@ -84,7 +84,7 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $this->sendMessage($entity, 'collection_content_subscription');
+    $this->sendMessage($entity, 'group_content_subscription');
   }
 
   /**
@@ -102,7 +102,7 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $this->sendMessage($entity, 'collection_content_subscription');
+    $this->sendMessage($entity, 'group_content_subscription');
   }
 
   /**
@@ -135,7 +135,7 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $this->sendMessage($entity, 'collection_content_subscription');
+    $this->sendMessage($entity, 'group_content_subscription');
   }
 
   /**
@@ -187,7 +187,7 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
       // user's chosen digest frequency.
       foreach ($this->getSubscribers($group_content) as $subscriber) {
         $message_values = [
-          'field_collection_content' => [
+          'field_group_content' => [
             0 => [
               'target_type' => $group_content->getEntityTypeId(),
               'target_id' => $group_content->id(),
