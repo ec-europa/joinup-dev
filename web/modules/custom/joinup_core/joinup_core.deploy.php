@@ -70,3 +70,38 @@ function joinup_core_deploy_0106701(): void {
     ->set('link', 'route:view.eif_recommendation.all;rdf_entity=http_e_f_fdata_ceuropa_ceu_fw21_f405d8980_b3f06_b4494_bb34a_b46c388a38651')
     ->save();
 }
+
+/**
+ * Remove digest messages that are already sent.
+ */
+function joinup_core_deploy_0106702(&$sandbox): TranslatableMarkup {
+  $database = \Drupal::database();
+  $storage = \Drupal::entityTypeManager()->getStorage('message');
+
+  // Initialize the sandbox and results counter on first run.
+  if (!isset($sandbox['mids'])) {
+    $query = $database->select('message_digest', 'md');
+    $query->fields('md', ['mid']);
+    $query->condition('md.sent', 1);
+    $sandbox['mids'] = $query->execute()->fetchCol();
+    $sandbox['total'] = count($sandbox['mids']);
+    $sandbox['current'] = 0;
+  }
+
+  if ($sandbox['total'] == 0) {
+    $sandbox['#finished'] = 1;
+    return t('There are no digest messages to delete.');
+  }
+
+  $mids_to_delete = array_slice($sandbox['mids'], $sandbox['current'], 500);
+  $messages_to_delete = $storage->loadMultiple($mids_to_delete);
+  $storage->delete($messages_to_delete);
+  $sandbox['current'] += count($mids_to_delete);
+  $sandbox['#finished'] = $sandbox['current'] / $sandbox['total'];
+
+  return t('Deleted @deleted of @total digest messages (@percentage% complete)', [
+    '@deleted' => $sandbox['current'],
+    '@total' => $sandbox['total'],
+    '@percentage' => Percentage::format($sandbox['total'], $sandbox['current']),
+  ]);
+}
