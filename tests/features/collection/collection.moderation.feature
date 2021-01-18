@@ -350,7 +350,7 @@ Feature: Collection moderation
     And I delete the "Coretta Simonson" owner
     And I delete the "Secretary of thieves" contact information
 
-  @javascript @terms @javascript @uploadFiles:logo.png,banner.jpg
+  @javascript @terms @uploadFiles:logo.png,banner.jpg
   Scenario: Changing Content creation value - regression #3
     # Regression test for a bug that happens when an "Add more" button on a
     # multi-value widget is clicked and then the "Closed collection" checkbox
@@ -395,7 +395,7 @@ Feature: Collection moderation
     And I delete the "Terrance Nash" owner
     And I delete the "Secretary of Silk" contact information
 
-  @javascript @terms @javascript @uploadFiles:logo.png,banner.jpg
+  @javascript @terms @uploadFiles:logo.png,banner.jpg
   Scenario: Changing Content creation value - regression #4
     # Regression test for a bug that happens when the "Closed collection" checkbox
     # is checked and then an "Add more" button on a multi-value widget is clicked.
