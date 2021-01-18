@@ -9,7 +9,6 @@ dependencies:
     - node.type.document
     - node.type.event
     - node.type.news
-    - node.type.newsletter
     - node.type.video
     - rdf_entity.rdfentity.collection
     - rdf_entity.rdfentity.solution
@@ -618,7 +617,6 @@ display:
             document: document
             event: event
             news: news
-            newsletter: newsletter
             video: video
           group: 1
           exposed: true
