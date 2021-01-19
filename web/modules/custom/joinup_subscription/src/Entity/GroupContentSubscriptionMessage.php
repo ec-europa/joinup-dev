@@ -25,6 +25,17 @@ class GroupContentSubscriptionMessage extends Message implements GroupContentSub
 
   /**
    * {@inheritdoc}
+   *
+   * phpcs:disable Generic.CodeAnalysis.UselessOverridingMethod.Found
+   */
+  public static function create(array $values = []): GroupContentSubscriptionMessageInterface {
+    // Delegate to the parent method. This is only overridden to provide the
+    // correct return type.
+    return parent::create($values);
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function getSubscribedGroupContent(): GroupContentInterface {
     $referenced_entity = $this->getFirstReferencedEntity(self::GROUP_CONTENT_REFERENCE_FIELD);
