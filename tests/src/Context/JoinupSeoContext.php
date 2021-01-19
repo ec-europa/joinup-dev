@@ -388,8 +388,8 @@ class JoinupSeoContext extends RawDrupalContext {
    *
    * @codingStandardsIgnoreStart
    * | engine         | google              |
-   * | file           | site_abcdefg        |
-   * | file_contents  | site_verify:abcdefg |
+   * | File           | site_abcdefg        |
+   * | File contents  | site_verify:abcdefg |
    * @codingStandardsIgnoreEnd
    *
    * @param \Behat\Gherkin\Node\TableNode $data
