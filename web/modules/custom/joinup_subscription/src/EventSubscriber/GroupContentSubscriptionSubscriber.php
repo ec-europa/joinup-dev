@@ -85,7 +85,7 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $this->sendMessage($entity, GroupContentSubscriptionMessage::TEMPLATE);
+    $this->sendMessage($entity);
   }
 
   /**
@@ -103,7 +103,7 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $this->sendMessage($entity, GroupContentSubscriptionMessage::TEMPLATE);
+    $this->sendMessage($entity);
   }
 
   /**
@@ -136,7 +136,7 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $this->sendMessage($entity, GroupContentSubscriptionMessage::TEMPLATE);
+    $this->sendMessage($entity);
   }
 
   /**
@@ -171,31 +171,32 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Sends the notification to the recipients.
+   * Sends the message to the recipients.
+   *
+   * These are in fact not sent but stored in the database for later sending in
+   * a digest message.
    *
    * @param \Drupal\joinup_group\Entity\GroupContentInterface $group_content
-   *   The group content for which to send the notification.
-   * @param string $message_template
-   *   The ID of the message template to use.
+   *   The group content for which to send messages.
    *
    * @return bool
-   *   Whether or not the sending of the e-mails has succeeded.
+   *   Whether or not the sending of the messages has succeeded.
    */
-  protected function sendMessage(GroupContentInterface $group_content, string $message_template): bool {
+  protected function sendMessage(GroupContentInterface $group_content): bool {
     try {
       $success = TRUE;
       // Create individual messages for each subscriber so that we can honor the
       // user's chosen digest frequency.
       foreach ($this->getSubscribers($group_content) as $subscriber) {
-        $message_values = [
+        $message = GroupContentSubscriptionMessage::create([
           'field_group_content' => [
             0 => [
               'target_type' => $group_content->getEntityTypeId(),
               'target_id' => $group_content->id(),
             ],
           ],
-        ];
-        $success = $this->messageDelivery->sendMessageTemplateToUser($message_template, [], $subscriber, [], $message_values, TRUE) && $success;
+        ]);
+        $success = $this->messageDelivery->sendMessageToUser($message, $subscriber, [], TRUE) && $success;
       }
       return $success;
     }
