@@ -27,11 +27,13 @@ function joinup_core_post_update_0106700(): void {
   $db = \Drupal::database();
 
   // Collect newsletter node IDs.
-  $newsletters = $db->select('node')
-    ->fields('node', ['nid', 'vid'])
-    ->condition('type', 'newsletter')
+  $query = $db->select('node', 'n');
+  $query->join('node_field_data', 'nfd', 'n.nid = nfd.nid');
+  $newsletters = $query->fields('n', ['nid', 'vid'])
+    ->fields('nfd', ['status'])
+    ->condition('n.type', 'newsletter')
     ->execute()
-    ->fetchAllKeyed();
+    ->fetchAll();
 
   // Convert existing fields.
   $tables = [
@@ -66,14 +68,41 @@ function joinup_core_post_update_0106700(): void {
   // Fill the document type field.
   foreach (['node__field_type', 'node_revision__field_type'] as $table) {
     $insert = $db->insert($table)->fields($fields);
-    foreach ($newsletters as $nid => $vid) {
+    foreach ($newsletters as $newsletter) {
       $insert->values(array_combine($fields, [
         'document',
-        $nid,
-        $vid,
+        $newsletter->nid,
+        $newsletter->vid,
         'en',
         0,
         'newsletter',
+      ]));
+    }
+    $insert->execute();
+  }
+
+  // Set an appropriate workflow state, depending on the publication state.
+  $fields = [
+    'bundle',
+    'deleted',
+    'entity_id',
+    'revision_id',
+    'langcode',
+    'delta',
+    'field_state_value',
+  ];
+
+  foreach (['node__field_state', 'node_revision__field_state'] as $table) {
+    $insert = $db->insert($table)->fields($fields);
+    foreach ($newsletters as $newsletter) {
+      $insert->values(array_combine($fields, [
+        'document',
+        0,
+        $newsletter->nid,
+        $newsletter->vid,
+        'en',
+        0,
+        $newsletter->status == 1 ? 'validated' : 'draft',
       ]));
     }
     $insert->execute();
