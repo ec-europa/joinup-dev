@@ -24,6 +24,11 @@ class GroupContentSubscriptionMessage extends Message implements GroupContentSub
   const GROUP_CONTENT_REFERENCE_FIELD = 'field_group_content';
 
   /**
+   * The message template for this message.
+   */
+  const TEMPLATE = 'group_content_subscription';
+
+  /**
    * {@inheritdoc}
    *
    * phpcs:disable Generic.CodeAnalysis.UselessOverridingMethod.Found

@@ -12,6 +12,7 @@ use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\NotificationEvents;
+use Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessage;
 use Drupal\og\OgMembershipInterface;
 use Drupal\solution\Entity\SolutionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -84,7 +85,7 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $this->sendMessage($entity, 'group_content_subscription');
+    $this->sendMessage($entity, GroupContentSubscriptionMessage::TEMPLATE);
   }
 
   /**
@@ -102,7 +103,7 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $this->sendMessage($entity, 'group_content_subscription');
+    $this->sendMessage($entity, GroupContentSubscriptionMessage::TEMPLATE);
   }
 
   /**
@@ -135,7 +136,7 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $this->sendMessage($entity, 'group_content_subscription');
+    $this->sendMessage($entity, GroupContentSubscriptionMessage::TEMPLATE);
   }
 
   /**
