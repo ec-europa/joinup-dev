@@ -26,9 +26,9 @@ Feature: In order to help moderators manage effectively imported content
     When I go to "/admin/reporting"
     And I click "Pipeline report"
     Then the "pipeline log" table should contain the following columns:
-      | Pipeline                                 | Last executed in days ago |
-      | Danish Public Sector Interoperability    | Never                     |
-      | EU Schemantic Interoperability Catalogue | Never                     |
-      | Joinup collection                        | 91                        |
-      | Slovenian Interoperability Portal - NIO  | 92                        |
-      | Spain - Center for Technology Transfer   | Never                     |
+      | Pipeline                                 | Last executed |
+      | Danish Public Sector Interoperability    | Never         |
+      | EU Schemantic Interoperability Catalogue | Never         |
+      | Joinup collection                        | 91 days ago   |
+      | Slovenian Interoperability Portal - NIO  | 92 days ago   |
+      | Spain - Center for Technology Transfer   | Never         |
