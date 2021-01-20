@@ -21,6 +21,7 @@ settings:
       discussion: view_mode_tile
       document: view_mode_tile
       event: view_mode_tile
+      glossary: view_mode_tile
       news: view_mode_tile
       newsletter: view_mode_tile
       tallinn_report: view_mode_tile

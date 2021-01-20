@@ -24,5 +24,4 @@ settings:
   handler_settings:
     target_bundles:
       collection: collection
-      solution: solution
 field_type: og_standard_reference
