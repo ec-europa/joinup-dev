@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Primary module hooks for Joinup pipeline logging module.
+ * Hook implementations for the Joinup pipeline logging module.
  */
 
 declare(strict_types = 1);
