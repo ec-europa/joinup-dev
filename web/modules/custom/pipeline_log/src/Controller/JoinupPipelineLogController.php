@@ -87,7 +87,7 @@ class JoinupPipelineLogController extends ControllerBase {
       }
       $last_execute_time = $this->pipelineCollection->get($plugin_id);
       // Convert to days or set to 'N/A'.
-      $last_execute_time = $last_execute_time ? floor(($this->time->getRequestTime() - $last_execute_time) / 86400) : 'Never';
+      $last_execute_time = $last_execute_time ? floor(($this->time->getRequestTime() - $last_execute_time) / 86400) : $this->t('Never');
       $rows[] = [
         $definition['label'],
         is_numeric($last_execute_time) ? $this->t('@count days ago', [
