@@ -116,8 +116,10 @@ interface WorkflowHelperInterface {
   /**
    * Checks if the user has at least one role with the given OG permission.
    *
-   * This just returns the permission information and should not be used for
-   * access checks. Use OgAccess to check access.
+   * This does a simple inspection of the available permissions and should not
+   * be relied on for access checks. For example this does not take into account
+   * that a group admin has full permissions, or a blocked user has no
+   * permissions. Use OgAccess to check access.
    *
    * @param string $permissions
    *   The permission string.

@@ -20,7 +20,6 @@ use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup_collection\JoinupCollectionHelper;
 use Drupal\joinup_group\ContentCreationOptions;
-use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
@@ -706,8 +705,9 @@ class CollectionContext extends RawDrupalContext {
 
     $failures = [];
     foreach ($this->explodeCommaSeparatedStepArgument($labels) as $label) {
+      /** @var \Drupal\collection\Entity\CollectionInterface $collection */
       $collection = $this->getEntityByLabel('rdf_entity', $label, 'collection');
-      if (!Og::getMembership($collection, $account, [])) {
+      if (!$collection->getMembership((int) $account->id(), [])) {
         $failures[] = $label;
       }
     }

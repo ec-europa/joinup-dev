@@ -1,0 +1,52 @@
+uuid: 14011c0d-e890-4ce1-8987-d290fe534e7a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.view_mode_tile
+    - field.field.node.glossary.field_glossary_abbreviation
+    - field.field.node.glossary.field_glossary_definition
+    - field.field.node.glossary.og_audience
+    - node.type.glossary
+  module:
+    - smart_trim
+    - template_suggestion
+    - text
+    - user
+id: node.glossary.view_mode_tile
+targetEntityType: node
+bundle: glossary
+mode: view_mode_tile
+content:
+  field_glossary_abbreviation:
+    weight: 0
+    label: hidden
+    settings:
+      trim_length: 600
+      trim_type: chars
+      trim_suffix: ''
+      wrap_output: false
+      wrap_class: trimmed
+      more_link: false
+      more_class: more-link
+      more_text: More
+      summary_handler: full
+      trim_options: {  }
+    third_party_settings: {  }
+    type: smart_trim
+    region: content
+  field_glossary_definition:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+    type: text_default
+    region: content
+hidden:
+  langcode: true
+  links: true
+  og_audience: true
+  published_at: true
+  report: true

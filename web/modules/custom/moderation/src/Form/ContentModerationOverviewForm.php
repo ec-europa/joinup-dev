@@ -8,14 +8,12 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\og\MembershipManagerInterface;
-use Drupal\og\OgMembershipInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -23,13 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Form that allows to display and filter the content moderation overview.
  */
 class ContentModerationOverviewForm extends FormBase {
-
-  /**
-   * The database connection.
-   *
-   * @var \Drupal\Core\Database\Connection
-   */
-  protected $connection;
 
   /**
    * The entity type manager.
@@ -46,30 +37,17 @@ class ContentModerationOverviewForm extends FormBase {
   protected $nodeStorage;
 
   /**
-   * The OG membership manager service.
-   *
-   * @var \Drupal\og\MembershipManagerInterface
-   */
-  protected $membershipManager;
-
-  /**
    * Constructs a new ContentModerationOverviewForm object.
    *
-   * @param \Drupal\Core\Database\Connection $connection
-   *   The database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
-   * @param \Drupal\og\MembershipManagerInterface $membership_manager
-   *   The OG membership manager service.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(Connection $connection, EntityTypeManagerInterface $entityTypeManager, MembershipManagerInterface $membership_manager) {
-    $this->connection = $connection;
+  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
     $this->entityTypeManager = $entityTypeManager;
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
-    $this->membershipManager = $membership_manager;
   }
 
   /**
@@ -77,9 +55,7 @@ class ContentModerationOverviewForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('database'),
-      $container->get('entity_type.manager'),
-      $container->get('og.membership_manager')
+      $container->get('entity_type.manager')
     );
   }
 
@@ -153,11 +129,8 @@ class ContentModerationOverviewForm extends FormBase {
 
     // If the user doesn't have global permission, check if they have permission
     // inside the group.
-    if (!$access) {
-      $membership = $this->membershipManager->getMembership($rdf_entity, $user->id());
-      if ($membership instanceof OgMembershipInterface) {
-        $access = $membership->hasPermission('access content moderation overview');
-      }
+    if (!$access && $rdf_entity instanceof GroupInterface) {
+      $access = $rdf_entity->hasGroupPermission((int) $user->id(), 'access content moderation overview');
     }
 
     return AccessResult::allowedIf($access)->addCacheableDependency($cache_metadata);
@@ -204,7 +177,7 @@ class ContentModerationOverviewForm extends FormBase {
    * @return array
    *   An associative array of select options, keyed by moderation state.
    */
-  protected function getStateFilterOptions(array $content_count, ?string $content_type = NULL) {
+  protected function getStateFilterOptions(array $content_count, ?string $content_type = NULL): array {
     $options = [];
     $total_count = 0;
 

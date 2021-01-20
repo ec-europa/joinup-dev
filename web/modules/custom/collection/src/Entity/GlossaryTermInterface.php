@@ -9,7 +9,7 @@ use Drupal\node\NodeInterface;
 /**
  * Interface for glossary terms in Joinup.
  */
-interface GlossaryTermInterface extends NodeInterface {
+interface GlossaryTermInterface extends NodeInterface, CollectionContentInterface {
 
   /**
    * Returns whether or not the glossary term has an abbreviation.
