@@ -90,7 +90,7 @@ class JoinupPipelineLogController extends ControllerBase {
       $last_execute_time = $last_execute_time ? floor(($this->time->getRequestTime() - $last_execute_time) / 86400) : $this->t('Never');
       $rows[] = [
         $definition['label'],
-        is_numeric($last_execute_time) ? $this->formatPlural($last_execute_time,'1 day ago', '@count days ago') : $last_execute_time,
+        is_numeric($last_execute_time) ? $this->formatPlural($last_execute_time, '1 day ago', '@count days ago') : $last_execute_time,
       ];
     }
 
