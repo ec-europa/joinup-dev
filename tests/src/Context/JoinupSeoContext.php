@@ -384,6 +384,35 @@ class JoinupSeoContext extends RawDrupalContext {
   }
 
   /**
+   * Adds a site verification entry.
+   *
+   * @codingStandardsIgnoreStart
+   * | engine         | google              |
+   * | File           | site_abcdefg        |
+   * | File contents  | site_verify:abcdefg |
+   * @codingStandardsIgnoreEnd
+   *
+   * @param \Behat\Gherkin\Node\TableNode $data
+   *   The site verification data.
+   *
+   * @Given the following site verification:
+   */
+  public function givenSiteVerificationData(TableNode $data): void {
+    $data = $data->getRowsHash();
+    \Drupal::database()->insert('site_verify')
+      ->fields([
+        'engine' => $data['Engine'],
+        'file' => $data['File'],
+        'file_contents' => $data['File contents'],
+        'meta' => '',
+      ])
+      ->execute();
+    // The site_verify module rebuilds the routes whenever a new entry is added
+    // in their settings form.
+    \Drupal::getContainer()->get('router.builder')->rebuild();
+  }
+
+  /**
    * Generates the serialized metadata for the RDF entity.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
