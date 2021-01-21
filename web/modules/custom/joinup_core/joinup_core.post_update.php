@@ -16,6 +16,8 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Batch\Percentage;
+use Drupal\Core\Serialization\Yaml;
+use Drupal\Core\Site\Settings;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessage;
 use Drupal\message\MessageInterface;
@@ -64,6 +66,21 @@ function joinup_core_post_update_0106801(array &$sandbox): TranslatableMarkup {
 
   // Initialize the sandbox and results counter on first run.
   if (!isset($sandbox['ids'])) {
+    // The message template and its field were not created yet as this script
+    // runs before config sync. Let's do it here.
+    $config_names = [
+      'message.template.group_content_subscription' => 'message_template',
+      'field.storage.message.field_group_content' => 'field_storage_config',
+      'field.field.message.group_content_subscription.field_group_content' => 'field_config',
+    ];
+    $config_sync_dir = Settings::get('config_sync_directory');
+    $entity_type_manager = \Drupal::entityTypeManager();
+    foreach ($config_names as $config_name => $entity_type_id) {
+      $values = Yaml::decode(file_get_contents("{$config_sync_dir}/{$config_name}.yml"));
+      $entity_type_manager->getStorage($entity_type_id)->create($values)->save();
+    }
+
+    // Get unsent message digests.
     $query = $database->select('message_digest', 'md');
     $query->fields('md', ['id', 'mid']);
     $query->condition('md.sent', 0);
