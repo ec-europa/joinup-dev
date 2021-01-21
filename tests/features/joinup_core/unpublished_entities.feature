@@ -36,6 +36,11 @@ Feature: Unpublished content of the website
       | Mists outside the planes of thinking  | 2018-10-04 8:30am | Ed Abbott | Grey Swords         | draft     |
       | Mists outside the planes of construct | 2018-10-04 8:31am | Ed Abbott | Grey Swords         | draft     |
       | Mists that are published maybe?       | 2018-10-04 8:31am | Ed Abbott | Grey Swords         | validated |
+    Given glossary content:
+      | title    | abbreviation | summary                 | author    | created           | definition                                  | collection          | status      |
+      | Alphabet | ABC          | Summary of Alphabet     | Ed Abbott | 2018-10-04 8:29am | Long, long definition field                 | Invisible Boyfriend | published   |
+      | Colors   | CLR          | Summary of Colors       | Ed Abbott | 2018-10-04 8:29am | Colors definition field                     | Invisible Boyfriend | unpublished |
+      | Smells   | SML          | Smells Like Teen Spirit | Ed Abbott | 2018-10-04 8:31am | With the lights out, it's less dangerous... | Invisible Boyfriend | unpublished |
 
     # The owner should be able to see all content.
     When I am logged in as "Ed Abbott"
@@ -56,10 +61,20 @@ Feature: Unpublished content of the website
     # The author should be able to see all his content in his profile.
     When I am logged in as "Ed Abbott"
     And I visit "/user"
-    Then I should see the "The Ragged Streams" tile
-    And I should see the "Storms of Touch" tile
-    And I should see the "The Male of the Gift" tile
-    And I should see the "Mists in the Thought" tile
+    Then I should see the following tiles in the correct order:
+      # Published content appears first in the content listing. Note: Published
+      # glossary terms are not indexed, so 'Alphabet' will not appear.
+      | Invisible Boyfriend                   |
+      | Storms of Touch                       |
+      | The Male of the Gift                  |
+      # Unpublished content.
+      | The Ragged Streams                    |
+      | Mists in the Thought                  |
+      | Mists outside the planes of thinking  |
+      | Mists outside the planes of construct |
+      | Mists that are published maybe?       |
+      | Colors                                |
+      | Smells                                |
 
     # The moderator should see the proposed collections on his dashboard.
     When I am logged in as a moderator
