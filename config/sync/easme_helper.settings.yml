@@ -1,2 +1,5 @@
+urls:
+  community_site: 'https://community-smei.easme-web.eu'
+  redirect_from_community_site: '<front>'
 notifications:
   site_name: 'EIC Challenge platform'
