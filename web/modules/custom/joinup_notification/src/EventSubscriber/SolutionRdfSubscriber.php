@@ -10,6 +10,7 @@ use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\og\OgRoleInterface;
+use Drupal\solution\Entity\SolutionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -86,13 +87,6 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   protected $workflow;
 
   /**
-   * The state field name of the entity object.
-   *
-   * @var string
-   */
-  protected $stateField;
-
-  /**
    * The motivation text passed in the entity.
    *
    * @var string
@@ -138,15 +132,17 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    */
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
-    if ($this->entity->bundle() !== 'solution') {
+
+    // Only initialize the workflow if available. It is not available when the
+    // entity is being deleted during cleanup of orphaned group content.
+    if (!$this->entity instanceof SolutionInterface || !$this->entity->hasWorkflow()) {
       return;
     }
 
     $this->event = $event;
-    $this->stateField = 'field_is_state';
-    $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
-    $this->fromState = isset($this->entity->original) ? $this->entity->original->get($this->stateField)->first()->value : '__new__';
-    $to_state = $this->entity->get($this->stateField)->first()->value;
+    $this->workflow = $this->entity->getWorkflow();
+    $this->fromState = isset($this->entity->original) ? $this->entity->original->getWorkflowState() : '__new__';
+    $to_state = $this->entity->getWorkflowState();
     $this->transition = $this->workflow->findTransition($this->fromState, $to_state);
     $this->motivation = empty($this->entity->motivation) ? '' : $this->entity->motivation;
     $this->hasPublished = $this->hasPublishedVersion($this->entity);
@@ -456,7 +452,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * @return bool
    *   Whether the entity has a published version.
    *
-   * @see: joinup_notification_rdf_entity_presave()
+   * @see joinup_notification_rdf_entity_presave()
    */
   protected function hasPublishedVersion(EntityInterface $entity) {
     if (isset($entity->hasPublished)) {
@@ -475,7 +471,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    *   (optional) A list of users to pass as bcc. The template must have the
    *   field_message_bcc field.
    *
-   * @see: ::getUsersMessages() for more information on the array.
+   * @see ::getUsersMessages()
    */
   protected function getUsersAndSend(array $user_data, array $bcc_data = []) {
     $message_values = [];

@@ -148,7 +148,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | title       | Collection With Glossary                                                                        |
       | state       | validated                                                                                       |
       | description | Colors of Paradise. Abbreviated as CLR. <a href="/contact"><strong>Colors of Dream</strong></a> |
-      | abstract    | The Alphabet is back.                                                                           |
+      | abstract    | The Alphabet is back, and it's s/ashy.                                                          |
     And solution:
       | title       | Under The Bridge         |
       | description | No Colors                |
@@ -180,9 +180,10 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | title         | body                                       | solution         | state     |
       | Won at Bingo! | aBC is for ALPHABET what CLR is for Colors | Under The Bridge | validated |
     And glossary content:
-      | title    | abbreviation | summary             | definition                  | collection               |
-      | Alphabet | ABC          | Summary of Alphabet | Long, long definition field | Collection With Glossary |
-      | Colors   | CLR          | Summary of Colors   | Colors definition field     | Collection With Glossary |
+      | title    | abbreviation | summary                  | definition                  | collection               |
+      | Alphabet | ABC          | Summary of Alphabet      | Long, long definition field | Collection With Glossary |
+      | Colors   | CLR          | Summary of Colors        | Colors definition field     | Collection With Glossary |
+      | S/ashy   | /S\|ASH      | S/ashes Like an Ion Beam | Cutting things in ha/f      | Collection With Glossary |
 
     When I go to the "Collection With Glossary" collection
     When I click "Overview"
@@ -197,6 +198,10 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     When I move backward one page
     And I click "CLR"
     Then I see the heading "Colors"
+
+    When I move backward one page
+    And I click "s/ashy"
+    Then I see the heading "S/ashy"
 
     # A glossary term inside a link text remains untouched.
     When I move backward one page

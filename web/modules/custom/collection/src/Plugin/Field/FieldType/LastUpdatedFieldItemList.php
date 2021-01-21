@@ -38,18 +38,15 @@ class LastUpdatedFieldItemList extends FieldItemList {
    *   Last updated timestamp.
    */
   protected function collectionLastUpdate() {
-    /** @var \Drupal\rdf_entity\RdfInterface $collection */
+    /** @var \Drupal\collection\Entity\CollectionInterface $collection */
     $collection = $this->getEntity();
 
     // Store the collection changed timestamp.
     $last_updated = $collection->getChangedTime();
 
     // Check for a higher child solution changed timestamp.
-    /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $solutions */
-    $solutions = $collection->get('field_ar_affiliates');
-    /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    foreach ($solutions->referencedEntities() as $solution) {
-      if ($solution->field_is_state->value === 'validated') {
+    foreach ($collection->getSolutions() as $solution) {
+      if ($solution->getWorkflowState() === 'validated') {
         if ($solution->getChangedTime() > $last_updated) {
           $last_updated = $solution->getChangedTime();
         }

@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\joinup_video\Entity\Video;
 use Drupal\joinup_video\JoinupVideo;
 
 /**
@@ -62,4 +63,13 @@ function joinup_video_preprocess_video_embed_iframe(&$variables) {
     unset($variables['fragment']);
   }
 
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function joinup_video_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['node']['video'])) {
+    $bundles['node']['video']['class'] = Video::class;
+  }
 }

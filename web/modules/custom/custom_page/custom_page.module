@@ -15,10 +15,9 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\custom_page\Entity\CustomPage;
 use Drupal\custom_page\Entity\CustomPageInterface;
-use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\node\NodeInterface;
-use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Drupal\search_api\Query\QueryInterface;
@@ -233,20 +232,22 @@ function custom_page_search_api_query_search_api_field_field_cp_content_listing_
  * is not published.
  */
 function custom_page_node_access(NodeInterface $node, $op, AccountInterface $account) {
-  if ($op !== 'view' || $node->bundle() !== 'custom_page') {
+  if ($op !== 'view' || !$node instanceof CustomPageInterface) {
     return AccessResult::neutral();
   }
 
-  $parent = JoinupGroupHelper::getGroup($node);
   // Let parentless nodes (e.g. newsletters) be handled by the core access.
-  if (empty($parent)) {
+  try {
+    $parent = $node->getGroup();
+  }
+  catch (MissingGroupException $e) {
     return AccessResult::neutral();
   }
   if (!$parent->access('view', $account)) {
     // Anonymous users do not have access to content of non published groups.
     return AccessResult::forbiddenIf($account->isAnonymous() || $node->getOwnerId() !== $account->id());
   }
-  $membership = Og::getMembership($parent, $account);
+  $membership = $parent->getMembership((int) $account->id());
   if (empty($membership)) {
     return AccessResult::neutral();
   }

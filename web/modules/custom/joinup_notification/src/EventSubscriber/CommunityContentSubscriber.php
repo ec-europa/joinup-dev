@@ -14,8 +14,8 @@ use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
+use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\joinup_workflow\WorkflowHelperInterface;
-use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManager;
 use Drupal\og\OgRoleInterface;
 use Drupal\state_machine_revisions\RevisionManagerInterface;
@@ -41,13 +41,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @var \Drupal\state_machine\Plugin\Workflow\Workflow
    */
   protected $workflow;
-
-  /**
-   * The state field name of the entity object.
-   *
-   * @var string
-   */
-  protected $stateField;
 
   /**
    * The motivation text passed in the entity.
@@ -79,8 +72,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   The config factory service.
    * @param \Drupal\Core\Session\AccountProxy $current_user
    *   The current user service.
-   * @param \Drupal\og\GroupTypeManager $og_group_type_manager
-   *   The og group type manager service.
    * @param \Drupal\og\MembershipManager $og_membership_manager
    *   The og membership manager service.
    * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper
@@ -90,8 +81,8 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
    *   The revision manager service.
    */
-  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelperInterface $workflow_helper, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
-    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_group_type_manager, $og_membership_manager, $workflow_helper, $message_delivery);
+  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, MembershipManager $og_membership_manager, WorkflowHelperInterface $workflow_helper, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
+    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_membership_manager, $workflow_helper, $message_delivery);
     $this->revisionManager = $revision_manager;
   }
 
@@ -112,13 +103,13 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
 
-    $state_item = $this->workflowHelper->getEntityStateFieldDefinition($this->entity->getEntityTypeId(), $this->entity->bundle());
-    if (!empty($state_item)) {
-      $this->stateField = $state_item->getName();
+    // Only initialize the workflow if it is available. It is unavailable when
+    // the entity is being deleted during cleanup of orphaned group content.
+    if ($this->entity instanceof EntityWorkflowStateInterface && $this->entity->hasWorkflow()) {
       $from_state = isset($this->entity->field_state_initial_value) ? $this->entity->field_state_initial_value : 'draft';
-      $to_state = $this->entity->get($this->stateField)->first()->value;
+      $to_state = $this->entity->getWorkflowState();
 
-      $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
+      $this->workflow = $this->entity->getWorkflow();
       // In some cases the workflow cannot be determined, for example when
       // deleting orphaned group content that has a workflow that depends on the
       // parent entity's content moderation status.
@@ -163,7 +154,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     }
 
     // If any of the workflow related properties are empty, return early.
-    if (empty($this->stateField) || empty($this->workflow) || empty($this->transition)) {
+    if (!$this->entity instanceof EntityWorkflowStateInterface || empty($this->workflow) || empty($this->transition)) {
       return FALSE;
     }
 
@@ -203,7 +194,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     }
 
     // If any of the workflow related properties are empty, return early.
-    if (empty($this->stateField) || empty($this->workflow) || empty($this->transition)) {
+    if (!$this->entity instanceof EntityWorkflowStateInterface || empty($this->workflow) || empty($this->transition)) {
       return FALSE;
     }
 
@@ -225,8 +216,9 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     // The storage class passes the loaded entity to the hooks when a delete
     // operation occurs. This returns the wrong state of the entity so the
     // latest revision is forced here.
+    /** @var \Drupal\joinup_workflow\EntityWorkflowStateInterface $latest_revision */
     if ($latest_revision = $this->revisionManager->loadLatestRevision($this->entity)) {
-      $state = $latest_revision->get($this->stateField)->first()->value;
+      $state = $latest_revision->getWorkflowState();
       if (empty($this->workflow) || empty($this->config[$this->workflow->getId()][$state])) {
         return;
       }
@@ -246,7 +238,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    */
   protected function appliesOnDelete() {
     // If any of the workflow related properties are empty, return early.
-    if (empty($this->stateField)) {
+    if (!$this->entity instanceof EntityWorkflowStateInterface) {
       return FALSE;
     }
 

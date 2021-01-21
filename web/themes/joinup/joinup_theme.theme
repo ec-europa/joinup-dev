@@ -253,6 +253,7 @@ function _joinup_theme_get_file_extension(File $file) {
 
   // List of available icons.
   $available_icons = [
+    'csv',
     'doc',
     'docx',
     'exe',
@@ -261,7 +262,10 @@ function _joinup_theme_get_file_extension(File $file) {
     'pdf',
     'png',
     'ppt',
+    'pptx',
     'rar',
+    'svg',
+    'txt',
     'xls',
     'xlsx',
     'zip',
@@ -1786,6 +1790,27 @@ function joinup_theme_preprocess_rdf_entity__solution__listing_item(&$variables)
     $parent = $rdf_entity->get('collection')->first()->entity;
     $variables['attributes']['data-drupal-parent-id'] = $parent->id();
     $variables['attributes']['data-drupal-parent-label'] = $parent->label();
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for rdf-entity--solution--group-header.html.twig.
+ */
+function joinup_theme_preprocess_rdf_entity__solution__group_header(&$variables) {
+  if (isset($variables['content']['releases_overview'])) {
+    $variables['content']['releases_overview']['#attributes'] = [
+      'role' => 'button',
+      'class' => [
+        'featured__form-button',
+        'button',
+        'button--blue-light',
+        'mdl-button',
+        'mdl-js-button',
+        'mdl-button--raised',
+        'mdl-js-ripple-effect',
+        'mdl-button--accent',
+      ],
+    ];
   }
 }
 

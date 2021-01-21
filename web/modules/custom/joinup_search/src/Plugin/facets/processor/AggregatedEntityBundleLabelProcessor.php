@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_search\Plugin\facets\processor;
 
-use Drupal\Core\Config\Entity\EntityBundleWithPluralLabelsInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -37,6 +37,13 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
   protected $entityTypeManager;
 
   /**
+   * The entity type bundle info service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   */
+  protected $bundleInfo;
+
+  /**
    * Constructs a new object.
    *
    * @param array $configuration
@@ -47,10 +54,13 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
    *   The plugin implementation definition.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info
+   *   The entity type bundle info service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $bundle_info) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
+    $this->bundleInfo = $bundle_info;
   }
 
   /**
@@ -61,7 +71,8 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('entity_type.bundle.info')
     );
   }
 
@@ -123,81 +134,39 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
     /** @var \Drupal\search_api\Plugin\search_api\datasource\ContentEntity[] $datasources */
     $datasources = $source->getIndex()->getDatasources();
 
-    // Fetch all the bundles available in this index.
-    // Notice that if there are two entity types that have a bundle with the
-    // same id, the wrong label might be shown. Since this processor is only
-    // meant for a field that consists of aggregated bundle ids, that situation
-    // is unlikely going to happen.
+    // Fetch all the bundles available in this index. Notice that if there are
+    // two entity types that have a bundle with the same ID, the wrong label
+    // might be shown. Since this processor is only meant for a field that
+    // consists of aggregated bundle IDs, that situation is unlikely going to
+    // happen.
     $bundles = [];
     foreach ($datasources as $datasource) {
-      // The values of the $bundles array are either bundle entities, for those
-      // having plural count labels, or the standard bundle label for the
-      // others. The keys are the bundle IDs. By giving precedence to bundles
-      // with plural count labels we assure the standard bundle label as
-      // fallback, in case a plural count label is missed.
-      $bundles += $this->getBundlesWithLabelPluralCount($datasource->getEntityTypeId()) + $datasource->getBundles();
+      $bundle_info = $this->bundleInfo->getBundleInfo($datasource->getEntityTypeId());
+      foreach ($datasource->getBundles() as $bundle_id => $bundle_label) {
+        $bundles[$bundle_id]['entity_type_id'] = $datasource->getEntityTypeId();
+        $bundles[$bundle_id]['label'] = $bundle_label;
+        if (!empty($bundle_info[$bundle_id]['label_count'])) {
+          $bundles[$bundle_id]['has_count_label'] = TRUE;
+        }
+      }
     }
 
-    $plural_count_label_context = $this->getConfiguration()['plural_count_label']['context'];
+    $plural_count_label_variant = $this->getConfiguration()['plural_count_label']['context'];
     foreach ($results as $result) {
       $bundle_id = $result->getRawValue();
       if (!isset($bundles[$bundle_id])) {
         continue;
       }
 
-      if ($bundles[$bundle_id] instanceof EntityBundleWithPluralLabelsInterface) {
-        $result->setDisplayValue($bundles[$bundle_id]->getCountLabel($result->getCount(), $plural_count_label_context));
+      if (!empty($bundles[$bundle_id]['has_count_label'])) {
+        $result->setDisplayValue($this->bundleInfo->getBundleCountLabel($bundles[$bundle_id]['entity_type_id'], $bundle_id, $result->getCount(), $plural_count_label_variant));
       }
       else {
-        $result->setDisplayValue($bundles[$bundle_id]);
+        $result->setDisplayValue($bundles[$bundle_id]['label']);
       }
     }
 
     return $results;
-  }
-
-  /**
-   * Returns a list of bundles allowing and having label count plural variants.
-   *
-   * @param string $entity_type_id
-   *   The entity type ID.
-   *
-   * @return \Drupal\Core\Config\Entity\EntityBundleWithPluralLabelsInterface[]
-   *   A list of bundle entities keyed by bundle entity ID.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   *   If the bundle entity type did not specify a storage handler.
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   *   Thrown when the module defining the entity type is not enabled.
-   */
-  protected function getBundlesWithLabelPluralCount(string $entity_type_id): array {
-    // Are plural labels requested by plugin configuration?
-    if ($this->getConfiguration()['plural_count_label']['enabled']) {
-      $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
-      // Not all bundles are defined as config entities.
-      if ($bundle_entity_type_id = $entity_type->getBundleEntityType()) {
-        // Ensure there's valid entity type for this bundle entity type ID.
-        if ($bundle_entity_type = $this->entityTypeManager->getDefinition($bundle_entity_type_id)) {
-          $bundle_class = $bundle_entity_type->getClass();
-          $bundle_class_interfaces = class_implements($bundle_class);
-          // Limit to entity types with bundle entities allowing label plurals.
-          if (in_array(EntityBundleWithPluralLabelsInterface::class, $bundle_class_interfaces)) {
-            if ($bundle_entity_storage = $this->entityTypeManager->getStorage($bundle_entity_type_id)) {
-              // Get all the bundle config entities of this entity type.
-              $bundles = $bundle_entity_storage->loadMultiple();
-              $plural_count_label_context = $this->getConfiguration()['plural_count_label']['context'];
-
-              // Filter out bundles with count label returning an empty value.
-              return array_filter($bundles, function (EntityBundleWithPluralLabelsInterface $bundle) use ($plural_count_label_context): bool {
-                // Ensure at least the singular and one plural.
-                return !empty($bundle->getCountLabel(1, $plural_count_label_context)) && !empty($bundle->getCountLabel(2, $plural_count_label_context));
-              });
-            }
-          }
-        }
-      }
-    }
-    return [];
   }
 
 }

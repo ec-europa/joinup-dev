@@ -7,12 +7,13 @@ namespace Drupal\moderation\Form;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
-use Drupal\Core\Database\Connection;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -20,13 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Form that allows to display and filter the content moderation overview.
  */
 class ContentModerationOverviewForm extends FormBase {
-
-  /**
-   * The database connection.
-   *
-   * @var \Drupal\Core\Database\Connection
-   */
-  protected $connection;
 
   /**
    * The entity type manager.
@@ -45,13 +39,13 @@ class ContentModerationOverviewForm extends FormBase {
   /**
    * Constructs a new ContentModerationOverviewForm object.
    *
-   * @param \Drupal\Core\Database\Connection $connection
-   *   The database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(Connection $connection, EntityTypeManagerInterface $entityTypeManager) {
-    $this->connection = $connection;
+  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
     $this->entityTypeManager = $entityTypeManager;
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
   }
@@ -61,7 +55,6 @@ class ContentModerationOverviewForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('database'),
       $container->get('entity_type.manager')
     );
   }
@@ -69,14 +62,14 @@ class ContentModerationOverviewForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'content_moderation_overview_form';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL): array {
     $result = $this->getModerationItems($rdf_entity);
     $count = $this->getModerationItemCount($result);
 
@@ -101,7 +94,7 @@ class ContentModerationOverviewForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
   }
 
   /**
@@ -109,7 +102,7 @@ class ContentModerationOverviewForm extends FormBase {
    *
    * This returns the updated form after changing the filter options.
    */
-  public static function updateForm(array $form, FormStateInterface $form_state) {
+  public static function updateForm(array $form, FormStateInterface $form_state): array {
     return $form['wrapper'];
   }
 
@@ -122,28 +115,25 @@ class ContentModerationOverviewForm extends FormBase {
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result object.
    */
-  public static function access(RdfInterface $rdf_entity): AccessResultInterface {
-    /** @var \Drupal\Core\Session\AccountProxyInterface $user */
-    $user = \Drupal::service('current_user');
+  public function access(RdfInterface $rdf_entity): AccessResultInterface {
+    // The content moderation overview is accessible by moderators and]
+    // facilitators, so access varies by user role and OG role.
+    $cache_metadata = (new CacheableMetadata())->addCacheContexts(
+      ['og_role', 'user.permissions']
+    );
 
-    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-    $membership_manager = \Drupal::service('og.membership_manager');
+    // Check if the user has global permission to access all content moderation
+    // overviews (this is granted to moderators).
+    $user = $this->currentUser();
+    $access = $user->hasPermission('access content moderation overview');
 
-    $access = FALSE;
-
-    // Only allow access if the current user is a moderator or a facilitator.
-    if (in_array('moderator', $user->getRoles())) {
-      $access = TRUE;
-    }
-    elseif ($membership_manager->isMember($rdf_entity, $user->id())) {
-      $membership = $membership_manager->getMembership($rdf_entity, $user->id());
-      $role = $rdf_entity->bundle() === 'collection' ? 'rdf_entity-collection-facilitator' : 'rdf_entity-solution-facilitator';
-      if (in_array($role, $membership->getRolesIds())) {
-        $access = TRUE;
-      }
+    // If the user doesn't have global permission, check if they have permission
+    // inside the group.
+    if (!$access && $rdf_entity instanceof GroupInterface) {
+      $access = $rdf_entity->hasGroupPermission((int) $user->id(), 'access content moderation overview');
     }
 
-    return AccessResult::allowedIf($access);
+    return AccessResult::allowedIf($access)->addCacheableDependency($cache_metadata);
   }
 
   /**
@@ -187,7 +177,7 @@ class ContentModerationOverviewForm extends FormBase {
    * @return array
    *   An associative array of select options, keyed by moderation state.
    */
-  protected function getStateFilterOptions(array $content_count, ?string $content_type = NULL) {
+  protected function getStateFilterOptions(array $content_count, ?string $content_type = NULL): array {
     $options = [];
     $total_count = 0;
 
@@ -230,7 +220,7 @@ class ContentModerationOverviewForm extends FormBase {
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   The filtered array.
    */
-  protected function filterCountedItems(array $entities, ?string $type_filter = NULL, ?string $state_filter = NULL) {
+  protected function filterCountedItems(array $entities, ?string $type_filter = NULL, ?string $state_filter = NULL): array {
     if (!empty($type_filter) && $type_filter !== 'all') {
       $entities = array_filter($entities, function (EntityInterface $entity) use ($type_filter) {
         return $entity->bundle() === $type_filter;
@@ -320,15 +310,15 @@ class ContentModerationOverviewForm extends FormBase {
   }
 
   /**
-   * Returns the latest revision id of an entity.
+   * Returns the latest revision ID of a node.
    *
    * @param string $entity_id
-   *   The entity id.
+   *   The entity ID.
    *
-   * @return mixed
-   *   The revision id or null.
+   * @return int|null
+   *   The revision ID or null if the entity is not found in the database.
    */
-  public function getLatestRevisionId(string $entity_id) {
+  public function getLatestRevisionId(string $entity_id): ?int {
     if ($storage = $this->entityTypeManager->getStorage('node')) {
       $revision_ids = $storage->getQuery()
         ->allRevisions()

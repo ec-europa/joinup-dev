@@ -5,15 +5,15 @@ declare(strict_types = 1);
 namespace Drupal\solution\Controller;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\og\Og;
+use Drupal\collection\Entity\CollectionInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\solution\Entity\SolutionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Controller for solution forms.
- *
- * Handles the form to perform actions when it is called by a route that
- * includes an rdf_entity id.
+ * Controller providing the form to add a new solution inside a collection.
  */
 class SolutionController extends ControllerBase {
 
@@ -25,61 +25,58 @@ class SolutionController extends ControllerBase {
    * is auto completed.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The collection rdf_entity.
+   *   The collection.
    *
    * @return array
    *   Return the form array to be rendered.
    */
-  public function add(RdfInterface $rdf_entity) {
+  public function add(RdfInterface $rdf_entity): array {
+    if (!$rdf_entity instanceof CollectionInterface) {
+      throw new NotFoundHttpException();
+    }
     $solution = $this->createNewSolution($rdf_entity);
 
     // Pass the collection to the form state so that the parent connection is
     // established.
     // @see solution_add_form_parent_submit()
-    $form = $this->entityFormBuilder()->getForm($solution, 'default', ['collection' => $rdf_entity->id()]);
-    return $form;
+    return $this->entityFormBuilder()->getForm($solution, 'default', ['collection' => $rdf_entity->id()]);
   }
 
   /**
    * Handles access to the solution add form through collection pages.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The RDF entity for which the solution is created.
+   *   The collection in which the solution is created.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result object.
    */
-  public function createSolutionAccess(RdfInterface $rdf_entity) {
+  public function createSolutionAccess(RdfInterface $rdf_entity): AccessResultInterface {
     // If the collection is archived, content creation is not allowed.
-    if ($rdf_entity->bundle() === 'collection' && $rdf_entity->field_ar_state->first()->value === 'archived') {
+    if (!$rdf_entity instanceof CollectionInterface || $rdf_entity->getWorkflowState() === 'archived') {
       return AccessResult::forbidden();
-    }
-
-    $user = $this->currentUser();
-    if (empty($rdf_entity) && !$user->isAnonymous()) {
-      return AccessResult::neutral();
     }
 
     // Users with 'administer organic groups' permission should have access
     // since this page can only be called from within a group.
+    $user = $this->currentUser();
     if ($user->hasPermission('administer organic groups')) {
       return AccessResult::allowed();
     }
 
-    $membership = Og::getMembership($rdf_entity, $user);
-    return (!empty($membership) && $membership->hasPermission('create solution rdf_entity')) ? AccessResult::allowed() : AccessResult::forbidden();
+    return $rdf_entity->hasGroupPermission((int) $user->id(), 'create solution rdf_entity') ? AccessResult::allowed() : AccessResult::forbidden();
   }
 
   /**
    * Creates a new solution entity that is affiliated with the given collection.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $collection
+   * @param \Drupal\collection\Entity\CollectionInterface $collection
    *   The collection to affiliate with the new solution.
    *
-   * @return \Drupal\Core\Entity\EntityInterface
+   * @return \Drupal\solution\Entity\SolutionInterface
    *   The unsaved solution entity.
    */
-  protected function createNewSolution(RdfInterface $collection) {
+  protected function createNewSolution(CollectionInterface $collection): SolutionInterface {
     return $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'solution',
       'collection' => [$collection->id()],

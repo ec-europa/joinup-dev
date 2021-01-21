@@ -8,7 +8,6 @@ use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
@@ -34,10 +33,10 @@ use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\node\Entity\Node;
-use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -240,7 +239,7 @@ class JoinupContext extends RawDrupalContext {
    *
    * @param \Drupal\og\Entity\OgRole[] $roles
    *   An array of roles to check.
-   * @param \Drupal\Core\Entity\EntityInterface $group
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
    *   The group that is checked if the user has the role.
    *
    * @return bool
@@ -248,13 +247,13 @@ class JoinupContext extends RawDrupalContext {
    *
    * @see \Drupal\DrupalExtension\Context\RawDrupalContext::loggedInWithRole
    */
-  protected function loggedInWithOgRoles(array $roles, EntityInterface $group) {
+  protected function loggedInWithOgRoles(array $roles, GroupInterface $group) {
     if ($this->getUserManager()->currentUserIsAnonymous() || !$this->loggedIn()) {
       return FALSE;
     }
     $current_user = $this->getUserManager()->getCurrentUser();
     $user = \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($current_user->uid);
-    $membership = Og::getMembership($group, $user);
+    $membership = $group->getMembership((int) $user->id());
     if (empty($membership)) {
       return FALSE;
     }
@@ -568,6 +567,7 @@ class JoinupContext extends RawDrupalContext {
 
     $revision_count = \Drupal::entityTypeManager()->getStorage('node')->getQuery()
       ->allRevisions()
+      ->accessCheck(FALSE)
       ->condition('nid', $node->id())
       ->count()
       ->execute();
@@ -994,8 +994,9 @@ class JoinupContext extends RawDrupalContext {
    * @Then the :title :type content should have the :state state
    */
   public function assertNodeWorkflowState(string $title, string $type, string $state): void {
+    /** @var \Drupal\joinup_workflow\EntityWorkflowStateInterface $node */
     $node = $this->getNodeByTitle($title, $type);
-    $actual = $this->getEntityStateField($node)->get('value')->getString();
+    $actual = $node->getWorkflowState();
     Assert::assertEquals($state, $actual, "The $title $type content has the expected state '$state' (actual: '$actual')");
   }
 
@@ -1017,8 +1018,9 @@ class JoinupContext extends RawDrupalContext {
    */
   public function updateWorkflowState(string $title, string $entity_type, string $state): void {
     $entity_type = self::translateEntityTypeAlias($entity_type);
+    /** @var \Drupal\joinup_workflow\EntityWorkflowStateInterface|\Drupal\Core\Entity\EntityInterface $entity */
     $entity = $this->getEntityByLabel($entity_type, $title);
-    $this->getEntityStateField($entity)->set('value', $state);
+    $entity->setWorkflowState($state);
 
     // Only create a new revision if the entity type supports it.
     if ($entity->getEntityType()->isRevisionable()) {

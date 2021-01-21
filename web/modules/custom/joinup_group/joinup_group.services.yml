@@ -13,8 +13,16 @@ services:
     class: Drupal\joinup_group\JoinupGroupManager
     arguments: ['@og.membership_manager', '@entity_type.manager']
     lazy: true
+  joinup_group.group_menu_links:
+    class: Drupal\joinup_group\EventSubscriber\GroupMenuLinksSubscriber
+    tags:
+      - { name: event_subscriber }
+  joinup_group.node_access_grants:
+    class: Drupal\joinup_group\JoinupGroupNodeAccessGrants
+    arguments: ['@database', '@cache.static']
   joinup_group.og_subscriber:
     class: Drupal\joinup_group\EventSubscriber\JoinupGroupOgSubscriber
+    arguments: [ '@current_user', '@workflow_state_permission.workflow_state_permission' ]
     tags:
       - name: event_subscriber
   joinup_group.route_subscriber:
@@ -24,9 +32,5 @@ services:
   joinup_group.transfer_ownership_subscriber:
     class: Drupal\joinup_group\EventSubscriber\TransferGroupOwnershipSubscriber
     arguments: ['@current_user', '@tempstore.private', '@messenger']
-    tags:
-      - { name: event_subscriber }
-  joinup_group.group_menu_links:
-    class: Drupal\joinup_group\EventSubscriber\GroupMenuLinksSubscriber
     tags:
       - { name: event_subscriber }

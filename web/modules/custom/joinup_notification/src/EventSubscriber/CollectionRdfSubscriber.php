@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\collection\Entity\CollectionInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
@@ -43,13 +44,6 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * @var \Drupal\state_machine\Plugin\Workflow\Workflow
    */
   protected $workflow;
-
-  /**
-   * The state field name of the entity object.
-   *
-   * @var string
-   */
-  protected $stateField;
 
   /**
    * The motivation text passed in the entity.
@@ -100,15 +94,14 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    */
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
-    if ($this->entity->bundle() !== 'collection') {
+    if (!$this->entity instanceof CollectionInterface) {
       return;
     }
 
     $this->event = $event;
-    $this->stateField = 'field_ar_state';
-    $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
-    $this->fromState = isset($this->entity->original) ? $this->entity->original->get($this->stateField)->first()->value : '__new__';
-    $to_state = $this->entity->get($this->stateField)->first()->value;
+    $this->workflow = $this->entity->getWorkflow();
+    $this->fromState = isset($this->entity->original) ? $this->entity->original->getWorkflowState() : '__new__';
+    $to_state = $this->entity->getWorkflowState();
     $this->transition = $this->workflow->findTransition($this->fromState, $to_state);
     $this->motivation = empty($this->entity->motivation) ? '' : $this->entity->motivation;
     $this->hasPublished = $this->hasPublishedVersion($this->entity);
@@ -469,15 +462,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    *   Whether the event applies.
    */
   protected function appliesOnCollections() {
-    if ($this->entity->getEntityTypeId() !== 'rdf_entity') {
-      return FALSE;
-    }
-
-    if ($this->entity->bundle() !== 'collection') {
-      return FALSE;
-    }
-
-    return TRUE;
+    return $this->entity instanceof CollectionInterface;
   }
 
   /**
@@ -494,8 +479,6 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
     $arguments = parent::generateArguments($entity);
     /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = $arguments['@actor:field_user_first_name'];
-    $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
     $arguments['@transition:motivation'] = $motivation;
 
@@ -548,9 +531,9 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * @return bool
    *   Whether the entity has a published version.
    *
-   * @see: joinup_notification_rdf_entity_presave()
+   * @see joinup_notification_rdf_entity_presave()
    */
-  protected function hasPublishedVersion(EntityInterface $entity) {
+  protected function hasPublishedVersion(EntityInterface $entity): bool {
     if (isset($entity->hasPublished)) {
       return ($entity->hasPublished);
     }
@@ -564,7 +547,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * @param array $user_data
    *    The user data array.
    *
-   * @see: ::getUsersMessages() for more information on the array.
+   * @see ::getUsersMessages() for more information on the array.
    */
   protected function getUsersAndSend(array $user_data) {
     $user_data = $this->getUsersMessages($user_data);

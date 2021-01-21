@@ -4,15 +4,15 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_subscription\EventSubscriber;
 
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\collection\Entity\CollectionContentInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgMembershipInterface;
+use Drupal\solution\Entity\SolutionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -79,7 +79,7 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
     $entity = $event->getEntity();
 
     // Only notify if the newly created content is published.
-    if (!$entity->isPublished()) {
+    if (!$entity instanceof CollectionContentInterface || !$entity->isPublished()) {
       return;
     }
 
@@ -97,7 +97,7 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
     $entity = $event->getEntity();
 
     // Only notify if the content is being published for the first time.
-    if (!$entity->isPublished() || empty($entity->original) || $entity->original->isPublished() || !$this->isFirstPublishedRevision($entity)) {
+    if (!$entity instanceof CollectionContentInterface || !$entity->isPublished() || empty($entity->original) || $entity->original->isPublished() || !$this->isFirstPublishedRevision($entity)) {
       return;
     }
 
@@ -123,7 +123,7 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     $entity = $event->getEntity();
     if (
-      !JoinupGroupHelper::isSolution($entity) ||
+      !$entity instanceof SolutionInterface ||
       $entity->get('collection')->isEmpty() ||
       !$entity->isPublished() ||
       // Note: the `->hasPublished` property is a hack that will be removed once
@@ -140,18 +140,18 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
   /**
    * Returns the list of subscribers.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   * @param \Drupal\collection\Entity\CollectionContentInterface $entity
    *   The collection content entity for which to return the subscribers.
    *
    * @return \Drupal\user\UserInterface[]
    *   The list of subscribers as an array of user accounts, keyed by user ID.
    */
-  protected function getSubscribers(ContentEntityInterface $entity): array {
+  protected function getSubscribers(CollectionContentInterface $entity): array {
     $membership_storage = $this->entityTypeManager->getStorage('og_membership');
     $membership_ids = $membership_storage
       ->getQuery()
       ->condition('entity_type', 'rdf_entity')
-      ->condition('entity_id', $this->getGroupId($entity))
+      ->condition('entity_id', $entity->getCollection()->id())
       ->condition('state', OgMembershipInterface::STATE_ACTIVE)
       ->condition('subscription_bundles', $entity->bundle())
       ->execute();
@@ -171,7 +171,7 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
   /**
    * Sends the notification to the recipients.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $collection_content
+   * @param \Drupal\collection\Entity\CollectionContentInterface $collection_content
    *   The collection content for which to send the notification.
    * @param string $message_template
    *   The ID of the message template to use.
@@ -179,7 +179,7 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
    * @return bool
    *   Whether or not the sending of the e-mails has succeeded.
    */
-  protected function sendMessage(ContentEntityInterface $collection_content, string $message_template): bool {
+  protected function sendMessage(CollectionContentInterface $collection_content, string $message_template): bool {
     try {
       $success = TRUE;
       // Create individual messages for each subscriber so that we can honor the
@@ -241,27 +241,6 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
       ->execute();
     reset($revision_ids);
     return !empty($revision_ids) ? key($revision_ids) : NULL;
-  }
-
-  /**
-   * Returns the entity ID of the collection the given entity belongs to.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity for which to return the collection ID.
-   *
-   * @return string
-   *   The collection ID.
-   */
-  protected function getGroupId(ContentEntityInterface $entity): string {
-    $field_name = JoinupGroupHelper::isSolution($entity) ? 'collection' : 'og_audience';
-
-    $field_item_list = $entity->get($field_name);
-
-    if ($field_item_list->isEmpty()) {
-      throw new \InvalidArgumentException('Entity does not belong to a collection.');
-    }
-
-    return $field_item_list->target_id;
   }
 
 }

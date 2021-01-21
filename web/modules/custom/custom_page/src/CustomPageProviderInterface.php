@@ -18,7 +18,7 @@ interface CustomPageProviderInterface {
    *   Whether or not to exclude custom pages that are disabled by the group
    *   facilitators and are not visible in the group menu. Defaults to TRUE.
    *
-   * @return \Drupal\node\NodeInterface[]
+   * @return \Drupal\custom_page\Entity\CustomPageInterface[]
    *   The custom page entities.
    */
   public function getCustomPagesByGroupId(string $group_id, bool $exclude_disabled = TRUE): array;

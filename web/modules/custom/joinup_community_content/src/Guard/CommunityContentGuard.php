@@ -109,7 +109,7 @@ class CommunityContentGuard implements GuardInterface {
   public function allowedUpdate(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
     $from_state = $this->getState($entity);
     $to_state = $transition->getToState()->getId();
-    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $from_state, $to_state);
+    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $workflow, $from_state, $to_state);
   }
 
   /**

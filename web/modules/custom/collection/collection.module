@@ -17,6 +17,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\collection\Entity\Collection;
+use Drupal\collection\Entity\CollectionInterface;
 use Drupal\collection\Entity\GlossaryTerm;
 use Drupal\collection\Plugin\Field\FieldType\LastUpdatedFieldItemList;
 use Drupal\node\NodeInterface;
@@ -142,13 +143,13 @@ function collection_rdf_entity_insert(EntityInterface $entity) {
  * node.
  */
 function collection_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($entity->bundle() != 'collection' || $account->isAnonymous() || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
+  if (!$entity instanceof CollectionInterface || $account->isAnonymous() || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
     return AccessResult::neutral();
   }
 
   switch ($operation) {
     case 'view':
-      $membership = Og::getMembership($entity, $account);
+      $membership = $entity->getMembership((int) $account->id());
       if (empty($membership)) {
         return AccessResult::neutral();
       }
@@ -180,7 +181,7 @@ function collection_rdf_entity_access(EntityInterface $entity, $operation, Accou
  * Default graph is published. Draft graph is draft.
  */
 function collection_rdf_entity_presave(RdfInterface $entity) {
-  if ($entity->bundle() !== 'collection') {
+  if (!$entity instanceof CollectionInterface) {
     return;
   }
 
@@ -198,7 +199,7 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
     return;
   }
 
-  $state = $entity->field_ar_state->value;
+  $state = $entity->getWorkflowState();
   if (in_array($state, ['draft', 'proposed'])) {
     $entity->set('graph', 'draft');
   }
@@ -224,11 +225,11 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
  * - When the entity is saved into the default graph, the draft must be deleted.
  */
 function collection_rdf_entity_update(EntityInterface $entity) {
-  if ($entity->bundle() !== 'collection' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
+  if (!$entity instanceof CollectionInterface || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
     return;
   }
 
-  if ($entity->field_ar_state->value === 'validated') {
+  if ($entity->getWorkflowState() === 'validated') {
     \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'draft');
   }
 }
@@ -297,8 +298,7 @@ function collection_entity_extra_field_info() {
  * Shows extra fields for the collection bundle.
  */
 function collection_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  /** @var \Drupal\rdf_entity\RdfInterface $entity */
-  if ($entity->bundle() !== 'collection') {
+  if (!$entity instanceof CollectionInterface) {
     return;
   }
 
@@ -330,12 +330,8 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
   }
 
   // Solution count.
-  // @todo Collections are not depending on solutions so they are not supposed
-  //   to handle functionality related to solutions. This should be moved to the
-  //   solution module.
-  // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5985
   if ($display->getComponent('solutions')) {
-    $solution_count = collection_solution_count($entity);
+    $solution_count = count($entity->getSolutionIds());
     $tags = Cache::buildTags('og-group-content', $entity->getCacheTagsToInvalidate());
     $tags = Cache::mergeTags($tags, ['rdf_entity_list']);
     $build['solutions'] = [
@@ -392,32 +388,6 @@ function collection_member_count(RdfInterface $entity) {
     ->condition('entity_id', $entity->id())
     ->condition('state', OgMembershipInterface::STATE_ACTIVE);
   return $query->countQuery()->execute()->fetchField();
-}
-
-/**
- * Amount of validated solutions in the collection.
- *
- * @param \Drupal\rdf_entity\RdfInterface $entity
- *   The collection.
- *
- * @return int
- *   Amount of validated solutions.
- */
-function collection_solution_count(RdfInterface $entity) {
-  $solutions = $entity->get('field_ar_affiliates');
-  $solution_ids = [];
-  foreach ($solutions as $solution) {
-    $solution_ids[] = $solution->getValue()['target_id'];
-  }
-  if (!$solution_ids) {
-    return 0;
-  }
-  return \Drupal::entityQuery('rdf_entity')
-    ->graphs(['default'])
-    ->condition('rid', 'solution')
-    ->condition('id', $solution_ids, 'IN')
-    ->count()
-    ->execute();
 }
 
 /**

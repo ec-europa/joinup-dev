@@ -38,11 +38,11 @@ use Drupal\user\Entity\User;
  * Implements hook_entity_access().
  */
 function solution_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($entity->getEntityTypeId() != 'rdf_entity' || $entity->bundle() != 'solution' || $account->isAnonymous() || $operation != 'view') {
+  if (!$entity instanceof SolutionInterface || $account->isAnonymous() || $operation != 'view') {
     return AccessResult::neutral();
   }
 
-  $membership = Og::getMembership($entity, $account);
+  $membership = $entity->getMembership((int) $account->id());
   if (empty($membership)) {
     return AccessResult::neutral();
   }
@@ -273,21 +273,6 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
         '#url' => Url::fromRoute('asset_release.solution_asset_release.overview', [
           'rdf_entity' => $solution->id(),
         ]),
-        '#attributes' => [
-          'role' => 'button',
-          'class' => [
-            // @todo Move the Material Design classes in the theme layer.
-            // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5731
-            'featured__form-button',
-            'button',
-            'button--blue-light',
-            'mdl-button',
-            'mdl-js-button',
-            'mdl-button--raised',
-            'mdl-js-ripple-effect',
-            'mdl-button--accent',
-          ],
-        ],
         '#cache' => [
           // The 'group_header_block' block cache will have different versions
           // for the 'asset_release.solution_asset_release.overview' route
@@ -417,7 +402,7 @@ function solution_get_related_solutions_ids(EntityInterface $entity) {
     }
   }
 
-  // Get all solutions that are reference directly.
+  // Get all solutions that are referenced directly.
   $related_ids = [];
   foreach ($entity->get('field_is_related_solutions')->getValue() as $field) {
     $related_ids[$field['target_id']] = $field['target_id'];
@@ -483,7 +468,7 @@ function solution_build_related_solutions_list(array $ids) {
  * Default graph is published. Draft graph is draft.
  */
 function solution_rdf_entity_presave(RdfInterface $entity) {
-  if ($entity->bundle() !== 'solution' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'solution', 'draft')) {
+  if (!$entity instanceof SolutionInterface || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'solution', 'draft')) {
     return;
   }
 
@@ -495,7 +480,7 @@ function solution_rdf_entity_presave(RdfInterface $entity) {
     return;
   }
 
-  $state = $entity->field_is_state->value;
+  $state = $entity->getWorkflowState();
   if (in_array($state, ['draft', 'proposed', 'needs_update', 'blacklisted'])) {
     $entity->set('graph', 'draft');
   }
@@ -534,10 +519,7 @@ function solution_invalidate_collection(EntityInterface $entity) {
   // For this reason, we clear the collection group cache tags whenever a
   // solution is saved.
   if (\Drupal::moduleHandler()->moduleExists('collection')) {
-    $ids = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'collection')
-      ->condition('field_ar_affiliates', $entity->id())
-      ->execute();
+    $ids = solution_get_collection_ids($entity);
     if ($ids) {
       $tags = [];
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
@@ -564,6 +546,7 @@ function solution_invalidate_collection(EntityInterface $entity) {
  *   The collection IDs.
  *
  * @see solution_rdf_entity_load()
+ * @see \Drupal\solution\SolutionAffiliationFieldItemList
  */
 function solution_get_collection_ids(RdfInterface $solution) {
   if (\Drupal::moduleHandler()->moduleExists('collection')) {
@@ -614,10 +597,7 @@ function solution_rdf_entity_delete(RdfInterface $solution) {
   }
 
   $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
-  $ids = $storage->getQuery()
-    ->condition('rid', 'collection')
-    ->condition('field_ar_affiliates', $solution->id())
-    ->execute();
+  $ids = solution_get_collection_ids($solution);
   if ($ids) {
     // Touch the parent collections in order to update their changed timestamp.
     $request_time = \Drupal::time()->getRequestTime();

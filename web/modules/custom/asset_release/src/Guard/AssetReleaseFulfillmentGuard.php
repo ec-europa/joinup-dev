@@ -6,7 +6,6 @@ namespace Drupal\asset_release\Guard;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
@@ -48,24 +47,10 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
    * {@inheritdoc}
    */
   public function allowed(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
-    $from_state = $this->getState($entity);
+    /** @var \Drupal\joinup_workflow\EntityWorkflowStateInterface $entity */
+    $from_state = $entity->getWorkflowState();
     $to_state = $transition->getToState()->getId();
-    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $from_state, $to_state);
-  }
-
-  /**
-   * Retrieve the initial state value of the entity.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $entity
-   *   The asset release entity.
-   *
-   * @return string
-   *   The machine name value of the state.
-   *
-   * @see https://www.drupal.org/node/2745673
-   */
-  protected function getState(RdfInterface $entity) {
-    return $entity->field_isr_state->first()->value;
+    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $workflow, $from_state, $to_state);
   }
 
 }

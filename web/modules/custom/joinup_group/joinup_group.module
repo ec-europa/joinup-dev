@@ -15,15 +15,17 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Test\Exception\MissingGroupException;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
+use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Event\GroupMenuLinksEvent;
 use Drupal\joinup_group\Form\RdfDeleteForm;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\meta_entity\Entity\MetaEntityInterface;
-use Drupal\og\Og;
+use Drupal\node\NodeInterface;
 use Drupal\og\OgAccess;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
@@ -100,11 +102,11 @@ function joinup_group_form_rdf_entity_form_alter(&$form, FormStateInterface $for
   // Add submit callback when the current bundle is in the list and when we are
   // in an affected operation type.
   $operation_types = ['add', 'default', 'propose'];
-  if (JoinupGroupHelper::isGroup($entity) && in_array($form_object->getOperation(), $operation_types)) {
+  if ($entity instanceof GroupInterface && in_array($form_object->getOperation(), $operation_types)) {
     $form['actions']['submit']['#submit'][] = 'joinup_group_propose_message_submit';
   }
 
-  if (JoinupGroupHelper::isGroup($entity)) {
+  if ($entity instanceof GroupInterface) {
     // If the entity has been published, only moderators can edit the short ID.
     // @todo Implement the EntityPublishedInterface for collections and
     //   solutions once we have the bundle classes in.
@@ -123,10 +125,10 @@ function joinup_group_form_rdf_entity_form_alter(&$form, FormStateInterface $for
 function joinup_group_propose_message_submit(&$form, FormStateInterface $form_state) {
   $form_object = $form_state->getFormObject();
   $entity = $form_object->getEntity();
-  $state = JoinupGroupHelper::getState($entity);
-
-  if ($state === 'proposed') {
-    \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $entity->get('rid')->entity->getSingularLabel()]));
+  if ($entity instanceof EntityWorkflowStateInterface) {
+    if ($entity->getWorkflowState() === 'proposed') {
+      \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $entity->get('rid')->entity->getSingularLabel()]));
+    }
   }
 }
 
@@ -140,11 +142,11 @@ function joinup_group_propose_message_submit(&$form, FormStateInterface $form_st
  * @todo hook api definition is needed.
  */
 function joinup_group_entity_graph_access(EntityInterface $entity, string $operation, AccountInterface $account, string $graph_name): AccessResult {
-  if (!$entity || !JoinupGroupHelper::isGroup($entity) || $operation != 'view' || $graph_name == 'default') {
+  if (!$entity || !$entity instanceof GroupInterface || $operation != 'view' || $graph_name == 'default') {
     return AccessResult::neutral();
   }
 
-  $membership = Og::getMembership($entity, $account);
+  $membership = $entity->getMembership((int) $account->id());
   if (empty($membership)) {
     return AccessResult::neutral();
   }
@@ -167,7 +169,7 @@ function joinup_group_entity_graph_access(EntityInterface $entity, string $opera
  * Implements hook_ENTITY_TYPE_insert() for RDF entities.
  */
 function joinup_group_rdf_entity_insert(RdfInterface $group): void {
-  if (!JoinupGroupHelper::isGroup($group)) {
+  if (!$group instanceof GroupInterface) {
     return;
   }
 
@@ -202,7 +204,7 @@ function joinup_group_rdf_entity_insert(RdfInterface $group): void {
  * empty.
  */
 function joinup_group_rdf_entity_presave(EntityInterface $entity) {
-  if (!JoinupGroupHelper::isGroup($entity)) {
+  if (!$entity instanceof GroupInterface) {
     return;
   }
 
@@ -247,7 +249,7 @@ function joinup_group_rdf_entity_presave(EntityInterface $entity) {
  * @see \joinup_group_rdf_entity_presave()
  */
 function joinup_group_rdf_entity_update(EntityInterface $entity) {
-  if (!JoinupGroupHelper::isGroup($entity)) {
+  if (!$entity instanceof GroupInterface) {
     return;
   }
 
@@ -348,9 +350,7 @@ function joinup_group_og_user_access_alter(array &$permissions, CacheableMetadat
   }
 
   // Check if the user is the group owner and bail out if this is not the case.
-  $membership = $group->getMembership((int) $user->id());
-  $role_id = "{$group->getEntityTypeId()}-{$group->bundle()}-administrator";
-  if (!$membership instanceof OgMembershipInterface || !$membership->hasRole($role_id)) {
+  if (!$group->isGroupOwner((int) $user->id())) {
     return;
   }
 
@@ -535,7 +535,7 @@ function joinup_group_get_og_members_overview_sort_handlers_info(string $order):
  * Implements hook_form_BASE_FORM_ID_alter().
  */
 function joinup_group_form_views_form_og_members_overview_default_alter(&$form, FormStateInterface $form_state, $form_id): void {
-  if (!$group = \Drupal::routeMatch()->getParameter('rdf_entity')) {
+  if (!($group = \Drupal::routeMatch()->getParameter('rdf_entity')) || !$group instanceof GroupInterface) {
     throw new \RuntimeException('Called from a wrong page.');
   }
 
@@ -705,4 +705,64 @@ function joinup_group_user_update(UserInterface $user) {
   }
 
   Cache::invalidateTags($tags);
+}
+
+/**
+ * Implements hook_node_access_records().
+ *
+ * Creates access records for unpublished nodes that are group content, to allow
+ * them to be viewed by group members with the 'view any unpublished content'
+ * permission.
+ */
+function joinup_group_node_access_records(NodeInterface $node): array {
+  /** @var \Drupal\joinup_group\JoinupGroupNodeAccessGrantsInterface $access_grants_helper */
+  $access_grants_helper = \Drupal::service('joinup_group.node_access_grants');
+  $grants = [];
+
+  foreach ($node->getTranslationLanguages(TRUE) as $langcode => $language) {
+    $translated_node = $node->getTranslation($langcode);
+    if ($translated_node instanceof GroupContentInterface && !$translated_node->isPublished()) {
+      try {
+        $group = $translated_node->getGroup();
+        $grants[] = [
+          'realm' => 'joinup_group_view_unpublished',
+          'gid' => $access_grants_helper->getNodeAccessGrantId($group),
+          'grant_view' => 1,
+          'grant_update' => 0,
+          'grant_delete' => 0,
+          'priority' => 0,
+          'langcode' => $langcode,
+        ];
+      }
+      catch (MissingGroupException $e) {
+      }
+    }
+  }
+
+  return $grants;
+}
+
+/**
+ * Implements hook_node_grants().
+ */
+function joinup_group_node_grants(AccountInterface $account, string $op): array {
+  $grants = [];
+
+  if ($op === 'view') {
+    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+    $membership_manager = \Drupal::service('og.membership_manager');
+    /** @var \Drupal\joinup_group\JoinupGroupNodeAccessGrantsInterface $access_grants_helper */
+    $access_grants_helper = \Drupal::service('joinup_group.node_access_grants');
+
+    foreach ($membership_manager->getMemberships($account->id()) as $membership) {
+      if ($membership->hasPermission('view any unpublished content')) {
+        $group = $membership->getGroup();
+        if ($group instanceof GroupInterface) {
+          $grants['joinup_group_view_unpublished'][] = $access_grants_helper->getNodeAccessGrantId($group);
+        }
+      }
+    }
+  }
+
+  return $grants;
 }
