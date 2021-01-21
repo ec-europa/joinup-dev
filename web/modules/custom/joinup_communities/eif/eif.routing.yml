@@ -1,0 +1,12 @@
+eif.solutions:
+  path: /node/703013/category/{eif_category}
+  defaults:
+    _controller: Drupal\node\Controller\NodeViewController::view
+    _title_callback: Drupal\node\Controller\NodeViewController::title
+    node: 703013
+  requirements:
+    _entity_access: node.view
+  options:
+    parameters:
+      eif_category:
+        type: eif_category
