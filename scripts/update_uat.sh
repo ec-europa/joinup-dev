@@ -15,7 +15,7 @@ touch disable-config-readonly
 # Flush Redis cache if enabled.
 test "$(./vendor/bin/drush eval 'print \Drupal\Core\Site\Settings::get("cache")["default"];')" != "cache.backend.redis" || ./vendor/bin/run redis:flush-all
 # Truncate cache_* tables.
-for table in `./vendor/bin/drush sql:query "SHOW TABLES LIKE 'cache\_%'"`; do ./vendor/bin/drush sql:query "TRUNCATE $table"; done
+for table in $(./vendor/bin/drush sql:query "SHOW TABLES LIKE 'cache\_%'"); do ./vendor/bin/drush sql:query "TRUNCATE $table"; done
 ./vendor/bin/drush deploy
 ./vendor/bin/drush pm:enable stage_file_proxy --yes
 
