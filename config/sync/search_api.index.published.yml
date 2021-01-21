@@ -5,46 +5,48 @@ dependencies:
   module:
     - search_api_solr
     - node
-    - paragraphs
-    - publication_date
     - meta_entity
     - rdf_entity
+    - taxonomy
+    - paragraphs
+    - publication_date
+    - rdf_taxonomy
     - user
     - search_api
     - asset_distribution
     - custom_page
     - joinup_search
   config:
-    - field.storage.node.field_event_agenda
-    - field.storage.node.field_paragraphs_body
-    - field.storage.paragraph.field_body
     - field.storage.node.body
+    - field.storage.rdf_entity.field_ad_description
+    - field.storage.rdf_entity.field_ar_abstract
+    - field.storage.rdf_entity.field_ar_description
+    - field.storage.node.field_event_agenda
     - field.storage.node.field_event_date
-    - field.storage.node.field_news_headline
+    - field.storage.rdf_entity.field_is_description
+    - field.storage.rdf_entity.field_is_pinned_in
+    - field.storage.rdf_entity.field_is_solution_type
+    - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_isr_release_notes
+    - field.storage.rdf_entity.field_licence_description
+    - field.storage.rdf_entity.field_licence_spdx_licence
     - field.storage.node.field_location
+    - field.storage.node.field_news_headline
     - field.storage.node.field_organisation
     - field.storage.node.field_scope
     - field.storage.node.field_short_title
-    - field.storage.meta_entity.count
-    - field.storage.rdf_entity.field_ar_abstract
-    - field.storage.rdf_entity.field_isr_contact_information
-    - field.storage.rdf_entity.field_ci_name
-    - field.storage.rdf_entity.field_is_contact_information
-    - field.storage.rdf_entity.field_licence_spdx_licence
-    - field.storage.rdf_entity.field_licence_description
-    - field.storage.rdf_entity.field_ad_description
-    - field.storage.rdf_entity.field_is_description
-    - field.storage.rdf_entity.field_isr_description
-    - field.storage.rdf_entity.field_ar_description
-    - field.storage.rdf_entity.field_is_owner
-    - field.storage.rdf_entity.field_owner_name
-    - field.storage.rdf_entity.field_isr_owner
-    - field.storage.rdf_entity.field_is_pinned_in
-    - field.storage.rdf_entity.field_isr_release_notes
-    - field.storage.rdf_entity.field_is_solution_type
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_organisation
+    - field.storage.meta_entity.count
+    - field.storage.rdf_entity.field_is_contact_information
+    - field.storage.rdf_entity.field_ci_name
+    - field.storage.rdf_entity.field_is_owner
+    - field.storage.rdf_entity.field_owner_name
+    - field.storage.rdf_entity.field_isr_contact_information
+    - field.storage.rdf_entity.field_isr_owner
+    - field.storage.node.field_paragraphs_body
+    - field.storage.paragraph.field_body
     - search_api.server.solr_published
 third_party_settings:
   search_api_solr:
@@ -370,6 +372,14 @@ field_settings:
     dependencies:
       module:
         - rdf_entity
+  name:
+    label: Name
+    datasource_id: 'entity:taxonomy_term'
+    property_path: name
+    type: text
+    dependencies:
+      module:
+        - taxonomy
   nid:
     label: ID
     datasource_id: 'entity:node'
@@ -378,6 +388,14 @@ field_settings:
     dependencies:
       module:
         - node
+  parent:
+    label: 'Term Parents'
+    datasource_id: 'entity:taxonomy_term'
+    property_path: parent
+    type: string
+    dependencies:
+      module:
+        - taxonomy
   policy_domain:
     label: Domains
     property_path: aggregated_field
@@ -475,6 +493,14 @@ field_settings:
     dependencies:
       module:
         - node
+  tid:
+    label: 'Term ID'
+    datasource_id: 'entity:taxonomy_term'
+    property_path: tid
+    type: string
+    dependencies:
+      module:
+        - rdf_taxonomy
   title:
     label: Title
     datasource_id: 'entity:node'
@@ -492,6 +518,22 @@ field_settings:
     dependencies:
       module:
         - user
+  vid:
+    label: Vocabulary
+    datasource_id: 'entity:taxonomy_term'
+    property_path: vid
+    type: string
+    dependencies:
+      module:
+        - taxonomy
+  weight:
+    label: Weight
+    datasource_id: 'entity:taxonomy_term'
+    property_path: weight
+    type: integer
+    dependencies:
+      module:
+        - taxonomy
 datasource_settings:
   'entity:node':
     bundles:
@@ -503,6 +545,7 @@ datasource_settings:
         - event
         - news
         - newsletter
+        - tallinn_report
         - video
     languages:
       default: true
@@ -517,6 +560,17 @@ datasource_settings:
         - licence
         - solution
         - spdx_licence
+    languages:
+      default: true
+      selected: {  }
+  'entity:taxonomy_term':
+    bundles:
+      default: false
+      selected:
+        - eif_conceptual_model
+        - eif_interoperability_layer
+        - eif_principle
+        - eif_recommendation
     languages:
       default: true
       selected: {  }
