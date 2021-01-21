@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\collection\Entity;
 
-use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\node\Entity\Node;
 
 /**
@@ -12,7 +11,7 @@ use Drupal\node\Entity\Node;
  */
 class GlossaryTerm extends Node implements GlossaryTermInterface {
 
-  use JoinupBundleClassFieldAccessTrait;
+  use NodeCollectionContentTrait;
 
   /**
    * {@inheritdoc}
