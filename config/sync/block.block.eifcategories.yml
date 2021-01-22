@@ -9,7 +9,7 @@ dependencies:
 id: eifcategories
 theme: joinup_theme
 region: content
-weight: -15
+weight: -14
 provider: null
 plugin: eif_categories
 settings:
