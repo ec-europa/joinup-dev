@@ -4,6 +4,7 @@ Feature:
   in order to better manage all content
   I need to be able to access operations directly through the contextual links.
 
+  @terms
   Scenario: Revisions link availability.
     Given collection:
       | title | Revisions collection |
@@ -15,6 +16,7 @@ Feature:
       | Short title | Revisions collection published          |
       | Headline    | Revisions collection has been published |
     And I enter "We are proud to announce another useless test entity." in the "Content" wysiwyg editor
+    And I select "EU and European Policies" from "Policy domain"
     And I press "Save as draft"
 
     # Edit the news to create a new revision.

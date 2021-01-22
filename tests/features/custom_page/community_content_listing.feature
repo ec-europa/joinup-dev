@@ -355,6 +355,7 @@ Feature:
     And I press "Save"
     Then I should see the error message "Invalid search field specified: unknown_field."
 
+  @terms
   Scenario: Global search setting allows for site-wide content in the content listing.
     Given I am logged in as a moderator
     When I go to the homepage of the "Nintendo64" collection
@@ -383,6 +384,7 @@ Feature:
       | Short title | Current wars               |
       | Headline    | Edisson vs Electro         |
       | Content     | A new movie is coming out. |
+    And I select "Statistics and Analysis" from "Policy domain"
     And I press "Publish"
     Then I should see the heading "Current wars"
 
