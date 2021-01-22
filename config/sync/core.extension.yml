@@ -116,6 +116,7 @@ module:
   oe_webtools: 0
   oe_webtools_analytics: 0
   oe_webtools_cookie_consent: 0
+  oe_webtools_etrans: 0
   oe_webtools_geocoding: 0
   oe_webtools_globan: 0
   oe_webtools_maps: 0
