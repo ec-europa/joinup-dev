@@ -14,7 +14,7 @@ use Drupal\file_url\FileUrlHandler;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\joinup\Traits\SearchTrait;
+use Drupal\joinup\Traits\TestingEntitiesTrait;
 use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -23,17 +23,10 @@ use Drupal\rdf_entity\RdfInterface;
  */
 class AssetDistributionContext extends RawDrupalContext {
 
+  use EntityReferenceTrait;
   use FileTrait;
   use RdfEntityTrait;
-  use SearchTrait;
-  use EntityReferenceTrait;
-
-  /**
-   * Test entities.
-   *
-   * @var \Drupal\Core\Entity\ContentEntityInterface[][]
-   */
-  protected $entities = [];
+  use TestingEntitiesTrait;
 
   /**
    * Navigates to the canonical page display of an asset distribution.
@@ -272,35 +265,6 @@ class AssetDistributionContext extends RawDrupalContext {
    */
   public function assertAssetDistributionCount(int $number): void {
     $this->assertRdfEntityCount($number, 'asset_distribution');
-  }
-
-  /**
-   * Remove any created test entities.
-   *
-   * @AfterScenario
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   *   Thrown when any of the test entities could not be deleted.
-   */
-  public function cleanTestingEntities(): void {
-    if (empty($this->entities)) {
-      return;
-    }
-
-    // Since we might be cleaning up many distributions, temporarily disable the
-    // feature to commit the index after every query.
-    $this->disableCommitOnUpdate();
-
-    foreach ($this->entities as $entities) {
-      if (!empty($entities)) {
-        foreach ($entities as $entity) {
-          $entity->skip_notification = TRUE;
-          @$entity->delete();
-        }
-      }
-    }
-    $this->entities = [];
-    $this->enableCommitOnUpdate();
   }
 
   /**
