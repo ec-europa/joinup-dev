@@ -52,8 +52,6 @@ SPARQL;
       LEFT JOIN {node__field_policy_domain} pd ON n.nid = pd.entity_id
       INNER JOIN {node__og_audience} og ON n.nid = og.entity_id
       WHERE n.type IN('discussion', 'document', 'event', 'news')
-      -- Unpublished nodes will set the policy domain when publishing.
-      AND n.status = 1
       AND pd.entity_id IS NULL
       ORDER BY n.nid
 Query;
