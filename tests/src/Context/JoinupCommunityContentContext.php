@@ -416,22 +416,33 @@ class JoinupCommunityContentContext extends RawDrupalContext {
       return;
     }
 
-    $name = $this->getRandom()->sentences(3);
-    $term = RdfTerm::create([
-      'vid' => 'policy_domain',
-      'name' => $name,
-      'parent' => RdfTerm::create([
+    // Try, first, to get an existing policy domain term.
+    if (!empty($this->entities['taxonomy_term'])) {
+      foreach ($this->entities['taxonomy_term'] as $candidate_term) {
+        if ($candidate_term->bundle() === 'policy_domain' && !$candidate_term->get('parent')->isEmpty()) {
+          $term = $candidate_term;
+        }
+      }
+    }
+
+    // Create a new policy domain term.
+    if (!isset($term)) {
+      $term = RdfTerm::create([
         'vid' => 'policy_domain',
-        'name' => $this->getRandom()->sentences(3),
-      ]),
-    ]);
-    $term->save();
+        'name' => $this->getRandom()->name(8, TRUE),
+        'parent' => RdfTerm::create([
+          'vid' => 'policy_domain',
+          'name' => $this->getRandom()->name(8, TRUE),
+        ]),
+      ]);
+      $term->save();
 
-    // Register the new terms to be cleaned-up after scenario.
-    $this->entities['taxonomy_term'][$term->parent->target_id] = $term->parent->entity;
-    $this->entities['taxonomy_term'][$term->id()] = $term;
+      // Register the new terms to be cleaned-up after scenario.
+      $this->entities['taxonomy_term'][$term->get('parent')->target_id] = $term->get('parent')->entity;
+      $this->entities['taxonomy_term'][$term->id()] = $term;
+    }
 
-    $node->{$alias} = $name;
+    $node->{$alias} = $term->label();
   }
 
 }
