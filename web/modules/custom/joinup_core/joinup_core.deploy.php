@@ -46,13 +46,20 @@ SPARQL;
     // the node IDs and the values are \stdClass objects with the node type,
     // revision ID and the policy domain ID of the parent group as properties.
     $sql = <<<Query
-      -- Prepend a character to 'nid' in order to preserve keys, later in
-      -- array_splice(). 
-      SELECT CONCAT('n', n.nid) AS nid, n.vid, n.type, og.og_audience_target_id AS parent_id FROM {node_field_data} n
+      SELECT
+        -- Add a char to node ID in order to preserve keys in array_splice(). 
+        CONCAT('n', n.nid) AS nid,
+        n.vid,
+        n.type,
+        og.og_audience_target_id AS parent_id
+      FROM {node_field_data} n
       LEFT JOIN {node__field_policy_domain} pd ON n.nid = pd.entity_id
       INNER JOIN {node__og_audience} og ON n.nid = og.entity_id
+      -- Only community content.
       WHERE n.type IN('discussion', 'document', 'event', 'news')
+      -- Only nodes missing policy domain.
       AND pd.entity_id IS NULL
+      -- Make order predictable.
       ORDER BY n.nid
 Query;
     $sandbox['nodes'] = array_map(function (\stdClass $node) use ($policy_domains): \stdClass {
