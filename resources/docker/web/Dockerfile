@@ -20,7 +20,8 @@ RUN set -ex; \
 	docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
 	docker-php-ext-install -j "$(nproc)" gd opcache pdo_mysql pdo_pgsql zip
 
-RUN pecl install xdebug; \
+# Use latest 2.x version of xdebug until we move to PHP of version >= 7.2.
+RUN pecl install xdebug-2.9.8; \
     docker-php-ext-enable xdebug;
 
 RUN wget https://github.com/composer/composer/releases/download/${composer_version}/composer.phar -O /usr/bin/composer
