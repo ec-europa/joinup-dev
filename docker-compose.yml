@@ -12,7 +12,7 @@ services:
       - .env.dist
     environment:
       DOCUMENT_ROOT: "/var/www/html/web"
-      PHP_XDEBUG_ENABLED: "1"
+      PHP_XDEBUG_ENABLED: "0"
       PHP_IDE_CONFIG: "serverName=Docker"
       PHP_SENDMAIL_PATH: "/usr/sbin/sendmail -t -i -S mail:1025"
 
@@ -72,6 +72,9 @@ services:
      - solr-precreate
      - drupal_unpublished
      - "/opt/docker-solr/configsets/drupal"
+
+  redis:
+    image: redis:latest
 
 volumes:
   virtuoso:
