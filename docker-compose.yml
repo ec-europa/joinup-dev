@@ -73,5 +73,8 @@ services:
      - drupal_unpublished
      - "/opt/docker-solr/configsets/drupal"
 
+  redis:
+    image: redis:latest
+
 volumes:
   virtuoso:
