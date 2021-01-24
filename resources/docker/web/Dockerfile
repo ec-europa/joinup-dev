@@ -21,8 +21,7 @@ RUN set -ex; \
 	docker-php-ext-install -j "$(nproc)" gd opcache pdo_mysql pdo_pgsql zip
 
 # Use latest 2.x version of xdebug until we move to PHP of version >= 7.2.
-RUN pecl install xdebug-2.9.8; \
-    docker-php-ext-enable xdebug;
+RUN pecl install xdebug-2.9.8;
 
 RUN wget https://github.com/composer/composer/releases/download/${composer_version}/composer.phar -O /usr/bin/composer
 RUN wget https://github.com/drush-ops/drush/releases/download/${drush_version}/drush.phar -O /usr/bin/drush
