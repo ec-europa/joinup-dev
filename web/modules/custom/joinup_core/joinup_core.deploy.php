@@ -14,6 +14,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
+
 /**
  * Set community content missing policy domain.
  */
@@ -73,7 +75,7 @@ Query;
 
     // Same as array_splice() but preserves numeric keys prefixed with a char.
     $sandbox['array_splice'] = function (array &$array): array {
-      $values = array_splice($array, 0, 1000);
+      $values = array_splice($array, 0, 300);
       $keys = array_map(function (string $key): int {
         return (int) substr($key, 1);
       }, array_keys($values));
@@ -112,6 +114,14 @@ Query;
   $nids = array_keys($nodes);
   // Invalidate updated nodes caches.
   $storage->resetCache($nids);
+  // Reindex updated nodes.
+  foreach ($storage->loadMultiple($nids) as $node) {
+    /** @var \Drupal\joinup_community_content\Entity\CommunityContentInterface $node */
+    ContentEntity::indexEntity($node);
+  }
+  // Commit changes to index.
+  \Drupal::getContainer()->get('search_api.post_request_indexing')->destruct();
+
   $sandbox['#finished'] = (int) empty($sandbox['nodes']);
 
   return "Updated {$sandbox['progress']} out of {$sandbox['count']}";
