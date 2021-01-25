@@ -19,6 +19,8 @@ declare(strict_types = 1);
  */
 function joinup_core_deploy_0106800(array &$sandbox): string {
   $db = \Drupal::database();
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+
   if (!isset($sandbox['nodes'])) {
     // Build an associative array having the group IDs as keys and their policy
     // domain IDs as values.
@@ -106,6 +108,10 @@ Query;
     }
     $query->execute();
   }
+
+  $nids = array_keys($nodes);
+  // Invalidate updated nodes caches.
+  $storage->resetCache($nids);
   $sandbox['#finished'] = (int) empty($sandbox['nodes']);
 
   return "Updated {$sandbox['progress']} out of {$sandbox['count']}";
