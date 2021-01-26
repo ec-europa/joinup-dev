@@ -93,10 +93,25 @@ services:
       - docker-entrypoint.sh
       - bash
       - '-c'
-      - 'mkdir -p /opt/docker-solr/drupal/conf ; cp -r /solr/conf/* /opt/docker-solr/drupal/conf/ ; sed -i "/solr.install.dir=/c\solr.install.dir=/opt/solr" /opt/docker-solr/drupal/conf/solrcore.properties ; precreate-core drupal_published /opt/docker-solr/drupal ; precreate-core drupal_unpublished /opt/docker-solr/drupal ; exec solr -f'
-    # Restore the Solr production snapshot:
-    # docker-compose exec solr /opt/solr/bin/restore_solr.sh --core drupal_published --snapshot-name published --timeout 120 --snapshot-dir /solr/snapshot --solr-url http://localhost:8983/solr
-    # docker-compose exec solr /opt/solr/bin/restore_solr.sh --core drupal_unpublished --snapshot-name unpublished --timeout 120 --snapshot-dir /solr/snapshot --solr-url http://localhost:8983/solr
+      - 'mkdir -p /opt/docker-solr/drupal/conf ;
+         cp -r /solr/conf/* /opt/docker-solr/drupal/conf/ ;
+         sed -i "/solr.install.dir=/c\solr.install.dir=/opt/solr" /opt/docker-solr/drupal/conf/solrcore.properties ;
+         precreate-core drupal_published /opt/docker-solr/drupal ;
+         precreate-core drupal_unpublished /opt/docker-solr/drupal ;
+         ( test "$${DOCKER_RESTORE_PRODUCTION}" = "yes" &&
+           (
+             /opt/solr/bin/solr start ;
+             sleep 5 ;
+             /usr/bin/curl -sS "http://localhost:8983/solr/drupal_published/replication?command=restore&name=published&location=/solr/snapshot&wt=xml" ;
+             ( until [[ "`/usr/bin/curl -sS ''http://localhost:8983/solr/drupal_published/replication?command=restorestatus''`" =~ \>success\< ]] ; do sleep 1 ; done ) ;
+             /usr/bin/curl -sS "http://localhost:8983/solr/drupal_unpublished/replication?command=restore&name=unpublished&location=/solr/snapshot&wt=xml" ;
+             ( until [[ "`/usr/bin/curl -sS ''http://localhost:8983/solr/drupal_unpublished/replication?command=restorestatus''`" =~ \>success\< ]] ; do sleep 1 ; done ) ;
+             /opt/solr/bin/solr stop
+           )
+         ) ;
+         exec solr -f'
+    environment:
+      DOCKER_RESTORE_PRODUCTION:
 
   redis:
     image: redis
