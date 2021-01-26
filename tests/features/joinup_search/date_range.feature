@@ -78,3 +78,11 @@ Feature: Date-range searching
       | News content 2             |
       | News content 1             |
       | Presenting DrillMaster X88 |
+
+    Scenario: Do not show the filters if there are no results found.
+      Given I go to "/search"
+
+      Then I should not see the "Created date minimum" date range search filter
+      And I should not see the "Created date maximum" date range search filter
+      And I should not see the "Updated date minimum" date range search filter
+      And I should not see the "Updated date maximum" date range search filter
