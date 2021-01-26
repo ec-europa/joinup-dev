@@ -1,6 +1,22 @@
 # Any value can be overridden in docker-compose.override.yml, a file that is not
 # under VCS control. See docker-compose.override.yml.dist for more details.
 
+# CLEAN vs. CLONE install
+# Docker compose knows to fire up the containers with databases having data
+# imported from the production dumps/snapshots. Read the documentation for the
+# DOCKER_RESTORE_PRODUCTION environment variable from .env.dist.
+
+# Accessing services from the host machine:
+# - http://localhost:8080 - Site's homepage.
+# - mysql://root@localhost:3307/joinup - MySQL connection.
+# - http://localhost:8891/sparql - SPARQL endpoint.
+# - http://localhost:8984/solr - Solr endpoint.
+# - http://localhost:8026 - MailHog UI.
+# - localhost:5900 - VNC server. Used to visualise the Selenium browser. Use
+#   'secret' as password.
+# Note that some service standard ports were changes in order to avoid
+# collision with potential host machine services.
+
 version: '3'
 services:
   web:
@@ -20,7 +36,8 @@ services:
       SMTP_PORT: 1025
       SMTP_FROM: contact@example.com
       # Environment variables without a value will receive the values from the
-      # host machine, if they are set.
+      # host machine, if they are set. Sensitive information such as
+      # user credentials should be placed in .env file.
       # See https://docs.docker.com/compose/environment-variables/#pass-environment-variables-to-containers
       DRUPAL_HASH_SALT:
       ASDA_URL:
