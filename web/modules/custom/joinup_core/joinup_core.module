@@ -16,8 +16,14 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\block\BlockInterface;
+use Drupal\collection\Entity\GlossaryTermInterface;
+use Drupal\custom_page\Entity\CustomPageInterface;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\JoinupSiteAlertListBuilder;
+use Drupal\joinup_discussion\Entity\DiscussionInterface;
+use Drupal\joinup_document\Entity\DocumentInterface;
+use Drupal\joinup_event\Entity\EventInterface;
+use Drupal\joinup_news\Entity\NewsInterface;
 use Drupal\node\NodeInterface;
 
 /**
@@ -221,7 +227,29 @@ function joinup_core_module_implements_alter(array &$implementations, $hook) {
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK() for menu_local_task.
+ */
+function joinup_core_theme_suggestions_menu_local_task(array $variables): array {
+  /** @var \Drupal\joinup_core\LocalTaskLinksHelperInterface $local_task_links_helper */
+  $local_task_links_helper = \Drupal::service('joinup_core.local_task_links_helper');
+  if ($local_task_links_helper->allowHorizontalTabs()->isAllowed()) {
+    return ['menu_local_task__horizontal_tabs'];
+  }
+  return ['menu_local_task__three_dots_menu'];
+}
+
+/**
  * Implements hook_block_access().
+ *
+ * Determines on which pages to show the Webtools eTrans block. Not all pages
+ * are suitable for machine translation.
+ *
+ * This is handled using a custom access check rather than configuring block
+ * visibility conditions in the block UI since we need to check conditions
+ * across several domains. This is not possible in the UI because the conditions
+ * are compared using "AND" logic.
+ *
+ * @see https://www.drupal.org/project/drupal/issues/923934
  */
 function joinup_core_block_access(BlockInterface $block, string $operation, AccountInterface $account): AccessResultInterface {
   if ($operation === 'view' && $block->id() === 'three_dots_menu') {
@@ -235,17 +263,42 @@ function joinup_core_block_access(BlockInterface $block, string $operation, Acco
     // 'three_dots_menu' block by implementing this hook.
     return $local_task_links_helper->allowThreeDotsMenu();
   }
-  return AccessResult::neutral();
-}
 
-/**
- * Implements hook_theme_suggestions_HOOK() for menu_local_task.
- */
-function joinup_core_theme_suggestions_menu_local_task(array $variables): array {
-  /** @var \Drupal\joinup_core\LocalTaskLinksHelperInterface $local_task_links_helper */
-  $local_task_links_helper = \Drupal::service('joinup_core.local_task_links_helper');
-  if ($local_task_links_helper->allowHorizontalTabs()->isAllowed()) {
-    return ['menu_local_task__horizontal_tabs'];
+  if ($operation !== 'view' || $block->getPluginId() !== 'oe_webtools_etrans') {
+    return AccessResult::neutral();
   }
-  return ['menu_local_task__three_dots_menu'];
+
+  // Check if we are on a route that is suitable for machine translation.
+  $eligible_route_names = [
+    // The "About" page of a collection or solution.
+    'entity.rdf_entity.about_page',
+  ];
+  $current_route_name = \Drupal::routeMatch()->getRouteName();
+  if (in_array($current_route_name, $eligible_route_names)) {
+    return AccessResult::allowed();
+  }
+
+  /** @var \Drupal\Core\Plugin\Context\ContextRepositoryInterface $context_repository */
+  $context_repository = \Drupal::service('context.repository');
+  $contexts = $context_repository->getRuntimeContexts(['@node.node_route_context:node']);
+
+  // Show the translation link on nodes of the following types:
+  if ($contexts['@node.node_route_context:node']->hasContextValue()) {
+    $eligible_node_types = [
+      CustomPageInterface::class,
+      DiscussionInterface::class,
+      DocumentInterface::class,
+      EventInterface::class,
+      GlossaryTermInterface::class,
+      NewsInterface::class,
+    ];
+    $entity = $contexts['@node.node_route_context:node']->getContextValue();
+    foreach ($eligible_node_types as $eligible_node_type) {
+      if ($entity instanceof $eligible_node_type) {
+        return AccessResult::allowed();
+      }
+    }
+  }
+
+  return AccessResult::forbidden();
 }

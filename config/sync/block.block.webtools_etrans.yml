@@ -20,17 +20,4 @@ settings:
   provider: oe_webtools_etrans
   label_display: '0'
   render_as: link
-visibility:
-  node_type:
-    id: node_type
-    bundles:
-      custom_page: custom_page
-      discussion: discussion
-      document: document
-      event: event
-      glossary: glossary
-      news: news
-      newsletter: newsletter
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
+visibility: {  }
