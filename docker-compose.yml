@@ -71,6 +71,16 @@ services:
       VIRT_Parameters_MaxDirtyBuffers: 250000
       VIRT_Replication_ServerEnable: 0
       VIRT_SPARQL_ResultSetMaxRows: 1000000
+      DOCKER_RESTORE_PRODUCTION:
+    command:
+      - bash
+      - '-c'
+      - 'if [ "$${DOCKER_RESTORE_PRODUCTION}" = "yes" ];
+         then
+           BACKUP_PREFIX="JOINUP_FULL_DUMP_" bash -ex /virtuoso.sh ;
+         else
+           bash -ex /virtuoso.sh;
+         fi'
 
   solr:
     image: solr:6
