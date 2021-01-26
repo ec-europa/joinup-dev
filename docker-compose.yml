@@ -51,6 +51,9 @@ services:
 
   virtuoso:
     image: tenforce/virtuoso
+    ports:
+      # Avoid port collision with a potential host machine instance of Virtuoso.
+      - '8891:8890'
     volumes:
       - ./db/virtuoso/snapshot:/data/backups
     environment:
@@ -66,9 +69,6 @@ services:
       # In order to bring up the Virtuoso without restoring from backup, set an
       # empty value in docker-compose.override.yml.
       BACKUP_PREFIX: JOINUP_FULL_DUMP_
-    ports:
-      # Avoid port collision with a potential host machine instance of Virtuoso.
-      - '8891:8890'
 
   solr:
     image: solr:6
