@@ -54,7 +54,7 @@ services:
     volumes:
       - ./db/virtuoso/snapshot:/data/backups
     environment:
-      SPARQL_UPDATE: 1
+      SPARQL_UPDATE: 'true'
       # Virtuoso .ini overrides. Pattern: VIRT_$SECTION_$KEY=$VALUE
       # See https://hub.docker.com/r/tenforce/virtuoso
       VIRT_Parameters_O_DIRECT: 1
