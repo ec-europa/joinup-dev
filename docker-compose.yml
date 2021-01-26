@@ -38,7 +38,7 @@ services:
       - selenium
 
   mysql:
-    image: percona/percona-server:5.7
+    image: mysql:5.7
     # macOS users should override 'volumes:' in docker-compose.override.yml.
     # See docker-compose.override.yml.dist.
     volumes:
@@ -47,7 +47,8 @@ services:
       # Avoid port collision with a potential host machine instance of MySQL.
       - '3307:3306'
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: 'joinup'
 
   virtuoso:
     image: tenforce/virtuoso
