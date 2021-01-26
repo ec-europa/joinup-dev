@@ -1,4 +1,4 @@
-@api @email @group-b
+@api @email @terms @group-b
 Feature: Notification test for the document transitions on a pre moderated parent.
   In order to manage my collections
   As an owner of the collection
@@ -42,6 +42,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I fill in "Title" with "CC notify create propose"
     And I fill in "Description" with "Sample body."
     And I select "Document" from "Type"
+    And I select "Statistics and Analysis" from "Policy domain"
     And I press "Propose"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                    |
@@ -55,6 +56,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Description" with "Sample body."
     And I select "Document" from "Type"
+    And I select "Statistics and Analysis" from "Policy domain"
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                     |

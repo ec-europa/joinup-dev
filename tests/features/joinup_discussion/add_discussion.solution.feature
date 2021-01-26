@@ -34,6 +34,7 @@ Feature: "Add discussion" visibility options.
     And I go to the homepage of the "Eager Sliver" solution
     Then I should see the link "Add discussion"
 
+  @terms
   Scenario: Add discussion as a facilitator.
     Given the following collection:
       | title  | Collective Emerald in the Luck |
@@ -65,6 +66,11 @@ Feature: "Add discussion" visibility options.
       | Content          | This is going to be an amazing discussion. |
       | File description | A picture of a flying girlfriend           |
     And I press "Publish"
+    Then I should see the error message "Policy domain field is required."
+
+    And I select "EU and European Policies" from "Policy domain"
+    And I press "Publish"
+
     Then I should see the heading "Flight of Girlfriend"
     And I should see the success message "Discussion Flight of Girlfriend has been created."
     And the "Emerald in the Luck" solution has a discussion titled "Flight of Girlfriend"

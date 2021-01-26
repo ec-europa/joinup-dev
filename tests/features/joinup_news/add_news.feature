@@ -1,4 +1,4 @@
-@api
+@api @terms
 Feature: Creation of news through the UI.
   In order to manage news
   As a user
@@ -56,8 +56,13 @@ Feature: Creation of news through the UI.
     # validation.
     # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3680
     And I press "Publish"
-    Then I should see the error message "Short title cannot be longer than 66 characters but is currently 69 characters long."
+    Then I should see the following error messages:
+      | error messages                    |
+      | Short title cannot be longer than 66 characters but is currently 69 characters long. |
+      | Policy domain field is required. |
+
     When I fill in "Short title" with "Ytterbium metal of the year"
+    And I select "EU and European Policies" from "Policy domain"
     And I press "Publish"
     Then I should see the success message "News Ytterbium metal of the year has been created."
     # Verify that the author is visible.
