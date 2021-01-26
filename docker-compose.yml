@@ -14,7 +14,7 @@
 # - http://localhost:8026 - MailHog UI.
 # - localhost:5900 - VNC server. Used to visualise the Selenium browser. Use
 #   'secret' as password.
-# Note that some service standard ports were changes in order to avoid
+# Note that some service standard ports were changed in order to avoid
 # collision with potential host machine services.
 
 version: '3'
