@@ -1,7 +1,7 @@
 # MySQL configs and commands.
 
 mysql:
-  dump_dir: ${joinup.db_dir}/mysql
+  dump_dir: ${joinup.db_dir}/mysql/dump
 
 commands:
 
@@ -9,9 +9,9 @@ commands:
   mysql:download-dump:
     # Cleanup any stale data.
     - task: remove
-      file: ${toolkit.clone.dumpfile}.gz
-    - task: remove
-      file: ${toolkit.clone.dumpfile}
+      file: ${mysql.dump_dir}
+    - task: mkdir
+      dir: ${mysql.dump_dir}
     # Download and unpack the archive.
     - task: run
       command: toolkit:download-dump
@@ -21,3 +21,6 @@ commands:
     # Remove the MySQL trigger definer.
     - task: exec
       command: perl -i -pe 's/DEFINER="[^"]+"@"[^"]+"//g' ${toolkit.clone.dumpfile}
+    # Support MySQL 8.
+    - task: exec
+      command: perl -i -pe 's/,NO_AUTO_CREATE_USER//g' ${toolkit.tmp_folder}/mysql.sql
