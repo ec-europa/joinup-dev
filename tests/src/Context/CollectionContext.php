@@ -61,6 +61,7 @@ class CollectionContext extends RawDrupalContext {
     'contact information' => 'field_ar_contact_information',
     'content creation' => 'field_ar_content_creation',
     'creation date' => 'created',
+    'last updated' => 'changed',
     'description' => 'field_ar_description',
     'keywords' => 'field_keywords',
     'logo' => 'field_ar_logo',
