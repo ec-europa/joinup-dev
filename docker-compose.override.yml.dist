@@ -16,10 +16,6 @@ services:
 #      - .env.dist
 #      - .env.local
 
-# Uncomment to bring up Virtuoso without restoring from backup.
-#  virtuoso:
-#    environment:
-#      BACKUP_PREFIX:
 
   mysql:
 # macOS users should override this value by uncommenting the following

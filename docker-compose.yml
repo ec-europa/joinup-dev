@@ -16,9 +16,6 @@ services:
       - .env.dist
     environment:
       DOCUMENT_ROOT: "/var/www/html/web"
-#      PHP_XDEBUG_ENABLED: "0"
-#      PHP_IDE_CONFIG: "serverName=Docker"
-#      PHP_SENDMAIL_PATH: "/usr/sbin/sendmail -t -i -S mail:1025"
       SMTP_SERVER: mail
       SMTP_PORT: 1025
       SMTP_FROM: contact@example.com
@@ -74,9 +71,6 @@ services:
       VIRT_Parameters_MaxDirtyBuffers: 250000
       VIRT_Replication_ServerEnable: 0
       VIRT_SPARQL_ResultSetMaxRows: 1000000
-      # In order to bring up the Virtuoso without restoring from backup, set an
-      # empty value in docker-compose.override.yml.
-      BACKUP_PREFIX: JOINUP_FULL_DUMP_
 
   solr:
     image: solr:6
