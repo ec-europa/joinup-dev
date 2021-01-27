@@ -1,0 +1,7 @@
+condition.plugin.eif_solutions_page:
+  type: condition.plugin
+  label: 'EIF Solutions condition plugin'
+  mapping:
+    eif_solutions:
+      type: boolean
+      label: 'EIF Solution'
