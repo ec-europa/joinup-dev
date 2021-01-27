@@ -1,0 +1,57 @@
+uuid: 410deccd-14c4-4b2f-b68d-f47d3309e2fe
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.published
+    - views.view.eif_recommendation
+  module:
+    - search_api
+id: category
+name: Category
+url_alias: category
+weight: 0
+min_count: 1
+show_only_one_result: true
+field_identifier: vid
+facet_source_id: 'search_api:views_page__eif_recommendation__page'
+widget:
+  type: links
+  config:
+    show_numbers: false
+    soft_limit: 0
+    soft_limit_settings:
+      show_less_label: 'Show less'
+      show_more_label: 'Show more'
+    show_reset_link: true
+    reset_text: All
+    hide_reset_when_no_selection: false
+    arbitrary_facet_plugin: _none
+query_operator: or
+use_hierarchy: false
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: true
+hard_limit: 0
+exclude: false
+only_visible_when_facet_source_is_visible: true
+processor_configs:
+  display_value_widget_order:
+    processor_id: display_value_widget_order
+    weights:
+      sort: 40
+    settings:
+      sort: DESC
+  translate_entity:
+    processor_id: translate_entity
+    weights:
+      build: 5
+    settings: {  }
+  url_processor_handler:
+    processor_id: url_processor_handler
+    weights:
+      pre_query: 50
+      build: 15
+    settings: {  }
+empty_behavior:
+  behavior: none
+show_title: false
