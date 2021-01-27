@@ -33,6 +33,7 @@ Feature: "Add event" visibility options.
     And I go to the homepage of the "The Stripped Stream" collection
     Then I should see the link "Add event"
 
+  @terms
   Scenario: Add event as a facilitator.
     Given collections:
       | title            | logo     | banner     | state     |
@@ -71,12 +72,17 @@ Feature: "Add event" visibility options.
     And I select "National" from "Scope"
     And  I additionally select "Regional" from "Scope"
     And I press "Save as draft"
-    Then I should see the error message "At least one location field should be filled in."
+    Then I should see the following error messages:
+      | error messages                                   |
+      | At least one location field should be filled in. |
+      | Policy domain field is required.                 |
+
     When I fill in "Physical location" with "Rue Belliard 28, Brussels, Belgium"
     And I enter the following for the "Virtual location" link field:
       | URL                          | Title           |
       | https://joinup.ec.europa.eu/ | Joinup homepage |
       | https://drupal.org/          |                 |
+    And I select "EU and European Policies" from "Policy domain"
     And I press "Save as draft"
     Then I should see the heading "An amazing event"
     But I should not see the text "National"

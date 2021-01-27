@@ -8,7 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\joinup_newsletter\Entity\Newsletter;
+use Drupal\collection\Entity\CollectionInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -65,13 +65,4 @@ function joinup_newsletter_entity_prepare_view(string $entity_type_id, array $en
  */
 function joinup_newsletter_form_oe_newsroom_newsletter_subscribe_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
   $form['actions']['submit']['#extra_suggestion'] = 'subscribe';
-}
-
-/**
- * Implements hook_entity_bundle_info_alter().
- */
-function joinup_newsletter_entity_bundle_info_alter(&$bundles) {
-  if (!empty($bundles['node']['newsletter'])) {
-    $bundles['node']['newsletter']['class'] = Newsletter::class;
-  }
 }
