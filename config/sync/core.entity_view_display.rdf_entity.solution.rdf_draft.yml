@@ -47,6 +47,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_site_pinned
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
+    - field.field.rdf_entity.solution.field_topic
     - rdf_entity.rdfentity.solution
   module:
     - file_url
@@ -277,14 +278,6 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_policy_domain:
-    weight: 20
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   field_spatial_coverage:
     weight: 4
     label: above
@@ -301,6 +294,14 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_topic:
+    type: entity_reference_label
+    weight: 20
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
   label:
     label: hidden
     type: string
@@ -327,6 +328,7 @@ hidden:
   field_is_shared_in: true
   field_is_show_eira_related: true
   field_is_state: true
+  field_policy_domain: true
   field_short_id: true
   field_site_featured: true
   field_site_pinned: true

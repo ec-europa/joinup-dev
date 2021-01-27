@@ -25,6 +25,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
+    - field.field.rdf_entity.collection.field_topic
     - image.style.thumbnail
     - rdf_entity.rdfentity.collection
   module:
@@ -57,6 +58,7 @@ third_party_settings:
         - field_short_id
         - field_ar_description
         - field_policy_domain
+        - field_topic
         - field_ar_owner
         - field_ar_contact_information
         - transition_motivation
@@ -78,8 +80,8 @@ third_party_settings:
         - field_ar_access_url
         - field_ar_logo
         - field_ar_banner
-        - field_spatial_coverage
         - field_keywords
+        - field_spatial_coverage
         - field_ar_closed
         - field_ar_content_creation
         - field_ar_moderation
@@ -114,7 +116,7 @@ content:
     type: text_textarea
     region: content
   field_ar_access_url:
-    weight: 11
+    weight: 10
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -131,13 +133,13 @@ content:
     region: content
   field_ar_closed:
     type: boolean_checkbox
-    weight: 15
+    weight: 16
     region: content
     settings:
       display_label: false
     third_party_settings: {  }
   field_ar_contact_information:
-    weight: 5
+    weight: 6
     settings:
       form_mode: inline
       override_labels: true
@@ -155,7 +157,7 @@ content:
     region: content
   field_ar_content_creation:
     type: options_buttons
-    weight: 16
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -171,7 +173,7 @@ content:
     type: text_textarea
     region: content
   field_ar_logo:
-    weight: 12
+    weight: 11
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
@@ -179,14 +181,14 @@ content:
     type: image_image
     region: content
   field_ar_moderation:
-    weight: 17
+    weight: 18
     settings:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_ar_owner:
-    weight: 4
+    weight: 5
     settings:
       form_mode: inline
       override_labels: true
@@ -204,7 +206,7 @@ content:
     region: content
   field_ar_state:
     type: state_machine_buttons
-    weight: 4
+    weight: 3
     settings:
       use_transition_label: 1
     third_party_settings: {  }
@@ -232,7 +234,7 @@ content:
       placeholder: 'Minimum 4 characters required.'
     third_party_settings: {  }
   field_spatial_coverage:
-    weight: 14
+    weight: 15
     settings:
       match_operator: CONTAINS
       size: 60
@@ -241,6 +243,12 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_topic:
+    type: options_select
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   label:
     type: string_textfield
     weight: 0
@@ -257,12 +265,12 @@ content:
       include_locked: true
     third_party_settings: {  }
   transition_motivation:
-    weight: 6
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   translation:
-    weight: 3
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }

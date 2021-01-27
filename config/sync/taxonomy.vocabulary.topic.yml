@@ -1,0 +1,13 @@
+uuid: 75d72936-26fc-4268-9c53-eed47b762140
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_taxonomy
+third_party_settings:
+  rdf_taxonomy:
+    locked: false
+name: Topic
+vid: topic
+description: ''
+weight: 0

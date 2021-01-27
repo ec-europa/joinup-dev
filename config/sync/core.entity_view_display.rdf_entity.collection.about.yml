@@ -24,6 +24,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
+    - field.field.rdf_entity.collection.field_topic
     - rdf_entity.rdfentity.collection
   module:
     - field_group
@@ -176,6 +177,7 @@ hidden:
   field_site_featured: true
   field_site_pinned: true
   field_spatial_coverage: true
+  field_topic: true
   join_collection: true
   label: true
   langcode: true

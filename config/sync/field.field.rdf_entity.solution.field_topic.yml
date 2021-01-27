@@ -1,0 +1,29 @@
+uuid: 00bb2b5c-80e4-491c-9275-fdaf74e9cdea
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_topic
+    - rdf_entity.rdfentity.solution
+    - taxonomy.vocabulary.topic
+id: rdf_entity.solution.field_topic
+field_name: field_topic
+entity_type: rdf_entity
+bundle: solution
+label: Topics
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      topic: topic
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

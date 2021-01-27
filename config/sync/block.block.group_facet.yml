@@ -12,7 +12,7 @@ dependencies:
 id: group_facet
 theme: joinup_theme
 region: sidebar_left
-weight: -19
+weight: -21
 provider: null
 plugin: 'facet_block:group'
 settings:

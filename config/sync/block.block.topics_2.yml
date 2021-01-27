@@ -1,26 +1,26 @@
-uuid: 4ef6299e-6391-43f3-a518-121e3353fe38
+uuid: 9fff74f7-cfa9-41ed-a843-eae534f4bff8
 langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.challenge_policy_domain
+    - facets.facet.challenge_topics
   module:
     - facets
     - joinup_core
   theme:
     - joinup_theme
-id: domains
+id: topics_2
 theme: joinup_theme
 region: sidebar_left
-weight: -16
+weight: -17
 provider: null
-plugin: 'facet_block:challenge_policy_domain'
+plugin: 'facet_block:challenge_topics'
 settings:
-  id: 'facet_block:challenge_policy_domain'
-  label: 'Challenges - Domains'
+  id: 'facet_block:challenge_topics'
+  label: 'Challenges - Topics'
   provider: facets
   label_display: '0'
-  block_id: domains
+  block_id: topics_2
 visibility:
   request_route:
     id: request_route
