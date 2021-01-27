@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e5ac9ebae90389854e84cc44e1778dad",
+    "content-hash": "cd9129919788094e621db79bf166e68e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5353,6 +5353,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Formatter settings are missing schema @see https://www.drupal.org/i/3194916": "https://git.drupalcode.org/project/paragraphs_jquery_ui_accordion/-/merge_requests/1.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
