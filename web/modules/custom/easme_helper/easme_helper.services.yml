@@ -2,3 +2,7 @@ services:
   easme_helper.notifications_helper:
     class: Drupal\easme_helper\Utility\NotificationsHelper
     arguments: ['@config.factory']
+  easme_helper.route_subscriber:
+    class: Drupal\easme_helper\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }

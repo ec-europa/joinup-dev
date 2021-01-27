@@ -32,6 +32,7 @@ module:
   dpsi: 0
   dynamic_entity_reference: 0
   dynamic_page_cache: 0
+  eif: 0
   easme_covid19: 0
   easme_helper: 0
   easme_pledge: 0

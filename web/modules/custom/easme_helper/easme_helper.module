@@ -7,6 +7,7 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\easme_helper\Controller\SubRequestController;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_help().
@@ -25,9 +26,112 @@ function easme_helper_help($route_name, RouteMatchInterface $route_match) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Redirect users to their Community profile (EIC Community site).
+ */
+function easme_helper_form_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\joinup_user\Entity\JoinupUser $account */
+  $account = $form_state->getFormObject()->getEntity();
+
+  // Check if user has a SMED ID.
+  if (empty($account->field_smed_id->value)) {
+    return;
+  }
+
+  // Check if the current user has the 'administer users' permission.
+  if (\Drupal::currentUser()->hasPermission('administer users')) {
+    return;
+  }
+
+  // Deny access to the form and warn user that they will be redirected.
+  $config = \Drupal::config('easme_helper.settings');
+  // @todo: make sure we don't have a double slash when appending the route to
+  // the url.
+  $link = $config->get('urls.community_site') . '/user/edit/smed/' . $account->field_smed_id->value;
+  $timeout = 5;
+  $form['#access'] = FALSE;
+  $form['#markup'] = '';
+  $message = t("Will redirecting you to your profile in @count second. <br> Please click <a href=\"@link\">this link</a> if you're not automatically redirected.", [
+    '@count' => $timeout,
+    '@link' => $link,
+  ]);
+  \Drupal::messenger()->addMessage($message);
+
+  // Redirect user to their Community profile.
+  $redirect_settings = [
+    'location' => $link,
+    'timeout' => $timeout * 1000,
+  ];
+  $form['#attached']['library'][] = 'easme_helper/redirect';
+  $form['#attached']['drupalSettings']['easme_helper']['redirect'] = $redirect_settings;
+
+}
+
+/**
  * Implements template_preprocess_message_digest().
  */
 function easme_helper_preprocess_message_digest(&$variables) {
   // Add EASME custom variables.
   $variables['notification_site_name'] = \Drupal::service('easme_helper.notifications_helper')->getSiteName();
+}
+
+/**
+ * Provides the list of statuses with related label and message.
+ *
+ * @return array[]
+ *   List of statuses in as an array with following keys:
+ *   - statuskey
+ *     - label: the status label.
+ *     - message: the message to shown to the user.
+ */
+function easme_helper_user_status_list() {
+  return [
+    'user_invited' => [
+      'label' => t('User invited'),
+      'message' => t('Please complete your profile at %url_to_smed_user'),
+    ],
+    'user_approved_incomplete' => [
+      'label' => t('User approved incomplete'),
+      'message' => t('Welcome %user_firstname %user_lastname, before you can continue please complete your profile at %smed_url'),
+    ],
+    'user_pending' => [
+      'label' => t('User pending'),
+      'message' => t('Welcome %user_firstname %user_lastname, your account is pending approval, once approved you will receive a notification e-mail'),
+    ],
+    'user_approved_complete' => [
+      'label' => t('User approved complete'),
+      'message' => t('Welcome %user_firstname %user_lastname'),
+    ],
+    'user_not_bootstrapped' => [
+      'label' => t('User not bootstrapped'),
+      'message' => t('Please contact us via the %link_to_contactform'),
+    ],
+    'user_unknown' => [
+      'label' => t('User unknown'),
+      'message' => t('Please register at %link_to_the_smed'),
+    ],
+    'user_blocked' => [
+      'label' => t('User blocked'),
+      'message' => t('Please contact us via the %link_to_contactform'),
+    ],
+    'user_unsuscribed' => [
+      'label' => t('User unsubscribed'),
+      'message' => t('Please register at %link_to_the_smed'),
+    ],
+  ];
+}
+
+/**
+ * Returns a simple "key/value" list of user status.
+ *
+ * @return array
+ *   The status list as key => label.
+ */
+function easme_helper_user_status_list_simple() {
+  $result = [];
+  foreach (easme_helper_user_status_list() as $key => $item) {
+    $result[$key] = $item['label'];
+  }
+  return $result;
 }

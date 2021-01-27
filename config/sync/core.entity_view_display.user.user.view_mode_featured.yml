@@ -5,9 +5,11 @@ dependencies:
   config:
     - core.entity_view_mode.user.view_mode_featured
     - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_message_from_service
     - field.field.user.user.field_password_expiration
     - field.field.user.user.field_smed_id
     - field.field.user.user.field_social_media
+    - field.field.user.user.field_updated_profile_by_service
     - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
@@ -17,6 +19,7 @@ dependencies:
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
+    - field.field.user.user.field_user_status
     - image.style.vertical_medium_image
   module:
     - image
@@ -61,14 +64,17 @@ content:
     region: content
 hidden:
   field_last_password_reset: true
+  field_message_from_service: true
   field_password_expiration: true
   field_smed_id: true
   field_social_media: true
+  field_updated_profile_by_service: true
   field_user_content: true
   field_user_frequency: true
   field_user_nationality: true
   field_user_organisation: true
   field_user_professional_domain: true
+  field_user_status: true
   langcode: true
   member_for: true
   simplenews: true

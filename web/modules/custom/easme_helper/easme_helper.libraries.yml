@@ -1,0 +1,6 @@
+redirect:
+  version: 1.x
+  js:
+    js/redirect.js: {}
+  dependencies:
+    - core/jquery
