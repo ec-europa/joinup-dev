@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd9129919788094e621db79bf166e68e",
+    "content-hash": "46a9fa564e9a1e432edfa8b7f0ea714f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2323,6 +2323,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Missing schema for fields default values @see https://www.drupal.org/i/3194940": "https://git.drupalcode.org/project/cached_computed_field/-/merge_requests/1.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

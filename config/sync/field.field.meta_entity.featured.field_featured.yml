@@ -17,7 +17,7 @@ required: false
 translatable: false
 default_value:
   -
-    value: 0
+    value: false
     expire: null
 default_value_callback: ''
 settings:
