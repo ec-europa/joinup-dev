@@ -16,15 +16,24 @@ services:
 #      - .env.dist
 #      - .env.local
 
-
   mysql:
 # macOS users should override this value by uncommenting the following
 # 'volumes:' block.
 #    volumes:
 #      - ./resources/docker/mysql/config:/etc/mysql/conf.d:cached
+#      - ./db/mysql/dump/mysql.sql:/db/mysql/dump/mysql.sql:delegated
+#      - ./scripts/docker/mysql:/docker-entrypoint-initdb.d:cached
+
+  virtuoso:
+# macOS users should override this value by uncommenting the following
+# 'volumes:' block.
+#    volumes:
+#      - ./db/virtuoso/snapshot:/data/backups:delegated
 
   solr:
 # macOS users should override this value by uncommenting the following
 # 'volumes:' block.
 #    volumes:
-#      - ./web/modules/contrib/search_api_solr/solr-conf/6.x:/solr-conf:delegated
+#      - ./db/solr:/solr/snapshot:delegated
+#      - ./web/modules/contrib/search_api_solr/solr-conf/6.x:/solr/conf:cached
+#      - ./scripts/solr/restore_solr.sh:/opt/solr/bin/restore_solr.sh:cached

@@ -53,11 +53,11 @@ services:
 
   mysql:
     image: mysql:5.7
-    # macOS users should override 'volumes:' in docker-compose.override.yml.
-    # See docker-compose.override.yml.dist.
     ports:
       # Avoid port collision with a potential host machine instance of MySQL.
       - '3307:3306'
+    # macOS users should override 'volumes:' in docker-compose.override.yml.
+    # See docker-compose.override.yml.dist.
     volumes:
       - ./resources/docker/mysql/config:/etc/mysql/conf.d
       # MySQL dump.
@@ -76,6 +76,8 @@ services:
     ports:
       # Avoid port collision with a potential host machine instance of Virtuoso.
       - '8891:8890'
+    # macOS users should override 'volumes:' in docker-compose.override.yml.
+    # See docker-compose.override.yml.dist.
     volumes:
       - ./db/virtuoso/snapshot:/data/backups
     environment:
