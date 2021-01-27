@@ -24,7 +24,12 @@ class JoinupConfigSyncTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['system'];
+  protected static $modules = [
+    // This module alters the schema of facet.widget.default_config.
+    // @see search_api_arbitrary_facet_config_schema_info_alter()
+    'search_api_arbitrary_facet',
+    'system',
+  ];
 
   /**
    * {@inheritdoc}
