@@ -23,4 +23,4 @@ commands:
       command: perl -i -pe 's/DEFINER="[^"]+"@"[^"]+"//g' ${toolkit.clone.dumpfile}
     # Support MySQL 8.
     - task: exec
-      command: perl -i -pe 's/,NO_AUTO_CREATE_USER//g' ${toolkit.tmp_folder}/mysql.sql
+      command: perl -i -pe 's/,NO_AUTO_CREATE_USER//g' ${toolkit.clone.dumpfile}
