@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_publication_date\Entity;
 
-
 /**
  * Blanket implementation for EntityPublicationDateInterface.
  *
