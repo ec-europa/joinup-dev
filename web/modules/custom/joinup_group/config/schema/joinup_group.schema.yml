@@ -22,3 +22,7 @@ group_menu_block_default:
     depth:
       type: integer
       label: 'Maximum number of levels'
+
+views.argument.search_api_group:
+  type: views.argument.search_api
+  label: 'Search API group'

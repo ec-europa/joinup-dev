@@ -547,11 +547,11 @@ display:
           validate_options:
             bundles:
               solution: solution
-            access: '1'
+            access: true
             operation: view
-            multiple: '0'
+            multiple: 0
           break_phrase: false
-          not: 0
+          not: false
           plugin_id: search_api_group
       display_extenders: {  }
       filter_groups:

@@ -5,3 +5,7 @@ condition.plugin.eif_solutions_page:
     eif_solutions:
       type: boolean
       label: 'EIF Solution'
+
+views.argument_validator.eif_toolbox:
+  type: views.argument_validator_entity
+  label: 'EIF Toolbox argument validator'
