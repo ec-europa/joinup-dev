@@ -1,0 +1,8 @@
+name: Joinup Publication Date
+type: module
+description: Extends the contributed Publication Date module with goodies such as support for bundle classes.
+package: Joinup
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - publication_date
