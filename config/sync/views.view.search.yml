@@ -39,13 +39,13 @@ display:
         type: autosubmit
         options:
           submit_button: Apply
-          reset_button: 0
+          reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by: '
-          expose_sort_order: 0
+          expose_sort_order: false
           sort_asc_label: Asc
           sort_desc_label: Desc
-          autosubmit_hide: 1
+          autosubmit_hide: true
       pager:
         type: full
         options:

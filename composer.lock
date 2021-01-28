@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a8334076092d6282ead9e5520010dcaf",
+    "content-hash": "0edfdc167f72c49cfc6fc93f1d98e28f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6981,6 +6981,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "The views plugin options are missing schema @see https://www.drupal.org/i/3195213": "https://git.drupalcode.org/project/views_autosubmit/-/merge_requests/2.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
