@@ -26,3 +26,11 @@ group_menu_block_default:
 views.argument.search_api_group:
   type: views.argument.search_api
   label: 'Search API group'
+
+views.argument_default.rdf_entity:
+  type: mapping
+  label: 'RDF entity'
+  mapping:
+    parameter_name:
+      type: string
+      label: 'Parameter name'
