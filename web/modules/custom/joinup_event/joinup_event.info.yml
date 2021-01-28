@@ -42,7 +42,6 @@ config_devel:
     - field.field.node.event.field_scope
     - field.field.node.event.field_shared_in
     - field.field.node.event.field_short_title
-    - field.field.node.event.field_site_pinned
     - field.field.node.event.field_state
     - field.field.node.event.og_audience
     - field.storage.node.field_event_agenda

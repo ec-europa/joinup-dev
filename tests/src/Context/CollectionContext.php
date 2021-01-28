@@ -71,7 +71,6 @@ class CollectionContext extends RawDrupalContext {
     'spatial coverage' => 'field_spatial_coverage',
     'state' => 'field_ar_state',
     'featured' => 'feature',
-    'pinned to front page' => 'field_site_pinned',
   ];
 
   /**
@@ -261,7 +260,6 @@ class CollectionContext extends RawDrupalContext {
         'archival request' => 'archival_request',
         'archived' => 'archived',
       ],
-      'field_site_pinned' => ['no' => 0, 'yes' => 1],
     ];
 
     foreach ($fields as $field => $value) {

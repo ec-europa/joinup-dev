@@ -15,7 +15,6 @@ dependencies:
     - field.field.node.news.field_policy_domain
     - field.field.node.news.field_shared_in
     - field.field.node.news.field_site_featured
-    - field.field.node.news.field_site_pinned
     - field.field.node.news.field_state
     - field.field.node.news.og_audience
     - image.style.thumbnail
@@ -25,7 +24,7 @@ dependencies:
     - comment
     - file
     - image
-    - joinup_core
+    - joinup_workflow
     - link
     - text
 id: node.news.default
@@ -172,7 +171,6 @@ hidden:
   created: true
   field_shared_in: true
   field_site_featured: true
-  field_site_pinned: true
   og_audience: true
   path: true
   promote: true

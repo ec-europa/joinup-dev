@@ -72,7 +72,6 @@ config_devel:
     - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_short_id
-    - field.field.rdf_entity.solution.field_site_pinned
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
     - field.storage.rdf_entity.field_is_actor

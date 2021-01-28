@@ -14,7 +14,7 @@ entity_type: node
 bundle: document
 label: 'Policy domain'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

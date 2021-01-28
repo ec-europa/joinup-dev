@@ -41,7 +41,6 @@ config_devel:
     - field.field.node.discussion.field_policy_domain
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
-    - field.field.node.discussion.field_site_pinned
     - field.field.node.discussion.field_state
     - field.field.node.discussion.og_audience
     - field.storage.comment.field_attachment
