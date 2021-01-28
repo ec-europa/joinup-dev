@@ -495,8 +495,8 @@ display:
             multiple: 0
             access: false
           break_phrase: false
-          not: 0
-          plugin_id: collection
+          not: false
+          plugin_id: search_api_group
       display_extenders: {  }
       filter_groups:
         operator: AND
