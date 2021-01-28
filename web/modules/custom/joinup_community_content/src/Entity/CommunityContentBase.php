@@ -9,6 +9,7 @@ use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_featured\FeaturedContentTrait;
 use Drupal\joinup_group\Entity\PinnableGroupContentTrait;
 use Drupal\joinup_group\Exception\MissingGroupException;
+use Drupal\joinup_publication_date\Entity\EntityPublicationDateTrait;
 use Drupal\joinup_stats\Entity\StatisticsAwareTrait;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
 use Drupal\node\Entity\Node;
@@ -21,6 +22,7 @@ use Drupal\node\Entity\Node;
  */
 abstract class CommunityContentBase extends Node implements CommunityContentInterface {
 
+  use EntityPublicationDateTrait;
   use EntityWorkflowStateTrait;
   use FeaturedContentTrait;
   use NodeCollectionContentTrait;
