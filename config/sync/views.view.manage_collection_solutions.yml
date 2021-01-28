@@ -160,8 +160,8 @@ display:
           include_exclude: include
           selected_actions:
             - change_collection
-          link_to_item: 0
-          use_highlighting: 0
+          link_to_item: false
+          use_highlighting: false
           plugin_id: search_api_bulk_form
         label:
           id: label
