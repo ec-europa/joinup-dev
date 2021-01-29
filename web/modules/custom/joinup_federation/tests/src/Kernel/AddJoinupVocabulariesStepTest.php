@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_federation\Kernel;
 
-use Drupal\Core\Serialization\Yaml;
-use Drupal\sparql_entity_storage\Entity\SparqlMapping;
+use Drupal\Tests\joinup_test\Traits\ConfigTestTrait;
 use Drupal\taxonomy\Entity\Vocabulary;
 use EasyRdf\Graph;
 
@@ -15,6 +14,8 @@ use EasyRdf\Graph;
  * @group joinup_federation
  */
 class AddJoinupVocabulariesStepTest extends StepTestBase {
+
+  use ConfigTestTrait;
 
   /**
    * {@inheritdoc}
@@ -37,10 +38,8 @@ class AddJoinupVocabulariesStepTest extends StepTestBase {
   protected function setUp() {
     parent::setUp();
 
-    // Create the language vocabulary and mapping.
     Vocabulary::create(['vid' => 'language', 'name' => 'Language'])->save();
-    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../joinup_core/config/install/sparql_entity_storage.mapping.taxonomy_term.language.yml'));
-    SparqlMapping::create($mapping)->save();
+    $this->importConfigs(['sparql_entity_storage.mapping.taxonomy_term.language']);
   }
 
   /**
