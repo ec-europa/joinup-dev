@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies:
-  module:
-    - rdf_entity
-id: rdf_entity.compact
-label: Compact
-targetEntityType: rdf_entity
-cache: true

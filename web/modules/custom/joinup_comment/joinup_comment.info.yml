@@ -1,6 +1,0 @@
-name: Joinup comment
-description: Configuration
-package: Joinup
-
-core: 8.x
-type: module
