@@ -14,7 +14,6 @@ dependencies:
     - field.field.node.document.field_shared_in
     - field.field.node.document.field_short_title
     - field.field.node.document.field_site_featured
-    - field.field.node.document.field_site_pinned
     - field.field.node.document.field_state
     - field.field.node.document.field_type
     - field.field.node.document.og_audience
@@ -24,7 +23,7 @@ dependencies:
     - comment
     - datetime
     - file_url
-    - joinup_core
+    - joinup_workflow
     - text
 id: node.document.default
 targetEntityType: node
@@ -160,7 +159,6 @@ hidden:
   created: true
   field_shared_in: true
   field_site_featured: true
-  field_site_pinned: true
   langcode: true
   og_audience: true
   path: true

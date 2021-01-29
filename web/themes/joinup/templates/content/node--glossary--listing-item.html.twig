@@ -1,7 +1,7 @@
 {#
 /**
  * @file
- * Theme override to display a node.
+ * Theme override to display a 'glossary' node .
  *
  * Available variables:
  * - node: The node entity with limited access to object properties and methods.
@@ -65,11 +65,35 @@
  *
  * @see template_preprocess_node()
  *
- * @todo Remove the id attribute (or make it a class), because if that gets
- *   rendered twice on a page this is invalid CSS for example: two lists
- *   in different view modes.
  */
 #}
-<article{{ attributes.addClass('page__content') }}>
-  {{ content }}
-</article>
+{%
+  set classes = [
+    'listing__card',
+    'mdl-card',
+    'listing__card--stats-container',
+    'listing__card--inline-container',
+  ]
+%}
+
+<div {{ attributes.addClass(classes) }}>
+  <div class="listing__metadata">
+    <div class="listing__text-container listing__text-container--document{{ class_container_tags }}">
+      <div class="listing__field">
+        <div class="listing__link"><a href="{{ url }}"></a></div>
+        {{ title_prefix }}
+        <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
+        {{ title_suffix }}
+        <h5 class="listing__subtitle listing__type">{{ content.field_glossary_abbreviation }}</h5>
+      </div>
+      <div class="listing__field">
+       <div class="listing__teaser">{{ content.field_glossary_definition }}</div>
+      </div>
+    </div>
+    <div class="listing__field listing__stats mdl-card__actions">
+      <div class="listing__stat">
+        <span class="listing__text">{{ node.type.entity.label|lower }}</span>
+      </div>
+    </div>
+  </div>
+</div>
