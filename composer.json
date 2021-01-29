@@ -405,6 +405,11 @@
             "no-api": true
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/idimopoulos/rdf_entity.git",
+            "no-api": true
+        },
+        {
             "type": "package",
             "package": {
                 "name": "pfrenssen/phpcs-pre-push",
