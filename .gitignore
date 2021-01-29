@@ -42,6 +42,7 @@
 /.idea/
 # VsCode
 /workspace.code-workspace
+/.VsCode
 
 # Ignore the config_readonly killswitch.
 /disable-config-readonly
