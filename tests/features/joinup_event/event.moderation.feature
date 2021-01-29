@@ -95,6 +95,7 @@ Feature: Event moderation
     And I fill the start time of the Date widget with "23:59:00"
     And I fill the end date of the Date widget with "2018-09-01"
     And I fill the end time of the Date widget with "00:30:00"
+    And I select "EU and European Policies" from "Policy domain"
     And I press "Save as draft"
     Then I should see the success message "Event Rainbow of Worlds has been created"
     And I should see the text "30/08 to 01/09/2018"

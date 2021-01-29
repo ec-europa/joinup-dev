@@ -31,7 +31,7 @@
         "drupal/entity_legal": "^3",
         "drupal/error_page": "^1.0",
         "drupal/facets": "~1.6",
-        "drupal/field_group": "^1.0",
+        "drupal/field_group": "^3.1",
         "drupal/field_permissions": "^1.1",
         "drupal/file_url": "~2.0",
         "drupal/flag": "^4.0",

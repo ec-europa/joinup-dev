@@ -60,7 +60,6 @@ display:
               document: default
               event: default
               news: default
-              newsletter: default
               tallinn_report: default
               video: default
             'entity:rdf_entity':

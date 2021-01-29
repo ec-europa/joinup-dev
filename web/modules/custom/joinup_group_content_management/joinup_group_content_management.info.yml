@@ -16,7 +16,3 @@ dependencies:
   - 'og_menu:og_menu'
   - 'views_bulk_operations:views_bulk_operations'
   - 'views_data_export'
-
-config_devel:
-  install:
-    - views.view.group_content_management

@@ -12,7 +12,6 @@ dependencies:
     - node.type.custom_page
   module:
     - entity_reference_revisions
-    - smart_trim
     - template_suggestion
     - user
 _core:

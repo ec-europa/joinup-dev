@@ -2,9 +2,8 @@ uuid: 5d6b34a2-4883-45e5-9678-1897320c4df3
 langcode: en
 status: true
 dependencies:
-  config:
-    - joinup_licence.type.default
   module:
+    - joinup_licence
     - text
 id: compatibility_document.default.default
 targetEntityType: compatibility_document
