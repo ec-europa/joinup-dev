@@ -397,10 +397,6 @@
             "url": "https://github.com/pfrenssen/task-runner.git"
         },
         {
-            "type": "composer",
-            "url": "https://packages.drupal.org/8"
-        },
-        {
             "type": "vcs",
             "url": "https://github.com/idimopoulos/sparql_entity_storage.git",
             "no-api": true
@@ -409,6 +405,10 @@
             "type": "vcs",
             "url": "https://github.com/idimopoulos/rdf_entity.git",
             "no-api": true
+        },
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
         },
         {
             "type": "package",
