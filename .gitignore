@@ -11,6 +11,9 @@
 # Ignore dist build location
 /dist/
 
+# Ignore user's local files
+/local/
+
 # Ignore sensitive information
 /web/sites/sites.php
 /web/sites/*/settings.php
