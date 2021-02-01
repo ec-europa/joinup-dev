@@ -84,6 +84,8 @@ class EifSolutionCondition extends ConditionPluginBase implements ContainerFacto
    * {@inheritdoc}
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state): void {
+    // Certain form elements may return 'eif_solutions' as 0/1. Cast here to
+    // ensure the data is in the expected type.
     $this->setConfig('eif_solutions', (bool) $form_state->getValue('eif_solutions'));
     parent::submitConfigurationForm($form, $form_state);
   }
