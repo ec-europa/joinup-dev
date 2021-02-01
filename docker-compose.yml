@@ -61,7 +61,7 @@ services:
     volumes:
       - ./resources/docker/mysql/config:/etc/mysql/conf.d
       # MySQL dump.
-      - ./db/mysql/dump/mysql.sql:/db/mysql/dump/mysql.sql
+      - ./db/mysql/dump:/db/mysql/dump
       # Contains a script to run when waking up.
       - ./scripts/docker/mysql:/docker-entrypoint-initdb.d
     env_file:
