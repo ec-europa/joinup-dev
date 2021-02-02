@@ -34,40 +34,40 @@ Feature: Machine translation
     # Inside a collection sidebar, only custom pages, glossary terms (but not
     # the glossary overview) and the about page should be translatable.
     When I go to the "Brexit" collection
-    Then I should not see the link "Translate this page"
+    Then I should not see the "Translate" button
     When I click "Members"
-    Then I should not see the link "Translate this page"
+    Then I should not see the "Translate" button
     When I click "Glossary"
-    Then I should not see the link "Translate this page"
+    Then I should not see the "Translate" button
     When I click "Digital portability"
-    Then I should see the link "Translate this page"
+    Then I should see the "Translate" button
     When I click "About"
-    Then I should see the link "Translate this page"
+    Then I should see the "Translate" button
     When I go to the "Increased credit card fees" custom page
-    Then I should see the link "Translate this page"
+    Then I should see the "Translate" button
 
     # Community content should be translatable.
     When I go to the "Confiscating of sandwiches" event
-    Then I should see the link "Translate this page"
+    Then I should see the "Translate" button
     When I go to the "Supply chain disruption" news
-    Then I should see the link "Translate this page"
+    Then I should see the "Translate" button
     When I go to the "Increased postal delivery costs" document
-    Then I should see the link "Translate this page"
+    Then I should see the "Translate" button
     When I go to the "Restriction on animal-based food imports" discussion
-    Then I should see the link "Translate this page"
+    Then I should see the "Translate" button
 
     # Pages that primarily list content should not be translatable.
     When I go to the homepage
-    Then I should not see the link "Translate this page"
+    Then I should not see the "Translate" button
     When I visit the search page
-    Then I should not see the link "Translate this page"
+    Then I should not see the "Translate" button
     When I click "Collections" in the "Header menu" region
-    Then I should not see the link "Translate this page"
+    Then I should not see the "Translate" button
     When I click "Solutions" in the "Header menu" region
-    Then I should not see the link "Translate this page"
+    Then I should not see the "Translate" button
     When I click "Keep up to date" in the "Header menu" region
-    Then I should not see the link "Translate this page"
+    Then I should not see the "Translate" button
 
     # Pages that are not content focused should not be translatable.
     When I click "Contact Joinup Support" in the "Footer" region
-    Then I should not see the link "Translate this page"
+    Then I should not see the "Translate" button

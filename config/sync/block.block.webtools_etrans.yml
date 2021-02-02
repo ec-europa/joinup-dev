@@ -19,5 +19,5 @@ settings:
   label: 'OpenEuropa Webtools ETrans'
   provider: oe_webtools_etrans
   label_display: '0'
-  render_as: link
+  render_as: button
 visibility: {  }
