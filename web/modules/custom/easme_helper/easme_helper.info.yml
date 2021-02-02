@@ -3,3 +3,6 @@ type: module
 description: 'Helper module for the Challenge platform'
 core: 8.x
 package: 'EASME'
+dependencies:
+  - cas:cas
+
