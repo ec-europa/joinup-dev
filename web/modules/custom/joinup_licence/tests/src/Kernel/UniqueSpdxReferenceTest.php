@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_licence\Kernel;
 
 use Drupal\Tests\joinup_test\Kernel\JoinupKernelTestBase;
+use Drupal\Tests\joinup_test\Traits\ConfigTestTrait;
 use Drupal\joinup_validation\Plugin\Validation\Constraint\UniqueFieldInBundleConstraint;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -14,6 +15,8 @@ use Drupal\rdf_entity\Entity\Rdf;
  * @group entity_validation
  */
 class UniqueSpdxReferenceTest extends JoinupKernelTestBase {
+
+  use ConfigTestTrait;
 
   /**
    * {@inheritdoc}
@@ -48,6 +51,13 @@ class UniqueSpdxReferenceTest extends JoinupKernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
+
+    $this->importConfigs([
+      'field.field.rdf_entity.licence.field_licence_spdx_licence',
+      'field.storage.rdf_entity.field_licence_spdx_licence',
+      'rdf_entity.rdfentity.licence',
+      'sparql_entity_storage.mapping.rdf_entity.licence',
+    ]);
 
     $this->installConfig('joinup_licence');
     $this->installConfig('spdx');

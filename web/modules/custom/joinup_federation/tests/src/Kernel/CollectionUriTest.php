@@ -4,11 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_federation\Kernel;
 
-use Drupal\Core\Serialization\Yaml;
+use Drupal\Tests\joinup_test\Traits\ConfigTestTrait;
 use Drupal\pipeline\Exception\PipelineStepPrepareLogicException;
 use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\sparql_entity_storage\Entity\SparqlGraph;
-use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 
 /**
  * Tests the invalid pipeline collection URI..
@@ -16,6 +14,8 @@ use Drupal\sparql_entity_storage\Entity\SparqlMapping;
  * @group joinup_federation
  */
 class CollectionUriTest extends StepTestBase {
+
+  use ConfigTestTrait;
 
   /**
    * {@inheritdoc}
@@ -45,14 +45,15 @@ class CollectionUriTest extends StepTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->installSchema('system', ['key_value_expire']);
-    $graph = Yaml::decode(file_get_contents(DRUPAL_ROOT . '/modules/contrib/sparql_entity_storage/config/install/sparql_entity_storage.graph.default.yml'));
-    SparqlGraph::create($graph)->save();
 
+    $this->installSchema('system', ['key_value_expire']);
     // Create the collection bundle.
     RdfEntityType::create(['rid' => 'collection', 'name' => 'Collection'])->save();
-    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/sparql_entity_storage.mapping.rdf_entity.collection.yml'));
-    SparqlMapping::create($mapping)->save();
+    // Create graph and mapping.
+    $this->importConfigs([
+      'sparql_entity_storage.graph.default',
+      'sparql_entity_storage.mapping.rdf_entity.collection',
+    ]);
   }
 
   /**

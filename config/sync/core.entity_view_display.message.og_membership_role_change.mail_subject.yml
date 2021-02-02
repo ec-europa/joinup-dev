@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.message.mail_subject
+    - field.field.message.og_membership_role_change.field_membership
     - message.template.og_membership_role_change
 id: message.og_membership_role_change.mail_subject
 targetEntityType: message

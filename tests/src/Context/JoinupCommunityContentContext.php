@@ -8,11 +8,15 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\Hook\Scope\AfterNodeCreateScope;
+use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\joinup\Traits\NodeTrait;
+use Drupal\joinup\Traits\TestingEntitiesTrait;
 use Drupal\joinup\Traits\TraversingTrait;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\node\Entity\Node;
+use Drupal\rdf_taxonomy\Entity\RdfTerm;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 
@@ -22,6 +26,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 class JoinupCommunityContentContext extends RawDrupalContext {
 
   use NodeTrait;
+  use TestingEntitiesTrait;
   use TraversingTrait;
 
   /**
@@ -381,6 +386,63 @@ class JoinupCommunityContentContext extends RawDrupalContext {
       throw new ElementNotFoundException($session, 'Comment #' . ($index + 1));
     }
     return $comments[$index];
+  }
+
+  /**
+   * Sets a random policy domain for community content that misses one.
+   *
+   * For some tests the community content's policy domain has no relevance. Such
+   * tests are allowed to omit an explicit policy domain. We're creating a dummy
+   * policy domain term, together with its parent, just to satisfy data
+   * integrity and prevent form validation errors.
+   *
+   * @param \Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope $scope
+   *   An object containing the entity properties and fields that are to be used
+   *   for creating the node as properties on the object.
+   *
+   * @BeforeNodeCreate
+   */
+  public function providePolicyDomain(BeforeNodeCreateScope $scope) {
+    $node = $scope->getEntity();
+
+    // Only deal with community content.
+    if (!in_array($node->type, CommunityContentHelper::BUNDLES, TRUE)) {
+      return;
+    }
+
+    // A policy domain has been already set.
+    $alias = 'policy domain';
+    if (!empty($node->{$alias})) {
+      return;
+    }
+
+    // Try, first, to get an existing policy domain term.
+    if (!empty($this->entities['taxonomy_term'])) {
+      foreach ($this->entities['taxonomy_term'] as $candidate_term) {
+        if ($candidate_term->bundle() === 'policy_domain' && !$candidate_term->get('parent')->isEmpty()) {
+          $term = $candidate_term;
+        }
+      }
+    }
+
+    // Create a new policy domain term.
+    if (!isset($term)) {
+      $term = RdfTerm::create([
+        'vid' => 'policy_domain',
+        'name' => $this->getRandom()->name(8, TRUE),
+        'parent' => RdfTerm::create([
+          'vid' => 'policy_domain',
+          'name' => $this->getRandom()->name(8, TRUE),
+        ]),
+      ]);
+      $term->save();
+
+      // Register the new terms to be cleaned-up after scenario.
+      $this->entities['taxonomy_term'][$term->get('parent')->target_id] = $term->get('parent')->entity;
+      $this->entities['taxonomy_term'][$term->id()] = $term;
+    }
+
+    $node->{$alias} = $term->label();
   }
 
 }

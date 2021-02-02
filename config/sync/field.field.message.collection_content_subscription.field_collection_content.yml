@@ -179,12 +179,6 @@ settings:
   solr_field_type:
     handler: 'default:solr_field_type'
     handler_settings: {  }
-  simplenews_newsletter:
-    handler: 'default:simplenews_newsletter'
-    handler_settings: {  }
-  simplenews_subscriber:
-    handler: 'default:simplenews_subscriber'
-    handler_settings: {  }
   sparql_graph:
     handler: 'default:sparql_graph'
     handler_settings: {  }

@@ -4,14 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_federation\Kernel;
 
-use Drupal\Core\Serialization\Yaml;
+use Drupal\Tests\joinup_test\Traits\ConfigTestTrait;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\pipeline\PipelineState;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\sparql_entity_storage\Entity\SparqlGraph;
-use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use Drupal\taxonomy\Entity\Vocabulary;
 use EasyRdf\Graph;
 
@@ -21,6 +19,8 @@ use EasyRdf\Graph;
  * @group joinup_federation
  */
 class ThreeWayMergeStepTest extends StepTestBase {
+
+  use ConfigTestTrait;
 
   /**
    * {@inheritdoc}
@@ -39,6 +39,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'allowed_formats',
     'field',
     'joinup_sparql',
     'rdf_schema_field_validation',
@@ -54,63 +55,38 @@ class ThreeWayMergeStepTest extends StepTestBase {
   protected function setUp() {
     parent::setUp();
 
-    // Create the 'default' and 'staging' graphs.
-    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../contrib/sparql_entity_storage/config/install/sparql_entity_storage.graph.default.yml'));
-    SparqlGraph::create($graph)->save();
-    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../contrib/rdf_entity/modules/rdf_draft/config/install/sparql_entity_storage.graph.draft.yml'));
-    SparqlGraph::create($graph)->save();
-    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../config/install/sparql_entity_storage.graph.staging.yml'));
-    SparqlGraph::create($graph)->save();
-
-    // Create the language vocabulary and mapping.
+    // Create the language vocabulary. and mapping.
     Vocabulary::create(['vid' => 'language', 'name' => 'Language'])->save();
-    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../joinup_core/config/install/sparql_entity_storage.mapping.taxonomy_term.language.yml'));
-    SparqlMapping::create($mapping)->save();
-
     // Create the solution RDF type.
     RdfEntityType::create(['rid' => 'solution', 'name' => 'Solution'])->save();
-    // Add some fields for the purpose of this test.
-    FieldStorageConfig::create([
-      'type' => 'text_long',
-      'entity_type' => 'rdf_entity',
-      'field_name' => 'field_is_description',
-    ])->setThirdPartySetting('sparql_entity_storage', 'mapping', [
-      'value' => [
-        'predicate' => 'http://purl.org/dc/terms/description',
-        'format' => 't_literal',
-      ],
-      'format' => [
-        'predicate' => '',
-        'format' => '',
-      ],
-    ])->save();
-    FieldConfig::create([
-      'entity_type' => 'rdf_entity',
-      'bundle' => 'solution',
-      'field_name' => 'field_is_description',
-      'label' => 'Description',
-    ])->save();
-    FieldStorageConfig::create([
-      'type' => 'entity_reference',
-      'entity_type' => 'rdf_entity',
-      'field_name' => 'field_status',
-    ])->setThirdPartySetting('sparql_entity_storage', 'mapping', [
-      'target_id' => [
-        'predicate' => 'http://www.w3.org/ns/adms#status',
-        'format' => 'resource',
-      ],
-    ])->save();
-    FieldConfig::create([
-      'entity_type' => 'rdf_entity',
-      'bundle' => 'solution',
-      'field_name' => 'field_status',
-      'label' => 'Status',
-      'default_value' => [
-        [
-          'target_id' => 'http://example.com/default-status',
-        ],
-      ],
-    ])->save();
+    // Create the collection bundle.
+    RdfEntityType::create(['rid' => 'collection', 'name' => 'Collection'])->save();
+
+    $this->importConfigs([
+       // Create the 'default', 'draft' and 'staging' graphs.
+      'sparql_entity_storage.graph.default',
+      'sparql_entity_storage.graph.draft',
+      'sparql_entity_storage.graph.staging',
+      // Create the language vocabulary mapping.
+      'sparql_entity_storage.mapping.taxonomy_term.language',
+      // Solution and collection mappings.
+      'sparql_entity_storage.mapping.rdf_entity.solution',
+      'sparql_entity_storage.mapping.rdf_entity.collection',
+      // Add some fields for the purpose of this test.
+      'field.storage.rdf_entity.field_is_description',
+      'field.field.rdf_entity.solution.field_is_description',
+      'field.storage.rdf_entity.field_status',
+      'field.field.rdf_entity.solution.field_status',
+      'field.storage.rdf_entity.field_ar_affiliates',
+      'field.field.rdf_entity.collection.field_ar_affiliates',
+    ]);
+
+    // Set a default value for field_status.
+    $this->container->get('config.factory')
+      ->getEditable('field.field.rdf_entity.solution.field_status')
+      ->set('default_value', [['target_id' => 'http://example.com/default-status']])
+      ->save();
+
     FieldStorageConfig::create([
       'type' => 'text_long',
       'entity_type' => 'rdf_entity',
@@ -131,19 +107,6 @@ class ThreeWayMergeStepTest extends StepTestBase {
       'field_name' => 'field_is_textfield',
       'label' => 'Not defined description',
     ])->save();
-
-    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../solution/config/install/sparql_entity_storage.mapping.rdf_entity.solution.yml'));
-    SparqlMapping::create($mapping)->save();
-
-    // Create the collection bundle.
-    RdfEntityType::create(['rid' => 'collection', 'name' => 'Collection'])->save();
-    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/sparql_entity_storage.mapping.rdf_entity.collection.yml'));
-    SparqlMapping::create($mapping)->save();
-    // And the affiliates field.
-    $field_storage_config = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.storage.rdf_entity.field_ar_affiliates.yml'));
-    FieldStorageConfig::create($field_storage_config)->save();
-    $field_config = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.field.rdf_entity.collection.field_ar_affiliates.yml'));
-    FieldConfig::create($field_config)->save();
   }
 
   /**

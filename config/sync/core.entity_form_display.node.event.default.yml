@@ -23,7 +23,6 @@ dependencies:
     - field.field.node.event.field_shared_in
     - field.field.node.event.field_short_title
     - field.field.node.event.field_site_featured
-    - field.field.node.event.field_site_pinned
     - field.field.node.event.field_state
     - field.field.node.event.og_audience
     - image.style.thumbnail
@@ -241,7 +240,6 @@ hidden:
   field_event_coordinates: true
   field_shared_in: true
   field_site_featured: true
-  field_site_pinned: true
   langcode: true
   og_audience: true
   path: true

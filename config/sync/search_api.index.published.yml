@@ -556,8 +556,8 @@ field_settings:
     configuration:
       type: union
       fields:
-        - 'entity:node/field_site_pinned'
-        - 'entity:rdf_entity/field_site_pinned'
+        - 'entity:node/front_page_pinned'
+        - 'entity:rdf_entity/front_page_pinned'
   spatial_coverage:
     label: 'Geographical coverage'
     property_path: aggregated_field
