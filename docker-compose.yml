@@ -29,6 +29,8 @@ services:
       SMTP_SERVER: mail
       SMTP_PORT: 1025
       SMTP_FROM: contact@example.com
+      DRUPAL_PRIVATE_FILE_SYSTEM: /var/www/html/private
+      DRUPAL_FILE_TEMP_PATH: /var/www/html/tmp
       # Environment variables without a value will receive the values from the
       # host machine, if they are set. Sensitive information such as
       # user credentials should be placed in .env file.
