@@ -11,7 +11,7 @@ rdf_entity.propose_form:
     _custom_access: '\Drupal\joinup\Controller\JoinupController::createAccess'
 
 joinup.collection_tca_form:
-  path: '/covid19-challenge/tca/challenge'
+  path: '/eic/tca/challenge'
   defaults:
     _form: '\Drupal\joinup\Form\TcaForm'
     _title: 'Why create a Challenge?'
