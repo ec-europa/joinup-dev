@@ -6,24 +6,18 @@
 # imported from the production dumps/snapshots. Read the documentation for the
 # DOCKER_RESTORE_PRODUCTION environment variable from .env.dist.
 
-# Accessing services from the host machine:
-# - http://localhost:8080 - Site's homepage.
-# - mysql://root@localhost:3307/joinup - MySQL connection.
-# - http://localhost:8891/sparql - SPARQL endpoint.
-# - http://localhost:8984/solr - Solr endpoint.
-# - http://localhost:8026 - MailHog UI.
-# - localhost:5900 - VNC server. Used to visualise the Selenium browser. Use
-#   'secret' as password.
-# Note that some service standard ports were changed in order to avoid
-# collision with potential host machine services.
+# Accessing services from the host machine
+# See docker-compose.override.yml.dist on each service, for more details on how
+# to access services from the host machine and how to avoid port collision with
+# potential host machine instances. The ports were not exposed by default, in
+# the main `docker-compose.yml` file, because they cannot be easily overridden.
+# See https://stackoverflow.com/questions/48851190/docker-compose-override-a-ports-property-instead-of-merging-it
 
 version: '3'
 services:
   web:
     image: fpfis/httpd-php-dev:7.1
     working_dir: /var/www/html
-    ports:
-      - '8080:8080'
     # macOS users should override 'volumes:' in docker-compose.override.yml.
     # See docker-compose.override.yml.dist.
     volumes:
@@ -53,9 +47,6 @@ services:
 
   mysql:
     image: mysql:5.7
-    ports:
-      # Avoid port collision with a potential host machine instance of MySQL.
-      - '3307:3306'
     # macOS users should override 'volumes:' in docker-compose.override.yml.
     # See docker-compose.override.yml.dist.
     volumes:
@@ -73,9 +64,6 @@ services:
 
   virtuoso:
     image: tenforce/virtuoso
-    ports:
-      # Avoid port collision with a potential host machine instance of Virtuoso.
-      - '8891:8890'
     # macOS users should override 'volumes:' in docker-compose.override.yml.
     # See docker-compose.override.yml.dist.
     volumes:
@@ -103,9 +91,6 @@ services:
 
   solr:
     image: solr:6
-    ports:
-      # Avoid port collision with a potential host machine instance of Solr.
-      - '8984:8983'
     # macOS users should override 'volumes:' in docker-compose.override.yml.
     # See docker-compose.override.yml.dist.
     volumes:
@@ -138,25 +123,15 @@ services:
 
   redis:
     image: redis
-    ports:
-      # Avoid port collision with a potential host machine instance of Redis.
-      - '6380:6379'
 
   mail:
     image: mailhog/mailhog
-    ports:
-      # Avoid port collision with a potential host machine instance of Mailhog.
-      - '1026:1025'
-      - '8026:8025'
 
-  # Spawn a Selenium server, including also a VNC server on localhost:5900 (the
-  # password is "secret")
+  # Includes a Selenium server accessible at port 5900.
+  # See docker-compose.override.yml.dist
   selenium:
     image: selenium/standalone-chrome-debug
     environment:
       - DISPLAY=:99
       - SE_OPTS=-debug
-    ports:
-      - '5900:5900'
-    expose:
-      - '4444'
+      - VNC_NO_PASSWORD=1
