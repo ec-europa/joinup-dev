@@ -127,7 +127,6 @@ function _joinup_blue_header_routes() {
 function _joinup_non_blue_header_routes() {
   return [
     'entity.user.edit_form',
-    'simplenews.newsletter_subscriptions_user',
   ];
 }
 
@@ -1524,14 +1523,13 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
 
   // Set templates for forms where actions button are separated.
   $custom_forms = [
-    'node_form',
-    'rdf_entity_form',
-    'message_contact_form_submission_form',
     'adms_validator_form',
+    'message_contact_form_submission_form',
+    'node_form',
+    'ogmenu_instance_navigation_edit_form',
+    'rdf_entity_form',
     'user_login_form',
     'user_pass',
-    'simplenews_subscriber_account_form',
-    'ogmenu_instance_navigation_edit_form',
   ];
 
   // Exclude forms with tabs.

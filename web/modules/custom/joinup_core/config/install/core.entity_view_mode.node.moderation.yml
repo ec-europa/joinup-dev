@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies:
-  module:
-    - node
-id: node.moderation
-label: Moderation
-targetEntityType: node
-cache: true

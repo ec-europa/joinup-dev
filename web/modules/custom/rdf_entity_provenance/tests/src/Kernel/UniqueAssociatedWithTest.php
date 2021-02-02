@@ -5,8 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\Tests\rdf_entity_provenance\Kernel;
 
 use Drupal\Core\Validation\Plugin\Validation\Constraint\UniqueFieldConstraint;
+use Drupal\Tests\joinup_test\Traits\ConfigTestTrait;
 use Drupal\Tests\rdf_entity\Kernel\RdfKernelTestBase;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\Entity\RdfEntityType;
 
 /**
  * Provides unit testing the provenance_associated_with constraint.
@@ -14,6 +16,8 @@ use Drupal\rdf_entity\Entity\Rdf;
  * @group rdf_entity
  */
 class UniqueAssociatedWithTest extends RdfKernelTestBase {
+
+  use ConfigTestTrait;
 
   /**
    * {@inheritdoc}
@@ -27,7 +31,10 @@ class UniqueAssociatedWithTest extends RdfKernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
-    $this->installConfig(['rdf_entity_provenance']);
+    RdfEntityType::create($this->getConfigData('rdf_entity.rdfentity.provenance_activity'))->save();
+    $this->importConfigs([
+      'sparql_entity_storage.mapping.rdf_entity.provenance_activity',
+    ]);
   }
 
   /**

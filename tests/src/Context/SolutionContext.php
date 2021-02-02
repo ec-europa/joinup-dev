@@ -574,7 +574,6 @@ class SolutionContext extends RawDrupalContext {
       'collection' => 'collection',
       'collections' => 'collection',
       'featured' => 'feature',
-      'pinned to front page' => 'field_site_pinned',
       'pinned in' => 'pinned_in_collection',
       'shared on' => 'field_is_shared_in',
     ];
@@ -607,7 +606,6 @@ class SolutionContext extends RawDrupalContext {
         'needs update' => 'needs_update',
         'blacklisted' => 'blacklisted',
       ],
-      'field_site_pinned' => ['no' => 0, 'yes' => 1],
       'field_is_show_eira_related' => ['no' => 0, 'yes' => 1],
     ];
 

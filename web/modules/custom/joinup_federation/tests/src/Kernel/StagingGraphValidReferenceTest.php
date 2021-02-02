@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_federation\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\joinup_test\Traits\ConfigTestTrait;
 use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -15,6 +16,7 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class StagingGraphValidReferenceTest extends KernelTestBase {
 
+  use ConfigTestTrait;
   use SparqlConnectionTrait;
 
   /**
@@ -46,8 +48,8 @@ class StagingGraphValidReferenceTest extends KernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
+    $this->importConfigs(['sparql_entity_storage.graph.staging']);
     $this->installConfig([
-      'joinup_federation',
       'joinup_federation_staging_graph_test',
       'rdf_draft',
       'rdf_entity',

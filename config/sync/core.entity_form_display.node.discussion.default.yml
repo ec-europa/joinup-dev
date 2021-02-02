@@ -10,7 +10,6 @@ dependencies:
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_site_featured
-    - field.field.node.discussion.field_site_pinned
     - field.field.node.discussion.field_state
     - field.field.node.discussion.og_audience
     - node.type.discussion
@@ -18,7 +17,7 @@ dependencies:
     - allowed_formats
     - comment
     - file
-    - joinup_core
+    - joinup_workflow
     - text
 id: node.discussion.default
 targetEntityType: node
@@ -120,7 +119,6 @@ hidden:
   created: true
   field_shared_in: true
   field_site_featured: true
-  field_site_pinned: true
   og_audience: true
   path: true
   promote: true

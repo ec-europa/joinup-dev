@@ -16,7 +16,6 @@ dependencies:
     - field.field.node.news.field_policy_domain
     - field.field.node.news.field_shared_in
     - field.field.node.news.field_site_featured
-    - field.field.node.news.field_site_pinned
     - field.field.node.news.field_state
     - field.field.node.news.og_audience
     - node.type.news
@@ -71,7 +70,6 @@ hidden:
   field_policy_domain: true
   field_shared_in: true
   field_site_featured: true
-  field_site_pinned: true
   langcode: true
   links: true
   og_audience: true

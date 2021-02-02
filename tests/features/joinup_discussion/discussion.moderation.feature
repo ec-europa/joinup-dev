@@ -4,6 +4,7 @@ Feature: Discussion moderation
   As a user of the website
   I need to be able to transit the discussions from one state to another.
 
+  @terms
   Scenario: Publish, request changes, propose, publish again and archive a discussion.
     Given users:
       | Username        |
@@ -27,6 +28,7 @@ Feature: Discussion moderation
     And I fill in the following:
       | Title   | Best method to cut logs        |
       | Content | Paying somebody else to do it? |
+    And I select "EU and European Policies" from "Policy domain"
     And I press "Publish"
     Then I should see the heading "Best method to cut logs"
     And I should see the link "Edit" in the "Entity actions" region

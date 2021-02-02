@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\custom_page\Kernel;
 
-use Drupal\Core\Serialization\Yaml;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\joinup_test\Traits\ConfigTestTrait;
 use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
@@ -24,6 +24,7 @@ use Drupal\sparql_entity_storage\Entity\SparqlMapping;
  */
 class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
 
+  use ConfigTestTrait;
   use SparqlConnectionTrait;
 
   /**
@@ -102,8 +103,7 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
     $mocked_collection_type->save();
 
     // Create the corresponding mapping config entity.
-    $mapping_values = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/sparql_entity_storage.mapping.rdf_entity.collection.yml'));
-    SparqlMapping::create($mapping_values)
+    SparqlMapping::create($this->getConfigData('sparql_entity_storage.mapping.rdf_entity.collection'))
       // Don't care about the 'draft' graph.
       ->unsetGraphs(['draft'])
       ->save();
