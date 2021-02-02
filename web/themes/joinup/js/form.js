@@ -17,7 +17,7 @@
     attach: function (context, settings) {
       $(context).find('.vertical-tabs').once('verticalTabsGrid').each(function () {
         // Add mdl grid classes.
-        var firstCellSize = ($(this).parent().hasClass('field-group-tabs-wrapper')) ? 2 : 4;
+        const firstCellSize = ($(this).parent().hasClass('field-group-tabs-wrapper')) ? 2 : 4;
         $(this).find('.vertical-tabs__menu').addClass('mdl-cell mdl-cell--' + firstCellSize + '-col mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-cell--order-2-phone');
         $(this).find('.vertical-tabs__panes').addClass('mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phone mdl-cell--order-1-phone');
         $(this).addClass('mdl-grid mdl-grid--no-spacing');
@@ -25,10 +25,9 @@
         // Move description from pane to tab.
         $(this).find('.vertical-tabs__pane').each(
           function () {
-            var summary = $(this).find('.vertical-tabs__details-summary').text();
-            var summaryIndex = $(this).index() / 2;
-            var $menuItem = $(this).closest('.vertical-tabs').find('.vertical-tabs__menu-item').get(summaryIndex - 1);
-
+            const summary = $(this).find('.vertical-tabs__details-summary').text();
+            const summaryIndex = ($(this).index() - 1) / 2;
+            const $menuItem = $(this).closest('.vertical-tabs').find('.vertical-tabs__menu-item').get(summaryIndex);
             $($menuItem).find('.vertical-tabs__menu-item-summary').text(summary);
           });
       });

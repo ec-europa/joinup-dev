@@ -30,7 +30,7 @@ display:
         type: tag
         options: {  }
       query:
-        type: views_query
+        type: search_api_query
         options:
           bypass_access: false
           skip_access: false
@@ -160,8 +160,8 @@ display:
           include_exclude: include
           selected_actions:
             - change_collection
-          link_to_item: 0
-          use_highlighting: 0
+          link_to_item: false
+          use_highlighting: false
           plugin_id: search_api_bulk_form
         label:
           id: label
@@ -495,8 +495,8 @@ display:
             multiple: 0
             access: false
           break_phrase: false
-          not: 0
-          plugin_id: collection
+          not: false
+          plugin_id: search_api_group
       display_extenders: {  }
       filter_groups:
         operator: AND

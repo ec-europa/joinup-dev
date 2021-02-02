@@ -51,5 +51,4 @@ hidden:
   language: true
   matomo: true
   path: true
-  simplenews: true
   timezone: true

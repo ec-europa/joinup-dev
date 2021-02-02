@@ -272,23 +272,6 @@ Feature:
     Then I should see the heading "20 year anniversary"
     Then I should not see the heading "Rare Nintendo64 disk drive discovered"
 
-  Scenario: Test newsletter listing.
-    Given newsletter content:
-      | title                  | content        | collection | state     |
-      | Nintendo64 in the News | Old stories... | Nintendo64 | validated |
-
-    Given I am logged in as a moderator
-    When I go to the homepage of the "Nintendo64" collection
-    And I click "Add custom page"
-
-    When I fill in the following:
-      | Title         | Newsletters 2018                      |
-      | Body          | Shows all content for this collection |
-      | Query presets | entity_bundle\|newsletter             |
-    And I check the box "Add related content"
-    And I press "Save"
-    Then I should see the "Nintendo64 in the News" tile
-
   Scenario: Test listing by keywords that contain the same word.
     Given document content:
       | title        | keywords            | content     | collection | state     |
@@ -355,6 +338,7 @@ Feature:
     And I press "Save"
     Then I should see the error message "Invalid search field specified: unknown_field."
 
+  @terms
   Scenario: Global search setting allows for site-wide content in the content listing.
     Given I am logged in as a moderator
     When I go to the homepage of the "Nintendo64" collection
@@ -383,6 +367,7 @@ Feature:
       | Short title | Current wars               |
       | Headline    | Edisson vs Electro         |
       | Content     | A new movie is coming out. |
+    And I select "Statistics and Analysis" from "Policy domain"
     And I press "Publish"
     Then I should see the heading "Current wars"
 
