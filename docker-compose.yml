@@ -13,7 +13,7 @@
 # the main `docker-compose.yml` file, because they cannot be easily overridden.
 # See https://stackoverflow.com/questions/48851190/docker-compose-override-a-ports-property-instead-of-merging-it
 
-version: '3'
+version: '3.8'
 services:
   web:
     image: fpfis/httpd-php-dev:7.1

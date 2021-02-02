@@ -1,7 +1,7 @@
 # Copy this file in the project root directory, as docker-compose.override.yml,
 # in order to override configurations provided in docker-compose.yml.
 
-version: '3'
+version: '3.8'
 services:
 
   web:
