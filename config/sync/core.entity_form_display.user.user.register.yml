@@ -74,5 +74,4 @@ hidden:
   field_user_professional_domain: true
   langcode: true
   language: true
-  simplenews: true
   timezone: true

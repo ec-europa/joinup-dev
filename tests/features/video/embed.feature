@@ -1,4 +1,4 @@
-@api
+@api @terms
 Feature: Embed of videos into the page.
   In order to show videos regarding my content
   As a user of the website
@@ -18,6 +18,7 @@ Feature: Embed of videos into the page.
     Then I fill in the following:
       | Headline    | United Kingdom Brexit Notification |
       | Short title | Brexit                             |
+    And I select "Supplier exchange" from "Policy domain"
     And I fill in "Content" with:
       """
       <h2>All below videos have 'autoplay' set to TRUE</h2>
@@ -53,6 +54,7 @@ Feature: Embed of videos into the page.
     When I fill in the following:
       | Headline    | Some test video |
       | Short title | Some test video |
+    And I select "Supplier exchange" from "Policy domain"
     And I press the button "Video Embed" in the "Content" wysiwyg editor
     Then a modal should open
     And I should see the text "Youtube and EC videos are allowed."
@@ -79,6 +81,7 @@ Feature: Embed of videos into the page.
     When I fill in the following:
       | Headline    | Some test video |
       | Short title | Some test video |
+    And I select "Supplier exchange" from "Policy domain"
     And I fill in "Content" with:
     """
     <p>{"preview_thumbnail":"/sites/default/files/styles/video_embed_wysiwyg_preview/public/video_thumbnails/r5Kd7ltWS9w.jpg?itok=2PfetCfJ","video_url":"https://www.youtube.com/watch?v=r5Kd7ltWS9w","settings":{"responsive":true,"width":"854","height":"480","autoplay":true},"settings_summary":["Embedded Video (Responsive)."]}</p>

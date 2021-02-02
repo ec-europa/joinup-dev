@@ -53,15 +53,24 @@ function joinup_workflow_entity_create(EntityInterface $entity) {
   // depending on the initial state that is passed into the entity.
   // @see: \Drupal\state_machine\Plugin\Field\FieldType\StateItem::preSave
   if ($entity instanceof EntityPublishedInterface && $entity instanceof EntityWorkflowStateInterface) {
-    /** @var \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper */
-    $workflow_helper = \Drupal::service('joinup_workflow.workflow_helper');
-    $workflow = $entity->getWorkflow();
-    $state_id = $entity->getWorkflowState();
-    if ($workflow && $workflow_helper->isWorkflowStatePublished($state_id, $workflow)) {
-      $entity->setPublished();
+    try {
+      /** @var \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper */
+      $workflow_helper = \Drupal::service('joinup_workflow.workflow_helper');
+      $workflow = $entity->getWorkflow();
+      $state_id = $entity->getWorkflowState();
+      if ($workflow && $workflow_helper->isWorkflowStatePublished($state_id, $workflow)) {
+        $entity->setPublished();
+      }
+      else {
+        $entity->setUnpublished();
+      }
     }
-    else {
-      $entity->setUnpublished();
+    catch (\UnexpectedValueException $exception) {
+      // In some circumstances, such as in field_config entity form, an
+      // arbitrary entity is created, used by the 'default value' widget, so an
+      // ID is not available, leading to an exception.
+      // @see \Drupal\field_ui\Form\FieldConfigEditForm::form()
+      // @see _field_create_entity_from_ids()
     }
   }
 }

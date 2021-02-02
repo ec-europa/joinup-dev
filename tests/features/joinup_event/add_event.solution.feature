@@ -34,6 +34,7 @@ Feature: "Add event" visibility options.
     And I go to the homepage of the "Ragged Tower" solution
     Then I should see the link "Add event"
 
+  @terms
   Scenario: Add event as a facilitator.
     Given the following collection:
       | title  | Collective The Luscious Bridges |
@@ -73,9 +74,13 @@ Feature: "Add event" visibility options.
     And I fill the end date of the Date widget with "2018-08-29"
     And I clear the end time of the "Date" widget
     And I press "Save as draft"
-    Then I should see the error message "The date and time should both be entered in the End date field"
+    Then I should see the following error messages:
+      | error messages                                                 |
+      | The date and time should both be entered in the End date field |
+      | Policy domain field is required.                               |
 
     When I fill the end time of the Date widget with "23:59:00"
+    And I select "EU and European Policies" from "Policy domain"
     And I press "Save as draft"
     Then I should see the heading "An amazing event"
     And I should see the success message "Event An amazing event has been created."

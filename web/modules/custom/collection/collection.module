@@ -348,8 +348,7 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
  * Implements hook_ENTITY_TYPE_view_alter().
  */
 function collection_rdf_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
-  /** @var \Drupal\rdf_entity\RdfInterface $entity */
-  if ($entity->bundle() !== 'collection' || $display->getMode() !== 'default') {
+  if (!$entity instanceof CollectionInterface || $display->getMode() !== 'default') {
     return;
   }
 
