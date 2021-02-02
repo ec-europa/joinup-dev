@@ -12,10 +12,5 @@ dependencies:
   - message_digest:message_digest
 
 config_devel:
-  - core.entity_form_mode.user.subscription_settings
-  - core.entity_view_mode.rdf_entity.digest_message_header
-  - field.field.user.user.field_user_frequency
-  - field.storage.user.field_user_frequency
-  - flag.flag.subscribe_discussions
-  - joinup_subscription.settings
-  - message_digest.interval.monthly
+  install:
+    - joinup_subscription.settings

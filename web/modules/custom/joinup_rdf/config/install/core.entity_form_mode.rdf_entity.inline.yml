@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies:
-  module:
-    - rdf_entity
-id: rdf_entity.inline
-label: Inline
-targetEntityType: rdf_entity
-cache: true

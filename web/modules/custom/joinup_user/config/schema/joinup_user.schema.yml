@@ -13,3 +13,7 @@ joinup_user.mail:
 views.filter.user_tristate_status:
   type: views.filter.in_operator
   label: 'User tristate status'
+
+views.field.joinup_user_bulk_form:
+  type: views.field.user_bulk_form
+  label: 'Joinup user operations bulk form'

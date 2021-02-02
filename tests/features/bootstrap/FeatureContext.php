@@ -890,6 +890,27 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Asserts that a vertical tab has a given summary.
+   *
+   * @param string $tab
+   *   The tab title.
+   * @param string $summary
+   *   The expected tab summary.
+   *
+   * @throws \Exception
+   *   When the tab is not found on the page or it's not active.
+   *
+   * @Then the :tab tab summary should be :summary
+   */
+  public function assertVerticalTabSummary(string $tab, string $summary): void {
+    $element = $this->findVerticalTab($tab);
+    if (!$actual_summary = $element->find('css', '.vertical-tabs__menu-item-summary')) {
+      throw new ElementNotFoundException($this->getSession()->getDriver(), 'span', 'css', '.vertical-tabs__menu-item-summary');
+    }
+    Assert::assertSame($summary, $actual_summary->getText());
+  }
+
+  /**
    * Creates testing terms for scenarios tagged with @terms tag.
    *
    * Limitation: It creates terms with maximum 2 level hierarchy.
