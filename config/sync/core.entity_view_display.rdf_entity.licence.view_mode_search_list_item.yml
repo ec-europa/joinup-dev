@@ -11,7 +11,7 @@ dependencies:
     - field.field.rdf_entity.licence.field_licence_type
     - rdf_entity.rdfentity.licence
   module:
-    - smart_trim
+    - text
     - user
 id: rdf_entity.licence.view_mode_search_list_item
 targetEntityType: rdf_entity

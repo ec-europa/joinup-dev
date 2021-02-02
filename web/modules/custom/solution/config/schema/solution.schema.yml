@@ -1,3 +1,7 @@
 action.configuration.change_collection:
   type: mapping
   label: 'Change collection action configuration'
+
+views.access.manage_solutions:
+  type: mapping
+  label: 'Manage solutions'
