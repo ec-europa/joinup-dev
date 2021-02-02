@@ -119,5 +119,4 @@ hidden:
   langcode: true
   language: true
   matomo: true
-  simplenews: true
   timezone: true

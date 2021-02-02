@@ -136,9 +136,6 @@ Feature: User profile
     And news content:
       | title                         | author        | collection       | state     | created         |
       | Discovered new flower species | Corwin Robert | Botanic E.D.E.N. | validated | 2018-11-15 9:01 |
-    And newsletter content:
-      | title        | author        | collection       | state     | created          |
-      | Latest seeds | Corwin Robert | Botanic E.D.E.N. | validated | 2018-07-11 10:00 |
     And video content:
       | title                 | author        | collection       | state     | created         |
       | Planting a tree howto | Corwin Robert | Botanic E.D.E.N. | validated | 2017-10-30 9:30 |
@@ -164,7 +161,6 @@ Feature: User profile
     # Tiles should be shown for the groups the user is member of or author of.
     Then I should see the following tiles in the correct order:
       | Discovered new flower species |
-      | Latest seeds                  |
       | Spring blossom party          |
       | Repopulating blue iris        |
       | Planting a tree howto         |
@@ -258,7 +254,6 @@ Feature: User profile
     And I click "My account"
     Then I should not see the link "Subscription settings"
     And I should not see the link "Persistent Logins"
-    And I should not see the link "Newsletters"
 
   @email
   Scenario: A user, changing its E-mail should receive a notification on his old

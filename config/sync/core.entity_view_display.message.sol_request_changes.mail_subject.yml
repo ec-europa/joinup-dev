@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.message.mail_subject
+    - field.field.message.sol_request_changes.field_message_bcc
     - message.template.sol_request_changes
 id: message.sol_request_changes.mail_subject
 targetEntityType: message

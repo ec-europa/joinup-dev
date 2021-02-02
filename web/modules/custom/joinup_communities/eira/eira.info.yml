@@ -6,7 +6,3 @@ package: 'Joinup communities'
 
 dependencies:
   - 'filter:filter'
-
-config_devel:
-  install:
-    - filter.format.eira_format

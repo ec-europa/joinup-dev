@@ -4,6 +4,7 @@ Feature: "Event page" editing.
   As an owner of the event
   I need to be able to edit it.
 
+  @terms
   Scenario: Add and remove map
     Given collections:
       | title  | logo     | banner     | state     |
@@ -15,6 +16,7 @@ Feature: "Event page" editing.
       | Title             | Best event                                               |
       | Description       | It will be the best event this year.                     |
       | Physical location | Tower Bridge, Tower Bridge Road, London, United Kingdom. |
+    And I select "EU and European Policies" from "Policy domain"
     And I press "Save as draft"
     Then I should see the heading "Best event"
     And I should see a map on the page
