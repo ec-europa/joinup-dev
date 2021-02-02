@@ -55,7 +55,7 @@ tips:
   anonymous_content:
     id: anonymous_content
     plugin: text
-    body: 'Find all the latest COVID-19 Challenge updates concerning events, documents, news, and discussions.'
+    body: 'Find all the latest Challenge updates concerning events, documents, news, and discussions.'
     weight: 6
     location: right
     attributes:
@@ -63,7 +63,7 @@ tips:
   authenticated_content:
     id: authenticated_content
     plugin: text
-    body: 'Find all the latest COVID-19 Challenge updates concerning events, documents, news, and discussions.'
+    body: 'Find all the latest Challenge updates concerning events, documents, news, and discussions.'
     weight: 7
     location: right
     attributes:
