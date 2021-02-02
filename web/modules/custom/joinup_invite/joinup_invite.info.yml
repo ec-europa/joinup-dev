@@ -9,6 +9,3 @@ dependencies:
   - joinup:joinup_subscription
   - og:og
   - rdf_entity:rdf_entity
-
-config_devel:
-  - field.storage.message.field_invitation

@@ -21,6 +21,6 @@ settings:
 visibility:
   eif_solutions_page:
     id: eif_solutions_page
-    eif_solutions: 1
+    eif_solutions: true
     negate: false
     context_mapping: {  }

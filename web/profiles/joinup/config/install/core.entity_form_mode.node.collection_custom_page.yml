@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies:
-  module:
-    - node
-id: node.collection_custom_page
-label: 'Collection custom page'
-targetEntityType: node
-cache: true
