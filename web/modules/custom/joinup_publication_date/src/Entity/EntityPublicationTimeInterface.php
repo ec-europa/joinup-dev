@@ -7,9 +7,9 @@ namespace Drupal\joinup_publication_date\Entity;
 use Drupal\Core\Entity\EntityPublishedInterface;
 
 /**
- * Interface for entities that have a publication date.
+ * Interface for entities that have a publication timestamp.
  */
-interface EntityPublicationDateInterface extends EntityPublishedInterface {
+interface EntityPublicationTimeInterface extends EntityPublishedInterface {
 
   /**
    * Returns the timestamp when the entity was first published.

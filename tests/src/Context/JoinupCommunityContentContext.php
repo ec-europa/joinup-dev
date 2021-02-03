@@ -15,7 +15,7 @@ use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
-use Drupal\joinup_publication_date\Entity\EntityPublicationDateInterface;
+use Drupal\joinup_publication_date\Entity\EntityPublicationTimeInterface;
 use Drupal\node\Entity\Node;
 use Drupal\rdf_taxonomy\Entity\RdfTerm;
 use PHPUnit\Framework\Assert;
@@ -100,7 +100,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
     // The Publication Date module sets a default value to the publication date
     // for nodes that have never been published.
     $node = $this->getNodeByTitle($title, $type);
-    if (!$node instanceof EntityPublicationDateInterface) {
+    if (!$node instanceof EntityPublicationTimeInterface) {
       throw new \InvalidArgumentException('Node does not have a publication date field.');
     }
     Assert::assertEmpty($node->getPublicationTime());
@@ -121,7 +121,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    */
   public function assertDifferentPublishedCreatedTime(string $title, string $type): void {
     $node = $this->getNodeByTitle($title, $type);
-    if (!$node instanceof EntityPublicationDateInterface) {
+    if (!$node instanceof EntityPublicationTimeInterface) {
       throw new \InvalidArgumentException('Node does not have a publication date field.');
     }
     Assert::assertNotEmpty($node->getPublicationTime());
@@ -143,7 +143,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    */
   public function assertSamePublishedCreatedTime(string $title, string $type): void {
     $node = $this->getNodeByTitle($title, $type);
-    if (!$node instanceof EntityPublicationDateInterface) {
+    if (!$node instanceof EntityPublicationTimeInterface) {
       throw new \InvalidArgumentException('Node does not have a publication date field.');
     }
     Assert::assertNotEmpty($node->getPublicationTime());
@@ -176,7 +176,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
     $published = $published === 'published';
 
     $node = $this->getNodeByTitle($title, $type);
-    if (!$node instanceof EntityPublicationDateInterface) {
+    if (!$node instanceof EntityPublicationTimeInterface) {
       throw new \InvalidArgumentException('Node does not have a publication date field.');
     }
     $node_revisions = $this->getNodeRevisionIdsList($title, $type, $published);
@@ -191,7 +191,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
       throw new \Exception("There was no revision found with the given criteria.");
     }
     $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
-    if (!$revision instanceof EntityPublicationDateInterface) {
+    if (!$revision instanceof EntityPublicationTimeInterface) {
       throw new \InvalidArgumentException('Node revision does not have a publication date field.');
     }
     Assert::assertEquals($node->getPublicationTime(), $revision->getPublicationTime());

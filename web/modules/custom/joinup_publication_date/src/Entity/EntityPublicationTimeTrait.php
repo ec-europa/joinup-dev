@@ -9,9 +9,9 @@ namespace Drupal\joinup_publication_date\Entity;
  *
  * This will return the value set by the Publication Date module if available.
  *
- * @see \Drupal\joinup_publication_date\Entity\EntityPublicationDateInterface
+ * @see \Drupal\joinup_publication_date\Entity\EntityPublicationTimeInterface
  */
-trait EntityPublicationDateTrait {
+trait EntityPublicationTimeTrait {
 
   /**
    * {@inheritdoc}

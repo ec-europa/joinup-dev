@@ -15,10 +15,10 @@ use Drupal\Core\Entity\EntityPublishedInterface;
  * If in the future the actual publication date will be stored this trait can be
  * trivially swapped out with the 'real' EntityPublicationDateTrait.
  *
- * @see \Drupal\joinup_publication_date\Entity\EntityPublicationDateInterface
- * @see \Drupal\joinup_publication_date\Entity\EntityPublicationDateTrait
+ * @see \Drupal\joinup_publication_date\Entity\EntityPublicationTimeInterface
+ * @see \Drupal\joinup_publication_date\Entity\EntityPublicationTimeTrait
  */
-trait EntityPublicationDateFallbackTrait {
+trait EntityPublicationTimeFallbackTrait {
 
   /**
    * {@inheritdoc}
