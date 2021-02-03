@@ -21,7 +21,7 @@ class Document extends CommunityContentBase implements DocumentInterface {
    * @return int|null
    *   The publication date of the document, or NULL if none is set.
    */
-  public function getPublicationDate(): ?int {
+  public function getPublicationTime(): ?int {
     $publication_date_item_list = $this->get('field_document_publication_date');
     if (!$publication_date_item_list->isEmpty() && $value = $publication_date_item_list->first()->value) {
       return strtotime($value);

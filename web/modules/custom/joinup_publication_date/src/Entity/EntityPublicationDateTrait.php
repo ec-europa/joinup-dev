@@ -16,7 +16,7 @@ trait EntityPublicationDateTrait {
   /**
    * {@inheritdoc}
    */
-  public function getPublicationDate(): ?int {
+  public function getPublicationTime(): ?int {
     // Check if we have a publication date set by the Publication Date module.
     if (!$this->hasField('published_at') || $this->getFieldDefinition('published_at')->getProvider() !== 'publication_date') {
       return NULL;

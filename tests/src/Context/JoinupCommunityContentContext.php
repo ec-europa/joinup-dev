@@ -103,7 +103,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
     if (!$node instanceof EntityPublicationDateInterface) {
       throw new \InvalidArgumentException('Node does not have a publication date field.');
     }
-    Assert::assertEmpty($node->getPublicationDate());
+    Assert::assertEmpty($node->getPublicationTime());
   }
 
   /**
@@ -124,8 +124,8 @@ class JoinupCommunityContentContext extends RawDrupalContext {
     if (!$node instanceof EntityPublicationDateInterface) {
       throw new \InvalidArgumentException('Node does not have a publication date field.');
     }
-    Assert::assertNotEmpty($node->getPublicationDate());
-    Assert::assertNotEquals($node->created->value, $node->getPublicationDate());
+    Assert::assertNotEmpty($node->getPublicationTime());
+    Assert::assertNotEquals($node->created->value, $node->getPublicationTime());
   }
 
   /**
@@ -146,8 +146,8 @@ class JoinupCommunityContentContext extends RawDrupalContext {
     if (!$node instanceof EntityPublicationDateInterface) {
       throw new \InvalidArgumentException('Node does not have a publication date field.');
     }
-    Assert::assertNotEmpty($node->getPublicationDate());
-    Assert::assertEquals($node->created->value, $node->getPublicationDate());
+    Assert::assertNotEmpty($node->getPublicationTime());
+    Assert::assertEquals($node->created->value, $node->getPublicationTime());
   }
 
   /**
@@ -194,7 +194,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
     if (!$revision instanceof EntityPublicationDateInterface) {
       throw new \InvalidArgumentException('Node revision does not have a publication date field.');
     }
-    Assert::assertEquals($node->getPublicationDate(), $revision->getPublicationDate());
+    Assert::assertEquals($node->getPublicationTime(), $revision->getPublicationTime());
   }
 
   /**
