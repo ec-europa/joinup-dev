@@ -5,8 +5,9 @@ dependencies:
   config:
     - field.storage.node.field_paragraphs_body
     - node.type.custom_page
-    - paragraphs.paragraphs_type.json_map
     - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.content_listing
+    - paragraphs.paragraphs_type.json_map
     - paragraphs.paragraphs_type.simple_paragraph
   module:
     - entity_reference_revisions
@@ -28,6 +29,7 @@ settings:
       simple_paragraph: simple_paragraph
       json_map: json_map
       accordion: accordion
+      content_listing: content_listing
     target_bundles_drag_drop:
       accordion:
         enabled: true
@@ -35,6 +37,9 @@ settings:
       accordion_item:
         weight: 7
         enabled: false
+      content_listing:
+        enabled: true
+        weight: 8
       json_map:
         enabled: true
         weight: 4
