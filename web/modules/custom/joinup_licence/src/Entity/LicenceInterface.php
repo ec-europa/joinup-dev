@@ -4,12 +4,13 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_licence\Entity;
 
+use Drupal\joinup_publication_date\Entity\EntityPublicationTimeInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Interface for licence entities in Joinup.
  */
-interface LicenceInterface extends RdfInterface {
+interface LicenceInterface extends RdfInterface, EntityPublicationTimeInterface {
 
   /**
    * Returns the legal types to which this licence conforms.

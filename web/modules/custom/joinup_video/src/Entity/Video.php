@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_video\Entity;
 
 use Drupal\collection\Entity\NodeCollectionContentTrait;
+use Drupal\joinup_publication_date\Entity\EntityPublicationTimeTrait;
 use Drupal\node\Entity\Node;
 
 /**
@@ -12,6 +13,7 @@ use Drupal\node\Entity\Node;
  */
 class Video extends Node implements VideoInterface {
 
+  use EntityPublicationTimeTrait;
   use NodeCollectionContentTrait;
 
 }
