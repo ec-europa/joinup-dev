@@ -52,7 +52,7 @@ class CasEventSubscriber implements EventSubscriberInterface {
    */
   public function userPreRegister(CasPreRegisterEvent $event) {
     // Prevent the creation of the user account.
-    $event->stopPropagation();
+    $event->setAllowAutomaticRegistration(FALSE);
 
     // Redirect the user to the Community site login process.
     $url = $this->configFactory->get('easme_helper.settings')->get('urls.community_site') . '/ecas';
