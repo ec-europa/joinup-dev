@@ -23,7 +23,7 @@ trait EntityPublicationDateFallbackTrait {
   /**
    * {@inheritdoc}
    */
-  public function getPublicationDate(): ?int {
+  public function getPublicationTime(): ?int {
     // We don't know the actual initial publication date. If the entity is
     // currently unpublished, pretend it has never been published.
     if ($this instanceof EntityPublishedInterface && !$this->isPublished()) {

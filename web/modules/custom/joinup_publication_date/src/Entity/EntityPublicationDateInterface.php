@@ -18,6 +18,6 @@ interface EntityPublicationDateInterface extends EntityPublishedInterface {
    *   Publication timestamp of the entity, or NULL if the entity has never been
    *   published.
    */
-  public function getPublicationDate(): ?int;
+  public function getPublicationTime(): ?int;
 
 }
