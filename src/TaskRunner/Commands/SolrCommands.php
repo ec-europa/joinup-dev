@@ -182,7 +182,7 @@ class SolrCommands extends AbstractCommands {
     $coreUrl = $config->get("${envCorePrefix}_URL");
     $coreName = $config->get("${envCorePrefix}_NAME");
     $command = static::COMMAND_MAP[$operation][$checkStatus];
-    return "{$coreUrl}/{$coreName}/replication?command={$command}&name={$core}&location={$config->get('toolkit.tmp_folder')}/solr&wt=json&json.nl=map";
+    return "{$coreUrl}/{$coreName}/replication?command={$command}&name={$core}&location={$config->get('solr.snapshot_dir')}&wt=json&json.nl=map";
   }
 
   /**
