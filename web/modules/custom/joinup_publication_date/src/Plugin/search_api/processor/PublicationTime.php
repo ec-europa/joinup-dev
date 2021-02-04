@@ -31,7 +31,7 @@ class PublicationTime extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(DatasourceInterface $datasource = NULL) {
+  public function getPropertyDefinitions(?DatasourceInterface $datasource = NULL): array {
     $properties = [];
 
     if (!$datasource) {
@@ -50,7 +50,7 @@ class PublicationTime extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function addFieldValues(ItemInterface $item) {
+  public function addFieldValues(ItemInterface $item): void {
     $entity = $item->getOriginalObject();
     if ($entity instanceof EntityPublicationTimeInterface) {
       $publication_time = $entity->getPublicationTime();
