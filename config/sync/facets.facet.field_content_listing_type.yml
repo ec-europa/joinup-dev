@@ -1,15 +1,15 @@
-uuid: 0737f57c-58ba-4413-956c-dd2bd61ac47c
+uuid: 260d6dc2-4ac4-4797-87b2-d1be773519ed
 langcode: en
 status: true
 dependencies: {  }
-id: field_cp_content_listing_content_type
+id: field_content_listing_type
 name: 'Content type'
-url_alias: field_cp_content_listing_content_type
+url_alias: field_content_listing_type
 weight: 0
 min_count: 1
 show_only_one_result: true
 field_identifier: entity_bundle
-facet_source_id: 'search_api_field:node.field_cp_content_listing'
+facet_source_id: 'search_api_field:paragraph.field_content_listing'
 widget:
   type: type
   config:
@@ -27,38 +27,38 @@ processor_configs:
   active_widget_order:
     processor_id: active_widget_order
     weights:
-      sort: -2
+      sort: 20
     settings:
-      sort: ASC
+      sort: DESC
   aggregated_entity_reference_label:
     processor_id: aggregated_entity_reference_label
     weights:
-      build: 0
+      build: 5
     settings: {  }
   count_limit:
     processor_id: count_limit
     weights:
-      build: -2
+      build: 50
     settings:
       minimum_items: 1
       maximum_items: null
   count_widget_order:
     processor_id: count_widget_order
     weights:
-      sort: -1
+      sort: 30
     settings:
       sort: DESC
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
-      sort: 0
+      sort: 40
     settings:
       sort: ASC
   url_processor_handler:
     processor_id: url_processor_handler
     weights:
-      pre_query: -10
-      build: -1
+      pre_query: 50
+      build: 15
     settings: {  }
 empty_behavior:
   behavior: none
