@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_publication_date\Plugin\search_api\processor;
 
+use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeInterface;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
@@ -51,14 +52,17 @@ class PublicationTime extends ProcessorPluginBase {
    * {@inheritdoc}
    */
   public function addFieldValues(ItemInterface $item): void {
-    $entity = $item->getOriginalObject();
-    if ($entity instanceof EntityPublicationTimeInterface) {
-      $publication_time = $entity->getPublicationTime();
-      if ($publication_time) {
-        $index_fields = $this->index->getFields();
-        $fields = $this->getFieldsHelper()->filterForPropertyPath($index_fields, NULL, 'publication_time');
-        foreach ($fields as $field) {
-          $field->addValue($publication_time);
+    $object = $item->getOriginalObject();
+    if ($object instanceof EntityAdapter) {
+      $entity = $object->getEntity();
+      if ($entity instanceof EntityPublicationTimeInterface) {
+        $publication_time = $entity->getPublicationTime();
+        if ($publication_time) {
+          $index_fields = $this->index->getFields();
+          $fields = $this->getFieldsHelper()->filterForPropertyPath($index_fields, NULL, 'publication_time');
+          foreach ($fields as $field) {
+            $field->addValue($publication_time);
+          }
         }
       }
     }
