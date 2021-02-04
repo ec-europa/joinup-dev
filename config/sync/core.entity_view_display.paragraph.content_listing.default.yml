@@ -19,4 +19,5 @@ content:
     third_party_settings: {  }
     type: search_api_field
     region: content
-hidden: {  }
+hidden:
+  paragraph_field_content_listing_top: true
