@@ -8,6 +8,3 @@ dependencies:
   - drupal:views
   - joinup:joinup_search
   - smart_trim:smart_trim
-
-config_devel:
-  - views.view.group_feed

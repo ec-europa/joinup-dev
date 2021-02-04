@@ -1,0 +1,92 @@
+# Copy this file in the project root directory, as docker-compose.override.yml,
+# in order to override configurations provided in docker-compose.yml.
+
+version: '3.8'
+services:
+
+  web:
+# macOS users should override this value by uncommenting the following
+# 'volumes:' block.
+#    volumes:
+#      - ${PWD}:/var/www/html:delegated
+
+# In order to expose this service to the host machine, uncomment the following
+# 'ports:' block. If the host machine is already running a webserver instance on
+# port 80, use a different value, such as '8080:8080'.
+#    ports:
+#      - '80:8080'
+
+# Create an .env.local file, in the project root directory, and uncomment the
+# 'env_file:' block in order override values provided in .env.dist file.
+#    env_file:
+#      - .env.dist
+#      - .env.local
+
+
+  mysql:
+# macOS users should override this value by uncommenting the following
+# 'volumes:' block.
+#    volumes:
+#      - ./resources/docker/mysql/config:/etc/mysql/conf.d:cached
+#      - ./db/mysql/dump/mysql.sql:/db/mysql/dump/mysql.sql:delegated
+#      - ./scripts/docker/mysql:/docker-entrypoint-initdb.d:cached
+
+# In order to expose this service to the host machine, uncomment the following
+# 'ports:' block. If the host machine is already running a MySQL instance on
+# port 3306, use a different value, such as '3307:3306'.
+#    ports:
+#      - '3306:3306'
+
+
+  virtuoso:
+# macOS users should override this value by uncommenting the following
+# 'volumes:' block.
+#    volumes:
+#      - ./db/virtuoso/snapshot:/data/backups:delegated
+
+
+# In order to expose this service to the host machine, uncomment the following
+# 'ports:' block. If the host machine is already running a Virtuoso instance on
+# port 8890, use a different value, such as '8891:8890'.
+#    ports:
+#      - '8890:8890'
+
+
+  solr:
+# macOS users should override this value by uncommenting the following
+# 'volumes:' block.
+#    volumes:
+#      - ./db/solr:/solr/snapshot:delegated
+#      - ./web/modules/contrib/search_api_solr/solr-conf/6.x:/solr/conf:cached
+#      - ./scripts/solr/restore_solr.sh:/opt/solr/bin/restore_solr.sh:cached
+
+# In order to expose this service to the host machine, uncomment the following
+# 'ports:' block. If the host machine is already running a Solr instance on port
+# 8983, use a different value, such as '8984:8983'.
+#    ports:
+#      - '8983:8983'
+
+
+  redis:
+# In order to expose this service to the host machine, uncomment the following
+# 'ports:' block. If the host machine is already running a Redis instance on
+# port 6379, use a different value, such as '6380:6379'.
+#    ports:
+#      - '6379:6379'
+
+
+  mail:
+# In order to expose this service to the host machine, uncomment the following
+# 'ports:' block. If the host machine is already running a MailHog instance on
+# ports 1025 and 8025, use different values, e.g. '1026:1025' and '8026:8025'.
+#    ports:
+#      - '1025:1025'
+#      - '8025:8025'
+
+  selenium:
+# In order to expose this service to the host machine, uncomment the following
+# 'ports:' block. If the host machine is already running a VNC Server instance
+# on port 5900, use a different value, such as '5901:5900'. Note that the VNC
+# server will be accessible at localhost:5900 with no password.
+#    ports:
+#      - '5900:5900'
