@@ -14,6 +14,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\paragraphs\Entity\Paragraph;
+
 /**
  * Set community content missing policy domain.
  */
@@ -115,4 +117,49 @@ Query;
   $sandbox['#finished'] = (int) empty($sandbox['nodes']);
 
   return "Updated {$sandbox['progress']} out of {$sandbox['count']}";
+}
+
+/**
+ * Moves the data about the content listing of custom pages to paragraphs.
+ */
+function joinup_core_deploy_0106801(array &$sandbox): string {
+  if (empty($sandbox['entity_ids'])) {
+    $sandbox['entity_ids'] = \Drupal::entityQuery('node')->condition('type', 'custom_page')->execute();
+    $sandbox['progress'] = 0;
+    $sandbox['count'] = count($sandbox['entity_ids']);
+    $sandbox['updated'] = 0;
+  }
+
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $entity_ids = array_splice($sandbox['entity_ids'], 0, 50);
+
+  foreach ($node_storage->loadMultiple($entity_ids) as $custom_page) {
+    if ($custom_page->get('field_cp_content_listing')->isEmpty()) {
+      continue;
+    }
+    $cp_value = $custom_page->get('field_cp_content_listing')->value;
+    // Skip if there is the field is not enabled and there are no query presets,
+    // meaning that the field is not simply disabled.
+    if ($cp_value['enabled'] === 0 && empty($cp_value['query_presets'])) {
+      continue;
+    }
+
+    $paragraph = Paragraph::create(['type' => 'content_listing']);
+    $paragraph->set('field_content_listing', $cp_value)->save();
+    $paragraphs_body = $custom_page->get('field_paragraphs_body');
+    $value = $paragraphs_body->getValue();
+    $value[] = [
+      'target_id' => $paragraph->id(),
+      'target_revision_id' => $paragraph->getRevisionId(),
+    ];
+    $paragraphs_body->setValue($value);
+    $custom_page->set('field_cp_content_listing', NULL);
+    $custom_page->save();
+    $sandbox['updated']++;
+  }
+
+  $sandbox['progress'] += count($entity_ids);
+  $sandbox['#finished'] = (int) empty($sandbox['entity_ids']);
+
+  return "Updated {$sandbox['progress']} out of {$sandbox['count']} [{$sandbox['updated']} were updated]";
 }
