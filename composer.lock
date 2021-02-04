@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0edfdc167f72c49cfc6fc93f1d98e28f",
+    "content-hash": "5e0ee507f610a3034cbf51266cdf5877",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5146,13 +5146,13 @@
                 "shasum": "7658d7286fdc075ea72a6ec36aea737b1182b5d8"
             },
             "require": {
-                "drupal/core": "^8.7.7 || ^9",
+                "drupal/core": "^8 || ^9",
                 "drupal/token": "^1.0"
             },
             "require-dev": {
                 "drupal/metatag_dc": "*",
                 "drupal/metatag_open_graph": "*",
-                "drupal/page_manager": "*",
+                "drupal/page_manager": "4.x-dev",
                 "drupal/panelizer": "4.x-dev",
                 "drupal/redirect": "1.x-dev"
             },
@@ -5971,6 +5971,7 @@
                 "patches_applied": {
                     "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "resources/patch/search-api-2824640-103-3136277-18-8.x-1.13.patch",
                     "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
+                    "Config schema missing for date filter @see https://www.drupal.org/node/3084839": "https://www.drupal.org/files/issues/2019-10-01/search_api-date_filter_config_schema-3084839-2.patch",
                     "Add a static method that knows to index a given entity @see https://www.drupal.org/project/search_api/issues/3106342": "https://www.drupal.org/files/issues/2020-01-14/3106342-6.patch",
                     "Bulk Form field for SAPI @see https://www.drupal.org/project/search_api/issues/3117171": "https://www.drupal.org/files/issues/2020-04-01/3117171-13.patch",
                     "Some bulk form field options are missing schema @see https://www.drupal.org/project/search_api/issues/3195199": "https://git.drupalcode.org/project/search_api/-/merge_requests/6.diff"
@@ -10042,7 +10043,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-10-26T14:41:29+00:00"
+            "time": "2020-08-03T19:59:39+00:00"
         },
         {
             "name": "stack/builder",
