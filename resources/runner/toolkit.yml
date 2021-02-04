@@ -4,7 +4,8 @@ toolkit:
   project_id: joinup
   tmp_folder: ${joinup.dir}/tmp
   clone:
-    dumpfile: ${toolkit.tmp_folder}/mysql.sql
+    dumpfile: ${mysql.dump_dir}/mysql.sql
+
   build:
     dist:
       commands:

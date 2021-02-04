@@ -43,7 +43,7 @@ trait TaskRunnerTrait {
    *
    * @param string|null $subDir
    *   (optional) A subdirectory relative to the project root. If omitted, the
-   *   project root directory is returnrd.
+   *   project root directory is returned.
    *
    * @return string
    *   A path to a project's directory or file.

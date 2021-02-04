@@ -1,77 +1,139 @@
-version: '3.4'
+# Any value can be overridden in docker-compose.override.yml, a file that is not
+# under VCS control. See docker-compose.override.yml.dist for more details.
+
+# CLEAN vs. CLONE install
+# Docker compose knows to fire up the containers with databases having data
+# imported from the production dumps/snapshots. Read the documentation for the
+# DOCKER_RESTORE_PRODUCTION environment variable from .env.dist.
+
+# Accessing services from the host machine
+# See docker-compose.override.yml.dist on each service, for more details on how
+# to access services from the host machine and how to avoid port collision with
+# potential host machine instances. The ports were not exposed by default, in
+# the main `docker-compose.yml` file, because they cannot be easily overridden.
+# See https://stackoverflow.com/questions/48851190/docker-compose-override-a-ports-property-instead-of-merging-it
+
+version: '3.8'
 services:
   web:
-    build:
-      context: ./resources/docker/web
-    ports:
-      - "8080:80"
+    image: fpfis/httpd-php-dev:7.1
+    working_dir: /var/www/html
+    # macOS users should override 'volumes:' in docker-compose.override.yml.
+    # See docker-compose.override.yml.dist.
     volumes:
-      - .:/var/www/html
-      - ./build.docker.main.xml:/var/www/html/build.xml
+      - ${PWD}:/var/www/html
     env_file:
       - .env.dist
     environment:
       DOCUMENT_ROOT: "/var/www/html/web"
-      PHP_XDEBUG_ENABLED: "1"
-      PHP_IDE_CONFIG: "serverName=Docker"
-      PHP_SENDMAIL_PATH: "/usr/sbin/sendmail -t -i -S mail:1025"
+      SMTP_SERVER: mail
+      SMTP_PORT: 1025
+      SMTP_FROM: contact@example.com
+      DRUPAL_PRIVATE_FILE_SYSTEM: /var/www/html/private
+      DRUPAL_FILE_TEMP_PATH: /var/www/html/tmp
+      # Environment variables without a value will receive the values from the
+      # host machine, if they are set. Sensitive information such as
+      # user credentials should be placed in .env file.
+      # See https://docs.docker.com/compose/environment-variables/#pass-environment-variables-to-containers
+      DRUPAL_HASH_SALT:
+      ASDA_URL:
+      ASDA_USER:
+      ASDA_PASSWORD:
+    depends_on:
+      - mysql
+      - virtuoso
+      - solr
+      - redis
+      - mail
+      - selenium
 
   mysql:
-    image: mysql:5.6
+    image: mysql:5.7
+    # macOS users should override 'volumes:' in docker-compose.override.yml.
+    # See docker-compose.override.yml.dist.
+    volumes:
+      - ./resources/docker/mysql/config:/etc/mysql/conf.d
+      # MySQL dump.
+      - ./db/mysql/dump:/db/mysql/dump
+      # Contains a script to run when waking up.
+      - ./scripts/docker/mysql:/docker-entrypoint-initdb.d
+    env_file:
+      - .env.dist
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
-      MYSQL_USER: 'db_user'
-      MYSQL_PASSWORD: 'db_pass'
-      MYSQL_DATABASE: 'db_name'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: 'joinup'
+      DOCKER_RESTORE_PRODUCTION:
 
   virtuoso:
     image: tenforce/virtuoso
-    environment:
-      - SPARQL_UPDATE=true
-      - DBA_PASSWORD=dba
+    # macOS users should override 'volumes:' in docker-compose.override.yml.
+    # See docker-compose.override.yml.dist.
     volumes:
-      - "virtuoso:/data"
-    ports:
-      - "8890:8890"
+      - ./db/virtuoso/snapshot:/data/backups
+    environment:
+      SPARQL_UPDATE: 'true'
+      # Virtuoso .ini overrides. Pattern: VIRT_$SECTION_$KEY=$VALUE
+      # See https://hub.docker.com/r/tenforce/virtuoso
+      VIRT_Parameters_O_DIRECT: 1
+      VIRT_Parameters_ThreadCleanupInterval: 1
+      VIRT_Parameters_NumberOfBuffers: 340000
+      VIRT_Parameters_MaxDirtyBuffers: 250000
+      VIRT_Replication_ServerEnable: 0
+      VIRT_SPARQL_ResultSetMaxRows: 1000000
+      DOCKER_RESTORE_PRODUCTION:
+    command:
+      - bash
+      - '-c'
+      - 'if [ "$${DOCKER_RESTORE_PRODUCTION}" = "yes" ];
+         then
+           BACKUP_PREFIX="JOINUP_FULL_DUMP_" bash -ex /virtuoso.sh ;
+         else
+           bash -ex /virtuoso.sh;
+         fi'
+
+  solr:
+    image: solr:6
+    # macOS users should override 'volumes:' in docker-compose.override.yml.
+    # See docker-compose.override.yml.dist.
+    volumes:
+      - ./db/solr:/solr/snapshot
+      - ./web/modules/contrib/search_api_solr/solr-conf/6.x:/solr/conf
+      - ./scripts/solr/restore_solr.sh:/opt/solr/bin/restore_solr.sh
+    entrypoint:
+      - docker-entrypoint.sh
+      - bash
+      - '-c'
+      - 'mkdir -p /opt/docker-solr/drupal/conf ;
+         cp -r /solr/conf/* /opt/docker-solr/drupal/conf/ ;
+         sed -i "/solr.install.dir=/c\solr.install.dir=/opt/solr" /opt/docker-solr/drupal/conf/solrcore.properties ;
+         precreate-core drupal_published /opt/docker-solr/drupal ;
+         precreate-core drupal_unpublished /opt/docker-solr/drupal ;
+         ( test "$${DOCKER_RESTORE_PRODUCTION}" = "yes" &&
+           (
+             /opt/solr/bin/solr start ;
+             sleep 5 ;
+             /usr/bin/curl -sS "http://localhost:8983/solr/drupal_published/replication?command=restore&name=published&location=/solr/snapshot&wt=xml" ;
+             ( until [[ "`/usr/bin/curl -sS ''http://localhost:8983/solr/drupal_published/replication?command=restorestatus''`" =~ \>success\< ]] ; do sleep 1 ; done ) ;
+             /usr/bin/curl -sS "http://localhost:8983/solr/drupal_unpublished/replication?command=restore&name=unpublished&location=/solr/snapshot&wt=xml" ;
+             ( until [[ "`/usr/bin/curl -sS ''http://localhost:8983/solr/drupal_unpublished/replication?command=restorestatus''`" =~ \>success\< ]] ; do sleep 1 ; done ) ;
+             /opt/solr/bin/solr stop
+           )
+         ) ;
+         exec solr -f'
+    environment:
+      DOCKER_RESTORE_PRODUCTION:
+
+  redis:
+    image: redis
 
   mail:
     image: mailhog/mailhog
-    ports:
-      - "1025:1025"
-      - "8025:8025"
 
+  # Includes a Selenium server accessible at port 5900.
+  # See docker-compose.override.yml.dist
   selenium:
-    image: selenium/standalone-chrome-debug:3.11
-    ports:
-      - "5900:5900"
-    expose:
-      - "4440"
-    volumes:
-      # Needed due to chrome having issues with memory usage. Firefox does not face this issue.
-      # @see: https://github.com/elgalu/docker-selenium/issues/20
-      - "/dev/shm:/dev/shm"
-
-  solr_published:
-    build:
-      context: ./resources/docker/solr
-    ports:
-     - "8982:8983"
-    entrypoint:
-     - docker-entrypoint.sh
-     - solr-precreate
-     - drupal_published
-     - "/opt/docker-solr/configsets/drupal"
-
-  solr_unpublished:
-    build:
-      context: ./resources/docker/solr
-    ports:
-     - "8983:8983"
-    entrypoint:
-     - docker-entrypoint.sh
-     - solr-precreate
-     - drupal_unpublished
-     - "/opt/docker-solr/configsets/drupal"
-
-volumes:
-  virtuoso:
+    image: selenium/standalone-chrome-debug
+    environment:
+      - DISPLAY=:99
+      - SE_OPTS=-debug
+      - VNC_NO_PASSWORD=1
