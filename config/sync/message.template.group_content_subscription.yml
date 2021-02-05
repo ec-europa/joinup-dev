@@ -1,0 +1,19 @@
+uuid: e69517bf-7ec2-4a76-a4b4-00cb6ace1af8
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.full_html
+template: group_content_subscription
+label: 'Group content subscription'
+description: 'Digest message sent when new content is published in a user''s subscribed collections and solutions'
+text:
+  -
+    value: '<p>[message:field_group_content:entity]</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }

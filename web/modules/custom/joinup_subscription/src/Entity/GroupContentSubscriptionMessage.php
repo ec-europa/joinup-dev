@@ -21,7 +21,23 @@ class GroupContentSubscriptionMessage extends Message implements GroupContentSub
   /**
    * The name of the field that references the group content for this message.
    */
-  const GROUP_CONTENT_REFERENCE_FIELD = 'field_collection_content';
+  const GROUP_CONTENT_REFERENCE_FIELD = 'field_group_content';
+
+  /**
+   * The message template for this message.
+   */
+  const TEMPLATE = 'group_content_subscription';
+
+  /**
+   * {@inheritdoc}
+   *
+   * phpcs:disable Generic.CodeAnalysis.UselessOverridingMethod.Found
+   */
+  public static function create(array $values = []): GroupContentSubscriptionMessageInterface {
+    // Delegate to the parent method. This is only overridden to provide the
+    // correct return type.
+    return parent::create($values);
+  }
 
   /**
    * {@inheritdoc}
