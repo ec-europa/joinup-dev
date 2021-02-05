@@ -58,8 +58,8 @@ class PublicationTime extends ProcessorPluginBase {
       if ($entity instanceof EntityPublicationTimeInterface) {
         $publication_time = $entity->getPublicationTime();
         if ($publication_time) {
-          $index_fields = $this->index->getFields();
-          $fields = $this->getFieldsHelper()->filterForPropertyPath($index_fields, NULL, 'publication_time');
+          $item_fields = $item->getFields(FALSE);
+          $fields = $this->getFieldsHelper()->filterForPropertyPath($item_fields, NULL, 'publication_time');
           foreach ($fields as $field) {
             $field->addValue($publication_time);
           }
