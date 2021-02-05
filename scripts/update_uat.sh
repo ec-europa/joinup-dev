@@ -14,7 +14,7 @@ touch disable-config-readonly
 
 ./vendor/bin/run redis:flush-all
 ./vendor/bin/drush deploy
-./vendor/bin/drush pm:enable stage_file_proxy --yes
+./vendor/bin/drush pm:enable joinup_acceptance,stage_file_proxy --yes
 
 echo "Rebuilding node access records."
 ./vendor/bin/drush php:eval "if(node_access_needs_rebuild()) { node_access_rebuild(); }"
