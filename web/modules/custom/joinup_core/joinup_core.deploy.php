@@ -14,8 +14,6 @@
 
 declare(strict_types = 1);
 
-use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
-
 /**
  * Set community content missing policy domain.
  */
@@ -112,17 +110,8 @@ Query;
     }
     $query->execute();
   }
-
-  $nids = array_keys($nodes);
   // Invalidate updated nodes caches.
-  $storage->resetCache($nids);
-  // Reindex updated nodes.
-  foreach ($storage->loadMultiple($nids) as $node) {
-    /** @var \Drupal\joinup_community_content\Entity\CommunityContentInterface $node */
-    ContentEntity::indexEntity($node);
-  }
-  // Commit changes to index.
-  \Drupal::getContainer()->get('search_api.post_request_indexing')->destruct();
+  $storage->resetCache(array_keys($nodes));
 
   $sandbox['#finished'] = (int) empty($sandbox['nodes']);
 
