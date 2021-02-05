@@ -1,10 +1,10 @@
-uuid: d0b6c71d-f872-49b8-858d-77ebeeccf340
+uuid: 694783ee-9f36-41ed-8fd9-51696b1bcd94
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.message.field_collection_content
-    - message.template.collection_content_subscription
+    - field.storage.message.field_group_content
+    - message.template.group_content_subscription
     - node.type.discussion
     - node.type.document
     - node.type.event
@@ -12,11 +12,11 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - dynamic_entity_reference
-id: message.collection_content_subscription.field_collection_content
-field_name: field_collection_content
+id: message.group_content_subscription.field_group_content
+field_name: field_group_content
 entity_type: message
-bundle: collection_content_subscription
-label: 'Collection content'
+bundle: group_content_subscription
+label: 'Group content'
 description: ''
 required: true
 translatable: false

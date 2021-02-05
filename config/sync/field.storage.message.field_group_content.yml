@@ -1,4 +1,4 @@
-uuid: 801ac6ab-bd41-40e1-8958-b07c84634964
+uuid: 2a833cf7-8ed7-4fe7-bdd6-c30283c9692c
 langcode: en
 status: true
 dependencies:
@@ -7,8 +7,8 @@ dependencies:
     - message
     - node
     - rdf_entity
-id: message.field_collection_content
-field_name: field_collection_content
+id: message.field_group_content
+field_name: field_group_content
 entity_type: message
 type: dynamic_entity_reference
 settings:
