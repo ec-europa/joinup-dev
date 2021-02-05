@@ -345,10 +345,10 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: search_api_string
-        published_at:
-          id: published_at
+        entity_published:
+          id: entity_published
           table: search_api_index_published
-          field: published_at
+          field: entity_published
           relationship: none
           group_type: group
           admin_label: ''
@@ -361,14 +361,14 @@ display:
           group: 1
           exposed: true
           expose:
-            operator_id: published_at_op
+            operator_id: entity_published_op
             label: 'Published between'
             description: ''
             use_operator: false
-            operator: published_at_op
+            operator: entity_published_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: published_at
+            identifier: published
             required: false
             remember: false
             multiple: false
