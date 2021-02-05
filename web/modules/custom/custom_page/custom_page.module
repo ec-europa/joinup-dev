@@ -195,11 +195,11 @@ function custom_page_menu_local_actions_alter(&$local_actions) {
  *
  * Alters the Search API query in custom pages for the content listing field.
  */
-function custom_page_search_api_query_search_api_field_field_cp_content_listing_alter(QueryInterface &$query) {
-  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+function custom_page_search_api_query_search_api_field_field_content_listing_alter(QueryInterface &$query) {
+  /** @var \Drupal\paragraphs\Entity\Paragraph $entity */
   $entity = $query->getOption('search_api_field entity');
   /** @var \Drupal\Core\Entity\EntityInterface $group */
-  $group = $entity->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->first()->entity;
+  $group = $entity->getParentEntity()->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->first()->entity;
   if (!$group) {
     return;
   }
