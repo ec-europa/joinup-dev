@@ -26,14 +26,27 @@ Feature:
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
+    And the following fields should not be present "Add related content, Allow shared content"
+    # The button appears in a non-javascript environment. The dropdown needs to be pressed in a javascript
+    # enabled browser.
+    And I should see the button "Add Content listing"
+    # Fill in title so that CSS will not complain about empty field when pressing a button.
+    When I fill in "Title" with "Hello world"
+    And I press "Add Content listing"
     And the following fields should be present "Add related content, Allow shared content"
     And the following fields should not be present "Query presets, Limit"
-    And I should see the button "Add and configure filter"
 
     Given I am logged in as a moderator
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
+    And the following fields should not be present "Add related content, Allow shared content"
+    # The button appears in a non-javascript environment. The dropdown needs to be pressed in a javascript
+    # enabled browser.
+    And I should see the button "Add Content listing"
+    # Fill in title so that CSS will not complain about empty field when pressing a button.
+    When I fill in "Title" with "Hello world"
+    And I press "Add Content listing"
     And the following fields should be present "Add related content, Allow shared content, Query presets, Limit"
     And I should see the button "Add and configure filter"
 
@@ -45,7 +58,7 @@ Feature:
     When I fill in the following:
       | Title | Latest content                        |
       | Body  | Shows all content for this collection |
-    And I check "Add related content"
+    And I press "Add Content listing"
     Then I should see the text "Related content from the community will be displayed below the one that you are publishing."
     And I should see the text "Display content shared from other communities."
     And I should see the text "Note: the content shown is dynamic, filtered live each time users will visualise the page. As a result, new content might be shown and old content can be altered or deleted."
@@ -120,7 +133,11 @@ Feature:
     Then I should see the heading "Add custom page"
     When I fill in "Title" with "Chosen content"
     And I enter "Shows a specific set of tiles." in the "Body" wysiwyg editor
-    And I check "Add related content"
+
+    # The "List additional actions" is the button arrow that shows the full list of paragraphs to add.
+    Given I press "List additional actions"
+    And I press "Add Content listing"
+    And I wait for AJAX to finish
     And I press "Save"
     Then I should see the heading "Chosen content"
     And I should see the following tiles in the correct order:
