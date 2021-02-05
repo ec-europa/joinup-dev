@@ -82,10 +82,7 @@ class DeliverDigestMessagesForm extends FormBase {
     $this->expireDigestMessages();
     do {
       $this->expireMessageDigestNotifiers();
-      // Process message digests.
-      $this->getMessageDigestManager()->processDigests();
-      // Cleanup old messages.
-      $this->getMessageDigestManager()->cleanupOldMessages();
+      message_digest_cron();
       $this->processQueue();
     } while ($this->countAllUndeliveredDigestMessages());
   }
