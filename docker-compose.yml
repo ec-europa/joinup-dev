@@ -23,6 +23,9 @@ services:
       MYSQL_PASSWORD: 'db_pass'
       MYSQL_DATABASE: 'db_name'
 
+  redis:
+    image: redis:latest
+
   virtuoso:
     image: tenforce/virtuoso
     environment:
