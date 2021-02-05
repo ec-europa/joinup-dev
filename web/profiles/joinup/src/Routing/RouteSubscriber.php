@@ -31,7 +31,6 @@ class RouteSubscriber extends RouteSubscriberBase {
       'persistent_login.user_tokens_list',
       'rdf_entity.rdf_add',
       'rdf_entity.rdf_add_page',
-      'simplenews.newsletter_subscriptions_user',
       'view.frontpage.feed_1',
       'view.frontpage.page_1',
     ];

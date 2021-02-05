@@ -27,7 +27,7 @@ dependencies:
   module:
     - allowed_formats
     - file_url
-    - joinup_core
+    - joinup_workflow
     - text
 _core:
   default_config_hash: j3zJkO0YsCH3XnkqczuklgeC1AUuwfhBu7y5wSezqbQ

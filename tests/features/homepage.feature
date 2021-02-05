@@ -56,9 +56,6 @@ Feature: Homepage
       | Economic cooperation | validated        | Social classes |
       | Economic dynamics    | deletion request | Social classes |
       | Economic cycles      | needs update     | Social classes |
-    And newsletter content:
-      | title            |
-      | Labour relations |
 
     # Only statistics of publicly visible content should be counted.
     When I reload the page
@@ -111,7 +108,6 @@ Feature: Homepage
       | Economic cooperation          |
       | Economic dynamics             |
       | Economic cycles               |
-      | Labour relations              |
 
     # Check if the "Collections" link leads to the pre-filtered search results.
     # This shows collections in the "validated' state.
@@ -150,7 +146,6 @@ Feature: Homepage
       | Economic cooperation          |
       | Economic dynamics             |
       | Economic cycles               |
-      | Labour relations              |
 
     # Check if the "Content" link leads to the pre-filtered search results.
     # This shows community content in the states 'validated' and 'archived'.
@@ -184,7 +179,6 @@ Feature: Homepage
       | World economy         |
       | Economic dynamics     |
       | Economic cycles       |
-      | Labour relations      |
 
   Scenario: the small homepage header should be shown only to logged in users.
     When I am an anonymous user

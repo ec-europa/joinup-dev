@@ -236,7 +236,7 @@ function custom_page_node_access(NodeInterface $node, $op, AccountInterface $acc
     return AccessResult::neutral();
   }
 
-  // Let parentless nodes (e.g. newsletters) be handled by the core access.
+  // Let parentless nodes be handled by the core access.
   try {
     $parent = $node->getGroup();
   }

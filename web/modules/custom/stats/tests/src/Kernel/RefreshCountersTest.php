@@ -5,8 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_stats\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\joinup_test\Traits\ConfigTestTrait;
 use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\file\Entity\File;
 
 /**
@@ -16,6 +18,7 @@ use Drupal\file\Entity\File;
  */
 class RefreshCountersTest extends KernelTestBase {
 
+  use ConfigTestTrait;
   use SparqlConnectionTrait;
 
   /**
@@ -65,17 +68,24 @@ class RefreshCountersTest extends KernelTestBase {
     $this->installEntitySchema('node');
     $this->installEntitySchema('file');
     $this->installSchema('file', ['file_usage']);
+
     $this->installConfig([
       'cached_computed_field',
-      'joinup_stats',
       'joinup_stats_test',
-      'meta_entity',
       'sparql_entity_storage',
     ]);
+    FieldStorageConfig::create($this->getConfigData('field.storage.meta_entity.count'))->save();
+    $this->importConfigs([
+      'meta_entity.type.download_count',
+      'meta_entity.type.visit_count',
+    ]);
 
-    // Make fields to instantly require refresh for testing purposes.
-    FieldConfig::loadByName('meta_entity', 'download_count', 'count')->setSetting('cache-max-age', 0)->save();
-    FieldConfig::loadByName('meta_entity', 'visit_count', 'count')->setSetting('cache-max-age', 0)->save();
+    FieldConfig::create($this->getConfigData('field.field.meta_entity.download_count.count'))
+      ->setSetting('cache-max-age', 0)
+      ->save();
+    FieldConfig::create($this->getConfigData('field.field.meta_entity.visit_count.count'))
+      ->setSetting('cache-max-age', 0)
+      ->save();
 
     $this->createContent();
   }

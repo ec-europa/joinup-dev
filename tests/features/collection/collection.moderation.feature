@@ -216,6 +216,9 @@ Feature: Collection moderation
     Given I am logged in as a user with the "authenticated" role
     # Propose a collection, filling in the required fields.
     When I go to the propose collection form
+    Then the "Main fields" tab should be active
+    And the "Main fields" tab summary should be "Contains all the fields to be mandatorily filled to create a collection"
+    And the "Additional fields" tab summary should be "Contains all optional fields providing additional information on the collection"
     And I fill in the following:
       | Title  | Spectres in fog        |
       # Contact information data.
@@ -228,6 +231,7 @@ Feature: Collection moderation
     And I fill in "Name" with "Katsumoto"
     And I check the box "Academia/Scientific organisation"
     And I click the "Additional fields" tab
+    Then the "Additional fields" tab should be active
     And I attach the file "logo.png" to "Logo"
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"

@@ -24,14 +24,33 @@ joinup_community_content.permission_scheme:
             label: 'Transition id'
             type: joinup_community_content.workflow_role_settings
     update:
+      type: mapping
       label: 'Update permissions'
-      type: sequence
-      sequence:
-        label: 'Workflow id'
-        type: sequence
-        sequence:
-          label: 'Transition id'
-          type: joinup_community_content.workflow_ownership_settings
+      mapping:
+        node:pre_moderated:
+          type: sequence
+          sequence:
+            label: 'Workflow id'
+            type: sequence
+            sequence:
+              label: 'Transition id'
+              type: joinup_community_content.workflow_ownership_settings
+        node:post_moderated:
+          type: sequence
+          sequence:
+            label: 'Workflow id'
+            type: sequence
+            sequence:
+              label: 'Transition id'
+              type: joinup_community_content.workflow_ownership_settings
+        node:discussion:post_moderated:
+          type: sequence
+          sequence:
+            label: 'Workflow id'
+            type: sequence
+            sequence:
+              label: 'Transition id'
+              type: joinup_community_content.workflow_ownership_settings
     delete:
       label: 'Delete permissions'
       type: sequence

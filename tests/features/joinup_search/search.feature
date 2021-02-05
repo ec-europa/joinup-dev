@@ -154,12 +154,6 @@ Feature: Global search
     And discussion content:
       | title            | body                                                              | solution       | state     |
       | Discussion omega | <p>Does anybody has idea why this <em>epsilon</em> is everywhere? | Solution alpha | validated |
-    # Currently no UI path allows the creation of newsletters. Search for migrated D6 newsletters instead.
-    # Ignore all steps related to newsletters in this test in UAT.
-    # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2256
-    And newsletter content:
-      | title            | body                                  | status    |
-      | Newsletter omega | Talking about these epsilon contents. | published |
     And custom_page content:
       | title      | body                                     | collection       |
       | Page omega | This is just an epsilon but should work. | Collection alpha |
@@ -177,40 +171,31 @@ Feature: Global search
     # "Alpha" is used in all the rdf entities titles.
     When I enter "Alpha" in the search bar and press enter
     Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha, Video alpha"
-    And I should not see the text "Newsletter omega"
 
     # "Omega" is used in all the node entities titles. Since the content of
     # custom pages is added to their collection, we also match the collection.
     When I enter "omega" in the search bar and press enter
     Then the page should show the tiles "Collection alpha, News omega, Event Omega, Document omega, Discussion omega, Page omega"
-    # Orphaned entities are not indexed.
-    # And I should see the text "Newsletter omega"
 
     # "Beta" is used in all the rdf entities body fields.
     When I enter "beta" in the search bar and press enter
     Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha"
-    And I should not see the text "Newsletter omega"
 
     # "Epsilon" is used in all the node entities body fields.
     When I enter "epsilon" in the search bar and press enter
     Then the page should show the tiles "Collection alpha, News omega, Event Omega, Document omega, Discussion omega, Page omega"
-    # Orphaned entities are not indexed.
-    # And I should see the text "Newsletter omega"
 
     # "Alphabet" is used in all the keywords fields.
     When I enter "Alphabet" in the search bar and press enter
     Then the page should show the tiles "Solution alpha, Release Alpha, News omega, Event Omega, Document omega"
-    And I should not see the text "Newsletter omega"
 
     # "Gamma" is used in the collection abstract.
     When I enter "gamma" in the search bar and press enter
     Then the page should show the tiles "Collection alpha"
-    And I should not see the text "Newsletter omega"
 
     # "Delta" is used in headline and short titles.
     When I enter "delta" in the search bar and press enter
     Then the page should show the tiles "News omega, Event Omega, Document omega"
-    And I should not see the text "Newsletter omega"
 
     # Search for the event fields: agenda, location, address, organisation, scope.
     When I enter "agenda" in the search bar and press enter

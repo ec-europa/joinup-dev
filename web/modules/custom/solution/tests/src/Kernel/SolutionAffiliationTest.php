@@ -4,14 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\solution\Kernel;
 
-use Drupal\Core\Serialization\Yaml;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\joinup_test\Traits\ConfigTestTrait;
 use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
-use Drupal\field\Entity\FieldConfig;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 
 /**
  * Tests solution affiliation.
@@ -20,6 +17,7 @@ use Drupal\sparql_entity_storage\Entity\SparqlMapping;
  */
 class SolutionAffiliationTest extends KernelTestBase {
 
+  use ConfigTestTrait;
   use SparqlConnectionTrait;
 
   /**
@@ -27,7 +25,6 @@ class SolutionAffiliationTest extends KernelTestBase {
    */
   protected static $modules = [
     'field',
-    'joinup_rdf',
     'og',
     'rdf_schema_field_validation',
     'rdf_draft',
@@ -56,22 +53,25 @@ class SolutionAffiliationTest extends KernelTestBase {
     parent::setUp();
 
     RdfEntityType::create(['rid' => 'collection'])->save();
+    RdfEntityType::create(['rid' => 'solution'])->save();
 
     $this->installEntitySchema('user');
     $this->installEntitySchema('rdf_entity');
     $this->installConfig([
-      'joinup_rdf',
       'rdf_draft',
-      'solution',
       'sparql_entity_storage',
     ]);
 
-    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/sparql_entity_storage.mapping.rdf_entity.collection.yml'));
-    SparqlMapping::create($mapping)->save();
-    $field_storage = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.storage.rdf_entity.field_ar_affiliates.yml'));
-    FieldStorageConfig::create($field_storage)->save();
-    $field_config = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.field.rdf_entity.collection.field_ar_affiliates.yml'));
-    FieldConfig::create($field_config)->save();
+    $this->importConfigs([
+      'sparql_entity_storage.mapping.rdf_entity.collection',
+      'sparql_entity_storage.mapping.rdf_entity.solution',
+      'field.storage.rdf_entity.field_ar_affiliates',
+      'field.field.rdf_entity.collection.field_ar_affiliates',
+      'field.storage.rdf_entity.field_ar_state',
+      'field.field.rdf_entity.collection.field_ar_state',
+      'field.storage.rdf_entity.field_is_state',
+      'field.field.rdf_entity.solution.field_is_state',
+    ]);
   }
 
   /**
