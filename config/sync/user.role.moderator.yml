@@ -58,6 +58,7 @@ permissions:
   - 'delete paragraph content json_map'
   - 'delete paragraph content simple_paragraph'
   - 'delete site alerts'
+  - 'deliver digest messages'
   - 'edit any custom_page content'
   - 'edit any discussion content'
   - 'edit any glossary content'

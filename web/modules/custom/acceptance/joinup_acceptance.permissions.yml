@@ -1,0 +1,3 @@
+deliver digest messages:
+  title: 'Deliver digest messages'
+  restrict access: true
