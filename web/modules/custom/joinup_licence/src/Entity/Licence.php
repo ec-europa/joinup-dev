@@ -6,7 +6,6 @@ namespace Drupal\joinup_licence\Entity;
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
-use Drupal\joinup_publication_date\Entity\EntityPublicationTimeFallbackTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -14,7 +13,6 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class Licence extends Rdf implements LicenceInterface {
 
-  use EntityPublicationTimeFallbackTrait;
   use JoinupBundleClassFieldAccessTrait;
 
   /**
