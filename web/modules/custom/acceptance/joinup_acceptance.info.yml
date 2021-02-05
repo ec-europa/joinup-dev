@@ -1,0 +1,8 @@
+name: 'Joinup Acceptance'
+type: module
+description: 'Tools to be used in the acceptance environment.'
+core_version_requirement: ^8 || ^9
+package: Joinup
+dependencies:
+  - joinup:dashboard
+  - message_digest:message_digest
