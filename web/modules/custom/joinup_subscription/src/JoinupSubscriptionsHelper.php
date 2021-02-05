@@ -12,48 +12,20 @@ use Drupal\joinup_community_content\CommunityContentHelper;
 class JoinupSubscriptionsHelper {
 
   /**
-   * An array of bundles that can be subscribed to, keyed by entity type.
-   */
-  const COLLECTION_BUNDLES = [
-    'rdf_entity' => ['solution'],
-    'node' => CommunityContentHelper::BUNDLES,
-  ];
-
-  /**
-   * An array of bundles that can be subscribed to, keyed by entity type.
-   */
-  const SOLUTION_BUNDLES = [
-    'node' => CommunityContentHelper::BUNDLES,
-  ];
-
-  /**
-   * Returns the default value for the collection membership subscriptions.
+   * An array of group content bundles that can be subscribed to.
    *
-   * @return array
-   *   A list of entries, each of which contains an entity type and a bundle
-   *   value.
+   * Users subscribing to collections or solutions can opt to receive updates
+   * about all community content, and collection subscribers can also get
+   * information about new solutions that are published in the collection.
    */
-  public static function getCollectionBundlesDefaultValue(): array {
-    $bundles_value = [];
-    foreach (JoinupSubscriptionsHelper::COLLECTION_BUNDLES as $entity_type => $bundles) {
-      foreach ($bundles as $bundle) {
-        $bundles_value[] = ['entity_type' => $entity_type, 'bundle' => $bundle];
-      }
-    }
-    return $bundles_value;
-  }
-
-  /**
-   * Returns the default value for the solution membership subscriptions.
-   *
-   * @return array
-   *   A list of entries, each of which contains an entity type and a bundle
-   *   value.
-   */
-  public static function getSolutionBundlesDefaultValue(): array {
-    return array_map(function (string $bundle): array {
-      return ['entity_type' => 'node', 'bundle' => $bundle];
-    }, JoinupSubscriptionsHelper::SOLUTION_BUNDLES['node']);
-  }
+  const SUBSCRIPTION_BUNDLES = [
+    'collection' => [
+      'rdf_entity' => ['solution'],
+      'node' => CommunityContentHelper::BUNDLES,
+    ],
+    'solution' => [
+      'node' => CommunityContentHelper::BUNDLES,
+    ],
+  ];
 
 }

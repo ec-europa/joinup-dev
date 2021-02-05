@@ -1,8 +1,8 @@
 @api @group-b
-Feature: Subscribing to a collection after joining
-  In order to promote my collection
-  As a collection owner
-  I want to persuade new members to subscribe to my collection
+Feature: Subscribing to a solution
+  In order to promote my solution
+  As a solution owner
+  I want to persuade new members to subscribe to my solution
 
   Background:
     Given collection:
@@ -20,13 +20,13 @@ Feature: Subscribing to a collection after joining
       | Cornilius Darcias |
 
   @javascript
-  Scenario: Show a modal dialog asking a user to subscribe after joining
+  Scenario: Subscribe to a solution as a normal user
     When I am logged in as "Cornilius Darcias"
     And I go to the "Some solution to subscribe" solution
     Then I should see the button "Subscribe to this solution"
 
     When I press "Subscribe to this solution"
-    Then I should see the success message "You have subscribed to this solution and will receive notifications for it. You can manage your subscriptions at My subscriptions"
+    Then I should see the success message "You have subscribed to this solution and will receive notifications for it. To manage your subscriptions go to My subscriptions in your user menu."
 
     When I open the account menu
     And I click "My subscriptions"

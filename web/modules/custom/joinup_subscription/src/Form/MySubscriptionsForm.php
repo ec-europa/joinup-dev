@@ -15,9 +15,9 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
-use Drupal\joinup_core\Plugin\Field\FieldType\EntityBundlePairItem;
 use Drupal\joinup_group\JoinupGroupManagerInterface;
 use Drupal\joinup_subscription\JoinupSubscriptionsHelper;
+use Drupal\joinup_subscription\Plugin\Field\FieldType\EntityBundlePairItem;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -54,13 +54,6 @@ class MySubscriptionsForm extends FormBase {
    * @var \Drupal\og\MembershipManagerInterface
    */
   protected $membershipManager;
-
-  /**
-   * The bundle of the groups to present.
-   *
-   * @var string
-   */
-  protected $subscriptionType;
 
   /**
    * Constructs a new MySubscriptionsForm.
@@ -103,29 +96,34 @@ class MySubscriptionsForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ?AccountInterface $user = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?AccountInterface $user = NULL, ?string $subscription_type = NULL) {
     // We have two different pages for the subscriptions. The "Subscriptions"
     // page and the "My subscriptions". In case of the first, the parameter is
     // not passed.
-    $this->subscriptionType = $this->getRouteMatch()->getParameter('subscription_type') ?? 'collection';
+    $subscription_type = $subscription_type ?? 'collection';
 
-    // When no user is passed we cannot show anything useful.
+    // When no user is passed or the subscription type is invalid we cannot show
+    // anything useful.
     if (empty($user)) {
       throw new \InvalidArgumentException('No user account supplied.');
     }
+    if (!array_key_exists($subscription_type, JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES)) {
+      throw new \InvalidArgumentException('Invalid subscription type.');
+    }
+
     /** @var \Drupal\user\UserInterface $user */
     $user = $this->entityTypeManager->getStorage('user')->load($user->id());
     $form['description'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
       '#value' => $this->t('Set your preferences to receive notifications on a per :group basis.', [
-        ':group' => $this->subscriptionType,
+        ':group' => $subscription_type,
       ]),
     ];
 
     $this->loadUserSubscriptionFrequencyWidget($form, $form_state, $user);
 
-    $memberships = $this->groupManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', $this->subscriptionType);
+    $memberships = $this->groupManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', $subscription_type);
     $user_is_subscribed = FALSE;
 
     // Add a JS behavior to enable the buttons when the checkboxes or the
@@ -135,7 +133,7 @@ class MySubscriptionsForm extends FormBase {
     // Return early if there are no memberships to display.
     if (!(bool) count($memberships)) {
       $empty_message = $this->t('No :group memberships yet. Join one or more :groups to subscribe to their content!', [
-        ':group' => $this->subscriptionType,
+        ':group' => $subscription_type,
       ]);
       $form['empty_text'] = [
         '#theme' => 'status_messages',
@@ -153,7 +151,7 @@ class MySubscriptionsForm extends FormBase {
     // to subscribe to.
     $form['groups']['#tree'] = TRUE;
     $bundle_info = [];
-    $active_subscription_bundles = $this->subscriptionType === 'collection' ? JoinupSubscriptionsHelper::COLLECTION_BUNDLES : JoinupSubscriptionsHelper::SOLUTION_BUNDLES;
+    $active_subscription_bundles = JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES[$subscription_type];
     foreach (array_keys($active_subscription_bundles) as $entity_type_id) {
       $bundle_info[$entity_type_id] = $this->entityTypeBundleInfo->getBundleInfo($entity_type_id);
     }
@@ -161,19 +159,19 @@ class MySubscriptionsForm extends FormBase {
     // Keep track of the groups with subscriptions in order to properly show or
     // hide the 'Unsubscribe from all' button in the end of the page.
     foreach ($memberships as $membership) {
+      /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
       $group = $membership->getGroup();
       if ($group === NULL) {
         continue;
       }
       $clean_group_id = Html::cleanCssIdentifier($group->id());
-      $logo = $group->hasField('field_ar_logo') ? $group->field_ar_logo : $group->field_is_logo;
       $form['groups'][$group->id()] = [
         '#type' => 'container',
         '#id' => 'group-' . $clean_group_id,
         '#attributes' => [
           'class' => ['group-subscription'],
         ],
-        'logo' => $logo->view([
+        'logo' => $group->getLogoAsRenderArray([
           'label' => 'hidden',
           'type' => 'image',
           'settings' => [
@@ -199,7 +197,7 @@ class MySubscriptionsForm extends FormBase {
       $subscription_status = [];
 
       $active_subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
-      $subscription_bundles = $this->subscriptionType === 'collection' ? JoinupSubscriptionsHelper::COLLECTION_BUNDLES : JoinupSubscriptionsHelper::SOLUTION_BUNDLES;
+      $subscription_bundles = JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES[$subscription_type];
       foreach ($subscription_bundles as $entity_type_id => $bundle_ids) {
         foreach ($bundle_ids as $bundle_id) {
           $key = static::getSubscriptionKey($entity_type_id, $bundle_id);
@@ -259,7 +257,7 @@ class MySubscriptionsForm extends FormBase {
       '#title' => $this->t('Unsubscribe from all'),
       '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
         'user' => $user->id(),
-        'bundle' => $this->subscriptionType,
+        'bundle' => $subscription_type,
       ]),
       '#access' => $user_is_subscribed,
     ];
@@ -347,7 +345,8 @@ class MySubscriptionsForm extends FormBase {
 
     // Change status of checkboxes.
     $subscription_status = [];
-    $subscription_bundles = $this->subscriptionType === 'collection' ? JoinupSubscriptionsHelper::COLLECTION_BUNDLES : JoinupSubscriptionsHelper::SOLUTION_BUNDLES;
+    $subscription_type = $form_state->getBuildInfo()['args'][1] ?? 'collection';
+    $subscription_bundles = JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES[$subscription_type];
     foreach ($subscription_bundles as $entity_type_id => $bundle_ids) {
       foreach ($bundle_ids as $bundle_id) {
         $key = static::getSubscriptionKey($entity_type_id, $bundle_id);
@@ -357,7 +356,7 @@ class MySubscriptionsForm extends FormBase {
     $form['groups'][$submitted_group_id]['bundles']['submit']['#attributes']['data-drupal-subscriptions'] = Json::encode(array_values($subscription_status));
 
     $user = $form_state->getBuildInfo()['args'][0];
-    $form['edit-actions']['unsubscribe_all']['#access'] = $this->hasSubscriptions($user);
+    $form['edit-actions']['unsubscribe_all']['#access'] = $this->hasSubscriptions($user, $subscription_type);
 
     return (new AjaxResponse())
       ->addCommand(new ReplaceCommand("#{$form['groups'][$submitted_group_id]['#id']}", $form['groups'][$submitted_group_id]))
@@ -455,12 +454,14 @@ class MySubscriptionsForm extends FormBase {
    *
    * @param \Drupal\Core\Session\AccountInterface $user
    *   The user to check.
+   * @param string $subscription_type
+   *   The subscription type.
    *
    * @return bool
    *   TRUE if the user is subscribed to at least one groups content type.
    */
-  protected function hasSubscriptions(AccountInterface $user): bool {
-    foreach ($this->groupManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', $this->subscriptionType) as $membership) {
+  protected function hasSubscriptions(AccountInterface $user, string $subscription_type): bool {
+    foreach ($this->groupManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', $subscription_type) as $membership) {
       $subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
       if (!empty($subscription_bundles)) {
         return TRUE;

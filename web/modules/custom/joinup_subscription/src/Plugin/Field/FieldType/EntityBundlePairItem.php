@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\Field\FieldType;
+namespace Drupal\joinup_subscription\Plugin\Field\FieldType;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldItemBase;
@@ -15,6 +15,9 @@ use Drupal\Core\TypedData\DataDefinition;
  *
  * This is a pseudo reference field that references bundles by storing the
  * entity type and the bundle machine name.
+ *
+ * @todo If this is useful for other subsystems in Joinup this can be split off
+ *   to a separate module.
  *
  * @FieldType(
  *   id = "entity_bundle_pair",

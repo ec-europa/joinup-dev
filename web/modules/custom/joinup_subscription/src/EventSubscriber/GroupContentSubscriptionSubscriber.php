@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\collection\Entity\CollectionContentInterface;
+use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\NotificationEvents;
@@ -16,9 +17,9 @@ use Drupal\solution\Entity\SolutionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Subscriber for compiling content subscription digest messages.
+ * Subscriber for compiling group content subscription digest messages.
  */
-class CollectionContentSubscriptionSubscriber implements EventSubscriberInterface {
+class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
 
   /**
    * The entity type manager.
@@ -74,7 +75,7 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The event object.
    */
-  public function notifyOnCommunityContentCreation(NotificationEvent $event) {
+  public function notifyOnCommunityContentCreation(NotificationEvent $event): void {
     /** @var \Drupal\node\NodeInterface $entity */
     $entity = $event->getEntity();
 
@@ -92,7 +93,7 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The event object.
    */
-  public function notifyOnCommunityContentPublication(NotificationEvent $event) {
+  public function notifyOnCommunityContentPublication(NotificationEvent $event): void {
     /** @var \Drupal\node\NodeInterface $entity */
     $entity = $event->getEntity();
 
@@ -140,18 +141,18 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
   /**
    * Returns the list of subscribers.
    *
-   * @param \Drupal\collection\Entity\CollectionContentInterface $entity
-   *   The collection content entity for which to return the subscribers.
+   * @param \Drupal\joinup_group\Entity\GroupContentInterface $entity
+   *   The group content entity for which to return the subscribers.
    *
    * @return \Drupal\user\UserInterface[]
    *   The list of subscribers as an array of user accounts, keyed by user ID.
    */
-  protected function getSubscribers(CollectionContentInterface $entity): array {
+  protected function getSubscribers(GroupContentInterface $entity): array {
     $membership_storage = $this->entityTypeManager->getStorage('og_membership');
     $membership_ids = $membership_storage
       ->getQuery()
       ->condition('entity_type', 'rdf_entity')
-      ->condition('entity_id', $entity->getCollection()->id())
+      ->condition('entity_id', $entity->getGroupId())
       ->condition('state', OgMembershipInterface::STATE_ACTIVE)
       ->condition('subscription_bundles', $entity->bundle())
       ->execute();
@@ -171,25 +172,25 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
   /**
    * Sends the notification to the recipients.
    *
-   * @param \Drupal\collection\Entity\CollectionContentInterface $collection_content
-   *   The collection content for which to send the notification.
+   * @param \Drupal\joinup_group\Entity\GroupContentInterface $group_content
+   *   The group content for which to send the notification.
    * @param string $message_template
    *   The ID of the message template to use.
    *
    * @return bool
    *   Whether or not the sending of the e-mails has succeeded.
    */
-  protected function sendMessage(CollectionContentInterface $collection_content, string $message_template): bool {
+  protected function sendMessage(GroupContentInterface $group_content, string $message_template): bool {
     try {
       $success = TRUE;
       // Create individual messages for each subscriber so that we can honor the
       // user's chosen digest frequency.
-      foreach ($this->getSubscribers($collection_content) as $subscriber) {
+      foreach ($this->getSubscribers($group_content) as $subscriber) {
         $message_values = [
           'field_collection_content' => [
             0 => [
-              'target_type' => $collection_content->getEntityTypeId(),
-              'target_id' => $collection_content->id(),
+              'target_type' => $group_content->getEntityTypeId(),
+              'target_id' => $group_content->id(),
             ],
           ],
         ];
@@ -199,7 +200,7 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
     }
     catch (\Exception $e) {
       $context = ['exception' => $e];
-      $this->loggerFactory->get('mail')->critical('Unexpected exception thrown when sending a collection content subscription message.', $context);
+      $this->loggerFactory->get('mail')->critical('Unexpected ' . get_class($e) . ' thrown in ' . $e->getFile() . ' on line ' . $e->getLine() . ' when sending a group content subscription message.', $context);
       return FALSE;
     }
   }
@@ -207,7 +208,7 @@ class CollectionContentSubscriptionSubscriber implements EventSubscriberInterfac
   /**
    * Returns whether the passed in entity is the first published revision.
    *
-   * @param \Drupal\Core\Entity\EntityPublishedInterface $entity
+   * @param \Drupal\Core\Entity\EntityPublishedInterface|\Drupal\Core\Entity\RevisionableInterface $entity
    *   The entity to check.
    *
    * @return bool

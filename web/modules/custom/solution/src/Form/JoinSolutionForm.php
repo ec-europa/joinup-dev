@@ -5,9 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\solution\Form;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\Url;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_group\Form\JoinGroupFormBase;
-use Drupal\joinup_subscription\JoinupSubscriptionsHelper;
 use Drupal\og\OgMembershipInterface;
 
 /**
@@ -50,11 +49,7 @@ class JoinSolutionForm extends JoinGroupFormBase {
    * {@inheritdoc}
    */
   public function getSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup {
-    return $this->t('You have subscribed to this solution and will receive notifications for it. You can manage your subscriptions at <a href=":url">My subscriptions</a>.', [
-      ':url' => Url::fromRoute('joinup_subscription.my_subscriptions', [
-        'subscription_type' => 'solution',
-      ])->toString(),
-    ]);
+    return $this->t('You have subscribed to this solution and will receive notifications for it. To manage your subscriptions go to <em>My subscriptions</em> in your user menu.');
   }
 
   /**
@@ -62,7 +57,14 @@ class JoinSolutionForm extends JoinGroupFormBase {
    */
   protected function createMembership(string $state, array $roles): OgMembershipInterface {
     $membership = parent::createMembership($state, $roles);
-    $membership->set('subscription_bundles', JoinupSubscriptionsHelper::getSolutionBundlesDefaultValue());
+
+    $bundles = [];
+    foreach (CommunityContentHelper::BUNDLES as $bundle) {
+      $bundles[] = ['entity_type' => 'node', 'bundle' => $bundle];
+    }
+
+    $membership->set('subscription_bundles', $bundles);
+
     return $membership;
   }
 
