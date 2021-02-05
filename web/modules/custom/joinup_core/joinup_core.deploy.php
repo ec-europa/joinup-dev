@@ -73,7 +73,7 @@ Query;
 
     // Same as array_splice() but preserves numeric keys prefixed with a char.
     $sandbox['array_splice'] = function (array &$array): array {
-      $values = array_splice($array, 0, 300);
+      $values = array_splice($array, 0, 1000);
       $keys = array_map(function (string $key): int {
         return (int) substr($key, 1);
       }, array_keys($values));
