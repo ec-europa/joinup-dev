@@ -23,6 +23,13 @@ interface StatisticsAwareInterface extends ContentEntityInterface {
   ];
 
   /**
+   * Returns the field names that are referencing statistics.
+   *
+   * @return array
+   */
+  public function getStatisticsFieldNames(): array;
+
+  /**
    * Creates the meta entities that provides statistical information.
    *
    * @return \Drupal\meta_entity\Entity\MetaEntityInterface[]

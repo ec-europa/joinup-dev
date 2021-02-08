@@ -10,6 +10,7 @@ use Drupal\joinup_featured\FeaturedContentTrait;
 use Drupal\joinup_group\Entity\PinnableGroupContentTrait;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_stats\Entity\StatisticsAwareTrait;
+use Drupal\joinup_stats\Entity\VisitCountAwareInterface;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
 use Drupal\node\Entity\Node;
 
@@ -27,6 +28,13 @@ abstract class CommunityContentBase extends Node implements CommunityContentInte
   use JoinupBundleClassMetaEntityTrait;
   use PinnableGroupContentTrait;
   use StatisticsAwareTrait;
+
+  /**
+   * Fields populated with statistical information by the joinup_stats module.
+   */
+  const JOINUP_STATS_FIELDS = [
+    VisitCountAwareInterface::class => 'visit_count',
+  ];
 
   /**
    * {@inheritdoc}
