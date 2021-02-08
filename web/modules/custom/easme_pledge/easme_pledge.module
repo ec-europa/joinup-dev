@@ -49,7 +49,7 @@ function easme_pledge_rdf_entity_view(array &$build, RdfInterface $entity, Entit
     $build['pledge'] = [
       '#type' => 'link',
       '#title' => t('Pledge'),
-      '#url' => Url::fromRoute('easme_pledge.rdf_entity_pledge.add', [
+      '#url' => Url::fromRoute('joinup_group.add_content', [
         'rdf_entity' => $entity->id(),
         'node_type' => 'pledge',
       ]),
