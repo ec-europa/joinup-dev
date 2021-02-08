@@ -258,14 +258,14 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   protected function filterInvalidItems(ExpiredItemCollection $items): ExpiredItemCollection {
     $valid_items = [];
     foreach ($items as $item) {
-      /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
-      if (!$meta_entity = $this->getEntity($item)) {
-        continue;
-      }
-
       // Only refresh the field if it has actually expired. It might have been
       // updated already since it has been added to the processing queue.
       if (!$this->fieldNeedsRefresh($item)) {
+        continue;
+      }
+
+      /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
+      if (!$meta_entity = $this->getEntity($item)) {
         continue;
       }
 
