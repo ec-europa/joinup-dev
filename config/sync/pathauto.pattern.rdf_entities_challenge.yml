@@ -10,16 +10,16 @@ _core:
 id: rdf_entities_challenge
 label: 'Rdf entities - challenge'
 type: rdf_entity
-pattern: 'challenge/[rdf_entity:label]'
+pattern: 'challenge/[rdf_entity:short_id_or_title]'
 selection_criteria:
-  b5ee0d7b-e3fe-4130-b587-e11028be3872:
+  3c477a53-380e-41bb-8a89-405e46804523:
     id: 'entity_bundle:rdf_entity'
     bundles:
       collection: collection
     negate: false
     context_mapping:
       rdf_entity: rdf_entity
-    uuid: b5ee0d7b-e3fe-4130-b587-e11028be3872
+    uuid: 3c477a53-380e-41bb-8a89-405e46804523
 selection_logic: and
 weight: -5
 relationships: {  }

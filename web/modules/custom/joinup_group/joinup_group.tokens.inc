@@ -56,11 +56,6 @@ function joinup_group_tokens(string $type, array $tokens, array $data, array $op
     $replacements[$original] = $rdf_entity->{$rdf_entity->getEntityType()->getKey('bundle')}->entity->getSingularLabel();
   }
 
-  $bundles = ['solution', 'asset_release', 'asset_distribution'];
-  if (!in_array($rdf_entity->bundle(), $bundles)) {
-    return $replacements;
-  }
-
   $token_service = \Drupal::token();
   $rdf_entity = $data['rdf_entity'];
 
