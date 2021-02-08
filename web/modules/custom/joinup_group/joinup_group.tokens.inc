@@ -48,14 +48,6 @@ function joinup_group_tokens(string $type, array $tokens, array $data, array $op
     return $replacements;
   }
 
-  /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
-  $rdf_entity = $data['rdf_entity'];
-  if (isset($tokens['bundle_singular'])) {
-    $original = $tokens['bundle_singular'];
-    $bubbleable_metadata->addCacheableDependency($rdf_entity);
-    $replacements[$original] = $rdf_entity->{$rdf_entity->getEntityType()->getKey('bundle')}->entity->getSingularLabel();
-  }
-
   $token_service = \Drupal::token();
   $rdf_entity = $data['rdf_entity'];
 
@@ -71,7 +63,7 @@ function joinup_group_tokens(string $type, array $tokens, array $data, array $op
     return NULL;
   };
 
-  if ($type == 'rdf_entity' && !empty($data['rdf_entity'])) {
+  if (!empty($data['rdf_entity'])) {
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'parent_collection':
