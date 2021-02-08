@@ -15,6 +15,7 @@ interface StatisticsAwareInterface extends ContentEntityInterface {
    * Returns the field names that are referencing statistics.
    *
    * @return array
+   *   The field names, keyed by type.
    */
   public function getStatisticsFieldNames(): array;
 
