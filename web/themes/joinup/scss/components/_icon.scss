@@ -53,7 +53,7 @@
 //
 // Styleguide 2.8
 
-$waat-icons-font-path: "../fonts/waat-icons/waat-icons";
+$waat-icons-font-path: "../fonts/waat-icons/waat-icons-custom";
 
 // Component
 // --------------------------------------------------
@@ -137,6 +137,14 @@ $waat-icons-font-path: "../fonts/waat-icons/waat-icons";
 .icon--latest:before,
 .icon--keep-up-to-date:before {
   content: "";
+}
+
+.icon--euvsvirus:before {
+  content: "\0e8f5";
+}
+.icon--community:before,
+.icon--eic-community:before {
+  content: "";
 }
 
 .icon--licence:before {

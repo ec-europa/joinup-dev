@@ -518,6 +518,7 @@ display:
         - 'user.node_grants:view'
       tags:
         - 'config:search_api.index.published'
+        - 'search_api_list:published'
   page_1:
     display_plugin: page
     id: page_1
@@ -535,13 +536,17 @@ display:
         weight: -48
         context: '0'
         menu_name: main
+      cache:
+        type: none
+      defaults:
+        cache: false
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - solution_owner
         - url.query_args
         - 'user.node_grants:view'
       tags:
         - 'config:search_api.index.published'
+        - 'search_api_list:published'

@@ -12,7 +12,7 @@ dependencies:
 id: challengesolution
 theme: joinup_theme
 region: sidebar_left
-weight: -13
+weight: -14
 provider: null
 plugin: 'facet_block:covid_19_group'
 settings:

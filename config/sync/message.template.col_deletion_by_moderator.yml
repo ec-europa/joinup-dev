@@ -9,10 +9,10 @@ label: 'Collection deleted by moderator'
 description: 'Moderator deletes a collection'
 text:
   -
-    value: 'Joinup: Your collection has been deleted by the moderation team'
+    value: 'Challenge: Your collection has been deleted by the moderation team'
     format: full_html
   -
-    value: '<p>The Joinup moderation team deleted the collection @entity:title.</p>'
+    value: '<p>The Challenge moderation team deleted the collection @entity:title.</p>'
     format: full_html
 settings:
   'token options':

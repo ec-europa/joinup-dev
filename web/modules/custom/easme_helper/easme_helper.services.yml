@@ -6,3 +6,8 @@ services:
     class: Drupal\easme_helper\Routing\RouteSubscriber
     tags:
       - { name: event_subscriber }
+  easme_helper.cas_event_subscriber:
+    class: '\Drupal\easme_helper\EventSubscriber\CasEventSubscriber'
+    arguments: ['@config.factory']
+    tags:
+      - { name: 'event_subscriber' }

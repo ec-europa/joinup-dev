@@ -80,6 +80,8 @@ commands:
         - resources/fixtures/solution_category.rdf
         - resources/fixtures/standardization_level.rdf
         - resources/fixtures/test_resource_type.rdf
+        - resources/fixtures/policy_domain.rdf
+        - resources/fixtures/topic.rdf
     - task: run
       command: sparql:query
       arguments:

@@ -12,7 +12,7 @@ dependencies:
 id: type
 theme: joinup_theme
 region: sidebar_left
-weight: -14
+weight: -15
 provider: null
 plugin: 'facet_block:covid_19_type'
 settings:

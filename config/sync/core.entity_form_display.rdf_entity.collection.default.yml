@@ -24,6 +24,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
+    - field.field.rdf_entity.collection.field_topic
     - image.style.thumbnail
     - rdf_entity.rdfentity.collection
   module:
@@ -58,6 +59,7 @@ third_party_settings:
         - field_short_id
         - field_ar_description
         - field_policy_domain
+        - field_topic
         - field_ar_owner
         - field_ar_contact_information
         - current_workflow_state
@@ -105,7 +107,7 @@ mode: default
 content:
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 7
+    weight: 8
     region: content
     settings:
       title: 'Current workflow state'
@@ -124,7 +126,7 @@ content:
     type: text_textarea
     region: content
   field_ar_access_url:
-    weight: 11
+    weight: 12
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -132,7 +134,7 @@ content:
     type: link_default
     region: content
   field_ar_banner:
-    weight: 13
+    weight: 14
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
@@ -141,13 +143,13 @@ content:
     region: content
   field_ar_closed:
     type: boolean_checkbox
-    weight: 16
+    weight: 17
     region: content
     settings:
       display_label: false
     third_party_settings: {  }
   field_ar_contact_information:
-    weight: 6
+    weight: 7
     settings:
       form_mode: inline
       override_labels: true
@@ -164,7 +166,7 @@ content:
     type: inline_entity_form_complex
     region: content
   field_ar_content_creation:
-    weight: 17
+    weight: 18
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -181,7 +183,7 @@ content:
     type: text_textarea
     region: content
   field_ar_logo:
-    weight: 12
+    weight: 13
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
@@ -189,14 +191,14 @@ content:
     type: image_image
     region: content
   field_ar_moderation:
-    weight: 18
+    weight: 19
     settings:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_ar_owner:
-    weight: 5
+    weight: 6
     settings:
       form_mode: inline
       override_labels: true
@@ -227,7 +229,7 @@ content:
     type: search_api_field_default
     region: content
   field_keywords:
-    weight: 15
+    weight: 16
     settings:
       size: 60
       placeholder: ''
@@ -235,7 +237,7 @@ content:
     type: string_textfield
     region: content
   field_newsletter:
-    weight: 19
+    weight: 20
     settings: {  }
     third_party_settings: {  }
     type: oe_newsroom_newsletter_default
@@ -255,7 +257,7 @@ content:
     type: string_textfield
     region: content
   field_spatial_coverage:
-    weight: 14
+    weight: 15
     settings:
       match_operator: CONTAINS
       size: 60
@@ -263,6 +265,12 @@ content:
       match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_topic:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   label:
     type: string_textfield
@@ -273,7 +281,7 @@ content:
     third_party_settings: {  }
     region: content
   transition_motivation:
-    weight: 8
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }

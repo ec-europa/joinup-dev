@@ -12,7 +12,7 @@ dependencies:
 id: geographicalcoverage
 theme: joinup_theme
 region: sidebar_left
-weight: -15
+weight: -16
 provider: null
 plugin: 'facet_block:challenge_spatial_coverage'
 settings:

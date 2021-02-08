@@ -17,6 +17,8 @@ permissions:
   - 'subscribe to newsletters'
   - 'use text format basic_html'
   - 'use text format simple_text'
+  - 'view field_policy_domain'
+  - 'view own field_policy_domain'
   - 'view paragraph content json_map'
   - 'view paragraph content simple_paragraph'
   - 'view rdf entity'

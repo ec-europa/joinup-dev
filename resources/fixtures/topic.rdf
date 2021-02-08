@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+  <skos:ConceptScheme rdf:about="http://joinup.eu/topic">
+  </skos:ConceptScheme>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#thematic">
+    <skos:prefLabel xml:lang="en">Thematic</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#agriculture-rural-development-fisheries-water">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Agriculture / Rural Development / Fisheries / Water</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#biotechnology">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Biotechnology</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#construction-and-transport-networks">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Construction and Transport networks</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#consumer-products-and-services">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Consumer products and services</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#cultural-and-creative-economy">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Cultural and Creative Economy</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#earth-and-related-environmental-sciences">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Earth and related environmental sciences</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#energy">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Energy</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#engineering-and-technology">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Engineering and technology</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#finance">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Finance</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#food-and-beverages">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Food and Beverages</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#health">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Health</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#information-and-communication-technology-ict">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Information and Communication Technology (ICT)</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#public-sector-innovation">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Public sector innovation</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#security">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Security</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#space">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#thematic"/>
+    <skos:prefLabel xml:lang="en">Space</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#horizontal">
+    <skos:prefLabel xml:lang="en">Horizontal</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#business-development">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#horizontal"/>
+    <skos:prefLabel xml:lang="en">Business development</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#financial-development">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#horizontal"/>
+    <skos:prefLabel xml:lang="en">Financial development</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#intellectual-property-&amp;-licencing">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#horizontal"/>
+    <skos:prefLabel xml:lang="en">Intellectual property &amp; Licencing</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#life-cycle-stage-expansion">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#horizontal"/>
+    <skos:prefLabel xml:lang="en">Life cycle stage Expansion</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#life-cycle-stage-upscaling">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#horizontal"/>
+    <skos:prefLabel xml:lang="en">Life cycle stage Upscaling</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#marketing">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#horizontal"/>
+    <skos:prefLabel xml:lang="en">Marketing</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#thematicbranding">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#marketing"/>
+    <skos:prefLabel xml:lang="en">Branding</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#thematiccommunication">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#marketing"/>
+    <skos:prefLabel xml:lang="en">Communication</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#thematicmarket-segmentation">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#marketing"/>
+    <skos:prefLabel xml:lang="en">Market segmentation</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#thematicvalue-proposition">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#marketing"/>
+    <skos:prefLabel xml:lang="en">Value proposition</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#organisation-development">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#horizontal"/>
+    <skos:prefLabel xml:lang="en">Organisation development</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#thematicrecruitment">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#organisation-development"/>
+    <skos:prefLabel xml:lang="en">Recruitment</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#thematicteam-building">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#organisation-development"/>
+    <skos:prefLabel xml:lang="en">Team building</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#thematicuse-of-external-expertise-consultancy">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#organisation-development"/>
+    <skos:prefLabel xml:lang="en">Use of external expertise (consultancy)</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#partnership-development">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#horizontal"/>
+    <skos:prefLabel xml:lang="en">Partnership development</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#public-procurement">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#horizontal"/>
+    <skos:prefLabel xml:lang="en">Public procurement</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#skill-development">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#horizontal"/>
+    <skos:prefLabel xml:lang="en">Skill development</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#thematicleadership">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#skill-development"/>
+    <skos:prefLabel xml:lang="en">Leadership</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#thematicnegotiation">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#skill-development"/>
+    <skos:prefLabel xml:lang="en">Negotiation</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#thematicpitching">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#skill-development"/>
+    <skos:prefLabel xml:lang="en">Pitching</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#thematictime-management">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#skill-development"/>
+    <skos:prefLabel xml:lang="en">Time management</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/topic#women-entrepreneurship">
+    <skos:broaderTransitive rdf:resource="http://joinup.eu/topic#horizontal"/>
+    <skos:prefLabel xml:lang="en">Women entrepreneurship</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/topic"/>
+  </skos:Concept>
+
+</rdf:RDF>

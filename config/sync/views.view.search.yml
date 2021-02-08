@@ -438,6 +438,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - 'url.query_args:sort_by'
         - 'user.node_grants:view'
       tags:
         - 'config:search_api.index.published'
