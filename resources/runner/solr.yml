@@ -18,7 +18,10 @@ commands:
   # Starts Solr.
   solr:start:
     - task: exec
-      command: ${solr.bin} status ; test $? -eq 0 || ${solr.bin} start
+      # The solr:start command runs in a clean build. It will break the installation if ran within
+      # a docker container as neither JAVA nor SOLR are available in the container the installation runs from.
+      # The first part returns data if the command is run within a docker container and skips the second command.
+      command: (grep docker /proc/1/cgroup -qa || ${solr.bin} status); test $? -eq 0 || ${solr.bin} start
 
   # Stops Solr.
   solr:stop:
