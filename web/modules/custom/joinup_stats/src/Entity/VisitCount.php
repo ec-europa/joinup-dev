@@ -8,4 +8,12 @@ namespace Drupal\joinup_stats\Entity;
  * Bundle class for meta entities that track visit counts.
  */
 class VisitCount extends StatisticBase implements VisitCountInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getVisitCount(): int {
+    return (int) $this->count->value;
+  }
+
 }

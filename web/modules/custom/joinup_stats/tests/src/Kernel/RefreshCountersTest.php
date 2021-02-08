@@ -121,13 +121,13 @@ class RefreshCountersTest extends KernelTestBase {
 
     // Check that the cached computed fields were updated.
     // @see \Drupal\joinup_stats_test\Mocks\TestQuery::getMockedResponseArray()
-    $this->assertEquals(55, $this->entities['rdf_entity']['http://example.com/distro/1']->download_count->entity->count->value);
-    $this->assertEquals(2034, $this->entities['rdf_entity']['http://example.com/distro/2']->download_count->entity->count->value);
-    $this->assertEquals(0, $this->entities['rdf_entity']['http://example.com/distro/3']->download_count->entity->count->value);
-    $this->assertEquals(3846545, $this->entities['node'][1]->visit_count->entity->count->value);
-    $this->assertEquals(234, $this->entities['node'][2]->visit_count->entity->count->value);
-    $this->assertEquals(8766, $this->entities['node'][3]->visit_count->entity->count->value);
-    $this->assertEquals(334, $this->entities['node'][4]->visit_count->entity->count->value);
+    $this->assertEquals(55, $this->entities['rdf_entity']['http://example.com/distro/1']->download_count->entity->getDownloadCount());
+    $this->assertEquals(2034, $this->entities['rdf_entity']['http://example.com/distro/2']->download_count->entity->getDownloadCount());
+    $this->assertEquals(0, $this->entities['rdf_entity']['http://example.com/distro/3']->download_count->entity->getDownloadCount());
+    $this->assertEquals(3846545, $this->entities['node'][1]->visit_count->entity->getVisitCount());
+    $this->assertEquals(234, $this->entities['node'][2]->visit_count->entity->getVisitCount());
+    $this->assertEquals(8766, $this->entities['node'][3]->visit_count->entity->getVisitCount());
+    $this->assertEquals(334, $this->entities['node'][4]->visit_count->entity->getVisitCount());
 
     // Pretend that the stats were incremented on Matomo side.
     $this->container->get('state')->set('joinup_stats_test.increment', [
@@ -149,13 +149,13 @@ class RefreshCountersTest extends KernelTestBase {
     // reload in order to get the new values.
     cached_computed_field_cron();
     $this->reloadEntities();
-    $this->assertEquals(1055, $this->entities['rdf_entity']['http://example.com/distro/1']->download_count->entity->count->value);
-    $this->assertEquals(12034, $this->entities['rdf_entity']['http://example.com/distro/2']->download_count->entity->count->value);
-    $this->assertEquals(39, $this->entities['rdf_entity']['http://example.com/distro/3']->download_count->entity->count->value);
-    $this->assertEquals(4846545, $this->entities['node'][1]->visit_count->entity->count->value);
-    $this->assertEquals(10234, $this->entities['node'][2]->visit_count->entity->count->value);
-    $this->assertEquals(28766, $this->entities['node'][3]->visit_count->entity->count->value);
-    $this->assertEquals(200334, $this->entities['node'][4]->visit_count->entity->count->value);
+    $this->assertEquals(1055, $this->entities['rdf_entity']['http://example.com/distro/1']->download_count->entity->getDownloadCount());
+    $this->assertEquals(12034, $this->entities['rdf_entity']['http://example.com/distro/2']->download_count->entity->getDownloadCount());
+    $this->assertEquals(39, $this->entities['rdf_entity']['http://example.com/distro/3']->download_count->entity->getDownloadCount());
+    $this->assertEquals(4846545, $this->entities['node'][1]->visit_count->entity->getVisitCount());
+    $this->assertEquals(10234, $this->entities['node'][2]->visit_count->entity->getVisitCount());
+    $this->assertEquals(28766, $this->entities['node'][3]->visit_count->entity->getVisitCount());
+    $this->assertEquals(200334, $this->entities['node'][4]->visit_count->entity->getVisitCount());
   }
 
   /**
