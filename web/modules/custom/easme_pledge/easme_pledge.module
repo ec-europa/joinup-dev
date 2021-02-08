@@ -12,10 +12,20 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
+use Drupal\easme_pledge\Entity\Pledge;
 use Drupal\easme_pledge\EventSubscriber\NotificationSubscriber;
 use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function easme_pledge_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['node']['pledge'])) {
+    $bundles['node']['pledge']['class'] = Pledge::class;
+  }
+}
 
 /**
  * Implements hook_entity_extra_field_info().
