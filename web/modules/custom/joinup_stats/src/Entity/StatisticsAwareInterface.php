@@ -12,17 +12,6 @@ use Drupal\Core\Entity\ContentEntityInterface;
 interface StatisticsAwareInterface extends ContentEntityInterface {
 
   /**
-   * A list of fields that contain statistical information.
-   *
-   * These are keyed by the specific interface that designates the availability
-   * of the field.
-   */
-  const STATISTICS_FIELDS = [
-    DownloadCountAwareInterface::class => 'download_count',
-    VisitCountAwareInterface::class => 'visit_count',
-  ];
-
-  /**
    * Returns the field names that are referencing statistics.
    *
    * @return array

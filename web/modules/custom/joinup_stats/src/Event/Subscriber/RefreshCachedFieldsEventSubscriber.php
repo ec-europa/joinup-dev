@@ -15,10 +15,9 @@ use Drupal\cached_computed_field\EventSubscriber\RefreshExpiredFieldsSubscriberB
 use Drupal\cached_computed_field\ExpiredItemCollection;
 use Drupal\cached_computed_field\ExpiredItemInterface;
 use Drupal\file_url\Entity\RemoteFile;
-use Drupal\joinup_stats\Entity\StatisticsAwareInterface;
+use Drupal\joinup_stats\Entity\StatisticInterface;
 use Drupal\matomo_reporting_api\MatomoQueryFactoryInterface;
 use Drupal\meta_entity\Entity\MetaEntityInterface;
-use Drupal\meta_entity\Entity\MetaEntityType;
 use Matomo\ReportingApi\QueryInterface;
 
 /**
@@ -51,11 +50,11 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   protected $configFactory;
 
   /**
-   * Settings derived from meta entity types data.
+   * Parameters used to query Matomo data, keyed by statistics type.
    *
-   * @var array
+   * @var array[]
    */
-  protected $metaEntityTypeSettings;
+  protected $matomoQueryParameters = [];
 
   /**
    * Constructs a new RefreshCachedMatomoDataEventSubscriber object.
@@ -136,7 +135,13 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
 
       /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
       $meta_entity = $this->getEntity($expired_item);
-      $type = $this->getSettingsForMetaEntity($meta_entity)['type'];
+      if (!$meta_entity instanceof StatisticInterface) {
+        $message = sprintf('[unknown entity type %s]', get_class($meta_entity));
+        $errors[$message][] = $expired_item->getEntityId();
+        continue;
+      }
+
+      $type = $this->getMatomoQueryParameters($meta_entity)['type'];
       $count = 0;
       foreach ($response_item as $result) {
         if (!empty($result->$type)) {
@@ -162,7 +167,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   /**
    * Gets the URL parameter for the query.
    *
-   * @param \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity
+   * @param \Drupal\joinup_stats\Entity\StatisticInterface $meta_entity
    *   The entity that the request URL is related to.
    *
    * @return string
@@ -171,8 +176,8 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @throws \Exception
    *   On malformed settings.
    */
-  protected function getUrlParameter(MetaEntityInterface $meta_entity): string {
-    $method = $this->getSettingsForMetaEntity($meta_entity)['parameter_method'];
+  protected function getUrlParameter(StatisticInterface $meta_entity): string {
+    $method = $this->getMatomoQueryParameters($meta_entity)['parameter_method'];
     return $this->$method($meta_entity);
   }
 
@@ -205,7 +210,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    *   Thrown when target entity is not a distribution.
    */
   protected function getDistributionFileUrl(MetaEntityInterface $meta_entity): string {
-    /** @var \Drupal\rdf_entity\RdfInterface $distribution */
+    /** @var \Drupal\asset_distribution\Entity\AssetDistributionInterface $distribution */
     $distribution = $meta_entity->getTargetEntity();
     if ($distribution->bundle() !== 'asset_distribution') {
       throw new \InvalidArgumentException('Retrieving files from entities other than distributions has not been implemented yet.');
@@ -269,6 +274,10 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
         continue;
       }
 
+      if (!$meta_entity instanceof StatisticInterface) {
+        continue;
+      }
+
       // Catch the case where the URL is not available. This can currently
       // happen only when a distribution we are attempting to track doesn't
       // have a file attached, but an external link.
@@ -299,7 +308,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
 
     $url_index = 0;
     foreach ($items as $item) {
-      /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
+      /** @var \Drupal\joinup_stats\Entity\StatisticInterface $meta_entity */
       $meta_entity = $this->getEntity($item);
       $parameters = $this->getSubQueryParameters($meta_entity);
       $query->setParameter('urls[' . $url_index++ . ']', http_build_query($parameters));
@@ -315,7 +324,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * All the default parameters, e.g. the authentication token and the site ID,
    * are set automatically by generating a new query each time.
    *
-   * @param \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity
+   * @param \Drupal\joinup_stats\Entity\StatisticInterface $meta_entity
    *   The entity with the expired field.
    * @param array $parameters
    *   A list of extra parameters to pass to the array of parameters.
@@ -327,8 +336,8 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @throws \Exception
    *   When the meta entity type configs are malformed.
    */
-  protected function getSubQueryParameters(MetaEntityInterface $meta_entity, array $parameters = []): array {
-    $stats_settings = $this->getSettingsForMetaEntity($meta_entity);
+  protected function getSubQueryParameters(StatisticInterface $meta_entity, array $parameters = []): array {
+    $stats_settings = $this->getMatomoQueryParameters($meta_entity);
     $sub_query = $this->matomoQueryFactory->getQuery($stats_settings['matomo_method']);
     $date_range = $this->getDateRange($stats_settings['period']);
 
@@ -360,46 +369,48 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   }
 
   /**
-   * Retrieves the statistics configurations for a given meta entity.
+   * Returns parameters needed to query Matomo for the given statistic entity.
    *
-   * @param \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity
-   *   The meta entity to retrieve the stats settings for.
+   * @param \Drupal\joinup_stats\Entity\StatisticInterface $stats_entity
+   *   The meta entity to retrieve the parameters for.
    *
    * @return array
-   *   The stats settings.
+   *   The Matomo query parameters.
    *
    * @throws \Exception
    *   When the configuration is incomplete or 'parameter_method' settings is
    *   not a callable.
    */
-  protected function getSettingsForMetaEntity(MetaEntityInterface $meta_entity): array {
-    if (!isset($this->metaEntityTypeSettings)) {
-      $this->metaEntityTypeSettings = [];
-      $statistics_types = array_values(StatisticsAwareInterface::STATISTICS_FIELDS);
-      foreach (MetaEntityType::loadMultiple($statistics_types) as $type => $meta_entity_type) {
-        $this->metaEntityTypeSettings[$type] = $meta_entity_type->getThirdPartySettings('joinup_stats');
+  protected function getMatomoQueryParameters(StatisticInterface $stats_entity): array {
+    $type = $stats_entity->bundle();
 
-        // Ensure configuration integrity.
-        $mandatory_settings = [
-          'matomo_method',
-          'parameter_name',
-          'parameter_method',
-          'period',
-          'type',
-        ];
-        foreach ($mandatory_settings as $key) {
-          if (!array_key_exists($key, $this->metaEntityTypeSettings[$type])) {
-            throw new \Exception("Incomplete configuration for '$type' meta entity type: missing {$key} key.");
-          }
-        }
-        $parameter_method_whitelist = ['getDistributionFileUrl', 'getEntityUrl'];
-        $parameter_method = $this->metaEntityTypeSettings[$type]['parameter_method'];
-        if (!is_callable([$this, $parameter_method]) || !in_array($parameter_method, $parameter_method_whitelist)) {
-          throw new \Exception("::{$this->metaEntityTypeSettings['parameter_method']}() is not a valid parameter method.");
+    if (!isset($this->matomoQueryParameters[$type])) {
+      $meta_entity_type = $this->entityTypeManager->getStorage('meta_entity_type')->load($type);
+      $matomo_parameters = $meta_entity_type->getThirdPartySettings('joinup_stats');
+
+      // Ensure all required parameters are present.
+      $mandatory_settings = [
+        'matomo_method',
+        'parameter_name',
+        'parameter_method',
+        'period',
+        'type',
+      ];
+      foreach ($mandatory_settings as $key) {
+        if (!array_key_exists($key, $matomo_parameters)) {
+          throw new \Exception("Incomplete configuration for '$type' meta entity type: missing {$key} key.");
         }
       }
+      $parameter_method_whitelist = ['getDistributionFileUrl', 'getEntityUrl'];
+      $parameter_method = $matomo_parameters['parameter_method'];
+      if (!is_callable([$this, $parameter_method]) || !in_array($parameter_method, $parameter_method_whitelist)) {
+        throw new \Exception("::$parameter_method() is not a valid parameter method.");
+      }
+
+      $this->matomoQueryParameters[$type] = $matomo_parameters;
     }
-    return $this->metaEntityTypeSettings[$meta_entity->bundle()];
+
+    return $this->matomoQueryParameters[$type] ?? [];
   }
 
 }
