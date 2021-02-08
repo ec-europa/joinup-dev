@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\asset_distribution;
 
-use Drupal\asset_distribution\Entity\AssetDistributionInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\asset_distribution\Entity\AssetDistributionInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
