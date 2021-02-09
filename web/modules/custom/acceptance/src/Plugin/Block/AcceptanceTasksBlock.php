@@ -10,19 +10,19 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_acceptance\Form\DeliverDigestMessagesForm;
+use Drupal\joinup_acceptance\Form\AcceptanceTasksForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a block containing allowing to trigger digest delivery.
+ * Provides a block containing an acceptance tasks form.
  *
  * @Block(
- *   id = "deliver_digest_messages",
- *   admin_label = @Translation("Deliver digest messages form"),
+ *   id = "acceptance_tasks",
+ *   admin_label = @Translation("Acceptance tasks"),
  *   category = @Translation("Forms"),
  * )
  */
-class DeliverDigestMessagesBlock extends BlockBase implements ContainerFactoryPluginInterface {
+class AcceptanceTasksBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * The form builder service.
@@ -64,14 +64,14 @@ class DeliverDigestMessagesBlock extends BlockBase implements ContainerFactoryPl
    * {@inheritdoc}
    */
   protected function blockAccess(AccountInterface $account): AccessResultInterface {
-    return AccessResult::allowedIfHasPermission($account, 'deliver digest messages');
+    return AccessResult::allowedIfHasPermission($account, 'perform acceptance tasks');
   }
 
   /**
    * {@inheritdoc}
    */
   public function build(): array {
-    return $this->formBuilder->getForm(DeliverDigestMessagesForm::class);
+    return $this->formBuilder->getForm(AcceptanceTasksForm::class);
   }
 
 }

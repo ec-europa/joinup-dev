@@ -14,9 +14,9 @@ use Drupal\message_digest\Traits\MessageDigestTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Form allowing to deliver digest messages.
+ * Form allowing to perform acceptance tasks.
  */
-class DeliverDigestMessagesForm extends FormBase {
+class AcceptanceTasksForm extends FormBase {
 
   use MessageDigestTrait;
 
@@ -95,7 +95,7 @@ class DeliverDigestMessagesForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId(): string {
-    return 'deliver_digest_messages';
+    return 'acceptance_tasks';
   }
 
   /**

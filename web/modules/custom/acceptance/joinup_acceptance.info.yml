@@ -1,6 +1,6 @@
 name: 'Joinup Acceptance'
 type: module
-description: 'Tools to be used in the acceptance environment.'
+description: 'Tasks to performed in the acceptance environment.'
 core_version_requirement: ^8 || ^9
 package: Joinup
 dependencies:

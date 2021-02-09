@@ -7,15 +7,15 @@ dependencies:
     - joinup_core
   theme:
     - joinup_theme
-id: deliver_digest_messages_form
+id: acceptance_tasks_form
 theme: joinup_theme
 region: content
 weight: 0
 provider: null
-plugin: deliver_digest_messages
+plugin: acceptance_tasks
 settings:
-  id: deliver_message_digests
-  label: 'Deliver digest messages  form'
+  id: acceptance_tasks
+  label: 'Acceptance tasks'
   provider: joinup_acceptance
   label_display: '0'
 visibility:
