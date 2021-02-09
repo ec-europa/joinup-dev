@@ -82,8 +82,12 @@ class AcceptanceTasksForm extends FormBase {
     do {
       $this->expireMessageDigestNotifiers();
       message_digest_cron();
-      $this->processQueue();
+      if (!$this->processQueue()) {
+        // An error status message has already been set.
+        return;
+      }
     } while ($this->countAllUndeliveredDigestMessages());
+    $this->messenger()->addStatus('Successfully delivered all digest messages. Note that the messages might have been spooled, meaning it could take some time to receive them.');
   }
 
   /**
@@ -100,11 +104,15 @@ class AcceptanceTasksForm extends FormBase {
 
   /**
    * Processes 'message_digest' queue.
+   *
+   * @return bool
+   *   The queue process success.
    */
-  protected function processQueue() {
+  protected function processQueue(): bool {
     $this->queueFactory->get('message_digest')->createQueue();
     $queue_worker = $this->queueManager->createInstance('message_digest');
     $queue = $this->queueFactory->get('message_digest');
+    $error_status_message = $this->t("Errors were logged while delivering digest messages. Contact the site administrator.");
     while ($item = $queue->claimItem()) {
       try {
         $queue_worker->processItem($item->data);
@@ -115,17 +123,21 @@ class AcceptanceTasksForm extends FormBase {
         $queue->releaseItem($item);
       }
       catch (SuspendQueueException $e) {
-        // If the worker indicates there is a problem with the whole queue,
-        // release the item and skip to the next queue.
+        // The worker indicates there is a problem with the whole queue. Exit.
         $queue->releaseItem($item);
         watchdog_exception('message_digest', $e);
+        $this->messenger()->addError($error_status_message);
+        return FALSE;
       }
       catch (\Exception $e) {
         // In case of any other kind of exception, log it and leave the item
         // in the queue to be processed again later.
         watchdog_exception('message_digest', $e);
+        $this->messenger()->addError($error_status_message);
+        return FALSE;
       }
     }
+    return TRUE;
   }
 
 }
