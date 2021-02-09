@@ -3,6 +3,7 @@
 joinup:
   site_dir: ${joinup.dir}/web
   theme_dir: ${joinup.site_dir}/themes/joinup
+  db_dir: ${joinup.dir}/db
 
 scss:
   import_dir: ${joinup.theme_dir}/scss

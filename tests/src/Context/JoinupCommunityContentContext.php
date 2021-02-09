@@ -447,6 +447,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
       foreach ($this->entities['taxonomy_term'] as $candidate_term) {
         if ($candidate_term->bundle() === 'policy_domain' && !$candidate_term->get('parent')->isEmpty()) {
           $term = $candidate_term;
+          break;
         }
       }
     }
