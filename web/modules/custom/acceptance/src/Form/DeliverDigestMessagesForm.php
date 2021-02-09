@@ -45,7 +45,6 @@ class DeliverDigestMessagesForm extends FormBase {
   public function __construct(QueueFactory $queue_factory, QueueWorkerManagerInterface $queue_manager) {
     $this->queueFactory = $queue_factory;
     $this->queueManager = $queue_manager;
-
   }
 
   /**
