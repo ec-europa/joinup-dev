@@ -1,0 +1,27 @@
+uuid: ee909561-ade9-4a56-8137-f47a4b2d419a
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_acceptance
+    - joinup_core
+  theme:
+    - joinup_theme
+id: acceptance_tasks_form
+theme: joinup_theme
+region: content
+weight: 0
+provider: null
+plugin: acceptance_tasks
+settings:
+  id: acceptance_tasks
+  label: 'Acceptance tasks'
+  provider: joinup_acceptance
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - dashboard.page
+    negate: false
+    context_mapping: {  }
