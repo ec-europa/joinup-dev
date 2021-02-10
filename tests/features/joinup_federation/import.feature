@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: As a site moderator I am able to import RDF files.
 
   Background:
@@ -9,6 +9,7 @@ Feature: As a site moderator I am able to import RDF files.
     And users:
       | Username        | Roles     |
       | Antoine Batiste | moderator |
+    And no pipelines have run
     And I am logged in as "Antoine Batiste"
 
   Scenario: Test available pipelines
@@ -22,12 +23,12 @@ Feature: As a site moderator I am able to import RDF files.
       | Spain - Center for Technology Transfer   |
 
   Scenario: Test the pipeline functionality
-    And users:
+    Given users:
       | Username         | Roles     |
       | LaDonna          | moderator |
       | Janette Desautel |           |
 
-    Given I click "ADMS-AP importer" in the "Administration toolbar" region
+    And I click "ADMS-AP importer" in the "Administration toolbar" region
     And I select "Spain - Center for Technology Transfer" from "Data pipeline"
     And I press "Execute"
     Then I should see "Spain - Center for Technology Transfer: Manual upload"
@@ -159,6 +160,18 @@ Feature: As a site moderator I am able to import RDF files.
       | http://example.com/licence/1 | Licence same as Apache 2 | Licence agreement details | Public domain | Apache 2     |
       | http://example.com/licence/2 | Licence same as MIT      | So on...                  | Public domain | MIT License  |
 
+    # Initially the pipeline report should show that the pipelines have not run.
+    When I go to "/admin/reporting"
+    And I click "Pipeline report"
+    Then the "pipeline log" table should contain the following columns:
+      | Pipeline                                 | Last executed |
+      | Danish Public Sector Interoperability    | Never         |
+      | EU Schemantic Interoperability Catalogue | Never         |
+      | Joinup collection                        | Never         |
+      | Slovenian Interoperability Portal - NIO  | Never         |
+      | Spain - Center for Technology Transfer   | Never         |
+
+    # Start the import.
     Given I click "ADMS-AP importer" in the "Administration toolbar" region
     And I select "Slovenian Interoperability Portal - NIO" from "Data pipeline"
     And I press "Execute"
@@ -306,6 +319,18 @@ Feature: As a site moderator I am able to import RDF files.
     # Check that provenance activity records are not indexed.
     When I am at "/search"
     Then I should not see the following facet items "Activities"
+
+    # Check that the pipeline report shows that the pipeline has run.
+    When I go to "/admin/reporting"
+    And I click "Pipeline report"
+    Then the "pipeline log" table should contain the following columns:
+      | Pipeline                                 | Last executed |
+      | Danish Public Sector Interoperability    | Never         |
+      | EU Schemantic Interoperability Catalogue | Never         |
+      | Joinup collection                        | Never         |
+      | Slovenian Interoperability Portal - NIO  | 0 days ago    |
+      | Spain - Center for Technology Transfer   | Never         |
+
 
     # We manually delete the imported entities as they are not tracked by Behat
     # and, as a consequence, will not be automatically deleted after test. Also

@@ -281,4 +281,45 @@ class JoinupCoreContext extends RawDrupalContext {
     $link->click();
   }
 
+  /**
+   * Sets the last execution time of a pipeline.
+   *
+   * @param string $pipeline_label
+   *   The pipeline label.
+   * @param string $days
+   *   The amount of days since the last execution of the pipeline.
+   *
+   * @Given the :pipeline pipeline was last executed :days days ago
+   */
+  public function givenPipelineRanTimeAgo(string $pipeline_label, string $days): void {
+    $pipeline_manager = \Drupal::getContainer()->get('plugin.manager.pipeline_pipeline');
+    $pipeline = NULL;
+    /**  @var \Drupal\pipeline\Plugin\PipelinePipelineInterface $pipeline_id */
+    foreach ($pipeline_manager->getDefinitions() as $definition) {
+      if ($definition['label'] == $pipeline_label) {
+        $pipeline = $definition;
+        break;
+      }
+    }
+
+    Assert::assertNotEmpty($pipeline, "Pipeline {$pipeline_label} was not found.");
+    $time = \Drupal::getContainer()->get('datetime.time');
+    $collection = \Drupal::getContainer()->get('keyvalue')->get('joinup_pipeline_log');
+    $collection->set($pipeline['id'], $time->getRequestTime() - ($days * 86400));
+  }
+
+  /**
+   * Deletes all execution dates of pipelines.
+   *
+   * In order to be able to not have random failures in tests, e.g. when another
+   * test runs a pipeline before this, this step will clean up the history so
+   * that we can test in a clean state.
+   *
+   * @Given no pipelines have run
+   */
+  public function givenNoPipelineRanYet(): void {
+    $collection = \Drupal::getContainer()->get('keyvalue')->get('joinup_pipeline_log');
+    $collection->deleteAll();
+  }
+
 }
