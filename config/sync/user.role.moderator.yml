@@ -15,6 +15,7 @@ permissions:
   - 'access draft community content'
   - 'access joinup reports'
   - 'access messages overview'
+  - 'access pipeline report'
   - 'access pipeline selector'
   - 'access release create field'
   - 'access toolbar'

@@ -15,6 +15,7 @@ use Drupal\pipeline\Plugin\PipelineStepPluginManager;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Provides a base class for Joinup ETL pipelines.
@@ -79,11 +80,13 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    *   The shared temp store factory service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
+   *   The event dispatcher service.
    */
-  public function __construct(array $configuration, string $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, AccountProxyInterface $current_user, ConnectionInterface $sparql, SharedTempStoreFactory $shared_tempstore_factory, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, string $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, AccountProxyInterface $current_user, ConnectionInterface $sparql, SharedTempStoreFactory $shared_tempstore_factory, EntityTypeManagerInterface $entity_type_manager, EventDispatcherInterface $event_dispatcher) {
     $this->currentUser = $current_user;
 
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $step_plugin_manager, $state_manager);
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $step_plugin_manager, $state_manager, $event_dispatcher);
 
     $this->sparql = $sparql;
     $this->sharedTempStoreFactory = $shared_tempstore_factory;
@@ -103,7 +106,8 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
       $container->get('current_user'),
       $container->get('sparql.endpoint'),
       $container->get('joinup_federation.tempstore.shared'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('event_dispatcher')
     );
   }
 
@@ -166,6 +170,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
     $this->clearGraphs();
     $this->lockRelease();
     parent::onSuccess();
+
     return $this;
   }
 
@@ -242,6 +247,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
     $this->clearStagingEntitiesCache();
     $this->clearGraphs();
     $this->lockRelease();
+
     return parent::onError();
   }
 
