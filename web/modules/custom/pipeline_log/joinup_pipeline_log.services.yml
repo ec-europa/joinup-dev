@@ -1,0 +1,6 @@
+services:
+  joinup_pipeline_log.event_subscriber:
+    class: Drupal\joinup_pipeline_log\EventSubscriber\JoinupPipelineLogSubscriber
+    arguments: ['@keyvalue', '@datetime.time']
+    tags:
+      - { name: event_subscriber }
