@@ -11,7 +11,9 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
+use Drupal\joinup_stats\Entity\DownloadCount;
 use Drupal\joinup_stats\Entity\StatisticsAwareInterface;
+use Drupal\joinup_stats\Entity\VisitCount;
 use Drupal\meta_entity\Entity\MetaEntityInterface;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -201,4 +203,16 @@ function joinup_stats_get_period_options() {
     (int) round(6 * $month_in_days) => t('6 months'),
     0 => t('All time'),
   ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function joinup_stats_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['meta_entity']['download_count'])) {
+    $bundles['meta_entity']['download_count']['class'] = DownloadCount::class;
+  }
+  if (!empty($bundles['meta_entity']['visit_count'])) {
+    $bundles['meta_entity']['visit_count']['class'] = VisitCount::class;
+  }
 }

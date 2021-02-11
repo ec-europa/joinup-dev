@@ -9,4 +9,12 @@ namespace Drupal\joinup_stats\Entity;
  */
 interface VisitCountAwareInterface extends StatisticsAwareInterface {
 
+  /**
+   * Returns the visit count.
+   *
+   * @return int
+   *   The number of tracked page views.
+   */
+  public function getVisitCount(): int;
+
 }
