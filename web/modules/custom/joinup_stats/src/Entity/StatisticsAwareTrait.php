@@ -17,16 +17,16 @@ trait StatisticsAwareTrait {
   /**
    * {@inheritdoc}
    */
+  public function getStatisticsFieldNames(): array {
+    return self::JOINUP_STATS_FIELDS;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function createStatisticsMetaEntities(): array {
-    /** @var \Drupal\meta_entity\MetaEntityRepositoryInterface $repository */
-    $repository = \Drupal::service('meta_entity.repository');
-    $field_names = $repository->getReverseReferenceFieldNames($this->getEntityTypeId(), $this->bundle());
-
-    // Filter out all field names that do not contain statistical data.
-    $field_names = array_intersect($field_names, StatisticsAwareInterface::STATISTICS_FIELDS);
-
     $entities = [];
-    foreach ($field_names as $field_name) {
+    foreach ($this->getStatisticsFieldNames() as $field_name) {
       try {
         $entities[] = $this->createMetaEntity($field_name);
       }

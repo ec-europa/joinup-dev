@@ -9,4 +9,12 @@ namespace Drupal\joinup_stats\Entity;
  */
 interface DownloadCountAwareInterface extends StatisticsAwareInterface {
 
+  /**
+   * Returns the download count.
+   *
+   * @return int
+   *   The number of tracked downloads.
+   */
+  public function getDownloadCount(): int;
+
 }

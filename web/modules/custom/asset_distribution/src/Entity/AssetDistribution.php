@@ -7,6 +7,8 @@ namespace Drupal\asset_distribution\Entity;
 use Drupal\asset_distribution\Exception\MissingDistributionParentException;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_group\Entity\GroupContentTrait;
+use Drupal\joinup_stats\Entity\DownloadCountAwareInterface;
+use Drupal\joinup_stats\Entity\DownloadCountAwareTrait;
 use Drupal\joinup_stats\Entity\StatisticsAwareTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\solution\Entity\SolutionContentTrait;
@@ -20,10 +22,18 @@ use Drupal\solution\Entity\SolutionInterface;
  */
 class AssetDistribution extends Rdf implements AssetDistributionInterface {
 
+  use DownloadCountAwareTrait;
   use GroupContentTrait;
   use SolutionContentTrait;
   use JoinupBundleClassMetaEntityTrait;
   use StatisticsAwareTrait;
+
+  /**
+   * Fields populated with statistical information by the joinup_stats module.
+   */
+  const JOINUP_STATS_FIELDS = [
+    DownloadCountAwareInterface::class => 'download_count',
+  ];
 
   /**
    * {@inheritdoc}
