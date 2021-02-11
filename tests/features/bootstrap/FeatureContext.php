@@ -96,19 +96,23 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fields are present on the page.
    *
    * @param string $fields
-   *   Fields.
+   *   The field labels to check.
+   * @param string|null $region
+   *   (optional) The name of the region to inspect. Defaults to the whole page.
    *
    * @throws \Exception
    *   Thrown when an expected field is not present.
    *
    * @Then (the following )field(s) should be present :fields
+   * @Then the :fields field(s) should be present in the :region region
    */
-  public function assertFieldsPresent(string $fields): void {
+  public function assertFieldsPresent(string $fields, ?string $region = NULL): void {
+    $region_element = $region ? $this->getRegion($region) : $this->getSession()->getPage();
+
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
-    $page = $this->getSession()->getPage();
     $not_found = [];
     foreach ($fields as $field) {
-      $is_found = (bool) $this->findAnyFormField($field, $page);
+      $is_found = (bool) $this->findAnyFormField($field, $region_element);
       if (!$is_found) {
         $not_found[] = $field;
       }
@@ -122,18 +126,22 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fields are not present on the page.
    *
    * @param string $fields
-   *   Fields.
+   *   The field labels to check.
+   * @param string|null $region
+   *   (optional) The name of the region to inspect. Defaults to the whole page.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
    * @Then (the following )field(s) should not be present :fields
+   * @Then the :fields field(s) should not be present in the :region region
    */
-  public function assertFieldsNotPresent(string $fields): void {
+  public function assertFieldsNotPresent(string $fields, ?string $region = NULL): void {
+    $region_element = $region ? $this->getRegion($region) : $this->getSession()->getPage();
+
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
-    $page = $this->getSession()->getPage();
     foreach ($fields as $field) {
-      $is_found = $page->findField($field);
+      $is_found = $region_element->findField($field);
       if ($is_found) {
         throw new \Exception("Field should not be found, but is present: " . $field);
       }

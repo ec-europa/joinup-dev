@@ -41,6 +41,18 @@ Feature: Global search
       | Licence to grill | 2020-08-04    | 2021-09-10T14:00 | validated | Bento      |
 
     When I visit the search page
+    # The search page is a view which is controlled using a combination of
+    # search facets and exposed filters. The design calls for exposed filters to
+    # be shown underneath the search bar (the "Sort by" dropdown) as well as in
+    # the sidebar (the "Published between" and "Last updated between" filters).
+    # A view only has a single exposed form, so this is solved by duplicating
+    # the form, showing one in the sidebar and one underneath the title, and
+    # altering the exposed form dynamically so the duplicated fields are hidden.
+    Then the "Published between, Last updated between" fields should be present in the "Left sidebar" region
+    And the "Sort by" field should be present in the "Content top" region
+    But the "Published between, Last updated between" fields should not be present in the "Content top" region
+    And the "Sort by" field should not be present in the "Left sidebar" region
+
     And I fill in "Published between" with "2020-01-01" in the "Left sidebar" region
     # Todo: ensure the search works when only entering only the first field.
     # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6362
