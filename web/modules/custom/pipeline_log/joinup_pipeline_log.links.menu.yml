@@ -1,0 +1,5 @@
+joinup_pipeline_log.report:
+  title: 'Pipeline report'
+  route_name: joinup_pipeline_log.report
+  parent: joinup.admin_reporting
+  weight: 4
