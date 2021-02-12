@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.view_mode_tile
-    - field.field.node.glossary.field_glossary_abbreviation
     - field.field.node.glossary.field_glossary_definition
     - field.field.node.glossary.field_glossary_synonyms
     - field.field.node.glossary.og_audience
@@ -18,23 +17,6 @@ targetEntityType: node
 bundle: glossary
 mode: view_mode_tile
 content:
-  field_glossary_abbreviation:
-    weight: 0
-    label: hidden
-    settings:
-      trim_length: 600
-      trim_type: chars
-      trim_suffix: ''
-      wrap_output: false
-      wrap_class: trimmed
-      more_link: false
-      more_class: more-link
-      more_text: More
-      summary_handler: full
-      trim_options: {  }
-    third_party_settings: {  }
-    type: smart_trim
-    region: content
   field_glossary_definition:
     weight: 1
     label: hidden

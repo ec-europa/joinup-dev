@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_glossary_abbreviation
     - field.storage.node.field_glossary_definition
     - field.storage.node.field_glossary_synonyms
     - node.type.glossary
@@ -209,10 +208,6 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: field
-        field_glossary_abbreviation:
-          id: field_glossary_abbreviation
-          table: node__field_glossary_abbreviation
-          field: field_glossary_abbreviation
         field_glossary_synonyms:
           id: field_glossary_synonyms
           table: node__field_glossary_synonyms
@@ -482,7 +477,6 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_glossary_abbreviation'
         - 'config:field.storage.node.field_glossary_definition'
         - 'config:field.storage.node.field_glossary_synonyms'
   main:
@@ -505,6 +499,5 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_glossary_abbreviation'
         - 'config:field.storage.node.field_glossary_definition'
         - 'config:field.storage.node.field_glossary_synonyms'
