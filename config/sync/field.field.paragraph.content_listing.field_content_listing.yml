@@ -15,7 +15,18 @@ label: 'Content listing'
 description: ''
 required: false
 translatable: false
-default_value: {  }
+default_value:
+  -
+    value:
+      fields:
+        field_content_listing_type:
+          weight: 0
+          region: top
+      enabled: 1
+      query_presets: ''
+      limit: 10
+      show_shared: 0
+      global_search: 0
 default_value_callback: ''
 settings: {  }
 field_type: search_api_field
