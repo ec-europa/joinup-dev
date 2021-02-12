@@ -12,10 +12,20 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
+use Drupal\easme_pledge\Entity\Pledge;
 use Drupal\easme_pledge\EventSubscriber\NotificationSubscriber;
 use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function easme_pledge_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['node']['pledge'])) {
+    $bundles['node']['pledge']['class'] = Pledge::class;
+  }
+}
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -49,7 +59,7 @@ function easme_pledge_rdf_entity_view(array &$build, RdfInterface $entity, Entit
     $build['pledge'] = [
       '#type' => 'link',
       '#title' => t('Pledge'),
-      '#url' => Url::fromRoute('easme_pledge.rdf_entity_pledge.add', [
+      '#url' => Url::fromRoute('joinup_group.add_content', [
         'rdf_entity' => $entity->id(),
         'node_type' => 'pledge',
       ]),
@@ -66,7 +76,7 @@ function easme_pledge_node_access(NodeInterface $entity, string $operation, Acco
   }
   // Even though the community content workflow access handler is designed for
   // community content, for this case, it serves our purpose.
-  return \Drupal::service('easme_pledge.access_handler')->entityAccess($entity, $operation, $account);
+  return \Drupal::getContainer()->get('easme_pledge.access_handler')->entityAccess($entity, $operation, $account);
 }
 
 /**

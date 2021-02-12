@@ -15,13 +15,12 @@ RUN sed -ri -e 's!/var/www/!${DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/a
 # install the PHP extensions we need
 RUN set -ex; \
 	apt-get update; \
-    apt-get install -y --no-install-recommends ssh libzip-dev libjpeg-dev libpng-dev libpq-dev mysql-client gnupg \
-    wget curl nano unzip patch git rsync make ssmtp; \
+    apt-get install -y --no-install-recommends iproute2 ssh libzip-dev libjpeg-dev libpng-dev libpq-dev mysql-client \
+    net-tools gnupg wget curl nano unzip patch git rsync make ssmtp; \
 	docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
 	docker-php-ext-install -j "$(nproc)" gd opcache pdo_mysql pdo_pgsql zip
 
-RUN pecl install xdebug; \
-    docker-php-ext-enable xdebug;
+RUN pecl install xdebug-2.9.8;
 
 RUN wget https://github.com/composer/composer/releases/download/${composer_version}/composer.phar -O /usr/bin/composer
 RUN wget https://github.com/drush-ops/drush/releases/download/${drush_version}/drush.phar -O /usr/bin/drush

@@ -2,7 +2,7 @@ uuid: c9a630bb-09f2-4ec1-b8f0-c0e4fd9a6b5c
 langcode: en
 status: true
 dependencies: {  }
-name: 'Joinup Quarterly Newsletter'
+name: 'Challenge Quarterly Newsletter'
 id: joinup_quarterly_newsletter
 description: ''
 format: plain

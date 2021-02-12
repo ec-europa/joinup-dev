@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_group\Controller;
 
 use Drupal\Component\Render\MarkupInterface;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Session\AccountInterface;
@@ -98,6 +99,11 @@ class GroupNodeController extends ControllerBase {
    *   Thrown when the user entity type is not defined.
    */
   public function createAccess(RdfInterface $rdf_entity, NodeTypeInterface $node_type, AccountInterface $account): AccessResultInterface {
+    // As a special case, the Pledge is allowed for all authenticated users.
+    if ($node_type->id() === 'pledge') {
+      return AccessResult::allowedIf($account->isAuthenticated());
+    }
+
     // Grant access depending on whether the user has permission to create a
     // node in this group according to their OG role.
     return $this->ogAccess->userAccessGroupContentEntityOperation('create', $rdf_entity, $this->createNode($rdf_entity, $node_type), $account);

@@ -25,8 +25,8 @@ Feature: User registration
       | Active                     | 1                  |
     Then the following email should have been sent:
       | recipient | miomio                                                                                                                          |
-      | subject   | Your Joinup account was created successfully.                                                                                   |
-      | body      | The Joinup Support Team created your account on Joinup. Please log in through the following link in order to set your password. |
+      | subject   | Your Challenge account was created successfully.                                                                                   |
+      | body      | The Challenge Support Team created your account on Joinup. Please log in through the following link in order to set your password. |
     # Only the email about the creation of the account should be sent. This
     # check ensures that we do not accidentally trigger any other notifications.
     And 1 e-mail should have been sent
