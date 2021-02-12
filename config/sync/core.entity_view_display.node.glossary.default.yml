@@ -17,7 +17,7 @@ bundle: glossary
 mode: default
 content:
   field_glossary_definition:
-    weight: 1
+    weight: 0
     label: hidden
     settings: {  }
     third_party_settings:
@@ -26,13 +26,17 @@ content:
     type: text_default
     region: content
   field_glossary_synonyms:
-    weight: 0
+    type: string
+    weight: 1
+    region: content
     label: inline
     settings:
       link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
+    third_party_settings:
+      field_delimiter:
+        delimiter: ', '
+      template_suggestion:
+        template_suggestion: ''
 hidden:
   langcode: true
   links: true
