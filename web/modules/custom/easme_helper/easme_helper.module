@@ -87,6 +87,10 @@ function easme_helper_preprocess_message_digest(&$variables) {
  */
 function easme_helper_user_status_list() {
   return [
+    'user_valid' => [
+      'label' => t('User validated'),
+      'message' => t('Welcome %user_firstname %user_lastname'),
+    ],
     'user_invited' => [
       'label' => t('User invited'),
       'message' => t('Please complete your profile at %url_to_smed_user'),
