@@ -138,15 +138,19 @@ function joinup_core_deploy_0106801(array &$sandbox): string {
     if ($custom_page->get('field_cp_content_listing')->isEmpty()) {
       continue;
     }
-    $cp_value = $custom_page->get('field_cp_content_listing')->value;
+    $cp_value = $custom_page->get('field_cp_content_listing')->getValue();
     // Skip if there is the field is not enabled and there are no query presets,
     // meaning that the field is not simply disabled.
-    if ($cp_value['enabled'] === 0 && empty($cp_value['query_presets'])) {
+    if ($cp_value[0]['value']['enabled'] === 0 && empty($cp_value[0]['value']['query_presets'])) {
       continue;
     }
 
+    $cp_value[0]['value']['fields']['field_content_listing_type'] = $cp_value[0]['value']['fields']['field_cp_content_listing_content_type'];
+    unset($cp_value[0]['value']['fields']['field_cp_content_listing_content_type']);
+
     $paragraph = Paragraph::create(['type' => 'content_listing']);
     $paragraph->set('field_content_listing', $cp_value)->save();
+
     $paragraphs_body = $custom_page->get('field_paragraphs_body');
     $value = $paragraphs_body->getValue();
     $value[] = [
