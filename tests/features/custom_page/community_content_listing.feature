@@ -268,7 +268,7 @@ Feature:
     When I fill in the following:
       | Title | Collection content                        |
       | Body  | Shows all the content for this collection |
-    And I check "Add related content"
+    And I press "Add Content listing"
     And I press "Save"
     Then I should see the heading "Collection content"
     # Verify that unwanted facets are not shown in the page.
@@ -302,7 +302,7 @@ Feature:
     When I fill in the following:
       | Title | Manuals        |
       | Body  | Product guides |
-    And I check the box "Add related content"
+    And I press "Add Content listing"
     And I fill in "Query presets" with:
         """
         entity_bundle|document
@@ -319,7 +319,7 @@ Feature:
     When I fill in the following:
       | Title | Licences          |
       | Body  | Product licensing |
-    And I check the box "Add related content"
+    And I press "Add Content listing"
     And I fill in "Query presets" with:
         """
         entity_bundle|document
@@ -336,7 +336,7 @@ Feature:
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
     When I fill in "Title" with "Query presets validation"
-    And I check "Add related content"
+    And I press "Add Content listing"
     And I fill in "Query presets" with "wrongvalue"
     And I press "Save"
     Then I should see the error message "Invalid query preset line added: wrongvalue."
@@ -364,7 +364,7 @@ Feature:
     When I fill in the following:
       | Title | All content     |
       | Body  | Show EVERYTHING |
-    And I check "Add related content"
+    And I press "Add Content listing"
     And I check "Global search"
     And I press "Save"
     Then I should see the heading "All content"
