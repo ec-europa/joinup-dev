@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.glossary.field_glossary_abbreviation
     - field.field.node.glossary.field_glossary_definition
+    - field.field.node.glossary.field_glossary_synonyms
     - field.field.node.glossary.og_audience
     - node.type.glossary
   module:
@@ -36,6 +37,14 @@ content:
       allowed_formats:
         hide_help: '1'
         hide_guidelines: '1'
+  field_glossary_synonyms:
+    weight: 26
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   status:
     type: boolean_checkbox
     settings:

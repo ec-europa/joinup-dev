@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.glossary.field_glossary_abbreviation
     - field.field.node.glossary.field_glossary_definition
+    - field.field.node.glossary.field_glossary_synonyms
     - field.field.node.glossary.og_audience
     - node.type.glossary
   module:
@@ -32,6 +33,14 @@ content:
       template_suggestion:
         template_suggestion: ''
     type: text_default
+    region: content
+  field_glossary_synonyms:
+    weight: 0
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
 hidden:
   langcode: true

@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_glossary_abbreviation
     - field.storage.node.field_glossary_definition
+    - field.storage.node.field_glossary_synonyms
     - node.type.glossary
     - rdf_entity.rdfentity.collection
   module:
@@ -212,6 +213,10 @@ display:
           id: field_glossary_abbreviation
           table: node__field_glossary_abbreviation
           field: field_glossary_abbreviation
+        field_glossary_synonyms:
+          id: field_glossary_synonyms
+          table: node__field_glossary_synonyms
+          field: field_glossary_synonyms
           relationship: none
           group_type: group
           admin_label: ''
@@ -479,6 +484,7 @@ display:
       tags:
         - 'config:field.storage.node.field_glossary_abbreviation'
         - 'config:field.storage.node.field_glossary_definition'
+        - 'config:field.storage.node.field_glossary_synonyms'
   main:
     display_plugin: block
     id: main
@@ -501,3 +507,4 @@ display:
       tags:
         - 'config:field.storage.node.field_glossary_abbreviation'
         - 'config:field.storage.node.field_glossary_definition'
+        - 'config:field.storage.node.field_glossary_synonyms'

@@ -6,10 +6,10 @@ dependencies:
     - core.entity_view_mode.node.view_mode_tile
     - field.field.node.glossary.field_glossary_abbreviation
     - field.field.node.glossary.field_glossary_definition
+    - field.field.node.glossary.field_glossary_synonyms
     - field.field.node.glossary.og_audience
     - node.type.glossary
   module:
-    - smart_trim
     - template_suggestion
     - text
     - user
@@ -44,6 +44,14 @@ content:
         template_suggestion: ''
     type: text_default
     region: content
+  field_glossary_synonyms:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
 hidden:
   langcode: true
   links: true
