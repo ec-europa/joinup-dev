@@ -196,10 +196,9 @@ function custom_page_menu_local_actions_alter(&$local_actions) {
  * Alters the Search API query in custom pages for the content listing field.
  */
 function custom_page_search_api_query_search_api_field_field_content_listing_alter(QueryInterface &$query) {
-  /** @var \Drupal\paragraphs\Entity\Paragraph $entity */
   $entity = $query->getOption('search_api_field entity');
-  /** @var \Drupal\Core\Entity\EntityInterface $group */
-  $group = $entity->getParentEntity()->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->first()->entity;
+  $parent_entity = \Drupal::entityTypeManager()->getStorage($entity->get('parent_type')->value)->load($entity->get('parent_id')->value);
+  $group = $parent_entity->getGroup();
   if (!$group) {
     return;
   }
@@ -222,7 +221,7 @@ function custom_page_search_api_query_search_api_field_field_content_listing_alt
   }
 
   // Remove the page itself from the results.
-  $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
+  $query->addCondition($parent_entity->getEntityType()->getKey('id'), $parent_entity->id(), '<>');
 }
 
 /**
