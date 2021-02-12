@@ -114,7 +114,7 @@ function joinup_search_search_api_query_alter(QueryInterface $query) {
   if ($query->getSearchId() === 'rdf_entity.field_collection_content') {
     // In case the user has filtered by event, first sort by the event date.
     // @todo This will be generic when event calendar will be implemented for
-    // the rdf_entity.field_is_content and the node.field_content_listing
+    // the rdf_entity.field_is_content and the paragraph.field_content_listing
     // instances of the search api field listing.
     if (_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
       // If the upcoming events are selected, set the order to 'ASC'.
@@ -129,7 +129,7 @@ function joinup_search_search_api_query_alter(QueryInterface $query) {
   $search_ids = [
     'rdf_entity.field_collection_content',
     'rdf_entity.field_is_content',
-    'node.field_content_listing',
+    'paragraph.field_content_listing',
   ];
 
   if (in_array($query->getSearchId(), $search_ids)) {
