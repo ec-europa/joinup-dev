@@ -174,13 +174,17 @@ function tallinn_search_api_query_search_api_field_field_collection_content_alte
 }
 
 /**
- * Implements hook_entity_view_alter().
+ * Implements hook_ENTITY_TYPE_view_alter().
  */
-function tallinn_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
-  if ($entity->bundle() !== 'custom_page') {
+function tallinn_paragraph_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  /** @var \Drupal\paragraphs\ParagraphInterface $entity */
+  if ($entity->bundle() !== 'content_listing') {
     return;
   }
-  if (empty($entity->og_audience) || $entity->og_audience->first()->target_id !== Tallinn::TALLINN_COMMUNITY_ID) {
+
+  /** @var \Drupal\custom_page\Entity\CustomPageInterface $parent */
+  $parent = $entity->getParentEntity();
+  if (empty($parent) || $parent->getGroup()->id() !== Tallinn::TALLINN_COMMUNITY_ID) {
     return;
   }
 
