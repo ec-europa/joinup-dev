@@ -29,16 +29,16 @@ processor_configs:
     weights:
       sort: 20
     settings:
-      sort: DESC
+      sort: ASC
   aggregated_entity_reference_label:
     processor_id: aggregated_entity_reference_label
     weights:
-      build: 5
+      build: -4
     settings: {  }
   count_limit:
     processor_id: count_limit
     weights:
-      build: 50
+      build: -9
     settings:
       minimum_items: 1
       maximum_items: null
@@ -58,7 +58,7 @@ processor_configs:
     processor_id: url_processor_handler
     weights:
       pre_query: 50
-      build: 15
+      build: -5
     settings: {  }
 empty_behavior:
   behavior: none
