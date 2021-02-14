@@ -120,8 +120,13 @@ function joinup_core_post_update_0106800(): void {
  */
 function joinup_core_post_update_0106801(): void {
   $db = \Drupal::database();
-  $terms = $db->select('node__field_glossary_abbreviation', 'n')
-    ->fields('n', ['entity_id', 'field_glossary_abbreviation_value'])
+  $query = $db->select('node__field_glossary_abbreviation', 'ga');
+  $query->addExpression('ga.entity_id', 'nid');
+  $query->addExpression('ga.field_glossary_abbreviation_value', 'abbr');
+  $query->innerJoin('node_field_data', 'n', 'ga.entity_id = n.nid');
+  $terms = $query
+    // Exclude abbreviations same as their term title.
+    ->condition('ga.field_glossary_abbreviation_value', 'n.title', '!=')
     ->execute()
     ->fetchAll();
   \Drupal::state()->set('isaicp_6153', $terms);

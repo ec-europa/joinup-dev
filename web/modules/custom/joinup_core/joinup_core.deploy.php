@@ -135,7 +135,7 @@ function joinup_core_deploy_0106801(array &$sandbox): string {
   $terms_to_process = array_splice($sandbox['terms'], 0, 20);
   $terms = [];
   foreach ($terms_to_process as $term) {
-    $terms[$term->entity_id] = $term->field_glossary_abbreviation_value;
+    $terms[$term->nid] = $term->abbr;
   }
   /** @var \Drupal\collection\Entity\GlossaryTermInterface $glossary */
   foreach (Node::loadMultiple(array_keys($terms)) as $nid => $glossary) {
