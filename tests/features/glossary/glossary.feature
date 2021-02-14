@@ -250,7 +250,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     # Test that the synonym replacement is case insensitive.
     And I should see the link "aBC"
 
-  Scenario: Test glossary term name duplication.
+  Scenario: Test glossary term name and synonyms collision.
     Given users:
       | Username |
       | ben      |
@@ -287,3 +287,50 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | Definition         | Same term name |
     And I press "Save"
     Then I should see the success message "Glossary term XFiles has been created."
+
+    # Test glossary term name and synonyms overlapping.
+    And glossary content:
+      | title     | synonyms                | definition                  | collection        |
+      | Alphabet  | ABC, XYZ                | Long, long definition field | A World of Things |
+      | Colors    | CLR,colrs               | Colors definition field     | A World of Things |
+      | XRatings  | XRT,X.R.T.,extraratings | definition                  | Other collection  |
+      | Duplicate | dupe,DuPe               | duplicate sysnonym          | A World of Things |
+
+    # Hard to fill a multi-value field, so we'll pre-create it with duplicates.
+    When I go to the glossary content "Duplicate" edit screen
+    And I press "Save"
+    Then I should see the error message "The 'DuPe' synonym is duplicated. Keep only one entry."
+
+    When I go to the "A World of Things" collection
+    And I click "Add glossary term" in the plus button menu
+    And I fill in the following:
+      # Test also if the match is case insensitive.
+      | Glossary term name | Some |
+      | Synonyms           | soMe |
+      | Definition         | def  |
+    And I press "Save"
+    Then I should see the error message "A synonym cannot be the same as the glossary term name (Some)."
+
+    And I fill in the following:
+      # Test also if the match is case insensitive.
+      | Glossary term name | xyz      |
+      | Synonyms           | alPHABET |
+      | Definition         | def      |
+    And I press "Save"
+    Then I should see the following error messages:
+      | error messages                                                                                                               |
+      | This glossary term (xyz) name is already used as synonym of Alphabet. You should remove that synonym before using this name. |
+      | Some synonyms are already used in other glossary terms either as term name or as term synonyms: alPHABET in Alphabet                   |
+
+    When I fill in "Synonyms" with "colrs"
+    And I press "Save"
+    Then I should see the following error messages:
+      | error messages                                                                                                               |
+      | This glossary term (xyz) name is already used as synonym of Alphabet. You should remove that synonym before using this name. |
+      | Some synonyms are already used in other glossary terms either as term name or as term synonyms: colrs in Colors.                        |
+
+    # But is allowed to overlap if the other term is in a different collection.
+    When I fill in "Glossary term name" with "XRatings"
+    And I fill in "Synonyms" with "extraratings"
+    And I press "Save"
+    Then I should see the success message "Glossary term XRatings has been created."
