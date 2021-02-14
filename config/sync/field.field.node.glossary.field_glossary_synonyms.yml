@@ -9,8 +9,8 @@ id: node.glossary.field_glossary_synonyms
 field_name: field_glossary_synonyms
 entity_type: node
 bundle: glossary
-label: Synonyms
-description: 'Synonyms of the glossary term name.'
+label: Synonym
+description: "Synonyms of the glossary term name. Click 'Add another item' to add multiple synonyms"
 required: false
 translatable: false
 default_value: {  }

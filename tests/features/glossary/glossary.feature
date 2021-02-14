@@ -30,7 +30,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
 
     When I click "Add glossary term" in the plus button menu
     Then I should see the heading "Add glossary term"
-    And the following fields should be present "Glossary term name, Summary, Definition, Synonyms"
+    And the following fields should be present "Glossary term name, Summary, Definition, Synonym"
 
     When I fill in the following:
       | Glossary term name | XFiles                                                                     |
@@ -306,7 +306,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     And I fill in the following:
       # Test also if the match is case insensitive.
       | Glossary term name | Some |
-      | Synonyms           | soMe |
+      | Synonym            | soMe |
       | Definition         | def  |
     And I press "Save"
     Then I should see the error message "A synonym cannot be the same as the glossary term name (Some)."
@@ -314,7 +314,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     And I fill in the following:
       # Test also if the match is case insensitive.
       | Glossary term name | xyz      |
-      | Synonyms           | alPHABET |
+      | Synonym            | alPHABET |
       | Definition         | def      |
     And I press "Save"
     Then I should see the following error messages:
@@ -322,7 +322,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | This glossary term (xyz) name is already used as synonym of Alphabet. You should remove that synonym before using this name. |
       | Some synonyms are already used in other glossary terms either as term name or as term synonyms: alPHABET in Alphabet                   |
 
-    When I fill in "Synonyms" with "colrs"
+    When I fill in "Synonym" with "colrs"
     And I press "Save"
     Then I should see the following error messages:
       | error messages                                                                                                               |
@@ -331,6 +331,6 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
 
     # But is allowed to overlap if the other term is in a different collection.
     When I fill in "Glossary term name" with "XRatings"
-    And I fill in "Synonyms" with "extraratings"
+    And I fill in "Synonym" with "extraratings"
     And I press "Save"
     Then I should see the success message "Glossary term XRatings has been created."
