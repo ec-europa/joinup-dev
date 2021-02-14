@@ -249,3 +249,41 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     And I should see the link "ALPHABET"
     # Test that the synonym replacement is case insensitive.
     And I should see the link "aBC"
+
+  Scenario: Test glossary term name duplication.
+    Given users:
+      | Username |
+      | ben      |
+    And the following collections:
+      | title             | state     |
+      | A World of Things | validated |
+      | Other collection  | validated |
+
+    And the following collection user membership:
+      | collection        | user | roles       |
+      | A World of Things | ben  | facilitator |
+      | Other collection  | ben  | facilitator |
+
+    Given I am logged in as ben
+    When I go to the "A World of Things" collection
+    And I click "Add glossary term" in the plus button menu
+    And I fill in the following:
+      | Glossary term name | XFiles     |
+      | Definition         | Definition |
+    And I press "Save"
+    Then I should see the success message "Glossary term XFiles has been created."
+    And I click "Add glossary term" in the plus button menu
+    And I fill in the following:
+      | Glossary term name | XFiles           |
+      | Definition         | Other definition |
+    When I press "Save"
+    Then I should see the error message "The Glossary term glossary term name value (XFiles) is already taken by XFiles."
+
+    # It should be possible to have the same term name in different collections.
+    When I go to the "Other collection" collection
+    And I click "Add glossary term" in the plus button menu
+    And I fill in the following:
+      | Glossary term name | XFiles         |
+      | Definition         | Same term name |
+    And I press "Save"
+    Then I should see the success message "Glossary term XFiles has been created."

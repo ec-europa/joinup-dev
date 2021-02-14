@@ -105,6 +105,11 @@ function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface
   if ($entity_type->id() == 'rdf_entity' && $bundle == 'collection' && !empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['collection']]);
   }
+  if ($entity_type->id() === 'node' && $bundle === 'glossary' && !empty($fields['title'])) {
+    $fields['title']->addConstraint('UniqueFieldValueInGroupAndBundle', [
+      'groupAudienceField' => 'og_audience',
+    ]);
+  }
 }
 
 /**
