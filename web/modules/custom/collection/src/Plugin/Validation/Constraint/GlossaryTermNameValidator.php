@@ -60,7 +60,6 @@ class GlossaryTermNameValidator extends ConstraintValidator implements Container
     $query = $storage->getQuery()
       ->condition('type', 'glossary')
       ->condition('og_audience', $glossary_term->get('og_audience')->target_id);
-    // ->condition('field_glossary_synonyms', $glossary_term->label());
     if ($glossary_term_id = $glossary_term->id()) {
       // On update, filter out the current entity.
       $query->condition('nid', $glossary_term_id, '<>');
