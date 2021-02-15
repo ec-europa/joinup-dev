@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1f8ee7307a7ea8be634274ef51ffbbab",
+    "content-hash": "847f70d3dd23baee188cde615b5e8975",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5048,7 +5048,9 @@
                     }
                 },
                 "patches_applied": {
-                    "Option to automatically create a meta-entity @see https://www.drupal.org/project/meta_entity/issues/3198498": "https://www.drupal.org/files/issues/2021-02-15/3198498-5.patch"
+                    "Option to automatically create a meta-entity @see https://www.drupal.org/project/meta_entity/issues/3198498": "https://www.drupal.org/files/issues/2021-02-15/3198498-5.patch",
+                    "Implement a permissions system @see https://www.drupal.org/project/meta_entity/issues/3198561": "https://www.drupal.org/files/issues/2021-02-15/3198561-5.patch",
+                    "Allow more flexible usage of meta entity form @see https://www.drupal.org/project/meta_entity/issues/3198576": "https://www.drupal.org/files/issues/2021-02-15/3198576-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
