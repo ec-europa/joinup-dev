@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0edfdc167f72c49cfc6fc93f1d98e28f",
+    "content-hash": "1f8ee7307a7ea8be634274ef51ffbbab",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1285,6 +1285,7 @@
             "keywords": [
                 "git"
             ],
+            "abandoned": "symplify/git-wrapper",
             "time": "2016-04-19T16:12:33+00:00"
         },
         {
@@ -5022,17 +5023,11 @@
         },
         {
             "name": "drupal/meta_entity",
-            "version": "1.0.0-alpha1",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/meta_entity.git",
-                "reference": "8.x-1.0-alpha1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/meta_entity-8.x-1.0-alpha1.zip",
-                "reference": "8.x-1.0-alpha1",
-                "shasum": "707a3b306367ebcc5d4c1e8b6fc95750e0460490"
+                "reference": "9ac469116e75a6023a303bcb8604fca58557c52c"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -5041,16 +5036,19 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
-                    "version": "8.x-1.0-alpha1",
-                    "datestamp": "1575031684",
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1568393285",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
                 },
                 "patches_applied": {
-                    "Meta entity cache tags are not included @see https://www.drupal.org/project/meta_entity/issues/3170250": "https://www.drupal.org/files/issues/2020-09-11/3170250-7.patch"
+                    "Option to automatically create a meta-entity @see https://www.drupal.org/project/meta_entity/issues/3198498": "https://www.drupal.org/files/issues/2021-02-15/3198498-5.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5081,7 +5079,8 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/meta_entity",
                 "issues": "https://www.drupal.org/project/issues/meta_entity"
-            }
+            },
+            "time": "2021-02-15T14:38:43+00:00"
         },
         {
             "name": "drupal/metatag",
@@ -18906,6 +18905,7 @@
         "dkarv/mdl-chip-input": 20,
         "drupal/cas_attributes": 20,
         "drupal/config_ignore": 20,
+        "drupal/meta_entity": 20,
         "drupal/og": 20,
         "drupal/site_verify": 20,
         "drupal/subpathauto": 20,
