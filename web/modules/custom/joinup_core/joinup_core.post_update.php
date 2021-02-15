@@ -126,7 +126,7 @@ function joinup_core_post_update_0106801(): void {
   $query->innerJoin('node_field_data', 'n', 'ga.entity_id = n.nid');
   $terms = $query
     // Exclude abbreviations same as their term title.
-    ->condition('ga.field_glossary_abbreviation_value', 'n.title', '!=')
+    ->where('LOWER(ga.field_glossary_abbreviation_value) <> LOWER(n.title)')
     ->execute()
     ->fetchAll();
   \Drupal::state()->set('isaicp_6153', $terms);
