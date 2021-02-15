@@ -14,6 +14,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\meta_entity\Entity\MetaEntity;
+
 /**
  * Set community content missing policy domain.
  */
@@ -116,4 +118,35 @@ Query;
   $sandbox['#finished'] = (int) empty($sandbox['nodes']);
 
   return "Updated {$sandbox['progress']} out of {$sandbox['count']}";
+}
+
+/**
+ * Create 'collection_settings' meta entities for all collections.
+ */
+function joinup_core_deploy_0106801(array &$sandbox): string {
+  if (!isset($sandbox['ids'])) {
+    $sandbox['ids'] = array_values(
+      \Drupal::entityTypeManager()->getStorage('rdf_entity')->getQuery()
+        ->condition('rid', 'collection')
+        ->execute());
+    $sandbox['total'] = count($sandbox['ids']);
+    $sandbox['progress'] = 0;
+  }
+
+  $ids = array_splice($sandbox['ids'], 0, 50);
+  foreach ($ids as $id) {
+    MetaEntity::create([
+      'type' => 'collection_settings',
+      'target' => [
+        'target_type' => 'rdf_entity',
+        'target_id' => $id,
+      ],
+      // Keep current behaviour for existing collections.
+      'glossary_link_only_first' => FALSE,
+    ])->save();
+  }
+  $sandbox['progress'] += count($ids);
+  $sandbox['#finished'] = (int) empty($sandbox['ids']);
+
+  return "Processed {$sandbox['progress']} out of {$sandbox['total']}";
 }
