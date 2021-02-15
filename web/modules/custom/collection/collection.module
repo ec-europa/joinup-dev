@@ -110,7 +110,9 @@ function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface
       'groupAudienceField' => 'og_audience',
     ]);
     $fields['title']->addConstraint('GlossaryTermName');
-    $fields['field_glossary_synonyms']->addConstraint('GlossaryTermSynonyms');
+    if (isset($fields['field_glossary_synonyms'])) {
+      $fields['field_glossary_synonyms']->addConstraint('GlossaryTermSynonyms');
+    }
   }
 }
 
