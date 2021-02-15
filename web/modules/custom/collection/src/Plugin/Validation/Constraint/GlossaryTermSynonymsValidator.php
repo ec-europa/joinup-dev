@@ -103,9 +103,9 @@ class GlossaryTermSynonymsValidator extends ConstraintValidator implements Conta
       }
       foreach ($other_glossary_term->get('field_glossary_synonyms') as $item) {
         $other_glossary_term_synonym_lowercased = \mb_strtolower($item->value);
-        if (in_array($other_glossary_term_synonym_lowercased, $synonyms)) {
+        if (isset($synonyms[$other_glossary_term_synonym_lowercased])) {
           $used_synonyms[$other_glossary_term_synonym_lowercased] = [
-            'synonym' => $synonyms[$item->value],
+            'synonym' => $synonyms[$other_glossary_term_synonym_lowercased],
             'entity' => $other_glossary_term,
           ];
         }

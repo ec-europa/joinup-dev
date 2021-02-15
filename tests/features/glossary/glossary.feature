@@ -291,7 +291,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     # Test glossary term name and synonyms overlapping.
     And glossary content:
       | title     | synonyms                | definition                  | collection        |
-      | Alphabet  | ABC, XYZ                | Long, long definition field | A World of Things |
+      | Alphabet  | ABC, XYZ, whatever      | Long, long definition field | A World of Things |
       | Colors    | CLR,colrs               | Colors definition field     | A World of Things |
       | XRatings  | XRT,X.R.T.,extraratings | definition                  | Other collection  |
       | Duplicate | dupe,DuPe               | duplicate sysnonym          | A World of Things |
@@ -320,14 +320,25 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     Then I should see the following error messages:
       | error messages                                                                                                               |
       | This glossary term (xyz) name is already used as synonym of Alphabet. You should remove that synonym before using this name. |
-      | Some synonyms are already used in other glossary terms either as term name or as term synonyms: alPHABET in Alphabet                   |
+      | Some synonyms are already used in other glossary terms either as term name or as term synonyms: alPHABET in Alphabet         |
+
+    And I fill in the following:
+      # Test also if the match is case insensitive.
+      | Glossary term name | xyz      |
+      | Synonym            | whatEVER |
+      | Definition         | def      |
+    And I press "Save"
+    Then I should see the following error messages:
+      | error messages                                                                                                               |
+      | This glossary term (xyz) name is already used as synonym of Alphabet. You should remove that synonym before using this name. |
+      | Some synonyms are already used in other glossary terms either as term name or as term synonyms: whatEVER in Alphabet.        |
 
     When I fill in "Synonym" with "colrs"
     And I press "Save"
     Then I should see the following error messages:
       | error messages                                                                                                               |
       | This glossary term (xyz) name is already used as synonym of Alphabet. You should remove that synonym before using this name. |
-      | Some synonyms are already used in other glossary terms either as term name or as term synonyms: colrs in Colors.                        |
+      | Some synonyms are already used in other glossary terms either as term name or as term synonyms: colrs in Colors.             |
 
     # But is allowed to overlap if the other term is in a different collection.
     When I fill in "Glossary term name" with "XRatings"
