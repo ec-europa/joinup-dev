@@ -1,0 +1,22 @@
+uuid: cf6084b3-d2be-46c0-aa38-81e82f370e96
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.meta_entity.collection_settings.glossary_link_only_first
+    - meta_entity.type.collection_settings
+id: meta_entity.collection_settings.default
+targetEntityType: meta_entity
+bundle: collection_settings
+mode: default
+content:
+  glossary_link_only_first:
+    weight: 0
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+hidden:
+  label: true
+  target: true
