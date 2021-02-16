@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.node.custom_page.field_attachment
-    - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.field_custom_page_logo
     - field.field.node.custom_page.field_paragraphs_body
     - field.field.node.custom_page.og_audience
@@ -83,7 +82,6 @@ content:
 hidden:
   created: true
   current_workflow_state: true
-  field_cp_content_listing: true
   og_audience: true
   path: true
   promote: true
