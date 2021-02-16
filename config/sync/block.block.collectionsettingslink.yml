@@ -1,0 +1,26 @@
+uuid: 1d23905a-f55d-4fba-8a2f-8738a56c967f
+langcode: en
+status: true
+dependencies:
+  module:
+    - collection
+    - joinup_core
+  theme:
+    - joinup_theme
+id: collectionsettingslink
+theme: joinup_theme
+region: content
+weight: -21
+provider: null
+plugin: collection_settings_link
+settings:
+  id: collection_settings_link
+  label: 'Collection settings link'
+  provider: collection
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes: collection.glossary_page
+    negate: false
+    context_mapping: {  }

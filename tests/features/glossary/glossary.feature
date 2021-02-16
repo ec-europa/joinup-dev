@@ -246,32 +246,46 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
 
   Scenario: Limiting replacements to the first occurrence.
     Given users:
-      | Username    | Roles     |
-      | regular     |           |
-      | fac |           |
-      | mod   | moderator |
-    And collection:
-      | title       | Collection With Glossary                                                          |
-      | state       | validated                                                                         |
-      | description | The Battle of Evermore of the battle and the BATTLE. Call it everMore or EVERmore |
+      | Username | Roles     |
+      | regular  |           |
+      | fac      |           |
+      | mod      | moderator |
+      | fac1     |           |
+    And the following collections:
+      | title                    | description                                                                       | state     |
+      | Collection With Glossary | The Battle of Evermore of the battle and the BATTLE. Call it everMore or EVERmore | validated |
+      | The Other Collection     | desc                                                                              | validated |
     And the following collection user membership:
-      | collection               | user        | roles       |
-      | Collection With Glossary | fac | facilitator |
+      | collection               | user | roles       |
+      | Collection With Glossary | fac  | facilitator |
+      | The Other Collection     | fac1 | facilitator |
     And glossary content:
       | title  | abbreviation | definition | collection               |
-      | battle | evermore          | def        | Collection With Glossary |
+      | battle | evermore     | def        | Collection With Glossary |
 
     Given I am an anonymous user
     When I go to the "Collection With Glossary" collection
     Then I should not see the link "Settings" in the "Entity actions" region
+    When I click "Glossary"
+    Then I should not see the link "Edit Glossary settings"
 
     Given I am logged in as regular
     When I go to the "Collection With Glossary" collection
     Then I should not see the link "Settings" in the "Entity actions" region
+    When I click "Glossary"
+    Then I should not see the link "Edit Glossary settings"
+
+    Given I am logged in as fac1
+    When I go to the "Collection With Glossary" collection
+    Then I should not see the link "Settings" in the "Entity actions" region
+    When I click "Glossary"
+    Then I should not see the link "Edit Glossary settings"
 
     Given I am logged in as mod
     When I go to the "Collection With Glossary" collection
     Then I should see the link "Settings" in the "Entity actions" region
+    When I click "Glossary"
+    Then I should see the link "Edit Glossary settings"
 
     Given I am logged in as fac
     When I go to the "Collection With Glossary" collection
@@ -282,7 +296,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     When I go to the "Collection With Glossary" collection
 
     # Only the first occurrence should be highlighted.
-    Then I should see the link "Battle"
+    And I should see the link "Battle"
     And I should see the link "Evermore"
     But I should not see the link "battle"
     And I should not see the link "BATTLE"
@@ -301,3 +315,8 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     And I should see the link "Evermore"
     And I should see the link "everMore"
     And I should see the link "EVERmore"
+
+    When I click "Glossary"
+    Then I should see the link "Edit Glossary settings"
+    When I click "Edit Glossary settings"
+    Then I should see the heading "Collection With Glossary collection settings"
