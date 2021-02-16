@@ -13,6 +13,7 @@ use Drupal\pipeline\PipelineStateManager;
 use Drupal\pipeline\Plugin\PipelineStepPluginManager;
 use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Provides a pipeline testing plugin.
@@ -55,9 +56,11 @@ class JoinupFederationInvalidTestingPipeline extends JoinupFederationPipelinePlu
    *   The entity type manager service.
    * @param \Drupal\Core\State\StateInterface $state
    *   The state storage service.
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
+   *   The event dispatcher service.
    */
-  public function __construct(array $configuration, string $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, AccountProxyInterface $current_user, ConnectionInterface $sparql, SharedTempStoreFactory $shared_tempstore_factory, EntityTypeManagerInterface $entity_type_manager, StateInterface $state) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $step_plugin_manager, $state_manager, $current_user, $sparql, $shared_tempstore_factory, $entity_type_manager);
+  public function __construct(array $configuration, string $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, AccountProxyInterface $current_user, ConnectionInterface $sparql, SharedTempStoreFactory $shared_tempstore_factory, EntityTypeManagerInterface $entity_type_manager, StateInterface $state, EventDispatcherInterface $event_dispatcher) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $step_plugin_manager, $state_manager, $current_user, $sparql, $shared_tempstore_factory, $entity_type_manager, $event_dispatcher);
     $this->stateStorage = $state;
   }
 
@@ -75,7 +78,8 @@ class JoinupFederationInvalidTestingPipeline extends JoinupFederationPipelinePlu
       $container->get('sparql.endpoint'),
       $container->get('joinup_federation.tempstore.shared'),
       $container->get('entity_type.manager'),
-      $container->get('state')
+      $container->get('state'),
+      $container->get('event_dispatcher')
     );
   }
 
