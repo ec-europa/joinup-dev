@@ -109,7 +109,7 @@ class UnsubscribeFromAllForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, UserInterface $user = NULL): array {
+  public function buildForm(array $form, FormStateInterface $form_state, ?UserInterface $user = NULL): array {
     $form_state->set('#user', $user);
     if ($memberships_ids = $this->getUserMembershipIds($user)) {
       $memberships = $this->entityTypeManager->getStorage('og_membership')->loadMultiple($memberships_ids);

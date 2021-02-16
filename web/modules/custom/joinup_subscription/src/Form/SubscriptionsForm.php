@@ -138,15 +138,15 @@ class SubscriptionsForm extends FormBase {
         continue;
       }
 
-      // Generate the list of memberships with checkboxes to choose which bundles
-      // to subscribe to.
+      // Generate the list of memberships with checkboxes to choose which
+      // bundles to subscribe to.
       $bundle_info = [];
       foreach (array_keys($subscription_bundles) as $entity_type_id) {
         $bundle_info[$entity_type_id] = $this->entityTypeBundleInfo->getBundleInfo($entity_type_id);
       }
 
-      // Keep track of the groups with subscriptions in order to properly show or
-      // hide the 'Unsubscribe from all' button in the end of the page.
+      // Keep track of the groups with subscriptions in order to properly show
+      // or hide the 'Unsubscribe from all' button in the end of the page.
       foreach ($memberships as $membership) {
         /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
         $group = $membership->getGroup();
@@ -225,11 +225,12 @@ class SubscriptionsForm extends FormBase {
             // HTML attribute directly instead of using the `#disabled` property
             // because this will make Drupal ignore the form submissions.
             'disabled' => 'disabled',
-            // Make sure to turn autocomplete off so that the browser doesn't try
-            // to restore a half submitted form when the user does a soft reload.
+            // Make sure to turn autocomplete off so that the browser doesn't
+            // try to restore a half submitted form when the user does a soft
+            // reload.
             'autocomplete' => 'off',
-            // Store the initial state of the subscriptions so that we can unlock
-            // the save button in JS whenever a state changes.
+            // Store the initial state of the subscriptions so that we can
+            // unlock the save button in JS whenever a state changes.
             'data-drupal-subscriptions' => Json::encode(array_values($subscription_status)),
           ],
         ];
@@ -242,9 +243,12 @@ class SubscriptionsForm extends FormBase {
       '#attributes' => ['class' => 'form__subscribe-actions'],
     ];
 
-    $unsubscribe_all_url = Url::fromRoute('joinup_subscription.unsubscribe_all', [
-      'user' => $user->id(),
-    ]);
+    $unsubscribe_all_url = Url::fromRoute(
+      'joinup_subscription.unsubscribe_all',
+      [
+        'user' => $user->id(),
+      ]
+    );
     $form['edit-actions']['unsubscribe_all'] = [
       '#type' => 'link',
       '#title' => $this->t('Unsubscribe from all'),
@@ -266,7 +270,9 @@ class SubscriptionsForm extends FormBase {
 
     // Check if the subscriptions have changed. This allows us to skip saving
     // the membership entity if nothing changed.
-    $bundles_value = $form_state->getValue(['groups', $membership->getGroupId(), 'bundles']);
+    $bundles_value = $form_state->getValue(
+      ['groups', $membership->getGroupId(), 'bundles']
+    );
     // Ignore the submit button.
     unset($bundles_value['submit']);
     $subscribed_bundles = array_keys(array_filter($bundles_value));
