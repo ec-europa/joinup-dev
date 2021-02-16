@@ -28,7 +28,7 @@ Group content subscriptions
 A user can subscribe to content in collections and solutions and will be
 notified when new content is published in the group they are a member of. The
 user can subscribe to groups through the "My subscriptions" link in the user
-profile menu. This leads to the `MySubscriptionsForm` where the user can choose
+profile menu. This leads to the `SubscriptionsForm` where the user can choose
 for which content bundles they want to receive notifications.
 
 When a user joins a collection they will be presented with a modal dialog that
