@@ -66,11 +66,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  node_field_cp_content_listing_top:
-    weight: 2
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   report:
     label: hidden
     weight: 5

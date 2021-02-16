@@ -51,7 +51,7 @@ SPARQL;
     // revision ID and the policy domain IDs of the parent group as properties.
     $sql = <<<Query
       SELECT
-        -- Add a char to node ID in order to preserve keys in array_splice(). 
+        -- Add a char to node ID in order to preserve keys in array_splice().
         CONCAT('n', n.nid) AS nid,
         n.vid,
         n.type,

@@ -36,7 +36,6 @@ hidden:
   field_custom_page_logo: true
   langcode: true
   links: true
-  node_field_cp_content_listing_top: true
   og_audience: true
   published_at: true
   report: true

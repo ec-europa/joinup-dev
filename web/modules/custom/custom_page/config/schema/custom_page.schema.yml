@@ -51,9 +51,6 @@ field.field.paragraph.content_listing.field_content_listing:
                     sequence:
                       type: search_api_field.plugin.filter.[plugin]
 
-field.field.node.custom_page.field_cp_content_listing:
-  type: field.field.paragraph.content_listing.field_content_listing
-
 field.widget.settings.search_api_field_custom_page:
   type: field.widget.settings.search_api_field_default
 
