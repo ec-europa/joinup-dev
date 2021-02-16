@@ -140,7 +140,7 @@ function joinup_core_deploy_0106801(array &$sandbox): string {
 
   foreach ($node_storage->loadMultiple(array_keys($items)) as $nid => $custom_page) {
     $paragraph = Paragraph::create(['type' => 'content_listing']);
-    $cp_value = $items[$nid];
+    $cp_value = [0 => ['value' => $items[$nid]]];
     $paragraph->set('field_content_listing', $cp_value)->save();
 
     $paragraphs_body = $custom_page->get('field_paragraphs_body');
