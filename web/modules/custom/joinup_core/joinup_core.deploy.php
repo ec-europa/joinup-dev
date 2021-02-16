@@ -121,34 +121,26 @@ Query;
 }
 
 /**
- * Moves the data about the content listing of custom pages to paragraphs.
+ * Moves the data about the content listing of custom pages to paragraphs (2).
  */
 function joinup_core_deploy_0106801(array &$sandbox): string {
-  if (empty($sandbox['entity_ids'])) {
-    $sandbox['entity_ids'] = \Drupal::entityQuery('node')->condition('type', 'custom_page')->execute();
+  if (empty($sandbox['items'])) {
+    $state = \Drupal::state();
+    $sandbox['items'] = $state->get('isaicp_5880');
+    $state->delete('isaicp_5880');
     $sandbox['progress'] = 0;
-    $sandbox['count'] = count($sandbox['entity_ids']);
+    $sandbox['count'] = count($sandbox['items']);
     $sandbox['updated'] = 0;
   }
 
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-  $entity_ids = array_splice($sandbox['entity_ids'], 0, 50);
+  $items = array_splice($sandbox['items'], 0, 20);
+  // Refactor the array to be keyed by 'nid' and having 'listing' as value.
+  $items = array_combine(array_column($items, 'nid'), array_column($items, 'listing'));
 
-  foreach ($node_storage->loadMultiple($entity_ids) as $custom_page) {
-    if ($custom_page->get('field_cp_content_listing')->isEmpty()) {
-      continue;
-    }
-    $cp_value = $custom_page->get('field_cp_content_listing')->getValue();
-    // Skip if there is the field is not enabled and there are no query presets,
-    // meaning that the field is not simply disabled.
-    if ($cp_value[0]['value']['enabled'] === 0 && empty($cp_value[0]['value']['query_presets'])) {
-      continue;
-    }
-
-    $cp_value[0]['value']['fields']['field_content_listing_type'] = $cp_value[0]['value']['fields']['field_cp_content_listing_content_type'];
-    unset($cp_value[0]['value']['fields']['field_cp_content_listing_content_type']);
-
+  foreach ($node_storage->loadMultiple(array_keys($items)) as $nid => $custom_page) {
     $paragraph = Paragraph::create(['type' => 'content_listing']);
+    $cp_value = $items[$nid];
     $paragraph->set('field_content_listing', $cp_value)->save();
 
     $paragraphs_body = $custom_page->get('field_paragraphs_body');
@@ -158,13 +150,12 @@ function joinup_core_deploy_0106801(array &$sandbox): string {
       'target_revision_id' => $paragraph->getRevisionId(),
     ];
     $paragraphs_body->setValue($value);
-    $custom_page->set('field_cp_content_listing', NULL);
     $custom_page->save();
     $sandbox['updated']++;
   }
 
-  $sandbox['progress'] += count($entity_ids);
-  $sandbox['#finished'] = (int) empty($sandbox['entity_ids']);
+  $sandbox['progress'] += count($items);
+  $sandbox['#finished'] = (int) empty($sandbox['items']);
 
   return "Updated {$sandbox['progress']} out of {$sandbox['count']} [{$sandbox['updated']} were updated]";
 }
