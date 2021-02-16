@@ -29,7 +29,5 @@ visibility:
       - view.eif_recommendation.principle
       - view.eif_recommendation.interoperability_layer
       - view.eif_recommendation.conceptual_model
-      - joinup_subscription.my_subscriptions
-      - joinup_subscription.subscriptions
     negate: false
     context_mapping: {  }
