@@ -16,6 +16,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\search_api\IndexInterface;
+use Drupal\search_api\Plugin\views\query\SearchApiQuery;
 use Drupal\search_api\Query\ConditionGroupInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\Utility\Utility;
@@ -403,7 +404,7 @@ function joinup_search_views_pre_execute(ViewExecutable $view) {
 function joinup_search_form_views_exposed_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $form_state->get('view');
-  if ($view->id() === 'search') {
+  if ($view instanceof ViewExecutable && $view->id() === 'search') {
     // We're displaying the 'search' view exposed form block twice, on the same
     // page. For this reason, beside the main view display ('search'), we've
     // created a second shadow disabled display, so that we can distinguish
@@ -424,6 +425,22 @@ function joinup_search_form_views_exposed_form_alter(array &$form, FormStateInte
     elseif ($display['id'] === 'shadow') {
       $form['keys']['#type'] = 'hidden';
       $form['sort_by']['#type'] = 'hidden';
+
+      // Hide the fields if no results are available, mimicking faceted search.
+      // Todo: This is doing 2 additional Solr queries so this has a performance
+      //   impact on the search pages. Rework this to use facets instead of
+      //   exposed filters once the Facets module supports date ranges.
+      $query_plugin = $view->getQuery();
+      if ($query_plugin instanceof SearchApiQuery) {
+        foreach (['published' => 'entity_published', 'updated' => 'entity_changed'] as $id => $field) {
+          $query = $query_plugin->query(TRUE);
+          $query->addCondition($field, NULL, '<>');
+          $result = $query->execute();
+          if ($result->getResultCount() === 0) {
+            $form[$id]['#access'] = FALSE;
+          }
+        }
+      }
     }
   }
 }
