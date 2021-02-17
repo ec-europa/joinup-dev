@@ -65,9 +65,13 @@ Feature: Unsubscribe from collections
       | Anna's house                                                                                                                                                                 |
       | Greg's foxhole                                                                                                                                                               |
 
-    When I press "Confirm"
+    When I click "Cancel"
+    Then I should see the heading "My subscriptions"
+
+    When I click "Unsubscribe from all"
+    And I press "Confirm"
     And I wait for the batch process to finish
-    Then I take a screenshot
+
     # Checks partially the success messages so it can work like the step that asserts 'lines of text' above.
     Then I should see the following success messages:
       | success messages                                            |

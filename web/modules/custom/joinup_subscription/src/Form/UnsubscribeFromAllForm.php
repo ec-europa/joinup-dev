@@ -103,7 +103,16 @@ class UnsubscribeFromAllForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl(): Url {
-    return Url::fromRoute('joinup_subscription.my_subscriptions');
+    $user = $this->getRouteMatch()->getParameter('user');
+    if (!$user instanceof UserInterface) {
+      throw new \InvalidArgumentException("The passed route parameter ({$this->getRouteMatch()->getRawParameter('user')}) is not a valid user ID.");
+    }
+    if ($user->id() == $this->currentUser()->id()) {
+      return Url::fromRoute('joinup_subscription.my_subscriptions');
+    }
+    return Url::fromRoute('joinup_subscription.subscriptions', [
+      'user' => $user->id(),
+    ]);
   }
 
   /**
@@ -173,7 +182,8 @@ class UnsubscribeFromAllForm extends ConfirmFormBase {
     }
     $membership->set('subscription_bundles', []);
     $membership->save();
-    $context['results'][$group->bundle()][] = $group->label();
+    $context['results']['labels'][$group->bundle()][] = $group->label();
+    $context['results']['user'] = $membership->getOwner();
   }
 
   /**
@@ -192,7 +202,7 @@ class UnsubscribeFromAllForm extends ConfirmFormBase {
   public function membershipUnsubscribeFinish(bool $success, array $results, array $operations): RedirectResponse {
     // @see \callback_batch_finished()
     if ($success) {
-      $list = $this->getGroupBuild($results);
+      $list = $this->getGroupBuild($results['labels']);
       $arguments = [
         '@items' => $this->renderer->render($list),
       ];
@@ -209,8 +219,16 @@ class UnsubscribeFromAllForm extends ConfirmFormBase {
       $this->messenger()->addError($message);
     }
 
-    $url = $this->getCancelUrl();
-    return new RedirectResponse(Url::fromRoute($url->getRouteName(), $url->getRouteParameters())->setAbsolute()->toString());
+    if ($results['user']->id() == $this->currentUser()->id()) {
+      $url = Url::fromRoute('joinup_subscription.my_subscriptions');
+    }
+    else {
+      $url = Url::fromRoute('joinup_subscription.subscriptions', [
+        'user' => $results['user']->id(),
+      ]);
+    }
+
+    return new RedirectResponse($url->setAbsolute()->toString());
   }
 
   /**
