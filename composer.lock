@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "61e35d70aad894b6dbc89a090ff15f07",
+    "content-hash": "566338cea846279d31a23e0bd4c6b794",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4466,6 +4466,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Fix config schema @see https://www.drupal.org/project/iframe/issues/3199001": "https://git.drupalcode.org/project/iframe/-/merge_requests/2.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
