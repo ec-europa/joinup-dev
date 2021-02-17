@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0edfdc167f72c49cfc6fc93f1d98e28f",
+    "content-hash": "b4443bdf8086399720195b37482fa028",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1285,6 +1285,7 @@
             "keywords": [
                 "git"
             ],
+            "abandoned": "symplify/git-wrapper",
             "time": "2016-04-19T16:12:33+00:00"
         },
         {
@@ -3853,6 +3854,54 @@
                 "source": "git://git.drupal.org/project/facets.git",
                 "issues": "https://www.drupal.org/project/issues/facets",
                 "irc": "irc://irc.freenode.org/drupal-search-api"
+            }
+        },
+        {
+            "name": "drupal/field_delimiter",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/field_delimiter.git",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/field_delimiter-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "553a4f1b49f65736a2fab9ab8ca707109732a7ad"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1590827750",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "andrewmacpherson",
+                    "homepage": "https://www.drupal.org/user/265648"
+                },
+                {
+                    "name": "purushotam.rai",
+                    "homepage": "https://www.drupal.org/user/3193859"
+                }
+            ],
+            "description": "Provides extra field formatter settings to specify delimiters for multi-value fields.",
+            "homepage": "https://www.drupal.org/project/field_delimiter",
+            "support": {
+                "source": "https://git.drupalcode.org/project/field_delimiter"
             }
         },
         {

@@ -14,6 +14,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
@@ -121,9 +122,37 @@ Query;
 }
 
 /**
- * Moves the data about the content listing of custom pages to paragraphs (2).
+ * Convert glossary abbreviation into term synonym (stage 2).
  */
 function joinup_core_deploy_0106801(array &$sandbox): string {
+  if (!isset($sandbox['terms'])) {
+    $state = \Drupal::state();
+    $sandbox['terms'] = $state->get('isaicp_6153');
+    $sandbox['total'] = count($sandbox['terms']);
+    $sandbox['progress'] = 0;
+    $state->delete('isaicp_6153');
+  }
+
+  $terms_to_process = array_splice($sandbox['terms'], 0, 20);
+  $terms = [];
+  foreach ($terms_to_process as $term) {
+    $terms[$term->nid] = $term->abbr;
+  }
+  /** @var \Drupal\collection\Entity\GlossaryTermInterface $glossary */
+  foreach (Node::loadMultiple(array_keys($terms)) as $nid => $glossary) {
+    $glossary->set('field_glossary_synonyms', $terms[$nid])->save();
+  }
+  $sandbox['progress'] += count($terms);
+
+  $sandbox['#finished'] = (int) empty($sandbox['terms']);
+
+  return "Converted {$sandbox['progress']} out of {$sandbox['total']}";
+}
+
+/**
+ * Moves the data about the content listing of custom pages to paragraphs (2).
+ */
+function joinup_core_deploy_0106802(array &$sandbox): string {
   if (empty($sandbox['items'])) {
     $state = \Drupal::state();
     $sandbox['items'] = $state->get('isaicp_5880');
