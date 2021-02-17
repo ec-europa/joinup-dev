@@ -57,6 +57,7 @@ module:
   geofield: 0
   help: 0
   honeypot: 0
+  iframe: 0
   image: 0
   inline_entity_form: 0
   isa2_analytics: 0
