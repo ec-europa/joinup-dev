@@ -1,0 +1,13 @@
+dependencies:
+  module:
+    - entity_test
+    - og
+id: entity_test.group
+field_name: group
+entity_type: entity_test
+type: og_standard_reference
+settings:
+  target_type: entity_test
+module: og
+cardinality: 1
+translatable: false

@@ -1,0 +1,5 @@
+type: module
+name: 'Unique Field Value In Group And Bundle Test'
+description: 'Testing module for UniqueFieldValueInGroupAndBundle'
+core_version_requirement: ^8 || ^9
+package: Testing

@@ -224,11 +224,13 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
         // Ensure case-insensitive search.
         $label = \mb_strtolower($glossary->label());
         $map[$label] = $link;
-        // Link also the abbreviation, if any.
-        if ($glossary->hasAbbreviation()) {
-          // Ensure abbreviation case-insensitive search.
-          $abbreviation = \mb_strtolower($glossary->getAbbreviation());
-          $map[$abbreviation] = $link;
+        // Link also the synonyms, if any.
+        foreach ($glossary->getSynonyms() as $synonym) {
+          // Ensure synonym case-insensitive search.
+          $synonym = \mb_strtolower($synonym);
+          if (!isset($map[$synonym])) {
+            $map[$synonym] = $link;
+          }
         }
 
         // When this glossary node is changing, invalidate the filter cache.
