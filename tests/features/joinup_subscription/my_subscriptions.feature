@@ -76,6 +76,7 @@ Feature: My subscriptions
     And I should see the link "Collections"
     And I should see the link "Solutions"
     And I should see the text "No collection memberships yet. Join one or more collections to subscribe to their content!"
+    And I should see the text "No solution memberships yet. Join one or more solutions to subscribe to their content!"
     But I should not see the link "Unsubscribe from all"
     And I should not see the text "Alpha Centauri"
 
@@ -92,7 +93,7 @@ Feature: My subscriptions
     Then I should not see the text "No collection memberships yet."
     And I should not see the link "Unsubscribe from all"
 
-    And the following collection content subscriptions should be selected:
+    And the following content subscriptions should be selected:
       | Alpha Centauri |  |
       | Barnard's Star |  |
       | Wolf 359       |  |
@@ -141,13 +142,13 @@ Feature: My subscriptions
     # The button remains enabled as changes persist after AJAX save.
     And the "Save changes" button on the "Wolf 359" subscription card should be enabled
 
-    And the following collection content subscriptions should be selected:
+    And the following content subscriptions should be selected:
       | Alpha Centauri | Discussion |
       | Barnard's Star |            |
       | Wolf 359       | Event      |
 
     # The 'Event' subscription was checked but not saved, so we should not be subscribed to it.
-    And I should have the following collection content subscriptions:
+    And I should have the following content subscriptions:
       | Alpha Centauri | Discussion |
       | Barnard's Star |            |
       | Wolf 359       |            |
@@ -166,14 +167,14 @@ Feature: My subscriptions
 
     # Ensure that the changes are not saved for all cards and unsaved changes are lost.
     Given I reload the page
-    And the following collection content subscriptions should be selected:
+    And the following content subscriptions should be selected:
       | Alpha Centauri |  |
       | Barnard's Star |  |
       # Even though 'Event' was unchecked, and another 'Save changes' button was clicked,
       # the changes for 'Wolf 359' were not saved and so they are reloaded.
       | Wolf 359       |  |
 
-    And I should have the following collection content subscriptions:
+    And I should have the following content subscriptions:
       | Alpha Centauri |  |
       | Barnard's Star |  |
       | Wolf 359       |  |

@@ -123,8 +123,10 @@ class SubscriptionsForm extends FormBase {
 
       // Return early if there are no memberships to display.
       if (!$memberships) {
-        $empty_message = $this->t('No @group memberships yet. Join one or more :groups to subscribe to their content!', [
-          '@group' => $this->entityTypeBundleInfo->getBundleInfo('rdf_entity')[$type]['label_plural'],
+        $type_info = $this->entityTypeBundleInfo->getBundleInfo('rdf_entity')[$type];
+        $empty_message = $this->t('No @group memberships yet. Join one or more @groups to subscribe to their content!', [
+          '@group' => $type_info['label_singular'],
+          '@groups' => $type_info['label_plural'],
         ]);
         $form['groups'][$type]['empty_text'] = [
           '#theme' => 'status_messages',
@@ -245,9 +247,7 @@ class SubscriptionsForm extends FormBase {
 
     $unsubscribe_all_url = Url::fromRoute(
       'joinup_subscription.unsubscribe_all',
-      [
-        'user' => $user->id(),
-      ]
+      ['user' => $user->id()]
     );
     $form['edit-actions']['unsubscribe_all'] = [
       '#type' => 'link',
