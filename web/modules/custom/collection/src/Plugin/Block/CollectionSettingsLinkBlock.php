@@ -73,7 +73,7 @@ class CollectionSettingsLinkBlock extends BlockBase implements ContainerFactoryP
       ]);
       $build['link'] = [
         '#type' => 'link',
-        '#title' => $this->t('Edit Glossary settings'),
+        '#title' => $this->t('Glossary settings'),
         '#url' => $url,
         '#access' => $url->access(),
         '#attributes' => [

@@ -267,25 +267,25 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     When I go to the "Collection With Glossary" collection
     Then I should not see the link "Settings" in the "Entity actions" region
     When I click "Glossary"
-    Then I should not see the link "Edit Glossary settings"
+    Then I should not see the link "Glossary settings"
 
     Given I am logged in as regular
     When I go to the "Collection With Glossary" collection
     Then I should not see the link "Settings" in the "Entity actions" region
     When I click "Glossary"
-    Then I should not see the link "Edit Glossary settings"
+    Then I should not see the link "Glossary settings"
 
     Given I am logged in as fac1
     When I go to the "Collection With Glossary" collection
     Then I should not see the link "Settings" in the "Entity actions" region
     When I click "Glossary"
-    Then I should not see the link "Edit Glossary settings"
+    Then I should not see the link "Glossary settings"
 
     Given I am logged in as mod
     When I go to the "Collection With Glossary" collection
     Then I should see the link "Settings" in the "Entity actions" region
     When I click "Glossary"
-    Then I should see the link "Edit Glossary settings"
+    Then I should see the link "Glossary settings"
 
     Given I am logged in as fac
     When I go to the "Collection With Glossary" collection
@@ -317,6 +317,6 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     And I should see the link "EVERmore"
 
     When I click "Glossary"
-    Then I should see the link "Edit Glossary settings"
-    When I click "Edit Glossary settings"
+    Then I should see the link "Glossary settings"
+    When I click "Glossary settings"
     Then I should see the heading "Collection With Glossary collection settings"
