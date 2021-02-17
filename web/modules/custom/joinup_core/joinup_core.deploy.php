@@ -172,8 +172,8 @@ function joinup_core_deploy_0106802(array &$sandbox): string {
           'target_type' => 'rdf_entity',
           'target_id' => $id,
         ],
-        // Keep current behaviour for existing collections.
-        'glossary_link_only_first' => FALSE,
+        // Make this default option, even for existing content.
+        'glossary_link_only_first' => TRUE,
       ]
     )->save();
   }
