@@ -114,3 +114,22 @@ function joinup_core_post_update_0106800(): void {
     $alias_generator->updateEntityAlias($node, 'bulkupdate');
   }
 }
+
+/**
+ * Convert glossary abbreviation into term synonym (stage 1).
+ */
+function joinup_core_post_update_0106801(): void {
+  $db = \Drupal::database();
+  $query = $db->select('node__field_glossary_abbreviation', 'ga');
+  $query->addExpression('ga.entity_id', 'nid');
+  $query->addExpression('ga.field_glossary_abbreviation_value', 'abbr');
+  $query->innerJoin('node_field_data', 'n', 'ga.entity_id = n.nid');
+  $terms = $query
+    // Exclude abbreviations same as their term title.
+    ->where('LOWER(ga.field_glossary_abbreviation_value) <> LOWER(n.title)')
+    ->execute()
+    ->fetchAll();
+  \Drupal::state()->set('isaicp_6153', $terms);
+  $db->truncate('node__field_glossary_abbreviation');
+  $db->truncate('node_revision__field_glossary_abbreviation');
+}

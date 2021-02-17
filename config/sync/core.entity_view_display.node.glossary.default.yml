@@ -3,8 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.glossary.field_glossary_abbreviation
     - field.field.node.glossary.field_glossary_definition
+    - field.field.node.glossary.field_glossary_synonyms
     - field.field.node.glossary.og_audience
     - node.type.glossary
   module:
@@ -16,16 +16,8 @@ targetEntityType: node
 bundle: glossary
 mode: default
 content:
-  field_glossary_abbreviation:
-    weight: 0
-    label: inline
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
   field_glossary_definition:
-    weight: 1
+    weight: 0
     label: hidden
     settings: {  }
     third_party_settings:
@@ -33,6 +25,18 @@ content:
         template_suggestion: ''
     type: text_default
     region: content
+  field_glossary_synonyms:
+    type: string
+    weight: 1
+    region: content
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ', '
+      template_suggestion:
+        template_suggestion: ''
 hidden:
   langcode: true
   links: true
