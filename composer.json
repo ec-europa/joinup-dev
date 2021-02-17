@@ -297,9 +297,7 @@
                 "MessageDigestSubcontext is deprecated @see https://www.drupal.org/project/message_digest/issues/3168495": "https://www.drupal.org/files/issues/2020-09-01/3168495-2.patch"
             },
             "drupal/meta_entity": {
-                "Option to automatically create a meta-entity @see https://www.drupal.org/project/meta_entity/issues/3198498": "https://www.drupal.org/files/issues/2021-02-15/3198498-5.patch",
-                "Implement a permissions system @see https://www.drupal.org/project/meta_entity/issues/3198561": "https://www.drupal.org/files/issues/2021-02-15/3198561-5.patch",
-                "Allow more flexible usage of meta entity form @see https://www.drupal.org/project/meta_entity/issues/3198576": "https://www.drupal.org/files/issues/2021-02-15/3198576-2.patch"
+                "Option to automatically create a meta-entity @see https://www.drupal.org/project/meta_entity/issues/3198498": "https://www.drupal.org/files/issues/2021-02-17/3198498-12.patch"
             },
             "drupal/paragraphs_jquery_ui_accordion": {
                 "Formatter settings are missing schema @see https://www.drupal.org/i/3194916": "https://git.drupalcode.org/project/paragraphs_jquery_ui_accordion/-/merge_requests/1.diff"
