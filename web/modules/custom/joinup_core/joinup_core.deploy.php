@@ -15,6 +15,7 @@
 declare(strict_types = 1);
 
 use Drupal\meta_entity\Entity\MetaEntity;
+use Drupal\node\Entity\Node;
 
 /**
  * Set community content missing policy domain.
@@ -121,29 +122,60 @@ Query;
 }
 
 /**
- * Create 'collection_settings' meta entities for all collections.
+ * Convert glossary abbreviation into term synonym (stage 2).
  */
 function joinup_core_deploy_0106801(array &$sandbox): string {
+  if (!isset($sandbox['terms'])) {
+    $state = \Drupal::state();
+    $sandbox['terms'] = $state->get('isaicp_6153');
+    $sandbox['total'] = count($sandbox['terms']);
+    $sandbox['progress'] = 0;
+    $state->delete('isaicp_6153');
+  }
+
+  $terms_to_process = array_splice($sandbox['terms'], 0, 20);
+  $terms = [];
+  foreach ($terms_to_process as $term) {
+    $terms[$term->nid] = $term->abbr;
+  }
+  /** @var \Drupal\collection\Entity\GlossaryTermInterface $glossary */
+  foreach (Node::loadMultiple(array_keys($terms)) as $nid => $glossary) {
+    $glossary->set('field_glossary_synonyms', $terms[$nid])->save();
+  }
+  $sandbox['progress'] += count($terms);
+
+  $sandbox['#finished'] = (int) empty($sandbox['terms']);
+
+  return "Converted {$sandbox['progress']} out of {$sandbox['total']}";
+}
+
+/**
+ * Create 'collection_settings' meta entities for all collections.
+ */
+function joinup_core_deploy_0106802(array &$sandbox): string {
   if (!isset($sandbox['ids'])) {
     $sandbox['ids'] = array_values(
       \Drupal::entityTypeManager()->getStorage('rdf_entity')->getQuery()
         ->condition('rid', 'collection')
-        ->execute());
+        ->execute()
+    );
     $sandbox['total'] = count($sandbox['ids']);
     $sandbox['progress'] = 0;
   }
 
   $ids = array_splice($sandbox['ids'], 0, 50);
   foreach ($ids as $id) {
-    MetaEntity::create([
-      'type' => 'collection_settings',
-      'target' => [
-        'target_type' => 'rdf_entity',
-        'target_id' => $id,
-      ],
-      // Keep current behaviour for existing collections.
-      'glossary_link_only_first' => FALSE,
-    ])->save();
+    MetaEntity::create(
+      [
+        'type' => 'collection_settings',
+        'target' => [
+          'target_type' => 'rdf_entity',
+          'target_id' => $id,
+        ],
+        // Make this default option, even for existing content.
+        'glossary_link_only_first' => TRUE,
+      ]
+    )->save();
   }
   $sandbox['progress'] += count($ids);
   $sandbox['#finished'] = (int) empty($sandbox['ids']);

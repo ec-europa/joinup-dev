@@ -82,7 +82,7 @@ class CollectionSettingsController extends ControllerBase {
   public function settings(CollectionInterface $rdf_entity): array {
     $meta_entity = $this->metaEntityRepository->getMetaEntityForEntity($rdf_entity, 'collection_settings');
     $form_state_additions = [
-      'redirect' => Url::fromRoute('collection.settings_form', [
+      'redirect' => Url::fromRoute('entity.rdf_entity.canonical', [
         'rdf_entity' => $rdf_entity->id(),
       ]),
     ];

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "847f70d3dd23baee188cde615b5e8975",
+    "content-hash": "6f548fbe8271dfdee59ba3effb734cac",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3857,6 +3857,54 @@
             }
         },
         {
+            "name": "drupal/field_delimiter",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/field_delimiter.git",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/field_delimiter-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "553a4f1b49f65736a2fab9ab8ca707109732a7ad"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1590827750",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "andrewmacpherson",
+                    "homepage": "https://www.drupal.org/user/265648"
+                },
+                {
+                    "name": "purushotam.rai",
+                    "homepage": "https://www.drupal.org/user/3193859"
+                }
+            ],
+            "description": "Provides extra field formatter settings to specify delimiters for multi-value fields.",
+            "homepage": "https://www.drupal.org/project/field_delimiter",
+            "support": {
+                "source": "https://git.drupalcode.org/project/field_delimiter"
+            }
+        },
+        {
             "name": "drupal/field_group",
             "version": "3.1.0",
             "source": {
@@ -5027,7 +5075,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/meta_entity.git",
-                "reference": "9ac469116e75a6023a303bcb8604fca58557c52c"
+                "reference": "b937e77f2af160d4de08cd4b07efd6c55443cd84"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -5040,17 +5088,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1568393285",
+                    "version": "8.x-1.0-alpha1+3-dev",
+                    "datestamp": "1613551190",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
                 },
                 "patches_applied": {
-                    "Option to automatically create a meta-entity @see https://www.drupal.org/project/meta_entity/issues/3198498": "https://www.drupal.org/files/issues/2021-02-15/3198498-5.patch",
-                    "Implement a permissions system @see https://www.drupal.org/project/meta_entity/issues/3198561": "https://www.drupal.org/files/issues/2021-02-15/3198561-5.patch",
-                    "Allow more flexible usage of meta entity form @see https://www.drupal.org/project/meta_entity/issues/3198576": "https://www.drupal.org/files/issues/2021-02-15/3198576-2.patch"
+                    "Option to automatically create a meta-entity @see https://www.drupal.org/project/meta_entity/issues/3198498": "https://www.drupal.org/files/issues/2021-02-17/3198498-12.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5082,7 +5128,7 @@
                 "source": "https://git.drupalcode.org/project/meta_entity",
                 "issues": "https://www.drupal.org/project/issues/meta_entity"
             },
-            "time": "2021-02-15T14:38:43+00:00"
+            "time": "2021-02-17T10:16:25+00:00"
         },
         {
             "name": "drupal/metatag",

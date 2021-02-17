@@ -12,10 +12,10 @@
       margin-top: 0;
       margin-bottom: 17px;
     }
-    .field_glossary--abbreviation {
+    .field_glossary--synonyms {
       margin-bottom: 2px;
       > div {
-        div {
+        > div {
           display: inline;
 
           &:first-child {
@@ -23,6 +23,10 @@
             &::after{
                 content: ": ";
             }
+          }
+
+          > div {
+            display: inline;
           }
         }
       }

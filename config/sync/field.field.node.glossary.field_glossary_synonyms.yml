@@ -1,0 +1,19 @@
+uuid: e671f491-dd28-43e5-93c3-f666b2fcf1c3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_glossary_synonyms
+    - node.type.glossary
+id: node.glossary.field_glossary_synonyms
+field_name: field_glossary_synonyms
+entity_type: node
+bundle: glossary
+label: Synonym
+description: "Synonyms of the glossary term name. Click 'Add another item' to add multiple synonyms"
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
