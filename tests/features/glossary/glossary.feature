@@ -266,8 +266,8 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | Collection With Glossary | fac  | facilitator |
       | The Other Collection     | fac1 | facilitator |
     And glossary content:
-      | title  | abbreviation | definition | collection               |
-      | battle | evermore     | def        | Collection With Glossary |
+      | title  | synonyms | definition | collection               |
+      | battle | evermore | def        | Collection With Glossary |
 
     Given I am an anonymous user
     When I go to the "Collection With Glossary" collection
@@ -312,7 +312,6 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     When I click "Settings" in the "Entity actions" region
     And I uncheck the box "Highlight only the first term appearance"
     And I press "Save"
-    And I go to the "Collection With Glossary" collection
 
     # All terms should be highlighted.
     Then I should see the link "Battle"

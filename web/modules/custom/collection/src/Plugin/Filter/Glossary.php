@@ -191,7 +191,7 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
    *
    * @return array
    *   An indexed array (tuple) with two values:
-   *     0: An associative array keyed by the glossary term or abbreviation. The
+   *     0: An associative array keyed by the glossary term or synonym. The
    *        values are arrays with two keys:
    *        - url: The glossary term URL.
    *        - summary: A summary to be used as tooltip.
