@@ -12,6 +12,9 @@ services:
     environment:
       DOCUMENT_ROOT: "/var/www/html/web"
       PHP_XDEBUG_ENABLED: "0"
+      XDEBUG_MODE: "debug"
+      XDEBUG_KEY: "PHPSTORM"
+      XDEBUG_LOG: "/tmp/xdebug.log"
       PHP_IDE_CONFIG: "serverName=Docker"
       PHP_SENDMAIL_PATH: "/usr/sbin/sendmail -t -i -S mail:1025"
 
