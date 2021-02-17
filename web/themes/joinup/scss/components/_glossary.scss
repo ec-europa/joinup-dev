@@ -60,3 +60,10 @@
     color: $color-orange;
   }
 }
+
+a.glossary-term {
+  border-bottom: 1px dotted $color-base;
+  color: $color-base;
+  text-decoration: none;
+  cursor: help;
+}
