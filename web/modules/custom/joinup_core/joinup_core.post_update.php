@@ -140,7 +140,6 @@ function joinup_core_post_update_0106801(): void {
   $db->truncate('node_revision__field_glossary_abbreviation');
 }
 
-
 /**
  * Remove digest messages that are already sent.
  */
