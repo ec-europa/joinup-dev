@@ -61,6 +61,13 @@
   }
 }
 
+a.glossary-term {
+  border-bottom: 1px dotted $color-base;
+  color: $color-base;
+  text-decoration: none;
+  cursor: help;
+}
+
 .glossary-settings-link {
   float: right;
   margin: 20px;
