@@ -1,0 +1,20 @@
+dependencies:
+  config:
+    - field.storage.entity_test.group
+  module:
+    - og
+id: entity_test.group_content.group
+field_name: group
+entity_type: entity_test
+bundle: group_content
+label: 'Group'
+required: false
+translatable: false
+default_value: {  }
+settings:
+  handler: 'default:entity_test'
+  handler_settings:
+    target_bundles:
+      group: group
+      other_group: group
+field_type: og_standard_reference
