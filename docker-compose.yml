@@ -70,6 +70,7 @@ services:
     # See docker-compose.override.yml.dist.
     volumes:
       - ./db/virtuoso/snapshot:/data/backups
+      - ./scripts/docker/virtuoso/entrypoint.sh:/entrypoint.sh
     environment:
       SPARQL_UPDATE: 'true'
       # Virtuoso .ini overrides. Pattern: VIRT_$SECTION_$KEY=$VALUE
@@ -82,14 +83,9 @@ services:
       VIRT_SPARQL_ResultSetMaxRows: 1000000
       DOCKER_RESTORE_PRODUCTION:
     command:
-      - bash
+      - '/bin/bash'
       - '-c'
-      - 'if [ "$${DOCKER_RESTORE_PRODUCTION}" = "yes" ];
-         then
-           BACKUP_PREFIX="JOINUP_FULL_DUMP_" bash -ex /virtuoso.sh ;
-         else
-           bash -ex /virtuoso.sh;
-         fi'
+      - 'chmod +x /entrypoint.sh && /entrypoint.sh'
 
   solr:
     image: solr:6
