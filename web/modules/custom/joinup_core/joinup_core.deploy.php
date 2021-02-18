@@ -14,6 +14,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\node\Entity\Node;
 
 /**
@@ -146,4 +147,38 @@ function joinup_core_deploy_0106801(array &$sandbox): string {
   $sandbox['#finished'] = (int) empty($sandbox['terms']);
 
   return "Converted {$sandbox['progress']} out of {$sandbox['total']}";
+}
+
+/**
+ * Create 'collection_settings' meta entities for all collections.
+ */
+function joinup_core_deploy_0106802(array &$sandbox): string {
+  if (!isset($sandbox['ids'])) {
+    $sandbox['ids'] = array_values(
+      \Drupal::entityTypeManager()->getStorage('rdf_entity')->getQuery()
+        ->condition('rid', 'collection')
+        ->execute()
+    );
+    $sandbox['total'] = count($sandbox['ids']);
+    $sandbox['progress'] = 0;
+  }
+
+  $ids = array_splice($sandbox['ids'], 0, 50);
+  foreach ($ids as $id) {
+    MetaEntity::create(
+      [
+        'type' => 'collection_settings',
+        'target' => [
+          'target_type' => 'rdf_entity',
+          'target_id' => $id,
+        ],
+        // Make this default option, even for existing content.
+        'glossary_link_only_first' => TRUE,
+      ]
+    )->save();
+  }
+  $sandbox['progress'] += count($ids);
+  $sandbox['#finished'] = (int) empty($sandbox['ids']);
+
+  return "Processed {$sandbox['progress']} out of {$sandbox['total']}";
 }

@@ -17,10 +17,22 @@ label: 'Featured site wide'
 description: 'A flag which indicates that the entity is flagged by a moderator to be featured site wide.'
 mapping:
   node:
-    discussion: featured
-    document: featured
-    event: featured
-    news: featured
+    discussion:
+      field_name: featured
+      auto_create: false
+    document:
+      field_name: featured
+      auto_create: false
+    event:
+      field_name: featured
+      auto_create: false
+    news:
+      field_name: featured
+      auto_create: false
   rdf_entity:
-    collection: featured
-    solution: featured
+    collection:
+      field_name: featured
+      auto_create: false
+    solution:
+      field_name: featured
+      auto_create: false
