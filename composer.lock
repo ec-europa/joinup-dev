@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e0ee507f610a3034cbf51266cdf5877",
+    "content-hash": "e593a2c9fa1988aa7d633936c9314a94",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1285,6 +1285,7 @@
             "keywords": [
                 "git"
             ],
+            "abandoned": "symplify/git-wrapper",
             "time": "2016-04-19T16:12:33+00:00"
         },
         {
@@ -3904,6 +3905,54 @@
             }
         },
         {
+            "name": "drupal/field_delimiter",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/field_delimiter.git",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/field_delimiter-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "553a4f1b49f65736a2fab9ab8ca707109732a7ad"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1590827750",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "andrewmacpherson",
+                    "homepage": "https://www.drupal.org/user/265648"
+                },
+                {
+                    "name": "purushotam.rai",
+                    "homepage": "https://www.drupal.org/user/3193859"
+                }
+            ],
+            "description": "Provides extra field formatter settings to specify delimiters for multi-value fields.",
+            "homepage": "https://www.drupal.org/project/field_delimiter",
+            "support": {
+                "source": "https://git.drupalcode.org/project/field_delimiter"
+            }
+        },
+        {
             "name": "drupal/field_group",
             "version": "3.1.0",
             "source": {
@@ -5070,35 +5119,32 @@
         },
         {
             "name": "drupal/meta_entity",
-            "version": "1.0.0-alpha1",
+            "version": "1.0.0-alpha2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/meta_entity.git",
-                "reference": "8.x-1.0-alpha1"
+                "reference": "8.x-1.0-alpha2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/meta_entity-8.x-1.0-alpha1.zip",
-                "reference": "8.x-1.0-alpha1",
-                "shasum": "707a3b306367ebcc5d4c1e8b6fc95750e0460490"
+                "url": "https://ftp.drupal.org/files/projects/meta_entity-8.x-1.0-alpha2.zip",
+                "reference": "8.x-1.0-alpha2",
+                "shasum": "ef90e13ad2711e4346d7c87c1f5227aa47304fbf"
             },
             "require": {
-                "drupal/core": "~8.0",
+                "drupal/core": "^8 || ^9",
                 "drupal/dynamic_entity_reference": "^2.0",
                 "php": ">=7.1"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-alpha1",
-                    "datestamp": "1575031684",
+                    "version": "8.x-1.0-alpha2",
+                    "datestamp": "1613598883",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
-                },
-                "patches_applied": {
-                    "Meta entity cache tags are not included @see https://www.drupal.org/project/meta_entity/issues/3170250": "https://www.drupal.org/files/issues/2020-09-11/3170250-7.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

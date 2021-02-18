@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for unique_field_value_in_group_and_bundle_test module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Entity\EntityTypeInterface;
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function unique_field_value_in_group_and_bundle_test_entity_base_field_info_alter(array &$fields, EntityTypeInterface $entity_type): void {
+  /** @var \Drupal\Core\Field\BaseFieldDefinition[] $fields */
+  if ($entity_type->id() === 'entity_test') {
+    $fields['name']->addConstraint('UniqueFieldValueInGroupAndBundle', [
+      'groupAudienceField' => \Drupal::state()->get('unique_field_value_in_group_and_bundle_test', 'group'),
+    ]);
+  }
+}

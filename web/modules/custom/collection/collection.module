@@ -105,6 +105,15 @@ function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface
   if ($entity_type->id() == 'rdf_entity' && $bundle == 'collection' && !empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['collection']]);
   }
+  if ($entity_type->id() === 'node' && $bundle === 'glossary') {
+    $fields['title']->addConstraint('UniqueFieldValueInGroupAndBundle', [
+      'groupAudienceField' => 'og_audience',
+    ]);
+    $fields['title']->addConstraint('GlossaryTermName');
+    if (isset($fields['field_glossary_synonyms'])) {
+      $fields['field_glossary_synonyms']->addConstraint('GlossaryTermSynonyms');
+    }
+  }
 }
 
 /**
@@ -448,4 +457,12 @@ function collection_node_delete(NodeInterface $node) {
     $group->skip_notification = TRUE;
     $group->setChangedTime(\Drupal::time()->getRequestTime())->save();
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function collection_form_meta_entity_collection_settings_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  // Remove the delete button from the 'collection_settings' edit form.
+  unset($form['actions']['delete']);
 }

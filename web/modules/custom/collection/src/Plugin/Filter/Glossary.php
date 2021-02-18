@@ -101,6 +101,7 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
       return $result;
     }
 
+    /** @var \Drupal\Core\Cache\RefinableCacheableDependencyInterface $cache_metadata */
     [$replacements, $cache_metadata] = $this->getReplacementsMap($collection);
 
     // This collection has no glossary term entries.
@@ -118,6 +119,10 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
     if (!preg_match($pattern, $text)) {
       return $result->addCacheableDependency($cache_metadata);
     }
+
+    $link_only_first = $collection->getGlossarySettings()['link_only_first'];
+    // Invalidate the cache when the collection glossary settings are changing.
+    $cache_metadata->addCacheableDependency($collection->get('settings')->entity);
 
     $document = Html::load($text);
     $text_nodes = (new \DOMXPath($document))->evaluate("//text()");
@@ -143,6 +148,12 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
         $link->setAttribute('class', 'glossary-term');
         $link->setAttribute('title', $replacements[$text_part_lowercased]['summary']);
         $parent_node->insertBefore($link, $text_node);
+
+        // If this collection was configured to replace only the first
+        // occurrence of the term, remove this match from replacements list.
+        if ($link_only_first) {
+          unset($replacements[$text_part_lowercased]);
+        }
       }
       $parent_node->removeChild($text_node);
     }
@@ -180,7 +191,7 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
    *
    * @return array
    *   An indexed array (tuple) with two values:
-   *     0: An associative array keyed by the glossary term or abbreviation. The
+   *     0: An associative array keyed by the glossary term or synonym. The
    *        values are arrays with two keys:
    *        - url: The glossary term URL.
    *        - summary: A summary to be used as tooltip.
@@ -213,11 +224,13 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
         // Ensure case-insensitive search.
         $label = \mb_strtolower($glossary->label());
         $map[$label] = $link;
-        // Link also the abbreviation, if any.
-        if ($glossary->hasAbbreviation()) {
-          // Ensure abbreviation case-insensitive search.
-          $abbreviation = \mb_strtolower($glossary->getAbbreviation());
-          $map[$abbreviation] = $link;
+        // Link also the synonyms, if any.
+        foreach ($glossary->getSynonyms() as $synonym) {
+          // Ensure synonym case-insensitive search.
+          $synonym = \mb_strtolower($synonym);
+          if (!isset($map[$synonym])) {
+            $map[$synonym] = $link;
+          }
         }
 
         // When this glossary node is changing, invalidate the filter cache.
