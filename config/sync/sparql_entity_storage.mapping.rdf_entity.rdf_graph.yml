@@ -32,40 +32,4 @@ base_fields_mapping:
     value:
       predicate: 'http://purl.org/dc/terms/modified'
       format: 'xsd:dateTime'
-  uuid:
-    value:
-      predicate: ''
-      format: ''
-  langcode:
-    value:
-      predicate: ''
-      format: ''
-  default_langcode:
-    value:
-      predicate: ''
-      format: ''
-  front_page_pinned:
-    value:
-      predicate: ''
-      format: ''
-  content_translation_source:
-    value:
-      predicate: ''
-      format: ''
-  content_translation_outdated:
-    value:
-      predicate: ''
-      format: ''
-  content_translation_uid:
-    target_id:
-      predicate: ''
-      format: ''
-  content_translation_status:
-    value:
-      predicate: ''
-      format: ''
-  graph:
-    target_id:
-      predicate: ''
-      format: ''
 entity_id_plugin: joinup_rdf_graph

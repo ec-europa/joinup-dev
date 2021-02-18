@@ -40,10 +40,6 @@ base_fields_mapping:
     value:
       predicate: 'http://purl.org/dc/terms/modified'
       format: 'xsd:dateTime'
-  uuid:
-    value:
-      predicate: ''
-      format: ''
   langcode:
     value:
       predicate: 'http://joinup.eu/language'
@@ -76,8 +72,4 @@ base_fields_mapping:
     value:
       predicate: 'http://joinup.eu/language/translation_changed_time'
       format: t_literal
-  graph:
-    value:
-      predicate: ''
-      format: ''
 entity_id_plugin: joinup_po_namespace

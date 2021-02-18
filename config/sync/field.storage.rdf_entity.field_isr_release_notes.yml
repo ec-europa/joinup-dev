@@ -11,9 +11,6 @@ third_party_settings:
       value:
         predicate: 'http://www.w3.org/ns/adms#versionNotes'
         format: t_literal
-      format:
-        predicate: ''
-        format: ''
 id: rdf_entity.field_isr_release_notes
 field_name: field_isr_release_notes
 entity_type: rdf_entity
