@@ -565,7 +565,6 @@ class SolutionContext extends RawDrupalContext {
       'source code repository' => 'field_is_source_code_repository',
       'spatial coverage' => 'field_spatial_coverage',
       'status' => 'field_status',
-      'topic' => 'field_topic',
       'translation' => 'field_is_translation',
       'webdav creation' => 'field_is_webdav_creation',
       'webdav url' => 'field_is_webdav_url',
