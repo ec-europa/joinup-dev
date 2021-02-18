@@ -48,7 +48,7 @@
         "drupal/message": "^1.1",
         "drupal/message_digest": "^1.0-rc3",
         "drupal/message_notify": "~1.2",
-        "drupal/meta_entity": "^1.0",
+        "drupal/meta_entity": "^1.0-alpha2",
         "drupal/og": "dev-neutral-access-result as 1.x-dev",
         "drupal/og_menu": "^1.0-alpha4",
         "drupal/paragraphs": "^1.12",
@@ -296,9 +296,6 @@
             "drupal/message_digest": {
                 "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch",
                 "MessageDigestSubcontext is deprecated @see https://www.drupal.org/project/message_digest/issues/3168495": "https://www.drupal.org/files/issues/2020-09-01/3168495-2.patch"
-            },
-            "drupal/meta_entity": {
-                "Meta entity cache tags are not included @see https://www.drupal.org/project/meta_entity/issues/3170250": "https://www.drupal.org/files/issues/2020-09-11/3170250-7.patch"
             },
             "drupal/paragraphs_jquery_ui_accordion": {
                 "Formatter settings are missing schema @see https://www.drupal.org/i/3194916": "https://git.drupalcode.org/project/paragraphs_jquery_ui_accordion/-/merge_requests/1.diff"

@@ -16,9 +16,19 @@ label: 'Pinned in'
 description: 'A list of groups that the entity is "pinned" in. The entity will be displayed prominently on the homepages of these groups.'
 mapping:
   node:
-    discussion: pinned_in
-    document: pinned_in
-    event: pinned_in
-    news: pinned_in
+    discussion:
+      field_name: pinned_in
+      auto_create: false
+    document:
+      field_name: pinned_in
+      auto_create: false
+    event:
+      field_name: pinned_in
+      auto_create: false
+    news:
+      field_name: pinned_in
+      auto_create: false
   rdf_entity:
-    solution: pinned_in
+    solution:
+      field_name: pinned_in
+      auto_create: false
