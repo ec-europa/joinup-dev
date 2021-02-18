@@ -1,0 +1,24 @@
+uuid: d001db5d-aef8-4e37-92e4-27eccb0e7b37
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.collection
+  module:
+    - joinup_stats
+    - rdf_entity
+third_party_settings:
+  joinup_stats:
+    matomo_method: ''
+    parameter_name: ''
+    parameter_method: ''
+    period: 7
+    type: null
+id: collection_settings
+label: 'Collection settings'
+description: 'Store data about collection.'
+mapping:
+  rdf_entity:
+    collection:
+      field_name: settings
+      auto_create: true
