@@ -319,20 +319,18 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *
    * @param \Behat\Gherkin\Node\TableNode $subscription_options
    *   The Behat table node containing the subscription options.
-   * @param string $bundle
-   *   The group bundle.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    *   Thrown when a checkbox for a given subscription option is not found or
    *   not in the expected state.
    *
-   * @Then the following :bundle content subscriptions should be selected:
+   * @Then the following content subscriptions should be selected:
    */
-  public function assertSubscriptionOptionsInMySubscriptions(TableNode $subscription_options, string $bundle): void {
+  public function assertSubscriptionOptionsInSubscriptions(TableNode $subscription_options): void {
     foreach ($subscription_options->getRowsHash() as $group_label => $expected_bundle_ids) {
       $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
-      $group = self::getRdfEntityByLabel($group_label, $bundle);
-      $subscription_bundles = JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES[$bundle];
+      $group = self::getRdfEntityByLabel($group_label);
+      $subscription_bundles = JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES[$group->bundle()];
       foreach ($subscription_bundles as $entity_type_id => $bundle_ids) {
         foreach ($bundle_ids as $bundle_id) {
           $key = implode('|', [$entity_type_id, $bundle_id]);
@@ -343,7 +341,6 @@ class JoinupSubscriptionContext extends RawDrupalContext {
           else {
             $this->assertSession()->checkboxNotChecked($locator);
           }
-
         }
       }
     }
@@ -360,22 +357,20 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *   The Behat table node containing the expected subscriptions. The first
    *   column contains the group labels, the second a comma-separated list
    *   of bundles the user is subscribed to.
-   * @param string $bundle
-   *   The group bundle.
    *
    * @throws \Exception
    *   Thrown when the user doesn't have a membership in one of the given
    *   groups. A membership is required in order to have subscriptions.
    *
-   * @Then I should have the following :bundle content subscriptions:
+   * @Then I should have the following content subscriptions:
    */
-  public function assertGroupContentSubscriptions(TableNode $subscriptions, string $bundle): void {
+  public function assertGroupContentSubscriptions(TableNode $subscriptions): void {
     $user = $this->getUserManager()->getCurrentUser();
     /** @var \Drupal\Core\Session\AccountInterface $account */
     $account = User::load($user->uid);
 
     foreach ($subscriptions->getRowsHash() as $collection_label => $expected_bundle_ids) {
-      $group = self::getRdfEntityByLabel($collection_label, $bundle);
+      $group = self::getRdfEntityByLabel($collection_label);
       $membership = $this->getMembershipByGroupAndUser($group, $account, OgMembershipInterface::ALL_STATES);
       $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
 

@@ -31,15 +31,11 @@ Feature: Subscribing to a solution
     When I open the account menu
     And I click "My subscriptions"
     Then I should see the heading "My subscriptions"
-    And I should see the link "Collections" in the "Content" region
-    And I should see the link "Solutions" in the "Content" region
-
-    When I click "Solutions" in the "Content" region
-    Then I should see the text "Some solution to subscribe"
+    And I should see the text "Some solution to subscribe"
     And the "Save changes" button on the "Some solution to subscribe" subscription card should be disabled
 
     # For solutions, all bundles are selected by default.
-    And the following solution content subscriptions should be selected:
+    And the following content subscriptions should be selected:
       | Some solution to subscribe | Discussion, Document, Event, News |
     # The button "Unsubscribe from all" is visible.
     And I should see the link "Unsubscribe from all"
@@ -50,7 +46,7 @@ Feature: Subscribing to a solution
     And I wait for AJAX to finish
     Then I should not see the "Save changes" button on the "Some solution to subscribe" subscription card
     But I should see the "Saved!" button on the "Some solution to subscribe" subscription card
-    And the following solution content subscriptions should be selected:
+    And the following content subscriptions should be selected:
       | Some solution to subscribe | Document, Event, News |
 
     When I go to the "Some solution to subscribe" solution

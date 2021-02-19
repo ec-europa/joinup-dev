@@ -1,37 +1,32 @@
 joinup_subscription.subscriptions:
   path: '/user/{user}/subscriptions'
   defaults:
-    _form: '\Drupal\joinup_subscription\Form\MySubscriptionsForm'
+    _form: Drupal\joinup_subscription\Form\SubscriptionsForm
     # Since this route is for viewing other people's subscriptions, this is not
     # titled 'My subscriptions' but 'Subscription settings'.
     _title: 'Subscription settings'
   requirements:
-    _custom_access: '\Drupal\joinup_subscription\Controller\MySubscriptionsController::access'
+    _permission: 'administer users'
   options:
     parameters:
       user:
         type: entity:user
 
 joinup_subscription.my_subscriptions:
-  path: '/user/subscriptions/{subscription_type}'
+  path: '/user/subscriptions'
   defaults:
-    _controller: '\Drupal\joinup_subscription\Controller\MySubscriptionsController::build'
+    _form: Drupal\joinup_subscription\Form\SubscriptionsForm
     _title: 'My subscriptions'
-    # Set the default page to show collections.
-    subscription_type: 'collection'
   requirements:
     _user_is_logged_in: 'TRUE'
-    subscription_type: '(collection|solution)'
 
 joinup_subscription.unsubscribe_all:
-  path: '/user/{user}/unsubscribe-all/{bundle}'
+  path: '/user/{user}/unsubscribe-all'
   defaults:
-    _form: '\Drupal\joinup_subscription\Form\UnsubscribeFromAllForm'
+    _form: Drupal\joinup_subscription\Form\UnsubscribeFromAllForm
     _title: 'Unsubscribe from all groups'
-    bundle: 'collection'
   requirements:
-    _custom_access: '\Drupal\joinup_subscription\Form\UnsubscribeFromAllForm::access'
-    bundle: '(collection|solution)'
+    _custom_access: Drupal\joinup_subscription\Form\UnsubscribeFromAllForm::access
   options:
     parameters:
       user:
