@@ -431,13 +431,55 @@ function joinup_search_form_views_exposed_form_alter(array &$form, FormStateInte
       //   impact on the search pages. Rework this to use facets instead of
       //   exposed filters once the Facets module supports date ranges.
       $query_plugin = $view->getQuery();
+      // Todo: Since the exposed form is constructed before Views starts to
+      //   build the query, the form values are not yet populated with sanitized
+      //   values. We are here taking the raw unsanitized user input but this is
+      //   dangerous.
+      $user_input = $form_state->getUserInput();
+
+      // Make sure the user's search keywords are passed to the query.
+      // Todo: sanitize this data.
+      if (!empty($user_input['keys'])) {
+        $query_plugin->keys($user_input['keys']);
+      }
+
       if ($query_plugin instanceof SearchApiQuery) {
-        foreach (['published' => 'entity_published', 'updated' => 'entity_changed'] as $id => $field) {
+        foreach (['published' => 'entity_published', 'updated' => 'entity_changed'] as $key => $search_api_field) {
+          // Don't hide the fields if the user entered a value.
+          foreach (['min', 'max'] as $range) {
+            if (!empty($user_input[$key][$range])) {
+              continue 2;
+            }
+          }
+
           $query = $query_plugin->query(TRUE);
-          $query->addCondition($field, NULL, '<>');
+          // Override the Search API search ID. The search ID is based on the
+          // Views display but we are not rendering the main display which has
+          // all facets defined. Instead we are rendering the duplicated
+          // "shadow" display. Pretend we are the main display so we get facets.
+          $query->setSearchId('views_page:search__search');
+          $query->addCondition($search_api_field, NULL, '<>');
+          // Todo: Executing this query gets us the results we need and we can
+          //   successfully hide the publication date filters when there are no
+          //   results that can be filtered down further. Doing this however
+          //   causes the rest of the search page to be rendered incorrectly.
+          //   The main problem is that the Facets module only performs the
+          //   calculation of the search results a single time, and will cache
+          //   the contents of every facet for the remainder of the request.
+          //   Since we building the exposed form before the search query has
+          //   been executed and we are manipulating the query by looking for
+          //   results that do not match with our date range filters, this has
+          //   the side effect that the facets will be cached using results that
+          //   exclude content that has no publication / updated date.
+          //   For documentation on why Facets works like this see the comments
+          //   in DefaultFacetManager::processFacets() and
+          //   SearchApiDisplay::fillFacetsWithResults().
           $result = $query->execute();
+
+          // Hide the date range filter when none of the results would be
+          // affected by it.
           if ($result->getResultCount() === 0) {
-            $form[$id]['#access'] = FALSE;
+            $form[$key]['#access'] = FALSE;
           }
         }
       }
