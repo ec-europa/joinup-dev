@@ -19,6 +19,7 @@ dependencies:
   - joinup:joinup_core
   - joinup:joinup_featured
   - joinup:joinup_group
+  - joinup:joinup_publication_date
   - joinup:joinup_validation
   - joinup:joinup_workflow
   - joinup:oe_newsroom_newsletter
