@@ -1,17 +1,4 @@
 # Collection routing definition
-collection.leave_confirm_form:
-  path: '/rdf_entity/{rdf_entity}/leave'
-  defaults:
-    _form: '\Drupal\collection\Form\LeaveCollectionConfirmForm'
-    _title: 'Leave collection'
-  requirements:
-    _custom_access: '\Drupal\collection\Form\LeaveCollectionConfirmForm::access'
-  options:
-    parameters:
-      rdf_entity:
-        type: entity:rdf_entity
-        bundle:
-          - collection
 collection.subscribe_to_collection_form:
   path: '/ajax/collection/{rdf_entity}/subscribe'
   defaults:
@@ -32,6 +19,19 @@ collection.glossary_page:
     letter: null
   requirements:
     _custom_access: Drupal\collection\Controller\GlossaryController::access
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+        bundle:
+          - collection
+collection.settings_form:
+  path: '/rdf_entity/{rdf_entity}/settings'
+  defaults:
+    _controller: Drupal\collection\Controller\CollectionSettingsController::settings
+    _title_callback: Drupal\collection\Controller\CollectionSettingsController::title
+  requirements:
+    _custom_access: Drupal\collection\Controller\CollectionSettingsController::access
   options:
     parameters:
       rdf_entity:

@@ -14,6 +14,9 @@
 
 declare(strict_types = 1);
 
+use Drupal\meta_entity\Entity\MetaEntity;
+use Drupal\node\Entity\Node;
+
 /**
  * Set community content missing policy domain.
  */
@@ -22,8 +25,8 @@ function joinup_core_deploy_0106800(array &$sandbox): string {
   $storage = \Drupal::entityTypeManager()->getStorage('node');
 
   if (!isset($sandbox['nodes'])) {
-    // Build an associative array having the group IDs as keys and their policy
-    // domain IDs as values.
+    // Build an associative array having the group ID as key and its policy
+    // domain IDs as value.
     $sparql = <<<SPARQL
       SELECT ?entityId ?policyDomain
         FROM NAMED <http://joinup.eu/collection/draft>
@@ -41,12 +44,12 @@ function joinup_core_deploy_0106800(array &$sandbox): string {
 SPARQL;
     $policy_domains = [];
     foreach (\Drupal::service('sparql.endpoint')->query($sparql) as $row) {
-      $policy_domains[$row->entityId->getUri()] = $row->policyDomain->getUri();
+      $policy_domains[$row->entityId->getUri()][] = $row->policyDomain->getUri();
     }
 
     // Get nodes without a policy domain as an associative array. The keys are
     // the node IDs and the values are \stdClass objects with the node type,
-    // revision ID and the policy domain ID of the parent group as properties.
+    // revision ID and the policy domain IDs of the parent group as properties.
     $sql = <<<Query
       SELECT
         -- Add a char to node ID in order to preserve keys in array_splice(). 
@@ -65,8 +68,8 @@ SPARQL;
       ORDER BY n.nid
 Query;
     $sandbox['nodes'] = array_map(function (\stdClass $node) use ($policy_domains): \stdClass {
-      // Replace the parent ID with its policy domain ID.
-      $node->policy_domain = $policy_domains[$node->parent_id];
+      // Replace the parent ID with its policy domain IDs.
+      $node->policy_domains = $policy_domains[$node->parent_id];
       unset($node->parent_id);
       return $node;
     }, $db->query($sql)->fetchAllAssoc('nid'));
@@ -97,22 +100,85 @@ Query;
   foreach (['node__field_policy_domain', 'node_revision__field_policy_domain'] as $table) {
     $query = $db->insert($table)->fields($fields);
     foreach ($nodes as $nid => $node) {
-      $query->values(array_combine($fields, [
-        $node->type,
-        $nid,
-        $node->vid,
-        'en',
-        0,
-        $node->policy_domain,
-      ]));
+      foreach ($node->policy_domains as $delta => $policy_domain) {
+        $query->values(array_combine($fields, [
+          $node->type,
+          $nid,
+          $node->vid,
+          'en',
+          $delta,
+          $policy_domain,
+        ]));
+      }
     }
     $query->execute();
   }
-
-  $nids = array_keys($nodes);
   // Invalidate updated nodes caches.
-  $storage->resetCache($nids);
+  $storage->resetCache(array_keys($nodes));
+
   $sandbox['#finished'] = (int) empty($sandbox['nodes']);
 
   return "Updated {$sandbox['progress']} out of {$sandbox['count']}";
+}
+
+/**
+ * Convert glossary abbreviation into term synonym (stage 2).
+ */
+function joinup_core_deploy_0106801(array &$sandbox): string {
+  if (!isset($sandbox['terms'])) {
+    $state = \Drupal::state();
+    $sandbox['terms'] = $state->get('isaicp_6153');
+    $sandbox['total'] = count($sandbox['terms']);
+    $sandbox['progress'] = 0;
+    $state->delete('isaicp_6153');
+  }
+
+  $terms_to_process = array_splice($sandbox['terms'], 0, 20);
+  $terms = [];
+  foreach ($terms_to_process as $term) {
+    $terms[$term->nid] = $term->abbr;
+  }
+  /** @var \Drupal\collection\Entity\GlossaryTermInterface $glossary */
+  foreach (Node::loadMultiple(array_keys($terms)) as $nid => $glossary) {
+    $glossary->set('field_glossary_synonyms', $terms[$nid])->save();
+  }
+  $sandbox['progress'] += count($terms);
+
+  $sandbox['#finished'] = (int) empty($sandbox['terms']);
+
+  return "Converted {$sandbox['progress']} out of {$sandbox['total']}";
+}
+
+/**
+ * Create 'collection_settings' meta entities for all collections.
+ */
+function joinup_core_deploy_0106802(array &$sandbox): string {
+  if (!isset($sandbox['ids'])) {
+    $sandbox['ids'] = array_values(
+      \Drupal::entityTypeManager()->getStorage('rdf_entity')->getQuery()
+        ->condition('rid', 'collection')
+        ->execute()
+    );
+    $sandbox['total'] = count($sandbox['ids']);
+    $sandbox['progress'] = 0;
+  }
+
+  $ids = array_splice($sandbox['ids'], 0, 50);
+  foreach ($ids as $id) {
+    MetaEntity::create(
+      [
+        'type' => 'collection_settings',
+        'target' => [
+          'target_type' => 'rdf_entity',
+          'target_id' => $id,
+        ],
+        // Make this default option, even for existing content.
+        'glossary_link_only_first' => TRUE,
+      ]
+    )->save();
+  }
+  $sandbox['progress'] += count($ids);
+  $sandbox['#finished'] = (int) empty($sandbox['ids']);
+
+  return "Processed {$sandbox['progress']} out of {$sandbox['total']}";
 }

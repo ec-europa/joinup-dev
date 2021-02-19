@@ -1,0 +1,4 @@
+collection.settings_form:
+  route_name: collection.settings_form
+  title: 'Settings'
+  base_route: entity.rdf_entity.canonical

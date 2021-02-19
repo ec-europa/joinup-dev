@@ -25,6 +25,7 @@ settings:
 visibility:
   request_route:
     id: request_route
-    routes: eif.solutions
+    routes:
+      - eif.solutions
     negate: false
     context_mapping: {  }
