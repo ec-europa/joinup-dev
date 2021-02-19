@@ -88,4 +88,18 @@ class Collection extends Rdf implements CollectionInterface {
     return 'field_ar_logo';
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getGlossarySettings(): array {
+    /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
+    $meta_entity = $this->get('settings')->entity;
+    if (!$meta_entity) {
+      throw new \Exception("The {$this->label()} collection doesn't have an associated 'collection_settings' meta-entity.");
+    }
+    return [
+      'link_only_first' => (bool) $meta_entity->get('glossary_link_only_first')->value,
+    ];
+  }
+
 }

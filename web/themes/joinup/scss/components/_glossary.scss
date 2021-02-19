@@ -60,3 +60,36 @@
     color: $color-orange;
   }
 }
+
+a.glossary-term {
+  border-bottom: 1px dotted $color-base;
+  color: $color-base;
+  text-decoration: none;
+  cursor: help;
+}
+
+.glossary-settings-link {
+  float: right;
+  margin: 20px;
+
+  &:before {
+    color: $color-base;
+    content: "";
+    @extend .icon;
+    @include icon-size(22px);
+    margin-right: 7px;
+    vertical-align: middle;
+  }
+
+  @include breakpoint(tablet) {
+    margin: 40px 30px 10px 10px;
+  }
+
+  @include breakpoint(desktop) {
+    margin: 40px 60px 10px 10px;
+  }
+
+  @media print {
+    display: none;
+  }
+}

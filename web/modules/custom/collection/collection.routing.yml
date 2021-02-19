@@ -25,3 +25,16 @@ collection.glossary_page:
         type: entity:rdf_entity
         bundle:
           - collection
+collection.settings_form:
+  path: '/rdf_entity/{rdf_entity}/settings'
+  defaults:
+    _controller: Drupal\collection\Controller\CollectionSettingsController::settings
+    _title_callback: Drupal\collection\Controller\CollectionSettingsController::title
+  requirements:
+    _custom_access: Drupal\collection\Controller\CollectionSettingsController::access
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+        bundle:
+          - collection
