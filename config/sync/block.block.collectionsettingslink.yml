@@ -21,6 +21,7 @@ settings:
 visibility:
   request_route:
     id: request_route
-    routes: collection.glossary_page
+    routes:
+      - collection.glossary_page
     negate: false
     context_mapping: {  }
