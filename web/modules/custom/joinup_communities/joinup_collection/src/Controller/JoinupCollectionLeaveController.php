@@ -6,8 +6,8 @@ namespace Drupal\joinup_collection\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
-use Drupal\collection\Form\LeaveCollectionConfirmForm;
 use Drupal\joinup_collection\JoinupCollectionHelper;
+use Drupal\joinup_group\Form\LeaveGroupConfirmForm;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -29,7 +29,7 @@ class JoinupCollectionLeaveController {
     if ($rdf_entity->id() === JoinupCollectionHelper::getCollectionId()) {
       return AccessResult::forbidden();
     }
-    return LeaveCollectionConfirmForm::access($rdf_entity);
+    return LeaveGroupConfirmForm::access($rdf_entity);
   }
 
 }

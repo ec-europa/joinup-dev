@@ -7,6 +7,7 @@ namespace Drupal\collection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\collection\Form\JoinCollectionForm;
 
 /**
  * Defines a service for #lazy_builder callbacks for the Collection module.
@@ -61,7 +62,7 @@ class CollectionLazyBuilders {
    */
   public function renderJoinCollectionForm($collection_id) {
     $collection = $this->entityTypeManager->getStorage('rdf_entity')->load($collection_id);
-    return $this->formBuilder->getForm('\Drupal\collection\Form\JoinCollectionForm', $this->currentUser, $collection);
+    return $this->formBuilder->getForm(JoinCollectionForm::class, $this->currentUser, $collection);
   }
 
 }

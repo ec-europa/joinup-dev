@@ -1,18 +1,18 @@
-uuid: 2ba02ed3-4b11-4958-b55d-7f39fa67282d
+uuid: 5245e99d-cd60-43cd-8868-e8cd3a5e325c
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.message.collection_content_subscription.field_collection_content
-    - message.template.collection_content_subscription
+    - field.field.message.group_content_subscription.field_group_content
+    - message.template.group_content_subscription
   module:
     - dynamic_entity_reference
-id: message.collection_content_subscription.default
+id: message.group_content_subscription.default
 targetEntityType: message
-bundle: collection_content_subscription
+bundle: group_content_subscription
 mode: default
 content:
-  field_collection_content:
+  field_group_content:
     weight: 0
     label: hidden
     settings:

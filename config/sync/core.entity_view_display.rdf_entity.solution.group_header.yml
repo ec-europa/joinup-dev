@@ -115,6 +115,11 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  solution_subscribe:
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   changed: true
   created: true

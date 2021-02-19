@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\collection\Form;
+namespace Drupal\joinup_group\Form;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
@@ -11,7 +11,7 @@ use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
@@ -21,14 +21,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Confirmation form for users that want to revoke their collection membership.
  */
-class LeaveCollectionConfirmForm extends ConfirmFormBase {
+class LeaveGroupConfirmForm extends ConfirmFormBase {
 
   /**
-   * The collection that is about to be abandoned by the user.
+   * The group that is about to be abandoned by the user.
    *
    * @var \Drupal\collection\Entity\CollectionInterface
    */
-  protected $collection;
+  protected $group;
 
   /**
    * The membership manager service.
@@ -67,15 +67,18 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion(): TranslatableMarkup {
-    return $this->t('Leave collection');
+    return $this->t('Leave :group', [
+      ':group' => $this->group->bundle(),
+    ]);
   }
 
   /**
    * {@inheritdoc}
    */
   public function getDescription(): TranslatableMarkup {
-    return $this->t("Are you sure you want to leave the %collection collection?<br />By leaving the collection you will be no longer able to publish content in it or receive notifications from it.", [
-      '%collection' => $this->collection->getName(),
+    return $this->t("Are you sure you want to leave the %label :type?<br />By leaving the :type you will be no longer able to publish content in it or receive notifications from it.", [
+      '%label' => $this->group->getName(),
+      ':type' => $this->group->bundle(),
     ]);
   }
 
@@ -84,20 +87,23 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    */
   public function getCancelUrl(): Url {
     return Url::fromRoute('entity.rdf_entity.canonical', [
-      'rdf_entity' => $this->collection->id(),
+      'rdf_entity' => $this->group->id(),
     ]);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ?CollectionInterface $rdf_entity = NULL): array {
-    // Store the collection on the object so it can be reused.
-    $this->collection = $rdf_entity;
+  public function buildForm(array $form, FormStateInterface $form_state, ?GroupInterface $rdf_entity = NULL): array {
+    // Store the group on the object so it can be reused.
+    $this->group = $rdf_entity;
 
     $form = parent::buildForm($form, $form_state);
-    if ($this->collection->isSoleGroupOwner((int) $this->currentUser()->id())) {
-      $form['description']['#markup'] = $this->t('You are owner of this collection. Before you leave this collection, you should transfer the ownership to another member.');
+
+    if ($this->group->isSoleGroupOwner((int) $this->currentUser()->id())) {
+      $form['description']['#markup'] = $this->t('You are owner of this :type. Before you leave this :type, you should transfer the ownership to another member.', [
+        ':type' => $this->group->bundle(),
+      ]);
       $form['actions']['submit']['#access'] = FALSE;
     }
 
@@ -112,7 +118,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
           'class' => ['button--small', 'dialog-cancel'],
         ],
         // Put the cancel button to the left of the confirmation button so it is
-        // consistent with the dialog shown when joining the collection.
+        // consistent with the dialog shown when joining the group.
         '#weight' => -1,
       ];
 
@@ -128,7 +134,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
   public function validateForm(array &$form, FormStateInterface $form_state): void {
     parent::validateForm($form, $form_state);
 
-    // Only authenticated users can leave a collection.
+    // Only authenticated users can leave a group.
     $user = $this->currentUser();
     if ($user->isAnonymous()) {
       $form_state->setErrorByName('user', $this->t('<a href=":login">Sign in</a> or <a href=":register">register</a> to change your group membership.', [
@@ -137,8 +143,10 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
       ]));
     }
 
-    if (!$this->membershipManager->isMember($this->collection, $user->id())) {
-      $form_state->setErrorByName('collection', $this->t('You are not a member of this collection. You cannot leave it.'));
+    if (!$this->membershipManager->isMember($this->group, $user->id())) {
+      $form_state->setErrorByName('group', $this->t('You are not a member of this :type. You cannot leave it.', [
+        ':type' => $this->group->bundle(),
+      ]));
     }
   }
 
@@ -148,17 +156,17 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $user_id = $this->currentUser()->id();
 
-    $membership = $this->membershipManager->getMembership($this->collection, $user_id);
+    $membership = $this->membershipManager->getMembership($this->group, $user_id);
     $membership->delete();
 
     // Also remove the user authorship, if case.
-    if ($this->collection->getOwnerId() === $user_id) {
-      $this->collection->skip_notification = TRUE;
-      $this->collection->setOwnerId(0)->save();
+    if ($this->group->getOwnerId() === $user_id) {
+      $this->group->skip_notification = TRUE;
+      $this->group->setOwnerId(0)->save();
     }
 
-    $this->messenger()->addStatus($this->t('You are no longer a member of %collection.', [
-      '%collection' => $this->collection->getName(),
+    $this->messenger()->addStatus($this->t('You are no longer a member of %label.', [
+      '%label' => $this->group->getName(),
     ]));
 
     $form_state->setRedirectUrl($this->getCancelUrl());

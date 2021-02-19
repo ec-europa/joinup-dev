@@ -10,6 +10,8 @@ declare(strict_types = 1);
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\field\FieldStorageConfigInterface;
+use Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessage;
+use Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessageInterface;
 use Drupal\message\MessageInterface;
 use Drupal\message_notify\Plugin\Notifier\MessageNotifierInterface;
 use Drupal\user\UserInterface;
@@ -48,24 +50,35 @@ function joinup_subscription_entity_base_field_info(EntityTypeInterface $entity_
 }
 
 /**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function joinup_subscription_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['message'][GroupContentSubscriptionMessage::TEMPLATE])) {
+    $bundles['message'][GroupContentSubscriptionMessage::TEMPLATE]['class'] = GroupContentSubscriptionMessage::class;
+  }
+}
+
+/**
  * Implements hook_message_digest_aggregate_alter().
  *
- * Reorders the messages in the collection content subscription digest to be
- * grouped by collection. The collections will be sorted alphabetically and also
- * the community content items within each collection is sorted alphabetically.
+ * Reorders the messages in the group content subscription digest to be grouped
+ * by the parent group. The groups will be sorted alphabetically and also the
+ * community content items within each group are sorted alphabetically.
  */
 function joinup_subscription_message_digest_aggregate_alter(array &$context, UserInterface $account, MessageNotifierInterface $notifier): void {
-  // Only act on the collection community content digest. This can be recognized
-  // because it is not linked to any entity type or entity ID.
-  if (!empty($context['entity_type']) || !empty($context['entity_id'])) {
+  // Only act on the group community content digest. Bail out if this contains
+  // any other message.
+  if (!array_reduce($context['messages'], function (bool $carry, MessageInterface $message): bool {
+    return $carry && $message instanceof GroupContentSubscriptionMessageInterface;
+  }, TRUE)) {
     return;
   }
 
   // Filter out any messages that are referring to deleted content.
+  /** @var \Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessageInterface[] $messages */
   $messages = &$context['messages'];
   foreach ($messages as $key => $message) {
-    $content = $message->field_collection_content->first()->entity ?? NULL;
-    if (empty($content)) {
+    if ($message->isOrphanedGroupContentSubscriptionMessage()) {
       unset($messages[$key]);
     }
   }
@@ -79,22 +92,18 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
 
   // Put the messages in the right order in which they will be displayed in the
   // digest message.
-  uasort($messages, function (MessageInterface $a, MessageInterface $b) {
-    // Find the collections by resolving the entity references from the message
-    // to the community content to the collection.
-    /** @var \Drupal\collection\Entity\CollectionContentInterface $a_content */
-    $a_content = $a->field_collection_content->first()->entity;
-    /** @var \Drupal\collection\Entity\CollectionContentInterface $b_content */
-    $b_content = $b->field_collection_content->first()->entity;
-    $a_collection = $a_content->getCollection();
-    $b_collection = $b_content->getCollection();
+  uasort($messages, function (GroupContentSubscriptionMessageInterface $a, GroupContentSubscriptionMessageInterface $b) {
+    $a_content = $a->getSubscribedGroupContent();
+    $b_content = $b->getSubscribedGroupContent();
+    $a_group = $a_content->getGroup();
+    $b_group = $b_content->getGroup();
 
-    // Within a collection, order by content alphabetically.
-    if ($a_collection->id() === $b_collection->id()) {
+    // Within a group, order by content alphabetically.
+    if ($a_group->id() === $b_group->id()) {
       return $a_content->label() <=> $b_content->label();
     }
-    // Also order the collections themselves alphabetically.
-    return $a_collection->label() <=> $b_collection->label();
+    // Also order the groups themselves alphabetically.
+    return $a_group->label() <=> $b_group->label();
   });
 }
 

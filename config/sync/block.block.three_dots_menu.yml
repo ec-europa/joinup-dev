@@ -4,7 +4,7 @@ status: true
 dependencies:
   theme:
     - joinup_theme
-id: joinup_theme_local_tasks
+id: three_dots_menu
 theme: joinup_theme
 region: featured
 weight: -17
@@ -16,5 +16,5 @@ settings:
   provider: core
   label_display: '0'
   primary: true
-  secondary: true
+  secondary: false
 visibility: {  }

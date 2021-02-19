@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "feed447f650d76b0f8e791cf0b68df6a",
+    "content-hash": "0fd06c92e2ef60636500077b0328b065",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5139,7 +5139,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.0-alpha2",
-                    "datestamp": "1613598883",
+                    "datestamp": "1613598911",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -10087,7 +10087,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-08-03T19:59:39+00:00"
+            "time": "2020-10-26T14:41:29+00:00"
         },
         {
             "name": "stack/builder",

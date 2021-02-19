@@ -1,10 +1,10 @@
 /**
  * @file
- * JavaScript code for the My Subscriptions form.
+ * JavaScript code for the subscriptions form.
  */
 
 (function ($, Drupal) {
-  Drupal.behaviors.joinupSubscriptionMySubscriptionsBehavior = {
+  Drupal.behaviors.joinupSubscription = {
     attach: function (context, settings) {
       // Whenever any of the checkboxes for a collection is clicked, enable the
       // submit button.

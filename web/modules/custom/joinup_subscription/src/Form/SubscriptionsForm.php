@@ -15,9 +15,9 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
-use Drupal\joinup_core\Plugin\Field\FieldType\EntityBundlePairItem;
 use Drupal\joinup_group\JoinupGroupManagerInterface;
-use Drupal\joinup_subscription\JoinupSubscriptionsInterface;
+use Drupal\joinup_subscription\JoinupSubscriptionsHelper;
+use Drupal\joinup_subscription\Plugin\Field\FieldType\EntityBundlePairItem;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a Joinup subscription form.
  */
-class MySubscriptionsForm extends FormBase {
+class SubscriptionsForm extends FormBase {
 
   /**
    * The entity type manager.
@@ -77,7 +77,7 @@ class MySubscriptionsForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): self {
     return new static(
       $container->get('entity_type.manager'),
       $container->get('entity_type.bundle.info'),
@@ -89,160 +89,171 @@ class MySubscriptionsForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'joinup_subscription_my_subscriptions';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ?AccountInterface $user = NULL) {
-    // When no user is passed we cannot show anything useful.
-    if (empty($user)) {
-      throw new \InvalidArgumentException('No user account supplied.');
+  public function buildForm(array $form, FormStateInterface $form_state, ?AccountInterface $user = NULL): array {
+    $user = $user ?: $this->currentUser();
+    if (!$user instanceof UserInterface) {
+      $user = $this->entityTypeManager->getStorage('user')->load($user->id());
     }
-    /** @var \Drupal\user\UserInterface $user */
-    $user = $this->entityTypeManager->getStorage('user')->load($user->id());
-
-    $form['description'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'p',
-      '#value' => $this->t('Set your preferences to receive notifications on a per collection basis.'),
-    ];
+    $form_state->set('#user', $user);
 
     $this->loadUserSubscriptionFrequencyWidget($form, $form_state, $user);
 
-    $memberships = $this->groupManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
-    $user_is_subscribed = FALSE;
-
-    // Add a JS behavior to enable the buttons when the checkboxes or the
-    // dropdown on the form are toggled.
-    $form['collections']['#attached']['library'][] = 'joinup_subscription/my_subscriptions';
-
-    // Return early if there are no memberships to display.
-    if (!(bool) count($memberships)) {
-      $empty_message = $this->t('No collection memberships yet. Join one or more collections to subscribe to their content!');
-      $form['empty_text'] = [
-        '#theme' => 'status_messages',
-        '#message_list' => ['status' => [$empty_message]],
-        '#status_headings' => [
-          'status' => $this->t('Status message'),
-          'error' => $this->t('Error message'),
-          'warning' => $this->t('Warning message'),
+    $form['groups']['#tree'] = TRUE;
+    foreach (JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES as $type => $subscription_bundles) {
+      $memberships = $this->groupManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', $type);
+      $form['groups'][$type]['label'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->entityTypeBundleInfo->getBundleCountLabel('rdf_entity', $type, count($memberships), 'no_count_capitalize'),
+        '#attributes' => [
+          'class' => ['subscription-type'],
         ],
       ];
-      return $form;
-    }
 
-    // Generate the list of memberships with checkboxes to choose which bundles
-    // to subscribe to.
-    $form['collections']['#tree'] = TRUE;
-    $bundle_info = [];
-    foreach (array_keys(JoinupSubscriptionsInterface::BUNDLES) as $entity_type_id) {
-      $bundle_info[$entity_type_id] = $this->entityTypeBundleInfo->getBundleInfo($entity_type_id);
-    }
+      // Add a JS behavior to enable the buttons when the checkboxes or the
+      // dropdown on the form are toggled.
+      $form['groups']['#attached']['library'][] = 'joinup_subscription/subscriptions';
 
-    // Keep track of the collections with subscriptions in order to properly
-    // show or hide the 'Unsubscribe from all' button in the end of the page.
-    foreach ($memberships as $membership) {
-      $collection = $membership->getGroup();
-      if ($collection === NULL) {
+      // Return early if there are no memberships to display.
+      if (!$memberships) {
+        $type_info = $this->entityTypeBundleInfo->getBundleInfo('rdf_entity')[$type];
+        $empty_message = $this->t('No @group memberships yet. Join one or more @groups to subscribe to their content!', [
+          '@group' => $type_info['label_singular'],
+          '@groups' => $type_info['label_plural'],
+        ]);
+        $form['groups'][$type]['empty_text'] = [
+          '#theme' => 'status_messages',
+          '#message_list' => ['status' => [$empty_message]],
+          '#status_headings' => [
+            'status' => $this->t('Status message'),
+            'error' => $this->t('Error message'),
+            'warning' => $this->t('Warning message'),
+          ],
+        ];
         continue;
       }
-      $clean_collection_id = Html::cleanCssIdentifier($collection->id());
-      $form['collections'][$collection->id()] = [
-        '#type' => 'container',
-        '#id' => 'collection-' . $clean_collection_id,
-        '#attributes' => [
-          'class' => ['collection-subscription'],
-        ],
-        'logo' => $collection->field_ar_logo->view([
-          'label' => 'hidden',
-          'type' => 'image',
-          'settings' => [
-            'image_style' => 'vertical_medium_image',
-            'image_link' => 'content',
-          ],
-        ]),
-        'link' => [
-          '#type' => 'link',
-          '#title' => $collection->label(),
-          '#url' => $collection->toUrl(),
-        ],
-        'motivation' => [
-          '#markup' => $this->t('Send me notifications for:'),
-        ],
-        'bundles' => [
+
+      // Generate the list of memberships with checkboxes to choose which
+      // bundles to subscribe to.
+      $bundle_info = [];
+      foreach (array_keys($subscription_bundles) as $entity_type_id) {
+        $bundle_info[$entity_type_id] = $this->entityTypeBundleInfo->getBundleInfo($entity_type_id);
+      }
+
+      // Keep track of the groups with subscriptions in order to properly show
+      // or hide the 'Unsubscribe from all' button in the end of the page.
+      foreach ($memberships as $membership) {
+        /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
+        $group = $membership->getGroup();
+        if ($group === NULL) {
+          continue;
+        }
+        $clean_group_id = Html::cleanCssIdentifier($group->id());
+        $form['groups'][$group->id()] = [
           '#type' => 'container',
-          '#extra_suggestion' => 'container__subscribe_form',
-        ],
-        '#extra_suggestion' => 'container__collection_subscription',
-      ];
+          '#id' => 'group-' . $clean_group_id,
+          '#attributes' => [
+            'class' => ['group-subscription'],
+          ],
+          'logo' => $group->getLogoAsRenderArray([
+            'label' => 'hidden',
+            'type' => 'image',
+            'settings' => [
+              'image_style' => 'vertical_medium_image',
+              'image_link' => 'content',
+            ],
+          ]),
+          'link' => [
+            '#type' => 'link',
+            '#title' => $group->label(),
+            '#url' => $group->toUrl(),
+          ],
+          'motivation' => [
+            '#markup' => $this->t('Send me notifications for:'),
+          ],
+          'bundles' => [
+            '#type' => 'container',
+            '#extra_suggestion' => 'container__subscribe_form',
+          ],
+          '#extra_suggestion' => 'container__group_subscription',
+        ];
 
-      $subscription_status = [];
+        $subscription_status = [];
 
-      $subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
-      foreach (JoinupSubscriptionsInterface::BUNDLES as $entity_type_id => $bundle_ids) {
-        foreach ($bundle_ids as $bundle_id) {
-          $key = static::getSubscriptionKey($entity_type_id, $bundle_id);
-          $value = array_reduce($subscription_bundles, function (bool $carry, EntityBundlePairItem $entity_bundle_pair) use ($entity_type_id, $bundle_id): bool {
-            return $carry || $entity_bundle_pair->getEntityTypeId() === $entity_type_id && $entity_bundle_pair->getBundleId() === $bundle_id;
-          }, FALSE);
-          $user_is_subscribed = $user_is_subscribed || $value;
-          $form['collections'][$collection->id()]['bundles'][$key] = [
-            '#type' => 'checkbox',
-            '#title' => $bundle_info[$entity_type_id][$bundle_id]['label'],
-            '#return_value' => TRUE,
-            '#default_value' => $value,
+        $active_subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
+        foreach ($subscription_bundles as $entity_type_id => $bundle_ids) {
+          foreach ($bundle_ids as $bundle_id) {
+            $key = static::getSubscriptionKey($entity_type_id, $bundle_id);
+            $value = array_reduce($active_subscription_bundles, function (bool $carry, EntityBundlePairItem $entity_bundle_pair) use ($entity_type_id, $bundle_id): bool {
+              return $carry || $entity_bundle_pair->getEntityTypeId() === $entity_type_id && $entity_bundle_pair->getBundleId() === $bundle_id;
+            }, FALSE);
+
+            $form['groups'][$group->id()]['bundles'][$key] = [
+              '#type' => 'checkbox',
+              '#title' => $bundle_info[$entity_type_id][$bundle_id]['label'],
+              '#return_value' => TRUE,
+              '#default_value' => $value,
+              // Make sure to turn autocomplete off so that the browser doesn't
+              // try to restore a half submitted form when the user does a soft
+              // reload.
+              '#attributes' => ['autocomplete' => 'off'],
+            ];
+
+            // Store status of checkboxes.
+            $subscription_status[$key] = $value;
+          }
+        }
+
+        $form['groups'][$group->id()]['bundles']['submit'] = [
+          '#ajax' => [
+            'callback' => '::reloadGroup',
+          ],
+          '#name' => 'submit-' . $clean_group_id,
+          '#submit' => ['::submitForm'],
+          '#type' => 'submit',
+          '#extra_suggestion' => 'subscribe_save',
+          '#value' => $this->t('Save changes'),
+          '#group_type' => $type,
+          '#attributes' => [
+            // The button should appear disabled initially. It becomes enabled
+            // when the user changes one of the checkboxes. We have to set this
+            // HTML attribute directly instead of using the `#disabled` property
+            // because this will make Drupal ignore the form submissions.
+            'disabled' => 'disabled',
             // Make sure to turn autocomplete off so that the browser doesn't
             // try to restore a half submitted form when the user does a soft
             // reload.
-            '#attributes' => ['autocomplete' => 'off'],
-          ];
-
-          // Store status of checkboxes.
-          $subscription_status[$key] = $value;
-        }
+            'autocomplete' => 'off',
+            // Store the initial state of the subscriptions so that we can
+            // unlock the save button in JS whenever a state changes.
+            'data-drupal-subscriptions' => Json::encode(array_values($subscription_status)),
+          ],
+        ];
       }
 
-      $form['collections'][$collection->id()]['bundles']['submit'] = [
-        '#ajax' => [
-          'callback' => '::reloadCollection',
-        ],
-        '#name' => 'submit-' . $clean_collection_id,
-        '#submit' => ['::submitForm'],
-        '#type' => 'submit',
-        '#extra_suggestion' => 'subscribe_save',
-        '#value' => $this->t('Save changes'),
-        '#attributes' => [
-          // The button should appear disabled initially. It becomes enabled
-          // when the user changes one of the checkboxes. We have to set this
-          // HTML attribute directly instead of using the `#disabled` property
-          // because this will make Drupal ignore the form submissions.
-          'disabled' => 'disabled',
-          // Make sure to turn autocomplete off so that the browser doesn't try
-          // to restore a half submitted form when the user does a soft reload.
-          'autocomplete' => 'off',
-          // Store the initial state of the subscriptions so that we can unlock
-          // the save button in JS whenever a state changes.
-          'data-drupal-subscriptions' => Json::encode(array_values($subscription_status)),
-        ],
-      ];
     }
-
     $form['edit-actions'] = [
       '#type' => 'container',
       '#id' => 'edit-actions',
       '#attributes' => ['class' => 'form__subscribe-actions'],
     ];
 
+    $unsubscribe_all_url = Url::fromRoute(
+      'joinup_subscription.unsubscribe_all',
+      ['user' => $user->id()]
+    );
     $form['edit-actions']['unsubscribe_all'] = [
       '#type' => 'link',
       '#title' => $this->t('Unsubscribe from all'),
-      '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
-        'user' => $user->id(),
-      ]),
-      '#access' => $user_is_subscribed,
+      '#url' => $unsubscribe_all_url,
+      '#access' => $unsubscribe_all_url->access(),
     ];
 
     return $form;
@@ -251,15 +262,17 @@ class MySubscriptionsForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    $collection_id = $this->getTriggeringElementCollectionId($form_state);
-    $collection = $this->entityTypeManager->getStorage('rdf_entity')->load($collection_id);
-    $user = $form_state->getBuildInfo()['args'][0];
-    $membership = $this->membershipManager->getMembership($collection, $user->id());
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
+    $group_id = $this->getTriggeringElementGroupId($form_state);
+    $group = $this->entityTypeManager->getStorage('rdf_entity')->load($group_id);
+    $user = $form_state->get('#user');
+    $membership = $this->membershipManager->getMembership($group, $user->id());
 
     // Check if the subscriptions have changed. This allows us to skip saving
     // the membership entity if nothing changed.
-    $bundles_value = $form_state->getValue('collections')[$membership->getGroupId()]['bundles'];
+    $bundles_value = $form_state->getValue(
+      ['groups', $membership->getGroupId(), 'bundles']
+    );
     // Ignore the submit button.
     unset($bundles_value['submit']);
     $subscribed_bundles = array_keys(array_filter($bundles_value));
@@ -286,10 +299,8 @@ class MySubscriptionsForm extends FormBase {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state object.
    */
-  public function submitUserFrequency(array &$form, FormStateInterface $form_state) {
-    $account = $form_state->getBuildInfo()['args'][0];
-    $user = $this->entityTypeManager->getStorage('user')->load($account->id());
-
+  public function submitUserFrequency(array &$form, FormStateInterface $form_state): void {
+    $user = $form_state->get('#user');
     $value = $form_state->getValue('field_user_frequency');
     $user->set('field_user_frequency', $value);
     $user->save();
@@ -312,7 +323,7 @@ class MySubscriptionsForm extends FormBase {
   }
 
   /**
-   * AJAX callback that refreshes a collection after it has been submitted.
+   * AJAX callback that refreshes a group after it has been submitted.
    *
    * @param array $form
    *   The form.
@@ -322,40 +333,42 @@ class MySubscriptionsForm extends FormBase {
    * @return \Drupal\Core\Ajax\AjaxResponse
    *   An AJAX response.
    */
-  public function reloadCollection(array &$form, FormStateInterface $form_state): AjaxResponse {
-    $submitted_collection_id = $this->getTriggeringElementCollectionId($form_state);
-    $form['collections'][$submitted_collection_id]['bundles']['submit']['#value'] = $this->t('Saved!');
+  public function reloadGroup(array &$form, FormStateInterface $form_state): AjaxResponse {
+    $submitted_group_id = $this->getTriggeringElementGroupId($form_state);
+    $form['groups'][$submitted_group_id]['bundles']['submit']['#value'] = $this->t('Saved!');
 
     // Change status of checkboxes.
     $subscription_status = [];
-    foreach (JoinupSubscriptionsInterface::BUNDLES as $entity_type_id => $bundle_ids) {
+    $subscription_type = $form_state->getTriggeringElement()['#group_type'];
+    $subscription_bundles = JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES[$subscription_type];
+    foreach ($subscription_bundles as $entity_type_id => $bundle_ids) {
       foreach ($bundle_ids as $bundle_id) {
         $key = static::getSubscriptionKey($entity_type_id, $bundle_id);
-        $subscription_status[$key] = $form['collections'][$submitted_collection_id]['bundles'][$key]['#checked'];
+        $subscription_status[$key] = $form['groups'][$submitted_group_id]['bundles'][$key]['#checked'];
       }
     }
-    $form['collections'][$submitted_collection_id]['bundles']['submit']['#attributes']['data-drupal-subscriptions'] = Json::encode(array_values($subscription_status));
+    $form['groups'][$submitted_group_id]['bundles']['submit']['#attributes']['data-drupal-subscriptions'] = Json::encode(array_values($subscription_status));
 
-    $user = $form_state->getBuildInfo()['args'][0];
+    $user = $form_state->get('#user');
     $form['edit-actions']['unsubscribe_all']['#access'] = $this->hasSubscriptions($user);
 
     return (new AjaxResponse())
-      ->addCommand(new ReplaceCommand("#{$form['collections'][$submitted_collection_id]['#id']}", $form['collections'][$submitted_collection_id]))
+      ->addCommand(new ReplaceCommand("#{$form['groups'][$submitted_group_id]['#id']}", $form['groups'][$submitted_group_id]))
       ->addCommand(new ReplaceCommand('#edit-actions', $form['edit-actions']));
   }
 
   /**
-   * Returns the collection ID for the submit button that was clicked.
+   * Returns the group ID for the submit button that was clicked.
    *
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state of the submitted form.
    *
    * @return string
-   *   The collection ID that corresponds to the submit button that was clicked.
+   *   The group ID that corresponds to the submit button that was clicked.
    */
-  protected function getTriggeringElementCollectionId(FormStateInterface $form_state): string {
-    // Return the collection ID which is stored in the third to last parent of
-    // the button: `['collections'][$collection_id]['bundles']['submit']`.
+  protected function getTriggeringElementGroupId(FormStateInterface $form_state): string {
+    // Return the group ID which is stored in the third to last parent of
+    // the button: `['groups'][$group_id]['bundles']['submit']`.
     $clicked_button_parents = array_values($form_state->getTriggeringElement()['#parents']);
     return $clicked_button_parents[count($clicked_button_parents) - 3];
   }
@@ -437,16 +450,16 @@ class MySubscriptionsForm extends FormBase {
    *   The user to check.
    *
    * @return bool
-   *   TRUE if the user is subscribed to at least one collection content type.
+   *   TRUE if the user is subscribed to at least one groups content type.
    */
   protected function hasSubscriptions(AccountInterface $user): bool {
-    foreach ($this->groupManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection') as $membership) {
-      $subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
-      if (!empty($subscription_bundles)) {
-        return TRUE;
-      }
-    }
-    return FALSE;
+    return (bool) $this->entityTypeManager
+      ->getStorage('og_membership')
+      ->getQuery()
+      ->condition('uid', $user->id())
+      ->exists('subscription_bundles')
+      ->count()
+      ->execute();
   }
 
 }

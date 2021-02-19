@@ -19,8 +19,9 @@ use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessageInterface;
 use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
-use Drupal\joinup_subscription\JoinupSubscriptionsInterface;
+use Drupal\joinup_subscription\JoinupSubscriptionsHelper;
 use Drupal\message_digest\Traits\MessageDigestTrait;
 use Drupal\og\OgMembershipInterface;
 use Drupal\user\Entity\User;
@@ -95,7 +96,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
   }
 
   /**
-   * Subscribes the given users to the given collection content bundles.
+   * Subscribes the given users to the given group content bundles.
    *
    * Table format:
    * | collection   | user   | subscriptions                     |
@@ -104,6 +105,8 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *
    * @param \Behat\Gherkin\Node\TableNode $subscription_table
    *   A table with the data for subscribing the users.
+   * @param string $bundle
+   *   The group bundle.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    *   Thrown when a membership cannot be updated with the new subscriptions.
@@ -111,27 +114,27 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *   Thrown if a membership is not found for a given user in a given
    *   collection.
    *
-   * @Given (the following )collection content subscriptions:
+   * @Given (the following ):bundle content subscriptions:
    */
-  public function subscribeToCollectionContent(TableNode $subscription_table): void {
+  public function subscribeToGroupContent(TableNode $subscription_table, string $bundle): void {
     foreach ($subscription_table->getColumnsHash() as $values) {
-      /** @var \Drupal\collection\Entity\CollectionInterface $collection */
-      $collection = $this->getRdfEntityByLabel($values['collection'], 'collection');
+      $group = $this->getRdfEntityByLabel($values[$bundle], $bundle);
       $user = $this->getUserByName($values['user']);
-      $membership = $this->getMembershipByGroupAndUser($collection, $user, OgMembershipInterface::ALL_STATES);
+      $membership = $this->getMembershipByGroupAndUser($group, $user, OgMembershipInterface::ALL_STATES);
       $subscriptions = [];
-      foreach ($this->explodeCommaSeparatedStepArgument(strtolower($values['subscriptions'])) as $bundle) {
+      $subscription_bundles = JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES[$bundle];
+      foreach ($this->explodeCommaSeparatedStepArgument(strtolower($values['subscriptions'])) as $subscription_bundle) {
         $entity_type = NULL;
-        foreach (JoinupSubscriptionsInterface::BUNDLES as $entity_type_id => $bundles) {
-          if (in_array($bundle, $bundles)) {
+        foreach ($subscription_bundles as $entity_type_id => $bundles) {
+          if (in_array($subscription_bundle, $bundles)) {
             $entity_type = $entity_type_id;
             break 1;
           }
         }
-        Assert::assertNotEmpty($entity_type, "Unknown bundle $bundle.");
+        Assert::assertNotEmpty($entity_type, "Unknown bundle $subscription_bundle.");
         $subscriptions[] = [
           'entity_type' => $entity_type,
-          'bundle' => $bundle,
+          'bundle' => $subscription_bundle,
         ];
       }
       $membership->set('subscription_bundles', $subscriptions)->save();
@@ -143,8 +146,8 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *
    * @param string $button
    *   The button label.
-   * @param string $collection
-   *   The collection name.
+   * @param string $label
+   *   The group name.
    * @param string $status
    *   The expected status. Possible values are 'enabled' and 'disabled'.
    *
@@ -155,15 +158,15 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *   Thrown when the region or the button are not found or if the expected
    *   status does not match the actual one.
    *
-   * @Given the :button button on the :collection subscription card should be :status
+   * @Given the :button button on the :label subscription card should be :status
    */
-  public function assertSubscriptionButtonStatus(string $button, string $collection, string $status): void {
+  public function assertSubscriptionButtonStatus(string $button, string $label, string $status): void {
     if (!in_array($status, ['enabled', 'disabled'])) {
       throw new \InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
     }
 
     $expected_status = $status === 'enabled';
-    $card = $this->getCollectionSubscriptionCardByHeading($collection);
+    $card = $this->getGroupSubscriptionCardByHeading($label);
     $button = $this->findNamedElementInRegion($button, 'button', $card);
     $disabled = !$button->hasAttribute('disabled');
     Assert::assertEquals($expected_status, $disabled);
@@ -174,16 +177,16 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *
    * @param string $button
    *   The button label.
-   * @param string $collection
-   *   The collection name.
+   * @param string $label
+   *   The group name.
    *
    * @throws \Exception
    *   Thrown when the card is not found.
    *
-   * @Given I press :button on the :collection subscription card
+   * @Given I press :button on the :label subscription card
    */
-  public function pressButtonOnSubscriptionCard(string $button, string $collection): void {
-    $card = $this->getCollectionSubscriptionCardByHeading($collection);
+  public function pressButtonOnSubscriptionCard(string $button, string $label): void {
+    $card = $this->getGroupSubscriptionCardByHeading($label);
     $button = $card->findButton($button);
     $button->press();
   }
@@ -193,18 +196,18 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *
    * @param string $button
    *   The button label.
-   * @param string $collection
-   *   The collection name.
+   * @param string $label
+   *   The group name.
    *
    * @throws \Exception
    *   Thrown when the card or the button is not found.
    *
    * @Given I should see the :button button on the :collection subscription card
    */
-  public function assertButtonExistsOnSubscriptionCard(string $button, string $collection): void {
-    $card = $this->getCollectionSubscriptionCardByHeading($collection);
+  public function assertButtonExistsOnSubscriptionCard(string $button, string $label): void {
+    $card = $this->getGroupSubscriptionCardByHeading($label);
     if (empty($card->findButton($button))) {
-      throw new \Exception("The '$button' button was not found in the '$collection' subscription card but should.");
+      throw new \Exception("The '$button' button was not found in the '$label' subscription card but should.");
     }
   }
 
@@ -213,44 +216,44 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *
    * @param string $button
    *   The button label.
-   * @param string $collection
-   *   The collection name.
+   * @param string $label
+   *   The group name.
    *
    * @throws \Exception
    *   Thrown when the card is not found or the button is.
    *
-   * @Given I should not see the :button button on the :collection subscription card
+   * @Given I should not see the :button button on the :label subscription card
    */
-  public function assertButtonNotExistsOnSubscriptionCard(string $button, string $collection): void {
-    $card = $this->getCollectionSubscriptionCardByHeading($collection);
+  public function assertButtonNotExistsOnSubscriptionCard(string $button, string $label): void {
+    $card = $this->getGroupSubscriptionCardByHeading($label);
     if ($card->findButton($button)) {
-      throw new \Exception("The '$button' button was found in the '$collection' subscription card but should not.");
+      throw new \Exception("The '$button' button was found in the '$label' subscription card but should not.");
     }
   }
 
   /**
    * Checks a material checkbox that represents a subscription's bundle.
    *
-   * @param string $collection
-   *   The collection name.
+   * @param string $label
+   *   The group name.
    * @param string $bundle
    *   The bundle to check.
    *
    * @throws \Exception
    *   Thrown when the card is not found or the checkbox is not styled properly.
    *
-   * @Given I check the :bundle checkbox of the :collection subscription
+   * @Given I check the :bundle checkbox of the :label subscription
    */
-  public function selectSubscriptionMaterialOptionInMySubscriptions(string $collection, string $bundle): void {
-    $collection = $this->getCollectionSubscriptionCardByHeading($collection);
-    $this->checkMaterialDesignField($bundle, $collection);
+  public function selectSubscriptionMaterialOptionInMySubscriptions(string $label, string $bundle): void {
+    $label = $this->getGroupSubscriptionCardByHeading($label);
+    $this->checkMaterialDesignField($bundle, $label);
   }
 
   /**
    * Unhecks a material checkbox that represents a subscription's bundle.
    *
-   * @param string $collection
-   *   The collection name.
+   * @param string $label
+   *   The group name.
    * @param string $bundle
    *   The bundle to check.
    *
@@ -258,38 +261,40 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *   Thrown when the card is not found or there was an issue with the material
    *   checkbox.
    *
-   * @Given I uncheck the :bundle checkbox of the :collection subscription
+   * @Given I uncheck the :bundle checkbox of the :label subscription
    */
-  public function deselectSubscriptionMaterialOptionInMySubscriptions(string $collection, string $bundle): void {
-    $collection = $this->getCollectionSubscriptionCardByHeading($collection);
-    $this->uncheckMaterialDesignField($bundle, $collection);
+  public function deselectSubscriptionMaterialOptionInMySubscriptions(string $label, string $bundle): void {
+    $label = $this->getGroupSubscriptionCardByHeading($label);
+    $this->uncheckMaterialDesignField($bundle, $label);
   }
 
   /**
-   * Selects collection subscription options in the subscription settings form.
+   * Selects group subscription options in the subscription settings form.
    *
    * This performs the action in the user interface, so the browser should be
    * navigated to the my subscriptions form before performing this step. This
    * will not submit the form.
    *
    * Table format:
-   * | Collection A | Discussion, Document, Event, News |
-   * | Collection B | Discussion, Event                 |
+   * | Group A | Discussion, Document, Event, News |
+   * | Group B | Discussion, Event                 |
    *
    * @param \Behat\Gherkin\Node\TableNode $subscription_options
    *   The Behat table node containing the subscription options.
+   * @param string $bundle
+   *   The group bundle.
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    *   Thrown when a checkbox for a given subscription option is not found.
    *
-   * @When I select the following collection subscription options:
+   * @When I select the following :bundle subscription options:
    */
-  public function selectSubscriptionOptionsInMySubscriptions(TableNode $subscription_options): void {
-    foreach ($subscription_options->getRowsHash() as $collection_label => $bundle_ids) {
+  public function selectSubscriptionOptionsInMySubscriptions(TableNode $subscription_options, string $bundle): void {
+    foreach ($subscription_options->getRowsHash() as $group_label => $bundle_ids) {
       $bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($bundle_ids));
-      $collection = self::getRdfEntityByLabel($collection_label, 'collection');
+      $group = self::getRdfEntityByLabel($group_label, $bundle);
       foreach (CommunityContentHelper::BUNDLES as $bundle_id) {
-        $locator = 'collections[' . $collection->id() . '][bundles][' . $bundle_id . ']';
+        $locator = 'groups[' . $group->id() . '][bundles][' . $bundle_id . ']';
         if (in_array($bundle_id, $bundle_ids)) {
           if ($this->getSession()->getPage()->hasUncheckedField($locator)) {
             $this->getSession()->getPage()->checkField($locator);
@@ -309,8 +314,8 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * navigated to the my subscription form before performing this step.
    *
    * Table format:
-   * | Collection A | Solution, Discussion, Document, Event, News |
-   * | Collection B | Discussion, Event                           |
+   * | Group A | Discussion, Document, Event, News |
+   * | Group B | Discussion, Event                 |
    *
    * @param \Behat\Gherkin\Node\TableNode $subscription_options
    *   The Behat table node containing the subscription options.
@@ -319,55 +324,54 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *   Thrown when a checkbox for a given subscription option is not found or
    *   not in the expected state.
    *
-   * @Then the following collection content subscriptions should be selected:
+   * @Then the following content subscriptions should be selected:
    */
-  public function assertSubscriptionOptionsInMySubscriptions(TableNode $subscription_options): void {
-    foreach ($subscription_options->getRowsHash() as $collection_label => $expected_bundle_ids) {
+  public function assertSubscriptionOptionsInSubscriptions(TableNode $subscription_options): void {
+    foreach ($subscription_options->getRowsHash() as $group_label => $expected_bundle_ids) {
       $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
-      $collection = self::getRdfEntityByLabel($collection_label, 'collection');
-      foreach (JoinupSubscriptionsInterface::BUNDLES as $entity_type_id => $bundle_ids) {
+      $group = self::getRdfEntityByLabel($group_label);
+      $subscription_bundles = JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES[$group->bundle()];
+      foreach ($subscription_bundles as $entity_type_id => $bundle_ids) {
         foreach ($bundle_ids as $bundle_id) {
           $key = implode('|', [$entity_type_id, $bundle_id]);
-          $locator = 'collections[' . $collection->id() . '][bundles][' . $key . ']';
+          $locator = 'groups[' . $group->id() . '][bundles][' . $key . ']';
           if (in_array($bundle_id, $expected_bundle_ids)) {
             $this->assertSession()->checkboxChecked($locator);
           }
           else {
             $this->assertSession()->checkboxNotChecked($locator);
           }
-
         }
       }
     }
   }
 
   /**
-   * Checks that the given collection content subscriptions are present.
+   * Checks that the given group content subscriptions are present.
    *
    * Table format:
-   * | Collection A | Discussion, Document, Event, News, Solution |
-   * | Collection B | Discussion, Event                           |
+   * | Group A | Discussion, Document, Event, News |
+   * | Group B | Discussion, Event                 |
    *
    * @param \Behat\Gherkin\Node\TableNode $subscriptions
    *   The Behat table node containing the expected subscriptions. The first
-   *   column contains the collection labels, the second a comma-separated list
+   *   column contains the group labels, the second a comma-separated list
    *   of bundles the user is subscribed to.
    *
    * @throws \Exception
    *   Thrown when the user doesn't have a membership in one of the given
-   *   collections. A membership is required in order to have subscriptions.
+   *   groups. A membership is required in order to have subscriptions.
    *
-   * @Then I should have the following collection content subscriptions:
+   * @Then I should have the following content subscriptions:
    */
-  public function assertCollectionContentSubscriptions(TableNode $subscriptions): void {
+  public function assertGroupContentSubscriptions(TableNode $subscriptions): void {
     $user = $this->getUserManager()->getCurrentUser();
     /** @var \Drupal\Core\Session\AccountInterface $account */
     $account = User::load($user->uid);
 
     foreach ($subscriptions->getRowsHash() as $collection_label => $expected_bundle_ids) {
-      /** @var \Drupal\collection\Entity\CollectionInterface $collection */
-      $collection = self::getRdfEntityByLabel($collection_label, 'collection');
-      $membership = $this->getMembershipByGroupAndUser($collection, $account, OgMembershipInterface::ALL_STATES);
+      $group = self::getRdfEntityByLabel($collection_label);
+      $membership = $this->getMembershipByGroupAndUser($group, $account, OgMembershipInterface::ALL_STATES);
       $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
 
       $actual_bundle_ids = array_map(function (array $item): string {
@@ -382,22 +386,23 @@ class JoinupSubscriptionContext extends RawDrupalContext {
   }
 
   /**
-   * Checks that the current user is not subscribed to the given collection.
+   * Checks that the current user is not subscribed to the given group.
    *
    * @param string $label
-   *   The name of the collection the user should not be subscribed to.
+   *   The name of the group the user should not be subscribed to.
+   * @param string $bundle
+   *   The group bundle.
    *
    * @throws \Exception
-   *   Thrown when the user is not a member of the given collection.
+   *   Thrown when the user is not a member of the given group.
    *
-   * @Then I should not be subscribed to the :label collection
+   * @Then I should not be subscribed to the :label :bundle
    */
-  public function assertNoCollectionContentSubscriptions(string $label): void {
+  public function assertNoGroupContentSubscriptions(string $label, string $bundle): void {
     $user = $this->getUserManager()->getCurrentUser();
     $account = User::load($user->uid);
-    /** @var \Drupal\collection\Entity\CollectionInterface $collection */
-    $collection = self::getRdfEntityByLabel($label, 'collection');
-    $membership = $this->getMembershipByGroupAndUser($collection, $account, OgMembershipInterface::ALL_STATES);
+    $group = self::getRdfEntityByLabel($label, $bundle);
+    $membership = $this->getMembershipByGroupAndUser($group, $account, OgMembershipInterface::ALL_STATES);
     Assert::assertEmpty($membership->get('subscription_bundles')->getValue());
   }
 
@@ -405,7 +410,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * Checks that the digest for a user contains a certain message.
    *
    * This is based on \MessageDigestSubContext::assertDigestContains() and
-   * adapted for the collection content subscription digest.
+   * adapted for the group content subscription digest.
    *
    * Example table:
    * @codingStandardsIgnoreStart
@@ -426,15 +431,15 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *     any non-expected messages included in the digest the assertion fails.
    *   - 'include': the expected messages should be included in the digest, but
    *     the test does not fail if there are more messages present.
-   * @param string $label
+   * @param string|null $label
    *   Optional label of an entity that is related to the message.
-   * @param string $entity_type
+   * @param string|null $entity_type
    *   Optional entity type of an entity that is related to the message.
    *
-   * @Then the :interval collection content subscription digest for :username should :scope the following message(s) for the :label :entity_type:
-   * @Then the :interval collection content subscription digest for :username should :scope the following message(s):
+   * @Then the :interval group content subscription digest for :username should :scope the following message(s) for the :label :entity_type:
+   * @Then the :interval group content subscription digest for :username should :scope the following message(s):
    */
-  public function assertDigestContains(TableNode $table, $interval, $username, $scope, $label = NULL, $entity_type = NULL) {
+  public function assertDigestContains(TableNode $table, string $interval, string $username, string $scope, $label = NULL, $entity_type = NULL): void {
     Assert::assertContains($scope, ['match', 'include'], sprintf('Unknown scope %s.', $scope));
 
     // Check that the notifier for the requested interval includes the view
@@ -446,7 +451,10 @@ class JoinupSubscriptionContext extends RawDrupalContext {
     $user = user_load_by_name($username);
     $actual_messages = $this->getUserMessagesByNotifier($notifier, $user->id(), $entity_type, $label);
     if ($scope !== 'include') {
-      Assert::assertEquals(count($expected_messages), count($actual_messages), sprintf('Expected %d messages in the %s digest for user %s, found %d messages.', count($expected_messages), $interval, $username, count($actual_messages)));
+      $actual_message_labels = array_map(function (GroupContentSubscriptionMessageInterface $message): string {
+        return $message->getSubscribedGroupContent()->label();
+      }, $actual_messages);
+      Assert::assertEquals(count($expected_messages), count($actual_messages), sprintf('Expected %d messages in the %s digest for user %s, found %d messages: %s.', count($expected_messages), $interval, $username, count($actual_messages), implode(', ', $actual_message_labels)));
     }
 
     $found_messages = [];
@@ -484,15 +492,15 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *   The digest interval, e.g. 'daily' or 'weekly'.
    * @param string $username
    *   The name of the user for which the message is intended.
-   * @param string $label
+   * @param string|null $label
    *   Optional label of an entity that is related to the message.
-   * @param string $entity_type
+   * @param string|null $entity_type
    *   Optional entity type of an entity that is related to the message.
    *
-   * @Then the :interval collection content subscription digest for :username should not contain the following message(s) for the :label :entity_type:
-   * @Then the :interval collection content subscription digest for :username should not contain the following message(s):
+   * @Then the :interval group content subscription digest for :username should not contain the following message(s) for the :label :entity_type:
+   * @Then the :interval group content subscription digest for :username should not contain the following message(s):
    */
-  public function assertDigestNotContains(TableNode $table, $interval, $username, $label = NULL, $entity_type = NULL) {
+  public function assertDigestNotContains(TableNode $table, string $interval, string $username, $label = NULL, $entity_type = NULL): void {
     // Check that the notifier for the requested interval includes the view
     // mode that contains the message content.
     $notifier = $this->getMessageDigestNotifierForInterval($interval);
@@ -543,8 +551,8 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    *   Thrown when the element is not found.
    */
-  protected function getCollectionSubscriptionCardByHeading(string $heading): NodeElement {
-    return $this->getListingByHeading('collection-subscription', $heading);
+  protected function getGroupSubscriptionCardByHeading(string $heading): NodeElement {
+    return $this->getListingByHeading('group-subscription', $heading);
   }
 
   /**
@@ -567,9 +575,9 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @throws \Exception
    *   Throws an exception when a parameter is not the expected one.
    *
-   * @Then the collection content subscription digest sent to :username contains the following sections:
+   * @Then the group content subscription digest sent to :username contains the following sections:
    */
-  public function assertCollectionContentSubscriptionEmailSections(string $username, TableNode $table): void {
+  public function assertGroupContentSubscriptionEmailSections(string $username, TableNode $table): void {
     $this->assertEmailTagPresent();
 
     // Remove the table header from the array.
@@ -578,7 +586,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
 
     $user = user_load_by_name($username);
     $email_address = $user->getEmail();
-    $emails = $this->getCollectionSubscriptionEmailsByEmail($email_address);
+    $emails = $this->getGroupSubscriptionEmailsByEmail($email_address);
 
     Assert::assertCount(1, $emails, "Expected 1 digest message for user $username, found " . count($emails) . ' messages.');
 
@@ -619,14 +627,14 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *   Throws an exception when the user doesn't exist, has no digest message or
    *   the message subject is incorrect.
    *
-   * @Then the collection content subscription digest sent to :username should have the subject :subject
+   * @Then the content subscription digest sent to :username should have the subject :subject
    */
-  public function assertCollectionContentSubscriptionEmailSubject(string $username, string $subject): void {
+  public function assertGroupContentSubscriptionEmailSubject(string $username, string $subject): void {
     $this->assertEmailTagPresent();
 
     $user = user_load_by_name($username);
     $email_address = $user->getEmail();
-    $emails = $this->getCollectionSubscriptionEmailsByEmail($email_address);
+    $emails = $this->getGroupSubscriptionEmailsByEmail($email_address);
 
     Assert::assertCount(1, $emails, "Expected 1 digest message for user $username, found " . count($emails) . ' messages.');
 
@@ -635,7 +643,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
   }
 
   /**
-   * Returns the sent collection subscription digest messages for the user.
+   * Returns the sent group subscription digest messages for the user.
    *
    * @param string $email_address
    *   The email of the recipient.
@@ -646,7 +654,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @throws \Exception
    *   Thrown if no emails are found or no user exists with the given data.
    */
-  protected function getCollectionSubscriptionEmailsByEmail(string $email_address): array {
+  protected function getGroupSubscriptionEmailsByEmail(string $email_address): array {
     $emails = [];
 
     foreach (self::MESSAGE_INTERVALS as $interval) {
