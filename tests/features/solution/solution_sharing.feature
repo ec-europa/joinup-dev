@@ -111,7 +111,7 @@ Feature: As a privileged user
 
     # I should still be on the same page, but the collection content should be
     # changed. The "Solution to be shared" should no longer be visible.
-    Then I should see the success message "Item was unshared from the following collections: Collection share candidate 1."
+    Then I should see the success message "Item was unshared from the following groups: Collection share candidate 1."
     And I should not see the "Solution to be shared" tile
 
     # Verify that the content is again shareable.

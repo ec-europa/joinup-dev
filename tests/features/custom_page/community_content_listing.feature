@@ -98,7 +98,7 @@ Feature:
     And I click the contextual link "Unshare" in the "NEC VR4300 CPU" tile
     And I check "Nintendo64"
     And I press "Submit"
-    Then I should see the success message "Item was unshared from the following collections: Nintendo64"
+    Then I should see the success message "Item was unshared from the following groups: Nintendo64"
 
     When I go to the "Latest news" custom page
     Then I should see the "Rare Nintendo64 disk drive discovered" tile
