@@ -1,0 +1,91 @@
+// Image widget File upload + library browse widget
+
+// Component
+// --------------------------------------------------
+
+// Elements
+// --------------------------------------------------
+.field--widget-image-library-widget {
+  label {
+    display: block;
+    @extend .form__label;
+  }
+
+  input {
+    font-family: "Open Sans", sans-serif;
+  }
+
+  .description:not(.form__description) {
+    br {
+      content:' ';
+      &:after {
+        content:' ';
+      }
+    }
+  }
+
+  .image-library-widget-link {
+    display: table-cell;
+    height: 90px;
+    width: 90px;
+    border: 1px solid lighten($color-grey-medium, 40%);
+    vertical-align: middle;
+    text-align: center;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    &:not(.preview):hover {
+      background: #f3f3f3;
+    }
+  }
+
+  .image-widget {
+    display: flex;
+
+    .image-widget-content {
+      padding: 10px;
+
+      span {
+        display: block;
+
+        &.file-size {
+          color: lighten($color-grey-medium, 20%);
+          font-size: 13px;
+          margin-bottom: 10px;
+        }
+      }
+    }
+
+    > div:first-of-type {
+      padding: 5px 0 0 0;
+    }
+  }
+
+  .image-library-widget-label {
+    margin: 10px 0 10px 0;
+  }
+
+  .views-element-container {
+    .views-row {
+      float: left;
+      margin: 0 5px 5px 0;
+    }
+    &::after {
+      display: block;
+      content: "";
+      clear: both;
+    }
+  }
+}
+
+// Modifiers
+// --------------------------------------------------
+
+// Dependencies
+// --------------------------------------------------
+
+// States
+// --------------------------------------------------
