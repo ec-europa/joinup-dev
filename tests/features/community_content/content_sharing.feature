@@ -80,7 +80,7 @@ Feature: Sharing content between collections
     When I check "Classic Rock"
     And I press "Share" in the "Modal buttons" region
     And I wait for AJAX to finish
-    Then I should see the success message "Item was shared on the following collections: Classic Rock."
+    Then I should see the success message "Item was shared on the following groups: Classic Rock."
     # Verify that the collections where the content has already been shared are
     # not shown anymore in the list.
     When I click "Share"
@@ -198,7 +198,7 @@ Feature: Sharing content between collections
     When I check "Essos city"
     And I press "Share" in the "Modal buttons" region
     And I wait for AJAX to finish
-    Then I should see the success message "Item was shared on the following collections: Essos city."
+    Then I should see the success message "Item was shared on the following groups: Essos city."
 
     When I am on the homepage
     And I click "Keep up to date"
@@ -319,15 +319,15 @@ Feature: Sharing content between collections
     And I click "Share"
     Then a modal should open
     And I should see the following lines of text:
-      | Share on                    |
-      | Facebook                    |
-      | Twitter                     |
-      | Linkedin                    |
-      | Other collections on Joinup |
+      | Share on               |
+      | Facebook               |
+      | Twitter                |
+      | Linkedin               |
+      | Other groups on Joinup |
     When I check "Gossip"
     And I press "Share" in the "Modal buttons" region
     And I wait for AJAX to finish
-    Then I should see the success message "Item was shared on the following collections: Gossip."
+    Then I should see the success message "Item was shared on the following groups: Gossip."
     And I should see the heading "Shared on"
     And I should see the "Gossip" tile
 
