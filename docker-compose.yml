@@ -70,6 +70,7 @@ services:
     # See docker-compose.override.yml.dist.
     volumes:
       - ./db/virtuoso/snapshot:/data/backups
+      - ./scripts/docker/virtuoso/entrypoint.sh:/entrypoint.sh
     environment:
       SPARQL_UPDATE: 'true'
       # Virtuoso .ini overrides. Pattern: VIRT_$SECTION_$KEY=$VALUE
@@ -82,14 +83,9 @@ services:
       VIRT_SPARQL_ResultSetMaxRows: 1000000
       DOCKER_RESTORE_PRODUCTION:
     command:
-      - bash
+      - '/bin/bash'
       - '-c'
-      - 'if [ "$${DOCKER_RESTORE_PRODUCTION}" = "yes" ];
-         then
-           BACKUP_PREFIX="JOINUP_FULL_DUMP_" bash -ex /virtuoso.sh ;
-         else
-           bash -ex /virtuoso.sh;
-         fi'
+      - 'chmod +x /entrypoint.sh && /entrypoint.sh'
 
   solr:
     image: solr:6
@@ -99,27 +95,7 @@ services:
       - ./db/solr:/solr/snapshot
       - ./web/modules/contrib/search_api_solr/solr-conf/6.x:/solr/conf
       - ./scripts/solr/restore_solr.sh:/opt/solr/bin/restore_solr.sh
-    entrypoint:
-      - docker-entrypoint.sh
-      - bash
-      - '-c'
-      - 'mkdir -p /opt/docker-solr/drupal/conf ;
-         cp -r /solr/conf/* /opt/docker-solr/drupal/conf/ ;
-         sed -i "/solr.install.dir=/c\solr.install.dir=/opt/solr" /opt/docker-solr/drupal/conf/solrcore.properties ;
-         precreate-core drupal_published /opt/docker-solr/drupal ;
-         precreate-core drupal_unpublished /opt/docker-solr/drupal ;
-         ( test "$${DOCKER_RESTORE_PRODUCTION}" = "yes" &&
-           (
-             /opt/solr/bin/solr start ;
-             sleep 5 ;
-             /usr/bin/curl -sS "http://localhost:8983/solr/drupal_published/replication?command=restore&name=published&location=/solr/snapshot&wt=xml" ;
-             ( until [[ "`/usr/bin/curl -sS ''http://localhost:8983/solr/drupal_published/replication?command=restorestatus''`" =~ \>success\< ]] ; do sleep 1 ; done ) ;
-             /usr/bin/curl -sS "http://localhost:8983/solr/drupal_unpublished/replication?command=restore&name=unpublished&location=/solr/snapshot&wt=xml" ;
-             ( until [[ "`/usr/bin/curl -sS ''http://localhost:8983/solr/drupal_unpublished/replication?command=restorestatus''`" =~ \>success\< ]] ; do sleep 1 ; done ) ;
-             /opt/solr/bin/solr stop
-           )
-         ) ;
-         exec solr -f'
+      - ./scripts/docker/solr/precreate.sh:/docker-entrypoint-initdb.d/precreate.sh
     environment:
       DOCKER_RESTORE_PRODUCTION:
 
