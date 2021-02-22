@@ -86,7 +86,7 @@ abstract class UnshareForm extends ShareFormBase {
    *   shared.
    */
   protected function getCollections(): array {
-    $collections = $this->getAlreadySharedCollectionIds();
+    $collections = $this->getAlreadySharedGroupIds();
     if (empty($collections)) {
       return $collections;
     }
@@ -111,7 +111,7 @@ abstract class UnshareForm extends ShareFormBase {
    */
   protected function removeFromCollection(RdfInterface $collection): void {
     // Flipping is needed to easily unset the value.
-    $current_ids = array_flip($this->getAlreadySharedCollectionIds());
+    $current_ids = array_flip($this->getAlreadySharedGroupIds());
     unset($current_ids[$collection->id()]);
     $this->entity->get($this->getSharedOnFieldName())->setValue(array_flip($current_ids));
     $this->entity->save();

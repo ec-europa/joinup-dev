@@ -12,6 +12,7 @@ use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleManagerInterface;
 use Drupal\sparql_entity_storage\SparqlEntityStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -127,7 +128,7 @@ abstract class ShareFormBase extends FormBase {
    * @return \Drupal\rdf_entity\RdfInterface[]
    *   A list of collection ids where the current entity is already shared on.
    */
-  protected function getAlreadySharedCollectionIds(): array {
+  protected function getAlreadySharedGroupIds(): array {
     if (!$this->getSharedOnFieldName() || !$this->entity->hasField($this->getSharedOnFieldName())) {
       return [];
     }
@@ -145,12 +146,12 @@ abstract class ShareFormBase extends FormBase {
    *   An array of groups.
    */
   protected function getUserGroupsByPermission($permission): array {
-    $roles = $this->roleManager->getRolesByPermissions([$permission], 'rdf_entity', 'collection');
+    $roles = $this->roleManager->getRolesByPermissions([$permission]);
     if (empty($roles)) {
       return [];
     }
 
-    $groups = $this->membershipManager->getUserGroupsByRoleIds($this->currentUser->id(), array_keys($roles));
+    $groups = $this->membershipManager->getUserGroupsByRoleIds($this->currentUser->id(), array_keys($roles), [OgMembershipInterface::STATE_ACTIVE], FALSE);
     return empty($groups) ? [] : $groups['rdf_entity'];
   }
 
