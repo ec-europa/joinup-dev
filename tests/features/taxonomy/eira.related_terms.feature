@@ -9,11 +9,11 @@ Feature:
     When I go to the "Public Service Provider" term page
     Then I should see the heading "Public Service Provider"
     And I should see the following links:
-      | Citizen                                   |
-      | Public Service                            |
-      | Public Service Consumer                   |
-      | Public Service Delivery Agent             |
-      | Service Delivery Model                    |
-      | Organisational Interoperability Agreement |
-      | Semantic Interoperability Agreement       |
-      | Technical Interoperability Agreement      |
+      | Citizen                              |
+      | Public Service Consumer              |
+      | Public Service Delivery Agent        |
+      | Service Delivery Model               |
+      | Organisational Agreement             |
+      | Semantic Agreement                   |
+      | Interoperable Digital Public Service |
+      | Technical Interoperability Agreement |
