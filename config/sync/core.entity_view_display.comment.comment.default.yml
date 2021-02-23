@@ -5,8 +5,6 @@ dependencies:
   config:
     - comment.type.comment
     - field.field.comment.comment.field_body
-  module:
-    - text
 _core:
   default_config_hash: 1pqbtJl4kPoWoUVg305Sq43ImIeCrjxJg2H1-GTrepU
 id: comment.comment.default

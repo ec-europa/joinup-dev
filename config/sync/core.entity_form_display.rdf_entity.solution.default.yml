@@ -67,9 +67,9 @@ third_party_settings:
       weight: 0
       format_type: tabs
       format_settings:
+        direction: vertical
         id: ''
         classes: ''
-        direction: vertical
       label: General
       region: content
     group_main:
@@ -95,9 +95,8 @@ third_party_settings:
       weight: 20
       format_type: tab
       format_settings:
-        label: 'Main fields'
-        formatter: open
         description: 'Contains all the fields to be mandatorily filled to create a solution'
+        formatter: open
         required_fields: true
         id: ''
         classes: ''
@@ -122,9 +121,8 @@ third_party_settings:
       weight: 21
       format_type: tab
       format_settings:
-        label: 'Additional fields'
-        formatter: closed
         description: 'Contains all optional fields providing additional information on the solution'
+        formatter: closed
         required_fields: true
         id: ''
         classes: ''

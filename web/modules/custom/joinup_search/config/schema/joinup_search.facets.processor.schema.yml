@@ -18,3 +18,11 @@ plugin.plugin_configuration.facets_processor.aggregated_entity_reference_label:
   label: 'Aggregated entity label'
   sequence:
     type: string
+
+plugin.plugin_configuration.facets_processor.joinup_search_content_type_fixed_order:
+  type: mapping
+  label: 'Fixed ordering for content types'
+  mapping:
+    sort:
+      type: string
+      label: 'Sort order'

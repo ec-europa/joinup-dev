@@ -33,7 +33,7 @@ Feature: Discussions added to collections
     And I go to the homepage of the "The Fallen History" collection
     Then I should see the link "Add discussion"
 
-  @uploadFiles:test.zip
+  @terms @uploadFiles:test.zip
   Scenario: Add discussion as a facilitator.
     Given user:
       | Username    | kesha1988                             |
@@ -61,15 +61,20 @@ Feature: Discussions added to collections
     And I press "Upload"
     And I press "Publish"
     Then I should see the following lines of text:
-      | Title field is required.            |
-      | File description field is required. |
-      | Content field is required.          |
+      | Title field is required.                       |
+      | The Attachments field description is required. |
+      | Content field is required.                     |
 
     When I fill in the following:
       | Title            | An amazing discussion                      |
       | Content          | This is going to be an amazing discussion. |
       | File description | The content of this file is mind blowing   |
     And I press "Publish"
+    Then I should see the error message "Policy domain field is required."
+
+    And I select "EU and European Policies" from "Policy domain"
+    And I press "Publish"
+
     Then I should see the heading "An amazing discussion"
 
     # Verify that the author is visible on the page.

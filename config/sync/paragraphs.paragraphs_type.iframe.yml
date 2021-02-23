@@ -1,0 +1,10 @@
+uuid: 80a0ae9e-1d57-46d9-a848-ea6d99405c25
+langcode: en
+status: true
+dependencies: {  }
+id: iframe
+label: IFrame
+icon_uuid: null
+icon_default: null
+description: 'Provides an iframe field.'
+behavior_plugins: {  }

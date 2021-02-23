@@ -131,6 +131,7 @@ Feature: News moderation.
     And I go to the homepage of the "Justice League" collection
     Then I should see the link "Add news"
 
+  @terms
   Scenario: Add news as a member to a post-moderated collection.
     # Add news as a member.
     # There is no need to check for a facilitator because when he creates news,
@@ -154,6 +155,7 @@ Feature: News moderation.
       | Short title | Eagle joins the JL                   |
       | Headline    | Eagle from WWII                      |
       | Content     | Specialized in close combat training |
+    And I select "Employment and Support Allowance" from "Policy domain"
     And I press "Save as draft"
     # Check reference to news page.
     Then I should see the success message "News Eagle joins the JL has been created."
@@ -172,6 +174,7 @@ Feature: News moderation.
     When I click "Justice League"
     Then I should see the link "Eagle joins the JL"
 
+  @terms
   Scenario: Add news as a member to a pre-moderated collection and get it validated by a facilitator.
     # Add news as a member.
     When I am logged in as "Cheetah"
@@ -183,6 +186,7 @@ Feature: News moderation.
       | Short title | Cheetah kills WonderWoman                             |
       | Headline    | Scarch of poison                                      |
       | Content     | A specific poison could expose Wonder-womans weakness |
+    And I select "Supplier exchange" from "Policy domain"
     And I press "Propose"
     # Check reference to news page.
     # Todo: Why should we not see a success message after creating a news article? See ISAICP-2761

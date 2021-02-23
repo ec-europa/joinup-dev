@@ -13,7 +13,7 @@ dependencies:
 id: anonymous_comment_links
 theme: joinup_theme
 region: content
-weight: -20
+weight: -19
 provider: null
 plugin: 'simple_block:anonymous_comment_links'
 settings:

@@ -64,6 +64,7 @@ Feature: Homepage feature
       | Short title | The Sacred Future documentation |
     And I enter "The Sacred Future documentation." in the "Description" wysiwyg editor
     And I select "Document" from "Type"
+    And I select "Finance in EU" from "Policy domain"
     Then I upload the file "test.zip" to "Upload a new file or enter a URL"
     And I press "Publish"
     Then I should see the heading "The Sacred Future documentation"

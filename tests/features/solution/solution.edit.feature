@@ -107,3 +107,17 @@ Feature: Solution editing.
     Then I should not see the link "Edit"
     When I go to the "Another solution" solution edit form
     Then I should get an access denied error
+
+  @javascript
+  Scenario: Test solution edit form vertical tabs.
+    When I am logged in as "Yancy Burton"
+    And I go to the homepage of the "Collection example" collection
+    And I click "Add solution" in the plus button menu
+    And I check the "I have read and accept the legal notice and I commit to manage my solution on a regular basis." material checkbox
+    And I press "Yes"
+    Then I should see the heading "Add Solution"
+    And the "Main fields" tab should be active
+    And the "Main fields" tab summary should be "Contains all the fields to be mandatorily filled to create a solution"
+    And the "Additional fields" tab summary should be "Contains all optional fields providing additional information on the solution"
+    And I click the "Additional fields" tab
+    Then the "Additional fields" tab should be active

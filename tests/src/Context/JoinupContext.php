@@ -764,7 +764,7 @@ class JoinupContext extends RawDrupalContext {
         'state' => 'field_state',
       ],
       'glossary' => [
-        'abbreviation' => 'field_glossary_abbreviation',
+        'synonyms' => 'field_glossary_synonyms',
         'definition' => 'field_glossary_definition:value',
         'summary' => 'field_glossary_definition:summary',
       ],
@@ -1454,7 +1454,7 @@ class JoinupContext extends RawDrupalContext {
    * @When I open the header local tasks menu
    */
   public function iOpenTheMdlDropdown() {
-    $element = $this->getSession()->getPage()->findById('block-joinup-theme-local-tasks');
+    $element = $this->getSession()->getPage()->findById('block-three-dots-menu');
     $this->openMaterialDesignMenu($element);
   }
 

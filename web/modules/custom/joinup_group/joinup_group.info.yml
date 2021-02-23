@@ -5,12 +5,6 @@ core: 8.x
 package: Joinup
 
 dependencies:
+  - 'joinup_bundle_class:joinup_bundle_class'
   - 'og:og'
   - 'og_menu:og_menu'
-
-config_devel:
-  install:
-    - system.action.joinup_og_membership_delete_action
-    - system.action.joinup_transfer_group_ownership
-  optional:
-    - views.view.members_overview

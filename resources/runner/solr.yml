@@ -12,6 +12,7 @@ solr:
       dir: ${solr.dir}/server/solr/${env.SOLR_CORE_PUBLISHED_NAME}
     unpublished:
       dir: ${solr.dir}/server/solr/${env.SOLR_CORE_UNPUBLISHED_NAME}
+  snapshot_dir: ${joinup.db_dir}/solr
 
 commands:
 
@@ -34,34 +35,34 @@ commands:
   solr:download-snapshot:
     # Cleanup any stale data.
     - task: remove
-      file: ${toolkit.tmp_folder}/solr.tar
+      file: ${solr.snapshot_dir}/solr.tar.gz
     - task: remove
-      file: ${toolkit.tmp_folder}/solr
+      file: ${solr.snapshot_dir}/solr.tar
+    - task: remove
+      file: ${solr.snapshot_dir}/snapshot.published
+    - task: remove
+      file: ${solr.snapshot_dir}/snapshot.unpublished
     # Download and unpack the archive.
     - task: run
       command: toolkit:download-dump
       options:
         asda-url: ${env.ASDA_URL}/solr
-        dumpfile: ${toolkit.tmp_folder}/solr.tar
+        dumpfile: ${solr.snapshot_dir}/solr.tar
     # Unpack and organize.
-    - task: mkdir
-      dir: ${toolkit.tmp_folder}/solr
     - task: exec
-      command: tar -xvf ${toolkit.tmp_folder}/solr.tar -C ${toolkit.tmp_folder}/solr
+      command: tar -xvf ${solr.snapshot_dir}/solr.tar -C ${solr.snapshot_dir}
     - task: rename
-      from: ${toolkit.tmp_folder}/solr/snapshot.joinup
-      to: ${toolkit.tmp_folder}/solr/snapshot.published
+      from: ${solr.snapshot_dir}/snapshot.joinup
+      to: ${solr.snapshot_dir}/snapshot.published
     - task: rename
-      from: ${toolkit.tmp_folder}/solr/snapshot.joinup-unpublished
-      to: ${toolkit.tmp_folder}/solr/snapshot.unpublished
+      from: ${solr.snapshot_dir}/snapshot.joinup-unpublished
+      to: ${solr.snapshot_dir}/snapshot.unpublished
     # Cleanup.
     - task: remove
-      file: ${toolkit.tmp_folder}/solr.tar
+      file: ${solr.snapshot_dir}/solr.tar
 
   # Empties the Solr backed.
   solr:empty:
-    - task: run
-      command: solr:start
     - task: exec
       command: curl
       arguments:

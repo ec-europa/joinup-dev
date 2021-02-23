@@ -1,0 +1,25 @@
+uuid: 2a833cf7-8ed7-4fe7-bdd6-c30283c9692c
+langcode: en
+status: true
+dependencies:
+  module:
+    - dynamic_entity_reference
+    - message
+    - node
+    - rdf_entity
+id: message.field_group_content
+field_name: field_group_content
+entity_type: message
+type: dynamic_entity_reference
+settings:
+  exclude_entity_types: false
+  entity_type_ids:
+    node: node
+    rdf_entity: rdf_entity
+module: dynamic_entity_reference
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

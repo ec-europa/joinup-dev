@@ -38,4 +38,15 @@ interface CollectionInterface extends RdfInterface, EntityWorkflowStateInterface
    */
   public function getSolutionIds(bool $published = TRUE): array;
 
+  /**
+   * Returns the collection glossary settings.
+   *
+   * @return array
+   *   The collection glossary settings.
+   *
+   * @throws \Exception
+   *   When the collection misses a 'collection_settings' meta entity.
+   */
+  public function getGlossarySettings(): array;
+
 }
