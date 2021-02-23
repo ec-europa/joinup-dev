@@ -145,9 +145,16 @@ class GroupMenuBlock extends OgMenuBlock {
       'rdf_entity' => $group->id(),
       'node_type' => 'custom_page',
     ]);
-    $edit_navigation_menu_url = Url::fromRoute('entity.ogmenu_instance.edit_form', [
-      'ogmenu_instance' => $this->getOgMenuInstance()->id(),
-    ]);
+    // In normal usage all groups have a menu instance, but this is not
+    // guaranteed under all circumstances (e.g. for collection that are created
+    // automatically as solution parents in tests). Fall back to a "safe" URL.
+    $edit_navigation_menu_url = '#';
+    $menu_instance = $this->getOgMenuInstance();
+    if ($menu_instance instanceof OgMenuInstanceInterface) {
+      $edit_navigation_menu_url = Url::fromRoute('entity.ogmenu_instance.edit_form', [
+        'ogmenu_instance' => $menu_instance->id(),
+      ])->toString();
+    }
 
     // If there are entries in the tree but none of those is in the build array,
     // it means that all the available pages have been disabled inside the menu
@@ -158,7 +165,7 @@ class GroupMenuBlock extends OgMenuBlock {
       '#value' => $this->t('All the pages have been disabled for this :type. You can <a href=":edit_menu_url">edit the menu configuration</a> or <a href=":add_page_url">add a new page</a>.',
         [
           ':type' => $group->get('rid')->entity->getSingularLabel(),
-          ':edit_menu_url' => $edit_navigation_menu_url->toString(),
+          ':edit_menu_url' => $edit_navigation_menu_url,
           ':add_page_url' => $create_custom_page_url->toString(),
         ]),
       '#access' => $create_custom_page_url->access(),
