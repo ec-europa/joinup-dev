@@ -13,12 +13,14 @@ Feature:
       | url                                          | role          | code |
       | /admin/reporting                             | authenticated | 403  |
       | /admin/reporting                             | moderator     | 200  |
-      | /admin/reporting/legal-notice-report         | authenticated | 403  |
-      | /admin/reporting/legal-notice-report         | moderator     | 200  |
-      | /admin/reporting/group-administrators/export | authenticated | 403  |
-      | /admin/reporting/group-administrators/export | moderator     | 200  |
       | /admin/reporting/export-user-list            | authenticated | 403  |
       | /admin/reporting/export-user-list            | moderator     | 200  |
+      | /admin/reporting/group-administrators/export | authenticated | 403  |
+      | /admin/reporting/group-administrators/export | moderator     | 200  |
+      | /admin/reporting/legal-notice-report         | authenticated | 403  |
+      | /admin/reporting/legal-notice-report         | moderator     | 200  |
+      | /admin/reporting/pipeline-log                | authenticated | 403  |
+      | /admin/reporting/pipeline-log                | moderator     | 200  |
       | /admin/reporting/solutions-by-type           | authenticated | 403  |
       | /admin/reporting/solutions-by-type           | moderator     | 200  |
       | /admin/reporting/solutions-by-licences       | authenticated | 403  |
@@ -32,6 +34,7 @@ Feature:
       | Export user list                      |
       | Solutions by solution type            |
       | Solutions by licences                 |
+      | Pipeline report                       |
       | Legal notice report                   |
 
   # This scenario is a light test to avoid regressions.

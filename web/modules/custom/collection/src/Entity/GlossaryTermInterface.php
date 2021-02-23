@@ -12,20 +12,12 @@ use Drupal\node\NodeInterface;
 interface GlossaryTermInterface extends NodeInterface, CollectionContentInterface {
 
   /**
-   * Returns whether or not the glossary term has an abbreviation.
+   * Returns a list o synonyms of the glossary term.
    *
-   * @return bool
-   *   TRUE if the glossary term has an abbreviation, FALSE otherwise.
+   * @return string[]
+   *   A list of synonyms.
    */
-  public function hasAbbreviation(): bool;
-
-  /**
-   * Returns the abbreviation of the glossary term.
-   *
-   * @return string|null
-   *   The abbreviation, or NULL if the term doesn't have an abbreviation.
-   */
-  public function getAbbreviation(): ?string;
+  public function getSynonyms(): array;
 
   /**
    * Returns the summary of the glossary term.

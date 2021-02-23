@@ -1,0 +1,3 @@
+perform acceptance tasks:
+  title: 'Perform acceptance tasks'
+  restrict access: true

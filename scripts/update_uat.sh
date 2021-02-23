@@ -17,7 +17,7 @@ test "$(./vendor/bin/drush eval 'print \Drupal\Core\Site\Settings::get("cache")[
 # Truncate cache_* tables.
 for table in $(./vendor/bin/drush sql:query "SHOW TABLES LIKE 'cache\_%'"); do ./vendor/bin/drush sql:query "TRUNCATE $table"; done
 ./vendor/bin/drush deploy
-./vendor/bin/drush pm:enable stage_file_proxy --yes
+./vendor/bin/drush pm:enable joinup_acceptance,stage_file_proxy --yes
 
 echo "Rebuilding node access records."
 ./vendor/bin/drush php:eval "if(node_access_needs_rebuild()) { node_access_rebuild(); }"

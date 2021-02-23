@@ -34,6 +34,7 @@ Feature: "Add document" visibility options.
     And I go to the homepage of the "Seventh Name" solution
     Then I should see the link "Add document"
 
+  @terms
   Scenario: Add document as a facilitator.
     Given the following collection:
       | title  | Collective Winter of Beginning |
@@ -57,8 +58,13 @@ Feature: "Add document" visibility options.
     And I select "Document" from "Type"
     Then I upload the file "test1.zip" to "Upload a new file or enter a URL"
     And I press "Save as draft"
-    Then I should see the error message "Description field is required."
+    Then I should see the following error messages:
+      | error messages                   |
+      | Description field is required.   |
+      | Policy domain field is required. |
+
     When I enter "This is going to be an amazing document." in the "Description" wysiwyg editor
+    And I select "EU and European Policies" from "Policy domain"
     And I press "Save as draft"
     Then I should see the heading "The Sparks of the Butterfly"
     And I should see the success message "Document The Sparks of the Butterfly has been created."

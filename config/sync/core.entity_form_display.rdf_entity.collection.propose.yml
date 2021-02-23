@@ -46,7 +46,6 @@ third_party_settings:
       label: General
       format_type: tabs
       format_settings:
-        label: General
         id: ''
         classes: ''
         direction: vertical
@@ -65,7 +64,6 @@ third_party_settings:
       label: 'Main fields'
       format_type: tab
       format_settings:
-        label: 'Main fields'
         formatter: open
         description: 'Contains all the fields to be mandatorily filled to create a collection'
         required_fields: true
@@ -88,7 +86,6 @@ third_party_settings:
       label: 'Additional fields'
       format_type: tab
       format_settings:
-        label: 'Additional fields'
         formatter: closed
         description: 'Contains all optional fields providing additional information on the collection'
         required_fields: true

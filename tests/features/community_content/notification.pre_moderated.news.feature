@@ -1,4 +1,4 @@
-@api @email @group-b
+@api @email @terms @group-b
 Feature: Notification test for the news transitions on a pre moderated parent.
   In order to manage my collections
   As an owner of the collection
@@ -42,6 +42,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I fill in "Short title" with "CCN create propose"
     And I fill in "Headline" with "CCN create propose"
     And I fill in "Content" with "CCN create propose"
+    And I select "Statistics and Analysis" from "Policy domain"
     And I press "Propose"
     Then the email sent to "CC owner" with subject "Joinup: Content has been proposed" contains the following lines of text:
       | text                                                                                                              |
@@ -76,6 +77,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I fill in "Short title" with "CCN create publish"
     And I fill in "Headline" with "CCN create publish"
     And I fill in "Content" with "CCN create publish"
+    And I select "Statistics and Analysis" from "Policy domain"
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                           |

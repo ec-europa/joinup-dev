@@ -12,7 +12,7 @@ dependencies:
 id: views_block__eif_related_entities_block_1
 theme: joinup_theme
 region: content
-weight: -10
+weight: -9
 provider: null
 plugin: 'views_block:eif_related_entities-block_1'
 settings:
@@ -25,6 +25,7 @@ settings:
 visibility:
   request_route:
     id: request_route
-    routes: entity.taxonomy_term.canonical
+    routes:
+      - entity.taxonomy_term.canonical
     negate: false
     context_mapping: {  }

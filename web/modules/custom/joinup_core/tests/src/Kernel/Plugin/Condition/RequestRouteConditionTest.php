@@ -71,21 +71,21 @@ class RequestRouteConditionTest extends KernelTestBase {
   public function testConditions() {
     /** @var \Drupal\system\Plugin\Condition\RequestPath $condition */
     $condition = $this->pluginManager->createInstance('request_route');
-    $condition->setConfig('routes', "foo.test\r\nbar.test.foo");
+    $condition->setConfig('routes', ['foo.test', 'bar.test.foo']);
 
     $this->addRequest('foo.test', '/foo/test');
-    $this->assertTrue($condition->execute(), 'The request route condition matches for configured routes.');
+    $this->assertTrue($condition->execute());
 
     $this->addRequest('bar.test', '/bar');
-    $this->assertFalse($condition->execute(), 'The request route condition does not match routes not configured.');
+    $this->assertFalse($condition->execute());
 
     // Verify the correctness of the summary.
-    $condition->setConfig('routes', "foo.test\r\nbar.test.foo");
-    $this->assertEquals($condition->summary(), 'Return true on the following routes: foo.test, bar.test.foo', 'The condition summary matches for configured routes.');
+    $condition->setConfig('routes', ['foo.test', 'bar.test.foo']);
+    $this->assertEquals('Return true on the following routes: foo.test, bar.test.foo', $condition->summary());
 
     // Test the summary when the plugin is negated.
     $condition->setConfig('negate', TRUE);
-    $this->assertEquals($condition->summary(), 'Do not return true on the following routes: foo.test, bar.test.foo', 'The condition summary matches for configured routes.');
+    $this->assertEquals('Do not return true on the following routes: foo.test, bar.test.foo', $condition->summary());
   }
 
   /**

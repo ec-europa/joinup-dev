@@ -1,0 +1,15 @@
+name: Statistics
+type: module
+description: 'Provide statistics for Joinup entities.'
+core: 8.x
+package: Joinup
+
+dependencies:
+  - 'cached_computed_field:cached_computed_field'
+  - 'joinup:joinup_bundle_class'
+  - 'matomo_reporting_api:matomo_reporting_api'
+  - 'meta_entity:meta_entity'
+
+config_devel:
+  install:
+    - joinup_stats.settings

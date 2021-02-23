@@ -1,0 +1,7 @@
+joinup_pipeline_log.settings:
+  type: config_object
+  label: 'Joinup pipeline log settings.'
+  mapping:
+    last_run_interval:
+      type: integer
+      label: "The time needed since the pipeline's last run in order to display a warning."

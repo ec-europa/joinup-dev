@@ -17,7 +17,7 @@ class RouteSubscriber extends RouteSubscriberBase {
    * {@inheritdoc}
    */
   public function alterRoutes(RouteCollection $collection) {
-    if ($route = $collection->get('collection.leave_confirm_form')) {
+    if ($route = $collection->get('joinup_group.leave_confirm_form')) {
       $route->setRequirement('_custom_access', JoinupCollectionLeaveController::class . '::access');
     }
   }

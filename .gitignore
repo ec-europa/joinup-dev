@@ -11,6 +11,9 @@
 # Ignore dist build location
 /dist/
 
+# Ignore user's local files
+/local/
+
 # Ignore sensitive information
 /web/sites/sites.php
 /web/sites/*/settings.php
@@ -44,13 +47,11 @@
 /disable-config-readonly
 
 # Ignore temporary and auto-generated files.
-/tmp
+/tmp/
 /VERSION
 
-# Ignore local docker-compose file.
-docker-compose.local.yml
-docker-compose.*.local.yml
-/resources/docker/local
+# Ignore local docker compose file.
+/docker-compose.override.yml
 
 # CPHP Behat files.
 /tests/behat-*

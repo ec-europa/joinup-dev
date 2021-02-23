@@ -29,7 +29,7 @@ There are two ways to run Joinup. With `docker` and `docker-compose` and buildin
 
 ### Docker
 
-To start with docker, please, check the separated [README file](resources/docker/README.md).
+To start with docker, please, check the separated [README file](docs/docker/README.md).
 
 ### Local installation
 
