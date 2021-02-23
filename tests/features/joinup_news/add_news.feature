@@ -39,10 +39,10 @@ Feature: Creation of news through the UI.
     And I press "Upload"
     And I press "Publish"
     Then I should see the following lines of text:
-      | Headline field is required.         |
-      | Short title field is required.      |
-      | Content field is required.          |
-      | File description field is required. |
+      | Headline field is required.                    |
+      | Short title field is required.                 |
+      | Content field is required.                     |
+      | The Attachments field description is required. |
 
     When I fill in the following:
       | Short title      | Ytterbium has won the ultimate heavy metal of the year award of 2020!                         |
