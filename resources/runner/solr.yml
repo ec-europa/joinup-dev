@@ -4,7 +4,7 @@ solr:
   version: '6.6.6'
   vendor_dir: ${joinup.dir}/vendor/apache
   dir: ${solr.vendor_dir}/solr-${solr.version}
-  bin: ${solr.dir}/bin/solr
+  bin: ${joinup.dir}/vendor/bin/solr
   download_url: http://archive.apache.org/dist/lucene/solr/${solr.version}/solr-${solr.version}.tgz
   config_dir: ${joinup.site_dir}/modules/contrib/search_api_solr/solr-conf/6.x
   core:
