@@ -203,6 +203,8 @@ function joinup_core_config_readonly_whitelist_patterns() {
     // links static overrides config.
     'system.menu.front-page',
     'system.menu.support',
+    // The outdated content threshold is editable by moderators.
+    'joinup_core.outdated_content_threshold',
     'core.menu.static_menu_link_overrides',
   ];
 }
