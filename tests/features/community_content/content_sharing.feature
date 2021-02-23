@@ -154,34 +154,34 @@ Feature: Sharing content between collections
 
     Examples:
       | content type | group type |
-#      | event        | collection |
+      | event        | collection |
       | event        | solution   |
-#      | document     | collection |
-#      | document     | solution   |
-#      | discussion   | collection |
-#      | discussion   | solution   |
-#      | news         | collection |
-#      | news         | solution   |
+      | document     | collection |
+      | document     | solution   |
+      | discussion   | collection |
+      | discussion   | solution   |
+      | news         | collection |
+      | news         | solution   |
 
   @javascript
   Scenario Outline: Share/Unshare should be visible according to the group permissions.
-    Given collections:
+    Given <group type>s:
       | title      | state     |
       | Westeros   | validated |
       | Essos city | validated |
     And "<content type>" content:
-      | title       | collection | state     |
-      | Iron throne | Westeros   | validated |
+      | title       | <group type> | state     |
+      | Iron throne | Westeros     | validated |
     Given users:
       | Username       | E-mail                     | Roles     |
       | Jamie Lanister | jamie.lanister@example.com | moderator |
       | John Snow      | john.snow@example.com      |           |
       | Arya Stark     | arya.stark@example.com     |           |
-    And the following collection user memberships:
-      | collection | user       | roles       |
-      | Westeros   | John snow  | facilitator |
-      | Essos city | John snow  | member      |
-      | Essos city | Arya Stark | facilitator |
+    And the following <group type> user memberships:
+      | <group type> | user       | roles       |
+      | Westeros     | John snow  | facilitator |
+      | Essos city   | John snow  | member      |
+      | Essos city   | Arya Stark | facilitator |
 
     When I am logged in as "Arya Stark"
     And I click "Keep up to date"
@@ -204,7 +204,7 @@ Feature: Sharing content between collections
     When I am on the homepage
     And I click "Keep up to date"
     Then I should see the contextual link "Share" in the "Iron throne" tile
-    # Simple members can still not unshare content from collections.
+    # Simple members can still not unshare content from any group.
     But I should not see the contextual link "Unshare" in the "Iron throne" tile
 
     When I am logged in as "Arya Stark"
@@ -225,32 +225,36 @@ Feature: Sharing content between collections
     And the following fields should be present "Essos city"
 
     Examples:
-      | content type |
-      | event        |
-      | document     |
-      | discussion   |
-      | news         |
+      | content type | group type |
+      | event        | collection |
+      | event        | solution   |
+      | document     | collection |
+      | document     | solution   |
+      | discussion   | collection |
+      | discussion   | solution   |
+      | news         | collection |
+      | news         | solution   |
 
   @javascript
-  Scenario Outline: Shared content should show visual cues in the collections they are shared.
-    Given collections:
+  Scenario Outline: Shared content should show visual cues in the groups they are shared into.
+    Given <group type>s:
       | title | state     |
       | Earth | validated |
       | Mars  | validated |
       | Venus | validated |
     And <content type> content:
-      | title         | collection | shared on   | state     |
-      | Earth content | Earth      | Mars        | validated |
-      | Mars content  | Mars       |             | validated |
-      | Venus content | Venus      | Earth, Mars | validated |
+      | title         | <group type> | shared on   | state     |
+      | Earth content | Earth        | Mars        | validated |
+      | Mars content  | Mars         |             | validated |
+      | Venus content | Venus        | Earth, Mars | validated |
 
-    When I go to the homepage of the "Earth" collection
+    When I go to the homepage of the "Earth" <group type>
     Then I should see the "Earth content" tile
     And I should see the "Venus content" tile
     And the "Venus content" tile should be marked as shared from "Venus"
     And the "Earth content" tile should not be marked as shared
 
-    When I go to the homepage of the "Mars" collection
+    When I go to the homepage of the "Mars" <group type>
     Then I should see the "Earth content" tile
     And I should see the "Mars content" tile
     And I should see the "Venus content" tile
@@ -258,7 +262,7 @@ Feature: Sharing content between collections
     And the "Venus content" tile should be marked as shared from "Venus"
     But the "Mars content" tile should not be marked as shared
 
-    When I go to the homepage of the "Venus" collection
+    When I go to the homepage of the "Venus" <group type>
     Then I should see the "Venus content" tile
     And the "Venus content" tile should not be marked as shared
 
@@ -269,11 +273,15 @@ Feature: Sharing content between collections
     And the "Venus content" tile should not be marked as shared
 
     Examples:
-      | content type |
-      | event        |
-      | document     |
-      | discussion   |
-      | news         |
+      | content type | group type |
+      | event        | collection |
+      | event        | solution   |
+      | document     | collection |
+      | document     | solution   |
+      | discussion   | collection |
+      | discussion   | solution   |
+      | news         | collection |
+      | news         | solution   |
 
   Scenario: Shared pinned content is erroneously shown first.
     Given collections:
