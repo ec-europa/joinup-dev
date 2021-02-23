@@ -1,3 +1,14 @@
+joinup_core.outdated_content_threshold:
+  type: sequence
+  label: 'Entity types'
+  sequence:
+    type: sequence
+    label: 'Bundles'
+    sequence:
+      type: integer
+      label: 'Years'
+      nullable: true
+
 field.formatter.third_party.joinup:
   type: mapping
   label: 'Theme settings for Joinup project.'
