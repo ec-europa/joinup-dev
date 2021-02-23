@@ -17,8 +17,8 @@ declare(strict_types = 1);
 use Drupal\Core\Database\Database;
 use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\node\Entity\Node;
+use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
 use EasyRdf\Graph;
-use EasyRdf\GraphStore;
 
 /**
  * Set community content missing policy domain.
@@ -194,12 +194,8 @@ function joinup_core_deploy_0106803(array &$sandbox): void {
   $sparql_connection = Database::getConnection('default', 'sparql_default');
   $sparql_connection->query('WITH <http://eira_skos> DELETE { ?s ?p ?o } WHERE { ?s ?p ?o } ');
 
-  // Re import the file to update the terms.
-  $connection_options = $sparql_connection->getConnectionOptions();
-  $connect_string = "http://{$connection_options['host']}:{$connection_options['port']}/sparql-graph-crud";
-  $graph_store = new GraphStore($connect_string);
-
   $filepath = __DIR__ . '/../../../../resources/fixtures/EIRA_SKOS.rdf';
+  $graph_store = SparqlGraphStoreTrait::createGraphStore();
   $graph = new Graph('http://eira_skos');
   $graph->parse(file_get_contents($filepath));
   $graph_store->insert($graph);
