@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_group\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
+use Drupal\joinup_core\Entity\OutdatedContentTrait;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\user\UserInterface;
@@ -13,6 +14,8 @@ use Drupal\user\UserInterface;
  * Reusable methods for group bundles.
  */
 trait GroupTrait {
+
+  use OutdatedContentTrait;
 
   /**
    * {@inheritdoc}
