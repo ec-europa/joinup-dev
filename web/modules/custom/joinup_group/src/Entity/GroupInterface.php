@@ -8,6 +8,7 @@ use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_bundle_class\LogoInterface;
+use Drupal\joinup_core\Entity\OutdatedContentInterface;
 use Drupal\joinup_bundle_class\ShortIdInterface;
 use Drupal\og\OgMembershipInterface;
 
@@ -16,7 +17,7 @@ use Drupal\og\OgMembershipInterface;
  *
  * This comprises collections and solutions.
  */
-interface GroupInterface extends ContentEntityInterface, LogoInterface, ShortIdInterface {
+interface GroupInterface extends ContentEntityInterface, LogoInterface, ShortIdInterface, OutdatedContentInterface {
 
   /**
    * Returns the given user's membership for this group entity.
