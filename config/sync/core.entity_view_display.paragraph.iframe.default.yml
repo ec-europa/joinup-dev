@@ -1,0 +1,36 @@
+uuid: bd13ff00-d6d5-4596-a382-0b4329cef9d5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.iframe.field_iframe
+    - paragraphs.paragraphs_type.iframe
+  module:
+    - iframe
+    - template_suggestion
+id: paragraph.iframe.default
+targetEntityType: paragraph
+bundle: iframe
+mode: default
+content:
+  field_iframe:
+    weight: 0
+    label: hidden
+    settings:
+      url: ''
+      title: ''
+      width: ''
+      height: ''
+      class: ''
+      expose_class: ''
+      frameborder: '0'
+      scrolling: ''
+      transparency: '0'
+      tokensupport: '0'
+      allowfullscreen: '0'
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+    type: iframe_only
+    region: content
+hidden: {  }

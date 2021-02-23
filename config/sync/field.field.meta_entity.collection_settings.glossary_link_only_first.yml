@@ -1,0 +1,23 @@
+uuid: 9c059a16-e01f-421e-a352-861f04668748
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.meta_entity.glossary_link_only_first
+    - meta_entity.type.collection_settings
+id: meta_entity.collection_settings.glossary_link_only_first
+field_name: glossary_link_only_first
+entity_type: meta_entity
+bundle: collection_settings
+label: 'Highlight only the first term appearance'
+description: 'If not checked, all encountered terms from the text will be converted into links.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

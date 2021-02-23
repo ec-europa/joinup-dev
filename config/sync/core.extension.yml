@@ -44,6 +44,7 @@ module:
   eupl: 0
   facets: 0
   field: 0
+  field_delimiter: 0
   field_group: 0
   field_permissions: 0
   file: 0
@@ -56,6 +57,7 @@ module:
   geofield: 0
   help: 0
   honeypot: 0
+  iframe: 0
   image: 0
   image_library_widget: 0
   inline_entity_form: 0
@@ -82,6 +84,7 @@ module:
   joinup_newsletter: 0
   joinup_notification: 0
   joinup_paragraphs: 0
+  joinup_pipeline_log: 0
   joinup_rdf: 0
   joinup_rdf_graph: 0
   joinup_rss: 0
@@ -158,7 +161,6 @@ module:
   serialization: 0
   simple_block: 0
   simple_sitemap: 0
-  simplenews: 0
   site_alert: 0
   site_verify: 0
   smart_trim: 0

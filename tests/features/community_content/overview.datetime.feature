@@ -62,6 +62,7 @@ Feature:
       | document   | document publication date |
       | news       | publication date          |
 
+  @terms
   Scenario: Documents without a publication date should show the published_at property.
     Given the following collection:
       | title | Gravitational pull detectors |
@@ -73,6 +74,7 @@ Feature:
       | Title       | POLI |
       | Short title | POLI |
     And I select "Document" from "Type"
+    And I select "Supplier exchange" from "Policy domain"
     # Regression test: Document is successfully displayed even when a publication date is not set.
     And I clear the date of the "Publication date" widget
     And I clear the time of the "Publication date" widget
@@ -85,6 +87,7 @@ Feature:
     # since it was just created.
     And I should not see the text "Last update:" in the "Content" region
 
+  @terms
   Scenario: Draft documents without a publication date should only show the last updated time.
     Given the following collection:
       | title | Gravitational pull detectors |
@@ -96,6 +99,7 @@ Feature:
       | Title       | POLI |
       | Short title | POLI |
     And I select "Document" from "Type"
+    And I select "Supplier exchange" from "Policy domain"
     # Regression test: Document is successfully displayed even when a publication date is not set.
     And I clear the date of the "Publication date" widget
     And I clear the time of the "Publication date" widget

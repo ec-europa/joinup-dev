@@ -375,7 +375,7 @@ Feature: Moderate community content
       | High frequency              |
       | Cluster                     |
 
-  @uploadFiles:logo.png
+  @terms @uploadFiles:logo.png
   Scenario: The logo image can be replaced for an event or news item that's in
     the "proposed" state. See ISAICP-5818.
 
@@ -399,6 +399,7 @@ Feature: Moderate community content
       | Description      | Here we go...       |
       | Virtual location | http://example.com  |
 
+    And I select "Statistics and Analysis" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I press "Upload"
     When I press "Propose"
@@ -417,6 +418,7 @@ Feature: Moderate community content
       | Headline    | Strong request for this rare metal that is on the mouth of everybody                          |
       | Content     | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
 
+    And I select "Data gathering, data processing" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I press "Upload"
     When I press "Propose"

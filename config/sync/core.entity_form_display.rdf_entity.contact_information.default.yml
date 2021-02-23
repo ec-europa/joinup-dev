@@ -10,6 +10,7 @@ dependencies:
     - rdf_entity.rdfentity.contact_information
   module:
     - joinup_core
+    - joinup_workflow
 _core:
   default_config_hash: uAQp2J2sANyBOzwYdPrJoC_TBLSxumdvFdXAcLgM3gs
 id: rdf_entity.contact_information.default

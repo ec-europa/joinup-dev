@@ -34,7 +34,7 @@ Feature: "Add discussion" visibility options.
     And I go to the homepage of the "Eager Sliver" solution
     Then I should see the link "Add discussion"
 
-  @uploadFiles:test.zip
+  @terms @uploadFiles:test.zip
   Scenario: Add discussion as a facilitator.
     Given the following collection:
       | title  | Collective Emerald in the Luck |
@@ -57,15 +57,20 @@ Feature: "Add discussion" visibility options.
     And I press "Upload"
     And I press "Publish"
     Then I should see the following lines of text:
-      | Title field is required.            |
-      | File description field is required. |
-      | Content field is required.          |
+      | Title field is required.                       |
+      | The Attachments field description is required. |
+      | Content field is required.                     |
 
     When I fill in the following:
       | Title            | Flight of Girlfriend                       |
       | Content          | This is going to be an amazing discussion. |
       | File description | A picture of a flying girlfriend           |
     And I press "Publish"
+    Then I should see the error message "Policy domain field is required."
+
+    And I select "EU and European Policies" from "Policy domain"
+    And I press "Publish"
+
     Then I should see the heading "Flight of Girlfriend"
     And I should see the success message "Discussion Flight of Girlfriend has been created."
     And the "Emerald in the Luck" solution has a discussion titled "Flight of Girlfriend"

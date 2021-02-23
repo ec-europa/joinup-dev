@@ -6,6 +6,7 @@ namespace Drupal\asset_distribution;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\asset_distribution\Entity\AssetDistributionInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -58,7 +59,7 @@ class AssetDistributionRelations implements ContainerInjectionInterface {
    * @param \Drupal\rdf_entity\RdfInterface $solution
    *   The solution rdf entity.
    *
-   * @return \Drupal\rdf_entity\RdfInterface[]
+   * @return \Drupal\asset_distribution\Entity\AssetDistributionInterface[]
    *   An array of distributions related to the solution.
    */
   public function getSolutionDistributions(RdfInterface $solution) {
@@ -71,9 +72,9 @@ class AssetDistributionRelations implements ContainerInjectionInterface {
     /** @var array $group_content */
     $group_content = $this->entityTypeManager->getStorage('rdf_entity')
       ->loadMultiple($group_content_ids['rdf_entity']);
-    /** @var \Drupal\rdf_entity\RdfInterface[] $distributions */
+    /** @var \Drupal\asset_distribution\Entity\AssetDistributionInterface[] $distributions */
     $distributions = array_filter($group_content, function (RdfInterface $entity) {
-      return ($entity->bundle() === 'asset_distribution');
+      return ($entity instanceof AssetDistributionInterface);
     });
 
     return $distributions;

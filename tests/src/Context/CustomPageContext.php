@@ -354,10 +354,9 @@ class CustomPageContext extends RawDrupalContext {
     }
 
     // Retrieve the image entity from the custom page logo.
-    /** @var \Drupal\node\Entity\Node $node */
+    /** @var \Drupal\custom_page\Entity\CustomPageInterface $node */
     $node = $this->getNodeByTitle($title, 'custom_page');
-    /** @var \Drupal\file\FileInterface $image */
-    $image = \Drupal::service('file_url.handler')::urlToFile($node->get('field_custom_page_logo')->first()->target_id);
+    $image = $node->getLogoAsFile();
 
     // Generate the expected URL of the logo using the right image style.
     // @see \Drupal\image\Plugin\Field\FieldFormatter\ImageUrlFormatter::viewElements()

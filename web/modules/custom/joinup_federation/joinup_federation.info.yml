@@ -9,7 +9,3 @@ dependencies:
   - 'joinup:rdf_entity_provenance'
   - 'joinup:rdf_schema_field_validation'
   - 'rdf_entity:rdf_entity'
-
-config_devel:
-  install:
-    - sparql_entity_storage.graph.staging

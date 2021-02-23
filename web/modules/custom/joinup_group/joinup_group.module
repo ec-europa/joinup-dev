@@ -39,6 +39,22 @@ use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 
 /**
+ * Implements hook_theme().
+ */
+function joinup_group_theme($existing, $type, $theme, $path) {
+  return [
+    // A button that (when clicked) opens a dropdown that (when clicked) opens a
+    // modal with a confirmation button that (when clicked) allows the user to
+    // leave the group.
+    'group_leave_button' => [
+      'variables' => [
+        'confirm' => '',
+      ],
+    ],
+  ];
+}
+
+/**
  * Implements hook_entity_bundle_field_info_alter().
  */
 function joinup_group_entity_bundle_field_info_alter(array &$fields, EntityTypeInterface $entity_type, string $bundle): void {

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_core\Plugin\Condition;
 
+use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Condition\ConditionPluginBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -46,14 +47,13 @@ class RequestRouteCondition extends ConditionPluginBase implements ContainerFact
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-
     $this->routeMatch = $route_match;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
     return new static(
       $configuration,
       $plugin_id,
@@ -65,18 +65,20 @@ class RequestRouteCondition extends ConditionPluginBase implements ContainerFact
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
-    return ['routes' => ''] + parent::defaultConfiguration();
+  public function defaultConfiguration(): array {
+    return [
+      'routes' => [],
+    ] + parent::defaultConfiguration();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
     $form['routes'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Routes'),
-      '#default_value' => $this->configuration['routes'],
+      '#default_value' => implode("\n", $this->getConfiguration()['routes']),
       '#description' => $this->t('Specify routes by their name. Enter one path per line.'),
     ];
     return parent::buildConfigurationForm($form, $form_state);
@@ -85,17 +87,17 @@ class RequestRouteCondition extends ConditionPluginBase implements ContainerFact
   /**
    * {@inheritdoc}
    */
-  public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
-    $this->configuration['routes'] = $form_state->getValue('routes');
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state): void {
+    $routes = array_filter(array_map('trim', explode("\n", str_replace("\r", "\n", $form_state->getValue('routes')))));
+    $this->setConfig('routes', $routes);
     parent::submitConfigurationForm($form, $form_state);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function summary() {
-    $routes = $this->getRoutes();
-    $routes = implode(', ', $routes);
+  public function summary(): MarkupInterface {
+    $routes = implode(', ', $this->getConfiguration()['routes']);
     if (!empty($this->isNegated())) {
       return $this->t('Do not return true on the following routes: @routes', ['@routes' => $routes]);
     }
@@ -105,11 +107,8 @@ class RequestRouteCondition extends ConditionPluginBase implements ContainerFact
   /**
    * {@inheritdoc}
    */
-  public function evaluate() {
-    $route_names = $this->getRoutes();
-    $current_route_name = $this->routeMatch->getRouteName();
-
-    return in_array($current_route_name, $route_names);
+  public function evaluate(): bool {
+    return in_array($this->routeMatch->getRouteName(), $this->getConfiguration()['routes'], TRUE);
   }
 
   /**
@@ -119,19 +118,6 @@ class RequestRouteCondition extends ConditionPluginBase implements ContainerFact
     $contexts = parent::getCacheContexts();
     $contexts[] = 'route.name';
     return $contexts;
-  }
-
-  /**
-   * Returns the configured routes.
-   *
-   * The configuration value is saved as multi-line text field, so we need to
-   * explode it and clean it.
-   *
-   * @return array
-   *   The configured route names.
-   */
-  protected function getRoutes() {
-    return array_map('trim', explode("\n", $this->configuration['routes']));
   }
 
 }

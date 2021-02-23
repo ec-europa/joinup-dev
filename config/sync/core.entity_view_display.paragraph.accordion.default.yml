@@ -24,9 +24,9 @@ content:
       view_mode: default
       autoscroll_offset: ''
       active: 0
-      simple_id: 0
-      autoscroll: 0
-      autoscroll_offset_toolbar: 0
+      simple_id: false
+      autoscroll: false
+      autoscroll_offset_toolbar: false
     third_party_settings:
       template_suggestion:
         template_suggestion: ''
