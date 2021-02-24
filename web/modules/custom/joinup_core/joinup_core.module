@@ -9,6 +9,8 @@ declare(strict_types = 1);
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -17,6 +19,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\block\BlockInterface;
 use Drupal\joinup_core\Element\Datetime;
+use Drupal\joinup_core\Entity\OutdatedContentInterface;
 use Drupal\joinup_core\JoinupSiteAlertListBuilder;
 use Drupal\joinup_core\Plugin\Field\FieldType\OutdatedContentFieldItemList;
 use Drupal\node\NodeInterface;
@@ -270,4 +273,26 @@ function joinup_core_entity_bundle_field_info(EntityTypeInterface $entity_type, 
       ->setDefaultValue(NULL);
   }
   return $fields;
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function joinup_core_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display): void {
+  if ($entity instanceof OutdatedContentInterface && $display->getMode() === 'default') {
+    /** @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info */
+    $bundle_info = \Drupal::service('entity_type.bundle.info');
+    $bundle_singular_label = $bundle_info->getBundleInfo($entity->getEntityTypeId())[$entity->bundle()]['label_singular'];
+    $build['#attached']['drupalSettings']['outdatedContent'] = [
+      'outdatedTime' => $entity->getOutdatedTime(),
+      'publicationTime' => $entity->getPublicationTime(),
+      'bundle' => $bundle_singular_label,
+    ];
+    $build['#attached']['library'][] = 'joinup_core/outdated_content';
+
+    // Invalidate the cache when the outdated content thresholds are changing.
+    (new CacheableMetadata())
+      ->addCacheableDependency(\Drupal::config('joinup_core.outdated_content_threshold'))
+      ->applyTo($build);
+  }
 }
