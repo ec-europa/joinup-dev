@@ -73,7 +73,7 @@ abstract class ShareForm extends ShareFormBase {
       if (!empty($form['groups'][$bundle])) {
         $form['groups'][$bundle] += [
           '#theme_wrappers' => ['fieldset'],
-          '#title' => ucfirst($this->bundleInfo->getBundleCountLabel('rdf_entity', $bundle, count($groups), 'default')),
+          '#title' => $this->bundleInfo->getBundleCountLabel('rdf_entity', $bundle, count($groups), 'no_count_capitalize'),
           '#tree' => TRUE,
           '#access' => !empty($groups),
         ];
