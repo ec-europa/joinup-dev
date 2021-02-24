@@ -11,8 +11,8 @@ use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\rdf_entity\RdfInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 
 /**
  * Form to share a community content inside collections.
@@ -38,9 +38,6 @@ abstract class ShareForm extends ShareFormBase {
    *
    * @return array
    *   The form structure.
-   *
-   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
-   *   Thrown when the group reference is not populated.
    */
   public function doBuildForm(array $form, FormStateInterface $form_state, ?EntityInterface $entity = NULL): array {
     $this->entity = $entity;
@@ -72,11 +69,11 @@ abstract class ShareForm extends ShareFormBase {
       ];
     }
 
-    foreach (['collection', 'solution'] as $bundle) {
+    foreach (JoinupGroupHelper::GROUP_BUNDLES as $bundle) {
       if (!empty($form['groups'][$bundle])) {
         $form['groups'][$bundle] += [
           '#theme_wrappers' => ['fieldset'],
-          '#title' => ucfirst(RdfEntityType::load($bundle)->getPluralLabel()),
+          '#title' => ucfirst($this->bundleInfo->getBundleCountLabel('rdf_entity', $bundle, count($groups), 'default')),
           '#tree' => TRUE,
           '#access' => !empty($groups),
         ];
@@ -162,20 +159,23 @@ abstract class ShareForm extends ShareFormBase {
   }
 
   /**
-   * Retrieves a list of collections where the entity can be shared on.
+   * Retrieves a list of groups where the entity can be shared on.
    *
-   * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collections where the current entity can be shared on.
+   * @return \Drupal\joinup_group\Entity\GroupInterface[]
+   *   A list of groups where the current entity can be shared on.
    */
   protected function getShareableGroups(): array {
     // Being part also for the access check, do not allow the user to access
-    // this page for entities without a field to store collections it is shared
-    // in.
+    // this page for entities without a field to store groups it is shared in.
     if (!$this->entity->hasField($this->getSharedOnFieldName())) {
       return [];
     }
 
     $user_groups = $this->getUserGroupsByPermission($this->getPermissionForAction('share'));
+    // Always show collections first.
+    asort($user_groups, function (GroupInterface $group1, GroupInterface $group2): int {
+      return $group1->bundle() <=> $group2->bundle();
+    });
     if ($parent = $this->getExcludedParent()) {
       unset($user_groups[$parent->id()]);
     }
@@ -186,7 +186,7 @@ abstract class ShareForm extends ShareFormBase {
   /**
    * Shares the current entity inside a group.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $group
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
    *   The group where to share the entity on.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
@@ -194,7 +194,7 @@ abstract class ShareForm extends ShareFormBase {
    * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
    *   Thrown when the entity storage is read only.
    */
-  protected function shareOnGroup(RdfInterface $group): void {
+  protected function shareOnGroup(GroupInterface $group): void {
     $current_ids = $this->getAlreadySharedGroupIds();
     $current_ids[] = $group->id();
 

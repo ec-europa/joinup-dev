@@ -6,7 +6,7 @@ namespace Drupal\joinup_group\Form;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\rdf_entity\RdfInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
 
 /**
  * Form to unshare a community content from within groups.
@@ -37,7 +37,7 @@ abstract class UnshareForm extends ShareFormBase {
     $this->entity = $entity;
 
     $options = array_map(function ($group) {
-      /** @var \Drupal\rdf_entity\RdfInterface $group */
+      /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
       return $group->label();
     }, $this->getGroups());
 
@@ -81,7 +81,7 @@ abstract class UnshareForm extends ShareFormBase {
   /**
    * Gets a list of groups where the content can be unshared from the user.
    *
-   * @return \Drupal\rdf_entity\RdfInterface[]
+   * @return \Drupal\joinup_group\Entity\GroupInterface[]
    *   A list of groups where the user is a facilitator and the content is
    *   shared.
    */
@@ -100,7 +100,7 @@ abstract class UnshareForm extends ShareFormBase {
   /**
    * Removes the current node from being shared inside a group.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $group
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
    *   The group where to remove the node.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
@@ -109,7 +109,7 @@ abstract class UnshareForm extends ShareFormBase {
    * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
    *   Thrown when the entity storage is read only.
    */
-  protected function removeFromGroup(RdfInterface $group): void {
+  protected function removeFromGroup(GroupInterface $group): void {
     // Flipping is needed to easily unset the value.
     $current_ids = array_flip($this->getAlreadySharedGroupIds());
     unset($current_ids[$group->id()]);
