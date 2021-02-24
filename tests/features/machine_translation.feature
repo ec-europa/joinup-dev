@@ -38,7 +38,7 @@ Feature: Machine translation
     When I click "Members"
     Then I should not see the "Translate" button
     When I click "Glossary"
-    Then I should not see the "Translate" button
+    Then I should see the "Translate" button
     When I click "Digital portability"
     Then I should see the "Translate" button
     When I click "About"
