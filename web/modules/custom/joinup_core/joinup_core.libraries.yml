@@ -14,3 +14,9 @@ timestamp_timeago:
   dependencies:
     - core/jquery
     - core/drupalSettings
+outdated_content:
+  js:
+    js/outdated_content.js: {  }
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
