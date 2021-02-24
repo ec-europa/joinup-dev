@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_core\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
@@ -32,6 +33,13 @@ class OutdatedContentThresholdForm extends ConfigFormBase {
   protected $entityTypeManager;
 
   /**
+   * The entity field manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
+
+  /**
    * Constructs a new form instance.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -40,11 +48,14 @@ class OutdatedContentThresholdForm extends ConfigFormBase {
    *   The entity type bundle info service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   The entity field manager service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeBundleInfoInterface $bundle_info, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeBundleInfoInterface $bundle_info, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager) {
     parent::__construct($config_factory);
     $this->bundleInfo = $bundle_info;
     $this->entityTypeManager = $entity_type_manager;
+    $this->entityFieldManager = $entity_field_manager;
   }
 
   /**
@@ -54,7 +65,8 @@ class OutdatedContentThresholdForm extends ConfigFormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('entity_type.bundle.info'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('entity_field.manager')
     );
   }
 
@@ -131,6 +143,10 @@ class OutdatedContentThresholdForm extends ConfigFormBase {
       $config->set("{$entity_type_id}.{$bundle}", $threshold);
     }
     $config->save();
+
+    // Entity bundle base field definitions cache needs rebuild.
+    // @see joinup_core_entity_bundle_field_info()
+    $this->entityFieldManager->clearCachedFieldDefinitions();
 
     parent::submitForm($form, $form_state);
   }

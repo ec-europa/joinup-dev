@@ -18,6 +18,7 @@ use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\block\BlockInterface;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\JoinupSiteAlertListBuilder;
+use Drupal\joinup_core\Plugin\Field\FieldType\OutdatedContentFieldItemList;
 use Drupal\node\NodeInterface;
 
 /**
@@ -250,4 +251,23 @@ function joinup_core_theme_suggestions_menu_local_task(array $variables): array 
     return ['menu_local_task__horizontal_tabs'];
   }
   return ['menu_local_task__three_dots_menu'];
+}
+
+/**
+ * Implements hook_entity_bundle_field_info().
+ */
+function joinup_core_entity_bundle_field_info(EntityTypeInterface $entity_type, string $bundle, array $base_field_definitions): array {
+  $fields = [];
+  $threshold = \Drupal::config('joinup_core.outdated_content_threshold')->get("{$entity_type->id()}.{$bundle}");
+  if ($threshold) {
+    $fields['outdated_time'] = BaseFieldDefinition::create('timestamp')
+      ->setLabel(t('Outdated time'))
+      ->setDescription(t('A date/time when this content will become outdated.'))
+      ->setComputed(TRUE)
+      ->setRequired(FALSE)
+      ->setClass(OutdatedContentFieldItemList::class)
+      ->setCardinality(1)
+      ->setDefaultValue(NULL);
+  }
+  return $fields;
 }
