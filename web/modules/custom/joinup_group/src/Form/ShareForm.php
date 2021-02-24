@@ -173,7 +173,7 @@ abstract class ShareForm extends ShareFormBase {
 
     $user_groups = $this->getUserGroupsByPermission($this->getPermissionForAction('share'));
     // Always show collections first.
-    asort($user_groups, function (GroupInterface $group1, GroupInterface $group2): int {
+    uasort($user_groups, function (GroupInterface $group1, GroupInterface $group2): int {
       return $group1->bundle() <=> $group2->bundle();
     });
     if ($parent = $this->getExcludedParent()) {
