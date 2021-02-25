@@ -10,7 +10,6 @@ use Drupal\joinup_featured\FeaturedContentTrait;
 use Drupal\joinup_group\Entity\PinnableGroupContentTrait;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeTrait;
-use Drupal\joinup_stats\Entity\StatisticsAwareTrait;
 use Drupal\joinup_stats\Entity\VisitCountAwareInterface;
 use Drupal\joinup_stats\Entity\VisitCountAwareTrait;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
@@ -30,7 +29,6 @@ abstract class CommunityContentBase extends Node implements CommunityContentInte
   use NodeCollectionContentTrait;
   use JoinupBundleClassMetaEntityTrait;
   use PinnableGroupContentTrait;
-  use StatisticsAwareTrait;
   use VisitCountAwareTrait;
 
   /**

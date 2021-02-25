@@ -8,6 +8,7 @@ dependencies:
   - drupal:datetime
   - drupal:image
   - drupal:link
+  - drupal:meta_entity
   - drupal:options
   - drupal:text
   - facets:facets

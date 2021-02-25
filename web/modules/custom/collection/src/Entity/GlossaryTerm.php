@@ -27,19 +27,10 @@ class GlossaryTerm extends Node implements GlossaryTermInterface {
   /**
    * {@inheritdoc}
    */
-  public function hasAbbreviation(): bool {
-    return !empty($this->getAbbreviation());
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getAbbreviation(): ?string {
-    $value = $this->getMainPropertyValue('field_glossary_abbreviation');
-    if (is_string($value)) {
-      return $value;
-    }
-    return NULL;
+  public function getSynonyms(): array {
+    return array_map(function (array $field_item): string {
+      return $field_item['value'];
+    }, $this->get('field_glossary_synonyms')->getValue());
   }
 
   /**

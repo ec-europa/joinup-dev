@@ -45,6 +45,7 @@ module:
   eupl: 0
   facets: 0
   field: 0
+  field_delimiter: 0
   field_group: 0
   field_permissions: 0
   file: 0
@@ -57,6 +58,7 @@ module:
   geofield: 0
   help: 0
   honeypot: 0
+  iframe: 0
   image: 0
   inline_entity_form: 0
   isa2_analytics: 0

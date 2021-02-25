@@ -81,38 +81,6 @@ function _joinup_form_meta_by_route(RouteMatchInterface $route_match) {
 }
 
 /**
- * Gives information about menu_local_task item being displayed.
- *
- * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
- *   The route object.
- *
- * @return string
- *   Whether a menu_local_task is of horizontal or menu display type.
- */
-function _joinup_menu_local_task_by_route(RouteMatchInterface $route_match) {
-  if ($route_name = $route_match->getRouteName()) {
-    if (in_array($route_name, _joinup_horizontal_tabs_routes())) {
-      return 'horizontal';
-    }
-    return 'menu';
-  }
-}
-
-/**
- * Get a list of routes where menu_local_tasks are normal horizontal tabs.
- *
- * @return array
- *   The routes.
- */
-function _joinup_horizontal_tabs_routes() {
-  return [
-    'user.login',
-    'user.pass',
-    'user.register',
-  ];
-}
-
-/**
  * Get a list of routes which should have tabs.
  *
  * @return array
@@ -1231,27 +1199,6 @@ function joinup_theme_preprocess_menu_local_action(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK() for menu-local-task.html.twig.
- */
-function joinup_theme_preprocess_menu_local_task(&$variables) {
-  $route_match = \Drupal::routeMatch();
-  $menu_type = _joinup_menu_local_task_by_route($route_match);
-
-  if ($menu_type == 'horizontal') {
-    $variables['attributes']['class'][] = 'tab tab--horizontal mdl-tabs__tab';
-  }
-  else {
-    // Every other occasion, item should be in MDL dropdown menu.
-    $variables['attributes']['class'][] = 'mdl-menu__item';
-  }
-
-  // Active flag.
-  if (isset($variables['is_active']) && $variables['is_active'] == TRUE) {
-    $variables['attributes']['class'][] = 'is-active';
-  }
-}
-
-/**
  * Implements hook_preprocess_HOOK() for node--moderation.html.twig.
  *
  * - Removes the contextual links.
@@ -1623,7 +1570,7 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
   ];
 
   switch ($form_id) {
-    case 'join_collection_form':
+    case 'join_group_form':
       // Add class for join collection button.
       $form['join']['#attributes']['class'][] = 'button--blue-light';
 
@@ -1674,7 +1621,7 @@ function joinup_theme_preprocess_rdf_entity(&$variables) {
  * - Changes the link to the collection page to an absolute URL so this can be
  *   opened in email messages.
  */
-function joinup_theme_preprocess_rdf_entity__collection__digest_message_header(&$variables) {
+function joinup_theme_preprocess_rdf_entity__digest_message_header(&$variables) {
   $variables['url'] = $variables['rdf_entity']->toUrl('canonical', ['absolute' => TRUE])->toString();
 }
 

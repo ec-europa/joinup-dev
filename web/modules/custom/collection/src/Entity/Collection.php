@@ -6,6 +6,7 @@ namespace Drupal\collection\Entity;
 
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
+use Drupal\joinup_bundle_class\LogoTrait;
 use Drupal\joinup_bundle_class\ShortIdTrait;
 use Drupal\joinup_featured\FeaturedContentTrait;
 use Drupal\joinup_group\Entity\GroupTrait;
@@ -26,6 +27,7 @@ class Collection extends Rdf implements CollectionInterface {
   use GroupTrait;
   use JoinupBundleClassFieldAccessTrait;
   use JoinupBundleClassMetaEntityTrait;
+  use LogoTrait;
   use ShortIdTrait;
 
   /**
@@ -79,6 +81,27 @@ class Collection extends Rdf implements CollectionInterface {
    */
   public function getWorkflowStateFieldName(): string {
     return 'field_ar_state';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLogoFieldName(): string {
+    return 'field_ar_logo';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getGlossarySettings(): array {
+    /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
+    $meta_entity = $this->get('settings')->entity;
+    if (!$meta_entity) {
+      throw new \Exception("The {$this->label()} collection doesn't have an associated 'collection_settings' meta-entity.");
+    }
+    return [
+      'link_only_first' => (bool) $meta_entity->get('glossary_link_only_first')->value,
+    ];
   }
 
 }

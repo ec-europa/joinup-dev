@@ -1,6 +1,6 @@
-my_subscriptions:
+subscriptions:
   version: 1.x
   js:
-    js/my_subscriptions.js: {}
+    js/subscriptions.js: {}
   dependencies:
     - core/jquery

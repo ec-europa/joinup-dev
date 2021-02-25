@@ -47,9 +47,14 @@ field.widget.settings.string_textfield_legacy_multicardinality:
 
 condition.plugin.request_route:
   type: condition.plugin
+  label: Request route condition
   mapping:
     routes:
-      type: string
+      type: sequence
+      label: Routes
+      sequence:
+        type: string
+        label: Route
 
 # Schema for 'joinup_timestamp_timeago' formatter settings.
 field.formatter.settings.joinup_timestamp_timeago:

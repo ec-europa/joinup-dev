@@ -1,0 +1,251 @@
+uuid: 694783ee-9f36-41ed-8fd9-51696b1bcd94
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_group_content
+    - message.template.group_content_subscription
+    - node.type.discussion
+    - node.type.document
+    - node.type.event
+    - node.type.news
+    - rdf_entity.rdfentity.solution
+  module:
+    - dynamic_entity_reference
+id: message.group_content_subscription.field_group_content
+field_name: field_group_content
+entity_type: message
+bundle: group_content_subscription
+label: 'Group content'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  node:
+    handler: 'default:node'
+    handler_settings:
+      target_bundles:
+        discussion: discussion
+        document: document
+        event: event
+        news: news
+      sort:
+        field: _none
+      auto_create: false
+      auto_create_bundle: discussion
+  rdf_entity:
+    handler: 'default:rdf_entity'
+    handler_settings:
+      target_bundles:
+        solution: solution
+      sort:
+        field: _none
+      auto_create: false
+      auto_create_bundle: ''
+  download_event:
+    handler: 'default:download_event'
+    handler_settings: {  }
+  block:
+    handler: 'default:block'
+    handler_settings: {  }
+  comment:
+    handler: 'default:comment'
+    handler_settings: {  }
+  comment_type:
+    handler: 'default:comment_type'
+    handler_settings: {  }
+  editor:
+    handler: 'default:editor'
+    handler_settings: {  }
+  entity_legal_document_version:
+    handler: 'default:entity_legal_document_version'
+    handler_settings: {  }
+  entity_legal_document:
+    handler: 'default:entity_legal_document'
+    handler_settings: {  }
+  entity_legal_document_acceptance:
+    handler: 'default:entity_legal_document_acceptance'
+    handler_settings: {  }
+  facets_facet_source:
+    handler: 'default:facets_facet_source'
+    handler_settings: {  }
+  facets_facet:
+    handler: 'default:facets_facet'
+    handler_settings: {  }
+  field_storage_config:
+    handler: 'default:field_storage_config'
+    handler_settings: {  }
+  field_config:
+    handler: 'default:field_config'
+    handler_settings: {  }
+  file:
+    handler: 'default:file'
+    handler_settings: {  }
+  remote_file:
+    handler: 'default:remote_file'
+    handler_settings: {  }
+  filter_format:
+    handler: 'default:filter_format'
+    handler_settings: {  }
+  flag:
+    handler: 'default:flag'
+    handler_settings: {  }
+  flagging:
+    handler: 'default:flagging'
+    handler_settings: {  }
+  geocoder_provider:
+    handler: 'default:geocoder_provider'
+    handler_settings: {  }
+  image_style:
+    handler: 'default:image_style'
+    handler_settings: {  }
+  invitation_type:
+    handler: 'default:invitation_type'
+    handler_settings: {  }
+  invitation:
+    handler: 'default:invitation'
+    handler_settings: {  }
+  language_content_settings:
+    handler: 'default:language_content_settings'
+    handler_settings: {  }
+  configurable_language:
+    handler: 'default:configurable_language'
+    handler_settings: {  }
+  linkit_profile:
+    handler: 'default:linkit_profile'
+    handler_settings: {  }
+  message:
+    handler: 'default:message'
+    handler_settings: {  }
+  message_template:
+    handler: 'default:message_template'
+    handler_settings: {  }
+  message_digest_interval:
+    handler: 'default:message_digest_interval'
+    handler_settings: {  }
+  meta_entity:
+    handler: 'default:meta_entity'
+    handler_settings: {  }
+  meta_entity_type:
+    handler: 'default:meta_entity_type'
+    handler_settings: {  }
+  metatag_defaults:
+    handler: 'default:metatag_defaults'
+    handler_settings: {  }
+  node_type:
+    handler: 'default:node_type'
+    handler_settings: {  }
+  og_membership:
+    handler: 'default:og_membership'
+    handler_settings: {  }
+  og_role:
+    handler: 'default:og_role'
+    handler_settings: {  }
+  og_membership_type:
+    handler: 'default:og_membership_type'
+    handler_settings: {  }
+  ogmenu_instance:
+    handler: 'default:ogmenu_instance'
+    handler_settings: {  }
+  ogmenu:
+    handler: 'default:ogmenu'
+    handler_settings: {  }
+  password_policy:
+    handler: 'default:password_policy'
+    handler_settings: {  }
+  path_alias:
+    handler: 'default:path_alias'
+    handler_settings: {  }
+  rdf_type:
+    handler: 'default:rdf_type'
+    handler_settings: {  }
+  redirect:
+    handler: 'default:redirect'
+    handler_settings: {  }
+  rest_resource_config:
+    handler: 'default:rest_resource_config'
+    handler_settings: {  }
+  search_api_server:
+    handler: 'default:search_api_server'
+    handler_settings: {  }
+  search_api_index:
+    handler: 'default:search_api_index'
+    handler_settings: {  }
+  search_api_task:
+    handler: 'default:search_api_task'
+    handler_settings: {  }
+  solr_field_type:
+    handler: 'default:solr_field_type'
+    handler_settings: {  }
+  sparql_graph:
+    handler: 'default:sparql_graph'
+    handler_settings: {  }
+  sparql_mapping:
+    handler: 'default:sparql_mapping'
+    handler_settings: {  }
+  action:
+    handler: 'default:action'
+    handler_settings: {  }
+  menu:
+    handler: 'default:menu'
+    handler_settings: {  }
+  taxonomy_term:
+    handler: 'default:taxonomy_term'
+    handler_settings: {  }
+  taxonomy_vocabulary:
+    handler: 'default:taxonomy_vocabulary'
+    handler_settings: {  }
+  tour:
+    handler: 'default:tour'
+    handler_settings: {  }
+  user_role:
+    handler: 'default:user_role'
+    handler_settings: {  }
+  user:
+    handler: 'default:user'
+    handler_settings: {  }
+  menu_link_content:
+    handler: 'default:menu_link_content'
+    handler_settings: {  }
+  pathauto_pattern:
+    handler: 'default:pathauto_pattern'
+    handler_settings: {  }
+  view:
+    handler: 'default:view'
+    handler_settings: {  }
+  date_format:
+    handler: 'default:date_format'
+    handler_settings: {  }
+  entity_form_display:
+    handler: 'default:entity_form_display'
+    handler_settings: {  }
+  entity_view_mode:
+    handler: 'default:entity_view_mode'
+    handler_settings: {  }
+  entity_form_mode:
+    handler: 'default:entity_form_mode'
+    handler_settings: {  }
+  entity_view_display:
+    handler: 'default:entity_view_display'
+    handler_settings: {  }
+  base_field_override:
+    handler: 'default:base_field_override'
+    handler_settings: {  }
+  paragraph:
+    handler: 'default:paragraph'
+    handler_settings: {  }
+  paragraphs_type:
+    handler: 'default:paragraphs_type'
+    handler_settings: {  }
+  site_alert:
+    handler: 'default:site_alert'
+    handler_settings: {  }
+  simple_block:
+    handler: 'default:simple_block'
+    handler_settings: {  }
+  compatibility_document:
+    handler: 'default:compatibility_document'
+    handler_settings: {  }
+field_type: dynamic_entity_reference

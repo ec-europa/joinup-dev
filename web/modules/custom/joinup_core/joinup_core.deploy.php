@@ -14,6 +14,12 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Database\Database;
+use Drupal\meta_entity\Entity\MetaEntity;
+use Drupal\node\Entity\Node;
+use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
+use EasyRdf\Graph;
+
 /**
  * Set community content missing policy domain.
  */
@@ -49,7 +55,7 @@ SPARQL;
     // revision ID and the policy domain IDs of the parent group as properties.
     $sql = <<<Query
       SELECT
-        -- Add a char to node ID in order to preserve keys in array_splice(). 
+        -- Add a char to node ID in order to preserve keys in array_splice().
         CONCAT('n', n.nid) AS nid,
         n.vid,
         n.type,
@@ -116,4 +122,111 @@ Query;
   $sandbox['#finished'] = (int) empty($sandbox['nodes']);
 
   return "Updated {$sandbox['progress']} out of {$sandbox['count']}";
+}
+
+/**
+ * Convert glossary abbreviation into term synonym (stage 2).
+ */
+function joinup_core_deploy_0106801(array &$sandbox): string {
+  if (!isset($sandbox['terms'])) {
+    $state = \Drupal::state();
+    $sandbox['terms'] = $state->get('isaicp_6153');
+    $sandbox['total'] = count($sandbox['terms']);
+    $sandbox['progress'] = 0;
+    $state->delete('isaicp_6153');
+  }
+
+  $terms_to_process = array_splice($sandbox['terms'], 0, 20);
+  $terms = [];
+  foreach ($terms_to_process as $term) {
+    $terms[$term->nid] = $term->abbr;
+  }
+  /** @var \Drupal\collection\Entity\GlossaryTermInterface $glossary */
+  foreach (Node::loadMultiple(array_keys($terms)) as $nid => $glossary) {
+    $glossary->set('field_glossary_synonyms', $terms[$nid])->save();
+  }
+  $sandbox['progress'] += count($terms);
+
+  $sandbox['#finished'] = (int) empty($sandbox['terms']);
+
+  return "Converted {$sandbox['progress']} out of {$sandbox['total']}";
+}
+
+/**
+ * Create 'collection_settings' meta entities for all collections.
+ */
+function joinup_core_deploy_0106802(array &$sandbox): string {
+  if (!isset($sandbox['ids'])) {
+    $sandbox['ids'] = array_values(
+      \Drupal::entityTypeManager()->getStorage('rdf_entity')->getQuery()
+        ->condition('rid', 'collection')
+        ->execute()
+    );
+    $sandbox['total'] = count($sandbox['ids']);
+    $sandbox['progress'] = 0;
+  }
+
+  $ids = array_splice($sandbox['ids'], 0, 50);
+  foreach ($ids as $id) {
+    MetaEntity::create(
+      [
+        'type' => 'collection_settings',
+        'target' => [
+          'target_type' => 'rdf_entity',
+          'target_id' => $id,
+        ],
+        // Make this default option, even for existing content.
+        'glossary_link_only_first' => TRUE,
+      ]
+    )->save();
+  }
+  $sandbox['progress'] += count($ids);
+  $sandbox['#finished'] = (int) empty($sandbox['ids']);
+
+  return "Processed {$sandbox['progress']} out of {$sandbox['total']}";
+}
+
+/**
+ * Update the EIRA vocabulary.
+ */
+function joinup_core_deploy_0106803(array &$sandbox): void {
+  // Clean up the existing graph.
+  $sparql_connection = Database::getConnection('default', 'sparql_default');
+  $sparql_connection->query('WITH <http://eira_skos> DELETE { ?s ?p ?o } WHERE { ?s ?p ?o } ');
+
+  $filepath = __DIR__ . '/../../../../resources/fixtures/EIRA_SKOS.rdf';
+  $graph_store = SparqlGraphStoreTrait::createGraphStore();
+  $graph = new Graph('http://eira_skos');
+  $graph->parse(file_get_contents($filepath));
+  $graph_store->insert($graph);
+
+  // Repeat steps taken after importing the fixtures that target eira terms.
+  $sparql_connection->query('WITH <http://eira_skos> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
+  $sparql_connection->query('WITH <http://eira_skos> INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { ?subject a skos:Concept .};');
+  $sparql_connection->query('WITH <http://eira_skos> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
+
+  // There is one term removed and replaced. Update database records.
+  $graphs = [
+    'http://joinup.eu/solution/published',
+    'http://joinup.eu/solution/draft',
+  ];
+
+  foreach ($graphs as $graph) {
+    $query = <<<QUERY
+WITH <$graph>
+DELETE { ?entity_id <http://purl.org/dc/terms/type> <http://data.europa.eu/dr8/PublicPolicyImplementationApproach> }
+INSERT { ?entity_id <http://purl.org/dc/terms/type> <http://data.europa.eu/dr8/InteroperableDigitalPublicServicesImplementationOrientation> }
+WHERE { ?entity_id <http://purl.org/dc/terms/type> <http://data.europa.eu/dr8/PublicPolicyImplementationApproach> }
+QUERY;
+    $sparql_connection->query($query);
+  }
+}
+
+/**
+ * Fix the EIF recommendation menu link route.
+ */
+function joinup_core_deploy_0106804(): void {
+  \Drupal::entityTypeManager()->getStorage('menu_link_content')->load(11390)
+    ->set('link', 'route:view.eif_recommendation.all;rdf_entity=http_e_f_fdata_ceuropa_ceu_fw21_f405d8980_b3f06_b4494_bb34a_b46c388a38651')
+    ->save();
 }

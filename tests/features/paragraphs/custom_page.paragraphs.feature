@@ -44,7 +44,7 @@ Feature:
       | BBBBBBBBBB |
       | AAAAAAAAAA |
 
-  Scenario: Moderators can add a map value.
+  Scenario: Moderators can add a map and/or an iframe paragraph.
     Given custom_page content:
       | title                     | body        | collection            |
       | Don't Mess with the Zohan | Wanna mess? | Paragraphs collection |
@@ -52,7 +52,8 @@ Feature:
     Given I am logged in as a facilitator of the "Paragraphs collection" collection
     And I go to the custom_page "Don't Mess with the Zohan" edit screen
     Then I should see the button "Add Simple paragraph"
-    Then I should not see the button "Add Map"
+    But I should not see the button "Add Map"
+    And I should not see the button "Add IFrame"
 
     When I fill in "Body" with "I'm half Australian, half Mt. Everest"
     And I press "Save"
@@ -62,7 +63,8 @@ Feature:
     Given I am logged in as a moderator
     And I go to the custom_page "Don't Mess with the Zohan" edit screen
     Then I should see the button "Add Simple paragraph"
-    Then I should see the button "Add Map"
+    And I should see the button "Add Map"
+    And I should see the button "Add IFrame"
 
     When I press "Add Map"
     # As the Webtools Map a webservice, we only test a fake JSON.
@@ -71,6 +73,16 @@ Feature:
     Then I should see the success message "Custom page Don't Mess with the Zohan has been updated."
     And I should see "I'm half Australian, half Mt. Everest"
     And the response should contain "{\"foo\":\"bar\"}"
+
+    When I go to the custom_page "Don't Mess with the Zohan" edit screen
+    And I press "Add IFrame"
+    And I fill in "Iframe URL" with "http://example.com"
+    And I press "Save"
+    # We only test that the <iframe .../> element is in page. Unfortunately, we
+    # cannot do precision RegExp search in page source, so we only check for the
+    # existence of the iframe and its URL.
+    Then I should see 1 "iframe" elements
+    And the response should contain "src=\"http://example.com\""
 
   @javascript
   Scenario Outline: Add an accordion to the custom page.

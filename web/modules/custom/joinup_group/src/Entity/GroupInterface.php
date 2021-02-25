@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_group\Entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\joinup_bundle_class\LogoInterface;
 use Drupal\og\OgMembershipInterface;
 
 /**
@@ -12,7 +13,7 @@ use Drupal\og\OgMembershipInterface;
  *
  * This comprises collections and solutions.
  */
-interface GroupInterface extends ContentEntityInterface {
+interface GroupInterface extends ContentEntityInterface, LogoInterface {
 
   /**
    * Returns the given user's membership for this group entity.

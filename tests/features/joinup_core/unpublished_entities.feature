@@ -37,10 +37,10 @@ Feature: Unpublished content of the website
       | Mists outside the planes of construct | 2018-10-04 8:31am | Ed Abbott | Grey Swords         | draft     |
       | Mists that are published maybe?       | 2018-10-04 8:31am | Ed Abbott | Grey Swords         | validated |
     Given glossary content:
-      | title    | abbreviation | summary                 | author    | created           | definition                                  | collection          | status      |
-      | Alphabet | ABC          | Summary of Alphabet     | Ed Abbott | 2018-10-04 8:29am | Long, long definition field                 | Invisible Boyfriend | published   |
-      | Colors   | CLR          | Summary of Colors       | Ed Abbott | 2018-10-04 8:29am | Colors definition field                     | Invisible Boyfriend | unpublished |
-      | Smells   | SML          | Smells Like Teen Spirit | Ed Abbott | 2018-10-04 8:31am | With the lights out, it's less dangerous... | Invisible Boyfriend | unpublished |
+      | title    | synonyms | summary                 | author    | created           | definition                                  | collection          | status      |
+      | Alphabet | ABC      | Summary of Alphabet     | Ed Abbott | 2018-10-04 8:29am | Long, long definition field                 | Invisible Boyfriend | published   |
+      | Colors   | CLR      | Summary of Colors       | Ed Abbott | 2018-10-04 8:29am | Colors definition field                     | Invisible Boyfriend | unpublished |
+      | Smells   | SML      | Smells Like Teen Spirit | Ed Abbott | 2018-10-04 8:31am | With the lights out, it's less dangerous... | Invisible Boyfriend | unpublished |
 
     # The owner should be able to see all content.
     When I am logged in as "Ed Abbott"
