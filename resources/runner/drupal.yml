@@ -43,6 +43,7 @@ drupal:
         - Matomo & OpenEuropa Webtools Analytics
         - Custom error handler
         - Permissions
+        - Error logging
         - Mail catch
         - Redis
       site-clean:
