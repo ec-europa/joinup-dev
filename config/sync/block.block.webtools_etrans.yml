@@ -20,4 +20,9 @@ settings:
   provider: oe_webtools_etrans
   label_display: '0'
   render_as: button
+  render_to: ''
+  domain: gen
+  delay: 0
+  include: ''
+  exclude: ''
 visibility: {  }
