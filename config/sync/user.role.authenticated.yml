@@ -99,3 +99,6 @@ permissions:
   - 'view paragraph content simple_paragraph'
   - 'view published og menu instance entities'
   - 'view rdf entity'
+  - 'view all revisions'
+  - 'revert all revisions'
+  - 'delete all revisions'
