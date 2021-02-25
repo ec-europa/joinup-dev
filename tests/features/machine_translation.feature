@@ -28,8 +28,8 @@ Feature: Machine translation
       | title               | abbreviation | summary                 | definition                | collection |
       | Digital portability | DP           | Availability of content | Across streaming services | Brexit     |
     And solution:
-      | title | Rejoin the EU |
-      | state | validated     |
+      | title | Rejoin the EU | collection |
+      | state | validated     | Brexit     |
 
     # Inside a collection sidebar, only custom pages, glossary terms (but not
     # the glossary overview) and the about page should be translatable.
