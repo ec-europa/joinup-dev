@@ -1,12 +1,12 @@
 joinup_subscription.subscriptions:
   path: '/user/{user}/subscriptions'
   defaults:
-    _form: '\Drupal\joinup_subscription\Form\MySubscriptionsForm'
+    _form: Drupal\joinup_subscription\Form\SubscriptionsForm
     # Since this route is for viewing other people's subscriptions, this is not
     # titled 'My subscriptions' but 'Subscription settings'.
     _title: 'Subscription settings'
   requirements:
-    _custom_access: '\Drupal\joinup_subscription\Controller\MySubscriptionsController::access'
+    _permission: 'administer users'
   options:
     parameters:
       user:
@@ -15,7 +15,7 @@ joinup_subscription.subscriptions:
 joinup_subscription.my_subscriptions:
   path: '/user/subscriptions'
   defaults:
-    _controller: '\Drupal\joinup_subscription\Controller\MySubscriptionsController::build'
+    _form: Drupal\joinup_subscription\Form\SubscriptionsForm
     _title: 'My subscriptions'
   requirements:
     _user_is_logged_in: 'TRUE'
@@ -23,10 +23,10 @@ joinup_subscription.my_subscriptions:
 joinup_subscription.unsubscribe_all:
   path: '/user/{user}/unsubscribe-all'
   defaults:
-    _form: '\Drupal\joinup_subscription\Form\UnsubscribeFromAllCollectionsForm'
+    _form: Drupal\joinup_subscription\Form\UnsubscribeFromAllForm
     _title: 'Unsubscribe from all groups'
   requirements:
-    _custom_access: '\Drupal\joinup_subscription\Form\UnsubscribeFromAllCollectionsForm::access'
+    _custom_access: Drupal\joinup_subscription\Form\UnsubscribeFromAllForm::access
   options:
     parameters:
       user:

@@ -7,11 +7,15 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperManager;
+use Drupal\block\BlockInterface;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\JoinupSiteAlertListBuilder;
 use Drupal\node\NodeInterface;
@@ -200,4 +204,34 @@ function joinup_core_module_implements_alter(array &$implementations, $hook) {
       unset($implementations['menu_ui']);
       break;
   }
+}
+
+/**
+ * Implements hook_block_access().
+ */
+function joinup_core_block_access(BlockInterface $block, string $operation, AccountInterface $account): AccessResultInterface {
+  if ($operation === 'view' && $block->id() === 'three_dots_menu') {
+    /** @var \Drupal\joinup_core\LocalTaskLinksHelperInterface $local_task_links_helper */
+    $local_task_links_helper = \Drupal::service('joinup_core.local_task_links_helper');
+    // A local tasks block can be either a horizontal tabs menu or a three-dots
+    // menu. Both are not possible on the same page. In order to determine the
+    // pages with horizontal tabs, the 'horizontal_tabs' block visibility should
+    // be edited. All others pages will show the local tasks as three-dots menu.
+    // Avoid the redundancy of maintaining the visibility also for the
+    // 'three_dots_menu' block by implementing this hook.
+    return $local_task_links_helper->allowThreeDotsMenu();
+  }
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK() for menu_local_task.
+ */
+function joinup_core_theme_suggestions_menu_local_task(array $variables): array {
+  /** @var \Drupal\joinup_core\LocalTaskLinksHelperInterface $local_task_links_helper */
+  $local_task_links_helper = \Drupal::service('joinup_core.local_task_links_helper');
+  if ($local_task_links_helper->allowHorizontalTabs()->isAllowed()) {
+    return ['menu_local_task__horizontal_tabs'];
+  }
+  return ['menu_local_task__three_dots_menu'];
 }

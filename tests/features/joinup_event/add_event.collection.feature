@@ -53,9 +53,9 @@ Feature: "Add event" visibility options.
     And I press "Upload"
     And I press "Publish"
     Then I should see the following lines of text:
-      | Title field is required.            |
-      | Description field is required.      |
-      | File description field is required. |
+      | Title field is required.                       |
+      | Description field is required.                 |
+      | The Attachments field description is required. |
 
     When I fill in the following:
       | Title                  | An amazing event                      |

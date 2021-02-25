@@ -296,7 +296,7 @@ class JoinupNotificationContext extends RawDrupalContext {
       foreach ($lines_of_text as $line_of_text) {
         $text = $line_of_text['text'];
         if (strpos($mail_body, $text) !== FALSE) {
-          throw new \Exception("Message with subject '$subject' sent to '$recipient' contains the text '$line_of_text'.");
+          throw new \Exception("Message with subject '$subject' sent to '$recipient' contains the text '$text'.");
         }
       }
     }

@@ -40,8 +40,8 @@ Run the following command to install all packages in the vendor folder:
 docker-compose exec --user www-data web composer install
 ```
 A Github authentication token will be required to download all packages.
-*Note:* If you have permission issues, please check known issue [Apache daemon user](#apache-daemon-user).
-*Note 2:* For the authentication token, you can map your local directories to the container in order to reuse all keyes
+**Note:** If you have permission issues, please check known issue [Apache daemon user](#apache-daemon-user).
+**Note 2:** For the authentication token, you can map your local directories to the container in order to reuse all keyes
 and tokens from your local account. Check [Reuse local configuration](#reuse-local-configuration) for more info.
 
 ## Before installing
@@ -64,7 +64,7 @@ docker-compose exec my_container_name "/bin/bash"
 Depending on the container (and its base image), it might be that `/bin/bash` is not available. In that case, `/bin/sh`
 and `sh` are good substitutes.
 
-*IMPORTANT:* Depending on your configuration, it might be that you have to change the ownership of all the files in
+**Note:** Depending on your configuration, it might be that you have to change the ownership of all the files in
 order to have a successful installation and to be able to run the tests properly. For a possible solution, please, refer
 to the section [Handling permissions](#handling-permissions)
 
@@ -97,6 +97,8 @@ Download both the SPARQL and SQL database dumps using the following command:
 ```
 $ docker-compose exec --user www-data web php -d memory_limit=-1 ./vendor/bin/run dev:download-databases
 ```
+**Note:** If you are changing from a clean install to a restored environment, you need to destroy the volumes with
+`docker-compose down -v` (the `-v` is the key) in order to destroy the volumes and rebuild.
 
 ## Launch containers using production databases
 To start the containers using the production database, in your `.env` file, set the variable `DOCKER_RESTORE_PRODUCTION`
@@ -106,7 +108,7 @@ updates:
 ```
 $ docker-compose exec --user www-data web ./vendor/bin/run toolkit:run-deploy
 ```
-**IMPORTANT**: All images start normally, and the web server is available almost immediately. However, mysql container
+**Note**: All images start normally, and the web server is available almost immediately. However, mysql container
 will not start until the backup is restored so for the first few minutes, depending on the size of the database dump,
 the web server will receive connection denials. Please, wait until the mysql import is finishes before accessing the
 site.

@@ -21,6 +21,7 @@ settings:
 visibility:
   request_route:
     id: request_route
-    routes: view.search.search
+    routes:
+      - view.search.search
     negate: true
     context_mapping: {  }

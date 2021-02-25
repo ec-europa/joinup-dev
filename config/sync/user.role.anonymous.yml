@@ -20,6 +20,7 @@ permissions:
   - 'view compatibility documents'
   - 'view paragraph content accordion'
   - 'view paragraph content accordion_item'
+  - 'view paragraph content iframe'
   - 'view paragraph content json_map'
   - 'view paragraph content simple_paragraph'
   - 'view rdf entity'

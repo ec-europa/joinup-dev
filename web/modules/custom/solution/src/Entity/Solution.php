@@ -9,12 +9,14 @@ use Drupal\collection\Entity\CollectionInterface;
 use Drupal\collection\Exception\MissingCollectionException;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
+use Drupal\joinup_bundle_class\LogoTrait;
 use Drupal\joinup_bundle_class\ShortIdTrait;
 use Drupal\joinup_featured\FeaturedContentTrait;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\GroupTrait;
 use Drupal\joinup_group\Entity\PinnableGroupContentTrait;
 use Drupal\joinup_group\Exception\MissingGroupException;
+use Drupal\joinup_publication_date\Entity\EntityPublicationTimeFallbackTrait;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -23,11 +25,13 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class Solution extends Rdf implements SolutionInterface {
 
+  use EntityPublicationTimeFallbackTrait;
   use EntityWorkflowStateTrait;
   use FeaturedContentTrait;
   use GroupTrait;
   use JoinupBundleClassFieldAccessTrait;
   use JoinupBundleClassMetaEntityTrait;
+  use LogoTrait;
   use PinnableGroupContentTrait;
   use ShortIdTrait;
 
@@ -124,6 +128,13 @@ class Solution extends Rdf implements SolutionInterface {
    */
   public function getPinnableGroupIds(): array {
     return $this->getAffiliatedCollectionIds();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLogoFieldName(): string {
+    return 'field_is_logo';
   }
 
 }
