@@ -3846,14 +3846,6 @@
                 {
                     "name": "borisson_",
                     "homepage": "https://www.drupal.org/user/2393360"
-                },
-                {
-                    "name": "drunken monkey",
-                    "homepage": "https://www.drupal.org/user/205582"
-                },
-                {
-                    "name": "mkalkbrenner",
-                    "homepage": "https://www.drupal.org/user/124705"
                 }
             ],
             "description": "The Facet module allows site builders to easily create and manage faceted search interfaces.",
@@ -5147,7 +5139,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.0-alpha2",
-                    "datestamp": "1613598911",
+                    "datestamp": "1613598883",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -10173,7 +10165,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-10-26T14:41:29+00:00"
+            "time": "2019-04-02T18:33:21+00:00"
         },
         {
             "name": "stack/builder",
@@ -14730,7 +14722,10 @@
             "type": "library",
             "extra": {
                 "enable-patching": true,
-                "composer-exit-on-patch-failure": true
+                "composer-exit-on-patch-failure": true,
+                "patches_applied": {
+                    "Download is broken @see DQA-481": "https://patch-diff.githubusercontent.com/raw/ec-europa/toolkit/pull/308.diff"
+                }
             },
             "autoload": {
                 "psr-4": {
