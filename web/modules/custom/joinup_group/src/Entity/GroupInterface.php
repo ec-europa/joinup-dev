@@ -117,4 +117,18 @@ interface GroupInterface extends ContentEntityInterface, LogoInterface, ShortIdI
    */
   public function hasGroupPermission(int $uid, string $permission): bool;
 
+  /**
+   * Returns recursively all content IDs of this group.
+   *
+   * WARNING! This method is resource intensive and it's not recommended to be
+   * used in a normal page request. It's strongly advised to be used only in
+   * operations that support longer requests, such as cron run.
+   *
+   * @return array
+   *   An associative array keyed by the group content entity type ID and having
+   *   an indexed array of entity IDs as values. The array is sorted by key and,
+   *   within each entity type, by entity IDs.
+   */
+  public function getGroupContentIds(): array;
+
 }

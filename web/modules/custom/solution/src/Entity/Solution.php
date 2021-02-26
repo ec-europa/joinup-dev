@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\solution\Entity;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\asset_release\Entity\AssetReleaseInterface;
 use Drupal\collection\Entity\CollectionInterface;
 use Drupal\collection\Exception\MissingCollectionException;
@@ -157,6 +158,23 @@ class Solution extends Rdf implements SolutionInterface {
    */
   public function getLogoFieldName(): string {
     return 'field_is_logo';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function doGetGroupContentIds(): array {
+    $ids = ['node' => $this->getNodeGroupContent()];
+    $releases = $this->getReleases();
+    $ids = NestedArray::mergeDeep(
+      $ids,
+      ['rdf_entity' => array_keys($releases)],
+      ['rdf_entity' => $this->getDistributionIds()]
+    );
+    foreach ($releases as $release) {
+      $ids['rdf_entity'] = array_merge($ids['rdf_entity'], $release->getDistributionIds());
+    }
+    return $ids;
   }
 
 }

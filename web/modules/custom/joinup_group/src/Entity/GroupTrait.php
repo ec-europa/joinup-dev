@@ -6,6 +6,7 @@ namespace Drupal\joinup_group\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\user\UserInterface;
 
@@ -65,6 +66,46 @@ trait GroupTrait {
       return $membership->hasPermission($permission);
     }
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getGroupContentIds(): array {
+    $group_content = $this->doGetGroupContentIds();
+    // Ensure that the results are sorted.
+    ksort($group_content);
+    array_walk($group_content, function (array &$ids): void {
+      // Sorting using array_walk($group_content, 'sort') short form, just
+      // doesn't work because array_walk() passes the array key as a second
+      // callback parameter. So sort() will receive the array key as second
+      // parameter, but the function expects a total different value there.
+      sort($ids);
+    });
+    return $group_content;
+  }
+
+  /**
+   * Processes and returns a list of group content entities.
+   *
+   * @return array
+   *   An associative array keyed by the group content entity type ID and having
+   *   an indexed array of entity IDs as values.
+   */
+  abstract protected function doGetGroupContentIds(): array;
+
+  /**
+   * Returns a list of group content node IDs.
+   *
+   * @return int[]
+   *   A list of group content node IDs.
+   */
+  protected function getNodeGroupContent(): array {
+    return array_values($this->entityTypeManager()
+      ->getStorage('node')
+      ->getQuery()
+      ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $this->id())
+      ->execute());
   }
 
   /**

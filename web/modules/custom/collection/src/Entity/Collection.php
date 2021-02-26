@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\collection\Entity;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_bundle_class\LogoTrait;
@@ -102,6 +103,19 @@ class Collection extends Rdf implements CollectionInterface {
     return [
       'link_only_first' => (bool) $meta_entity->get('glossary_link_only_first')->value,
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function doGetGroupContentIds(): array {
+    $ids = ['node' => $this->getNodeGroupContent()];
+    $solutions = $this->getSolutions();
+    $ids = NestedArray::mergeDeep($ids, ['rdf_entity' => array_keys($solutions)]);
+    foreach ($solutions as $solution) {
+      $ids = NestedArray::mergeDeep($ids, $solution->getGroupContentIds());
+    }
+    return $ids;
   }
 
 }
