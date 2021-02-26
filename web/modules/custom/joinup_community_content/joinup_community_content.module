@@ -292,3 +292,38 @@ function joinup_community_content_preprocess_links__comment(array &$variables): 
     unset($variables['links']['comment-forbidden']);
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_community_content_form_node_revision_revert_confirm_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $entity = $form_state->getBuildInfo()['args'][0];
+  if (!($entity instanceof CommunityContentInterface)) {
+    return;
+  }
+
+  $current_user = \Drupal::getContainer()->get('current_user');
+  if ($current_user->hasPermission('create published revisions')) {
+    return;
+  }
+
+  $workflow_helper = \Drupal::getContainer()->get('joinup_workflow.workflow_helper');
+  if ($workflow_helper->hasOgPermission('create published revisions', $entity->getGroup(), $current_user)) {
+    return;
+  }
+
+  array_unshift($form['#submit'], 'joinup_community_content_form_node_revision_revert_confirm_submit');
+}
+
+/**
+ * Sets the revision in proposed state in case of a pre-moderated group.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state instance.
+ */
+function joinup_community_content_form_node_revision_revert_confirm_submit(array $form, FormStateInterface $form_state) {
+  $entity = $form_state->getBuildInfo()['args'][0];
+  $entity->set('field_state', 'proposed');
+}
