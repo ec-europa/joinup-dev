@@ -1,3 +1,6 @@
 view own content revisions:
   title: 'View own content revisions'
   description: 'Access the revisions overview and view page for community content the user is the author of.'
+create published revisions:
+  title: 'Create published revisions'
+  description: 'When reverting a revision, a user without this permission will have the revision set to proposed state.'

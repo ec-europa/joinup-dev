@@ -26,6 +26,7 @@ permissions:
   - 'create paragraph content accordion'
   - 'create paragraph content accordion_item'
   - 'create paragraph content simple_paragraph'
+  - 'create published revisions'
   - 'delete any asset_distribution rdf_entity'
   - 'delete any custom_page content'
   - 'delete any discussion content'

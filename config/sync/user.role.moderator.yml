@@ -48,6 +48,7 @@ permissions:
   - 'create paragraph content iframe'
   - 'create paragraph content json_map'
   - 'create paragraph content simple_paragraph'
+  - 'create published revisions'
   - 'create rdf entity news'
   - 'create solution releases'
   - 'delete any document content'
