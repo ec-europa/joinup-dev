@@ -83,4 +83,11 @@ class AssetRelease extends Rdf implements AssetReleaseInterface {
     return $field->first()->value;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getDistributionIds(): array {
+    return $this->getReferencedEntityIds('field_isr_distribution')['rdf_entity'] ?? [];
+  }
+
 }
