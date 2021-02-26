@@ -111,7 +111,7 @@ class SubscribersReportController extends ControllerBase {
     $query = <<<SQL
 SELECT m.entity_id, COUNT(DISTINCT(b.entity_id)) as subscribers
 FROM {og_membership} m
-LEFT JOIN {og_membership__subscription_bundles} b ON m.id = b.entity_id
+INNER JOIN {og_membership__subscription_bundles} b ON m.id = b.entity_id
 $where_clause
 GROUP BY m.entity_id;
 SQL;
@@ -130,7 +130,7 @@ SQL;
     $query = <<<SQL
 SELECT m.entity_id, COUNT(*) as count, b.subscription_bundles_bundle as bundle
 FROM {og_membership} m
-LEFT JOIN {og_membership__subscription_bundles} b ON m.id = b.entity_id
+INNER JOIN {og_membership__subscription_bundles} b ON m.id = b.entity_id
 $where_clause
 GROUP BY m.entity_id, b.subscription_bundles_bundle;
 SQL;
@@ -171,11 +171,12 @@ SQL;
     $info = [];
 
     foreach (JoinupGroupHelper::GROUP_BUNDLES as $bundle) {
+      $rdf_type = $bundle === 'collection' ? 'http://www.w3.org/ns/dcat#Catalog' : 'http://www.w3.org/ns/dcat#Dataset';
       $query = <<<SPARQL
 SELECT ?entity_id ?label
 FROM <http://joinup.eu/$bundle/published>
 WHERE {
-  ?entity_id a <http://www.w3.org/ns/dcat#Catalog> .
+  ?entity_id a <$rdf_type> .
   ?entity_id <http://purl.org/dc/terms/title> ?label .
 }
 ORDER BY ASC(?label)
