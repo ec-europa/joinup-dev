@@ -87,6 +87,21 @@ class Solution extends Rdf implements SolutionInterface {
   /**
    * {@inheritdoc}
    */
+  public function getReleaseIds(): array {
+    return $this->getReferencedEntityIds('field_is_has_version')['rdf_entity'] ?? [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getReleases(): array {
+    return $this->entityTypeManager()->getStorage('rdf_entity')
+      ->loadMultiple($this->getReleaseIds());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getDistributionIds(): array {
     return $this->getReferencedEntityIds('field_is_distribution')['rdf_entity'] ?? [];
   }

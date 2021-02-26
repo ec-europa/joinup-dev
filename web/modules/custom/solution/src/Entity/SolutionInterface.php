@@ -20,6 +20,22 @@ use Drupal\rdf_entity\RdfInterface;
 interface SolutionInterface extends RdfInterface, CollectionContentInterface, EntityPublicationTimeInterface, EntityWorkflowStateInterface, FeaturedContentInterface, PinnableGroupContentInterface, GroupInterface, DistributionsParentInterface {
 
   /**
+   * Returns teh child releases.
+   *
+   * @return \Drupal\asset_release\Entity\AssetReleaseInterface[]
+   *   An array of child releases, keyed by their ID.
+   */
+  public function getReleases(): array;
+
+  /**
+   * Returns a list of child release IDs.
+   *
+   * @return string[]
+   *   A list of release IDs.
+   */
+  public function getReleaseIds(): array;
+
+  /**
    * Returns the latest release ID of this solution, if any.
    *
    * @return string|null
