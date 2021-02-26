@@ -116,4 +116,15 @@ interface GroupInterface extends ContentEntityInterface, LogoInterface {
    */
   public function hasGroupPermission(int $uid, string $permission): bool;
 
+  /**
+   * Returns whether the group is moderated.
+   *
+   * Community content of moderated groups are going through the pre-moderated
+   * workflow.
+   *
+   * @return bool
+   *   Whether the group is moderated.
+   */
+  public function isModerated(): bool;
+
 }
