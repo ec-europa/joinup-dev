@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature:
   As a user of the website
   In order to be able to manage the history of my content
