@@ -302,6 +302,10 @@ function joinup_community_content_form_node_revision_revert_confirm_alter(&$form
     return;
   }
 
+  if (!$entity->getGroup()->isModerated()) {
+    return;
+  }
+
   $current_user = \Drupal::getContainer()->get('current_user');
   if ($current_user->hasPermission('create published revisions')) {
     return;
