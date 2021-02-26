@@ -19,24 +19,24 @@ interface CollectionInterface extends RdfInterface, EntityPublicationTimeInterfa
   /**
    * Returns the solutions that are affiliated with this collection.
    *
-   * @param bool $published
-   *   When TRUE, only published solutions will be returned. Defaults to TRUE.
+   * @param bool $only_published
+   *   (optional) Whether to return only published solutions. Defaults to FALSE.
    *
    * @return \Drupal\solution\Entity\SolutionInterface[]
    *   The solutions.
    */
-  public function getSolutions(bool $published = TRUE): array;
+  public function getSolutions(bool $only_published = FALSE): array;
 
   /**
    * Returns the IDs of the solutions that are affiliated with this collection.
    *
-   * @param bool $published
-   *   When TRUE, only published solutions will be returned. Defaults to TRUE.
+   * @param bool $only_published
+   *   (optional) Whether to return only published solutions. Defaults to FALSE.
    *
    * @return string[]
    *   The solutions.
    */
-  public function getSolutionIds(bool $published = TRUE): array;
+  public function getSolutionIds(bool $only_published = FALSE): array;
 
   /**
    * Returns the collection glossary settings.

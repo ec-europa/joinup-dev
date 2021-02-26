@@ -44,8 +44,8 @@ class Collection extends Rdf implements CollectionInterface {
   /**
    * {@inheritdoc}
    */
-  public function getSolutions(bool $published = TRUE): array {
-    $ids = $this->getSolutionIds($published);
+  public function getSolutions(bool $only_published = FALSE): array {
+    $ids = $this->getSolutionIds($only_published);
     if (empty($ids)) {
       return $ids;
     }
@@ -58,10 +58,10 @@ class Collection extends Rdf implements CollectionInterface {
   /**
    * {@inheritdoc}
    */
-  public function getSolutionIds(bool $published = TRUE): array {
+  public function getSolutionIds(bool $only_published = FALSE): array {
     $ids = $this->getReferencedEntityIds('field_ar_affiliates')['rdf_entity'] ?? [];
 
-    if ($ids && $published) {
+    if ($ids && $only_published) {
       // Published solutions are stored in the 'default' graph.
       $ids = $this->entityTypeManager()
         ->getStorage('rdf_entity')
