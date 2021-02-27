@@ -31,6 +31,14 @@ function joinup_core_theme($existing, $type, $theme, $path) {
         'front' => [],
       ],
     ],
+    'download_link' => [
+      'variables' => [
+        'attributes' => [],
+        'extension' => '',
+        'url' => NULL,
+        'title' => '',
+      ],
+    ],
   ];
 }
 

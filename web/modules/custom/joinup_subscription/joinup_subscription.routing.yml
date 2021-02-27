@@ -14,6 +14,14 @@ joinup_subscription.subscribers_report:
   requirements:
     _permission: 'access joinup reports'
 
+joinup_subscription.subscribers_report_download:
+  path: '/admin/reporting/subscribers-report/download'
+  defaults:
+    _title: 'Download subscribers report'
+    _controller: '\Drupal\joinup_subscription\Controller\SubscribersReportController::download'
+  requirements:
+    _permission: 'download subscribers report'
+
 joinup_subscription.subscriptions:
   path: '/user/{user}/subscriptions'
   defaults:

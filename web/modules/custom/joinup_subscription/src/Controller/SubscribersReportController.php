@@ -8,13 +8,16 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Url;
 use Drupal\Core\Utility\TableSort;
+use Drupal\csv_serialization\Encoder\CsvEncoder;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Generates a report detailing the number of subscribers in a(ll) group(s).
@@ -130,7 +133,13 @@ class SubscribersReportController extends ControllerBase {
     ];
 
     $data = $this->getSubscriberData();
-    $this->sortData($data, $headers);
+
+    // Sort the table according to the options passed in the query arguments.
+    // @see \Drupal\Core\Utility\TableSort
+    $request = $this->requestStack->getCurrentRequest();
+    $sort = TableSort::getSort($headers, $request);
+    $order_by = TableSort::getOrder($headers, $request)['sql'];
+    $this->sortData($data, $sort, $order_by);
 
     return [
       'table' => [
@@ -138,7 +147,34 @@ class SubscribersReportController extends ControllerBase {
         '#header' => $headers,
         '#rows' => $data,
       ],
+      'download' => [
+        '#theme' => 'download_link',
+        '#url' => Url::fromRoute('joinup_subscription.subscribers_report_download'),
+        '#attributes' => ['class' => ['button', 'button--primary']],
+        '#title' => $this->t('Download CSV'),
+        '#access' => $this->currentUser()->hasPermission('download subscribers report'),
+      ],
     ];
+  }
+
+  /**
+   * Serves the subscriber report as a CSV file download.
+   *
+   * @return \Symfony\Component\HttpFoundation\Response
+   *   The CSV file as a download.
+   */
+  public function download(): Response {
+    $data = $this->getSubscriberData();
+    $this->sortData($data);
+
+    $csv = (new CsvEncoder())->encode($data, 'csv');
+    $filename = 'subscribers-report-' . date('Y-m-d') . '.csv';
+
+    $response = new Response($csv);
+    $response->headers->set('Content-Disposition', "attachment; filename=\"$filename\"");
+    $response->headers->set('Content-Type', 'text/csv');
+
+    return $response;
   }
 
   /**
@@ -246,18 +282,13 @@ SPARQL;
    *
    * @param array $data
    *   The data to sort.
-   * @param array $headers
-   *   The table headers containing the sorting configuration.
-   *
-   * @see \Drupal\Core\Utility\TableSort
+   * @param string|null $sort
+   *   The sorting order, either 'asc' or 'desc'. Defaults to 'asc'.
+   * @param string|null $order_by
+   *   The column to sort. Defaults to 'label'.
    */
-  protected function sortData(array &$data, array $headers): void {
-    // Sort the table.
-    $request = $this->requestStack->getCurrentRequest();
-    $sort = TableSort::getSort($headers, $request);
-    $order_by = TableSort::getOrder($headers, $request)['sql'];
-
-    usort($data, function(array $a, array $b) use ($sort, $order_by): int {
+  protected function sortData(array &$data, ?string $sort = 'asc', ?string $order_by = 'label'): void {
+    usort($data, function (array $a, array $b) use ($sort, $order_by): int {
       $result = $a[$order_by] <=> $b[$order_by];
       return $sort === 'asc' ? $result : -$result;
     });
