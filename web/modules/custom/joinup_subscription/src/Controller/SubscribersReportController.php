@@ -8,11 +8,13 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Utility\TableSort;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Generates a report detailing the number of subscribers in a(ll) group(s).
@@ -41,6 +43,13 @@ class SubscribersReportController extends ControllerBase {
   protected $sparqlConnection;
 
   /**
+   * The Symfony request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
+
+  /**
    * Constructs a new SubscribersReportController.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
@@ -49,11 +58,14 @@ class SubscribersReportController extends ControllerBase {
    *   The SQL connection.
    * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparqlConnection
    *   The SPARQL connection.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+   *   The request stack.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, Connection $sqlConnection, ConnectionInterface $sparqlConnection) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, Connection $sqlConnection, ConnectionInterface $sparqlConnection, RequestStack $requestStack) {
     $this->entityTypeManager = $entityTypeManager;
     $this->sqlConnection = $sqlConnection;
     $this->sparqlConnection = $sparqlConnection;
+    $this->requestStack = $requestStack;
   }
 
   /**
@@ -63,7 +75,8 @@ class SubscribersReportController extends ControllerBase {
     return new static(
       $container->get('entity_type.manager'),
       $container->get('database'),
-      $container->get('sparql.endpoint')
+      $container->get('sparql.endpoint'),
+      $container->get('request_stack')
     );
   }
 
@@ -74,20 +87,56 @@ class SubscribersReportController extends ControllerBase {
    *   The render array.
    */
   public function build(): array {
+    $headers = [
+      [
+        'data' => $this->t('Group'),
+        'field' => 'label',
+        'sort' => 'asc',
+      ],
+      [
+        'data' => $this->t('Type'),
+        'field' => 'bundle',
+      ],
+      [
+        'data' => $this->t('Subscribers'),
+        'field' => 'subscribers',
+        'initial_click_sort' => 'desc',
+      ],
+      [
+        'data' => $this->t('Solution'),
+        'field' => 'solution',
+        'initial_click_sort' => 'desc',
+      ],
+      [
+        'data' => $this->t('Discussion'),
+        'field' => 'discussion',
+        'initial_click_sort' => 'desc',
+      ],
+      [
+        'data' => $this->t('Document'),
+        'field' => 'document',
+        'initial_click_sort' => 'desc',
+      ],
+      [
+        'data' => $this->t('Event'),
+        'field' => 'event',
+        'initial_click_sort' => 'desc',
+      ],
+      [
+        'data' => $this->t('News'),
+        'field' => 'news',
+        'initial_click_sort' => 'desc',
+      ],
+    ];
+
+    $data = $this->getSubscriberData();
+    $this->sortData($data, $headers);
+
     return [
       'table' => [
         '#type' => 'table',
-        '#header' => [
-          $this->t('Group'),
-          $this->t('Type'),
-          $this->t('Subscribers'),
-          $this->t('Solution'),
-          $this->t('Discussion'),
-          $this->t('Document'),
-          $this->t('Event'),
-          $this->t('News'),
-        ],
-        '#rows' => $this->getSubscriberData(),
+        '#header' => $headers,
+        '#rows' => $data,
       ],
     ];
   }
@@ -190,6 +239,28 @@ SPARQL;
       }
     }
     return $info;
+  }
+
+  /**
+   * Sorts the given data using the query arguments on the current request.
+   *
+   * @param array $data
+   *   The data to sort.
+   * @param array $headers
+   *   The table headers containing the sorting configuration.
+   *
+   * @see \Drupal\Core\Utility\TableSort
+   */
+  protected function sortData(array &$data, array $headers): void {
+    // Sort the table.
+    $request = $this->requestStack->getCurrentRequest();
+    $sort = TableSort::getSort($headers, $request);
+    $order_by = TableSort::getOrder($headers, $request)['sql'];
+
+    usort($data, function(array $a, array $b) use ($sort, $order_by): int {
+      $result = $a[$order_by] <=> $b[$order_by];
+      return $sort === 'asc' ? $result : -$result;
+    });
   }
 
 }
