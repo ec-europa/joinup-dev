@@ -37,13 +37,14 @@ Feature: Revision permissions support in OG
       | Open-ended or open-ring spanners?    | Positive and negative aspects.                     |
       | Orbital sander tearing off too fast? | Any tricks to improve lifespan of the tool itself? |
 
-    # Collection members cannot access the list of revisions, even if they are the authors.
+    # Authors can always access the list of revisions.
     When I am logged in as "Ainslee Hext"
     And I go to the "Open-ended or open-ring spanners?" discussion
+    Then I should see the link "Revisions"
     # Same goes for solution members.
     When I am logged in as "Erik Quick"
     And I go to the "Orbital sander tearing off too fast?" discussion
-    Then I should not see the link "Revisions"
+    Then I should see the link "Revisions"
 
     # Verify that collection facilitator has the permission to see revisions.
     When I am logged in as a facilitator of the "Mechanics 101" collection
