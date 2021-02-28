@@ -40,7 +40,6 @@ Feature: Revision permissions support in OG
     # Collection members cannot access the list of revisions, even if they are the authors.
     When I am logged in as "Ainslee Hext"
     And I go to the "Open-ended or open-ring spanners?" discussion
-    Then I should not see the link "Revisions"
     # Same goes for solution members.
     When I am logged in as "Erik Quick"
     And I go to the "Orbital sander tearing off too fast?" discussion
