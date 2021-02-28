@@ -77,7 +77,7 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
       $global_access = AccessResult::allowedIf($node && $this->checkAccess($node, $account, $operation));
     }
 
-    return $global_access->cachePerPermissions()->addCacheableDependency($node)->inheritCacheability($og_access);
+    return $global_access->cachePerUser();
   }
 
   /**

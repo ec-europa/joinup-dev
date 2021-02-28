@@ -16,7 +16,6 @@ permissions:
   - 'create contact_information rdf entity'
   - 'create document content'
   - 'create owner rdf entity'
-  - 'delete all revisions'
   - 'delete own comments'
   - 'delete own document content'
   - 'edit own comments'

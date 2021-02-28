@@ -109,7 +109,7 @@ class Collection extends Rdf implements CollectionInterface {
    * {@inheritdoc}
    */
   public function isModerated(): bool {
-    return $this->get('field_ar_moderation')->value === CommunityContentWorkflowAccessControlHandler::PRE_MODERATION;
+    return $this->get('field_ar_moderation')->value == CommunityContentWorkflowAccessControlHandler::PRE_MODERATION;
   }
 
 }

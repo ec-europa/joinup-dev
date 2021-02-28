@@ -56,7 +56,7 @@ Feature:
     When I click "Revisions" in the "Entity actions" region
     Then I should see the button "Compare"
     And I should see the link "Revert"
-    And I should see the link "Delete"
+    And I should not see the link "Delete"
 
     Given I click "Revert"
     And I press "Revert"

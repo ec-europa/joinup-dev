@@ -142,7 +142,7 @@ class Solution extends Rdf implements SolutionInterface {
    * {@inheritdoc}
    */
   public function isModerated(): bool {
-    return $this->get('field_is_moderation')->value === CommunityContentWorkflowAccessControlHandler::PRE_MODERATION;
+    return $this->get('field_is_moderation')->value == CommunityContentWorkflowAccessControlHandler::PRE_MODERATION;
   }
 
 }
