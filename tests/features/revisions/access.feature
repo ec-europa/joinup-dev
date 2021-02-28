@@ -77,3 +77,43 @@ Feature:
       | solution   | discussion   | no         | Goodbi world  |
       | solution   | news         | yes        | Goodbye world |
       | solution   | event        | no         | Goodbi world  |
+
+  Scenario Outline: Users with author role can directly publish a revision in a moderated group.
+    Given <group type>:
+      | title       | Hellow world                              |
+      | description | Because I do not know how to spell Hello. |
+      | moderation  | yes                                       |
+      | state       | validated                                 |
+    And users:
+      | Username      | E-mail                   |
+      | Clumsy Bounce | clumsy.ounce@example.com |
+    And <content type> content:
+      | title        | description                            | state     | author        | <group type> |
+      | Goodbi world | Because I cannot spell Goodbye either. | validated | Clumsy Bounce | Hellow world |
+    And <group type> user membership:
+      | <group type> | user          | roles  |
+      | Hellow world | Clumsy Bounce | author |
+    And <content type> revisions:
+      | current title | title         |
+      | Goodbi world  | Goodbye world |
+
+    When I am logged in as "Clumsy Bounce"
+    And I visit the "Goodbye world" <content type>
+    When I click "Revisions" in the "Entity actions" region
+    Given I click "Revert"
+    And I press "Revert"
+    # Having the title "Goodbi world" means that the reverted revision is published.
+    Then I should see the heading "Revisions for Goodbi world"
+    Given I go to the "Goodbi world" <content type>
+    Then I should see the heading "Goodbi world"
+
+    Examples:
+      | group type | content type |
+      | collection | discussion   |
+      | collection | document     |
+      | collection | event        |
+      | collection | news         |
+      | solution   | document     |
+      | solution   | discussion   |
+      | solution   | news         |
+      | solution   | event        |
