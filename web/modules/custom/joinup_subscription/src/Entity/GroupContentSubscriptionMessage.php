@@ -59,7 +59,7 @@ class GroupContentSubscriptionMessage extends Message implements GroupContentSub
       return $this->getSubscribedGroupContent()->getGroup();
     }
     catch (MissingGroupException | OrphanedGroupContentSubscriptionMessageException $e) {
-      throw new OrphanedGroupContentSubscriptionMessageException('Cannot retrieve group from orphaned group content subscription message.', NULL, $e);
+      throw new OrphanedGroupContentSubscriptionMessageException('Cannot retrieve group from orphaned group content subscription message.', 0, $e);
     }
   }
 
