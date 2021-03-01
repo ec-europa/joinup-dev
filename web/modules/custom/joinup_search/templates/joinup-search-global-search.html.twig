@@ -14,7 +14,7 @@
         <span class="search-bar__icon icon icon--search"></span>
     </label>
 
-    <form action="{{ path("view.search.page_1") }}" class="search-bar__input-container mdl-textfield__expandable-holder">
+    <form action="{{ path("view.search.search") }}" class="search-bar__input-container mdl-textfield__expandable-holder">
         {% for id, filter in filters %}
             <input type="hidden" class="mdl-chipfield__input" name="f[]" value="{{ id }}" data-description="{{ filter }}">
         {% endfor %}

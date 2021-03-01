@@ -1,11 +1,13 @@
 uuid: 26ad8d49-79c5-469e-ae7f-7421eb61e649
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - views.view.search
 _core:
   default_config_hash: ysi99P4v5ouxkoPt_QshncQLomRjU64U7Iy-CD3_mIM
-id: search_api_views__search__page_1
-name: 'search_api_views:search:page_1'
+id: search_api_views__search__search
+name: 'search_api_views:search:search'
 filter_key: null
 url_processor: query_string
 breadcrumb: {  }

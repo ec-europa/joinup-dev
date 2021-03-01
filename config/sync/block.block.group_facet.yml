@@ -12,7 +12,7 @@ dependencies:
 id: group_facet
 theme: joinup_theme
 region: sidebar_left
-weight: -17
+weight: -16
 provider: null
 plugin: 'facet_block:group'
 settings:
@@ -24,6 +24,6 @@ visibility:
   request_route:
     id: request_route
     routes:
-      - view.search.page_1
+      - view.search.search
     negate: false
     context_mapping: {  }
