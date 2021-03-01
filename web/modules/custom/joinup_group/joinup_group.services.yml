@@ -34,7 +34,7 @@ services:
     arguments: ['@current_user', '@tempstore.private', '@messenger']
     tags:
       - { name: event_subscriber }
-  joinup_group.queue:
+  joinup_group.group_aware_queue:
     class: Drupal\joinup_group\Queue\JoinupGroupQueueFactory
     parent: queue.database
   joinup_group.url_alias_updater:

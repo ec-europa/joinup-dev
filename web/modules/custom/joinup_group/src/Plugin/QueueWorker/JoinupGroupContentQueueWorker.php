@@ -6,22 +6,22 @@ namespace Drupal\joinup_group\Plugin\QueueWorker;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Queue\QueueWorkerBase;
+use Drupal\pathauto\PathautoGeneratorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a worker to consume the 'joinup_group:group_update' queue.
+ * Provides a worker to consume the 'joinup_group:group_content_update' queue.
  *
  * @QueueWorker(
- *   id = "joinup_group:group_update",
- *   title = @Translation("Push data about entities to be updated in 'joinup_group:group_content_update' queue"),
+ *   id = "joinup_group:group_content_update",
+ *   title = @Translation("Recreate the group content URL aliases"),
  *   cron = {
  *     "time" = 10,
  *   },
  * ),
  */
-class JoinupGroupQueueWorker extends QueueWorkerBase implements ContainerFactoryPluginInterface {
+class JoinupGroupContentQueueWorker extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 
   /**
    * The entity type manager service.
@@ -31,11 +31,11 @@ class JoinupGroupQueueWorker extends QueueWorkerBase implements ContainerFactory
   protected $entityTypeManager;
 
   /**
-   * The queue factory service.
+   * The pathauto alias generator service.
    *
-   * @var \Drupal\Core\Queue\QueueFactory
+   * @var \Drupal\pathauto\PathautoGeneratorInterface
    */
-  protected $queueFactory;
+  protected $aliasGenerator;
 
   /**
    * Constructs a new plugin instance.
@@ -48,13 +48,13 @@ class JoinupGroupQueueWorker extends QueueWorkerBase implements ContainerFactory
    *   The plugin implementation definition.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
-   * @param \Drupal\Core\Queue\QueueFactory $queue_factory
-   *   The queue factory service.
+   * @param \Drupal\pathauto\PathautoGeneratorInterface $alias_generator
+   *   The pathauto alias generator service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, QueueFactory $queue_factory) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, PathautoGeneratorInterface $alias_generator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
-    $this->queueFactory = $queue_factory;
+    $this->aliasGenerator = $alias_generator;
   }
 
   /**
@@ -66,7 +66,7 @@ class JoinupGroupQueueWorker extends QueueWorkerBase implements ContainerFactory
       $plugin_id,
       $plugin_definition,
       $container->get('entity_type.manager'),
-      $container->get('queue')
+      $container->get('pathauto.generator')
     );
   }
 
@@ -74,28 +74,17 @@ class JoinupGroupQueueWorker extends QueueWorkerBase implements ContainerFactory
    * {@inheritdoc}
    */
   public function processItem($data): void {
-    $group = $this->entityTypeManager
-      ->getStorage('rdf_entity')
+    $entity = $this->entityTypeManager
+      ->getStorage($data['entity_type_id'])
       ->load($data['entity_id']);
 
-    if (!$group) {
-      // The group might have been deleted in the meantime.
+    if (!$entity) {
+      // The entity might have been deleted in the meantime.
       return;
     }
 
-    /** @var \Drupal\joinup_group\Queue\JoinupGroupQueue $group_content_queue */
-    $group_content_queue = $this->queueFactory->get('joinup_group:group_content_update');
-
-    // Push group content entities into joinup_group:group_content_update queue.
-    foreach ($group->getGroupContentIds() as $entity_type_id => $entity_ids) {
-      foreach ($entity_ids as $entity_id) {
-        $group_content_queue->createItem([
-          'group_id' => $data['entity_id'],
-          'entity_type_id' => $entity_type_id,
-          'entity_id' => $entity_id,
-        ]);
-      }
-    }
+    // Regenerate the group content alias.
+    $this->aliasGenerator->updateEntityAlias($entity, 'update');
   }
 
 }

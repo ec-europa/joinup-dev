@@ -9,11 +9,11 @@ use Drupal\Core\Queue\DatabaseQueue;
 /**
  * Extends the core's database queue.
  *
- * We need a way to delete 'joinup_group_queue' queue items created on behalf of
- * a certain group. This queue class is very similar to parent DatabaseQueue,
- * except that provides an additional table column where the group ID hash is
- * stored. A new method, self::deleteGroupItems(), knows to delete the queue
- * items created by a specific group.
+ * We need a way to delete queue items created on behalf of a certain group.
+ * This queue class is very similar to parent DatabaseQueue, except that
+ * provides an additional table column where the group ID hash is stored. A new
+ * method, self::deleteGroupItems(), knows to delete the queue items created by
+ * a specific group.
  *
  * @see \Drupal\joinup_group\JoinupGroupContentUrlAliasUpdater::queueGroupContent()
  */
@@ -42,10 +42,10 @@ class JoinupGroupQueue extends DatabaseQueue {
    * {@inheritdoc}
    */
   protected function doCreateItem($data) {
-    // Almost the same code as parent, except that it extracts the group hash
-    // from data and stores it in a separate table column.
-    $group_hash = $data['group_hash'];
-    unset($data['group_hash']);
+    // Almost the same code as parent, except that it extracts the group ID from
+    // data and stores it in a separate table column, as MD5 hash.
+    $group_hash = md5($data['group_id']);
+    unset($data['group_id']);
     $query = $this->connection->insert(static::TABLE_NAME)
       ->fields([
         'name' => $this->name,
@@ -62,17 +62,17 @@ class JoinupGroupQueue extends DatabaseQueue {
   /**
    * Deletes queue items belonging to certain group.
    *
-   * @param string $group_hash
-   *   The MD5 of the group ID.
+   * @param string $group_id
+   *   The group ID.
    *
    * @throws \Exception
    *   If the operation cannot be completed.
    */
-  public function deleteGroupItems(string $group_hash): void {
+  public function deleteGroupItems(string $group_id): void {
     try {
       $this->connection->delete(static::TABLE_NAME)
         ->condition('name', $this->name)
-        ->condition('group_hash', $group_hash)
+        ->condition('group_hash', md5($group_id))
         ->execute();
     }
     catch (\Exception $e) {

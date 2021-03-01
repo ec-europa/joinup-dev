@@ -236,4 +236,5 @@ drupal:
       Error logging: |
         $config['system.logging']['error_level'] = 'verbose';
       Custom queue services: |
-        $settings['queue_service_joinup_group_queue'] = 'joinup_group.queue';
+        $settings['queue_service_joinup_group:group_update'] = 'joinup_group.group_aware_queue';
+        $settings['queue_service_joinup_group:group_content_update'] = 'joinup_group.group_aware_queue';
