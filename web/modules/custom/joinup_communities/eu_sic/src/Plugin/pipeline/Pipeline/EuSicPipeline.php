@@ -18,6 +18,7 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *     "add_joinup_vocabularies",
  *     "adms_validation",
  *     "analyze_incoming_entities",
+ *     "spdx_to_joinup_licence",
  *     "user_selection_filter",
  *     "3_way_merge",
  *     "broken_references",
