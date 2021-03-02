@@ -59,6 +59,7 @@ Feature: User authentication
       | node/add/event                                      |
       | node/add/glossary                                   |
       | node/add/news                                       |
+      | outdated-content-threshold                          |
       | propose/collection                                  |
       | propose/solution                                    |
       | rdf-graph                                           |
@@ -137,6 +138,7 @@ Feature: User authentication
       | node/add/event                                      |
       | node/add/glossary                                   |
       | node/add/news                                       |
+      | outdated-content-threshold                          |
       | propose/solution                                    |
       | rdf-graph                                           |
       | rdf-graph/add                                       |
@@ -187,6 +189,7 @@ Feature: User authentication
       | media/add/news_logo                         |
       | media/add/solution_banner                   |
       | media/add/solution_logo                     |
+      | outdated-content-threshold                  |
       | propose/collection                          |
 
   Scenario Outline: Moderator cannot access restricted pages
