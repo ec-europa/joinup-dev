@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group\Entity;
 
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_bundle_class\LogoInterface;
 use Drupal\og\OgMembershipInterface;
 
@@ -18,8 +20,9 @@ interface GroupInterface extends ContentEntityInterface, LogoInterface {
   /**
    * Returns the given user's membership for this group entity.
    *
-   * @param int $uid
-   *   The ID of the user for which to return the membership.
+   * @param int|null $uid
+   *   The ID of the user for which to return the membership. If omitted the
+   *   membership of the current user will be returned.
    * @param array $states
    *   (optional) Array with the states to return. Defaults to only returning
    *   active memberships. In order to retrieve all memberships regardless of
@@ -34,7 +37,28 @@ interface GroupInterface extends ContentEntityInterface, LogoInterface {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    *   Thrown when the OG module is not enabled.
    */
-  public function getMembership(int $uid, array $states = [OgMembershipInterface::STATE_ACTIVE]): ?OgMembershipInterface;
+  public function getMembership(?int $uid = NULL, array $states = [OgMembershipInterface::STATE_ACTIVE]): ?OgMembershipInterface;
+
+  /**
+   * Determines whether a user has a group permission in the group.
+   *
+   * The following conditions will result in a positive result:
+   * - The user is the global super user (UID 1).
+   * - The user has a role in the group that specifically grants the permission.
+   * - The user is not a member of the group, and the permission has been
+   *   granted to non-members.
+   *
+   * @param string $permission
+   *   The name of the OG permission being checked. This includes both group
+   *   level permissions such as 'subscribe without approval' and group content
+   *   entity operation permissions such as 'edit own article content'.
+   * @param \Drupal\Core\Session\AccountInterface|null $user
+   *   (optional) The user to check. Defaults to the current user.
+   *
+   * @return \Drupal\Core\Access\AccessResultInterface
+   *   An access result object.
+   */
+  public function getGroupAccess(string $permission, AccountInterface $user = NULL): AccessResultInterface;
 
   /**
    * Returns the group owners.
@@ -103,7 +127,7 @@ interface GroupInterface extends ContentEntityInterface, LogoInterface {
    * Checks if the user has at least one role with the given OG permission.
    *
    * This is a simple wrapper around OgMembershipInterface::hasPermission() and
-   * should not be relied on for access checks. Use OgAccess to check access.
+   * should not be relied on for access checks. Use ::getGroupAccess() instead.
    *
    * @param int $uid
    *   The ID of the user to check.
