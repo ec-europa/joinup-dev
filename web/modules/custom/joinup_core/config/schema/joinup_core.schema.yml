@@ -1,3 +1,8 @@
+# Normally this kind of data should be stored in each bundle config entity, as
+# third-party settings. As the active config store is locked in production, we
+# don't want the bundle config entities to be editable, so we keep these
+# settings in a centralized config object which is editable.
+# See joinup_core_config_readonly_whitelist_patterns().
 joinup_core.outdated_content_threshold:
   type: sequence
   label: 'Entity types'
