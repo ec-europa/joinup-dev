@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_subscription\Controller;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
@@ -141,6 +142,16 @@ class SubscribersReportController extends ControllerBase {
     $order_by = TableSort::getOrder($headers, $request)['sql'];
     $this->sortData($data, $sort, $order_by);
 
+    // Turn the group labels into links.
+    array_walk($data, function (array &$row): void {
+      $route_params = ['rdf_entity' => $row['entity_id']];
+      $row['label'] = new FormattableMarkup('<a href=":uri">@label</a>', [
+        ':uri' => (new Url('entity.rdf_entity.canonical', $route_params))->toString(),
+        '@label' => $row['label'],
+      ]);
+      unset($row['entity_id']);
+    });
+
     return [
       'table' => [
         '#type' => 'table',
@@ -165,6 +176,12 @@ class SubscribersReportController extends ControllerBase {
    */
   public function download(): Response {
     $data = $this->getSubscriberData();
+
+    // Strip out the entity ID, this is not desired in the exported data.
+    array_walk($data, function (array &$row): void {
+      unset($row['entity_id']);
+    });
+
     $this->sortData($data);
 
     $csv = (new CsvEncoder())->encode($data, 'csv');
@@ -235,11 +252,6 @@ SQL;
         }
       }
     }
-
-    // Strip out the entity ID, so it will not be shown in the table.
-    array_walk($data, function (array &$row): void {
-      unset($row['entity_id']);
-    });
 
     return $data;
   }
