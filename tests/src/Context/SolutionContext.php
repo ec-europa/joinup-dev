@@ -136,7 +136,7 @@ class SolutionContext extends RawDrupalContext {
    * | Bar solution | This is a bar solution | validated                                         |                 | text.pdf      | no     | 28-01-1995 12:06 | yes              | no       | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
    * @codingStandardsIgnoreEnd
    *
-   * Fields title, description, state and content creation are mandatory.
+   * Fields title and state are mandatory.
    *
    * @param \Behat\Gherkin\Node\TableNode $solution_table
    *   The solution data.
