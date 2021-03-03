@@ -58,7 +58,7 @@ interface GroupInterface extends ContentEntityInterface, LogoInterface {
    * @return \Drupal\Core\Access\AccessResultInterface
    *   An access result object.
    */
-  public function getGroupAccess(string $permission, AccountInterface $user = NULL): AccessResultInterface;
+  public function getGroupAccess(string $permission, ?AccountInterface $user = NULL): AccessResultInterface;
 
   /**
    * Returns the group owners.

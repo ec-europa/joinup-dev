@@ -31,7 +31,7 @@ trait GroupTrait {
   /**
    * {@inheritdoc}
    */
-  public function getGroupAccess(string $permission, AccountInterface $user = NULL): AccessResultInterface {
+  public function getGroupAccess(string $permission, ?AccountInterface $user = NULL): AccessResultInterface {
     assert(is_subclass_of($this, ContentEntityBase::class), __TRAIT__ . ' is intended to be used in bundle classes for content entities.');
 
     /** @var \Drupal\og\OgAccessInterface $og_access */
