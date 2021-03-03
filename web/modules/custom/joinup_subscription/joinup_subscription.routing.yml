@@ -21,6 +21,7 @@ joinup_subscription.subscribers_report_download:
     _controller: '\Drupal\joinup_subscription\Controller\SubscribersReportController::download'
   requirements:
     _permission: 'download subscribers report'
+    _format: 'csv'
 
 joinup_subscription.subscriptions:
   path: '/user/{user}/subscriptions'
