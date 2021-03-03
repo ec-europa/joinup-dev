@@ -13,6 +13,7 @@ permissions:
   - 'access dashboard'
   - 'access distribution reports'
   - 'access draft community content'
+  - 'access group reports'
   - 'access joinup reports'
   - 'access messages overview'
   - 'access pipeline report'

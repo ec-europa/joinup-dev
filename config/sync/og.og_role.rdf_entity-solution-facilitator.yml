@@ -13,6 +13,7 @@ group_bundle: solution
 group_id: null
 permissions:
   - 'access content moderation overview'
+  - 'access group reports'
   - 'add user'
   - 'administer comments'
   - 'create asset_distribution rdf_entity'

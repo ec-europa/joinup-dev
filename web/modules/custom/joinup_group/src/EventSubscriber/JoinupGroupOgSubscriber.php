@@ -67,13 +67,18 @@ class JoinupGroupOgSubscriber implements EventSubscriberInterface {
    *   The OG permission event.
    */
   public function provideOgGroupPermissions(OgPermissionEventInterface $event): void {
-    $event->setPermission(
+    $event->setPermissions([
+      new GroupPermission([
+        'name' => 'access group reports',
+        'title' => $this->t('Access the group reports page.'),
+        'restrict access' => TRUE,
+      ]),
       new GroupPermission([
         'name' => 'administer shared entities',
         'title' => $this->t('Administer shared entities'),
         'restrict access' => TRUE,
-      ])
-    );
+      ]),
+    ]);
   }
 
   /**
