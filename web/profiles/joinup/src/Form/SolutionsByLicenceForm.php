@@ -99,8 +99,15 @@ class SolutionsByLicenceForm extends FormBase {
     ];
 
     $licence_id = $form_state->getValue('licence_option');
-    $results = $this->connection->query($this->getCountQuery($licence_id));
-    $total = reset($results)->total->getValue();
+
+    // Under some unknown circumstances the result returned can be a string with
+    // the value 'binding' instead of the expected count. This has been causing
+    // random test failures, and has also been observed during debugging on a
+    // development environment. It appears that calling ::getArrayCopy() works
+    // around this somehow and the problem can no longer be replicated.
+    $results = $this->connection->query($this->getCountQuery($licence_id))->getArrayCopy();
+    $result = reset($results);
+    $total = $result->total->getValue();
     $page = $this->pagerManager->createPager($total, self::ITEMS_PER_PAGE)->getCurrentPage();
     $offset = $page * self::ITEMS_PER_PAGE;
     $items = $this->connection->query($this->getQuery($offset, $licence_id));
