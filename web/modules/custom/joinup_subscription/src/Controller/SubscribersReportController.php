@@ -8,7 +8,6 @@ use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\TableSort;
 use Drupal\csv_serialization\Encoder\CsvEncoder;
@@ -24,13 +23,6 @@ use Symfony\Component\HttpFoundation\Response;
  * Generates a report detailing the number of subscribers in a(ll) group(s).
  */
 class SubscribersReportController extends ControllerBase {
-
-  /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
 
   /**
    * The SQL database connection.
@@ -56,8 +48,6 @@ class SubscribersReportController extends ControllerBase {
   /**
    * Constructs a new SubscribersReportController.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
    * @param \Drupal\Core\Database\Connection $sqlConnection
    *   The SQL connection.
    * @param \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $sparqlConnection
@@ -65,8 +55,7 @@ class SubscribersReportController extends ControllerBase {
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, Connection $sqlConnection, ConnectionInterface $sparqlConnection, RequestStack $requestStack) {
-    $this->entityTypeManager = $entityTypeManager;
+  public function __construct(Connection $sqlConnection, ConnectionInterface $sparqlConnection, RequestStack $requestStack) {
     $this->sqlConnection = $sqlConnection;
     $this->sparqlConnection = $sparqlConnection;
     $this->requestStack = $requestStack;
@@ -77,7 +66,6 @@ class SubscribersReportController extends ControllerBase {
    */
   public static function create(ContainerInterface $container): self {
     return new static(
-      $container->get('entity_type.manager'),
       $container->get('database'),
       $container->get('sparql.endpoint'),
       $container->get('request_stack')
