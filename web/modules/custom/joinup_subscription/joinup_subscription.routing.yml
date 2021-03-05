@@ -1,3 +1,19 @@
+joinup_subscription.group_subscribers_report:
+  path: '/rdf_entity/{rdf_entity}/reports/subscribers'
+  defaults:
+    _title: 'Subscribers report'
+    _controller: \Drupal\joinup_subscription\Controller\SubscribersReportController::groupReport
+  requirements:
+    _custom_access: Drupal\joinup_group\Controller\GroupReportsController::access
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+        bundle:
+          - collection
+          - solution
+    _og_entity_type_id: rdf_entity
+
 joinup_subscription.my_subscriptions:
   path: '/user/subscriptions'
   defaults:
@@ -10,7 +26,7 @@ joinup_subscription.subscribers_report:
   path: '/admin/reporting/subscribers-report'
   defaults:
     _title: 'Subscribers report'
-    _controller: '\Drupal\joinup_subscription\Controller\SubscribersReportController::build'
+    _controller: \Drupal\joinup_subscription\Controller\SubscribersReportController::fullReport
   requirements:
     _permission: 'access joinup reports'
 
@@ -18,7 +34,7 @@ joinup_subscription.subscribers_report_download:
   path: '/admin/reporting/subscribers-report/download'
   defaults:
     _title: 'Download subscribers report'
-    _controller: '\Drupal\joinup_subscription\Controller\SubscribersReportController::download'
+    _controller: \Drupal\joinup_subscription\Controller\SubscribersReportController::download
   requirements:
     _permission: 'download subscribers report'
     _format: 'csv'

@@ -73,12 +73,12 @@ class SubscribersReportController extends ControllerBase {
   }
 
   /**
-   * Returns a render array containing a table with subscriber data.
+   * Returns a table with subscriber data across all groups.
    *
    * @return array
-   *   The render array.
+   *   The table as a render array.
    */
-  public function build(): array {
+  public function fullReport(): array {
     $headers = [
       [
         'data' => $this->t('Group'),
@@ -152,6 +152,44 @@ class SubscribersReportController extends ControllerBase {
         '#attributes' => ['class' => ['button', 'button--primary']],
         '#title' => $this->t('Download CSV'),
         '#access' => $this->currentUser()->hasPermission('download subscribers report'),
+      ],
+    ];
+  }
+
+  /**
+   * Returns a subscribers report for a single group.
+   *
+   * @param \Drupal\joinup_group\Entity\GroupInterface $rdf_entity
+   *   The group for which to return the report.
+   *
+   * @return array[]
+   *   A render array containing subscriber data.
+   */
+  public function groupReport(GroupInterface $rdf_entity): array {
+    $data = $this->getSubscriberData($rdf_entity);
+    $group_data = $data[$rdf_entity->id()] ?? NULL;
+
+    if (!empty($group_data)) {
+      $rows = [
+        [$this->t('Subscribers'), $group_data['subscribers']],
+        [$this->t('Solution'), $group_data['solution']],
+        [$this->t('Discussion'), $group_data['discussion']],
+        [$this->t('Document'), $group_data['document']],
+        [$this->t('Event'), $group_data['event']],
+        [$this->t('News'), $group_data['news']],
+      ];
+      return [
+        'table' => [
+          '#theme' => 'vertical_table',
+          '#rows' => $rows,
+          '#attributes' => ['class' => ['group-subscribers-report']],
+        ],
+      ];
+    }
+
+    return [
+      'message' => [
+        '#markup' => $this->t('No subscribers data is available'),
       ],
     ];
   }
