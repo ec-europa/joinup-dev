@@ -39,6 +39,12 @@ function joinup_core_theme($existing, $type, $theme, $path) {
         'title' => '',
       ],
     ],
+    'vertical_table' => [
+      'variables' => [
+        'attributes' => [],
+        'rows' => [],
+      ],
+    ],
   ];
 }
 
