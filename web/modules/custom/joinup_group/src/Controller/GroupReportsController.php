@@ -8,16 +8,45 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_group\Event\GroupReportsEvent;
+use Drupal\joinup_group\Event\GroupReportsEventInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Returns responses for the group reports page.
  *
  * This is a page containing various reports about a group and is accessible for
- * facilitators and moderators. The reports are discovered through an event.
+ * facilitators and moderators. Modules can add reports for inclusion in this
+ * page by subscribing to the GroupReportsEvent.
  *
  * This page can be reached through the three-dots menu on the group overview.
  */
 class GroupReportsController extends ControllerBase {
+
+  /**
+   * The event dispatcher.
+   *
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   */
+  protected $dispatcher;
+
+  /**
+   * Constructs a GroupReportsController object.
+   *
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
+   *   The event dispatcher.
+   */
+  public function __construct(EventDispatcherInterface $dispatcher) {
+    $this->dispatcher = $dispatcher;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static($container->get('event_dispatcher'));
+  }
 
   /**
    * Renders the group reports page.
@@ -29,12 +58,47 @@ class GroupReportsController extends ControllerBase {
    *   The page as a render array.
    */
   public function reports(GroupInterface $rdf_entity): array {
-    $build['content'] = [
-      '#type' => 'item',
-      '#markup' => $this->t('To be implemented'),
-    ];
+    $reports = $this->getReports($rdf_entity);
+
+    if ($reports) {
+      $content = [];
+
+      foreach ($reports as $report) {
+        $content[$report->id()] = [
+          'title' => $report->getTitle(),
+          'description' => $report->getDescription(),
+          'url' => $report->getUrl(),
+        ];
+      }
+
+      $build = [
+        '#theme' => 'admin_block_content',
+        '#content' => $content,
+      ];
+    }
+    else {
+      $build = [
+        '#markup' => $this->t('No reports are currently available.'),
+      ];
+    }
 
     return $build;
+  }
+
+  /**
+   * Returns the available group reports.
+   *
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
+   *   The group for which to return reports.
+   *
+   * @return \Drupal\joinup_group\Event\GroupReport[]
+   *   An array of group reports, keyed by group report ID.
+   */
+  protected function getReports(GroupInterface $group): array {
+    $event = new GroupReportsEvent($group);
+    $this->dispatcher->dispatch(GroupReportsEventInterface::EVENT_NAME, $event);
+
+    return $event->getGroupReports();
   }
 
   /**
