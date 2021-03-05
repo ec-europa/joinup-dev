@@ -38,34 +38,34 @@ Feature:
 
   Scenario: Access the group reports page
     # Anonymous users can never access the group reports.
-    When I am not logged in
-    And I go to the "Muscle tissue formation" collection
+    Given I am not logged in
+    When I go to the "Muscle tissue formation" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Cultured meat technology" collection
+    When I go to the "Cultured meat technology" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Aligning myotubes" solution
+    When I go to the "Aligning myotubes" solution
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Increasing global meat demand" solution
+    When I go to the "Increasing global meat demand" solution
     Then I should not see the link "Reports" in the "Entity actions" region
 
     # Normal authenticated users can never access the group reports.
-    When I am logged in as an "authenticated user"
-    And I go to the "Muscle tissue formation" collection
+    Given I am logged in as an "authenticated user"
+    When I go to the "Muscle tissue formation" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Cultured meat technology" collection
+    When I go to the "Cultured meat technology" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Aligning myotubes" solution
+    When I go to the "Aligning myotubes" solution
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Increasing global meat demand" solution
+    When I go to the "Increasing global meat demand" solution
     Then I should not see the link "Reports" in the "Entity actions" region
 
     # Moderators can access all group reports.
-    When I am logged in as a "moderator"
-    And I go to the "Muscle tissue formation" collection
+    Given I am logged in as a "moderator"
+    When I go to the "Muscle tissue formation" collection
     Then I should see the link "Reports" in the "Entity actions" region
     When I click "Reports" in the "Entity actions" region
     Then I should see the heading "Reports"
-    And I go to the "Cultured meat technology" collection
+    When I go to the "Cultured meat technology" collection
     Then I should see the link "Reports" in the "Entity actions" region
     When I click "Reports" in the "Entity actions" region
     Then I should see the heading "Reports"
@@ -79,60 +79,60 @@ Feature:
     Then I should see the heading "Reports"
 
     # Facilitator of "Muscle tissue formation".
-    When I am logged in as "keiko"
-    And I go to the "Muscle tissue formation" collection
+    Given I am logged in as "keiko"
+    When I go to the "Muscle tissue formation" collection
     Then I should see the link "Reports" in the "Entity actions" region
     When I click "Reports" in the "Entity actions" region
     Then I should see the heading "Reports"
     When I go to the "Cultured meat technology" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Aligning myotubes" solution
+    When I go to the "Aligning myotubes" solution
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Increasing global meat demand" solution
+    When I go to the "Increasing global meat demand" solution
     Then I should not see the link "Reports" in the "Entity actions" region
 
     # Member of "Muscle tissue formation".
-    When I am logged in as "juro"
-    And I go to the "Muscle tissue formation" collection
+    Given I am logged in as "juro"
+    When I go to the "Muscle tissue formation" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Cultured meat technology" collection
+    When I go to the "Cultured meat technology" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Aligning myotubes" solution
+    When I go to the "Aligning myotubes" solution
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Increasing global meat demand" solution
+    When I go to the "Increasing global meat demand" solution
     Then I should not see the link "Reports" in the "Entity actions" region
 
     # Facilitator of "Cultured meat technology".
-    When I am logged in as "daichi"
-    And I go to the "Muscle tissue formation" collection
+    Given I am logged in as "daichi"
+    When I go to the "Muscle tissue formation" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Cultured meat technology" collection
+    When I go to the "Cultured meat technology" collection
     Then I should see the link "Reports" in the "Entity actions" region
     When I click "Reports" in the "Entity actions" region
     Then I should see the heading "Reports"
     When I go to the "Aligning myotubes" solution
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Increasing global meat demand" solution
+    When I go to the "Increasing global meat demand" solution
     Then I should not see the link "Reports" in the "Entity actions" region
 
     # Member of "Cultured meat technology".
-    When I am logged in as "yumiko"
-    And I go to the "Muscle tissue formation" collection
+    Given I am logged in as "yumiko"
+    When I go to the "Muscle tissue formation" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Cultured meat technology" collection
+    When I go to the "Cultured meat technology" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Aligning myotubes" solution
+    When I go to the "Aligning myotubes" solution
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Increasing global meat demand" solution
+    When I go to the "Increasing global meat demand" solution
     Then I should not see the link "Reports" in the "Entity actions" region
 
     # Facilitator of "Aligning myotubes".
-    When I am logged in as "kyouko"
-    And I go to the "Muscle tissue formation" collection
+    Given I am logged in as "kyouko"
+    When I go to the "Muscle tissue formation" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Cultured meat technology" collection
+    When I go to the "Cultured meat technology" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Aligning myotubes" solution
+    When I go to the "Aligning myotubes" solution
     Then I should see the link "Reports" in the "Entity actions" region
     When I click "Reports" in the "Entity actions" region
     Then I should see the heading "Reports"
@@ -140,36 +140,36 @@ Feature:
     Then I should not see the link "Reports" in the "Entity actions" region
 
     # Member of "Aligning myotubes".
-    When I am logged in as "tsubasa"
-    And I go to the "Muscle tissue formation" collection
+    Given I am logged in as "tsubasa"
+    When I go to the "Muscle tissue formation" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Cultured meat technology" collection
+    When I go to the "Cultured meat technology" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Aligning myotubes" solution
+    When I go to the "Aligning myotubes" solution
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Increasing global meat demand" solution
+    When I go to the "Increasing global meat demand" solution
     Then I should not see the link "Reports" in the "Entity actions" region
 
     # Facilitator of "Increasing global meat demand".
-    When I am logged in as "hoshiko"
-    And I go to the "Muscle tissue formation" collection
+    Given I am logged in as "hoshiko"
+    When I go to the "Muscle tissue formation" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Cultured meat technology" collection
+    When I go to the "Cultured meat technology" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Aligning myotubes" solution
+    When I go to the "Aligning myotubes" solution
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Increasing global meat demand" solution
+    When I go to the "Increasing global meat demand" solution
     Then I should see the link "Reports" in the "Entity actions" region
     When I click "Reports" in the "Entity actions" region
     Then I should see the heading "Reports"
 
    # Member of "Increasing global meat demand".
-    When I am logged in as "takehiko"
-    And I go to the "Muscle tissue formation" collection
+    Given I am logged in as "takehiko"
+    When I go to the "Muscle tissue formation" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Cultured meat technology" collection
+    When I go to the "Cultured meat technology" collection
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Aligning myotubes" solution
+    When I go to the "Aligning myotubes" solution
     Then I should not see the link "Reports" in the "Entity actions" region
-    And I go to the "Increasing global meat demand" solution
+    When I go to the "Increasing global meat demand" solution
     Then I should not see the link "Reports" in the "Entity actions" region
