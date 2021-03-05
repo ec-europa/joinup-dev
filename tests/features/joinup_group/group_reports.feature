@@ -173,3 +173,15 @@ Feature:
     Then I should not see the link "Reports" in the "Entity actions" region
     When I go to the "Increasing global meat demand" solution
     Then I should not see the link "Reports" in the "Entity actions" region
+
+    # Let's do a quick sanity check of the reports page to see if the page
+    # renders, and that the group header is visible.
+    Given I am logged in as a "moderator"
+    When I go to the "Muscle tissue formation" collection
+    And I click "Reports"
+    Then I should see the heading "Muscle tissue formation" in the "Header" region
+    And I should see the heading "Reports" in the "Page title"
+    When I go to the "Aligning myotubes" solution
+    And I click "Reports"
+    Then I should see the heading "Aligning myotubes" in the "Header" region
+    And I should see the heading "Reports" in the "Page title"
