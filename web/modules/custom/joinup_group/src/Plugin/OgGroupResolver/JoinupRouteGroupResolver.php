@@ -12,6 +12,8 @@ use Drupal\og\Plugin\OgGroupResolver\RouteGroupResolver;
  * Use this to make the group (collection or solution) available as a route
  * context on paths that are not defined as entity link templates.
  *
+ * This is for example used to display the group_header_block on a route.
+ *
  * @OgGroupResolver(
  *   id = "joinup_route_group",
  *   label = "Group entity from current route",
@@ -26,6 +28,7 @@ class JoinupRouteGroupResolver extends RouteGroupResolver {
   protected function getContentEntityPaths() {
     return [
       '/rdf_entity/{rdf_entity}/moderate' => 'rdf_entity',
+      '/rdf_entity/{rdf_entity}/reports' => 'rdf_entity',
     ];
   }
 

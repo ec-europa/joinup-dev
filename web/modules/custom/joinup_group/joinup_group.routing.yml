@@ -50,6 +50,7 @@ joinup_group.reports:
         bundle:
           - collection
           - solution
+    _og_entity_type_id: rdf_entity
 
 joinup_group.transfer_group_ownership_confirm:
   path: '/group/transfer/ownership'
