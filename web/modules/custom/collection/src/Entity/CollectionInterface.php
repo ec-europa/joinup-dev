@@ -7,6 +7,7 @@ namespace Drupal\collection\Entity;
 use Drupal\joinup_bundle_class\ShortIdInterface;
 use Drupal\joinup_featured\FeaturedContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_publication_date\Entity\EntityPublicationTimeInterface;
 use Drupal\joinup_workflow\ArchivableEntityInterface;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -14,7 +15,7 @@ use Drupal\rdf_entity\RdfInterface;
 /**
  * Interface for collection entities in Joinup.
  */
-interface CollectionInterface extends RdfInterface, EntityWorkflowStateInterface, GroupInterface, FeaturedContentInterface, ShortIdInterface, ArchivableEntityInterface {
+interface CollectionInterface extends RdfInterface, EntityPublicationTimeInterface, EntityWorkflowStateInterface, GroupInterface, FeaturedContentInterface, ShortIdInterface, ArchivableEntityInterface {
 
   /**
    * Returns the solutions that are affiliated with this collection.
@@ -37,5 +38,16 @@ interface CollectionInterface extends RdfInterface, EntityWorkflowStateInterface
    *   The solutions.
    */
   public function getSolutionIds(bool $published = TRUE): array;
+
+  /**
+   * Returns the collection glossary settings.
+   *
+   * @return array
+   *   The collection glossary settings.
+   *
+   * @throws \Exception
+   *   When the collection misses a 'collection_settings' meta entity.
+   */
+  public function getGlossarySettings(): array;
 
 }

@@ -146,6 +146,7 @@ permissions:
   - 'unshare news content'
   - 'unshare solution rdf_entity'
   - 'update any navigation ogmenu_instance'
+  - 'update collection_settings meta-entity'
   - 'update group'
   - 'update paragraph content accordion'
   - 'update paragraph content accordion_item'

@@ -8,33 +8,12 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\joinup_stats\Entity\DownloadCount;
-use Drupal\joinup_stats\Entity\StatisticsAwareInterface;
 use Drupal\joinup_stats\Entity\VisitCount;
 use Drupal\meta_entity\Entity\MetaEntityInterface;
 use Drupal\rdf_entity\RdfInterface;
-
-/**
- * Implements hook_entity_insert().
- *
- * Ensure that the statistics meta entities are automatically created whenever a
- * new content entity is created that is configured to have statistics metadata
- * attached to it. We need to have these meta entities available because we are
- * tracking download counts using a cached computed field. This field has an
- * expiration time after which it will be refreshed during a cron job. If we do
- * not have the field, then we will not know when it expires, and it will never
- * be updated.
- */
-function joinup_stats_entity_insert(EntityInterface $entity): void {
-  if ($entity instanceof StatisticsAwareInterface) {
-    foreach ($entity->createStatisticsMetaEntities() as $meta_entity) {
-      $meta_entity->save();
-    }
-  }
-}
 
 /**
  * Implements hook_ENTITY_TYPE_insert().

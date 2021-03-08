@@ -250,6 +250,82 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     # Test that the synonym replacement is case insensitive.
     And I should see the link "aBC"
 
+  Scenario: Limiting replacements to the first occurrence.
+    Given users:
+      | Username | Roles     |
+      | regular  |           |
+      | fac      |           |
+      | mod      | moderator |
+      | fac1     |           |
+    And the following collections:
+      | title                    | description                                                                       | state     |
+      | Collection With Glossary | The Battle of Evermore of the battle and the BATTLE. Call it everMore or EVERmore | validated |
+      | The Other Collection     | desc                                                                              | validated |
+    And the following collection user membership:
+      | collection               | user | roles       |
+      | Collection With Glossary | fac  | facilitator |
+      | The Other Collection     | fac1 | facilitator |
+    And glossary content:
+      | title  | synonyms | definition | collection               |
+      | battle | evermore | def        | Collection With Glossary |
+
+    Given I am an anonymous user
+    When I go to the "Collection With Glossary" collection
+    Then I should not see the link "Settings" in the "Entity actions" region
+    When I click "Glossary"
+    Then I should not see the link "Glossary settings"
+
+    Given I am logged in as regular
+    When I go to the "Collection With Glossary" collection
+    Then I should not see the link "Settings" in the "Entity actions" region
+    When I click "Glossary"
+    Then I should not see the link "Glossary settings"
+
+    Given I am logged in as fac1
+    When I go to the "Collection With Glossary" collection
+    Then I should not see the link "Settings" in the "Entity actions" region
+    When I click "Glossary"
+    Then I should not see the link "Glossary settings"
+
+    Given I am logged in as mod
+    When I go to the "Collection With Glossary" collection
+    Then I should see the link "Settings" in the "Entity actions" region
+    When I click "Glossary"
+    Then I should see the link "Glossary settings"
+
+    Given I am logged in as fac
+    When I go to the "Collection With Glossary" collection
+    And I click "Settings" in the "Entity actions" region
+    Then I should see the heading "Collection With Glossary collection settings"
+    And the "Highlight only the first term appearance" checkbox should be checked
+
+    When I go to the "Collection With Glossary" collection
+
+    # Only the first occurrence should be highlighted.
+    And I should see the link "Battle"
+    And I should see the link "Evermore"
+    But I should not see the link "battle"
+    And I should not see the link "BATTLE"
+    And I should not see the link "everMore"
+    And I should not see the link "EVERmore"
+
+    When I click "Settings" in the "Entity actions" region
+    And I uncheck the box "Highlight only the first term appearance"
+    And I press "Save"
+
+    # All terms should be highlighted.
+    Then I should see the link "Battle"
+    And I should see the link "battle"
+    And I should see the link "BATTLE"
+    And I should see the link "Evermore"
+    And I should see the link "everMore"
+    And I should see the link "EVERmore"
+
+    When I click "Glossary"
+    Then I should see the link "Glossary settings"
+    When I click "Glossary settings"
+    Then I should see the heading "Collection With Glossary collection settings"
+
   Scenario: Test glossary term name and synonyms collision.
     Given users:
       | Username |
@@ -345,3 +421,4 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     And I fill in "Synonym" with "extraratings"
     And I press "Save"
     Then I should see the success message "Glossary term XRatings has been created."
+

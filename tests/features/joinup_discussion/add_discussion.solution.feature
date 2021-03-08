@@ -57,9 +57,9 @@ Feature: "Add discussion" visibility options.
     And I press "Upload"
     And I press "Publish"
     Then I should see the following lines of text:
-      | Title field is required.            |
-      | File description field is required. |
-      | Content field is required.          |
+      | Title field is required.                       |
+      | The Attachments field description is required. |
+      | Content field is required.                     |
 
     When I fill in the following:
       | Title            | Flight of Girlfriend                       |

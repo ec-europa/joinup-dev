@@ -245,6 +245,11 @@ function solution_entity_extra_field_info(): array {
       'description' => t('A link to share the content'),
       'visible' => FALSE,
     ];
+    $display['solution_subscribe'] = [
+      'label' => t('Subscribe to this Solution'),
+      'description' => t('Subscribes the user to the solution.'),
+      'visible' => FALSE,
+    ];
   }
 
   return $fields;
@@ -364,6 +369,19 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
       'contexts' => [
         'og_role',
       ],
+    ];
+  }
+
+  if ($display->getComponent('solution_subscribe')) {
+    $build['solution_subscribe'] = [
+      '#lazy_builder' => [
+        'solution.lazy_builders:renderJoinSolutionForm',
+        [$solution->id()],
+      ],
+      '#create_placeholder' => TRUE,
+      // This form varies by the role a user has inside the collection. Set the
+      // applicable cache context.
+      '#cache' => ['contexts' => ['og_role']],
     ];
   }
 }
@@ -620,10 +638,14 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = $query->getOption('search_api_field entity');
 
+  $or = $query->createConditionGroup('OR');
   // Show only content that belongs to this solution through the aggregated
   // field. This makes sure that other related entities (such as the solution
   // owner) do not show up as solution content tiles.
-  $query->addCondition('entity_groups', [$entity->id()], 'IN');
+  $or->addCondition('entity_groups', [$entity->id()], 'IN');
+  // Or show content that has been shared on this collection.
+  $or->addCondition('shared_in', [$entity->id()], 'IN');
+  $query->addConditionGroup($or);
 
   // Remove the solution itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');

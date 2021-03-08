@@ -1,0 +1,22 @@
+uuid: 27817a6e-1796-47a8-9a2f-34d7cd9334f6
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - meta_entity
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: meta_entity.glossary_link_only_first
+field_name: glossary_link_only_first
+entity_type: meta_entity
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

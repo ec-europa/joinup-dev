@@ -6,6 +6,7 @@ namespace Drupal\joinup_event\Entity;
 
 use Drupal\Core\Url;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
+use Drupal\joinup_bundle_class\LogoTrait;
 use Drupal\joinup_community_content\Entity\CommunityContentBase;
 
 /**
@@ -14,6 +15,14 @@ use Drupal\joinup_community_content\Entity\CommunityContentBase;
 class Event extends CommunityContentBase implements EventInterface {
 
   use JoinupBundleClassFieldAccessTrait;
+  use LogoTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLogoFieldName(): string {
+    return 'field_event_logo';
+  }
 
   /**
    * {@inheritdoc}

@@ -1,0 +1,17 @@
+uuid: 9d24aaac-4cfb-4b2f-aa2f-f8db9acb81a4
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - field.field.message.group_content_subscription.field_group_content
+    - message.template.group_content_subscription
+id: message.group_content_subscription.mail_subject
+targetEntityType: message
+bundle: group_content_subscription
+mode: mail_subject
+content: {  }
+hidden:
+  field_group_content: true
+  partial_0: true
+  partial_1: true
