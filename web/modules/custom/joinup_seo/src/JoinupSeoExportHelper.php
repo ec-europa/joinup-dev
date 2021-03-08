@@ -34,6 +34,11 @@ class JoinupSeoExportHelper implements JoinupSeoExportHelperInterface {
    */
   public function exportRdfEntityMetadata(RdfInterface $entity): string {
     $output = $this->serializer->serializeEntity($entity, 'jsonld', $this->getOptions());
+    // The JSON-LD serializer strips off the ID from the URL and adds only the
+    // last part. Restore the entity ID to the data.
+    $output = json_decode($output);
+    $output->{"@id"} = $entity->id();
+    $output = json_encode($output);
     return is_string($output) ? $output : '';
   }
 
@@ -54,8 +59,17 @@ class JoinupSeoExportHelper implements JoinupSeoExportHelperInterface {
     $content = file_get_contents($fixtures_path);
     $content = json_decode($content);
     return [
+      // Data to set as a context in the top level of the metadata.
       'context' => $content,
+      // Setting expand_native_types to TRUE encapsulates the entity in a
+      // "@graph" entry along with the "@context" entry (these are the only two
+      // entries in the top level).
+      // If set to FALSE, all data are set in the top level along with the
+      // "@context". Schema.org module encapsulates the data for content in the
+      // "@graph" section so we are doing the same for RDF entities.
       'expand_native_types' => TRUE,
+      // Compact forces the properties with only one value to be presented as a
+      // "key": "value" pair and not as "key": [array-of-values].
       'compact' => TRUE,
     ];
   }
