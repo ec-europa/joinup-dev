@@ -67,6 +67,11 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
     }
 
     if ($operation === 'view') {
+      // The core access check to view revisions only accounts for the 'view all
+      // revisions' permission, while we need to additionally give permission to
+      // users to view revisions on their own content. However we need to be
+      // careful to not accidentally bypass any other access checks (e.g. the
+      // user might not have the 'access content' permission).
       $global_access = AccessResult::allowedIf($node && (
           $this->checkAccess($node, $account, $operation)
           || ($node->getOwnerId() === $account->id() && $account->hasPermission('view own content revisions'))
