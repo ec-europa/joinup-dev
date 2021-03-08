@@ -33,14 +33,31 @@ class JoinupSeoExportHelper implements JoinupSeoExportHelperInterface {
    * {@inheritdoc}
    */
   public function exportRdfEntityMetadata(RdfInterface $entity): string {
-    if (!$output = $this->serializer->serializeEntity($entity, 'json')) {
-      return '';
-    }
+    $output = $this->serializer->serializeEntity($entity, 'jsonld', $this->getOptions());
+    return is_string($output) ? $output : '';
+  }
 
-    // Serializer returns an array reset() the results to display them properly.
-    $output = json_decode($output);
-    $output = (object) $output;
-    return json_encode($output);
+  /**
+   * Returns a static list of options for the serializer.
+   *
+   * @return array
+   *   An array of options for the JSON-LD serializer.
+   */
+  protected function getOptions(): array {
+    // The \EasyRdf\Serialiser\JsonLd uses the \ML\JsonLD class to generate the
+    // final output. The \ML\JsonLD has two ways of using the context. Either
+    // downloading it from a web source or by passing an object. For the web
+    // resource, the expected response has to be in the 'application/jsonld'
+    // format, something that we do not have. However, even for performance and
+    // availability purposes, a local file is used instead.
+    $fixtures_path = __DIR__ . '/../fixtures/adms-ap-2.01.jsonld';
+    $content = file_get_contents($fixtures_path);
+    $content = json_decode($content);
+    return [
+      'context' => $content,
+      'expand_native_types' => TRUE,
+      'compact' => TRUE,
+    ];
   }
 
 }
