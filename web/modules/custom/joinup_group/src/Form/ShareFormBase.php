@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group\Form;
 
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Messenger\MessengerInterface;
@@ -12,6 +13,7 @@ use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleManagerInterface;
 use Drupal\sparql_entity_storage\SparqlEntityStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -83,6 +85,13 @@ abstract class ShareFormBase extends FormBase {
   protected $messenger;
 
   /**
+   * The bundle info service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   */
+  protected $bundleInfo;
+
+  /**
    * Constructs a new ShareContentFormBase object.
    *
    * @param \Drupal\sparql_entity_storage\SparqlEntityStorage $sparql_storage
@@ -97,14 +106,17 @@ abstract class ShareFormBase extends FormBase {
    *   The current user account.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info
+   *   The bundle info service.
    */
-  public function __construct(SparqlEntityStorage $sparql_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, OgRoleManagerInterface $role_manager, AccountInterface $current_user, MessengerInterface $messenger) {
+  public function __construct(SparqlEntityStorage $sparql_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, OgRoleManagerInterface $role_manager, AccountInterface $current_user, MessengerInterface $messenger, EntityTypeBundleInfoInterface $bundle_info) {
     $this->sparqlStorage = $sparql_storage;
     $this->rdfBuilder = $rdf_builder;
     $this->membershipManager = $membership_manager;
     $this->roleManager = $role_manager;
     $this->currentUser = $current_user;
     $this->messenger = $messenger;
+    $this->bundleInfo = $bundle_info;
   }
 
   /**
@@ -117,17 +129,18 @@ abstract class ShareFormBase extends FormBase {
       $container->get('og.membership_manager'),
       $container->get('og.role_manager'),
       $container->get('current_user'),
-      $container->get('messenger')
+      $container->get('messenger'),
+      $container->get('entity_type.bundle.info')
     );
   }
 
   /**
-   * Gets a list of collection ids where the current entity is already shared.
+   * Gets a list of group ids where the current entity is already shared.
    *
-   * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collection ids where the current entity is already shared on.
+   * @return \Drupal\joinup_group\Entity\GroupInterface[]
+   *   A list of group ids where the current entity is already shared on.
    */
-  protected function getAlreadySharedCollectionIds(): array {
+  protected function getAlreadySharedGroupIds(): array {
     if (!$this->getSharedOnFieldName() || !$this->entity->hasField($this->getSharedOnFieldName())) {
       return [];
     }
@@ -141,16 +154,16 @@ abstract class ShareFormBase extends FormBase {
    * @param string $permission
    *   A permission to filter the roles of the user by.
    *
-   * @return \Drupal\rdf_entity\RdfInterface[]
+   * @return \Drupal\joinup_group\Entity\GroupInterface[]
    *   An array of groups.
    */
-  protected function getUserGroupsByPermission($permission): array {
-    $roles = $this->roleManager->getRolesByPermissions([$permission], 'rdf_entity', 'collection');
+  protected function getUserGroupsByPermission(string $permission): array {
+    $roles = $this->roleManager->getRolesByPermissions([$permission]);
     if (empty($roles)) {
       return [];
     }
 
-    $groups = $this->membershipManager->getUserGroupsByRoleIds($this->currentUser->id(), array_keys($roles));
+    $groups = $this->membershipManager->getUserGroupsByRoleIds($this->currentUser->id(), array_keys($roles), [OgMembershipInterface::STATE_ACTIVE], FALSE);
     return empty($groups) ? [] : $groups['rdf_entity'];
   }
 
@@ -188,7 +201,7 @@ abstract class ShareFormBase extends FormBase {
    * collection of the solution.
    *
    * @return \Drupal\joinup_group\Entity\GroupInterface|null
-   *   The affiliated or parent collection, if one exists.
+   *   The affiliated or parent group, if one exists.
    */
   protected function getExcludedParent(): ?GroupInterface {
     if ($this->entity instanceof GroupContentInterface) {

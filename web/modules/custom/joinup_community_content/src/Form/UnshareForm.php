@@ -40,7 +40,7 @@ class UnshareForm extends OriginalForm {
   public function access(NodeInterface $node) {
     $this->entity = $node;
 
-    return AccessResult::allowedIf(!empty($this->getCollections()));
+    return AccessResult::allowedIf(!empty($this->getGroups()));
   }
 
   /**
