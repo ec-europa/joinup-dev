@@ -111,7 +111,11 @@ class Collection extends Rdf implements CollectionInterface {
   protected function doGetGroupContentIds(): array {
     $ids = ['node' => $this->getNodeGroupContent()];
     $solutions = $this->getSolutions();
-    $ids = NestedArray::mergeDeep($ids, ['rdf_entity' => array_keys($solutions)]);
+    $ids = NestedArray::mergeDeep($ids, [
+      'rdf_entity' => [
+        'solution' => array_keys($solutions),
+      ],
+    ]);
     foreach ($solutions as $solution) {
       $ids = NestedArray::mergeDeep($ids, $solution->getGroupContentIds());
     }

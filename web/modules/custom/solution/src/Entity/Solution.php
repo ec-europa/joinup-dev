@@ -166,13 +166,18 @@ class Solution extends Rdf implements SolutionInterface {
   public function doGetGroupContentIds(): array {
     $ids = ['node' => $this->getNodeGroupContent()];
     $releases = $this->getReleases();
-    $ids = NestedArray::mergeDeep(
-      $ids,
-      ['rdf_entity' => array_keys($releases)],
-      ['rdf_entity' => $this->getDistributionIds()]
-    );
+    $ids = NestedArray::mergeDeep($ids, [
+      'rdf_entity' => [
+        'asset_release' => array_keys($releases),
+        'asset_distribution' => $this->getDistributionIds(),
+      ],
+    ]);
     foreach ($releases as $release) {
-      $ids['rdf_entity'] = array_merge($ids['rdf_entity'], $release->getDistributionIds());
+      $ids = NestedArray::mergeDeep($ids, [
+        'rdf_entity' => [
+          'asset_distribution' => $release->getDistributionIds(),
+        ],
+      ]);
     }
     return $ids;
   }

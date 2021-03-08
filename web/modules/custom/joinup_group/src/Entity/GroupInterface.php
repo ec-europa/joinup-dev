@@ -125,9 +125,10 @@ interface GroupInterface extends ContentEntityInterface, LogoInterface, ShortIdI
    * operations that support longer requests, such as cron run.
    *
    * @return array
-   *   An associative array keyed by the group content entity type ID and having
-   *   an indexed array of entity IDs as values. The array is sorted by key and,
-   *   within each entity type, by entity IDs.
+   *   An associative array keyed by the group content entity type ID. Each
+   *   value is an associative array keyed by entity bundle and having the node
+   *   IDs as values. The array is sorted by keys and, within each bundle, by
+   *   entity IDs.
    */
   public function getGroupContentIds(): array;
 

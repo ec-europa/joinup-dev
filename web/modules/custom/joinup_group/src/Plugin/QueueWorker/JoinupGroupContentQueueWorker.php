@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group\Plugin\QueueWorker;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
@@ -83,8 +84,10 @@ class JoinupGroupContentQueueWorker extends QueueWorkerBase implements Container
       return;
     }
 
+    Cache::invalidateTags($entity->getCacheTagsToInvalidate());
+
     // Regenerate the group content alias.
-    $this->aliasGenerator->updateEntityAlias($entity, 'update');
+    $this->aliasGenerator->updateEntityAlias($entity, 'bulkupdate');
   }
 
 }
