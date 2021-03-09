@@ -40,7 +40,7 @@ class JoinupSeoExportHelper implements JoinupSeoExportHelperInterface {
     foreach ($output->{"@graph"} as $object) {
       if (isset($object->{"@type"})) {
         $output->{"@graph"} = [$object];
-        return json_encode($output, JSON_PRETTY_PRINT);
+        return json_encode($output, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
       }
     }
     return '';
