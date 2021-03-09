@@ -74,7 +74,7 @@ class JoinupDocumentContext extends RawDrupalContext {
       unset($node->{'file type'});
     }
 
-    if (isset($node->field_document_publication_date)) {
+    if (!empty($node->field_document_publication_date)) {
       $time = $node->field_document_publication_date;
       if (!is_numeric($time)) {
         $time = strtotime($time);

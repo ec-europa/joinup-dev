@@ -6,6 +6,7 @@ dependencies:
     - asset_distribution
     - custom_page
     - joinup_featured
+    - joinup_publication_date
     - joinup_search
     - meta_entity
     - node
@@ -128,6 +129,10 @@ field_settings:
         - 'entity:rdf_entity/collection'
         - 'entity:rdf_entity/field_isr_is_version_of'
         - 'entity:rdf_entity/og_audience'
+  entity_published:
+    label: Published
+    property_path: publication_time
+    type: date
   field_ad_description:
     label: 'Description » Processed text'
     datasource_id: 'entity:rdf_entity'
@@ -722,6 +727,7 @@ processor_settings:
   joinup_entity_published_revision: {  }
   joinup_entity_status:
     inverse: false
+  publication_time: {  }
   rendered_item: {  }
   reverse_entity_references: {  }
   solr_date_range:

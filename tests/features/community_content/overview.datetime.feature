@@ -63,7 +63,7 @@ Feature:
       | news       | publication date          |
 
   @terms
-  Scenario: Documents without a publication date should show the published_at property.
+  Scenario: Published documents without a manually chosen publication date should show the date the node was actually first published.
     Given the following collection:
       | title | Gravitational pull detectors |
       | state | validated                    |

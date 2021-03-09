@@ -730,6 +730,7 @@ class JoinupContext extends RawDrupalContext {
         'attachments' => 'field_attachment',
         'logo' => 'field_custom_page_logo',
         'body' => 'field_paragraphs_body',
+        'publication date' => 'published_at',
       ],
       'discussion' => [
         'attachments' => 'field_attachment',
@@ -759,9 +760,10 @@ class JoinupContext extends RawDrupalContext {
         'location' => 'field_location',
         'online location' => 'field_event_online_location',
         'organisation' => 'field_organisation',
-        'web url' => 'field_event_web_url',
+        'publication date' => 'published_at',
         'scope' => 'field_scope',
         'state' => 'field_state',
+        'web url' => 'field_event_web_url',
       ],
       'glossary' => [
         'synonyms' => 'field_glossary_synonyms',
