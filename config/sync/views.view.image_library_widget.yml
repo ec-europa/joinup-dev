@@ -49,7 +49,7 @@ display:
       pager:
         type: mini
         options:
-          items_per_page: 10
+          items_per_page: 16
           offset: 0
           id: 0
           total_pages: null
@@ -65,16 +65,11 @@ display:
             offset: false
             offset_label: Offset
       style:
-        type: grid
+        type: default
         options:
           grouping: {  }
-          columns: 5
-          automatic_width: true
-          alignment: horizontal
-          col_class_default: true
-          col_class_custom: ''
-          row_class_default: true
-          row_class_custom: ''
+          row_class: ''
+          default_row_class: true
       row:
         type: fields
         options:
