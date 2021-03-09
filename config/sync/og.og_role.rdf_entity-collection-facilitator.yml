@@ -29,7 +29,6 @@ permissions:
   - 'create paragraph content accordion'
   - 'create paragraph content accordion_item'
   - 'create paragraph content simple_paragraph'
-  - 'create published revisions'
   - 'create rdf entity news'
   - 'create solution rdf_entity'
   - 'delete any custom_page content'

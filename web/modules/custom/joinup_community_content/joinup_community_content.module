@@ -295,6 +295,16 @@ function joinup_community_content_preprocess_links__comment(array &$variables): 
 
 /**
  * Implements hook_form_FORM_ID_alter().
+ *
+ * In pre-moderated groups all content changes from non-trusted users should be
+ * approved by a moderator before they are published. Trusted users (authors and
+ * moderators) can bypass this.
+ *
+ * This alters the node revision revert form to ensure that a moderator has to
+ * approve the reverting of a revision proposed by a non-trusted user.
+ *
+ * Trusted users (and any user in a non-moderator group) can revert without
+ * approval.
  */
 function joinup_community_content_form_node_revision_revert_confirm_alter(&$form, FormStateInterface $form_state, $form_id) {
   $entity = $form_state->getBuildInfo()['args'][0];
@@ -302,30 +312,44 @@ function joinup_community_content_form_node_revision_revert_confirm_alter(&$form
     return;
   }
 
+  // Skip if the group is not moderated.
   if (!$entity->getGroup()->isModerated()) {
     return;
   }
 
+  // Check if the user (e.g. a moderator) has global permission to directly
+  // publish content in moderated groups. If this is the case we don't need to
+  // alter the form.
   $current_user = \Drupal::getContainer()->get('current_user');
-  if ($current_user->hasPermission('create published revisions')) {
+  if ($current_user->hasPermission('publish content in moderated groups')) {
     return;
   }
 
-  $workflow_helper = \Drupal::getContainer()->get('joinup_workflow.workflow_helper');
-  if ($workflow_helper->hasOgPermission('create published revisions', $entity->getGroup(), $current_user)) {
+  // Check if the user (e.g. an author) has permission to directly publish
+  // content in this particular group.
+  // @todo Use GroupInterface::getGroupAccess() once ISAICP-5951 is in.
+  /** @var \Drupal\og\OgAccessInterface $og_access */
+  $og_access = \Drupal::service('og.access');
+  if ($og_access->userAccess($entity->getGroup(), 'publish content in moderated groups', $current_user)->isAllowed()) {
     return;
   }
 
+  // The user is not allowed to directly publish in the group. Alter the form.
   array_unshift($form['#submit'], 'joinup_community_content_form_node_revision_revert_confirm_submit');
 }
 
 /**
  * Sets the revision in proposed state in case of a pre-moderated group.
  *
+ * This ensures that when an untrusted user reverts a revision this will only be
+ * public after approval by a moderator.
+ *
  * @param array $form
  *   The form array.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form state instance.
+ *
+ * @see \joinup_community_content_form_node_revision_revert_confirm_alter()
  */
 function joinup_community_content_form_node_revision_revert_confirm_submit(array $form, FormStateInterface $form_state) {
   $entity = $form_state->getBuildInfo()['args'][0];

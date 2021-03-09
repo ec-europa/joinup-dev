@@ -17,7 +17,6 @@ permissions:
   - 'create document content'
   - 'create event content'
   - 'create news content'
-  - 'create published revisions'
   - 'create solution rdf_entity'
   - 'delete own comments'
   - 'delete own custom_page content'
