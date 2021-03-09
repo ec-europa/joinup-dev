@@ -24,6 +24,8 @@ class RdfEntityUriWebConverterForm extends FormBase {
     $form['entity_id'] = [
       '#type' => 'textfield',
       '#title' => $this->t('RDF entity ID or a URL'),
+      '#maxlength' => 2048,
+      '#attributes' => ['size' => 2048],
       '#description' => $this->t('Paste either a RDF entity ID in order to be redirected to the RDF entity page, or a system or aliased RDF entity URL to get the decoded ID of the entity,'),
     ];
     $form['submit'] = [
