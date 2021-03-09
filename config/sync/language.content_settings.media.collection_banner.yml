@@ -1,0 +1,11 @@
+uuid: 52128fe5-c7f8-4826-96c6-5a9c71aca43d
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.collection_banner
+id: media.collection_banner
+target_entity_type_id: media
+target_bundle: collection_banner
+default_langcode: site_default
+language_alterable: false

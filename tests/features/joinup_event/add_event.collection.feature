@@ -33,7 +33,7 @@ Feature: "Add event" visibility options.
     And I go to the homepage of the "The Stripped Stream" collection
     Then I should see the link "Add event"
 
-  @terms
+  @terms @uploadFiles:test.zip
   Scenario: Add event as a facilitator.
     Given collections:
       | title            | logo     | banner     | state     |
@@ -116,3 +116,27 @@ Feature: "Add event" visibility options.
     And I fill the end date of the Date widget with "2019-01-02"
     And I press "Save as draft"
     Then I should see the text "29/08/2018 to 02/01/2019"
+
+  @javascript @generateMedia @uploadFiles:logo.png
+  Scenario: Test the image library widget.
+    Given the following collection:
+      | title | Stream of Dreams |
+      | state | validated        |
+    And event content:
+      | title             | collection       | body      |  online location              | state     |
+      | The Great Opening | Stream of Dreams | It opens! |  webinar - http://example.com | validated |
+
+    Given I am logged in as a moderator
+
+    # Upload works.
+    When I go to the event content "The Great Opening" edit screen
+    And I attach the file "logo.png" to "Logo"
+    And I wait for AJAX to finish
+
+    # Picking-up pre-uploaded images works.
+    When I remove the file from "Logo"
+    And I wait for AJAX to finish
+    And I select image #7 as event logo
+    And I wait for AJAX to finish
+    And I press "Update"
+    And the "The Great Opening" event logo is image #7
