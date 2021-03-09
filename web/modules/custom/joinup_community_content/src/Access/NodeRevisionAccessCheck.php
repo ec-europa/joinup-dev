@@ -66,23 +66,8 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
       return $og_access;
     }
 
-    if ($operation === 'view') {
-      // The core access check to view revisions only accounts for the 'view all
-      // revisions' permission, while we need to additionally give permission to
-      // users to view revisions on their own content. However we need to be
-      // careful to not accidentally bypass any other access checks (e.g. the
-      // user might not have the 'access content' permission).
-      $global_access = AccessResult::allowedIf($node && (
-          $this->checkAccess($node, $account, $operation)
-          || ($node->getOwnerId() === $account->id() && $account->hasPermission('view own content revisions'))
-        )
-      );
-    }
-    else {
-      $global_access = AccessResult::allowedIf($node && $this->checkAccess($node, $account, $operation));
-    }
-
-    return $global_access->cachePerUser();
+    $global_access = AccessResult::allowedIf($node && $this->checkAccess($node, $account, $operation));
+    return $global_access->cachePerPermissions()->addCacheableDependency($node)->inheritCacheability($og_access);
   }
 
   /**
@@ -138,6 +123,12 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
     // Check if the user has either the "all" or the type-specific permission.
     $result = $this->ogAccess->userAccessEntity($map[$operation], $node, $account)
       ->orIf($this->ogAccess->userAccessEntity($type_map[$operation], $node, $account));
+
+    // If the user owns the entity, check if they can 'view own revisions'
+    if (!$result->isAllowed() && (int) $node->getOwnerId() === (int) $account->id()) {
+      $result = $result->orIf($this->ogAccess->userAccessEntity('view own revisions', $node, $account));
+    }
+
     // If neither of the access checks are allowed, we have no opinion. However
     // if the 'node_access_strict' option is set in Organic Groups then should
     // never return neutral, but we should strictly forbid access.

@@ -89,6 +89,11 @@ class EventSubscriber implements EventSubscriberInterface {
           'restrict access' => TRUE,
         ]),
         new GroupPermission([
+          'name' => 'view own revisions',
+          'title' => $this->t('View own revisions'),
+          'restrict access' => TRUE,
+        ]),
+        new GroupPermission([
           'name' => 'revert all revisions',
           'title' => $this->t('Revert all revisions'),
           'restrict access' => TRUE,

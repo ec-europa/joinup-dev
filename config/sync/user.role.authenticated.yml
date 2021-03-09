@@ -92,7 +92,6 @@ permissions:
   - 'use text format glossary_html'
   - 'use text format simple_html'
   - 'view compatibility documents'
-  - 'view own content revisions'
   - 'view own unpublished content'
   - 'view paragraph content accordion'
   - 'view paragraph content accordion_item'
