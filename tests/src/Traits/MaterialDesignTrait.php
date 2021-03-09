@@ -33,7 +33,7 @@ trait MaterialDesignTrait {
     if ($this->browserSupportsJavaScript()) {
       // Check if the checkbox has already been checked.
       if (!$this->findMaterialDesignCheckbox($label, $element)->isChecked()) {
-        $this->toggleMaterialDesignCheckbox($label, $element);
+        $this->toggleMaterialDesignCheckbox($element, $label);
       }
     }
     // Fall back to the standard behaviour if JavaScript is disabled.
@@ -64,7 +64,7 @@ trait MaterialDesignTrait {
     if ($this->browserSupportsJavaScript()) {
       // Only check if the checkbox is unchecked.
       if ($this->findMaterialDesignCheckbox($label, $element)->isChecked()) {
-        $this->toggleMaterialDesignCheckbox($label, $element);
+        $this->toggleMaterialDesignCheckbox($element, $label);
       }
     }
     // Fall back to the standard behaviour if JavaScript is disabled.
@@ -79,16 +79,16 @@ trait MaterialDesignTrait {
    * In Material Design regular checkboxes are hidden and replaces with fancy
    * animated fake checkboxes. This method can toggle them.
    *
-   * @param string $label
-   *   The label of the animated checkbox to toggle.
    * @param \Behat\Mink\Element\TraversableElement $element
    *   Element in which to search for the field label.
+   * @param string|null $label
+   *   The label of the animated checkbox to toggle.
    *
    * @throws \Exception
    *   Thrown when the browser does not support JavaScript or when the animated
    *   checkbox with the given label is not found.
    */
-  protected function toggleMaterialDesignCheckbox($label, TraversableElement $element) {
+  protected function toggleMaterialDesignCheckbox(TraversableElement $element, ?string $label = NULL): void {
     \assert(method_exists($this, 'browserSupportsJavaScript'), __METHOD__ . ' depends on BrowserCapabilityDetectionTrait. Please include it in your class.');
     if (!$this->browserSupportsJavaScript()) {
       throw new \Exception("The animated checkbox with label $label cannot be toggled in a browser that doesn't support JavaScript.");
