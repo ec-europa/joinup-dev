@@ -762,6 +762,7 @@ class JoinupContext extends RawDrupalContext {
         'web url' => 'field_event_web_url',
         'scope' => 'field_scope',
         'state' => 'field_state',
+        'publication date' => 'published_at',
       ],
       'glossary' => [
         'synonyms' => 'field_glossary_synonyms',
