@@ -9,7 +9,6 @@ use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_bundle_class\LogoTrait;
 use Drupal\joinup_bundle_class\ShortIdTrait;
 use Drupal\joinup_featured\FeaturedContentTrait;
-use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\GroupTrait;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeFallbackTrait;
 use Drupal\joinup_workflow\ArchivableEntityTrait;
