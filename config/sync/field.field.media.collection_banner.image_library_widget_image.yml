@@ -1,0 +1,45 @@
+uuid: 2189b359-4f8f-4525-b579-90d51db34d8b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.image_library_widget_image
+    - media.type.collection_banner
+  module:
+    - content_translation
+    - image
+third_party_settings:
+  content_translation:
+    translation_sync:
+      file: '0'
+      alt: '0'
+      title: '0'
+id: media.collection_banner.image_library_widget_image
+field_name: image_library_widget_image
+entity_type: media
+bundle: collection_banner
+label: Image
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: library/collection/banner
+  file_extensions: 'png jpg jpeg'
+  max_filesize: ''
+  max_resolution: ''
+  min_resolution: ''
+  alt_field: false
+  alt_field_required: true
+  title_field: false
+  title_field_required: false
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: image

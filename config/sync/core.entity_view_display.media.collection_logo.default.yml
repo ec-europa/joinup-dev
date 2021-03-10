@@ -1,0 +1,30 @@
+uuid: 2673d423-7576-44d3-bbcf-85e32ffe7c03
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.collection_logo.image_library_widget_image
+    - image.style.large
+    - media.type.collection_logo
+  module:
+    - image
+id: media.collection_logo.default
+targetEntityType: media
+bundle: collection_logo
+mode: default
+content:
+  image_library_widget_image:
+    label: visually_hidden
+    weight: 0
+    settings:
+      image_style: large
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  thumbnail: true
+  uid: true

@@ -6,10 +6,10 @@ namespace Drupal\joinup_group\Form;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\rdf_entity\RdfInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
 
 /**
- * Form to unshare a community content from within collections.
+ * Form to unshare a community content from within groups.
  */
 abstract class UnshareForm extends ShareFormBase {
 
@@ -36,14 +36,14 @@ abstract class UnshareForm extends ShareFormBase {
   public function doBuildForm(array $form, FormStateInterface $form_state, ?EntityInterface $entity = NULL): array {
     $this->entity = $entity;
 
-    $options = array_map(function ($collection) {
-      /** @var \Drupal\rdf_entity\RdfInterface $collection */
-      return $collection->label();
-    }, $this->getCollections());
+    $options = array_map(function ($group) {
+      /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
+      return $group->label();
+    }, $this->getGroups());
 
-    $form['collections'] = [
+    $form['groups'] = [
       '#type' => 'checkboxes',
-      '#title' => 'Collections',
+      '#title' => 'Groups',
       '#options' => $options,
       '#default_value' => [],
     ];
@@ -61,58 +61,58 @@ abstract class UnshareForm extends ShareFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-    $collections = [];
+    $groups = [];
     // We can safely loop through these ids, as invalid options are handled
     // already by Drupal.
-    foreach ($form_state->getValue('collections') as $id => $checked) {
+    foreach ($form_state->getValue('groups') as $id => $checked) {
       if ($checked) {
-        $collection = $this->sparqlStorage->load($id);
-        $this->removeFromCollection($collection);
-        $collections[] = $collection->label();
+        $group = $this->sparqlStorage->load($id);
+        $this->removeFromGroup($group);
+        $groups[] = $group->label();
       }
     }
 
-    if (!empty($collections)) {
-      $this->messenger->addStatus('Item was unshared from the following collections: ' . implode(', ', $collections) . '.');
+    if (!empty($groups)) {
+      $this->messenger->addStatus('Item was unshared from the following groups: ' . implode(', ', $groups) . '.');
     }
     $form_state->setRedirectUrl($this->entity->toUrl());
   }
 
   /**
-   * Gets a list of collections where the content can be unshared from the user.
+   * Gets a list of groups where the content can be unshared from the user.
    *
-   * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collections where the user is a facilitator and the content is
+   * @return \Drupal\joinup_group\Entity\GroupInterface[]
+   *   A list of groups where the user is a facilitator and the content is
    *   shared.
    */
-  protected function getCollections(): array {
-    $collections = $this->getAlreadySharedCollectionIds();
-    if (empty($collections)) {
-      return $collections;
+  protected function getGroups(): array {
+    $groups = $this->getAlreadySharedGroupIds();
+    if (empty($groups)) {
+      return $groups;
     }
 
     if ($this->currentUser->hasPermission('administer shared entities')) {
-      return $this->sparqlStorage->loadMultiple($collections);
+      return $this->sparqlStorage->loadMultiple($groups);
     }
-    return array_intersect_key($this->getUserGroupsByPermission($this->getPermissionForAction('unshare')), array_flip($collections));
+    return array_intersect_key($this->getUserGroupsByPermission($this->getPermissionForAction('unshare')), array_flip($groups));
   }
 
   /**
-   * Removes the current node from being shared inside a collection.
+   * Removes the current node from being shared inside a group.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The collection where to remove the node.
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
+   *   The group where to remove the node.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
-   *   Thrown when the unshared entity cannot be saved after the collection is
+   *   Thrown when the unshared entity cannot be saved after the group is
    *   removed from it.
    * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
    *   Thrown when the entity storage is read only.
    */
-  protected function removeFromCollection(RdfInterface $collection): void {
+  protected function removeFromGroup(GroupInterface $group): void {
     // Flipping is needed to easily unset the value.
-    $current_ids = array_flip($this->getAlreadySharedCollectionIds());
-    unset($current_ids[$collection->id()]);
+    $current_ids = array_flip($this->getAlreadySharedGroupIds());
+    unset($current_ids[$group->id()]);
     $this->entity->get($this->getSharedOnFieldName())->setValue(array_flip($current_ids));
     $this->entity->save();
   }

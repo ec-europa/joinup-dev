@@ -1,0 +1,13 @@
+uuid: 0794ae5f-942c-4459-b021-f71cc1d69bd2
+langcode: en
+status: true
+dependencies: {  }
+id: news_logo
+label: 'News logo'
+description: 'Pre-uploaded images to be used as logo for news items.'
+source: image
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: image_library_widget_image
+field_map: {  }
