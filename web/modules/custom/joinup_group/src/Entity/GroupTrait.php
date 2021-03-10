@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\joinup_group\Entity;
 
 use Drupal\Core\Access\AccessResultInterface;
-use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
@@ -20,7 +19,7 @@ trait GroupTrait {
    * {@inheritdoc}
    */
   public function getMembership(?int $uid = NULL, array $states = [OgMembershipInterface::STATE_ACTIVE]): ?OgMembershipInterface {
-    assert(is_subclass_of($this, ContentEntityBase::class), __TRAIT__ . ' is intended to be used in bundle classes for content entities.');
+    assert(is_subclass_of($this, GroupInterface::class), __TRAIT__ . ' is intended to be used in bundle classes for group entities.');
 
     // Default to the current user.
     $uid = $uid ?? \Drupal::currentUser()->id();
@@ -32,7 +31,7 @@ trait GroupTrait {
    * {@inheritdoc}
    */
   public function getGroupAccess(string $permission, ?AccountInterface $user = NULL): AccessResultInterface {
-    assert(is_subclass_of($this, ContentEntityBase::class), __TRAIT__ . ' is intended to be used in bundle classes for content entities.');
+    assert(is_subclass_of($this, GroupInterface::class), __TRAIT__ . ' is intended to be used in bundle classes for group entities.');
 
     /** @var \Drupal\og\OgAccessInterface $og_access */
     $og_access = \Drupal::service('og.access');
