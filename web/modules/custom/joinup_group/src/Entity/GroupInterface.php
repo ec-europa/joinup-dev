@@ -16,6 +16,16 @@ use Drupal\og\OgMembershipInterface;
 interface GroupInterface extends ContentEntityInterface, LogoInterface {
 
   /**
+   * Flag for pre-moderated groups.
+   */
+  public const PRE_MODERATION = 1;
+
+  /**
+   * Flag for post-moderated groups.
+   */
+  public const POST_MODERATION = 0;
+
+  /**
    * Returns the given user's membership for this group entity.
    *
    * @param int $uid

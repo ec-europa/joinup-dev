@@ -6,8 +6,8 @@ namespace Drupal\Tests\joinup_community_content\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Tests\joinup_workflow\ExistingSite\JoinupWorkflowExistingSiteTestBase;
-use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
 use Drupal\joinup_group\ContentCreationOptions;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgGroupAudienceHelper;
@@ -305,7 +305,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
   protected function createAccessProvider(): array {
     return [
       'collection' => [
-        CommunityContentWorkflowAccessControlHandler::PRE_MODERATION => [
+        GroupInterface::PRE_MODERATION => [
           ContentCreationOptions::FACILITATORS_AND_AUTHORS => [
             'userModerator' => [
               'draft',
@@ -363,7 +363,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
             ],
           ],
         ],
-        CommunityContentWorkflowAccessControlHandler::POST_MODERATION => [
+        GroupInterface::POST_MODERATION => [
           ContentCreationOptions::FACILITATORS_AND_AUTHORS => [
             'userModerator' => [
               'draft',
@@ -417,7 +417,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
         ],
       ],
       'solution' => [
-        CommunityContentWorkflowAccessControlHandler::PRE_MODERATION => [
+        GroupInterface::PRE_MODERATION => [
           ContentCreationOptions::FACILITATORS_AND_AUTHORS => [
             'userModerator' => [
               'draft',
@@ -455,7 +455,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
             ],
           ],
         ],
-        CommunityContentWorkflowAccessControlHandler::POST_MODERATION => [
+        GroupInterface::POST_MODERATION => [
           ContentCreationOptions::FACILITATORS_AND_AUTHORS => [
             'userModerator' => [
               'draft',
@@ -639,7 +639,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
    */
   protected function updateAccessProvider(): array {
     $data = [
-      CommunityContentWorkflowAccessControlHandler::PRE_MODERATION => [
+      GroupInterface::PRE_MODERATION => [
         'draft' => [
           'own' => [
             'draft',
@@ -712,7 +712,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
           ],
         ],
       ],
-      CommunityContentWorkflowAccessControlHandler::POST_MODERATION => [
+      GroupInterface::POST_MODERATION => [
         'draft' => [
           'own' => [
             'draft',
@@ -818,7 +818,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
   protected function deleteAccessProvider(): array {
     return [
       'collection' => [
-        CommunityContentWorkflowAccessControlHandler::PRE_MODERATION => [
+        GroupInterface::PRE_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [
@@ -850,7 +850,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
             ],
           ],
         ],
-        CommunityContentWorkflowAccessControlHandler::POST_MODERATION => [
+        GroupInterface::POST_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [
@@ -881,7 +881,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
         ],
       ],
       'solution' => [
-        CommunityContentWorkflowAccessControlHandler::PRE_MODERATION => [
+        GroupInterface::PRE_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [
@@ -913,7 +913,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
             ],
           ],
         ],
-        CommunityContentWorkflowAccessControlHandler::POST_MODERATION => [
+        GroupInterface::POST_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [

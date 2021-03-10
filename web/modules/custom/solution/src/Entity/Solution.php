@@ -11,7 +11,6 @@ use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_bundle_class\LogoTrait;
 use Drupal\joinup_bundle_class\ShortIdTrait;
-use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
 use Drupal\joinup_featured\FeaturedContentTrait;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\GroupTrait;
@@ -142,7 +141,7 @@ class Solution extends Rdf implements SolutionInterface {
    * {@inheritdoc}
    */
   public function isModerated(): bool {
-    return $this->get('field_is_moderation')->value == CommunityContentWorkflowAccessControlHandler::PRE_MODERATION;
+    return $this->get('field_is_moderation')->value == GroupInterface::PRE_MODERATION;
   }
 
 }

@@ -15,9 +15,9 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_community_content\JoinupCommunityContentCommentAccessControlHandler;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\node\NodeInterface;
@@ -139,7 +139,7 @@ function joinup_community_content_workflow_selector(EntityInterface $entity): ?s
   }
 
   $moderation = JoinupGroupHelper::getModeration($parent_entity);
-  if ($moderation === CommunityContentWorkflowAccessControlHandler::POST_MODERATION) {
+  if ($moderation === GroupInterface::POST_MODERATION) {
     return 'node:post_moderated';
   }
 

@@ -8,8 +8,8 @@ use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_bundle_class\LogoTrait;
 use Drupal\joinup_bundle_class\ShortIdTrait;
-use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
 use Drupal\joinup_featured\FeaturedContentTrait;
+use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\GroupTrait;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeFallbackTrait;
 use Drupal\joinup_workflow\ArchivableEntityTrait;
@@ -109,7 +109,7 @@ class Collection extends Rdf implements CollectionInterface {
    * {@inheritdoc}
    */
   public function isModerated(): bool {
-    return $this->get('field_ar_moderation')->value == CommunityContentWorkflowAccessControlHandler::PRE_MODERATION;
+    return $this->get('field_ar_moderation')->value == GroupInterface::PRE_MODERATION;
   }
 
 }
