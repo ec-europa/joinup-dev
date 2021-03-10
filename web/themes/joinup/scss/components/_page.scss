@@ -99,13 +99,19 @@
     @extend .white-box;
   }
 }
-
-
+// Webtools eTrans css overrides:
+// https://europa.eu/webtools/webtools.etrans.css?utilities=true
+// --------------------------------------------------
 #block-webtools-etrans {
   clear: both;
   position: relative;
   width: 100%;
   z-index: 10;
+
+  .wt-etrans,
+  .wtEtransRequester {
+    display: block;
+  }
 
   #eTransButton {
     display: block;
@@ -118,9 +124,7 @@
     text-decoration: initial;
     letter-spacing: 0.5px;
     color: #fff;
-    border-width: 3px !important;
-    border-style: solid;
-    border-color: $color-blue-default;
+    border-width: 3px solid $color-blue-default !important;
     background-color: $color-blue-default !important;
     background-image: none !important;
     white-space: nowrap;
