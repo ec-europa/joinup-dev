@@ -352,6 +352,11 @@ function joinup_community_content_form_node_revision_revert_confirm_alter(&$form
  * @see \joinup_community_content_form_node_revision_revert_confirm_alter()
  */
 function joinup_community_content_form_node_revision_revert_confirm_submit(array $form, FormStateInterface $form_state) {
+  // We are altering the NodeRevisionRevertForm which is a simple confirmation
+  // form. It does not expose the entity through any methods, but we can get it
+  // from the form arguments.
   $entity = $form_state->getBuildInfo()['args'][0];
-  $entity->set('field_state', 'proposed');
+  if ($entity instanceof CommunityContentInterface) {
+    $entity->setWorkflowState('proposed');
+  }
 }
