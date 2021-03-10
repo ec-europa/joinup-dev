@@ -1,0 +1,37 @@
+uuid: b6d8b55e-5ad0-4909-9592-31d7d6de7f43
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.collection_banner.image_library_widget_image
+    - image.style.thumbnail
+    - media.type.collection_banner
+  module:
+    - image
+id: media.collection_banner.default
+targetEntityType: media
+bundle: collection_banner
+mode: default
+content:
+  image_library_widget_image:
+    type: image_image
+    weight: 1
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  langcode: true
+  path: true
+  status: true
+  uid: true

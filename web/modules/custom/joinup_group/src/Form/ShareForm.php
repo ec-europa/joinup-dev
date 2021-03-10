@@ -11,7 +11,8 @@ use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\rdf_entity\RdfInterface;
+use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 
 /**
  * Form to share a community content inside collections.
@@ -37,9 +38,6 @@ abstract class ShareForm extends ShareFormBase {
    *
    * @return array
    *   The form structure.
-   *
-   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
-   *   Thrown when the group reference is not populated.
    */
   public function doBuildForm(array $form, FormStateInterface $form_state, ?EntityInterface $entity = NULL): array {
     $this->entity = $entity;
@@ -49,44 +47,44 @@ abstract class ShareForm extends ShareFormBase {
       '#entity' => $this->entity,
     ];
 
-    $collections = $this->getShareableCollections();
-
-    // Wrap all the elements with a fieldset, like the "checkboxes" element
-    // does. So we can use a label for all the elements.
-    // @see CompositeFormElementTrait::preRenderCompositeFormElement()
-    $form['collections'] = [
-      '#theme_wrappers' => ['fieldset'],
-      '#title' => $this->t('Collections'),
-      '#title_display' => 'invisible',
-      '#tree' => TRUE,
-      '#access' => !empty($collections),
-    ];
-
-    foreach ($collections as $id => $collection) {
-      $form['collections'][$id] = [
+    $groups = $this->getShareableGroups();
+    foreach ($groups as $id => $group) {
+      $bundle = $group->bundle();
+      $form['groups'][$bundle][$id] = [
         '#type' => 'container',
         '#attributes' => [
           'class' => ['share-box__row'],
         ],
-        'entity' => $this->rdfBuilder->view($collection, 'compact'),
+        'entity' => $this->rdfBuilder->view($group, 'compact'),
         'checkbox' => [
           '#type' => 'checkbox',
-          '#title' => $collection->label(),
+          '#title' => $group->label(),
           // Replicate the behaviour of the "checkboxes" element again.
           // @see \Drupal\Core\Render\Element\Checkboxes::processCheckboxes
           '#return_value' => $id,
           '#default_value' => FALSE,
           // Drop the extra "checkbox" key.
-          '#parents' => ['collections', $id],
+          '#parents' => ['groups', $id],
         ],
       ];
+    }
+
+    foreach (JoinupGroupHelper::GROUP_BUNDLES as $bundle) {
+      if (!empty($form['groups'][$bundle])) {
+        $form['groups'][$bundle] += [
+          '#theme_wrappers' => ['fieldset'],
+          '#title' => $this->bundleInfo->getBundleCountLabel('rdf_entity', $bundle, count($groups), 'no_count_capitalize'),
+          '#tree' => TRUE,
+          '#access' => !empty($groups),
+        ];
+      }
     }
 
     $form['actions'] = ['#type' => 'actions'];
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#extra_suggestion' => 'light_blue',
-      '#value' => empty($collections) ? $this->t('Close') : $this->t('Share'),
+      '#value' => empty($groups) ? $this->t('Close') : $this->t('Share'),
     ];
 
     if ($this->isModal() || $this->isAjaxForm()) {
@@ -103,19 +101,19 @@ abstract class ShareForm extends ShareFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     // Keep only the checked entries.
-    $collections = array_filter($form_state->getValue('collections'));
-    $collection_labels = [];
+    $groups = array_filter($form_state->getValue('groups'));
+    $group_labels = [];
     // We can safely loop through these ids, as unvalid options are handled
     // already by Drupal.
-    foreach ($collections as $id => $value) {
-      $collection = $this->sparqlStorage->load($id);
-      $this->shareOnCollection($collection);
-      $collection_labels[] = $collection->label();
+    foreach ($groups as $id => $value) {
+      $group = $this->sparqlStorage->load($id);
+      $this->shareOnGroup($group);
+      $group_labels[] = $group->label();
     }
 
-    // Show a message if the content was shared on at least one collection.
-    if (!empty($collections)) {
-      $this->messenger->addStatus('Item was shared on the following collections: ' . implode(', ', $collection_labels) . '.');
+    // Show a message if the content was shared on at least one group.
+    if (!empty($groups)) {
+      $this->messenger->addStatus('Item was shared on the following groups: ' . implode(', ', $group_labels) . '.');
     }
 
     $form_state->setRedirectUrl($this->entity->toUrl());
@@ -161,41 +159,44 @@ abstract class ShareForm extends ShareFormBase {
   }
 
   /**
-   * Retrieves a list of collections where the entity can be shared on.
+   * Retrieves a list of groups where the entity can be shared on.
    *
-   * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collections where the current entity can be shared on.
+   * @return \Drupal\joinup_group\Entity\GroupInterface[]
+   *   A list of groups where the current entity can be shared on.
    */
-  protected function getShareableCollections(): array {
+  protected function getShareableGroups(): array {
     // Being part also for the access check, do not allow the user to access
-    // this page for entities without a field to store collections it is shared
-    // in.
+    // this page for entities without a field to store groups it is shared in.
     if (!$this->entity->hasField($this->getSharedOnFieldName())) {
       return [];
     }
 
-    $user_collections = $this->getUserGroupsByPermission($this->getPermissionForAction('share'));
+    $user_groups = $this->getUserGroupsByPermission($this->getPermissionForAction('share'));
+    // Always show collections first.
+    uasort($user_groups, function (GroupInterface $group1, GroupInterface $group2): int {
+      return $group1->bundle() <=> $group2->bundle();
+    });
     if ($parent = $this->getExcludedParent()) {
-      unset($user_collections[$parent->id()]);
+      unset($user_groups[$parent->id()]);
     }
 
-    return array_diff_key($user_collections, array_flip($this->getAlreadySharedCollectionIds()));
+    return array_diff_key($user_groups, array_flip($this->getAlreadySharedGroupIds()));
   }
 
   /**
-   * Shares the current entity inside a collection.
+   * Shares the current entity inside a group.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The collection where to share the entity on.
+   * @param \Drupal\joinup_group\Entity\GroupInterface $group
+   *   The group where to share the entity on.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    *   Thrown when the current entity cannot be retrieved from the database.
    * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
    *   Thrown when the entity storage is read only.
    */
-  protected function shareOnCollection(RdfInterface $collection): void {
-    $current_ids = $this->getAlreadySharedCollectionIds();
-    $current_ids[] = $collection->id();
+  protected function shareOnGroup(GroupInterface $group): void {
+    $current_ids = $this->getAlreadySharedGroupIds();
+    $current_ids[] = $group->id();
 
     // Entity references do not ensure uniqueness.
     $current_ids = array_unique($current_ids);
