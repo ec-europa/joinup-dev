@@ -8,7 +8,7 @@ services:
 # macOS users should override this value by uncommenting the following
 # 'volumes:' block.
 #    volumes:
-#      - ${PWD}:/var/www/html:delegated
+#    - nfsmount:/var/www/html
 
 # In order to expose this service to the host machine, uncomment the following
 # 'ports:' block. If the host machine is already running a webserver instance on
@@ -90,3 +90,12 @@ services:
 # server will be accessible at localhost:5900 with no password.
 #    ports:
 #      - '5900:5900'
+
+# macOS users should uncomment the following block:
+# volumes:
+#  nfsmount:
+#    driver: local
+#    driver_opts:
+#      type: nfs
+#      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+#      device: ":${PWD}/"
