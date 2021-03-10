@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ce2a743606cf3772ba509757f5d2e1d",
+    "content-hash": "602a42b94cdd63475ac883f392f176f6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4485,6 +4485,58 @@
             "homepage": "https://www.drupal.org/project/iframe",
             "support": {
                 "source": "https://git.drupalcode.org/project/iframe"
+            }
+        },
+        {
+            "name": "drupal/image_library_widget",
+            "version": "1.0.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/image_library_widget.git",
+                "reference": "8.x-1.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/image_library_widget-8.x-1.0-alpha1.zip",
+                "reference": "8.x-1.0-alpha1",
+                "shasum": "448d97a0f480a8392eaaa6ba4ea3eb24c5ea7779"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9",
+                "php": ">=7.1.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0-alpha1",
+                    "datestamp": "1579698183",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Claudiu Cristea",
+                    "homepage": "https://www.drupal.org/user/56348",
+                    "email": "clau.cristea@gmail.com"
+                }
+            ],
+            "description": "Provides a widget allowing users to upload or choose an existing image from a library.",
+            "homepage": "https://www.drupal.org/project/image_library_widget",
+            "keywords": [
+                "Drupal",
+                "Views",
+                "image",
+                "library"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/image_library_widget"
             }
         },
         {
@@ -10166,7 +10218,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-11-25T21:59:37+00:00"
+            "time": "2020-08-03T19:59:39+00:00"
         },
         {
             "name": "stack/builder",

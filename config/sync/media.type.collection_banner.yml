@@ -1,0 +1,13 @@
+uuid: 144e4010-2c7c-48b5-88ab-d64ce707e3fe
+langcode: en
+status: true
+dependencies: {  }
+id: collection_banner
+label: 'Collection banner'
+description: 'Pre-uploaded images to be used as banner for collections.'
+source: image
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: image_library_widget_image
+field_map: {  }

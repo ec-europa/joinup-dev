@@ -56,6 +56,7 @@ Feature: "Add custom page" visibility options.
       | Code Camp | collection |
       | Parachute | solution   |
 
+  @uploadFiles:test.zip
   Scenario Outline: Add custom page as a facilitator.
     And I am logged in as a facilitator of the "<second title>" <group>
 
