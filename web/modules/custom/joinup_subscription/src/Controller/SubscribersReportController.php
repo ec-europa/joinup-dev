@@ -145,6 +145,7 @@ class SubscribersReportController extends ControllerBase {
         '#type' => 'table',
         '#header' => $headers,
         '#rows' => $data,
+        '#attributes' => ['class' => ['global-subscribers-report']],
       ],
       'download' => [
         '#theme' => 'download_link',
