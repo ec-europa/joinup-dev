@@ -498,6 +498,22 @@ class JoinupContext extends RawDrupalContext {
   }
 
   /**
+   * Navigates to the revisions form of a node.
+   *
+   * @param string $title
+   *   The title of the node.
+   *
+   * @When I visit the revisions page for :title
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   */
+  public function visitRevisionsForm(string $title): void {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title);
+    $this->visitPath($node->toUrl('version-history')->toString());
+  }
+
+  /**
    * Navigates to the dashboard page of the user.
    *
    * @When I go to the dashboard
