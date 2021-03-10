@@ -68,6 +68,13 @@ trait GroupTrait {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function isModerated(): bool {
+    return (int) $this->getMainPropertyValue($this->getGroupModerationFieldName()) === GroupInterface::PRE_MODERATION;
+  }
+
+  /**
    * Returns the membership manager.
    *
    * @return \Drupal\og\MembershipManagerInterface

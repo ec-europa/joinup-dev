@@ -140,8 +140,8 @@ class Solution extends Rdf implements SolutionInterface {
   /**
    * {@inheritdoc}
    */
-  public function isModerated(): bool {
-    return $this->get('field_is_moderation')->value == GroupInterface::PRE_MODERATION;
+  public function getGroupModerationFieldName(): string {
+    return 'field_is_moderation';
   }
 
 }

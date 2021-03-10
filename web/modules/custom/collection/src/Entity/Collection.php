@@ -94,6 +94,13 @@ class Collection extends Rdf implements CollectionInterface {
   /**
    * {@inheritdoc}
    */
+  public function getGroupModerationFieldName(): string {
+    return 'field_ar_moderation';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getGlossarySettings(): array {
     /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
     $meta_entity = $this->get('settings')->entity;
@@ -103,13 +110,6 @@ class Collection extends Rdf implements CollectionInterface {
     return [
       'link_only_first' => (bool) $meta_entity->get('glossary_link_only_first')->value,
     ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isModerated(): bool {
-    return $this->get('field_ar_moderation')->value == GroupInterface::PRE_MODERATION;
   }
 
 }

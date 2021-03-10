@@ -137,4 +137,12 @@ interface GroupInterface extends ContentEntityInterface, LogoInterface {
    */
   public function isModerated(): bool;
 
+  /**
+   * Returns the field name of the group moderation field.
+   *
+   * @return string
+   *   The field name.
+   */
+  public function getGroupModerationFieldName(): string;
+
 }
