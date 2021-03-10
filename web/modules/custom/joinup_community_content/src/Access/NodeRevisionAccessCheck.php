@@ -124,7 +124,7 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
     $result = $this->ogAccess->userAccessEntity($map[$operation], $node, $account)
       ->orIf($this->ogAccess->userAccessEntity($type_map[$operation], $node, $account));
 
-    // If the user owns the entity, check if they can 'view own revisions'
+    // If the user owns the entity, check if they can 'view own revisions'.
     if (!$result->isAllowed() && (int) $node->getOwnerId() === (int) $account->id()) {
       $result = $result->orIf($this->ogAccess->userAccessEntity('view own revisions', $node, $account));
     }
