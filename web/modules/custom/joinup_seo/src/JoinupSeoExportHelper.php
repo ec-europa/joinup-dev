@@ -59,8 +59,8 @@ class JoinupSeoExportHelper implements JoinupSeoExportHelperInterface {
     // resource, the expected response has to be in the 'application/jsonld'
     // format, something that we do not have. However, even for performance and
     // availability purposes, a local file is used instead.
-    $fixtures_path = __DIR__ . '/../fixtures/adms-ap-2.01.jsonld';
-    $content = file_get_contents($fixtures_path);
+    $context_path = __DIR__ . '/../assets/adms-ap-2.01.jsonld';
+    $content = file_get_contents($context_path);
     $content = json_decode($content);
     return [
       // Frame contains the "@context" and passes this to the values.
