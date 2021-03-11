@@ -31,6 +31,20 @@ function joinup_core_theme($existing, $type, $theme, $path) {
         'front' => [],
       ],
     ],
+    'download_link' => [
+      'variables' => [
+        'attributes' => [],
+        'extension' => '',
+        'url' => NULL,
+        'title' => '',
+      ],
+    ],
+    'vertical_table' => [
+      'variables' => [
+        'attributes' => [],
+        'rows' => [],
+      ],
+    ],
   ];
 }
 

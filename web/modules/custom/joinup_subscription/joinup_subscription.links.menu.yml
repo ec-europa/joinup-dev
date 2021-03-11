@@ -3,3 +3,9 @@ joinup_subscription.my_subscriptions:
   route_name: joinup_subscription.my_subscriptions
   menu_name: account
   weight: 0
+
+joinup_subscription.subscribers_report:
+  title: 'Subscribers report'
+  route_name: joinup_subscription.subscribers_report
+  parent: joinup.admin_reporting
+  weight: 2
