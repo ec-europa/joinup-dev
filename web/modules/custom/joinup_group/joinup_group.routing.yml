@@ -36,6 +36,22 @@ joinup_group.membership_delete_action.confirm:
   requirements:
     _custom_access: 'Drupal\joinup_group\Form\DeleteGroupMembershipConfirmForm::access'
 
+joinup_group.reports:
+  path: '/rdf_entity/{rdf_entity}/reports'
+  defaults:
+    _controller: Drupal\joinup_group\Controller\GroupReportsController::reports
+    _title: 'Reports'
+  requirements:
+    _custom_access: Drupal\joinup_group\Controller\GroupReportsController::access
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+        bundle:
+          - collection
+          - solution
+    _og_entity_type_id: rdf_entity
+
 joinup_group.transfer_group_ownership_confirm:
   path: '/group/transfer/ownership'
   defaults:

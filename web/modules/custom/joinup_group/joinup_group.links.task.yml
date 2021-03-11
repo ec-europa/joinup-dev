@@ -1,0 +1,5 @@
+joinup_group.reports:
+  route_name: joinup_group.reports
+  title: 'Reports'
+  base_route: entity.rdf_entity.canonical
+  weight: 22
