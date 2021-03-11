@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group\Entity;
 
-use Drupal\Core\Entity\ContentEntityBase;
+use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\Entity\OutdatedContentTrait;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
@@ -20,10 +21,25 @@ trait GroupTrait {
   /**
    * {@inheritdoc}
    */
-  public function getMembership(int $uid, array $states = [OgMembershipInterface::STATE_ACTIVE]): ?OgMembershipInterface {
-    assert(is_subclass_of($this, ContentEntityBase::class), __TRAIT__ . ' is intended to be used in bundle classes for content entities.');
+  public function getMembership(?int $uid = NULL, array $states = [OgMembershipInterface::STATE_ACTIVE]): ?OgMembershipInterface {
+    assert(is_subclass_of($this, GroupInterface::class), __TRAIT__ . ' is intended to be used in bundle classes for group entities.');
+
+    // Default to the current user.
+    $uid = $uid ?? \Drupal::currentUser()->id();
 
     return $this->getMembershipManager()->getMembership($this, $uid, $states);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getGroupAccess(string $permission, ?AccountInterface $user = NULL): AccessResultInterface {
+    assert(is_subclass_of($this, GroupInterface::class), __TRAIT__ . ' is intended to be used in bundle classes for group entities.');
+
+    /** @var \Drupal\og\OgAccessInterface $og_access */
+    $og_access = \Drupal::service('og.access');
+
+    return $og_access->userAccess($this, $permission, $user);
   }
 
   /**

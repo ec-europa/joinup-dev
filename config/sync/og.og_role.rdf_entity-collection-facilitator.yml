@@ -13,6 +13,7 @@ group_bundle: collection
 group_id: null
 permissions:
   - 'access content moderation overview'
+  - 'access group reports'
   - 'add user'
   - 'administer comments'
   - 'administer tallinn settings'
