@@ -37,3 +37,7 @@ $settings['config_sync_directory'] = DRUPAL_ROOT . '/../config/sync';
 $settings['joinup']['sparql_public_endpoint'] = getenv('SPARQL_PUBLIC_ENDPOINT');
 
 $databases['sparql_default']['default']['namespace'] = 'Drupal\\joinup_sparql\\Driver\\Database\\joinup_sparql';
+
+$settings['queue_service_joinup_group:group_update'] = 'joinup_group.group_aware_queue';
+$settings['queue_service_joinup_group:group_content_update'] = 'joinup_group.group_aware_queue';
+

@@ -46,6 +46,7 @@ drupal:
         - Error logging
         - Mail catch
         - Redis
+        - Custom queue services
       site-clean:
         - Main settings
         - Databases
@@ -60,6 +61,7 @@ drupal:
         - Error logging
         - Mail catch
         - Redis
+        - Custom queue services
       behat:
         - Main settings
         - Databases
@@ -72,6 +74,7 @@ drupal:
         - OpenEuropa Newsroom Newsletter
         - OpenEuropa Webtools Geocoding Cache
         - Redis
+        - Custom queue services
       error_page_test:
         - Main settings
         - Databases
@@ -85,6 +88,7 @@ drupal:
         - OpenEuropa Webtools Geocoding Cache
         - Redis
         - Pipe errors to a temporary file
+        - Custom queue services
       phpunit:
         - Main settings
         - Databases
@@ -97,6 +101,7 @@ drupal:
         - OpenEuropa Newsroom Newsletter
         - OpenEuropa Webtools Geocoding Cache
         - Error logging
+        - Custom queue services
       prod:
         - Main settings
         - Databases
@@ -105,6 +110,7 @@ drupal:
         - Matomo & OpenEuropa Webtools Analytics
         - Custom error handler
         - Redis
+        - Custom queue services
     header: |
       <?php
 
@@ -216,7 +222,7 @@ drupal:
         $settings['error_page']['template_dir'] = DRUPAL_ROOT . '/../resources/error_page';
         set_error_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleError']);
         set_exception_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleException']);
-      Pipe errors to a temporary file:
+      Pipe errors to a temporary file: |
         $settings['error_page']['log']['method'] = 3;
         $settings['error_page']['log']['destination'] = 'php://temp';
       OpenEuropa Newsroom Newsletter: |
@@ -227,5 +233,8 @@ drupal:
         $settings['filecache']['strategy']['bins']['geocoder'] = 'persist';
       Development: |
         $settings['extension_discovery_scan_tests'] = TRUE;
-      Error logging:
+      Error logging: |
         $config['system.logging']['error_level'] = 'verbose';
+      Custom queue services: |
+        $settings['queue_service_joinup_group:group_update'] = 'joinup_group.group_aware_queue';
+        $settings['queue_service_joinup_group:group_content_update'] = 'joinup_group.group_aware_queue';
