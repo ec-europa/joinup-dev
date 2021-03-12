@@ -86,7 +86,7 @@ Feature:
     And I click "Share"
     And I check "Nintendo64"
     And I press "Share"
-    Then I should see the success message "Item was shared on the following collections: Nintendo64"
+    Then I should see the success message "Item was shared on the following groups: Nintendo64"
 
     When I go to the "Latest news" custom page
     Then I should see the "Rare Nintendo64 disk drive discovered" tile
@@ -98,7 +98,7 @@ Feature:
     And I click the contextual link "Unshare" in the "NEC VR4300 CPU" tile
     And I check "Nintendo64"
     And I press "Submit"
-    Then I should see the success message "Item was unshared from the following collections: Nintendo64"
+    Then I should see the success message "Item was unshared from the following groups: Nintendo64"
 
     When I go to the "Latest news" custom page
     Then I should see the "Rare Nintendo64 disk drive discovered" tile
@@ -175,7 +175,7 @@ Feature:
     And I click "Share"
     And I check "Nintendo64"
     And I press "Share" in the "Modal buttons" region
-    Then I should see the success message "Item was shared on the following collections: Nintendo64"
+    Then I should see the success message "Item was shared on the following groups: Nintendo64"
     When I go to the "Chosen content" custom page
     Then I should see the following tiles in the correct order:
       | 20 year anniversary                   |

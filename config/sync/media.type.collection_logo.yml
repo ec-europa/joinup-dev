@@ -1,0 +1,13 @@
+uuid: 912f25eb-aa46-46c4-8e0d-b70bd24247fe
+langcode: en
+status: true
+dependencies: {  }
+id: collection_logo
+label: 'Collection logo'
+description: 'Pre-uploaded images to be used as logo for collections.'
+source: image
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: image_library_widget_image
+field_map: {  }

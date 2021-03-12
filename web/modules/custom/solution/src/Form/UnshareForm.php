@@ -40,7 +40,7 @@ class UnshareForm extends OriginalForm {
   public function access(RdfInterface $rdf_entity) {
     $this->entity = $rdf_entity;
 
-    return AccessResult::allowedIf(!empty($this->getCollections()));
+    return AccessResult::allowedIf(!empty($this->getGroups()));
   }
 
   /**

@@ -53,7 +53,7 @@ Feature: As a privileged user
     When I check "Collection share candidate 1"
     And I press "Share" in the "Modal buttons" region
     And I wait for AJAX to finish
-    Then I should see the success message "Item was shared on the following collections: Collection share candidate 1."
+    Then I should see the success message "Item was shared on the following groups: Collection share candidate 1."
 
     # Verify that the collections where the solution has already been shared are
     # not shown anymore in the list.
@@ -111,7 +111,7 @@ Feature: As a privileged user
 
     # I should still be on the same page, but the collection content should be
     # changed. The "Solution to be shared" should no longer be visible.
-    Then I should see the success message "Item was unshared from the following collections: Collection share candidate 1."
+    Then I should see the success message "Item was unshared from the following groups: Collection share candidate 1."
     And I should not see the "Solution to be shared" tile
 
     # Verify that the content is again shareable.
