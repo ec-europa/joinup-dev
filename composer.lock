@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7038096502ae71baa31e440d481b8d3a",
+    "content-hash": "ab309f7e023a7f21d4ebbaeed972a613",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5550,6 +5550,9 @@
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://git.drupalcode.org/project/password_policy/-/merge_requests/3.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

@@ -307,6 +307,9 @@
             "drupal/paragraphs_jquery_ui_accordion": {
                 "Formatter settings are missing schema @see https://www.drupal.org/i/3194916": "https://git.drupalcode.org/project/paragraphs_jquery_ui_accordion/-/merge_requests/1.diff"
             },
+            "drupal/password_policy": {
+                "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://git.drupalcode.org/project/password_policy/-/merge_requests/3.diff"
+            },
             "drupal/pipeline": {
                 "Allow other modules to interact when the pipeline finishes @see https://www.drupal.org/project/pipeline/issues/3192409": "https://git.drupalcode.org/project/pipeline/-/merge_requests/1.diff"
             },
