@@ -56,7 +56,7 @@
         "drupal/og_menu": "^1.0-alpha4",
         "drupal/paragraphs": "^1.12",
         "drupal/paragraphs_jquery_ui_accordion": "^1.4",
-        "drupal/password_policy": "3.0-beta1",
+        "drupal/password_policy": "3.x-dev",
         "drupal/pathauto": "~1.8",
         "drupal/pipeline": "^1.0",
         "drupal/publication_date": "^2.0-beta2",
@@ -306,9 +306,6 @@
             },
             "drupal/paragraphs_jquery_ui_accordion": {
                 "Formatter settings are missing schema @see https://www.drupal.org/i/3194916": "https://git.drupalcode.org/project/paragraphs_jquery_ui_accordion/-/merge_requests/1.diff"
-            },
-            "drupal/password_policy": {
-                "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://git.drupalcode.org/project/password_policy/-/merge_requests/3.diff"
             },
             "drupal/pipeline": {
                 "Allow other modules to interact when the pipeline finishes @see https://www.drupal.org/project/pipeline/issues/3192409": "https://git.drupalcode.org/project/pipeline/-/merge_requests/1.diff"
