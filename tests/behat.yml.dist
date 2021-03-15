@@ -18,6 +18,7 @@ default:
         - Drupal\joinup\Context\ContactFormContext
         - Drupal\joinup\Context\ContactInformationContext
         - Drupal\joinup\Context\CustomPageContext
+        - Drupal\joinup\Context\DateRangeContext
         - Drupal\joinup\Context\DrupalContext
         - Drupal\joinup\Context\EifContext
         - Drupal\joinup\Context\EuplContext
