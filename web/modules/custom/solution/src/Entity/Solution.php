@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\solution\Entity;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\asset_release\Entity\AssetReleaseInterface;
 use Drupal\collection\Entity\CollectionInterface;
 use Drupal\collection\Exception\MissingCollectionException;
@@ -87,6 +88,28 @@ class Solution extends Rdf implements SolutionInterface {
   /**
    * {@inheritdoc}
    */
+  public function getReleaseIds(): array {
+    return $this->getReferencedEntityIds('field_is_has_version')['rdf_entity'] ?? [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getReleases(): array {
+    return $this->entityTypeManager()->getStorage('rdf_entity')
+      ->loadMultiple($this->getReleaseIds());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDistributionIds(): array {
+    return $this->getReferencedEntityIds('field_is_distribution')['rdf_entity'] ?? [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getLatestReleaseId(): ?string {
     return $this->get('latest_release')->target_id;
   }
@@ -135,6 +158,28 @@ class Solution extends Rdf implements SolutionInterface {
    */
   public function getLogoFieldName(): string {
     return 'field_is_logo';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function doGetGroupContentIds(): array {
+    $ids = ['node' => $this->getNodeGroupContent()];
+    $releases = $this->getReleases();
+    $ids = NestedArray::mergeDeep($ids, [
+      'rdf_entity' => [
+        'asset_release' => array_keys($releases),
+        'asset_distribution' => $this->getDistributionIds(),
+      ],
+    ]);
+    foreach ($releases as $release) {
+      $ids = NestedArray::mergeDeep($ids, [
+        'rdf_entity' => [
+          'asset_distribution' => $release->getDistributionIds(),
+        ],
+      ]);
+    }
+    return $ids;
   }
 
 }
