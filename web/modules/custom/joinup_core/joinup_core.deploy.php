@@ -33,3 +33,31 @@ function joinup_core_deploy_0106900(array &$sandbox): string {
 
   return 'Deleted tables.';
 }
+
+/**
+ * Update URL aliases of group content with short ID.
+ */
+function joinup_core_deploy_0106901(array &$sandbox): string {
+  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  $updater = \Drupal::getContainer()->get('joinup_group.url_alias_updater');
+
+  if (!isset($sandbox['ids'])) {
+    $sandbox['ids'] = $storage->getQuery()
+      ->condition('rid', ['collection', 'solution'], 'IN')
+      ->exists('field_short_id')
+      ->execute();
+    $sandbox['total'] = count($sandbox['ids']);
+    $sandbox['progress'] = 0;
+  }
+
+  $ids = array_splice($sandbox['ids'], 0, 10);
+  /** @var \Drupal\joinup_group\Entity\GroupInterface[] $groups */
+  $groups = $storage->loadMultiple($ids);
+  foreach ($groups as $group) {
+    $updater->queueGroupContent($group);
+  }
+  $sandbox['progress'] += count($ids);
+  $sandbox['#finished'] = (int) empty($sandbox['ids']);
+
+  return "Processed {$sandbox['progress']} out of {$sandbox['total']}";
+}

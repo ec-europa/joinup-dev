@@ -14,19 +14,18 @@ use Drupal\Core\Url;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\Og;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Confirmation form for users that want to revoke their collection membership.
+ * Confirmation form for users that want to revoke their group membership.
  */
 class LeaveGroupConfirmForm extends ConfirmFormBase {
 
   /**
    * The group that is about to be abandoned by the user.
    *
-   * @var \Drupal\collection\Entity\CollectionInterface
+   * @var \Drupal\joinup_group\Entity\GroupInterface
    */
   protected $group;
 
@@ -38,7 +37,7 @@ class LeaveGroupConfirmForm extends ConfirmFormBase {
   protected $membershipManager;
 
   /**
-   * Constructs a LeaveCollectionConfirmForm.
+   * Constructs a LeaveGroupConfirmForm.
    *
    * @param \Drupal\og\MembershipManagerInterface $membershipManager
    *   The membership manager service.
@@ -60,7 +59,7 @@ class LeaveGroupConfirmForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getFormId(): string {
-    return 'leave_collection_confirm_form';
+    return 'leave_group_confirm_form';
   }
 
   /**
@@ -173,15 +172,15 @@ class LeaveGroupConfirmForm extends ConfirmFormBase {
   }
 
   /**
-   * Access check for the LeaveCollectionConfirmForm.
+   * Access check for the LeaveGroupConfirmForm.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The collection that is on the verge of losing a member.
+   * @param \Drupal\joinup_group\Entity\GroupInterface $rdf_entity
+   *   The group that is on the verge of losing a member.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result object.
    */
-  public static function access(RdfInterface $rdf_entity): AccessResultInterface {
+  public static function access(GroupInterface $rdf_entity): AccessResultInterface {
     /** @var \Drupal\Core\Session\AccountProxyInterface $account_proxy */
     $account_proxy = \Drupal::service('current_user');
 
@@ -190,7 +189,7 @@ class LeaveGroupConfirmForm extends ConfirmFormBase {
       return AccessResult::forbidden();
     }
 
-    // Only allow access if the current user is a member of the collection.
+    // Only allow access if the current user is a member of the group.
     $user = User::load($account_proxy->id());
     return AccessResult::allowedIf(Og::isMember($rdf_entity, $user));
   }

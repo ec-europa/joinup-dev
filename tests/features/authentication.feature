@@ -36,6 +36,7 @@ Feature: User authentication
       | admin/reporting/group-administrators/export         |
       | admin/reporting/solutions-by-licences               |
       | admin/reporting/solutions-by-type                   |
+      | admin/reporting/subscribers-report                  |
       | admin/structure                                     |
       | admin/structure/compatibility-document              |
       | admin/structure/compatibility-document/display      |
@@ -80,8 +81,9 @@ Feature: User authentication
     Then the response status code should be 403
 
     Examples:
-      | path                                       |
-      | admin/reporting/distribution-downloads/csv |
+      | path                                        |
+      | admin/reporting/distribution-downloads/csv  |
+      | admin/reporting/subscribers-report/download |
 
   Scenario Outline: Authenticated user can access pages they are authorized to
     Given I am logged in as a user with the "authenticated" role
@@ -114,6 +116,7 @@ Feature: User authentication
       | admin/reporting/group-administrators/export         |
       | admin/reporting/solutions-by-licences               |
       | admin/reporting/solutions-by-type                   |
+      | admin/reporting/subscribers-report                  |
       | admin/structure                                     |
       | admin/structure/compatibility-document              |
       | admin/structure/compatibility-document/display      |
@@ -156,8 +159,9 @@ Feature: User authentication
     Then the response status code should be 403
 
     Examples:
-      | path                                       |
-      | admin/reporting/distribution-downloads/csv |
+      | path                                        |
+      | admin/reporting/distribution-downloads/csv  |
+      | admin/reporting/subscribers-report/download |
 
   Scenario Outline: Moderator can access pages they are authorized to
     Given I am logged in as a user with the "moderator" role
@@ -176,6 +180,7 @@ Feature: User authentication
       | admin/reporting/group-administrators/export |
       | admin/reporting/solutions-by-licences       |
       | admin/reporting/solutions-by-type           |
+      | admin/reporting/subscribers-report          |
       | admin/structure/compatibility-document      |
       | dashboard                                   |
       | licence                                     |
