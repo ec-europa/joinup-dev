@@ -782,3 +782,31 @@ function joinup_group_node_grants(AccountInterface $account, string $op): array 
 
   return $grants;
 }
+
+/**
+ * Implements hook_entity_update().
+ */
+function joinup_group_entity_update(EntityInterface $group): void {
+  if ($group instanceof GroupInterface) {
+    /** @var \Drupal\joinup_group\Entity\GroupInterface $group_original_entity */
+    $group_original_entity = $group->original;
+    if ($group_original_entity->getShortId() !== $group->getShortId()) {
+      \Drupal::getContainer()->get('joinup_group.url_alias_updater')->queueGroupContent($group);
+      $bundle_info = \Drupal::getContainer()->get('entity_type.bundle.info')->getBundleInfo($group->getEntityTypeId())[$group->bundle()];
+      $arguments = [
+        '@bundle' => $bundle_info['label_singular'],
+        '%original' => $group_original_entity->getShortId(),
+        '%actual' => $group->getShortId(),
+      ];
+      if ($group_original_entity->getShortId() && $group->getShortId()) {
+        \Drupal::messenger()->addStatus(t("You've changed the @bundle's short ID from %original to %actual. It will take some time until the @bundle content URLs will be updated.", $arguments));
+      }
+      elseif (!$group_original_entity->getShortId()) {
+        \Drupal::messenger()->addStatus(t("You've added a @bundle short ID: %actual. It will take some time until the @bundle content URLs will be updated.", $arguments));
+      }
+      elseif (!$group->getShortId()) {
+        \Drupal::messenger()->addStatus(t("You've removed the @bundle's short ID: %original. It will take some time until the @bundle content URLs will be updated.", $arguments));
+      }
+    }
+  }
+}

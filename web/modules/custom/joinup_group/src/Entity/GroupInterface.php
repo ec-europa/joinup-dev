@@ -8,6 +8,7 @@ use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_bundle_class\LogoInterface;
+use Drupal\joinup_bundle_class\ShortIdInterface;
 use Drupal\og\OgMembershipInterface;
 
 /**
@@ -15,7 +16,7 @@ use Drupal\og\OgMembershipInterface;
  *
  * This comprises collections and solutions.
  */
-interface GroupInterface extends ContentEntityInterface, LogoInterface {
+interface GroupInterface extends ContentEntityInterface, LogoInterface, ShortIdInterface {
 
   /**
    * Returns the given user's membership for this group entity.
@@ -139,5 +140,20 @@ interface GroupInterface extends ContentEntityInterface, LogoInterface {
    *   the group.
    */
   public function hasGroupPermission(int $uid, string $permission): bool;
+
+  /**
+   * Returns recursively all content IDs of this group.
+   *
+   * WARNING! This method is resource intensive and it's not recommended to be
+   * used in a normal page request. It's strongly advised to be used only in
+   * operations that support longer requests, such as cron run.
+   *
+   * @return array
+   *   An associative array keyed by the group content entity type ID. Each
+   *   value is an associative array keyed by entity bundle and having the node
+   *   IDs as values. The array is sorted by keys and, within each bundle, by
+   *   entity IDs.
+   */
+  public function getGroupContentIds(): array;
 
 }
