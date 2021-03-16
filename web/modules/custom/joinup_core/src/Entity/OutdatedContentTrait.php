@@ -16,7 +16,7 @@ trait OutdatedContentTrait {
    */
   public function getOutdatedTime(): ?int {
     assert($this instanceof OutdatedContentInterface, 'Class ' . get_class($this) . ' must implement ' . OutdatedContentInterface::class);
-    if ($this->hasField('outdated_time')) {
+    if ($this->hasField('outdated_time') && !$this->get('outdated_time')->isEmpty()) {
       return $this->get('outdated_time')->first()->getValue()['value'];
     }
     return NULL;
