@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\solution\Entity;
 
+use Drupal\asset_distribution\Entity\DistributionsParentInterface;
 use Drupal\asset_release\Entity\AssetReleaseInterface;
 use Drupal\collection\Entity\CollectionContentInterface;
-use Drupal\joinup_bundle_class\ShortIdInterface;
 use Drupal\joinup_featured\FeaturedContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
@@ -17,7 +17,23 @@ use Drupal\rdf_entity\RdfInterface;
 /**
  * Interface for solution entities in Joinup.
  */
-interface SolutionInterface extends RdfInterface, CollectionContentInterface, EntityPublicationTimeInterface, EntityWorkflowStateInterface, FeaturedContentInterface, PinnableGroupContentInterface, GroupInterface, ShortIdInterface {
+interface SolutionInterface extends RdfInterface, CollectionContentInterface, EntityPublicationTimeInterface, EntityWorkflowStateInterface, FeaturedContentInterface, PinnableGroupContentInterface, GroupInterface, DistributionsParentInterface {
+
+  /**
+   * Returns teh child releases.
+   *
+   * @return \Drupal\asset_release\Entity\AssetReleaseInterface[]
+   *   An array of child releases, keyed by their ID.
+   */
+  public function getReleases(): array;
+
+  /**
+   * Returns a list of child release IDs.
+   *
+   * @return string[]
+   *   A list of release IDs.
+   */
+  public function getReleaseIds(): array;
 
   /**
    * Returns the latest release ID of this solution, if any.

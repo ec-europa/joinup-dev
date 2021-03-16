@@ -8,6 +8,7 @@ use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\Entity\OutdatedContentTrait;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\user\UserInterface;
 
@@ -84,6 +85,61 @@ trait GroupTrait {
       return $membership->hasPermission($permission);
     }
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getGroupContentIds(): array {
+    $group_content = $this->doGetGroupContentIds();
+    // Ensure that the results are sorted.
+    ksort($group_content);
+    array_walk($group_content, function (array &$ids_by_bundle): void {
+      ksort($ids_by_bundle);
+      array_walk($ids_by_bundle, function (array &$ids): void {
+        // Sorting using array_walk($ids_by_bundle, 'sort') short form, just
+        // doesn't work because array_walk() passes the array key as a second
+        // callback parameter. So sort() will receive the array key as second
+        // parameter, but the function expects a total different value there.
+        sort($ids);
+      });
+    });
+    return $group_content;
+  }
+
+  /**
+   * Processes and returns a list of group content entities.
+   *
+   * @return array
+   *   An associative array keyed by the group content entity type ID. Each
+   *   value is an associative array keyed by entity bundle and having the node
+   *   IDs as values.
+   */
+  abstract protected function doGetGroupContentIds(): array;
+
+  /**
+   * Returns a list of group content node IDs, grouped by node type.
+   *
+   * @return int[][]
+   *   An associative array keyed by node type and having node IDs as values.
+   */
+  protected function getNodeGroupContent(): array {
+    $storage = $this->entityTypeManager()->getStorage('node');
+
+    $nids = $storage->getQuery()
+      ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $this->id())
+      ->execute();
+
+    if (!$nids) {
+      return [];
+    }
+
+    $nids_per_bundle = [];
+    foreach ($storage->loadMultiple($nids) as $nid => $node) {
+      $nids_per_bundle[$node->bundle()][] = $nid;
+    }
+
+    return $nids_per_bundle;
   }
 
   /**
