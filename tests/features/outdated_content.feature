@@ -52,7 +52,7 @@ Feature:
 
     When I go to the "Outdated published discussion" discussion
     Then I should see the heading "Outdated published discussion"
-    And I should see "This discussion is more than 11 years old"
+    And the text "This discussion is more than 11 years old" should appear 1 time
 
     # A document is not prone to be outdated.
     When I go to the "Very old document" document
@@ -66,7 +66,7 @@ Feature:
 
     When I go to the "Outdated published event" event
     Then I should see the heading "Outdated published event"
-    And I should see "This event is more than 1 year old"
+    And the text "This event is more than 1 year old" should appear 1 time
 
     # News item is prone to be outdated.
     When I go to the "Recent published news" news
@@ -75,7 +75,7 @@ Feature:
 
     When I go to the "Outdated published news" news
     Then I should see the heading "Outdated published news"
-    And I should see "This news is more than 3 years old"
+    And the text "This news is more than 3 years old" should appear 1 time
 
     # Login as moderator to test content that was never published.
     Given I am logged in as a moderator

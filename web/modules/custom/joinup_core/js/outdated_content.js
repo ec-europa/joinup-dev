@@ -31,7 +31,7 @@
                 "@bundle": drupalSettings.outdatedContent.bundle,
               })
             );
-          $('.page__title-wrapper').find('.details').append(notice);
+          $('.page__title-wrapper').find('.details.after-title').append(notice);
         }
       }
     }
