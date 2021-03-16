@@ -1,0 +1,24 @@
+uuid: 73710360-354d-4a25-96b7-d9157a28a0d1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.content_listing.field_content_listing
+    - paragraphs.paragraphs_type.content_listing
+  module:
+    - custom_page
+id: paragraph.content_listing.default
+targetEntityType: paragraph
+bundle: content_listing
+mode: default
+content:
+  field_content_listing:
+    weight: 0
+    settings:
+      query_builder: true
+    third_party_settings: {  }
+    type: search_api_field_custom_page
+    region: content
+hidden:
+  created: true
+  status: true

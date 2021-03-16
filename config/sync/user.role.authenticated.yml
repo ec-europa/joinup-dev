@@ -95,6 +95,7 @@ permissions:
   - 'view own unpublished content'
   - 'view paragraph content accordion'
   - 'view paragraph content accordion_item'
+  - 'view paragraph content content_listing'
   - 'view paragraph content iframe'
   - 'view paragraph content json_map'
   - 'view paragraph content simple_paragraph'

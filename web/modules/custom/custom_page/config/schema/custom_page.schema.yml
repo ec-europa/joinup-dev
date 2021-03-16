@@ -1,5 +1,5 @@
 # Extend the default search_api_field schema to add the "show_shared" key.
-field.field.node.custom_page.field_cp_content_listing:
+field.field.paragraph.content_listing.field_content_listing:
   type: field_config_base
   label: 'Field'
   mapping:

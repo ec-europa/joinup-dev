@@ -1,13 +1,17 @@
-uuid: 2d0d86f1-9177-4aa5-925f-7a7aed536b77
+uuid: 8ed1a591-60ba-4daa-956b-27ca3cc9221d
 langcode: en
 status: true
 dependencies:
   module:
-    - node
+    - field_permissions
+    - paragraphs
     - search_api_field
-id: node.field_cp_content_listing
-field_name: field_cp_content_listing
-entity_type: node
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: paragraph.field_content_listing
+field_name: field_content_listing
+entity_type: paragraph
 type: search_api_field
 settings:
   index: published
@@ -20,20 +24,26 @@ settings:
       document: view_mode_tile
       event: view_mode_tile
       news: view_mode_tile
-      newsletter: view_mode_tile
       tallinn_report: view_mode_tile
+      video: view_mode_tile
     'entity:rdf_entity':
       asset_distribution: view_mode_tile
       asset_release: view_mode_tile
       collection: view_mode_tile
-      contact_information: view_mode_tile
       licence: view_mode_tile
-      owner: ''
       solution: view_mode_tile
+      spdx_licence: view_mode_tile
+    'entity:taxonomy_term':
+      eif_conceptual_model: default
+      eif_interoperability_layer: default
+      eif_principle: default
+      eif_recommendation: default
+    'entity:user':
+      user: view_mode_tile
 module: search_api_field
 locked: false
 cardinality: 1
-translatable: false
+translatable: true
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

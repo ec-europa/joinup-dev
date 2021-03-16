@@ -14,6 +14,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\paragraphs\Entity\Paragraph;
+
 /**
  * Delete stale tables.
  */
@@ -61,9 +63,49 @@ QUERY;
 }
 
 /**
- * Update URL aliases of group content with short ID.
+ * Moves the data about the content listing of custom pages to paragraphs (2).
  */
 function joinup_core_deploy_0106902(array &$sandbox): string {
+  if (empty($sandbox['items'])) {
+    $state = \Drupal::state();
+    $sandbox['items'] = $state->get('isaicp_5880');
+    $state->delete('isaicp_5880');
+    $sandbox['progress'] = 0;
+    $sandbox['count'] = count($sandbox['items']);
+    $sandbox['updated'] = 0;
+  }
+
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $items = array_splice($sandbox['items'], 0, 20);
+  // Refactor the array to be keyed by 'nid' and having 'listing' as value.
+  $items = array_combine(array_column($items, 'nid'), array_column($items, 'listing'));
+
+  foreach ($node_storage->loadMultiple(array_keys($items)) as $nid => $custom_page) {
+    $paragraph = Paragraph::create(['type' => 'content_listing']);
+    $cp_value = [0 => ['value' => $items[$nid]]];
+    $paragraph->set('field_content_listing', $cp_value)->save();
+
+    $paragraphs_body = $custom_page->get('field_paragraphs_body');
+    $value = $paragraphs_body->getValue();
+    $value[] = [
+      'target_id' => $paragraph->id(),
+      'target_revision_id' => $paragraph->getRevisionId(),
+    ];
+    $paragraphs_body->setValue($value);
+    $custom_page->save();
+    $sandbox['updated']++;
+  }
+
+  $sandbox['progress'] += count($items);
+  $sandbox['#finished'] = (int) empty($sandbox['items']);
+
+  return "Updated {$sandbox['progress']} out of {$sandbox['count']} [{$sandbox['updated']} were updated]";
+}
+
+/**
+ * Update URL aliases of group content with short ID.
+ */
+function joinup_core_deploy_0106903(array &$sandbox): string {
   $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
   $updater = \Drupal::getContainer()->get('joinup_group.url_alias_updater');
 
