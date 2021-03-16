@@ -34,3 +34,10 @@ joinup_core.support.contact:
   menu_name: support
   url: 'internal:/contact'
   weight: -100
+
+joinup_core.manage_media:
+  title: 'Library'
+  route_name: view.media.media_page_list
+  description: 'Allows to manage of the image library.'
+  parent: system.admin
+  weight: 0

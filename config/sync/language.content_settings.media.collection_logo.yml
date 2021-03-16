@@ -1,0 +1,11 @@
+uuid: a1bf8795-a3cf-429e-b0fb-0c355b2bcd41
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.collection_logo
+id: media.collection_logo
+target_entity_type_id: media
+target_bundle: collection_logo
+default_langcode: site_default
+language_alterable: false

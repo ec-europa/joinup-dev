@@ -10,6 +10,7 @@ group_resolvers:
   - collection_from_route
   - eif_group
   - joinup_route_group
+  - joinup_subscription_routes
   - route_group
   - route_group_content
 _core:

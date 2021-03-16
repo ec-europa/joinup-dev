@@ -26,6 +26,7 @@ Feature: User authentication
       | admin/config                                        |
       | admin/config/search/redirect                        |
       | admin/content                                       |
+      | admin/content/media                                 |
       | admin/content/rdf                                   |
       | admin/legal-notice                                  |
       | admin/legal-notice/add                              |
@@ -35,14 +36,23 @@ Feature: User authentication
       | admin/reporting/group-administrators/export         |
       | admin/reporting/solutions-by-licences               |
       | admin/reporting/solutions-by-type                   |
+      | admin/reporting/subscribers-report                  |
       | admin/structure                                     |
       | admin/structure/compatibility-document              |
       | admin/structure/compatibility-document/display      |
       | admin/structure/compatibility-document/form-display |
+      | admin/structure/media                               |
       | admin/structure/views                               |
       | dashboard                                           |
       | licence                                             |
       | licence/add                                         |
+      | media/add                                           |
+      | media/add/collection_banner                         |
+      | media/add/collection_logo                           |
+      | media/add/event_logo                                |
+      | media/add/news_logo                                 |
+      | media/add/solution_banner                           |
+      | media/add/solution_logo                             |
       | node/add                                            |
       | node/add/custom_page                                |
       | node/add/discussion                                 |
@@ -71,8 +81,9 @@ Feature: User authentication
     Then the response status code should be 403
 
     Examples:
-      | path                                       |
-      | admin/reporting/distribution-downloads/csv |
+      | path                                        |
+      | admin/reporting/distribution-downloads/csv  |
+      | admin/reporting/subscribers-report/download |
 
   Scenario Outline: Authenticated user can access pages they are authorized to
     Given I am logged in as a user with the "authenticated" role
@@ -95,6 +106,7 @@ Feature: User authentication
       | admin                                               |
       | admin/config                                        |
       | admin/content                                       |
+      | admin/content/media                                 |
       | admin/content/rdf                                   |
       | admin/legal-notice                                  |
       | admin/legal-notice/add                              |
@@ -104,14 +116,23 @@ Feature: User authentication
       | admin/reporting/group-administrators/export         |
       | admin/reporting/solutions-by-licences               |
       | admin/reporting/solutions-by-type                   |
+      | admin/reporting/subscribers-report                  |
       | admin/structure                                     |
       | admin/structure/compatibility-document              |
       | admin/structure/compatibility-document/display      |
       | admin/structure/compatibility-document/form-display |
+      | admin/structure/media                               |
       | admin/structure/views                               |
       | dashboard                                           |
       | licence                                             |
       | licence/add                                         |
+      | media/add                                           |
+      | media/add/collection_banner                         |
+      | media/add/collection_logo                           |
+      | media/add/event_logo                                |
+      | media/add/news_logo                                 |
+      | media/add/solution_banner                           |
+      | media/add/solution_logo                             |
       | node/add                                            |
       | node/add/custom_page                                |
       | node/add/discussion                                 |
@@ -138,8 +159,9 @@ Feature: User authentication
     Then the response status code should be 403
 
     Examples:
-      | path                                       |
-      | admin/reporting/distribution-downloads/csv |
+      | path                                        |
+      | admin/reporting/distribution-downloads/csv  |
+      | admin/reporting/subscribers-report/download |
 
   Scenario Outline: Moderator can access pages they are authorized to
     Given I am logged in as a user with the "moderator" role
@@ -147,20 +169,29 @@ Feature: User authentication
 
     Examples:
       | path                                        |
-      | admin/people                                |
-      | admin/structure/compatibility-document      |
+      | admin/content/media                         |
       | admin/content/rdf                           |
       | admin/legal-notice                          |
       | admin/legal-notice/add                      |
+      | admin/people                                |
       | admin/reporting/distribution-downloads      |
       | admin/reporting/distribution-downloads/csv  |
       | admin/reporting/export-user-list            |
       | admin/reporting/group-administrators/export |
       | admin/reporting/solutions-by-licences       |
       | admin/reporting/solutions-by-type           |
+      | admin/reporting/subscribers-report          |
+      | admin/structure/compatibility-document      |
       | dashboard                                   |
       | licence                                     |
       | licence/add                                 |
+      | media/add                                   |
+      | media/add/collection_banner                 |
+      | media/add/collection_logo                   |
+      | media/add/event_logo                        |
+      | media/add/news_logo                         |
+      | media/add/solution_banner                   |
+      | media/add/solution_logo                     |
       | propose/collection                          |
 
   Scenario Outline: Moderator cannot access restricted pages
@@ -177,6 +208,7 @@ Feature: User authentication
       | admin/structure                                     |
       | admin/structure/compatibility-document/display      |
       | admin/structure/compatibility-document/form-display |
+      | admin/structure/media                               |
       | admin/structure/views                               |
       | node/add                                            |
       | node/add/custom_page                                |
@@ -219,6 +251,7 @@ Feature: User authentication
       | admin                              |
       | admin/config                       |
       | admin/content                      |
+      | admin/content/media                |
       | admin/content/rdf                  |
       | admin/legal-notice                 |
       | admin/legal-notice/add             |

@@ -1,0 +1,11 @@
+uuid: e98ff76b-f863-4601-8f59-985d1a2c0e2f
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.news_logo
+id: media.news_logo
+target_entity_type_id: media
+target_bundle: news_logo
+default_langcode: site_default
+language_alterable: false
