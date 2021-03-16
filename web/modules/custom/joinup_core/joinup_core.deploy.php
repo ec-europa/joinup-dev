@@ -37,9 +37,35 @@ function joinup_core_deploy_0106900(array &$sandbox): string {
 }
 
 /**
+ * Fix the datatype of the owner ID in owners and contact information.
+ */
+function joinup_core_deploy_0106901(array &$sandbox): void {
+  $database = \Drupal::getContainer()->get('sparql.endpoint');
+  $variables = [
+    'http://joinup.eu/owner/published' => 'http://joinup.eu/owner/uid',
+    'http://joinup.eu/contact_information/published' => 'http://joinup.eu/contact_information/uid',
+  ];
+
+  foreach ($variables as $graph => $predicate) {
+    $query = <<<QUERY
+WITH <{$graph}>
+DELETE { ?owner <{$predicate}> ?value }
+INSERT { ?owner <{$predicate}> ?new_value }
+WHERE {
+ ?owner <{$predicate}> ?value .
+ FILTER (datatype(?value) = <integer>) .
+ BIND(STRDT(STR(?value), xsd:integer) AS ?new_value)
+}
+QUERY;
+
+    $database->query($query);
+  }
+}
+
+/**
  * Moves the data about the content listing of custom pages to paragraphs (2).
  */
-function joinup_core_deploy_0106901(array &$sandbox): string {
+function joinup_core_deploy_0106902(array &$sandbox): string {
   if (empty($sandbox['items'])) {
     $state = \Drupal::state();
     $sandbox['items'] = $state->get('isaicp_5880');
@@ -79,7 +105,7 @@ function joinup_core_deploy_0106901(array &$sandbox): string {
 /**
  * Update URL aliases of group content with short ID.
  */
-function joinup_core_deploy_0106902(array &$sandbox): string {
+function joinup_core_deploy_0106903(array &$sandbox): string {
   $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
   $updater = \Drupal::getContainer()->get('joinup_group.url_alias_updater');
 

@@ -6,19 +6,25 @@ Feature: SEO for RDF entities.
 
   Scenario Outline: Basic JSON meta information for collections and solutions.
     Given the following <type>:
-  | title | SEO entity |
-  | state | validated  |
+      | title | SEO entity |
+      | state | validated  |
 
     When I visit the "SEO entity" <type>
     Then the rdf metadata of the "SEO entity" rdf entity should be attached in the page
+
+    And 1 metatag graph of type "<graph type>" should exist in the page
+    And the metatag graph of the item with "@type" "<graph type>" should have the following "http://purl.org/dc/terms/title" properties:
+      | property  | value      |
+      | @language | en         |
+      | @value    | SEO entity |
 
     When I click "<link>"
     Then the rdf metadata of the "SEO entity" rdf entity should not be attached in the page
 
     Examples:
-      | type       | link        |
-      | collection | Collections |
-      | solution   | Solutions   |
+      | type       | link        | graph type      |
+      | collection | Collections | AssetRepository |
+      | solution   | Solutions   | Asset           |
 
   Scenario: Basic JSON meta information for releases and distributions.
     Given the following solution:
