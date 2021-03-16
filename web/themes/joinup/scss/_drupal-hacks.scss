@@ -647,6 +647,11 @@ details .details-title {
   }
 }
 
+// Fix download button on subscribers report
+table.global-subscribers-report {
+  margin-bottom: $form-margin;
+}
+
 // Wrapper for map on event page.
 .custom-map-wrapper {
   background: #fff;

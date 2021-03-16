@@ -45,7 +45,7 @@ class LastUpdatedFieldItemList extends FieldItemList {
     $last_updated = $collection->getChangedTime();
 
     // Check for a higher child solution changed timestamp.
-    foreach ($collection->getSolutions() as $solution) {
+    foreach ($collection->getSolutions(TRUE) as $solution) {
       if ($solution->getWorkflowState() === 'validated') {
         if ($solution->getChangedTime() > $last_updated) {
           $last_updated = $solution->getChangedTime();

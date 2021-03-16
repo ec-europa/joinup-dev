@@ -1,0 +1,22 @@
+{#
+/**
+ * @file
+ * Theme override for a link to a dynamically generated download.
+ *
+ * Available variables:
+ * - attributes: The HTML attributes for the containing element.
+ * - extension: The extension of the downloaded file.
+ * - url: The URL that generates the download.
+ * - title: The link title.
+ *
+ * @see template_preprocess_download_link()
+ */
+#}
+{% if extension %}
+  <span class="form-table_link-icon icon icon--mime-{{ extension }}"></span>
+  <div class="fieldset__file-wrapper">
+    <span{{ attributes }}><a href="{{ url }}">{{ title }}</a></span>
+  </div>
+{% else %}
+  <a href="{{ url }}"{{ attributes }}>{{ title }}</a>
+{% endif %}

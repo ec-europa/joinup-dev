@@ -22,6 +22,7 @@ Feature: Collection API
       | state | validated                         |
     Then I should have 1 collection
 
+  @uploadFiles:logo.png,banner.jpg
   Scenario: Assign ownership when a collection is created through UI.
     Given the following owner:
       | name     | type                  |

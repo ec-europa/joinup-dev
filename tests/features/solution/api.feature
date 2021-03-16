@@ -53,7 +53,7 @@ Feature: Solution API
     Then I should have 1 solution
     And the "Inflatable rooster" solution should be affiliated with the "Inflatable mascots" collection
 
-  @terms
+  @terms @uploadFiles:logo.png,banner.jpg
   Scenario: Assign ownership during creation of solutions through UI
     Given the following owner:
       | name      | type            |

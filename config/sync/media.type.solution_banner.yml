@@ -1,0 +1,13 @@
+uuid: aec30381-155c-40cf-9cca-07f3c0d9dd7f
+langcode: en
+status: true
+dependencies: {  }
+id: solution_banner
+label: 'Solution banner'
+description: 'Pre-uploaded images to be used as banner for solutions.'
+source: image
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: image_library_widget_image
+field_map: {  }

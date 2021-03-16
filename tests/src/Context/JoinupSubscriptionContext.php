@@ -76,6 +76,32 @@ class JoinupSubscriptionContext extends RawDrupalContext {
   }
 
   /**
+   * Navigates to the global subscribers report.
+   *
+   * @When I go to the global subscribers report
+   */
+  public function visitGlobalSubscribersReport(): void {
+    $url = Url::fromRoute('joinup_subscription.subscribers_report');
+    $this->visitPath($url->toString());
+  }
+
+  /**
+   * Navigates to the subscribers report for the given group.
+   *
+   * @param string $group
+   *   The name of the group.
+   *
+   * @When I go to the subscribers report for :group
+   */
+  public function visitSubscribersReport(string $group): void {
+    $group_entity = $this->getRdfEntityByLabel($group);
+    $url = Url::fromRoute('joinup_subscription.group_subscribers_report', [
+      'rdf_entity' => $group_entity->id(),
+    ]);
+    $this->visitPath($url->toString());
+  }
+
+  /**
    * Subscribes the given users to the given discussion.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
