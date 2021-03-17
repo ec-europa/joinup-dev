@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\collection\Entity;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_bundle_class\LogoTrait;
@@ -44,8 +45,8 @@ class Collection extends Rdf implements CollectionInterface {
   /**
    * {@inheritdoc}
    */
-  public function getSolutions(bool $published = TRUE): array {
-    $ids = $this->getSolutionIds($published);
+  public function getSolutions(bool $only_published = FALSE): array {
+    $ids = $this->getSolutionIds($only_published);
     if (empty($ids)) {
       return $ids;
     }
@@ -58,10 +59,10 @@ class Collection extends Rdf implements CollectionInterface {
   /**
    * {@inheritdoc}
    */
-  public function getSolutionIds(bool $published = TRUE): array {
+  public function getSolutionIds(bool $only_published = FALSE): array {
     $ids = $this->getReferencedEntityIds('field_ar_affiliates')['rdf_entity'] ?? [];
 
-    if ($ids && $published) {
+    if ($ids && $only_published) {
       // Published solutions are stored in the 'default' graph.
       $ids = $this->entityTypeManager()
         ->getStorage('rdf_entity')
@@ -109,6 +110,23 @@ class Collection extends Rdf implements CollectionInterface {
     return [
       'link_only_first' => (bool) $meta_entity->get('glossary_link_only_first')->value,
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function doGetGroupContentIds(): array {
+    $ids = ['node' => $this->getNodeGroupContent()];
+    $solutions = $this->getSolutions();
+    $ids = NestedArray::mergeDeep($ids, [
+      'rdf_entity' => [
+        'solution' => array_keys($solutions),
+      ],
+    ]);
+    foreach ($solutions as $solution) {
+      $ids = NestedArray::mergeDeep($ids, $solution->getGroupContentIds());
+    }
+    return $ids;
   }
 
 }

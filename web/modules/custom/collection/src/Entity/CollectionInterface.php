@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\collection\Entity;
 
-use Drupal\joinup_bundle_class\ShortIdInterface;
 use Drupal\joinup_featured\FeaturedContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeInterface;
@@ -15,29 +14,29 @@ use Drupal\rdf_entity\RdfInterface;
 /**
  * Interface for collection entities in Joinup.
  */
-interface CollectionInterface extends RdfInterface, EntityPublicationTimeInterface, EntityWorkflowStateInterface, GroupInterface, FeaturedContentInterface, ShortIdInterface, ArchivableEntityInterface {
+interface CollectionInterface extends RdfInterface, EntityPublicationTimeInterface, EntityWorkflowStateInterface, GroupInterface, FeaturedContentInterface, ArchivableEntityInterface {
 
   /**
    * Returns the solutions that are affiliated with this collection.
    *
-   * @param bool $published
-   *   When TRUE, only published solutions will be returned. Defaults to TRUE.
+   * @param bool $only_published
+   *   (optional) Whether to return only published solutions. Defaults to FALSE.
    *
    * @return \Drupal\solution\Entity\SolutionInterface[]
    *   The solutions.
    */
-  public function getSolutions(bool $published = TRUE): array;
+  public function getSolutions(bool $only_published = FALSE): array;
 
   /**
    * Returns the IDs of the solutions that are affiliated with this collection.
    *
-   * @param bool $published
-   *   When TRUE, only published solutions will be returned. Defaults to TRUE.
+   * @param bool $only_published
+   *   (optional) Whether to return only published solutions. Defaults to FALSE.
    *
    * @return string[]
    *   The solutions.
    */
-  public function getSolutionIds(bool $published = TRUE): array;
+  public function getSolutionIds(bool $only_published = FALSE): array;
 
   /**
    * Returns the collection glossary settings.

@@ -32,7 +32,7 @@ Feature: Solution editing.
       | owner               | Acme inc.         |
       | state               | validated         |
 
-  @terms
+  @terms @uploadFiles:logo.png,banner.jpg
   Scenario: A solution owner can edit only its own solutions.
     When I am logged in as "Yancy Burton"
     And I go to the homepage of the "Collection example" collection

@@ -1,0 +1,3 @@
+download subscribers report:
+  title: 'Download the subscribers report'
+  restrict access: true

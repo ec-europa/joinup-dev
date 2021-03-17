@@ -307,13 +307,19 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
           '#markup' => $this->formatPlural($result->getResultCount(), '1 result found', '@count results found'),
         ],
         '#results' => $results,
-        '#pager' => [
-          '#type' => 'pager',
-        ],
       ];
 
-      // Build pager.
-      $this->pagerManager->createPager($result->getResultCount(), $limit);
+      // Build the pager. The $element will ensure that a unique identifier is
+      // assigned to each pager. This is required because the search_api_field
+      // is a field that can appear anywhere it can be attached. For example, a
+      // search_api_field might be directly attached to an entity but also as a
+      // paragraph. Without this, all pagers would change all fields.
+      static $element = 0;
+      $build['#pager'] = [
+        '#type' => 'pager',
+        '#element' => $element,
+      ];
+      $this->pagerManager->createPager($result->getResultCount(), $limit, $element++);
     }
     else {
       $build['#no_results_found'] = [

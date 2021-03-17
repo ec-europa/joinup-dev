@@ -1,0 +1,24 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a vertical table.
+ *
+ * Available variables:
+ * - attributes: Attributes to apply to the table element.
+ * - rows: An array of table cells to show. The first cell will be styled as a
+ *   table header.
+ */
+#}
+<table{{ attributes.addClass('table--vertical') }}>
+  {% for row in rows %}
+    <tr>
+      {% for col in row %}
+        {%  if loop.first %}
+          <th>{{ col }}</th>
+        {% else %}
+          <td>{{ col }}</td>
+        {% endif %}
+      {%  endfor %}
+    </tr>
+  {% endfor %}
+</table>

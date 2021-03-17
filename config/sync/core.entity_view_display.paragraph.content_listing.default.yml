@@ -1,0 +1,27 @@
+uuid: c1b2dfdb-ab4c-41bd-9491-731fa80794d9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.content_listing.field_content_listing
+    - paragraphs.paragraphs_type.content_listing
+  module:
+    - search_api_field
+id: paragraph.content_listing.default
+targetEntityType: paragraph
+bundle: content_listing
+mode: default
+content:
+  field_content_listing:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: search_api_field
+    region: content
+  paragraph_field_content_listing_top:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

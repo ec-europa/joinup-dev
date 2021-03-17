@@ -1,0 +1,10 @@
+uuid: fabc15a3-d09c-4f1a-bbc0-bb0894efeb29
+langcode: en
+status: true
+dependencies: {  }
+id: content_listing
+label: 'Content listing'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

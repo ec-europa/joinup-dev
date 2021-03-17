@@ -5,7 +5,7 @@ dependencies: {  }
 name: 'RDF Graph'
 rid: rdf_graph
 description: ''
-label_singular: 'RDF graph'
-label_plural: 'RDF graphs'
+label_singular: RDF graph
+label_plural: RDF graphs
 label_count:
-  default: !!binary MSBSREYgZ3JhcGgDQGNvdW50IFJERiBncmFwaHM=
+  default: "1 RDF graph\x03@count RDF graphs"

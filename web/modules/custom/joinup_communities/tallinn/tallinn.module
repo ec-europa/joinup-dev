@@ -174,13 +174,17 @@ function tallinn_search_api_query_search_api_field_field_collection_content_alte
 }
 
 /**
- * Implements hook_entity_view_alter().
+ * Implements hook_ENTITY_TYPE_view_alter().
  */
-function tallinn_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
-  if ($entity->bundle() !== 'custom_page') {
+function tallinn_paragraph_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  /** @var \Drupal\paragraphs\ParagraphInterface $entity */
+  if ($entity->bundle() !== 'content_listing') {
     return;
   }
-  if (empty($entity->og_audience) || $entity->og_audience->first()->target_id !== Tallinn::TALLINN_COMMUNITY_ID) {
+
+  /** @var \Drupal\custom_page\Entity\CustomPageInterface $parent */
+  $parent = $entity->getParentEntity();
+  if (empty($parent) || $parent->getGroup()->id() !== Tallinn::TALLINN_COMMUNITY_ID) {
     return;
   }
 
@@ -192,21 +196,21 @@ function tallinn_entity_view_alter(array &$build, EntityInterface $entity, Entit
   // Unset the facets only if there is a facet showing a tab for tallinn
   // reports. Tallinn reports are only shown on one page and on that page, only
   // tallinn reports are shown, so the check is straight forward.
-  if (isset($build['node_field_cp_content_listing_top'][0][0]['big_icons']['#items'][0]['#title']['#type']) && $build['node_field_cp_content_listing_top'][0][0]['big_icons']['#items'][0]['#title']['#type'] === 'tallinn_report') {
-    unset($build['node_field_cp_content_listing_top']);
+  if (isset($build['paragraph_field_content_listing_top'][0][0]['big_icons']['#items'][0]['#title']['#type']) && $build['paragraph_field_content_listing_top'][0][0]['big_icons']['#items'][0]['#title']['#type'] === 'tallinn_report') {
+    unset($build['paragraph_field_content_listing_top']);
   }
 
   // By default, results are not sorted. Sort results by title.
-  if (isset($build['field_cp_content_listing']['#results'])) {
-    uasort($build['field_cp_content_listing']['#results'], function ($first, $second) {
+  if (isset($build['field_content_listing']['#results'])) {
+    uasort($build['field_content_listing']['#results'], function ($first, $second) {
       return $first['#entity']->label() <=> $second['#entity']->label();
     });
   }
-  $build['field_cp_content_listing']['#cache']['contexts'][] = 'og_role';
+  $build['field_content_listing']['#cache']['contexts'][] = 'og_role';
 
   // Since the entities are only viewable by their authors the content listing
   // varies by user.
-  $build['field_cp_content_listing']['#cache']['contexts'][] = 'user';
+  $build['field_content_listing']['#cache']['contexts'][] = 'user';
 }
 
 /**
