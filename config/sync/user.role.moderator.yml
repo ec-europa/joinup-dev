@@ -30,6 +30,7 @@ permissions:
   - 'administer matomo integration'
   - 'administer nodes'
   - 'administer organic groups'
+  - 'administer outdated content threshold'
   - 'administer search fields'
   - 'administer shared entities'
   - 'administer site alert'

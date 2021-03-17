@@ -6,6 +6,7 @@ namespace Drupal\joinup_group\Entity;
 
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_core\Entity\OutdatedContentTrait;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
@@ -15,6 +16,8 @@ use Drupal\user\UserInterface;
  * Reusable methods for group bundles.
  */
 trait GroupTrait {
+
+  use OutdatedContentTrait;
 
   /**
    * {@inheritdoc}

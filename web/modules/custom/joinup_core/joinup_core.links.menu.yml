@@ -41,3 +41,10 @@ joinup_core.manage_media:
   description: 'Allows to manage of the image library.'
   parent: system.admin
   weight: 0
+
+joinup_core.outdated_content_threshold:
+  title: 'Outdated content thresholds'
+  route_name: joinup_core.outdated_content_threshold
+  parent: system.admin
+  weight: 3
+
