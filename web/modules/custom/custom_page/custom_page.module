@@ -18,7 +18,6 @@ use Drupal\custom_page\Entity\CustomPageInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\node\NodeInterface;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Drupal\search_api\Query\QueryInterface;
 
@@ -195,11 +194,10 @@ function custom_page_menu_local_actions_alter(&$local_actions) {
  *
  * Alters the Search API query in custom pages for the content listing field.
  */
-function custom_page_search_api_query_search_api_field_field_cp_content_listing_alter(QueryInterface &$query) {
-  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+function custom_page_search_api_query_search_api_field_field_content_listing_alter(QueryInterface &$query) {
   $entity = $query->getOption('search_api_field entity');
-  /** @var \Drupal\Core\Entity\EntityInterface $group */
-  $group = $entity->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->first()->entity;
+  $parent_entity = \Drupal::entityTypeManager()->getStorage($entity->get('parent_type')->value)->load($entity->get('parent_id')->value);
+  $group = $parent_entity->getGroup();
   if (!$group) {
     return;
   }
@@ -222,7 +220,7 @@ function custom_page_search_api_query_search_api_field_field_cp_content_listing_
   }
 
   // Remove the page itself from the results.
-  $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
+  $query->addCondition($parent_entity->getEntityType()->getKey('id'), $parent_entity->id(), '<>');
 }
 
 /**

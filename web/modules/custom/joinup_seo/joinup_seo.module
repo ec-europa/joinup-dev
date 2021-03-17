@@ -87,7 +87,7 @@ function joinup_seo_page_attachments(array &$attachments) {
     [
       '#tag' => 'script',
       '#attributes' => [
-        'type' => 'application/json',
+        'type' => 'application/ld+json',
       ],
       '#value' => $output,
     ],

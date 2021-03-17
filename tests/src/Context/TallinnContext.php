@@ -79,29 +79,34 @@ class TallinnContext extends RawDrupalContext {
       'uuid' => '9d7b6405-061a-4064-ae7e-b34c67f3afad',
       'title' => 'Implementation monitoring',
       'og_audience' => Tallinn::TALLINN_COMMUNITY_ID,
-      'field_paragraphs_body' => Paragraph::create([
-        'type' => 'simple_paragraph',
-        'field_body' => [
-          'value' => '{block:tallinn_dashboard}',
-          'format' => 'content_editor',
-        ],
-      ]),
-      'field_cp_content_listing' => [
-        [
-          'value' => [
-            'fields' => [
-              'field_cp_content_listing_content_type' => [
-                'weight' => 0,
-                'region' => 'top',
+      'field_paragraphs_body' => [
+        Paragraph::create([
+          'type' => 'simple_paragraph',
+          'field_body' => [
+            'value' => '{block:tallinn_dashboard}',
+            'format' => 'content_editor',
+          ],
+        ]),
+        Paragraph::create([
+          'type' => 'content_listing',
+          'field_content_listing' => [
+            [
+              'value' => [
+                'fields' => [
+                  'field_content_listing_type' => [
+                    'weight' => 0,
+                    'region' => 'top',
+                  ],
+                ],
+                'enabled' => 1,
+                'query_presets' => 'entity_bundle|tallinn_report',
+                'global_search' => FALSE,
+                // Show all tallinn reports in one page.
+                'limit' => '33',
               ],
             ],
-            'enabled' => 1,
-            'query_presets' => 'entity_bundle|tallinn_report',
-            'global_search' => FALSE,
-            // Show all tallinn reports in one page.
-            'limit' => '33',
           ],
-        ],
+        ]),
       ],
     ])->save();
   }

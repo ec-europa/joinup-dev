@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.node.custom_page.field_attachment
-    - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.field_custom_page_logo
     - field.field.node.custom_page.field_paragraphs_body
     - field.field.node.custom_page.og_audience
@@ -14,7 +13,6 @@ dependencies:
     - field_group
     - file
     - link
-    - search_api_field
     - template_suggestion
     - user
 third_party_settings:
@@ -54,13 +52,6 @@ content:
         template_suggestion: fieldset__show_more
     type: file_default
     region: content
-  field_cp_content_listing:
-    type: search_api_field
-    weight: 3
-    region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
   field_paragraphs_body:
     type: entity_reference_revisions_entity_view
     weight: 1
@@ -72,11 +63,6 @@ content:
     third_party_settings: {  }
   links:
     weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  node_field_cp_content_listing_top:
-    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
