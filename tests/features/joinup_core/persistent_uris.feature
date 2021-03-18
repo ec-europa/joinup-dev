@@ -45,7 +45,7 @@ Feature:
 
     And "eira" terms:
       | tid                                   | name         | description                                |
-      | http://data.europa.eu/dr8/DreamDomain | Dream Domain | You're safe from pain in the dream domain. |
+      | http://data.europa.eu/dr8/Dream/Domain | Dream Domain | You're safe from pain in the dream domain. |
 
     And discussion content:
       | title                 | body                  | collection            | state     |
@@ -131,6 +131,7 @@ Feature:
     And I am on "data/w21/4205229d-92b6-4cac-80af-d8c2296d923c"
     Then I should see the heading "Persistent licence"
 
-    Given I am on "data/dr8/DreamDomain"
+    Given I am on "data/dr8/Dream/Domain"
     Then I should see the heading "Dream Domain"
     And I should see "You're safe from pain in the dream domain."
+    And the url should match "/taxonomy/term/http_e_f_fdata_ceuropa_ceu_fdr8_fDream_fDomain"
