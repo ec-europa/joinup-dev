@@ -29,6 +29,7 @@ joinup_core.id_redirect:
     _controller: '\Drupal\joinup_core\Controller\IdRedirect::redirectToRdfEntity'
   requirements:
     _access: 'TRUE'
+    uuid: '.+'
 
 joinup_core.rdf_entity_uri_web_converter_page:
   path: '/rdf'

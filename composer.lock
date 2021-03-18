@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "602a42b94cdd63475ac883f392f176f6",
+    "content-hash": "0ba614ca21fe88a80fe1fcddcbe18670",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2959,7 +2959,8 @@
                     "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch",
                     "EntityConstraintValidationList::findByCode is inconsistent @see https://www.drupal.org/project/drupal/issues/3126654": "https://www.drupal.org/files/issues/2020-04-10/find_by_code_override-3126654-D8-4.patch",
                     "Cannot implement a custom user cancellation method @see https://www.drupal.org/project/drupal/issues/3135592": "https://www.drupal.org/files/issues/2020-05-11/3135592-3.patch",
-                    "Allow to refine by bundle in EntityConverter @see https://www.drupal.org/project/drupal/issues/3155568": "https://www.drupal.org/files/issues/2020-06-30/3155568-4.patch"
+                    "Allow to refine by bundle in EntityConverter @see https://www.drupal.org/project/drupal/issues/3155568": "https://www.drupal.org/files/issues/2020-06-30/3155568-4.patch",
+                    "Cannot use / as a route parameter @see https://www.drupal.org/project/drupal/issues/2741939": "https://www.drupal.org/files/issues/2020-03-19/2741939-27.patch"
                 }
             },
             "autoload": {
@@ -10218,7 +10219,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-08-03T19:59:39+00:00"
+            "time": "2020-11-25T21:59:37+00:00"
         },
         {
             "name": "stack/builder",
@@ -19069,7 +19070,8 @@
     "platform": {
         "php": ">=7.1.0",
         "ext-dom": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-pdo": "*"
     },
     "platform-dev": {
         "ext-iconv": "*",
