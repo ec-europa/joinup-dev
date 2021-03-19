@@ -4,13 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_workflow;
 
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 
 /**
  * Interface for bundle classes that are subject to workflows.
  */
-interface EntityWorkflowStateInterface {
+interface EntityWorkflowStateInterface extends FieldableEntityInterface {
 
   /**
    * Returns the current workflow state.
