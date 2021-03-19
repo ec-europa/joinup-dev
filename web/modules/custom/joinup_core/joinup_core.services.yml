@@ -14,5 +14,4 @@ services:
   path_processor.joinup_core:
     class: Drupal\joinup_core\PathProcessor\NamespacePathProcessor
     tags:
-      - { name: path_processor_inbound, priority: 1000 }
-      - { name: path_processor_outbound, priority: 1000 }
+      - { name: path_processor_inbound, priority: 200 }
