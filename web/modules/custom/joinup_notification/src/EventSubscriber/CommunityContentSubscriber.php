@@ -6,7 +6,7 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_group\JoinupGroupHelper;
@@ -66,7 +66,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   /**
    * Constructs a new CommunityContentSubscriber object.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    * @param \Drupal\Core\Config\ConfigFactory $config_factory
    *   The config factory service.
@@ -81,7 +81,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
    *   The revision manager service.
    */
-  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, MembershipManager $og_membership_manager, WorkflowHelperInterface $workflow_helper, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, MembershipManager $og_membership_manager, WorkflowHelperInterface $workflow_helper, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
     parent::__construct($entity_type_manager, $config_factory, $current_user, $og_membership_manager, $workflow_helper, $message_delivery);
     $this->revisionManager = $revision_manager;
   }
