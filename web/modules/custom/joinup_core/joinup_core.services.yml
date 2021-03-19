@@ -10,3 +10,9 @@ services:
   joinup_core.local_task_links_helper:
     class: Drupal\joinup_core\LocalTaskLinksHelper
     arguments: ['@entity_type.manager']
+
+  path_processor.joinup_core:
+    class: Drupal\joinup_core\PathProcessor\NamespacePathProcessor
+    tags:
+      - { name: path_processor_inbound, priority: 1000 }
+      - { name: path_processor_outbound, priority: 1000 }
