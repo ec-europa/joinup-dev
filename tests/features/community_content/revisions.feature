@@ -187,9 +187,12 @@ Feature:
     When I go to the "Careful with that ax" <content type>
     Then I should see the heading "Careful with that ax"
 
+    # Note that discussions are always considered to be post-moderated even if
+    # they are posted in a pre-moderated group. The reasoning behind this is
+    # everyone should always be free to start a discussion. See ISAICP-2265.
     Examples:
       | group type | content type | moderation | final title   | moderate action | join button                | leave link                     |
-      | collection | discussion   | yes        | Goodbye world | Publish         | Join this collection       | Leave this collection          |
+      | collection | discussion   | yes        | Goodbi world  | Update          | Join this collection       | Leave this collection          |
       | collection | document     | yes        | Goodbye world | Publish         | Join this collection       | Leave this collection          |
       | collection | event        | yes        | Goodbye world | Publish         | Join this collection       | Leave this collection          |
       | collection | news         | yes        | Goodbye world | Publish         | Join this collection       | Leave this collection          |
@@ -197,11 +200,11 @@ Feature:
       | collection | document     | no         | Goodbi world  | Update          | Join this collection       | Leave this collection          |
       | collection | event        | no         | Goodbi world  | Update          | Join this collection       | Leave this collection          |
       | collection | news         | no         | Goodbi world  | Update          | Join this collection       | Leave this collection          |
+      | solution   | discussion   | yes        | Goodbi world  | Update          | Subscribe to this solution | Unsubscribe from this solution |
       | solution   | document     | yes        | Goodbye world | Publish         | Subscribe to this solution | Unsubscribe from this solution |
-      | solution   | discussion   | yes        | Goodbye world | Publish         | Subscribe to this solution | Unsubscribe from this solution |
       | solution   | news         | yes        | Goodbye world | Publish         | Subscribe to this solution | Unsubscribe from this solution |
       | solution   | event        | yes        | Goodbye world | Publish         | Subscribe to this solution | Unsubscribe from this solution |
-      | solution   | document     | no         | Goodbi world  | Update          | Subscribe to this solution | Unsubscribe from this solution |
       | solution   | discussion   | no         | Goodbi world  | Update          | Subscribe to this solution | Unsubscribe from this solution |
+      | solution   | document     | no         | Goodbi world  | Update          | Subscribe to this solution | Unsubscribe from this solution |
       | solution   | news         | no         | Goodbi world  | Update          | Subscribe to this solution | Unsubscribe from this solution |
       | solution   | event        | no         | Goodbi world  | Update          | Subscribe to this solution | Unsubscribe from this solution |
