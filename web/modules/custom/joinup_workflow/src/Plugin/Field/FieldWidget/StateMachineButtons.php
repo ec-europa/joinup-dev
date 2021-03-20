@@ -143,7 +143,9 @@ class StateMachineButtons extends OptionsSelectWidget implements ContainerFactor
     // Pass the label settings to the process callback.
     $element['#use_transition_label'] = $this->getSetting('use_transition_label');
 
-    // Leave the field in place for validation purposes.
+    // Hide the current field since it is a dropdown and we want to show a row
+    // of buttons instead. The data in this field is used later on to populate
+    // the buttons in the form. See ::processActions().
     $element['#access'] = FALSE;
 
     // Add a process callback to add the buttons in the form actions.
