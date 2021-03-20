@@ -33,6 +33,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
       | CC notify pre reject deletion       | CC member      | body | Document      | CC pre collection | deletion_request |
       | CC notify pre delete                | CC member      | body | Document      | CC pre collection | deletion_request |
       | CC notify validated to delete       | CC member      | body | Document      | CC pre collection | validated        |
+      | CC notify validated to revise       | CC member      | body | Document      | CC pre collection | validated        |
 
     # Test 'create' operation.
     When all e-mails have been sent
@@ -96,6 +97,15 @@ Feature: Notification test for the document transitions on a pre moderated paren
       | body      | CC Member has requested to delete the document - "CC notify pre request deletion" in the collection: "CC pre collection", with the following motivation: "I just want to delete it.". |
 
     When all e-mails have been sent
+    And I go to the "CC notify validated to revise" document
+    And I click "Edit" in the "Entity actions" region
+    And I press "Request changes"
+    Then the following email should have been sent:
+      | recipient | CC owner                                                                                                                                    |
+      | subject   | Joinup: Content has been proposed                                                                                                           |
+      | body      | CC Member has submitted an update of the document - "CC notify validated to revise" for publication in the collection: "CC pre collection". |
+
+    When all e-mails have been sent
     And I am logged in as "CC facilitator"
     And I go to the "CC notify pre publish" document
     And I click "Edit" in the "Entity actions" region
@@ -117,6 +127,10 @@ Feature: Notification test for the document transitions on a pre moderated paren
       | recipient | CC member                                                                                                                                                                                                     |
       | subject   | Joinup: Content has been updated                                                                                                                                                                              |
       | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify pre request changes" in the collection: "CC pre collection", with the following motivation: "Can you do some changes?". |
+    But the following email should not have been sent:
+      | recipient | CC owner                                                                                                                                         |
+      | subject   | Joinup: Content has been proposed                                                                                                                |
+      | body      | CC Facilitator has submitted an update of the document - "CC notify pre request changes" for publication in the collection: "CC pre collection". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
