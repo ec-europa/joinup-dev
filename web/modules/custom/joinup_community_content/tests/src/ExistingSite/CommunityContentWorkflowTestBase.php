@@ -672,6 +672,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
           'own' => [
             'draft',
             'deletion_request',
+            'proposed',
           ],
           'any' => [
             'userModerator' => [
