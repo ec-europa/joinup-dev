@@ -227,7 +227,7 @@ Feature: News moderation.
       # Post-moderated. State: validated, owned by Eagle who is a normal member. Should only be able to create a new draft.
       | Eagle         | Hawkgirl helped Green Lantern | Save new draft, Update          | Publish, Request changes, Preview                   |
       # Pre-moderated. State: validated, owned by Mirror Master who is a normal member. Should only be able to create a new draft and propose changes.
-      | Mirror Master | Stealing from Batman          | Save new draft, Propose changes | Update, Propose, Publish, Preview                   |
+      | Mirror Master | Stealing from Batman          | Save new draft, Propose changes | Update, Publish, Preview                            |
 
   Scenario Outline: Members cannot edit news they own for specific states.
     Given I am logged in as "<user>"
