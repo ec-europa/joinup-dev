@@ -11,6 +11,9 @@ use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsSelectWidget;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\joinup_workflow\EntityWorkflowStateInterface;
+use Drupal\joinup_workflow\Event\StateMachineButtonLabelsEvent;
+use Drupal\joinup_workflow\Event\StateMachineButtonLabelsEventInterface;
 use Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -242,25 +245,26 @@ class StateMachineButtons extends OptionsSelectWidget implements ContainerFactor
    */
   protected function replaceStateLabelsWithTransitionLabels(array $options, FieldItemListInterface $items) {
     $entity = $items->getEntity();
-    $current_value = $items->value;
+    if ($entity instanceof EntityWorkflowStateInterface) {
+      $workflow = $entity->getWorkflow();
+      $current_state = $items->value;
+      $transitions = $workflow->getAllowedTransitions($current_state, $entity);
 
-    // We need to get the field type class to fetch easily the related
-    // workflow. Getting the option provider seems the only way.
-    /** @var \Drupal\state_machine\Plugin\Field\FieldType\StateItem $state_item */
-    $state_item = $this->fieldDefinition->getFieldStorageDefinition()->getOptionsProvider($this->column, $entity);
-    $workflow = $state_item->getWorkflow();
-    $transitions = $workflow->getAllowedTransitions($current_value, $entity);
+      // Allow modules to alter the transitions.
+      $event = new StateMachineButtonLabelsEvent($entity, $transitions, $current_state);
+      $this->eventDispatcher->dispatch(StateMachineButtonLabelsEventInterface::EVENT_NAME, $event);
 
-    // Replace "to state" labels with the label associated to that transition.
-    foreach ($transitions as $transition) {
-      $state = $transition->getToState();
-      $state_id = $state->getId();
-      $options[$state_id] = $transition->getLabel();
+      // Replace "to state" labels with the label associated to that transition.
+      foreach ($event->getTransitions() as $transition) {
+        $state = $transition->getToState();
+        $state_id = $state->getId();
+        $options[$state_id] = $transition->getLabel();
+      }
+
+      // Sanitize again the labels.
+      // @see \Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase::getOptions()
+      array_walk_recursive($options, [$this, 'sanitizeLabel']);
     }
-
-    // Sanitize again the labels.
-    // @see \Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase::getOptions()
-    array_walk_recursive($options, [$this, 'sanitizeLabel']);
 
     return $options;
   }

@@ -46,8 +46,15 @@ node:pre_moderated:
       label: 'Report'
       from: [validated]
       to: needs_update
+    # In pre-moderated groups, if a facilitator proposes a new revision this
+    # transition will be shown as "Request changes". If a content author
+    # proposes a new revision then it will be labeled "Propose changes".
+    # Here we only need to provide the 'Propose changes' transition since a
+    # facilitator is not subject to moderation, and its workflow is
+    # automatically set to post-moderated.
+    # @see joinup_community_content_workflow_selector()
     propose_new_revision:
-      label: 'Request changes'
+      label: 'Propose new revision'
       from: [validated]
       to: proposed
     request_deletion:
