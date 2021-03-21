@@ -120,7 +120,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     When all e-mails have been sent
     And I go to the "CCN validated to revise" news
     And I click "Edit" in the "Entity actions" region
-    And I press "Request changes"
+    And I press "Propose changes"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                          |
       | subject   | Joinup: Content has been proposed                                                                                                 |
