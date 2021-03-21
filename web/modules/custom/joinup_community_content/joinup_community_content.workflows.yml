@@ -46,7 +46,7 @@ node:pre_moderated:
       label: 'Report'
       from: [validated]
       to: needs_update
-    request_changes:
+    propose_new_revision:
       label: 'Request changes'
       from: [validated]
       to: proposed

@@ -173,11 +173,40 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
       return;
     }
 
-    if (empty($this->config[$this->workflow->getId()][$this->transition->getId()])) {
+    /** @var \Drupal\joinup_community_content\Entity\CommunityContentInterface $entity */
+    $entity = $this->entity;
+    $workflow_id = $this->workflow->getId();
+    $transition_id = $this->transition->getId();
+
+    $config = $this->config[$workflow_id][$transition_id] ?? [];
+    if (empty($config)) {
       return;
     }
 
-    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->transition->getId()]);
+    // If we are sending notifications regarding the transition from validated
+    // to proposed, the users that need to receive the notifications depend on
+    // who performed the transition:
+    // - A facilitator or moderator might "Request changes" if they see that an
+    //   existing published content item needs to be corrected or amended. In
+    //   this case the original author needs to be notified so they can make the
+    //   requested changes. These will be outlined in the motivation.
+    // - An author of a published piece of content might want to "Propose
+    //   changes" if they want to update their content. In a pre-moderated group
+    //   the facilitators need to be notified so they can approve the changes
+    //   for publication.
+    if ($transition_id === 'propose_new_revision') {
+      // Determine if we are a privileged user such as a facilitator or
+      // moderator. Only privileged users can update content in validated state
+      // directly, all other users first need to pass through proposed state.
+      $is_privileged = $entity->isTargetWorkflowStateAllowed('validated', 'validated');
+      if ($is_privileged) {
+        // We are a facilitator or moderator and are requesting changes. Ensure
+        // the notifications are only sent to the content owner.
+        $config = array_intersect_key($config, array_flip(['owner']));
+      }
+    }
+
+    $user_data = $this->getUsersMessages($config);
     $this->sendUserDataMessages($user_data);
   }
 
