@@ -19,10 +19,7 @@ class FrontPagePinnedFieldItemList extends FieldItemList {
    */
   protected function computeValue(): void {
     if (!isset($this->list[0])) {
-      /** @var \Drupal\joinup_front_page\FrontPageMenuHelperInterface $front_page_helper */
-      $front_page_helper = \Drupal::service('joinup_front_page.front_page_helper');
-      $value = empty($front_page_helper->getFrontPageMenuItem($this->getEntity())) ? 0 : 1;
-      $this->list[0] = $this->createItem(0, $value);
+      $this->list[0] = $this->createItem(0, (int) $this->getEntity()->isPinnedToFrontpage());
     }
   }
 
