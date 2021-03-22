@@ -12,9 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
  * Handles joinup_core.id_redirect route case when {uuid} param contains a '/'.
  *
  * Because the joinup_core.id_redirect route's {uuid} parameter may contain one
- * or more slashes, we encode the URL parameter because Drupal doesn't allow
- * slashes in parameters, as opposed to Symfony. We revert the variable in
- * IdRedirect::redirectToRdfEntity().
+ * or more slashes, we encode the URL parameter as Drupal doesn't allow slashes
+ * in parameters, as opposed to Symfony. We revert the parameter encoding,
+ * later, in IdRedirect::redirectToRdfEntity().
  *
  * @see https://www.drupal.org/project/drupal/issues/2741939
  * @see https://symfony.com/doc/3.4/routing/slash_in_parameter.html
