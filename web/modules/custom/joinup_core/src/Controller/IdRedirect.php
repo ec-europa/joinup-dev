@@ -28,6 +28,8 @@ class IdRedirect extends ControllerBase {
       return $this->redirect('joinup_core.not_found', [], [], 404);
     }
 
+    // The UUID has been encoded early to allow slashes.
+    // @see \Drupal\joinup_core\PathProcessor\IdRedirectNamespaceProcessor::processInbound()
     $uuid = urldecode($uuid);
     return $this->redirect("entity.$entity_type_id.canonical", [
       $entity_type_id => "http://data.europa.eu/$namespace/$uuid",
