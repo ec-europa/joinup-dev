@@ -16,6 +16,6 @@ services:
     arguments: ['@entity_type.manager']
 
   path_processor.joinup_core:
-    class: Drupal\joinup_core\PathProcessor\IdRedirectNamespaceProcessor
+    class: Drupal\joinup_core\PathProcessor\IdRedirectUuidProcessor
     tags:
       - { name: path_processor_inbound, priority: 200 }

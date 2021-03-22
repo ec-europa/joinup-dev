@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @see https://symfony.com/doc/3.4/routing/slash_in_parameter.html
  * @see \Drupal\joinup_core\Controller\IdRedirect::redirectToRdfEntity()
  */
-class IdRedirectNamespaceProcessor implements InboundPathProcessorInterface {
+class IdRedirectUuidProcessor implements InboundPathProcessorInterface {
 
   /**
    * {@inheritdoc}
