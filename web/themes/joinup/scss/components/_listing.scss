@@ -16,9 +16,14 @@
   background: #fff;
   display: flex;
   align-items: stretch;
-  border-width: 2px;
-  border-style: solid;
-  border-color: #e9edee;
+}
+
+.paragraph--type--content-listing {
+  .listing__item {
+    border-width: 2px;
+    border-style: solid;
+    border-color: #e9edee;
+  }
 }
 
 .listing__card {
