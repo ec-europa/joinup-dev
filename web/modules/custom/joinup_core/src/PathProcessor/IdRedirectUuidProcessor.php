@@ -27,7 +27,7 @@ class IdRedirectUuidProcessor implements InboundPathProcessorInterface {
    */
   public function processInbound($path, Request $request): string {
     if (strpos($path, '/data/') === 0 && !$request->query->has('uuid')) {
-      preg_match('#/data/(?<namespace>[^/]+)/(?<uuid>.+)#', $path, $matches);
+      preg_match('#^/data/(?<namespace>[^/]+)/(?<uuid>.+)$#', $path, $matches);
       if (!empty($matches['namespace']) && !empty($matches['uuid'][0]) && IdRedirect::getEntityTypeFromPersistentUriNamespace($matches['namespace'])) {
         return '/data/' . $matches['namespace'] . '/' . urlencode($matches['uuid']);
       }
