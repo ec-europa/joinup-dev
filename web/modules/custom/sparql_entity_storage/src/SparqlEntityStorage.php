@@ -971,7 +971,7 @@ QUERY;
             }
           }
 
-          if ($cardinality !== FieldStorageConfigInterface::CARDINALITY_UNLIMITED && $cardinality === $delta + 1) {
+          if ($cardinality !== NULL && $cardinality !== FieldStorageConfigInterface::CARDINALITY_UNLIMITED && $cardinality === $delta + 1) {
             // Just reached the max delta for fields with limited cardinality.
             break;
           }

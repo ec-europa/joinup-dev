@@ -202,7 +202,7 @@ class SparqlEntityStorageFieldHandler implements SparqlEntityStorageFieldHandler
           }
 
           // Filter out unmapped columns or columns with invalid predicate.
-          $column_mappings = array_filter($column_mappings, function (array $column_mapping): bool {
+          $column_mappings = array_filter((array) $column_mappings, function (array $column_mapping): bool {
             return !empty($column_mapping['predicate']) && UrlHelper::isValid($column_mapping['predicate']);
           });
 
@@ -474,8 +474,8 @@ class SparqlEntityStorageFieldHandler implements SparqlEntityStorageFieldHandler
   /**
    * {@inheritdoc}
    */
-  public function getFieldCardinality(string $entity_type_id, string $field_name): int {
-    return $this->getOutboundMap($entity_type_id)['fields'][$field_name]['cardinality'];
+  public function getFieldCardinality(string $entity_type_id, string $field_name): ?int {
+    return $this->getOutboundMap($entity_type_id)['fields'][$field_name]['cardinality'] ?? NULL;
   }
 
   /**
