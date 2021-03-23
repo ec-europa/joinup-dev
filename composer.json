@@ -197,8 +197,7 @@
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
             "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
             "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit",
-            "cd web/modules/custom/sparql_entity_storage && curl https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.diff | patch -p1 && curl https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/32.diff | patch -p1 && curl https://patch-diff.githubusercontent.com/raw/idimopoulos/sparql_entity_storage/pull/3.diff | patch -p1",
-            "cd web/modules/custom/rdf_entity && curl https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...ea8f6af001fca732e89a4be0e29643953f49a88f.diff | patch -p1"
+            "test -f web/modules/custom/rdf_entity/src/Entity/RdfEntityType.php.orig || (cd web/modules/custom/sparql_entity_storage && curl https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.diff | patch -p1 && curl https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/32.diff | patch -p1 && curl https://patch-diff.githubusercontent.com/raw/idimopoulos/sparql_entity_storage/pull/3.diff | patch -p1 && cd ../rdf_entity && curl https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...ea8f6af001fca732e89a4be0e29643953f49a88f.diff | patch -p1)"
         ],
         "post-update-cmd": [
             "Joinup\\Composer\\CaptureGitReleaseTag::capture",
