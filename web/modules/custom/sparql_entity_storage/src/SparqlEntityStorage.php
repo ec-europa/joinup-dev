@@ -178,20 +178,6 @@ class SparqlEntityStorage extends ContentEntityStorageBase implements SparqlEnti
   }
 
   /**
-   * Builds a new graph (list of triples).
-   *
-   * @param string $graph_uri
-   *   The URI of the graph.
-   *
-   * @return \EasyRdf\Graph
-   *   The EasyRdf graph object.
-   */
-  protected static function getGraph($graph_uri) {
-    $graph = new Graph($graph_uri);
-    return $graph;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function create(array $values = []): ContentEntityInterface {
@@ -936,7 +922,7 @@ QUERY;
 
     $graph_id = $entity->get('graph')->target_id;
     $graph_uri = $this->getGraphHandler()->getBundleGraphUri($entity_type_id, $bundle, $graph_id);
-    $graph = self::getGraph($graph_uri);
+    $graph = new Graph($graph_uri);
     $lang_array = $this->toLangArray($entity);
     foreach ($lang_array as $field_name => $langcode_data) {
       $field_predicate = $this->fieldHandler->getFieldPredicate($entity_type_id, $field_name);
