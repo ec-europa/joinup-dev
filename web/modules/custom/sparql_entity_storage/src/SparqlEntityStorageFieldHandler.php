@@ -211,11 +211,9 @@ class SparqlEntityStorageFieldHandler implements SparqlEntityStorageFieldHandler
             continue;
           }
 
-          $this->outboundMap[$entity_type_id]['fields'][$field_name] = [
-            'type' => $field_definition->getType(),
-            'main_property' => $field_storage_definition->getMainPropertyName(),
-            'cardinality' => $field_storage_definition->getCardinality(),
-          ];
+          $this->outboundMap[$entity_type_id]['fields'][$field_name]['type'] = $field_definition->getType();
+          $this->outboundMap[$entity_type_id]['fields'][$field_name]['main_property'] = $field_storage_definition->getMainPropertyName();
+          $this->outboundMap[$entity_type_id]['fields'][$field_name]['cardinality'] = $field_storage_definition->getCardinality();
 
           if ($is_multi_value = $field_storage_definition->isMultiple()) {
             if (!$field_predicate) {
