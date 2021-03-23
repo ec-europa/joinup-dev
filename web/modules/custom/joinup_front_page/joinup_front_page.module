@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -69,6 +70,12 @@ function joinup_front_page_entity_view_alter(array &$build, EntityInterface $ent
     // Note: the 'entity' contextual link group is added by the Joinup profile.
     // @see joinup_entity_view_alter()
     $build['#contextual_links']['entity']['metadata']['is_pinned_to_front_page'] = (int) !empty($menu_item);
+    // The URL to pin entities to the front page is protected against CSRF
+    // attacks, so this needs to vary with the session. The CSRF token is only
+    // valid for a single session.
+    $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], [
+      'session',
+    ]);
   }
 }
 
