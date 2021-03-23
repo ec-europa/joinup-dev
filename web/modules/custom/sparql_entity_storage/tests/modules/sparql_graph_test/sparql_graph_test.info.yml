@@ -1,0 +1,7 @@
+type: module
+core_version_requirement: ^8 || ^9
+name: 'SPARQL graph test'
+description: 'Testing module for SPARQL graphs.'
+package: Testing
+dependencies:
+  - 'sparql_entity_storage:sparql_entity_storage'

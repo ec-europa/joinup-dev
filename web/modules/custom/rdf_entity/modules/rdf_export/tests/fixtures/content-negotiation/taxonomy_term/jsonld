@@ -1,0 +1,1 @@
+[{"@id":"http://example.com/citrus-fruits","@type":["http://www.w3.org/2004/02/skos/core#Concept"],"http://www.w3.org/2004/02/skos/core#inScheme":[{"@id":"http://example.com/fruit-type"}],"http://www.w3.org/2004/02/skos/core#prefLabel":[{"@value":"Citrus fruits","@language":"en"}]},{"@id":"http://example.com/fruit-type"},{"@id":"http://www.w3.org/2004/02/skos/core#Concept"}]

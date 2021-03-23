@@ -1,0 +1,7 @@
+taxonomy.vocabulary.*.third_party.rdf_taxonomy:
+  type: mapping
+  label: 'RDF Taxonomy third party settings'
+  mapping:
+    locked:
+      type: boolean
+      label: 'If true, terms cannot be added or edited via UI'

@@ -1,0 +1,26 @@
+name: SPDX Licences
+type: module
+description: 'A license management module.'
+package: Joinup
+
+core_version_requirement: ^8 || ^9
+
+dependencies:
+  - drupal:link
+  - drupal:text
+  - rdf_entity:rdf_entity
+
+config_devel:
+  install:
+    - core.entity_form_display.rdf_entity.spdx_licence.default
+    - core.entity_view_display.rdf_entity.spdx_licence.default
+    - field.field.rdf_entity.spdx_licence.field_spdx_licence_id
+    - field.field.rdf_entity.spdx_licence.field_spdx_licence_text
+    - field.field.rdf_entity.spdx_licence.field_spdx_see_also
+    - field.storage.rdf_entity.field_spdx_licence_id
+    - field.storage.rdf_entity.field_spdx_licence_text
+    - field.storage.rdf_entity.field_spdx_see_also
+    - rdf_entity.rdfentity.spdx_licence
+    - sparql_entity_storage.mapping.rdf_entity.spdx_licence
+    - sparql_entity_storage.mapping.taxonomy_term.legal_type
+    - taxonomy.vocabulary.legal_type

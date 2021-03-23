@@ -1,0 +1,2 @@
+<http://example.com/apple> <http://example.com/fruit/title> "Apple"@und .
+<http://example.com/apple> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://example.com/fruit/type> .

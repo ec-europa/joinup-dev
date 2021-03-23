@@ -1,0 +1,4 @@
+entity.sparql_graph.collection:
+  route_name: entity.sparql_graph.collection
+  base_route: entity.sparql_graph.collection
+  title: Graphs

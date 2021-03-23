@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_spdx_licence_text
+    - rdf_entity.rdfentity.spdx_licence
+  module:
+    - text
+third_party_settings: {  }
+id: rdf_entity.spdx_licence.field_spdx_licence_text
+field_name: field_spdx_licence_text
+entity_type: rdf_entity
+bundle: spdx_licence
+label: 'Licence text'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

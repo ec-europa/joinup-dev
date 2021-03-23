@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="web/core/tests/bootstrap.php"
+         colors="true"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutChangesToGlobalState="true"
+         printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"
+>
+    <php>
+        <ini name="error_reporting" value="32767"/>
+        <ini name="memory_limit" value="-1"/>
+        <env name="SIMPLETEST_BASE_URL" value="http://localhost:8888"/>
+        <env name="SIMPLETEST_DB" value="mysql://root:@127.0.0.1/sparql_entity_storage_test_phpunit"/>
+        <env name="SIMPLETEST_SPARQL_DB" value="sparql://127.0.0.1:8890?module=sparql_entity_storage"/>
+        <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="/tmp"/>
+        <env name="BROWSERTEST_OUTPUT_FILE" value="/tmp/browser_output/outputfile.txt"/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="99999"/>
+    </php>
+    <testsuites>
+        <testsuite name="sparql_entity_storage">
+            <directory>./web/modules/sparql_entity_storage</directory>
+        </testsuite>
+    </testsuites>
+    <listeners>
+        <listener class="\Drupal\Tests\Listeners\DrupalListener"/>
+    </listeners>
+</phpunit>

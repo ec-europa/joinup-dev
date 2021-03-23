@@ -1,0 +1,484 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the SPARQL entity storage module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
+use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\BundleEntityFormBase;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\FieldStorageConfigInterface;
+use Drupal\sparql_entity_storage\Entity\SparqlMapping;
+use Drupal\sparql_entity_storage\SparqlEntityStorageFieldHandler;
+use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
+use Drupal\sparql_entity_storage\SparqlGraphInterface;
+use EasyRdf\Http;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ *
+ * SPARQL storage entity types having bundles as config entities are storing
+ * their mapping information in 'sparql_mapping' entities. Expose the mapping
+ * information via EntityTypeBundleInfoInterface::getAllBundleInfo(). Entity
+ * types without bundles as config entities may, alternatively, provide mapping
+ * information via hook_entity_bundle_info_alter().
+ *
+ * @see \Drupal\Core\Entity\EntityTypeBundleInfoInterface::getAllBundleInfo()
+ * @see hook_entity_bundle_info()
+ */
+function sparql_entity_storage_entity_bundle_info_alter(array &$bundles): void {
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $sparql_mapping_storage = $entity_type_manager->getStorage('sparql_mapping');
+  /** @var \Drupal\sparql_entity_storage\SparqlMappingInterface $mapping */
+  foreach ($sparql_mapping_storage->loadMultiple() as $mapping) {
+    $entity_type_id = $mapping->getTargetEntityTypeId();
+    $bundle = $mapping->getTargetBundle();
+    if (isset($bundles[$entity_type_id][$bundle])) {
+      $bundles[$entity_type_id][$bundle]['sparql_entity_storage'] = [
+        'rdf_type' => $mapping->getRdfType(),
+        'base_fields_mapping' => $mapping->getMappings(),
+        'graph' => $mapping->getGraphs(),
+        'entity_type_id' => $mapping->getEntityIdPlugin(),
+      ];
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function sparql_entity_storage_entity_base_field_info_alter(array &$fields, EntityTypeInterface $entity_type) {
+  if (!in_array(SparqlEntityStorageInterface::class, class_implements($entity_type->getStorageClass()))) {
+    return;
+  }
+
+  $fields['graph'] = BaseFieldDefinition::create('entity_reference')
+    ->setName('graph')
+    ->setLabel(t('The graph where the entity is stored.'))
+    ->setTargetEntityTypeId($entity_type->id())
+    ->setCustomStorage(TRUE)
+    ->setSetting('target_type', 'sparql_graph');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sparql_entity_storage_form_field_storage_config_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Only add mapping form element to fields of entities implementing
+  // SparqlEntityStorageInterface.
+  $id = $form_state->get('entity_type_id');
+  if (!$id) {
+    return;
+  }
+  $storage = \Drupal::entityTypeManager()->getStorage($id);
+  if (!$storage instanceof SparqlEntityStorageInterface) {
+    return;
+  }
+
+  $form_obj = $form_state->getFormObject();
+  /** @var \Drupal\field\Entity\FieldStorageConfig $entity */
+  $entity = $form_obj->getEntity();
+  $schema = $entity->getSchema();
+  $form['sparql_mapping'] = [
+    '#type' => 'details',
+    '#title' => t('SPARQL field mapping'),
+    '#description' => t('This field uses a SPARQL backend. Please map the fields to their corresponding RDF properties.'),
+    '#weight' => 99,
+  ];
+  $form_state->set('sparql_mapping_columns', array_keys($schema['columns']));
+  foreach ($schema['columns'] as $column => $column_desc) {
+    $description = isset($column_desc['description']) ? $column_desc['description'] . "<br>" : '';
+    foreach (['type', 'length', 'size', 'serialize'] as $key) {
+      if (!empty($column_desc[$key])) {
+        $description .= '<strong>' . $key . "</strong>: " . $column_desc[$key] . ' ';
+      }
+    }
+
+    $settings = sparql_entity_storage_get_mapping_property($entity, 'mapping', $column);
+
+    $form['sparql_mapping'][$column] = [
+      '#type' => 'details',
+      '#title' => $column,
+      '#description' => $description,
+    ];
+
+    $form['sparql_mapping'][$column]['predicate_' . $column] = [
+      '#type' => 'url',
+      '#title' => t('Mapping'),
+      '#weight' => 150,
+      '#default_value' => isset($settings['predicate']) ? $settings['predicate'] : '',
+    ];
+
+    $form['sparql_mapping'][$column]['format_' . $column] = [
+      '#type' => 'select',
+      '#title' => t('Value format'),
+      '#options' => SparqlEntityStorageFieldHandler::getSupportedDataTypes(),
+      '#empty_value' => 'no_format',
+      '#weight' => 151,
+      '#default_value' => isset($settings['format']) ? $settings['format'] : NULL,
+    ];
+  }
+
+  $form['#entity_builders'][] = 'sparql_entity_storage_form_alter_builder';
+  $form['#validate'][] = 'sparql_entity_storage_field_storage_form_validate';
+}
+
+/**
+ * Validation callback for the field storage form.
+ *
+ * @param array $form
+ *   Form definition.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state.
+ */
+function sparql_entity_storage_field_storage_form_validate(array &$form, FormStateInterface $form_state) {
+  $cardinality = (int) $form_state->getValue('cardinality_number');
+  if ($cardinality < 2 && (int) $form_state->getValue('cardinality') !== FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED) {
+    return;
+  }
+
+  $columns = $form_state->get('sparql_mapping_columns');
+
+  // We can only have 1 predicate mapped if the cardinality is higher than 1.
+  $predicate_count = 0;
+  foreach ($columns as $column) {
+    $predicate = $form_state->getValue('predicate_' . $column);
+    if ($predicate) {
+      $predicate_count++;
+    }
+
+    if ($predicate_count > 1) {
+      $form_state->setErrorByName('sparql_mapping', t('Multiple SPARQL mapping predicates are not supported with a field cardinality higher than 1.'));
+      break;
+    }
+  }
+}
+
+/**
+ * Retrieve nested third party settings from object.
+ *
+ * @param \Drupal\Core\Config\Entity\ConfigEntityInterface $object
+ *   The object may be either a bundle entity or a field storage config entity.
+ * @param string $property
+ *   The property for which to retrieve the mapping.
+ * @param string $column
+ *   The field column.
+ * @param mixed $default
+ *   (optional) The default value. Defaults to NULL.
+ *
+ * @return mixed
+ *   The mapping.
+ *
+ * @todo Move this to a service (or to SPARQL storage?)
+ */
+function sparql_entity_storage_get_mapping_property(ConfigEntityInterface $object, string $property, string $column, $default = NULL) {
+  // Mapping data requested for a configurable field.
+  if ($object instanceof FieldStorageConfigInterface) {
+    $property_value = $object->getThirdPartySetting('sparql_entity_storage', $property, FALSE);
+  }
+  // Mapping data requested for a bundle entity.
+  else {
+    $entity_type_id = $object->getEntityType()->getBundleOf();
+    $bundle = $object->id();
+    $mapping = SparqlMapping::loadByName($entity_type_id, $bundle);
+    $property_value = $mapping->get($property) ?: FALSE;
+  }
+  if (!is_array($property_value) || !isset($property_value[$column])) {
+    return $default;
+  }
+
+  return $property_value[$column];
+}
+
+/**
+ * Entity builder callback: Save the mapping.
+ */
+function sparql_entity_storage_form_alter_builder($entity_type, FieldStorageConfig $entity, array &$form, FormStateInterface $form_state) {
+  $schema = $entity->getSchema();
+  $data = [];
+  foreach ($schema['columns'] as $column => $column_desc) {
+    $data[$column]['predicate'] = $form_state->getValue('predicate_' . $column);
+    $data[$column]['format'] = $form_state->getValue('format_' . $column);
+
+  }
+  $entity->setThirdPartySetting('sparql_entity_storage', 'mapping', $data);
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Configurations for the entity bundle.
+ */
+function sparql_entity_storage_form_alter(&$form, FormStateInterface $form_state) {
+  $form_object = $form_state->getFormObject();
+  if (!$form_object instanceof BundleEntityFormBase) {
+    return;
+  }
+  /** @var \Drupal\Core\Config\Entity\ConfigEntityBundleBase $bundle_entity */
+  $bundle_entity = $form_object->getEntity();
+  if (!$bundle_entity instanceof ConfigEntityBundleBase) {
+    return;
+  }
+  $entity_type_id = $bundle_entity->getEntityType()->getBundleOf();
+  $form_state->set('entity_type_id', $entity_type_id);
+
+  /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $storage */
+  $storage = \Drupal::entityTypeManager()->getStorage($entity_type_id);
+  if (!$storage instanceof SparqlEntityStorageInterface) {
+    return;
+  }
+  $base_fields = \Drupal::service('entity_field.manager')->getBaseFieldDefinitions($entity_type_id);
+  $id_key = $storage->getEntityType()->getKey('id');
+  $form_state->set('bundle_id_key', $storage->getEntityType()->getKey('bundle'));
+
+  $form['sparql_entity_storage'] = [
+    '#type' => 'details',
+    '#title' => t('SPARQL Entity Storage'),
+    '#description' => t('SPARQL entity storage configurations.'),
+    '#open' => TRUE,
+    '#weight' => 99,
+    '#tree' => TRUE,
+  ];
+
+  // When creating a new bundle we can't yet use it for creating a mapping. In
+  // this case we defer to the custom submit handler.
+  $mapping = NULL;
+  if (!$bundle_entity->isNew()) {
+    $mapping = SparqlMapping::loadByName($entity_type_id, $bundle_entity->id());
+    if (!$mapping) {
+      $mapping = SparqlMapping::create([
+        'entity_type_id' => $entity_type_id,
+        'bundle' => !$bundle_entity->isNew() ? $bundle_entity->id() : NULL,
+      ]);
+    }
+    $form_state->set('sparql_mapping', $mapping);
+  }
+
+  $form['sparql_entity_storage']['rdf_type'] = [
+    '#type' => 'textfield',
+    '#title' => t('RDF type mapping'),
+    '#default_value' => $mapping ? $mapping->getRdfType() : NULL,
+  ];
+
+  /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageEntityIdPluginManager $id_plugin_manager */
+  $id_plugin_manager = \Drupal::service('plugin.manager.sparql_entity_id');
+  $plugins = array_map(function (array $definition) {
+    return $definition['name'];
+  }, $id_plugin_manager->getDefinitions());
+
+  $form['sparql_entity_storage']['entity_id_plugin'] = [
+    '#type' => 'select',
+    '#title' => t('Entity ID generator'),
+    '#description' => t("The generator used to create IDs for new entities."),
+    '#options' => $plugins,
+    '#default_value' => $mapping && $mapping->getEntityIdPlugin() ? $mapping->getEntityIdPlugin() : $id_plugin_manager->getFallbackPluginId(NULL),
+  ];
+
+  $form['sparql_entity_storage']['graph'] = [
+    '#type' => 'details',
+    '#title' => t('Graphs'),
+    '#description' => t('Graph URI mapping'),
+  ];
+
+  foreach ($storage->getGraphDefinitions() as $graph_id => $graph) {
+    $form['sparql_entity_storage']['graph'][$graph_id] = [
+      '#type' => 'url',
+      '#title' => t('@title (@id)', [
+        '@title' => $graph['title'],
+        '@id' => $graph_id,
+      ]),
+      '#description' => $graph['description'],
+      '#default_value' => $mapping ? $mapping->getGraphUri($graph_id) : NULL,
+      '#required' => $graph_id === SparqlGraphInterface::DEFAULT,
+    ];
+  }
+
+  $form['sparql_entity_storage']['base_fields_mapping'] = [
+    '#type' => 'details',
+    '#title' => t('Field mapping'),
+    '#description' => t('This entity type uses a SPARQL backend. Please map the bundle base fields to their corresponding RDF properties.'),
+  ];
+
+  /** @var \Drupal\Core\Field\BaseFieldDefinition $base_field */
+  foreach ($base_fields as $field_name => $base_field) {
+    // The entity id doesn't need a mapping as it's the subject of the triple.
+    if ($field_name === $id_key) {
+      continue;
+    }
+    $columns = $base_field->getColumns();
+    foreach ($columns as $column_name => $column) {
+      $title = $base_field->getLabel();
+      if (count($columns) > 1) {
+        $title .= ' (' . $column_name . ')';
+      }
+
+      $form['sparql_entity_storage']['base_fields_mapping'][$field_name] = [
+        '#type' => 'details',
+        '#title' => $title,
+        '#description' => $base_field->getDescription(),
+      ];
+
+      $form['sparql_entity_storage']['base_fields_mapping'][$field_name][$column_name]['predicate'] = [
+        '#type' => 'url',
+        '#title' => t('Mapping'),
+        '#description' => t('The RDF predicate.'),
+        '#weight' => 150,
+        '#default_value' => $mapping ? $mapping->getFieldColumnMappingPredicate($field_name, $column_name) : NULL,
+      ];
+
+      $form['sparql_entity_storage']['base_fields_mapping'][$field_name][$column_name]['format'] = [
+        '#type' => 'select',
+        '#title' => t('Value format'),
+        '#description' => t('The RDF format. Required if format is filled.'),
+        '#options' => SparqlEntityStorageFieldHandler::getSupportedDataTypes(),
+        '#empty_value' => '',
+        '#weight' => 151,
+        '#default_value' => $mapping ? $mapping->getFieldColumnMappingFormat($field_name, $column_name) : NULL,
+      ];
+    }
+  }
+
+  $form['actions']['submit']['#submit'][] = 'sparql_entity_storage_type_mapping_submit';
+}
+
+/**
+ * Stores the mapping of base fields and RDF properties.
+ *
+ * @param array $form
+ *   The form API form render array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ *
+ * @throws \Exception
+ *   If the mapping fails to save.
+ *
+ * @see sparql_entity_storage_form_alter()
+ */
+function sparql_entity_storage_type_mapping_submit(array &$form, FormStateInterface $form_state): void {
+  $values = $form_state->getValue('sparql_entity_storage');
+  /** @var \Drupal\sparql_entity_storage\SparqlMappingInterface $mapping */
+  $mapping = $form_state->get('sparql_mapping');
+  if (!$mapping) {
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $bundle_entity */
+    $bundle_entity = $form_state->getFormObject()->getEntity();
+    $mapping = SparqlMapping::create([
+      'entity_type_id' => $bundle_entity->getEntityType()->getBundleOf(),
+      'bundle' => $form_state->getFormObject()->getEntity()->id(),
+    ]);
+  }
+
+  $mapping
+    ->setRdfType($values['rdf_type'])
+    ->setEntityIdPlugin($values['entity_id_plugin'])
+    // Add only non-empty values.
+    ->setGraphs(array_filter($values['graph']))
+    ->setMappings($values['base_fields_mapping'])
+    ->save();
+}
+
+/**
+ * Returns the requirements related to virtuoso version.
+ *
+ * @return array
+ *   The virtuoso version requirements.
+ */
+function sparql_entity_storage_virtuoso_version_requirements() {
+  $minimum_version = '07.00.0000';
+  $requirements = [
+    'sparql_endpoint' => [
+      'title' => t('Virtuoso endpoint availability'),
+      'description' => t('Virtuoso endpoint is available.'),
+    ],
+    'sparql_virtuoso_version' => [
+      'title' => t('Virtuoso version'),
+      'description' => t('Virtuoso version meets minimum requirements.'),
+    ],
+  ];
+
+  /** @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $connection */
+  $connection = Database::getConnection('default', 'sparql_default');
+  $client = Http::getDefaultHttpClient();
+  $client->resetParameters(TRUE);
+  $client->setUri($connection->getQueryUri());
+  $client->setMethod('GET');
+
+  try {
+    $response = $client->request();
+  }
+  catch (Exception $e) {
+    // If the endpoint could not be reached, return early.
+    $requirements['sparql_endpoint']['description'] = t('Virtuoso endpoint could not be reached.');
+    $requirements['sparql_endpoint']['severity'] = REQUIREMENT_ERROR;
+    return $requirements;
+  }
+
+  $server_header = $response->getHeader('Server');
+  preg_match('/Virtuoso\/(.*?)\s/', $server_header, $matches);
+  $version = (is_array($matches) && count($matches) === 2) ? $matches[1] : [];
+  if (version_compare($version, $minimum_version, 'lt')) {
+    $description = t('The minimum virtuoso version supported is :version', [
+      ':version' => $minimum_version,
+    ]);
+    $requirements['sparql_virtuoso_version']['description'] = $description;
+    $requirements['sparql_virtuoso_version']['severity'] = REQUIREMENT_ERROR;
+    $requirements['sparql_virtuoso_version']['value'] = $version;
+  }
+
+  return $requirements;
+}
+
+/**
+ * Returns the requirements related to virtuoso query permissions.
+ *
+ * Since there is no direct way to draw information from the virtuoso instance
+ * the function simply tries to create a triple in a random graph and then
+ * delete the whole graph.
+ *
+ * @return array
+ *   The virtuoso query requirements.
+ */
+function sparql_entity_storage_virtuoso_permission_requirements() {
+  $rand = random_int(10000, 50000);
+  $uri = 'http://example.com/id/' . $rand;
+  $query = <<<QUERY
+    WITH <{$uri}>
+    INSERT { <{$uri}> <http://example.com/predicate> "test value" }
+    CLEAR GRAPH <{$uri}>
+QUERY;
+
+  /** @var \Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface $connection */
+  $connection = Database::getConnection('default', 'sparql_default');
+  $requirements = [
+    'sparql_virtuoso_query' => [
+      'title' => t('Virtuoso permissions'),
+      'description' => t('Virtuoso update/delete permissions are properly set.'),
+      'value' => $query,
+    ],
+  ];
+
+  try {
+    $connection->query($query);
+  }
+  catch (Exception $e) {
+    $requirements['sparql_virtuoso_query']['description'] = $e->getMessage();
+    $requirements['sparql_virtuoso_query']['severity'] = REQUIREMENT_ERROR;
+  }
+
+  return $requirements;
+}
+
+/**
+ * Implements hook_cache_flush().
+ */
+function sparql_entity_storage_cache_flush() {
+  \Drupal::service('sparql.graph_handler')->clearCache();
+}

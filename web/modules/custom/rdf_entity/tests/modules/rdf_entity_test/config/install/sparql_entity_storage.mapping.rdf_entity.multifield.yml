@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - sparql_entity_storage.graph.default
+    - sparql_entity_storage.graph.draft
+    - rdf_entity.rdfentity.multifield
+third_party_settings: {  }
+id: rdf_entity.multifield
+entity_type_id: rdf_entity
+bundle: multifield
+rdf_type: 'http://example.com/multifield'
+base_fields_mapping:
+  rid:
+    target_id:
+      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      format: resource
+  uid:
+    target_id:
+      predicate: 'http://example.com/multifield_with_owner/uid'
+      format: integer
+  label:
+    value:
+      predicate: 'http://example.com/multifield_label'
+      format: literal
+graph:
+  default: 'http://example.com/multifield/published'
+  draft: 'http://example.com/multifield/draft'

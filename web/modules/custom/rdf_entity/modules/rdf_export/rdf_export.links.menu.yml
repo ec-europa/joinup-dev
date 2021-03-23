@@ -1,0 +1,6 @@
+rdf_export.settings:
+  title: 'RDF Export'
+  route_name: rdf_export.settings
+  parent: sparql_entity_storage.settings
+  description: 'Settings regarding RDF Export module.'
+  weight: 99

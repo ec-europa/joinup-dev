@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.sparql_test.reference
+    - sparql_test.type.vegetable
+id: sparql_test.vegetable.reference
+field_name: reference
+entity_type: sparql_test
+bundle: vegetable
+label: Reference
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:sparql_test'
+  handler_settings:
+    target_bundles:
+      fruit: fruit
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: null
+field_type: entity_reference

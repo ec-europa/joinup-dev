@@ -1,0 +1,84 @@
+services:
+  entity.query.sparql:
+    class: Drupal\sparql_entity_storage\Entity\Query\Sparql\QueryFactory
+    arguments: ['@sparql.endpoint', '@entity_type.manager', '@sparql.graph_handler', '@sparql.field_handler', '@module_handler', '@language_manager']
+    tags:
+    - { name: backend_overridable }
+  sparql.endpoint:
+    class: Drupal\sparql_entity_storage\Driver\Database\sparql\Connection
+    factory: ['Drupal\Core\Database\Database', getConnection]
+    arguments: [default, sparql_default]
+  sparql.paramconverter:
+    class: Drupal\sparql_entity_storage\ParamConverter\SparqlEntityStorageConverter
+    arguments: ['@entity_type.manager', '@entity.repository', '@event_dispatcher']
+    tags:
+    # Use a higher priority than EntityConverter.
+    - { name: paramconverter, priority: 6 }
+  sparql.route_processor:
+    class: Drupal\sparql_entity_storage\RouteProcessor\SparqlEntityStorageRouteProcessor
+    arguments: ['@current_route_match']
+    tags:
+    - { name: route_processor_outbound, priority: 200 }
+  sparql.graph_handler:
+    class: Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandler
+    arguments: ['@entity_type.manager', '@event_dispatcher']
+  sparql.field_handler:
+    class: Drupal\sparql_entity_storage\SparqlEntityStorageFieldHandler
+    arguments: ['@entity_type.manager', '@entity_field.manager', '@event_dispatcher', '@entity_type.bundle.info']
+  plugin.manager.sparql_entity_id:
+    class: Drupal\sparql_entity_storage\SparqlEntityStorageEntityIdPluginManager
+    arguments: ['@container.namespaces', '@cache.discovery', '@module_handler', '@entity_type.manager']
+  sparql.inbound_value.datetime.subscriber:
+    class: Drupal\sparql_entity_storage\EventSubscriber\InboundValueDateTimeSubscriber
+    tags:
+    - { name: event_subscriber }
+  sparql.outbound_value.datetime.subscriber:
+    class: Drupal\sparql_entity_storage\EventSubscriber\OutboundValueDateTimeSubscriber
+    tags:
+    - { name: event_subscriber }
+  sparql.inbound_value.translatable_literal.subscriber:
+    class: Drupal\sparql_entity_storage\EventSubscriber\InboundValueTranslatableLiteralSubscriber
+    arguments: ['@typed_data_manager']
+    tags:
+    - { name: event_subscriber }
+
+  sparql_entity.serializer:
+    class: Drupal\sparql_entity_storage\SparqlSerializer
+    arguments: ['@sparql.endpoint', '@sparql.graph_handler']
+  sparql_entity.encoder_base:
+    abstract: true
+    class: Drupal\sparql_entity_storage\Encoder\SparqlEncoder
+  sparql_entity.encoder.jsonld:
+    parent: sparql_entity.encoder_base
+    tags:
+      - { name: encoder, format: jsonld }
+  sparql_entity.encoder.rdfxml:
+    parent: sparql_entity.encoder_base
+    tags:
+      - { name: encoder, format: rdfxml }
+  sparql_entity.encoder.ntriples:
+    parent: sparql_entity.encoder_base
+    tags:
+      - { name: encoder, format: ntriples }
+  sparql_entity.encoder.turtle:
+    parent: sparql_entity.encoder_base
+    tags:
+      - { name: encoder, format: turtle }
+  sparql_entity.encoder.n3:
+    parent: sparql_entity.encoder_base
+    tags:
+      - { name: encoder, format: n3 }
+  sparql.entity_normalizer:
+    class: Drupal\sparql_entity_storage\Normalizer\SparqlEntityNormalizer
+    arguments: ['@sparql_entity.serializer', '@entity_type.manager']
+    tags:
+      - { name: normalizer, priority: 10 }
+  sparql.content_type.subscriber:
+    class: Drupal\sparql_entity_storage\EventSubscriber\SparqlContentTypesSubscriber
+    tags:
+      - { name: event_subscriber }
+  sparql.sparql_mapping.subscriber:
+    class: Drupal\sparql_entity_storage\EventSubscriber\SparqlMappingSubscriber
+    arguments: ['@entity_type.bundle.info']
+    tags:
+      - { name: event_subscriber }

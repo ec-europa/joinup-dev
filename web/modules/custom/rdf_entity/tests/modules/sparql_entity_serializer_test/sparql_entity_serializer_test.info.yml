@@ -1,0 +1,8 @@
+name: 'SPARQL Serializer Test'
+type: module
+description: 'Provides a module for testing SPARQL serialization.'
+core_version_requirement: ^8 || ^9
+package: Testing
+dependencies:
+- rdf_entity
+- rest

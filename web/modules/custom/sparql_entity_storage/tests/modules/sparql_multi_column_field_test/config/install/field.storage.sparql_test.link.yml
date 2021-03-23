@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  module:
+  - link
+  - sparql_test
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      uri:
+        predicate: 'http://example.com/link/uri'
+        format: 'xsd:anyURI'
+      title:
+        predicate: 'http://example.com/link/title'
+        format: t_literal
+      options:
+        predicate: ''
+        format: no_format
+id: sparql_test.link
+field_name: link
+entity_type: sparql_test
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

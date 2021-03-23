@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:ns0="http://example.com/fruit/">
+
+  <rdf:Description rdf:about="http://example.com/apple">
+    <ns0:title xml:lang="und">Apple</ns0:title>
+    <rdf:type rdf:resource="http://example.com/fruit/type"/>
+  </rdf:Description>
+
+</rdf:RDF>

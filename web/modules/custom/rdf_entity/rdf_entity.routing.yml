@@ -1,0 +1,79 @@
+entity.rdf_entity.canonical:
+  path: '/rdf_entity/{rdf_entity}'
+  defaults:
+    _entity_view: 'rdf_entity'
+    _title_callback: '\Drupal\rdf_entity\Controller\RdfController::rdfTitle'
+  requirements:
+    _entity_access: 'rdf_entity.view'
+
+entity.rdf_entity.collection:
+  path: 'admin/content/rdf'
+  defaults:
+    _entity_list: 'rdf_entity'
+    _title: 'RDF Entity'
+  requirements:
+    _permission: 'view rdf entity overview'
+
+rdf_entity.rdf_add_page:
+  path: '/rdf_entity/add'
+  defaults:
+    _title: 'Add RDF'
+    _controller: '\Drupal\rdf_entity\Controller\RdfController::addPage'
+  requirements:
+    _entity_create_access: 'rdf_entity'
+
+rdf_entity.rdf_add:
+  path: '/rdf_entity/add/{rdf_type}'
+  defaults:
+    _title: 'Add RDF'
+    _controller: '\Drupal\rdf_entity\Controller\RdfController::add'
+  requirements:
+    _entity_create_access: 'rdf_entity:{rdf_type}'
+
+entity.rdf_entity.edit_form:
+  path: '/rdf_entity/{rdf_entity}/edit'
+  defaults:
+    _entity_form: rdf_entity.edit
+    _title: 'Edit Rdf'
+  requirements:
+    _entity_access: 'rdf_entity.update'
+
+entity.rdf_entity.delete_form:
+  path: '/rdf_entity/{rdf_entity}/delete'
+  defaults:
+    _entity_form: rdf_entity.delete
+    _title: 'Delete Rdf'
+  requirements:
+    _entity_access: 'rdf_entity.delete'
+
+entity.rdf_type.collection:
+  path: '/admin/structure/rdf_type'
+  defaults:
+    _entity_list: 'rdf_type'
+    _title: 'Rdf type'
+  requirements:
+    _permission: 'administer rdf entity'
+
+entity.rdf_type.add_form:
+  path: '/admin/structure/rdf_type/add'
+  defaults:
+    _entity_form: 'rdf_type'
+    _title: 'Add Rdf type'
+  requirements:
+    _entity_create_access: 'rdf_type'
+
+entity.rdf_type.edit_form:
+  path: '/admin/structure/rdf_type/manage/{rdf_type}'
+  defaults:
+    _entity_form: 'rdf_type.default'
+    _title_callback: '\Drupal\rdf_entity\Controller\RdfController::rdfTypeTitle'
+  requirements:
+    _entity_access: 'rdf_type.update'
+
+entity.rdf_type.delete_form:
+  path: '/admin/structure/rdf_type/manage/{rdf_type}/delete'
+  defaults:
+    _entity_form: 'rdf_type.delete'
+    _title: 'Delete Rdf type'
+  requirements:
+    _entity_access: 'rdf_type.delete'

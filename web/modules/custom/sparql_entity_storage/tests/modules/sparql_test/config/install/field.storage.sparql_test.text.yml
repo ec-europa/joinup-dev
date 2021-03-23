@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  module:
+  - sparql_test
+  - text
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      value:
+        predicate: 'http://purl.org/dc/terms/description'
+        format: t_literal
+      format:
+        predicate: 'http://purl.org/dc/terms/description/format'
+        format: t_literal
+id: sparql_test.text
+field_name: text
+entity_type: sparql_test
+type: text_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

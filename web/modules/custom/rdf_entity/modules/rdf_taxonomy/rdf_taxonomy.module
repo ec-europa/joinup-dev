@@ -1,0 +1,149 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the RDF Taxonomy module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\rdf_taxonomy\Entity\RdfTerm;
+use Drupal\rdf_taxonomy\RdfTaxonomyTermListBuilder;
+use Drupal\rdf_taxonomy\TermRdfStorage;
+use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
+use Drupal\sparql_entity_storage\Entity\SparqlMapping;
+use Drupal\sparql_entity_storage\UriEncoder;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\taxonomy\TermInterface;
+use Drupal\taxonomy\VocabularyInterface;
+
+/**
+ * Implements hook_entity_type_alter().
+ *
+ * Set the controller class for vocabularies and terms to an alternate
+ * implementation of the Drupal\Core\Entity\EntityStorageInterface interface.
+ */
+function rdf_taxonomy_entity_type_alter(array &$entity_types) {
+  $entity_types['taxonomy_term']->setClass(RdfTerm::class);
+  $entity_types['taxonomy_term']->setStorageClass(TermRdfStorage::class);
+  $entity_types['taxonomy_term']->setHandlerClass('views_data', NULL);
+  $entity_types['taxonomy_term']->setHandlerClass('list_builder', RdfTaxonomyTermListBuilder::class);
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function rdf_taxonomy_entity_base_field_info_alter(array &$fields, EntityTypeInterface $entity_type): void {
+  if ($entity_type->id() != 'taxonomy_term') {
+    return;
+  }
+
+  /** @var \Drupal\Core\Field\BaseFieldDefinition $original_tid */
+  $original_tid = $fields['tid'];
+
+  // Change the tid type to string (RDF uri).
+  $fields['tid'] = BaseFieldDefinition::create('string')
+    ->setName($original_tid->getName())
+    ->setTargetEntityTypeId($original_tid->getTargetEntityTypeId())
+    ->setTargetBundle($original_tid->getTargetBundle())
+    ->setLabel($original_tid->getLabel())
+    ->setDescription($original_tid->getDescription())
+    ->setProvider('rdf_taxonomy')
+    ->setReadOnly($original_tid->isReadOnly());
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function rdf_taxonomy_taxonomy_vocabulary_access(VocabularyInterface $vocabulary, $operation, AccountInterface $account) {
+  $locked = ($operation !== 'view') && $vocabulary->getThirdPartySetting('rdf_taxonomy', 'locked', TRUE);
+  return AccessResult::forbiddenIf($locked);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function rdf_taxonomy_taxonomy_term_access(TermInterface $term, $operation, AccountInterface $account) {
+  $locked = ($operation !== 'view') && $term->vid->entity->getThirdPartySetting('rdf_taxonomy', 'locked', TRUE);
+  return AccessResult::forbiddenIf($locked);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_create_access().
+ */
+function rdf_taxonomy_taxonomy_term_create_access(AccountInterface $account, array $context, $entity_bundle) {
+  $vocabulary = Vocabulary::load($entity_bundle);
+  $locked = $vocabulary->getThirdPartySetting('rdf_taxonomy', 'locked', TRUE);
+  return AccessResult::forbiddenIf($locked);
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function rdf_taxonomy_form_taxonomy_term_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\taxonomy\TermInterface $term */
+  $term = $form_state->getFormObject()->getEntity();
+
+  $sparql_mapping = SparqlMapping::loadByName('taxonomy_term', $term->bundle());
+  if (!$sparql_mapping->isMapped('weight')) {
+    // RDF terms with no weight mapping have 0 weight.
+    $form['relations']['weight'] = [
+      '#type' => 'value',
+      '#value' => 0,
+    ];
+  }
+
+  // RDF terms have no language. Set the entity default language to prevent a
+  // form validation error.
+  $form['langcode']['widget'][0]['value']['#default_value'] = $term->language()->getId();
+
+  // RDF Taxonomy doesn't support multiple parents yet.
+  $parent = reset($form['relations']['parent']['#default_value']);
+  $form['relations']['parent']['#default_value'] = $parent;
+
+  // Visual enhancements.
+  $form['relations']['#open'] = TRUE;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Resets the 'page' variable since the ID of an RDF entity is encoded when
+ * retrieved as a raw parameter from the route.
+ *
+ * The canonical implementation at template_preprocess_taxonomy_term() doesn't
+ * know how to deal with the encoded entity IDs found in the URL.
+ *
+ * @see template_preprocess_taxonomy_term()
+ */
+function rdf_taxonomy_preprocess_taxonomy_term(&$variables) {
+  /** @var \Drupal\taxonomy\TermInterface $term */
+  $term = $variables['term'];
+  $variables['page'] = $variables['view_mode'] == 'full' && rdf_taxonomy_term_is_page($term);
+}
+
+/**
+ * Returns whether the current page is the page of the passed-in term.
+ *
+ * Adapted from taxonomy_term_is_page().
+ *
+ * @param \Drupal\taxonomy\Entity\Term $term
+ *   A taxonomy term entity.
+ *
+ * @see taxonomy_term_is_page()
+ */
+function rdf_taxonomy_term_is_page(Term $term) {
+  if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $page_term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+    if (!SparqlArg::isValidResource($page_term_id)) {
+      $page_term_id = UriEncoder::decodeUrl($page_term_id);
+    }
+    return $page_term_id === $term->id();
+  }
+  return FALSE;
+}

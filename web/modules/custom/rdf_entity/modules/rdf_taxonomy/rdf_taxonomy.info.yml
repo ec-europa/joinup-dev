@@ -1,0 +1,8 @@
+name: RDF Taxonomy
+type: module
+description: 'Replace the taxonomy SQL storage backend with RDF storage.'
+package: Custom
+core_version_requirement: ^8 || ^9
+dependencies:
+  - rdf_entity:rdf_entity
+  - drupal:taxonomy

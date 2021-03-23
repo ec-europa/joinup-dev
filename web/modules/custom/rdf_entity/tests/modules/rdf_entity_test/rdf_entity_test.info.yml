@@ -1,0 +1,8 @@
+name: 'Rdf entity tests'
+type: module
+description: 'Support module for rdf entity tests.'
+core_version_requirement: ^8 || ^9
+package: Testing
+dependencies:
+  - datetime
+  - link

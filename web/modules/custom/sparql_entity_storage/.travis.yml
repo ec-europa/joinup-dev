@@ -1,0 +1,55 @@
+language: php
+
+php:
+  - '7.2'
+  - '7.3'
+  - '7.4'
+
+sudo: required
+
+services:
+  - mysql
+  - docker
+
+mysql:
+  database: sparql_entity_storage_test
+  username: root
+  encoding: utf8
+
+env:
+  global:
+    - SITE_DIR="$HOME/build/testing_site"
+  matrix:
+    - TEST=PHPCodeSniffer
+    - TEST=PHPStan DRUPAL=~8.9.0 PHPUNIT=^7
+    - TEST=PHPUnit DRUPAL=~8.9.0 PHPUNIT=^7
+    - TEST=PHPUnit DRUPAL=~9.0.0 PHPUNIT=^8
+    - TEST=PHPUnit DRUPAL=~9.1.0 PHPUNIT=^8
+    - TEST=PHPUnit DRUPAL=~9.2.0 PHPUNIT=^8
+
+matrix:
+  fast_finish: true
+  exclude:
+    - php: '7.2'
+      env: TEST=PHPUnit DRUPAL=~9.0.0 PHPUNIT=^8
+    - php: '7.2'
+      env: TEST=PHPUnit DRUPAL=~9.1.0 PHPUNIT=^8
+    - php: '7.2'
+      env: TEST=PHPUnit DRUPAL=~9.2.0 PHPUNIT=^8
+    - php: '7.3'
+      env: TEST=PHPCodeSniffer
+    - php: '7.3'
+      env: TEST=PHPStan DRUPAL=~8.9.0 PHPUNIT=^7
+    - php: '7.4'
+      env: TEST=PHPCodeSniffer
+    - php: '7.4'
+      env: TEST=PHPStan DRUPAL=~8.9.0 PHPUNIT=^7
+
+before_install:
+  # Remove this line to run with Xdebug enabled.
+  - phpenv config-rm xdebug.ini || true
+
+script: ${TRAVIS_BUILD_DIR}/tests/travis-ci/scripts/run_tests.sh
+
+notifications:
+  email: false

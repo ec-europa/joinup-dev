@@ -1,0 +1,10 @@
+name: 'Rdf entity taxonomy tests'
+type: module
+description: 'Support module for rdf taxonomy tests.'
+core_version_requirement: ^8 || ^9
+package: Testing
+dependencies:
+  - rdf_entity_test
+
+config_devel:
+  - sparql_entity_storage.mapping.taxonomy_term.taxonomy_test

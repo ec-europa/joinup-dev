@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Includes installation functions for the sparql_entity_storage module.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function sparql_entity_storage_requirements($phase) {
+  $requirements = [];
+  if ($phase !== 'runtime') {
+    return $requirements;
+  }
+
+  $requirements += sparql_entity_storage_virtuoso_version_requirements();
+  // If the endpoint is not available, return early.
+  if (
+    isset($requirements['sparql_endpoint']['severity']) &&
+    $requirements['sparql_endpoint']['severity'] === REQUIREMENT_ERROR
+  ) {
+    return $requirements;
+  }
+
+  return $requirements + sparql_entity_storage_virtuoso_permission_requirements();
+}

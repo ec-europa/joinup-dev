@@ -1,0 +1,5 @@
+@prefix ns0: <http://example.com/fruit/> .
+
+<http://example.com/apple>
+  ns0:title "Apple"@und ;
+  a ns0:type .

@@ -1,0 +1,7 @@
+name: 'RDF Draft'
+type: module
+description: 'Brings the notion of a draft graph to RDF entities.'
+core_version_requirement: ^8 || ^9
+package: Custom
+dependencies:
+  - rdf_entity:rdf_entity

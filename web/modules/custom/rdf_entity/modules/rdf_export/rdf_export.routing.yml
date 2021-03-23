@@ -1,0 +1,9 @@
+rdf_export.settings:
+  path: '/admin/config/sparql/export'
+  defaults:
+    _form: '\Drupal\rdf_export\Form\SettingsForm'
+    _title: 'RDF Export'
+  requirements:
+    _permission: 'administer rdf metadata settings'
+  options:
+    _admin_route: TRUE

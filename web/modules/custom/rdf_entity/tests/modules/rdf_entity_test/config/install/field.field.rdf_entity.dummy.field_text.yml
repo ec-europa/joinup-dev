@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_text
+    - rdf_entity.rdfentity.dummy
+id: rdf_entity.dummy.field_text
+field_name: field_text
+entity_type: rdf_entity
+bundle: dummy
+label: Text
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

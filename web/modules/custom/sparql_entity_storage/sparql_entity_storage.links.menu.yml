@@ -1,0 +1,12 @@
+sparql_entity_storage.settings:
+  title: 'SPARQL Entity Storage'
+  route_name: sparql_entity_storage.settings
+  parent: system.admin_config
+  description: 'Administer settings of SPARQL Entity Storage.'
+  position: right
+
+entity.sparql_graph.collection:
+  title: 'SPARQL Graphs'
+  parent: sparql_entity_storage.settings
+  description: 'Create and manage SPARQL entity graphs.'
+  route_name: entity.sparql_graph.collection
