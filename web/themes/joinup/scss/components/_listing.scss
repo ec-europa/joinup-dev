@@ -18,6 +18,14 @@
   align-items: stretch;
 }
 
+.paragraph--type--content-listing {
+  .listing__item {
+    border-width: 2px;
+    border-style: solid;
+    border-color: #e9edee;
+  }
+}
+
 .listing__card {
   display: flex;
   align-items: stretch;

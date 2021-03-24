@@ -25,7 +25,7 @@ base_fields_mapping:
   uid:
     target_id:
       predicate: 'http://joinup.eu/owner/uid'
-      format: integer
+      format: 'xsd:integer'
   label:
     value:
       predicate: 'http://purl.org/dc/terms/title'

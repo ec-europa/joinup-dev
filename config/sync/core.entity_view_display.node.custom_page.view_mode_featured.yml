@@ -5,7 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.node.view_mode_featured
     - field.field.node.custom_page.field_attachment
-    - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.field_custom_page_logo
     - field.field.node.custom_page.field_paragraphs_body
     - field.field.node.custom_page.og_audience
@@ -34,11 +33,9 @@ content:
         template_suggestion: ''
 hidden:
   field_attachment: true
-  field_cp_content_listing: true
   field_custom_page_logo: true
   langcode: true
   links: true
-  node_field_cp_content_listing_top: true
   og_audience: true
   published_at: true
   report: true
