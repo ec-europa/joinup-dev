@@ -199,12 +199,13 @@ class CommunityContentWorkflowAccessControlHandler {
     $view_scheme = $this->getPermissionScheme('view');
     $workflow_id = $content->getWorkflow()->getId();
     $state = $content->getWorkflowState();
+    $roles = $view_scheme[$workflow_id][$state] ?? [];
     // @todo Shouldn't we return AccessResult::neutral() instead of
     // AccessResult::allowed() and only AccessResult::forbidden() should have
     // cacheable metadata? Neutral means we don't make any opinion but the
     // default view access on node is to allow.
     // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6007
-    $result = $this->workflowHelper->userHasOwnAnyRoles($content, $account, $view_scheme[$workflow_id][$state]) ? AccessResult::allowed() : AccessResult::forbidden();
+    $result = !empty($roles) && $this->workflowHelper->userHasOwnAnyRoles($content, $account, $roles) ? AccessResult::allowed() : AccessResult::forbidden();
     return $result->addCacheableDependency($content);
   }
 
