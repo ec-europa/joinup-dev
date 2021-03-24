@@ -8,8 +8,8 @@ use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_bundle_class\LogoInterface;
-use Drupal\joinup_core\Entity\OutdatedContentInterface;
 use Drupal\joinup_bundle_class\ShortIdInterface;
+use Drupal\joinup_core\Entity\OutdatedContentInterface;
 use Drupal\og\OgMembershipInterface;
 
 /**
