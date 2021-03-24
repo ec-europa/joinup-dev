@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_front_page\Cache\Context;
+namespace Drupal\joinup_featured\Cache\Context;
 
 use Drupal\Core\Access\CsrfTokenGenerator;
 use Drupal\Core\Cache\CacheableMetadata;
@@ -11,9 +11,9 @@ use Drupal\Core\Cache\Context\CacheContextInterface;
 /**
  * Cache context for CSRF protected links for (un)pinning content.
  *
- * Cache context ID: 'pinned_to_front_page_csrf'.
+ * Cache context ID: 'joinup_featured_csrf'.
  *
- * The contextual links that allow content to be pinned to the front page are
+ * The contextual links that allow content to be features inside a group are
  * protected against CSRF using a session based token. This cache context is in
  * fact similar to the 'session' cache context, but we are not using that one
  * since we still want the pages that show these links to be marked as cacheable
@@ -28,9 +28,9 @@ use Drupal\Core\Cache\Context\CacheContextInterface;
  * shared base class to avoid introducing unwanted module dependencies. This
  * code is trivial and not worth the effort to split off into a separate module.
  *
- * @see \Drupal\joinup_featured\Cache\Context\FeaturedContentCsrfCacheContext
+ * @see \Drupal\joinup_front_page\Cache\Context\PinnedToFrontPageCsrfCacheContext
  */
-class PinnedToFrontPageCsrfCacheContext implements CacheContextInterface {
+class FeaturedContentCsrfCacheContext implements CacheContextInterface {
 
   /**
    * The CSRF token generator.
@@ -40,7 +40,7 @@ class PinnedToFrontPageCsrfCacheContext implements CacheContextInterface {
   protected $csrfTokenGenerator;
 
   /**
-   * Constructs a new PinnedToFrontPageCsrfCacheContext.
+   * Constructs a new FeaturedContentCsrfCacheContext.
    *
    * @param \Drupal\Core\Access\CsrfTokenGenerator $csrf_token_generator
    *   The CSRF token generator.
@@ -53,7 +53,7 @@ class PinnedToFrontPageCsrfCacheContext implements CacheContextInterface {
    * {@inheritdoc}
    */
   public static function getLabel() {
-    return t('Pinned to front page CSRF token');
+    return t('Featured content CSRF token');
   }
 
   /**
