@@ -71,10 +71,12 @@ function joinup_front_page_entity_view_alter(array &$build, EntityInterface $ent
     // @see joinup_entity_view_alter()
     $build['#contextual_links']['entity']['metadata']['is_pinned_to_front_page'] = (int) !empty($menu_item);
     // The URL to pin entities to the front page is protected against CSRF
-    // attacks, so this needs to vary with the session. The CSRF token is only
-    // valid for a single session.
+    // attacks, so this needs to vary with the session. We have a dedicated
+    // cache context for this, avoiding the 'session' cache context since this
+    // would mark the entire page as uncacheable, preventing the detection of
+    // regressions in cacheability.
     $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], [
-      'session',
+      'pinned_to_front_page_csrf',
     ]);
   }
 }
