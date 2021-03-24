@@ -10,3 +10,8 @@ services:
   joinup_core.local_task_links_helper:
     class: Drupal\joinup_core\LocalTaskLinksHelper
     arguments: ['@entity_type.manager']
+  joinup_core.outdated_content.config.sunscriber:
+    class: Drupal\joinup_core\EventSubscriber\OutdatedContentConfigSubscriber
+    arguments: ['@entity_field.manager']
+    tags:
+      - { name: event_subscriber }
