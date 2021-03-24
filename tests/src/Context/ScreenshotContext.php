@@ -37,6 +37,13 @@ class ScreenshotContext extends RawMinkContext {
   protected $s3Dir;
 
   /**
+   * Optional URL where $this->localDir is exposed.
+   *
+   * @var string|null
+   */
+  protected $publicUrl;
+
+  /**
    * Optional AWS region where the Amazon S3 bucket is located.
    *
    * @var string
@@ -56,6 +63,8 @@ class ScreenshotContext extends RawMinkContext {
    * @param string|null $localDir
    *   Optional directory where the screenshots are saved. If omitted the
    *   screenshots will not be saved.
+   * @param string|null $publicUrl
+   *   The public URL corresponding to $localDir directory, if any.
    * @param string|null $s3Dir
    *   Optional folder on an Amazon S3 bucket where screenshots will be uploaded
    *   to. If omitted, the screenshots will not be uploaded to AWS S3.
@@ -68,8 +77,9 @@ class ScreenshotContext extends RawMinkContext {
    *
    * @see tests/behat.yml.dist
    */
-  public function __construct(?string $localDir = NULL, ?string $s3Dir = NULL, ?string $s3Region = NULL, ?string $s3Bucket = NULL) {
+  public function __construct(?string $localDir = NULL, ?string $publicUrl, ?string $s3Dir = NULL, ?string $s3Region = NULL, ?string $s3Bucket = NULL) {
     $this->localDir = $localDir;
+    $this->publicUrl = $publicUrl;
     $this->s3Dir = $s3Dir;
     $this->s3Region = $s3Region;
     $this->s3Bucket = $s3Bucket;
@@ -189,13 +199,13 @@ class ScreenshotContext extends RawMinkContext {
     }
 
     // Save the screenshot locally.
-    $path = $this->save($screenshot, $file_name);
+    $url = $this->save($screenshot, $file_name);
 
     // Upload the screenshot to Amazon S3.
     $this->upload($screenshot, $file_name);
 
     if ($message) {
-      print strtr($message, ['@file_name' => $path ?: $file_name]);
+      print strtr($message, ['@file_name' => $url ?: $file_name]);
       // Depending on the output formatter used, Behat will suppress any output
       // generated during the test. Flush the output buffers so out message will
       // show up in the test logs.
@@ -212,7 +222,7 @@ class ScreenshotContext extends RawMinkContext {
    *   The file name.
    *
    * @return string|null
-   *   The saved screenshot path.
+   *   The saved screenshot path or URL, if screenshots are exposed.
    *
    * @throws \Exception
    *   Thrown if the destination folder doesn't exist and couldn't be created.
@@ -234,7 +244,7 @@ class ScreenshotContext extends RawMinkContext {
     $path = $this->localDir . DIRECTORY_SEPARATOR . $file_name;
     file_put_contents($path, $screenshot);
 
-    return $path;
+    return $this->publicUrl ? "{$this->publicUrl}/{$file_name}" : $path;
   }
 
   /**

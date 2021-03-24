@@ -3,7 +3,7 @@
 behat:
   screenshots:
     local:
-      dir: ${toolkit.tmp_folder}/behat
+      dir: ${joinup.site_dir}/sites/simpletest/behat
   # Either 'firefox' or 'chrome'.
   browser_name: chrome
   formatter:

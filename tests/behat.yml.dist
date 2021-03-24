@@ -52,6 +52,7 @@ default:
         - Drupal\joinup\Context\RssContext
         - Drupal\joinup\Context\ScreenshotContext:
             localDir: ${behat.screenshots.local.dir}
+            publicUrl: ${env.DRUPAL_BASE_URL}/sites/simpletest/behat
             s3Dir: ${env.BEHAT_S3_DIR}
             s3Region: ${env.BEHAT_S3_AWS_REGION}
             s3Bucket: ${env.BEHAT_S3_BUCKET}
