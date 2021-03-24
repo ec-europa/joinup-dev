@@ -915,6 +915,37 @@ class JoinupContext extends RawDrupalContext {
   }
 
   /**
+   * Asserts that a date/time field is prefilled with the current time.
+   *
+   * @param string $field
+   *   The date/time field name.
+   *
+   * @throws \Exception
+   *   When the field is not found.
+   *
+   * @Then I see :field filled with the current time
+   */
+  public function assertDateTimeFieldValue(string $field): void {
+    $now = new \DateTimeImmutable();
+
+    $date_part = $this->findDateRangeComponent($field, 'date')->getAttribute('value');
+    $time_part = $this->findDateRangeComponent($field, 'time')->getAttribute('value');
+    if (empty($date_part) || empty($time_part)) {
+      throw new ExpectationFailedException("The '{$field}' date/time field is not filled with the current time.");
+    }
+
+    $date = new \DateTimeImmutable("{$date_part} {$time_part}");
+
+    $interval = $now->diff($date);
+    // Given that such a test cannot do an exact assertion, because of the
+    // testing environment latency, we consider 3 seconds as an acceptable
+    // fuzziness.
+    if ($interval->f > 3000) {
+      throw new ExpectationFailedException("The '{$field}' date/time field is not filled with the current time.");
+    }
+  }
+
+  /**
    * Finds a datetime field.
    *
    * First, get the fields that use a datetime widget. Fields of type 'created'
