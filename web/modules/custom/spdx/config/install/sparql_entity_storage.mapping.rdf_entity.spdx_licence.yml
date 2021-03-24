@@ -12,15 +12,11 @@ graph:
   default: 'http://joinup.eu/spdx_licence/published'
 base_fields_mapping:
   rid:
-    field: null
-    columns:
-      target_id:
-        predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
-        format: resource
+    target_id:
+      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      format: resource
   label:
-    field: null
-    columns:
-      value:
-        predicate: 'http://spdx.org/rdf/terms#name'
-        format: t_literal
+    value:
+      predicate: 'http://spdx.org/rdf/terms#name'
+      format: t_literal
 entity_id_plugin: default

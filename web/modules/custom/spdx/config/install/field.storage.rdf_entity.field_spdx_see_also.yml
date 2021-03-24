@@ -7,11 +7,9 @@ dependencies:
 third_party_settings:
   sparql_entity_storage:
     mapping:
-      field: null
-      columns:
-        uri:
-          predicate: 'http://spdx.org/rdf/terms#seeAlso'
-          format: 'xsd:anyURI'
+      uri:
+        predicate: 'http://spdx.org/rdf/terms#seeAlso'
+        format: 'xsd:anyURI'
 id: rdf_entity.field_spdx_see_also
 field_name: field_spdx_see_also
 entity_type: rdf_entity
