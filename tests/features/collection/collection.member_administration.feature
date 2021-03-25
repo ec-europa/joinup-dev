@@ -1,4 +1,4 @@
-@api @email @group-a @terms
+@api @group-a @terms
 Feature: Collection membership administration
   In order to build a community
   As a collection facilitator
@@ -37,6 +37,7 @@ Feature: Collection membership administration
     Then I should see the button "Apply to selected items" in the "Members admin form header" region
     But I should not see the button "Apply to selected items" in the "Members admin form actions" region
 
+  @email
   Scenario: Request a membership
     When I am logged in as "Donald Duck"
     And all e-mails have been sent
@@ -54,6 +55,7 @@ Feature: Collection membership administration
       | subject   | Joinup: A user has requested to join your collection                               |
       | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
 
+  @email
   Scenario: Approve a membership
     # Check that a member with pending state does not have access to add new content.
     Given I am logged in as "Kathie Cumbershot"
