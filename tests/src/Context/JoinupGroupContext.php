@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup\Context;
 
 use Behat\Mink\Exception\ElementNotFoundException;
+use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -18,6 +19,22 @@ class JoinupGroupContext extends RawDrupalContext {
 
   use NodeTrait;
   use RdfEntityTrait;
+
+  /**
+   * Navigates to the membership permissions table of the given group.
+   *
+   * @param string $label
+   *   The name of the group.
+   *
+   * @When I go to the member(ship) permissions table of :label
+   */
+  public function visitMembershipPermissionsTable(string $label): void {
+    $group = $this->getRdfEntityByLabel($label);
+    $url = Url::fromRoute('joinup_group.membership_permissions_info', [
+      'rdf_entity' => $group->id(),
+    ]);
+    $this->visitPath($url->toString());
+  }
 
   /**
    * Checks if the given node belongs to the given group.
