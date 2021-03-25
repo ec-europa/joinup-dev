@@ -767,6 +767,20 @@ function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for views-exposed-form.html.twig.
+ */
+function joinup_theme_preprocess_views_exposed_form__og_members_overview(&$variables) {
+  // Append a help icon to the member permissions link on the members page.
+  if (!empty($variables['form']['member_permissions_link']['#title'])) {
+    $link = &$variables['form']['member_permissions_link'];
+    $title = $link['#title'];
+    $link['#title'] = [
+      '#markup' => $title . ' <span class="icon icon--help"></span>',
+    ];
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for field--comma-separated.html.twig.
  */
 function joinup_theme_preprocess_field__comma_separated(&$variables) {
