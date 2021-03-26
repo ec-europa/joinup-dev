@@ -89,6 +89,10 @@
   }
 }
 
+.details__icon {
+  @extend .listing__icon;
+}
+
 // Modifiers
 // --------------------------------------------------
 .details__element--block {
