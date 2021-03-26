@@ -21,6 +21,23 @@ class JoinupGroupContext extends RawDrupalContext {
   use RdfEntityTrait;
 
   /**
+   * Navigates to the members page of the given group.
+   *
+   * @param string $label
+   *   The name of the group.
+   *
+   * @When I go to the members page of :label
+   * @When I am on the members page of :label
+   */
+  public function visitMembersPage(string $label): void {
+    $group = $this->getRdfEntityByLabel($label);
+    $url = Url::fromRoute('entity.rdf_entity.member_overview', [
+      'rdf_entity' => $group->id(),
+    ]);
+    $this->visitPath($url->toString());
+  }
+
+  /**
    * Navigates to the membership permissions table of the given group.
    *
    * @param string $label
