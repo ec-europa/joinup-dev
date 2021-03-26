@@ -32,16 +32,6 @@ use Drupal\og\MembershipManagerInterface;
 class CommunityContentWorkflowAccessControlHandler {
 
   /**
-   * Flag for pre-moderated groups.
-   */
-  const PRE_MODERATION = 1;
-
-  /**
-   * Flag for post-moderated groups.
-   */
-  const POST_MODERATION = 0;
-
-  /**
    * The entity type manager service.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface

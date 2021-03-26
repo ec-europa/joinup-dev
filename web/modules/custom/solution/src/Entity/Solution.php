@@ -163,6 +163,13 @@ class Solution extends Rdf implements SolutionInterface {
   /**
    * {@inheritdoc}
    */
+  public function getGroupModerationFieldName(): string {
+    return 'field_is_moderation';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function doGetGroupContentIds(): array {
     $ids = ['node' => $this->getNodeGroupContent()];
     $releases = $this->getReleases();

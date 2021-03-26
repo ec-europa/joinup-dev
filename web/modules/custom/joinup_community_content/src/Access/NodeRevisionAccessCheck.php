@@ -121,23 +121,22 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
     }
 
     // Check if the user has either the "all" or the type-specific permission.
-    // We cannot use orIf() to join them, as OG returns access denied when the
-    // permission is not present for the user in a group, and orIf() returns
-    // forbidden if any of the parameters is forbidden.
-    $all_access = $this->ogAccess->userAccessEntity($map[$operation], $node, $account);
-    $type_access = $this->ogAccess->userAccessEntity($type_map[$operation], $node, $account);
-    // If neither of the access checks are allowed, check the node_access_strict
-    // configuration and return either neutral or forbidden.
-    // @see og_entity_access()
-    if (!$all_access->isAllowed() && !$type_access->isAllowed()) {
-      $node_access_strict = $this->configFactory->get('og.settings')->get('node_access_strict');
+    $result = $this->ogAccess->userAccessEntity($map[$operation], $node, $account)
+      ->orIf($this->ogAccess->userAccessEntity($type_map[$operation], $node, $account));
 
-      return AccessResult::forbiddenIf($node_access_strict)->inheritCacheability($all_access)->inheritCacheability($type_access);
+    // If the user owns the entity, check if they can 'view own revisions'.
+    if (!$result->isAllowed() && (int) $node->getOwnerId() === (int) $account->id()) {
+      $result = $result->orIf($this->ogAccess->userAccessEntity('view own revisions', $node, $account));
     }
 
-    // Merge all the cacheability of the two permissions checked, as they might
-    // differ.
-    $result = AccessResult::allowed()->inheritCacheability($all_access)->inheritCacheability($type_access);
+    // If neither of the access checks are allowed, we have no opinion. However
+    // if the 'node_access_strict' option is set in Organic Groups then should
+    // never return neutral, but we should strictly forbid access.
+    // @see og_entity_access()
+    if (!$result->isAllowed()) {
+      $node_access_strict = $this->configFactory->get('og.settings')->get('node_access_strict');
+      return AccessResult::forbiddenIf($node_access_strict)->inheritCacheability($result);
+    }
 
     // First check the access to the default revision and finally, if the
     // node passed in is not the default revision then access to that, too.
