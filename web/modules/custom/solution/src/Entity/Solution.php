@@ -170,6 +170,13 @@ class Solution extends Rdf implements SolutionInterface {
   /**
    * {@inheritdoc}
    */
+  public function getContentCreationFieldName(): string {
+    return 'field_is_content_creation';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function doGetGroupContentIds(): array {
     $ids = ['node' => $this->getNodeGroupContent()];
     $releases = $this->getReleases();

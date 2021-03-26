@@ -97,6 +97,13 @@ trait GroupTrait {
   /**
    * {@inheritdoc}
    */
+  public function getContentCreation(): string {
+    return $this->getMainPropertyValue($this->getContentCreationFieldName());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getGroupContentIds(): array {
     $group_content = $this->doGetGroupContentIds();
     // Ensure that the results are sorted.
