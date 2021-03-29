@@ -133,19 +133,3 @@ Feature: Solution membership administration
     And I should see the link "Invite members"
     When I click "Invite members"
     Then I should see the heading "Invite members"
-
-  # The permissions table should not be accessible for non-public solutions.
-  Scenario: Access the membership permissions information table
-    Given the following solutions:
-      | title                | state       |
-      | The Draft Sons       | draft       |
-      | The Proposed Sons    | proposed    |
-      | The Sons of Darkness | blacklisted |
-    When I go to the member permissions table of "The Draft Sons"
-    Then I should see the heading "Sign in to continue"
-    When I go to the member permissions table of "The Proposed Sons"
-    Then I should see the heading "Sign in to continue"
-    When I go to the member permissions table of "The Sons of Darkness"
-    Then I should see the heading "Sign in to continue"
-    When I go to the member permissions table of "The Missing Sons"
-    Then I should see the heading "Member permissions"
