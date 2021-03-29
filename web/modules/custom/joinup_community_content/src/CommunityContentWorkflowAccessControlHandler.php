@@ -213,7 +213,7 @@ class CommunityContentWorkflowAccessControlHandler {
     $create_scheme = $this->getPermissionScheme('create');
     $workflow_id = $content->getWorkflow()->getId();
     try {
-      $content_creation = $content->getGroup()->getContentCreation();
+      $content_creation = $content->getGroup()->getContentCreators();
     }
     catch (MissingGroupException $e) {
       // Forbid creating community content if the parent group has not been set

@@ -95,7 +95,7 @@ class CommunityContentGuard implements GuardInterface {
     $permission_scheme = $this->permissionScheme->get('create');
     $workflow_id = $workflow->getId();
     $parent = JoinupGroupHelper::getGroup($entity);
-    $content_creation = $parent->getContentCreation();
+    $content_creation = $parent->getContentCreators();
 
     if (!isset($permission_scheme[$workflow_id][$content_creation][$transition->getId()])) {
       return FALSE;

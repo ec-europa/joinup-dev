@@ -97,7 +97,7 @@ trait GroupTrait {
   /**
    * {@inheritdoc}
    */
-  public function getContentCreation(): string {
+  public function getContentCreators(): string {
     return $this->getMainPropertyValue($this->getContentCreationFieldName());
   }
 

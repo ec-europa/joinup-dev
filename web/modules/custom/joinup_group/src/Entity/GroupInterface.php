@@ -179,7 +179,7 @@ interface GroupInterface extends ContentEntityInterface, LogoInterface, ShortIdI
    *   - \Drupal\joinup_group\ContentCreationOptions::MEMBERS
    *   - \Drupal\joinup_group\ContentCreationOptions::REGISTERED_USERS
    */
-  public function getContentCreation(): string;
+  public function getContentCreators(): string;
 
   /**
    * Returns the field name of the content creation field.
