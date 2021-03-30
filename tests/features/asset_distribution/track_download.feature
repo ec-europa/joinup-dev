@@ -144,9 +144,9 @@ Feature: Asset distribution editing.
     Then I should see the success message "Export complete. Download the file here if file is not automatically downloaded."
     And I should see the link "here"
     And the file downloaded from the "here" link contains the following strings:
-      | ID,User,Email,"File name",Distribution,Parent,Created                                |
-      | ,"Anonymous (not verified)",visitor@example.com,text.pdf,"Distribution 1",Release 1, |
-      | ,user1,user1@example.com,text.pdf,"Distribution 1",Release 1,                        |
-      | ,user2,user2@example.com,test.zip,"Distribution 2",Solution,                         |
-      | ,"Anonymous (not verified)",anon@example.com,test1.zip,"Distribution 3",Solution,    |
-      | ,user1,user1@example.com,test1.zip,"Distribution 3",Solution,                        |
+      | ID,User,Email,"File name",Distribution,Parent,Created                                  |
+      | ,"Anonymous (not verified)",visitor@example.com,text.pdf,"Distribution 1","Release 1", |
+      | ,user1,user1@example.com,text.pdf,"Distribution 1","Release 1",                        |
+      | ,user2,user2@example.com,test.zip,"Distribution 2",Solution,                           |
+      | ,"Anonymous (not verified)",anon@example.com,test1.zip,"Distribution 3",Solution,      |
+      | ,user1,user1@example.com,test1.zip,"Distribution 3",Solution,                          |
