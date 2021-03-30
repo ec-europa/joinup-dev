@@ -1,0 +1,28 @@
+uuid: 9ba4d46f-3c31-430d-8207-990dfaf4d4ba
+langcode: en
+status: true
+dependencies:
+  module:
+    - eif
+    - node
+    - oe_webtools_etrans
+  theme:
+    - joinup_theme
+id: webtools_etrans
+theme: joinup_theme
+region: content
+weight: -25
+provider: null
+plugin: oe_webtools_etrans
+settings:
+  id: oe_webtools_etrans
+  label: 'OpenEuropa Webtools ETrans'
+  provider: oe_webtools_etrans
+  label_display: '0'
+  render_as: button
+  render_to: ''
+  domain: gen
+  delay: 0
+  include: ''
+  exclude: ''
+visibility: {  }

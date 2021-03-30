@@ -1366,7 +1366,62 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Unchecks a material checkbox in a row that contains some text.
+   * Checks a material design checkbox.
+   *
+   * To be used for Javascript based tests.
+   *
+   * @param string $text
+   *   The checkbox text.
+   *
+   * @Given I check the :text material checkbox
+   */
+  public function checkMaterialCheckbox(string $text): void {
+    $this->checkMaterialCheckboxHelper($this->getSession()->getPage(), $text);
+  }
+
+
+  /**
+   * Unchecks a material checkbox in a row that contains a certain text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox or radio button.
+   * @throws \InvalidArgumentException
+   *   If this step definition was used on a radio button.
+   *
+   * @Given I check the material checkbox in the :text table row
+   */
+  public function checkMaterialCheckboxInTableRow(string $text): void {
+    $this->checkMaterialCheckboxHelper($this->getRowByRowText($text));
+  }
+
+  /**
+   * Checks a material design checkbox placed in given context.
+   *
+   * @param \Behat\Mink\Element\TraversableElement $element
+   *   The traversable element to search.
+   * @param string|null $text
+   *   (optional) The checkbox label, if any. Defaults to false.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException When the checkbox cannot be found in $context.
+   * @throws \Exception When the checkbox is already checked.
+   */
+  protected function checkMaterialCheckboxHelper(TraversableElement $element, ?string $text = NULL): void {
+    $checkbox = $text ? $element->findField($text) : $element->find('css', 'input[type="checkbox"]');
+    if (!$checkbox) {
+      throw new ElementNotFoundException($this->getSession(), 'checkbox', NULL, $text);
+    }
+    if ($checkbox->isChecked()) {
+      throw new \Exception("Checkbox with text {$text} is already checked.");
+    }
+    $this->toggleMaterialDesignCheckbox($checkbox->getParent());
+  }
+
+  /**
+   * Unchecks a material checkbox in a row that contains a certain text.
    *
    * @param string $text
    *   Text in the row.
@@ -1380,26 +1435,31 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Given I uncheck the material checkbox in the :text table row
    */
   public function uncheckMaterialCheckboxInTableRow(string $text): void {
-    $row = $this->getRowByRowText($text);
-    $this->toggleMaterialDesignCheckbox('', $row);
+    $this->uncheckMaterialCheckboxHelper($this->getRowByRowText($text));
   }
 
   /**
-   * Checks a material design checkbox.
+   * Unchecks a material design checkbox placed in given context.
    *
-   * To be used for Javascript based tests.
-   *
-   * @param string $text
+   * @param \Behat\Mink\Element\TraversableElement $element
+   *   The node element to search.
+   * @param string|null $text
    *   The checkbox text.
    *
-   * @Given I check the :text material checkbox
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   When the checkbox cannot be found in $context.
+   * @throws \Exception
+   *   When the checkbox is already unchecked.
    */
-  public function checkMaterialCheckbox(string $text): void {
-    $checkbox = $this->getSession()->getPage()->findField($text);
-    if ($checkbox && $checkbox->isChecked()) {
-      throw new \Exception("Checkbox with text {$text} is already checked.");
+  protected function uncheckMaterialCheckboxHelper(TraversableElement $element, ?string $text =  NULL): void {
+    $checkbox = $text ? $element->findField($text) : $element->find('css', 'input[type="checkbox"]');
+    if (!$checkbox) {
+      throw new ElementNotFoundException($this->getSession(), 'checkbox', NULL, $text);
     }
-    $this->toggleMaterialDesignCheckbox('', $checkbox->getParent());
+    if (!$checkbox->isChecked()) {
+      throw new \Exception("Checkbox with text {$text} is already unchecked.");
+    }
+    $this->toggleMaterialDesignCheckbox($checkbox->getParent());
   }
 
   /**

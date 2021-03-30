@@ -84,6 +84,11 @@ Feature: "Add document" visibility options.
     When I go to the homepage of the "Hunter in the Swords" collection
     Then I should see the link "An amazing document"
 
+    # Check that the publication date field is prefilled with the current time.
+    When I go to the homepage of the "Hunter in the Swords" collection
+    And I click "Add document" in the plus button menu
+    Then I see "Publication date" filled with the current time
+
   # Regression test to ensure that no critical errors are thrown when a new
   # revision is created for a document that has a remote file attached.
   # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3670

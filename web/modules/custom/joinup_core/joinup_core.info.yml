@@ -3,7 +3,6 @@ type: module
 description: 'Contains shared code for Joinup.'
 core: 8.x
 package: Joinup
-
 dependencies:
   - 'drupal:comment'
   - 'drupal:image'
@@ -17,3 +16,6 @@ dependencies:
   - 'rdf_entity:rdf_taxonomy'
   - 'redirect:redirect'
   - 'site_alert:site_alert'
+config_devel:
+  install:
+    - joinup_core.outdated_content_threshold

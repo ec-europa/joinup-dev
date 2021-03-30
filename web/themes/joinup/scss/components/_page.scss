@@ -99,3 +99,56 @@
     @extend .white-box;
   }
 }
+
+// Webtools eTrans css overrides:
+// https://europa.eu/webtools/webtools.etrans.css?utilities=true
+// --------------------------------------------------
+#block-webtools-etrans {
+  clear: both;
+  position: relative;
+  width: 100%;
+  z-index: 10;
+
+  .wt-etrans,
+  #wtEtransRequester {
+    display: block !important;
+  }
+
+  #eTransButton {
+    display: block;
+    margin: 25px auto 30px auto;
+    font-weight: $font-weight-medium;
+    font-size: 13px;
+    line-height: normal;
+    height: auto;
+    padding: 10px 20px !important;
+    text-decoration: initial;
+    letter-spacing: 0.5px;
+    color: #fff;
+    border: 3px solid $color-blue-default !important;
+    background-color: $color-blue-default !important;
+    background-image: none !important;
+    white-space: nowrap;
+    cursor: pointer;
+
+    @include hidden-print;
+    @include border-radius(4px);
+
+    &:focus {
+      border: 3px solid $color-blue-default !important;
+      padding: 10px 20px !important;
+    }
+
+    @include breakpoint(tablet) {
+      float: right;
+      display: inline-block;
+      margin: -70px 0 0 0;
+      font-size: 13px;
+      padding: 5px 10px !important;
+
+      &:focus {
+        padding: 5px 10px !important;
+      }
+    }
+  }
+}

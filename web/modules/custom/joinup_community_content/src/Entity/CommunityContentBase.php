@@ -6,6 +6,7 @@ namespace Drupal\joinup_community_content\Entity;
 
 use Drupal\collection\Entity\NodeCollectionContentTrait;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
+use Drupal\joinup_core\Entity\OutdatedContentTrait;
 use Drupal\joinup_featured\FeaturedContentTrait;
 use Drupal\joinup_front_page\Entity\PinnableToFrontpageTrait;
 use Drupal\joinup_group\Entity\PinnableGroupContentTrait;
@@ -27,8 +28,9 @@ abstract class CommunityContentBase extends Node implements CommunityContentInte
   use EntityPublicationTimeTrait;
   use EntityWorkflowStateTrait;
   use FeaturedContentTrait;
-  use NodeCollectionContentTrait;
   use JoinupBundleClassMetaEntityTrait;
+  use NodeCollectionContentTrait;
+  use OutdatedContentTrait;
   use PinnableGroupContentTrait;
   use PinnableToFrontpageTrait;
   use VisitCountAwareTrait;
