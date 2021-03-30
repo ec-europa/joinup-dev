@@ -73,14 +73,16 @@ Feature: Group member permissions table
     And I am on the members page of "Applied astrology"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                   | Member | Author | Facilitator | Owner |
-      | View published content       | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion           |        | ✓      | ✓           | ✓     |
-      | Publish content              |        | ✓      | ✓           | ✓     |
-      | Update own published content |        | ✓      | ✓           | ✓     |
-      | Update any content           |        |        | ✓           | ✓     |
-      | Delete own content           |        | ✓      | ✓           | ✓     |
-      | Delete any content           |        |        | ✓           | ✓     |
+      | Permission                                  | Member | Author | Facilitator | Owner |
+      | View published content                      | ✓      | ✓      | ✓           | ✓     |
+      | View unpublished content from other users   |        |        | ✓           | ✓     |
+      | Start a discussion                          |        | ✓      | ✓           | ✓     |
+      | Publish content                             |        | ✓      | ✓           | ✓     |
+      | Update own published content                |        | ✓      | ✓           | ✓     |
+      | Update any content                          |        |        | ✓           | ✓     |
+      | Request changes on content from other users |        |        | ✓           | ✓     |
+      | Delete own content                          |        | ✓      | ✓           | ✓     |
+      | Delete any content                          |        |        | ✓           | ✓     |
 
     # Quick check to verify the permissions are actually matching what is
     # displayed in the table. Only the most common case ("member") is checked.
@@ -94,20 +96,26 @@ Feature: Group member permissions table
     And I should not see the link "Add document"
     And I should not see the link "Add event"
     And I should not see the link "Add news"
-
+    Given event content:
+      | title             | state | collection        | author           |
+      | The Poor Scholars | draft | Applied astrology | Mustrum Ridcully |
+    When I go to the content page of the type event with the title "The Poor Scholars"
+    Then I should get an access denied error
 
     # Collection. Content creation: authors and facilitators. Not moderated.
     And I am on the members page of "Illiberal studies"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                   | Member | Author | Facilitator | Owner |
-      | View published content       | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion           |        | ✓      | ✓           | ✓     |
-      | Publish content              |        | ✓      | ✓           | ✓     |
-      | Update own published content |        | ✓      | ✓           | ✓     |
-      | Update any content           |        |        | ✓           | ✓     |
-      | Delete own content           |        | ✓      | ✓           | ✓     |
-      | Delete any content           |        |        | ✓           | ✓     |
+      | Permission                                  | Member | Author | Facilitator | Owner |
+      | View published content                      | ✓      | ✓      | ✓           | ✓     |
+      | View unpublished content from other users   |        |        | ✓           | ✓     |
+      | Start a discussion                          |        | ✓      | ✓           | ✓     |
+      | Publish content                             |        | ✓      | ✓           | ✓     |
+      | Update own published content                |        | ✓      | ✓           | ✓     |
+      | Update any content                          |        |        | ✓           | ✓     |
+      | Request changes on content from other users |        |        | ✓           | ✓     |
+      | Delete own content                          |        | ✓      | ✓           | ✓     |
+      | Delete any content                          |        |        | ✓           | ✓     |
 
     Given I am logged in as a member of the "Illiberal studies" collection
     When I go to the homepage of the "Illiberal studies" collection
@@ -117,6 +125,11 @@ Feature: Group member permissions table
     And I should not see the link "Add document"
     And I should not see the link "Add event"
     And I should not see the link "Add news"
+    Given event content:
+      | title    | state | collection        | author           |
+      | Rag Week | draft | Illiberal studies | Mustrum Ridcully |
+    When I go to the content page of the type event with the title "Rag Week"
+    Then I should get an access denied error
 
 
     # Collection. Content creation: members. Moderated.
@@ -125,6 +138,7 @@ Feature: Group member permissions table
     Then the "member permissions" table should be:
       | Permission                                                 | Member | Author | Facilitator | Owner |
       | View published content                                     | ✓      | ✓      | ✓           | ✓     |
+      | View unpublished content from other users                  |        |        | ✓           | ✓     |
       | Start a discussion                                         | ✓      | ✓      | ✓           | ✓     |
       | Propose content for publication, pending approval          | ✓      |        |             |       |
       | Approve proposed content for publication                   |        |        | ✓           | ✓     |
@@ -133,6 +147,7 @@ Feature: Group member permissions table
       | Approve proposed changes to published content              |        |        | ✓           | ✓     |
       | Update own published content without approval              |        | ✓      | ✓           | ✓     |
       | Update any content                                         |        |        | ✓           | ✓     |
+      | Request changes on content from other users                |        |        | ✓           | ✓     |
       | Request deletion of own content, pending approval          | ✓      |        |             |       |
       | Approve requested deletion of content                      |        |        | ✓           | ✓     |
       | Delete own content without approval                        |        | ✓      | ✓           | ✓     |
@@ -153,27 +168,32 @@ Feature: Group member permissions table
     When I click "Add news"
     Then I should see the button "Propose"
     But I should not see the button "Publish"
-    Given news content:
+    Given event content:
       | title                          | state     | collection           | author           |
       | Election of Boy Archchancellor | validated | Approximate accuracy | Horace Worblehat |
-    When I go to the news content "Election of Boy Archchancellor" edit screen
+      | The Wizards' Excuse Me         | draft     | Approximate accuracy | Mustrum Ridcully |
+    When I go to the event content "Election of Boy Archchancellor" edit screen
     Then I should see the button "Request deletion"
     And I should see the button "Propose changes"
     But I should not see the link "Delete"
     And I should not see the button "Update"
+    When I go to the content page of the type event with the title "The Wizards' Excuse Me"
+    Then I should get an access denied error
 
     # Collection. Content creation: members. Not moderated.
     Given I am on the members page of "Dust, miscellaneous particles and filaments"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                   | Member | Author | Facilitator | Owner |
-      | View published content       | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion           | ✓      | ✓      | ✓           | ✓     |
-      | Publish content              | ✓      | ✓      | ✓           | ✓     |
-      | Update own published content | ✓      | ✓      | ✓           | ✓     |
-      | Update any content           |        |        | ✓           | ✓     |
-      | Delete own content           | ✓      | ✓      | ✓           | ✓     |
-      | Delete any content           |        |        | ✓           | ✓     |
+      | Permission                                  | Member | Author | Facilitator | Owner |
+      | View published content                      | ✓      | ✓      | ✓           | ✓     |
+      | View unpublished content from other users   |        |        | ✓           | ✓     |
+      | Start a discussion                          | ✓      | ✓      | ✓           | ✓     |
+      | Publish content                             | ✓      | ✓      | ✓           | ✓     |
+      | Update own published content                | ✓      | ✓      | ✓           | ✓     |
+      | Update any content                          |        |        | ✓           | ✓     |
+      | Request changes on content from other users |        |        | ✓           | ✓     |
+      | Delete own content                          | ✓      | ✓      | ✓           | ✓     |
+      | Delete any content                          |        |        | ✓           | ✓     |
 
     Given I am logged in as "Ponder Stibbons"
     When I go to the homepage of the "Dust, miscellaneous particles and filaments" collection
@@ -190,14 +210,17 @@ Feature: Group member permissions table
     When I click "Add news"
     Then I should see the button "Publish"
     But I should not see the button "Propose"
-    Given news content:
-      | title              | state     | collection                                  | author          |
-      | Beating the bounds | validated | Dust, miscellaneous particles and filaments | Ponder Stibbons |
-    When I go to the news content "Beating the bounds" edit screen
+    Given event content:
+      | title                                               | state     | collection                                  | author           |
+      | Beating the bounds                                  | validated | Dust, miscellaneous particles and filaments | Ponder Stibbons  |
+      | Archchancellor Bowell's Remembrance's Bun and Penny | draft     | Dust, miscellaneous particles and filaments | Mustrum Ridcully |
+    When I go to the event content "Beating the bounds" edit screen
     Then I should see the link "Delete"
     And I should see the button "Update"
     But I should not see the button "Request deletion"
     And I should not see the button "Propose changes"
+    When I go to the content page of the type event with the title "Archchancellor Bowell's Remembrance's Bun and Penny"
+    Then I should get an access denied error
 
     # Collection. Content creation: any user. Moderated.
     Given I am on the members page of "Creative uncertainty"
@@ -205,6 +228,7 @@ Feature: Group member permissions table
     Then the "member permissions" table should be:
       | Permission                                                 | Member | Author | Facilitator | Owner |
       | View published content                                     | ✓      | ✓      | ✓           | ✓     |
+      | View unpublished content from other users                  |        |        | ✓           | ✓     |
       | Start a discussion                                         | ✓      | ✓      | ✓           | ✓     |
       | Propose content for publication, pending approval          | ✓      |        |             |       |
       | Approve proposed content for publication                   |        |        | ✓           | ✓     |
@@ -213,6 +237,7 @@ Feature: Group member permissions table
       | Approve proposed changes to published content              |        |        | ✓           | ✓     |
       | Update own published content without approval              |        | ✓      | ✓           | ✓     |
       | Update any content                                         |        |        | ✓           | ✓     |
+      | Request changes on content from other users                |        |        | ✓           | ✓     |
       | Request deletion of own content, pending approval          | ✓      |        |             |       |
       | Approve requested deletion of content                      |        |        | ✓           | ✓     |
       | Delete own content without approval                        |        | ✓      | ✓           | ✓     |
@@ -233,27 +258,32 @@ Feature: Group member permissions table
     When I click "Add news"
     Then I should see the button "Propose"
     But I should not see the button "Publish"
-    Given news content:
-      | title         | state     | collection           | author       |
-      | The Convivium | validated | Creative uncertainty | Henry Porter |
-    When I go to the news content "The Convivium" edit screen
+    Given event content:
+      | title                       | state     | collection           | author           |
+      | The Convivium               | validated | Creative uncertainty | Henry Porter     |
+      | The Hunting of the Megapode | draft     | Creative uncertainty | Mustrum Ridcully |
+    When I go to the event content "The Convivium" edit screen
     Then I should see the button "Request deletion"
     And I should see the button "Propose changes"
     But I should not see the link "Delete"
     And I should not see the button "Update"
+    When I go to the content page of the type event with the title "The Hunting of the Megapode"
+    Then I should get an access denied error
 
     # Collection. Content creation: any user. Not moderated.
     Given I am on the members page of "Woolly thinking"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                   | Member | Author | Facilitator | Owner |
-      | View published content       | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion           | ✓      | ✓      | ✓           | ✓     |
-      | Publish content              | ✓      | ✓      | ✓           | ✓     |
-      | Update own published content | ✓      | ✓      | ✓           | ✓     |
-      | Update any content           |        |        | ✓           | ✓     |
-      | Delete own content           | ✓      | ✓      | ✓           | ✓     |
-      | Delete any content           |        |        | ✓           | ✓     |
+      | Permission                                  | Member | Author | Facilitator | Owner |
+      | View published content                      | ✓      | ✓      | ✓           | ✓     |
+      | View unpublished content from other users   |        |        | ✓           | ✓     |
+      | Start a discussion                          | ✓      | ✓      | ✓           | ✓     |
+      | Publish content                             | ✓      | ✓      | ✓           | ✓     |
+      | Update own published content                | ✓      | ✓      | ✓           | ✓     |
+      | Update any content                          |        |        | ✓           | ✓     |
+      | Request changes on content from other users |        |        | ✓           | ✓     |
+      | Delete own content                          | ✓      | ✓      | ✓           | ✓     |
+      | Delete any content                          |        |        | ✓           | ✓     |
 
     Given I am logged in as "Rincewind"
     When I go to the homepage of the "Woolly thinking" collection
@@ -270,27 +300,32 @@ Feature: Group member permissions table
     When I click "Add news"
     Then I should see the button "Publish"
     But I should not see the button "Propose"
-    Given news content:
-      | title       | state     | collection      | author    |
-      | Gaudy night | validated | Woolly thinking | Rincewind |
-    When I go to the news content "Gaudy night" edit screen
+    Given event content:
+      | title                                     | state     | collection      | author           |
+      | Gaudy night                               | validated | Woolly thinking | Rincewind        |
+      | Archchancellor Preserved Bigger's Bequest | draft     | Woolly thinking | Mustrum Ridcully |
+    When I go to the event content "Gaudy night" edit screen
     Then I should see the link "Delete"
     And I should see the button "Update"
     But I should not see the button "Request deletion"
     And I should not see the button "Propose changes"
+    When I go to the content page of the type event with the title "Archchancellor Preserved Bigger's Bequest"
+    Then I should get an access denied error
 
     # Solution. Content creation: authors and facilitators. Moderated.
     Given I am on the members page of "Applied anthropics"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                   | Member | Author | Facilitator | Owner |
-      | View published content       | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion           |        | ✓      | ✓           | ✓     |
-      | Publish content              |        | ✓      | ✓           | ✓     |
-      | Update own published content |        | ✓      | ✓           | ✓     |
-      | Update any content           |        |        | ✓           | ✓     |
-      | Delete own content           |        | ✓      | ✓           | ✓     |
-      | Delete any content           |        |        | ✓           | ✓     |
+      | Permission                                  | Member | Author | Facilitator | Owner |
+      | View published content                      | ✓      | ✓      | ✓           | ✓     |
+      | View unpublished content from other users   |        |        | ✓           | ✓     |
+      | Start a discussion                          |        | ✓      | ✓           | ✓     |
+      | Publish content                             |        | ✓      | ✓           | ✓     |
+      | Update own published content                |        | ✓      | ✓           | ✓     |
+      | Update any content                          |        |        | ✓           | ✓     |
+      | Request changes on content from other users |        |        | ✓           | ✓     |
+      | Delete own content                          |        | ✓      | ✓           | ✓     |
+      | Delete any content                          |        |        | ✓           | ✓     |
 
     Given I am logged in as a member of the "Applied anthropics" solution
     When I go to the homepage of the "Applied anthropics" solution
@@ -300,20 +335,27 @@ Feature: Group member permissions table
     And I should not see the link "Add document"
     And I should not see the link "Add event"
     And I should not see the link "Add news"
+    Given event content:
+      | title        | state | solution           | author           |
+      | Scrawn Money | draft | Applied anthropics | Mustrum Ridcully |
+    When I go to the content page of the type event with the title "Scrawn Money"
+    Then I should get an access denied error
 
 
     # Solution. Content creation: authors and facilitators. Non-moderated.
     Given I am on the members page of "Extreme horticulture"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                   | Member | Author | Facilitator | Owner |
-      | View published content       | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion           |        | ✓      | ✓           | ✓     |
-      | Publish content              |        | ✓      | ✓           | ✓     |
-      | Update own published content |        | ✓      | ✓           | ✓     |
-      | Update any content           |        |        | ✓           | ✓     |
-      | Delete own content           |        | ✓      | ✓           | ✓     |
-      | Delete any content           |        |        | ✓           | ✓     |
+      | Permission                                  | Member | Author | Facilitator | Owner |
+      | View published content                      | ✓      | ✓      | ✓           | ✓     |
+      | View unpublished content from other users   |        |        | ✓           | ✓     |
+      | Start a discussion                          |        | ✓      | ✓           | ✓     |
+      | Publish content                             |        | ✓      | ✓           | ✓     |
+      | Update own published content                |        | ✓      | ✓           | ✓     |
+      | Update any content                          |        |        | ✓           | ✓     |
+      | Request changes on content from other users |        |        | ✓           | ✓     |
+      | Delete own content                          |        | ✓      | ✓           | ✓     |
+      | Delete any content                          |        |        | ✓           | ✓     |
 
     Given I am logged in as a member of the "Extreme horticulture" solution
     When I go to the homepage of the "Extreme horticulture" solution
@@ -323,6 +365,11 @@ Feature: Group member permissions table
     And I should not see the link "Add document"
     And I should not see the link "Add event"
     And I should not see the link "Add news"
+    Given event content:
+      | title            | state | solution             | author           |
+      | 'Sity and Guilds | draft | Extreme horticulture | Mustrum Ridcully |
+    When I go to the content page of the type event with the title "'Sity and Guilds"
+    Then I should get an access denied error
 
 
     # Solution. Content creation: any user. Moderated.
@@ -331,6 +378,7 @@ Feature: Group member permissions table
     Then the "member permissions" table should be:
       | Permission                                                 | Member | Author | Facilitator | Owner |
       | View published content                                     | ✓      | ✓      | ✓           | ✓     |
+      | View unpublished content from other users                  |        |        | ✓           | ✓     |
       | Start a discussion                                         | ✓      | ✓      | ✓           | ✓     |
       | Propose content for publication, pending approval          | ✓      |        |             |       |
       | Approve proposed content for publication                   |        |        | ✓           | ✓     |
@@ -339,6 +387,7 @@ Feature: Group member permissions table
       | Approve proposed changes to published content              |        |        | ✓           | ✓     |
       | Update own published content without approval              |        | ✓      | ✓           | ✓     |
       | Update any content                                         |        |        | ✓           | ✓     |
+      | Request changes on content from other users                |        |        | ✓           | ✓     |
       | Request deletion of own content, pending approval          | ✓      |        |             |       |
       | Approve requested deletion of content                      |        |        | ✓           | ✓     |
       | Delete own content without approval                        |        | ✓      | ✓           | ✓     |
@@ -359,27 +408,32 @@ Feature: Group member permissions table
     When I click "Add news"
     Then I should see the button "Propose"
     But I should not see the button "Publish"
-    Given news content:
-      | title             | state     | solution                     | author         |
-      | Head of the River | validated | Prehumous morbid bibliomancy | Dr. John Hicks |
-    When I go to the news content "Head of the River" edit screen
+    Given event content:
+      | title             | state     | solution                     | author           |
+      | Head of the River | validated | Prehumous morbid bibliomancy | Dr. John Hicks   |
+      | Poore Boys Funne  | draft     | Prehumous morbid bibliomancy | Mustrum Ridcully |
+    When I go to the event content "Head of the River" edit screen
     Then I should see the button "Request deletion"
     And I should see the button "Propose changes"
     But I should not see the link "Delete"
     And I should not see the button "Update"
+    When I go to the content page of the type event with the title "Poore Boys Funne"
+    Then I should get an access denied error
 
     # Solution. Content creation: any user. Non-moderated.
     Given I am on the members page of "Posthumous morbid bibliomancy"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                   | Member | Author | Facilitator | Owner |
-      | View published content       | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion           | ✓      | ✓      | ✓           | ✓     |
-      | Publish content              | ✓      | ✓      | ✓           | ✓     |
-      | Update own published content | ✓      | ✓      | ✓           | ✓     |
-      | Update any content           |        |        | ✓           | ✓     |
-      | Delete own content           | ✓      | ✓      | ✓           | ✓     |
-      | Delete any content           |        |        | ✓           | ✓     |
+      | Permission                                  | Member | Author | Facilitator | Owner |
+      | View published content                      | ✓      | ✓      | ✓           | ✓     |
+      | View unpublished content from other users   |        |        | ✓           | ✓     |
+      | Start a discussion                          | ✓      | ✓      | ✓           | ✓     |
+      | Publish content                             | ✓      | ✓      | ✓           | ✓     |
+      | Update own published content                | ✓      | ✓      | ✓           | ✓     |
+      | Update any content                          |        |        | ✓           | ✓     |
+      | Request changes on content from other users |        |        | ✓           | ✓     |
+      | Delete own content                          | ✓      | ✓      | ✓           | ✓     |
+      | Delete any content                          |        |        | ✓           | ✓     |
 
     Given I am logged in as "Hex"
     When I go to the homepage of the "Posthumous morbid bibliomancy" solution
@@ -396,14 +450,17 @@ Feature: Group member permissions table
     When I click "Add news"
     Then I should see the button "Publish"
     But I should not see the button "Propose"
-    Given news content:
-      | title       | state     | collection                    | author |
-      | May Morning | validated | Posthumous morbid bibliomancy | Hex    |
-    When I go to the news content "May Morning" edit screen
+    Given event content:
+      | title                         | state     | collection                    | author           |
+      | May Morning                   | validated | Posthumous morbid bibliomancy | Hex              |
+      | A veritable heyhoe-rumbledown | draft     | Posthumous morbid bibliomancy | Mustrum Ridcully |
+    When I go to the event content "May Morning" edit screen
     Then I should see the link "Delete"
     And I should see the button "Update"
     But I should not see the button "Request deletion"
     And I should not see the button "Propose changes"
+    When I go to the content page of the type event with the title "A veritable heyhoe-rumbledown"
+    Then I should get an access denied error
 
   # The permissions table should not be accessible for non-public groups.
   Scenario: Access the membership permissions information table

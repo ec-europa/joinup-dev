@@ -48,6 +48,15 @@ class GroupMembershipPermissionsInformationController extends ControllerBase {
         ],
       ],
       [
+        'description' => $this->t('View unpublished content from other users'),
+        'permitted' => [
+          'member' => FALSE,
+          'author' => FALSE,
+          'facilitator' => TRUE,
+          'owner' => TRUE,
+        ],
+      ],
+      [
         'description' => $this->t('Start a discussion'),
         'permitted' => [
           'member' => !$only_authors_can_create,
@@ -119,6 +128,15 @@ class GroupMembershipPermissionsInformationController extends ControllerBase {
       ],
       [
         'description' => $this->t('Update any content'),
+        'permitted' => [
+          'member' => FALSE,
+          'author' => FALSE,
+          'facilitator' => TRUE,
+          'owner' => TRUE,
+        ],
+      ],
+      [
+        'description' => $this->t('Request changes on content from other users'),
         'permitted' => [
           'member' => FALSE,
           'author' => FALSE,
