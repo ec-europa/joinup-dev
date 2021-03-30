@@ -6,11 +6,12 @@ namespace Drupal\Tests\joinup_core\Traits;
 
 use Drupal\Tests\TestFileCreationTrait;
 use Drupal\file\Entity\File;
+use Drupal\file\FileInterface;
 
 /**
- * Functions regarding the file URL manipulation.
+ * Provides test files for the tests.
  */
-trait FileUrlTrait {
+trait TestFileTrait {
 
   use TestFileCreationTrait {
     getTestFiles as drupalGetTestFiles;
@@ -22,7 +23,7 @@ trait FileUrlTrait {
    * @return \Drupal\file\FileInterface
    *   The created file.
    */
-  public function getTestFile($type_name, $size = NULL) {
+  public function getTestFile($type_name, $size = NULL): FileInterface {
     // Get a file to upload.
     $file = current($this->drupalGetTestFiles($type_name, $size));
     // Add a filesize property to files as would be read by
