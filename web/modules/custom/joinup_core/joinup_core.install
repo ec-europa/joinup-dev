@@ -91,3 +91,21 @@ function joinup_core_requirements($phase): array {
 
   return $requirements;
 }
+
+/**
+ * Install new fields in the download event entity.
+ */
+function joinup_core_update_0107000(array &$sandbox): void {
+  $update_manager = \Drupal::entityDefinitionUpdateManager();
+  $base_fields = \Drupal::getContainer()->get('entity_field.manager')->getBaseFieldDefinitions('download_event');
+
+  $fields = [
+    'parent_entity_type',
+    'parent_entity_id',
+  ];
+
+  foreach ($fields as $field) {
+    $storage = $base_fields[$field]->getFieldStorageDefinition();
+    $update_manager->installFieldStorageDefinition($field, 'download_event', 'download_event', $storage);
+  }
+}
