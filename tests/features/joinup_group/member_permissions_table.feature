@@ -7,9 +7,14 @@ Feature: Group member permissions table
   Scenario:
     Given users:
       | Username         |
+      | Horace Worblehat |
+      | Ponder Stibbons  |
+      | Henry Porter     |
+      | Rincewind        |
+      | Dr. John Hicks   |
+      | Hex              |
       | Mustrum Ridcully |
       | A. A. Dinwiddie  |
-      | Henry Porter     |
     Given the following collections:
       | title                                       | state     | content creation         | moderation |
       | Applied astrology                           | validated | facilitators and authors | yes        |
@@ -26,6 +31,10 @@ Feature: Group member permissions table
       | Posthumous morbid bibliomancy | validated | registered users         | no         |
     And the following collection user memberships:
       | collection                                  | user             | roles       |
+      | Approximate accuracy                        | Horace Worblehat |             |
+      | Dust, miscellaneous particles and filaments | Ponder Stibbons  |             |
+      | Creative uncertainty                        | Henry Porter     |             |
+      | Woolly thinking                             | Rincewind        |             |
       | Applied astrology                           | Mustrum Ridcully | facilitator |
       | Illiberal studies                           | Mustrum Ridcully | facilitator |
       | Approximate accuracy                        | Mustrum Ridcully | facilitator |
@@ -42,10 +51,11 @@ Feature: Group member permissions table
       | Illiberal studies                           | Henry Porter     |             |
       | Approximate accuracy                        | Henry Porter     |             |
       | Dust, miscellaneous particles and filaments | Henry Porter     |             |
-      | Creative uncertainty                        | Henry Porter     |             |
       | Woolly thinking                             | Henry Porter     |             |
     And the following solution user memberships:
       | solution                      | user             | roles       |
+      | Prehumous morbid bibliomancy  | Dr. John Hicks   |             |
+      | Posthumous morbid bibliomancy | Hex              |             |
       | Applied anthropics            | Mustrum Ridcully | facilitator |
       | Extreme horticulture          | Mustrum Ridcully | facilitator |
       | Prehumous morbid bibliomancy  | Mustrum Ridcully | facilitator |
@@ -63,12 +73,17 @@ Feature: Group member permissions table
     And I am on the members page of "Applied astrology"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                 | Member | Author | Facilitator | Owner |
-      | Can view published content | ✓      | ✓      | ✓           | ✓     |
-      | Can start a discussion     |        | ✓      | ✓           | ✓     |
-      | Can publish content        |        | ✓      | ✓           | ✓     |
+      | Permission             | Member | Author | Facilitator | Owner |
+      | View published content | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion     |        | ✓      | ✓           | ✓     |
+      | Publish content        |        | ✓      | ✓           | ✓     |
+      | Delete own content     |        | ✓      | ✓           | ✓     |
+      | Delete any content     |        |        | ✓           | ✓     |
 
-    # Quick check to verify the permissions are actually matching what is displayed in the table.
+    # Quick check to verify the permissions are actually matching what is
+    # displayed in the table. Only the most common case ("member") is checked.
+    # This is already covered in other scenarios, but having a check here will
+    # alert us to update the tables if permissions change.
     Given I am logged in as a member of the "Applied astrology" collection
     When I go to the homepage of the "Applied astrology" collection
     # Can not start a discussion.
@@ -83,10 +98,12 @@ Feature: Group member permissions table
     And I am on the members page of "Illiberal studies"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                 | Member | Author | Facilitator | Owner |
-      | Can view published content | ✓      | ✓      | ✓           | ✓     |
-      | Can start a discussion     |        | ✓      | ✓           | ✓     |
-      | Can publish content        |        | ✓      | ✓           | ✓     |
+      | Permission             | Member | Author | Facilitator | Owner |
+      | View published content | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion     |        | ✓      | ✓           | ✓     |
+      | Publish content        |        | ✓      | ✓           | ✓     |
+      | Delete own content     |        | ✓      | ✓           | ✓     |
+      | Delete any content     |        |        | ✓           | ✓     |
 
     Given I am logged in as a member of the "Illiberal studies" collection
     When I go to the homepage of the "Illiberal studies" collection
@@ -102,13 +119,18 @@ Feature: Group member permissions table
     Given I am on the members page of "Approximate accuracy"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                                            | Member | Author | Facilitator | Owner |
-      | Can view published content                            | ✓      | ✓      | ✓           | ✓     |
-      | Can start a discussion                                | ✓      | ✓      | ✓           | ✓     |
-      | Can propose content for publication, pending approval | ✓      |        |             |       |
-      | Can publish content without approval                  |        | ✓      | ✓           | ✓     |
+      | Permission                                        | Member | Author | Facilitator | Owner |
+      | View published content                            | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion                                | ✓      | ✓      | ✓           | ✓     |
+      | Propose content for publication, pending approval | ✓      |        |             |       |
+      | Approve proposed content for publication          |        |        | ✓           | ✓     |
+      | Publish content without approval                  |        | ✓      | ✓           | ✓     |
+      | Request deletion of own content, pending approval | ✓      |        |             |       |
+      | Approve requested deletion of content             |        |        | ✓           | ✓     |
+      | Delete own content without approval               |        | ✓      | ✓           | ✓     |
+      | Delete any content                                |        |        | ✓           | ✓     |
 
-    Given I am logged in as a member of the "Approximate accuracy" collection
+    Given I am logged in as "Horace Worblehat"
     When I go to the homepage of the "Approximate accuracy" collection
     # Can start a discussion.
     And I click "Add discussion"
@@ -123,17 +145,25 @@ Feature: Group member permissions table
     When I click "Add news"
     Then I should see the button "Propose"
     But I should not see the button "Publish"
+    Given news content:
+      | title                          | state     | collection           | author           |
+      | Election of Boy Archchancellor | validated | Approximate accuracy | Horace Worblehat |
+    When I go to the news content "Election of Boy Archchancellor" edit screen
+    Then I should see the button "Request deletion"
+    But I should not see the link "Delete"
 
     # Collection. Content creation: members. Not moderated.
     Given I am on the members page of "Dust, miscellaneous particles and filaments"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                 | Member | Author | Facilitator | Owner |
-      | Can view published content | ✓      | ✓      | ✓           | ✓     |
-      | Can start a discussion     | ✓      | ✓      | ✓           | ✓     |
-      | Can publish content        | ✓      | ✓      | ✓           | ✓     |
+      | Permission             | Member | Author | Facilitator | Owner |
+      | View published content | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion     | ✓      | ✓      | ✓           | ✓     |
+      | Publish content        | ✓      | ✓      | ✓           | ✓     |
+      | Delete own content     | ✓      | ✓      | ✓           | ✓     |
+      | Delete any content     |        |        | ✓           | ✓     |
 
-    Given I am logged in as a member of the "Dust, miscellaneous particles and filaments" collection
+    Given I am logged in as "Ponder Stibbons"
     When I go to the homepage of the "Dust, miscellaneous particles and filaments" collection
     # Can start a discussion.
     And I click "Add discussion"
@@ -148,18 +178,29 @@ Feature: Group member permissions table
     When I click "Add news"
     Then I should see the button "Publish"
     But I should not see the button "Propose"
+    Given news content:
+      | title              | state     | collection                                  | author          |
+      | Beating the bounds | validated | Dust, miscellaneous particles and filaments | Ponder Stibbons |
+    When I go to the news content "Beating the bounds" edit screen
+    Then I should see the link "Delete"
+    But I should not see the button "Request deletion"
 
     # Collection. Content creation: any user. Moderated.
     Given I am on the members page of "Creative uncertainty"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                                            | Member | Author | Facilitator | Owner |
-      | Can view published content                            | ✓      | ✓      | ✓           | ✓     |
-      | Can start a discussion                                | ✓      | ✓      | ✓           | ✓     |
-      | Can propose content for publication, pending approval | ✓      |        |             |       |
-      | Can publish content without approval                  |        | ✓      | ✓           | ✓     |
+      | Permission                                        | Member | Author | Facilitator | Owner |
+      | View published content                            | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion                                | ✓      | ✓      | ✓           | ✓     |
+      | Propose content for publication, pending approval | ✓      |        |             |       |
+      | Approve proposed content for publication          |        |        | ✓           | ✓     |
+      | Publish content without approval                  |        | ✓      | ✓           | ✓     |
+      | Request deletion of own content, pending approval | ✓      |        |             |       |
+      | Approve requested deletion of content             |        |        | ✓           | ✓     |
+      | Delete own content without approval               |        | ✓      | ✓           | ✓     |
+      | Delete any content                                |        |        | ✓           | ✓     |
 
-    Given I am logged in as a member of the "Creative uncertainty" collection
+    Given I am logged in as "Henry Porter"
     When I go to the homepage of the "Creative uncertainty" collection
     # Can start a discussion.
     And I click "Add discussion"
@@ -174,17 +215,25 @@ Feature: Group member permissions table
     When I click "Add news"
     Then I should see the button "Propose"
     But I should not see the button "Publish"
+    Given news content:
+      | title         | state     | collection           | author       |
+      | The Convivium | validated | Creative uncertainty | Henry Porter |
+    When I go to the news content "The Convivium" edit screen
+    Then I should see the button "Request deletion"
+    But I should not see the link "Delete"
 
     # Collection. Content creation: any user. Not moderated.
     Given I am on the members page of "Woolly thinking"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                 | Member | Author | Facilitator | Owner |
-      | Can view published content | ✓      | ✓      | ✓           | ✓     |
-      | Can start a discussion     | ✓      | ✓      | ✓           | ✓     |
-      | Can publish content        | ✓      | ✓      | ✓           | ✓     |
+      | Permission             | Member | Author | Facilitator | Owner |
+      | View published content | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion     | ✓      | ✓      | ✓           | ✓     |
+      | Publish content        | ✓      | ✓      | ✓           | ✓     |
+      | Delete own content     | ✓      | ✓      | ✓           | ✓     |
+      | Delete any content     |        |        | ✓           | ✓     |
 
-    Given I am logged in as a member of the "Woolly thinking" collection
+    Given I am logged in as "Rincewind"
     When I go to the homepage of the "Woolly thinking" collection
     # Can start a discussion.
     And I click "Add discussion"
@@ -199,15 +248,23 @@ Feature: Group member permissions table
     When I click "Add news"
     Then I should see the button "Publish"
     But I should not see the button "Propose"
+    Given news content:
+      | title       | state     | collection      | author    |
+      | Gaudy night | validated | Woolly thinking | Rincewind |
+    When I go to the news content "Gaudy night" edit screen
+    Then I should see the link "Delete"
+    But I should not see the button "Request deletion"
 
     # Solution. Content creation: authors and facilitators. Moderated.
     Given I am on the members page of "Applied anthropics"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                 | Member | Author | Facilitator | Owner |
-      | Can view published content | ✓      | ✓      | ✓           | ✓     |
-      | Can start a discussion     |        | ✓      | ✓           | ✓     |
-      | Can publish content        |        | ✓      | ✓           | ✓     |
+      | Permission             | Member | Author | Facilitator | Owner |
+      | View published content | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion     |        | ✓      | ✓           | ✓     |
+      | Publish content        |        | ✓      | ✓           | ✓     |
+      | Delete own content     |        | ✓      | ✓           | ✓     |
+      | Delete any content     |        |        | ✓           | ✓     |
 
     Given I am logged in as a member of the "Applied anthropics" solution
     When I go to the homepage of the "Applied anthropics" solution
@@ -223,10 +280,12 @@ Feature: Group member permissions table
     Given I am on the members page of "Extreme horticulture"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                 | Member | Author | Facilitator | Owner |
-      | Can view published content | ✓      | ✓      | ✓           | ✓     |
-      | Can start a discussion     |        | ✓      | ✓           | ✓     |
-      | Can publish content        |        | ✓      | ✓           | ✓     |
+      | Permission             | Member | Author | Facilitator | Owner |
+      | View published content | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion     |        | ✓      | ✓           | ✓     |
+      | Publish content        |        | ✓      | ✓           | ✓     |
+      | Delete own content     |        | ✓      | ✓           | ✓     |
+      | Delete any content     |        |        | ✓           | ✓     |
 
     Given I am logged in as a member of the "Extreme horticulture" solution
     When I go to the homepage of the "Extreme horticulture" solution
@@ -242,13 +301,18 @@ Feature: Group member permissions table
     Given I am on the members page of "Prehumous morbid bibliomancy"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                                            | Member | Author | Facilitator | Owner |
-      | Can view published content                            | ✓      | ✓      | ✓           | ✓     |
-      | Can start a discussion                                | ✓      | ✓      | ✓           | ✓     |
-      | Can propose content for publication, pending approval | ✓      |        |             |       |
-      | Can publish content without approval                  |        | ✓      | ✓           | ✓     |
+      | Permission                                        | Member | Author | Facilitator | Owner |
+      | View published content                            | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion                                | ✓      | ✓      | ✓           | ✓     |
+      | Propose content for publication, pending approval | ✓      |        |             |       |
+      | Approve proposed content for publication          |        |        | ✓           | ✓     |
+      | Publish content without approval                  |        | ✓      | ✓           | ✓     |
+      | Request deletion of own content, pending approval | ✓      |        |             |       |
+      | Approve requested deletion of content             |        |        | ✓           | ✓     |
+      | Delete own content without approval               |        | ✓      | ✓           | ✓     |
+      | Delete any content                                |        |        | ✓           | ✓     |
 
-    Given I am logged in as a member of the "Prehumous morbid bibliomancy" solution
+    Given I am logged in as "Dr. John Hicks"
     When I go to the homepage of the "Prehumous morbid bibliomancy" solution
     # Can start a discussion.
     And I click "Add discussion"
@@ -263,17 +327,25 @@ Feature: Group member permissions table
     When I click "Add news"
     Then I should see the button "Propose"
     But I should not see the button "Publish"
+    Given news content:
+      | title             | state     | solution                     | author         |
+      | Head of the River | validated | Prehumous morbid bibliomancy | Dr. John Hicks |
+    When I go to the news content "Head of the River" edit screen
+    Then I should see the button "Request deletion"
+    But I should not see the link "Delete"
 
     # Solution. Content creation: any user. Non-moderated.
     Given I am on the members page of "Posthumous morbid bibliomancy"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                 | Member | Author | Facilitator | Owner |
-      | Can view published content | ✓      | ✓      | ✓           | ✓     |
-      | Can start a discussion     | ✓      | ✓      | ✓           | ✓     |
-      | Can publish content        | ✓      | ✓      | ✓           | ✓     |
+      | Permission             | Member | Author | Facilitator | Owner |
+      | View published content | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion     | ✓      | ✓      | ✓           | ✓     |
+      | Publish content        | ✓      | ✓      | ✓           | ✓     |
+      | Delete own content     | ✓      | ✓      | ✓           | ✓     |
+      | Delete any content     |        |        | ✓           | ✓     |
 
-    Given I am logged in as a member of the "Posthumous morbid bibliomancy" solution
+    Given I am logged in as "Hex"
     When I go to the homepage of the "Posthumous morbid bibliomancy" solution
     # Can start a discussion.
     And I click "Add discussion"
@@ -288,14 +360,20 @@ Feature: Group member permissions table
     When I click "Add news"
     Then I should see the button "Publish"
     But I should not see the button "Propose"
+    Given news content:
+      | title       | state     | collection                    | author |
+      | May Morning | validated | Posthumous morbid bibliomancy | Hex    |
+    When I go to the news content "May Morning" edit screen
+    Then I should see the link "Delete"
+    But I should not see the button "Request deletion"
 
   # The permissions table should not be accessible for non-public groups.
   Scenario: Access the membership permissions information table
     Given the following collections:
-      | title                | state       |
-      | Valid Bibliomancy    | validated   |
-      | Draft Bibliomancy    | draft       |
-      | Proposed Bibliomancy | proposed    |
+      | title                | state     |
+      | Valid Bibliomancy    | validated |
+      | Draft Bibliomancy    | draft     |
+      | Proposed Bibliomancy | proposed  |
     And the following solutions:
       | title             | state       |
       | Valid Dynamics    | validated   |
