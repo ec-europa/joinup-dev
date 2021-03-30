@@ -14,7 +14,6 @@ Feature: Group member permissions table
       | Dr. John Hicks   |
       | Hex              |
       | Mustrum Ridcully |
-      | A. A. Dinwiddie  |
     Given the following collections:
       | title                                       | state     | content creation         | moderation |
       | Applied astrology                           | validated | facilitators and authors | yes        |
@@ -41,17 +40,6 @@ Feature: Group member permissions table
       | Dust, miscellaneous particles and filaments | Mustrum Ridcully | facilitator |
       | Creative uncertainty                        | Mustrum Ridcully | facilitator |
       | Woolly thinking                             | Mustrum Ridcully | facilitator |
-      | Applied astrology                           | A. A. Dinwiddie  | author      |
-      | Illiberal studies                           | A. A. Dinwiddie  | author      |
-      | Approximate accuracy                        | A. A. Dinwiddie  | author      |
-      | Dust, miscellaneous particles and filaments | A. A. Dinwiddie  | author      |
-      | Creative uncertainty                        | A. A. Dinwiddie  | author      |
-      | Woolly thinking                             | A. A. Dinwiddie  | author      |
-      | Applied astrology                           | Henry Porter     |             |
-      | Illiberal studies                           | Henry Porter     |             |
-      | Approximate accuracy                        | Henry Porter     |             |
-      | Dust, miscellaneous particles and filaments | Henry Porter     |             |
-      | Woolly thinking                             | Henry Porter     |             |
     And the following solution user memberships:
       | solution                      | user             | roles       |
       | Prehumous morbid bibliomancy  | Dr. John Hicks   |             |
@@ -60,14 +48,6 @@ Feature: Group member permissions table
       | Extreme horticulture          | Mustrum Ridcully | facilitator |
       | Prehumous morbid bibliomancy  | Mustrum Ridcully | facilitator |
       | Posthumous morbid bibliomancy | Mustrum Ridcully | facilitator |
-      | Applied anthropics            | A. A. Dinwiddie  | author      |
-      | Extreme horticulture          | A. A. Dinwiddie  | author      |
-      | Prehumous morbid bibliomancy  | A. A. Dinwiddie  | author      |
-      | Posthumous morbid bibliomancy | A. A. Dinwiddie  | author      |
-      | Applied anthropics            | Henry Porter     |             |
-      | Extreme horticulture          | Henry Porter     |             |
-      | Prehumous morbid bibliomancy  | Henry Porter     |             |
-      | Posthumous morbid bibliomancy | Henry Porter     |             |
 
     # Collection. Content creation: authors and facilitators. Moderated.
     And I am on the members page of "Applied astrology"
