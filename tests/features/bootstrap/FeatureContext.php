@@ -2006,11 +2006,20 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception("The downloaded file has no content.");
     }
 
-    $not_found = array_filter($strings_table->getColumn(0), function (string $text) use ($content): bool {
-      return strpos($content, $text) === FALSE;
-    });
+    $not_found = [];
+    foreach ($strings_table->getColumn(0) as $text) {
+      $matches = [];
+      if (preg_match('/^.*%(.*?)%.*$/', $text, $matches)) {
+        $entity = $this->getEntityByLabel('rdf_entity', $matches[1]);
+        $text = str_replace("%{$matches[1]}%", $entity->id(), $text);
+      }
 
-    if ($not_found) {
+      if (strpos($content, $text) === FALSE) {
+        $not_found[] = $text;
+      }
+    }
+
+    if (!empty($not_found)) {
       throw new ExpectationFailedException("Following strings were not found in the downloaded file:\n- " . implode("\n- ", $not_found));
     }
   }
