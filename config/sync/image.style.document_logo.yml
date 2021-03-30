@@ -1,0 +1,15 @@
+uuid: b5517964-d8a1-46a9-8b57-23569123c1b4
+langcode: en
+status: true
+dependencies: {  }
+name: document_logo
+label: 'Document logo'
+effects:
+  9763ee8e-f771-406e-9747-63ad1da9107e:
+    uuid: 9763ee8e-f771-406e-9747-63ad1da9107e
+    id: image_scale
+    weight: 1
+    data:
+      width: 100
+      height: 100
+      upscale: false

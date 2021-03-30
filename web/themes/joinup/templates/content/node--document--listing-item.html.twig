@@ -67,24 +67,21 @@
  *
  */
 #}
-{%
-  set classes = [
-    'listing__card',
-    'mdl-card',
-    'listing__card--stats-container',
-    view_mode == 'view_mode_featured' ? 'listing__card--inline-container',
-  ]
-%}
+{% set classes = [
+  'listing__card',
+  'mdl-card',
+  'listing__card--stats-container',
+  view_mode == 'view_mode_featured' ? 'listing__card--inline-container',
+] %}
 
-{%
-  set class_container_tags = (content.field_keywords|render) ? ' listing__text-container--tags' : ''
-%}
+{% set class_container_tags = (content.field_keywords|render) ? ' listing__text-container--tags' : '' %}
+{% set rendered_logo = content.field_document_logo|render %}
+
 <div {{ attributes.addClass(classes) }}>
-  {% if view_mode == 'view_mode_featured' %}
-    <div class="listing__image listing__image--default">
-      <span class="icon icon--mime-{{ extension }}"></span>
-    </div>
+  {% if rendered_logo %}
+    <div class="listing__image">{{ rendered_logo }}</div>
   {% endif %}
+
   <div class="listing__metadata">
     <div class="listing__text-container listing__text-container--document{{ class_container_tags }}">
       <div class="listing__field">
@@ -92,15 +89,20 @@
         {{ title_prefix }}
         <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
         {{ title_suffix }}
-        <h5 class="listing__subtitle listing__type">{{ content.field_type }}</h5>
+        {% if not rendered_logo %}
+          <h5 class="listing__subtitle listing__type">{{ content.field_type }}</h5>
+        {% endif %}
       </div>
-      <div class="listing__field">
-        <p class="listing__teaser">{{ content.body }}</p>
-      </div>
+      {% if not rendered_logo %}
+        <div class="listing__field">
+          <p class="listing__teaser">{{ content.body }}</p>
+        </div>
+      {% endif %}
     </div>
-    {% if content.field_keywords|render %}
+    {% if not rendered_logo and content.field_keywords|render %}
       <div class="listing__field listing__tags">{{ content.field_keywords }}</div>
     {% endif %}
+
     <div class="listing__field listing__stats mdl-card__actions">
       <div class="listing__stat">
         <span class="listing__text">{{ node.type.entity.label|lower }}</span>
