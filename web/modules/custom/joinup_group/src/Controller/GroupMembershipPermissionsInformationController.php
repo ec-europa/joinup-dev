@@ -89,6 +89,44 @@ class GroupMembershipPermissionsInformationController extends ControllerBase {
         ],
       ],
       [
+        'description' => $this->t('Propose changes to own published content, pending approval'),
+        'applicable' => $is_moderated && !$only_authors_can_create,
+        'permitted' => [
+          'member' => TRUE,
+          'author' => FALSE,
+          'facilitator' => FALSE,
+          'owner' => FALSE,
+        ],
+      ],
+      [
+        'description' => $this->t('Approve proposed changes to published content'),
+        'applicable' => $is_moderated && !$only_authors_can_create,
+        'permitted' => [
+          'member' => FALSE,
+          'author' => FALSE,
+          'facilitator' => TRUE,
+          'owner' => TRUE,
+        ],
+      ],
+      [
+        'description' => $is_moderated && !$only_authors_can_create ? $this->t('Update own published content without approval') : $this->t('Update own published content'),
+        'permitted' => [
+          'member' => !$is_moderated && !$only_authors_can_create,
+          'author' => TRUE,
+          'facilitator' => TRUE,
+          'owner' => TRUE,
+        ],
+      ],
+      [
+        'description' => $this->t('Update any content'),
+        'permitted' => [
+          'member' => FALSE,
+          'author' => FALSE,
+          'facilitator' => TRUE,
+          'owner' => TRUE,
+        ],
+      ],
+      [
         'description' => $this->t('Request deletion of own content, pending approval'),
         'applicable' => $is_moderated && !$only_authors_can_create,
         'permitted' => [

@@ -73,12 +73,14 @@ Feature: Group member permissions table
     And I am on the members page of "Applied astrology"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission             | Member | Author | Facilitator | Owner |
-      | View published content | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion     |        | ✓      | ✓           | ✓     |
-      | Publish content        |        | ✓      | ✓           | ✓     |
-      | Delete own content     |        | ✓      | ✓           | ✓     |
-      | Delete any content     |        |        | ✓           | ✓     |
+      | Permission                   | Member | Author | Facilitator | Owner |
+      | View published content       | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion           |        | ✓      | ✓           | ✓     |
+      | Publish content              |        | ✓      | ✓           | ✓     |
+      | Update own published content |        | ✓      | ✓           | ✓     |
+      | Update any content           |        |        | ✓           | ✓     |
+      | Delete own content           |        | ✓      | ✓           | ✓     |
+      | Delete any content           |        |        | ✓           | ✓     |
 
     # Quick check to verify the permissions are actually matching what is
     # displayed in the table. Only the most common case ("member") is checked.
@@ -98,12 +100,14 @@ Feature: Group member permissions table
     And I am on the members page of "Illiberal studies"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission             | Member | Author | Facilitator | Owner |
-      | View published content | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion     |        | ✓      | ✓           | ✓     |
-      | Publish content        |        | ✓      | ✓           | ✓     |
-      | Delete own content     |        | ✓      | ✓           | ✓     |
-      | Delete any content     |        |        | ✓           | ✓     |
+      | Permission                   | Member | Author | Facilitator | Owner |
+      | View published content       | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion           |        | ✓      | ✓           | ✓     |
+      | Publish content              |        | ✓      | ✓           | ✓     |
+      | Update own published content |        | ✓      | ✓           | ✓     |
+      | Update any content           |        |        | ✓           | ✓     |
+      | Delete own content           |        | ✓      | ✓           | ✓     |
+      | Delete any content           |        |        | ✓           | ✓     |
 
     Given I am logged in as a member of the "Illiberal studies" collection
     When I go to the homepage of the "Illiberal studies" collection
@@ -119,16 +123,20 @@ Feature: Group member permissions table
     Given I am on the members page of "Approximate accuracy"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                                        | Member | Author | Facilitator | Owner |
-      | View published content                            | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion                                | ✓      | ✓      | ✓           | ✓     |
-      | Propose content for publication, pending approval | ✓      |        |             |       |
-      | Approve proposed content for publication          |        |        | ✓           | ✓     |
-      | Publish content without approval                  |        | ✓      | ✓           | ✓     |
-      | Request deletion of own content, pending approval | ✓      |        |             |       |
-      | Approve requested deletion of content             |        |        | ✓           | ✓     |
-      | Delete own content without approval               |        | ✓      | ✓           | ✓     |
-      | Delete any content                                |        |        | ✓           | ✓     |
+      | Permission                                                 | Member | Author | Facilitator | Owner |
+      | View published content                                     | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion                                         | ✓      | ✓      | ✓           | ✓     |
+      | Propose content for publication, pending approval          | ✓      |        |             |       |
+      | Approve proposed content for publication                   |        |        | ✓           | ✓     |
+      | Publish content without approval                           |        | ✓      | ✓           | ✓     |
+      | Propose changes to own published content, pending approval | ✓      |        |             |       |
+      | Approve proposed changes to published content              |        |        | ✓           | ✓     |
+      | Update own published content without approval              |        | ✓      | ✓           | ✓     |
+      | Update any content                                         |        |        | ✓           | ✓     |
+      | Request deletion of own content, pending approval          | ✓      |        |             |       |
+      | Approve requested deletion of content                      |        |        | ✓           | ✓     |
+      | Delete own content without approval                        |        | ✓      | ✓           | ✓     |
+      | Delete any content                                         |        |        | ✓           | ✓     |
 
     Given I am logged in as "Horace Worblehat"
     When I go to the homepage of the "Approximate accuracy" collection
@@ -150,18 +158,22 @@ Feature: Group member permissions table
       | Election of Boy Archchancellor | validated | Approximate accuracy | Horace Worblehat |
     When I go to the news content "Election of Boy Archchancellor" edit screen
     Then I should see the button "Request deletion"
+    And I should see the button "Propose changes"
     But I should not see the link "Delete"
+    And I should not see the button "Update"
 
     # Collection. Content creation: members. Not moderated.
     Given I am on the members page of "Dust, miscellaneous particles and filaments"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission             | Member | Author | Facilitator | Owner |
-      | View published content | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion     | ✓      | ✓      | ✓           | ✓     |
-      | Publish content        | ✓      | ✓      | ✓           | ✓     |
-      | Delete own content     | ✓      | ✓      | ✓           | ✓     |
-      | Delete any content     |        |        | ✓           | ✓     |
+      | Permission                   | Member | Author | Facilitator | Owner |
+      | View published content       | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion           | ✓      | ✓      | ✓           | ✓     |
+      | Publish content              | ✓      | ✓      | ✓           | ✓     |
+      | Update own published content | ✓      | ✓      | ✓           | ✓     |
+      | Update any content           |        |        | ✓           | ✓     |
+      | Delete own content           | ✓      | ✓      | ✓           | ✓     |
+      | Delete any content           |        |        | ✓           | ✓     |
 
     Given I am logged in as "Ponder Stibbons"
     When I go to the homepage of the "Dust, miscellaneous particles and filaments" collection
@@ -183,22 +195,28 @@ Feature: Group member permissions table
       | Beating the bounds | validated | Dust, miscellaneous particles and filaments | Ponder Stibbons |
     When I go to the news content "Beating the bounds" edit screen
     Then I should see the link "Delete"
+    And I should see the button "Update"
     But I should not see the button "Request deletion"
+    And I should not see the button "Propose changes"
 
     # Collection. Content creation: any user. Moderated.
     Given I am on the members page of "Creative uncertainty"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                                        | Member | Author | Facilitator | Owner |
-      | View published content                            | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion                                | ✓      | ✓      | ✓           | ✓     |
-      | Propose content for publication, pending approval | ✓      |        |             |       |
-      | Approve proposed content for publication          |        |        | ✓           | ✓     |
-      | Publish content without approval                  |        | ✓      | ✓           | ✓     |
-      | Request deletion of own content, pending approval | ✓      |        |             |       |
-      | Approve requested deletion of content             |        |        | ✓           | ✓     |
-      | Delete own content without approval               |        | ✓      | ✓           | ✓     |
-      | Delete any content                                |        |        | ✓           | ✓     |
+      | Permission                                                 | Member | Author | Facilitator | Owner |
+      | View published content                                     | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion                                         | ✓      | ✓      | ✓           | ✓     |
+      | Propose content for publication, pending approval          | ✓      |        |             |       |
+      | Approve proposed content for publication                   |        |        | ✓           | ✓     |
+      | Publish content without approval                           |        | ✓      | ✓           | ✓     |
+      | Propose changes to own published content, pending approval | ✓      |        |             |       |
+      | Approve proposed changes to published content              |        |        | ✓           | ✓     |
+      | Update own published content without approval              |        | ✓      | ✓           | ✓     |
+      | Update any content                                         |        |        | ✓           | ✓     |
+      | Request deletion of own content, pending approval          | ✓      |        |             |       |
+      | Approve requested deletion of content                      |        |        | ✓           | ✓     |
+      | Delete own content without approval                        |        | ✓      | ✓           | ✓     |
+      | Delete any content                                         |        |        | ✓           | ✓     |
 
     Given I am logged in as "Henry Porter"
     When I go to the homepage of the "Creative uncertainty" collection
@@ -220,18 +238,22 @@ Feature: Group member permissions table
       | The Convivium | validated | Creative uncertainty | Henry Porter |
     When I go to the news content "The Convivium" edit screen
     Then I should see the button "Request deletion"
+    And I should see the button "Propose changes"
     But I should not see the link "Delete"
+    And I should not see the button "Update"
 
     # Collection. Content creation: any user. Not moderated.
     Given I am on the members page of "Woolly thinking"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission             | Member | Author | Facilitator | Owner |
-      | View published content | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion     | ✓      | ✓      | ✓           | ✓     |
-      | Publish content        | ✓      | ✓      | ✓           | ✓     |
-      | Delete own content     | ✓      | ✓      | ✓           | ✓     |
-      | Delete any content     |        |        | ✓           | ✓     |
+      | Permission                   | Member | Author | Facilitator | Owner |
+      | View published content       | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion           | ✓      | ✓      | ✓           | ✓     |
+      | Publish content              | ✓      | ✓      | ✓           | ✓     |
+      | Update own published content | ✓      | ✓      | ✓           | ✓     |
+      | Update any content           |        |        | ✓           | ✓     |
+      | Delete own content           | ✓      | ✓      | ✓           | ✓     |
+      | Delete any content           |        |        | ✓           | ✓     |
 
     Given I am logged in as "Rincewind"
     When I go to the homepage of the "Woolly thinking" collection
@@ -253,18 +275,22 @@ Feature: Group member permissions table
       | Gaudy night | validated | Woolly thinking | Rincewind |
     When I go to the news content "Gaudy night" edit screen
     Then I should see the link "Delete"
+    And I should see the button "Update"
     But I should not see the button "Request deletion"
+    And I should not see the button "Propose changes"
 
     # Solution. Content creation: authors and facilitators. Moderated.
     Given I am on the members page of "Applied anthropics"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission             | Member | Author | Facilitator | Owner |
-      | View published content | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion     |        | ✓      | ✓           | ✓     |
-      | Publish content        |        | ✓      | ✓           | ✓     |
-      | Delete own content     |        | ✓      | ✓           | ✓     |
-      | Delete any content     |        |        | ✓           | ✓     |
+      | Permission                   | Member | Author | Facilitator | Owner |
+      | View published content       | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion           |        | ✓      | ✓           | ✓     |
+      | Publish content              |        | ✓      | ✓           | ✓     |
+      | Update own published content |        | ✓      | ✓           | ✓     |
+      | Update any content           |        |        | ✓           | ✓     |
+      | Delete own content           |        | ✓      | ✓           | ✓     |
+      | Delete any content           |        |        | ✓           | ✓     |
 
     Given I am logged in as a member of the "Applied anthropics" solution
     When I go to the homepage of the "Applied anthropics" solution
@@ -280,12 +306,14 @@ Feature: Group member permissions table
     Given I am on the members page of "Extreme horticulture"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission             | Member | Author | Facilitator | Owner |
-      | View published content | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion     |        | ✓      | ✓           | ✓     |
-      | Publish content        |        | ✓      | ✓           | ✓     |
-      | Delete own content     |        | ✓      | ✓           | ✓     |
-      | Delete any content     |        |        | ✓           | ✓     |
+      | Permission                   | Member | Author | Facilitator | Owner |
+      | View published content       | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion           |        | ✓      | ✓           | ✓     |
+      | Publish content              |        | ✓      | ✓           | ✓     |
+      | Update own published content |        | ✓      | ✓           | ✓     |
+      | Update any content           |        |        | ✓           | ✓     |
+      | Delete own content           |        | ✓      | ✓           | ✓     |
+      | Delete any content           |        |        | ✓           | ✓     |
 
     Given I am logged in as a member of the "Extreme horticulture" solution
     When I go to the homepage of the "Extreme horticulture" solution
@@ -301,16 +329,20 @@ Feature: Group member permissions table
     Given I am on the members page of "Prehumous morbid bibliomancy"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission                                        | Member | Author | Facilitator | Owner |
-      | View published content                            | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion                                | ✓      | ✓      | ✓           | ✓     |
-      | Propose content for publication, pending approval | ✓      |        |             |       |
-      | Approve proposed content for publication          |        |        | ✓           | ✓     |
-      | Publish content without approval                  |        | ✓      | ✓           | ✓     |
-      | Request deletion of own content, pending approval | ✓      |        |             |       |
-      | Approve requested deletion of content             |        |        | ✓           | ✓     |
-      | Delete own content without approval               |        | ✓      | ✓           | ✓     |
-      | Delete any content                                |        |        | ✓           | ✓     |
+      | Permission                                                 | Member | Author | Facilitator | Owner |
+      | View published content                                     | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion                                         | ✓      | ✓      | ✓           | ✓     |
+      | Propose content for publication, pending approval          | ✓      |        |             |       |
+      | Approve proposed content for publication                   |        |        | ✓           | ✓     |
+      | Publish content without approval                           |        | ✓      | ✓           | ✓     |
+      | Propose changes to own published content, pending approval | ✓      |        |             |       |
+      | Approve proposed changes to published content              |        |        | ✓           | ✓     |
+      | Update own published content without approval              |        | ✓      | ✓           | ✓     |
+      | Update any content                                         |        |        | ✓           | ✓     |
+      | Request deletion of own content, pending approval          | ✓      |        |             |       |
+      | Approve requested deletion of content                      |        |        | ✓           | ✓     |
+      | Delete own content without approval                        |        | ✓      | ✓           | ✓     |
+      | Delete any content                                         |        |        | ✓           | ✓     |
 
     Given I am logged in as "Dr. John Hicks"
     When I go to the homepage of the "Prehumous morbid bibliomancy" solution
@@ -332,18 +364,22 @@ Feature: Group member permissions table
       | Head of the River | validated | Prehumous morbid bibliomancy | Dr. John Hicks |
     When I go to the news content "Head of the River" edit screen
     Then I should see the button "Request deletion"
+    And I should see the button "Propose changes"
     But I should not see the link "Delete"
+    And I should not see the button "Update"
 
     # Solution. Content creation: any user. Non-moderated.
     Given I am on the members page of "Posthumous morbid bibliomancy"
     When I click "Member permissions"
     Then the "member permissions" table should be:
-      | Permission             | Member | Author | Facilitator | Owner |
-      | View published content | ✓      | ✓      | ✓           | ✓     |
-      | Start a discussion     | ✓      | ✓      | ✓           | ✓     |
-      | Publish content        | ✓      | ✓      | ✓           | ✓     |
-      | Delete own content     | ✓      | ✓      | ✓           | ✓     |
-      | Delete any content     |        |        | ✓           | ✓     |
+      | Permission                   | Member | Author | Facilitator | Owner |
+      | View published content       | ✓      | ✓      | ✓           | ✓     |
+      | Start a discussion           | ✓      | ✓      | ✓           | ✓     |
+      | Publish content              | ✓      | ✓      | ✓           | ✓     |
+      | Update own published content | ✓      | ✓      | ✓           | ✓     |
+      | Update any content           |        |        | ✓           | ✓     |
+      | Delete own content           | ✓      | ✓      | ✓           | ✓     |
+      | Delete any content           |        |        | ✓           | ✓     |
 
     Given I am logged in as "Hex"
     When I go to the homepage of the "Posthumous morbid bibliomancy" solution
@@ -365,7 +401,9 @@ Feature: Group member permissions table
       | May Morning | validated | Posthumous morbid bibliomancy | Hex    |
     When I go to the news content "May Morning" edit screen
     Then I should see the link "Delete"
+    And I should see the button "Update"
     But I should not see the button "Request deletion"
+    And I should not see the button "Propose changes"
 
   # The permissions table should not be accessible for non-public groups.
   Scenario: Access the membership permissions information table
