@@ -59,6 +59,16 @@ class DownloadEvent extends ContentEntityBase implements EntityOwnerInterface {
       ->setSetting('target_type', 'file')
       ->setRequired(TRUE);
 
+    $fields['parent_entity_type'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Parent entity type'))
+      ->setDescription(t('The solution or release that the distribution belongs to.'))
+      ->setRequired(FALSE);
+
+    $fields['parent_entity_id'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Parent entity ID'))
+      ->setDescription(t('The entity ID of the solution or release that the distribution belongs to.'))
+      ->setRequired(FALSE);
+
     return $fields;
   }
 
