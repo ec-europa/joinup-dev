@@ -182,6 +182,15 @@ class GroupMembershipPermissionsInformationController extends ControllerBase {
           'owner' => TRUE,
         ],
       ],
+      [
+        'description' => $this->t('Manage users'),
+        'permitted' => [
+          'member' => FALSE,
+          'author' => FALSE,
+          'facilitator' => FALSE,
+          'owner' => TRUE,
+        ],
+      ],
     ];
 
     $build['permissions'] = [
