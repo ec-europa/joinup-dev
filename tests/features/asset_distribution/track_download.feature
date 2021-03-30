@@ -122,7 +122,6 @@ Feature: Asset distribution editing.
       | title         | Release 1 |
       | is version of | Solution  |
       | state         | validated |
-      |
     And the following distributions:
       | title          | parent    | access url |
       | Distribution 1 | Release 1 | text.pdf   |
