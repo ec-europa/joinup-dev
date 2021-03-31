@@ -147,7 +147,11 @@ class JoinupCommunityContentContext extends RawDrupalContext {
       throw new \InvalidArgumentException('Node does not have a publication date field.');
     }
     Assert::assertNotEmpty($node->getPublicationTime());
-    Assert::assertEquals($node->created->value, $node->getPublicationTime());
+
+    // Since there can be minor differences in the timestamp depending on the
+    // performacne of the request, we allow a grace period of 5 milliseconds
+    // for the difference between the created and the publication date.
+    Assert::assertTrue(abs((int) $node->created->value - (int) $node->getPublicationTime()) < 5);
   }
 
   /**
