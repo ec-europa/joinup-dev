@@ -148,9 +148,10 @@ class JoinupCommunityContentContext extends RawDrupalContext {
     }
     Assert::assertNotEmpty($node->getPublicationTime());
 
-    // Since there can be minor differences in the timestamp depending on the
-    // performacne of the request, we allow a grace period of 5 milliseconds
-    // for the difference between the created and the publication date.
+    // Depending on the performance of the test environment it is possible that
+    // a small amount of time has passed between the moment the node was created
+    // and the moment it was published. We allow a grace period of 5 seconds to
+    // account for the difference between the created and the publication date.
     Assert::assertTrue(abs((int) $node->created->value - (int) $node->getPublicationTime()) < 5);
   }
 
