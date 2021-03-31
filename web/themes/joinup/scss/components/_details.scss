@@ -111,6 +111,19 @@
   .details {
     margin: 10px 0;
 
+    &.after-title {
+      margin-top: 5px;
+      max-width: 95%;
+
+      .details__element {
+        margin-top: 0;
+        margin-right: 5px;
+        height: 25px;
+        line-height: 25px;
+        color: $color-grey-medium;
+      }
+    }
+
     @include breakpoint(mobile) {
       margin: 0;
     }
