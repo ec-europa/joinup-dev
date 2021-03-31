@@ -14,8 +14,8 @@ third_party_settings:
         predicate: 'http://purl.org/dc/terms/abstract'
         format: literal
       format:
-        predicate: ''
-        format: ''
+        predicate: 'http://joinup.eu/text_format'
+        format: 'xsd:string'
   field_permissions:
     permission_type: public
 id: rdf_entity.field_ar_abstract
