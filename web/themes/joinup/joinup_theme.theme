@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -409,6 +410,17 @@ function joinup_theme_preprocess_page(&$variables) {
  */
 function joinup_theme_preprocess_page_title(&$variables) {
   $route_match = \Drupal::routeMatch();
+
+  // Make the bundle and label available so the type can be shown in bylines.
+  $entity = $variables['entity'] ?? NULL;
+  if ($entity instanceof ContentEntityInterface) {
+    /** @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info */
+    $bundle_info = \Drupal::service('entity_type.bundle.info');
+    $info = $bundle_info->getBundleInfo($entity->getEntityTypeId());
+    $bundle = $entity->bundle();
+    $variables['bundle'] = $bundle;
+    $variables['bundle_label'] = $info[$bundle]['label'] ?? $bundle;
+  }
 
   $variables['visually_hidden_class'] = '';
 
