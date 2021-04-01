@@ -12,7 +12,7 @@ field_name: field_json
 entity_type: paragraph
 bundle: json_map
 label: JSON
-description: 'Enter a JSON serialized string representing the map.'
+description: 'Enter a JSON serialized string representing the map, or use the <a href="https://europa.eu/webtools/mgmt/wizard/ui.php?uec=bmap" target="_blank">Basic map (BMAP) wizard</a> to create one.'
 required: true
 translatable: false
 default_value: {  }
