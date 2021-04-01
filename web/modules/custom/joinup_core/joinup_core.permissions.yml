@@ -7,3 +7,5 @@ access uri converter:
 administer matomo integration:
   title: 'Administer Matomo integration'
   description: 'Grants access to the Matomo Integration settings form.'
+administer outdated content threshold:
+  title: 'Administer outdated content thresholds'
