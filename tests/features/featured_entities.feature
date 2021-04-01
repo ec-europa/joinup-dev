@@ -14,8 +14,9 @@ Feature: Featuring content site-wide
       | Opensource neutron generators | Tidy Neutron         | validated | yes      |
       | Gamma-sensible spectroscopy   | Reborn Eternal Gamma | validated | no       |
     And users:
-      | Username     | E-mail                   |
-      | Niles Turner | niles.turner@example.com |
+      | Username        | E-mail                   | Roles     |
+      | Niles Turner    | niles.turner@example.com |           |
+      | Modston Modster | modston@example.org      | moderator |
     And the following collection user memberships:
       | collection           | user         | roles       |
       | Tidy Neutron         | Niles Turner | facilitator |
@@ -57,7 +58,7 @@ Feature: Featuring content site-wide
     And I should not see the contextual link "Remove from featured" in the "Ionizing radiation types" tile
     And I should not see the contextual link "Remove from featured" in the "Elementary particles standard model" tile
 
-    When I am logged in as a moderator
+    When I am logged in as "Modston Modster"
     # Wait for contextual links to be generated. There is a session race condition that happens when a contextual link
     # has a CSRF token. The session will store the seed if not yet present, but if a new request is made before the
     # session is persisted, the seed won't be found and regenerated. For this reason, the already generated contextual
@@ -109,7 +110,7 @@ Feature: Featuring content site-wide
     Then I should not see the contextual link "Feature" in the "<featured>" tile
     And I should not see the contextual link "Remove from featured" in the "<unfeatured>" tile
 
-    When I am logged in as a moderator
+    When I am logged in as "Modston Modster"
     And I click "<header link>"
     Then I should see the contextual link "Feature" in the "<unfeatured>" tile
     And the "<unfeatured>" <content type> tile should not be marked as featured
@@ -125,6 +126,13 @@ Feature: Featuring content site-wide
     And I click the contextual link "Remove from featured" in the "<unfeatured>" tile
     Then I should see the success message "<label> <unfeatured> has been removed from the featured contents."
     And the "<unfeatured>" <content type> tile should not be marked as featured
+
+    # After relogging the contextual links should keep working.
+    When I log out
+    And I am logged in as "Modston Modster"
+    And I click "<header link>"
+    And I click the contextual link "Feature" in the "<unfeatured>" tile
+    Then I should see the success message "<label> <unfeatured> has been set as featured content."
 
     Examples:
       | header link | featured                      | unfeatured                  | label      | content type |
