@@ -16,6 +16,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides the block that shows statistics on the homepage of anonymous users.
  *
+ * @todo This should be moved into the Joinup profile since this depends on many
+ *   moving parts inside Joinup. It causes a circular dependency on a number of
+ *   modules such as joinup_group and joinup_search.
+ *
  * @Block(
  *  id = "statistics",
  *  admin_label = @Translation("Statistics block"),
