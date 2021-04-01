@@ -7,6 +7,7 @@ namespace Drupal\joinup\Context;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -17,6 +18,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  */
 class JoinupGroupContext extends RawDrupalContext {
 
+  use EntityTrait;
   use NodeTrait;
   use RdfEntityTrait;
 
@@ -48,6 +50,22 @@ class JoinupGroupContext extends RawDrupalContext {
   public function visitMembershipPermissionsTable(string $label): void {
     $group = $this->getRdfEntityByLabel($label);
     $url = Url::fromRoute('joinup_group.membership_permissions_info', [
+      'rdf_entity' => $group->id(),
+    ]);
+    $this->visitPath($url->toString());
+  }
+
+  /**
+   * Navigates to the about page of a collection or solution.
+   *
+   * @param string $label
+   *   The label of the group for which to visit the about page.
+   *
+   * @Given I go to the about page of :label
+   */
+  public function visitAboutPage(string $label): void {
+    $group = $this->getEntityByLabel('rdf_entity', $label);
+    $url = Url::fromRoute('entity.rdf_entity.about_page', [
       'rdf_entity' => $group->id(),
     ]);
     $this->visitPath($url->toString());

@@ -26,10 +26,9 @@ namespace Drupal\joinup_group\Entity;
  * naming is used since from a UI perspective the actions of "pinning" content
  * to a collection / solution / front page is equivalent.
  *
- * See FrontPageMenuHelper and FrontPageMenuController for front page pinning.
+ * See PinnableToFrontpageInterface for front page pinning.
  *
- * @see \Drupal\joinup_front_page\Controller\FrontPageMenuController
- * @see \Drupal\joinup_front_page\FrontPageMenuHelper
+ * @see \Drupal\joinup_front_page\Entity\PinnableToFrontpageInterface
  */
 interface PinnableGroupContentInterface extends GroupContentInterface {
 

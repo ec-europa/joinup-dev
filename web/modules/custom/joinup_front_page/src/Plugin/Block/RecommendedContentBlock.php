@@ -27,6 +27,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * This is the block that is responsible for the content and tiles that are
  * shown on the homepage.
  *
+ * @todo This should be moved into the Joinup profile since this depends on many
+ *   moving parts inside Joinup. It causes a circular dependency on a number of
+ *   modules such as joinup_group and joinup_community_content.
+ *
  * @Block(
  *  id = "recommended_content",
  *  admin_label = @Translation("Recommended content"),
