@@ -89,6 +89,10 @@
   }
 }
 
+.details__icon {
+  @extend .listing__icon;
+}
+
 // Modifiers
 // --------------------------------------------------
 .details__element--block {
@@ -123,6 +127,20 @@
       margin-right: 0;
       padding-right: 0;
       border-right: none;
+    }
+  }
+}
+
+.after-title {
+  .details__element {
+    height: 25px;
+    .value {
+      line-height: 25px;
+    }
+    .details__icon {
+      position: relative;
+      top: -2px;
+      left: -5px;
     }
   }
 }

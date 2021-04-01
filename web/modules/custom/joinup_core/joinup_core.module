@@ -9,6 +9,9 @@ declare(strict_types = 1);
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Block\BlockPluginInterface;
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -16,8 +19,11 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\block\BlockInterface;
+use Drupal\joinup_core\ETransBlockConfiguration;
 use Drupal\joinup_core\Element\Datetime;
+use Drupal\joinup_core\Entity\OutdatedContentInterface;
 use Drupal\joinup_core\JoinupSiteAlertListBuilder;
+use Drupal\joinup_core\Plugin\Field\FieldType\OutdatedContentFieldItemList;
 use Drupal\node\NodeInterface;
 
 /**
@@ -203,6 +209,8 @@ function joinup_core_config_readonly_whitelist_patterns() {
     // links static overrides config.
     'system.menu.front-page',
     'system.menu.support',
+    // The outdated content threshold is editable by moderators.
+    'joinup_core.outdated_content_threshold',
     'core.menu.static_menu_link_overrides',
   ];
 }
@@ -222,6 +230,16 @@ function joinup_core_module_implements_alter(array &$implementations, $hook) {
 
 /**
  * Implements hook_block_access().
+ *
+ * Determines on which pages to show the Webtools eTrans block. Not all pages
+ * are suitable for machine translation.
+ *
+ * This is handled using a custom access check rather than configuring block
+ * visibility conditions in the block UI since we need to check conditions
+ * across several domains. This is not possible in the UI because the conditions
+ * are compared using "AND" logic.
+ *
+ * @see https://www.drupal.org/project/drupal/issues/923934
  */
 function joinup_core_block_access(BlockInterface $block, string $operation, AccountInterface $account): AccessResultInterface {
   if ($operation === 'view' && $block->id() === 'three_dots_menu') {
@@ -235,7 +253,70 @@ function joinup_core_block_access(BlockInterface $block, string $operation, Acco
     // 'three_dots_menu' block by implementing this hook.
     return $local_task_links_helper->allowThreeDotsMenu();
   }
-  return AccessResult::neutral();
+
+  if ($operation !== 'view' || $block->getPluginId() !== 'oe_webtools_etrans') {
+    return AccessResult::neutral();
+  }
+
+  // Check if we are on a route that is suitable for machine translation.
+  if (!empty(joinup_core_get_etrans_block_config_for_current_page())) {
+    return AccessResult::allowed();
+  }
+  return AccessResult::forbidden();
+}
+
+/**
+ * Implements hook_block_build_BASE_BLOCK_ID_alter().
+ *
+ * Ensures that the Webtools eTrans block varies by route, since we are altering
+ * the block configuration depending on the route.
+ *
+ * @see \joinup_core_block_view_oe_webtools_etrans_alter()
+ */
+function joinup_core_block_build_oe_webtools_etrans_alter(array &$build, BlockPluginInterface $block) {
+  $cacheable_metadata = new CacheableMetadata();
+  $cacheable_metadata->addCacheContexts(['route']);
+  $cacheable_metadata->applyTo($build);
+}
+
+/**
+ * Implements hook_block_view_BASE_BLOCK_ID_alter().
+ *
+ * Tailors the HTML elements that need to be translated by the Webtools eTrans
+ * service to the type of the current page.
+ */
+function joinup_core_block_view_oe_webtools_etrans_alter(array &$build, BlockPluginInterface $block) {
+  $block->setConfiguration(joinup_core_get_etrans_block_config_for_current_page() + $block->getConfiguration());
+}
+
+/**
+ * Returns the Webtools eTrans block configuration for the current page.
+ *
+ * @return array
+ *   The Webtools eTrans block configuration.
+ *
+ * @see \Drupal\oe_webtools_etrans\Plugin\Block\ETransBlock
+ */
+function joinup_core_get_etrans_block_config_for_current_page(): array {
+  $current_route_name = \Drupal::routeMatch()->getRouteName();
+  if (array_key_exists($current_route_name, ETransBlockConfiguration::CONFIG_MAPPING['routes'])) {
+    return ETransBlockConfiguration::CONFIG_MAPPING['routes'][$current_route_name];
+  }
+
+  /** @var \Drupal\Core\Plugin\Context\ContextRepositoryInterface $context_repository */
+  $context_repository = \Drupal::service('context.repository');
+  $contexts = $context_repository->getRuntimeContexts(['@node.node_route_context:node']);
+
+  if ($contexts['@node.node_route_context:node']->hasContextValue()) {
+    $entity = $contexts['@node.node_route_context:node']->getContextValue();
+    foreach (ETransBlockConfiguration::CONFIG_MAPPING['bundles'] as $bundle_class => $config) {
+      if ($entity instanceof $bundle_class) {
+        return $config;
+      }
+    }
+  }
+
+  return [];
 }
 
 /**
@@ -248,4 +329,45 @@ function joinup_core_theme_suggestions_menu_local_task(array $variables): array 
     return ['menu_local_task__horizontal_tabs'];
   }
   return ['menu_local_task__three_dots_menu'];
+}
+
+/**
+ * Implements hook_entity_bundle_field_info().
+ */
+function joinup_core_entity_bundle_field_info(EntityTypeInterface $entity_type, string $bundle, array $base_field_definitions): array {
+  $fields = [];
+  $threshold = \Drupal::config('joinup_core.outdated_content_threshold')->get("{$entity_type->id()}.{$bundle}");
+  if ($threshold) {
+    $fields['outdated_time'] = BaseFieldDefinition::create('timestamp')
+      ->setLabel(t('Outdated time'))
+      ->setDescription(t('A date/time when this content will become outdated.'))
+      ->setComputed(TRUE)
+      ->setRequired(FALSE)
+      ->setClass(OutdatedContentFieldItemList::class)
+      ->setCardinality(1)
+      ->setDefaultValue(NULL);
+  }
+  return $fields;
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function joinup_core_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display): void {
+  if ($entity instanceof OutdatedContentInterface && $display->getMode() === 'default') {
+    /** @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info */
+    $bundle_info = \Drupal::service('entity_type.bundle.info');
+    $bundle_singular_label = $bundle_info->getBundleInfo($entity->getEntityTypeId())[$entity->bundle()]['label_singular'];
+    $build['#attached']['drupalSettings']['outdatedContent'] = [
+      'outdatedTime' => $entity->getOutdatedTime(),
+      'publicationTime' => $entity->getPublicationTime(),
+      'bundle' => $bundle_singular_label,
+    ];
+    $build['#attached']['library'][] = 'joinup_core/outdated_content';
+
+    // Invalidate the cache when the outdated content thresholds are changing.
+    (new CacheableMetadata())
+      ->addCacheableDependency(\Drupal::config('joinup_core.outdated_content_threshold'))
+      ->applyTo($build);
+  }
 }

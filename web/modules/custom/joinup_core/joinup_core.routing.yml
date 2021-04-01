@@ -35,3 +35,11 @@ joinup_core.rdf_entity_uri_web_converter_page:
     _permission: 'access uri converter'
   options:
     _admin_route: TRUE
+
+joinup_core.outdated_content_threshold:
+  path: '/outdated-content-threshold'
+  defaults:
+    _form: Drupal\joinup_core\Form\OutdatedContentThresholdForm
+    _title: 'Outdated content thresholds'
+  requirements:
+    _permission: 'administer outdated content threshold'

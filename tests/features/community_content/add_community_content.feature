@@ -174,3 +174,20 @@ Feature: Add community content
     And I press "Publish"
     Then I should see the heading "Published community news"
     And the publication date of the "Published community news" news should be equal to the created date
+
+  Scenario Outline: Community content type is indicated on the byline
+    Given the following collection:
+      | title | The night watch |
+      | state | validated       |
+    And <content type> content:
+      | title                   | collection      | state     |
+      | The glorious revolution | The night watch | validated |
+    When I go to the content page of the type "<content type>" with the title "The glorious revolution"
+    Then I should see the text <label> in the "Page title" region
+
+    Examples:
+      | content type | label      |
+      | discussion   | Discussion |
+      | document     | Document   |
+      | event        | Event      |
+      | news         | News       |
