@@ -33,12 +33,10 @@ class JoinupFrontPageContext extends RawDrupalContext {
       throw new \InvalidArgumentException('Only "rdf" and "content" are allowed as type.');
     }
 
-    /** @var \Drupal\joinup_front_page\FrontPageMenuHelperInterface $front_page_helper */
-    $front_page_helper = \Drupal::service('joinup_front_page.front_page_helper');
     $type = $type === 'content' ? 'node' : 'rdf_entity';
     foreach ($table->getColumnsHash() as $row) {
       $entity = $this->getEntityByLabel($type, $row['title']);
-      $front_page_helper->pinToFrontPage($entity);
+      $entity->pinToFrontPage();
     }
   }
 

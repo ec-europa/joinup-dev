@@ -5,10 +5,16 @@ Feature: Pinning content to the front page
   So that important content has more visibility
 
   Background:
-    Given the following collections:
-      | title       | state     | creation date |
-      | Risky Sound | validated | 2017-12-21    |
-      | Tuna Moving | validated | 2018-02-28    |
+    Given the following owner:
+      | name              |
+      | Timofei Håkansson |
+    And the following contact:
+      | name  | Arushi Papke     |
+      | email | aripap@yahoo.com |
+    And the following collections:
+      | title       | state     | creation date | owner             | contact information |
+      | Risky Sound | validated | 2017-12-21    | Timofei Håkansson | Arushi Papke        |
+      | Tuna Moving | validated | 2018-02-28    |                   |                     |
     And the following solutions:
       | title            | collection  | state     | creation date |
       | D minor          | Risky Sound | validated | 2017-12-22    |
@@ -286,3 +292,10 @@ Feature: Pinning content to the front page
     And I visit the collection overview page
     And I click the contextual link "Pin to front page" in the "Tuna Moving" tile
     Then I should see the success message "Collection Tuna Moving has been set as pinned content."
+
+  # Regression test for a bug that caused moderators to see links to pin owners
+  # and contact information entities to the front page in about pages.
+  Scenario: Owners and contact information cannot be pinned to the front page.
+    Given I am logged in as a moderator
+    When I go to the about page of "Risky Sound"
+    Then I should not see the contextual link "Pin to front page"
