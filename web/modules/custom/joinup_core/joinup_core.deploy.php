@@ -45,7 +45,6 @@ function joinup_core_deploy_0107000(array &$sandbox): string {
       continue;
     }
 
-    /** @var \Drupal\solution\Entity\SolutionInterface|\Drupal\asset_release\Entity\AssetReleaseInterface $parent */
     try {
       $parent = $distribution->getParent();
     }
