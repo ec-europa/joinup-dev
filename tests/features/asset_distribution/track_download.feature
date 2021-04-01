@@ -110,7 +110,7 @@ Feature: Asset distribution editing.
     When I go to the "Winter of 95" release
     Then I should see the link "External" in the "i386" tile
 
-  Scenario: Tests the CSV download.
+  Scenario: Download a CSV export of the distributions download report.
     Given users:
       | Username | E-mail            |
       | user1    | user1@example.com |
