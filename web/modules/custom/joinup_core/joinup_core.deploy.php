@@ -49,7 +49,7 @@ function joinup_core_deploy_0107000(array &$sandbox): string {
       $parent = $distribution->getParent();
     }
     catch (\Exception $e) {
-      // We don't want to force anything for old regords.
+      // We don't want to force anything for old records.
       continue;
     }
 
