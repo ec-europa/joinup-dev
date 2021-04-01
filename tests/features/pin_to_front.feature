@@ -273,6 +273,26 @@ Feature: Pinning content to the front page
     When I click the contextual link "Edit pinned items" in the "Content" region
     Then I should see the text "There are no pinned items. Start by pinning an entity to the front page."
 
+  @javascript
+  Scenario: Contextual links keep working after relogging
+    Given users:
+      | Username        | E-mail              | Roles     |
+      | Jocelyn Modpeel | jocymod@example.com | moderator |
+    And I am logged in as "Jocelyn Modpeel"
+    And I visit the collection overview page
+    When I click the contextual link "Pin to front page" in the "Tuna Moving" tile
+    Then I should see the success message "Collection Tuna Moving has been set as pinned content."
+    When I click the contextual link "Unpin from front page" in the "Tuna Moving" tile
+    Then I should see the success message "Collection Tuna Moving has been removed from the pinned contents."
+
+    # Log out and back in. This should clear the cached CSRF tokens and the
+    # contextual links should keep working.
+    When I log out
+    And I am logged in as "Jocelyn Modpeel"
+    And I visit the collection overview page
+    And I click the contextual link "Pin to front page" in the "Tuna Moving" tile
+    Then I should see the success message "Collection Tuna Moving has been set as pinned content."
+
   # Regression test for a bug that caused moderators to see links to pin owners
   # and contact information entities to the front page in about pages.
   Scenario: Owners and contact information cannot be pinned to the front page.
