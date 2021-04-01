@@ -59,7 +59,7 @@ content:
     type: image_url
     weight: 3
     region: content
-    label: above
+    label: hidden
     settings:
       image_style: digest_image
     third_party_settings:
