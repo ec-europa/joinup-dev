@@ -67,21 +67,27 @@
  *
  */
 #}
-{% set classes = [
-  'listing__card',
-  'mdl-card',
-  'listing__card--stats-container',
-  view_mode == 'view_mode_featured' ? 'listing__card--inline-container',
-] %}
+{%
+  set classes = [
+    'listing__card',
+    'mdl-card',
+    'listing__card--stats-container',
+    view_mode == 'view_mode_featured' ? 'listing__card--inline-container',
+  ]
+%}
 
-{% set class_container_tags = (content.field_keywords|render) ? ' listing__text-container--tags' : '' %}
-{% set rendered_logo = content.field_document_logo|render %}
+{%
+  set class_container_tags = (content.field_keywords|render) ? ' listing__text-container--tags' : ''
+%}
+
+{%
+  set rendered_logo = content.field_document_logo|render
+%}
 
 <div {{ attributes.addClass(classes) }}>
   {% if rendered_logo %}
     <div class="listing__image">{{ rendered_logo }}</div>
   {% endif %}
-
   <div class="listing__metadata">
     <div class="listing__text-container listing__text-container--document{{ class_container_tags }}">
       <div class="listing__field">
