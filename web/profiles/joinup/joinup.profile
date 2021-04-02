@@ -239,8 +239,15 @@ function joinup_theme($existing, $type, $theme, $path) {
     'path' => drupal_get_path('profile', 'joinup') . '/templates',
   ];
   return [
-    'joinup_legal_notice' => $page_template,
     'joinup_eligibility_criteria' => $page_template,
+    'joinup_legal_notice' => $page_template,
+    'joinup_modal_close_button' => [
+      'variables' => [
+        'label' => t('Got it'),
+        'url' => '',
+        'attributes' => [],
+      ],
+    ] + $page_template,
   ];
 }
 

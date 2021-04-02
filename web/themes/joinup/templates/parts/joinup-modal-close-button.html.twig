@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ * The Joinup Modal Close Button™.
+ */
+#}
+{%
+  set classes = [
+    'dialog-cancel',
+    'button--blue',
+    'button-inline',
+    'mdl-button',
+    'mdl-button--accent',
+    'mdl-button--accent',
+    'mdl-button--raised',
+]
+%}
+<a{{ attributes.addClass(classes) }} href="{{ url }}">{{ label }}</a>

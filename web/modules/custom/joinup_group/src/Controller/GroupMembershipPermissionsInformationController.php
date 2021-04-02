@@ -235,22 +235,10 @@ class GroupMembershipPermissionsInformationController extends ControllerBase {
     }
 
     $build['close'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Got it'),
+      '#theme' => 'joinup_modal_close_button',
       '#url' => Url::fromRoute('entity.rdf_entity.member_overview', [
         'rdf_entity' => $rdf_entity->id(),
       ]),
-      '#attributes' => [
-        'class' => [
-          'dialog-cancel',
-          'button--blue',
-          'button-inline',
-          'mdl-button',
-          'mdl-button--accent',
-          'mdl-button--accent',
-          'mdl-button--raised',
-        ],
-      ],
     ];
 
     return $build;
