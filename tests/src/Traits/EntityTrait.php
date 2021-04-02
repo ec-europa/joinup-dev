@@ -101,6 +101,39 @@ trait EntityTrait {
   }
 
   /**
+   * Translates human readable bundle names to machine names.
+   *
+   * @param string $bundle
+   *   The human readable bundle. Case insensitive.
+   *
+   * @return string
+   *   The machine name of the bundle.
+   */
+  protected static function translateBundle(string $bundle): string {
+    $bundle = strtolower($bundle);
+    $aliases = static::bundleAliases();
+    if (array_key_exists($bundle, $aliases)) {
+      $bundle = $aliases[$bundle];
+    }
+    return $bundle;
+  }
+
+  /**
+   * Mapping of human readable bundle names to machine names.
+   *
+   * @return array
+   *   The bundle mapping.
+   */
+  protected static function bundleAliases(): array {
+    return [
+      'contact information' => 'contact_information',
+      'distribution' => 'asset_distribution',
+      'release' => 'asset_release',
+      'spdx licence' => 'spdx_licence',
+    ];
+  }
+
+  /**
    * Returns a MenuLinkContent entity from the database.
    *
    * The function assumes that there are not duplicate entries with the same

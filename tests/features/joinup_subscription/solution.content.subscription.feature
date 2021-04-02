@@ -26,13 +26,13 @@ Feature: Subscribing to community content in solutions
       | Cities of Bulgaria   | bisera |             |
       | Cities of Bulgaria   | kalin  | facilitator |
     And the following solution content subscriptions:
-      | solution             | user   | subscriptions              |
-      | Products of Bulgaria | hristo | discussion, event, news    |
-      | Products of Bulgaria | bisera | discussion, document, news |
-      | Products of Bulgaria | kalin  | document, event            |
-      | Cities of Bulgaria   | hristo | document, event            |
-      | Cities of Bulgaria   | bisera | discussion, event, news    |
-      | Cities of Bulgaria   | kalin  | discussion, document, news |
+      | solution             | user   | subscriptions                          |
+      | Products of Bulgaria | hristo | discussion, event, news, distribution  |
+      | Products of Bulgaria | bisera | discussion, document, news, release    |
+      | Products of Bulgaria | kalin  | document, event, distribution, release |
+      | Cities of Bulgaria   | hristo | document, event                        |
+      | Cities of Bulgaria   | bisera | discussion, event, news                |
+      | Cities of Bulgaria   | kalin  | discussion, document, news             |
     And all message digests have been delivered
     And the mail collector cache is empty
 
