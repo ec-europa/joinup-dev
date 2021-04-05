@@ -6,6 +6,7 @@ namespace Drupal\joinup_front_page;
 
 use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\TypedData\ComputedItemListTrait;
+use Drupal\joinup_front_page\Entity\PinnableToFrontpageInterface;
 
 /**
  * Computed field that returns if the entity is pinned on the front page.
@@ -19,9 +20,8 @@ class FrontPagePinnedFieldItemList extends FieldItemList {
    */
   protected function computeValue(): void {
     if (!isset($this->list[0])) {
-      /** @var \Drupal\joinup_front_page\FrontPageMenuHelperInterface $front_page_helper */
-      $front_page_helper = \Drupal::service('joinup_front_page.front_page_helper');
-      $value = empty($front_page_helper->getFrontPageMenuItem($this->getEntity())) ? 0 : 1;
+      $entity = $this->getEntity();
+      $value = $entity instanceof PinnableToFrontpageInterface ? (int) $entity->isPinnedToFrontPage() : 0;
       $this->list[0] = $this->createItem(0, $value);
     }
   }

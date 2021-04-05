@@ -1,0 +1,6 @@
+services:
+  cache_context.joinup_featured_csrf:
+    class: Drupal\joinup_featured\Cache\Context\FeaturedContentCsrfCacheContext
+    arguments: ['@csrf_token']
+    tags:
+      - { name: cache.context}

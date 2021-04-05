@@ -15,21 +15,24 @@
 {{ title_prefix }}
 {% if title %}
   <div class="page__title-wrapper">
-      <h1 class="page__title">{{ title }}</h1>
-      {% if permalink %}
-        <a class="permalink" href="{{ permalink }}" alt="{{ 'Permalink'|t }}" title="{{ 'Permalink'|t }}"><span class="icon icon--anchor"></span><span class="visually-hidden">{{ 'Permalink'|t }}</span></a>
-      {% endif %}
-      <div class="details after-title">
-        {{ additional_content.author }}
-        <div class="details__element">
-          <div class="value gray">{{ 'Published on'|t }}: {{ additional_content.published }}</div>
-        </div>
-        {% if additional_content.published != additional_content.updated %}
-        <div class="details__element">
-          <div class="value gray">{{ 'Last update'|t }}: {{ additional_content.updated }}</div>
-        </div>
-       {% endif %}
+    <h1 class="page__title">{{ title }}</h1>
+    {% if permalink %}
+      <a class="permalink" href="{{ permalink }}" alt="{{ 'Permalink'|t }}" title="{{ 'Permalink'|t }}"><span class="icon icon--anchor"></span><span class="visually-hidden">{{ 'Permalink'|t }}</span></a>
+    {% endif %}
+    <div class="details after-title">
+      {{ additional_content.author }}
+      <div class="details__element">
+        <div class="value gray">{{ 'Published on'|t }}: {{ additional_content.published }}</div>
       </div>
+      {% if additional_content.published != additional_content.updated %}
+      <div class="details__element">
+        <div class="value gray">{{ 'Last update'|t }}: {{ additional_content.updated }}</div>
+      </div>
+      {% endif %}
+      <div class="details__element">
+        <div class="value gray">{{ bundle_label }} <span class="details__icon icon icon--{{ bundle }}"></span></div>
+      </div>
+    </div>
   </div>
 {% endif %}
 {{ title_suffix }}
