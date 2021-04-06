@@ -33,6 +33,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
       | CCN pre reject deletion       | CC member      | body | CCN pre reject deletion       | CC pre collection | deletion_request |
       | CCN pre delete                | CC member      | body | CCN pre delete                | CC pre collection | deletion_request |
       | CCN validated to delete       | CC member      | body | CCN pre delete                | CC pre collection | validated        |
+      | CCN validated to revise       | CC member      | body | CCN pre revise                | CC pre collection | validated        |
 
     # Test 'create' operation.
     When all e-mails have been sent
@@ -117,6 +118,15 @@ Feature: Notification test for the news transitions on a pre moderated parent.
       | If you think this action is not clear or not due, please contact Joinup Support at                                                                                          |
 
     When all e-mails have been sent
+    And I go to the "CCN validated to revise" news
+    And I click "Edit" in the "Entity actions" region
+    And I press "Propose changes"
+    Then the following email should have been sent:
+      | recipient | CC owner                                                                                                                          |
+      | subject   | Joinup: Content has been proposed                                                                                                 |
+      | body      | CC Member has submitted an update of the news - "CCN validated to revise" for publication in the collection: "CC pre collection". |
+
+    When all e-mails have been sent
     And I am logged in as "CC facilitator"
     And I go to the "CCN pre publish" news
     And I click "Edit" in the "Entity actions" region
@@ -138,6 +148,10 @@ Feature: Notification test for the news transitions on a pre moderated parent.
       | text                                                                                                                                                                                                |
       | the Facilitator, CC Facilitator has requested you to modify the news - "CCN pre request changes" in the collection: "CC pre collection", with the following motivation: "Can you do some changes?". |
       | If you think this action is not clear or not due, please contact Joinup Support at                                                                                                                  |
+    But the following email should not have been sent:
+      | recipient | CC owner                                                                                                                               |
+      | subject   | Joinup: Content has been proposed                                                                                                      |
+      | body      | CC Facilitator has submitted an update of the news - "CCN pre request changes" for publication in the collection: "CC pre collection". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"

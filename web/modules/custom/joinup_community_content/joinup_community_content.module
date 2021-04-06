@@ -15,11 +15,10 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_community_content\JoinupCommunityContentCommentAccessControlHandler;
+use Drupal\joinup_discussion\Entity\DiscussionInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
-use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\node\NodeInterface;
 
 /**
@@ -125,7 +124,13 @@ function joinup_community_content_attachment_file_process($element, FormStateInt
 function joinup_community_content_workflow_selector(EntityInterface $entity): ?string {
   $bundles = ['document', 'event', 'news'];
   if (!$entity instanceof CommunityContentInterface || !in_array($entity->bundle(), $bundles)) {
-    // @todo Document why this doesn't apply to discussions.
+    // This does not apply to discussions because of this functional decision:
+    // "By default (this cannot be modified) discussions created into the
+    // collection and comments posted on any content items of the collection are
+    // post-moderated."
+    // The reasoning behind this is that everyone should always be free to start
+    // a discussion without facilitator intervention.
+    // Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2265
     throw new \InvalidArgumentException('This function can only be called for community content apart from discussion.');
   }
 
@@ -138,24 +143,7 @@ function joinup_community_content_workflow_selector(EntityInterface $entity): ?s
     return NULL;
   }
 
-  $moderation = JoinupGroupHelper::getModeration($parent_entity);
-  if ($moderation === CommunityContentWorkflowAccessControlHandler::POST_MODERATION) {
-    return 'node:post_moderated';
-  }
-
-  // Roles with the `publish content in moderated groups` permission are able to
-  // directly publish in the group regardless of the moderation state, as a
-  // trusted user.
-  // We check the available permissions directly instead of using OgAccess
-  // because we don't want users with admin permissions to always go through the
-  // post moderated workflow.
-  $current_user = \Drupal::currentUser();
-  if ($current_user->hasPermission('publish content in moderated groups')) {
-    return 'node:post_moderated';
-  }
-
-  $membership = $parent_entity->getMembership((int) $current_user->id());
-  if ($membership && $membership->hasPermission('publish content in moderated groups')) {
+  if (!$parent_entity->isModerated()) {
     return 'node:post_moderated';
   }
 
@@ -290,5 +278,74 @@ function joinup_community_content_preprocess_links__comment(array &$variables): 
   // We display one for all comments at the bottom of the list.
   if (\Drupal::currentUser()->isAnonymous()) {
     unset($variables['links']['comment-forbidden']);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * In pre-moderated groups all content changes from non-trusted users should be
+ * approved by a moderator before they are published. Trusted users (authors and
+ * moderators) can bypass this.
+ *
+ * This alters the node revision revert form to ensure that a moderator has to
+ * approve the reverting of a revision proposed by a non-trusted user.
+ *
+ * Trusted users (and any user in a non-moderator group) can revert without
+ * approval.
+ */
+function joinup_community_content_form_node_revision_revert_confirm_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $entity = $form_state->getBuildInfo()['args'][0];
+  if (!$entity instanceof CommunityContentInterface) {
+    return;
+  }
+
+  // This does not apply to discussions because of this functional decision:
+  // "By default (this cannot be modified) discussions created into the
+  // collection and comments posted on any content items of the collection are
+  // post-moderated."
+  // The reasoning behind this is that everyone should always be free to start a
+  // discussion without facilitator intervention.
+  // Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2265
+  if ($entity instanceof DiscussionInterface) {
+    return;
+  }
+
+  // Skip if the group is not moderated.
+  if (!$entity->getGroup()->isModerated()) {
+    return;
+  }
+
+  // Check if the user (e.g. a moderator) has permission to directly publish
+  // content in moderated groups. If this is the case we don't need to alter the
+  // form.
+  if ($entity->isTargetWorkflowStateAllowed('validated', 'validated')) {
+    return;
+  }
+
+  // The user is not allowed to directly publish in the group. Alter the form.
+  array_unshift($form['#submit'], 'joinup_community_content_form_node_revision_revert_confirm_submit');
+}
+
+/**
+ * Sets the revision in proposed state in case of a pre-moderated group.
+ *
+ * This ensures that when an untrusted user reverts a revision this will only be
+ * public after approval by a moderator.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state instance.
+ *
+ * @see \joinup_community_content_form_node_revision_revert_confirm_alter()
+ */
+function joinup_community_content_form_node_revision_revert_confirm_submit(array $form, FormStateInterface $form_state) {
+  // We are altering the NodeRevisionRevertForm which is a simple confirmation
+  // form. It does not expose the entity through any methods, but we can get it
+  // from the form arguments.
+  $entity = $form_state->getBuildInfo()['args'][0];
+  if ($entity instanceof CommunityContentInterface) {
+    $entity->setWorkflowState('proposed');
   }
 }
