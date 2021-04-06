@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "48a84a6b0754ef1a4db816a0be4dd0ed",
+    "content-hash": "0d022833de83f35463f006cff5afa36b",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6647,7 +6647,7 @@
                     "Bundle classes support @see https://github.com/ec-europa/sparql_entity_storage/pull/11": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.diff",
                     "Allow routes to filter by bundle @see https://github.com/ec-europa/sparql_entity_storage/pull/32": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/32.diff",
                     "Allow to pass options to the serializer @see https://github.com/idimopoulos/sparql_entity_storage/pull/3": "https://patch-diff.githubusercontent.com/raw/idimopoulos/sparql_entity_storage/pull/3.diff",
-                    "Support NOT EXISTS query @see https://github.com/idimopoulos/sparql_entity_storage/pull/4": "https://patch-diff.githubusercontent.com/raw/idimopoulos/sparql_entity_storage/pull/4.diff"
+                    "Support NOT EXISTS query @see https://github.com/idimopoulos/sparql_entity_storage/pull/4": "resources/patch/sparql_entity_storage_support_not_exists.patch"
                 }
             },
             "autoload": {

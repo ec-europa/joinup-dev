@@ -1,0 +1,195 @@
+diff --git a/src/Entity/Query/Sparql/Query.php b/src/Entity/Query/Sparql/Query.php
+index 9215946..3097e69 100644
+--- a/src/Entity/Query/Sparql/Query.php
++++ b/src/Entity/Query/Sparql/Query.php
+@@ -355,6 +355,16 @@ class Query extends QueryBase implements SparqlQueryInterface {
+     if (!in_array($direction, ['ASC', 'DESC'])) {
+       throw new \RuntimeException('Only "ASC" and "DESC" are allowed as sort order.');
+     }
++
++    // Unlike the normal SQL queries where a column not defined can be used for
++    // sorting if exists in the table, in SPARQL, the sort argument must be
++    // defined in the WHERE clause. Any sort property, therefore, must will be
++    // included with an EXISTS condition.
++    // Also, the $idKey and $bundleKey properties cannot be added as triples as
++    // they cannot be the object of the triple.
++    if (!in_array($field, [$this->idKey, $this->bundleKey])) {
++      $this->exists($field);
++    }
+     return parent::sort($field, $direction, $langcode);
+   }
+ 
+diff --git a/src/Entity/Query/Sparql/SparqlCondition.php b/src/Entity/Query/Sparql/SparqlCondition.php
+index 582416f..47e7201 100644
+--- a/src/Entity/Query/Sparql/SparqlCondition.php
++++ b/src/Entity/Query/Sparql/SparqlCondition.php
+@@ -70,7 +70,7 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
+     'ENDS WITH' => ['prefix' => 'FILTER(STRENDS(', 'suffix' => '))'],
+     'LIKE' => ['prefix' => 'FILTER(CONTAINS(', 'suffix' => '))'],
+     'NOT LIKE' => ['prefix' => 'FILTER(!CONTAINS(', 'suffix' => '))'],
+-    'EXISTS' => ['prefix' => 'FILTER EXISTS {', 'suffix' => '}'],
++    'EXISTS' => ['prefix' => '', 'suffix' => ''],
+     'NOT EXISTS' => ['prefix' => 'FILTER NOT EXISTS {', 'suffix' => '}'],
+     '<' => ['prefix' => '', 'suffix' => ''],
+     '>' => ['prefix' => '', 'suffix' => ''],
+@@ -271,10 +271,6 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
+           'lang' => $lang,
+           'column' => $column,
+         ];
+-
+-        if (!in_array($operator, ['EXISTS', 'NOT EXISTS'])) {
+-          $this->requiresDefaultPattern = FALSE;
+-        }
+     }
+ 
+     return $this;
+@@ -384,6 +380,7 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
+     }
+ 
+     $mappings = $this->fieldHandler->getFieldPredicates($entity_type_id, $field, $column);
++    $mappings = array_values(array_unique($mappings));
+     $field_name = $field . '__' . $column;
+     if (count($mappings) === 1) {
+       $this->fieldMappings[$field_name] = reset($mappings);
+@@ -396,10 +393,10 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
+       // loaded by the database. There is no way that in a single request,
+       // the same predicate is found with a single and multiple mappings.
+       // There is no filter per bundle in the query.
+-      $this->fieldMappingConditions[] = [
++      $this->fieldMappingConditions[$field_name] = [
+         'field' => $field,
+         'column' => $column,
+-        'value' => array_values(array_unique($mappings)),
++        'value' => $mappings,
+         'operator' => 'IN',
+       ];
+     }
+@@ -445,10 +442,11 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
+       $field_name = $condition['field'] . '__' . $condition['column'];
+       $field_predicate = $this->fieldMappings[$field_name];
+       $condition_string = self::ID_KEY . ' ' . $this->escapePredicate($field_predicate) . ' ' . SparqlArg::toVar($field_name);
++      $this->addConditionFragment($condition_string);
+ 
+       $condition['value'] = SparqlArg::toResourceUris($condition['value']);
+       $condition['field'] = $field_predicate;
+-      $condition_string .= ' . ' . $this->compileValuesFilter($condition);
++      $condition_string = $this->compileValuesFilter($condition);
+       $this->addConditionFragment($condition_string);
+     }
+   }
+@@ -503,8 +501,11 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
+           break;
+ 
+         case 'EXISTS':
++          $this->compileExists($condition);
++          break;
++
+         case 'NOT EXISTS':
+-          $this->addConditionFragment($this->compileExists($condition));
++          $this->compileNotExists($condition);
+           break;
+ 
+         case 'CONTAINS':
+@@ -589,18 +590,66 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
+   }
+ 
+   /**
+-   * Compiles a filter exists (or not exists) condition.
++   * Compiles a filter exists condition.
++   *
++   * Since a triple in SPARQL works just like EXISTS does, for EXISTS we add
++   * any condition missing from the field mapping fragments.
+    *
+    * @param array $condition
+    *   An array that contains the 'field', 'value', 'operator' values.
++   */
++  protected function compileExists(array $condition): void {
++    $field_predicate = $this->fieldMappings[$condition['field']];
++    $condition_strings = [];
++    $condition_strings[] = self::ID_KEY . ' ' . $this->escapePredicate($field_predicate) . ' ' . SparqlArg::toVar($condition['field']);
++
++    if (isset($this->fieldMappingConditions[$condition['field']])) {
++      $mapping_condition = $this->fieldMappingConditions[$condition['field']];
++      $mapping_condition['value'] = SparqlArg::toResourceUris($mapping_condition['value']);
++      $mapping_condition['field'] = $field_predicate;
++      $condition_strings[] = $this->compileValuesFilter($mapping_condition);
++    }
++
++    foreach ($condition_strings as $condition_string) {
++      if (array_search($condition_string, $this->conditionFragments) === FALSE) {
++        $this->addConditionFragment($condition_string);
++      }
++    }
++  }
++
++  /**
++   * Compiles a filter not exists condition.
+    *
+-   * @return string
+-   *   A condition fragment string.
++   * @param array $condition
++   *   An array that contains the 'field', 'value', 'operator' values.
+    */
+-  protected function compileExists(array $condition): string {
++  protected function compileNotExists(array $condition): void {
+     $prefix = self::$filterOperatorMap[$condition['operator']]['prefix'];
+     $suffix = self::$filterOperatorMap[$condition['operator']]['suffix'];
+-    return $prefix . self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$condition['field']]) . ' ' . SparqlArg::toVar($condition['field']) . $suffix;
++
++    $field_predicate = $this->fieldMappings[$condition['field']];
++    $condition_strings = [];
++    $condition_strings[] = self::ID_KEY . ' ' . $this->escapePredicate($field_predicate) . ' ' . SparqlArg::toVar($condition['field']);
++
++    if (isset($this->fieldMappingConditions[$condition['field']])) {
++      $mapping_condition = $this->fieldMappingConditions[$condition['field']];
++      $mapping_condition['value'] = SparqlArg::toResourceUris($mapping_condition['value']);
++      $mapping_condition['field'] = $field_predicate;
++      $condition_strings[] = $this->compileValuesFilter($mapping_condition);
++    }
++
++    foreach ($condition_strings as $condition_string) {
++      $key = array_search($condition_string, $this->conditionFragments);
++      // Since field mapping conditions act also as EXISTS (the triple patterns
++      // MUST exist), remove any pattern added in the mapping conditions so that
++      // only the negative condition below exists.
++      if ($key !== FALSE) {
++        unset($this->conditionFragments[$key]);
++      }
++    }
++
++    $this->addConditionFragment($prefix . implode(' . ', $condition_strings) . $suffix);
++
+   }
+ 
+   /**
+diff --git a/tests/src/Kernel/SparqlEntityQueryTest.php b/tests/src/Kernel/SparqlEntityQueryTest.php
+index a8fe4b7..ace3e25 100644
+--- a/tests/src/Kernel/SparqlEntityQueryTest.php
++++ b/tests/src/Kernel/SparqlEntityQueryTest.php
+@@ -448,6 +448,26 @@ class SparqlEntityQueryTest extends SparqlKernelTestBase {
+     ];
+   }
+ 
++  /**
++   * Tests the NOT EXISTS operator.
++   */
++  public function testNotExists() {
++    $entity = SparqlTest::create([
++      'id' => 'http://fruit.example.com/not_exists',
++      'title' => 'fruit title not exists',
++      'type' => 'fruit',
++    ]);
++    $entity->save();
++    $this->entities[] = $entity;
++
++    $results = $this->getQuery()
++      ->condition('type', 'fruit')
++      ->notExists('text')
++      ->execute();
++
++    $this->assertNotEmpty($results);
++  }
++
+   /**
+    * Asserts that arrays are identical.
+    */
