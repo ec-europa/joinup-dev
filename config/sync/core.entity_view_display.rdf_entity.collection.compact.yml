@@ -23,7 +23,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_short_id
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_spatial_coverage
-    - image.style.image_style_collection_logo
+    - image.style.logo
     - rdf_entity.rdfentity.collection
   module:
     - image
@@ -40,7 +40,7 @@ content:
     region: content
     label: hidden
     settings:
-      image_style: image_style_collection_logo
+      image_style: logo
       image_link: ''
     third_party_settings:
       template_suggestion:

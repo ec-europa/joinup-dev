@@ -26,7 +26,7 @@ dependencies:
     - field.field.node.event.field_site_featured
     - field.field.node.event.field_state
     - field.field.node.event.og_audience
-    - image.style.image_style_event_logo
+    - image.style.logo
     - node.type.event
   module:
     - comment
@@ -117,7 +117,7 @@ content:
     weight: 3
     label: hidden
     settings:
-      image_style: image_style_event_logo
+      image_style: logo
       image_link: content
     third_party_settings: {  }
     type: image
