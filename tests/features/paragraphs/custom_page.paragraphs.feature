@@ -52,8 +52,8 @@ Feature:
     Given I am logged in as a facilitator of the "Paragraphs collection" collection
     And I go to the custom_page "Don't Mess with the Zohan" edit screen
     Then I should see the button "Add Simple paragraph"
-    But I should not see the button "Add Map"
-    And I should not see the button "Add IFrame"
+    And I should see the button "Add Map"
+    But I should not see the button "Add IFrame"
 
     When I fill in "Body" with "I'm half Australian, half Mt. Everest"
     And I press "Save"
