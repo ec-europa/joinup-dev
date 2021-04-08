@@ -56,13 +56,24 @@ Feature: Subscribing to community content in solutions
       | title    | body                        | solution             | state     | author |
       | Rose oil | A widely used essential oil | Products of Bulgaria | validated | bisera |
       | Burgas   | City of dreams              | Cities of Bulgaria   | validated | hristo |
+    And releases:
+      | title       | release number | release notes   | is version of        | state     |
+      | Spring 2021 | 2021/03        | Blooming pears. | Products of Bulgaria | validated |
+    And distributions:
+      | title                 | description    | parent               |
+      # A distribution linked directly to the solution.
+      | Full list of products | There are many | Products of Bulgaria |
+      # A distribution linked to a release.
+      | Spring discounts      | Get them now   | Spring 2021          |
 
     Then the daily group content subscription digest for hristo should match the following messages:
-      | Duck liver      |
-      | Sunflower seeds |
-      | Rose oil        |
-      | Plovdiv         |
-      | Stara Zagora    |
+      | Duck liver            |
+      | Sunflower seeds       |
+      | Rose oil              |
+      | Plovdiv               |
+      | Stara Zagora          |
+      | Full list of products |
+      | Spring discounts      |
     And the weekly group content subscription digest for bisera should match the following message:
       | Duck liver      |
       | Canned cherries |
@@ -70,12 +81,16 @@ Feature: Subscribing to community content in solutions
       | Sofia           |
       | Stara Zagora    |
       | Burgas          |
+      | Spring 2021     |
     And the monthly group content subscription digest for kalin should match the following message:
-      | Canned cherries |
-      | Sunflower seeds |
-      | Sofia           |
-      | Plovdiv         |
-      | Burgas          |
+      | Canned cherries       |
+      | Sunflower seeds       |
+      | Sofia                 |
+      | Plovdiv               |
+      | Burgas                |
+      | Spring 2021           |
+      | Full list of products |
+      | Spring discounts      |
 
     # Check that only the user's chosen frequency is digested.
     But the weekly digest for hristo should not contain any messages
@@ -106,14 +121,16 @@ Feature: Subscribing to community content in solutions
     # Check that the messages are formatted correctly.
     Given all message digests have been delivered
     And the group content subscription digest sent to hristo contains the following sections:
-      | title                |
-      | Cities of Bulgaria   |
-      | Plovdiv              |
-      | Stara Zagora         |
-      | Products of Bulgaria |
-      | Duck liver           |
-      | Rose oil             |
-      | Sunflower seeds      |
+      | title                 |
+      | Cities of Bulgaria    |
+      | Plovdiv               |
+      | Stara Zagora          |
+      | Products of Bulgaria  |
+      | Duck liver            |
+      | Full list of products |
+      | Rose oil              |
+      | Spring discounts      |
+      | Sunflower seeds       |
     And the content subscription digest sent to hristo should have the subject "Joinup: Daily digest message"
 
     And the group content subscription digest sent to bisera contains the following sections:
@@ -125,17 +142,21 @@ Feature: Subscribing to community content in solutions
       | Products of Bulgaria |
       | Canned cherries      |
       | Rose oil             |
+      | Spring 2021          |
     And the content subscription digest sent to bisera should have the subject "Joinup: Weekly digest message"
 
     And the group content subscription digest sent to kalin contains the following sections:
-      | title                |
-      | Cities of Bulgaria   |
-      | Burgas               |
-      | Plovdiv              |
-      | Sofia                |
-      | Products of Bulgaria |
-      | Canned cherries      |
-      | Sunflower seeds      |
+      | title                 |
+      | Cities of Bulgaria    |
+      | Burgas                |
+      | Plovdiv               |
+      | Sofia                 |
+      | Products of Bulgaria  |
+      | Canned cherries       |
+      | Full list of products |
+      | Spring 2021           |
+      | Spring discounts      |
+      | Sunflower seeds       |
     And the content subscription digest sent to kalin should have the subject "Joinup: Monthly digest message"
 
     # Clean out the message queue for the next test.
