@@ -187,7 +187,7 @@ class GroupMembershipPermissionsInformationController extends ControllerBase {
         'permitted' => [
           'member' => FALSE,
           'author' => FALSE,
-          'facilitator' => FALSE,
+          'facilitator' => TRUE,
           'owner' => TRUE,
         ],
       ],

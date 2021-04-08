@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-b
 Feature: Group member permissions table
   In order to get an overview of which actions I can take in a group
   As a member of a collection or solution
@@ -63,7 +63,7 @@ Feature: Group member permissions table
       | Request changes on content from other users |        |        | ✓           | ✓     |
       | Delete own content                          |        | ✓      | ✓           | ✓     |
       | Delete any content                          |        |        | ✓           | ✓     |
-      | Manage users                                |        |        |             | ✓     |
+      | Manage users                                |        |        | ✓           | ✓     |
 
     # Quick check to verify the permissions are actually matching what is
     # displayed in the table. Only the most common case ("member") is checked.
@@ -97,7 +97,7 @@ Feature: Group member permissions table
       | Request changes on content from other users |        |        | ✓           | ✓     |
       | Delete own content                          |        | ✓      | ✓           | ✓     |
       | Delete any content                          |        |        | ✓           | ✓     |
-      | Manage users                                |        |        |             | ✓     |
+      | Manage users                                |        |        | ✓           | ✓     |
 
     Given I am logged in as a member of the "Illiberal studies" collection
     When I go to the homepage of the "Illiberal studies" collection
@@ -134,7 +134,7 @@ Feature: Group member permissions table
       | Approve requested deletion of content                      |        |        | ✓           | ✓     |
       | Delete own content without approval                        |        | ✓      | ✓           | ✓     |
       | Delete any content                                         |        |        | ✓           | ✓     |
-      | Manage users                                               |        |        |             | ✓     |
+      | Manage users                                               |        |        | ✓           | ✓     |
 
     Given I am logged in as "Horace Worblehat"
     When I go to the homepage of the "Approximate accuracy" collection
@@ -177,7 +177,7 @@ Feature: Group member permissions table
       | Request changes on content from other users |        |        | ✓           | ✓     |
       | Delete own content                          | ✓      | ✓      | ✓           | ✓     |
       | Delete any content                          |        |        | ✓           | ✓     |
-      | Manage users                                |        |        |             | ✓     |
+      | Manage users                                |        |        | ✓           | ✓     |
 
     Given I am logged in as "Ponder Stibbons"
     When I go to the homepage of the "Dust, miscellaneous particles and filaments" collection
@@ -226,7 +226,7 @@ Feature: Group member permissions table
       | Approve requested deletion of content                      |        |        | ✓           | ✓     |
       | Delete own content without approval                        |        | ✓      | ✓           | ✓     |
       | Delete any content                                         |        |        | ✓           | ✓     |
-      | Manage users                                               |        |        |             | ✓     |
+      | Manage users                                               |        |        | ✓           | ✓     |
 
     Given I am logged in as "Henry Porter"
     When I go to the homepage of the "Creative uncertainty" collection
@@ -269,7 +269,7 @@ Feature: Group member permissions table
       | Request changes on content from other users |        |        | ✓           | ✓     |
       | Delete own content                          | ✓      | ✓      | ✓           | ✓     |
       | Delete any content                          |        |        | ✓           | ✓     |
-      | Manage users                                |        |        |             | ✓     |
+      | Manage users                                |        |        | ✓           | ✓     |
 
     Given I am logged in as "Rincewind"
     When I go to the homepage of the "Woolly thinking" collection
@@ -312,7 +312,7 @@ Feature: Group member permissions table
       | Request changes on content from other users |        |        | ✓           | ✓     |
       | Delete own content                          |        | ✓      | ✓           | ✓     |
       | Delete any content                          |        |        | ✓           | ✓     |
-      | Manage users                                |        |        |             | ✓     |
+      | Manage users                                |        |        | ✓           | ✓     |
 
     Given I am logged in as a member of the "Applied anthropics" solution
     When I go to the homepage of the "Applied anthropics" solution
@@ -343,7 +343,7 @@ Feature: Group member permissions table
       | Request changes on content from other users |        |        | ✓           | ✓     |
       | Delete own content                          |        | ✓      | ✓           | ✓     |
       | Delete any content                          |        |        | ✓           | ✓     |
-      | Manage users                                |        |        |             | ✓     |
+      | Manage users                                |        |        | ✓           | ✓     |
 
     Given I am logged in as a member of the "Extreme horticulture" solution
     When I go to the homepage of the "Extreme horticulture" solution
@@ -380,7 +380,7 @@ Feature: Group member permissions table
       | Approve requested deletion of content                      |        |        | ✓           | ✓     |
       | Delete own content without approval                        |        | ✓      | ✓           | ✓     |
       | Delete any content                                         |        |        | ✓           | ✓     |
-      | Manage users                                               |        |        |             | ✓     |
+      | Manage users                                               |        |        | ✓           | ✓     |
 
     Given I am logged in as "Dr. John Hicks"
     When I go to the homepage of the "Prehumous morbid bibliomancy" solution
@@ -423,7 +423,7 @@ Feature: Group member permissions table
       | Request changes on content from other users |        |        | ✓           | ✓     |
       | Delete own content                          | ✓      | ✓      | ✓           | ✓     |
       | Delete any content                          |        |        | ✓           | ✓     |
-      | Manage users                                |        |        |             | ✓     |
+      | Manage users                                |        |        | ✓           | ✓     |
 
     Given I am logged in as "Hex"
     When I go to the homepage of the "Posthumous morbid bibliomancy" solution
