@@ -211,7 +211,6 @@ Feature: News moderation.
     Then I should see the link "Cheetah kills WonderWoman"
 
   Scenario Outline: Members can only edit news they own for specific states.
-    # Post moderated.
     Given I am logged in as "<user>"
     And I go to the "<title>" news
     Then I should see the link "Edit"
@@ -220,14 +219,15 @@ Feature: News moderation.
     And the following buttons should be present "<available buttons>"
     And the following buttons should not be present "<unavailable buttons>"
     Examples:
-      | user          | title                         | available buttons      | unavailable buttons                                 |
-      # State: draft, owned by Eagle
-      | Eagle         | Creating Justice League       | Save as draft, Publish | Propose, Request changes, Preview                   |
-      # State: draft, can propose
-      | Mirror Master | Creating Legion of Doom       | Save as draft, Propose | Publish, Request changes, Request deletion, Preview |
-      # State: validated, owned by Eagle who is a normal member. Should only be able to create a new draft.
-      | Eagle         | Hawkgirl helped Green Lantern | Save new draft         | Publish, Request changes, Preview                   |
-      | Mirror Master | Stealing from Batman          | Save new draft         | Update, Propose, Publish, Request changes, Preview  |
+      | user          | title                         | available buttons               | unavailable buttons                                 |
+      # Post-moderated. State: draft, owned by Eagle
+      | Eagle         | Creating Justice League       | Save as draft, Publish          | Propose, Request changes, Preview                   |
+      # Pre-moderated. State: draft, can propose
+      | Mirror Master | Creating Legion of Doom       | Save as draft, Propose          | Publish, Request changes, Request deletion, Preview |
+      # Post-moderated. State: validated, owned by Eagle who is a normal member. Should only be able to create a new draft.
+      | Eagle         | Hawkgirl helped Green Lantern | Save new draft, Update          | Publish, Request changes, Preview                   |
+      # Pre-moderated. State: validated, owned by Mirror Master who is a normal member. Should only be able to create a new draft and propose changes.
+      | Mirror Master | Stealing from Batman          | Save new draft, Propose changes | Update, Publish, Preview                            |
 
   Scenario Outline: Members cannot edit news they own for specific states.
     Given I am logged in as "<user>"

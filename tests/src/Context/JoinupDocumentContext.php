@@ -87,6 +87,11 @@ class JoinupDocumentContext extends RawDrupalContext {
       $date_formatter = \Drupal::service('date.formatter');
       $node->field_document_publication_date = $date_formatter->format($time, 'custom', 'Y-m-d H:i:s');
     }
+
+    // The document type is a required field and in normal usage a document
+    // cannot be created without it. If the scenario doesn't specify a type,
+    // default to 'document'.
+    $node->field_type = $node->field_type ?? 'document';
   }
 
   /**

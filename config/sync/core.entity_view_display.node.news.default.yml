@@ -18,7 +18,7 @@ dependencies:
     - field.field.node.news.field_site_featured
     - field.field.node.news.field_state
     - field.field.node.news.og_audience
-    - image.style.image_style_news_logo
+    - image.style.logo
     - node.type.news
   module:
     - comment
@@ -95,7 +95,7 @@ content:
     region: content
     label: above
     settings:
-      image_style: image_style_news_logo
+      image_style: logo
       image_link: content
     third_party_settings:
       template_suggestion:

@@ -42,7 +42,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
   /**
    * The entity type manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager|null
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface|null
    */
   protected $entityTypeManager;
 

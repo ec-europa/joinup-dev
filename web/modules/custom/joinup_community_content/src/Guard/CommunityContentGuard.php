@@ -107,24 +107,12 @@ class CommunityContentGuard implements GuardInterface {
    * {@inheritdoc}
    */
   public function allowedUpdate(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
-    $from_state = $this->getState($entity);
+    $from_state = $entity->getWorkflowState();
     $to_state = $transition->getToState()->getId();
-    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $workflow, $from_state, $to_state);
-  }
 
-  /**
-   * Retrieve the initial state value of the entity.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The discussion entity.
-   *
-   * @return string
-   *   The machine name value of the state.
-   *
-   * @see https://www.drupal.org/node/2745673
-   */
-  protected function getState(EntityInterface $entity) {
-    return $entity->get('field_state')->first()->value;
+    // Note that we cannot call $entity->isTargetWorkflowStateAllowed() since it
+    // invokes the guards, causing an endless loop.
+    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $workflow, $from_state, $to_state);
   }
 
 }

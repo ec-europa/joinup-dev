@@ -74,6 +74,13 @@ class JoinupEventContext extends RawDrupalContext {
         $node->$field = $date_formatter->format($date, 'custom', DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
       }
     }
+
+    // In normal usage an event cannot be created without either a physical or
+    // virtual location. If the scenario doesn't specify either of those,
+    // provide a default value so that we don't run into unspecified behaviour.
+    if (empty($node->field_location) && empty($node->field_event_online_location)) {
+      $node->field_location = 'Belliardstraat 28, 1000 Brussels, Belgium';
+    }
   }
 
   /**
