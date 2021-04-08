@@ -48,8 +48,9 @@ For a full description of the functionality, see the following scenarios:
 The group content subscriptions are stored in the `subscription_bundles`
 base field on the `OgMembership` entity. This is added in
 `joinup_subscription_entity_base_field_info()`.
-The `subscription_bundles` property also stores the entity type along with the bundle
-as collections also send digest messages for solutions as well.
+The `subscription_bundles` property also stores the entity type along with the
+bundle as digest messages can be sent for nodes (community content) as well as
+RDF entities (solutions, distributions and releases).
 
 There is no helper service at the moment to handle storing and retrieving this
 data since it is handled trivially through the Field API:
