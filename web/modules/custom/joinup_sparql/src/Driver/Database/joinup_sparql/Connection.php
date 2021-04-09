@@ -27,25 +27,17 @@ class Connection extends BaseConnection implements ConnectionInterface {
    * {@inheritdoc}
    */
   public function query(string $query, array $args = [], array $options = []): Result {
-    $attempts = 2;
-    do {
-      $success = TRUE;
-      try {
-        return parent::query($query);
-      }
-      catch (SparqlQueryException $e) {
-        // During a Virtuoso checkpoint, the server locks down, causing HTTP
-        // requests on the SPARQL endpoint to fail with a 404 response. We wait
-        // a reasonable amount of time and then we retry one more time.
-        // @see http://docs.openlinksw.com/virtuoso/checkpoint/
-        sleep(5);
-        if ($attempts === 0) {
-          throw new \Exception($e->getMessage());
-        }
-        $attempts--;
-        $success = FALSE;
-      }
-    } while (!$success);
+    try {
+      return parent::query($query);
+    }
+    catch (SparqlQueryException $e) {
+      // During a Virtuoso checkpoint, the server locks down, causing HTTP
+      // requests on the SPARQL endpoint to fail with a 404 response. We wait a
+      // reasonable amount of time and then we retry one more time.
+      // @see http://docs.openlinksw.com/virtuoso/checkpoint/
+      sleep(5);
+      return parent::query($query);
+    }
   }
 
   /**
