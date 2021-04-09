@@ -20,7 +20,7 @@ index 9215946..3097e69 100644
    }
  
 diff --git a/src/Entity/Query/Sparql/SparqlCondition.php b/src/Entity/Query/Sparql/SparqlCondition.php
-index 582416f..47e7201 100644
+index 582416f..cd6de5b 100644
 --- a/src/Entity/Query/Sparql/SparqlCondition.php
 +++ b/src/Entity/Query/Sparql/SparqlCondition.php
 @@ -70,7 +70,7 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
@@ -32,18 +32,16 @@ index 582416f..47e7201 100644
      'NOT EXISTS' => ['prefix' => 'FILTER NOT EXISTS {', 'suffix' => '}'],
      '<' => ['prefix' => '', 'suffix' => ''],
      '>' => ['prefix' => '', 'suffix' => ''],
-@@ -271,10 +271,6 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
-           'lang' => $lang,
+@@ -272,7 +272,7 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
            'column' => $column,
          ];
--
--        if (!in_array($operator, ['EXISTS', 'NOT EXISTS'])) {
--          $this->requiresDefaultPattern = FALSE;
--        }
-     }
  
-     return $this;
-@@ -384,6 +380,7 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
+-        if (!in_array($operator, ['EXISTS', 'NOT EXISTS'])) {
++        if ($operator !== 'NOT EXISTS') {
+           $this->requiresDefaultPattern = FALSE;
+         }
+     }
+@@ -384,6 +384,7 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
      }
  
      $mappings = $this->fieldHandler->getFieldPredicates($entity_type_id, $field, $column);
@@ -51,7 +49,7 @@ index 582416f..47e7201 100644
      $field_name = $field . '__' . $column;
      if (count($mappings) === 1) {
        $this->fieldMappings[$field_name] = reset($mappings);
-@@ -396,10 +393,10 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
+@@ -396,10 +397,10 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
        // loaded by the database. There is no way that in a single request,
        // the same predicate is found with a single and multiple mappings.
        // There is no filter per bundle in the query.
@@ -64,7 +62,7 @@ index 582416f..47e7201 100644
          'operator' => 'IN',
        ];
      }
-@@ -445,10 +442,11 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
+@@ -445,10 +446,11 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
        $field_name = $condition['field'] . '__' . $condition['column'];
        $field_predicate = $this->fieldMappings[$field_name];
        $condition_string = self::ID_KEY . ' ' . $this->escapePredicate($field_predicate) . ' ' . SparqlArg::toVar($field_name);
@@ -77,7 +75,7 @@ index 582416f..47e7201 100644
        $this->addConditionFragment($condition_string);
      }
    }
-@@ -503,8 +501,11 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
+@@ -503,8 +505,11 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
            break;
  
          case 'EXISTS':
@@ -90,7 +88,7 @@ index 582416f..47e7201 100644
            break;
  
          case 'CONTAINS':
-@@ -589,18 +590,66 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
+@@ -589,18 +594,66 @@ class SparqlCondition extends ConditionFundamentals implements SparqlConditionIn
    }
  
    /**
