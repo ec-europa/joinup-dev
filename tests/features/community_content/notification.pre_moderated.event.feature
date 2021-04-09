@@ -33,6 +33,7 @@ Feature: Notification test for the event transitions on a pre moderated parent.
       | CC notify pre reject deletion       | CC member      | body | Carrer dels Sagristans, Barcelona    | CC pre collection | deletion_request |
       | CC notify pre delete                | CC member      | body | 4 Chome-2-15 Ginza, Chuo City, Tokyo | CC pre collection | deletion_request |
       | CC notify validated to delete       | CC member      | body | Malcolm X Boulevard, New York        | CC pre collection | validated        |
+      | CC notify validated to revise       | CC member      | body | Malcolm X Boulevard, New York        | CC pre collection | validated        |
 
     # Test 'create' operation.
     When all e-mails have been sent
@@ -96,6 +97,15 @@ Feature: Notification test for the event transitions on a pre moderated parent.
       | body      | CC Member has requested to delete the event - "CC notify pre request deletion" in the collection: "CC pre collection", with the following motivation: "I just want to delete it.". |
 
     When all e-mails have been sent
+    And I go to the "CC notify validated to revise" event
+    And I click "Edit" in the "Entity actions" region
+    And I press "Propose changes"
+    Then the following email should have been sent:
+      | recipient | CC owner                                                                                                                                 |
+      | subject   | Joinup: Content has been proposed                                                                                                        |
+      | body      | CC Member has submitted an update of the event - "CC notify validated to revise" for publication in the collection: "CC pre collection". |
+
+    When all e-mails have been sent
     And I am logged in as "CC facilitator"
     And I go to the "CC notify pre publish" event
     And I click "Edit" in the "Entity actions" region
@@ -117,6 +127,10 @@ Feature: Notification test for the event transitions on a pre moderated parent.
       | recipient | CC member                                                                                                                                                                                                  |
       | subject   | Joinup: Content has been updated                                                                                                                                                                           |
       | body      | the Facilitator, CC Facilitator has requested you to modify the event - "CC notify pre request changes" in the collection: "CC pre collection", with the following motivation: "Can you do some changes?". |
+    But the following email should not have been sent:
+      | recipient | CC owner                                                                                                                                      |
+      | subject   | Joinup: Content has been proposed                                                                                                             |
+      | body      | CC Facilitator has submitted an update of the event - "CC notify pre request changes" for publication in the collection: "CC pre collection". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"

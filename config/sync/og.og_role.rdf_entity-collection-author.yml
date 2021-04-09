@@ -12,5 +12,10 @@ group_type: rdf_entity
 group_bundle: collection
 group_id: null
 permissions:
-  - 'publish content in moderated groups'
+  - 'transition own node document from draft to validated using the community_content - node:pre_moderated workflow'
+  - 'transition own node document from validated to validated using the community_content - node:pre_moderated workflow'
+  - 'transition own node event from draft to validated using the community_content - node:pre_moderated workflow'
+  - 'transition own node event from validated to validated using the community_content - node:pre_moderated workflow'
+  - 'transition own node news from draft to validated using the community_content - node:pre_moderated workflow'
+  - 'transition own node news from validated to validated using the community_content - node:pre_moderated workflow'
 role_type: required

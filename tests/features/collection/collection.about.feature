@@ -28,8 +28,8 @@ Feature: About page
       | state               | validated                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
     When I go to the homepage of the "Fitness at work" collection
-    # Check for HTML so that we assert that actually the HTML has been stripped.
-    Then the page should contain the html text "Fit while working is dope"
+    # Check for HTML so that we can assert that text styling is present.
+    Then the page should contain the html text "<strong>Fit while working</strong> is dope"
     And I should see the text "leo blandit a ornare non sollicitudin iaculis…"
     # Check that later chunks of text in the abstract are not rendered.
     But I should not see the text "purus. Integer nec enim facilisis mi fermentum mollis sed vitae lacus" in the Content region
@@ -61,8 +61,8 @@ Feature: About page
     And I fill in "Abstract" with ""
     And I press "Publish"
     Then I should see the heading "Fitness at work"
-    And the page should contain the html text "This collection is intended to show ways of being fit while working"
-    And I should see the text "In consequat sapien risus a malesuada…" in the Content region
+    And the page should contain the html text "This collection is intended to show ways of being <strong>fit while working</strong>"
+    And I should see the text "Vivamus libero leo blandit a ornare non sollicitudin iaculis…" in the Content region
     But I should not see the text "malesuada eros auctor eget. Curabitur at" in the Content region
     When I click "Read more" in the "Content" region
     Then I should see the heading "About Fitness at work"

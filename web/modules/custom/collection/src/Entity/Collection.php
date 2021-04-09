@@ -96,6 +96,13 @@ class Collection extends Rdf implements CollectionInterface {
   /**
    * {@inheritdoc}
    */
+  public function getGroupModerationFieldName(): string {
+    return 'field_ar_moderation';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getGlossarySettings(): array {
     /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
     $meta_entity = $this->get('settings')->entity;

@@ -26,7 +26,7 @@ interface WorkflowStatePermissionInterface {
    * been built in here because the State Machine module does not yet allow to
    * retrieve transitions for a given user account. The only way to do it is to
    * swap out the current user before retrieving the transitions from the State
-   * Machine. You might be looking for WorkflowHelper::getAvailableStates()
+   * Machine. You might be looking for WorkflowHelper::getAvailableTransitions()
    * which takes care of this.
    *
    * @param \Drupal\Core\Session\AccountInterface $account

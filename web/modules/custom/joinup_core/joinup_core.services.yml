@@ -1,12 +1,16 @@
 services:
+
   joinup_core.joinup_version:
     class: Drupal\joinup_core\JoinupVersion
+
   logger.channel.joinup_core:
     parent: logger.channel_base
     arguments: ['joinup_core']
+
   joinup_core.requirements_helper:
     class: Drupal\joinup_core\RequirementsHelper
     arguments: ['@database']
+
   joinup_core.local_task_links_helper:
     class: Drupal\joinup_core\LocalTaskLinksHelper
     arguments: ['@entity_type.manager']
@@ -15,3 +19,8 @@ services:
     arguments: ['@entity_field.manager']
     tags:
       - { name: event_subscriber }
+
+  path_processor.joinup_core:
+    class: Drupal\joinup_core\PathProcessor\IdRedirectUuidProcessor
+    tags:
+      - { name: path_processor_inbound, priority: 200 }

@@ -24,10 +24,8 @@ dependencies:
     - allowed_formats
     - comment
     - file
-    - image
     - image_library_widget
     - joinup_workflow
-    - joinup_core
     - link
     - text
 id: node.news.default
