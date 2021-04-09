@@ -9,7 +9,6 @@ use Drupal\sparql_entity_storage\Driver\Database\sparql\ConnectionInterface;
 use Drupal\sparql_entity_storage\Exception\SparqlQueryException;
 use EasyRdf\Http;
 use EasyRdf\Http\Client as HttpClient;
-use EasyRdf\Http\Exception as EasyRdfException;
 use EasyRdf\Sparql\Client;
 use EasyRdf\Sparql\Result;
 
@@ -38,56 +37,6 @@ class Connection extends BaseConnection implements ConnectionInterface {
       sleep(5);
       return parent::query($query);
     }
-  }
-
-  /**
-   * Execute the query against the endpoint.
-   *
-   * @param string $query
-   *   The string query to execute.
-   * @param array $args
-   *   An array of arguments for the query.
-   * @param array $options
-   *   An associative array of options to control how the query is run.
-   *
-   * @return \EasyRdf\Sparql\Result|\EasyRdf\Graph
-   *   The query result.
-   *
-   * @throws \InvalidArgumentException
-   *   If $args value is passed but arguments replacement is not yet
-   *   supported. To be removed in #55.
-   * @throws \Drupal\sparql_entity_storage\Exception\SparqlQueryException
-   *   Exception during query execution, e.g. timeout.
-   *
-   * @see https://github.com/ec-europa/sparql_entity_storage/issues/1
-   */
-  protected function doQuery(string $query, array $args = [], array $options = []) {
-    // @todo Remove this in #1.
-    // @see https://github.com/ec-europa/sparql_entity_storage/issues/1
-    if ($args) {
-      throw new \InvalidArgumentException('Replacement arguments are not yet supported.');
-    }
-
-    if ($this->logger) {
-      $query_start = microtime(TRUE);
-    }
-
-    try {
-      // @todo Implement argument replacement in #1.
-      // @see https://github.com/ec-europa/sparql_entity_storage/issues/1
-      $results = $this->easyRdfClient->query($query);
-    }
-    catch (EasyRdfException $exception) {
-      // Re-throw the exception, but with the query as message.
-      throw new SparqlQueryException('Execution of query failed: ' . htmlentities($query));
-    }
-
-    if ($this->logger) {
-      $query_end = microtime(TRUE);
-      $this->log($query, $args, $query_end - $query_start);
-    }
-
-    return $results;
   }
 
   /**
