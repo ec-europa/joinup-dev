@@ -498,6 +498,22 @@ class JoinupContext extends RawDrupalContext {
   }
 
   /**
+   * Navigates to the revisions form of a node.
+   *
+   * @param string $title
+   *   The title of the node.
+   *
+   * @When I visit the revisions page for :title
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   */
+  public function visitRevisionsForm(string $title): void {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title);
+    $this->visitPath($node->toUrl('version-history')->toString());
+  }
+
+  /**
    * Navigates to the dashboard page of the user.
    *
    * @When I go to the dashboard
@@ -690,7 +706,11 @@ class JoinupContext extends RawDrupalContext {
       }
     }
 
-    $image_fields = ['field_news_logo', 'field_event_logo'];
+    $image_fields = [
+      'field_document_logo',
+      'field_event_logo',
+      'field_news_logo',
+    ];
     foreach ($image_fields as $image_field) {
       if (!empty($node->$image_field)) {
         $file = $this->createFile($node->$image_field);
@@ -744,6 +764,7 @@ class JoinupContext extends RawDrupalContext {
         'file' => 'field_file',
         'keywords' => 'field_keywords',
         'licence' => 'field_licence',
+        'logo' => 'field_document_logo',
         'short title' => 'field_short_title',
         'spatial coverage' => 'field_document_spatial_coverage',
         'state' => 'field_state',

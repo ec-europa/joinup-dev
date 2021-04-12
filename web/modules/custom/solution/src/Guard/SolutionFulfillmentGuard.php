@@ -62,6 +62,8 @@ class SolutionFulfillmentGuard implements GuardInterface {
 
     $from_state = $entity->getWorkflowState();
 
+    // Note that we cannot call $entity->isTargetWorkflowStateAllowed() since it
+    // invokes the guards, causing an endless loop.
     return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $workflow, $from_state, $to_state);
   }
 

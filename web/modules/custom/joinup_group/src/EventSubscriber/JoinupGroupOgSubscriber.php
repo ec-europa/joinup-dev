@@ -12,7 +12,6 @@ use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent;
 use Drupal\og\Event\PermissionEventInterface as OgPermissionEventInterface;
 use Drupal\og\GroupPermission;
-use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -30,24 +29,13 @@ class JoinupGroupOgSubscriber implements EventSubscriberInterface {
   protected $currentUser;
 
   /**
-   * The service that determines the access to update workflow states.
-   *
-   * @var \Drupal\workflow_state_permission\WorkflowStatePermissionInterface
-   */
-  protected $workflowStatePermission;
-
-  /**
    * Constructs a JoinupGroupOgSubscriber.
    *
    * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   The current logged in user.
-   * @param \Drupal\workflow_state_permission\WorkflowStatePermissionInterface $workflowStatePermission
-   *   The service that determines the permission to update the workflow state
-   *   of a given entity.
    */
-  public function __construct(AccountInterface $currentUser, WorkflowStatePermissionInterface $workflowStatePermission) {
+  public function __construct(AccountInterface $currentUser) {
     $this->currentUser = $currentUser;
-    $this->workflowStatePermission = $workflowStatePermission;
   }
 
   /**
@@ -84,7 +72,9 @@ class JoinupGroupOgSubscriber implements EventSubscriberInterface {
   /**
    * Determines if a group can be updated without changing workflow state.
    *
-   * This applies both to collections and solutions.
+   * This applies both to collections and solutions. It also updates the label
+   * for the button that saves a group without changing state and moves it to
+   * the leftmost position.
    *
    * @param \Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent $event
    *   The event.
@@ -95,9 +85,8 @@ class JoinupGroupOgSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $workflow = $entity->getWorkflow();
     $state = $event->getState();
-    $permitted = $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $event->getEntity(), $workflow, $state, $state);
+    $permitted = $entity->isTargetWorkflowStateAllowed($state, $state);
     $access = AccessResult::forbiddenIf(!$permitted);
     $access->addCacheContexts(['user.roles', 'og_role']);
     $event->setAccess($access);

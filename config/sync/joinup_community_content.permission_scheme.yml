@@ -188,7 +188,9 @@ create:
         roles:
           - moderator
         og_roles:
+          - rdf_entity-collection-author
           - rdf_entity-collection-facilitator
+          - rdf_entity-solution-author
           - rdf_entity-solution-facilitator
     any_user:
       save_as_draft:
@@ -348,6 +350,10 @@ update:
             - rdf_entity-solution-facilitator
     validated:
       draft:
+        own:
+          og_roles:
+            - rdf_entity-collection-author
+            - rdf_entity-solution-author
         any:
           roles:
             - moderator
@@ -355,6 +361,10 @@ update:
             - rdf_entity-collection-facilitator
             - rdf_entity-solution-facilitator
       deletion_request:
+        own:
+          og_roles:
+            - rdf_entity-collection-author
+            - rdf_entity-solution-author
         any:
           roles:
             - moderator
@@ -362,6 +372,10 @@ update:
             - rdf_entity-collection-facilitator
             - rdf_entity-solution-facilitator
       proposed:
+        own:
+          og_roles:
+            - rdf_entity-collection-author
+            - rdf_entity-solution-author
         any:
           roles:
             - moderator
@@ -369,6 +383,10 @@ update:
             - rdf_entity-collection-facilitator
             - rdf_entity-solution-facilitator
       validated:
+        own:
+          og_roles:
+            - rdf_entity-collection-author
+            - rdf_entity-solution-author
         any:
           roles:
             - moderator

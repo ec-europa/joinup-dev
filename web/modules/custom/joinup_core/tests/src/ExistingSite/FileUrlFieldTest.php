@@ -6,7 +6,7 @@ namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
+use Drupal\Tests\joinup_core\Traits\TestFileTrait;
 use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
 use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
 use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
@@ -25,7 +25,7 @@ use weitzman\LoginTrait\LoginTrait;
 class FileUrlFieldTest extends JoinupExistingSiteTestBase {
 
   use EntityUtilityTrait;
-  use FileUrlTrait;
+  use TestFileTrait;
   use LoginTrait;
   use RdfEntityCreationTrait;
   use SparqlConnectionTrait;

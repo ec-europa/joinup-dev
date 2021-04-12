@@ -4,13 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_workflow;
 
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 
 /**
  * Interface for bundle classes that are subject to workflows.
  */
-interface EntityWorkflowStateInterface {
+interface EntityWorkflowStateInterface extends FieldableEntityInterface {
 
   /**
    * Returns the current workflow state.
@@ -79,5 +80,25 @@ interface EntityWorkflowStateInterface {
    *   The machine name.
    */
   public function getWorkflowStateFieldName(): string;
+
+  /**
+   * Checks whether the entity can be updated depending on the workflow states.
+   *
+   * Entities which are subject to workflow can only be updated if their current
+   * and target workflow states are matching a workflow which is allowed for the
+   * current user.
+   *
+   * This can also be used to check if the entity can be updated while keeping
+   * the workflow state unchanged.
+   *
+   * @param string $to_state
+   *   The destination state.
+   * @param string|null $from_state
+   *   The initial workflow state. Defaults to the current workflow state.
+   *
+   * @return bool
+   *   TRUE if the target state is allowed, FALSE if it is not.
+   */
+  public function isTargetWorkflowStateAllowed(string $to_state, ?string $from_state = NULL): bool;
 
 }

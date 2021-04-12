@@ -16,7 +16,7 @@ dependencies:
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
-    - image.style.image_style_collection_logo
+    - image.style.logo
   module:
     - image
     - social_media_links_field
@@ -92,7 +92,7 @@ content:
     weight: 2
     label: hidden
     settings:
-      image_style: image_style_collection_logo
+      image_style: logo
       image_link: ''
     third_party_settings:
       template_suggestion:

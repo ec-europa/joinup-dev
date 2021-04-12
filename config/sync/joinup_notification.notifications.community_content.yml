@@ -73,9 +73,17 @@ update:
     report:
       owner:
         - cc_transition_report
-    request_changes:
+    propose_new_revision:
       owner:
         - cc_transition_request_changes
+      roles:
+        moderator:
+          - cc_transition_propose
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_propose
+        rdf_entity-solution-administrator:
+          - cc_transition_propose
     request_deletion:
       roles:
         moderator:

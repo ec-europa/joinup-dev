@@ -17,4 +17,4 @@ tags:
   schema_social_media_posting_is_accessible_for_free: 'True'
   schema_social_media_posting_main_entity_of_page: '[current-page:url]'
   schema_social_media_posting_description: '[node:summary]'
-  schema_social_media_posting_image: 'a:2:{s:5:"@type";s:11:"ImageObject";s:3:"url";s:143:"https://joinup.ec.europa.eu/sites/default/files/styles/image_style_collection_logo/public/collection/logo/2019-04/190404-logo-JOINUP-blue-2.png";}'
+  schema_social_media_posting_image: 'a:2:{s:5:"@type";s:11:"ImageObject";s:3:"url";s:143:"https://joinup.ec.europa.eu/sites/default/files/styles/logo/public/collection/logo/2019-04/190404-logo-JOINUP-blue-2.png";}'
