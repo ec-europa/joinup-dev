@@ -4,7 +4,7 @@ Feature: Unpublished content of the website
   As a user of the website
   I want to be able to find unpublished content that I can work on
 
-  Scenario: Test unpublished entities interaction.
+  Scenario: Test unpublished entities interaction for collections.
     Given the following owner:
       | name            | type                    |
       | Owner something | Non-Profit Organisation |
@@ -36,7 +36,7 @@ Feature: Unpublished content of the website
       | Mists outside the planes of thinking  | 2018-10-04 8:30am | Ed Abbott | Grey Swords         | draft     |
       | Mists outside the planes of construct | 2018-10-04 8:31am | Ed Abbott | Grey Swords         | draft     |
       | Mists that are published maybe?       | 2018-10-04 8:31am | Ed Abbott | Grey Swords         | validated |
-    Given glossary content:
+    And glossary content:
       | title    | synonyms | summary                 | author    | created           | definition                                  | collection          | status      |
       | Alphabet | ABC      | Summary of Alphabet     | Ed Abbott | 2018-10-04 8:29am | Long, long definition field                 | Invisible Boyfriend | published   |
       | Colors   | CLR      | Summary of Colors       | Ed Abbott | 2018-10-04 8:29am | Colors definition field                     | Invisible Boyfriend | unpublished |
@@ -142,3 +142,71 @@ Feature: Unpublished content of the website
       | Mists outside the planes of construct |
       # Created at 8:30am.
       | Mists outside the planes of thinking  |
+
+  Scenario: Test unpublished entities interaction for solutions.
+    Given the following owner:
+      | name            | type                    |
+      | Owner something | Non-Profit Organisation |
+    And the following contact:
+      | name  | Published contact       |
+      | email | pub.contact@example.com |
+    And users:
+      | Username  | Roles |
+      | Ed Abbott |       |
+    And the following solutions:
+      | title               | description         | state     | owner           | contact information |
+      | Invisible Boyfriend | Invisible Boyfriend | validated | Owner something | Published contact   |
+    And the following solution user memberships:
+      | solution            | user      | roles         |
+      | Invisible Boyfriend | Ed Abbott | authenticated |
+    And "event" content:
+      | title                | created           | author    | solution            | state     |
+      | The Ragged Streams   | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | proposed  |
+      | Storms of Touch      | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | validated |
+      | The Male of the Gift | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | validated |
+      | Mists in the Thought | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | draft     |
+    And the following releases:
+      | title        | documentation | release number | release notes | creation date    | is version of       | state |
+      | Hidden spies | text.pdf      | 3              | Notes 3       | 28-01-1995 12:05 | Invisible Boyfriend | draft |
+
+    # The owner should be able to see all content.
+    When I am logged in as "Ed Abbott"
+    And I go to the "Invisible Boyfriend" solution
+    Then I should see the "The Ragged Streams" tile
+    And I should see the "Storms of Touch" tile
+    And I should see the "The Male of the Gift" tile
+    And I should see the "Mists in the Thought" tile
+    # The owner of the content did not create the release as they are simple members.
+    And I should not see the following tiles in the "Unpublished content area" region:
+      | Hidden spies |
+
+    # Other authenticated users should only see the published items.
+    When I am logged in as a user with the "authenticated" role
+    And I go to the "Invisible Boyfriend" solution
+    Then I should see the "Storms of Touch" tile
+    And I should see the "The Male of the Gift" tile
+    But I should not see the "The Ragged Streams" tile
+    And I should not see the "Mists in the Thought" tile
+    And I should not see the following tiles in the "Unpublished content area" region:
+      | Hidden spies |
+
+    # The facilitator should not be able to see content that only have a draft state.
+    When I am logged in as a facilitator of the "Invisible Boyfriend" solution
+    And I go to the "Invisible Boyfriend" solution
+    Then I should see the "The Ragged Streams" tile
+    And I should see the "Storms of Touch" tile
+    And I should see the "The Male of the Gift" tile
+    But I should not see the "Mists in the Thought" tile
+    # Releases are available.
+    And I should see the following tiles in the "Unpublished content area" region:
+      | The Ragged Streams |
+      | Hidden spies       |
+
+    # Publish the release.
+    Given I go to the "Hidden spies" release
+    And I click "Edit" in the "Entity actions" region
+    And I press "Publish"
+    And I go to the "Invisible Boyfriend" solution
+    Then I should see the "Hidden spies" tile
+    But I should not see the following tiles in the "Unpublished content area" region:
+      | Hidden spies |
