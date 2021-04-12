@@ -44,12 +44,24 @@ Feature:
       | BBBBBBBBBB |
       | AAAAAAAAAA |
 
-  Scenario: Moderators can add a map and/or an iframe paragraph.
-    Given custom_page content:
-      | title                     | body        | collection            |
-      | Don't Mess with the Zohan | Wanna mess? | Paragraphs collection |
+  Scenario: Moderators can add a map and/or an iframe and map paragraph.
+    Given users:
+      | Username |
+      | Zohan    |
+    And the following collection user membership:
+      | collection            | user  |
+      | Paragraphs collection | Zohan |
+    And custom_page content:
+      | title                     | body        | collection            | author |
+      | Don't Mess with the Zohan | Wanna mess? | Paragraphs collection | Zohan  |
 
-    Given I am logged in as a facilitator of the "Paragraphs collection" collection
+    When I am logged in as "Zohan"
+    And I go to the custom_page "Don't Mess with the Zohan" edit screen
+    Then I should see the button "Add Simple paragraph"
+    And I should not see the button "Add Map"
+    But I should not see the button "Add IFrame"
+
+    When I am logged in as a facilitator of the "Paragraphs collection" collection
     And I go to the custom_page "Don't Mess with the Zohan" edit screen
     Then I should see the button "Add Simple paragraph"
     And I should see the button "Add Map"
