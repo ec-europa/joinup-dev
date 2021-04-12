@@ -12,6 +12,7 @@ use Drupal\Core\Render\Markup;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
@@ -45,6 +46,29 @@ function joinup_notification_node_presave(EntityInterface $entity) {
     return;
   }
   $entity->field_state_initial_value = $entity->get('field_state')->first()->getOriginalId();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * When we are sending notifications for entities that are being updated we may
+ * need to know whether the entity was published before being saved. For example
+ * we only want to send out notifications in digest messages about new content
+ * that is being published for the first time. If a previously published entity
+ * is re-published we do not want to repeatedly send out this notification.
+ * For "normal" (aka SQL-based) entities we can discover whether it was
+ * previously published by inspecting the revisions, but for RDF entities the
+ * revisions are not yet implemented. Our notifications can only be sent out
+ * after the entity is fully saved, but at that point the information about the
+ * previous published entities is lost (we can see if the entity is published,
+ * but not if this is a _new_ entity being published or an existing entity being
+ * re-published). As a workaround we set a flag on the entity during pre-save
+ * when we still have the required information available.
+ *
+ * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6481
+ */
+function joinup_notification_rdf_entity_presave(RdfInterface $entity) {
+  $entity->hasPublished = !$entity->isNew() && $entity->hasGraph('default');
 }
 
 /**

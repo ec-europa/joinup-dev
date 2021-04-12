@@ -116,12 +116,11 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
   public function notifyOnRdfEntityCrudOperation(NotificationEvent $event) {
     // Only act on entities that are being created or updated. Subscribers are
     // not notified about entities that are being removed.
-    $operation = $event->getOperation();
     if (!in_array($event->getOperation(), ['create', 'update'])) {
       return;
     }
 
-    // Ignore content that does not belong to a group. and content that is not
+    // Ignore content that does not belong to a group, and content that is not
     // published.
     $entity = $event->getEntity();
     if (!$entity instanceof GroupContentInterface) {
@@ -135,12 +134,12 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
 
     // We only want to include content in the digest on initial publication, not
     // when existing or previously published content is updated or re-published.
-    // Only keep content that is newly created or is not yet included in the
-    // published ("default") graph.
-    // Note: the `->hasGraph()` check is a hack that can be removed once we have
-    // revisionable RDF entities.
-    $is_new = $operation === 'create' || $entity->isNew();
-    if (!$is_new && $entity->hasGraph('default')) {
+    // Only keep content that is newly created or is not yet published.
+    // Note: the `->hasPublished` check is a hack that can be removed once we
+    // have revisionable RDF entities.
+    // @see joinup_notification_rdf_entity_presave()
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6481
+    if ($entity->hasPublished) {
       return;
     }
 
