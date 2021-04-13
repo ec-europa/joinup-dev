@@ -35,12 +35,12 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    * @var array
    */
   const LISTED_BUNDLES = [
+    'asset_release',
     'custom_page',
     'discussion',
     'document',
     'event',
     'news',
-    'asset_release',
   ];
 
   /**
