@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_seo\Plugin\simple_sitemap\UrlGenerator;
 
+use Drupal\Core\Cache\MemoryCache\MemoryCacheInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -48,9 +49,11 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
    *   The sitemap entity helper service.
    * @param \Drupal\simple_sitemap\Plugin\simple_sitemap\UrlGenerator\UrlGeneratorManager $url_generator_manager
    *   The url generator manager service.
+   * @param \Drupal\Core\Cache\MemoryCache\MemoryCacheInterface $memory_cache
+   *   The memory cache.
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, Simplesitemap $generator, Logger $logger, LanguageManagerInterface $language_manager, EntityTypeManagerInterface $entity_type_manager, EntityHelper $entityHelper, UrlGeneratorManager $url_generator_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $generator, $logger, $language_manager, $entity_type_manager, $entityHelper, $url_generator_manager);
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, Simplesitemap $generator, Logger $logger, LanguageManagerInterface $language_manager, EntityTypeManagerInterface $entity_type_manager, EntityHelper $entityHelper, UrlGeneratorManager $url_generator_manager, MemoryCacheInterface $memory_cache) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $generator, $logger, $language_manager, $entity_type_manager, $entityHelper, $url_generator_manager, $memory_cache);
     $this->urlGeneratorManager = $url_generator_manager;
   }
 
@@ -67,7 +70,8 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
       $container->get('language_manager'),
       $container->get('entity_type.manager'),
       $container->get('simple_sitemap.entity_helper'),
-      $container->get('plugin.manager.simple_sitemap.url_generator')
+      $container->get('plugin.manager.simple_sitemap.url_generator'),
+      $container->get('entity.memory_cache')
     );
   }
 
