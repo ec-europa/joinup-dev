@@ -62,8 +62,7 @@ Feature: Collection homepage
 
     # Approve the membership.
     Given I am logged in as "Thorin"
-    And I go to the "Exactly the same collection, but closed" collection
-    And I click "Members" in the "Left sidebar"
+    And I am on the members page of "Exactly the same collection, but closed"
     # Assert that the user does not see the default OG tab.
     Then I should not see the link "Group"
     And I check the box "Update the member Some goblin"

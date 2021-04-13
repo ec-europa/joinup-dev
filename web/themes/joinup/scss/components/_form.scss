@@ -169,6 +169,15 @@
 }
 
 // Styling for members overview
+.views-exposed-form {
+  .form__content {
+    .listing__item--membership-permissions {
+      display: flex;
+      justify-content: end;
+      align-self: center;
+    }
+  }
+}
 .form__member-actions {
   .form-wrapper {
     .form-item,

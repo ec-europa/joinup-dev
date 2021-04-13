@@ -13,6 +13,8 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\file\FileInterface;
+use Drupal\file\FileUsage\FileUsageInterface;
+use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -22,11 +24,25 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class AnonymousDownloadForm extends FormBase {
 
   /**
+   * The RDF entity storage.
+   *
+   * @var \Drupal\Core\Entity\ContentEntityStorageInterface
+   */
+  protected $sparqlStorage;
+
+  /**
    * The download_event entity storage.
    *
    * @var \Drupal\Core\Entity\ContentEntityStorageInterface
    */
   protected $eventStorage;
+
+  /**
+   * The file usage service.
+   *
+   * @var \Drupal\file\FileUsage\FileUsageInterface
+   */
+  protected $fileUsage;
 
   /**
    * The file being downloaded.
@@ -38,11 +54,17 @@ class AnonymousDownloadForm extends FormBase {
   /**
    * Instantiates a new AnonymousDownloadForm object.
    *
+   * @param \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $sparql_storage
+   *   The RDF entity storage.
    * @param \Drupal\Core\Entity\ContentEntityStorageInterface $event_storage
    *   The download event entity storage.
+   * @param \Drupal\file\FileUsage\FileUsageInterface $file_usage
+   *   The file usage service.
    */
-  public function __construct(ContentEntityStorageInterface $event_storage) {
+  public function __construct(SparqlEntityStorageInterface $sparql_storage, ContentEntityStorageInterface $event_storage, FileUsageInterface $file_usage) {
+    $this->sparqlStorage = $sparql_storage;
     $this->eventStorage = $event_storage;
+    $this->fileUsage = $file_usage;
   }
 
   /**
@@ -50,7 +72,9 @@ class AnonymousDownloadForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')->getStorage('download_event')
+      $container->get('entity_type.manager')->getStorage('rdf_entity'),
+      $container->get('entity_type.manager')->getStorage('download_event'),
+      $container->get('file.usage')
     );
   }
 
@@ -119,10 +143,26 @@ class AnonymousDownloadForm extends FormBase {
       throw new BadRequestHttpException();
     }
 
+    $usages = $this->fileUsage->listUsage($this->file);
+
+    // Normally, only one distribution is allowed to use a file and only
+    // distributions call this code.
+    if (empty($usages['file']['rdf_entity'])) {
+      throw new \RuntimeException('No distributions were found using the file with ID ' . $file->id());
+    }
+    if (count($usages['file']['rdf_entity']) > 1) {
+      throw new \RuntimeException('More than one distributions were found for the file with ID ' . $file->id());
+    }
+    $distribution = $this->sparqlStorage->load(key($usages['file']['rdf_entity']));
+
+    /** @var \Drupal\solution\Entity\SolutionInterface|\Drupal\asset_release\Entity\AssetReleaseInterface $parent */
+    $parent = $distribution->getParent();
     $event = $this->eventStorage->create([
       'uid' => 0,
       'mail' => $form_state->getValue('email'),
       'file' => $this->file->id(),
+      'parent_entity_type' => $parent->getEntityTypeId(),
+      'parent_entity_id' => $parent->id(),
     ]);
     $event->save();
 
