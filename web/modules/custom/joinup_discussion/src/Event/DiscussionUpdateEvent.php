@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_discussion\Event;
 
-use Drupal\node\NodeInterface;
+use Drupal\joinup_discussion\Entity\DiscussionInterface;
 
 /**
  * An event to fire whenever a discussion is updated.
@@ -21,12 +21,12 @@ class DiscussionUpdateEvent extends DiscussionEventBase {
   /**
    * Creates a new discussion event object.
    *
-   * @param \Drupal\node\NodeInterface $node
+   * @param \Drupal\joinup_discussion\Entity\DiscussionInterface $node
    *   The discussion node subject of event.
    * @param array $changed_fields
    *   A list of changed fields, keyed by field name.
    */
-  public function __construct(NodeInterface $node, array $changed_fields) {
+  public function __construct(DiscussionInterface $node, array $changed_fields) {
     parent::__construct($node);
     $this->changedFields = $changed_fields;
   }

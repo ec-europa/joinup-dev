@@ -36,12 +36,12 @@ class AssetDistribution extends Rdf implements AssetDistributionInterface {
   /**
    * {@inheritdoc}
    */
-  public function getParent() {
+  public function getParent(): DistributionsParentInterface {
     /** @var \Drupal\asset_distribution\DistributionParentFieldItemList $field */
     $field = $this->get('parent');
 
     /** @var \Drupal\asset_release\Entity\AssetReleaseInterface|\Drupal\solution\Entity\SolutionInterface $parent */
-    if ($field->isEmpty() || !($parent = $field->entity)) {
+    if ($field->isEmpty() || !($parent = $field->entity) || !$parent instanceof DistributionsParentInterface) {
       // During normal operation every distribution should have a parent entity,
       // so the only way a parent can be missing is because of an unexpected
       // condition occurring at runtime, for example if a data store goes

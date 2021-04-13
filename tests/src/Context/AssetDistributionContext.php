@@ -483,15 +483,19 @@ class AssetDistributionContext extends RawDrupalContext {
    */
   public function downloadEvents(TableNode $table): void {
     foreach ($table->getColumnsHash() as $row) {
+      /** @var \Drupal\asset_distribution\Entity\AssetDistributionInterface $distribution */
       $distribution = $this->getRdfEntityByLabel($row['distribution'], 'asset_distribution');
-      /** @var \Drupal\file\FileInterface $file */
       $file = FileUrlHandler::urlToFile($distribution->get('field_ad_access_url')->target_id);
       $account = \Drupal::service('email.validator')->isValid($row['user']) ? new AnonymousUserSession() : user_load_by_name($row['user']);
       $mail = $account->isAnonymous() ? $row['user'] : $account->getEmail();
+
+      $parent = $distribution->getParent();
       $entity = DownloadEvent::create([
         'uid' => $account->id(),
         'mail' => $mail,
         'file' => $file->id(),
+        'parent_entity_type' => $parent->getEntityTypeId(),
+        'parent_entity_id' => $parent->id(),
       ]);
       $entity->save();
       $this->entities['download_event'][$entity->id()] = $entity;
