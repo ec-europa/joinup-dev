@@ -34,12 +34,13 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    *
    * @var array
    */
-  const COMMUNITY_BUNDLES = [
+  const LISTED_BUNDLES = [
     'custom_page',
     'discussion',
     'document',
     'event',
     'news',
+    'asset_release',
   ];
 
   /**
@@ -160,7 +161,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
     $index = $this->entityTypeManager->getStorage('search_api_index')->load('unpublished');
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $index->query();
-    $query->addCondition('entity_bundle', self::COMMUNITY_BUNDLES, 'IN');
+    $query->addCondition('entity_bundle', self::LISTED_BUNDLES, 'IN');
     $query->addCondition('entity_groups', $group->id());
     $query->sort('entity_created', 'DESC');
     $results = $query->execute();
@@ -193,7 +194,10 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
     /** @var \Drupal\search_api\Item\ItemInterface $item */
     foreach ($result->getResultItems() as $item) {
       try {
-        $entity = $this->revisionManager->loadLatestRevision($item->getOriginalObject()->getValue());
+        $entity = $item->getOriginalObject()->getValue();
+        if (!($entity instanceof RdfInterface)) {
+          $entity = $this->revisionManager->loadLatestRevision($item->getOriginalObject()->getValue());
+        }
       }
       catch (SearchApiException $e) {
         $entity = NULL;
@@ -233,7 +237,11 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    */
   public function getCacheTags(): array {
     $node_type = $this->entityTypeManager->getStorage('node')->getEntityType();
-    return Cache::mergeTags(parent::getCacheTags(), $node_type->getListCacheTags());
+    $rdf_type = $this->entityTypeManager->getStorage('rdf_entity')->getEntityType();
+    return Cache::mergeTags(parent::getCacheTags(), Cache::mergeTags([
+      $node_type->getListCacheTags(),
+      $rdf_type->getListCacheTags(),
+    ]));
   }
 
 }
