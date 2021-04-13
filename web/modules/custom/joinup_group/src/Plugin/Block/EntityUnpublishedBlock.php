@@ -195,7 +195,12 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
     foreach ($result->getResultItems() as $item) {
       try {
         $entity = $item->getOriginalObject()->getValue();
-        if (!($entity instanceof RdfInterface)) {
+        // Revisions are not yet implemented for RDF entities, even though they
+        // inherit RevisionableInterface through ContentEntityInterface. We need
+        // to check the RdfInterface directly.
+        // @todo Remove this workaround once we have revisions for RDF entities.
+        // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6481
+        if (!$entity instanceof RdfInterface) {
           $entity = $this->revisionManager->loadLatestRevision($item->getOriginalObject()->getValue());
         }
       }
