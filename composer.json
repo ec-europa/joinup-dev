@@ -29,7 +29,7 @@
         "drupal/editor_file": "~1.5",
         "drupal/email_registration": "^1.1",
         "drupal/embed_block": "^1.0",
-        "drupal/entity_legal": "^3",
+        "drupal/entity_legal": "^3.0.0-beta2",
         "drupal/error_page": "^1.0",
         "drupal/facets": "1.6.0",
         "drupal/field_delimiter": "^1.1",
@@ -40,7 +40,7 @@
         "drupal/geocoder": "^3.0",
         "drupal/geofield": "~1.6",
         "drupal/honeypot": "~2",
-        "drupal/iframe": "^2.8",
+        "drupal/iframe": "^2.10",
         "drupal/image_library_widget": "^1.0",
         "drupal/inline_entity_form": "^1.0",
         "drupal/json_field": "^1.0",
@@ -278,18 +278,12 @@
             "drupal/dynamic_entity_reference": {
                 "Backport improvements in infinite recursion protection from the entity_reference field formatter @see https://www.drupal.org/project/dynamic_entity_reference/issues/3152105#comment-13701599": "https://www.drupal.org/files/issues/2020-06-16/3152105-2.patch"
             },
-            "drupal/entity_legal": {
-                "FieldException during config import @see https://www.drupal.org/project/entity_legal/issues/2980786": "https://www.drupal.org/files/issues/2019-07-26/entity_legal-skip_field_creation_during_config_import-2980786-4.patch"
-            },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
             },
             "drupal/honeypot": {
                 "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2020-09-09/3059040-31.patch",
                 "Provide ways to clean up old honeypot_time_restriction values @see https://www.drupal.org/project/honeypot/issues/2997609": "https://git.drupalcode.org/project/honeypot/-/merge_requests/2.diff"
-            },
-            "drupal/iframe": {
-                "Fix config schema @see https://www.drupal.org/project/iframe/issues/3199001": "https://git.drupalcode.org/project/iframe/-/merge_requests/2.diff"
             },
             "drupal/inline_entity_form": {
                 "Autocomplete field doesn't allow to reference entities with long titles @see https://www.drupal.org/node/2895663": "https://www.drupal.org/files/issues/2895663-2.patch"
