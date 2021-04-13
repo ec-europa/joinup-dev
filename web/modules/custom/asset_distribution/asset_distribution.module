@@ -309,3 +309,38 @@ function asset_distribution_rdf_entity_delete(RdfInterface $distribution) {
   }
 
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function asset_distribution_preprocess_views_view_field(&$variables) {
+  $view = $variables['view'];
+  $field = $variables['field'];
+  if ($view->storage->id() !== 'asset_distribution_downloads' || $view->current_display !== 'page' || $field->field !== 'parent_entity_id') {
+    return;
+  }
+
+  /** @var \Drupal\asset_distribution\Entity\DownloadEvent $download_event */
+  $download_event = $variables['row']->_entity;
+  if ($download_event->get('parent_entity_type')->isEmpty() || $download_event->get('parent_entity_id')->isEmpty()) {
+    return;
+  }
+
+  // Notice: This code works for any entity type, though it is only meant for
+  // distributions so it might be too much.
+  $entity_type = $download_event->get('parent_entity_type')->value;
+  $entity_id = $download_event->get('parent_entity_id')->value;
+
+  try {
+    $storage = $storages[$entity_type] ?? \Drupal::entityTypeManager()->getStorage($entity_type);
+  }
+  catch (Exception $exception) {
+    return;
+  }
+
+  $storages[$entity_type] = $storage;
+  $entity = $storage->load($entity_id);
+  if (!empty($entity)) {
+    $variables['output'] = $entity->toLink($entity->label());
+  }
+}

@@ -17,7 +17,7 @@ interface AssetDistributionInterface extends RdfInterface, CollectionContentInte
   /**
    * Return the distribution's parent, either a release or a solution.
    *
-   * @return \Drupal\asset_release\Entity\AssetReleaseInterface|\Drupal\solution\Entity\SolutionInterface
+   * @return \Drupal\asset_distribution\Entity\DistributionsParentInterface
    *   The parent entity, either a release or a solution.
    *
    * @throws \Drupal\asset_distribution\Exception\MissingDistributionParentException
@@ -26,7 +26,7 @@ interface AssetDistributionInterface extends RdfInterface, CollectionContentInte
    *   need to catch this exception. This will only be thrown in case something
    *   is seriously wrong, e.g. if the database is down.
    */
-  public function getParent();
+  public function getParent(): DistributionsParentInterface;
 
   /**
    * Checks whether the distribution parent is a solution rather than a release.
