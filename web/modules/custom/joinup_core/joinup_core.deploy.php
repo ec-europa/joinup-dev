@@ -88,6 +88,7 @@ function joinup_core_deploy_0107001(array &$sandbox): string {
   }
 
   $sandbox['progress'] += count($entity_ids);
-  $sandbox['#finished'] = (float) $sandbox['progress'] / (float) $sandbox['max'];
+  $sandbox['#finished'] = empty($sandbox['entity_ids']) ? 1 : (float) $sandbox['progress'] / (float) $sandbox['max'];
+
   return "Completed {$sandbox['progress']} out of {$sandbox['max']}.";
 }
