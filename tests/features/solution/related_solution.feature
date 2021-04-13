@@ -12,7 +12,7 @@ Feature: Related solution
       | Kalikatoures | Company, Industry consortium |
     And solutions:
       | title      | related solutions | description                         | documentation | related by type | moderation | logo     | banner     | policy domain | state     | solution type | owner        | contact information |
-      | C          |                   | Blazing fast segmetation faults.    | text.pdf      | yes             | no         | logo.png | banner.jpg | Demography    | validated |               | Kalikatoures | Kalikatoura         |
+      | C          |                   | Blazing fast segmentation faults.   | text.pdf      | yes             | no         | logo.png | banner.jpg | Demography    | validated |               | Kalikatoures | Kalikatoura         |
       | Java       | C                 | Because inheritance is cool.        | text.pdf      | yes             | no         | logo.png | banner.jpg | Demography    | validated | Citizen       | Kalikatoures | Kalikatoura         |
       | PHP        |                   | Make a site.                        | text.pdf      | yes             | yes        | logo.png | banner.jpg | Demography    | validated | Citizen       | Kalikatoures | Kalikatoura         |
       | Golang     |                   | Concurrency for the masses          | text.pdf      | yes             | yes        | logo.png | banner.jpg | Demography    | proposed  | Citizen       | Kalikatoures | Kalikatoura         |

@@ -2,7 +2,7 @@
 Feature: Notification test for the collection transitions.
   In order to manage my collections
   As an user that is related to the collection
-  I want to receive a notification an event occurs.
+  I want to receive a notification when an event occurs
 
   Scenario: Notifications should be sent whenever an event is occurring related to a collection.
     Given the following owner:

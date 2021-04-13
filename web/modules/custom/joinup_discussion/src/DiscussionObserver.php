@@ -6,6 +6,7 @@ namespace Drupal\joinup_discussion;
 
 use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Drupal\changed_fields\ObserverInterface;
+use Drupal\joinup_discussion\Entity\DiscussionInterface;
 use Drupal\joinup_discussion\Event\DiscussionEvents;
 use Drupal\joinup_discussion\Event\DiscussionUpdateEvent;
 
@@ -61,7 +62,7 @@ class DiscussionObserver implements ObserverInterface {
     $changed_fields = $entity_subject->getChangedFields();
     // Dispatch the update event only if there are changes of relevant fields
     // and the discussion is in the 'validated' state.
-    if ($changed_fields && $discussion->get('field_state')->value === 'validated') {
+    if ($discussion instanceof DiscussionInterface && $changed_fields && $discussion->get('field_state')->value === 'validated') {
       $event = new DiscussionUpdateEvent($discussion, $changed_fields);
       $this->eventDispatcher->dispatch(DiscussionEvents::UPDATE, $event);
     }

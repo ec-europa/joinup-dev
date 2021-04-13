@@ -113,3 +113,37 @@ Feature: Notification test for the discussion transitions on a post moderated pa
       | moderation | roles  |
       | no         |        |
       | yes        | author |
+
+  Scenario: No notifications should be sent when a discussion is orphaned
+    Given collections:
+      | title                   | state     |
+      | Event Horizon Telescope | validated |
+    And discussion content:
+      | title                            | collection              | state     |
+      | How do the jets fire into space? | Event Horizon Telescope | validated |
+    And users:
+      | Username         |
+      | Lindsey McCray   |
+      | Cambria Falconer |
+      | Monroe Fearchar  |
+    And collection user memberships:
+      | collection              | user           | roles              |
+      | Event Horizon Telescope | Lindsey McCray | owner, facilitator |
+    And discussion subscriptions:
+      | username         | title                            |
+      | Cambria Falconer | How do the jets fire into space? |
+    And comments:
+      | message              | author          | parent                           |
+      | Huge magnetic fields | Monroe Fearchar | How do the jets fire into space? |
+
+    When all e-mails have been sent
+    And I am logged in as a moderator
+    And I go to the homepage of the "Event Horizon Telescope" collection
+    And I click "Edit" in the "Entity actions" region
+    And I click "Delete"
+    And I press "Delete"
+    Then the following email should have been sent:
+      | recipient | Lindsey McCray                                                            |
+      | subject   | Joinup: Your collection has been deleted by the moderation team           |
+      | body      | The Joinup moderation team deleted the collection Event Horizon Telescope |
+    And 1 e-mail should have been sent

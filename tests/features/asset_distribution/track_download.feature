@@ -110,7 +110,7 @@ Feature: Asset distribution editing.
     When I go to the "Winter of 95" release
     Then I should see the link "External" in the "i386" tile
 
-  Scenario: Tests the CSV download.
+  Scenario: Download a CSV export of the distributions download report.
     Given users:
       | Username | E-mail            |
       | user1    | user1@example.com |
@@ -118,11 +118,15 @@ Feature: Asset distribution editing.
     And the following solution:
       | title | Solution  |
       | state | validated |
+    And the following release:
+      | title         | Release 1 |
+      | is version of | Solution  |
+      | state         | validated |
     And the following distributions:
-      | title          | parent   | access url |
-      | Distribution 1 | Solution | text.pdf   |
-      | Distribution 2 | Solution | test.zip   |
-      | Distribution 3 | Solution | test1.zip  |
+      | title          | parent    | access url |
+      | Distribution 1 | Release 1 | text.pdf   |
+      | Distribution 2 | Solution  | test.zip   |
+      | Distribution 3 | Solution  | test1.zip  |
     And the following distribution download events:
       | distribution   | user                |
       | Distribution 1 | visitor@example.com |
@@ -139,9 +143,10 @@ Feature: Asset distribution editing.
     Then I should see the success message "Export complete. Download the file here if file is not automatically downloaded."
     And I should see the link "here"
     And the file downloaded from the "here" link contains the following strings:
-      | ID,User,Email,"File name",Distribution,Created                             |
-      | ,"Anonymous (not verified)",visitor@example.com,text.pdf,"Distribution 1", |
-      | ,user1,user1@example.com,text.pdf,"Distribution 1",                        |
-      | ,user2,user2@example.com,test.zip,"Distribution 2",                        |
-      | ,"Anonymous (not verified)",anon@example.com,test1.zip,"Distribution 3",   |
-      | ,user1,user1@example.com,test1.zip,"Distribution 3",                       |
+      | ID,User,Email,"File name",Distribution,Parent,Created                                  |
+      # The %title% variable will translate the title to the entity ID since that is what is exported in the CSV file.
+      | ,"Anonymous (not verified)",visitor@example.com,text.pdf,"Distribution 1",%Release 1%, |
+      | ,user1,user1@example.com,text.pdf,"Distribution 1",%Release 1%,                        |
+      | ,user2,user2@example.com,test.zip,"Distribution 2",%Solution%,                         |
+      | ,"Anonymous (not verified)",anon@example.com,test1.zip,"Distribution 3",%Solution%,    |
+      | ,user1,user1@example.com,test1.zip,"Distribution 3",%Solution%,                        |
