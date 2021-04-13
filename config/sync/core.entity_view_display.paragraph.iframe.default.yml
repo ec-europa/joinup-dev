@@ -22,7 +22,6 @@ content:
       width: ''
       height: ''
       class: ''
-      expose_class: ''
       frameborder: '0'
       scrolling: ''
       transparency: '0'
