@@ -14,6 +14,7 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_discussion\Event\DiscussionDeleteEvent;
 use Drupal\joinup_discussion\Event\DiscussionEvents;
 use Drupal\joinup_discussion\Event\DiscussionUpdateEvent;
+use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
@@ -124,6 +125,14 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
 
     // Don't send out notifications if unpublished discussions are deleted.
     if (!$discussion->isPublished()) {
+      return;
+    }
+
+    // Don't send out notifications for orphaned discussions.
+    try {
+      $discussion->getGroup();
+    }
+    catch (MissingGroupException $e) {
       return;
     }
 

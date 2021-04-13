@@ -155,6 +155,12 @@
   }
 }
 
+.form-table__member-permissions {
+  .form-table__cell__data {
+    text-align: center;
+  }
+}
+
 // Fix margin if there is more than one text field in a table cell.
 .form-table__cell {
   .mdl-textfield + .mdl-textfield {

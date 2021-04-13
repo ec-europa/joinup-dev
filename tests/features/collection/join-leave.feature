@@ -119,8 +119,7 @@ Feature: Joining and leaving collections through the web interface
     Then I should see the text "You are owner of this collection. Before you leave this collection, you should transfer the ownership to another member."
     And I should not see the button "Confirm"
 
-    When I go to the homepage of the "Insectarium" collection
-    And I click "Members"
+    When I go to the members page of "Insectarium"
     And I select the "newcomer researcher" row
     And I select "Transfer the ownership of the collection to the selected member" from "Action"
     And I press "Apply to selected items"

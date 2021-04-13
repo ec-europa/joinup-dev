@@ -34,8 +34,7 @@ Feature: As a group (collection or solution) owner or site moderator
   @email
   Scenario Outline: Administrators, moderators and owners can transfer the group ownership.
     Given I am logged in as "<user>"
-    And I go to the homepage of the "<title>" <type>
-    And I click "Members"
+    And I am on the members page of "<title>"
 
     # Try to transfer the ownership to the current owner.
     Given I select the "cruel" row
@@ -97,8 +96,7 @@ Feature: As a group (collection or solution) owner or site moderator
 
   Scenario Outline: Group facilitators do not have access to transfer ownership.
     Given I am logged in as "shy"
-    And I go to the homepage of the "<title>" <type>
-    Given I click "Members"
+    And I am on the members page of "<title>"
     Then the available options in the "Action" select should not include the "Transfer the ownership of the <type> to the selected member" options
 
     Examples:
@@ -124,24 +122,21 @@ Feature: As a group (collection or solution) owner or site moderator
       | Rivers Of Babylon | shy   | facilitator |
 
     Given I am logged in as "shy"
-    And I go to the homepage of the "Rivers Of Babylon" solution
-    Given I click "Members"
+    And I am on the members page of "Rivers Of Babylon"
     Then the available options in the "Action" select should not include the "Transfer the ownership of the solution to the selected member" options
 
     Given I am logged in as "loner"
-    And I go to the homepage of the "Babylon" collection
-    Given I click "Members"
+    And I am on the members page of "Babylon"
     Then the available options in the "Action" select should not include the "Transfer the ownership of the solution to the selected member" options
 
   # In Joinup every owner is also a facilitator, so if a normal member is
   # promoted to owner, they should also become a facilitator.
   Scenario Outline: If ownership is transferred to a normal member, it should also include the facilitator role
     Given I am logged in as "light"
-    And I go to the homepage of the "<title>" <group type>
-    And I click "Members"
-    And I select the "loner" row
+    And I am on the members page of "<title>"
+    When I select the "loner" row
     And I select "Transfer the ownership of the <group type> to the selected member" from "Action"
-    When I press "Apply to selected items"
+    And I press "Apply to selected items"
     Then I should see "Are you sure you want to transfer the ownership of <title> <group type> to Freyja Stefánsdóttir?"
     When I press "Confirm"
     Then I should see "Ownership of <title> <group type> transferred from users Finnur Robertsson, Edda Agnarsdóttir to Freyja Stefánsdóttir."
