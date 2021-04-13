@@ -44,7 +44,7 @@ Feature:
       | BBBBBBBBBB |
       | AAAAAAAAAA |
 
-  Scenario: Moderators can add a map and/or an iframe and map paragraph.
+  Scenario: Privileged users can add a map and/or an iframe and map paragraph.
     Given users:
       | Username |
       | Zohan    |
@@ -55,12 +55,14 @@ Feature:
       | title                     | body        | collection            | author |
       | Don't Mess with the Zohan | Wanna mess? | Paragraphs collection | Zohan  |
 
+    # Normal members cannot add maps.
     When I am logged in as "Zohan"
     And I go to the custom_page "Don't Mess with the Zohan" edit screen
     Then I should see the button "Add Simple paragraph"
     And I should not see the button "Add Map"
     But I should not see the button "Add IFrame"
 
+    # Facilitators can add maps.
     When I am logged in as a facilitator of the "Paragraphs collection" collection
     And I go to the custom_page "Don't Mess with the Zohan" edit screen
     Then I should see the button "Add Simple paragraph"
@@ -72,6 +74,7 @@ Feature:
     Then I should see the success message "Custom page Don't Mess with the Zohan has been updated."
     And I should see "I'm half Australian, half Mt. Everest"
 
+    # Moderators can add maps.
     Given I am logged in as a moderator
     And I go to the custom_page "Don't Mess with the Zohan" edit screen
     Then I should see the button "Add Simple paragraph"
