@@ -90,6 +90,13 @@ trait GroupTrait {
   /**
    * {@inheritdoc}
    */
+  public function isModerated(): bool {
+    return (int) $this->getMainPropertyValue($this->getGroupModerationFieldName()) === GroupInterface::PRE_MODERATION;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getGroupContentIds(): array {
     $group_content = $this->doGetGroupContentIds();
     // Ensure that the results are sorted.

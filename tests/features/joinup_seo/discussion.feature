@@ -40,7 +40,7 @@ Feature: SEO for discussion forum posts.
       | @type    | ImageObject                                                                                                                                     |
       # Discussions don't have an image field but an image is required by google. Add the Joinup logo as the image of
       # all discussions.
-      | url      | https://joinup.ec.europa.eu/sites/default/files/styles/image_style_collection_logo/public/collection/logo/2019-04/190404-logo-JOINUP-blue-2.png |
+      | url      | https://joinup.ec.europa.eu/sites/default/files/styles/logo/public/collection/logo/2019-04/190404-logo-JOINUP-blue-2.png |
     # The index is the delta in the field attachment, with 0 meaning the first of the values.
     And the metatag graph of the item with "name" "Discussions are now forum posts" should have the following "sharedContent" properties in index 0:
       | property | value                                                    |

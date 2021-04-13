@@ -13,6 +13,7 @@ use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_bundle_class\LogoTrait;
 use Drupal\joinup_bundle_class\ShortIdTrait;
 use Drupal\joinup_featured\FeaturedContentTrait;
+use Drupal\joinup_front_page\Entity\PinnableToFrontpageTrait;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\GroupTrait;
 use Drupal\joinup_group\Entity\PinnableGroupContentTrait;
@@ -34,6 +35,7 @@ class Solution extends Rdf implements SolutionInterface {
   use JoinupBundleClassMetaEntityTrait;
   use LogoTrait;
   use PinnableGroupContentTrait;
+  use PinnableToFrontpageTrait;
   use ShortIdTrait;
 
   /**
@@ -158,6 +160,13 @@ class Solution extends Rdf implements SolutionInterface {
    */
   public function getLogoFieldName(): string {
     return 'field_is_logo';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getGroupModerationFieldName(): string {
+    return 'field_is_moderation';
   }
 
   /**

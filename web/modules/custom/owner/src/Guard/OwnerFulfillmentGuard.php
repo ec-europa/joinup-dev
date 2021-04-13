@@ -6,7 +6,6 @@ namespace Drupal\owner\Guard;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
@@ -49,25 +48,13 @@ class OwnerFulfillmentGuard implements GuardInterface {
    * {@inheritdoc}
    */
   public function allowed(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
+    /** @var \Drupal\owner\Entity\OwnerInterface $entity */
+    $from_state = $entity->getWorkflowState();
     $to_state = $transition->getToState()->getId();
-    $from_state = $this->getState($entity);
 
+    // Note that we cannot call $entity->isTargetWorkflowStateAllowed() since it
+    // invokes the guards, causing an endless loop.
     return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $workflow, $from_state, $to_state);
-  }
-
-  /**
-   * Retrieve the initial state value of the entity.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $entity
-   *   The owner entity.
-   *
-   * @return string
-   *   The machine name value of the state.
-   *
-   * @see https://www.drupal.org/node/2745673
-   */
-  protected function getState(RdfInterface $entity) {
-    return $entity->field_owner_state->first()->value;
   }
 
 }

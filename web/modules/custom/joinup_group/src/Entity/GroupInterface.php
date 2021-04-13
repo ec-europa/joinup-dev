@@ -9,6 +9,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_bundle_class\LogoInterface;
 use Drupal\joinup_bundle_class\ShortIdInterface;
+use Drupal\joinup_front_page\Entity\PinnableToFrontpageInterface;
 use Drupal\og\OgMembershipInterface;
 
 /**
@@ -16,7 +17,17 @@ use Drupal\og\OgMembershipInterface;
  *
  * This comprises collections and solutions.
  */
-interface GroupInterface extends ContentEntityInterface, LogoInterface, ShortIdInterface {
+interface GroupInterface extends ContentEntityInterface, LogoInterface, PinnableToFrontpageInterface, ShortIdInterface {
+
+  /**
+   * Flag for pre-moderated groups.
+   */
+  public const PRE_MODERATION = 1;
+
+  /**
+   * Flag for post-moderated groups.
+   */
+  public const POST_MODERATION = 0;
 
   /**
    * Returns the given user's membership for this group entity.
@@ -140,6 +151,25 @@ interface GroupInterface extends ContentEntityInterface, LogoInterface, ShortIdI
    *   the group.
    */
   public function hasGroupPermission(int $uid, string $permission): bool;
+
+  /**
+   * Returns whether the group is moderated.
+   *
+   * Community content of moderated groups are going through the pre-moderated
+   * workflow.
+   *
+   * @return bool
+   *   Whether the group is moderated.
+   */
+  public function isModerated(): bool;
+
+  /**
+   * Returns the field name of the group moderation field.
+   *
+   * @return string
+   *   The field name.
+   */
+  public function getGroupModerationFieldName(): string;
 
   /**
    * Returns recursively all content IDs of this group.

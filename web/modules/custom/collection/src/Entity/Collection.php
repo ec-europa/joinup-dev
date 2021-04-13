@@ -10,6 +10,7 @@ use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_bundle_class\LogoTrait;
 use Drupal\joinup_bundle_class\ShortIdTrait;
 use Drupal\joinup_featured\FeaturedContentTrait;
+use Drupal\joinup_front_page\Entity\PinnableToFrontpageTrait;
 use Drupal\joinup_group\Entity\GroupTrait;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeFallbackTrait;
 use Drupal\joinup_workflow\ArchivableEntityTrait;
@@ -29,6 +30,7 @@ class Collection extends Rdf implements CollectionInterface {
   use JoinupBundleClassFieldAccessTrait;
   use JoinupBundleClassMetaEntityTrait;
   use LogoTrait;
+  use PinnableToFrontpageTrait;
   use ShortIdTrait;
 
   /**
@@ -89,6 +91,13 @@ class Collection extends Rdf implements CollectionInterface {
    */
   public function getLogoFieldName(): string {
     return 'field_ar_logo';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getGroupModerationFieldName(): string {
+    return 'field_ar_moderation';
   }
 
   /**

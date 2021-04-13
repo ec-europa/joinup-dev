@@ -16,9 +16,10 @@ group_id: null
 permissions:
   - 'access comments'
   - 'delete own comments'
+  - 'post comments'
   - 'share discussion content'
   - 'share document content'
   - 'share event content'
   - 'share news content'
-  - 'post comments'
+  - 'view own revisions'
 role_type: required
