@@ -5,19 +5,19 @@ declare(strict_types = 1);
 namespace Drupal\joinup_group\Entity;
 
 use Drupal\Core\Access\AccessResultInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_bundle_class\LogoInterface;
 use Drupal\joinup_bundle_class\ShortIdInterface;
 use Drupal\joinup_front_page\Entity\PinnableToFrontpageInterface;
 use Drupal\og\OgMembershipInterface;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Interface for entities that are groups.
  *
  * This comprises collections and solutions.
  */
-interface GroupInterface extends ContentEntityInterface, LogoInterface, PinnableToFrontpageInterface, ShortIdInterface {
+interface GroupInterface extends RdfInterface, LogoInterface, PinnableToFrontpageInterface, ShortIdInterface {
 
   /**
    * Flag for pre-moderated groups.
