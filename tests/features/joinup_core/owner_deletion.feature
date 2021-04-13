@@ -20,8 +20,7 @@ Feature: Deletion of collection and solution owners
       | An owned group | Group owner 2 | owner |
       | An owned group | Group member  |       |
     And I am logged in as "Site moderator"
-    And I go to the homepage of the "An owned group" <type>
-    And I click "Members"
+    And I am on the members page of "An owned group"
     And I select the "Group owner 1" row
     And I select the "Group owner 2" row
 

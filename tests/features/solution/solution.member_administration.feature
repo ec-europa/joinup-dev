@@ -17,8 +17,8 @@ Feature: Solution membership administration
       | Guadalupe Norman |       | guadalupe_norman@example.com | Guadalupe  | Norman      |
       | Marcia Garcia    |       | marcia_garcia@example.com    | Marcia     | Garcia      |
     And the following solutions:
-      | title            | related solutions | description                      | documentation | moderation | logo     | banner     | policy domain | state     | solution type | owner                | contact information                      |
-      | The Missing Sons |                   | Blazing fast segmetation faults. | text.pdf      | no         | logo.png | banner.jpg | Demography    | validated |               | James Wilson the 2nd | Princeton-Plainsboro Teaching University |
+      | title            | related solutions | description                       | documentation | moderation | logo     | banner     | policy domain | state     | solution type | owner                | contact information                      |
+      | The Missing Sons |                   | Blazing fast segmentation faults. | text.pdf      | no         | logo.png | banner.jpg | Demography    | validated |               | James Wilson the 2nd | Princeton-Plainsboro Teaching University |
     And the following solution user memberships:
       | solution         | user             | roles       |
       | The Missing Sons | Guadalupe Norman | facilitator |
@@ -26,23 +26,19 @@ Feature: Solution membership administration
 
   Scenario: Only privileged members should be able to add members
     When I am not logged in
-    And I go to the "The Missing Sons" solution
-    And I click "Members" in the "Left sidebar"
+    And I go to the members page of "The Missing Sons"
     Then I should not see the link "Add members"
 
     When I am logged in as an authenticated
-    And I go to the "The Missing Sons" solution
-    And I click "Members" in the "Left sidebar"
+    And I go to the members page of "The Missing Sons"
     Then I should not see the link "Add members"
 
     When I am logged in as "Marcia Garcia"
-    And I go to the "The Missing Sons" solution
-    And I click "Members" in the "Left sidebar"
+    And I go to the members page of "The Missing Sons"
     Then I should not see the link "Add members"
 
     When I am logged in as "Guadalupe Norman"
-    And I go to the "The Missing Sons" solution
-    And I click "Members" in the "Left sidebar"
+    And I go to the members page of "The Missing Sons"
     Then I should see the link "Add members"
 
     # Add a facilitator.
@@ -59,8 +55,7 @@ Feature: Solution membership administration
 
     # Try new privileges.
     When I am logged in as "Marcia Garcia"
-    And I go to the "The Missing Sons" solution
-    And I click "Members" in the "Left sidebar"
+    And I go to the members page of "The Missing Sons"
     Then I should see the link "Add members"
     When I click "Add members"
     Then I should see the heading "Add members"
@@ -68,8 +63,7 @@ Feature: Solution membership administration
   @email
   Scenario: Assign and remove new role to a member
     When I am logged in as "Guadalupe Norman"
-    And I go to the "The Missing Sons" solution
-    And I click "Members" in the "Left sidebar"
+    And I go to the members page of "The Missing Sons"
     Then I should see the link "Add members"
     Then I check the box "Update the member Marcia Garcia"
     Then I select "Add the facilitator role to the selected members" from "Action"
@@ -100,23 +94,19 @@ Feature: Solution membership administration
       | dwightone | dwight1@example.com    | Christian  | Dwight      |
 
     When I am not logged in
-    And I go to the "The Missing Sons" solution
-    And I click "Members" in the "Left sidebar"
+    And I go to the members page of "The Missing Sons"
     Then I should not see the link "Invite members"
 
     When I am logged in as an authenticated
-    And I go to the "The Missing Sons" solution
-    And I click "Members" in the "Left sidebar"
+    And I go to the members page of "The Missing Sons"
     Then I should not see the link "Invite members"
 
     When I am logged in as "dwightone"
-    And I go to the "The Missing Sons" solution
-    And I click "Members" in the "Left sidebar"
+    And I go to the members page of "The Missing Sons"
     Then I should not see the link "Invite members"
 
     When I am logged in as "Guadalupe Norman"
-    And I go to the "The Missing Sons" solution
-    And I click "Members" in the "Left sidebar"
+    And I go to the members page of "The Missing Sons"
     Then I should see the link "Invite members"
     When I click "Invite members"
     Then I should see the heading "Invite members"
@@ -138,8 +128,7 @@ Feature: Solution membership administration
     # Accept the invitation directly.
     When I am logged in as "dwightone"
     And I accept the invitation for the "The Missing Sons" solution group
-    And I go to the "The Missing Sons" solution
-    And I click "Members" in the "Left sidebar"
+    And I go to the members page of "The Missing Sons"
     Then I should see the link "Add members"
     And I should see the link "Invite members"
     When I click "Invite members"

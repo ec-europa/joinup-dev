@@ -23,6 +23,39 @@ class JoinupGroupContext extends RawDrupalContext {
   use RdfEntityTrait;
 
   /**
+   * Navigates to the members page of the given group.
+   *
+   * @param string $label
+   *   The name of the group.
+   *
+   * @When I go to the members page of :label
+   * @When I am on the members page of :label
+   */
+  public function visitMembersPage(string $label): void {
+    $group = $this->getRdfEntityByLabel($label);
+    $url = Url::fromRoute('entity.rdf_entity.member_overview', [
+      'rdf_entity' => $group->id(),
+    ]);
+    $this->visitPath($url->toString());
+  }
+
+  /**
+   * Navigates to the membership permissions table of the given group.
+   *
+   * @param string $label
+   *   The name of the group.
+   *
+   * @When I go to the member(ship) permissions table of :label
+   */
+  public function visitMembershipPermissionsTable(string $label): void {
+    $group = $this->getRdfEntityByLabel($label);
+    $url = Url::fromRoute('joinup_group.membership_permissions_info', [
+      'rdf_entity' => $group->id(),
+    ]);
+    $this->visitPath($url->toString());
+  }
+
+  /**
    * Navigates to the about page of a collection or solution.
    *
    * @param string $label
@@ -32,7 +65,9 @@ class JoinupGroupContext extends RawDrupalContext {
    */
   public function visitAboutPage(string $label): void {
     $group = $this->getEntityByLabel('rdf_entity', $label);
-    $url = Url::fromRoute('entity.rdf_entity.about_page', ['rdf_entity' => $group->id()]);
+    $url = Url::fromRoute('entity.rdf_entity.about_page', [
+      'rdf_entity' => $group->id(),
+    ]);
     $this->visitPath($url->toString());
   }
 

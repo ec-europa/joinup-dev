@@ -32,8 +32,7 @@ Feature: Type something to filter the listing the member list
 
   Scenario Outline: Only moderators are allowed to filter users in the solution members page.
     Given I am logged in as "<user>"
-    When I go to the homepage of the "Coffee grinders" solution
-    And I click "Members" in the "Left sidebar"
+    When I go to the members page of "Coffee grinders"
     But the following fields should be present "Type something to filter the list, Roles"
 
     Examples:
@@ -46,8 +45,7 @@ Feature: Type something to filter the listing the member list
 
   Scenario: Privileged members should be able to filter users in the solutions members page.
     Given I am logged in as "sludge"
-    When I go to the homepage of the "Coffee grinders" solution
-    And I click "Members" in the "Left sidebar"
+    When I go to the members page of "Coffee grinders"
     And I fill in "Type something to filter the list" with "right"
     And I press "Apply"
     And I should see the link "Jack Cartwright"

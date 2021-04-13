@@ -36,6 +36,21 @@ joinup_group.membership_delete_action.confirm:
   requirements:
     _custom_access: 'Drupal\joinup_group\Form\DeleteGroupMembershipConfirmForm::access'
 
+joinup_group.membership_permissions_info:
+  path: '/rdf_entity/{rdf_entity}/permissions-info'
+  defaults:
+    _title: 'Member permissions'
+    _controller: '\Drupal\joinup_group\Controller\GroupMembershipPermissionsInformationController::build'
+  requirements:
+    _entity_access: 'rdf_entity.view'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+        bundle:
+          - collection
+          - solution
+
 joinup_group.reports:
   path: '/rdf_entity/{rdf_entity}/reports'
   defaults:
