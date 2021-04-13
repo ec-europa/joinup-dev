@@ -437,6 +437,26 @@ function joinup_group_form_views_exposed_form_alter(&$form, FormStateInterface $
       $form['roles_target_id']['#options'][$key] = "$option_text ($count)";
     }
   }
+
+  // Insert a link to the table showing member permissions.
+  $url = Url::fromRoute('joinup_group.membership_permissions_info', [
+    'rdf_entity' => $group->id(),
+  ]);
+  $form['member_permissions_link'] = [
+    '#type' => 'link',
+    '#title' => t('Member permissions'),
+    '#url' => $url,
+    '#attributes' => [
+      'class' => ['use-ajax'],
+      'data-dialog-type' => 'modal',
+      'data-dialog-options' => Json::encode([
+        'width' => 'auto',
+        'height' => 'auto',
+      ]),
+    ],
+    '#access' => $url->access(),
+    '#attached' => ['library' => ['core/drupal.dialog.ajax']],
+  ];
 }
 
 /**

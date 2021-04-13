@@ -1,4 +1,4 @@
-@api @email @group-a @terms
+@api @group-a @terms
 Feature: Collection membership administration
   In order to build a community
   As a collection facilitator
@@ -31,12 +31,12 @@ Feature: Collection membership administration
       | Medical diagnosis | Kathie Cumbershot |                            | pending |
 
   Scenario: Only one instance of the "Apply to selected items" should exist.
-    When I am logged in as a moderator
-    And I go to the "Medical diagnosis" collection
-    And I click "Members" in the "Left sidebar"
+    Given I am logged in as a moderator
+    And I am on the members page of "Medical diagnosis"
     Then I should see the button "Apply to selected items" in the "Members admin form header" region
     But I should not see the button "Apply to selected items" in the "Members admin form actions" region
 
+  @email
   Scenario: Request a membership
     When I am logged in as "Donald Duck"
     And all e-mails have been sent
@@ -54,6 +54,7 @@ Feature: Collection membership administration
       | subject   | Joinup: A user has requested to join your collection                               |
       | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
 
+  @email
   Scenario: Approve a membership
     # Check that a member with pending state does not have access to add new content.
     Given I am logged in as "Kathie Cumbershot"
@@ -63,15 +64,13 @@ Feature: Collection membership administration
 
     # Check that the facilitator can also see the approve action.
     Given I am logged in as "Turkey Ham"
-    And I go to the "Medical diagnosis" collection
-    Then I click "Members" in the "Left sidebar"
+    And I am on the members page of "Medical diagnosis"
     Then I select "Approve the pending membership(s)" from "Action"
 
     # Approve a membership.
     Given I am logged in as "Lisa Cuddy"
-    When all e-mails have been sent
-    And I go to the "Medical diagnosis" collection
-    And I click "Members" in the "Left sidebar"
+    And all e-mails have been sent
+    And I am on the members page of "Medical diagnosis"
     Then the "Action" select should contain the following options:
       | Approve the pending membership(s)                               |
       | Block the selected membership(s)                                |
@@ -145,10 +144,9 @@ Feature: Collection membership administration
 
   @email
   Scenario: Reject a membership
-    When I am logged in as "Lisa Cuddy"
+    Given I am logged in as "Lisa Cuddy"
     And all e-mails have been sent
-    And I go to the "Medical diagnosis" collection
-    Then I click "Members" in the "Left sidebar"
+    And I am on the members page of "Medical diagnosis"
     # Assert that the user does not see the default OG tab.
     Then I should not see the link "Group"
     And I check the box "Update the member Kathie Cumbershot"

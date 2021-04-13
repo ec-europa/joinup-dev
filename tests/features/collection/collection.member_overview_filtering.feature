@@ -29,8 +29,7 @@ Feature: Type something to filter the listing the member list
 
   Scenario Outline: All users are allowed to filter the users by a combined search field and the role.
     Given I am logged in as "<user>"
-    When I go to the homepage of the "Coffee makers" collection
-    And I click "Members" in the "Left sidebar"
+    And I am on the members page of "Coffee makers"
     Then the following fields should be present "Type something to filter the list, Roles"
 
     Examples:
@@ -42,10 +41,9 @@ Feature: Type something to filter the listing the member list
       | queenson   |
 
   Scenario: Moderators should be able to filter users in the table in the collection members page.
-    When I am logged in as "séamusline"
-    And I go to the homepage of the "Coffee makers" collection
-    And I click "Members" in the "Left sidebar"
-    And I fill in "Type something to filter the list" with "bro"
+    Given I am logged in as "séamusline"
+    And I am on the members page of "Coffee makers"
+    When I fill in "Type something to filter the list" with "bro"
     And I press "Apply"
 
     Then the "member administration" table should contain the following columns:

@@ -172,6 +172,25 @@ interface GroupInterface extends ContentEntityInterface, LogoInterface, Pinnable
   public function getGroupModerationFieldName(): string;
 
   /**
+   * Returns who can create content in the group.
+   *
+   * @return string
+   *   The content creation option value. Can be one of the following:
+   *   - \Drupal\joinup_group\ContentCreationOptions::FACILITATORS_AND_AUTHORS
+   *   - \Drupal\joinup_group\ContentCreationOptions::MEMBERS
+   *   - \Drupal\joinup_group\ContentCreationOptions::REGISTERED_USERS
+   */
+  public function getContentCreators(): string;
+
+  /**
+   * Returns the field name of the content creation field.
+   *
+   * @return string
+   *   The field name.
+   */
+  public function getContentCreationFieldName(): string;
+
+  /**
    * Returns recursively all content IDs of this group.
    *
    * WARNING! This method is resource intensive and it's not recommended to be
