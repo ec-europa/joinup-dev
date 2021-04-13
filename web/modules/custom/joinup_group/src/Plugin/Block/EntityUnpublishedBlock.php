@@ -238,10 +238,8 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
   public function getCacheTags(): array {
     $node_type = $this->entityTypeManager->getStorage('node')->getEntityType();
     $rdf_type = $this->entityTypeManager->getStorage('rdf_entity')->getEntityType();
-    return Cache::mergeTags(parent::getCacheTags(), Cache::mergeTags([
-      $node_type->getListCacheTags(),
-      $rdf_type->getListCacheTags(),
-    ]));
+    $cache_tags = Cache::mergeTags(parent::getCacheTags(), $node_type->getListCacheTags());
+    return Cache::mergeTags($cache_tags, $rdf_type->getListCacheTags());
   }
 
 }
