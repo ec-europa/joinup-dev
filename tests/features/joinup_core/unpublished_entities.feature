@@ -151,23 +151,50 @@ Feature: Unpublished content of the website
       | name  | Published contact       |
       | email | pub.contact@example.com |
     And users:
-      | Username  | Roles |
-      | Ed Abbott |       |
+      | Username      |
+      | Ed Abbott     |
+      | Facilitator 1 |
+      | Facilitator 2 |
     And the following solutions:
       | title               | description         | state     | owner           | contact information |
       | Invisible Boyfriend | Invisible Boyfriend | validated | Owner something | Published contact   |
     And the following solution user memberships:
-      | solution            | user      | roles         |
-      | Invisible Boyfriend | Ed Abbott | authenticated |
+      | solution            | user          | roles         |
+      | Invisible Boyfriend | Ed Abbott     | authenticated |
+      | Invisible Boyfriend | Facilitator 1 | facilitator   |
+      | Invisible Boyfriend | Facilitator 2 | facilitator   |
     And "event" content:
       | title                | created           | author    | solution            | state     |
       | The Ragged Streams   | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | proposed  |
       | Storms of Touch      | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | validated |
       | The Male of the Gift | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | validated |
       | Mists in the Thought | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | draft     |
-    And the following releases:
-      | title        | documentation | release number | release notes | creation date    | is version of       | state |
-      | Hidden spies | text.pdf      | 3              | Notes 3       | 28-01-1995 12:05 | Invisible Boyfriend | draft |
+
+    When I am logged in as "Facilitator 1"
+    When I go to the homepage of the "Invisible Boyfriend" solution
+    And I click "Add release"
+    When I fill in "Name" with "Chasing shadows"
+    And I fill in "Release number" with "1.0"
+    And I fill in "Release notes" with "Changed release."
+    And I press "Save as draft"
+    Then I should see the heading "Chasing shadows 1.0"
+
+    When I go to the "Invisible Boyfriend" solution
+    And I should see the following tiles in the "Unpublished content area" region:
+      | Chasing shadows    |
+      | The Ragged Streams |
+
+    # The entity should be visible in the user's account page as well.
+    When I click "My account"
+    And I should see the following tiles in the "My unpublished content area" region:
+      | Chasing shadows    |
+
+    # Facilitators can see the draft releases and proposed entities in the "Unpublished content" region.
+    When I am logged in as "Facilitator 2"
+    And I go to the "Invisible Boyfriend" solution
+    And I should see the following tiles in the "Unpublished content area" region:
+      | Chasing shadows    |
+      | The Ragged Streams |
 
     # The owner should be able to see all content.
     When I am logged in as "Ed Abbott"
@@ -178,7 +205,7 @@ Feature: Unpublished content of the website
     And I should see the "Mists in the Thought" tile
     # The owner of the content did not create the release as they are simple members.
     And I should not see the following tiles in the "Unpublished content area" region:
-      | Hidden spies |
+      | Chasing shadows |
 
     # Other authenticated users should only see the published items.
     When I am logged in as a user with the "authenticated" role
@@ -188,25 +215,14 @@ Feature: Unpublished content of the website
     But I should not see the "The Ragged Streams" tile
     And I should not see the "Mists in the Thought" tile
     And I should not see the following tiles in the "Unpublished content area" region:
-      | Hidden spies |
-
-    # The facilitator should not be able to see content that only have a draft state.
-    When I am logged in as a facilitator of the "Invisible Boyfriend" solution
-    And I go to the "Invisible Boyfriend" solution
-    Then I should see the "The Ragged Streams" tile
-    And I should see the "Storms of Touch" tile
-    And I should see the "The Male of the Gift" tile
-    But I should not see the "Mists in the Thought" tile
-    # Releases are available.
-    And I should see the following tiles in the "Unpublished content area" region:
-      | The Ragged Streams |
-      | Hidden spies       |
+      | Chasing shadows |
 
     # Publish the release.
-    Given I go to the "Hidden spies" release
+    Given I am logged in as "Facilitator 1"
+    And I go to the "Chasing shadows" release
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     And I go to the "Invisible Boyfriend" solution
-    Then I should see the "Hidden spies" tile
+    Then I should see the "Chasing shadows" tile
     But I should not see the following tiles in the "Unpublished content area" region:
-      | Hidden spies |
+      | Chasing shadows |
