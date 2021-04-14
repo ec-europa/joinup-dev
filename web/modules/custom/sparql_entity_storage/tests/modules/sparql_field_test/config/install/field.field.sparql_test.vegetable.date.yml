@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+  - field.storage.sparql_test.date
+  - sparql_test.type.vegetable
+  module:
+  - datetime
+id: sparql_test.vegetable.date
+field_name: date
+entity_type: sparql_test
+bundle: vegetable
+label: Date
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

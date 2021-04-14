@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+  - field.storage.sparql_test.text
+  - sparql_test.type.fruit
+id: sparql_test.fruit.text
+field_name: text
+entity_type: sparql_test
+bundle: fruit
+label: Text
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

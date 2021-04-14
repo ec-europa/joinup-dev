@@ -112,7 +112,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
 
     /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageFieldHandlerInterface $field_handler */
     $field_handler = \Drupal::service('sparql.field_handler');
-    $field_uri = $field_handler->getFieldPredicates('rdf_entity', 'field_ar_affiliates')['collection'];
+    $field_uri = $field_handler->getFieldColumnPredicates('rdf_entity', 'field_ar_affiliates')['collection'];
 
     // Generate a list of new IDs that the solution references as an affiliate.
     $new_ids = array_map(function (EntityReferenceItem $field_item): string {

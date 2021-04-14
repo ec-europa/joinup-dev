@@ -11,12 +11,6 @@ third_party_settings:
       uri:
         predicate: 'http://xmlns.com/foaf/spec/#term_homepage'
         format: 'xsd:anyUri'
-      title:
-        predicate: ''
-        format: ''
-      options:
-        predicate: ''
-        format: ''
 id: rdf_entity.field_ar_access_url
 field_name: field_ar_access_url
 entity_type: rdf_entity

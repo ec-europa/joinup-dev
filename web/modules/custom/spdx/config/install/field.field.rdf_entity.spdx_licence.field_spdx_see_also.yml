@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_spdx_see_also
+    - rdf_entity.rdfentity.spdx_licence
+  module:
+    - link
+id: rdf_entity.spdx_licence.field_spdx_see_also
+field_name: field_spdx_see_also
+entity_type: rdf_entity
+bundle: spdx_licence
+label: 'See also'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link

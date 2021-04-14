@@ -1,0 +1,32 @@
+{#
+/**
+ * @file
+ * Default theme implementation to list rdf bundles available for adding content.
+ *
+ * This list is displayed on the Add content admin page.
+ *
+ * Available variables:
+ * - types: A list of rdf bundles, each with the following properties:
+ *   - add_link: Link to create a piece of content of this type.
+ *   - description: Description of this type of content.
+ *
+ * @see template_preprocess_rdf_add_list()
+ *
+ * @ingroup themeable
+ */
+#}
+{% if types is not empty %}
+  <dl>
+    {% for type in types %}
+      <dt>{{ type.add_link }}</dt>
+      <dd>{{ type.description }}</dd>
+    {% endfor %}
+  </dl>
+{% else %}
+  <p>
+    {% set create_content = path('node.type_add') %}
+    {% trans %}
+      You have not created any rdf bundles yet. Go to the <a href="{{ create_content }}">rdf bundle creation page</a> to add a new content type.
+    {% endtrans %}
+  </p>
+{% endif %}

@@ -92,7 +92,7 @@ class JoinupFederationHashGenerator {
    */
   protected function buildEntityQuery(array $entity_ids): string {
     $ids_string = SparqlArg::serializeUris($entity_ids, ' ');
-    $graphs = array_unique($this->graphHandler->getEntityTypeGraphUrisFlatList('rdf_entity', ['staging']));
+    $graphs = array_keys($this->graphHandler->getEntityTypeGraphUrisFlatList('rdf_entity', ['staging']));
     $named_graph = '';
     foreach ($graphs as $graph) {
       $named_graph .= 'FROM ' . SparqlArg::uri($graph) . "\n";

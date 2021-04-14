@@ -11,12 +11,6 @@ third_party_settings:
       uri:
         predicate: 'http://spdx.org/rdf/terms#seeAlso'
         format: 'xsd:anyURI'
-      title:
-        predicate: ''
-        format: no_format
-      options:
-        predicate: ''
-        format: no_format
 id: rdf_entity.field_spdx_see_also
 field_name: field_spdx_see_also
 entity_type: rdf_entity

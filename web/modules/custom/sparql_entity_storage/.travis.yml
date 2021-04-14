@@ -1,0 +1,61 @@
+language: php
+
+sudo: required
+
+services:
+  - mysql
+  - docker
+
+mysql:
+  database: sparql_entity_storage_test
+  username: root
+  encoding: utf8
+
+jobs:
+  include:
+    # PHP 7.3
+    - name: 'PHPCodeSniffer'
+      php: 7.3
+      env: TEST_SUITE=PHPCodeSniffer
+
+    - name: 'PHPStan'
+      php: 7.3
+      env: TEST_SUITE=PHPStan DRUPAL=~8.9.0 PHPUNIT=^7
+
+    - name: 'PHPUnit with Drupal 8 on PHP 7.3'
+      php: 7.3
+      env: TEST_SUITE=PHPUnit DRUPAL=^8.9 PHPUNIT=^7
+
+    - name: 'PHPUnit with Drupal 9 on PHP 7.3'
+      php: 7.3
+      env: TEST_SUITE=PHPUnit DRUPAL=^9.1 PHPUNIT=^9
+
+    # PHP 7.4
+    - name: 'PHPUnit with Drupal 8 on PHP 7.4'
+      php: 7.4
+      env: TEST_SUITE=PHPUnit DRUPAL=^8.9 PHPUNIT=^7
+
+    - name: 'PHPUnit with Drupal 9 on PHP 7.4'
+      php: 7.4
+      env: TEST_SUITE=PHPUnit DRUPAL=^9.1 PHPUNIT=^9
+
+    # PHP 8
+    - name: 'PHPUnit with Drupal 9 on PHP 8 nightly'
+      php: nightly
+      env: TEST_SUITE=PHPUnit DRUPAL=^9.1 PHPUNIT=^9
+
+cache:
+  directories:
+    - ${HOME}/.composer/cache
+
+before_install:
+  - export COMPOSER_MEMORY_LIMIT=2G
+  - export SITE_DIR="${TRAVIS_BUILD_DIR}/../testing_site"
+  - mkdir "${TRAVIS_BUILD_DIR}/../testing_site"
+  # Remove this line to run with Xdebug enabled.
+  - phpenv config-rm xdebug.ini || true
+
+script: ${TRAVIS_BUILD_DIR}/tests/travis-ci/scripts/run_tests.sh
+
+notifications:
+  email: false

@@ -12,18 +12,6 @@ third_party_settings:
       target_id:
         predicate: 'http://purl.org/dc/dcmitype/StillImage'
         format: 'xsd:string'
-      alt:
-        predicate: ''
-        format: ''
-      title:
-        predicate: ''
-        format: ''
-      width:
-        predicate: ''
-        format: ''
-      height:
-        predicate: ''
-        format: ''
 id: rdf_entity.field_is_logo
 field_name: field_is_logo
 entity_type: rdf_entity

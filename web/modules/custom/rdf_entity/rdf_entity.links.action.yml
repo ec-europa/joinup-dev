@@ -1,0 +1,12 @@
+rdf_entity.rdf_add:
+  route_name: rdf_entity.rdf_add_page
+  title: 'Add RDF'
+  appears_on:
+  - entity.rdf_entity.collection
+  - entity.rdf_entity.canonical
+
+entity.rdf_type.add_form:
+  route_name: entity.rdf_type.add_form
+  title: 'Add RDF bundle'
+  appears_on:
+  - entity.rdf_type.collection

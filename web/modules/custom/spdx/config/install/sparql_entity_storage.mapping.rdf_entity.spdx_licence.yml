@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - sparql_entity_storage.graph.default
+    - rdf_entity.rdfentity.spdx_licence
+id: rdf_entity.spdx_licence
+entity_type_id: rdf_entity
+bundle: spdx_licence
+rdf_type: 'http://spdx.org/rdf/terms#License'
+graph:
+  default: 'http://joinup.eu/spdx_licence/published'
+base_fields_mapping:
+  rid:
+    target_id:
+      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      format: resource
+  label:
+    value:
+      predicate: 'http://spdx.org/rdf/terms#name'
+      format: t_literal
+entity_id_plugin: default

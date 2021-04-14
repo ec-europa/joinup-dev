@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_spdx_licence_id
+    - rdf_entity.rdfentity.spdx_licence
+id: rdf_entity.spdx_licence.field_spdx_licence_id
+field_name: field_spdx_licence_id
+entity_type: rdf_entity
+bundle: spdx_licence
+label: 'Licence ID'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

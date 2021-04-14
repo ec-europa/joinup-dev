@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "07c40765da9245df16dcaad3f2e46c4d",
+    "content-hash": "5971f95077c0d433c5fc0c7f9f55e008",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5767,82 +5767,6 @@
             }
         },
         {
-            "name": "drupal/rdf_entity",
-            "version": "1.0.0-alpha24",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/rdf_entity.git",
-                "reference": "8.x-1.0-alpha24"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha24.zip",
-                "reference": "8.x-1.0-alpha24",
-                "shasum": "87fc8da911ef66f8367cd85fe5a2067e8ad81dbe"
-            },
-            "require": {
-                "drupal/core": "^8 || ^9",
-                "drupal/sparql_entity_storage": "^1.0"
-            },
-            "require-dev": {
-                "drupal/coder": "^8.3",
-                "easyrdf/easyrdf": "1.0.0 as 0.9.2",
-                "mglaman/phpstan-drupal": "^0.12.6",
-                "minimaxir/big-list-of-naughty-strings": "dev-master",
-                "phpstan/phpstan-deprecation-rules": "^0.12.5"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-1.0-alpha24",
-                    "datestamp": "1603173166",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                },
-                "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...ea8f6af001fca732e89a4be0e29643953f49a88f.diff"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "claudiu.cristea",
-                    "homepage": "https://www.drupal.org/user/56348"
-                },
-                {
-                    "name": "dublutz",
-                    "homepage": "https://www.drupal.org/user/980246"
-                },
-                {
-                    "name": "idimopoulos",
-                    "homepage": "https://www.drupal.org/user/2578708"
-                },
-                {
-                    "name": "pfrenssen",
-                    "homepage": "https://www.drupal.org/user/382067"
-                },
-                {
-                    "name": "sandervd",
-                    "homepage": "https://www.drupal.org/user/346775"
-                },
-                {
-                    "name": "sardara",
-                    "homepage": "https://www.drupal.org/user/2353864"
-                }
-            ],
-            "description": "This module allows you to leverage the semantic web by storing and retrieving content directly from an RDF data store using the SPARQL RDF query language.",
-            "homepage": "https://drupal.org/project/rdf_entity",
-            "support": {
-                "source": "https://cgit.drupalcode.org/rdf_entity",
-                "issues": "https://drupal.org/project/issues/rdf_entity"
-            }
-        },
-        {
             "name": "drupal/redirect",
             "version": "1.6.0",
             "source": {
@@ -6595,128 +6519,6 @@
             }
         },
         {
-            "name": "drupal/sparql_entity_storage",
-            "version": "1.0.0-alpha9",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/sparql_entity_storage.git",
-                "reference": "8.x-1.0-alpha9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/sparql_entity_storage-8.x-1.0-alpha9.zip",
-                "reference": "8.x-1.0-alpha9",
-                "shasum": "c4228b2957dcfe4ff3f47d57375040f83b2b9f0d"
-            },
-            "require": {
-                "drupal/core": "^8 || ^9",
-                "easyrdf/easyrdf": "1.0.0 as 0.9.2",
-                "ml/json-ld": "^1.0"
-            },
-            "require-dev": {
-                "composer/installers": "^1.7",
-                "drupal/coder": "^8.3",
-                "drupal/core": "^8.9 || ^9.1",
-                "drupal/core-composer-scaffold": "^9.0",
-                "mglaman/phpstan-drupal": "^0.12.9",
-                "mikey179/vfsstream": "^1.6",
-                "minimaxir/big-list-of-naughty-strings": "dev-master",
-                "phpspec/prophecy-phpunit": "^1.0 || ^2.0",
-                "phpstan/phpstan-deprecation-rules": "^0.12.5",
-                "phpunit/phpunit": "*",
-                "symfony/phpunit-bridge": "^5.1.4",
-                "zaporylie/composer-drupal-optimizations": "^1.1"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-1.0-alpha9",
-                    "datestamp": "1618382134",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                },
-                "installer-paths": {
-                    "../testing_site/core": [
-                        "type:drupal-core"
-                    ],
-                    "../testing_site/modules/{$name}": [
-                        "type:drupal-module"
-                    ]
-                },
-                "drupal-scaffold": {
-                    "locations": {
-                        "web-root": "../testing_site/"
-                    },
-                    "file-mapping": {
-                        "[project-root]/.editorconfig": false,
-                        "[project-root]/.gitattributes": false
-                    }
-                },
-                "patches_applied": {
-                    "Bundle classes support @see https://github.com/ec-europa/sparql_entity_storage/pull/11": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.diff",
-                    "Allow routes to filter by bundle @see https://github.com/ec-europa/sparql_entity_storage/pull/32": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/32.diff"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/Driver/Database/sparql/Connection.php"
-                ]
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "claudiu.cristea",
-                    "homepage": "https://www.drupal.org/user/56348"
-                },
-                {
-                    "name": "idimopoulos",
-                    "homepage": "https://www.drupal.org/user/2578708"
-                },
-                {
-                    "name": "pfrenssen",
-                    "homepage": "https://www.drupal.org/user/382067"
-                }
-            ],
-            "description": "Provides SPARQL entity storage and query for Drupal entities.",
-            "homepage": "https://drupal.org/project/sparql_entity_storage",
-            "support": {
-                "source": "https://cgit.drupalcode.org/sparql_entity_storage",
-                "issues": "https://drupal.org/project/issues/sparql_entity_storage"
-            }
-        },
-        {
-            "name": "drupal/spdx",
-            "version": "1.0.0-alpha8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ec-europa/spdx.git",
-                "reference": "93357da0473b54fdbf84f0f54aa728c42e11844b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/93357da0473b54fdbf84f0f54aa728c42e11844b",
-                "reference": "93357da0473b54fdbf84f0f54aa728c42e11844b",
-                "shasum": ""
-            },
-            "require": {
-                "drupal/rdf_entity": "^1.0",
-                "php": ">=7.1",
-                "spdx/license-list-data": "master"
-            },
-            "type": "drupal-module",
-            "description": "Allows to federate and manage the SPDX licences.",
-            "support": {
-                "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha8",
-                "issues": "https://github.com/ec-europa/spdx/issues"
-            },
-            "time": "2020-10-19T13:59:26+00:00"
-        },
-        {
             "name": "drupal/state_machine",
             "version": "1.0.0",
             "source": {
@@ -7451,28 +7253,31 @@
         },
         {
             "name": "easyrdf/easyrdf",
-            "version": "1.0.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/easyrdf/easyrdf.git",
-                "reference": "8735708426066b791c2a6d40329050d5cf31385c"
+                "reference": "c7b0a9dbcb211eb7de03ee99ff5b52d17f2a8e64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easyrdf/easyrdf/zipball/8735708426066b791c2a6d40329050d5cf31385c",
-                "reference": "8735708426066b791c2a6d40329050d5cf31385c",
+                "url": "https://api.github.com/repos/easyrdf/easyrdf/zipball/c7b0a9dbcb211eb7de03ee99ff5b52d17f2a8e64",
+                "reference": "c7b0a9dbcb211eb7de03ee99ff5b52d17f2a8e64",
                 "shasum": ""
             },
             "require": {
+                "ext-dom": "*",
                 "ext-mbstring": "*",
                 "ext-pcre": "*",
+                "ext-xmlreader": "*",
+                "lib-libxml": "*",
                 "php": ">=7.1.0"
             },
             "require-dev": {
+                "code-lts/doctum": "^5",
                 "ml/json-ld": "~1.0",
                 "phpunit/phpunit": "^7",
-                "sami/sami": "^4",
-                "semsol/arc2": "~2.2",
+                "semsol/arc2": "^2.4",
                 "squizlabs/php_codesniffer": "3.*",
                 "zendframework/zend-http": "~2.3"
             },
@@ -7514,7 +7319,7 @@
                 "rdfa",
                 "sparql"
             ],
-            "time": "2020-07-14T23:45:20+00:00"
+            "time": "2020-12-02T08:47:31+00:00"
         },
         {
             "name": "ec-europa/joinup-tallinn-dashboard",
@@ -10214,17 +10019,6 @@
                 "solr"
             ],
             "time": "2018-08-09T13:01:25+00:00"
-        },
-        {
-            "name": "spdx/license-list-data",
-            "version": "master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spdx/license-list-data",
-                "reference": "master"
-            },
-            "type": "library",
-            "time": "2020-10-26T14:41:29+00:00"
         },
         {
             "name": "stack/builder",
@@ -19053,7 +18847,7 @@
         {
             "alias": "0.9.2",
             "alias_normalized": "0.9.2.0",
-            "version": "1.0.0.0",
+            "version": "1.1.1.0",
             "package": "easyrdf/easyrdf"
         },
         {

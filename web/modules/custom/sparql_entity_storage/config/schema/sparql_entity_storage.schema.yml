@@ -1,0 +1,92 @@
+# Schema for sparql_entity_storage module configuration.
+
+field.storage.*.*.third_party.sparql_entity_storage:
+  type: mapping
+  mapping:
+    'mapping':
+      type: sequence
+      label: 'Column'
+      sequence:
+        type: mapping
+        mapping:
+          predicate:
+            type: string
+            label: 'Predicate'
+          format:
+            type: string
+            label: 'Value format'
+    field_predicate:
+      type: string
+      label: 'Field predicate'
+      nullable: true
+
+sparql_entity_storage.graph.*:
+  type: config_entity
+  label: 'SPARQL graph'
+  mapping:
+    id:
+      type: string
+      label: ID
+    weight:
+      type: integer
+      label: Weight
+    name:
+      type: label
+      label: Name
+    description:
+      type: text
+      label: Description
+    entity_types:
+      type: sequence
+      nullable: true
+      label: 'Entity types'
+      sequence:
+        type: string
+        label: 'Entity type'
+
+sparql_entity_storage.mapping.*:
+  type: config_entity
+  label: 'Stores the mapping between Drupal bundle settings and RDF representation'
+  mapping:
+    id:
+      type: string
+      label: ID
+    entity_type_id:
+      type: string
+      label: 'Referred entity type'
+    bundle:
+      type: string
+      label: 'Referred bundle'
+    rdf_type:
+      type: string
+      label: 'RDF type mapping'
+    graph:
+      type: sequence
+      sequence:
+        type: string
+        label: 'The mapping of a graph definition to a graph URI.'
+    base_fields_mapping:
+      type: sequence
+      label: 'The base fields mapping'
+      sequence:
+        type: sequence
+        label: 'Column'
+        sequence:
+          type: mapping
+          mapping:
+            predicate:
+              type: string
+              label: 'Predicate'
+            format:
+              type: string
+              label: 'Value format'
+    field_predicates:
+      type: sequence
+      lable: 'Field level predicates'
+      nullable: true
+      sequence:
+        type: string
+        label: 'Field predicate'
+    entity_id_plugin:
+      type: string
+      label: 'The plugin that generates the entity ID'

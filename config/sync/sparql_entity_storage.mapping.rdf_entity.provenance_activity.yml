@@ -32,18 +32,6 @@ base_fields_mapping:
     value:
       predicate: 'http://purl.org/dc/terms/modified'
       format: 'xsd:dateTime'
-  uuid:
-    value:
-      predicate: ''
-      format: ''
-  langcode:
-    value:
-      predicate: ''
-      format: ''
-  default_langcode:
-    value:
-      predicate: ''
-      format: ''
   provenance_associated_with:
     value:
       predicate: 'http://www.w3.org/ns/prov#wasAssociatedWith'
@@ -64,8 +52,4 @@ base_fields_mapping:
     value:
       predicate: 'http://joinup.eu/provenance/enabled'
       format: 'xsd:boolean'
-  graph:
-    value:
-      predicate: ''
-      format: ''
 entity_id_plugin: default

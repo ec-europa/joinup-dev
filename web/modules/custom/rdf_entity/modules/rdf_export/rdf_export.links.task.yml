@@ -1,0 +1,8 @@
+rdf.entities:
+  class: \Drupal\Core\Menu\LocalTaskDefault
+  deriver: \Drupal\rdf_export\Plugin\Derivative\RdfExportLocalTask
+
+rdf_export.settings:
+  route_name: rdf_export.settings
+  base_route: entity.sparql_graph.collection
+  title: 'Export'

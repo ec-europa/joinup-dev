@@ -1,0 +1,10 @@
+name: RDF Export
+type: module
+description: 'Export RDF entities as RDF'
+package: Custom
+core_version_requirement: ^8 || ^9
+
+# These modules are required by the tests, must be available at bootstrap time
+dependencies:
+- 'drupal:serialization'
+- 'rdf_entity:rdf_entity'

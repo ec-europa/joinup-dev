@@ -1,0 +1,57 @@
+sparql_entity_storage.settings:
+  path: '/admin/config/sparql'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'SPARQL Entity Storage'
+  requirements:
+    _permission: 'administer site configuration'
+
+entity.sparql_graph.collection:
+  path: '/admin/config/sparql/graph'
+  defaults:
+    _entity_list: 'sparql_graph'
+    _title: 'SPARQL Graphs'
+  requirements:
+    _permission: 'administer site configuration'
+
+sparql_graph.add:
+  path: '/admin/config/sparql/graph/add'
+  defaults:
+    _entity_form: 'sparql_graph.add'
+    _title: 'Add graph'
+  requirements:
+    _entity_create_access: sparql_graph
+
+entity.sparql_graph.edit_form:
+  path: '/admin/config/sparql/graph/manage/{sparql_graph}'
+  defaults:
+    _entity_form: 'sparql_graph.edit'
+    _title_callback: '\Drupal\Core\Entity\Controller\EntityController::title'
+  requirements:
+    _entity_access: sparql_graph.update
+
+entity.sparql_graph.delete_form:
+  path: '/admin/config/sparql/graph/manage/{sparql_graph}/delete'
+  defaults:
+    _entity_form: 'sparql_graph.delete'
+    _title: 'Delete'
+  requirements:
+    _entity_access: sparql_graph.delete
+
+entity.sparql_graph.enable:
+  path: '/admin/config/sparql/graph/manage/{sparql_graph}/enable'
+  defaults:
+    _controller: \Drupal\sparql_entity_storage\Controller\SparqlGraphToggle::toggle
+    _title: Enable
+    toggle_operation: enable
+  requirements:
+    _custom_access: \Drupal\sparql_entity_storage\Controller\SparqlGraphToggle::access
+
+entity.sparql_graph.disable:
+  path: '/admin/config/sparql/graph/manage/{sparql_graph}/disable'
+  defaults:
+    _controller: \Drupal\sparql_entity_storage\Controller\SparqlGraphToggle::toggle
+    _title: Disable
+    toggle_operation: disable
+  requirements:
+    _custom_access: \Drupal\sparql_entity_storage\Controller\SparqlGraphToggle::access

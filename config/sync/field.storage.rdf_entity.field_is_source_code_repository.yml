@@ -11,12 +11,6 @@ third_party_settings:
       uri:
         predicate: 'http://joinup.eu/solution/source_code_repository'
         format: 'xsd:string'
-      title:
-        predicate: ''
-        format: ''
-      options:
-        predicate: ''
-        format: ''
 id: rdf_entity.field_is_source_code_repository
 field_name: field_is_source_code_repository
 entity_type: rdf_entity

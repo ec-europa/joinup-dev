@@ -12,12 +12,6 @@ third_party_settings:
       target_id:
         predicate: 'http://xmlns.com/foaf/0.1/page'
         format: 'xsd:string'
-      display:
-        predicate: ''
-        format: ''
-      description:
-        predicate: ''
-        format: ''
 id: rdf_entity.field_isr_documentation
 field_name: field_isr_documentation
 entity_type: rdf_entity

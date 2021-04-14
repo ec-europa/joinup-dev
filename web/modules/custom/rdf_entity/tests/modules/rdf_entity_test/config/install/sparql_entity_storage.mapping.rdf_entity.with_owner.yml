@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - sparql_entity_storage.graph.default
+    - sparql_entity_storage.graph.draft
+    - rdf_entity.rdfentity.with_owner
+third_party_settings: {  }
+id: rdf_entity.with_owner
+entity_type_id: rdf_entity
+bundle: with_owner
+rdf_type: 'http://example.com/dummy_with_owner'
+base_fields_mapping:
+  rid:
+    target_id:
+      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      format: resource
+  uid:
+    target_id:
+      predicate: 'http://example.com/dummy_with_owner/uid'
+      format: integer
+  label:
+    value:
+      predicate: 'http://example.com/dummy_with_owner_label'
+      format: literal
+graph:
+  default: 'http://example.com/with_owner/published'
+  draft: 'http://example.com/with_owner/draft'

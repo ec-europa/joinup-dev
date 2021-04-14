@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  config:
+  - sparql_entity_storage.graph.default
+  - sparql_test.type.fruit
+third_party_settings: {  }
+id: sparql_test.fruit
+entity_type_id: sparql_test
+bundle: fruit
+rdf_type: 'http://example.com/fruit/type'
+base_fields_mapping:
+  type:
+    target_id:
+      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      format: resource
+  title:
+    value:
+      predicate: 'http://example.com/fruit/name'
+      format: t_literal
+  created:
+    value:
+      predicate: 'http://purl.org/dc/terms/issued'
+      format: 'xsd:dateTime'
+  changed:
+    value:
+      predicate: 'http://example.com/modified'
+      format: 'xsd:integer'
+  langcode:
+    value:
+      predicate: 'http://example.com/language'
+      format: t_literal
+graph:
+  default: 'http://example.com/fruit/graph/default'
+entity_id_plugin: default

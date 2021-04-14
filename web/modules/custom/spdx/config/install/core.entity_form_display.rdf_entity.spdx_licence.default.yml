@@ -1,0 +1,53 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.spdx_licence.field_spdx_licence_id
+    - field.field.rdf_entity.spdx_licence.field_spdx_licence_text
+    - field.field.rdf_entity.spdx_licence.field_spdx_see_also
+    - rdf_entity.rdfentity.spdx_licence
+  module:
+    - link
+    - text
+id: rdf_entity.spdx_licence.default
+targetEntityType: rdf_entity
+bundle: spdx_licence
+mode: default
+content:
+  field_spdx_licence_id:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_spdx_licence_text:
+    weight: 2
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_spdx_see_also:
+    weight: 3
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  label:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  current_workflow_state: true
+  langcode: true
+  uid: true

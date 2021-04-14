@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the RDF Entity Test module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function rdf_entity_test_entity_base_field_info(EntityTypeInterface $entity_type) {
+  // Run this only for tests that require to check the path alias.
+  if (\Drupal::moduleHandler()->moduleExists('path') && $entity_type->id() === 'rdf_entity') {
+    $fields['path'] = BaseFieldDefinition::create('path')
+      ->setLabel(t('URL alias'))
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'path',
+        'weight' => 30,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setComputed(TRUE);
+
+    return $fields;
+  }
+}

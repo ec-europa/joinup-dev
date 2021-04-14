@@ -1,0 +1,7 @@
+type: module
+core_version_requirement: ^8 || ^9
+name: 'SPARQL Serialization Test'
+description: 'Support module for testing sparql_entity_storage module.'
+package: Testing
+dependencies:
+  - sparql_entity_storage:sparql_entity_storage

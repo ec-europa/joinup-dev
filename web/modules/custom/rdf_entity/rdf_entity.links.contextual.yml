@@ -1,0 +1,4 @@
+entity.rdf_entity.edit_form:
+  route_name: entity.rdf_entity.edit_form
+  group: rdf_entity
+  title: Edit

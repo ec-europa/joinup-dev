@@ -1,0 +1,5 @@
+sparql_graph.add:
+  route_name: sparql_graph.add
+  title: 'Add new graph'
+  appears_on:
+  - entity.sparql_graph.collection

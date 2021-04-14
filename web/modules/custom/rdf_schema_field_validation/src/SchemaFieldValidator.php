@@ -63,7 +63,7 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
     }
 
     try {
-      $predicate = $this->fieldHanlder->getFieldPredicates($entity_type_id, $field_name, $column_name);
+      $predicate = $this->fieldHanlder->getFieldColumnPredicates($entity_type_id, $field_name, $column_name);
     }
     catch (UnmappedFieldException $exception) {
       // An unmapped field is not defined in schema.

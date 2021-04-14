@@ -1,0 +1,8 @@
+type: module
+core_version_requirement: ^8 || ^9
+name: 'SPARQL field test'
+description: 'Testing module for SPARQL entity fields.'
+package: Testing
+dependencies:
+- datetime
+- sparql_test:sparql_test

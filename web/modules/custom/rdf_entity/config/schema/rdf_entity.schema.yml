@@ -1,0 +1,18 @@
+# Schema for the configuration files of the rdf_entity module.
+
+rdf_entity.rdfentity.*:
+  type: config_entity
+  label: 'Rdf type'
+  mapping:
+    name:
+      type: label
+      label: 'Name'
+    rid:
+      type: string
+      label: 'Bundle type'
+    description:
+      type: text
+      label: 'Description'
+    help:
+      type: text
+      label: 'Explanation or submission guidelines'

@@ -1,0 +1,5 @@
+services:
+  sparql_graph_test.subscriber:
+    class: Drupal\sparql_graph_test\DefaultGraphsSubscriber
+    tags:
+    - name: event_subscriber

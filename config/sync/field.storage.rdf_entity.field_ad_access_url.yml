@@ -12,12 +12,6 @@ third_party_settings:
       target_id:
         predicate: 'http://www.w3.org/ns/dcat#accessURL'
         format: 'xsd:anyURI'
-      display:
-        predicate: ''
-        format: ''
-      description:
-        predicate: ''
-        format: ''
 id: rdf_entity.field_ad_access_url
 field_name: field_ad_access_url
 entity_type: rdf_entity

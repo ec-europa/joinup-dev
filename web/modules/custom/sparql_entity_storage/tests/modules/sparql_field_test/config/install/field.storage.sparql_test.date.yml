@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  module:
+  - datetime
+  - sparql_test
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      value:
+        predicate: 'http://example.com/date'
+        format: 'xsd:dateTime'
+id: sparql_test.date
+field_name: date
+entity_type: sparql_test
+type: datetime
+settings:
+  datetime_type: datetime
+module: datetime
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

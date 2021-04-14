@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @file
+ * Procedural lumps of code for the rdf_draft module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
+use Drupal\sparql_entity_storage\SparqlGraphInterface;
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function rdf_draft_entity_type_alter(array &$entity_types) {
+  // Guard condition against infinite recursion.
+  static $recurse = FALSE;
+  if ($recurse) {
+    return;
+  }
+
+  /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $graph_handler */
+  $graph_handler = \Drupal::service('sparql.graph_handler');
+
+  /** @var \Drupal\Core\Entity\EntityTypeInterface $entity_type */
+  foreach ($entity_types as $entity_type_id => $entity_type) {
+    if ($entity_type->hasViewBuilderClass() && $entity_type->hasLinkTemplate('canonical')) {
+      $recurse = TRUE;
+      $graphs = $graph_handler->getGraphDefinitions($entity_type_id);
+      $recurse = FALSE;
+      foreach ($graphs as $graph_id => $graph) {
+        if ($graph_id !== SparqlGraphInterface::DEFAULT) {
+          $entity_type->setLinkTemplate("rdf-draft-$graph_id", "/$entity_type_id/{{$entity_type_id}}/graph/$graph_id");
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function rdf_draft_entity_operation(EntityInterface $entity) {
+  $operations = [];
+
+  /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $storage */
+  $storage = \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId());
+
+  if ($storage instanceof SparqlEntityStorageInterface) {
+    foreach ($storage->getGraphDefinitions() as $name => $definition) {
+      $link_template = "rdf-draft-$name";
+      if ($entity->hasLinkTemplate($link_template) && $storage->hasGraph($entity, $name)) {
+        $operations[$name] = [
+          'title' => t('View @graph', ['@graph' => $name]),
+          'weight' => 100,
+          'url' => $entity->toUrl($link_template),
+        ];
+      }
+    }
+  }
+  return $operations;
+}

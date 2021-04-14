@@ -1,0 +1,118 @@
+<?php
+
+/**
+ * @file
+ * Install rdf taxonomy.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\rdf_taxonomy\Entity\RdfTerm;
+use Drupal\rdf_taxonomy\RdfTaxonomyTermListBuilder;
+use Drupal\rdf_taxonomy\TermRdfStorage;
+
+/**
+ * Implements hook_install().
+ */
+function rdf_taxonomy_install() {
+  // Don't build a node - term index.
+  // When this should be needed, look into altering the schema.
+  $config = \Drupal::service('config.factory')->getEditable('taxonomy.settings');
+  $config->set('maintain_index_table', 0);
+  $config->save();
+
+  // Remove revision fields created by taxonomy.module.
+  $definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  /** @var \Drupal\Core\Entity\EntityLastInstalledSchemaRepositoryInterface $last_installed_schema_repository */
+  $last_installed_schema_repository = \Drupal::service('entity.last_installed_schema.repository');
+
+  $field_storage_definitions = $last_installed_schema_repository->getLastInstalledFieldStorageDefinitions('taxonomy_term');
+  $revision_fields = [
+    'revision_created',
+    'revision_user',
+    'revision_log_message',
+  ];
+  foreach ($revision_fields as $field_name) {
+    // This check is just to ensure Drupal 8.6.x compatibility as those fields
+    // were added in Drupal 8.7.x.
+    // @todo Drop Drupal 8.6.x support in #92.
+    // @see https://github.com/ec-europa/rdf_entity/issues/92
+    if (isset($field_storage_definitions[$field_name])) {
+      $definition_update_manager->uninstallFieldStorageDefinition($field_storage_definitions[$field_name]);
+    }
+  }
+
+  // Install the 'graph' field definition. The field is not installed when the
+  // module is enabled because the 'taxonomy_term' entity type definition is
+  // installed earlier, when the taxonomy.module is installed. Thus, we'll have
+  // need explicitly install the field to entity type field storage definition.
+  $graph_field_definition = BaseFieldDefinition::create('entity_reference')
+    ->setName('graph')
+    ->setLabel(t('The graph where the entity is stored.'))
+    ->setTargetEntityTypeId('taxonomy_term')
+    ->setTargetBundle(NULL)
+    ->setCustomStorage(TRUE)
+    ->setSetting('target_type', 'rdf_entity_graph');
+  $definition_update_manager->installFieldStorageDefinition('graph', 'taxonomy_term', 'rdf_taxonomy', $graph_field_definition);
+}
+
+/**
+ * Install the 'taxonomy_term' entity type definition changes.
+ */
+function rdf_taxonomy_update_8001() {
+  $definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+
+  // Install entity type alters.
+  $entity_type = $definition_update_manager->getEntityType('taxonomy_term')
+    ->setClass(RdfTerm::class)
+    ->setStorageClass(TermRdfStorage::class)
+    ->setHandlerClass('views_data', NULL)
+    ->setHandlerClass('list_builder', RdfTaxonomyTermListBuilder::class);
+  $definition_update_manager->updateEntityType($entity_type);
+
+  // Install missed fields definitions.
+  $definitions = [
+    'graph' => BaseFieldDefinition::create('entity_reference')
+      ->setName('graph')
+      ->setLabel(t('The graph where the entity is stored.'))
+      ->setTargetEntityTypeId('taxonomy_term')
+      ->setTargetBundle(NULL)
+      ->setCustomStorage(TRUE)
+      ->setSetting('target_type', 'rdf_entity_graph'),
+    'revision_id' => BaseFieldDefinition::create('integer')
+      ->setName('revision_id')
+      ->setTargetEntityTypeId('taxonomy_term')
+      ->setTargetBundle(NULL)
+      ->setLabel(new TranslatableMarkup('Revision ID'))
+      ->setReadOnly(TRUE)
+      ->setCustomStorage(TRUE)
+      ->setSetting('unsigned', TRUE),
+    'revision_default' => BaseFieldDefinition::create('boolean')
+      ->setName('revision_default')
+      ->setTargetEntityTypeId('taxonomy_term')
+      ->setTargetBundle(NULL)
+      ->setLabel(new TranslatableMarkup('Default revision'))
+      ->setDescription(new TranslatableMarkup('A flag indicating whether this was a default revision when it was saved.'))
+      ->setStorageRequired(TRUE)
+      ->setInternal(TRUE)
+      ->setTranslatable(FALSE)
+      ->setCustomStorage(TRUE)
+      ->setRevisionable(TRUE),
+    'revision_translation_affected' => BaseFieldDefinition::create('boolean')
+      ->setName('revision_translation_affected')
+      ->setTargetEntityTypeId('taxonomy_term')
+      ->setTargetBundle(NULL)
+      ->setLabel(new TranslatableMarkup('Revision translation affected'))
+      ->setDescription(new TranslatableMarkup('Indicates if the last edit of a translation belongs to current revision.'))
+      ->setReadOnly(TRUE)
+      ->setRevisionable(TRUE)
+      ->setCustomStorage(TRUE)
+      ->setTranslatable(TRUE),
+  ];
+  foreach ($definitions as $field_name => $definition) {
+    $definition_update_manager->installFieldStorageDefinition($field_name, 'taxonomy_term', 'rdf_taxonomy', $definition);
+  }
+
+}

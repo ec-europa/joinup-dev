@@ -1,0 +1,6 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<http://example.com/citrus-fruits>
+  a skos:Concept ;
+  skos:inScheme <http://example.com/fruit-type> ;
+  skos:prefLabel "Citrus fruits"@en .

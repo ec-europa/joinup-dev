@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - sparql_entity_storage.graph.default
+    - sparql_entity_storage.graph.draft
+    - rdf_entity.rdfentity.dummy
+third_party_settings: {  }
+id: rdf_entity.dummy
+entity_type_id: rdf_entity
+bundle: dummy
+rdf_type: 'http://example.com/dummy'
+base_fields_mapping:
+  rid:
+    target_id:
+      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      format: resource
+  label:
+    value:
+      predicate: 'http://example.com/dummy_label'
+      format: t_literal
+  langcode:
+    value:
+      predicate: 'http://example.com/language'
+      format: t_literal
+  created:
+    value:
+      predicate: 'http://purl.org/dc/terms/issued'
+      format: 'xsd:dateTime'
+  changed:
+    value:
+      predicate: 'http://example.com/modified'
+      format: 'xsd:integer'
+graph:
+  default: 'http://example.com/dummy/published'
+  draft: 'http://example.com/dummy/draft'
