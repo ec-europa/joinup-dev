@@ -1,0 +1,73 @@
+{#
+/**
+ * @file
+ * Theme override to display an RDF entity.
+ *
+ * @see template_preprocess_rdf_entity()
+ */
+#}
+{% set image_url = site_url ~ '/' ~ directory ~ '/images/digest-message/' ~ rdf_entity.bundle ~ '_icon.png'%}
+{% set publication_date = rdf_entity.getCreatedTime()|format_date('date_only') %}
+{% if content.field_isr_release_number|render %}
+  {% set release_number = content.field_isr_release_number|render|striptags %}
+{% endif %}
+{% if content.field_isr_release_notes %}
+  {% set body = content.field_isr_release_notes %}
+{% elseif content.field_ad_description %}
+    {% set body = content.field_ad_description %}
+{% endif %}
+<!-- RDF -->
+<tr>
+  <td align="left" valign="top" bgcolor="#E9EDEE" class="node--container"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="node">
+    <tbody>
+      <tr>
+        <td align="left" valign="top" class="node--date"><span>{{ publication_date }}</span></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top" class="node--separator-small">&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="left" valign="top" class="node--title"><a href="{{ url }}">{{ label }}{% if release_number %} {{ release_number }}{% endif %}</a></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top" class="node--separator">&nbsp;</td>
+      </tr>
+
+      <tr>
+        <td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr>
+              {% if image_url %}
+                <td width="200" align="left" valign="top" class="node--img hidden"><a href="{{ url }}"><img src="{{ image_url }}" width="200" height="200" alt=""/></a></td>
+                <td width="20" align="left" valign="top" class="hidden">&nbsp;</td>
+              {% endif %}
+              <td align="left" valign="top">{{ body }}</td>
+            </tr>
+          </tbody>
+        </table></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top" class="node--separator">&nbsp;</td>
+      </tr>
+
+      <tr>
+        <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="node--end-separator">
+          <tbody>
+            <tr>
+              <td width="35%" align="left" valign="top" class="hidden">&nbsp;</td>
+              <td align="left" valign="top" class="node--button-container"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tbody>
+                  <tr>
+                    <td align="center" valign="middle" class="node--button-link"><a href="{{ url }}">{{ 'Read more'|t }}</a></td>
+                  </tr>
+                </tbody>
+              </table></td>
+              <td width="35%" align="left" valign="top" class="hidden">&nbsp;</td>
+            </tr>
+          </tbody>
+        </table></td>
+      </tr>
+    </tbody>
+  </table></td>
+</tr>
+<!-- RDF END -->
