@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8681f0d6358572b41f01b4aebc5520a2",
+    "content-hash": "07c40765da9245df16dcaad3f2e46c4d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6596,17 +6596,17 @@
         },
         {
             "name": "drupal/sparql_entity_storage",
-            "version": "1.0.0-alpha8",
+            "version": "1.0.0-alpha9",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/sparql_entity_storage.git",
-                "reference": "8.x-1.0-alpha8"
+                "reference": "8.x-1.0-alpha9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/sparql_entity_storage-8.x-1.0-alpha8.zip",
-                "reference": "8.x-1.0-alpha8",
-                "shasum": "813d9e19bf5fb6443b26091af2d4fa3602cf552c"
+                "url": "https://ftp.drupal.org/files/projects/sparql_entity_storage-8.x-1.0-alpha9.zip",
+                "reference": "8.x-1.0-alpha9",
+                "shasum": "c4228b2957dcfe4ff3f47d57375040f83b2b9f0d"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -6614,23 +6614,49 @@
                 "ml/json-ld": "^1.0"
             },
             "require-dev": {
-                "minimaxir/big-list-of-naughty-strings": "dev-master"
+                "composer/installers": "^1.7",
+                "drupal/coder": "^8.3",
+                "drupal/core": "^8.9 || ^9.1",
+                "drupal/core-composer-scaffold": "^9.0",
+                "mglaman/phpstan-drupal": "^0.12.9",
+                "mikey179/vfsstream": "^1.6",
+                "minimaxir/big-list-of-naughty-strings": "dev-master",
+                "phpspec/prophecy-phpunit": "^1.0 || ^2.0",
+                "phpstan/phpstan-deprecation-rules": "^0.12.5",
+                "phpunit/phpunit": "*",
+                "symfony/phpunit-bridge": "^5.1.4",
+                "zaporylie/composer-drupal-optimizations": "^1.1"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-alpha8",
-                    "datestamp": "1602943655",
+                    "version": "8.x-1.0-alpha9",
+                    "datestamp": "1618382134",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
                 },
+                "installer-paths": {
+                    "../testing_site/core": [
+                        "type:drupal-core"
+                    ],
+                    "../testing_site/modules/{$name}": [
+                        "type:drupal-module"
+                    ]
+                },
+                "drupal-scaffold": {
+                    "locations": {
+                        "web-root": "../testing_site/"
+                    },
+                    "file-mapping": {
+                        "[project-root]/.editorconfig": false,
+                        "[project-root]/.gitattributes": false
+                    }
+                },
                 "patches_applied": {
                     "Bundle classes support @see https://github.com/ec-europa/sparql_entity_storage/pull/11": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.diff",
-                    "Allow routes to filter by bundle @see https://github.com/ec-europa/sparql_entity_storage/pull/32": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/32.diff",
-                    "Allow to pass options to the serializer @see https://github.com/idimopoulos/sparql_entity_storage/pull/3": "https://patch-diff.githubusercontent.com/raw/idimopoulos/sparql_entity_storage/pull/3.diff",
-                    "Support NOT EXISTS query @see https://github.com/idimopoulos/sparql_entity_storage/pull/4": "resources/patch/sparql_entity_storage_support_not_exists.patch"
+                    "Allow routes to filter by bundle @see https://github.com/ec-europa/sparql_entity_storage/pull/32": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/32.diff"
                 }
             },
             "autoload": {
