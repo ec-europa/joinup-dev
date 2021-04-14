@@ -1,7 +1,6 @@
 {
   "require": {
     "composer/installers": "^1.5.0",
-    "cweagans/composer-patches": "^1.6.5",
     "drupal/core": "${DRUPAL}",
     "drupal/core-composer-scaffold": "*",
     "drupal/pathauto": "*",
@@ -44,11 +43,6 @@
     "drupal-scaffold": {
       "locations": {
         "web-root": "web/"
-      }
-    },
-    "patches": {
-      "drupal/core": {
-        "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2018-06-11/2765065-93.patch"
       }
     }
   }

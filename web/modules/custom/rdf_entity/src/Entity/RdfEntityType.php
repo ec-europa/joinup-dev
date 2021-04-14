@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\rdf_entity\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
-use Drupal\Core\Config\Entity\EntityBundleWithPluralLabelsTrait;
 use Drupal\rdf_entity\RdfEntityTypeInterface;
 
 /**
@@ -39,17 +38,11 @@ use Drupal\rdf_entity\RdfEntityTypeInterface;
  *   config_export = {
  *     "name",
  *     "rid",
- *     "description",
- *     "label_singular",
- *     "label_plural",
- *     "label_count",
+ *     "description"
  *   }
  * )
  */
 class RdfEntityType extends ConfigEntityBundleBase implements RdfEntityTypeInterface {
-
-  use EntityBundleWithPluralLabelsTrait;
-
   /**
    * The bundle type of RDF entity.
    *

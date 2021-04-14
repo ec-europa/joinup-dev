@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies: {  }
+third_party_settings: {  }
+name: Fruit
+rid: fruit
+description: Fruits
+label_singular: fruit
+label_plural: fruits
+label_count:
+  - "1 fruit\x03@count fruits"
