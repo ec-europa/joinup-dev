@@ -68,10 +68,7 @@ class SparqlEntityStorageConverter extends EntityConverter {
    * {@inheritdoc}
    */
   public function convert($value, $definition, $name, array $defaults) {
-    // The parameter converter is not called only when trying to resolve an ID
-    // from the URL. When constructing a \Drupal\Core\Url from route with
-    // parameters given, calling the ::access method will attempt to also
-    // resolve the ID but the ID might be passed as decoded already.
+    // Here the escaped URI is transformed into a valid URI.
     if (!SparqlArg::isValidResource($value)) {
       $value = UriEncoder::decodeUrl($value);
     }
@@ -86,10 +83,6 @@ class SparqlEntityStorageConverter extends EntityConverter {
     // translation object for the current context.
     if ($entity instanceof EntityInterface && $entity instanceof TranslatableInterface) {
       $entity = $this->entityRepository->getTranslationFromContext($entity, NULL, ['operation' => 'entity_upcast']);
-    }
-
-    if (!empty($definition['bundle']) && !in_array($entity->bundle(), $definition['bundle'], TRUE)) {
-      return NULL;
     }
     return $entity;
   }
