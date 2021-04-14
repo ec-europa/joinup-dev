@@ -18,10 +18,14 @@ interface SparqlSerializerInterface {
    *   The entity to export.
    * @param string $format
    *   The serialisation format. Defaults to 'turtle'.
+   * @param array $options
+   *   An array of options to pass to the serializer. Please, see each
+   *   serializer for the specific options. Serializers are under the namespace
+   *   \EasyRdf\Serialiser.
    *
    * @return string
    *   The serialised entity as a string.
    */
-  public function serializeEntity(ContentEntityInterface $entity, string $format = 'turtle'): string;
+  public function serializeEntity(ContentEntityInterface $entity, string $format = 'turtle', array $options = []): string;
 
 }

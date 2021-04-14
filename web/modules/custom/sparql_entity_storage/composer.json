@@ -15,10 +15,18 @@
     "ml/json-ld": "^1.0"
   },
   "require-dev": {
-    "minimaxir/big-list-of-naughty-strings": "dev-master",
+    "composer/installers": "^1.7",
     "drupal/coder": "^8.3",
-    "mglaman/phpstan-drupal": "^0.12.6",
-    "phpstan/phpstan-deprecation-rules": "^0.12.5"
+    "drupal/core": "^8.9 || ^9.1",
+    "drupal/core-composer-scaffold": "^8.9 || ^9.1",
+    "mglaman/phpstan-drupal": "^0.12.9",
+    "mikey179/vfsstream": "^1.6",
+    "minimaxir/big-list-of-naughty-strings": "dev-master",
+    "phpspec/prophecy-phpunit": "^1.0 || ^2.0",
+    "phpstan/phpstan-deprecation-rules": "^0.12.5",
+    "phpunit/phpunit": "*",
+    "symfony/phpunit-bridge": "^5.1.4",
+    "zaporylie/composer-drupal-optimizations": "^1.1"
   },
   "repositories": [
     {
@@ -31,11 +39,30 @@
           "type": "zip"
         }
       }
+    },
+    {
+      "type": "composer",
+      "url": "https://packages.drupal.org/8"
     }
   ],
   "autoload": {
     "classmap": [
       "src/Driver/Database/sparql/Connection.php"
     ]
+  },
+  "extra": {
+    "installer-paths": {
+      "../testing_site/core": ["type:drupal-core"],
+      "../testing_site/modules/{$name}": ["type:drupal-module"]
+    },
+    "drupal-scaffold": {
+      "locations": {
+        "web-root": "../testing_site/"
+      },
+      "file-mapping": {
+        "[project-root]/.editorconfig": false,
+        "[project-root]/.gitattributes": false
+      }
+    }
   }
 }

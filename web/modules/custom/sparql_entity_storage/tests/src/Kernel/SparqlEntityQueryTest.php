@@ -449,6 +449,27 @@ class SparqlEntityQueryTest extends SparqlKernelTestBase {
   }
 
   /**
+   * Tests the NOT EXISTS operator.
+   */
+  public function testNotExists() {
+    $entity = SparqlTest::create([
+      'id' => 'http://fruit.example.com/not_exists',
+      'title' => 'fruit title not exists',
+      'type' => 'fruit',
+    ]);
+    $entity->save();
+    $this->entities[] = $entity;
+
+    $results = $this->getQuery()
+      ->condition('type', 'fruit')
+      ->notExists('text')
+      ->execute();
+
+    $this->assertCount(1, $results);
+    $this->assertContains('http://fruit.example.com/not_exists', $results);
+  }
+
+  /**
    * Asserts that arrays are identical.
    */
   protected function assertResult() {

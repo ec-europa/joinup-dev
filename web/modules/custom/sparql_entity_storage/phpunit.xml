@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="web/core/tests/bootstrap.php"
+<phpunit bootstrap="../testing_site/core/tests/bootstrap.php"
          colors="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
@@ -9,7 +9,6 @@
     <php>
         <ini name="error_reporting" value="32767"/>
         <ini name="memory_limit" value="-1"/>
-        <env name="SIMPLETEST_BASE_URL" value="http://localhost:8888"/>
         <env name="SIMPLETEST_DB" value="mysql://root:@127.0.0.1/sparql_entity_storage_test_phpunit"/>
         <env name="SIMPLETEST_SPARQL_DB" value="sparql://127.0.0.1:8890?module=sparql_entity_storage"/>
         <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="/tmp"/>
@@ -18,7 +17,7 @@
     </php>
     <testsuites>
         <testsuite name="sparql_entity_storage">
-            <directory>./web/modules/sparql_entity_storage</directory>
+            <directory>../testing_site/modules/sparql_entity_storage/tests</directory>
         </testsuite>
     </testsuites>
     <listeners>

@@ -355,6 +355,16 @@ class Query extends QueryBase implements SparqlQueryInterface {
     if (!in_array($direction, ['ASC', 'DESC'])) {
       throw new \RuntimeException('Only "ASC" and "DESC" are allowed as sort order.');
     }
+
+    // Unlike the normal SQL queries where a column not defined can be used for
+    // sorting if exists in the table, in SPARQL, the sort argument must be
+    // defined in the WHERE clause. Any sort property, therefore, must will be
+    // included with an EXISTS condition.
+    // Also, the $idKey and $bundleKey properties cannot be added as triples as
+    // they cannot be the object of the triple.
+    if (!in_array($field, [$this->idKey, $this->bundleKey])) {
+      $this->exists($field);
+    }
     return parent::sort($field, $direction, $langcode);
   }
 

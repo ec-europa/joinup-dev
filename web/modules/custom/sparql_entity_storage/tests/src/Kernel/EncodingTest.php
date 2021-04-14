@@ -22,8 +22,12 @@ class EncodingTest extends SparqlKernelTestBase {
       // Retry with the vendor directory in the Drupal root.
       $path = DRUPAL_ROOT . "/vendor/minimaxir/big-list-of-naughty-strings/blns.json";
       if (!file_exists($path)) {
-        $this->markTestSkipped('Library minimaxir/big-list-of-naughty-strings is required.');
-        return;
+        // Retry with the module's vendor directory.
+        $path = __DIR__ . "/../../../vendor/minimaxir/big-list-of-naughty-strings/blns.json";
+        if (!file_exists($path)) {
+          $this->markTestSkipped('Library minimaxir/big-list-of-naughty-strings is required.');
+          return;
+        }
       }
     }
     $json = file_get_contents($path);

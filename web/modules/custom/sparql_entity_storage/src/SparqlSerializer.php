@@ -43,12 +43,12 @@ class SparqlSerializer implements SparqlSerializerInterface {
   /**
    * {@inheritdoc}
    */
-  public function serializeEntity(ContentEntityInterface $entity, string $format = 'turtle'): string {
+  public function serializeEntity(ContentEntityInterface $entity, string $format = 'turtle', array $options = []): string {
     $graph_uri = $this->graphHandler->getBundleGraphUri($entity->getEntityTypeId(), $entity->bundle(), $entity->graph->target_id);
     $entity_id = $entity->id();
 
     $query = <<<Query
-SELECT ?s ?p ?o 
+SELECT ?s ?p ?o
 WHERE {
   {
     GRAPH <{$graph_uri}> {
@@ -71,7 +71,7 @@ Query;
     foreach ($results as $result) {
       $graph->add($result->s, $result->p, $result->o);
     }
-    return $graph->serialise($format);
+    return $graph->serialise($format, $options);
   }
 
 }

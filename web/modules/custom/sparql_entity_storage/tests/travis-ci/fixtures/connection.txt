@@ -1,8 +1,0 @@
-
-$databases['sparql_default']['default'] = array (
-  'prefix' => '',
-  'host' => '127.0.0.1',
-  'port' => 8890,
-  'namespace' => 'Drupal\\sparql_entity_storage\\Driver\\Database\\sparql',
-  'driver' => 'sparql',
-);

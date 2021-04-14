@@ -1,10 +1,5 @@
 language: php
 
-php:
-  - '7.2'
-  - '7.3'
-  - '7.4'
-
 sudo: required
 
 services:
@@ -16,36 +11,47 @@ mysql:
   username: root
   encoding: utf8
 
-env:
-  global:
-    - SITE_DIR="$HOME/build/testing_site"
-  matrix:
-    - TEST=PHPCodeSniffer
-    - TEST=PHPStan DRUPAL=~8.9.0 PHPUNIT=^7
-    - TEST=PHPUnit DRUPAL=~8.9.0 PHPUNIT=^7
-    - TEST=PHPUnit DRUPAL=~9.0.0 PHPUNIT=^8
-    - TEST=PHPUnit DRUPAL=~9.1.0 PHPUNIT=^8
-    - TEST=PHPUnit DRUPAL=~9.2.0 PHPUNIT=^8
+jobs:
+  include:
+    # PHP 7.3
+    - name: 'PHPCodeSniffer'
+      php: 7.3
+      env: TEST_SUITE=PHPCodeSniffer
 
-matrix:
-  fast_finish: true
-  exclude:
-    - php: '7.2'
-      env: TEST=PHPUnit DRUPAL=~9.0.0 PHPUNIT=^8
-    - php: '7.2'
-      env: TEST=PHPUnit DRUPAL=~9.1.0 PHPUNIT=^8
-    - php: '7.2'
-      env: TEST=PHPUnit DRUPAL=~9.2.0 PHPUNIT=^8
-    - php: '7.3'
-      env: TEST=PHPCodeSniffer
-    - php: '7.3'
-      env: TEST=PHPStan DRUPAL=~8.9.0 PHPUNIT=^7
-    - php: '7.4'
-      env: TEST=PHPCodeSniffer
-    - php: '7.4'
-      env: TEST=PHPStan DRUPAL=~8.9.0 PHPUNIT=^7
+    - name: 'PHPStan'
+      php: 7.3
+      env: TEST_SUITE=PHPStan DRUPAL=~8.9.0 PHPUNIT=^7
+
+    - name: 'PHPUnit with Drupal 8 on PHP 7.3'
+      php: 7.3
+      env: TEST_SUITE=PHPUnit DRUPAL=^8.9 PHPUNIT=^7
+
+    - name: 'PHPUnit with Drupal 9 on PHP 7.3'
+      php: 7.3
+      env: TEST_SUITE=PHPUnit DRUPAL=^9.1 PHPUNIT=^9
+
+    # PHP 7.4
+    - name: 'PHPUnit with Drupal 8 on PHP 7.4'
+      php: 7.4
+      env: TEST_SUITE=PHPUnit DRUPAL=^8.9 PHPUNIT=^7
+
+    - name: 'PHPUnit with Drupal 9 on PHP 7.4'
+      php: 7.4
+      env: TEST_SUITE=PHPUnit DRUPAL=^9.1 PHPUNIT=^9
+
+    # PHP 8
+    - name: 'PHPUnit with Drupal 9 on PHP 8 nightly'
+      php: nightly
+      env: TEST_SUITE=PHPUnit DRUPAL=^9.1 PHPUNIT=^9
+
+cache:
+  directories:
+    - ${HOME}/.composer/cache
 
 before_install:
+  - export COMPOSER_MEMORY_LIMIT=2G
+  - export SITE_DIR="${TRAVIS_BUILD_DIR}/../testing_site"
+  - mkdir "${TRAVIS_BUILD_DIR}/../testing_site"
   # Remove this line to run with Xdebug enabled.
   - phpenv config-rm xdebug.ini || true
 
