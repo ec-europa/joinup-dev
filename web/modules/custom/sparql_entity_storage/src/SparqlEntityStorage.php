@@ -258,8 +258,7 @@ class SparqlEntityStorage extends ContentEntityStorageBase implements SparqlEnti
               }
             }
           }
-          $entity_class = $this->getEntityClass($bundle);
-          $entity = new $entity_class($entity_values, $this->entityTypeId, $bundle, $translations);
+          $entity = new $this->entityClass($entity_values, $this->entityTypeId, $bundle, $translations);
           $this->trackOriginalGraph($entity);
           $entities[$id] = $entity;
         }
@@ -761,12 +760,9 @@ QUERY;
       $keyed_entities[$entity->id()] = $entity;
     }
 
-    $entity_classes = $this->getEntityClasses($keyed_entities);
-
     // Allow code to run before deleting.
-    foreach ($entity_classes as $entity_class => &$items) {
-      $entity_class::preDelete($this, $items);
-    }
+    $entity_class = $this->entityClass;
+    $entity_class::preDelete($this, $keyed_entities);
     foreach ($keyed_entities as $entity) {
       $this->invokeHook('predelete', $entity);
     }
@@ -787,9 +783,7 @@ QUERY;
     $this->resetCache(array_keys($keyed_entities), array_keys($graphs));
 
     // Allow code to run after deleting.
-    foreach ($entity_classes as $entity_class => &$items) {
-      $entity_class::postDelete($this, $items);
-    }
+    $entity_class::postDelete($this, $keyed_entities);
     foreach ($keyed_entities as $entity) {
       $this->invokeHook('delete', $entity);
     }
