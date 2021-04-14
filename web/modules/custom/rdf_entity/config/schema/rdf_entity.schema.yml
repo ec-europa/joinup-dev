@@ -1,7 +1,7 @@
 # Schema for the configuration files of the rdf_entity module.
 
 rdf_entity.rdfentity.*:
-  type: config_entity
+  type: bundle_entity_with_plural_labels
   label: 'Rdf type'
   mapping:
     name:

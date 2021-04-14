@@ -5,3 +5,7 @@ third_party_settings: {  }
 name: Multifield
 rid: multifield
 description: ''
+label_singular: 'multifield item'
+label_plural: 'multifield items'
+label_count:
+  - "1 multifield item\x03@count multifield items"

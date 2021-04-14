@@ -5,3 +5,7 @@ third_party_settings: {  }
 name: 'With Owner'
 rid: with_owner
 description: ''
+label_singular: "'with owner' item"
+label_plural: "'with owner' items"
+label_count:
+  - "1 'with owner' item\x03@count 'with owner' items"

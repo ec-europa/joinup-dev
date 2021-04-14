@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\rdf_entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\Core\Config\Entity\EntityBundleWithPluralLabelsInterface;
 
 /**
  * Provides an interface defining a Rdf entity.
@@ -13,6 +14,6 @@ use Drupal\Core\Config\Entity\ConfigEntityInterface;
  *
  * @ingroup rdf_entity
  */
-interface RdfEntityTypeInterface extends ConfigEntityInterface {
+interface RdfEntityTypeInterface extends ConfigEntityInterface, EntityBundleWithPluralLabelsInterface {
 
 }
