@@ -67,10 +67,10 @@ hidden:
   field_file: true
   field_keywords: true
   field_licence: true
-  field_topic: true
   field_shared_in: true
   field_short_title: true
   field_site_featured: true
+  field_topic: true
   field_type: true
   langcode: true
   links: true

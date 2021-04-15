@@ -158,9 +158,9 @@ content:
 hidden:
   field_keywords: true
   field_news_spatial_coverage: true
-  field_topic: true
   field_site_featured: true
   field_state: true
+  field_topic: true
   langcode: true
   links: true
   og_audience: true

@@ -1,3 +1,4 @@
+uuid: 9d8e35a1-9622-454f-b4df-9a2db8e6560b
 langcode: en
 status: true
 dependencies:
@@ -9,7 +10,7 @@ id: node.discussion.field_topic
 field_name: field_topic
 entity_type: node
 bundle: discussion
-label: 'Topic'
+label: Topic
 description: ''
 required: true
 translatable: false

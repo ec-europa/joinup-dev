@@ -228,8 +228,6 @@ display:
                 display_method: label
               owner_type:
                 display_method: label
-              topic:
-                display_method: label
               product_type:
                 display_method: label
               representation_technique:
@@ -245,6 +243,8 @@ display:
               test_resource_type:
                 display_method: label
               themes:
+                display_method: label
+              topic:
                 display_method: label
           entity_type: rdf_entity
           plugin_id: search_api_field

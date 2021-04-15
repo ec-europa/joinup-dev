@@ -1,3 +1,4 @@
+uuid: 4d598b9f-3122-41f4-a63d-703e28ff71a9
 langcode: en
 status: true
 dependencies:
@@ -9,7 +10,7 @@ id: rdf_entity.collection.field_topic
 field_name: field_topic
 entity_type: rdf_entity
 bundle: collection
-label: 'Topic'
+label: Topic
 description: ''
 required: true
 translatable: false

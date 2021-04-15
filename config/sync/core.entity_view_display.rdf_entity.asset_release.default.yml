@@ -235,8 +235,8 @@ hidden:
   field_isr_solution_type: true
   field_isr_translation: true
   field_keywords: true
-  field_topic: true
   field_spatial_coverage: true
   field_status: true
+  field_topic: true
   langcode: true
   og_audience: true

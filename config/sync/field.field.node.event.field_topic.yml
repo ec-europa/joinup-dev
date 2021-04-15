@@ -1,3 +1,4 @@
+uuid: db4738d6-da42-46aa-bc71-b77bfbca09bf
 langcode: en
 status: true
 dependencies:
@@ -9,7 +10,7 @@ id: node.event.field_topic
 field_name: field_topic
 entity_type: node
 bundle: event
-label: 'Topic'
+label: Topic
 description: ''
 required: true
 translatable: false

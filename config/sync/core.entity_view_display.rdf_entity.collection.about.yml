@@ -168,10 +168,10 @@ hidden:
   field_collection_content: true
   field_keywords: true
   field_newsletter: true
-  field_topic: true
   field_short_id: true
   field_site_featured: true
   field_spatial_coverage: true
+  field_topic: true
   join_collection: true
   label: true
   langcode: true

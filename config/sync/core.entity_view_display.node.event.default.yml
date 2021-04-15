@@ -197,11 +197,11 @@ hidden:
   field_keywords: true
   field_organisation: true
   field_organisation_type: true
-  field_topic: true
   field_scope: true
   field_short_title: true
   field_site_featured: true
   field_state: true
+  field_topic: true
   langcode: true
   og_audience: true
   published_at: true

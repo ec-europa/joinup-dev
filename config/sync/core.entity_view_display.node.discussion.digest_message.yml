@@ -49,11 +49,11 @@ content:
 hidden:
   field_attachment: true
   field_keywords: true
-  field_topic: true
   field_replies: true
   field_shared_in: true
   field_site_featured: true
   field_state: true
+  field_topic: true
   flag_subscribe_discussions: true
   invite_link: true
   langcode: true

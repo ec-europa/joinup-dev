@@ -23,7 +23,7 @@ content:
       transparency: '0'
       tokensupport: '0'
       allowfullscreen: '0'
-      expose_class: false
+      expose_class: 0
     third_party_settings: {  }
     type: iframe_urlheight
     region: content

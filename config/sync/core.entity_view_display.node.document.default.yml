@@ -174,9 +174,9 @@ hidden:
   field_document_logo: true
   field_document_spatial_coverage: true
   field_keywords: true
-  field_topic: true
   field_site_featured: true
   field_state: true
+  field_topic: true
   langcode: true
   links: true
   og_audience: true

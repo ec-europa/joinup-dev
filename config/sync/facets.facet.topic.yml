@@ -1,3 +1,4 @@
+uuid: b8184002-cf51-45de-b78f-b25faf7ad07b
 langcode: en
 status: true
 dependencies:
@@ -7,7 +8,7 @@ dependencies:
   module:
     - search_api
 id: topic
-name: 'Topic'
+name: Topic
 url_alias: topic
 weight: 0
 min_count: 1

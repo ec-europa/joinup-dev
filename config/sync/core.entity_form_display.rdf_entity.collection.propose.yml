@@ -218,12 +218,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_topic:
-    weight: 3
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
   field_short_id:
     type: string_textfield
     weight: 1
@@ -241,6 +235,12 @@ content:
       match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_topic:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   label:
     type: string_textfield

@@ -1,8 +1,9 @@
+uuid: 475b1055-c12f-4160-a696-505b1018e587
 langcode: en
 status: true
 dependencies: {  }
 id: solution_topic
-name: 'Topic'
+name: Topic
 url_alias: solution_topic
 weight: 0
 min_count: 1

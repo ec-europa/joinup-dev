@@ -1,3 +1,4 @@
+uuid: 7777c996-c138-4412-b0ec-44ff13952c37
 langcode: en
 status: true
 dependencies:
@@ -9,7 +10,7 @@ id: node.news.field_topic
 field_name: field_topic
 entity_type: node
 bundle: news
-label: 'Topic'
+label: Topic
 description: ''
 required: true
 translatable: false
