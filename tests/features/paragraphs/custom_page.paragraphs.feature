@@ -44,22 +44,37 @@ Feature:
       | BBBBBBBBBB |
       | AAAAAAAAAA |
 
-  Scenario: Moderators can add a map and/or an iframe paragraph.
-    Given custom_page content:
-      | title                     | body        | collection            |
-      | Don't Mess with the Zohan | Wanna mess? | Paragraphs collection |
+  Scenario: Privileged users can add a map and/or an iframe and map paragraph.
+    Given users:
+      | Username |
+      | Zohan    |
+    And the following collection user membership:
+      | collection            | user  |
+      | Paragraphs collection | Zohan |
+    And custom_page content:
+      | title                     | body        | collection            | author |
+      | Don't Mess with the Zohan | Wanna mess? | Paragraphs collection | Zohan  |
 
-    Given I am logged in as a facilitator of the "Paragraphs collection" collection
+    # Normal members cannot add maps.
+    When I am logged in as "Zohan"
     And I go to the custom_page "Don't Mess with the Zohan" edit screen
     Then I should see the button "Add Simple paragraph"
-    But I should not see the button "Add Map"
-    And I should not see the button "Add IFrame"
+    And I should not see the button "Add Map"
+    But I should not see the button "Add IFrame"
+
+    # Facilitators can add maps.
+    When I am logged in as a facilitator of the "Paragraphs collection" collection
+    And I go to the custom_page "Don't Mess with the Zohan" edit screen
+    Then I should see the button "Add Simple paragraph"
+    And I should see the button "Add Map"
+    But I should not see the button "Add IFrame"
 
     When I fill in "Body" with "I'm half Australian, half Mt. Everest"
     And I press "Save"
     Then I should see the success message "Custom page Don't Mess with the Zohan has been updated."
     And I should see "I'm half Australian, half Mt. Everest"
 
+    # Moderators can add maps.
     Given I am logged in as a moderator
     And I go to the custom_page "Don't Mess with the Zohan" edit screen
     Then I should see the button "Add Simple paragraph"

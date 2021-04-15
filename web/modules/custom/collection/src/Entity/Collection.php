@@ -103,6 +103,13 @@ class Collection extends Rdf implements CollectionInterface {
   /**
    * {@inheritdoc}
    */
+  public function getContentCreationFieldName(): string {
+    return 'field_ar_content_creation';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getGlossarySettings(): array {
     /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
     $meta_entity = $this->get('settings')->entity;

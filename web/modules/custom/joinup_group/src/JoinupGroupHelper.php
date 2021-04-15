@@ -24,22 +24,6 @@ class JoinupGroupHelper {
   ];
 
   /**
-   * Content creation field machine names per group bundle.
-   */
-  const GROUP_CONTENT_CREATION = [
-    'collection' => 'field_ar_content_creation',
-    'solution' => 'field_is_content_creation',
-  ];
-
-  /**
-   * Workflow state field machine names per group bundle.
-   */
-  const GROUP_STATE_FIELDS = [
-    'collection' => 'field_ar_state',
-    'solution' => 'field_is_state',
-  ];
-
-  /**
    * Returns the group the entity belongs to.
    *
    * This relies on the fact that in Joinup every group content entity only
@@ -72,22 +56,6 @@ class JoinupGroupHelper {
       }
     }
     return NULL;
-  }
-
-  /**
-   * Returns the content creation option for the given group.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group for which to return the content creation option value.
-   *
-   * @return string
-   *   The content creation option value. Can be one of the following:
-   *   - \Drupal\joinup_group\ContentCreationOptions::FACILITATORS
-   *   - \Drupal\joinup_group\ContentCreationOptions::MEMBERS
-   *   - \Drupal\joinup_group\ContentCreationOptions::REGISTERED_USERS
-   */
-  public static function getContentCreation(EntityInterface $entity): string {
-    return $entity->{self::GROUP_CONTENT_CREATION[$entity->bundle()]}->first()->value;
   }
 
 }

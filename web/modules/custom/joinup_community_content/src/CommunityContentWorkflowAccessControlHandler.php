@@ -11,7 +11,7 @@ use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
-use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\node\NodeStorageInterface;
@@ -189,12 +189,13 @@ class CommunityContentWorkflowAccessControlHandler {
     $view_scheme = $this->getPermissionScheme('view');
     $workflow_id = $content->getWorkflow()->getId();
     $state = $content->getWorkflowState();
+    $roles = $view_scheme[$workflow_id][$state] ?? [];
     // @todo Shouldn't we return AccessResult::neutral() instead of
     // AccessResult::allowed() and only AccessResult::forbidden() should have
     // cacheable metadata? Neutral means we don't make any opinion but the
     // default view access on node is to allow.
     // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6007
-    $result = $this->workflowHelper->userHasOwnAnyRoles($content, $account, $view_scheme[$workflow_id][$state]) ? AccessResult::allowed() : AccessResult::forbidden();
+    $result = !empty($roles) && $this->workflowHelper->userHasOwnAnyRoles($content, $account, $roles) ? AccessResult::allowed() : AccessResult::forbidden();
     return $result->addCacheableDependency($content);
   }
 
@@ -212,7 +213,14 @@ class CommunityContentWorkflowAccessControlHandler {
   protected function entityCreateAccess(CommunityContentInterface $content, AccountInterface $account): AccessResultInterface {
     $create_scheme = $this->getPermissionScheme('create');
     $workflow_id = $content->getWorkflow()->getId();
-    $content_creation = $this->getParentContentCreationOption($content);
+    try {
+      $content_creation = $content->getGroup()->getContentCreators();
+    }
+    catch (MissingGroupException $e) {
+      // Forbid creating community content if the parent group has not been set
+      // (e.g. because the entity is orphaned).
+      return AccessResult::forbidden()->addCacheTags($content->getEntityType()->getListCacheTags());
+    }
 
     foreach ($create_scheme[$workflow_id][$content_creation] as $ownership_data) {
       // There is no check whether the transition is allowed as only allowed
@@ -276,23 +284,6 @@ class CommunityContentWorkflowAccessControlHandler {
     }
 
     return AccessResult::forbidden()->addCacheableDependency($content);
-  }
-
-  /**
-   * Returns the content creation option value of the parent of an entity.
-   *
-   * @param \Drupal\joinup_community_content\Entity\CommunityContentInterface $content
-   *   The group content entity.
-   *
-   * @return string
-   *   The content creation option value.
-   *
-   * @throws \Drupal\joinup_group\Exception\MissingGroupException
-   *   Thrown when the entity doesn't have a parent group.
-   */
-  protected function getParentContentCreationOption(CommunityContentInterface $content): string {
-    $parent = $content->getGroup();
-    return JoinupGroupHelper::getContentCreation($parent);
   }
 
   /**

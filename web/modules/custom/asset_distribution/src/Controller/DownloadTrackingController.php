@@ -12,7 +12,9 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\asset_distribution\Form\AnonymousDownloadForm;
 use Drupal\file\FileInterface;
+use Drupal\file\FileUsage\FileUsageInterface;
 use Drupal\file_url\FileUrlHandler;
+use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -50,9 +52,16 @@ class DownloadTrackingController extends ControllerBase {
   protected $sparqlStorage;
 
   /**
+   * The file usage service.
+   *
+   * @var \Drupal\file\FileUsage\FileUsageInterface
+   */
+  protected $fileUsage;
+
+  /**
    * Instantiates a new DownloadTrackingController object.
    *
-   * @param \Drupal\Core\Entity\ContentEntityStorageInterface $sparql_storage
+   * @param \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $sparql_storage
    *   The RDF entity storage.
    * @param \Drupal\Core\Entity\ContentEntityStorageInterface $event_storage
    *   The download event entity storage.
@@ -62,13 +71,16 @@ class DownloadTrackingController extends ControllerBase {
    *   The form builder.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
+   * @param \Drupal\file\FileUsage\FileUsageInterface $file_usage
+   *   The file usage service.
    */
-  public function __construct(ContentEntityStorageInterface $sparql_storage, ContentEntityStorageInterface $event_storage, FileUrlHandler $file_url_handler, FormBuilderInterface $form_builder, AccountInterface $current_user) {
+  public function __construct(SparqlEntityStorageInterface $sparql_storage, ContentEntityStorageInterface $event_storage, FileUrlHandler $file_url_handler, FormBuilderInterface $form_builder, AccountInterface $current_user, FileUsageInterface $file_usage) {
     $this->sparqlStorage = $sparql_storage;
     $this->eventStorage = $event_storage;
     $this->fileUrlHandler = $file_url_handler;
     $this->formBuilder = $form_builder;
     $this->currentUser = $current_user;
+    $this->fileUsage = $file_usage;
   }
 
   /**
@@ -80,7 +92,8 @@ class DownloadTrackingController extends ControllerBase {
       $container->get('entity_type.manager')->getStorage('download_event'),
       $container->get('file_url.handler'),
       $container->get('form_builder'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('file.usage')
     );
   }
 
@@ -124,9 +137,26 @@ class DownloadTrackingController extends ControllerBase {
    *   The generated response.
    */
   protected function trackAuthenticatedDownload(FileInterface $file) {
+    $usages = $this->fileUsage->listUsage($file);
+
+    // Normally, only one distribution is allowed to use a file and only
+    // distributions call this code.
+    if (empty($usages['file']['rdf_entity'])) {
+      throw new \RuntimeException('No distributions were found using the file with ID ' . $file->id());
+    }
+    if (count($usages['file']['rdf_entity']) > 1) {
+      throw new \RuntimeException('More than one distributions were found for the file with ID ' . $file->id());
+    }
+    $distribution = $this->sparqlStorage->load(key($usages['file']['rdf_entity']));
+
+    /** @var \Drupal\solution\Entity\SolutionInterface|\Drupal\asset_release\Entity\AssetReleaseInterface $parent */
+    $parent = $distribution->getParent();
+
     $event = $this->eventStorage->create([
       'uid' => $this->currentUser->id(),
       'file' => $file->id(),
+      'parent_entity_type' => $parent->getEntityTypeId(),
+      'parent_entity_id' => $parent->id(),
     ]);
     $event->save();
 
