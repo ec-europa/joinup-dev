@@ -326,14 +326,14 @@ class GroupContentUpdateUrlAliasTest extends JoinupExistingSiteTestBase {
     ]);
 
     $parent = RdfTerm::create([
-      'vid' => 'policy_domain',
+      'vid' => 'topic',
       'tid' => 'http://example.com/policy/parent',
       'name' => $this->randomString(),
     ]);
     $parent->save();
     $this->markEntityForCleanup($parent);
     $term = RdfTerm::create([
-      'vid' => 'policy_domain',
+      'vid' => 'topic',
       'tid' => 'http://example.com/policy',
       'name' => $this->randomString(),
       'parent' => 'http://example.com/policy/parent',
@@ -348,7 +348,7 @@ class GroupContentUpdateUrlAliasTest extends JoinupExistingSiteTestBase {
       'field_ar_description' => $this->randomString(),
       'field_ar_state' => 'validated',
       'field_ar_owner' => 'http://example.com/owner',
-      'field_policy_domain' => 'http://example.com/policy',
+      'field_topic' => 'http://example.com/policy',
       'field_ar_contact_information' => 'http://example.com/contact',
     ]);
 
@@ -360,7 +360,7 @@ class GroupContentUpdateUrlAliasTest extends JoinupExistingSiteTestBase {
       'field_is_description' => $this->randomString(),
       'field_is_state' => 'validated',
       'field_is_owner' => 'http://example.com/owner',
-      'field_policy_domain' => 'http://example.com/policy',
+      'field_topic' => 'http://example.com/policy',
       'field_is_solution_type' => 'http://data.europa.eu/dr8/ArchitectureBuildingBlock',
       'field_is_contact_information' => 'http://example.com/contact',
     ]);

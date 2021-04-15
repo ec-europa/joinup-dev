@@ -17,9 +17,32 @@ declare(strict_types = 1);
 use Drupal\asset_distribution\Entity\DownloadEvent;
 
 /**
+ * Backup the field policy domain node field.
+ */
+function joinup_core_deploy_0107000(&$sandbox) {
+  $schema = \Drupal::database()->schema();
+  $type = [
+    'type' => 'varchar',
+    'length' => 128,
+    'not null' => TRUE,
+    'description' => 'The ID of the target entity.',
+  ];
+
+  $schema->dropTable('node__field_topic');
+  $schema->renameTable('node__field_topic_backup', 'node__field_topic');
+  // The "changeField" happens in the deploy phase so that we can use the API
+  // to perform the changes because the command to change the field name differs
+  // even from mariaDB to MySQL.
+  $schema->changeField('node__field_topic', 'field_policy_domain_target_id', 'field_topic_target_id', $type);
+  $schema->dropTable('node_revision__field_topic');
+  $schema->renameTable('node_revision__field_topic_backup', 'node_revision__field_topic');
+  $schema->changeField('node_revision__field_topic', 'field_policy_domain_target_id', 'field_topic_target_id', $type);
+}
+
+/**
  * Switch the filter format of the collection abstract to basic HTML.
  */
-function joinup_core_deploy_0107000(array &$sandbox): string {
+function joinup_core_deploy_0107001(array &$sandbox): string {
   $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
 
   if (!isset($sandbox['total'])) {
@@ -48,7 +71,7 @@ function joinup_core_deploy_0107000(array &$sandbox): string {
 /**
  * Fill the parent of the distribution downloads.
  */
-function joinup_core_deploy_0107001(array &$sandbox): string {
+function joinup_core_deploy_0107002(array &$sandbox): string {
   if (empty($sandbox['entity_ids'])) {
     $sandbox['entity_ids'] = \Drupal::database()->query('SELECT `id` FROM joinup_download_event')->fetchCol();
     $sandbox['progress'] = 0;

@@ -52,12 +52,12 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
         'field_is_banner',
         'field_is_logo',
         'field_is_solution_type',
-        'field_policy_domain',
+        'field_topic',
       ],
       'asset_release' => [
         'field_isr_banner',
         'field_isr_logo',
-        'field_policy_domain',
+        'field_topic',
       ],
     ],
   ];
