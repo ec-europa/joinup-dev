@@ -4,7 +4,7 @@ Feature: Unpublished content of the website
   As a user of the website
   I want to be able to find unpublished content that I can work on
 
-  Scenario: Test unpublished entities interaction for collections.
+  Scenario: Interact with unpublished entities in collections.
     Given the following owner:
       | name            | type                    |
       | Owner something | Non-Profit Organisation |
@@ -132,7 +132,7 @@ Feature: Unpublished content of the website
       | Mists that are published maybe? |
     But I should see the "Mists that are published maybe?" tile
 
-    # Test that unpublished content are ordered by create date.
+    # Unpublished content is ordered by creation date.
     When I am logged in as "Ed Abbott"
     And I go to the homepage of the "Grey Swords" collection
     And I should see the following tiles in the correct order:
@@ -143,7 +143,7 @@ Feature: Unpublished content of the website
       # Created at 8:30am.
       | Mists outside the planes of thinking  |
 
-  Scenario: Test unpublished entities interaction for solutions.
+  Scenario: Interact with unpublished entities in solutions.
     Given the following owner:
       | name            | type                    |
       | Owner something | Non-Profit Organisation |
