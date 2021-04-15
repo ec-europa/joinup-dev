@@ -19,7 +19,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
-    - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_topic
     - field.field.rdf_entity.collection.field_short_id
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_spatial_coverage
@@ -111,7 +111,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  field_policy_domain:
+  field_topic:
     weight: 5
     label: above
     settings:

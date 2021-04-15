@@ -1,19 +1,16 @@
-uuid: 9b75fa64-cc16-4e07-ba72-33601cdacdc2
 langcode: en
 status: true
 dependencies:
   module:
-    - rdf_entity
+    - field_permissions
+    - node
     - taxonomy
 third_party_settings:
-  sparql_entity_storage:
-    mapping:
-      target_id:
-        predicate: 'http://policy_domain'
-        format: resource
-id: rdf_entity.field_policy_domain
-field_name: field_policy_domain
-entity_type: rdf_entity
+  field_permissions:
+    permission_type: public
+id: node.field_topic
+field_name: field_topic
+entity_type: node
 type: entity_reference
 settings:
   target_type: taxonomy_term

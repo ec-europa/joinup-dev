@@ -1,4 +1,3 @@
-uuid: e35a7837-d193-4cb9-8469-f13d78910a3f
 langcode: en
 status: true
 dependencies:
@@ -9,7 +8,7 @@ third_party_settings:
   sparql_entity_storage:
     mapping:
       target_id:
-        predicate: 'http://www.w3.org/ns/dcat#theme'
+        predicate: 'http://topic'
         format: resource
 id: rdf_entity.field_topic
 field_name: field_topic

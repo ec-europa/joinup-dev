@@ -1,18 +1,15 @@
-uuid: 1d367b45-2e25-40a8-be01-7c67a362f4cf
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_policy_domain
-    - node.type.discussion
-    - taxonomy.vocabulary.policy_domain
-_core:
-  default_config_hash: DiFKcDjkYTcHIGIjRx-VjmeGgbk1hTKcX7-lpmEd4vE
-id: node.discussion.field_policy_domain
-field_name: field_policy_domain
+    - field.storage.node.field_topic
+    - node.type.event
+    - taxonomy.vocabulary.topic
+id: node.event.field_topic
+field_name: field_topic
 entity_type: node
-bundle: discussion
-label: 'Policy domain'
+bundle: event
+label: 'Topic'
 description: ''
 required: true
 translatable: false
@@ -22,7 +19,7 @@ settings:
   handler: 'grouped_rdf_taxonomy_term_selection:default'
   handler_settings:
     target_bundles:
-      policy_domain: policy_domain
+      topic: topic
     sort:
       field: _none
     auto_create: false

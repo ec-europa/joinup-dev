@@ -1,20 +1,19 @@
-uuid: 3e59dc78-03ba-4d56-b9ad-ca736338d56d
 langcode: en
 status: true
 dependencies: {  }
-id: collection_policy_domain
+id: collection_topic
 name: 'Policy Domain'
-url_alias: collection_policy_domain
+url_alias: collection_topic
 weight: -1
 min_count: 1
 show_only_one_result: true
-field_identifier: policy_domain
+field_identifier: topic
 facet_source_id: 'search_api_field:rdf_entity.field_collection_content'
 widget:
   type: links_inline
   config:
     show_numbers: true
-    all_text: 'all policy domains'
+    all_text: 'all topics'
     prefix_text: 'About:'
     suffix_text: ''
 query_operator: or

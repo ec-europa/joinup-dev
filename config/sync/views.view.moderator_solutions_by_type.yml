@@ -228,7 +228,7 @@ display:
                 display_method: label
               owner_type:
                 display_method: label
-              policy_domain:
+              topic:
                 display_method: label
               product_type:
                 display_method: label

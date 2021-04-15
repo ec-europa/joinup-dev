@@ -1,4 +1,3 @@
-uuid: d3f7d9a0-daea-4131-be10-0bfe6336f3c5
 langcode: en
 status: true
 dependencies:
@@ -7,19 +6,19 @@ dependencies:
     - views.view.search
   module:
     - search_api
-id: policy_domain
-name: 'Policy domain'
-url_alias: policy_domain
+id: topic
+name: 'Topic'
+url_alias: topic
 weight: 0
 min_count: 1
 show_only_one_result: true
-field_identifier: policy_domain
+field_identifier: topic
 facet_source_id: 'search_api:views_page__search__page_1'
 widget:
   type: dropdown
   config:
     show_numbers: true
-    default_option_label: 'Any policy domain'
+    default_option_label: 'Any topic'
     arbitrary_facet_plugin: _none
 query_operator: or
 use_hierarchy: false

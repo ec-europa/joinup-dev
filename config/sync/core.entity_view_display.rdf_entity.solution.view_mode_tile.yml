@@ -40,7 +40,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_webdav_url
     - field.field.rdf_entity.solution.field_is_wiki
     - field.field.rdf_entity.solution.field_keywords
-    - field.field.rdf_entity.solution.field_policy_domain
+    - field.field.rdf_entity.solution.field_topic
     - field.field.rdf_entity.solution.field_short_id
     - field.field.rdf_entity.solution.field_site_featured
     - field.field.rdf_entity.solution.field_spatial_coverage
@@ -137,7 +137,7 @@ hidden:
   field_is_webdav_url: true
   field_is_wiki: true
   field_keywords: true
-  field_policy_domain: true
+  field_topic: true
   field_short_id: true
   field_site_featured: true
   field_spatial_coverage: true

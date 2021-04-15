@@ -11,7 +11,7 @@ dependencies:
     - field.field.node.document.field_file
     - field.field.node.document.field_keywords
     - field.field.node.document.field_licence
-    - field.field.node.document.field_policy_domain
+    - field.field.node.document.field_topic
     - field.field.node.document.field_shared_in
     - field.field.node.document.field_short_title
     - field.field.node.document.field_site_featured
@@ -111,7 +111,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
-  field_policy_domain:
+  field_topic:
     weight: 7
     settings: {  }
     third_party_settings: {  }
