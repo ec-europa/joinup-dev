@@ -20,7 +20,10 @@ Release procedure
 1. Deploy the release branch to the acceptance environment using the Jenkins
    job: https://jenkins.fpfis.eu/job/Joinup/job/acceptance/job/Build-acceptance/
 1. Move the release ticket in UAT.
+1. If any last minute problems are discovered during acceptance testing, these
+   will be fixed in pull requests that are merged directly into master.
 1. After receiving approval from the functional team, publish the new release on
    GitHub. This will automatically create the tag.
+1. Merge back master into develop if needed.
 1. Create a followup PR against develop that cleans up the update and deploy
    scripts.
