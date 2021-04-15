@@ -191,7 +191,7 @@ Feature: Unpublished content of the website
     # The entity should be visible in the user's account page as well.
     When I click "My account"
     And I should see the following tiles in the "My unpublished content area" region:
-      | Chasing shadows    |
+      | Chasing shadows |
 
     # Other facilitators should also see draft releases and proposed entities
     # in the "Unpublished content" region, but they should not see other content
@@ -204,17 +204,30 @@ Feature: Unpublished content of the website
       | Chasing shadows    |
       | The Ragged Streams |
     But I should not see the "Mists in the Thought" tile
+    # The unpublished release created by the other facilitator should not show
+    # up in the user's account page.
+    When I click "My account"
+    Then I should not see the "Chasing shadows" tile
 
     # A user should be able to see all content that they created. regardless of
     # the state.
     When I am logged in as "Ed Abbott"
     And I go to the "Invisible Boyfriend" solution
-    Then I should see the "The Ragged Streams" tile
-    And I should see the "Storms of Touch" tile
+    Then I should see the "Storms of Touch" tile
     And I should see the "The Male of the Gift" tile
-    And I should see the "Mists in the Thought" tile
+    And I should see the following tiles in the "Unpublished content area" region:
+      | The Ragged Streams   |
+      | Mists in the Thought |
     # The user should not see unpublished content that they didn't create.
     But I should not see the following tiles in the "Unpublished content area" region:
+      | Chasing shadows |
+
+    # The unpublished entities should be visible in the user's account page.
+    When I click "My account"
+    And I should see the following tiles in the "My unpublished content area" region:
+      | The Ragged Streams   |
+      | Mists in the Thought |
+    But I should not see the following tiles in the "My unpublished content area" region:
       | Chasing shadows |
 
     # Other authenticated users should only see the published items.
