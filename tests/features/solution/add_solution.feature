@@ -23,7 +23,7 @@ Feature: "Add solution" visibility options.
       | Description field is required.    |
       | Name field is required.           |
       | E-mail address field is required. |
-      | Policy domain field is required.  |
+      | Topic field is required.  |
       | Owner field is required.          |
       | Solution type field is required.  |
 
@@ -94,7 +94,7 @@ Feature: "Add solution" visibility options.
       | Name                  | Ernst Brice                                                   |
       | E-mail address        | ernsy1999@gmail.com                                           |
     Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
-    And I select "Demography" from "Policy domain"
+    And I select "Demography" from "Topic"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
     # The owner field should have a help text.
@@ -154,7 +154,7 @@ Feature: "Add solution" visibility options.
       | Name                  | Ajit Tamboli                                                           |
       | E-mail address        | tambotamboli@gocloud.in                                                |
     Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
-    And I select "E-inclusion" from "Policy domain"
+    And I select "E-inclusion" from "Topic"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
     And I attach the file "logo.png" to "Logo"
@@ -195,7 +195,7 @@ Feature: "Add solution" visibility options.
     And I fill in the following:
       | Title       | PHP comments parser                             |
       | Description | A simple parser that goes through PHP comments. |
-    And I select "Data gathering, data processing" from "Policy domain"
+    And I select "Data gathering, data processing" from "Topic"
     And I select "Implementing Guideline" from "Solution type"
 
     # Submit the incomplete form, so error messages about missing fields will
@@ -257,7 +257,7 @@ Feature: "Add solution" visibility options.
       | Geographical coverage | Switzerland                                 |
       | Name                  | Angela Crespi                               |
       | E-mail address        | angela_crespi@glacmon.basel-uni.ch          |
-    And I select "Data gathering, data processing" from "Policy domain"
+    And I select "Data gathering, data processing" from "Topic"
     And I select "Logging Service" from "Solution type"
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "University of Basel"
@@ -296,7 +296,7 @@ Feature: "Add solution" visibility options.
       | owner               | Organisation example                              |
       | state               | validated                                         |
       | solution type       | Non-binding Instrument, Service Discovery Service |
-      | policy domain       | Employment and Support Allowance                  |
+      | topic       | Employment and Support Allowance                  |
       | contact information | Invisible Man                                     |
 
     Given I am logged in as a moderator

@@ -43,7 +43,7 @@ Feature: Notification test for the event transitions on a pre moderated parent.
     And I fill in "Title" with "CC notify create propose"
     And I fill in "Description" with "CC notify create propose"
     And I fill in "Physical location" with "South King Street, Honolulu"
-    And I select "Statistics and Analysis" from "Policy domain"
+    And I select "Statistics and Analysis" from "Topic"
     And I press "Propose"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                 |
@@ -57,7 +57,7 @@ Feature: Notification test for the event transitions on a pre moderated parent.
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Description" with "CC notify create publish"
     And I fill in "Physical location" with "West Broadway, Vancouver"
-    And I select "Statistics and Analysis" from "Policy domain"
+    And I select "Statistics and Analysis" from "Topic"
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                  |

@@ -55,7 +55,7 @@ Feature:
       | title | EIF Toolbox |
       | state | validated   |
     And solutions:
-      | title    | state     | policy domain | collection  | eif reference                      |
+      | title    | state     | topic | collection  | eif reference                      |
       | Balker   | validated |               | EIF Toolbox | Recommendation 1, Recommendation 2 |
       | Corridor | validated |               | EIF Toolbox | Recommendation 1                   |
       | Lager    | validated | Demography    | EIF Toolbox |                                    |
@@ -72,10 +72,10 @@ Feature:
     But I should not see the "Corridor" tile
     And I should not see the "Lager" tile
 
-    # Policy domain should not list entities as well.
+    # Topic should not list entities as well.
     Given I am logged in as a moderator
     When I click "RDF ID converter" in the "Administration toolbar" region
-    And I fill in "RDF entity ID or a URL" with "http://joinup.eu/ontology/policy-domain#demography"
+    And I fill in "RDF entity ID or a URL" with "http://joinup.eu/ontology/topic#demography"
     And I press "Go!"
     Then I should see the heading "Demography"
     But I should not see the "Lager" tile

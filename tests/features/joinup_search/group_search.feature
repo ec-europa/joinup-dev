@@ -9,7 +9,7 @@ Feature: Search inside groups
       | title            | Chalet construction |
       | logo             | logo.png            |
       | moderation       | no                  |
-      | policy domain    | Demography          |
+      | topic    | Demography          |
       | spatial coverage | Switzerland         |
       | state            | validated           |
     And solution:
@@ -32,7 +32,7 @@ Feature: Search inside groups
       | Opening of the winter season | Ski resorts will open in December | validated | Chalet construction |                      |
       | Presenting DrillMaster X88   | Our most finely ground drill bit  | validated |                     | Inclined foundations |
     And news content:
-      | title             | body            | collection          | solution             | policy domain           | spatial coverage | state     |
+      | title             | body            | collection          | solution             | topic           | spatial coverage | state     |
       | Natural materials | Ground feel     | Chalet construction |                      | Statistics and Analysis | Switzerland      | validated |
       | Still frozen      | Maybe next week |                     | Inclined foundations |                         | Austria          | validated |
     And custom_page content:

@@ -27,7 +27,7 @@ Feature: Collection homepage
       | moderation          | yes                              |
       | content creation    | members                          |
       | state               | validated                        |
-      | policy domain       | Employment and Support Allowance |
+      | topic       | Employment and Support Allowance |
     And the following solution:
       | title            | Bilbo's book          |
       | collection       | Middle earth daily    |
@@ -41,11 +41,11 @@ Feature: Collection homepage
       | Middle earth daily | Boromir |             |
       | Middle earth daily | Legolas |             |
     And news content:
-      | title                                             | body                | policy domain     | collection         | state     | created           | changed  |
+      | title                                             | body                | topic     | collection         | state     | created           | changed  |
       | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated | 2014-10-17 8:34am | 2017-7-5 |
       | Breaking: Gandalf supposedly plans his retirement | A new white wizard? | Supplier exchange | Middle earth daily | validated | 2014-10-17 8:31am | 2017-7-5 |
     And event content:
-      | title                                    | short title      | body                                      | collection         | created           | start date          | end date            | state     | policy domain     | changed  |
+      | title                                    | short title      | body                                      | collection         | created           | start date          | end date            | state     | topic     | changed  |
       | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2014-10-17 8:33am | 2016-03-15T11:12:12 | 2016-03-15T11:12:12 | validated | Supplier exchange | 2017-7-5 |
 
   @clearStaticCache
@@ -118,17 +118,17 @@ Feature: Collection homepage
 
     # Deselect the content type filter.
     When I click the News content tab
-    # Verify the policy domain inline facet.
-    Then "all policy domains" should be selected in the "collection policy domain" inline facet
-    And the "collection policy domain" inline facet should allow selecting the following values:
+    # Verify the topic inline facet.
+    Then "all topics" should be selected in the "collection topic" inline facet
+    And the "collection topic" inline facet should allow selecting the following values:
       | Supplier exchange (2) |
       | Finance in EU (1)     |
 
-    When I click "Supplier exchange" in the "collection policy domain" inline facet
-    Then "Supplier exchange (2)" should be selected in the "collection policy domain" inline facet
-    And the "collection policy domain" inline facet should allow selecting the following values:
+    When I click "Supplier exchange" in the "collection topic" inline facet
+    Then "Supplier exchange (2)" should be selected in the "collection topic" inline facet
+    And the "collection topic" inline facet should allow selecting the following values:
       | Finance in EU (1)  |
-      | all policy domains |
+      | all topics |
     Then I should see the following tiles in the correct order:
       | Big hobbit feast - fireworks at midnight          |
       | Breaking: Gandalf supposedly plans his retirement |
@@ -136,17 +136,17 @@ Feature: Collection homepage
 
     # Verify that the inline widget reset link doesn't break other active facets.
     When I click the News content tab
-    Then "Supplier exchange (1)" should be selected in the "collection policy domain" inline facet
-    And the "collection policy domain" inline facet should allow selecting the following values:
+    Then "Supplier exchange (1)" should be selected in the "collection topic" inline facet
+    And the "collection topic" inline facet should allow selecting the following values:
       | Finance in EU (1)  |
-      | all policy domains |
+      | all topics |
     And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
     But I should not see the "Big hobbit feast - fireworks at midnight" tile
     And I should not see the "Rohirrim make extraordinary deal" tile
-    # Reset the policy domain selection.
-    When I click "all policy domains" in the "collection policy domain" inline facet
-    Then "all policy domains" should be selected in the "collection policy domain" inline facet
-    And the "collection policy domain" inline facet should allow selecting the following values:
+    # Reset the topic selection.
+    When I click "all topics" in the "collection topic" inline facet
+    Then "all topics" should be selected in the "collection topic" inline facet
+    And the "collection topic" inline facet should allow selecting the following values:
       | Finance in EU (1)     |
       | Supplier exchange (1) |
     And I should see the "Breaking: Gandalf supposedly plans his retirement" tile

@@ -61,7 +61,7 @@ Feature: Solutions message overview
       | Title                 | Message overview proposal |
       | Description           | Doesn't matter.           |
       | Geographical coverage | Belgium                   |
-    When I select "HR" from "Policy domain"
+    When I select "HR" from "Topic"
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
     And I press "Propose"

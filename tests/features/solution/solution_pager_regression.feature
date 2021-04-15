@@ -9,7 +9,7 @@ Feature: Test for a 'facets' regression on the solution overview page.
       | name  | Pierre Plezant             |
       | email | pierre.plezant@example.com |
     And the following solutions:
-      | title                | description                | logo     | banner     | state     | owner             | contact information | solution type | policy domain |
+      | title                | description                | logo     | banner     | state     | owner             | contact information | solution type | topic |
       | Apache               | Serving the web            | logo.png | banner.jpg | validated | Apache Foundation | Pierre Plezant      | Business      | E-inclusion   |
       | Security audit tools | Automated test of security | logo.png | banner.jpg | validated | Apache Foundation | Pierre Plezant      | Business      | E-inclusion   |
       | Drupal               | Content management         | logo.png | banner.jpg | validated | Apache Foundation | Pierre Plezant      | Business      | E-inclusion   |

@@ -12,7 +12,7 @@ Feature: Collection API
       | moderation       | no                       |
       | closed           | no                       |
       | content creation | facilitators and authors |
-      | policy domain    | E-health                 |
+      | topic    | E-health                 |
       | state            | validated                |
     Then I should have 1 collection
 
@@ -36,7 +36,7 @@ Feature: Collection API
       # Contact information data.
       | Name        | BasicCollectionAPI Contact                   |
       | E-mail      | basic.collection.api@example.com             |
-    When I select "Data gathering, data processing" from "Policy domain"
+    When I select "Data gathering, data processing" from "Topic"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I press "Add existing" at the "Owner" field

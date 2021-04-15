@@ -11,7 +11,7 @@ Feature: Related solution
       | name         | type                         |
       | Kalikatoures | Company, Industry consortium |
     And solutions:
-      | title      | related solutions | description                         | documentation | related by type | moderation | logo     | banner     | policy domain | state     | solution type | owner        | contact information |
+      | title      | related solutions | description                         | documentation | related by type | moderation | logo     | banner     | topic | state     | solution type | owner        | contact information |
       | C          |                   | Blazing fast segmentation faults.   | text.pdf      | yes             | no         | logo.png | banner.jpg | Demography    | validated |               | Kalikatoures | Kalikatoura         |
       | Java       | C                 | Because inheritance is cool.        | text.pdf      | yes             | no         | logo.png | banner.jpg | Demography    | validated | Citizen       | Kalikatoures | Kalikatoura         |
       | PHP        |                   | Make a site.                        | text.pdf      | yes             | yes        | logo.png | banner.jpg | Demography    | validated | Citizen       | Kalikatoures | Kalikatoura         |

@@ -32,7 +32,7 @@ Feature: About this solution
       | state               | validated                                         |
       | documentation       | text.pdf                                          |
       | language            | Italian, Kallawaya                                |
-      | policy domain       | Demography, E-inclusion                           |
+      | topic       | Demography, E-inclusion                           |
       | related solutions   | Gel, Polymer, Protein                             |
       | solution type       | Non-binding Instrument, Service Discovery Service |
       | spatial coverage    | Italy, Egypt                                      |
@@ -103,7 +103,7 @@ Feature: About this solution
       | Egypt |
       | Italy |
 
-    # Multiple policy domains.
+    # Multiple topics.
     And I should see the text "Demography" in the "Header" region
     And I should see the text "E-inclusion" in the "Header" region
     But I should not see the text "Demography" in the "Content" region

@@ -15,7 +15,7 @@ Feature: As a user of the website
       | name            |
       | Martin Gonzalez |
     And the following collections:
-      | title                      | description                | logo     | banner     | owner           | contact information | state            | policy domain                    |
+      | title                      | description                | logo     | banner     | owner           | contact information | state            | topic                    |
       | Willing Fairy              | Willing Fairy              | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | draft            | Statistics and Analysis          |
       | The Fallen Thoughts        | The Fallen Thoughts        | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | proposed         | Finance in EU                    |
       | Destruction of Scent       | Destruction of Scent       | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | validated        | Supplier exchange                |

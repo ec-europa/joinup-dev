@@ -48,7 +48,7 @@ Feature: Solution editing.
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
-    And I select "EU and European Policies" from "Policy domain"
+    And I select "EU and European Policies" from "Topic"
     And I select "Citizen" from "Solution type"
 
     # Click the button to select an existing owner.
@@ -63,7 +63,7 @@ Feature: Solution editing.
     When I go to the "Solution A" solution edit form
     Then I should see the heading "Edit Solution Solution A"
     Then the fields "Logo, Banner, Upload a new file or enter a URL, Geographical coverage, Keywords, Related solutions, Status, Languages, Landing page, Metrics page" should be correctly ordered in the region "Management solution vertical tab"
-    Then the fields "Title, Description, Contact information, Policy domain, Owner, Solution type, Moderated, Content creation" should be correctly ordered in the region "Main solution vertical tab"
+    Then the fields "Title, Description, Contact information, Topic, Owner, Solution type, Moderated, Content creation" should be correctly ordered in the region "Main solution vertical tab"
 
     And the following fields should not be present "Issue tracker, Wiki, Langcode, Translation"
     And the following fieldsets should be present "Contact information, Owner, Content creation"

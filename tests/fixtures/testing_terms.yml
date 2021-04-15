@@ -1,5 +1,5 @@
 # The fist level is the vocabulary ID. Accepts only 2-level hierarchy.
-policy_domain:
+topic:
   'Economy and Welfare':
     - 'Finance in EU'
   eGov:

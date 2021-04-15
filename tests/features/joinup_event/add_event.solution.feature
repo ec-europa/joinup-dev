@@ -48,7 +48,7 @@ Feature: "Add event" visibility options.
     When I go to the homepage of the "The Luscious Bridges" solution
     And I click "Add event" in the plus button menu
     Then I should see the heading "Add event"
-    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Contact email, Website, Policy domain, Add a new file, Scope, Geographical coverage"
+    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Contact email, Website, Topic, Add a new file, Scope, Geographical coverage"
     And the following fields should not be present "Shared on, Motivation"
 
     # Check required fields.
@@ -77,10 +77,10 @@ Feature: "Add event" visibility options.
     Then I should see the following error messages:
       | error messages                                                 |
       | The date and time should both be entered in the End date field |
-      | Policy domain field is required.                               |
+      | Topic field is required.                               |
 
     When I fill the end time of the Date widget with "23:59:00"
-    And I select "EU and European Policies" from "Policy domain"
+    And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
     Then I should see the heading "An amazing event"
     And I should see the success message "Event An amazing event has been created."

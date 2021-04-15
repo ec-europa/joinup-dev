@@ -72,7 +72,7 @@ Feature: As a user, visiting the EIF Toolbox page, I want to be able to filter
     And I fill in "Description" with "foo"
     And I fill in "Name" with "TikTok"
     And I fill in "E-mail address" with "where@example.com"
-    And I select "E-health" from "Policy domain"
+    And I select "E-health" from "Topic"
     And I select "Public Policy Cycle" from "Solution type"
     And I press "Publish"
 

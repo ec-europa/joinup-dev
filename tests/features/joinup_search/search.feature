@@ -13,15 +13,15 @@ Feature: Global search
       | title            | Molecular cooking collection |
       | logo             | logo.png                     |
       | moderation       | no                           |
-      | policy domain    | Demography                   |
+      | topic    | Demography                   |
       | spatial coverage | Belgium                      |
       | state            | validated                    |
     And the following solutions:
-      | title          | collection                   | description                                                                                                                          | policy domain | spatial coverage | state     |
+      | title          | collection                   | description                                                                                                                          | topic | spatial coverage | state     |
       | Spherification | Molecular cooking collection | Spherification is the culinary process of shaping a liquid into spheres                                                              | Demography    | European Union   | validated |
       | Foam           | Molecular cooking collection | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" |               |                  | validated |
     And news content:
-      | title                 | body             | collection                   | policy domain           | spatial coverage | state     |
+      | title                 | body             | collection                   | topic           | spatial coverage | state     |
       | El Celler de Can Roca | The best in town | Molecular cooking collection | Statistics and Analysis | Luxembourg       | validated |
 
     Given I am logged in as a user with the "authenticated" role
@@ -35,9 +35,9 @@ Feature: Global search
     And I should see the "Spherification" tile
     And I should see the "Foam" tile
     # Facets should be in place.
-    And the option with text "Any policy domain" from select facet "policy domain" is selected
-    And the "policy domain" select facet should contain the following options:
-      | Any policy domain             |
+    And the option with text "Any topic" from select facet "topic" is selected
+    And the "topic" select facet should contain the following options:
+      | Any topic             |
       | Demography   (2)              |
       | Statistics and Analysis   (1) |
     And the option with text "Any location" from select facet "spatial coverage" is selected
@@ -50,12 +50,12 @@ Feature: Global search
     # Joinup there were two search fields, but this was confusing users.
     And there should be exactly 1 "search field" on the page
 
-    # Test the policy domain facet.
-    When I select "Demography" from the "policy domain" select facet
-    Then the option with text "Demography   (2)" from select facet "policy domain" is selected
+    # Test the topic facet.
+    When I select "Demography" from the "topic" select facet
+    Then the option with text "Demography   (2)" from select facet "topic" is selected
     # The selected option moves to the last position by default.
-    And the "policy domain" select facet should contain the following options:
-      | Any policy domain             |
+    And the "topic" select facet should contain the following options:
+      | Any topic             |
       | Statistics and Analysis   (1) |
       | Demography   (2)              |
     Then the option with text "Any location" from select facet "spatial coverage" is selected
@@ -75,9 +75,9 @@ Feature: Global search
       | Any location         |
       | European Union   (1) |
       | Belgium   (1)        |
-    Then the option with text "Demography   (1)" from select facet "policy domain" is selected
-    And the "policy domain" select facet should contain the following options:
-      | Any policy domain |
+    Then the option with text "Demography   (1)" from select facet "topic" is selected
+    And the "topic" select facet should contain the following options:
+      | Any topic |
       | Demography   (1)  |
     And I should see the "Molecular cooking collection" tile
     But I should not see the "El Celler de Can Roca" tile
@@ -97,8 +97,8 @@ Feature: Global search
     Then the "Solutions" content checkbox item should be selected
     And the "News" content checkbox item should be selected
     Then the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (1)"
-    And the "policy domain" select facet should contain the following options:
-      | Any policy domain             |
+    And the "topic" select facet should contain the following options:
+      | Any topic             |
       | Demography   (1)              |
       | Statistics and Analysis   (1) |
     And the "spatial coverage" select facet should contain the following options:

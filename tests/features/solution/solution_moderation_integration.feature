@@ -16,7 +16,7 @@ Feature: As a user of the website
       | name    | type                  |
       | Mr Crab | Private Individual(s) |
     And the following solutions:
-      | title                    | description                | logo     | banner     | owner   | contact information | solution type | state            | policy domain |
+      | title                    | description                | logo     | banner     | owner   | contact information | solution type | state            | topic |
       | Professional Dreams      | Azure ship                 | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | draft            | E-inclusion   |
       | The Falling Swords       | The Falling Swords         | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | proposed         | E-inclusion   |
       | Flight of Night          | Rose of Doors              | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | validated        | E-inclusion   |

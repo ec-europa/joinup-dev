@@ -45,7 +45,7 @@ Feature: Proposing a collection
       | error messages                    |
       | Title field is required.          |
       | Description field is required.    |
-      | Policy domain field is required.  |
+      | Topic field is required.  |
       | Owner field is required.          |
       | Name field is required.           |
       | E-mail address field is required. |
@@ -58,7 +58,7 @@ Feature: Proposing a collection
       | Name                  | Contact person                                                                                       |
       | E-mail                | contact_person@example.com                                                                           |
       | Keywords              | Some keyword                                                                                         |
-    When I select "HR" from "Policy domain"
+    When I select "HR" from "Topic"
     And I select the radio button "Only members can create content."
     And I check "Moderated"
     # The owner field should have a help text.
@@ -140,7 +140,7 @@ Feature: Proposing a collection
 
     Given I am logged in as an "authenticated user"
     When I go to the propose collection form
-    Then the following fields should be visible "Title, Description, Policy domain"
+    Then the following fields should be visible "Title, Description, Topic"
     And the following field widgets should be visible "Owner"
     And the following fields should not be visible "Moderated, Abstract, Content creation, Geographical coverage"
     And the following fields should not be present "Affiliates"
@@ -149,7 +149,7 @@ Feature: Proposing a collection
     # Fill the mandatory fields.
     And I fill in "Title" with "Just a proposal"
     And I enter "Nothing..." in the "Description" wysiwyg editor
-    And I select "Employment and Support Allowance" from "Policy domain"
+    And I select "Employment and Support Allowance" from "Topic"
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
@@ -159,7 +159,7 @@ Feature: Proposing a collection
     And I press "Create contact information"
 
     When I click "Additional fields" tab
-    Then the following fields should not be visible "Title, Description, Policy domain"
+    Then the following fields should not be visible "Title, Description, Topic"
     And the following field widgets should not be visible "Owner"
     And the following fields should be visible "Content creation, Moderated, Abstract, Geographical coverage"
     And the following fields should not be present "Affiliates"
@@ -213,7 +213,7 @@ Feature: Proposing a collection
     # be shown to the user.
     Then the "Main fields" tab should be active
     # Fill the required fields.
-    When I select "HR" from "Policy domain"
+    When I select "HR" from "Topic"
     And I fill in the following:
       | Name   | Contact person             |
       | E-mail | contact_person@example.com |

@@ -74,7 +74,7 @@ Feature:
       | Title       | POLI |
       | Short title | POLI |
     And I select "Document" from "Type"
-    And I select "Supplier exchange" from "Policy domain"
+    And I select "Supplier exchange" from "Topic"
     # Regression test: Document is successfully displayed even when a publication date is not set.
     And I clear the date of the "Publication date" widget
     And I clear the time of the "Publication date" widget
@@ -99,7 +99,7 @@ Feature:
       | Title       | POLI |
       | Short title | POLI |
     And I select "Document" from "Type"
-    And I select "Supplier exchange" from "Policy domain"
+    And I select "Supplier exchange" from "Topic"
     # Regression test: Document is successfully displayed even when a publication date is not set.
     And I clear the date of the "Publication date" widget
     And I clear the time of the "Publication date" widget

@@ -8,7 +8,7 @@ Feature: Multilingual search
       | title            | Molecular cooking collection |
       | logo             | logo.png                     |
       | moderation       | no                           |
-      | policy domain    | Demography                   |
+      | topic    | Demography                   |
       | spatial coverage | Belgium                      |
       | state            | validated                    |
     And the multilingual "El celler de Can Roca" solution of "Molecular cooking collection" collection
