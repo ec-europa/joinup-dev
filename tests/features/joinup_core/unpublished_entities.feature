@@ -170,6 +170,8 @@ Feature: Unpublished content of the website
       | The Male of the Gift | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | validated |
       | Mists in the Thought | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | draft     |
 
+    # Create a release as a facilitator. In contrast to community content, only
+    # facilitators are allowed to create releases.
     When I am logged in as "Facilitator 1"
     When I go to the homepage of the "Invisible Boyfriend" solution
     And I click "Add release"
@@ -179,6 +181,8 @@ Feature: Unpublished content of the website
     And I press "Save as draft"
     Then I should see the heading "Chasing shadows 1.0"
 
+    # As a facilitator, I should see my own unpublished content, and content
+    # that is proposed by other members and is awaiting publication.
     When I go to the "Invisible Boyfriend" solution
     And I should see the following tiles in the "Unpublished content area" region:
       | Chasing shadows    |
@@ -189,22 +193,28 @@ Feature: Unpublished content of the website
     And I should see the following tiles in the "My unpublished content area" region:
       | Chasing shadows    |
 
-    # Facilitators can see the draft releases and proposed entities in the "Unpublished content" region.
+    # Other facilitators should also see draft releases and proposed entities
+    # in the "Unpublished content" region, but they should not see other content
+    # in draft state. The reason for this is that facilitators should only be
+    # aware of content that is proposed / ready for publication. Releases are an
+    # exception because these are facilitator-only and always OK to show.
     When I am logged in as "Facilitator 2"
     And I go to the "Invisible Boyfriend" solution
     And I should see the following tiles in the "Unpublished content area" region:
       | Chasing shadows    |
       | The Ragged Streams |
+    But I should not see the "Mists in the Thought" tile
 
-    # The owner should be able to see all content.
+    # A user should be able to see all content that they created. regardless of
+    # the state.
     When I am logged in as "Ed Abbott"
     And I go to the "Invisible Boyfriend" solution
     Then I should see the "The Ragged Streams" tile
     And I should see the "Storms of Touch" tile
     And I should see the "The Male of the Gift" tile
     And I should see the "Mists in the Thought" tile
-    # The owner of the content did not create the release as they are simple members.
-    And I should not see the following tiles in the "Unpublished content area" region:
+    # The user should not see unpublished content that they didn't create.
+    But I should not see the following tiles in the "Unpublished content area" region:
       | Chasing shadows |
 
     # Other authenticated users should only see the published items.
@@ -217,7 +227,8 @@ Feature: Unpublished content of the website
     And I should not see the following tiles in the "Unpublished content area" region:
       | Chasing shadows |
 
-    # Publish the release.
+    # Publish the release. It should now be moved to the main section and no
+    # longer show up in the unpublished content area.
     Given I am logged in as "Facilitator 1"
     And I go to the "Chasing shadows" release
     And I click "Edit" in the "Entity actions" region
