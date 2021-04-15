@@ -115,3 +115,16 @@ function joinup_core_deploy_0107002(array &$sandbox): string {
 
   return "Completed {$sandbox['progress']} out of {$sandbox['max']}.";
 }
+
+/**
+ * Update taxonomy terms.
+ */
+function joinup_core_deploy_0107003(&$sandbox) {
+  $query = <<<QUERY
+DELETE { GRAPH ?g { ?entity <http://policy_domain> ?value } }
+INSERT { GRAPH ?g { ?entity <https://www.w3.org/ns/dcat#themeTaxonomy> ?value } }
+WHERE { GRAPH ?g { ?entity <http://policy_domain> ?value } }
+QUERY;
+
+  \Drupal::getContainer()->get('sparql.endpoint')->query($query);
+}
