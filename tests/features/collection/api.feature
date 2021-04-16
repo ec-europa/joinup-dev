@@ -12,7 +12,7 @@ Feature: Collection API
       | moderation       | no                       |
       | closed           | no                       |
       | content creation | facilitators and authors |
-      | topic    | E-health                 |
+      | topic            | E-health                 |
       | state            | validated                |
     Then I should have 1 collection
 

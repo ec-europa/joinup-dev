@@ -45,7 +45,7 @@ Feature: Proposing a collection
       | error messages                    |
       | Title field is required.          |
       | Description field is required.    |
-      | Topic field is required.  |
+      | Topic field is required.          |
       | Owner field is required.          |
       | Name field is required.           |
       | E-mail address field is required. |

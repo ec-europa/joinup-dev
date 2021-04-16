@@ -18,26 +18,26 @@ Feature: Joinup should be ADMS-AP compliant.
       | description | Some nice licence |
       | type        | Attribution       |
     And the following collection:
-      | title                | Morbid Scattered Microphone    |
-      | author               | Andre Munson                   |
-      | abstract             | Abstract.                      |
-      | description          | Description of the collection. |
-      | access url           | http://www.example.com/msm/    |
-      | logo                 | logo.png                       |
-      | banner               | banner.jpg                     |
-      | contact information  | Jocelyn Bass                   |
-      | owner                | Teddy Bass                     |
-      | creation date        | 2016-07-13T13:00               |
-      | modification date    | 2017-06-30T11:27               |
-      | closed               | no                             |
-      | content creation     | facilitators and authors       |
-      | moderation           | no                             |
-      | topic        | Demography                     |
-      | spatial coverage     | Belgium                        |
-      | state                | validated                      |
-      | featured             | no                             |
+      | title               | Morbid Scattered Microphone    |
+      | author              | Andre Munson                   |
+      | abstract            | Abstract.                      |
+      | description         | Description of the collection. |
+      | access url          | http://www.example.com/msm/    |
+      | logo                | logo.png                       |
+      | banner              | banner.jpg                     |
+      | contact information | Jocelyn Bass                   |
+      | owner               | Teddy Bass                     |
+      | creation date       | 2016-07-13T13:00               |
+      | modification date   | 2017-06-30T11:27               |
+      | closed              | no                             |
+      | content creation    | facilitators and authors       |
+      | moderation          | no                             |
+      | topic               | Demography                     |
+      | spatial coverage    | Belgium                        |
+      | state               | validated                      |
+      | featured            | no                             |
     And the following solutions:
-      | title        | collection                  | author           | description    | logo     | banner     | owner      | contact information | creation date   | modification date | documentation | content creation | keywords         | landing page                    | language    | metrics page                    | moderation | topic            | related solutions | solution type          | source code repository        | spatial coverage | status    | translation | webdav creation | webdav url                    | wiki                        | state     | featured | pinned in |
+      | title        | collection                  | author           | description    | logo     | banner     | owner      | contact information | creation date   | modification date | documentation | content creation | keywords         | landing page                    | language    | metrics page                    | moderation | topic                    | related solutions | solution type          | source code repository        | spatial coverage | status    | translation | webdav creation | webdav url                    | wiki                        | state     | featured | pinned in |
       | Early Omega  | Morbid Scattered Microphone | Andre Munson     | <p>content</p> | logo.png | banner.jpg | Teddy Bass | Jocelyn Bass        | 2017-11-01T8:00 | 2017-12-01T8:43   | text.pdf      | registered users | ADMS, validation | http://www.example.com/landing1 | Interlingua | http://www.example.org/metrics1 | no         | EU and European Policies |                   | Service Delivery Model | http://www.example.org/source | Canada           | Completed |             | no              | http://www.example.org/webdav | http://www.example.org/wiki | validated | no       |           |
       | Snake Timely | Morbid Scattered Microphone | Branson Winthrop | <p>content</p> | logo.png | banner.jpg | Teddy Bass | Jocelyn Bass        | 2015-03-03T8:00 | 2018-02-14T18:43  | text.pdf      | registered users |                  | http://www.example.com/landing2 | English     | http://www.example.org/metrics2 | yes        | Demography               | Early Omega       | Business Information   | http://www.example.org/source | Canada           | Completed |             | yes             | http://www.example.org/webdav | http://www.example.org/wiki | validated | no       |           |
     And the following releases:

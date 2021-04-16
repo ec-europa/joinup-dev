@@ -23,7 +23,7 @@ Feature: "Add solution" visibility options.
       | Description field is required.    |
       | Name field is required.           |
       | E-mail address field is required. |
-      | Topic field is required.  |
+      | Topic field is required.          |
       | Owner field is required.          |
       | Solution type field is required.  |
 
@@ -296,7 +296,7 @@ Feature: "Add solution" visibility options.
       | owner               | Organisation example                              |
       | state               | validated                                         |
       | solution type       | Non-binding Instrument, Service Discovery Service |
-      | topic       | Employment and Support Allowance                  |
+      | topic               | Employment and Support Allowance                  |
       | contact information | Invisible Man                                     |
 
     Given I am logged in as a moderator

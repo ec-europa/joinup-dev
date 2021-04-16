@@ -58,9 +58,9 @@ Feature: Creation of news through the UI.
     # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3680
     And I press "Publish"
     Then I should see the following error messages:
-      | error messages                    |
+      | error messages                                                                       |
       | Short title cannot be longer than 66 characters but is currently 69 characters long. |
-      | Topic field is required. |
+      | Topic field is required.                                                             |
 
     When I fill in "Short title" with "Ytterbium metal of the year"
     And I select "EU and European Policies" from "Topic"

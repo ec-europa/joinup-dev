@@ -26,7 +26,7 @@ Feature: Event moderation
       | state               | validated             |
       | owner               | Alma Lee              |
       | contact information | Evs contact           |
-      | topic       | E-inclusion           |
+      | topic               | E-inclusion           |
     And the following collection user membership:
       | collection | user           | roles       |
       | Wet Lords  | Rosa Vaughn    | member      |

@@ -108,11 +108,11 @@ Feature: Collections Overview
       | title            | Jira       |
       | logo             | logo.png   |
       | moderation       | no         |
-      | topic    | Demography |
+      | topic            | Demography |
       | spatial coverage | Belgium    |
       | state            | validated  |
     And news content:
-      | title                             | body                             | collection | topic           | spatial coverage | state     |
+      | title                             | body                             | collection | topic                   | spatial coverage | state     |
       | Jira will be down for maintenance | As always, during business hours | Jira       | Statistics and Analysis | Luxembourg       | validated |
     And custom_page content:
       | title            | body                                       | collection |

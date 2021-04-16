@@ -77,7 +77,7 @@ Feature: "Add event" visibility options.
     Then I should see the following error messages:
       | error messages                                                 |
       | The date and time should both be entered in the End date field |
-      | Topic field is required.                               |
+      | Topic field is required.                                       |
 
     When I fill the end time of the Date widget with "23:59:00"
     And I select "EU and European Policies" from "Topic"

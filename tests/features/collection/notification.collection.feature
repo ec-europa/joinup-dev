@@ -21,7 +21,7 @@ Feature: Notification test for the collection transitions.
       | NC member2     |           | nc_member2@test.com     | NC         | Member2     |
       | NCS owner      |           | ncs_owner@test.com      | NC         | Owner       |
     And collections:
-      | title                  | state            | abstract     | description   | topic     | owner      | contact information        |
+      | title                  | state            | abstract     | description   | topic             | owner      | contact information        |
       | NC to propose          | draft            | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
       | NC to validate         | proposed         | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
       # The following will also cover the validate edited notification.

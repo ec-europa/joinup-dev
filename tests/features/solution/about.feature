@@ -32,7 +32,7 @@ Feature: About this solution
       | state               | validated                                         |
       | documentation       | text.pdf                                          |
       | language            | Italian, Kallawaya                                |
-      | topic       | Demography, E-inclusion                           |
+      | topic               | Demography, E-inclusion                           |
       | related solutions   | Gel, Polymer, Protein                             |
       | solution type       | Non-binding Instrument, Service Discovery Service |
       | spatial coverage    | Italy, Egypt                                      |

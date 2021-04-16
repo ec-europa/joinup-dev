@@ -67,9 +67,9 @@ Feature: "Add document" visibility options.
     Then I upload the file "test.zip" to "Upload a new file or enter a URL"
     And I press "Save as draft"
     Then I should see the following error messages:
-      | error messages                   |
-      | Description field is required.   |
-      | Topic field is required. |
+      | error messages                 |
+      | Description field is required. |
+      | Topic field is required.       |
 
     When I enter "This is going to be an amazing document." in the "Description" wysiwyg editor
     And I select "EU and European Policies" from "Topic"

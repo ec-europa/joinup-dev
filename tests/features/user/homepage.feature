@@ -18,7 +18,7 @@ Feature: Homepage feature
       | Boy of Courage      | Boy of Courage      | logo.png | banner.jpg | Jared Mcgee | validated |
       | Legion Constitution | Legion Constitution | logo.png | banner.jpg | Jared Mcgee | validated |
     And news content:
-      | title                     | body                      | topic     | collection          | state     | visits | created          |
+      | title                     | body                      | topic             | collection          | state     | visits | created          |
       | The Danger of the Bridges | The Danger of the Bridges | Finance in EU     | The Sacred Future   | validated | 649    | 2013-06-15 16:00 |
       | Girl in the Dreams        | Girl in the Dreams        | Supplier exchange | Boy of Courage      | validated | 9421   | 2014-05-11 16:00 |
       | An Explosion in Space     | An Explosion in Space     | E-health          | Legion Constitution | validated | 5064   | 2015-04-07 16:00 |

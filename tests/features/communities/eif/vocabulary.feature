@@ -55,10 +55,10 @@ Feature:
       | title | EIF Toolbox |
       | state | validated   |
     And solutions:
-      | title    | state     | topic | collection  | eif reference                      |
-      | Balker   | validated |               | EIF Toolbox | Recommendation 1, Recommendation 2 |
-      | Corridor | validated |               | EIF Toolbox | Recommendation 1                   |
-      | Lager    | validated | Demography    | EIF Toolbox |                                    |
+      | title    | state     | topic      | collection  | eif reference                      |
+      | Balker   | validated |            | EIF Toolbox | Recommendation 1, Recommendation 2 |
+      | Corridor | validated |            | EIF Toolbox | Recommendation 1                   |
+      | Lager    | validated | Demography | EIF Toolbox |                                    |
 
     # Underlying Principle 1.
     When I go to "/taxonomy/term/http_e_f_fdata_ceuropa_ceu_fRec1"

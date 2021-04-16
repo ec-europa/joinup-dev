@@ -13,15 +13,15 @@ Feature: Global search
       | title            | Molecular cooking collection |
       | logo             | logo.png                     |
       | moderation       | no                           |
-      | topic    | Demography                   |
+      | topic            | Demography                   |
       | spatial coverage | Belgium                      |
       | state            | validated                    |
     And the following solutions:
-      | title          | collection                   | description                                                                                                                          | topic | spatial coverage | state     |
-      | Spherification | Molecular cooking collection | Spherification is the culinary process of shaping a liquid into spheres                                                              | Demography    | European Union   | validated |
-      | Foam           | Molecular cooking collection | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" |               |                  | validated |
+      | title          | collection                   | description                                                                                                                          | topic      | spatial coverage | state     |
+      | Spherification | Molecular cooking collection | Spherification is the culinary process of shaping a liquid into spheres                                                              | Demography | European Union   | validated |
+      | Foam           | Molecular cooking collection | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" |            |                  | validated |
     And news content:
-      | title                 | body             | collection                   | topic           | spatial coverage | state     |
+      | title                 | body             | collection                   | topic                   | spatial coverage | state     |
       | El Celler de Can Roca | The best in town | Molecular cooking collection | Statistics and Analysis | Luxembourg       | validated |
 
     Given I am logged in as a user with the "authenticated" role
@@ -37,7 +37,7 @@ Feature: Global search
     # Facets should be in place.
     And the option with text "Any topic" from select facet "topic" is selected
     And the "topic" select facet should contain the following options:
-      | Any topic             |
+      | Any topic                     |
       | Demography   (2)              |
       | Statistics and Analysis   (1) |
     And the option with text "Any location" from select facet "spatial coverage" is selected
@@ -55,7 +55,7 @@ Feature: Global search
     Then the option with text "Demography   (2)" from select facet "topic" is selected
     # The selected option moves to the last position by default.
     And the "topic" select facet should contain the following options:
-      | Any topic             |
+      | Any topic                     |
       | Statistics and Analysis   (1) |
       | Demography   (2)              |
     Then the option with text "Any location" from select facet "spatial coverage" is selected
@@ -77,8 +77,8 @@ Feature: Global search
       | Belgium   (1)        |
     Then the option with text "Demography   (1)" from select facet "topic" is selected
     And the "topic" select facet should contain the following options:
-      | Any topic |
-      | Demography   (1)  |
+      | Any topic        |
+      | Demography   (1) |
     And I should see the "Molecular cooking collection" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Spherification" tile
@@ -98,7 +98,7 @@ Feature: Global search
     And the "News" content checkbox item should be selected
     Then the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (1)"
     And the "topic" select facet should contain the following options:
-      | Any topic             |
+      | Any topic                     |
       | Demography   (1)              |
       | Statistics and Analysis   (1) |
     And the "spatial coverage" select facet should contain the following options:

@@ -58,11 +58,11 @@ Feature: "Add event" visibility options.
       | The Attachments field description is required. |
 
     When I fill in the following:
-      | Title                  | An amazing event                      |
-      | Short title            | Amazing event                         |
-      | Description            | This is going to be an amazing event. |
-      | File description       | Taxi discount voucher.                |
-      | Geographical coverage  | France                                |
+      | Title                 | An amazing event                      |
+      | Short title           | Amazing event                         |
+      | Description           | This is going to be an amazing event. |
+      | File description      | Taxi discount voucher.                |
+      | Geographical coverage | France                                |
     And I press "Add another item" at the "Virtual location" field
     And I fill the start date of the Date widget with "2018-08-29"
     And I fill the start time of the Date widget with "23:59:59"
@@ -75,7 +75,7 @@ Feature: "Add event" visibility options.
     Then I should see the following error messages:
       | error messages                                   |
       | At least one location field should be filled in. |
-      | Topic field is required.                 |
+      | Topic field is required.                         |
 
     When I fill in "Physical location" with "Rue Belliard 28, Brussels, Belgium"
     And I enter the following for the "Virtual location" link field:
@@ -123,8 +123,8 @@ Feature: "Add event" visibility options.
       | title | Stream of Dreams |
       | state | validated        |
     And event content:
-      | title             | collection       | body      |  online location              | state     |
-      | The Great Opening | Stream of Dreams | It opens! |  webinar - http://example.com | validated |
+      | title             | collection       | body      | online location              | state     |
+      | The Great Opening | Stream of Dreams | It opens! | webinar - http://example.com | validated |
 
     Given I am logged in as a moderator
 

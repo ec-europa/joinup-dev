@@ -422,10 +422,10 @@ class JoinupCommunityContentContext extends RawDrupalContext {
   /**
    * Sets a random topic for community content that misses one.
    *
-   * For some tests the community content's topic has no relevance. Such
-   * tests are allowed to omit an explicit topic. We're creating a dummy
-   * topic term, together with its parent, just to satisfy data
-   * integrity and prevent form validation errors.
+   * For some tests the community content's topic has no relevance. Such tests
+   * are allowed to omit an explicit topic. We're creating a dummy topic term,
+   * together with its parent, just to satisfy data integrity and prevent form
+   * validation errors.
    *
    * @param \Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope $scope
    *   An object containing the entity properties and fields that are to be used

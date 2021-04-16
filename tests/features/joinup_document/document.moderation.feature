@@ -26,7 +26,7 @@ Feature: Document moderation
       | state               | validated                       |
       | owner               | thisisanowner                   |
       | contact information | Dis contact                     |
-      | topic       | E-inclusion                     |
+      | topic               | E-inclusion                     |
     And the following collection user membership:
       | collection      | user            | roles       |
       | The Naked Ashes | Gretchen Greene | member      |

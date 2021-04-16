@@ -13,13 +13,13 @@ Feature: Contact Information moderation
       | type                          | name               |
       | Non-Governmental Organisation | Anglo-Saxon Museum |
     And collection:
-      | title         | Games of the Anglo-Saxon age                  |
-      | description   | There were many different board games played. |
-      | logo          | logo.png                                      |
-      | banner        | banner.jpg                                    |
-      | owner         | Anglo-Saxon Museum                            |
-      | topic | E-inclusion                                   |
-      | state         | draft                                         |
+      | title       | Games of the Anglo-Saxon age                  |
+      | description | There were many different board games played. |
+      | logo        | logo.png                                      |
+      | banner      | banner.jpg                                    |
+      | owner       | Anglo-Saxon Museum                            |
+      | topic       | E-inclusion                                   |
+      | state       | draft                                         |
     And collection user membership:
       | collection                   | user                  | roles       |
       | Games of the Anglo-Saxon age | Sæwine Cynebald       | facilitator |

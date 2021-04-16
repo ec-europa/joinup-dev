@@ -36,24 +36,24 @@ Feature: Collection moderation
       # Facilitator of all the collections.
       | Carole James    |           |
     And the following collections:
-      | title                   | description             | logo     | banner     | owner          | contact information | state            |
-      | Deep Past               | Azure ship              | logo.png | banner.jpg | Simon Sandoval | Francis             | draft            |
-      | The Licking Silence     | The Licking Silence     | logo.png | banner.jpg | Simon Sandoval | Francis             | proposed         |
-      | Person of Wizards       | Person of Wizards       | logo.png | banner.jpg | Simon Sandoval | Francis             | validated        |
-      | The Shard's Hunter      | The Shard's Hunter      | logo.png | banner.jpg | Simon Sandoval | Francis             | archival request |
-      | Luck in the Abyss       | Luck in the Abyss       | logo.png | banner.jpg | Simon Sandoval | Francis             | archived         |
+      | title               | description         | logo     | banner     | owner          | contact information | state            |
+      | Deep Past           | Azure ship          | logo.png | banner.jpg | Simon Sandoval | Francis             | draft            |
+      | The Licking Silence | The Licking Silence | logo.png | banner.jpg | Simon Sandoval | Francis             | proposed         |
+      | Person of Wizards   | Person of Wizards   | logo.png | banner.jpg | Simon Sandoval | Francis             | validated        |
+      | The Shard's Hunter  | The Shard's Hunter  | logo.png | banner.jpg | Simon Sandoval | Francis             | archival request |
+      | Luck in the Abyss   | Luck in the Abyss   | logo.png | banner.jpg | Simon Sandoval | Francis             | archived         |
     And the following collection user memberships:
-      | collection              | user         | roles       |
-      | Deep Past               | Erika Reid   | owner       |
-      | The Licking Silence     | Erika Reid   | owner       |
-      | Person of Wizards       | Erika Reid   | owner       |
-      | The Shard's Hunter      | Erika Reid   | owner       |
-      | Luck in the Abyss       | Erika Reid   | owner       |
-      | Deep Past               | Carole James | facilitator |
-      | The Licking Silence     | Carole James | facilitator |
-      | Person of Wizards       | Carole James | facilitator |
-      | The Shard's Hunter      | Carole James | facilitator |
-      | Luck in the Abyss       | Carole James | facilitator |
+      | collection          | user         | roles       |
+      | Deep Past           | Erika Reid   | owner       |
+      | The Licking Silence | Erika Reid   | owner       |
+      | Person of Wizards   | Erika Reid   | owner       |
+      | The Shard's Hunter  | Erika Reid   | owner       |
+      | Luck in the Abyss   | Erika Reid   | owner       |
+      | Deep Past           | Carole James | facilitator |
+      | The Licking Silence | Carole James | facilitator |
+      | Person of Wizards   | Carole James | facilitator |
+      | The Shard's Hunter  | Carole James | facilitator |
+      | Luck in the Abyss   | Carole James | facilitator |
 
     # The following table tests the allowed transitions in a collection.
     # For each entry, the following steps must be performed:
@@ -65,61 +65,61 @@ Feature: Collection moderation
     # When I click the "Edit" link
     # Then the state field should have only the given states available.
     Then for the following collection, the corresponding user should have the corresponding available state buttons:
-      | collection              | user            | buttons                                           |
+      | collection          | user            | buttons                                           |
 
       # The owner is also a facilitator so the only UATable part of the owner is that they have the ability to
       # request archival and delete the collection when the collection is validated.
-      | Deep Past               | Erika Reid      | Save as draft, Propose                            |
-      | The Licking Silence     | Erika Reid      | Propose, Save as draft                            |
+      | Deep Past           | Erika Reid      | Save as draft, Propose                            |
+      | The Licking Silence | Erika Reid      | Propose, Save as draft                            |
       # Person of Wizards has a published version so the facilitator can publish directly.
       # The facilitator can still save as draft or propose for internal checking between eligible users.
       # Note that the 'Delete' action is represented as a link rather than a button and has a dedicated test below.
-      | Person of Wizards       | Erika Reid      | Publish, Save as draft, Propose, Request archival |
-      | The Shard's Hunter      | Erika Reid      |                                                   |
-      | Luck in the Abyss       | Erika Reid      |                                                   |
+      | Person of Wizards   | Erika Reid      | Publish, Save as draft, Propose, Request archival |
+      | The Shard's Hunter  | Erika Reid      |                                                   |
+      | Luck in the Abyss   | Erika Reid      |                                                   |
 
       # The following collections do not follow the rule above and should be
       # tested as shown.
-      | Deep Past               | Carole James    | Save as draft, Propose                            |
-      | The Licking Silence     | Carole James    | Propose, Save as draft                            |
-      | Person of Wizards       | Carole James    | Publish, Save as draft, Propose                   |
-      | The Shard's Hunter      | Carole James    |                                                   |
-      | Luck in the Abyss       | Carole James    |                                                   |
-      | Deep Past               | Velma Smith     |                                                   |
-      | The Licking Silence     | Velma Smith     |                                                   |
-      | Person of Wizards       | Velma Smith     |                                                   |
-      | The Shard's Hunter      | Velma Smith     |                                                   |
-      | Luck in the Abyss       | Velma Smith     |                                                   |
-      | Deep Past               | Lena Richardson | Save as draft, Propose, Publish                   |
-      | The Licking Silence     | Lena Richardson | Propose, Save as draft, Publish                   |
-      | Person of Wizards       | Lena Richardson | Publish, Save as draft, Propose                   |
-      | The Shard's Hunter      | Lena Richardson | Publish, Archive                                  |
-      | Luck in the Abyss       | Lena Richardson |                                                   |
+      | Deep Past           | Carole James    | Save as draft, Propose                            |
+      | The Licking Silence | Carole James    | Propose, Save as draft                            |
+      | Person of Wizards   | Carole James    | Publish, Save as draft, Propose                   |
+      | The Shard's Hunter  | Carole James    |                                                   |
+      | Luck in the Abyss   | Carole James    |                                                   |
+      | Deep Past           | Velma Smith     |                                                   |
+      | The Licking Silence | Velma Smith     |                                                   |
+      | Person of Wizards   | Velma Smith     |                                                   |
+      | The Shard's Hunter  | Velma Smith     |                                                   |
+      | Luck in the Abyss   | Velma Smith     |                                                   |
+      | Deep Past           | Lena Richardson | Save as draft, Propose, Publish                   |
+      | The Licking Silence | Lena Richardson | Propose, Save as draft, Publish                   |
+      | Person of Wizards   | Lena Richardson | Publish, Save as draft, Propose                   |
+      | The Shard's Hunter  | Lena Richardson | Publish, Archive                                  |
+      | Luck in the Abyss   | Lena Richardson |                                                   |
 
     # The 'Delete' action is not a button but a link leading to a confirmation
     # page that is styled as a button. It should only be available to the owner
     # of a validated collection.
     And the visibility of the delete link should be as follows for these users in these collections:
-      | collection              | user            | delete link |
-      | Person of Wizards       | Erika Reid      | yes         |
-      | The Shard's Hunter      | Erika Reid      | no          |
-      | Luck in the Abyss       | Erika Reid      | no          |
-      | Deep Past               | Carole James    | no          |
-      | The Licking Silence     | Carole James    | no          |
-      | Person of Wizards       | Carole James    | no          |
-      | The Shard's Hunter      | Carole James    | no          |
-      | Luck in the Abyss       | Carole James    | no          |
-      | Deep Past               | Velma Smith     | no          |
-      | The Licking Silence     | Velma Smith     | no          |
-      | Person of Wizards       | Velma Smith     | no          |
-      | The Shard's Hunter      | Velma Smith     | no          |
-      | Luck in the Abyss       | Velma Smith     | no          |
+      | collection          | user            | delete link |
+      | Person of Wizards   | Erika Reid      | yes         |
+      | The Shard's Hunter  | Erika Reid      | no          |
+      | Luck in the Abyss   | Erika Reid      | no          |
+      | Deep Past           | Carole James    | no          |
+      | The Licking Silence | Carole James    | no          |
+      | Person of Wizards   | Carole James    | no          |
+      | The Shard's Hunter  | Carole James    | no          |
+      | Luck in the Abyss   | Carole James    | no          |
+      | Deep Past           | Velma Smith     | no          |
+      | The Licking Silence | Velma Smith     | no          |
+      | Person of Wizards   | Velma Smith     | no          |
+      | The Shard's Hunter  | Velma Smith     | no          |
+      | Luck in the Abyss   | Velma Smith     | no          |
       # A moderator can also see the delete link.
-      | Deep Past               | Lena Richardson | yes         |
-      | The Licking Silence     | Lena Richardson | yes         |
-      | Person of Wizards       | Lena Richardson | yes         |
-      | The Shard's Hunter      | Lena Richardson | yes         |
-      | Luck in the Abyss       | Lena Richardson | yes         |
+      | Deep Past           | Lena Richardson | yes         |
+      | The Licking Silence | Lena Richardson | yes         |
+      | Person of Wizards   | Lena Richardson | yes         |
+      | The Shard's Hunter  | Lena Richardson | yes         |
+      | Luck in the Abyss   | Lena Richardson | yes         |
 
     # Authentication sample checks.
     Given I am logged in as "Carole James"
@@ -182,7 +182,7 @@ Feature: Collection moderation
       | banner              | banner.jpg         |
       | owner               | Carpet Sandation   |
       | contact information | Partyanimal        |
-      | topic       | Supplier exchange  |
+      | topic               | Supplier exchange  |
       | state               | proposed           |
     When I am on the homepage
     And I click "Collections"
