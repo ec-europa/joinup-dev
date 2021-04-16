@@ -29,7 +29,7 @@ Release procedure
    the option *Save draft*!
 1. Build the release using the following Jenkins job:
    https://jenkins.fpfis.eu/job/Joinup/job/acceptance/job/build-rpm-acc/
-   Make sure to enter the name of the release branch as th e `RELEASE_TAG`. We
+   Make sure to enter the name of the release branch as the `RELEASE_TAG`. We
    are actually only creating the tag _after_ the release is accepted.
 1. Deploy the release to the acceptance environment using the Jenkins job:
    https://jenkins.fpfis.eu/job/Joinup/job/acceptance/job/Build-acceptance/
