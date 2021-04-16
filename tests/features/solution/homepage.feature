@@ -158,7 +158,7 @@ Feature: Solution homepage
     Then I should not see the "Pager" region
 
   @terms @javascript
-  Scenario: Test that up to 7 policy terms are visible in the solution overview header.
+  Scenario: Test that up to 7 topic terms are visible in the solution overview header.
     Given the following solutions:
       | title      | description        | logo     | banner     | state     | topic                                                                                                                              |
       | All topics | Bring in EVERYONE! | logo.png | banner.jpg | validated | Finance in EU, Supplier exchange, E-health, HR, Employment and Support Allowance, Statistics and Analysis, E-inclusion, Demography |
