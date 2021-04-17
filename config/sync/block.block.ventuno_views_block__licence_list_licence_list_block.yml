@@ -1,0 +1,30 @@
+uuid: eef633eb-4179-492b-9406-ca63ca34f9f9
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.licence_list
+  module:
+    - system
+    - views
+  theme:
+    - ventuno
+id: ventuno_views_block__licence_list_licence_list_block
+theme: ventuno
+region: content
+weight: -16
+provider: null
+plugin: 'views_block:licence_list-licence_list_block'
+settings:
+  id: 'views_block:licence_list-licence_list_block'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: /node/701805
+    negate: false
+    context_mapping: {  }

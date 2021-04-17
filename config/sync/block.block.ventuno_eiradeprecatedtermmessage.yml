@@ -1,0 +1,27 @@
+uuid: 20e684b2-2775-4d4d-ab46-7d12ec382bc6
+langcode: en
+status: true
+dependencies:
+  module:
+    - eira
+    - joinup_core
+  theme:
+    - ventuno
+id: ventuno_eiradeprecatedtermmessage
+theme: ventuno
+region: content_top
+weight: -19
+provider: null
+plugin: eira_deprecated_term_block
+settings:
+  id: eira_deprecated_term_block
+  label: 'Eira deprecated term message'
+  provider: eira
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - entity.taxonomy_term.canonical
+    negate: false
+    context_mapping: {  }
