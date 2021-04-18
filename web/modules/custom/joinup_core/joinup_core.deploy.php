@@ -17,7 +17,7 @@ declare(strict_types = 1);
 use Drupal\asset_distribution\Entity\DownloadEvent;
 
 /**
- * Backup the field policy domain node field.
+ * Restore the field policy domain node field into the new topic field.
  */
 function joinup_core_deploy_0107000(&$sandbox) {
   $schema = \Drupal::database()->schema();
