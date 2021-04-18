@@ -120,11 +120,38 @@ function joinup_core_deploy_0107002(array &$sandbox): string {
  * Update taxonomy terms.
  */
 function joinup_core_deploy_0107003(&$sandbox) {
+  $connection = \Drupal::getContainer()->get('sparql.endpoint');
+
+  // Move current policy domain terms to the new graph <http://topic> as it this
+  // is now the graph according to
+  // sparql_entity_storage.mapping.taxonomy_term.topic.uml under
+  // "graph > default".
+  $query = <<<QUERY
+DELETE { GRAPH <http://policy_domain> { ?s ?p ?o } }
+INSERT { GRAPH <http://topic> { ?s ?p ?o } }
+WHERE { GRAPH <http://policy_domain> { ?s ?p ?o } }
+QUERY;
+  $connection->query($query);
+
+  // Update the type of the topic terms. It was agreed to change this from
+  // <http://joinup.eu/policy-domain> to
+  // <https://www.w3.org/ns/dcat#themeTaxonomy> instead of
+  // <http://joinup.eu/topic>. The type is defined in
+  // sparql_entity_storage.mapping.taxonomy_term.topic.yml under "rdf_type".
+  $query = <<<QUERY
+DELETE { GRAPH <http://topic> { ?entity <http://www.w3.org/2004/02/skos/core#inScheme> <http://joinup.eu/policy-domain> } }
+INSERT { GRAPH <http://topic> { ?entity <http://www.w3.org/2004/02/skos/core#inScheme> <https://www.w3.org/ns/dcat#themeTaxonomy> } }
+WHERE { GRAPH <http://topic> { ?entity <http://www.w3.org/2004/02/skos/core#inScheme> <http://joinup.eu/policy-domain> } }
+QUERY;
+  $connection->query($query);
+
+  // Update the references from <http://joinup.eu/policy-domain> to
+  // <https://www.w3.org/ns/dcat#themeTaxonomy> in all graphs that have the
+  // topic reference.
   $query = <<<QUERY
 DELETE { GRAPH ?g { ?entity <http://policy_domain> ?value } }
 INSERT { GRAPH ?g { ?entity <https://www.w3.org/ns/dcat#themeTaxonomy> ?value } }
 WHERE { GRAPH ?g { ?entity <http://policy_domain> ?value } }
 QUERY;
-
-  \Drupal::getContainer()->get('sparql.endpoint')->query($query);
+  $connection->query($query);
 }

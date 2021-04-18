@@ -8,7 +8,7 @@ dependencies:
 id: taxonomy_term.topic
 entity_type_id: taxonomy_term
 bundle: topic
-rdf_type: 'http://joinup.eu/topic'
+rdf_type: 'https://www.w3.org/ns/dcat#themeTaxonomy'
 graph:
   default: 'http://topic'
 base_fields_mapping:
