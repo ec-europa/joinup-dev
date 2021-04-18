@@ -31,6 +31,4 @@ function joinup_core_post_update_0107000(&$sandbox) {
   }
 
   \Drupal::getContainer()->get('sparql.endpoint')->query('MOVE <http://policy_domain> TO <http://topic>');
-  \Drupal::getContainer()->get('sparql.field_handler')->clearCache();
-  \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->resetCache();
 }
