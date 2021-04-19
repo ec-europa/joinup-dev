@@ -100,7 +100,7 @@ default:
         Content: '.section--content-middle'
         Cookie consent banner: '#cookie-consent-banner'
         Entity actions: '.block-local-tasks-block'
-        Footer: '.section--footer'
+        Footer: '.section--footer, footer'
         Header menu: '#block-joinup-theme-main-menu'
         Header: '.section--featured'
         Left sidebar: '.section--sidebar-left'
