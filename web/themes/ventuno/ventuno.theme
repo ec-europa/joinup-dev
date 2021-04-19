@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Functions to support theming in the Ventuno theme.
+ */
+
 declare(strict_types = 1);
 
 /**
