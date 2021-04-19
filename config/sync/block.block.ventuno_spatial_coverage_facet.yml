@@ -11,8 +11,8 @@ dependencies:
     - ventuno
 id: ventuno_spatial_coverage_facet
 theme: ventuno
-region: header
-weight: -15
+region: sidebar
+weight: -19
 provider: null
 plugin: 'facet_block:spatial_coverage'
 settings:

@@ -11,8 +11,8 @@ dependencies:
     - ventuno
 id: ventuno_entity_bundle_facet
 theme: ventuno
-region: header
-weight: -18
+region: sidebar
+weight: -22
 provider: null
 plugin: 'facet_block:type'
 settings:

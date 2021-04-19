@@ -10,8 +10,8 @@ dependencies:
     - ventuno
 id: ventuno_mycontentcollection
 theme: ventuno
-region: header
-weight: 0
+region: sidebar
+weight: -14
 provider: null
 plugin: 'facet_block:collection_my_content'
 settings:

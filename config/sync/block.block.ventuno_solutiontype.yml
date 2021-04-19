@@ -10,8 +10,8 @@ dependencies:
     - ventuno
 id: ventuno_solutiontype
 theme: ventuno
-region: header
-weight: -19
+region: sidebar
+weight: -23
 provider: null
 plugin: 'facet_block:solution_type'
 settings:

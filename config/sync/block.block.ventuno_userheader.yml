@@ -11,7 +11,7 @@ _core:
 id: ventuno_userheader
 theme: ventuno
 region: featured
-weight: -20
+weight: -25
 provider: null
 plugin: user_header_block
 settings:

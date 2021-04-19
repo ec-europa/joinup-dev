@@ -10,8 +10,8 @@ dependencies:
     - ventuno
 id: ventuno_changed
 theme: ventuno
-region: header
-weight: -20
+region: sidebar
+weight: -24
 provider: null
 plugin: 'facet_block:aggregated_changed'
 settings:

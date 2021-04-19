@@ -11,7 +11,7 @@ dependencies:
 id: ventuno_support
 theme: ventuno
 region: header
-weight: -21
+weight: -26
 provider: null
 plugin: 'system_menu_block:support'
 settings:

@@ -11,8 +11,8 @@ dependencies:
     - ventuno
 id: ventuno_navigation
 theme: ventuno
-region: header
-weight: -22
+region: sidebar
+weight: -26
 provider: null
 plugin: 'group_menu_block:navigation'
 settings:

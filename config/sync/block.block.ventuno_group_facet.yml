@@ -11,8 +11,8 @@ dependencies:
     - ventuno
 id: ventuno_group_facet
 theme: ventuno
-region: header
-weight: -17
+region: sidebar
+weight: -21
 provider: null
 plugin: 'facet_block:group'
 settings:

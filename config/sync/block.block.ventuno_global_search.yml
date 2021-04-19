@@ -10,7 +10,7 @@ dependencies:
 id: ventuno_global_search
 theme: ventuno
 region: header
-weight: -22
+weight: -27
 provider: null
 plugin: joinup_search_global_search
 settings:

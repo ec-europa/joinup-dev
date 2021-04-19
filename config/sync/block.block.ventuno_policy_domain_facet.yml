@@ -11,8 +11,8 @@ dependencies:
     - ventuno
 id: ventuno_policy_domain_facet
 theme: ventuno
-region: header
-weight: -16
+region: sidebar
+weight: -20
 provider: null
 plugin: 'facet_block:policy_domain'
 settings:

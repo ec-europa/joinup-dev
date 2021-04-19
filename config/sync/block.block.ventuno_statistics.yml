@@ -11,7 +11,7 @@ dependencies:
 id: ventuno_statistics
 theme: ventuno
 region: featured
-weight: -18
+weight: -23
 provider: null
 plugin: statistics
 settings:

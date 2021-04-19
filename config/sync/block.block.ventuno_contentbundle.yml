@@ -13,8 +13,8 @@ _core:
   default_config_hash: maOU9192SGD0AVcjVb1fN8OjC-1lemKXWALBgJR0JCk
 id: ventuno_contentbundle
 theme: ventuno
-region: header
-weight: -11
+region: sidebar
+weight: -16
 provider: null
 plugin: 'facet_block:content_bundle'
 settings:
