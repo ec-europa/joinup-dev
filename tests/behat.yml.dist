@@ -102,7 +102,7 @@ default:
         Entity actions: '.block-local-tasks-block'
         Footer: '.section--footer, footer'
         Header menu: '#block-joinup-theme-main-menu'
-        Header: '.section--featured'
+        Header: '.section--featured, header'
         Left sidebar: '.section--sidebar-left'
         Main solution vertical tab: '#edit-group-main'
         Management solution vertical tab: '#edit-group-management'
