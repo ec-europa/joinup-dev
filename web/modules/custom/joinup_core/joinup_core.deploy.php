@@ -40,24 +40,19 @@ function joinup_core_deploy_0107000(&$sandbox) {
 
   $sparql_endpoint = \Drupal::getContainer()->get('sparql.endpoint');
 
-  // Update the type of the topic terms. It was agreed to change this from
-  // <http://joinup.eu/policy-domain> to
-  // <https://www.w3.org/ns/dcat#themeTaxonomy> instead of
-  // <http://joinup.eu/topic>. The type is defined in
-  // sparql_entity_storage.mapping.taxonomy_term.topic.yml under "rdf_type".
   $query = <<<QUERY
 DELETE { GRAPH <http://topic> { ?entity <http://www.w3.org/2004/02/skos/core#inScheme> <http://joinup.eu/policy-domain> } }
-INSERT { GRAPH <http://topic> { ?entity <http://www.w3.org/2004/02/skos/core#inScheme> <https://www.w3.org/ns/dcat#themeTaxonomy> } }
+INSERT { GRAPH <http://topic> { ?entity <http://www.w3.org/2004/02/skos/core#inScheme> <http://joinup.eu/vocabulary/topic> } }
 WHERE { GRAPH <http://topic> { ?entity <http://www.w3.org/2004/02/skos/core#inScheme> <http://joinup.eu/policy-domain> } }
 QUERY;
   $sparql_endpoint->query($query);
 
   // Update the references from <http://joinup.eu/policy-domain> to
-  // <https://www.w3.org/ns/dcat#themeTaxonomy> in all graphs that have the
+  // <http://joinup.eu/vocabulary/topic> in all graphs that have the
   // topic reference.
   $query = <<<QUERY
 DELETE { GRAPH ?g { ?entity <http://policy_domain> ?value } }
-INSERT { GRAPH ?g { ?entity <https://www.w3.org/ns/dcat#themeTaxonomy> ?value } }
+INSERT { GRAPH ?g { ?entity <http://joinup.eu/vocabulary/topic> ?value } }
 WHERE { GRAPH ?g { ?entity <http://policy_domain> ?value } }
 QUERY;
   $sparql_endpoint->query($query);
