@@ -1992,38 +1992,6 @@ class JoinupContext extends RawDrupalContext {
   }
 
   /**
-   * Asserts that the small header is present in the page.
-   *
-   * @throws \Exception
-   *   Thrown when the small header is not found.
-   *
-   * @Then I should see the small header
-   */
-  public function assertSmallHeaderIsPresent() {
-    $element = $this->getSession()->getPage()->find('css', '.section--header');
-
-    if (!$element) {
-      throw new \Exception('The small header was not found in the page.');
-    }
-  }
-
-  /**
-   * Asserts that the small header is not present in the page.
-   *
-   * @throws \Exception
-   *   Thrown when the small header is found.
-   *
-   * @Then I should not see the small header
-   */
-  public function assertSmallHeaderIsNotPresent() {
-    $element = $this->getSession()->getPage()->find('css', '.section--header');
-
-    if ($element) {
-      throw new \Exception('The small header was fount in the page, but it should not.');
-    }
-  }
-
-  /**
    * Asserts that a certain link contains the URL of an entity.
    *
    * @param string $link
