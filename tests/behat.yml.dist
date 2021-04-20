@@ -102,7 +102,7 @@ default:
         Entity actions: '.block-local-tasks-block'
         Footer: '.section--footer, footer'
         Header menu: '#block-joinup-theme-main-menu'
-        Header: '.section--featured, header'
+        Header: '.section--featured, header.region-header'
         Left sidebar: '.section--sidebar-left'
         Main solution vertical tab: '#edit-group-main'
         Management solution vertical tab: '#edit-group-management'
@@ -118,10 +118,10 @@ default:
         Plus button menu: 'div.add-content-menu'
         Primary menu: '.region-primary-menu'
         SevenHeader: '.region-header'
+        Statistics: '#block-statistics, #block-ventuno-statistics'
         Table of contents: '#block-table-of-contents'
         Table of contents outline: '#block-toc-outline'
         Unpublished content area: '.block-entity-unpublished'
-        Statistics: '#block-statistics'
       drupal:
         drupal_root: ${joinup.site_dir}
       selectors:
