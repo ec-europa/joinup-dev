@@ -10,7 +10,7 @@ id: rdf_entity.asset_release.field_topic
 field_name: field_topic
 entity_type: rdf_entity
 bundle: asset_release
-label: 'Policy Domain'
+label: 'Topic'
 description: ''
 required: true
 translatable: false

@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: collection_topic
-name: 'Policy Domain'
+name: 'Topic'
 url_alias: collection_topic
 weight: -1
 min_count: 1
