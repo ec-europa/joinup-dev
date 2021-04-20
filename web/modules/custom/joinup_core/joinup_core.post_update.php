@@ -31,8 +31,7 @@ function joinup_core_post_update_0107000(&$sandbox) {
   }
 
   \Drupal::getContainer()->get('sparql.endpoint')->query('MOVE <http://policy_domain> TO <http://topic>');
-  \Drupal::database()->delete('config')
-    ->condition('collection', '')
-    ->condition('name', 'taxonomy.vocabulary.policy_domain')
-    ->execute();
+  \Drupal::configFactory()->getEditable('taxonomy.vocabulary.policy_domain')->delete();
+  \Drupal::keyValue('config.entity.key_store.rdf_entity_mapping')->deleteAll();
+  \Drupal::keyValue('config.entity.key_store.taxonomy_vocabulary')->deleteAll();
 }
