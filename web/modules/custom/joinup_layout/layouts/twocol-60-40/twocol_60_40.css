@@ -7,8 +7,7 @@
   flex-wrap: wrap;
 }
 
-.joinup-layout--twocol-60-40 > .layout__region,
-.joinup-layout--twocol-60-40 > .layout__region--second {
+.joinup-layout--twocol-60-40 > .layout__region {
   flex: 0 1 100%;
 }
 
