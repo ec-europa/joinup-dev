@@ -19,13 +19,21 @@ declare(strict_types = 1);
  */
 function joinup_core_deploy_0107100(array &$sandbox): void {
   // WARNING: Needs to run first among the deploy hooks.
-  $schema = \Drupal::database()->schema();
   $database = \Drupal::database();
-  $type = [
+  $schema = $database->schema();
+  $field_schema_definition = [
     'type' => 'varchar',
     'length' => 128,
     'not null' => TRUE,
     'description' => 'The ID of the target entity.',
+  ];
+  $indexes = [
+    'fields' => [
+      'field_topic_target_id' => $field_schema_definition,
+    ],
+    'indexes' => [
+      'field_topic_target_id' => ['field_topic_target_id'],
+    ],
   ];
 
   $schema->dropTable('node__field_topic');
@@ -33,11 +41,15 @@ function joinup_core_deploy_0107100(array &$sandbox): void {
   // The "changeField" happens in the deploy phase so that we can use the API
   // to perform the changes because the command to change the field name differs
   // even from mariaDB to MySQL.
-  $schema->changeField('node__field_topic', 'field_policy_domain_target_id', 'field_topic_target_id', $type);
+  $schema->changeField('node__field_topic', 'field_policy_domain_target_id', 'field_topic_target_id', $field_schema_definition, $indexes);
+  $schema->dropIndex('node__field_topic', 'field_policy_domain_target_id');
+  $database->query("ALTER TABLE node__field_topic COMMENT 'Data storage for node field field_topic.'");
 
   $schema->dropTable('node_revision__field_topic');
   $schema->renameTable('node_revision__field_topic_backup', 'node_revision__field_topic');
-  $schema->changeField('node_revision__field_topic', 'field_policy_domain_target_id', 'field_topic_target_id', $type);
+  $schema->changeField('node_revision__field_topic', 'field_policy_domain_target_id', 'field_topic_target_id', $field_schema_definition, $indexes);
+  $schema->dropIndex('node_revision__field_topic', 'field_policy_domain_target_id');
+  $database->query("ALTER TABLE node_revision__field_topic COMMENT 'Revision archive storage for node field field_topic.'");
 
   $sparql_endpoint = \Drupal::getContainer()->get('sparql.endpoint');
 
@@ -106,5 +118,4 @@ QUERY;
 UPDATE cachetags SET `tag` = REPLACE(tag, 'policy_domain', 'topic');
 QUERY;
   $database->query($query);
-
 }
