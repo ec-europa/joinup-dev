@@ -100,4 +100,11 @@ SET `field_topic_target_id` =
 QUERY;
     $database->query($query);
   }
+
+  // Update the cachetags table and rename the necessary tags.
+  $query = <<<QUERY
+UPDATE cachetags SET `tag` = REPLACE(tag, 'policy_domain', 'topic');
+QUERY;
+  $database->query($query);
+
 }
