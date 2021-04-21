@@ -19,6 +19,7 @@ declare(strict_types = 1);
  * Backup the field policy domain node field.
  */
 function joinup_core_post_update_0107100(&$sandbox) {
+  // WARNING: Needs to run last among the post update hooks.
   $schema = \Drupal::database()->schema();
   $schema->renameTable('node__field_policy_domain', 'node__field_topic_backup');
   $schema->renameTable('node_revision__field_policy_domain', 'node_revision__field_topic_backup');

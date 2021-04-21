@@ -17,7 +17,8 @@ declare(strict_types = 1);
 /**
  * Restore the field policy domain node field into the new topic field.
  */
-function joinup_core_deploy_0107100(&$sandbox) {
+function joinup_core_deploy_0107100(array &$sandbox): void {
+  // WARNING: Needs to run first among the deploy hooks.
   $schema = \Drupal::database()->schema();
   $database = \Drupal::database();
   $type = [
