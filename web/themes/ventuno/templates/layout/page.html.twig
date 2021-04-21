@@ -41,10 +41,17 @@
  */
 #}
 <div class="layout-container">
+  <div class="section-header">
+    <header role="banner" class="region-header">
+      {{ page.header }}
+    </header>
 
-  <header role="banner" class="region-header">
-    {{ page.header }}
-  </header>
+    {% if page.header_bottom %}
+      <div class="region-header-bottom">
+        {{ page.header_bottom }}
+      </div>
+    {% endif %}
+  </div>
 
   {{ page.featured }}
 

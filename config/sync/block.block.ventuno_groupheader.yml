@@ -10,8 +10,8 @@ _core:
   default_config_hash: h5CYj7Tnz0AfDbd7lm81Q1EBn7jA6-IcEpCbJt4ddsk
 id: ventuno_groupheader
 theme: ventuno
-region: featured
-weight: -26
+region: header_bottom
+weight: -25
 provider: null
 plugin: group_header_block
 settings:

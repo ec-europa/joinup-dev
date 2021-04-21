@@ -10,8 +10,8 @@ _core:
   default_config_hash: cUHOddgt8ZfDNPWn5Oz4x-XWRYRKnfmp23iF-wfobwg
 id: ventuno_userheader
 theme: ventuno
-region: featured
-weight: -25
+region: header_bottom
+weight: -24
 provider: null
 plugin: user_header_block
 settings:

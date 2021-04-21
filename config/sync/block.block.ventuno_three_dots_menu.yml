@@ -6,8 +6,8 @@ dependencies:
     - ventuno
 id: ventuno_three_dots_menu
 theme: ventuno
-region: featured
-weight: -22
+region: header_bottom
+weight: -21
 provider: null
 plugin: local_tasks_block
 settings:

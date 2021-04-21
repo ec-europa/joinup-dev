@@ -10,8 +10,8 @@ dependencies:
     - ventuno
 id: ventuno_statistics
 theme: ventuno
-region: featured
-weight: -23
+region: header_bottom
+weight: -22
 provider: null
 plugin: statistics
 settings:
