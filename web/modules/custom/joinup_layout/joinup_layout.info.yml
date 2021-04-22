@@ -1,0 +1,5 @@
+name: 'Joinup layout'
+type: module
+description: 'Contains custom layouts for Joinup.'
+core_version_requirement: ^8 || ^9
+package: Joinup
