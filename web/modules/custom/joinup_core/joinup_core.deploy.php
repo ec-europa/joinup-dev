@@ -127,6 +127,15 @@ SET `field_user_professional_domain_target_id` =
   REPLACE(`field_user_professional_domain_target_id`, 'http://joinup.eu/ontology/policy-domain', 'http://joinup.eu/ontology/topic');
 QUERY;
   $database->query($query);
+
+  // Update the name of the pathauto_state.taxonomy_term in the key_value pair.
+  $query = <<<QUERY
+UPDATE key_value
+SET `name` =
+  REPLACE(`name`, 'http://joinup.eu/ontology/policy-domain', 'http://joinup.eu/ontology/topic')
+WHERE collection = 'pathauto_state.taxonomy_term'
+QUERY;
+  $database->query($query);
 }
 
 /**
