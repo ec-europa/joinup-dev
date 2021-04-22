@@ -6,9 +6,9 @@ namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
 use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
+use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
 use Drupal\search_api\Entity\Index;
 use Drupal\taxonomy\Entity\Vocabulary;
-use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
 
 /**
  * Tests hierarchy indexing for the aggregated field 'Topic'.
