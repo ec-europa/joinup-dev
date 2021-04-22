@@ -6,9 +6,9 @@ namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
 use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
-use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
 use Drupal\search_api\Entity\Index;
 use Drupal\taxonomy\Entity\Vocabulary;
+use weitzman\DrupalTestTraits\Entity\TaxonomyCreationTrait;
 
 /**
  * Tests hierarchy indexing for the aggregated field 'Topic'.
@@ -18,7 +18,7 @@ use Drupal\taxonomy\Entity\Vocabulary;
 class TopicHierarchyIndexingTest extends JoinupExistingSiteTestBase {
 
   use RdfEntityCreationTrait;
-  use TaxonomyTestTrait;
+  use TaxonomyCreationTrait;
 
   /**
    * A list of terms used in the test.
@@ -54,16 +54,6 @@ class TopicHierarchyIndexingTest extends JoinupExistingSiteTestBase {
       $this->assertCount(1, $results);
       $item = reset($results);
       $this->assertSame($item->getOriginalObject()->getEntity()->id(), $collection->id());
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function tearDown(): void {
-    parent::tearDown();
-    foreach ($this->terms as $term) {
-      $term->delete();
     }
   }
 
