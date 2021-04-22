@@ -121,14 +121,18 @@ Feature: Collection homepage
     # Verify the topic inline facet.
     Then "all topics" should be selected in the "collection topic" inline facet
     And the "collection topic" inline facet should allow selecting the following values:
-      | Supplier exchange (2) |
-      | Finance in EU (1)     |
+      | eGov (2)                |
+      | Supplier exchange (2)   |
+      | Economy and Welfare (1) |
+      | Finance in EU (1)       |
 
     When I click "Supplier exchange" in the "collection topic" inline facet
     Then "Supplier exchange (2)" should be selected in the "collection topic" inline facet
     And the "collection topic" inline facet should allow selecting the following values:
-      | Finance in EU (1) |
-      | all topics        |
+      | eGov (2)                |
+      | Economy and Welfare (1) |
+      | Finance in EU (1)       |
+      | all topics              |
     Then I should see the following tiles in the correct order:
       | Big hobbit feast - fireworks at midnight          |
       | Breaking: Gandalf supposedly plans his retirement |
@@ -138,8 +142,10 @@ Feature: Collection homepage
     When I click the News content tab
     Then "Supplier exchange (1)" should be selected in the "collection topic" inline facet
     And the "collection topic" inline facet should allow selecting the following values:
-      | Finance in EU (1) |
-      | all topics        |
+      | Economy and Welfare (1) |
+      | eGov (1)                |
+      | Finance in EU (1)       |
+      | all topics              |
     And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
     But I should not see the "Big hobbit feast - fireworks at midnight" tile
     And I should not see the "Rohirrim make extraordinary deal" tile
@@ -147,8 +153,10 @@ Feature: Collection homepage
     When I click "all topics" in the "collection topic" inline facet
     Then "all topics" should be selected in the "collection topic" inline facet
     And the "collection topic" inline facet should allow selecting the following values:
-      | Finance in EU (1)     |
-      | Supplier exchange (1) |
+      | Economy and Welfare (1) |
+      | eGov (1)                |
+      | Finance in EU (1)       |
+      | Supplier exchange (1)   |
     And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
     And I should see the "Rohirrim make extraordinary deal" tile
     But I should not see the "Big hobbit feast - fireworks at midnight" tile
