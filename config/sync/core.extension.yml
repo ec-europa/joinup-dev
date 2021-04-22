@@ -77,6 +77,7 @@ module:
   joinup_group: 0
   joinup_group_content_management: 0
   joinup_invite: 0
+  joinup_layout: 0
   joinup_legal: 0
   joinup_licence: 0
   joinup_material_design: 0

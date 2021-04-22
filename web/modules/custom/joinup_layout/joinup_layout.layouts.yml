@@ -1,0 +1,20 @@
+joinup_layout_twocol_60_40:
+  label: 'Joinup 60/40'
+  path: layouts/twocol-60-40
+  template: joinup-layout--twocol-60-40
+  library: joinup_layout/twocol_60_40
+  category: 'Columns: 2'
+  default_region: first
+  icon_map:
+    - [top]
+    - [first, second]
+    - [bottom]
+  regions:
+    top:
+      label: Top
+    first:
+      label: First
+    second:
+      label: Second
+    bottom:
+      label: Bottom
