@@ -85,7 +85,7 @@ WHERE {
 QUERY;
   $sparql_endpoint->query($query);
 
-  // Update all references to the policy domain terms.
+  // Update all references to the policy domain terms in SPARQL.
   $query = <<<QUERY
 DELETE { GRAPH ?g { ?s ?p ?oldUri } }
 INSERT { GRAPH ?g { ?s ?p ?newUri } }
@@ -100,15 +100,16 @@ WHERE {
 QUERY;
   $sparql_endpoint->query($query);
 
+  // Update all instances of the policy domain terms in the node field tables.
   $tables = [
     'node__field_topic',
     'node_revision__field_topic',
   ];
   foreach ($tables as $table) {
     $query = <<<QUERY
-UPDATE {{$table}}
+UPDATE {$table}
 SET `field_topic_target_id` =
-    REPLACE(field_topic_target_id, 'http://joinup.eu/ontology/policy-domain', 'http://joinup.eu/ontology/topic');
+    REPLACE(`field_topic_target_id`, 'http://joinup.eu/ontology/policy-domain', 'http://joinup.eu/ontology/topic');
 QUERY;
     $database->query($query);
   }
@@ -118,4 +119,51 @@ QUERY;
 UPDATE cachetags SET `tag` = REPLACE(tag, 'policy_domain', 'topic');
 QUERY;
   $database->query($query);
+
+  // Update the user professional domain.
+  $query = <<<QUERY
+UPDATE user__field_user_professional_domain
+SET `field_user_professional_domain_target_id` =
+  REPLACE(`field_user_professional_domain_target_id`, 'http://joinup.eu/ontology/policy-domain', 'http://joinup.eu/ontology/topic');
+QUERY;
+  $database->query($query);
+}
+
+/**
+ * Update the paragraph content listings.
+ */
+function joinup_deploy_0107101(array &$sandbox): string {
+  $database = \Drupal::database();
+  if (empty($sandbox['items'])) {
+    $sandbox['items'] = $database->query("SELECT entity_id, revision_id, delta, langcode, deleted, field_content_listing_value FROM paragraph_revision__field_content_listing WHERE field_content_listing_value LIKE '%policy_domain%' OR field_content_listing_value LIKE '%policy-domain';")->fetchAll();
+    $sandbox['max'] = count($sandbox['items']);
+    $sandbox['progress'] = 0;
+  }
+
+  $tables = [
+    'paragraph__field_content_listing',
+    'paragraph_revision__field_content_listing',
+  ];
+
+  $items = array_splice($sandbox['items'], 0, 50);
+  foreach ($items as $item) {
+    $value = unserialize($item->field_content_listing_value);
+    $value['query_presets'] = str_replace(['policy_domain', 'policy-domain'], 'topic', $value['query_presets']);
+    $item->field_content_listing_value = serialize($value);
+
+    foreach ($tables as $table) {
+      $database->update($table)
+        ->fields((array) $item)
+        ->condition('entity_id', $item->entity_id)
+        ->condition('revision_id', $item->revision_id)
+        ->condition('deleted', $item->deleted)
+        ->condition('delta', $item->delta)
+        ->condition('langcode', $item->langcode)
+        ->execute();
+    }
+  }
+
+  $sandbox['progress'] += count($items);
+  $sandbox['#finished'] = ($sandbox['progress'] >= $sandbox['max']) ? 1 : (float) $sandbox['progress'] / (float) $sandbox['max'];
+  return "Processed {$sandbox['progress']} out of {$sandbox['max']} items.";
 }
