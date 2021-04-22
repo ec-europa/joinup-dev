@@ -8,6 +8,7 @@ use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
 use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
 use Drupal\search_api\Entity\Index;
 use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
 
 /**
  * Tests hierarchy indexing for the aggregated field 'Topic'.
@@ -17,6 +18,7 @@ use Drupal\taxonomy\Entity\Vocabulary;
 class TopicHierarchyIndexingTest extends JoinupExistingSiteTestBase {
 
   use RdfEntityCreationTrait;
+  use TaxonomyTestTrait;
 
   /**
    * A list of terms used in the test.
@@ -33,7 +35,7 @@ class TopicHierarchyIndexingTest extends JoinupExistingSiteTestBase {
     $this->terms['parent'] = $this->createTerm($topic_vocabulary, [
       'name' => 'Parent',
     ]);
-    $this->terms['child'] = $this->coreCreateTerm($topic_vocabulary, [
+    $this->terms['child'] = $this->createTerm($topic_vocabulary, [
       'name' => 'Child',
       'parent' => $this->terms['parent']->id(),
     ]);
