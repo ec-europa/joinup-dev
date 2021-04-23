@@ -290,7 +290,7 @@ class JoinupSearchContext extends RawDrupalContext {
     if (!$element) {
       throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
     }
-    $this->assertSelectedOption($element, $option);
+    $this->assertSelectedOption($element, $option, TRUE);
   }
 
   /**
@@ -326,7 +326,7 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function assertSelectOptionsAsList($select, TableNode $table) {
     $element = $this->findFacetByAlias($select, NULL, 'select');
-    $this->assertSelectAvailableOptions($element, $table);
+    $this->assertSelectAvailableOptions($element, $table, TRUE);
   }
 
   /**
