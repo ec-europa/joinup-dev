@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the global search bar.
+ *
+ * Available variables:
+ * - filters: the search filters, to be displayed as chips.
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="search-bar">
+    <label for="search-bar__input" style="display: none">{{ 'Search'|trans }}</label>
+    <form action="{{ path("view.search.page_1") }}">
+        {% for id, filter in filters %}
+            <input type="hidden" class="search-bar__chip" name="f[]" value="{{ id }}" data-description="{{ filter }}">
+        {% endfor %}
+        <input class="search-bar__input" type="text" name="keys" id="search-bar__input" placeholder="{{ 'Start typing to search…'|trans }}">
+        <input type="submit" value="{{ 'Search'|trans }}">
+    </form>
+</div>

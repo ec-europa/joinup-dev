@@ -7,6 +7,7 @@ namespace Drupal\joinup_search\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\og\OgContextInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -65,6 +66,39 @@ class GlobalSearchBlock extends BlockBase implements ContainerFactoryPluginInter
   /**
    * {@inheritdoc}
    */
+  public function defaultConfiguration() {
+    return [
+      'template_suggestion' => '',
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockForm($form, FormStateInterface $form_state) {
+    $form['template_suggestion'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Template suggestion'),
+      '#default_value' => $this->configuration['template_suggestion'],
+      '#size' => 60,
+      '#maxlength' => 128,
+      '#pattern' => '[a-z_]+',
+      '#description' => $this->t('Optional template suggestion, can be used to override the theming. Can consist only of lowercase letters and underscores.'),
+    ];
+
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockSubmit($form, FormStateInterface $form_state) {
+    $this->configuration['template_suggestion'] = $form_state->getValue('template_suggestion');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function build() {
     $group = $this->getGroup();
 
@@ -73,6 +107,7 @@ class GlobalSearchBlock extends BlockBase implements ContainerFactoryPluginInter
     $build['content'] = [
       '#theme' => 'joinup_search_global_search',
       '#filters' => $filters,
+      '#template_suggestion' => $this->configuration['template_suggestion'],
       '#cache' => [
         'contexts' => $this->getCacheContexts(),
         'tags' => $this->getCacheTags(),

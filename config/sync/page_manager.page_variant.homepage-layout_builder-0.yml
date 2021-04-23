@@ -27,6 +27,7 @@ variant_settings:
             label: 'Global search'
             provider: joinup_search
             label_display: '0'
+            template_suggestion: homepage
             context_mapping: {  }
           additional: {  }
           weight: 1
