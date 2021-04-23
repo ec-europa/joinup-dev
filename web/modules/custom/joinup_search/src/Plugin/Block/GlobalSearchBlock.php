@@ -8,12 +8,16 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Url;
 use Drupal\og\OgContextInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a global search block.
+ *
+ * This block is used in the top header as well as on the front page. It allows
+ * to do a site-wide (a.k.a. 'global') search. When displayed on a page that
+ * belongs to a group, the group will be added as a filter which is displayed
+ * inline in the text field.
  *
  * @Block(
  *   id = "joinup_search_global_search",
@@ -36,12 +40,12 @@ class GlobalSearchBlock extends BlockBase implements ContainerFactoryPluginInter
    *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
    *   The plugin ID for the plugin instance.
-   * @param string $plugin_definition
+   * @param array $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\og\OgContextInterface $og_context
    *   The OG context provider.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, OgContextInterface $og_context) {
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, OgContextInterface $og_context) {
     $this->ogContext = $og_context;
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -73,13 +77,6 @@ class GlobalSearchBlock extends BlockBase implements ContainerFactoryPluginInter
         'contexts' => $this->getCacheContexts(),
         'tags' => $this->getCacheTags(),
       ],
-    ];
-
-    $build['advanced_search'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Advanced search'),
-      '#url' => Url::fromRoute('view.search.page_1'),
-      '#attributes' => ['class' => ['advanced-search--header']],
     ];
 
     return $build;
