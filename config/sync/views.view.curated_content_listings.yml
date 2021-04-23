@@ -226,12 +226,26 @@ display:
             operator_list: {  }
           group: 1
       sorts: {  }
-      header: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content:
+            value: 'Please choose the content listing to manage.'
+            format: content_editor
+          plugin_id: text
       footer: {  }
       empty: {  }
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
+      title: 'Curated content listings'
     cache_metadata:
       max-age: -1
       contexts:
