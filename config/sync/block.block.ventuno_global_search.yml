@@ -5,6 +5,7 @@ dependencies:
   module:
     - joinup_core
     - joinup_search
+    - system
   theme:
     - ventuno
 id: ventuno_global_search
@@ -23,5 +24,10 @@ visibility:
     id: request_route
     routes:
       - view.search.page_1
+    negate: true
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '<front>'
     negate: true
     context_mapping: {  }
