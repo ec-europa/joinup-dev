@@ -25,12 +25,12 @@ Feature: Homepage
       | Elections           | archival request |
       | Party structure     | archived         |
     And the following solutions:
-      | title             | state            | collection     |
-      | Economic theory   | draft            | Social classes |
-      | Economic history  | proposed         | Social classes |
-      | Laws of economics | validated        | Social classes |
-      | Planned economy   | needs update     | Social classes |
-      | Economic growth   | blacklisted      | Social classes |
+      | title             | state        | collection     |
+      | Economic theory   | draft        | Social classes |
+      | Economic history  | proposed     | Social classes |
+      | Laws of economics | validated    | Social classes |
+      | Planned economy   | needs update | Social classes |
+      | Economic growth   | blacklisted  | Social classes |
     And custom_page content:
       | title                | collection     |
       | Developing economics | Social classes |
@@ -199,3 +199,17 @@ Feature: Homepage
       | version                    | url                                        |
       | v1.57.0                    | /ec-europa/joinup-dev/releases/tag/v1.57.0 |
       | v1.57.0-177-g0123456abcdef | /ec-europa/joinup-dev/commit/0123456abcdef |
+
+  Scenario: Search box is shown in the main content instead of the header on the homepage
+    Given collection:
+      | title | RNA vaccines |
+      | state | validated    |
+    And I am on the homepage
+    Then I should see the "Search" field in the Content region
+    And I should see the button "Search" in the Content region
+    But I should not see the "Search" field in the Header region
+    And I should not see the button "Search" in the Header region
+    When I enter "RNA" in the search bar
+    And press "Search"
+    Then I should be on the search page
+    And I should see the "RNA vaccines" tile
