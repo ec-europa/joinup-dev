@@ -210,6 +210,18 @@ Feature: Homepage
     And I should see the link "Twitter" in the Footer region
     But I should not see the link "Facebook" in the Footer region
 
+  @terms
+  Scenario: Latest news is shown on the homepage
+    Given collection:
+      | title | Shaping of nature |
+      | state | validated         |
+    Given news content:
+      | title                       | headline                 | body                                                                                                                                                                                                                                                    | collection        | policy domain                              | state     | publication date     |
+      | Current biodiversity crisis | Preserve habitats        | Here, we combine global maps of human populations and land use over the past 12,000 y with current biodiversity data to show that nearly three quarters of nature has long been shaped by histories of human habitation and use by indigenous peoples.  | Shaping of nature | Finance in EU, Supplier exchange, E-health | validated | 2021-04-26T19:09:00Z |
+      | Environmental stewardship   | Transformative practices | With rare exceptions, current biodiversity losses are caused not by human conversion or degradation of untouched ecosystems, but rather by the appropriation, colonization, and intensification of use in lands inhabited and used by prior societies.  | Shaping of nature | Employment and Support Allowance           | validated | 2021-01-27T16:12:00Z |
+      | Spatial reconstruction      | Loss of wildlands        | Global land use history confirms that empowering the environmental stewardship of Indigenous peoples and local communities will be critical to conserving biodiversity across the planet.                                                               | Shaping of nature | HR, Statistics and Analysis, E-justice     | validated | 2021-02-28T13:15:00Z |
+      | Earlier transformations     | Ecosystem management     | Archaeological evidence shows that by 10,000 BCE, all societies employed ecologically transformative land use practices, including burning, hunting, species propagation, domestication, cultivation have left long-term legacies across the biosphere. | Shaping of nature | EU and European Policies                   | validated | 2021-03-29T10:18:00Z |
+
   @version
   Scenario Outline: The current version of the Joinup platform is shown in the footer.
     Given the Joinup version is set to "<version>"
