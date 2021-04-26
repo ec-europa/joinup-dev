@@ -1,0 +1,23 @@
+uuid: 564c2d2e-3c76-4ce1-bdd4-9d6afca60642
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.solution_type
+  module:
+    - facets
+  theme:
+    - ventuno
+id: ventuno_solutiontype
+theme: ventuno
+region: sidebar
+weight: -23
+provider: null
+plugin: 'facet_block:solution_type'
+settings:
+  id: 'facet_block:solution_type'
+  label: 'Solution type'
+  provider: facets
+  label_display: visible
+  block_id: solutiontype
+visibility: {  }

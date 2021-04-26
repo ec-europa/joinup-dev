@@ -14,6 +14,7 @@ dev:
     - field_ui
     - filecache
     - joinup_cas_mock_server
+    - page_manager_ui
     - views_ui
 
 commands:

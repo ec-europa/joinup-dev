@@ -1,0 +1,33 @@
+uuid: f891a64a-9f59-469e-a246-990c5d1e5c4b
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_group
+    - og
+  theme:
+    - ventuno
+_core:
+  default_config_hash: lNcx1eTcO-2duy3JjKHExr2AxeKuGkf60Vc6V35A_dI
+id: ventuno_joinup_add_content
+theme: ventuno
+region: header_bottom
+weight: -23
+provider: null
+plugin: add_content_block
+settings:
+  id: add_content_block
+  label: 'Add content'
+  provider: joinup
+  label_display: visible
+  context_mapping:
+    og: '@og.context:og'
+visibility:
+  og_group_type:
+    id: og_group_type
+    group_types:
+      rdf_entity-collection: rdf_entity-collection
+      rdf_entity-solution: rdf_entity-solution
+    negate: false
+    context_mapping:
+      og: '@og.context:og'

@@ -1,0 +1,24 @@
+uuid: df4c9292-61a5-4790-9fe9-bd74f6e66c7a
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup
+  theme:
+    - ventuno
+_core:
+  default_config_hash: h5CYj7Tnz0AfDbd7lm81Q1EBn7jA6-IcEpCbJt4ddsk
+id: ventuno_groupheader
+theme: ventuno
+region: header_bottom
+weight: -25
+provider: null
+plugin: group_header_block
+settings:
+  id: group_header_block
+  label: 'Group header'
+  provider: joinup
+  label_display: '0'
+  context_mapping:
+    og: '@og.context:og'
+visibility: {  }

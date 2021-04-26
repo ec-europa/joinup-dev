@@ -1,0 +1,20 @@
+uuid: 072fdcb3-436c-4081-8d65-12d72adb4f75
+langcode: en
+status: true
+dependencies:
+  config:
+    - page_manager.page.homepage
+id: homepage-layout_builder-0
+label: 'Layout Builder'
+variant: layout_builder
+variant_settings:
+  id: layout_builder
+  uuid: c6b4a07e-d959-4562-a8a9-96a8c2a46ae9
+  label: null
+  weight: 0
+  sections: {  }
+page: homepage
+weight: 0
+selection_criteria: {  }
+selection_logic: and
+static_context: {  }

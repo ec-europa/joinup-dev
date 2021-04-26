@@ -1,0 +1,33 @@
+uuid: 09ff5094-47fe-4d5f-9ee7-578e7f84558e
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+  theme:
+    - ventuno
+id: ventuno_horizontal_tabs
+theme: ventuno
+region: content
+weight: -23
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Horizontal tabs'
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - user.login
+      - user.pass
+      - view.eif_recommendation.all
+      - view.eif_recommendation.principle
+      - view.eif_recommendation.interoperability_layer
+      - view.eif_recommendation.conceptual_model
+    negate: false
+    context_mapping: {  }
