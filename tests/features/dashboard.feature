@@ -10,3 +10,7 @@ Feature: Dashboard
     Then I should see the link "Dashboard"
     When I click "Dashboard"
     Then I should see the heading "Dashboard"
+    And I should see the following links:
+      | My subscriptions         |
+      | Licences overview        |
+      | Curated content listings |
