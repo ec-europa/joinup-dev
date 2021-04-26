@@ -12,7 +12,52 @@ variant_settings:
   uuid: c6b4a07e-d959-4562-a8a9-96a8c2a46ae9
   label: null
   weight: 0
-  sections: {  }
+  sections:
+    -
+      layout_id: layout_twocol_section
+      layout_settings:
+        label: 'Search and topic discovery'
+        column_widths: 50-50
+      components:
+        ed59ccf8-a4f3-40fd-984b-094b964019e3:
+          uuid: ed59ccf8-a4f3-40fd-984b-094b964019e3
+          region: first
+          configuration:
+            id: joinup_search_global_search
+            label: 'Global search'
+            provider: joinup_search
+            label_display: '0'
+            template_suggestion: homepage
+            context_mapping: {  }
+          additional: {  }
+          weight: 1
+        d01d2c31-5d45-4bad-b722-1044de906ffa:
+          uuid: d01d2c31-5d45-4bad-b722-1044de906ffa
+          region: first
+          configuration:
+            id: layout_builder_block
+            label: 'Search top'
+            provider: layout_builder_block
+            label_display: '0'
+            text: "<p>Find the interoperability <strong>solutions you need</strong></p>\r\n"
+            format: content_editor
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+        92757bf1-d70d-4a3d-a086-2e431b16e707:
+          uuid: 92757bf1-d70d-4a3d-a086-2e431b16e707
+          region: first
+          configuration:
+            id: layout_builder_block
+            label: 'Search bottom'
+            provider: layout_builder_block
+            label_display: '0'
+            text: "<p>Need more search options? Use our <a href=\"/search\">advanced search</a></p>\r\n"
+            format: content_editor
+            context_mapping: {  }
+          additional: {  }
+          weight: 2
+      third_party_settings: {  }
 page: homepage
 weight: 0
 selection_criteria: {  }

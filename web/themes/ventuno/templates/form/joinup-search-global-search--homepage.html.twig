@@ -10,12 +10,12 @@
  */
 #}
 <div class="search-bar">
-    <label for="search-bar__input">{{ 'Search'|trans }}</label>
-
+    <label for="search-bar__input" style="display: none">{{ 'Search'|trans }}</label>
     <form action="{{ path("view.search.page_1") }}">
         {% for id, filter in filters %}
             <input type="hidden" class="search-bar__chip" name="f[]" value="{{ id }}" data-description="{{ filter }}">
         {% endfor %}
-        <input class="search-bar__input" type="text" name="keys" id="search-bar__input">
+        <input class="search-bar__input" type="text" name="keys" id="search-bar__input" placeholder="{{ 'Start typing to search…'|trans }}">
+        <input type="submit" value="{{ 'Search'|trans }}">
     </form>
 </div>

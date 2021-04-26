@@ -37,7 +37,7 @@ function joinup_search_theme($existing, $type, $theme, $path) {
       ],
     ],
     'joinup_search_global_search' => [
-      'variables' => ['filters' => []],
+      'variables' => ['filters' => [], 'template_suggestion' => ''],
     ],
   ];
 }
@@ -394,4 +394,18 @@ function joinup_search_views_pre_execute(ViewExecutable $view) {
   // method to ensure legacy support.
   // Selecting the entity_created option itself won't affect the query.
   $view->getQuery()->sort('entity_created', 'DESC');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for the global search block.
+ *
+ * Includes the template suggestion that can be configured in the block settings
+ * for the global search block.
+ */
+function joinup_search_theme_suggestions_joinup_search_global_search(array $variables): array {
+  if (!empty($variables['template_suggestion'])) {
+    return ['joinup_search_global_search__' . $variables['template_suggestion']];
+  }
+
+  return [];
 }

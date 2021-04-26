@@ -18,6 +18,7 @@ settings:
   label: 'Global search'
   provider: joinup_search
   label_display: '0'
+  template_suggestion: header
 visibility:
   request_route:
     id: request_route
