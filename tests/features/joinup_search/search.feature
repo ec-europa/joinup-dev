@@ -230,7 +230,7 @@ Feature: Global search
   Scenario: Advanced search
     # An advanced search link is shown in the header, except on the search page.
     Given I am on the homepage
-    Then I should see the link "Advanced search"
+    Then I should see the link "advanced search"
     Given I visit the collection overview
     Then I should see the link "Advanced search"
     When I click "Advanced search"
