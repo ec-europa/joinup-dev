@@ -45,6 +45,7 @@ module:
   facets: 0
   field: 0
   field_delimiter: 0
+  field_formatter_range: 0
   field_group: 0
   field_permissions: 0
   file: 0
