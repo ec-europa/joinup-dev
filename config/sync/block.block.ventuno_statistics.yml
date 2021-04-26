@@ -1,0 +1,34 @@
+uuid: 93084d2f-8846-4964-9c0f-57f6cfd0b3fb
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_front_page
+    - system
+    - user
+  theme:
+    - ventuno
+id: ventuno_statistics
+theme: ventuno
+region: header_bottom
+weight: -22
+provider: null
+plugin: statistics
+settings:
+  id: broken
+  label: 'Statistics block'
+  provider: joinup_front_page
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      anonymous: anonymous
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

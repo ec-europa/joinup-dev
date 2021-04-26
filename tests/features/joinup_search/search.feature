@@ -228,10 +228,9 @@ Feature: Global search
     Then the page should show the tiles "Ulysses Freeman"
 
   Scenario: Advanced search
-    # An advanced search link is shown in the header, except on the home page
-    # and the search page.
+    # An advanced search link is shown in the header, except on the search page.
     Given I am on the homepage
-    Then I should not see the link "Advanced search"
+    Then I should see the link "Advanced search"
     Given I visit the collection overview
     Then I should see the link "Advanced search"
     When I click "Advanced search"

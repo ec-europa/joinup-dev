@@ -10,6 +10,8 @@ module: joinup_front_page
 routes:
   -
     route_name: joinup_front_page.homepage
+  -
+    route_name: page_manager.page_view_homepage_homepage-layout_builder-0
 tips:
   welcome:
     id: welcome

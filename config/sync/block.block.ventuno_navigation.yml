@@ -1,0 +1,35 @@
+uuid: de428884-cbce-487e-9b3b-cda82ade5e05
+langcode: en
+status: true
+dependencies:
+  config:
+    - og_menu.ogmenu.navigation
+  module:
+    - joinup_group
+    - og
+  theme:
+    - ventuno
+id: ventuno_navigation
+theme: ventuno
+region: sidebar
+weight: -26
+provider: null
+plugin: 'group_menu_block:navigation'
+settings:
+  id: 'group_menu_block:navigation'
+  label: 'Collection | Solution menu'
+  provider: joinup_core
+  label_display: '0'
+  level: 1
+  depth: 1
+  context_mapping:
+    og: '@og.context:og'
+visibility:
+  og_group_type:
+    id: og_group_type
+    group_types:
+      rdf_entity-collection: rdf_entity-collection
+      rdf_entity-solution: rdf_entity-solution
+    negate: false
+    context_mapping:
+      og: '@og.context:og'

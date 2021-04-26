@@ -16,7 +16,8 @@ Feature:
 
   Scenario: A user logging in from the front page should end up again on the homepage.
     When I go to the homepage
-    And I open the account menu
+    # Todo: Restore commented out line when the new theme has an account menu.
+    # And I open the account menu
     And I click "Sign in"
     And I fill in "E-mail address" with "mr.redirect@example.com"
     And I fill in "Password" with "Mr Redirect"

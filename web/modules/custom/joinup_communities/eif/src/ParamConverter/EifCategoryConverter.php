@@ -17,7 +17,7 @@ class EifCategoryConverter implements ParamConverterInterface {
    * {@inheritdoc}
    */
   public function applies($definition, $name, Route $route): bool {
-    return $definition['type'] && $definition['type'] === 'eif_category';
+    return isset($definition['type']) && $definition['type'] === 'eif_category';
   }
 
   /**
