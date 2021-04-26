@@ -42,7 +42,7 @@ class DashboardController extends ControllerBase {
     $user_id = $this->currentUser->id();
 
     $links = [
-      'my_subscriptions' =>[
+      'my_subscriptions' => [
         'title' => $this->t('My subscriptions'),
         'url' => Url::fromRoute('joinup_subscription.my_subscriptions', [
           'user' => $user_id,
