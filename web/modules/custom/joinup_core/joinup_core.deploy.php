@@ -220,8 +220,11 @@ Query;
   $sandbox['total'] = $sandbox['total'] ?? $response['numFound'];
 
   if (!$response['docs']) {
+    // Optimize the index for better performance.
+    $optimize = $client->createUpdate()->addOptimize();
+    $client->update($optimize);
     $sandbox['#finished'] = 1;
-    return NULL;
+    return "Optimized 'drupal_published' index for better performance";
   }
 
   $update = $client->createUpdate();
