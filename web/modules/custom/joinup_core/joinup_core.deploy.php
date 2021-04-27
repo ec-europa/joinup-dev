@@ -216,7 +216,7 @@ Query;
   $select->setRows(1000);
 
   // Do the query.
-  $response = json_decode($client->select($select)->getResponse()->getBody(), true)['response'];
+  $response = json_decode($client->select($select)->getResponse()->getBody(), TRUE)['response'];
   $sandbox['total'] = $sandbox['total'] ?? $response['numFound'];
 
   if (!$response['docs']) {
