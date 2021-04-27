@@ -3,7 +3,7 @@ description: Custom theme for Joinup.
 package: Custom
 type: theme
 core_version_requirement: ^8 || ^9
-base_theme: classy
+base theme: classy
 
 regions:
   header: Header
