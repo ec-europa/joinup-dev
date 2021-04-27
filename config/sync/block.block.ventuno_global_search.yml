@@ -5,6 +5,7 @@ dependencies:
   module:
     - joinup_core
     - joinup_search
+    - system
   theme:
     - ventuno
 id: ventuno_global_search
@@ -18,10 +19,16 @@ settings:
   label: 'Global search'
   provider: joinup_search
   label_display: '0'
+  template_suggestion: header
 visibility:
   request_route:
     id: request_route
     routes:
       - view.search.page_1
+    negate: true
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '<front>'
     negate: true
     context_mapping: {  }

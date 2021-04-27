@@ -263,4 +263,10 @@ settings:
   theme_rule:
     handler: 'default:theme_rule'
     handler_settings: {  }
+  entity_queue:
+    handler: 'default:entity_queue'
+    handler_settings: {  }
+  entity_subqueue:
+    handler: 'default:entity_subqueue'
+    handler_settings: {  }
 field_type: dynamic_entity_reference

@@ -39,6 +39,7 @@ module:
   embed_block: 0
   entity_legal: 0
   entity_reference_revisions: 0
+  entityqueue: 0
   error_page: 0
   eu_sic: 0
   eupl: 0
@@ -105,6 +106,7 @@ module:
   json_field: 0
   language: 0
   layout_builder: 0
+  layout_builder_block: 0
   layout_discovery: 0
   link: 0
   linkit: 0
@@ -200,6 +202,7 @@ module:
   views_autosubmit: 0
   views_bulk_operations: 0
   views_data_export: 0
+  views_multiple_permissions: 0
   whats_new: 0
   workflow_state_permission: 0
   menu_admin_per_menu: 1
