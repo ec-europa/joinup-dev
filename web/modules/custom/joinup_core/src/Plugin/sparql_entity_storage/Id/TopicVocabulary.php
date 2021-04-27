@@ -10,14 +10,14 @@ use Drupal\sparql_entity_storage\SparqlEntityStorageEntityIdPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Generates the entity ID for 'policy_domain' taxonomy terms.
+ * Generates the entity ID for 'topic' taxonomy terms.
  *
  * @SparqlEntityIdGenerator(
- *   id = "policy_domain",
- *   name = @Translation("Policy domain terms"),
+ *   id = "topic",
+ *   name = @Translation("Topic terms"),
  * )
  */
-class PolicyDomainVocabulary extends SparqlEntityStorageEntityIdPluginBase {
+class TopicVocabulary extends SparqlEntityStorageEntityIdPluginBase {
 
   /**
    * The transliteration service.
@@ -27,7 +27,7 @@ class PolicyDomainVocabulary extends SparqlEntityStorageEntityIdPluginBase {
   protected $transliteration;
 
   /**
-   * Constructs a PolicyDomainVocabulary plugin.
+   * Constructs a TopicVocabulary plugin.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -65,10 +65,10 @@ class PolicyDomainVocabulary extends SparqlEntityStorageEntityIdPluginBase {
     $entity = $this->getEntity();
 
     if (empty($entity->parent->target_id)) {
-      $pattern = 'http://joinup.eu/ontology/policy-domain/category#%s';
+      $pattern = 'http://joinup.eu/ontology/topic/category#%s';
     }
     else {
-      $pattern = 'http://joinup.eu/ontology/policy-domain#%s';
+      $pattern = 'http://joinup.eu/ontology/topic#%s';
     }
 
     $name = strtolower($this->transliteration->transliterate($entity->label()));

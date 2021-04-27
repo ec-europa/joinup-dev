@@ -10,10 +10,10 @@
        - Moderation
        - hasVersion (for releases that refer to the solution through isVersionOf)
        - Collection (Computed field)
-       - Policy domain
+       - Topic
        - Workflow status
      Release:
-       - Policy domain
+       - Topic
        - Workflow status
      Distribution:
        - Parent. The parent of the distribution. Can be either a solution or a release. The entity set as parent

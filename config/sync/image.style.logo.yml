@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: logo
-label: 'Logo'
+label: Logo
 effects:
   b8e22f18-31be-42e2-904f-16bea591ea81:
     uuid: b8e22f18-31be-42e2-904f-16bea591ea81

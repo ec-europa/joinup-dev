@@ -1,12 +1,12 @@
 # The fist level is the vocabulary ID. Accepts only 2-level hierarchy.
-policy_domain:
+topic:
   'Economy and Welfare':
     - 'Finance in EU'
   eGov:
     - 'Supplier exchange'
-  E-health:
+  E-health Dpt.:
     - E-health
-  HR:
+  HR Dpt.:
     - 'Employment and Support Allowance'
     - HR
   Info:

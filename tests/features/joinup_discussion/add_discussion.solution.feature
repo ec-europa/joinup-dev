@@ -49,7 +49,7 @@ Feature: "Add discussion" visibility options.
     When I go to the homepage of the "Emerald in the Luck" solution
     And I click "Add discussion" in the plus button menu
     Then I should see the heading "Add discussion"
-    And the following fields should be present "Title, Content, Policy domain, Add a new file"
+    And the following fields should be present "Title, Content, Topic, Add a new file"
     And the following fields should not be present "Motivation"
 
     # Check required fields.
@@ -66,9 +66,9 @@ Feature: "Add discussion" visibility options.
       | Content          | This is going to be an amazing discussion. |
       | File description | A picture of a flying girlfriend           |
     And I press "Publish"
-    Then I should see the error message "Policy domain field is required."
+    Then I should see the error message "Topic field is required."
 
-    And I select "EU and European Policies" from "Policy domain"
+    And I select "EU and European Policies" from "Topic"
     And I press "Publish"
 
     Then I should see the heading "Flight of Girlfriend"

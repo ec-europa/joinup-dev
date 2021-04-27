@@ -333,10 +333,10 @@ trait TraversingTrait {
   protected static function getFacetIdFromAlias(string $alias): string {
     $mappings = [
       'collection type' => 'collection_type',
-      'collection policy domain' => 'collection_policy_domain',
+      'collection topic' => 'collection_topic',
       'collection/solution' => 'group',
-      'policy domain' => 'policy_domain',
-      'solution policy domain' => 'solution_policy_domain',
+      'topic' => 'topic',
+      'solution topic' => 'solution_topic',
       'solution spatial coverage' => 'solution_spatial_coverage',
       'spatial coverage' => 'spatial_coverage',
       'My solutions content' => 'solution_my_content',

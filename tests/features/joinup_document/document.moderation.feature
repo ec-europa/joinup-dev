@@ -26,7 +26,7 @@ Feature: Document moderation
       | state               | validated                       |
       | owner               | thisisanowner                   |
       | contact information | Dis contact                     |
-      | policy domain       | E-inclusion                     |
+      | topic               | E-inclusion                     |
     And the following collection user membership:
       | collection      | user            | roles       |
       | The Naked Ashes | Gretchen Greene | member      |
@@ -91,7 +91,7 @@ Feature: Document moderation
     And I enter "This is going to be an amazing document." in the "Description" wysiwyg editor
     And I select "Document" from "Type"
     Then I upload the file "test.zip" to "Upload a new file or enter a URL"
-    And I select "EU and European Policies" from "Policy domain"
+    And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
     Then I should see the success message "Document An amazing document has been created"
 
