@@ -12,7 +12,27 @@ variant_settings:
   uuid: c6b4a07e-d959-4562-a8a9-96a8c2a46ae9
   label: null
   weight: 0
-  sections: {  }
+  sections:
+    -
+      layout_id: layout_twocol_section
+      layout_settings:
+        label: 'News and events'
+        column_widths: 50-50
+      components:
+        52bba3fe-70ac-478a-9bda-2bbb24a9a8a1:
+          uuid: 52bba3fe-70ac-478a-9bda-2bbb24a9a8a1
+          region: first
+          configuration:
+            id: 'views_block:latest_news-block'
+            label: ''
+            provider: views
+            label_display: visible
+            views_label: ''
+            items_per_page: none
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+      third_party_settings: {  }
 page: homepage
 weight: 0
 selection_criteria: {  }
