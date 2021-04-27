@@ -144,7 +144,7 @@ QUERY;
 /**
  * Update the paragraph content listings.
  */
-function joinup_deploy_0107101(array &$sandbox): string {
+function joinup_core_deploy_0107101(array &$sandbox): string {
   $database = \Drupal::database();
   if (empty($sandbox['items'])) {
     $sandbox['items'] = $database->query("SELECT entity_id, revision_id, delta, langcode, deleted, field_content_listing_value FROM paragraph_revision__field_content_listing WHERE field_content_listing_value LIKE '%policy_domain%' OR field_content_listing_value LIKE '%policy-domain';")->fetchAll();
@@ -183,7 +183,7 @@ function joinup_deploy_0107101(array &$sandbox): string {
 /**
  * Reindex content with topics.
  */
-function joinup_deploy_0107102(array &$sandbox): ?string {
+function joinup_core_deploy_0107102(array &$sandbox): ?string {
   if (!isset($sandbox['current'])) {
     // Collections, solutions, releases, community content, with policy domain.
     $sandbox['query'] = <<<Query
