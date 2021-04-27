@@ -114,11 +114,10 @@ QUERY;
     $database->query($query);
   }
 
-  // Update the cachetags table and rename the necessary tags.
-  $query = <<<QUERY
-UPDATE cachetags SET `tag` = REPLACE(tag, 'policy_domain', 'topic');
-QUERY;
-  $database->query($query);
+  // Cleanup the {cachetags} table.
+  $database->delete('cachetags')
+    ->condition('tag', '%policy_domain%', 'LIKE')
+    ->execute();
 
   // Update the user professional domain.
   $query = <<<QUERY
