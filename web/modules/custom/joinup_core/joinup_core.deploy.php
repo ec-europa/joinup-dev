@@ -183,7 +183,7 @@ function joinup_core_deploy_0107101(array &$sandbox): string {
 /**
  * Reindex content with topics.
  */
-function joinup_core_deploy_0107102(array &$sandbox): ?string {
+function joinup_core_deploy_0107102(array &$sandbox): string {
   if (!isset($sandbox['current'])) {
     // Collections, solutions, releases, community content, with policy domain.
     $sandbox['query'] = <<<Query
