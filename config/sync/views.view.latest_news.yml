@@ -197,13 +197,14 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
-  block_1:
+  block:
     display_plugin: block
-    id: block_1
+    id: block
     display_title: Block
     position: 1
     display_options:
       display_extenders: {  }
+      block_description: 'Latest news'
     cache_metadata:
       max-age: -1
       contexts:
