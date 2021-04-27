@@ -202,7 +202,7 @@ Query;
 
   $client = new Client();
   // Allow large documents to be indexed.
-  $client->getEndpoint()->setTimeout(10);
+  $client->getEndpoint()->setTimeout(20);
   // Ignore unpublished content because that will be re-indexed on publication.
   $client->getEndpoint()->setCore('drupal_published');
   $select = $client->createSelect();
