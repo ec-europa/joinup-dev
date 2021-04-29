@@ -24,7 +24,7 @@ default_value:
         solution_content_bundle:
           weight: 0
           region: top
-        solution_policy_domain:
+        solution_topic:
           weight: 1
           region: inline_facets
         solution_spatial_coverage:

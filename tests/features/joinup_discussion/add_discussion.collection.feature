@@ -51,7 +51,7 @@ Feature: Discussions added to collections
     When I go to the homepage of the "The World of the Waves" collection
     And I click "Add discussion" in the plus button menu
     Then I should see the heading "Add discussion"
-    And the following fields should be present "Title, Content, Policy domain, Add a new file"
+    And the following fields should be present "Title, Content, Topic, Add a new file"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state, Motivation"
     And the following fields should not be present "Shared on"
@@ -70,9 +70,9 @@ Feature: Discussions added to collections
       | Content          | This is going to be an amazing discussion. |
       | File description | The content of this file is mind blowing   |
     And I press "Publish"
-    Then I should see the error message "Policy domain field is required."
+    Then I should see the error message "Topic field is required."
 
-    And I select "EU and European Policies" from "Policy domain"
+    And I select "EU and European Policies" from "Topic"
     And I press "Publish"
 
     Then I should see the heading "An amazing discussion"

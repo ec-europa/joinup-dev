@@ -122,7 +122,7 @@ Feature: Add community content
     And I fill in the following:
       | Title   | Published community discussion |
       | Content | Published community discussion |
-    And I select "Supplier exchange" from "Policy domain"
+    And I select "Supplier exchange" from "Topic"
     And I press "Publish"
     Then I should see the heading "Published community discussion"
     And the publication date of the "Published community discussion" discussion should be equal to the created date
@@ -134,7 +134,7 @@ Feature: Add community content
       | Title       | Published community document |
       | Short title | Published community document |
     And I select "Document" from "Type"
-    And I select "Supplier exchange" from "Policy domain"
+    And I select "Supplier exchange" from "Topic"
     And I enter "Published community document." in the "Description" wysiwyg editor
     And I press "Publish"
     Then I should see the heading "Published community document"
@@ -148,7 +148,7 @@ Feature: Add community content
       | Title       | Published community event |
       | Short title | Published community event |
       | Description | Published community event |
-    And I select "Supplier exchange" from "Policy domain"
+    And I select "Supplier exchange" from "Topic"
     And I press "Add another item" at the "Virtual location" field
     And I fill the start date of the Date widget with "2018-08-29"
     And I fill the start time of the Date widget with "23:59:59"
@@ -170,7 +170,7 @@ Feature: Add community content
       | Short title | Published community news |
       | Headline    | Published community news |
       | Content     | Published community news |
-    And I select "Supplier exchange" from "Policy domain"
+    And I select "Supplier exchange" from "Topic"
     And I press "Publish"
     Then I should see the heading "Published community news"
     And the publication date of the "Published community news" news should be equal to the created date

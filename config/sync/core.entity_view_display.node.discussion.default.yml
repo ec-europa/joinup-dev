@@ -7,7 +7,7 @@ dependencies:
     - field.field.node.discussion.body
     - field.field.node.discussion.field_attachment
     - field.field.node.discussion.field_keywords
-    - field.field.node.discussion.field_policy_domain
+    - field.field.node.discussion.field_topic
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_site_featured
@@ -46,16 +46,6 @@ content:
     third_party_settings:
       template_suggestion:
         template_suggestion: with_label
-  field_policy_domain:
-    weight: 0
-    label: hidden
-    settings:
-      link: true
-    third_party_settings:
-      template_suggestion:
-        template_suggestion: comma_separated
-    type: entity_reference_label
-    region: content
   field_replies:
     weight: 4
     label: above
@@ -82,6 +72,16 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
+  field_topic:
+    weight: 0
+    label: hidden
+    settings:
+      link: true
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: comma_separated
+    type: entity_reference_label
     region: content
   flag_subscribe_discussions:
     weight: 10

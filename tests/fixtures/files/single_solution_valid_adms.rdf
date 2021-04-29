@@ -10,7 +10,7 @@
        - Moderation
        - hasVersion (for releases that refer to the solution through isVersionOf)
        - Collection (Computed field)
-       - Policy domain
+       - Topic
        - Workflow status
      Owner:
        - Workflow status

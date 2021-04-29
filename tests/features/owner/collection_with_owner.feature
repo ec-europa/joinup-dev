@@ -18,7 +18,7 @@ Feature: Creation of owners through UI
       # Contact information data.
       | Name        | Larry Joe                                                                                            |
       | E-mail      | larry.joe@example.com                                                                                |
-    When I select "EU and European Policies" from "Policy domain"
+    When I select "EU and European Policies" from "Topic"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
 

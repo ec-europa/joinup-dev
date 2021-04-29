@@ -36,7 +36,7 @@ Feature: Notification test for the event transitions on a post moderated parent.
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Description" with "CC notify create publish"
     And I fill in "Physical location" with "Capel Street, Dublin"
-    And I select "Statistics and Analysis" from "Policy domain"
+    And I select "Statistics and Analysis" from "Topic"
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                              |

@@ -187,7 +187,7 @@ class SolutionContext extends RawDrupalContext {
    * | landing page        | http://example.com/foobar/landing                              |
    * | language            | Greek, German                                                  |
    * | owner               | Zapsum, Holdline Accountants                                   |
-   * | policy domain       | Demography, E-inclusion                                        |
+   * | topic               | Demography, E-inclusion                                        |
    * | related solutions   | Solution 2, Solution 3                                         |
    * | solution type       | [ABB159] Service Discovery Service, ...                        |
    * | spatial coverage    | Denmark, Serbia                                                |
@@ -558,7 +558,7 @@ class SolutionContext extends RawDrupalContext {
       'moderation' => 'field_is_moderation',
       'modification date' => 'changed',
       'owner' => 'field_is_owner',
-      'policy domain' => 'field_policy_domain',
+      'topic' => 'field_topic',
       'related by type' => 'field_is_show_eira_related',
       'related solutions' => 'field_is_related_solutions',
       'solution type' => 'field_is_solution_type',

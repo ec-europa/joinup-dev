@@ -67,7 +67,7 @@ class CollectionContext extends RawDrupalContext {
     'moderation' => 'field_ar_moderation',
     'modification date' => 'changed',
     'owner' => 'field_ar_owner',
-    'policy domain' => 'field_policy_domain',
+    'topic' => 'field_topic',
     'spatial coverage' => 'field_spatial_coverage',
     'state' => 'field_ar_state',
     'featured' => 'feature',

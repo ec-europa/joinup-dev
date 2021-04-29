@@ -55,6 +55,13 @@ function joinup_core_theme($existing, $type, $theme, $path) {
 }
 
 /**
+ * Implements hook_cron().
+ */
+function joinup_core_cron(): void {
+  \Drupal::getContainer()->get('batch.storage')->cleanup();
+}
+
+/**
  * Implements hook_form_BASE_FORM_ID_alter().
  *
  * Alters the Site Alert entity form to hide the scheduling of the alerts. Due

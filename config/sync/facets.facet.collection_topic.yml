@@ -1,20 +1,20 @@
-uuid: c549f1f8-506a-417f-8419-9efbcbd737e0
+uuid: b2350dca-4ce5-43cc-a07b-fd42577f0edd
 langcode: en
 status: true
 dependencies: {  }
-id: solution_policy_domain
-name: 'Policy domain'
-url_alias: solution_policy_domain
-weight: 0
+id: collection_topic
+name: 'Topic'
+url_alias: collection_topic
+weight: -1
 min_count: 1
 show_only_one_result: true
-field_identifier: policy_domain
-facet_source_id: 'search_api_field:rdf_entity.field_is_content'
+field_identifier: topic
+facet_source_id: 'search_api_field:rdf_entity.field_collection_content'
 widget:
   type: links_inline
   config:
     show_numbers: true
-    all_text: 'all policy domains'
+    all_text: 'all topics'
     prefix_text: 'About:'
     suffix_text: ''
 query_operator: or

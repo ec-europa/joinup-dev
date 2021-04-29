@@ -384,7 +384,7 @@ Feature:
       | Short title | Current wars               |
       | Headline    | Edisson vs Electro         |
       | Content     | A new movie is coming out. |
-    And I select "Statistics and Analysis" from "Policy domain"
+    And I select "Statistics and Analysis" from "Topic"
     And I press "Publish"
     Then I should see the heading "Current wars"
 
