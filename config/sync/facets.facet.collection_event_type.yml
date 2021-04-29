@@ -45,7 +45,7 @@ processor_configs:
     weights:
       build: -10
     settings:
-      collection_policy_domain:
+      collection_topic:
         enable: false
         condition: null
         values: ''

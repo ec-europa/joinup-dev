@@ -34,9 +34,9 @@ class EifContext extends RawDrupalContext {
    * @BeforeScenario @eif_community&&@api
    */
   public function setupEifData(BeforeScenarioScope $scope): void {
-    // Create two policy domain terms.
+    // Create two topic terms.
     Term::create([
-      'vid' => 'policy_domain',
+      'vid' => 'topic',
       'tid' => 'http://example.com/term/1',
       'name' => 'Term 1',
     ])->save();
@@ -61,7 +61,7 @@ class EifContext extends RawDrupalContext {
       'id' => 'http://nifo.collection',
       'label' => 'NIFO collection',
       'field_ar_state' => 'validated',
-      'field_policy_domain' => 'http://example.com/term/1',
+      'field_topic' => 'http://example.com/term/1',
       'field_ar_owner' => 'http://example.com/owner',
       'field_ar_contact_information' => 'http://example.com/contact',
     ])->save();
@@ -73,7 +73,7 @@ class EifContext extends RawDrupalContext {
       'label' => 'EIF Toolbox',
       'collection' => 'http://nifo.collection',
       'field_is_state' => 'validated',
-      'field_policy_domain' => 'http://example.com/term/1',
+      'field_topic' => 'http://example.com/term/1',
       'field_is_owner' => 'http://example.com/owner',
       'field_is_contact_information' => 'http://example.com/contact',
     ]);

@@ -36,7 +36,7 @@ Feature: Notification test for the document transitions on a post moderated pare
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Description" with "Sample body."
     And I select "Document" from "Type"
-    And I select "Statistics and Analysis" from "Policy domain"
+    And I select "Statistics and Analysis" from "Topic"
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                            |

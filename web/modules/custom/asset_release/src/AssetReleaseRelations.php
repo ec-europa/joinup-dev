@@ -42,7 +42,7 @@ class AssetReleaseRelations implements ContainerInjectionInterface {
     'field_is_related_solutions' => 'field_isr_related_solutions',
     'field_is_included_asset' => 'field_isr_included_asset',
     'field_is_translation' => 'field_isr_translation',
-    'field_policy_domain' => 'field_policy_domain',
+    'field_topic' => 'field_topic',
   ];
 
   /**

@@ -235,10 +235,10 @@ function joinup_community_content_theme_suggestions_container_alter(array &$sugg
  */
 function joinup_community_content_translate_facet_arguments(array $arguments) {
   $mapping = [
-    'collection_policy_domain' => 'policy_domain',
+    'collection_topic' => 'topic',
     'collection_type' => 'type',
     'solution_content_bundle' => 'type',
-    'solution_policy_domain' => 'policy_domain',
+    'solution_topic' => 'topic',
     'solution_spatial_coverage' => 'spatial_coverage',
   ];
 

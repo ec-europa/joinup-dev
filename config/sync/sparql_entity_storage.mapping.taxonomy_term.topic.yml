@@ -1,16 +1,16 @@
-uuid: f3e15728-3fb1-4349-b9b6-1f4a54b1b67e
+uuid: 95effb47-b451-4391-b64e-253b9e4a55b1
 langcode: en
 status: true
 dependencies:
   config:
     - sparql_entity_storage.graph.default
-    - taxonomy.vocabulary.policy_domain
-id: taxonomy_term.policy_domain
+    - taxonomy.vocabulary.topic
+id: taxonomy_term.topic
 entity_type_id: taxonomy_term
-bundle: policy_domain
-rdf_type: 'http://joinup.eu/policy-domain'
+bundle: topic
+rdf_type: 'http://joinup.eu/vocabulary/topic'
 graph:
-  default: 'http://policy_domain'
+  default: 'http://topic'
 base_fields_mapping:
   uuid:
     value:
@@ -53,4 +53,4 @@ base_fields_mapping:
       predicate: ''
       format: ''
   path: {  }
-entity_id_plugin: policy_domain
+entity_id_plugin: topic

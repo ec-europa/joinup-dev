@@ -801,7 +801,7 @@ class JoinupContext extends RawDrupalContext {
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
-        'policy domain' => 'field_policy_domain',
+        'topic' => 'field_topic',
         'shared on' => 'field_shared_in',
         'visits' => 'visit_count',
       ],

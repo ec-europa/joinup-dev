@@ -16,7 +16,7 @@ Feature:
       | Short title | Revisions collection published          |
       | Headline    | Revisions collection has been published |
     And I enter "We are proud to announce another useless test entity." in the "Content" wysiwyg editor
-    And I select "EU and European Policies" from "Policy domain"
+    And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
 
     # Edit the news to create a new revision.

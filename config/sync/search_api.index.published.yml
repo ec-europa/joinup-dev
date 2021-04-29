@@ -447,15 +447,6 @@ field_settings:
     dependencies:
       module:
         - taxonomy
-  policy_domain:
-    label: 'Policy domain'
-    property_path: aggregated_field
-    type: string
-    configuration:
-      type: union
-      fields:
-        - 'entity:node/field_policy_domain'
-        - 'entity:rdf_entity/field_policy_domain'
   processed:
     label: 'Body » Paragraph » Body » Processed text'
     datasource_id: 'entity:node'
@@ -593,6 +584,15 @@ field_settings:
     dependencies:
       module:
         - node
+  topic:
+    label: Topic
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_topic'
+        - 'entity:rdf_entity/field_topic'
   uid:
     label: 'User ID'
     datasource_id: 'entity:user'

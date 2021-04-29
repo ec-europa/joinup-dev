@@ -32,7 +32,7 @@ Feature: Creating a test (solution) in the TRR collection.
     When I fill in the following:
       | Name           | Lucky Luke          |
       | E-mail address | ernsy1999@gmail.com |
-    And I select "Supplier exchange" from "Policy domain"
+    And I select "Supplier exchange" from "Topic"
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I wait for AJAX to finish
