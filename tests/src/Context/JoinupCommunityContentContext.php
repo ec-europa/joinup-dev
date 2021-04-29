@@ -420,12 +420,12 @@ class JoinupCommunityContentContext extends RawDrupalContext {
   }
 
   /**
-   * Sets a random policy domain for community content that misses one.
+   * Sets a random topic for community content that misses one.
    *
-   * For some tests the community content's policy domain has no relevance. Such
-   * tests are allowed to omit an explicit policy domain. We're creating a dummy
-   * policy domain term, together with its parent, just to satisfy data
-   * integrity and prevent form validation errors.
+   * For some tests the community content's topic has no relevance. Such tests
+   * are allowed to omit an explicit topic. We're creating a dummy topic term,
+   * together with its parent, just to satisfy data integrity and prevent form
+   * validation errors.
    *
    * @param \Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope $scope
    *   An object containing the entity properties and fields that are to be used
@@ -433,7 +433,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    *
    * @BeforeNodeCreate
    */
-  public function providePolicyDomain(BeforeNodeCreateScope $scope) {
+  public function provideTopic(BeforeNodeCreateScope $scope) {
     $node = $scope->getEntity();
 
     // Only deal with community content.
@@ -441,29 +441,29 @@ class JoinupCommunityContentContext extends RawDrupalContext {
       return;
     }
 
-    // A policy domain has been already set.
-    $alias = 'policy domain';
+    // A topic has been already set.
+    $alias = 'topic';
     if (!empty($node->{$alias})) {
       return;
     }
 
-    // Try, first, to get an existing policy domain term.
+    // Try, first, to get an existing topic term.
     if (!empty($this->entities['taxonomy_term'])) {
       foreach ($this->entities['taxonomy_term'] as $candidate_term) {
-        if ($candidate_term->bundle() === 'policy_domain' && !$candidate_term->get('parent')->isEmpty()) {
+        if ($candidate_term->bundle() === 'topic' && !$candidate_term->get('parent')->isEmpty()) {
           $term = $candidate_term;
           break;
         }
       }
     }
 
-    // Create a new policy domain term.
+    // Create a new topic term.
     if (!isset($term)) {
       $term = RdfTerm::create([
-        'vid' => 'policy_domain',
+        'vid' => 'topic',
         'name' => $this->getRandom()->name(8, TRUE),
         'parent' => RdfTerm::create([
-          'vid' => 'policy_domain',
+          'vid' => 'topic',
           'name' => $this->getRandom()->name(8, TRUE),
         ]),
       ]);

@@ -1,18 +1,16 @@
-uuid: befa6cc8-9105-41ce-bf2d-528adf154d1c
+uuid: 7777c996-c138-4412-b0ec-44ff13952c37
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_policy_domain
+    - field.storage.node.field_topic
     - node.type.news
-    - taxonomy.vocabulary.policy_domain
-_core:
-  default_config_hash: kGJk_kXR936xQZTYDvgAWTE1zuv-Uc9zRyy-g0OK_Ek
-id: node.news.field_policy_domain
-field_name: field_policy_domain
+    - taxonomy.vocabulary.topic
+id: node.news.field_topic
+field_name: field_topic
 entity_type: node
 bundle: news
-label: 'Policy domain'
+label: Topic
 description: ''
 required: true
 translatable: false
@@ -22,7 +20,7 @@ settings:
   handler: 'grouped_rdf_taxonomy_term_selection:default'
   handler_settings:
     target_bundles:
-      policy_domain: policy_domain
+      topic: topic
     sort:
       field: _none
     auto_create: false

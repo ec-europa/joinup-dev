@@ -17,7 +17,7 @@ Feature: Creating content and commenting on archived collection
       | name          |
       | April Hawkins |
     And the following collections:
-      | title               | description         | logo     | banner     | owner         | contact information | state     | policy domain           |
+      | title               | description         | logo     | banner     | owner         | contact information | state     | topic                   |
       | The Willing Consort | The Willing Consort | logo.png | banner.jpg | April Hawkins | Jody Rodriquez      | validated | Statistics and Analysis |
     And the following collection user memberships:
       | collection          | user        | roles              |

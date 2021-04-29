@@ -43,7 +43,7 @@ class DiscussionObserver implements ObserverInterface {
         'discussion' => [
           'title',
           'body',
-          'field_policy_domain',
+          'field_topic',
           'field_keywords',
           'field_attachment',
           'field_state',

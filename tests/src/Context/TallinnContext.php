@@ -35,14 +35,14 @@ class TallinnContext extends RawDrupalContext {
    * @BeforeScenario @tallinn&&@api
    */
   public function setupTallinnData() {
-    // Create two policy domain terms.
+    // Create two topic terms.
     Term::create([
-      'vid' => 'policy_domain',
+      'vid' => 'topic',
       'tid' => 'http://example.com/term/1',
       'name' => 'Term 1',
     ])->save();
     Term::create([
-      'vid' => 'policy_domain',
+      'vid' => 'topic',
       'tid' => 'http://example.com/term/2',
       'name' => 'Term 2',
       'parent' => 'http://example.com/term/1',
@@ -68,7 +68,7 @@ class TallinnContext extends RawDrupalContext {
       'id' => Tallinn::TALLINN_COMMUNITY_ID,
       'label' => 'Tallinn Ministerial Declaration',
       'field_ar_state' => 'validated',
-      'field_policy_domain' => 'http://example.com/term/2',
+      'field_topic' => 'http://example.com/term/2',
       'field_ar_owner' => 'http://example.com/owner',
       'field_ar_contact_information' => 'http://example.com/contact',
     ])->save();

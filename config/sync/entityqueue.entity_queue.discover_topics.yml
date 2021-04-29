@@ -13,7 +13,7 @@ entity_settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      policy_domain: policy_domain
+      topic: topic
     sort:
       field: _none
     auto_create: false

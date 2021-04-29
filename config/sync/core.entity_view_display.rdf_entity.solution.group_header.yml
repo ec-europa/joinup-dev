@@ -40,7 +40,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_webdav_url
     - field.field.rdf_entity.solution.field_is_wiki
     - field.field.rdf_entity.solution.field_keywords
-    - field.field.rdf_entity.solution.field_policy_domain
+    - field.field.rdf_entity.solution.field_topic
     - field.field.rdf_entity.solution.field_short_id
     - field.field.rdf_entity.solution.field_site_featured
     - field.field.rdf_entity.solution.field_spatial_coverage
@@ -87,7 +87,7 @@ content:
       template_suggestion:
         template_suggestion: ''
     region: content
-  field_policy_domain:
+  field_topic:
     type: entity_reference_custom_link
     weight: 4
     region: content
@@ -95,11 +95,11 @@ content:
     settings:
       path: 'internal:/search'
       label: '[term:name]'
-      query_parameters: "f[0]|policy_domain:[term:tid]\r\nf[1]|type:solution"
+      query_parameters: "f[0]|topic:[term:tid]\r\nf[1]|type:solution"
       limit: 7
     third_party_settings:
       template_suggestion:
-        template_suggestion: solution_header_policy_domain
+        template_suggestion: solution_header_topic
   label:
     label: hidden
     type: string

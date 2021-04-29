@@ -6,10 +6,10 @@ Feature: "Add document" visibility options.
 
   Scenario: "Add document" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following collection:
-      | title      | Collective Seventh Name           |
-      | logo       | logo.png                          |
-      | banner     | banner.jpg                        |
-      | state      | validated                         |
+      | title  | Collective Seventh Name |
+      | logo   | logo.png                |
+      | banner | banner.jpg              |
+      | state  | validated               |
     And the following solutions:
       | title               | collection              | logo     | banner     | state     |
       | Seventh Name        | Collective Seventh Name | logo.png | banner.jpg | validated |
@@ -49,22 +49,22 @@ Feature: "Add document" visibility options.
     When I go to the homepage of the "Winter of Beginning" solution
     And I click "Add document" in the plus button menu
     Then I should see the heading "Add document"
-    And the following fields should be present "Title, Short title, Type, Policy domain, Keywords, Geographical coverage, Licence, Description, Upload a new file or enter a URL"
+    And the following fields should be present "Title, Short title, Type, Topic, Keywords, Geographical coverage, Licence, Description, Upload a new file or enter a URL"
     And the following fields should not be present "Shared on, Motivation"
 
     When I fill in the following:
-      | Title       | The Sparks of the Butterfly              |
-      | Short title | Amazing document                         |
+      | Title       | The Sparks of the Butterfly |
+      | Short title | Amazing document            |
     And I select "Document" from "Type"
     Then I upload the file "test1.zip" to "Upload a new file or enter a URL"
     And I press "Save as draft"
     Then I should see the following error messages:
-      | error messages                   |
-      | Description field is required.   |
-      | Policy domain field is required. |
+      | error messages                 |
+      | Description field is required. |
+      | Topic field is required.       |
 
     When I enter "This is going to be an amazing document." in the "Description" wysiwyg editor
-    And I select "EU and European Policies" from "Policy domain"
+    And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
     Then I should see the heading "The Sparks of the Butterfly"
     And I should see the success message "Document The Sparks of the Butterfly has been created."

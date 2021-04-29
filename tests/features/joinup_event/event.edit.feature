@@ -16,7 +16,7 @@ Feature: "Event page" editing.
       | Title             | Best event                                               |
       | Description       | It will be the best event this year.                     |
       | Physical location | Tower Bridge, Tower Bridge Road, London, United Kingdom. |
-    And I select "EU and European Policies" from "Policy domain"
+    And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
     Then I should see the heading "Best event"
     And I should see a map on the page

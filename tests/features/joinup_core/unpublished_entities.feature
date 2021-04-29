@@ -18,7 +18,7 @@ Feature: Unpublished content of the website
       | Brenda Day     |       |
       | Phillip Shaw   |       |
     And the following collections:
-      | title               | description         | state     | content creation | moderation | abstract     | policy domain     | owner           | contact information |
+      | title               | description         | state     | content creation | moderation | abstract     | topic             | owner           | contact information |
       | Invisible Boyfriend | Invisible Boyfriend | validated | members          | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
       | Grey Swords         | Invisible Boyfriend | proposed  | members          | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
       | Nothing of Slaves   | Invisible Boyfriend | draft     | members          | no         | Trusted host | Supplier exchange | Owner something | Published contact   |

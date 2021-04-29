@@ -27,7 +27,7 @@ default_value:
         collection_event_type:
           weight: -1
           region: inline_facets
-        collection_policy_domain:
+        collection_topic:
           weight: 0
           region: inline_facets
       enabled: 1
