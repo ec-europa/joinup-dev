@@ -43,7 +43,7 @@ class JoinupNewsContext extends RawDrupalContext {
    * total number of articles matches the expected number.
    *
    * Table format:
-   * | date   | policy domains    | title      | body      |
+   * | date   | topics            | title      | body      |
    * | 28 Feb | HR, Finance in EU | News title | Body text |
    *
    * @param \Behat\Gherkin\Node\TableNode $table
@@ -72,27 +72,27 @@ class JoinupNewsContext extends RawDrupalContext {
       $actual_date = $actual_data->find('css', '.dated-listing--date')->getText();
       Assert::assertEquals($expected_data['date'], $actual_date, sprintf('Expected date "%s" for the "%s" article in the "Latest news" section but found "%s" instead.', $expected_data['date'], $actual_title, $actual_date));
 
-      // Check that the correct number of policy domains are present.
-      $expected_policy_domain_titles = array_map('trim', explode(',', $expected_data['policy domains']));
-      $policy_domain_elements = $actual_data->findAll('css', '.field--name-field-policy-domain .field__item');
-      Assert::assertEquals(count($expected_policy_domain_titles), count($policy_domain_elements), sprintf('Expected %d policy domains for the "%s" article in the "Latest news" section but found %d policy domains.', count($expected_policy_domain_titles), $expected_data['title'], count($policy_domain_elements)));
+      // Check that the correct number of topics are present.
+      $expected_topic_titles = array_map('trim', explode(',', $expected_data['topics']));
+      $topic_elements = $actual_data->findAll('css', '.field--name-field-topic .field__item');
+      Assert::assertEquals(count($expected_topic_titles), count($topic_elements), sprintf('Expected %d topics for the "%s" article in the "Latest news" section but found %d topics.', count($expected_topic_titles), $expected_data['title'], count($topic_elements)));
 
       // Check the body text.
       $actual_body = $actual_data->find('css', '.field--name-body')->getText();
       Assert::assertEquals($expected_data['body'], $actual_body, sprintf('The body text for the article "%s" in the "Latest news" section does not contain the expected text.', $actual_title));
 
-      foreach ($expected_policy_domain_titles as $j => $expected_policy_domain_title) {
-        /** @var \Behat\Mink\Element\NodeElement $policy_domain_element */
-        $policy_domain_element = array_shift($policy_domain_elements);
+      foreach ($expected_topic_titles as $j => $expected_topic_title) {
+        /** @var \Behat\Mink\Element\NodeElement $topic_element */
+        $topic_element = array_shift($topic_elements);
 
-        // Check the title of each policy domain.
-        $actual_policy_domain_title = $policy_domain_element->getText();
-        Assert::assertEquals($expected_policy_domain_title, $actual_policy_domain_title, sprintf('Expected policy domain #%d to be "%s" for the "%s" article in the "Latest news" section but instead found "%s".', $j + 1, $expected_policy_domain_title, $actual_title, $actual_policy_domain_title));
+        // Check the title of each topic.
+        $actual_topic_title = $topic_element->getText();
+        Assert::assertEquals($expected_topic_title, $actual_topic_title, sprintf('Expected topic #%d to be "%s" for the "%s" article in the "Latest news" section but instead found "%s".', $j + 1, $expected_topic_title, $actual_title, $actual_topic_title));
 
-        // Check that each policy domain links to their canonical page.
-        $policy_domain_entity = self::getEntityByLabel('taxonomy_term', $actual_policy_domain_title, 'policy_domain');
-        $xpath = '/a[@href = "' . $policy_domain_entity->toUrl()->toString() . '"]';
-        Assert::assertNotEmpty($policy_domain_element->find('xpath', $xpath), sprintf('Policy domain "%s" for article "%s" does not link to the canonical policy domain page.', $actual_policy_domain_title, $actual_title));
+        // Check that each topic links to their canonical page.
+        $topic_entity = self::getEntityByLabel('taxonomy_term', $actual_topic_title, 'topic');
+        $xpath = '/a[@href = "' . $topic_entity->toUrl()->toString() . '"]';
+        Assert::assertNotEmpty($topic_element->find('xpath', $xpath), sprintf('Topic "%s" for article "%s" does not link to the canonical topic page.', $actual_topic_title, $actual_title));
       }
     }
   }
