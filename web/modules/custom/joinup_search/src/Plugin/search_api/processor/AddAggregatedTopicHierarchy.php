@@ -11,6 +11,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Adds all ancestors' IDs to the topic aggregated hierarchical field.
  *
+ * This is currently hardcoded on topics since it is the only hierarchical data
+ * we are indexing right now. In the future this can be expanded to loop over
+ * all fields and check if any are hierarchical.
+ *
  * @SearchApiProcessor(
  *   id = "aggregated_topic_hierarchy",
  *   label = @Translation("Index aggregated topic hierarchy"),
