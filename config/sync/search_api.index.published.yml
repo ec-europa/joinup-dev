@@ -328,7 +328,6 @@ field_settings:
     dependencies:
       module:
         - meta_entity
-        - meta_entity
       config:
         - field.storage.meta_entity.count
   id:
@@ -425,7 +424,6 @@ field_settings:
     dependencies:
       module:
         - meta_entity
-        - meta_entity
       config:
         - field.storage.meta_entity.field_featured
   node_pinned_in:
@@ -436,8 +434,6 @@ field_settings:
     dependencies:
       module:
         - meta_entity
-        - meta_entity
-        - rdf_entity
         - rdf_entity
       config:
         - field.storage.meta_entity.field_pinned_in
@@ -492,7 +488,6 @@ field_settings:
     dependencies:
       module:
         - meta_entity
-        - meta_entity
       config:
         - field.storage.meta_entity.field_featured
   rdf_pinned_in:
@@ -503,8 +498,6 @@ field_settings:
     dependencies:
       module:
         - meta_entity
-        - meta_entity
-        - rdf_entity
         - rdf_entity
       config:
         - field.storage.meta_entity.field_pinned_in
