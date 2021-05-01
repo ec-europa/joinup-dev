@@ -193,6 +193,7 @@ module:
   theme_rule: 0
   token: 0
   toolbar: 0
+  topic: 0
   tour: 0
   trr: 0
   user: 0
