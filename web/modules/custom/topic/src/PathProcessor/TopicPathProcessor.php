@@ -22,7 +22,7 @@ class TopicPathProcessor implements OutboundPathProcessorInterface {
   /**
    * {@inheritdoc}
    */
-  public function processOutbound($path, &$options = [], Request $request = NULL, BubbleableMetadata $bubbleable_metadata = NULL) {
+  public function processOutbound($path, &$options = [], ?Request $request = NULL, ?BubbleableMetadata $bubbleable_metadata = NULL): string {
     $route = $options['route'] ?? NULL;
     if ($route instanceof Route && $route->getOption(TopicRouteProcessor::REDIRECT_TO_SEARCH_PAGE_OPTION)) {
       $topic = $options['entity'] ?? NULL;

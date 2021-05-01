@@ -24,7 +24,7 @@ class TopicRouteProcessor implements OutboundRouteProcessorInterface {
   /**
    * {@inheritdoc}
    */
-  public function processOutbound($route_name, Route $route, array &$parameters, BubbleableMetadata $bubbleable_metadata = NULL) {
+  public function processOutbound($route_name, Route $route, array &$parameters, ?BubbleableMetadata $bubbleable_metadata = NULL): void {
     if ($route_name !== 'entity.taxonomy_term.canonical') {
       return;
     }
