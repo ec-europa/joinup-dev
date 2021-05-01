@@ -92,6 +92,8 @@ Feature: Solution homepage
     Then "all topics" should be selected in the "solution topic" inline facet
     And the "solution topic" inline facet should allow selecting the following values:
       | E-inclusion (2)             |
+      | Social and Political (2)    |
+      | Info (1)                    |
       | Statistics and Analysis (1) |
     And "everywhere" should be selected in the "solution spatial coverage" inline facet
     And the "solution spatial coverage" inline facet should allow selecting the following values:

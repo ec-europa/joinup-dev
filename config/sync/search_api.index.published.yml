@@ -5,7 +5,6 @@ dependencies:
   module:
     - asset_distribution
     - custom_page
-    - joinup_featured
     - joinup_search
     - meta_entity
     - node
@@ -425,7 +424,6 @@ field_settings:
     dependencies:
       module:
         - meta_entity
-        - node
       config:
         - field.storage.meta_entity.field_featured
   node_pinned_in:
@@ -490,7 +488,6 @@ field_settings:
     dependencies:
       module:
         - meta_entity
-        - rdf_entity
       config:
         - field.storage.meta_entity.field_featured
   rdf_pinned_in:
@@ -664,6 +661,9 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
+  aggregated_topic_hierarchy:
+    weights:
+      preprocess_index: -50
   html_filter:
     all_fields: false
     fields:
@@ -854,7 +854,6 @@ processor_settings:
           document: !!float 0
           event: !!float 3
           news: !!float 5
-          newsletter: !!float 0
           video: !!float 0
       'entity:rdf_entity':
         datasource_boost: !!float 0
