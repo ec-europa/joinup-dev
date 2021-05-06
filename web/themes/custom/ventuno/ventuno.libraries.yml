@@ -1,0 +1,10 @@
+style:
+  version: VERSION
+  css:
+    theme:
+      assets/css/ventuno.style.css: {}
+  js:
+    assets/js/ventuno.script.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
