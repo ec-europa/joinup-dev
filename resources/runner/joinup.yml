@@ -25,3 +25,5 @@ commands:
       options:
         style: ${scss.style}
         import-dir: ${scss.import_dir}
+    - "npm --prefix web/themes/custom/ventuno install"
+    - "npm --prefix web/themes/custom/ventuno run production"
