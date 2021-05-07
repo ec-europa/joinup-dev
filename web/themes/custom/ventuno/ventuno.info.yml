@@ -1,10 +1,10 @@
-name: ventuno
-description: A theme based on Radix.
+name: Ventuno
+description: Custom theme for Joinup.
+package: Custom
 screenshot: screenshot.png
-core_version_requirement: ^8.7.7 || ^9.0
-# version: VERSION
-engine: twig
 type: theme
+engine: twig
+core_version_requirement: ^8 || ^9
 base theme: radix
 
 regions:
@@ -12,8 +12,12 @@ regions:
   navbar_left:  Navbar left
   navbar_right: Navbar right
   header: Header
+  header_bottom: 'Header bottom'
+  featured: Featured
+  sidebar: Sidebar
+  content_top: 'Content top'
   content: Content
-  page_bottom: Page bottom
+  content_bottom: 'Content bottom'
   footer: Footer
 
 libraries:

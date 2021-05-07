@@ -1,0 +1,102 @@
+{#
+/**
+ * @file
+ * Template for the main page.
+ */
+#}
+<div class="page">
+  {% embed '@radix/navbar/navbar.twig' with {
+    placement: 'sticky-top',
+    container: 'fixed',
+    color: 'light',
+    utility_classes: ['bg-light'],
+  } %}
+
+    {% block branding %}
+      {% if page.navbar_branding %}
+        {{ page.navbar_branding }}
+      {% endif %}
+    {% endblock %}
+
+    {% block left %}
+      {% if page.navbar_left %}
+        <div class="mr-auto">
+          {{ page.navbar_left }}
+        </div>
+      {% endif %}
+    {% endblock %}
+
+    {% block right %}
+      {% if page.navbar_right %}
+        {{ page.navbar_right }}
+      {% endif %}
+    {% endblock %}
+  {% endembed %}
+
+  {% if page.header %}
+    <header class="page__header mb-3">
+      <div class="container">
+        {{ page.header }}
+      </div>
+    </header>
+  {% endif %}
+  {% if page.header_bottom %}
+    <div class="page__header_bottom mb-3">
+      <div class="container">
+        {{ page.header_bottom }}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if page.featured %}
+    <div class="page__featured">
+      <div class="container">
+        {{ page.featured }}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if page.content_top %}
+    <div class="page__content_top">
+      <div class="container">
+        {{ page.content_top }}
+      </div>
+    </div>
+  {% endif %}
+
+  <main class="pt-5 pb-5">
+    {% if page.content %}
+      <div class="page__content">
+        <div class="container">
+          {{ page.content }}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if page.sidebar %}
+      <aside class="page__sidebar" role="complementary">
+        <div class="container">
+          {{ page.sidebar }}
+        </div>
+      </aside>
+    {% endif %}
+  </main>
+
+  {% if page.content_bottom %}
+    <div class="page__content_bottom">
+      <div class="container">
+        {{ page.content_bottom }}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if page.footer %}
+    <footer class="page__footer">
+      <div class="container">
+        <div class="d-flex justify-content-md-between align-items-md-center">
+          {{ page.footer }}
+        </div>
+      </div>
+    </footer>
+  {% endif %}
+</div>

@@ -1,11 +1,35 @@
 <?php
+
 /**
  * @file
- * Theme functions
+ * Functions to support theming in the Ventuno theme.
  */
+
+declare(strict_types = 1);
 
 // Include all files from the includes directory.
 $includes_path = dirname(__FILE__) . '/includes/*.inc';
 foreach (glob($includes_path) as $filename) {
   require_once dirname(__FILE__) . '/includes/' . basename($filename);
+}
+
+/**
+ * Implements hook_preprocess_rdf_entity().
+ */
+function ventuno_preprocess_rdf_entity(&$variables) {
+  // Workaround for incorrect rendering of RDF entity label.
+  // @see https://www.drupal.org/project/rdf_entity/issues/3209500
+  $variables['label'] = $variables['rdf_entity']->label();
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function ventuno_preprocess_page(&$variables) {
+  // Retrieve the Joinup version and link to display in the footer.
+  // @todo Move this into a block.
+  /** @var \Drupal\joinup_core\JoinupVersionInterface $joinup_version */
+  $joinup_version = \Drupal::service('joinup_core.joinup_version');
+  $variables['version'] = $joinup_version->getVersion();
+  $variables['version_url'] = $joinup_version->getUrl();
 }

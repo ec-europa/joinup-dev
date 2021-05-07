@@ -1,6 +1,15 @@
-# Ignore SASS files
+# Ignore SASS files.
 /.sass-cache
+
+# Ignore OSX cruft.
 .DS_Store
+
+# Ignore IDE cruft.
 *.codekit
 .idea
-node_modules
+
+# Ignore dependencies.
+node_modules/
+
+# Ignore compiled code.
+/assets/
