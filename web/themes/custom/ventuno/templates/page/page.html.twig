@@ -33,19 +33,19 @@
     {% endblock %}
   {% endembed %}
 
-  {% if page.header %}
+  {% if page.header or page.header_bottom %}
     <header class="page__header mb-3">
-      <div class="container">
-        {{ page.header }}
-      </div>
+      {% if page.header %}
+        <div class="container">
+          {{ page.header }}
+        </div>
+      {% endif %}
+      {% if page.header_bottom %}
+        <div class="container page__header_bottom mb-3">
+          {{ page.header_bottom }}
+        </div>
+      {% endif %}
     </header>
-  {% endif %}
-  {% if page.header_bottom %}
-    <div class="page__header_bottom mb-3">
-      <div class="container">
-        {{ page.header_bottom }}
-      </div>
-    </div>
   {% endif %}
 
   {% if page.featured %}
@@ -90,13 +90,36 @@
     </div>
   {% endif %}
 
-  {% if page.footer %}
-    <footer class="page__footer">
-      <div class="container">
-        <div class="d-flex justify-content-md-between align-items-md-center">
-          {{ page.footer }}
-        </div>
+  <footer class="page__footer">
+    <div class="container">
+      <div class="d-flex justify-content-md-between align-items-md-center">
+        {{ page.footer }}
       </div>
-    </footer>
-  {% endif %}
+    </div>
+    <p class="joinup-version"><a href="{{ version_url }}">{{ version }}</a></p>
+    <div class="social-media">
+      <h3>{{ 'Follow us'|t }}:</h3>
+      <ul>
+        <li>
+          <a href="https://www.linkedin.com/groups/2600644/">{{ 'LinkedIn'|t }}</a>
+        </li>
+        <li>
+          <a href="http://twitter.com/Joinup_eu">{{ 'Twitter'|t }}</a>
+        </li>
+        <li>
+          <a href="http://ec.europa.eu/newsroom/joinup/newsletter-specific-archive-issue.cfm?newsletter_service_id=877&lang=default">{{ 'Joinup Newsletter'|t }}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="ec-menu">
+      <ul>
+        <li><a href="http://ec.europa.eu/info/about-commissions-new-web-presence_en">{{ 'About the Commission\'s new web presence'|t }}</a></li>
+        <li><a href="http://ec.europa.eu/info/resources-partners_en">{{ 'Resources for partners'|t }}</a></li>
+        <li><a href="http://ec.europa.eu/info/cookies_en">{{ 'Cookies'|t }}</a></li>
+        <li><a href="/joinup/legal-notice">{{ 'Legal notice'|t }}</a></li>
+        <li><a href="http://ec.europa.eu/info/contact_en">{{ 'Contact'|t }}</a></li>
+        <li><a href="http://ec.europa.eu/info/europa-analytics_en">{{ 'Europa Analytics' }}</a></li>
+      </ul>
+    </div>
+  </footer>
 </div>
