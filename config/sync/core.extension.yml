@@ -218,6 +218,7 @@ module:
 theme:
   stable: 0
   classy: 0
+  radix: 0
   seven: 0
   joinup_theme: 0
   ventuno: 0
