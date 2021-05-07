@@ -4,8 +4,10 @@ declare(strict_types = 1);
 
 namespace Joinup\TaskRunner\Commands;
 
+use Joinup\TaskRunner\Task\Npm\loadTasks as NpmLoadTasks;
+use Joinup\TaskRunner\Task\Filesystem\loadTasks as FilesystemTasks;
 use OpenEuropa\TaskRunner\Commands\AbstractCommands;
-use OpenEuropa\TaskRunner\Tasks\CollectionFactory\loadTasks;
+use OpenEuropa\TaskRunner\Tasks\CollectionFactory\loadTasks as CollectionFactoryLoadTasks;
 use Robo\Collection\CollectionBuilder;
 use Robo\Robo;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,7 +17,9 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class BuildCommands extends AbstractCommands {
 
-  use loadTasks;
+  use CollectionFactoryLoadTasks;
+  use FilesystemTasks;
+  use NpmLoadTasks;
 
   /**
    * Replaces the toolkit:build-dist command.
@@ -26,6 +30,8 @@ class BuildCommands extends AbstractCommands {
    *   non-production code.
    * - Uses the `drupal:settings` command to build the `settings.php` file.
    * - Compiles SCSS to CSS.
+   * - Bundles theme assets using webpack.
+   * - Removes all files from the theme that are not needed on production.
    * - The Git tag and commit hash are computed, if not passed.
    *
    * @param array $options
@@ -76,6 +82,21 @@ class BuildCommands extends AbstractCommands {
     $tasks[] = $this->taskScss($scssMap)
       ->setFormatter('ScssPhp\\ScssPhp\\Formatter\\' . ucfirst($config->get('scss.style')))
       ->addImportPath($config->get('scss.import_dir'));
+
+    // Bundle the Ventuno theme assets using webpack.
+    $tasks[] = $this->taskNpmInstall()->option('prefix', "{$distDir}/web/themes/custom/ventuno");
+    $tasks[] = $this->taskNpmRun()->arg('production')->option('prefix', "{$distDir}/web/themes/custom/ventuno");
+
+    // Clean up all files from the theme that are only needed for development.
+    $tasks[] = $this->taskDeleteDir([
+      "{$distDir}/web/themes/custom/ventuno/node_modules",
+    ]);
+    $tasks[] = $this->taskDeleteFile([
+      "{$distDir}/web/themes/custom/ventuno/package.json",
+      "{$distDir}/web/themes/custom/ventuno/package-lock.json",
+      "{$distDir}/web/themes/custom/ventuno/webpack.mix.js",
+      "{$distDir}/web/themes/custom/ventuno/yarn.lock",
+    ]);
 
     // Prepare sha and tag variables.
     $tag = $options['tag'] ?? $this->getGitTag();
