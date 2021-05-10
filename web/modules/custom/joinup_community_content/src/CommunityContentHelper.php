@@ -56,16 +56,4 @@ class CommunityContentHelper {
     }, []);
   }
 
-  /**
-   * Returns a generic description of community content.
-   *
-   * This description is used in various places, in the user interface.
-   *
-   * @return \Drupal\Component\Render\MarkupInterface
-   *   A translated markup.
-   */
-  public static function getCommunityContentDescription(): MarkupInterface {
-    return t('KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Collections and Solutions.');
-  }
-
 }
