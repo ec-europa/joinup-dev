@@ -79,6 +79,7 @@ Feature: Collection content
     Then I delete the "Solution from draft to validated" solution
     And I delete the "Costas Papazoglou" contact information
 
+  @clearStaticCache
   Scenario: Content type facet labels should show the plural form when multiple results are available.
     Given I go to the homepage of the "Turin Egyptian Collection" collection
     Then the "Discussion" content tab is displayed
@@ -108,12 +109,7 @@ Feature: Collection content
       | title                              | state     | collection                |
       | Understand the restoration process | validated | Turin Egyptian Collection |
 
-    # @todo Remove this line as part of ISAICP-4280.
-    # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4280
-    Given the cache has been cleared
-
     Given I reload the page
-
     Then the "Discussions" content tab is displayed
     And the "Documents" content tab is displayed
     And the "Events" content tab is displayed

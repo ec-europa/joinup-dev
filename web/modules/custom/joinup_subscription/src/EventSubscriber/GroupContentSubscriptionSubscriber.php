@@ -9,12 +9,13 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\collection\Entity\CollectionContentInterface;
 use Drupal\joinup_group\Entity\GroupContentInterface;
+use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_subscription\Entity\GroupContentSubscriptionMessage;
+use Drupal\joinup_subscription\JoinupSubscriptionsHelper;
 use Drupal\og\OgMembershipInterface;
-use Drupal\solution\Entity\SolutionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -114,25 +115,45 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
    */
   public function notifyOnRdfEntityCrudOperation(NotificationEvent $event) {
     // Only act on entities that are being created or updated. Subscribers are
-    // not notified about solutions that are being removed.
+    // not notified about entities that are being removed.
     if (!in_array($event->getOperation(), ['create', 'update'])) {
       return;
     }
 
-    // We are only concerned about solutions that belong to a collection, are
-    // published and are newly created or are being published for the first
-    // time. Let's filter it down.
-    /** @var \Drupal\rdf_entity\RdfInterface $entity */
+    // Ignore content that does not belong to a group, and content that is not
+    // published.
     $entity = $event->getEntity();
-    if (
-      !$entity instanceof SolutionInterface ||
-      $entity->get('collection')->isEmpty() ||
-      !$entity->isPublished() ||
-      // Note: the `->hasPublished` property is a hack that will be removed once
-      // we have revisionable RDF entities.
-      // @see joinup_group_entity_presave()
-      (!$entity->isNew() && $entity->hasPublished)
-    ) {
+    if (!$entity instanceof GroupContentInterface) {
+      return;
+    }
+
+    // Ignore unpublished content.
+    if (!$entity instanceof EntityPublishedInterface || !$entity->isPublished()) {
+      return;
+    }
+
+    // We only want to include content in the digest on initial publication, not
+    // when existing or previously published content is updated or re-published.
+    // Only keep content that is newly created or is not yet published.
+    // Note: the `->hasPublished` check is a hack that can be removed once we
+    // have revisionable RDF entities.
+    // @see joinup_notification_rdf_entity_presave()
+    // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6481
+    if ($entity->hasPublished) {
+      return;
+    }
+
+    // Avoid including orphaned group content in the digest.
+    try {
+      $group = $entity->getGroup();
+    }
+    catch (MissingGroupException $e) {
+      return;
+    }
+
+    // Ignore content that is not approved for inclusion in digest messages.
+    $subscribable_bundles = JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES[$group->bundle()]['rdf_entity'] ?? [];
+    if (!in_array($entity->bundle(), $subscribable_bundles)) {
       return;
     }
 
