@@ -35,7 +35,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     And I click "Add discussion" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Content" with "CC notify create publish"
-    And I select "Statistics and Analysis" from "Policy domain"
+    And I select "Statistics and Analysis" from "Topic"
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                   |

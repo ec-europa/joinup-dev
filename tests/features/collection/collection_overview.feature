@@ -73,7 +73,7 @@ Feature: Collections Overview
       # Contact information data.
       | Name        | Overviewer contact                  |
       | E-mail      | overviewer@example.com              |
-    And I select "Employment and Support Allowance" from "Policy domain"
+    And I select "Employment and Support Allowance" from "Topic"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing owner.
@@ -108,11 +108,11 @@ Feature: Collections Overview
       | title            | Jira       |
       | logo             | logo.png   |
       | moderation       | no         |
-      | policy domain    | Demography |
+      | topic            | Demography |
       | spatial coverage | Belgium    |
       | state            | validated  |
     And news content:
-      | title                             | body                             | collection | policy domain           | spatial coverage | state     |
+      | title                             | body                             | collection | topic                   | spatial coverage | state     |
       | Jira will be down for maintenance | As always, during business hours | Jira       | Statistics and Analysis | Luxembourg       | validated |
     And custom_page content:
       | title            | body                                       | collection |

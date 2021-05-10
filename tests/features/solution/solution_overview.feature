@@ -141,7 +141,7 @@ Feature: Solutions Overview
       | Name                  | Ambrosio Morison                                                       |
       | E-mail address        | ambrosio.morison@example.com                                           |
     Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
-    And I select "Demography" from "Policy domain"
+    And I select "Demography" from "Topic"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"

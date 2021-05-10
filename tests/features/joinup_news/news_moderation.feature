@@ -141,7 +141,7 @@ Feature: News moderation.
     And I go to the homepage of the "Justice League" collection
     And I click "Add news"
     Then I should see the heading "Add news"
-    And the following fields should be present "Headline, Short title, Logo, Content, Policy domain, Keywords, Geographical coverage"
+    And the following fields should be present "Headline, Short title, Logo, Content, Topic, Keywords, Geographical coverage"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state"
 
@@ -155,7 +155,7 @@ Feature: News moderation.
       | Short title | Eagle joins the JL                   |
       | Headline    | Eagle from WWII                      |
       | Content     | Specialized in close combat training |
-    And I select "Employment and Support Allowance" from "Policy domain"
+    And I select "Employment and Support Allowance" from "Topic"
     And I press "Save as draft"
     # Check reference to news page.
     Then I should see the success message "News Eagle joins the JL has been created."
@@ -186,7 +186,7 @@ Feature: News moderation.
       | Short title | Cheetah kills WonderWoman                             |
       | Headline    | Scarch of poison                                      |
       | Content     | A specific poison could expose Wonder-womans weakness |
-    And I select "Supplier exchange" from "Policy domain"
+    And I select "Supplier exchange" from "Topic"
     And I press "Propose"
     # Check reference to news page.
     # Todo: Why should we not see a success message after creating a news article? See ISAICP-2761

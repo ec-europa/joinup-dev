@@ -29,7 +29,7 @@ Feature:
       # Contact information data.
       | Name        | Contact person             |
       | E-mail      | contact_person@example.com |
-    And I select "HR" from "Policy domain"
+    And I select "HR" from "Topic"
     And I fill in "Short ID" with "sst-2020"
     And I press "Propose"
     Then I should see the error message "Content with Short ID sst-2020 already exists. Please choose a different Short ID."
@@ -98,7 +98,7 @@ Feature:
       # Existing owner.
       | Owner          | Organisation example      |
     Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
-    And I select "Demography" from "Policy domain"
+    And I select "Demography" from "Topic"
 
     # Short ID is case insensitive.
     And I fill in "Short ID" with "wkwasi"

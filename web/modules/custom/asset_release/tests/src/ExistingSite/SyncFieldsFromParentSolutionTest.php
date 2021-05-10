@@ -37,14 +37,14 @@ class SyncFieldsFromParentSolutionTest extends JoinupExistingSiteTestBase {
       'name' => 'Type 2',
     ]);
 
-    // Create two policy domain terms.
-    $vocabulary = Vocabulary::load('policy_domain');
+    // Create two topic terms.
+    $vocabulary = Vocabulary::load('topic');
     $this->createTerm($vocabulary, [
-      'tid' => 'http://example.com/policy-domain/d1',
+      'tid' => 'http://example.com/topic/d1',
       'name' => 'Domain 1',
     ]);
     $this->createTerm($vocabulary, [
-      'tid' => 'http://example.com/policy-domain/d2',
+      'tid' => 'http://example.com/topic/d2',
       'name' => 'Domain 2',
     ]);
 
@@ -116,7 +116,7 @@ class SyncFieldsFromParentSolutionTest extends JoinupExistingSiteTestBase {
       'field_is_related_solutions' => 'http://example.com/solution-related1',
       'field_is_included_asset' => 'http://example.com/solution-related1',
       'field_is_translation' => 'http://example.com/solution-related1',
-      'field_policy_domain' => 'http://example.com/policy-domain/d1',
+      'field_topic' => 'http://example.com/topic/d1',
       'collection' => 'http://example.com/collection',
     ]);
 
@@ -136,7 +136,7 @@ class SyncFieldsFromParentSolutionTest extends JoinupExistingSiteTestBase {
     $this->assertSame('http://example.com/solution-related1', $release->field_isr_related_solutions->target_id);
     $this->assertSame('http://example.com/solution-related1', $release->field_isr_included_asset->target_id);
     $this->assertSame('http://example.com/solution-related1', $release->field_isr_translation->target_id);
-    $this->assertSame('http://example.com/policy-domain/d1', $release->field_policy_domain->target_id);
+    $this->assertSame('http://example.com/topic/d1', $release->field_topic->target_id);
 
     // Change the values of solution fields but reload the solution first, in
     // order to get the last value of 'field_is_has_version' field.
@@ -148,7 +148,7 @@ class SyncFieldsFromParentSolutionTest extends JoinupExistingSiteTestBase {
       ->set('field_is_related_solutions', 'http://example.com/solution-related2')
       ->set('field_is_included_asset', 'http://example.com/solution-related2')
       ->set('field_is_translation', 'http://example.com/solution-related2')
-      ->set('field_policy_domain', 'http://example.com/policy-domain/d2')
+      ->set('field_topic', 'http://example.com/topic/d2')
       ->save();
 
     // Reload the release.
@@ -161,7 +161,7 @@ class SyncFieldsFromParentSolutionTest extends JoinupExistingSiteTestBase {
     $this->assertSame('http://example.com/solution-related2', $release->field_isr_related_solutions->target_id);
     $this->assertSame('http://example.com/solution-related2', $release->field_isr_included_asset->target_id);
     $this->assertSame('http://example.com/solution-related2', $release->field_isr_translation->target_id);
-    $this->assertSame('http://example.com/policy-domain/d2', $release->field_policy_domain->target_id);
+    $this->assertSame('http://example.com/topic/d2', $release->field_topic->target_id);
   }
 
 }

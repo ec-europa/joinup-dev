@@ -53,7 +53,7 @@ Feature: Solution homepage
       | wiki             | http://example.wiki/foobar/wiki      |
       | state            | validated                            |
     And news content:
-      | title                             | body                             | solution        | policy domain           | spatial coverage | state     |
+      | title                             | body                             | solution        | topic                   | spatial coverage | state     |
       | Jira will be down for maintenance | As always, during business hours | Jira restarters | Statistics and Analysis | Luxembourg       | validated |
     And custom_page content:
       | title            | body                                       | solution        |
@@ -89,8 +89,8 @@ Feature: Solution homepage
       | name  | Geronimo             |
       | email | geronimo@example.com |
     And the following solutions:
-      | title             | description     | logo     | banner     | state     | owner                 | contact information | solution type | policy domain |
-      | Chiricahua Server | Serving the web | logo.png | banner.jpg | validated | Chiricahua Foundation | Geronimo            | Business      | E-inclusion   |
+      | title             | description     | logo     | banner     | state     | owner                 | contact information | solution type | topic       |
+      | Chiricahua Server | Serving the web | logo.png | banner.jpg | validated | Chiricahua Foundation | Geronimo            | Business      | E-inclusion |
     # There should not be a pager when the solution is empty.
     When I go to the homepage of the "Chiricahua Server" solution
     Then I should not see the "Pager" region
@@ -158,13 +158,13 @@ Feature: Solution homepage
     Then I should not see the "Pager" region
 
   @terms @javascript
-  Scenario: Test that up to 7 policy terms are visible in the solution overview header.
+  Scenario: Test that up to 7 topic terms are visible in the solution overview header.
     Given the following solutions:
-      | title              | description        | logo     | banner     | state     | policy domain                                                                                                                      |
-      | All policy domains | Bring in EVERYONE! | logo.png | banner.jpg | validated | Finance in EU, Supplier exchange, E-health, HR, Employment and Support Allowance, Statistics and Analysis, E-inclusion, Demography |
+      | title      | description        | logo     | banner     | state     | topic                                                                                                                              |
+      | All topics | Bring in EVERYONE! | logo.png | banner.jpg | validated | Finance in EU, Supplier exchange, E-health, HR, Employment and Support Allowance, Statistics and Analysis, E-inclusion, Demography |
 
-    When I go to the "All policy domains" solution
-    Then I should see the text "Policy domain" in the "Header"
+    When I go to the "All topics" solution
+    Then I should see the text "Topic" in the "Header"
     And I should see the following links:
       | Demography                       |
       | E-health                         |
@@ -176,5 +176,5 @@ Feature: Solution homepage
     And I should not see the link "Supplier exchange"
     When I click "HR"
     Then the url should match "/search"
-    Then the option with text "HR   (1)" from select facet "policy domain" is selected
+    Then the option with text "HR   (1)" from select facet "topic" is selected
     Then the "Solution" content checkbox item should be selected
