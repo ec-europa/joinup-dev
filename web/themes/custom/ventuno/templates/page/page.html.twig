@@ -1,0 +1,125 @@
+{#
+/**
+ * @file
+ * Template for the main page.
+ */
+#}
+<div class="page">
+  {% embed '@radix/navbar/navbar.twig' with {
+    placement: 'sticky-top',
+    container: 'fixed',
+    color: 'light',
+    utility_classes: ['bg-light'],
+  } %}
+
+    {% block branding %}
+      {% if page.navbar_branding %}
+        {{ page.navbar_branding }}
+      {% endif %}
+    {% endblock %}
+
+    {% block left %}
+      {% if page.navbar_left %}
+        <div class="mr-auto">
+          {{ page.navbar_left }}
+        </div>
+      {% endif %}
+    {% endblock %}
+
+    {% block right %}
+      {% if page.navbar_right %}
+        {{ page.navbar_right }}
+      {% endif %}
+    {% endblock %}
+  {% endembed %}
+
+  {% if page.header or page.header_bottom %}
+    <header class="page__header mb-3">
+      {% if page.header %}
+        <div class="container">
+          {{ page.header }}
+        </div>
+      {% endif %}
+      {% if page.header_bottom %}
+        <div class="container page__header_bottom mb-3">
+          {{ page.header_bottom }}
+        </div>
+      {% endif %}
+    </header>
+  {% endif %}
+
+  {% if page.featured %}
+    <div class="page__featured">
+      <div class="container">
+        {{ page.featured }}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if page.content_top %}
+    <div class="page__content_top">
+      <div class="container">
+        {{ page.content_top }}
+      </div>
+    </div>
+  {% endif %}
+
+  <main class="pt-5 pb-5">
+    {% if page.content %}
+      <div class="page__content">
+        <div class="container">
+          {{ page.content }}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if page.sidebar %}
+      <aside class="page__sidebar" role="complementary">
+        <div class="container">
+          {{ page.sidebar }}
+        </div>
+      </aside>
+    {% endif %}
+  </main>
+
+  {% if page.content_bottom %}
+    <div class="page__content_bottom">
+      <div class="container">
+        {{ page.content_bottom }}
+      </div>
+    </div>
+  {% endif %}
+
+  <footer class="page__footer">
+    <div class="container">
+      <div class="d-flex justify-content-md-between align-items-md-center">
+        {{ page.footer }}
+      </div>
+    </div>
+    <p class="joinup-version"><a href="{{ version_url }}">{{ version }}</a></p>
+    <div class="social-media">
+      <h3>{{ 'Follow us'|t }}:</h3>
+      <ul>
+        <li>
+          <a href="https://www.linkedin.com/groups/2600644/">{{ 'LinkedIn'|t }}</a>
+        </li>
+        <li>
+          <a href="http://twitter.com/Joinup_eu">{{ 'Twitter'|t }}</a>
+        </li>
+        <li>
+          <a href="http://ec.europa.eu/newsroom/joinup/newsletter-specific-archive-issue.cfm?newsletter_service_id=877&lang=default">{{ 'Joinup Newsletter'|t }}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="ec-menu">
+      <ul>
+        <li><a href="http://ec.europa.eu/info/about-commissions-new-web-presence_en">{{ 'About the Commission\'s new web presence'|t }}</a></li>
+        <li><a href="http://ec.europa.eu/info/resources-partners_en">{{ 'Resources for partners'|t }}</a></li>
+        <li><a href="http://ec.europa.eu/info/cookies_en">{{ 'Cookies'|t }}</a></li>
+        <li><a href="/joinup/legal-notice">{{ 'Legal notice'|t }}</a></li>
+        <li><a href="http://ec.europa.eu/info/contact_en">{{ 'Contact'|t }}</a></li>
+        <li><a href="http://ec.europa.eu/info/europa-analytics_en">{{ 'Europa Analytics' }}</a></li>
+      </ul>
+    </div>
+  </footer>
+</div>

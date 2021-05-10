@@ -262,8 +262,8 @@ function joinup_eulogin_module_implements_alter(&$implementations, $hook): void 
 /**
  * Implements hook_preprocess_HOOK().
  */
-function joinup_eulogin_preprocess_menu(&$variables) {
-  if ($variables['menu_name'] !== 'account') {
+function joinup_eulogin_preprocess_menu(&$variables, $hook) {
+  if (($variables['menu_name'] ?? NULL) !== 'account') {
     return;
   }
   if (\Drupal::currentUser()->isAuthenticated() && isset($variables['items']['joinup_eulogin.eu_login_info'])) {

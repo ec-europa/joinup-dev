@@ -1,0 +1,5 @@
+# Schema for the configuration files of the ventuno theme.
+
+ventuno.settings:
+  type: theme_settings
+  label: 'ventuno settings'

@@ -1,0 +1,36 @@
+name: Ventuno
+description: Custom theme for Joinup.
+package: Custom
+screenshot: screenshot.png
+type: theme
+engine: twig
+core_version_requirement: ^8 || ^9
+base theme: radix
+
+regions:
+  navbar_branding: Navbar branding
+  navbar_left:  Navbar left
+  navbar_right: Navbar right
+  header: Header
+  header_bottom: 'Header bottom'
+  featured: Featured
+  sidebar: Sidebar
+  content_top: 'Content top'
+  content: Content
+  content_bottom: 'Content bottom'
+  footer: Footer
+
+libraries:
+  - radix/style
+  - ventuno/style
+
+libraries-override:
+  radix/bootstrap: false
+
+ckeditor_stylesheets:
+  - assets/css/ventuno.style.css
+
+component-libraries:
+  ventuno:
+    paths:
+      - ./src/components

@@ -43,7 +43,7 @@ function whats_new_entity_prepare_view(string $entity_type_id, array $entities, 
  * Implements hook_preprocess_HOOK().
  */
 function whats_new_preprocess_menu(array &$variables): void {
-  if ($variables['menu_name'] !== 'support' || \Drupal::getContainer()->get('current_user')->isAnonymous()) {
+  if (($variables['menu_name'] ?? NULL) !== 'support' || \Drupal::getContainer()->get('current_user')->isAnonymous()) {
     return;
   }
 
