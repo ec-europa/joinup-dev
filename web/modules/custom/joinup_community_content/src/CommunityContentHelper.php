@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_community_content;
 
-use Drupal\Component\Render\MarkupInterface;
-
 /**
  * Contains helper methods for dealing with community content.
  */
