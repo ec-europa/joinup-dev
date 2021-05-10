@@ -24,6 +24,7 @@ class JoinupSubscriptionsHelper {
       'node' => CommunityContentHelper::BUNDLES,
     ],
     'solution' => [
+      'rdf_entity' => ['asset_distribution', 'asset_release'],
       'node' => CommunityContentHelper::BUNDLES,
     ],
   ];
