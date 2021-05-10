@@ -150,6 +150,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
       $subscriptions = [];
       $subscription_bundles = JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES[$bundle];
       foreach ($this->explodeCommaSeparatedStepArgument(strtolower($values['subscriptions'])) as $subscription_bundle) {
+        $subscription_bundle = static::translateBundle($subscription_bundle);
         $entity_type = NULL;
         foreach ($subscription_bundles as $entity_type_id => $bundles) {
           if (in_array($subscription_bundle, $bundles)) {

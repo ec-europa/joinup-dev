@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\collection\Entity\CollectionInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
@@ -16,6 +17,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Handles notifications related to collections.
  */
 class CollectionRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+
+  use StringTranslationTrait;
 
   const TEMPLATE_APPROVE_EDIT = 'col_approve_edit';
   const TEMPLATE_APPROVE_NEW = 'col_approve_new';
@@ -269,12 +272,11 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * Notification id 5:
    *  - Event: A collection which has been published is proposed.
    *  - Recipient: Owner
-   *@codingStandardsIgnoreStart
+   *@codingStandardsIgnoreEnd
    *
    * If the entity does not have a published version, send notification id 1 to
    * the moderators, otherwise, send templates 4, 5 to the owner and the
    * moderator respectively.
-   *
    */
   protected function notificationPropose() {
     if (!$this->hasPublished) {
@@ -424,10 +426,10 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * amount of the affiliates the solution has.
    *
    * @param \Drupal\Core\Entity\EntityInterface $solution
-   *    The solution entity.
+   *   The solution entity.
    *
-   * @todo: This might need to be moved to the solution subscriber once it is
-   * created, in order to remove weird workarounds.
+   * @todo This might need to be moved to the solution subscriber once it is
+   *   created, in order to remove weird workarounds.
    */
   protected function notifySolutionOwners(EntityInterface $solution) {
     // Count collections that are not archived and are affiliated to the
@@ -490,10 +492,10 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
         }, $membership->getRoles());
 
         if (in_array('administrator', $role_names)) {
-          $arguments['@actor:role'] = t('Owner');
+          $arguments['@actor:role'] = $this->t('Owner');
         }
         elseif (in_array('facilitator', $role_names)) {
-          $arguments['@actor:role'] = t('Facilitator');
+          $arguments['@actor:role'] = $this->t('Facilitator');
         }
       }
       $arguments['@actor:full_name'] = $actor->getDisplayName();
@@ -509,10 +511,10 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
       $arguments['@transition:request_action'] = 'archive';
       $arguments['@transition:request_action:past'] = 'archived';
       if ($this->transition->getId() === 'archive') {
-        $arguments['@transition:archive:extra:owner'] = t('You can verify the outcome of your request by clicking on @entity:url', [
+        $arguments['@transition:archive:extra:owner'] = $this->t('You can verify the outcome of your request by clicking on @entity:url', [
           '@entity:url' => $arguments['@entity:url'],
         ]);
-        $arguments['@transition:archive:extra:members'] = t('The reason for being @transition:request_action:past is: @transition:motivation', [
+        $arguments['@transition:archive:extra:members'] = $this->t('The reason for being @transition:request_action:past is: @transition:motivation', [
           '@transition:request_action:past' => $arguments['@transition:request_action:past'],
           '@transition:motivation' => $arguments['@transition:motivation'],
         ]);
@@ -545,9 +547,9 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * Calculates the user data to send the messages with.
    *
    * @param array $user_data
-   *    The user data array.
+   *   The user data array in the format as used by ::getUsersMessages().
    *
-   * @see ::getUsersMessages() for more information on the array.
+   * @see ::getUsersMessages()
    */
   protected function getUsersAndSend(array $user_data) {
     $user_data = $this->getUsersMessages($user_data);
@@ -560,8 +562,8 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * Applies only for archival request.
    *
    * @return bool
-   *    Whether the action is requested. Returns TRUE if the transition is
-   *    caused by a moderator approving the requested archival of a collection.
+   *   Whether the action is requested. Returns TRUE if the transition is caused
+   *   by a moderator approving the requested archival of a collection.
    */
   protected function isTransitionRequested(): bool {
     assert($this->entity instanceof EntityWorkflowStateInterface);
