@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_community_content;
 
-use Drupal\Component\Render\MarkupInterface;
-
 /**
  * Contains helper methods for dealing with community content.
  */
@@ -54,18 +52,6 @@ class CommunityContentHelper {
     return array_reduce($states, function ($all_states, $bundle_states) {
       return array_unique(array_merge($all_states, $bundle_states));
     }, []);
-  }
-
-  /**
-   * Returns a generic description of community content.
-   *
-   * This description is used in various places, in the user interface.
-   *
-   * @return \Drupal\Component\Render\MarkupInterface
-   *   A translated markup.
-   */
-  public static function getCommunityContentDescription(): MarkupInterface {
-    return t('KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Collections and Solutions.');
   }
 
 }

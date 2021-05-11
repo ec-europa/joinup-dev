@@ -99,22 +99,3 @@ function joinup_front_page_menu_link_content_update(MenuLinkContentInterface $en
   $linked_entity->original = $linked_entity;
   ContentEntity::indexEntity($linked_entity);
 }
-
-/**
- * Implements hook_theme().
- */
-function joinup_front_page_theme($existing, $type, $theme, $path) {
-  $default = [
-    'count' => 0,
-    'description' => NULL,
-  ];
-  return [
-    'statistics_block' => [
-      'variables' => [
-        'collection' => $default,
-        'solution' => $default,
-        'content' => $default,
-      ],
-    ],
-  ];
-}
