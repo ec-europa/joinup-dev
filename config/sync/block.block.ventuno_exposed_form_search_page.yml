@@ -1,0 +1,30 @@
+uuid: 38986bff-9d1a-45e2-aaa1-9cf56ff30442
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.search
+  module:
+    - joinup_core
+    - views
+  theme:
+    - ventuno
+id: ventuno_exposed_form_search_page
+theme: ventuno
+region: content_top
+weight: -17
+provider: null
+plugin: 'views_exposed_filter_block:search-page_1'
+settings:
+  id: 'views_exposed_filter_block:search-page_1'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - view.search.page_1
+    negate: false
+    context_mapping: {  }

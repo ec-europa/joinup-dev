@@ -222,8 +222,12 @@ trait TraversingTrait {
     }
 
     $result = [];
-    foreach ($regionObj->findAll('css', '.listing__item--tile') as $element) {
-      $title_element = $element->find('css', ' .listing__title');
+    // @todo The `.listing__item--tile` selector is part of the original Joinup
+    //   theme and can be removed once we have fully migrated to the new theme.
+    foreach ($regionObj->findAll('css', '.listing__item--tile, article.tile') as $element) {
+      // @todo The `.listing__title` selector is part of the original Joinup
+      //   theme and can be removed once we migrated to the new theme.
+      $title_element = $element->find('css', ' .listing__title, h2 a');
       // Some tiles don't have a title, like the one to create a new collection
       // in the collections page.
       if ($title_element) {
@@ -248,7 +252,14 @@ trait TraversingTrait {
    *   Thrown when the element is not found.
    */
   protected function getTileByHeading(string $heading): NodeElement {
-    return $this->getListingByHeading('listing__item--tile', $heading);
+    // @todo The `.listing__item--tile` selector is part of the original Joinup
+    //   theme and can be removed once we have fully migrated to the new theme.
+    try {
+      return $this->getListingByHeading('listing__item--tile', $heading);
+    }
+    catch (ElementNotFoundException $e) {
+      return $this->getListingByHeading('tile', $heading);
+    }
   }
 
   /**
@@ -266,12 +277,22 @@ trait TraversingTrait {
    *   Thrown when the element is not found.
    */
   protected function getListingByHeading(string $type, string $heading): NodeElement {
-    // Locate all the items.
+    // Locate all the items in the old theme.
+    // @todo This can be removed once we are fully migrated to the new theme.
     $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " ' . $type . ' ")]';
     // That have a heading with the specified text.
     $xpath .= '[.//*[@class and contains(concat(" ", normalize-space(@class), " "), " listing__title ")][normalize-space()="' . $heading . '"]]';
 
     $item = $this->getSession()->getPage()->find('xpath', $xpath);
+
+    if (!$item) {
+      // Locate all the items.
+      $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " ' . $type . ' ")]';
+      // That have a heading with the specified text.
+      $xpath .= '[.//h2/a[normalize-space()="' . $heading . '"]]';
+
+      $item = $this->getSession()->getPage()->find('xpath', $xpath);
+    }
 
     if (!$item) {
       // Throw a specific exception, so it can be catched by steps that need to

@@ -1,0 +1,24 @@
+uuid: 12775192-0da7-4871-8ad6-04071ad5a982
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_user
+  theme:
+    - ventuno
+_core:
+  default_config_hash: cUHOddgt8ZfDNPWn5Oz4x-XWRYRKnfmp23iF-wfobwg
+id: ventuno_userheader
+theme: ventuno
+region: header_bottom
+weight: -24
+provider: null
+plugin: user_header_block
+settings:
+  id: user_header_block
+  label: 'User header'
+  provider: joinup_user
+  label_display: '0'
+  context_mapping:
+    user_route: '@joinup_user.user_route_context:user_route'
+visibility: {  }

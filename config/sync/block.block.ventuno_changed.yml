@@ -1,0 +1,23 @@
+uuid: 43677eff-1e61-493a-9545-983abdbcaa16
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.aggregated_changed
+  module:
+    - facets
+  theme:
+    - ventuno
+id: ventuno_changed
+theme: ventuno
+region: sidebar
+weight: -24
+provider: null
+plugin: 'facet_block:aggregated_changed'
+settings:
+  id: 'facet_block:aggregated_changed'
+  label: Changed
+  provider: facets
+  label_display: visible
+  block_id: changed
+visibility: {  }

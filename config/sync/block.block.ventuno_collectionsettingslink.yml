@@ -1,0 +1,27 @@
+uuid: d502888a-3fd7-453b-a167-8befac1c38a5
+langcode: en
+status: true
+dependencies:
+  module:
+    - collection
+    - joinup_core
+  theme:
+    - ventuno
+id: ventuno_collectionsettingslink
+theme: ventuno
+region: content
+weight: -21
+provider: null
+plugin: collection_settings_link
+settings:
+  id: collection_settings_link
+  label: 'Collection settings link'
+  provider: collection
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - collection.glossary_page
+    negate: false
+    context_mapping: {  }

@@ -1,0 +1,37 @@
+uuid: 94d7e55a-8fa4-4025-8a6a-2f949f6d4d05
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+    - joinup_group
+    - user
+  theme:
+    - ventuno
+_core:
+  default_config_hash: 8hMLXJHLAZgYjCaC6thcOsOxgPnm0NHmB7G2l-W3UXk
+id: ventuno_rdf_entities_in_proposed_state
+theme: ventuno
+region: content_bottom
+weight: 0
+provider: null
+plugin: proposed_entities
+settings:
+  id: proposed_entities
+  label: 'Rdf entities in proposed state'
+  provider: joinup_core
+  label_display: visible
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - dashboard.page
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      moderator: moderator
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

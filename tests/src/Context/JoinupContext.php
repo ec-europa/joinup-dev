@@ -1115,7 +1115,7 @@ class JoinupContext extends RawDrupalContext {
    * @Then I (should )see the :heading tile
    */
   public function assertTilePresent($heading) {
-    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title, article.tile h2');
     foreach ($results as $result) {
       /** @var \Behat\Mink\Element\Element $result */
       if ($result->getText() === $heading) {
@@ -1138,7 +1138,7 @@ class JoinupContext extends RawDrupalContext {
    * @Then I (should )see :number tile(s)
    */
   public function assertTileCount($number) {
-    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title, article.tile h2');
     $nr_found = count($results);
     if ($nr_found != $number) {
       throw new \Exception("Found $nr_found tiles, expected $number");
@@ -1159,7 +1159,7 @@ class JoinupContext extends RawDrupalContext {
   public function assertTileNotPresent($heading) {
     // We target the heading with "h2" instead of ".listing__title" because both
     // unstyled and styled tiles use h2 as element for their titles.
-    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile h2');
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile h2, article.tile h2');
     foreach ($results as $result) {
       /** @var \Behat\Mink\Element\Element $result */
       if ($result->getText() === $heading) {
@@ -1988,38 +1988,6 @@ class JoinupContext extends RawDrupalContext {
       $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " ' . $wrapper_selector . ' ")]//div[contains(concat(" ", normalize-space(@class), " "), " stats__text--upper ")]';
       $element = $this->getSession()->getPage()->find('xpath', $xpath);
       Assert::assertEquals($expected_value, $element->getText());
-    }
-  }
-
-  /**
-   * Asserts that the small header is present in the page.
-   *
-   * @throws \Exception
-   *   Thrown when the small header is not found.
-   *
-   * @Then I should see the small header
-   */
-  public function assertSmallHeaderIsPresent() {
-    $element = $this->getSession()->getPage()->find('css', '.section--header');
-
-    if (!$element) {
-      throw new \Exception('The small header was not found in the page.');
-    }
-  }
-
-  /**
-   * Asserts that the small header is not present in the page.
-   *
-   * @throws \Exception
-   *   Thrown when the small header is found.
-   *
-   * @Then I should not see the small header
-   */
-  public function assertSmallHeaderIsNotPresent() {
-    $element = $this->getSession()->getPage()->find('css', '.section--header');
-
-    if ($element) {
-      throw new \Exception('The small header was fount in the page, but it should not.');
     }
   }
 

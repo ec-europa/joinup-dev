@@ -40,34 +40,41 @@ class DashboardController extends ControllerBase {
    */
   public function page() {
     $user_id = $this->currentUser->id();
-    $my_subscriptions_url = Url::fromRoute('joinup_subscription.my_subscriptions', [
-      'user' => $user_id,
-    ]);
 
-    $links['my_subscriptions'] = [
-      'title' => $this->t('My subscriptions'),
-      'url' => $my_subscriptions_url,
-      'attributes' => ['class' => ['button', 'button--small']],
+    $links = [
+      'my_subscriptions' => [
+        'title' => $this->t('My subscriptions'),
+        'url' => Url::fromRoute('joinup_subscription.my_subscriptions', [
+          'user' => $user_id,
+        ]),
+      ],
+      'licences' => [
+        'title' => $this->t('Licences overview'),
+        'url' => Url::fromRoute('joinup_licence.overview'),
+      ],
+      'curated_content_listings' => [
+        'title' => $this->t('Curated content listings'),
+        'url' => Url::fromRoute('view.curated_content_listings.page'),
+      ],
     ];
 
-    $licences_url = Url::fromRoute('joinup_licence.overview');
-    $links['licences'] = [
-      'title' => $this->t('Licences overview'),
-      'url' => $licences_url,
-      'attributes' => ['class' => ['button', 'button--small']],
-    ];
+    $links = array_map(function (array $link): array {
+      return [
+        'title' => $link['title'],
+        'url' => $link['url'],
+        'attributes' => ['class' => ['button', 'button--small']],
+      ];
+    }, $links);
 
     $links = array_filter($links, function ($link) {
       return $link['url']->access();
     });
 
-    $links = [
+    return [
       '#theme' => 'links',
       '#links' => $links,
       '#attributes' => ['class' => ['links--buttons']],
     ];
-
-    return $links;
   }
 
 }

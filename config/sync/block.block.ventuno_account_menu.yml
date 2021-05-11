@@ -1,0 +1,27 @@
+uuid: 98b62985-3f3c-4557-8c1d-1a23da83f682
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.account
+  module:
+    - system
+  theme:
+    - ventuno
+_core:
+  default_config_hash: lxJVRvbhOgBVEtScW90v2nLxj8qbvvkD2WMnhgqFHFs
+id: ventuno_account_menu
+theme: ventuno
+region: header
+weight: -23
+provider: null
+plugin: 'system_menu_block:account'
+settings:
+  id: 'system_menu_block:account'
+  label: 'User account menu'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 1
+  expand_all_items: false
+visibility: {  }

@@ -43,6 +43,4 @@
   {% endblock %}
 </div>
 
-{% if content.advanced_search is defined and content.advanced_search is not empty %}
-  {{ content.advanced_search }}
-{% endif %}
+<a class="advanced-search--header" href="{{ path('view.search.page_1') }}">{{ 'Advanced search'|trans }}</a>

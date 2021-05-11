@@ -1,0 +1,27 @@
+uuid: aadc46d3-74e8-4351-bbd5-ac75e7aee6ee
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+    - joinup_licence
+  theme:
+    - ventuno
+id: ventuno_licencedeprecatedmessage
+theme: ventuno
+region: content_top
+weight: -18
+provider: null
+plugin: licence_deprecated_message_block
+settings:
+  id: licence_deprecated_message_block
+  label: 'Licence overview deprecated message'
+  provider: joinup_licence
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - entity.rdf_entity.canonical
+    negate: false
+    context_mapping: {  }
