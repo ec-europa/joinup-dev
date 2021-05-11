@@ -14,9 +14,6 @@
 
 declare(strict_types = 1);
 
-use Solarium\Client;
-use Solarium\QueryType\Update\Query\Document\Document;
-
 /**
  * Restore the field policy domain node field into the new topic field.
  */
@@ -177,76 +174,4 @@ function joinup_core_deploy_0107101(array &$sandbox): string {
   $sandbox['progress'] += count($items);
   $sandbox['#finished'] = ($sandbox['progress'] >= $sandbox['max']) ? 1 : (float) $sandbox['progress'] / (float) $sandbox['max'];
   return "Processed {$sandbox['progress']} out of {$sandbox['max']} items.";
-}
-
-/**
- * Reindex content with topics.
- */
-function joinup_core_deploy_0107102(array &$sandbox): string {
-  if (!isset($sandbox['current'])) {
-    // Collections, solutions, releases, community content, with policy domain.
-    $sandbox['query'] = <<<Query
-(
-  sm_entity_bundle:collection OR
-  sm_entity_bundle:solution OR
-  sm_entity_bundle:asset_release OR
-  sm_entity_bundle:discussion OR
-  sm_entity_bundle:document OR
-  sm_entity_bundle:event OR
-  sm_entity_bundle:news
-) AND sm_policy_domain:['' TO *]
-Query;
-    $sandbox['current'] = 0;
-  }
-
-  $client = new Client();
-  // Allow large documents to be indexed.
-  $client->getEndpoint()->setTimeout(20);
-  // Ignore unpublished content because that will be re-indexed on publication.
-  $client->getEndpoint()->setCore('drupal_published');
-  $select = $client->createSelect();
-  // Fields to retrieve.
-  $select->setFields(['id', 'sm_policy_domain']);
-  // Query filters.
-  $select->createFilterQuery('sm_policy_domain')->setQuery($sandbox['query']);
-  // Make the order predictable.
-  $select->setSorts(['id' => 'asc']);
-  // Batch size.
-  $select->setRows(1000);
-
-  // Do the query.
-  $response = json_decode($client->select($select)->getResponse()->getBody(), TRUE)['response'];
-  $sandbox['total'] = $sandbox['total'] ?? $response['numFound'];
-
-  if (!$response['docs']) {
-    // Optimize the index for better performance.
-    $optimize = $client->createUpdate()->addOptimize();
-    $client->update($optimize);
-    $sandbox['#finished'] = 1;
-    return "Optimized 'drupal_published' index for better performance";
-  }
-
-  $update = $client->createUpdate();
-  foreach ($response['docs'] as $doc) {
-    // Transform URIs.
-    $topics = array_map(function (string $uri): string {
-      return str_replace('policy-domain', 'topic', $uri);
-    }, $doc['sm_policy_domain']);
-    // Atomic update: Reindex only the field, not the whole Solr document.
-    $update->addDocument($update->createDocument()
-      ->setKey('id', $doc['id'])
-      // Add the new field.
-      ->setField('sm_topic', $topics, NULL, Document::MODIFIER_SET)
-      // Remove the stale field.
-      ->setField('sm_policy_domain', NULL, NULL, Document::MODIFIER_SET)
-    );
-    $sandbox['current']++;
-  }
-  // Immediately commit updates.
-  $update->addCommit();
-  // Do the update.
-  $client->update($update);
-
-  $sandbox['#finished'] = 0;
-  return "Processed {$sandbox['current']} out of {$sandbox['total']}";
 }
