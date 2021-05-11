@@ -34,7 +34,8 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    *
    * @var array
    */
-  const COMMUNITY_BUNDLES = [
+  const LISTED_BUNDLES = [
+    'asset_release',
     'custom_page',
     'discussion',
     'document',
@@ -160,7 +161,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
     $index = $this->entityTypeManager->getStorage('search_api_index')->load('unpublished');
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $index->query();
-    $query->addCondition('entity_bundle', self::COMMUNITY_BUNDLES, 'IN');
+    $query->addCondition('entity_bundle', self::LISTED_BUNDLES, 'IN');
     $query->addCondition('entity_groups', $group->id());
     $query->sort('entity_created', 'DESC');
     $results = $query->execute();
@@ -193,7 +194,15 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
     /** @var \Drupal\search_api\Item\ItemInterface $item */
     foreach ($result->getResultItems() as $item) {
       try {
-        $entity = $this->revisionManager->loadLatestRevision($item->getOriginalObject()->getValue());
+        $entity = $item->getOriginalObject()->getValue();
+        // Revisions are not yet implemented for RDF entities, even though they
+        // inherit RevisionableInterface through ContentEntityInterface. We need
+        // to check the RdfInterface directly.
+        // @todo Remove this workaround once we have revisions for RDF entities.
+        // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6481
+        if (!$entity instanceof RdfInterface) {
+          $entity = $this->revisionManager->loadLatestRevision($item->getOriginalObject()->getValue());
+        }
       }
       catch (SearchApiException $e) {
         $entity = NULL;
@@ -233,7 +242,9 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    */
   public function getCacheTags(): array {
     $node_type = $this->entityTypeManager->getStorage('node')->getEntityType();
-    return Cache::mergeTags(parent::getCacheTags(), $node_type->getListCacheTags());
+    $rdf_type = $this->entityTypeManager->getStorage('rdf_entity')->getEntityType();
+    $cache_tags = Cache::mergeTags(parent::getCacheTags(), $node_type->getListCacheTags());
+    return Cache::mergeTags($cache_tags, $rdf_type->getListCacheTags());
   }
 
 }
