@@ -1,0 +1,9 @@
+services:
+  topic.path_processor:
+    class: Drupal\topic\PathProcessor\TopicPathProcessor
+    tags:
+      - { name: path_processor_outbound, priority: 0 }
+  topic.route_processor:
+    class: Drupal\topic\RouteProcessor\TopicRouteProcessor
+    tags:
+      - { name: route_processor_outbound, priority: 0 }

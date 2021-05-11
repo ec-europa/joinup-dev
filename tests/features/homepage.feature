@@ -36,6 +36,14 @@ Feature: Homepage
       | 29 Mar | EU and European Policies         | Earlier transformations     | Archaeological evidence shows that by 10000 BCE all societies employed ecologically transformative land use practices including burning hunting species propagation domestication cultivation have left long-term legacies across the biosphere.     |
       | 28 Feb | HR, Statistics and Analysis      | Spatial reconstruction      | Global land use history confirms that empowering the environmental stewardship of Indigenous peoples and local communities will be critical to conserving biodiversity across the planet.                                                            |
 
+    # The topics that are associated with the news articles should redirect to a
+    # search page which is pre-filtered on the topic.
+    # Todo: Once topics have canonical pages these should redirect to the topic
+    #   page instead.
+    When I click "Finance in EU"
+    Then I should be on the advanced search page
+    And the option with text "Finance in EU (1)" from select facet "topic" is selected
+
   @version
   Scenario Outline: The current version of the Joinup platform is shown in the footer.
     Given the Joinup version is set to "<version>"
