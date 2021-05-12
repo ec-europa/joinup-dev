@@ -1,0 +1,5 @@
+twocol_60_40:
+  version: VERSION
+  css:
+    theme:
+      layouts/twocol-60-40/twocol_60_40.css: {}
