@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the Topic module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\topic\Entity\Topic;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function topic_entity_bundle_info_alter(&$bundles) {
+  if (!empty($bundles['taxonomy_term']['topic'])) {
+    $bundles['taxonomy_term']['topic']['class'] = Topic::class;
+  }
+}

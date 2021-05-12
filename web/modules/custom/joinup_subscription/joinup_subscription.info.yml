@@ -9,6 +9,7 @@ dependencies:
   - flag:flag
   - joinup:joinup_bundle_class
   - joinup:joinup_group
+  - joinup:joinup_notification
   - message_digest:message_digest
 
 config_devel:
