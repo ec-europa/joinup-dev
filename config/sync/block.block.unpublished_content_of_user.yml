@@ -18,7 +18,7 @@ plugin: user_unpublished
 settings:
   id: user_unpublished
   label: 'My unpublished content'
-  provider: joinup_core
+  provider: joinup_user
   label_display: visible
   context_mapping:
     user_route: '@joinup_user.user_route_context:user_route'
