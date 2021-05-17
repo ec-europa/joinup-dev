@@ -1968,30 +1968,6 @@ class JoinupContext extends RawDrupalContext {
   }
 
   /**
-   * Checks the numbers in the 'statistics block' on the homepage.
-   *
-   * Table format:
-   * | Solutions | Collections | Content |
-   * | 89        | 41          | 25      |
-   *
-   * @param \Behat\Gherkin\Node\TableNode $statistics_table
-   *   The table containing the expected values for the statistics.
-   *
-   * @throws \UnexpectedValueException
-   *   Thrown when at least one of the expected values is not found.
-   *
-   * @Then I should see the following statistics:
-   */
-  public function assertHomepageStatistics(TableNode $statistics_table) {
-    foreach ($statistics_table->getRowsHash() as $type => $expected_value) {
-      $wrapper_selector = mb_strtolower("stats__wrapper__$type");
-      $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " ' . $wrapper_selector . ' ")]//div[contains(concat(" ", normalize-space(@class), " "), " stats__text--upper ")]';
-      $element = $this->getSession()->getPage()->find('xpath', $xpath);
-      Assert::assertEquals($expected_value, $element->getText());
-    }
-  }
-
-  /**
    * Asserts that a certain link contains the URL of an entity.
    *
    * @param string $link
