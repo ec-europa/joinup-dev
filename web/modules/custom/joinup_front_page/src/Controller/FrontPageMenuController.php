@@ -17,16 +17,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class FrontPageMenuController extends ControllerBase {
 
   /**
-   * Provides empty homepage.
-   *
-   * @return array
-   *   A render array for the homepage.
-   */
-  public function homepageContent() {
-    return [];
-  }
-
-  /**
    * Route callback that assigns an entity to the front page menu.
    *
    * @param \Drupal\joinup_front_page\Entity\PinnableToFrontpageInterface $entity

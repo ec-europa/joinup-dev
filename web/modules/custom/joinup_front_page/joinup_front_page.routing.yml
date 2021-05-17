@@ -27,10 +27,3 @@ joinup_front_page.site_unpin:
     parameters:
       entity:
         type: entity:{entity_type}
-
-joinup_front_page.homepage:
-  path: '/homepage'
-  defaults:
-    _controller: '\Drupal\joinup_front_page\Controller\FrontPageMenuController::homepageContent'
-  requirements:
-    _permission: 'access content'
