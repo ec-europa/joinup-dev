@@ -26,7 +26,6 @@ permissions:
   - 'administer collection ownership'
   - 'administer comments'
   - 'administer entity legal'
-  - 'administer front-page menu items'
   - 'administer matomo integration'
   - 'administer nodes'
   - 'administer organic groups'
