@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d9a881c0ec7ea3331c84891f780aa887",
+    "content-hash": "0783880366da5a1221bb4e03caf250b8",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3812,7 +3812,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.6",
-                    "datestamp": "1604397981",
+                    "datestamp": "1620838256",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3822,7 +3822,8 @@
                     "dev-8.x-1.x": "1.x-dev"
                 },
                 "patches_applied": {
-                    "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
+                    "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
+                    "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "resources/patch/facets_sa_contrib_2021_008.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10248,7 +10249,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-10-26T14:41:29+00:00"
+            "time": "2020-08-03T19:59:39+00:00"
         },
         {
             "name": "stack/builder",

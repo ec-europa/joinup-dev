@@ -277,7 +277,8 @@
                 "Allow to refine by bundle in EntityConverter @see https://www.drupal.org/project/drupal/issues/3155568": "https://www.drupal.org/files/issues/2020-06-30/3155568-4.patch"
             },
             "drupal/facets": {
-                "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
+                "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
+                "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "resources/patch/facets_sa_contrib_2021_008.patch"
             },
             "drupal/honeypot": {
                 "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2020-09-09/3059040-31.patch",
