@@ -8,8 +8,6 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\menu_link_content\MenuLinkContentInterface;
-use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -34,23 +32,4 @@ function joinup_front_page_form_menu_edit_form_alter(&$form, FormStateInterface 
       $link_data['#attributes']['class'][] = 'tabledrag-leaf';
     }
   }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_update().
- *
- * Reindexes linked content whenever the front page menu changes. This ensures
- * that content added to the menu will also appear in search results.
- */
-function joinup_front_page_menu_link_content_update(MenuLinkContentInterface $entity) {
-  if ($entity->getMenuName() !== 'front-page') {
-    return;
-  }
-
-  /** @var \Drupal\joinup_menu\JoinupMenuHelperInterface $menu_helper */
-  $menu_helper = \Drupal::service('joinup_menu.menu_helper');
-  $entities = $menu_helper->loadEntitiesFromMenuItems([$entity]);
-  $linked_entity = reset($entities);
-  $linked_entity->original = $linked_entity;
-  ContentEntity::indexEntity($linked_entity);
 }
