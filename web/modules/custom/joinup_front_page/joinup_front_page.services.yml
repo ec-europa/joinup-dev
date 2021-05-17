@@ -1,5 +1,0 @@
-services:
-  joinup_front_page.route_subscriber:
-    class: Drupal\joinup_front_page\Routing\RouteSubscriber
-    tags:
-      - { name: event_subscriber }
