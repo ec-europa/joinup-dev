@@ -23,12 +23,6 @@ use Drupal\Core\Cache\Context\CacheContextInterface;
  * contextual links placeholders take up very little cache space, and we don't
  * want to lose the ability to detect regressions in cacheability of important
  * pages such as the collections / solutions overviews and homepages.
- *
- * This cache context has an identical twin but the code has not been put in a
- * shared base class to avoid introducing unwanted module dependencies. This
- * code is trivial and not worth the effort to split off into a separate module.
- *
- * @see \Drupal\joinup_front_page\Cache\Context\PinnedToFrontPageCsrfCacheContext
  */
 class FeaturedContentCsrfCacheContext implements CacheContextInterface {
 
