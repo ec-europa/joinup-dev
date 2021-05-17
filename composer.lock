@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0783880366da5a1221bb4e03caf250b8",
+    "content-hash": "6ad4b13c5c0a8bff23186bf8008e798c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3823,7 +3823,7 @@
                 },
                 "patches_applied": {
                     "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
-                    "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "resources/patch/facets_sa_contrib_2021_008.patch"
+                    "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "https://www.drupal.org/files/issues/2021-05-17/3213582-facets-1.6-1.7.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
