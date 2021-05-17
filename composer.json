@@ -23,7 +23,6 @@
         "drupal/config_readonly": "^1.0",
         "drupal/core": "~8.9",
         "drupal/core-composer-scaffold": "~8.9",
-        "drupal/ctools": "3.4.0",
         "drupal/diff": "~1.0",
         "drupal/digital_size_formatter": "~2.0",
         "drupal/dynamic_entity_reference": "~2.0",
@@ -277,7 +276,8 @@
                 "Allow to refine by bundle in EntityConverter @see https://www.drupal.org/project/drupal/issues/3155568": "https://www.drupal.org/files/issues/2020-06-30/3155568-4.patch"
             },
             "drupal/facets": {
-                "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
+                "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
+                "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "https://www.drupal.org/files/issues/2021-05-17/3213582-facets-1.6-1.7.patch"
             },
             "drupal/honeypot": {
                 "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2020-09-09/3059040-31.patch",
