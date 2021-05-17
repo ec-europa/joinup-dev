@@ -7,9 +7,6 @@
 
 declare(strict_types = 1);
 
-use Drupal\Core\Cache\Cache;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
@@ -36,31 +33,6 @@ function joinup_front_page_form_menu_edit_form_alter(&$form, FormStateInterface 
       $link_data['#attributes']['class'][] = 'tabledrag-root';
       $link_data['#attributes']['class'][] = 'tabledrag-leaf';
     }
-  }
-}
-
-/**
- * Implements hook_entity_view_alter().
- *
- * Adds metadata about whether the entity is pinned to front page, so that
- * contextual links are refreshed when an entity is (un)pinned.
- */
-function joinup_front_page_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display): void {
-  if (in_array($entity->getEntityTypeId(), ['node', 'rdf_entity'])) {
-    $front_page_helper = \Drupal::service('joinup_front_page.front_page_helper');
-    $menu_item = $front_page_helper->getFrontPageMenuItem($entity);
-
-    // Note: the 'entity' contextual link group is added by the Joinup profile.
-    // @see joinup_entity_view_alter()
-    $build['#contextual_links']['entity']['metadata']['is_pinned_to_front_page'] = (int) !empty($menu_item);
-    // The URL to pin entities to the front page is protected against CSRF
-    // attacks, so this needs to vary with the session. We have a dedicated
-    // cache context for this, avoiding the 'session' cache context since this
-    // would mark the entire page as uncacheable, preventing the detection of
-    // regressions in cacheability.
-    $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], [
-      'pinned_to_front_page_csrf',
-    ]);
   }
 }
 
