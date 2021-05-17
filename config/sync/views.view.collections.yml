@@ -475,19 +475,6 @@ display:
             group_items: {  }
           plugin_id: search_api_string
       sorts:
-        site_pinned:
-          id: site_pinned
-          table: search_api_index_published
-          field: site_pinned
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: false
-          expose:
-            label: ''
-            identifier: site_pinned
-          plugin_id: search_api
         entity_created:
           id: entity_created
           table: search_api_index_published
