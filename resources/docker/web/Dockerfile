@@ -1,4 +1,4 @@
-FROM php:7.3.27-apache-stretch
+FROM php:7.3.28-apache-stretch
 
 ARG composer_version="1.7.2"
 ARG drush_version="8.1.17"
@@ -16,11 +16,11 @@ RUN sed -ri -e 's!/var/www/!${DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/a
 RUN set -ex; \
 	apt-get update; \
     apt-get install -y --no-install-recommends iproute2 ssh libzip-dev libjpeg-dev libpng-dev libpq-dev mysql-client \
-    net-tools gnupg wget curl nano unzip patch git rsync make ssmtp telnet lsof; \
+    net-tools gnupg wget curl nano unzip patch git rsync make ssmtp telnet lsof iputils-ping; \
 	docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
 	docker-php-ext-install -j "$(nproc)" gd opcache pdo_mysql pdo_pgsql zip
 
-RUN pecl install xdebug-3.0.2;
+RUN pecl install xdebug-3.0.4;
  # enabling in the docker-compose.yml file
  # && docker-php-ext-enable xdebug
 

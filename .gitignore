@@ -54,3 +54,6 @@ docker-compose.*.local.yml
 
 # CPHP Behat files.
 /tests/behat-*
+
+*.sql
+*.deb
