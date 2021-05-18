@@ -7,7 +7,8 @@
 echo "**** emptying xdebug config ..."
 echo -n "" > /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 echo "zend_extension=xdebug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-echo "xdebug.remote_host=$(ip -4 route show default | awk '/^default/ { print $3 }')" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+echo "xdebug.client_host=$(ip -4 route show default | awk '/^default/ { print $3 }')" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 echo "xdebug.mode=$XDEBUG_MODE" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 echo "xdebug.idekey=$XDEBUG_KEY" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
