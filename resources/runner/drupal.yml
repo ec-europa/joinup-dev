@@ -194,6 +194,7 @@ drupal:
         $settings['redis.connection']['interface'] = getenv('REDIS_INTERFACE');
         $settings['redis.connection']['host'] = getenv('REDIS_HOST');
         $settings['redis.connection']['port'] = getenv('REDIS_PORT');
+        $settings['redis.connection']['password'] = getenv('REDIS_PASSWORD');
         $settings['cache']['default'] = 'cache.backend.redis';
         $settings['container_yamls'][] = DRUPAL_ROOT . '/modules/contrib/redis/example.services.yml';
       Custom error handler: |
