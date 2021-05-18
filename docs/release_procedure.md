@@ -39,10 +39,11 @@ Release procedure
    branch.
 1. After receiving approval from the functional team, merge the release branch
    into master, then publish the new release on GitHub. This will automatically
-   create the tag.
-1. In the Joinup project page in Jira, click the "Releases" icon in the left
-   sidebar. Find the release in the table, click the three-dot 'Actions' menu
-   and choose 'Release'. Also set the correct date for the release.
+   create the tag. The release branch can then be deleted.
+1. In the Joinup project page in Jira, move the release ticket to 'Resolved'.
+1. Next up in Jira, click the "Releases" icon in the left sidebar. Find the
+   release in the table, click the three-dot 'Actions' menu and choose
+   'Release'. Set the correct date for the release.
 1. Merge back master into develop.
 1. Create a followup PR against develop that cleans up the update and deploy
    scripts, and a corresponding Jira ticket, and move this in QA.
