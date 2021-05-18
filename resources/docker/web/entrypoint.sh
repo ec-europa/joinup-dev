@@ -20,7 +20,11 @@ fi;
 if [ "$PHP_XDEBUG_ENABLED" -eq "1" ]; then
     echo "**** ENABLING XDEBUG ..."
     docker-php-ext-enable xdebug;
+
 fi;
 
 # Run the default startup file.
 /usr/local/bin/apache2-foreground
+# change owner of xdebug.log
+touch $XDEBUG_LOG
+chown wwww-data:www-data $XDEBUG_LOG
