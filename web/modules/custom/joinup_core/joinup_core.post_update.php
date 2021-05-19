@@ -14,29 +14,3 @@
  */
 
 declare(strict_types = 1);
-
-/**
- * Backup the field policy domain node field.
- */
-function joinup_core_post_update_0107100(&$sandbox) {
-  // WARNING: Needs to run last among the post update hooks.
-  $schema = \Drupal::database()->schema();
-  $schema->renameTable('node__field_policy_domain', 'node__field_topic_backup');
-  $schema->renameTable('node_revision__field_policy_domain', 'node_revision__field_topic_backup');
-
-  $queries = [
-    'CREATE TABLE `node__field_policy_domain` LIKE `node__field_topic_backup`;',
-    'CREATE TABLE `node_revision__field_policy_domain` LIKE `node_revision__field_topic_backup`;',
-  ];
-
-  foreach ($queries as $query) {
-    // Core was using the same query until removed in
-    // https://www.drupal.org/files/issues/2061879-9.patch.
-    \Drupal::database()->query($query);
-  }
-
-  \Drupal::getContainer()->get('sparql.endpoint')->query('MOVE <http://policy_domain> TO <http://topic>');
-  \Drupal::configFactory()->getEditable('taxonomy.vocabulary.policy_domain')->delete();
-  \Drupal::keyValue('config.entity.key_store.rdf_entity_mapping')->deleteAll();
-  \Drupal::keyValue('config.entity.key_store.taxonomy_vocabulary')->deleteAll();
-}

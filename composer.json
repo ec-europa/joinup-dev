@@ -23,7 +23,6 @@
         "drupal/config_readonly": "^1.0",
         "drupal/core": "~8.9",
         "drupal/core-composer-scaffold": "~8.9",
-        "drupal/ctools": "3.4.0",
         "drupal/diff": "~1.0",
         "drupal/digital_size_formatter": "~2.0",
         "drupal/dynamic_entity_reference": "~2.0",
@@ -278,7 +277,8 @@
             },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
-                "Configurable dropdown child prefix. @see https://www.drupal.org/project/facets/issues/3214662": "https://git.drupalcode.org/project/facets/-/merge_requests/20.diff"
+                "Configurable dropdown child prefix. @see https://www.drupal.org/project/facets/issues/3214662": "https://git.drupalcode.org/project/facets/-/merge_requests/20.diff",
+                "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "https://www.drupal.org/files/issues/2021-05-17/3213582-facets-1.6-1.7.patch"
             },
             "drupal/honeypot": {
                 "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2020-09-09/3059040-31.patch",
@@ -333,7 +333,7 @@
             },
             "drupal/sparql_entity_storage": {
                 "Bundle classes support @see https://github.com/ec-europa/sparql_entity_storage/pull/11": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/11.diff",
-                "Allow routes to filter by bundle @see https://github.com/ec-europa/sparql_entity_storage/pull/32": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/32.diff"
+                "Allow routes to filter by bundle @see https://github.com/ec-europa/sparql_entity_storage/pull/32": "https://github.com/idimopoulos/sparql_entity_storage/compare/8.x-1.x...idimopoulos:e9b6e36.diff"
             },
             "drupal/subpathauto": {
                 "Subpaths with redirect not resolved @see https://www.drupal.org/project/subpathauto/issues/3175637": "https://git.drupalcode.org/project/subpathauto/-/merge_requests/1/diffs.diff"
