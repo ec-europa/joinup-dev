@@ -161,9 +161,9 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
       tags: {  }
-  block_1:
+  block:
     display_plugin: block
-    id: block_1
+    id: block
     display_title: Block
     position: 1
     display_options:
