@@ -20,10 +20,11 @@ widget:
   config:
     show_numbers: true
     default_option_label: 'Any topic'
+    child_prefix: '-'
     arbitrary_facet_plugin: _none
 query_operator: or
-use_hierarchy: false
-expand_hierarchy: false
+use_hierarchy: true
+expand_hierarchy: true
 enable_parent_when_child_gets_disabled: true
 hard_limit: 0
 exclude: false
