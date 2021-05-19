@@ -1,18 +1,21 @@
-uuid: 47abf8c0-76e3-4a9b-8ad2-29e38df1a41a
+uuid: ccbdcb8f-aec5-48eb-a4be-c2a116c3cf7a
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.numbered_listing
     - entityqueue.entity_queue.spotlight
   module:
     - entityqueue
+    - node
+    - user
 id: in_the_spotlight
 label: 'In the spotlight'
 module: views
 description: ''
 tag: ''
-base_table: entity_subqueue_field_data
-base_field: name
+base_table: node_field_data
+base_field: nid
 display:
   default:
     display_plugin: default
@@ -21,8 +24,9 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'access content'
       cache:
         type: tag
         options: {  }
@@ -52,50 +56,36 @@ display:
       style:
         type: default
       row:
-        type: 'entity:entity_subqueue'
+        type: 'entity:node'
         options:
           relationship: none
-          view_mode: default
+          view_mode: numbered_listing
       fields:
         title:
-          table: entity_subqueue_field_data
-          field: title
           id: title
-          entity_type: null
+          table: node_field_data
+          field: title
+          entity_type: node
           entity_field: title
+          label: ''
+          alter:
+            alter_text: false
+            make_link: false
+            absolute: false
+            trim: false
+            word_boundary: false
+            ellipsis: false
+            strip_tags: false
+            html: false
+          hide_empty: false
+          empty_zero: false
+          settings:
+            link_to_entity: true
           plugin_id: field
           relationship: none
           group_type: group
           admin_label: ''
-          label: ''
           exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
           element_type: ''
           element_class: ''
           element_label_type: ''
@@ -105,12 +95,9 @@ display:
           element_wrapper_class: ''
           element_default_classes: true
           empty: ''
-          hide_empty: false
-          empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
           type: string
-          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -124,10 +111,10 @@ display:
       filters:
         status:
           value: '1'
-          table: entity_subqueue_field_data
+          table: node_field_data
           field: status
           plugin_id: boolean
-          entity_type: entity_subqueue
+          entity_type: node
           entity_field: status
           id: status
           expose:
@@ -135,24 +122,37 @@ display:
             operator_limit_selection: false
             operator_list: {  }
           group: 1
-        queue:
-          id: queue
-          table: entity_subqueue_field_data
-          field: queue
-          value:
-            spotlight: spotlight
-          entity_type: entity_subqueue
-          entity_field: queue
-          plugin_id: bundle
+      sorts:
+        entityqueue_relationship:
+          id: entityqueue_relationship
+          table: node_field_data
+          field: entityqueue_relationship
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
           expose:
-            operator_limit_selection: false
-            operator_list: {  }
-      sorts: {  }
+            label: ''
+            identifier: ''
+          entity_type: node
+          plugin_id: entity_queue_position
       title: 'In the spotlight'
       header: {  }
       footer: {  }
       empty: {  }
-      relationships: {  }
+      relationships:
+        entityqueue_relationship:
+          id: entityqueue_relationship
+          table: node_field_data
+          field: entityqueue_relationship
+          relationship: none
+          group_type: group
+          admin_label: 'Content queue'
+          required: true
+          limit_queue: spotlight
+          entity_type: node
+          plugin_id: entity_queue
       arguments: {  }
       display_extenders: {  }
     cache_metadata:
@@ -160,7 +160,12 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-      tags: {  }
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:entityqueue.entity_queue.spotlight'
+        - entity_field_info
+        - views_data
   block:
     display_plugin: block
     id: block
@@ -173,4 +178,9 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-      tags: {  }
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:entityqueue.entity_queue.spotlight'
+        - entity_field_info
+        - views_data
