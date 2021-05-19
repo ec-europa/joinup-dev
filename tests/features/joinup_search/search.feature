@@ -37,11 +37,11 @@ Feature: Global search
     # Facets should be in place.
     And the option with text "Any topic" from select facet "topic" is selected
     And the "topic" select facet should contain the following options:
-      | Any topic                   |
-      | Demography (2)              |
-      | Social and Political (2)    |
-      | Info (1)                    |
-      | Statistics and Analysis (1) |
+      | Any topic                     |
+      | Social and Political (2)      |
+      | • Demography (2)              |
+      | Info (1)                      |
+      | • Statistics and Analysis (1) |
     And the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
       | Any location       |
@@ -53,15 +53,15 @@ Feature: Global search
     And there should be exactly 1 "search field" on the page
 
     # Test the topic facet.
-    When I select "Demography" from the "topic" select facet
-    Then the option with text "Demography (2)" from select facet "topic" is selected
+    When I select "• Demography" from the "topic" select facet
+    Then the option with text "• Demography (2)" from select facet "topic" is selected
     # The selected option moves to the last position by default.
     And the "topic" select facet should contain the following options:
-      | Any topic                   |
-      | Social and Political (2)    |
-      | Info (1)                    |
-      | Statistics and Analysis (1) |
-      | Demography (2)              |
+      | Any topic                     |
+      | Social and Political (2)      |
+      | • Demography (2)              |
+      | Info (1)                      |
+      | • Statistics and Analysis (1) |
 
     Then the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
@@ -77,14 +77,14 @@ Feature: Global search
     When I select "Belgium" from the "spatial coverage" select facet
     Then the option with text "Belgium (1)" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
-      | Any location         |
-      | Belgium   (1)        |
-      | European Union   (1) |
-    Then the option with text "Demography   (1)" from select facet "topic" is selected
+      | Any location       |
+      | European Union (1) |
+      | Belgium (1)        |
+    Then the option with text "• Demography (1)" from select facet "topic" is selected
     And the "topic" select facet should contain the following options:
       | Any topic                |
       | Social and Political (1) |
-      | Demography (1)           |
+      | • Demography (1)         |
     And I should see the "Molecular cooking collection" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Spherification" tile
@@ -104,11 +104,11 @@ Feature: Global search
     And the "News" content checkbox item should be selected
     Then the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (1)"
     And the "topic" select facet should contain the following options:
-      | Any topic                   |
-      | Demography (1)              |
-      | Info (1)                    |
-      | Social and Political (1)    |
-      | Statistics and Analysis (1) |
+      | Any topic                     |
+      | Info (1)                      |
+      | • Statistics and Analysis (1) |
+      | Social and Political (1)      |
+      | • Demography (1)              |
     And the "spatial coverage" select facet should contain the following options:
       | Any location       |
       | European Union (1) |
