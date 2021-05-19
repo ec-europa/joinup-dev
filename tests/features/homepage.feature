@@ -61,6 +61,11 @@ Feature: Homepage
     And event content:
       | title           | collection    | topic                    | state     | body                                                                                                                                                                                  |
       | Stay at the ISS | Mice in space | EU and European Policies | validated | Two groups of mice (six per group) were housed aboard the International Space Station for 35 days. One group was subjected to artificial gravity (1 g) and the other to microgravity. |
+    And the "In the spotlight" content listing contains:
+      | type    | label           |
+      | content | Muscle atrophy  |
+      | content | Stay at the ISS |
+      | content | Microgravity    |
 
     When I am on the homepage
     Then the spotlight section should contain the following content:
