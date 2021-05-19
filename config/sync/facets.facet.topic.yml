@@ -20,7 +20,7 @@ widget:
   config:
     show_numbers: true
     default_option_label: 'Any topic'
-    child_prefix: '-'
+    child_prefix: '•'
     arbitrary_facet_plugin: _none
 query_operator: or
 use_hierarchy: true
