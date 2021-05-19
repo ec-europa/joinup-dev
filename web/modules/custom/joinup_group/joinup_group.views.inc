@@ -16,4 +16,7 @@ function joinup_group_views_data_alter(array &$data): void {
   $data['search_api_index_published']['entity_groups']['argument']['id'] = 'search_api_group';
   $data['search_api_index_unpublished']['entity_groups']['argument']['id'] = 'search_api_group';
   $data['node__og_audience']['og_audience_target_id']['argument']['id'] = 'og_audience_group';
+  // Allow the Search API 'entity_bundle' field to be displayed as its label.
+  $data['search_api_index_published']['entity_bundle']['field']['id'] = 'joinup_search_api_entity_bundle';
+  $data['search_api_index_unpublished']['entity_bundle']['field']['id'] = 'joinup_search_api_entity_bundle';
 }
