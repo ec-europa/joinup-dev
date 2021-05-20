@@ -50,17 +50,17 @@ Feature: Homepage
       | title | Mice in space |
       | state | validated     |
     And news content:
-      | title          | collection    | topic                                      | state     | body                                                                                                                                                                              |
-      | Muscle atrophy | Mice in space | Finance in EU, Supplier exchange, E-health | validated | Researchers from the University of Tsukuba have sent mice into space to explore effects of spaceflight and reduced gravity on muscle atrophy, or wasting, at the molecular level. |
+      | title          | collection    | topic                                      | state     | logo       | body                                                                                                                                                                              |
+      | Muscle atrophy | Mice in space | Finance in EU, Supplier exchange, E-health | validated | blaise.jpg | Researchers from the University of Tsukuba have sent mice into space to explore effects of spaceflight and reduced gravity on muscle atrophy, or wasting, at the molecular level. |
     And discussion content:
-      | title                | collection    | topic                            | state     | body                                                                                                                                                                                       |
-      | Influence of gravity | Mice in space | Employment and Support Allowance | validated | Space exploration has brought about many scientific and technological advances, yet manned spaceflights come at a cost to astronauts, including reduced skeletal muscle mass and strength. |
+      | title                | collection    | topic                            | state     | logo    | body                                                                                                                                                                                       |
+      | Influence of gravity | Mice in space | Employment and Support Allowance | validated | ada.jpg | Space exploration has brought about many scientific and technological advances, yet manned spaceflights come at a cost to astronauts, including reduced skeletal muscle mass and strength. |
     And document content:
-      | title        | collection    | topic                                  | state     | body                                                                                                                                                                                            |
-      | Microgravity | Mice in space | HR, Statistics and Analysis, E-justice | validated | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
+      | title        | collection    | topic                                  | state     | logo     | body                                                                                                                                                                                            |
+      | Microgravity | Mice in space | HR, Statistics and Analysis, E-justice | validated | alan.jpg | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
     And event content:
-      | title           | collection    | topic                    | state     | body                                                                                                                                                                                  |
-      | Stay at the ISS | Mice in space | EU and European Policies | validated | Two groups of mice (six per group) were housed aboard the International Space Station for 35 days. One group was subjected to artificial gravity (1 g) and the other to microgravity. |
+      | title           | collection    | topic                    | state     | logo        | body                                                                                                                                                                                  |
+      | Stay at the ISS | Mice in space | EU and European Policies | validated | charles.jpg | Two groups of mice (six per group) were housed aboard the International Space Station for 35 days. One group was subjected to artificial gravity (1 g) and the other to microgravity. |
     And the "In the spotlight" content listing contains:
       | type    | label           |
       | content | Muscle atrophy  |
