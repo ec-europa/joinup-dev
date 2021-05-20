@@ -56,7 +56,8 @@ third_party_settings:
     group_main:
       children:
         - label
-        - field_short_id
+        - field_ar_logo
+        - field_ar_banner
         - field_ar_description
         - field_policy_domain
         - field_topic
@@ -78,10 +79,9 @@ third_party_settings:
       region: content
     group_description:
       children:
+        - field_short_id
         - field_ar_abstract
         - field_ar_access_url
-        - field_ar_logo
-        - field_ar_banner
         - field_spatial_coverage
         - field_keywords
         - field_ar_closed
@@ -134,7 +134,7 @@ content:
     type: link_default
     region: content
   field_ar_banner:
-    weight: 14
+    weight: 3
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
@@ -183,7 +183,7 @@ content:
     type: text_textarea
     region: content
   field_ar_logo:
-    weight: 13
+    weight: 2
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
