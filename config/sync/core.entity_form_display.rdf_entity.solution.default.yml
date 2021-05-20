@@ -77,7 +77,8 @@ third_party_settings:
     group_main:
       children:
         - label
-        - field_short_id
+        - field_is_logo
+        - field_is_banner
         - field_is_description
         - field_is_contact_information
         - field_policy_domain
@@ -108,8 +109,7 @@ third_party_settings:
       region: content
     group_management:
       children:
-        - field_is_logo
-        - field_is_banner
+        - field_short_id
         - field_is_documentation
         - field_spatial_coverage
         - field_keywords
@@ -154,7 +154,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_is_banner:
-    weight: 6
+    weight: 4
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
