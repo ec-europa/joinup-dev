@@ -105,6 +105,7 @@ module:
   mailsystem: 0
   matomo: 0
   matomo_reporting_api: 0
+  menu_export: 0
   menu_ui: 0
   message: 0
   message_digest: 0
