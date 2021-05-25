@@ -111,6 +111,7 @@ default:
         Modal buttons: '.ui-dialog-buttonpane'
         Modal content: '#drupal-modal'
         Modal title: '.ui-dialog-title'
+        My unpublished content area: '.block-user-unpublished'
         Navigation menu block: '#block-navigation'
         Navigation menu: 'div.navigation-menu ul'
         Page title: 'div.page__title-wrapper'
