@@ -28,7 +28,7 @@ class CaptureGitReleaseTag {
 
     $wrapper = new GitWrapper();
     $git = $wrapper->workingCopy($directory);
-    $git->run(['fetch --tags']);
+    $git->fetch(['deepen' => 5000, 'tags' => TRUE]);
     $version = trim((string) $git->run(['describe --tags']));
 
     $fs = new Filesystem();
