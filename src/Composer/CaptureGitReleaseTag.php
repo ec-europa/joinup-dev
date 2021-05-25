@@ -28,6 +28,14 @@ class CaptureGitReleaseTag {
 
     $wrapper = new GitWrapper();
     $git = $wrapper->workingCopy($directory);
+    $remotes = $git->getRemotes();
+    $event->getIO()->write("Remotes:");
+    foreach ($remotes as $remote => $urls) {
+      $event->getIO()->write("- $remote:");
+      foreach ($urls as $action => $url) {
+        $event->getIO()->write("  - $action: $url");
+      }
+    }
     $git->fetch(['deepen' => 5000, 'tags' => TRUE]);
     $version = trim((string) $git->run(['describe --tags']));
 
