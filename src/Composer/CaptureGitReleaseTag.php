@@ -32,6 +32,14 @@ class CaptureGitReleaseTag {
     $count = $git->run(['rev-list HEAD --count']);
     $event->getIO()->write("Commit count: $count");
 
+    $event->getIO()->write("Tags:");
+    $tags = (string) $git->tag('--list');
+    foreach (explode("\n", $tags) as $tag) {
+      $tag = trim($tag);
+      $event->getIO()->write("- $tag");
+    }
+
+    $git = $wrapper->workingCopy($directory);
     $remotes = $git->getRemotes();
     $event->getIO()->write("Remotes:");
     foreach ($remotes as $remote => $urls) {
@@ -42,7 +50,14 @@ class CaptureGitReleaseTag {
     }
 
     $event->getIO()->write("Deepening tree and fetching tags...");
-    $git->fetch(['deepen' => 5000, 'tags' => TRUE]);
+    $git->fetch(['deepen' => 500, 'tags' => TRUE]);
+
+    $event->getIO()->write("Tags:");
+    $tags = (string) $git->tag('--list');
+    foreach (explode("\n", $tags) as $tag) {
+      $tag = trim($tag);
+      $event->getIO()->write("- $tag");
+    }
 
     $count = $git->run(['rev-list HEAD --count']);
     $event->getIO()->write("Commit count: $count");
