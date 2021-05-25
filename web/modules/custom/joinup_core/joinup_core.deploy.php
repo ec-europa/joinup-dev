@@ -20,27 +20,24 @@ declare(strict_types = 1);
 function joinup_deploy_0107200(array &$sandbox): string {
   $rdf_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
   if (empty($sandbox['items'])) {
-    /*
-     *
-     * IDs and values for the owner types can be found with the following query
-     * in the SPARQL endpoint:
-     * SELECT ?id ?value
-     * @codingStandardsIgnoreStart
-     * FROM <http://adms_skos_v1.00>
-     * WHERE {
-     *  ?id <http://www.w3.org/2004/02/skos/core#prefLabel> ?value
-     * }
-     * @codingStandardsIgnoreEnd
-     * Same, for spatial coverage terms:
-     * @codingStandardsIgnoreStart
-     * SELECT ?id ?value
-     * FROM <http://countries-skos>
-     * WHERE {
-     *  ?id <http://www.w3.org/2004/02/skos/core#prefLabel> ?value
-     * }
-     * @codingStandardsIgnoreEnd
-     * Also, predicate for solution spatial: <http://purl.org/dc/terms/spatial>.
-     */
+    // IDs and values for the owner types can be found with the following query
+    // in the SPARQL endpoint:
+    // @code
+    // SELECT ?id ?value
+    // FROM <http://adms_skos_v1.00>
+    // WHERE {
+    //  ?id <http://www.w3.org/2004/02/skos/core#prefLabel> ?value
+    // }
+    // @endcode
+    // Same, for spatial coverage terms:
+    // @code
+    // SELECT ?id ?value
+    // FROM <http://countries-skos>
+    // WHERE {
+    //  ?id <http://www.w3.org/2004/02/skos/core#prefLabel> ?value
+    // }
+    // @endcode
+    // Also, predicate for solution spatial: <http://purl.org/dc/terms/spatial>.
     $sandbox['parent_data'] = [
       'http://www.juntadeandalucia.es/repositorio/' => [
         'field_is_contact_information' => [
