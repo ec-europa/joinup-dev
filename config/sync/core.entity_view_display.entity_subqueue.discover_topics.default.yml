@@ -20,8 +20,8 @@ content:
     weight: 0
     region: content
     settings:
-      path: '[term:url]'
-      label: '[term:label]'
+      path: '[term:landing-page-url]'
+      label: '[term:name]'
       query_parameters: ''
       limit: -1
     third_party_settings:
