@@ -70,3 +70,22 @@ Feature: Homepage
     And press "Search"
     Then I should be on the search page
     And I should see the "RNA vaccines" tile
+
+  @terms
+  Scenario: Discover topics block shows a list of topics.
+    Given collection:
+      | title | Clash of vania's |
+      | state | validated        |
+    And news content:
+      | title      | headline      | collection       | topic     | state     | publication date     | body |
+      | Some title | Some headline | Clash of vania's | E-justice | validated | 2021-04-26T19:09:00Z | Body |
+
+    Given the following terms are assigned to the "Discover topics" queue:
+      | Employment and Support Allowance |
+      | E-justice                        |
+    When I am on the homepage
+    Then I should see the link "Employment and Support Allowance" in the "Discover topics block"
+    And I should see the link "E-justice" in the "Discover topics block"
+    When I click "E-justice"
+    Then I should be on the advanced search page
+    And the option with text "E-justice (1)" from select facet "topic" is selected
