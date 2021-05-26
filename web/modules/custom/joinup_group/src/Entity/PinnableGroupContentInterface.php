@@ -18,17 +18,6 @@ namespace Drupal\joinup_group\Entity;
  * - Community content: can be pinned only in their own solution of collection.
  *
  * Other group content (such as custom pages) cannot be pinned.
- *
- * *Note that this interface is NOT for pinning entities to the frontpage*
- *
- * There is a similarly named concept in Joinup which allows content to be
- * "Pinned to the frontpage" but this is implemented using a menu. The same
- * naming is used since from a UI perspective the actions of "pinning" content
- * to a collection / solution / front page is equivalent.
- *
- * See PinnableToFrontpageInterface for front page pinning.
- *
- * @see \Drupal\joinup_front_page\Entity\PinnableToFrontpageInterface
  */
 interface PinnableGroupContentInterface extends GroupContentInterface {
 

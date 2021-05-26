@@ -525,7 +525,6 @@ function joinup_theme_preprocess_menu(&$variables) {
 
   // Set login text instead of image on the homepage.
   $login_text_routes = [
-    'joinup_front_page.homepage',
     'page_manager.page_view_homepage_homepage-layout_builder-0',
   ];
   $route_match = \Drupal::routeMatch();

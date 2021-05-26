@@ -6,6 +6,5 @@ package: Joinup
 
 dependencies:
   - 'joinup_bundle_class:joinup_bundle_class'
-  - 'joinup_front_page:joinup_front_page'
   - 'og:og'
   - 'og_menu:og_menu'

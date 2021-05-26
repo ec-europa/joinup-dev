@@ -91,6 +91,39 @@ variant_settings:
           additional: {  }
           weight: 0
       third_party_settings: {  }
+    -
+      layout_id: layout_threecol_section
+      layout_settings:
+        label: About
+        column_widths: 33-34-33
+      components:
+        35b639cd-36a3-445e-8788-fa6fba6225b9:
+          uuid: 35b639cd-36a3-445e-8788-fa6fba6225b9
+          region: first
+          configuration:
+            id: layout_builder_block
+            label: 'What''s Joinup about?'
+            provider: layout_builder_block
+            label_display: visible
+            text: "<p>Joinup is a collaborative platform created by the European Commission and funded by the European Union via the <a href=\"https://ec.europa.eu/isa2/\" target=\"_blank\">Interoperability solutions for public administrations, businesses and citizens</a> (ISA2) Programme.</p>\r\n"
+            format: content_editor
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+        5e95e3c1-323b-4a9e-8d33-938ccdbcd06b:
+          uuid: 5e95e3c1-323b-4a9e-8d33-938ccdbcd06b
+          region: second
+          configuration:
+            id: layout_builder_block
+            label: 'Who is it for?'
+            provider: layout_builder_block
+            label_display: visible
+            text: "<p>Joinup offers several services that aim to help <strong>e-Government professionals</strong> share their experience with each other. Joinup supports them to find, choose, re-use, develop and implement interoperability solutions.</p>\r\n"
+            format: content_editor
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+      third_party_settings: {  }
 page: homepage
 weight: 0
 selection_criteria: {  }
