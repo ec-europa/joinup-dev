@@ -5,4 +5,4 @@ topic.landing_page:
     _controller: '\Drupal\topic\Controller\TopicPageController::build'
   requirements:
     _entity_access: 'taxonomy_term.view'
-    taxonomy_term: \d+
+    taxonomy_term: .+
