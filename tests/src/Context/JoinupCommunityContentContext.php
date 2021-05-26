@@ -488,9 +488,11 @@ class JoinupCommunityContentContext extends RawDrupalContext {
    * This also checks if the content is in the correct order and if the total
    * number of content items is correct.
    *
+   * @codingStandardsIgnoreStart
    * Table format:
    *  | number | logo     | topics                           | title         | body      |
    *  | 1      | alan.jpg | Finance in EU, Supplier exchange | Awesome title | Some text |
+   * @codingStandardsIgnoreEnd
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   A table containing the expected content of the in the spotlight section.
