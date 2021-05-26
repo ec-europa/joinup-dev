@@ -1,0 +1,8 @@
+topic.landing_page:
+  path: '/taxonomy/term/{taxonomy_term}/page'
+  defaults:
+    _title: 'Term page'
+    _controller: '\Drupal\topic\Controller\TopicPageController::build'
+  requirements:
+    _entity_access: 'taxonomy_term.view'
+    taxonomy_term: \d+

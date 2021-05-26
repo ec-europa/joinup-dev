@@ -22,9 +22,18 @@ class TopicRouteProcessor implements OutboundRouteProcessorInterface {
   public const REDIRECT_TO_SEARCH_PAGE_OPTION = 'topic_redirect_to_search';
 
   /**
+   * The routes that will be redirected to the search page.
+   */
+  protected const REDIRECT_ROUTES = [
+    'entity.taxonomy_term.canonical',
+    'topic.landing_page',
+  ];
+
+  /**
    * {@inheritdoc}
    */
   public function processOutbound($route_name, Route $route, array &$parameters, ?BubbleableMetadata $bubbleable_metadata = NULL): void {
+
     if ($route_name !== 'entity.taxonomy_term.canonical') {
       return;
     }
