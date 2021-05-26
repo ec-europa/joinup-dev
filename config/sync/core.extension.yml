@@ -75,7 +75,6 @@ module:
   joinup_event: 0
   joinup_featured: 0
   joinup_federation: 0
-  joinup_front_page: 0
   joinup_group: 0
   joinup_group_content_management: 0
   joinup_invite: 0
@@ -83,7 +82,6 @@ module:
   joinup_legal: 0
   joinup_licence: 0
   joinup_material_design: 0
-  joinup_menu: 0
   joinup_news: 0
   joinup_newsletter: 0
   joinup_notification: 0

@@ -8,7 +8,6 @@ use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_bundle_class\LogoInterface;
 use Drupal\joinup_bundle_class\ShortIdInterface;
-use Drupal\joinup_front_page\Entity\PinnableToFrontpageInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -17,7 +16,7 @@ use Drupal\rdf_entity\RdfInterface;
  *
  * This comprises collections and solutions.
  */
-interface GroupInterface extends RdfInterface, LogoInterface, PinnableToFrontpageInterface, ShortIdInterface {
+interface GroupInterface extends RdfInterface, LogoInterface, ShortIdInterface {
 
   /**
    * Flag for pre-moderated groups.

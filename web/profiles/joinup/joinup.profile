@@ -292,7 +292,6 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
     // proper running order for this hook, so let's make sure that we do not
     // lose any data set by other modules which are supposed to run after us.
     // @see joinup_featured_entity_view_alter()
-    // @see joinup_front_page_entity_view_alter()
     // @see https://www.drupal.org/project/drupal/issues/3120298
     $build['#contextual_links']['entity']['route_parameters']['entity_type'] = $entity->getEntityTypeId();
     $build['#contextual_links']['entity']['route_parameters']['entity'] = $entity->id();
