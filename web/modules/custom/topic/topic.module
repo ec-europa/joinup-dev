@@ -43,7 +43,8 @@ function topic_tokens($type, $tokens, array $data, array $options, BubbleableMet
         case 'landing-page-url':
           if ($term->bundle() !== 'topic') {
             $replacements[$original] = '';
-          } else {
+          }
+          else {
             $replacements[$original] = $term->toUrl('landing-page')->setAbsolute()->toString();
           }
           break;
@@ -54,8 +55,6 @@ function topic_tokens($type, $tokens, array $data, array $options, BubbleableMet
 
   return $replacements;
 }
-
-
 
 /**
  * Implements hook_entity_type_alter().

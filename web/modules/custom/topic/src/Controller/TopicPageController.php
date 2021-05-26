@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\topic\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
@@ -14,7 +16,6 @@ class TopicPageController extends ControllerBase {
    *
    * WARNING: The user will never be able to access this page as they will be
    * redirected to the search page.
-   *
    */
   public function build() {
 
