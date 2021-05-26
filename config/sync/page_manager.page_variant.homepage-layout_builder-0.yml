@@ -57,6 +57,19 @@ variant_settings:
             context_mapping: {  }
           additional: {  }
           weight: 2
+        fdf6b367-2ded-47ac-99d1-26e9beae4382:
+          uuid: fdf6b367-2ded-47ac-99d1-26e9beae4382
+          region: second
+          configuration:
+            id: 'views_block:discover_topics-block'
+            label: ''
+            provider: views
+            label_display: visible
+            views_label: ''
+            items_per_page: none
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
       third_party_settings: {  }
     -
       layout_id: layout_twocol_section
