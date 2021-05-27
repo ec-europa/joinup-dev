@@ -59,10 +59,28 @@ variant_settings:
           weight: 2
       third_party_settings: {  }
     -
-      layout_id: layout_twocol_section
+      layout_id: joinup_layout_twocol_60_40
+      layout_settings:
+        label: 'Spotlight and highlighted solution'
+      components:
+        26488b6d-5ac8-4c62-a3dc-137f6dced5c5:
+          uuid: 26488b6d-5ac8-4c62-a3dc-137f6dced5c5
+          region: first
+          configuration:
+            id: 'views_block:in_the_spotlight-block'
+            label: ''
+            provider: views
+            label_display: visible
+            views_label: ''
+            items_per_page: none
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+      third_party_settings: {  }
+    -
+      layout_id: joinup_layout_twocol_60_40
       layout_settings:
         label: 'News and events'
-        column_widths: 50-50
       components:
         52bba3fe-70ac-478a-9bda-2bbb24a9a8a1:
           uuid: 52bba3fe-70ac-478a-9bda-2bbb24a9a8a1
