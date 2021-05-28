@@ -409,13 +409,13 @@ class SolutionContext extends RawDrupalContext {
    * @param string $title
    *   The solution name.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\solution\Entity\SolutionInterface
    *   The solution.
    *
    * @throws \InvalidArgumentException
    *   Thrown when a solution with the given name does not exist.
    */
-  protected function getSolutionByName($title) {
+  protected function getSolutionByName($title): SolutionInterface {
     return $this->getRdfEntityByLabel($title, 'solution');
   }
 
