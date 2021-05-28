@@ -348,7 +348,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I (should )see the image :filename
    */
   public function assertImagePresent(string $filename): void {
-    Assert::assertTrue($this->findImageInRegion($filename));
+    Assert::assertTrue($this->hasImage($filename));
   }
 
   /**
@@ -360,7 +360,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I should not see the image :filename
    */
   public function assertImageNotPresent(string $filename): void {
-    Assert::assertFalse($this->findImageInRegion($filename));
+    Assert::assertFalse($this->hasImage($filename));
   }
 
   /**
@@ -375,7 +375,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertImagePresentInRegion(string $filename, string $tile): void {
     $tile = $this->getTileByHeading($tile);
-    Assert::assertTrue($this->findImageInRegion($filename, $tile));
+    Assert::assertTrue($this->hasImage($filename, $tile));
   }
 
   /**
@@ -390,7 +390,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertImageNotPresentInRegion(string $filename, string $tile): void {
     $tile = $this->getTileByHeading($tile);
-    Assert::assertFalse($this->findImageInRegion($filename, $tile));
+    Assert::assertFalse($this->hasImage($filename, $tile));
   }
 
   /**
