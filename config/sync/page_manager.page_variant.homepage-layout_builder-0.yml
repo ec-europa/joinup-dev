@@ -76,15 +76,14 @@ variant_settings:
             context_mapping: {  }
           additional: {  }
           weight: 0
-        69b8fd3b-2268-4d66-bb66-8634476d00e4:
-          uuid: 69b8fd3b-2268-4d66-bb66-8634476d00e4
+        204e8ccb-280d-4ee4-b598-74b9f96d6496:
+          uuid: 204e8ccb-280d-4ee4-b598-74b9f96d6496
           region: second
           configuration:
-            id: entityqueue_block
+            id: 'entityqueue_block:highlighted_solution'
             label: 'Highlighted solution'
             provider: entityqueue_block
             label_display: visible
-            entityqueue: highlighted_solution
             view_mode: highlighted
             context_mapping: {  }
           additional: {  }
