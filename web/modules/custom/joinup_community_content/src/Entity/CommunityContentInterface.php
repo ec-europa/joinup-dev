@@ -12,10 +12,11 @@ use Drupal\joinup_publication_date\Entity\EntityPublicationTimeInterface;
 use Drupal\joinup_stats\Entity\VisitCountAwareInterface;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\node\NodeInterface;
+use Drupal\topic\Entity\TopicReferencingEntityInterface;
 
 /**
  * Interface for community content entities.
  */
-interface CommunityContentInterface extends NodeInterface, EntityPublicationTimeInterface, FeaturedContentInterface, PinnableGroupContentInterface, CollectionContentInterface, EntityWorkflowStateInterface, OutdatedContentInterface, VisitCountAwareInterface {
+interface CommunityContentInterface extends NodeInterface, EntityPublicationTimeInterface, FeaturedContentInterface, CollectionContentInterface, EntityWorkflowStateInterface, OutdatedContentInterface, PinnableGroupContentInterface, TopicReferencingEntityInterface, VisitCountAwareInterface {
 
 }
