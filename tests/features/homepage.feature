@@ -112,9 +112,10 @@ Feature: Homepage
       | title      | headline      | collection       | topic     | state     | publication date     | body |
       | Some title | Some headline | Clash of vania's | E-justice | validated | 2021-04-26T19:09:00Z | Body |
 
-    Given the following terms are assigned to the "Discover topics" queue:
-      | Employment and Support Allowance |
-      | E-justice                        |
+    Given the "Discover topics" content listing contains:
+      | type  | label                            |
+      | topic | Employment and Support Allowance |
+      | topic | E-justice                        |
     When I am on the homepage
     Then I should see the link "Employment and Support Allowance" in the "Discover topics block"
     And I should see the link "E-justice" in the "Discover topics block"

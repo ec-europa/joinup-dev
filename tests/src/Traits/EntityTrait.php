@@ -79,6 +79,7 @@ trait EntityTrait {
       'content' => 'node',
       'group' => 'rdf_entity',
       'solution' => 'rdf_entity',
+      'topic' => 'taxonomy_term',
     ];
   }
 
