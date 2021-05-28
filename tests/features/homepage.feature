@@ -46,6 +46,36 @@ Feature: Homepage
     Then I should be on the advanced search page
     And the option with text "Finance in EU (1)" from select facet "topic" is selected
 
+  @terms
+  Scenario: Community content can be placed "In the spotlight" on the homepage
+    Given collection:
+      | title | Mice in space |
+      | state | validated     |
+    And news content:
+      | title          | collection    | topic                                      | state     | logo       | body                                                                                                                                                                              |
+      | Muscle atrophy | Mice in space | Finance in EU, Supplier exchange, E-health | validated | blaise.jpg | Researchers from the University of Tsukuba have sent mice into space to explore effects of spaceflight and reduced gravity on muscle atrophy, or wasting, at the molecular level. |
+    And discussion content:
+      | title                | collection    | topic                            | state     | logo    | body                                                                                                                                                                                       |
+      | Influence of gravity | Mice in space | Employment and Support Allowance | validated | ada.jpg | Space exploration has brought about many scientific and technological advances, yet manned spaceflights come at a cost to astronauts, including reduced skeletal muscle mass and strength. |
+    And document content:
+      | title        | collection    | topic                                  | state     | logo     | body                                                                                                                                                                                            |
+      | Microgravity | Mice in space | HR, Statistics and Analysis, E-justice | validated | alan.jpg | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
+    And event content:
+      | title           | collection    | topic                    | state     | logo        | body                                                                                                                                                                                  |
+      | Stay at the ISS | Mice in space | EU and European Policies | validated | charles.jpg | Two groups of mice (six per group) were housed aboard the International Space Station for 35 days. One group was subjected to artificial gravity (1 g) and the other to microgravity. |
+    And the "In the spotlight" content listing contains:
+      | type    | label           |
+      | content | Muscle atrophy  |
+      | content | Stay at the ISS |
+      | content | Microgravity    |
+
+    When I am on the homepage
+    Then the in the spotlight section should contain the following content:
+      | number | logo        | topics                           | title           | body                                                                                                                                                                                            |
+      | 1      | blaise.jpg  | Finance in EU, Supplier exchange | Muscle atrophy  | Researchers from the University of Tsukuba have sent mice into space to explore effects of spaceflight and reduced gravity on muscle atrophy                                                    |
+      | 2      | charles.jpg | EU and European Policies         | Stay at the ISS | Two groups of mice (six per group) were housed aboard the International Space Station for 35 days. One group was subjected to artificial gravity (1 g) and the other to microgravity.           |
+      | 3      | alan.jpg    | HR, Statistics and Analysis      | Microgravity    | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
+
   @version
   Scenario Outline: The current version of the Joinup platform is shown in the footer.
     Given the Joinup version is set to "<version>"
