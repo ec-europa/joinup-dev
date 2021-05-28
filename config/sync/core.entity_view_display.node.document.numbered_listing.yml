@@ -1,9 +1,9 @@
-uuid: b4fc7e77-e604-41e3-8277-4ad43835da48
+uuid: 089776ca-3aec-4a72-a6aa-78c4a2b693e6
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_display.comment.comment.default
+    - core.entity_view_mode.node.numbered_listing
     - field.field.node.document.body
     - field.field.node.document.field_comments
     - field.field.node.document.field_document_logo
@@ -19,25 +19,25 @@ dependencies:
     - field.field.node.document.field_topic
     - field.field.node.document.field_type
     - field.field.node.document.og_audience
+    - image.style.horizontal_medium_image
     - node.type.document
   module:
-    - comment
-    - datetime
+    - field_delimiter
+    - field_formatter_range
     - field_group
-    - file_url
-    - link
-    - options
+    - image
+    - layout_builder
+    - smart_trim
     - template_suggestion
-    - text
     - user
 third_party_settings:
   field_group:
     group_categorisation:
       children:
-        - field_type
         - field_licence
+        - field_type
       parent_name: ''
-      weight: 3
+      weight: 5
       format_type: html_element
       format_settings:
         id: ''
@@ -49,12 +49,12 @@ third_party_settings:
         effect: none
         speed: fast
       label: Categorisation
-      region: content
+      region: hidden
     group_attachment:
       children:
         - field_file
       parent_name: ''
-      weight: 4
+      weight: 6
       format_type: html_element
       format_settings:
         id: ''
@@ -66,118 +66,80 @@ third_party_settings:
         effect: none
         speed: fast
       label: Attachment
-      region: content
+      region: hidden
+  layout_builder:
+    allow_custom: false
+    enabled: false
 _core:
   default_config_hash: IBVftmfYLkfapLokxuyLrv1me4toJj5yidZu0ixGxQM
-id: node.document.default
+id: node.document.numbered_listing
 targetEntityType: node
 bundle: document
-mode: default
+mode: numbered_listing
 content:
   body:
     label: hidden
-    type: text_default
-    weight: 1
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  field_comments:
-    weight: 7
-    label: above
-    settings:
-      pager_id: 0
-      view_mode: default
-    third_party_settings: {  }
-    type: comment_default
-    region: content
-  field_document_publication_date:
+    type: smart_trim
     weight: 2
-    label: hidden
     settings:
-      timezone_override: ''
-      format_type: date_only
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      summary_handler: trim
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
     third_party_settings:
       template_suggestion:
-        template_suggestion: no_wrappers
-    type: datetime_default
+        template_suggestion: ''
     region: content
-  field_file:
-    weight: 5
-    label: hidden
-    settings:
-      mode: link
-    third_party_settings:
-      template_suggestion:
-        template_suggestion: fieldset
-    type: file_url_default
-    region: content
-  field_licence:
-    type: entity_reference_label
-    weight: 11
-    region: content
-    label: above
-    settings:
-      link: false
-    third_party_settings:
-      template_suggestion:
-        template_suggestion: fieldset
-  field_shared_in:
-    type: entity_reference_entity_view
-    weight: 8
-    region: content
-    label: above
-    settings:
-      view_mode: view_mode_tile
-      link: false
-    third_party_settings:
-      template_suggestion:
-        template_suggestion: entity_reference__listing_tile
-  field_short_title:
+  field_document_logo:
+    type: image
     weight: 0
+    region: content
     label: hidden
     settings:
-      link_to_entity: false
+      image_style: horizontal_medium_image
+      image_link: content
     third_party_settings:
       template_suggestion:
-        template_suggestion: no_wrappers
-    type: string
+        template_suggestion: ''
+  field_topic:
+    type: entity_reference_label
+    weight: 1
     region: content
-  field_type:
-    type: list_default
-    weight: 10
-    region: content
-    label: above
-    settings: {  }
-    third_party_settings:
-      template_suggestion:
-        template_suggestion: fieldset
-  report:
     label: hidden
-    weight: 6
-    region: content
     settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: '0'
-      target: '0'
+      link: true
     third_party_settings:
+      field_delimiter:
+        delimiter: ''
+      field_formatter_range:
+        limit: 2
+        offset: 0
+        reverse: false
       template_suggestion:
-        template_suggestion: no_wrappers
-    type: link
-  share_link:
-    weight: 5
-    region: content
-    settings: {  }
-    third_party_settings: {  }
+        template_suggestion: ''
 hidden:
-  field_document_logo: true
+  field_comments: true
+  field_document_publication_date: true
   field_document_spatial_coverage: true
+  field_file: true
   field_keywords: true
+  field_licence: true
+  field_shared_in: true
+  field_short_title: true
   field_site_featured: true
   field_state: true
-  field_topic: true
+  field_type: true
   langcode: true
   links: true
   og_audience: true
   published_at: true
+  report: true
+  share_link: true
