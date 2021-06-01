@@ -1,6 +1,6 @@
 name: State Machine Permissions
-type: module
 description: Provides permissions per transition for the workflows.
+type: module
 package: Other
 core_version_requirement: ^8.9 || ^9
 php: 7.1

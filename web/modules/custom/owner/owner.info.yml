@@ -1,9 +1,9 @@
 name: Owner
-type: module
 description: 'Provides Owners for the Joinup project.'
+type: module
+package: Joinup
 core_version_requirement: ^8.9 || ^9
 php: 7.1
-package: Joinup
 
 dependencies:
   - 'joinup:joinup_workflow'

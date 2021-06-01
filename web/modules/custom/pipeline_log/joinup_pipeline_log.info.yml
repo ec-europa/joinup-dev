@@ -1,9 +1,9 @@
 name: Joinup pipeline log
-type: module
 description: Logs the last execute time of the pipeline and warns users.
+type: module
+package: Custom
 core_version_requirement: ^8.9 || ^9
 php: 7.1
-package: Custom
 dependencies:
   - joinup_federation:joinup_federation
 

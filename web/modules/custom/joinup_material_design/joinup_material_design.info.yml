@@ -1,6 +1,6 @@
 name: Joinup Material Design
-type: module
 description: Material Design components for Joinup
+type: module
 package: Joinup
 core_version_requirement: ^8.9 || ^9
 php: 7.1

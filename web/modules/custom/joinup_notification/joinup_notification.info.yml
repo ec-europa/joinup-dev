@@ -1,9 +1,9 @@
 name: 'Joinup notification'
-type: module
 description: 'Handles notifications for joinup project.'
+type: module
+package: Joinup
 core_version_requirement: ^8.9 || ^9
 php: 7.1
-package: Joinup
 dependencies:
   - 'joinup:joinup_workflow'
   - 'joinup:solution'

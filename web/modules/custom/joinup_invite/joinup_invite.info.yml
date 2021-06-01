@@ -1,9 +1,10 @@
 name: Joinup invite
-type: module
 description: A light invitation system for joinup.
+type: module
+package: Joinup
 core_version_requirement: ^8.9 || ^9
 php: 7.1
-package: Joinup
+
 dependencies:
   - joinup:joinup_material_design
   - joinup:joinup_notification

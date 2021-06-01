@@ -1,6 +1,6 @@
 name: Joinup Workflow
-type: module
 description: Shared code for handling workflows in Joinup.
+type: module
 package: Joinup
 core_version_requirement: ^8.9 || ^9
 php: 7.1

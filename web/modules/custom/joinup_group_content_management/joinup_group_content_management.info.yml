@@ -1,9 +1,9 @@
 name: 'Joinup Group Content Management'
-type: module
 description: 'Contains functionality related to managing group content.'
+type: module
+package: Joinup
 core_version_requirement: ^8.9 || ^9
 php: 7.1
-package: Joinup
 
 dependencies:
   - 'csv_serialization:csv_serialization'

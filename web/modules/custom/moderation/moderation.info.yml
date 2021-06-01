@@ -1,9 +1,9 @@
 name: Moderation
-type: module
 description: Provides a moderation overview.
+type: module
+package: Joinup
 core_version_requirement: ^8.9 || ^9
 php: 7.1
-package: Joinup
 
 dependencies:
   - rdf_entity:rdf_entity

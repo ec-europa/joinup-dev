@@ -1,9 +1,9 @@
 name: 'Asset distribution'
-type: module
 description: 'An asset distribution RDF entity'
+type: module
+package: Joinup
 core_version_requirement: ^8.9 || ^9
 php: 7.1
-package: Joinup
 
 dependencies:
   - 'digital_size_formatter:digital_size_formatter'

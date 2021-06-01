@@ -1,9 +1,9 @@
-type: module
 name: 'Joinup Group'
 description: 'Services and API methods useful for Joinup groups.'
+type: module
+package: Joinup
 core_version_requirement: ^8.9 || ^9
 php: 7.1
-package: Joinup
 
 dependencies:
   - 'joinup_bundle_class:joinup_bundle_class'

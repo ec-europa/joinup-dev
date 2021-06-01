@@ -1,9 +1,9 @@
 name: 'Custom page'
-type: module
 description: 'Custom content that belongs to a collection.'
+type: module
+package: Joinup
 core_version_requirement: ^8.9 || ^9
 php: 7.1
-package: Joinup
 
 dependencies:
   - 'drupal:menu_ui'

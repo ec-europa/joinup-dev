@@ -1,9 +1,9 @@
 name: Joinup Document
-type: module
 description: The document content type used in Joinup.
+type: module
+package: Joinup
 core_version_requirement: ^8.9 || ^9
 php: 7.1
-package: Joinup
 
 dependencies:
   - cached_computed_field:cached_computed_field
