@@ -16,4 +16,3 @@ dependencies:
   - 'og:og'
   - 'search_api:search_api'
   - 'smart_trim:smart_trim'
-
