@@ -2,6 +2,7 @@ name: 'Contact information'
 type: module
 description: 'Provides Contact information entities for the Joinup project.'
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Joinup
 
 dependencies:

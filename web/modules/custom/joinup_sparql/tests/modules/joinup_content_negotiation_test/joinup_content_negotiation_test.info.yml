@@ -2,6 +2,7 @@ name: 'Joinup Content Negotiation  Test'
 type: module
 description: 'Provides a module for testing content negotiation.'
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Testing
 dependencies:
   - drupal:rest

@@ -2,6 +2,7 @@ type: module
 name: 'Joinup front page'
 description: 'Contains functionality related to the Joinup front page.'
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Joinup
 
 dependencies:

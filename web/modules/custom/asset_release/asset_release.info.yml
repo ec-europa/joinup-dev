@@ -2,6 +2,7 @@ name: Release
 type: module
 description: 'The release RDF entity.'
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Joinup
 
 dependencies:

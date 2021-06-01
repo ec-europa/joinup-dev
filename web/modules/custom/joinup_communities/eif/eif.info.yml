@@ -2,6 +2,7 @@ name: European Interoperability Framework
 type: module
 description: Custom functionality for the European Interoperability Framework community.
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Joinup communities
 dependencies:
   - joinup:custom_page

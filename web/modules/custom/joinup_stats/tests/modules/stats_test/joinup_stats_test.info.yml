@@ -2,6 +2,7 @@ type: module
 name: 'Statistics test'
 description: 'Used to test Joinup Statistics.'
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Testing
 dependecies:
   - joinup:joinup_stats

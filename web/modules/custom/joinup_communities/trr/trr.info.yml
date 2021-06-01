@@ -2,6 +2,7 @@ name: TRR
 type: module
 description: Specificities for the TRR GITB community.
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Joinup communities
 
 dependencies:

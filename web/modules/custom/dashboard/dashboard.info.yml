@@ -2,4 +2,5 @@ name: Dashboard
 type: module
 description: Provides a dashboard for the Joinup project.
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Joinup

@@ -3,5 +3,6 @@ type: module
 description: Extends the contributed Publication Date module with goodies such as support for bundle classes.
 package: Joinup
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 dependencies:
   - publication_date:publication_date

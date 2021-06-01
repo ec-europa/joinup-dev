@@ -2,6 +2,7 @@ name: Joinup video
 type: module
 description: Provides video functionality
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Joinup
 
 dependencies:

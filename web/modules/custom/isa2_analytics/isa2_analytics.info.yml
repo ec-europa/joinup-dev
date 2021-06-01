@@ -3,6 +3,7 @@ description: Integrates the ISA2 Joinup instance with Webtools Analytics for tra
 package: ISA2
 
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 type: module
 
 dependencies:

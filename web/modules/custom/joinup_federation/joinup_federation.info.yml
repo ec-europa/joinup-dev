@@ -2,6 +2,7 @@ type: module
 name: 'Joinup Federation'
 description: 'Allow modules to implement pipelines for RDF data federation.'
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Joinup
 
 dependencies:

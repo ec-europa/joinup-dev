@@ -3,6 +3,7 @@ type: module
 description: CAS mock server customized for Joinup.
 package: Joinup
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 dependencies:
   - cas_mock_server:cas_mock_server
   - joinup:joinup_eulogin

@@ -2,6 +2,7 @@ name: Joinup subscription
 type: module
 description: Allows users to subscribe to collection content.
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Joinup
 
 dependencies:

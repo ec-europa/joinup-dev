@@ -2,6 +2,7 @@ name: 'Joinup Acceptance'
 type: module
 description: 'Tasks to performed in the acceptance environment.'
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Joinup
 dependencies:
   - joinup:dashboard

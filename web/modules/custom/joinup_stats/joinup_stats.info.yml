@@ -2,6 +2,7 @@ name: Statistics
 type: module
 description: 'Provide statistics for Joinup entities.'
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Joinup
 
 dependencies:

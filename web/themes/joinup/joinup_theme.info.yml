@@ -3,6 +3,7 @@ description: Joinup theme based on Material design lite.
 package: Custom
 type: theme
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 
 libraries:
   - joinup_theme/material-design-lite

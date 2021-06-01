@@ -2,6 +2,7 @@ name: Joinup News
 type: module
 description: News content type.
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Joinup
 
 dependencies:

@@ -2,6 +2,7 @@ name: Solution
 type: module
 description: 'The interoperability solution RDF entity.'
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Joinup
 
 dependencies:

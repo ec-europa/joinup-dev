@@ -2,6 +2,7 @@ name: 'Asset distribution'
 type: module
 description: 'An asset distribution RDF entity'
 core_version_requirement: ^8.9 || ^9
+php: 7.1
 package: Joinup
 
 dependencies:
