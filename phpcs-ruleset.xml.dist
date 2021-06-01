@@ -59,7 +59,7 @@
         </properties>
     </rule>
 
-    <!-- Require the strict types declaration in every PHP file. -->
+    <!-- Require nullable types to be declared as such. -->
     <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue">
     </rule>
 
