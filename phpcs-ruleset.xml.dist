@@ -32,9 +32,21 @@
         <exclude name="DrupalPractice.Yaml" />
     </rule>
 
+    <rule ref="./vendor/ec-europa/qa-automation/phpcs/QualityAssurance">
+        <!-- Exclude sniff which incorrectly forces use of alternative method. See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/DQA-1418 -->
+        <exclude name="QualityAssurance.Functions.DrupalWrappers.FoundWithAlternative" />
+        <!-- Ignore non-Drupal code. -->
+        <exclude-pattern>src/Composer/</exclude-pattern>
+    </rule>
+
     <!-- Do not report lines exceeding 80 characters for Markdown files that contain long file paths. -->
     <rule ref="Drupal.Files.TxtFileLineLength.TooLong">
-        <exclude-pattern>web/modules/custom/joinup_subscription/README.md</exclude-pattern>
+        <exclude-pattern>web/modules/custom/*/README.md</exclude-pattern>
+    </rule>
+
+    <!-- Ignore false positives regarding hardcoded paths in README files. -->
+    <rule ref="QualityAssurance.Generic.HardcodedPath.HardcodedPath">
+        <exclude-pattern>README.*</exclude-pattern>
     </rule>
 
     <!-- Validate the (post)update identifiers. -->
