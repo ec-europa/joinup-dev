@@ -2,6 +2,6 @@ name: 'Search API field'
 type: module
 description: 'Adds a search field to entities.'
 package: Search
+core_version_requirement: ^8.9 || ^9
 dependencies:
   - search_api:search_api
-core: '8.x'

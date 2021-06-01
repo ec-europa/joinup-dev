@@ -1,7 +1,7 @@
 name: EUPL
 type: module
 description: 'Customizations for the EUPL community.'
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: 'Joinup communities'
 
 dependencies: {  }

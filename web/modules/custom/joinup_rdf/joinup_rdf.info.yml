@@ -1,7 +1,7 @@
 name: 'Joinup RDF'
 type: module
 description: 'Integrates the RDF data model in Joinup.'
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup
 
 dependencies:

@@ -1,7 +1,7 @@
 name: Joinup video
 type: module
 description: Provides video functionality
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup
 
 dependencies:

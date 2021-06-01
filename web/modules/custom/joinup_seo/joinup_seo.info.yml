@@ -1,7 +1,7 @@
 name: Joinup SEO
 type: module
 description: Contains specific functionality that helps visibility of the platform in search engines.
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup
 
 dependencies:

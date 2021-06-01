@@ -1,5 +1,5 @@
 name: 'Joinup Validation'
 type: module
 description: 'Validation constraints that are useful for Joinup.'
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup

@@ -1,7 +1,7 @@
 name: 'Joinup paragraphs'
 type: module
 description: 'Contains settings, installation config and functionality related to paragraphs needed in Joinup.'
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup
 
 dependencies:

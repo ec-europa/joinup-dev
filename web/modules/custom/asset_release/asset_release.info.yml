@@ -1,7 +1,7 @@
 name: Release
 type: module
 description: 'The release RDF entity.'
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup
 
 dependencies:

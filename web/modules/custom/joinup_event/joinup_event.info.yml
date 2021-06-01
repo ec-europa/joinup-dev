@@ -1,7 +1,7 @@
 name: 'Joinup Event'
 type: module
 description: 'Events content type for joinup.'
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup
 
 dependencies:

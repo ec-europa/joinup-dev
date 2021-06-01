@@ -1,7 +1,7 @@
 type: module
 name: 'Joinup Newsletter'
 description: 'Provides newsletter functionality to Joinup'
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup
 
 dependencies:

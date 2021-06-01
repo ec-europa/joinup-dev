@@ -1,5 +1,5 @@
 type: module
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 name: RDF Staging Graph Test
 description: Testing module for RDF staging graph.
 package: Testing

@@ -1,7 +1,7 @@
 name: Whats new
 type: module
 description: Provides a way to feature a menu item and remember users that visited the entity linked.
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8.9 || ^9
 package: Joinup
 dependencies:
   - drupal:menu_link_content

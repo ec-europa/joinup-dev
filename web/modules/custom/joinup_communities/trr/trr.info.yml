@@ -1,7 +1,7 @@
 name: TRR
 type: module
 description: Specificities for the TRR GITB community.
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup communities
 
 dependencies:

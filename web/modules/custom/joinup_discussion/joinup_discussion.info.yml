@@ -1,7 +1,7 @@
 name: Discussion
 type: module
 description: 'A discussion content bundle for the Joinup project.'
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup
 
 dependencies:

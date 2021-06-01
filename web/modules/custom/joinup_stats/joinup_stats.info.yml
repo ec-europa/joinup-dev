@@ -1,7 +1,7 @@
 name: Statistics
 type: module
 description: 'Provide statistics for Joinup entities.'
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup
 
 dependencies:

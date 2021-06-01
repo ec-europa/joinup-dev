@@ -1,7 +1,7 @@
 name: 'Asset distribution'
 type: module
 description: 'An asset distribution RDF entity'
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup
 
 dependencies:

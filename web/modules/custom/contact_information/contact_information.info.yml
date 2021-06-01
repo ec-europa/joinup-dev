@@ -1,7 +1,7 @@
 name: 'Contact information'
 type: module
 description: 'Provides Contact information entities for the Joinup project.'
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup
 
 dependencies:

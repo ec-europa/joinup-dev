@@ -1,7 +1,7 @@
 type: module
 name: 'Joinup Federation'
 description: 'Allow modules to implement pipelines for RDF data federation.'
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 package: Joinup
 
 dependencies:
