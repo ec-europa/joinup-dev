@@ -9,7 +9,6 @@
 
     <!-- Exclude unsupported file types. -->
     <exclude-pattern>*.gif$</exclude-pattern>
-    <exclude-pattern>*.less$</exclude-pattern>
     <exclude-pattern>*.png$</exclude-pattern>
 
     <!-- Minified files don't have to comply with coding standards. -->
