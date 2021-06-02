@@ -166,3 +166,7 @@ commands:
         - if (node_access_needs_rebuild()) { node_access_rebuild(); }
     - task: run
       command: config-readonly:enable
+
+  toolkit:test-phpcs:
+    - task: exec
+      command: ${phpcs.file.bin}
