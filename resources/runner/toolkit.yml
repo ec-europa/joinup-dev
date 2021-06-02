@@ -167,6 +167,7 @@ commands:
     - task: run
       command: config-readonly:enable
 
+  # Overrides the toolkit:test-phpcs command.
   toolkit:test-phpcs:
     - task: exec
       command: ${phpcs.file.bin}
