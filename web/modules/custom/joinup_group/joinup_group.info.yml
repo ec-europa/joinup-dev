@@ -5,6 +5,7 @@ core: 8.x
 package: Joinup
 
 dependencies:
+  - 'joinup:topic'
   - 'joinup_bundle_class:joinup_bundle_class'
   - 'og:og'
   - 'og_menu:og_menu'
