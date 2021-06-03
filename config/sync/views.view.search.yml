@@ -657,6 +657,7 @@ display:
         weight: -48
         context: '0'
         menu_name: main
+        enabled: false
       title: 'EU vs Virus'
     cache_metadata:
       max-age: -1
