@@ -27,8 +27,6 @@ commands:
 
   # Overrides the toolkit:build-dev command.
   toolkit:build-dev:
-    - task: run
-      command: composer:install
     - task: copy
       from: ${joinup.site_dir}/sites/default/default.services.yml
       to: ${joinup.site_dir}/sites/default/services.yml
@@ -169,7 +167,5 @@ commands:
 
   # Overrides the toolkit:test-phpcs command.
   toolkit:test-phpcs:
-    - task: run
-      command: testing:phpcs-setup
     - task: exec
       command: ${phpcs.file.bin}
