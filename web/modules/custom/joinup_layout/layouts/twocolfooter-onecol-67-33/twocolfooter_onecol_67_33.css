@@ -1,0 +1,34 @@
+/*
+ * @file
+ * Provides the layout styles for layout twocolfooter_onecol_67_33.
+ */
+
+.joinup-layout--twocolfooter-onecol-67-33 {
+  display: flex;
+  flex-wrap: revert;
+}
+
+.joinup-layout--twocolfooter-onecol-67-33 > .inline-wrapper {
+  flex: 0 1 50%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.joinup-layout--twocolfooter-onecol-67-33 > .inline-wrapper > .layout__region {
+  flex: 0 1 100%;
+}
+
+@media screen and (min-width: 40em) {
+  .joinup-layout--twocolfooter-onecol-67-33 > .inline-wrapper > .layout__region--first {
+    flex: 0 1 50%;
+  }
+  .joinup-layout--twocolfooter-onecol-67-33 > .inline-wrapper > .layout__region--second {
+    flex: 0 1 50%;
+  }
+  .joinup-layout--twocolfooter-onecol-67-33 > .inline-wrapper > .layout__region--third {
+    flex: 0 1 100%;
+  }
+  .joinup-layout--twocolfooter-onecol-67-33 > .inline-wrapper > .layout__region--two_col_footer {
+    flex: 0 1 100%;
+  }
+}
