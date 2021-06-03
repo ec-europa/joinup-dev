@@ -80,5 +80,5 @@ build.project.xml export-ignore
 LICENSE export-ignore
 phpcs-ruleset.xml.dist export-ignore
 phpstan.neon export-ignore
-phpunit.xml.dist export-ignore
+phpunit.xml export-ignore
 README.md export-ignore
