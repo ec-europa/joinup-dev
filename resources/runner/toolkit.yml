@@ -169,5 +169,7 @@ commands:
 
   # Overrides the toolkit:test-phpcs command.
   toolkit:test-phpcs:
+    - task: run
+      command: testing:phpcs-setup
     - task: exec
       command: ${phpcs.file.bin}
