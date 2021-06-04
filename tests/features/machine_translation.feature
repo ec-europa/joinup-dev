@@ -35,40 +35,40 @@ Feature: Machine translation
     # Inside a collection sidebar, only custom pages, glossary terms (but not
     # the glossary overview) and the about page should be translatable.
     When I go to the "Brexit" collection
-    Then I should not see the "Translate" button
+    Then I should not see any Webtools eTrans elements
     When I click "Members"
-    Then I should not see the "Translate" button
+    Then I should not see any Webtools eTrans elements
     When I click "Glossary"
-    Then I should see the "Translate" button
+    Then I should see the Webtools eTrans button
     When I click "Digital portability"
-    Then I should see the "Translate" button
+    Then I should see the Webtools eTrans button
     When I click "About"
-    Then I should see the "Translate" button
+    Then I should see the Webtools eTrans button
     When I go to the "Increased credit card fees" custom page
-    Then I should see the "Translate" button
+    Then I should see the Webtools eTrans button
 
     # Community content should be translatable.
     When I go to the "Confiscating of sandwiches" event
-    Then I should see the "Translate" button
+    Then I should see the Webtools eTrans button
     When I go to the "Supply chain disruption" news
-    Then I should see the "Translate" button
+    Then I should see the Webtools eTrans button
     When I go to the "Increased postal delivery costs" document
-    Then I should see the "Translate" button
+    Then I should see the Webtools eTrans button
     When I go to the "Restriction on animal-based food imports" discussion
-    Then I should see the "Translate" button
+    Then I should see the Webtools eTrans button
 
     # Pages that primarily list content should not be translatable.
     When I go to the homepage
-    Then I should not see the "Translate" button
+    Then I should not see any Webtools eTrans elements
     When I visit the search page
-    Then I should not see the "Translate" button
+    Then I should not see any Webtools eTrans elements
     When I click "Collections" in the "Header menu" region
-    Then I should not see the "Translate" button
+    Then I should not see any Webtools eTrans elements
     When I click "Solutions" in the "Header menu" region
-    Then I should not see the "Translate" button
+    Then I should not see any Webtools eTrans elements
     When I click "Keep up to date" in the "Header menu" region
-    Then I should not see the "Translate" button
+    Then I should not see any Webtools eTrans elements
 
     # Pages that are not content focused should not be translatable.
     When I click "Contact Joinup Support" in the "Footer" region
-    Then I should not see the "Translate" button
+    Then I should not see any Webtools eTrans elements
