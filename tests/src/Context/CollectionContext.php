@@ -6,6 +6,7 @@ namespace Drupal\joinup\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Drupal\collection\Entity\CollectionInterface;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\EntityTrait;
@@ -23,7 +24,6 @@ use Drupal\joinup_group\ContentCreationOptions;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\user\Entity\User;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -116,13 +116,13 @@ class CollectionContext extends RawDrupalContext {
    * @param string $title
    *   The collection title.
    *
-   * @return \Drupal\rdf_entity\RdfInterface
+   * @return \Drupal\collection\Entity\CollectionInterface
    *   The collection.
    *
    * @throws \InvalidArgumentException
    *   Thrown when a collection with the given title does not exist.
    */
-  protected function getCollectionByName(string $title): RdfInterface {
+  protected function getCollectionByName(string $title): CollectionInterface {
     return $this->getRdfEntityByLabel($title, 'collection');
   }
 
@@ -284,13 +284,13 @@ class CollectionContext extends RawDrupalContext {
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
-   * @return \Drupal\rdf_entity\RdfInterface
+   * @return \Drupal\collection\Entity\CollectionInterface
    *   A new collection entity.
    *
    * @throws \Exception
    *   Thrown when a given image is not found.
    */
-  protected function createCollection(array $values): RdfInterface {
+  protected function createCollection(array $values): CollectionInterface {
     // Add images.
     $image_fields = ['field_ar_banner', 'field_ar_logo'];
     foreach ($image_fields as $field_name) {
@@ -738,12 +738,15 @@ class CollectionContext extends RawDrupalContext {
   /**
    * Creates the standard 'Joinup' collection.
    *
+   * @return \Drupal\collection\Entity\CollectionInterface
+   *   The 'Joinup' collection.
+   *
    * @BeforeScenario @joinup_collection&&@api
    *
    * @see joinup_collection.module
    */
-  public function createJoinupCollection(): void {
-    $this->createCollection([
+  public function createJoinupCollection(): CollectionInterface {
+    return $this->createCollection([
       'id' => JoinupCollectionHelper::getCollectionId(),
       'label' => 'Joinup',
       'field_ar_state' => 'validated',
