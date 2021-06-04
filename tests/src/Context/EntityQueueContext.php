@@ -31,6 +31,8 @@ class EntityQueueContext extends RawDrupalContext {
    * | content    |  Colony organisation 101 |
    * @codingStandardsIgnoreEnd
    *
+   * The 'type' and 'label' columns are required.
+   *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The Behat table containing the content to include in the entity queue.
    * @param string $label
