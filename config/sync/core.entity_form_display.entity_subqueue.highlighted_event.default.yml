@@ -1,0 +1,60 @@
+uuid: 5db127db-657b-4adf-9dd7-8ab9c4890c3f
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.highlighted_event
+    - field.field.entity_subqueue.highlighted_event.call_to_action
+    - field.field.entity_subqueue.highlighted_event.header
+  module:
+    - entityqueue
+    - link
+id: entity_subqueue.highlighted_event.default
+targetEntityType: entity_subqueue
+bundle: highlighted_event
+mode: default
+content:
+  call_to_action:
+    weight: 2
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  header:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  items:
+    type: entityqueue_dragtable
+    weight: 3
+    settings:
+      match_operator: CONTAINS
+      size: '60'
+      placeholder: ''
+      link_to_entity: false
+      link_to_edit_form: true
+      match_limit: 10
+    region: content
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 4
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }
