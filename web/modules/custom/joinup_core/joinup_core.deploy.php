@@ -14,6 +14,8 @@
 
 declare(strict_types = 1);
 
+use Laminas\Diactoros\Uri;
+
 /**
  * Update fields in specific solutions.
  */
@@ -98,4 +100,26 @@ function joinup_core_deploy_0107200(array &$sandbox): string {
   $sandbox['progress'] += count($items);
   $sandbox['#finished'] = ($sandbox['progress'] >= $sandbox['max']) ? 1 : (float) $sandbox['progress'] / (float) $sandbox['max'];
   return "Processed {$sandbox['progress']} out of {$sandbox['max']} items.";
+}
+
+/**
+ * Clean orphan Solr document entries.
+ */
+function joinup_deploy_0107201(array &$sandbox = NULL): void {
+  $http_client = \Drupal::httpClient();
+  foreach (['published', 'unpublished'] as $index_id) {
+    $endpoint = \Drupal::config("search_api.server.solr_{$index_id}")
+      ->get('backend_config.connector_config');
+    $uri = (string) (new Uri())
+      ->withScheme($endpoint['scheme'])
+      ->withHost($endpoint['host'])
+      ->withPort($endpoint['port'])
+      ->withPath(rtrim($endpoint['path'], '/') . "/{$endpoint['core']}/update")
+      ->withQuery(http_build_query([
+        'stream.body' => '<delete><query>-hash:tb6juv</query></delete>',
+        'commit' => 'true',
+        'wt' => 'json',
+       ]));
+    $http_client->get($uri);
+  }
 }
