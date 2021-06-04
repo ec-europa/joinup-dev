@@ -17,7 +17,7 @@ declare(strict_types = 1);
 /**
  * Update fields in specific solutions.
  */
-function joinup_deploy_0107200(array &$sandbox): string {
+function joinup_core_deploy_0107200(array &$sandbox): string {
   $rdf_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
   if (empty($sandbox['items'])) {
     // IDs and values for the owner types can be found with the following query
