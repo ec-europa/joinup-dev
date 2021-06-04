@@ -105,7 +105,7 @@ function joinup_core_deploy_0107200(array &$sandbox): string {
 /**
  * Clean orphan Solr document entries.
  */
-function joinup_deploy_0107201(array &$sandbox = NULL): void {
+function joinup_core_deploy_0107201(array &$sandbox = NULL): void {
   $http_client = \Drupal::httpClient();
   foreach (['published', 'unpublished'] as $index_id) {
     $endpoint = \Drupal::config("search_api.server.solr_{$index_id}")
