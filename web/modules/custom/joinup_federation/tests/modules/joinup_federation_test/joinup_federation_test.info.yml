@@ -2,7 +2,7 @@ type: module
 name: Joinup federation test
 description: Module used for testing in Joinup federation.
 package: Testing
-core_version_requirement: ^8.9 || ^9
+core_version_requirement: ^8.9 || ^9.1
 php: 7.1
 
 dependencies:

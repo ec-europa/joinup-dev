@@ -2,5 +2,5 @@ name: OpenEuropa Newsroom Newsletter
 description: Allows to subscribe to Newsroom newsletters
 type: module
 package: OpenEuropa
-core_version_requirement: ^8.9 || ^9
+core_version_requirement: ^8.9 || ^9.1
 php: 7.1

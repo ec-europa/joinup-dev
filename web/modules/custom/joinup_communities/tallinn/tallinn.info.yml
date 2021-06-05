@@ -1,7 +1,7 @@
 name: Tallinn
 type: module
 description: Specificities for the Tallinn community.
-core_version_requirement: ^8.9 || ^9
+core_version_requirement: ^8.9 || ^9.1
 php: 7.1
 package: Joinup communities
 configure: tallinn.settings

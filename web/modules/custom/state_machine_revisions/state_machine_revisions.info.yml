@@ -2,5 +2,5 @@ name: State Machine revisions
 description: Handles default revisions for workflow-enabled entities.
 type: module
 package: Other
-core_version_requirement: ^8.9 || ^9
+core_version_requirement: ^8.9 || ^9.1
 php: 7.1

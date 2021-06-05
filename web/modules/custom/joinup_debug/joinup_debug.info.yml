@@ -2,5 +2,5 @@ name: 'Joinup debug'
 description: 'Provides additional logging when unexpected behavior occurs.'
 type: module
 package: Joinup
-core_version_requirement: ^8.9 || ^9
+core_version_requirement: ^8.9 || ^9.1
 php: 7.1

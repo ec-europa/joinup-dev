@@ -2,5 +2,5 @@ name: 'Joinup test'
 description: 'Contains functionality to test Joinup.'
 type: module
 package: Joinup
-core_version_requirement: ^8.9 || ^9
+core_version_requirement: ^8.9 || ^9.1
 php: 7.1

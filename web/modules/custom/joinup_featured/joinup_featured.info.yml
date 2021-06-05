@@ -2,5 +2,5 @@ name: Joinup Featured
 description: Allows to feature content site wide. The content will appear at the top of lists.
 type: module
 package: Joinup
-core_version_requirement: ^8.9 || ^9
+core_version_requirement: ^8.9 || ^9.1
 php: 7.1

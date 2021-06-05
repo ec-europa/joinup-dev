@@ -2,7 +2,7 @@ name: RDF - Provenance
 description: Provides basic properties to track provenance data related to the entity.
 type: module
 package: Custom
-core_version_requirement: ^8.9 || ^9
+core_version_requirement: ^8.9 || ^9.1
 php: 7.1
 dependencies:
   - rdf_entity:rdf_entity

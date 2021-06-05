@@ -2,5 +2,5 @@ name: workflow_state_permission
 description: Provides a plugin type to determine access to workflow states.
 type: module
 package: Custom
-core_version_requirement: ^8.9 || ^9
+core_version_requirement: ^8.9 || ^9.1
 php: 7.1

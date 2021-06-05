@@ -2,7 +2,7 @@ name: Joinup Theme
 description: Joinup theme based on Material design lite.
 type: theme
 package: Joinup
-core_version_requirement: ^8.9 || ^9
+core_version_requirement: ^8.9 || ^9.1
 php: 7.1
 
 libraries:

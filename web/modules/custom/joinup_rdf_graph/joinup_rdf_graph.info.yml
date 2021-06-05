@@ -2,7 +2,7 @@ name: RDF Graph
 description: Allows storing triples in the datastore under a specific graph.
 type: module
 package: Joinup
-core_version_requirement: ^8.9 || ^9
+core_version_requirement: ^8.9 || ^9.1
 php: 7.1
 dependencies:
   - rdf_entity:rdf_entity
