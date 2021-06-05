@@ -31,7 +31,7 @@ function joinup_user_install() {
   /** @var \Drupal\file\FileInterface $file */
   $file = File::create(['uri' => $file_path]);
 
-  // The uuid is the one assigned to the user photo field so there is no need
+  // The UUID is the one assigned to the user photo field so there is no need
   // to manually edit and assign the file.
   $file->set('uuid', '2e24bbc5-dedf-42b0-85cf-35940274c2f8');
   $file->setPermanent();
