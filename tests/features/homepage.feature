@@ -81,6 +81,23 @@ Feature: Homepage
       | 2      | charles.jpg | EU and European Policies         | Stay at the ISS | Two groups of mice (six per group) were housed aboard the International Space Station for 35 days. One group was subjected to artificial gravity (1 g) and the other to microgravity.           |
       | 3      | alan.jpg    | HR, Statistics and Analysis      | Microgravity    | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
 
+  @terms
+  Scenario: A solution can be highlighted on the homepage
+    Given solution:
+      | title         | Mercury poisoning                                                          |
+      | state         | validated                                                                  |
+      | description   | Mercury poisoning is a type of metal poisoning due to exposure to mercury. |
+      | logo          | logo.png                                                                   |
+      | solution type | Interoperability Specification, Networking Service                         |
+      | topic         | Demography, EU and European Policies, HR                                   |
+      | state         | validated                                                                  |
+    And the "Highlighted solution" content listing contains:
+      | type     | label             |
+      | solution | Mercury poisoning |
+
+    When I am on the homepage
+    Then I should see "Mercury poisoning" as the highlighted solution
+
   @version
   Scenario Outline: The current version of the Joinup platform is shown in the footer.
     Given the Joinup version is set to "<version>"

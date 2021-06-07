@@ -587,19 +587,20 @@ trait TraversingTrait {
   }
 
   /**
-   * Finds an image element in a region given the file name.
+   * Checks if an image with a given file name exists in a given element.
    *
    * @param string $filename
    *   The file name.
-   * @param \Behat\Mink\Element\NodeElement|null $region
-   *   (optional) The region to check in.
+   * @param \Behat\Mink\Element\NodeElement|null $element
+   *   (optional) The element to check in. If omitted the entire page will be
+   *   checked.
    *
    * @return bool
-   *   Whether the element exists or not in the given region.
+   *   Whether the element exists or not in the given element or page.
    */
-  protected function findImageInRegion(string $filename, ?NodeElement $region = NULL): bool {
-    if (empty($region)) {
-      $region = $this->getSession()->getPage();
+  protected function hasImage(string $filename, ?NodeElement $element = NULL): bool {
+    if (empty($element)) {
+      $element = $this->getSession()->getPage();
     }
 
     // Drupal appends an underscore and a number to the filename when duplicate
@@ -612,9 +613,9 @@ trait TraversingTrait {
     $extension = $parts['extension'];
     $filename = $parts['filename'];
     $expression = '/src="[^"]*' . $filename . '(_\d+)?\.' . $extension . '[^"]*"/';
-    $elements = $region->findAll('xpath', "//img");
-    foreach ($elements as $element) {
-      $html = $element->getOuterHtml();
+    $image_elements = $element->findAll('xpath', "//img");
+    foreach ($image_elements as $image_element) {
+      $html = $image_element->getOuterHtml();
       if (preg_match($expression, $html)) {
         return TRUE;
       }

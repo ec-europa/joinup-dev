@@ -15,6 +15,7 @@ use Drupal\joinup_stats\Entity\VisitCountAwareInterface;
 use Drupal\joinup_stats\Entity\VisitCountAwareTrait;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
 use Drupal\node\Entity\Node;
+use Drupal\topic\Entity\TopicReferencingEntityTrait;
 
 /**
  * Base class for community content entities.
@@ -31,6 +32,7 @@ abstract class CommunityContentBase extends Node implements CommunityContentInte
   use NodeCollectionContentTrait;
   use OutdatedContentTrait;
   use PinnableGroupContentTrait;
+  use TopicReferencingEntityTrait;
   use VisitCountAwareTrait;
 
   /**
