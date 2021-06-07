@@ -7,7 +7,6 @@ dependencies:
   module:
     - field_delimiter
     - field_formatter_range
-    - joinup_core
     - template_suggestion
 id: entity_subqueue.discover_topics.default
 targetEntityType: entity_subqueue
@@ -16,14 +15,11 @@ mode: default
 content:
   items:
     label: hidden
-    type: entity_reference_custom_link
+    type: entity_reference_label
     weight: 0
     region: content
     settings:
-      path: '[term:landing-page-url]'
-      label: '[term:name]'
-      query_parameters: ''
-      limit: -1
+      link: true
     third_party_settings:
       field_delimiter:
         delimiter: ''

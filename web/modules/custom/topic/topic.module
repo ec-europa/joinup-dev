@@ -7,7 +7,6 @@
 
 declare(strict_types = 1);
 
-use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\topic\Entity\Topic;
 
 /**
@@ -17,52 +16,4 @@ function topic_entity_bundle_info_alter(&$bundles) {
   if (!empty($bundles['taxonomy_term']['topic'])) {
     $bundles['taxonomy_term']['topic']['class'] = Topic::class;
   }
-}
-
-/**
- * Implements hook_token_info_alter().
- */
-function topic_token_info_alter(&$data) {
-  $data['tokens']['term']['landing-page-url'] = [
-    'name' => t("Landing page URL"),
-    'description' => t("The landing page URL of the taxonomy term. Only topics are supported."),
-  ];
-}
-
-/**
- * Implements hook_tokens().
- */
-function topic_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
-  $replacements = [];
-  if ($type == 'term' && !empty($data['term'])) {
-    /** @var \Drupal\taxonomy\TermInterface $term */
-    $term = $data['term'];
-
-    foreach ($tokens as $name => $original) {
-      switch ($name) {
-        case 'landing-page-url':
-          if ($term->bundle() !== 'topic') {
-            $replacements[$original] = '';
-          }
-          else {
-            $replacements[$original] = $term->toUrl('landing-page')->setAbsolute()->toString();
-          }
-          break;
-
-      }
-    }
-  }
-
-  return $replacements;
-}
-
-/**
- * Implements hook_entity_type_alter().
- */
-function topic_rdf_entity_type_alter(array &$entity_types) {
-  if (!isset($entity_types['taxonomy-term'])) {
-    return;
-  }
-
-  $entity_types['rdf_entity']->setLinkTemplate('landing-page', '/taxonomy/term/{taxonomy_term}/page');
 }

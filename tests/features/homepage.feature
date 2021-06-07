@@ -133,8 +133,7 @@ Feature: Homepage
     And news content:
       | title      | headline      | collection       | topic     | state     | publication date     | body |
       | Some title | Some headline | Clash of vania's | E-justice | validated | 2021-04-26T19:09:00Z | Body |
-
-    Given the "Discover topics" content listing contains:
+    And the "Discover topics" content listing contains:
       | type  | label                            |
       | topic | Employment and Support Allowance |
       | topic | E-justice                        |
