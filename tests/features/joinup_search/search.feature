@@ -23,6 +23,10 @@ Feature: Global search
     And news content:
       | title                 | body             | collection                   | topic                   | spatial coverage | state     |
       | El Celler de Can Roca | The best in town | Molecular cooking collection | Statistics and Analysis | Luxembourg       | validated |
+      | Dummy news 1          | Dummy body       | Molecular cooking collection | E-inclusion             | Luxembourg       | validated |
+      | Dummy news 2          | Dummy body       | Molecular cooking collection | E-inclusion             | Luxembourg       | validated |
+      | Dummy news 3          | Dummy body       | Molecular cooking collection | E-inclusion             | Luxembourg       | validated |
+      | Dummy news 4          | Dummy body       | Molecular cooking collection | E-inclusion             | Luxembourg       | validated |
 
     Given I am logged in as a user with the "authenticated" role
     # @todo The search page cache should be cleared when new content is added.
@@ -38,31 +42,53 @@ Feature: Global search
     And the option with text "Any topic" from select facet "topic" is selected
     And the "topic" select facet should contain the following options:
       | Any topic                     |
-      | Demography   (2)              |
-      | Statistics and Analysis   (1) |
+      | Social and Political (6)      |
+      | • E-inclusion (4)             |
+      | • Demography (2)              |
+      | Info (1)                      |
+      | • Statistics and Analysis (1) |
     And the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
-      | Any location         |
-      | Belgium   (1)        |
-      | European Union   (1) |
-      | Luxembourg   (1)     |
+      | Any location       |
+      | Luxembourg (5)     |
+      | Belgium (1)        |
+      | European Union (1) |
     # Check that only one search field is available. In an earlier version of
     # Joinup there were two search fields, but this was confusing users.
     And there should be exactly 1 "search field" on the page
 
+    When I select "Social and Political" from the "topic" select facet
+    Then the option with text "Social and Political (6)" from select facet "topic" is selected
+    And the "topic" select facet should contain the following options:
+      | Any topic                     |
+      | Social and Political (6)      |
+      | • E-inclusion (4)             |
+      | • Demography (2)              |
+      | Info (1)                      |
+      | • Statistics and Analysis (1) |
+    # The tiles appear because the parent term is selected even though they do not have a direct reference there.
+    And I should see the "Dummy news 1" tile
+    And I should see the "Dummy news 2" tile
+    And I should see the "Dummy news 3" tile
+    And I should see the "Dummy news 4" tile
+
     # Test the topic facet.
-    When I select "Demography" from the "topic" select facet
-    Then the option with text "Demography   (2)" from select facet "topic" is selected
+    When I select "• Demography" from the "topic" select facet
+    Then the option with text "• Demography (2)" from select facet "topic" is selected
     # The selected option moves to the last position by default.
     And the "topic" select facet should contain the following options:
       | Any topic                     |
-      | Statistics and Analysis   (1) |
-      | Demography   (2)              |
+      | Social and Political (6)      |
+      | • E-inclusion (4)             |
+      | • Demography (2)              |
+      | Info (1)                      |
+      | • Statistics and Analysis (1) |
+
     Then the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
-      | Any location         |
-      | Belgium   (1)        |
-      | European Union   (1) |
+      | Any location       |
+      | Belgium (1)        |
+      | European Union (1) |
     And I should see the "Molecular cooking collection" tile
     And I should see the "Spherification" tile
     But I should not see the "El Celler de Can Roca" tile
@@ -70,15 +96,16 @@ Feature: Global search
 
     # Test the spatial coverage facet.
     When I select "Belgium" from the "spatial coverage" select facet
-    Then the option with text "Belgium   (1)" from select facet "spatial coverage" is selected
+    Then the option with text "Belgium (1)" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
-      | Any location         |
-      | European Union   (1) |
-      | Belgium   (1)        |
-    Then the option with text "Demography   (1)" from select facet "topic" is selected
+      | Any location       |
+      | European Union (1) |
+      | Belgium (1)        |
+    Then the option with text "• Demography (1)" from select facet "topic" is selected
     And the "topic" select facet should contain the following options:
-      | Any topic        |
-      | Demography   (1) |
+      | Any topic                |
+      | Social and Political (1) |
+      | • Demography (1)         |
     And I should see the "Molecular cooking collection" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Spherification" tile
@@ -89,22 +116,25 @@ Feature: Global search
     Then I should see the text "Content types" in the "Left sidebar" region
 
     # Select link in the 'type' facet.
-    When I check the "News (1)" checkbox from the "Content types" facet
+    When I check the "News (5)" checkbox from the "Content types" facet
     Then the "News" content checkbox item should be selected
-    And the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (1)"
+    And the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (5)"
 
     When I check the "Solutions (2)" checkbox from the "Content types" facet
     Then the "Solutions" content checkbox item should be selected
     And the "News" content checkbox item should be selected
-    Then the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (1)"
+    Then the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (5)"
     And the "topic" select facet should contain the following options:
       | Any topic                     |
-      | Demography   (1)              |
-      | Statistics and Analysis   (1) |
+      | Social and Political (5)      |
+      | • E-inclusion (4)             |
+      | • Demography (1)              |
+      | Info (1)                      |
+      | • Statistics and Analysis (1) |
     And the "spatial coverage" select facet should contain the following options:
-      | Any location         |
-      | European Union   (1) |
-      | Luxembourg   (1)     |
+      | Any location       |
+      | Luxembourg (5)     |
+      | European Union (1) |
     And I should not see the "Molecular cooking collection" tile
     And I should see the "El Celler de Can Roca" tile
     But I should see the "Spherification" tile
