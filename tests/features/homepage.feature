@@ -12,6 +12,11 @@ Feature: Homepage
     And I should see the following lines of text:
       | Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme.    |
       | Joinup offers several services that aim to help e-Government professionals share their experience with each other. Joinup supports them to find, choose, re-use, develop and implement interoperability solutions. |
+      | For fresh start on creating content                                                                                                                                                                                |
+    And I should see the following links:
+      | How to video |
+      | Guided tour  |
+      | FAQ          |
 
   Scenario: Only specific social network links are available in the footer.
     When I am on the homepage

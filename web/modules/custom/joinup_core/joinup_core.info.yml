@@ -1,8 +1,9 @@
 name: 'Joinup core'
-type: module
 description: 'Contains shared code for Joinup.'
-core: 8.x
+type: module
 package: Joinup
+core_version_requirement: ^8.9 || ^9.1
+php: 7.1
 dependencies:
   - 'drupal:comment'
   - 'drupal:image'
