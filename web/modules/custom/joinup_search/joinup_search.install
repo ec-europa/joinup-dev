@@ -34,7 +34,7 @@ function joinup_search_requirements(string $phase): array {
         'fq' => "-hash:{$site_hash}",
         'q' => '*:*',
         'wt' => 'json',
-       ]));
+      ]));
 
     try {
       $response = $http_client->get($uri);
@@ -56,7 +56,7 @@ function joinup_search_requirements(string $phase): array {
         'description' => t('The valid site hash is %hash. Retrieve the invalid entries with this <a href=":uri">query</a>.', [
           '%hash' => $site_hash,
           ':uri' => $uri,
-         ]),
+        ]),
       ];
     }
   }
