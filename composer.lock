@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5f590a4a820102ebe95af3978f8ba980",
+    "content-hash": "a73b208af03046e92c40051228c8b63a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -15101,16 +15101,16 @@
         },
         {
             "name": "ec-europa/toolkit",
-            "version": "4.4.3",
+            "version": "4.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/toolkit.git",
-                "reference": "ee815ca3cd84ff94e72ad8c989c0c6505836f144"
+                "reference": "8a84fdc4105379629fdb09c71ca348bf5c543abe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/toolkit/zipball/ee815ca3cd84ff94e72ad8c989c0c6505836f144",
-                "reference": "ee815ca3cd84ff94e72ad8c989c0c6505836f144",
+                "url": "https://api.github.com/repos/ec-europa/toolkit/zipball/8a84fdc4105379629fdb09c71ca348bf5c543abe",
+                "reference": "8a84fdc4105379629fdb09c71ca348bf5c543abe",
                 "shasum": ""
             },
             "require": {
@@ -15131,10 +15131,7 @@
             "type": "library",
             "extra": {
                 "enable-patching": true,
-                "composer-exit-on-patch-failure": true,
-                "patches_applied": {
-                    "Download is broken @see DQA-481": "https://patch-diff.githubusercontent.com/raw/ec-europa/toolkit/pull/308.diff"
-                }
+                "composer-exit-on-patch-failure": true
             },
             "autoload": {
                 "psr-4": {
@@ -15147,7 +15144,7 @@
             ],
             "description": "Toolkit packaged for Drupal 8.",
             "homepage": "https://github.com/ec-europa/toolkit",
-            "time": "2020-12-07T12:45:42+00:00"
+            "time": "2021-05-26T22:33:38+00:00"
         },
         {
             "name": "fabpot/goutte",

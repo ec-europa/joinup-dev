@@ -54,4 +54,3 @@ Usage
       event: visit_count
       news: visit_count
   ```
-

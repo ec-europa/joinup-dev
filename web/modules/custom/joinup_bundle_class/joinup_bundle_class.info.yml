@@ -1,5 +1,6 @@
 name: 'Joinup Bundle Class'
-type: module
 description: 'Shared code for entity types that implement bundle classes in Joinup.'
-core: 8.x
+type: module
 package: Joinup
+core_version_requirement: ^8.9 || ^9.1
+php: 7.1

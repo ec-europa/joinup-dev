@@ -1,8 +1,9 @@
 name: 'Custom page'
-type: module
 description: 'Custom content that belongs to a collection.'
-core: 8.x
+type: module
 package: Joinup
+core_version_requirement: ^8.9 || ^9.1
+php: 7.1
 
 dependencies:
   - 'drupal:menu_ui'
@@ -15,4 +16,3 @@ dependencies:
   - 'og:og'
   - 'search_api:search_api'
   - 'smart_trim:smart_trim'
-

@@ -1,5 +1,6 @@
 name: EU SIC
 type: module
 description: EU Schemantic Interoperability Catalogue community.
-core: 8.x
+core_version_requirement: ^8.9 || ^9.1
+php: 7.1
 package: Joinup communities

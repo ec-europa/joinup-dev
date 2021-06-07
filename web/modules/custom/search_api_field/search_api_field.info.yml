@@ -1,7 +1,8 @@
 name: 'Search API field'
-type: module
 description: 'Adds a search field to entities.'
+type: module
 package: Search
+core_version_requirement: ^8.9 || ^9.1
+php: 7.1
 dependencies:
   - search_api:search_api
-core: '8.x'

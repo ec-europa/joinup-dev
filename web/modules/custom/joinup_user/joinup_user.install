@@ -17,7 +17,25 @@ use Drupal\joinup_user\JoinupUserViewsData;
  * Implements hook_install().
  */
 function joinup_user_install() {
-  joinup_user_setup_default_avatar();
+  // Set a default image for the users avatar.
+  $directory = \Drupal::service('file_system')
+    ->realpath(drupal_get_path('module', 'joinup_user') . '/includes');
+  $file_name = 'user_icon.png';
+  $file_path = $directory . '/' . $file_name;
+  $internal_path = "public://default_images";
+  if (is_file($file_path) && \Drupal::service('file_system')->prepareDirectory($internal_path, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
+    $file_system = \Drupal::service('file_system');
+    $destination = file_build_uri($file_system->basename($file_path));
+    $file_path = $file_system->copy($file_path, $destination, FileSystemInterface::EXISTS_REPLACE);
+  }
+  /** @var \Drupal\file\FileInterface $file */
+  $file = File::create(['uri' => $file_path]);
+
+  // The UUID is the one assigned to the user photo field so there is no need
+  // to manually edit and assign the file.
+  $file->set('uuid', '2e24bbc5-dedf-42b0-85cf-35940274c2f8');
+  $file->setPermanent();
+  $file->save();
 
   // Update some classes for the 'user' entity type.
   $manager = \Drupal::entityDefinitionUpdateManager();
@@ -41,28 +59,4 @@ function joinup_user_install() {
     ->fields(['status' => 0])
     ->condition('uid', 0)
     ->execute();
-}
-
-/**
- * Set a default image for the users avatar.
- */
-function joinup_user_setup_default_avatar() {
-  $directory = \Drupal::service('file_system')
-    ->realpath(drupal_get_path('module', 'joinup_user') . '/includes');
-  $file_name = 'user_icon.png';
-  $file_path = $directory . '/' . $file_name;
-  $internal_path = "public://default_images";
-  if (is_file($file_path) && \Drupal::service('file_system')->prepareDirectory($internal_path, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
-    $file_system = \Drupal::service('file_system');
-    $destination = file_build_uri($file_system->basename($file_path));
-    $file_path = $file_system->copy($file_path, $destination, FileSystemInterface::EXISTS_REPLACE);
-  }
-  /** @var \Drupal\file\FileInterface $file */
-  $file = File::create(['uri' => $file_path]);
-
-  // The uuid is the one assigned to the user photo field so there is no need
-  // to manually edit and assign the file.
-  $file->set('uuid', '2e24bbc5-dedf-42b0-85cf-35940274c2f8');
-  $file->setPermanent();
-  $file->save();
 }

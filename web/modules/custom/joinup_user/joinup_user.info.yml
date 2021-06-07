@@ -1,8 +1,10 @@
 name: 'Joinup user'
-type: module
 description: 'User profile fields, user notifications, ...'
-core: 8.x
+type: module
 package: Joinup
+core_version_requirement: ^8.9 || ^9.1
+php: 7.1
+
 dependencies:
   - 'drupal:user'
   - 'joinup:search_api_field'

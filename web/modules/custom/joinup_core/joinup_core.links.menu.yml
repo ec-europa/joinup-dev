@@ -47,4 +47,3 @@ joinup_core.outdated_content_threshold:
   route_name: joinup_core.outdated_content_threshold
   parent: system.admin
   weight: 3
-
