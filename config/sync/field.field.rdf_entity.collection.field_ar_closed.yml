@@ -20,6 +20,6 @@ default_value:
     value: 0
 default_value_callback: ''
 settings:
-  on_label: 'Closed challenge'
+  on_label: 'Private challenge'
   off_label: 'Open challenge'
 field_type: boolean
