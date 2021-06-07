@@ -89,6 +89,18 @@ variant_settings:
             context_mapping: {  }
           additional: {  }
           weight: 0
+        204e8ccb-280d-4ee4-b598-74b9f96d6496:
+          uuid: 204e8ccb-280d-4ee4-b598-74b9f96d6496
+          region: second
+          configuration:
+            id: 'entityqueue_block:highlighted_solution'
+            label: 'Highlighted solution'
+            provider: entityqueue_block
+            label_display: visible
+            view_mode: highlighted
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
       third_party_settings: {  }
     -
       layout_id: joinup_layout_twocol_60_40
@@ -110,13 +122,12 @@ variant_settings:
           weight: 0
       third_party_settings: {  }
     -
-      layout_id: layout_threecol_section
+      layout_id: joinup_layout_twocolfooter_onecol_67_33
       layout_settings:
         label: About
-        column_widths: 33-34-33
       components:
-        35b639cd-36a3-445e-8788-fa6fba6225b9:
-          uuid: 35b639cd-36a3-445e-8788-fa6fba6225b9
+        b0ffc367-218e-4407-bb94-bd9682a9552e:
+          uuid: b0ffc367-218e-4407-bb94-bd9682a9552e
           region: first
           configuration:
             id: layout_builder_block
@@ -128,15 +139,41 @@ variant_settings:
             context_mapping: {  }
           additional: {  }
           weight: 0
-        5e95e3c1-323b-4a9e-8d33-938ccdbcd06b:
-          uuid: 5e95e3c1-323b-4a9e-8d33-938ccdbcd06b
+        e1eeef2d-dde1-4aa3-af7b-a6709184d497:
+          uuid: e1eeef2d-dde1-4aa3-af7b-a6709184d497
           region: second
           configuration:
             id: layout_builder_block
             label: 'Who is it for?'
             provider: layout_builder_block
             label_display: visible
-            text: "<p>Joinup offers several services that aim to help <strong>e-Government professionals</strong> share their experience with each other. Joinup supports them to find, choose, re-use, develop and implement interoperability solutions.</p>\r\n"
+            text: '<p>Joinup offers several services that aim to help <strong>e-Government professionals</strong> share their experience with each other. Joinup supports them to find, choose, re-use, develop and implement interoperability solutions.</p>'
+            format: content_editor
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+        e82de3d1-2e2f-4244-8ba8-c147ba44d577:
+          uuid: e82de3d1-2e2f-4244-8ba8-c147ba44d577
+          region: two_col_footer
+          configuration:
+            id: layout_builder_block
+            label: 'For fresh start on creating content'
+            provider: layout_builder_block
+            label_display: '0'
+            text: "<p>For fresh start on creating content</p>\r\n\r\n<p><a href=\"/collection/joinup/help-videos\">How to video</a>&nbsp;<a href=\"/guided-tour\">Guided tour</a>&nbsp;<a href=\"/collection/joinup/faq\">FAQ</a></p>\r\n"
+            format: content_editor
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+        6ab0ceea-4541-4153-8b64-227e02369d30:
+          uuid: 6ab0ceea-4541-4153-8b64-227e02369d30
+          region: third
+          configuration:
+            id: layout_builder_block
+            label: 'New Joinup video'
+            provider: layout_builder_block
+            label_display: '0'
+            text: "<p>{\"preview_thumbnail\":\"/sites/default/files/styles/video_embed_wysiwyg_preview/public/video_thumbnails/vodYK2bH05I.jpg?itok=LYHRRAiE\",\"video_url\":\"https://youtu.be/vodYK2bH05I\",\"settings\":{\"responsive\":true,\"width\":\"854\",\"height\":\"480\",\"autoplay\":false},\"settings_summary\":[\"Embedded Video (Responsive).\"]}</p>\r\n"
             format: content_editor
             context_mapping: {  }
           additional: {  }

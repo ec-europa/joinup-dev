@@ -20,6 +20,7 @@ use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeFallbackTrait;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\topic\Entity\TopicReferencingEntityTrait;
 
 /**
  * Entity subclass for the 'solution' bundle.
@@ -35,6 +36,7 @@ class Solution extends Rdf implements SolutionInterface {
   use LogoTrait;
   use PinnableGroupContentTrait;
   use ShortIdTrait;
+  use TopicReferencingEntityTrait;
 
   /**
    * {@inheritdoc}

@@ -172,7 +172,9 @@
             "web/modules/custom/joinup_publication_date/src/Entity/EntityPublicationTimeFallbackTrait.php",
             "web/modules/custom/joinup_publication_date/src/Entity/EntityPublicationTimeInterface.php",
             "web/modules/custom/joinup_publication_date/src/Entity/EntityPublicationTimeTrait.php",
-            "web/modules/custom/joinup_sparql/src/Driver/Database/joinup_sparql/Connection.php"
+            "web/modules/custom/joinup_sparql/src/Driver/Database/joinup_sparql/Connection.php",
+            "web/modules/custom/topic/src/Entity/TopicReferencingEntityInterface.php",
+            "web/modules/custom/topic/src/Entity/TopicReferencingEntityTrait.php"
         ],
         "psr-4": {
             "Joinup\\": "src"

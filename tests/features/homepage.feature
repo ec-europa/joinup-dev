@@ -12,6 +12,11 @@ Feature: Homepage
     And I should see the following lines of text:
       | Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme.    |
       | Joinup offers several services that aim to help e-Government professionals share their experience with each other. Joinup supports them to find, choose, re-use, develop and implement interoperability solutions. |
+      | For fresh start on creating content                                                                                                                                                                                |
+    And I should see the following links:
+      | How to video |
+      | Guided tour  |
+      | FAQ          |
 
   Scenario: Only specific social network links are available in the footer.
     When I am on the homepage
@@ -75,6 +80,23 @@ Feature: Homepage
       | 1      | blaise.jpg  | Finance in EU, Supplier exchange | Muscle atrophy  | Researchers from the University of Tsukuba have sent mice into space to explore effects of spaceflight and reduced gravity on muscle atrophy                                                    |
       | 2      | charles.jpg | EU and European Policies         | Stay at the ISS | Two groups of mice (six per group) were housed aboard the International Space Station for 35 days. One group was subjected to artificial gravity (1 g) and the other to microgravity.           |
       | 3      | alan.jpg    | HR, Statistics and Analysis      | Microgravity    | Conventional studies investigating the effects of reduced gravity on muscle mass and function have used a ground control group that is not directly comparable to the space experimental group. |
+
+  @terms
+  Scenario: A solution can be highlighted on the homepage
+    Given solution:
+      | title         | Mercury poisoning                                                          |
+      | state         | validated                                                                  |
+      | description   | Mercury poisoning is a type of metal poisoning due to exposure to mercury. |
+      | logo          | logo.png                                                                   |
+      | solution type | Interoperability Specification, Networking Service                         |
+      | topic         | Demography, EU and European Policies, HR                                   |
+      | state         | validated                                                                  |
+    And the "Highlighted solution" content listing contains:
+      | type     | label             |
+      | solution | Mercury poisoning |
+
+    When I am on the homepage
+    Then I should see "Mercury poisoning" as the highlighted solution
 
   @version
   Scenario Outline: The current version of the Joinup platform is shown in the footer.

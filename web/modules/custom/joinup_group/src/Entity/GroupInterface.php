@@ -10,13 +10,14 @@ use Drupal\joinup_bundle_class\LogoInterface;
 use Drupal\joinup_bundle_class\ShortIdInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\topic\Entity\TopicReferencingEntityInterface;
 
 /**
  * Interface for entities that are groups.
  *
  * This comprises collections and solutions.
  */
-interface GroupInterface extends RdfInterface, LogoInterface, ShortIdInterface {
+interface GroupInterface extends RdfInterface, LogoInterface, ShortIdInterface, TopicReferencingEntityInterface {
 
   /**
    * Flag for pre-moderated groups.
