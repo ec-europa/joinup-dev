@@ -1,8 +1,9 @@
-type: module
 name: 'Joinup Newsletter'
 description: 'Provides newsletter functionality to Joinup'
-core: 8.x
+type: module
 package: Joinup
+core_version_requirement: ^8.9 || ^9.1
+php: 7.1
 
 dependencies:
   - 'joinup:joinup_community_content'
