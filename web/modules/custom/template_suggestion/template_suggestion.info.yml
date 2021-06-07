@@ -1,5 +1,6 @@
 name: 'Template suggestion'
-type: module
 description: 'Allows fields to declare custom template suggestions in third party settings.'
-core: 8.x
+type: module
 package: Joinup
+core_version_requirement: ^8.9 || ^9.1
+php: 7.1
