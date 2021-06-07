@@ -1,5 +1,6 @@
 name: Semic
 type: module
 description: Specificities for the SEMIC community.
-core: 8.x
+core_version_requirement: ^8.9 || ^9.1
+php: 7.1
 package: Joinup communities
