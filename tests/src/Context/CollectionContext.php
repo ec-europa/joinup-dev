@@ -813,8 +813,8 @@ class CollectionContext extends RawDrupalContext {
       return;
     }
 
-    // Skip if a collection has been set.
-    if (!empty($node->collection)) {
+    // Skip if a collection or solution has been defined.
+    if (!empty($node->collection) || !empty($node->solution)) {
       return;
     }
 
