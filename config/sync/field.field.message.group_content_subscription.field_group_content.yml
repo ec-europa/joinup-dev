@@ -65,9 +65,6 @@ settings:
   entity_legal_document:
     handler: 'default:entity_legal_document'
     handler_settings: {  }
-  entity_legal_document_acceptance:
-    handler: 'default:entity_legal_document_acceptance'
-    handler_settings: {  }
   facets_facet_source:
     handler: 'default:facets_facet_source'
     handler_settings: {  }
@@ -253,5 +250,8 @@ settings:
     handler_settings: {  }
   media:
     handler: 'default:media'
+    handler_settings: {  }
+  search_api_field:
+    handler: 'default:search_api_field'
     handler_settings: {  }
 field_type: dynamic_entity_reference
