@@ -3,9 +3,8 @@ langcode: en
 status: true
 dependencies:
   module:
-    - eif
-    - node
     - oe_webtools_etrans
+    - system
   theme:
     - joinup_theme
 id: webtools_etrans
@@ -25,4 +24,9 @@ settings:
   delay: 0
   include: ''
   exclude: ''
-visibility: {  }
+visibility:
+  request_path:
+    id: request_path
+    pages: "/node/*/edit\r\n/node/*/delete\r\n/rdf_entity/*/edit\r\n/rdf_entity/*/delete\r\n/taxonomy_term/*/edit\r\n/taxonomy_term/*/delete"
+    negate: true
+    context_mapping: {  }
