@@ -6,6 +6,7 @@ namespace Drupal\joinup\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\Traits\AliasTranslatorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\UserTrait;
@@ -16,6 +17,7 @@ use Drupal\rdf_entity\RdfInterface;
  */
 class ContactInformationContext extends RawDrupalContext {
 
+  use AliasTranslatorTrait;
   use RdfEntityTrait;
   use SearchTrait;
   use UserTrait;
@@ -66,36 +68,11 @@ class ContactInformationContext extends RawDrupalContext {
 
     foreach ($contact_table->getRowsHash() as $key => $value) {
       // Replace the column aliases with the actual field names.
-      $key = self::translateFieldNameAlias($key);
+      $key = self::translateFieldNameAlias($key, self::contactInformationFieldAliases());
       $values[$key] = $value;
     }
 
     $this->createContactInformation($values);
-  }
-
-  /**
-   * Translates human readable field names to machine names.
-   *
-   * @param string $field_name
-   *   The human readable field name. Case insensitive.
-   *
-   * @return string
-   *   The machine name of the field.
-   *
-   * @throws \Exception
-   *   Thrown when an unknown field name is passed.
-   */
-  protected static function translateFieldNameAlias($field_name) {
-    $field_name = strtolower($field_name);
-    $aliases = self::contactInformationFieldAliases();
-    if (array_key_exists($field_name, $aliases)) {
-      $field_name = $aliases[$field_name];
-    }
-    else {
-      throw new \Exception("Unknown field name '$field_name'.");
-    }
-
-    return $field_name;
   }
 
   /**
@@ -121,7 +98,7 @@ class ContactInformationContext extends RawDrupalContext {
       $values = [];
 
       foreach ($entity as $key => $value) {
-        $key = self::translateFieldNameAlias($key);
+        $key = self::translateFieldNameAlias($key, self::contactInformationFieldAliases());
         $values[$key] = $value;
       }
 
