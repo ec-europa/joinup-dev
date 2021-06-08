@@ -17,7 +17,7 @@ class JoinupExistingSiteTestSuite extends JoinupTestSuiteBase {
    */
   public static function suite() {
     $suite = new static('existing-site');
-    $suite->addTestsBySuiteNamespace(NULL, 'ExistingSite');
+    $suite->addTestFile(__DIR__ . '/../../web/modules/custom/joinup_core/tests/src/ExistingSite/ConfigTest.php');
     return $suite;
   }
 

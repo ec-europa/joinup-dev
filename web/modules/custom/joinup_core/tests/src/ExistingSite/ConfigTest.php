@@ -43,7 +43,7 @@ class ConfigTest extends JoinupExistingSiteTestBase {
     $diff = array_keys((array) $this->getOutputFromJSON());
 
     // Check that there are no differences between database and config sync.
-    $this->assertEmpty($diff, 'Differences between active and sync stores for: ' . implode(', ', $diff));
+    $this->assertEmpty($diff, 'Differences between active and sync stores for: ' . implode(', ', $diff) . var_export($this->getOutputFromJSON(), TRUE));
   }
 
   /**
