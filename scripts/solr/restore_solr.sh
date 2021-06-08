@@ -69,7 +69,7 @@ fi
 
 # Wipe out the existing index.
 log "Wiping out the exiting index of Solr '${CORE}' core."
-WIPE_INDEX=`/usr/bin/curl -sS "${SOLR_SERVER_URL}/${CORE}/update?stream.body=<delete><query>*:*</query></delete>&commit=true&wt=xml"`
+WIPE_INDEX=`/usr/bin/curl -sS --request POST --header "Content-Type: application/xml" --data "<delete><query>*:*</query></delete>" "${SOLR_SERVER_URL}/${CORE}/update?commit=true&wt=xml"`
 log "${WIPE_INDEX}"
 
 # Restore the index.
