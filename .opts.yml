@@ -10,3 +10,4 @@ upgrade_commands:
     - ./vendor/bin/drush deploy --yes
     - rm disable-config-readonly
     - ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer --yes
+install_clean: yes
