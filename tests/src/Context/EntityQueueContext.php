@@ -43,7 +43,6 @@ class EntityQueueContext extends RawDrupalContext {
   public function setEntityQueueContent(TableNode $table, string $label): void {
     /** @var \Drupal\entityqueue\EntitySubqueueInterface $subqueue */
     $subqueue = self::getEntityByLabel('entity_subqueue', $label);
-    $subqueue->clearItems();
 
     $entities = array_map(function (array $row): ContentEntityInterface {
       $entity_type_id = self::translateEntityTypeAlias($row['type']);
