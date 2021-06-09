@@ -50,7 +50,6 @@ Feature: Machine translation
     When I go to the "Increased credit card fees" custom page
     Then I should see the Webtools eTrans button
     When I go to the edit form of the "Increased credit card fees" "custom page"
-    And I click "Edit" in the "Entity actions" region
     Then I should not see any Webtools eTrans elements
 
     # Community content should be translatable.
@@ -64,7 +63,7 @@ Feature: Machine translation
     Then I should not see any Webtools eTrans elements
     When I go to the "Increased postal delivery costs" document
     Then I should see the Webtools eTrans button
-    When I go to the edit form of the "Increased portal deliver costs" document
+    When I go to the edit form of the "Increased postal delivery costs" document
     Then I should not see any Webtools eTrans elements
     When I go to the "Restriction on animal-based food imports" discussion
     Then I should see the Webtools eTrans button

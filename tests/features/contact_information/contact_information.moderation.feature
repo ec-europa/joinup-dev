@@ -146,6 +146,6 @@ Feature: Contact Information moderation
     And I click "Edit" in the "Entity actions"
     And the following 1 button should be present "Update"
     And I should see the link "Delete"
-    When I go to the "Saint Louis solutions" collection edit form
+    When I go to the edit form of the "Saint Louis solutions" collection
     Then I should see the button "Edit" in the "Contact information inline form" region
     Then I should see the button "Remove" in the "Contact information inline form" region

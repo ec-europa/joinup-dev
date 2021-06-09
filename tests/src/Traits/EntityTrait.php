@@ -75,10 +75,22 @@ trait EntityTrait {
    */
   protected static function entityTypeAliases(): array {
     return [
+      'asset_distribution' => 'rdf_entity',
+      'asset_release' => 'rdf_entity',
+      'contact_information' => 'rdf_entity',
       'collection' => 'rdf_entity',
       'content' => 'node',
+      'custom_page' => 'node',
+      'discussion' => 'node',
+      'document' => 'node',
+      'event' => 'node',
+      'glossary' => 'node',
       'group' => 'rdf_entity',
+      'news' => 'node',
+      'owner' => 'rdf_entity',
       'solution' => 'rdf_entity',
+      'spdx_licence' => 'rdf_entity',
+      'tallinn_report' => 'node',
     ];
   }
 
@@ -126,10 +138,16 @@ trait EntityTrait {
    */
   protected static function bundleAliases(): array {
     return [
-      'contact information' => 'contact_information',
+      'news' => 'news',
+      'custom page' => 'custom_page',
+      'event' => 'event',
+      'discussion' => 'discussion',
+      'document' => 'document',
       'distribution' => 'asset_distribution',
+      'glossary' => 'glossary',
       'release' => 'asset_release',
       'spdx licence' => 'spdx_licence',
+      'tallinn report' => 'tallinn_report',
     ];
   }
 
@@ -182,6 +200,35 @@ trait EntityTrait {
     // with updated values (e.g. the "collection" computed field of solutions).
     \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->resetCache([$entity->id()]);
     ContentEntity::indexEntity($entity);
+  }
+
+  /**
+   * Navigates to the edit or delete form of an entity.
+   *
+   * @param string $action
+   *   The action. Either 'edit' or 'delete'.
+   * @param string $title
+   *   The title of the entity.
+   * @param string $bundle
+   *   An alias of a bundle as defined in the
+   *   \Drupal\joinup\Traits\EntityTrait::bundleAliases method.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when an invalid action is passed.
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   Thrown when the form URL cannot be generated for the community content.
+   */
+  public function visitEntityForm(string $action, string $title, string $bundle): void {
+    if (!in_array($action, ['edit', 'delete'])) {
+      throw new \InvalidArgumentException('Only "edit" and "delete" actions are allowed.');
+    }
+
+    $bundle = $this->translateBundle($bundle);
+    $entity_type_id = $this->translateEntityTypeAlias($bundle);
+
+    $node = $this->getEntityByLabel($entity_type_id, $title, $bundle);
+    $path = $node->toUrl("{$action}-form")->getInternalPath();
+    $this->visitPath($path);
   }
 
 }
