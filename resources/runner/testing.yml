@@ -67,4 +67,5 @@ commands:
       command: php -d memory_limit=-1 ${phpstan.bin} --no-progress analyse src tests/src web/modules/custom web/profiles web/themes
   testing:check-deprecated-code-contrib:
     - task: exec
-      command: php -d memory_limit=-1 ${phpstan.bin} --no-progress analyse web/modules/contrib
+      # Mute the returning error code as is used only for reporting.
+      command: php -d memory_limit=-1 ${phpstan.bin} --no-progress analyse web/modules/contrib || true

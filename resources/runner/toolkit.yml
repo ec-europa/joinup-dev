@@ -171,3 +171,7 @@ commands:
       command: testing:phpcs-setup
     - task: exec
       command: ${phpcs.file.bin}
+    - task: run
+      command: testing:check-deprecated-code
+    - task: run
+      command: testing:check-deprecated-code-contrib
