@@ -4,18 +4,39 @@ status: true
 dependencies:
   config:
     - entityqueue.entity_queue.highlighted_event
-    - field.field.entity_subqueue.highlighted_event.call_to_action
+    - field.field.entity_subqueue.highlighted_event.external_url
     - field.field.entity_subqueue.highlighted_event.header
+    - field.field.entity_subqueue.highlighted_event.link_text
+    - field.field.entity_subqueue.highlighted_event.link_to_external_url
   module:
     - entityqueue
+    - field_group
     - link
+third_party_settings:
+  field_group:
+    group_link:
+      children:
+        - link_text
+        - link_to_external_url
+        - external_url
+      parent_name: ''
+      weight: 2
+      format_type: details
+      region: content
+      format_settings:
+        description: ''
+        open: true
+        id: ''
+        classes: ''
+        required_fields: false
+      label: 'Call to action'
 id: entity_subqueue.highlighted_event.default
 targetEntityType: entity_subqueue
 bundle: highlighted_event
 mode: default
 content:
-  call_to_action:
-    weight: 2
+  external_url:
+    weight: 6
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -42,13 +63,21 @@ content:
       match_limit: 10
     region: content
     third_party_settings: {  }
-  langcode:
-    type: language_select
+  link_text:
     weight: 4
-    region: content
     settings:
-      include_locked: true
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
+    type: string_textfield
+    region: content
+  link_to_external_url:
+    weight: 5
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   title:
     type: string_textfield
     weight: 0
@@ -57,4 +86,5 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  langcode: true

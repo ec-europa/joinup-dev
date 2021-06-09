@@ -4,8 +4,10 @@ status: true
 dependencies:
   config:
     - entityqueue.entity_queue.highlighted_event
-    - field.field.entity_subqueue.highlighted_event.call_to_action
+    - field.field.entity_subqueue.highlighted_event.external_url
     - field.field.entity_subqueue.highlighted_event.header
+    - field.field.entity_subqueue.highlighted_event.link_text
+    - field.field.entity_subqueue.highlighted_event.link_to_external_url
   module:
     - link
 id: entity_subqueue.highlighted_event.default
@@ -13,8 +15,8 @@ targetEntityType: entity_subqueue
 bundle: highlighted_event
 mode: default
 content:
-  call_to_action:
-    weight: 2
+  external_url:
+    weight: 5
     label: above
     settings:
       trim_length: 80
@@ -41,6 +43,24 @@ content:
     settings:
       link: true
     third_party_settings: {  }
+  link_text:
+    weight: 4
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  link_to_external_url:
+    weight: 3
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   title:
     label: hidden
     type: string

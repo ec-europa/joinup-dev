@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\joinup_event\Entity\Event;
 use Drupal\joinup_event\Entity\EventInterface;
@@ -54,6 +55,13 @@ function joinup_event_preprocess_fieldset(array &$variables): void {
   if (isset($variables['element']['#id']) && $variables['element']['#id'] === 'group-event-location') {
     $variables['legend_span']['attributes']->addClass('js-form-required form-required');
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_event_form_entity_subqueue_highlighted_event_edit_form_alter(array &$form, FormStateInterface $form_state): void {
+  $form['external_url']['#states']['visible'][':input[name="link_to_external_url[value]"]']['checked'] = TRUE;
 }
 
 /**

@@ -1,0 +1,22 @@
+uuid: 89dc6ac8-7831-485b-8518-12ed9d8236dd
+langcode: en
+status: true
+dependencies:
+  module:
+    - entityqueue
+    - field_permissions
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: entity_subqueue.link_to_external_url
+field_name: link_to_external_url
+entity_type: entity_subqueue
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
