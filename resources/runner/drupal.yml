@@ -199,10 +199,8 @@ drupal:
         $config['system.mail']['interface']['default'] = 'devel_mail_log';
         $config['mailsystem.settings']['defaults']['sender'] = 'devel_mail_log';
       Search API: |
-        $config['search_api.server.solr_published']['backend_config']['connector_config'] = parse_url(getenv('SOLR_CORE_PUBLISHED_URL'));
-        $config['search_api.server.solr_published']['backend_config']['connector_config']['core'] = getenv('SOLR_CORE_PUBLISHED_NAME');
-        $config['search_api.server.solr_unpublished']['backend_config']['connector_config'] = parse_url(getenv('SOLR_CORE_UNPUBLISHED_URL'));
-        $config['search_api.server.solr_unpublished']['backend_config']['connector_config']['core'] = getenv('SOLR_CORE_UNPUBLISHED_NAME');;
+        $config['search_api.server.joinup']['backend_config']['connector_config'] = parse_url(getenv('SOLR_URL'));
+        $config['search_api.server.joinup']['backend_config']['connector_config']['core'] = getenv('SOLR_CORE');
       Matomo & OpenEuropa Webtools Analytics: |
         $config['matomo.settings']['site_id'] = getenv('MATOMO_SITE_ID');
         $config['matomo.settings']['url_http'] = getenv('MATOMO_SITE_URL_HTTP');
