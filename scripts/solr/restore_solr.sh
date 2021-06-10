@@ -76,7 +76,6 @@ cd ${SNAPSHOT_DIR}
 SNAPSHOT_DIR=$(pwd)
 cd ${CURRENT_DIR}
 
-echo "${SNAPSHOT_DIR}/snapshot.${SNAPSHOT_NAME}"
 if [ ! -d "${SNAPSHOT_DIR}/snapshot.${SNAPSHOT_NAME}" ]; then
   error "The '${SNAPSHOT_DIR}' directory doesn't contain a '${SNAPSHOT_NAME}' snapshot!";
 fi
