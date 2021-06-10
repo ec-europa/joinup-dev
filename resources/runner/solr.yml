@@ -66,11 +66,19 @@ commands:
     - task: exec
       command: curl
       arguments:
-        - ${env.SOLR_CORE_PUBLISHED_URL}/${env.SOLR_CORE_PUBLISHED_NAME}/update?stream.body=<delete><query>*:*</query></delete>&commit=true
+        - ${env.SOLR_CORE_PUBLISHED_URL}/${env.SOLR_CORE_PUBLISHED_NAME}/update?commit=true&wt=json
+      options:
+        request: POST
+        header: 'Content-Type: application/xml'
+        data: '<delete><query>*:*</query></delete>'
     - task: exec
       command: curl
       arguments:
-        - ${env.SOLR_CORE_UNPUBLISHED_URL}/${env.SOLR_CORE_UNPUBLISHED_NAME}/update?stream.body=<delete><query>*:*</query></delete>&commit=true
+        - ${env.SOLR_CORE_UNPUBLISHED_URL}/${env.SOLR_CORE_UNPUBLISHED_NAME}/update?commit=true&wt=json
+      options:
+        request: POST
+        header: 'Content-Type: application/xml'
+        data: '<delete><query>*:*</query></delete>'
 
   # Restores the Solr index from a snapshot.
   solr:restore:
