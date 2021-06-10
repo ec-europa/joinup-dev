@@ -61,7 +61,17 @@ class JoinupEventEventSubscriber implements EventSubscriberInterface {
     // Retrieve the request path, and do inbound processing so that language
     // prefixes are removed.
     $request = $event->getRequest();
-    $path = $this->pathProcessor->processInbound($request->getPathInfo(), $request);
+    if (strpos($request->getPathInfo(), '/system/files/') === 0 && !$request->query->has('file')) {
+      // Private files paths are split by the inbound path processor and the
+      // relative file path is moved to the 'file' query string parameter. This
+      // is because the route system does not allow an arbitrary amount of
+      // parameters. We preserve the path as is returned by the request object.
+      // @see \Drupal\system\PathProcessor\PathProcessorFiles::processInbound()
+      $path = $request->getPathInfo();
+    }
+    else {
+      $path = $this->pathProcessor->processInbound($request->getPathInfo(), $request);
+    }
 
     if ($path === '/events') {
       $url = Url::fromRoute('view.search.page_1');
