@@ -67,6 +67,7 @@ class JoinupEventEventSubscriber implements EventSubscriberInterface {
       // is because the route system does not allow an arbitrary amount of
       // parameters. We preserve the path as is returned by the request object.
       // @see \Drupal\system\PathProcessor\PathProcessorFiles::processInbound()
+      // @see \Drupal\redirect\EventSubscriber\RedirectRequestSubscriber::onKernelRequestCheckRedirect()
       $path = $request->getPathInfo();
     }
     else {
