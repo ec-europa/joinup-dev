@@ -52,7 +52,7 @@ dependencies:
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_organisation
-    - search_api.server.solr_published
+    - search_api.server.joinup
 third_party_settings:
   search_api_solr:
     finalize: false
@@ -873,4 +873,4 @@ tracker_settings:
 options:
   index_directly: true
   cron_limit: 50
-server: solr_published
+server: joinup
