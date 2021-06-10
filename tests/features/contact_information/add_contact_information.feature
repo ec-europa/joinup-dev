@@ -8,7 +8,7 @@ Feature: Creation of contact information
     Given I am logged in as an "authenticated user"
     And I go to the propose collection form
     # Check that the help text for the website field is visible.
-    Then I should see the description "This must be an external URL such as http://example.com." for the "Website URL" field
+    Then I should see the description "This must be an external URL such as http://example.com." for the "Company webpage" field
 
     When I press "Create contact information"
     Then I should see the following error messages:

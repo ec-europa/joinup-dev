@@ -15,7 +15,7 @@ Feature:
     And the following contact:
       | email       | proud-servers@example.com |
       | name        | Proud servers secretariat |
-      | Website URL | http://www.example.com    |
+      | Company webpage | http://www.example.com    |
     And the following owner:
       | name       | type                  |
       | John Smith | Private Individual(s) |

@@ -72,7 +72,7 @@ Feature: "Add solution" visibility options.
     And I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
     Then I should see the heading "Add Solution"
-    And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner, Name, E-mail address, Website URL"
+    And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner, Name, E-mail address, Company webpage"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation, Motivation"
     # Regression test for ensuring that obsolete content creation value is removed.
     # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3567

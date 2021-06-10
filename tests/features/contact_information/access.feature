@@ -8,7 +8,7 @@ Feature: Contact information access
     Given the following contact:
       | email       | phil.coulson@shield.gov |
       | name        | Phil Coulson            |
-      | Website URL | http://shield.gov       |
+      | Company webpage | http://shield.gov       |
     When I am an anonymous user
     When I go to the "Phil Coulson" contact information page
     Then I should see the heading "Sign in to continue"
