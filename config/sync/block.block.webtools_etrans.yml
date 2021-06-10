@@ -3,8 +3,8 @@ langcode: en
 status: true
 dependencies:
   module:
+    - joinup_core
     - oe_webtools_etrans
-    - system
   theme:
     - joinup_theme
 id: webtools_etrans
@@ -25,8 +25,14 @@ settings:
   include: ''
   exclude: ''
 visibility:
-  request_path:
-    id: request_path
-    pages: "/node/*/edit\r\n/node/*/delete\r\n/rdf_entity/*/edit\r\n/rdf_entity/*/delete\r\n/taxonomy_term/*/edit\r\n/taxonomy_term/*/delete"
+  request_route:
+    id: request_route
+    routes:
+      0: entity.node.delete_form
+      2: entity.node.edit_form
+      4: entity.rdf_entity.delete_form
+      6: entity.rdf_entity.edit_form
+      8: entity.taxonomy_term.edit_form
+      10: entity.taxonomy_term.delete_form
     negate: true
     context_mapping: {  }
