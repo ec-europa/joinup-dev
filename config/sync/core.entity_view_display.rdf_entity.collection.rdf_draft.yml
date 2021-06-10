@@ -140,6 +140,7 @@ content:
 hidden:
   changed: true
   created: true
+  field_ar_abstract: true
   field_ar_affiliates: true
   field_ar_banner: true
   field_ar_logo: true
