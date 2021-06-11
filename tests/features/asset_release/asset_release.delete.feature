@@ -11,7 +11,7 @@ Feature: Asset release "delete" functionality.
     And the following contact:
       | name        | Yet another contact           |
       | email       | yetanothercontact@example.com |
-      | Website URL | http://example.com            |
+      | Company webpage | http://example.com            |
     And the following collection:
       | title | Yet another collection |
       | state | validated              |

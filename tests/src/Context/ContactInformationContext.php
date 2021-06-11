@@ -102,7 +102,7 @@ class ContactInformationContext extends RawDrupalContext {
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | name                   | email                            | website url                            | author      |
+   * | name                   | email                            | Company webpage                            | author      |
    * | John Irwin             | foo@example.com, bar@example.com | http://google.com                      | Author name |
    * | Jack Smith, John Irwin | baz@example.com                  | http://yahoo.com, http://altavista.com |             |
    * @codingStandardsIgnoreEnd
@@ -213,7 +213,7 @@ class ContactInformationContext extends RawDrupalContext {
       'uri' => 'id',
       'email' => 'field_ci_email',
       'name' => 'field_ci_name',
-      'website url' => 'field_ci_webpage',
+      'Company webpage' => 'field_ci_webpage',
       'author' => 'uid',
     ];
   }

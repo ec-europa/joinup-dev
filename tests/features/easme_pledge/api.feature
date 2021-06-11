@@ -6,7 +6,7 @@ Feature: Basic tests related to the pledge.
     Given the following contact:
       | email       | test@example.com    |
       | name        | Pledge secretariat  |
-      | Website URL | http://www.test.com |
+      | Company webpage | http://www.test.com |
     And the following owner:
       | name                 | type                    |
       | Organisation example | Non-Profit Organisation |

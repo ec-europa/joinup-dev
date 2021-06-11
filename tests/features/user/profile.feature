@@ -146,7 +146,7 @@ Feature: User profile
     And the following contact:
       | name        | Wibo Verhoeven             |
       | email       | wibo.verhoeven@example.com |
-      | Website URL | http://example.com         |
+      | Company webpage | http://example.com         |
       | author      | Corwin Robert              |
     And the following owner:
       | type                  | name                 | author        |

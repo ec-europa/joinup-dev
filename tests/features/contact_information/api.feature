@@ -8,7 +8,7 @@ Feature: Contact information API
     Given the following contact:
       | email       | foo@bar.com                 |
       | name        | Contact information API foo |
-      | Website URL | http://www.example.org      |
+      | Company webpage | http://www.example.org      |
     Then I should have 1 contact information
 
   Scenario: Programmatically create a contact information using only the mandatory fields

@@ -15,7 +15,7 @@ entity_type: rdf_entity
 bundle: collection
 label: Logo
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

@@ -11,7 +11,7 @@ Feature: "Edit" visibility options.
     And the following contact:
       | name        | Awesome contact            |
       | email       | awesomecontact@example.com |
-      | Website URL | http://example.com         |
+      | Company webpage | http://example.com         |
     And the following solution:
       | title               | My awesome solution abc |
       | description         | My awesome solution     |

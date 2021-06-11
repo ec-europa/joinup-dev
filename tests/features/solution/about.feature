@@ -7,7 +7,7 @@ Feature: About this solution
   @terms
   Scenario: About page
     Given the following contacts:
-      | name                    | email                        | Website URL                     |
+      | name                    | email                        | Company webpage                     |
       | Ariel Lucile            | ariel@nova.dk                | http://nova.dk, http://nova.com |
       | Maiken Bine, Peer Milla | maiken@nova.dk, peer@nova.dk | https://innovation.nova.org     |
     And owners:
@@ -71,7 +71,7 @@ Feature: About this solution
       | Maiken Bine  |
       | Peer Milla   |
     And I should see the text "E-mail address"
-    And I should see the text "Website URL"
+    And I should see the text "Company webpage"
     And I should see the following links:
       | ariel@nova.dk               |
       | maiken@nova.dk              |
