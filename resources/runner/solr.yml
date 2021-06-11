@@ -8,10 +8,8 @@ solr:
   download_url: http://archive.apache.org/dist/lucene/solr/${solr.version}/solr-${solr.version}.tgz
   config_dir: ${joinup.site_dir}/modules/contrib/search_api_solr/solr-conf/6.x
   core:
-    published:
-      dir: ${solr.dir}/server/solr/${env.SOLR_CORE_PUBLISHED_NAME}
-    unpublished:
-      dir: ${solr.dir}/server/solr/${env.SOLR_CORE_UNPUBLISHED_NAME}
+    joinup:
+      dir: ${solr.dir}/server/solr/${env.SOLR_CORE}
   snapshot_dir: ${joinup.db_dir}/solr
 
 commands:
@@ -39,9 +37,7 @@ commands:
     - task: remove
       file: ${solr.snapshot_dir}/solr.tar
     - task: remove
-      file: ${solr.snapshot_dir}/snapshot.published
-    - task: remove
-      file: ${solr.snapshot_dir}/snapshot.unpublished
+      file: ${solr.snapshot_dir}/snapshot.joinup
     # Download and unpack the archive.
     - task: run
       command: toolkit:download-dump
@@ -51,12 +47,6 @@ commands:
     # Unpack and organize.
     - task: exec
       command: tar -xvf ${solr.snapshot_dir}/solr.tar -C ${solr.snapshot_dir}
-    - task: rename
-      from: ${solr.snapshot_dir}/snapshot.joinup
-      to: ${solr.snapshot_dir}/snapshot.published
-    - task: rename
-      from: ${solr.snapshot_dir}/snapshot.joinup-unpublished
-      to: ${solr.snapshot_dir}/snapshot.unpublished
     # Cleanup.
     - task: remove
       file: ${solr.snapshot_dir}/solr.tar
@@ -66,15 +56,7 @@ commands:
     - task: exec
       command: curl
       arguments:
-        - ${env.SOLR_CORE_PUBLISHED_URL}/${env.SOLR_CORE_PUBLISHED_NAME}/update?commit=true&wt=json
-      options:
-        request: POST
-        header: 'Content-Type: application/xml'
-        data: '<delete><query>*:*</query></delete>'
-    - task: exec
-      command: curl
-      arguments:
-        - ${env.SOLR_CORE_UNPUBLISHED_URL}/${env.SOLR_CORE_UNPUBLISHED_NAME}/update?commit=true&wt=json
+        - ${env.SOLR_URL}/${env.SOLR_CORE}/update?commit=true&wt=json
       options:
         request: POST
         header: 'Content-Type: application/xml'
@@ -87,22 +69,14 @@ commands:
     - task: run
       command: solr:restore-core
       arguments:
-        - published
-    - task: run
-      command: solr:restore-core
-      arguments:
-        - unpublished
+        - joinup
 
   # Takes a snapshot of the Solr index.
   solr:backup:
     - task: run
       command: solr:backup-core
       arguments:
-        - published
-    - task: run
-      command: solr:backup-core
-      arguments:
-        - unpublished
+        - joinup
 
   # Downloads and installs the Solr binary.
   solr:download-bin:
@@ -134,6 +108,4 @@ commands:
     - task: run
       command: solr:start
     - task: exec
-      command: test -d ${solr.core.published.dir} || ${solr.bin} create_core -c ${env.SOLR_CORE_PUBLISHED_NAME} -d ${solr.config_dir}
-    - task: exec
-      command: test -d ${solr.core.unpublished.dir} || ${solr.bin} create_core -c ${env.SOLR_CORE_UNPUBLISHED_NAME} -d ${solr.config_dir}
+      command: test -d ${solr.core.joinup.dir} || ${solr.bin} create_core -c ${env.SOLR_CORE} -d ${solr.config_dir}

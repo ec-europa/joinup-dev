@@ -22,43 +22,40 @@ function joinup_search_requirements(string $phase): array {
 
   $http_client = \Drupal::httpClient();
   $site_hash = Utility::getSiteHash();
-  foreach (['published', 'unpublished'] as $index_id) {
-    $endpoint = \Drupal::config("search_api.server.solr_{$index_id}")
-      ->get('backend_config.connector_config');
-    $uri = (string) (new Uri())
-      ->withScheme($endpoint['scheme'])
-      ->withHost($endpoint['host'])
-      ->withPort($endpoint['port'])
-      ->withPath(rtrim($endpoint['path'], '/') . "/{$endpoint['core']}/select")
-      ->withQuery(http_build_query([
-        'fq' => "-hash:{$site_hash}",
-        'q' => '*:*',
-        'wt' => 'json',
-      ]));
+  $endpoint = \Drupal::config('search_api.server.joinup')->get('backend_config.connector_config');
+  $uri = (string) (new Uri())
+    ->withScheme($endpoint['scheme'])
+    ->withHost($endpoint['host'])
+    ->withPort($endpoint['port'])
+    ->withPath(rtrim($endpoint['path'], '/') . "/{$endpoint['core']}/select")
+    ->withQuery(http_build_query([
+      'fq' => "-hash:{$site_hash}",
+      'q' => '*:*',
+      'wt' => 'json',
+    ]));
 
-    try {
-      $response = $http_client->get($uri);
-    }
-    catch (\Throwable $exception) {
-      // Ignore error, it's already covered by search_api_solr module.
-      // @see search_api_solr_requirements()
-      continue;
-    }
+  try {
+    $response = $http_client->get($uri);
+  }
+  catch (\Throwable $exception) {
+    // Ignore error, it's already covered by search_api_solr module.
+    // @see search_api_solr_requirements()
+    return [];
+  }
 
-    $num_found = Json::decode($response->getBody()->getContents())['response']['numFound'];
-    if ($num_found) {
-      $requirements["solr_data:{$index_id}"] = [
-        'severity' => REQUIREMENT_ERROR,
-        'title' => t('Solr index: %index', ['%index' => $index_id]),
-        'value' => t('Found @count entries with invalid site hash', [
-          '@count' => $num_found,
-        ]),
-        'description' => t('The valid site hash is %hash. Retrieve the invalid entries with this <a href=":uri">query</a>.', [
-          '%hash' => $site_hash,
-          ':uri' => $uri,
-        ]),
-      ];
-    }
+  $num_found = Json::decode($response->getBody()->getContents())['response']['numFound'];
+  if ($num_found) {
+    $requirements['solr_data'] = [
+      'severity' => REQUIREMENT_ERROR,
+      'title' => t('Solr core: %core', ['%core' => 'joinup']),
+      'value' => t('Found @count entries with invalid site hash', [
+        '@count' => $num_found,
+      ]),
+      'description' => t('The valid site hash is %hash. Retrieve the invalid entries with this <a href=":uri">query</a>.', [
+        '%hash' => $site_hash,
+        ':uri' => $uri,
+      ]),
+    ];
   }
 
   return $requirements;

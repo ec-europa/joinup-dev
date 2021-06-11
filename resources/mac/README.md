@@ -64,96 +64,90 @@ Redis](https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-
 
 ## Setting up the project
 
-1. Clone the respository of this project
+### Clone the repository
 
-   ```bash
-   $ git clone https://github.com/ec-europa/joinup-dev.git
-   ```
+```bash
+$ git clone https://github.com/ec-europa/joinup-dev.git
+```
 
-1. Create a local task runner configuration file
+### Create a local task runner configuration file
 
-    In order to override any configuration of the task runner
-    (`./vendor/bin/run`), create a `runner.yml` file in the project's top
-    directory. You can override there any default runner configuration, or any
-    other declared in `./resources/runner` files or in `runner.yml.dist`. Note
-    that the `runner.yml` file is not under VCS control.
+In order to override any configuration of the task runner (`./vendor/bin/run`),
+create a `runner.yml` file in the project's top directory. You can override
+there any default runner configuration, or any other declared in
+`./resources/runner` files or in `runner.yml.dist`. Note that the `runner.yml`
+file is not under VCS control.
 
-1. Setup environment variables
+### Environment variables
 
 Sensitive data will be stored in [environment variables](
 https://en.wikipedia.org/wiki/Environment_variable). See `.env.dist` for
 details.
 
-**! Important: For the ASDA settings please contact your local developer !**  
+**Important!** For the ASDA settings please contact your local developer
 
-3. Run composer
+## Build the codebase
 
-   ```bash
-   $ composer install
-   ```
+```bash
+$ composer install
+```
 
-4. Run `toolkit:build-dev`
+### Install and/or relink
 
-   ```bash
-   $ ./vendor/bin/run toolkit:build-dev
-   ```
+```bash
+$ brew unlink unixodbc
+$ brew install virtuoso
+$ brew unlink virtuoso
+$ brew link unixodbc
+$ brew link --overwrite virtuoso
+```
 
-5. Install and/or relink
+### Setup Virtuoso
 
-   ```bash
-   $ brew unlink unixodbc
-   $ brew install virtuoso
-   $ brew unlink virtuoso
-   $ brew link unixodbc
-   $ brew link --overwrite virtuoso
-   ```
+```bash
+$ ./vendor/bin/run virtuoso:setup
+$ ./vendor/bin/run virtuoso:start
+```
 
-6. Setup Virtuoso
+[Check Virtuoso](http://localhost:8890/sparql)
 
-   ```bash
-   $ ./vendor/bin/run virtuoso:setup
-   $ ./vendor/bin/run virtuoso:start
-   ```
+### Run `toolkit:install-clean`
 
-  [Check Virtuoso](http://localhost:8890/sparql)
+```bash
+$ ./vendor/bin/run toolkit:install-clean
+```
 
-7. Run `toolkit:install-clean`
+### Setup Solr and check if it's running
 
-   ```bash
-   $ ./vendor/bin/run toolkit:install-clean
-   ```
+```bash
+$ ./vendor/bin/run solr:setup
+``` 
 
-8. Setup Solr and check if it's running
+[Check Solr](http://localhost:8983/solr/#/)
 
-   ```bash
-    $ ./vendor/bin/run solr:setup
-    ```
+### Download production databases
 
-   [Check Solr](http://localhost:8983/solr/#/)
+```bash
+$ ./vendor/bin/run dev:download-databases
+```
 
-9. Download production Databases
+### Rebuild environment
 
-   ```bash
-   $ ./vendor/bin/run dev:download-databases
-   ```
+```bash
+$ ./vendor/bin/run toolkit:install-clone
+```
 
-10. Rebuild environment
+### Unblock the admin user
 
-   ```bash
-   $ ./vendor/bin/run toolkit:install-clone
-   ```
+```bash
+$ drush user:unblock
+```
 
-12. Unblock the admin user
+### Login with the admin user
 
-   ```bash
-   $ drush user:unblock
-   ```
-
-13. Login with the admin user
-
-   ```bash
-   $ drush uli
-   ```
+```bash
+$ drush uli
+```
 
 ## Switching between branches
 
@@ -162,6 +156,5 @@ date:
 
 ```bash
 $ ./vendor/bin/composer install
-$ ./vendor/bin/run toolkit:build-dev
 $ ./vendor/bin/run toolkit:install-clone
 ```

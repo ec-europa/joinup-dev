@@ -198,13 +198,15 @@
             "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
             "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
-            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit"
+            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit",
+            "test ! -f ./vendor/bin/run || ./vendor/bin/run toolkit:build-dev"
         ],
         "post-update-cmd": [
             "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
             "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
-            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit"
+            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit",
+            "test ! -f ./vendor/bin/run || ./vendor/bin/run toolkit:build-dev"
         ]
     },
     "extra": {
