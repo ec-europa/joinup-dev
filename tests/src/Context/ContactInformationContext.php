@@ -6,15 +6,18 @@ namespace Drupal\joinup\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\Traits\AliasTranslatorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\UserTrait;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Behat step definitions for testing contact information entities.
  */
 class ContactInformationContext extends RawDrupalContext {
 
+  use AliasTranslatorTrait;
   use RdfEntityTrait;
   use SearchTrait;
   use UserTrait;
@@ -39,7 +42,7 @@ class ContactInformationContext extends RawDrupalContext {
    *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    */
-  public function visitContactInformationPage($label) {
+  public function visitContactInformationPage(string $label): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
     $entity = $this->getRdfEntityByLabel($label, 'contact_information');
     $this->visitPath($entity->toUrl()->toString());
@@ -60,41 +63,16 @@ class ContactInformationContext extends RawDrupalContext {
    *
    * @Given (the following )contact:
    */
-  public function givenContactEntity(TableNode $contact_table) {
+  public function givenContactEntity(TableNode $contact_table): void {
     $values = [];
 
     foreach ($contact_table->getRowsHash() as $key => $value) {
       // Replace the column aliases with the actual field names.
-      $key = self::translateFieldNameAlias($key);
+      $key = self::translateFieldNameAlias($key, self::contactInformationFieldAliases());
       $values[$key] = $value;
     }
 
     $this->createContactInformation($values);
-  }
-
-  /**
-   * Translates human readable field names to machine names.
-   *
-   * @param string $field_name
-   *   The human readable field name. Case insensitive.
-   *
-   * @return string
-   *   The machine name of the field.
-   *
-   * @throws \Exception
-   *   Thrown when an unknown field name is passed.
-   */
-  protected static function translateFieldNameAlias($field_name) {
-    $field_name = strtolower($field_name);
-    $aliases = self::contactInformationFieldAliases();
-    if (array_key_exists($field_name, $aliases)) {
-      $field_name = $aliases[$field_name];
-    }
-    else {
-      throw new \Exception("Unknown field name '$field_name'.");
-    }
-
-    return $field_name;
   }
 
   /**
@@ -115,12 +93,12 @@ class ContactInformationContext extends RawDrupalContext {
    *
    * @Given (the following )contacts:
    */
-  public function givenContactEntities(TableNode $contact_table) {
+  public function givenContactEntities(TableNode $contact_table): void {
     foreach ($contact_table->getColumnsHash() as $entity) {
       $values = [];
 
       foreach ($entity as $key => $value) {
-        $key = self::translateFieldNameAlias($key);
+        $key = self::translateFieldNameAlias($key, self::contactInformationFieldAliases());
         $values[$key] = $value;
       }
 
@@ -151,7 +129,7 @@ class ContactInformationContext extends RawDrupalContext {
    *
    * @When I delete the :contact contact information
    */
-  public function deleteContactInformation($name) {
+  public function deleteContactInformation(string $name): void {
     $this->getRdfEntityByLabel($name, 'contact_information')->delete();
   }
 
@@ -160,7 +138,7 @@ class ContactInformationContext extends RawDrupalContext {
    *
    * @AfterScenario
    */
-  public function cleanContactInformationEntities() {
+  public function cleanContactInformationEntities(): void {
     if (empty($this->contactInformations)) {
       return;
     }
@@ -183,13 +161,13 @@ class ContactInformationContext extends RawDrupalContext {
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\rdf_entity\RdfInterface
    *   A new contact information entity.
    *
    * @throws \Exception
    *   When the author is specified but the related user doesn't exist.
    */
-  protected function createContactInformation(array $values) {
+  protected function createContactInformation(array $values): RdfInterface {
     // The 'author' key was replaced by 'uid' in the calling function.
     if (!empty($values['uid'])) {
       $values['uid'] = $this->getUserByName($values['uid'])->id();
@@ -207,7 +185,7 @@ class ContactInformationContext extends RawDrupalContext {
    * @return array
    *   Mapping.
    */
-  protected static function contactInformationFieldAliases() {
+  protected static function contactInformationFieldAliases(): array {
     // Mapping alias - field name.
     return [
       'uri' => 'id',

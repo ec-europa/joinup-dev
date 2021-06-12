@@ -1,0 +1,23 @@
+uuid: 29f9d527-e03d-4ba4-8572-d564cf98df41
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.highlighted_event
+    - field.storage.entity_subqueue.external_url
+  module:
+    - link
+id: entity_subqueue.highlighted_event.external_url
+field_name: external_url
+entity_type: entity_subqueue
+bundle: highlighted_event
+label: 'External URL'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link

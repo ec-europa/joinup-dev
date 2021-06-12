@@ -120,6 +120,18 @@ variant_settings:
             context_mapping: {  }
           additional: {  }
           weight: 0
+        7cc83b30-0be3-4f89-940b-3e7f72d7b16d:
+          uuid: 7cc83b30-0be3-4f89-940b-3e7f72d7b16d
+          region: second
+          configuration:
+            id: 'entityqueue_block:highlighted_event'
+            label: 'Highlighted event'
+            provider: entityqueue_block
+            label_display: visible
+            view_mode: highlighted
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
       third_party_settings: {  }
     -
       layout_id: joinup_layout_twocolfooter_onecol_67_33

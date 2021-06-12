@@ -98,6 +98,51 @@ Feature: Homepage
     When I am on the homepage
     Then I should see "Mercury poisoning" as the highlighted solution
 
+  Scenario: An event can be highlighted on the homepage
+    Given event content:
+      | title                     | start date       | end date         | state     |
+      | Florentine steak festival | 2021-06-04T20:00 | 2021-06-04T22:00 | validated |
+    And the "Highlighted event" content listing contains:
+      | type    | label                     |
+      | content | Florentine steak festival |
+    And the "Highlighted event" content listing has the following fields:
+      | header text  | We don't serve 'well done' |
+      | link text    | Eat our divine meat        |
+      | external url | http://raresteaktown.com/  |
+
+    When I am on the homepage
+    Then I should see the heading "We don't serve 'well done'" in the "Highlighted event"
+    And I should see the heading "Florentine steak festival" in the "Highlighted event"
+    And I should see the text "04 to 05/06/2021" in the "Highlighted event"
+    And I should see the link "Eat our divine meat" in the "Highlighted event"
+    And the response should contain "http://raresteaktown.com"
+    And I should see the link "More events" in the "Highlighted event"
+
+    # When all the fields in the Highlighted event content listing are left
+    # empty, a "Read more" link to the event page should be shown by default.
+    Given the "Highlighted event" content listing has the following fields:
+      | header text  | |
+      | link text    | |
+      | external url | |
+    When I am on the homepage
+    And I should see the heading "Florentine steak festival" in the "Highlighted event"
+    And I should see the text "04 to 05/06/2021" in the "Highlighted event"
+    And I should see the link "Read more" in the "Highlighted event"
+    And I should see the link "More events" in the "Highlighted event"
+    But I should not see the heading "We don't serve 'well done'"
+    And the response should not contain "http://raresteaktown.com"
+
+    When I click "Read more" in the "Highlighted event"
+    Then the url should match "/collection/joinup/event/florentine-steak-festival"
+
+    # The "More events" link should temporarily link to the search page with the
+    # events pre-filtered. This will be replaced with the events page later.
+    Given I am on the homepage
+    When I click "More events"
+    Then I should be on the advanced search page
+    And the "Event" content checkbox item should be selected
+    And I should see the "Florentine steak festival" tile
+
   @version
   Scenario Outline: The current version of the Joinup platform is shown in the footer.
     Given the Joinup version is set to "<version>"
