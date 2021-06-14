@@ -22,11 +22,11 @@ Feature: Joining and leaving collections through the web interface
     Then the "Überwaldean Land Eels" collection should have 0 active members
     And the "Folk Dance and Song Society" collection should have 0 active members
 
-    # Anonymous users should not be able to join or leave a collection.
+    # Anonymous users should be able to join a collection but not leave one.
     Given I am an anonymous user
     When I go to the homepage of the "Überwaldean Land Eels" collection
-    Then I should not see the "Join this collection" button
-    And I should not see the link "Leave this collection"
+    Then I should see the "Join this collection" button
+    But I should not see the link "Leave this collection"
 
     # Authenticated users can join. The Join button should be hidden if the user
     # already is a member of the collection.
