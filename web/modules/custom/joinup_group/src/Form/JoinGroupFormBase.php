@@ -283,7 +283,7 @@ abstract class JoinGroupFormBase extends FormBase {
    *   True if the form can be accessed, false otherwise.
    */
   public function access(): bool {
-    return $this->currentUser()->isAuthenticated() && $this->getRouteMatch()->getRouteName() !== 'joinup_group.leave_confirm_form';
+    return $this->getRouteMatch()->getRouteName() !== 'joinup_group.leave_confirm_form';
   }
 
   /**
