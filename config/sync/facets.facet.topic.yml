@@ -18,9 +18,9 @@ facet_source_id: 'search_api:views_page__search__page_1'
 widget:
   type: dropdown
   config:
-    show_numbers: true
+    show_numbers: false
     default_option_label: 'Any topic'
-    child_prefix: •
+    child_prefix: ' '
     arbitrary_facet_plugin: _none
 query_operator: or
 use_hierarchy: true
