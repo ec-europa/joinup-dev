@@ -25,6 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * A simple form with a button to join or leave a collection.
  */
 abstract class JoinGroupFormBase extends FormBase {
+
   /**
    * The entity type manager service.
    *
@@ -222,8 +223,8 @@ abstract class JoinGroupFormBase extends FormBase {
     // Only authenticated users can join a group.
     if ($this->user->isAnonymous()) {
       $form_state->setErrorByName('user', $this->t('<a href=":login">Sign in</a> or <a href=":register">register</a> to change your group membership.', [
-        ':login' => $this->urlGenerator->generateFromRoute('user.login'),
-        ':register' => $this->urlGenerator->generateFromRoute('user.register'),
+        ':login' => Url::fromRoute('user.login')->toString(),
+        ':register' => Url::fromRoute('user.register')->toString(),
       ]));
     }
 
