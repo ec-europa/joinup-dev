@@ -75,22 +75,22 @@ trait EntityTrait {
    */
   protected static function entityTypeAliases(): array {
     return [
-      'asset_distribution' => 'rdf_entity',
-      'asset_release' => 'rdf_entity',
-      'contact_information' => 'rdf_entity',
       'collection' => 'rdf_entity',
+      'contact information' => 'rdf_entity',
       'content' => 'node',
-      'custom_page' => 'node',
+      'custom page' => 'node',
       'discussion' => 'node',
+      'distribution' => 'rdf_entity',
       'document' => 'node',
       'event' => 'node',
       'glossary' => 'node',
       'group' => 'rdf_entity',
       'news' => 'node',
       'owner' => 'rdf_entity',
+      'release' => 'rdf_entity',
       'solution' => 'rdf_entity',
-      'spdx_licence' => 'rdf_entity',
-      'tallinn_report' => 'node',
+      'spdx licence' => 'rdf_entity',
+      'tallinn report' => 'node',
     ];
   }
 
@@ -138,13 +138,13 @@ trait EntityTrait {
    */
   protected static function bundleAliases(): array {
     return [
-      'news' => 'news',
       'custom page' => 'custom_page',
-      'event' => 'event',
       'discussion' => 'discussion',
-      'document' => 'document',
       'distribution' => 'asset_distribution',
+      'document' => 'document',
+      'event' => 'event',
       'glossary' => 'glossary',
+      'news' => 'news',
       'release' => 'asset_release',
       'spdx licence' => 'spdx_licence',
       'tallinn report' => 'tallinn_report',
@@ -223,9 +223,9 @@ trait EntityTrait {
       throw new \InvalidArgumentException('Only "edit" and "delete" actions are allowed.');
     }
 
-    $bundle = $this->translateBundle($bundle);
     $entity_type_id = $this->translateEntityTypeAlias($bundle);
 
+    $bundle = $this->translateBundle($bundle);
     $node = $this->getEntityByLabel($entity_type_id, $title, $bundle);
     $path = $node->toUrl("{$action}-form")->getInternalPath();
     $this->visitPath($path);
