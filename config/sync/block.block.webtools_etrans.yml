@@ -28,11 +28,11 @@ visibility:
   request_route:
     id: request_route
     routes:
-      0: entity.node.delete_form
-      2: entity.node.edit_form
-      4: entity.rdf_entity.delete_form
-      6: entity.rdf_entity.edit_form
-      8: entity.taxonomy_term.edit_form
-      10: entity.taxonomy_term.delete_form
+      - entity.node.delete_form
+      - entity.node.edit_form
+      - entity.rdf_entity.delete_form
+      - entity.rdf_entity.edit_form
+      - entity.taxonomy_term.edit_form
+      - entity.taxonomy_term.delete_form
     negate: true
     context_mapping: {  }
