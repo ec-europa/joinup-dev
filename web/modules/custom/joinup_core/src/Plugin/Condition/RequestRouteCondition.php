@@ -88,7 +88,7 @@ class RequestRouteCondition extends ConditionPluginBase implements ContainerFact
    * {@inheritdoc}
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state): void {
-    $routes = array_filter(array_map('trim', explode("\n", str_replace("\r", "\n", $form_state->getValue('routes')))));
+    $routes = array_values(array_filter(array_map('trim', explode("\n", str_replace("\r", "\n", $form_state->getValue('routes'))))));
     $this->setConfig('routes', $routes);
     parent::submitConfigurationForm($form, $form_state);
   }

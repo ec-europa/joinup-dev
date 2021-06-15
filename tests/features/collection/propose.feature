@@ -177,7 +177,7 @@ Feature: Proposing a collection
     And the "Just a proposal" collection logo is image #3
     And the "Just a proposal" collection banner is image #8
 
-    When I go to the "Just a proposal" collection edit form
+    Given I go to the edit form of the "Just a proposal" collection
     And I click "Additional fields" tab
     And I remove the file from the "Logo" field
     But I wait for AJAX to finish
@@ -187,7 +187,7 @@ Feature: Proposing a collection
     And I wait for AJAX to finish
     And I press "Propose"
 
-    When I go to the "Just a proposal" collection edit form
+    When I go to the edit form of the "Just a proposal" collection
     And I click "Additional fields" tab
     Then I should see the link "logo.png"
 

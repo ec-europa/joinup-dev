@@ -457,22 +457,21 @@ class JoinupContext extends RawDrupalContext {
   }
 
   /**
-   * Navigates to the edit form of a node entity.
+   * Navigates to the edit or delete form of an entity.
    *
-   * @param string $bundle
-   *   The type of the node entity.
+   * @param string $action
+   *   The action. Either 'edit' or 'delete'.
    * @param string $title
-   *   The title of the node.
+   *   The title of the entity.
+   * @param string $bundle
+   *   An alias of a bundle as defined in the
+   *   \Drupal\joinup\Traits\EntityTrait::bundleAliases method.
    *
-   * @When I go to the :bundle (content ) :title edit screen
-   * @When I visit the :bundle (content ) :title edit screen
-   *
-   * @throws \Drupal\Core\Entity\EntityMalformedException
+   * @When I go to the :action form of the :title :bundle
+   * @When I visit the :action form of the :title :bundle
    */
-  public function visitNodeEditForm($bundle, $title) {
-    /** @var \Drupal\node\NodeInterface $node */
-    $node = $this->getNodeByTitle($title, $bundle);
-    $this->visitPath($node->toUrl('edit-form')->toString());
+  public function goToEntityForm(string $action, string $title, string $bundle): void {
+    $this->visitEntityForm($action, $title, $bundle);
   }
 
   /**

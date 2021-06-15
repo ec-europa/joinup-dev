@@ -60,7 +60,7 @@ Feature: Solution editing.
     Then I should see the heading "Solution A"
 
     And I should see the link "Edit"
-    When I go to the "Solution A" solution edit form
+    When I go to the edit form of the "Solution A" solution
     Then I should see the heading "Edit Solution Solution A"
     Then the fields "Logo, Banner, Upload a new file or enter a URL, Geographical coverage, Keywords, Related solutions, Status, Languages, Landing page, Metrics page" should be correctly ordered in the region "Management solution vertical tab"
     Then the fields "Title, Description, Contact information, Topic, Owner, Solution type, Moderated, Content creation" should be correctly ordered in the region "Main solution vertical tab"
@@ -81,7 +81,7 @@ Feature: Solution editing.
     # This user is an owner only of Solution A.
     When I go to the homepage of the "Another solution" solution
     Then I should not see the link "Edit"
-    When I go to the "Another solution" solution edit form
+    When I go to the edit form of the "Another solution" solution
     Then I should get an access denied error
 
     # Clean up the solution that was created through the UI.
@@ -100,12 +100,12 @@ Feature: Solution editing.
     When I am logged in as a facilitator of the "Solution B" solution
     And I go to the homepage of the "Solution B" solution
     Then I should see the link "Edit"
-    When I go to the "Solution B" solution edit form
+    When I go to the edit form of the "Solution B" solution
     Then I should see the heading "Edit Solution Solution B"
 
     When I go to the homepage of the "Another solution" solution
     Then I should not see the link "Edit"
-    When I go to the "Another solution" solution edit form
+    When I go to the edit form of the "Another solution" solution
     Then I should get an access denied error
 
   @javascript

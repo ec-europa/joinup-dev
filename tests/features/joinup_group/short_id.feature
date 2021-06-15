@@ -43,12 +43,12 @@ Feature:
     And I press "Propose"
     And I should see the heading "Structural Solar Traces"
 
-    When I go to the "Structural Solar Traces" collection edit form
+    When I go to the edit form of the "Structural Solar Traces" collection
     Then the following fields should not be disabled "Short ID"
 
     # Publish the collection.
     When I am logged in as a moderator
-    And I go to the "Structural Solar Traces" collection edit form
+    When I go to the edit form of the "Structural Solar Traces" collection
     And I press "Publish"
     Then I should see the heading "Structural Solar Traces"
 
@@ -59,7 +59,7 @@ Feature:
     # Check that the field is not editable any more for facilitators once the
     # collection is published.
     When I am logged in as a facilitator of the "Structural Solar Traces" collection
-    And I go to the "Structural Solar Traces" collection edit form
+    When I go to the edit form of the "Structural Solar Traces" collection
     Then the following fields should be disabled "Short ID"
 
     Then I delete the "Structural Solar Traces" collection
@@ -116,12 +116,12 @@ Feature:
     And I press "Propose"
     Then I should see the heading "I know what a solution is"
 
-    When I go to the "I know what a solution is" solution edit form
+    When I go to the edit form of the "I know what a solution is" solution
     Then the following fields should not be disabled "Short ID"
 
     # Publish the solution.
     When I am logged in as a moderator
-    And I go to the "I know what a solution is" solution edit form
+    When I go to the edit form of the "I know what a solution is" solution
     And I press "Publish"
     Then I should see the heading "I know what a solution is"
 
@@ -131,7 +131,7 @@ Feature:
 
     # Check that the field is not editable for facilitators.
     When I am logged in as a facilitator of the "I know what a solution is" solution
-    And I go to the "I know what a solution is" solution edit form
+    When I go to the edit form of the "I know what a solution is" solution
     Then the following fields should be disabled "Short ID"
 
     Then I delete the "I know what a solution is" solution

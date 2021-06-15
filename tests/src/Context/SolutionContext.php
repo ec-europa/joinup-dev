@@ -94,24 +94,6 @@ class SolutionContext extends RawDrupalContext {
   }
 
   /**
-   * Navigates to the edit form of a solution.
-   *
-   * @param string $solution
-   *   The name of the solution.
-   *
-   * @When I go to the :solution solution edit form
-   * @When I visit the :solution solution edit form
-   *
-   * @throws \Drupal\Core\Entity\EntityMalformedException
-   */
-  public function visitEditSolution($solution) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
-    $entity = $this->getSolutionByName($solution);
-    $path = $entity->toUrl('edit-form')->toString();
-    $this->visitPath($path);
-  }
-
-  /**
    * Navigates to the solution overview page.
    *
    * @todo This is currently dependent on the Joinup profile being installed,
@@ -676,7 +658,7 @@ class SolutionContext extends RawDrupalContext {
       }
 
       // Go to the edit form and check that the expected buttons are visible.
-      $this->visitEditSolution($values['solution']);
+      $this->visitEntityForm('edit', $values['solution'], 'solution');
       $buttons = $this->explodeCommaSeparatedStepArgument($values['buttons']);
       $this->assertSubmitButtonsVisible($buttons);
     }

@@ -74,8 +74,8 @@ Feature: Tests the collection last update time.
     # The custom page is the newest thus will give the collection updated time.
     Then the response should contain "2016-05-06T05:29"
 
-    And I go to the document content "Get Rid of Rats" edit screen
-    When I press "Update"
+    When I go to the edit form of the "Get Rid of Rats" document
+    And I press "Update"
     # The updated time has changed to the current time but we cannot catch the
     # time we ran the update.
     Then the response should not contain "2016-05-06T05:29"
@@ -101,7 +101,7 @@ Feature: Tests the collection last update time.
     Then I should see "about a minute ago"
 
     # Editing the solution changes the last updated time.
-    Given I go to the "Roof Hole Cover" solution edit form
+    Given I go to the edit form of the "Roof Hole Cover" solution
     And I select "Public Policy Cycle" from "Solution type"
     And I select "Demography" from "Topic"
     And I press "Publish"
@@ -113,7 +113,7 @@ Feature: Tests the collection last update time.
     Then I should see "about a minute ago"
 
     # Deleting the solution changes the last updated time.
-    Given I go to the "Roof Hole Cover" solution edit form
+    Given I go to the edit form of the "Roof Hole Cover" solution
     And I click "Delete"
     When I press "Delete"
     And I go to the homepage of the "Household Wizard" collection
