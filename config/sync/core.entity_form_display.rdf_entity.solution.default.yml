@@ -14,8 +14,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
-    - field.field.rdf_entity.solution.field_is_eif_category
-    - field.field.rdf_entity.solution.field_is_eif_recommendation
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
     - field.field.rdf_entity.solution.field_is_issue_tracker
@@ -29,7 +27,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
     - field.field.rdf_entity.solution.field_is_shared_in
-    - field.field.rdf_entity.solution.field_is_show_eira_related
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
@@ -95,6 +92,14 @@ third_party_settings:
         - current_workflow_state
         - field_is_state
         - transition_motivation
+        - field_is_documentation
+        - field_spatial_coverage
+        - field_keywords
+        - field_is_related_solutions
+        - field_status
+        - field_is_language
+        - field_is_landing_page
+        - field_is_metrics_page
       parent_name: group_general
       weight: 20
       format_type: tab
@@ -106,32 +111,6 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Main fields'
-      region: content
-    group_management:
-      children:
-        - field_short_id
-        - field_is_documentation
-        - field_spatial_coverage
-        - field_keywords
-        - field_is_related_solutions
-        - field_is_show_eira_related
-        - field_status
-        - field_is_language
-        - field_is_landing_page
-        - field_is_metrics_page
-        - field_is_eif_recommendation
-        - field_is_eif_category
-      parent_name: group_general
-      weight: 21
-      format_type: tab
-      format_settings:
-        label: 'Additional fields'
-        formatter: closed
-        description: 'Contains all optional fields providing additional information on the solution'
-        required_fields: true
-        id: ''
-        classes: ''
-      label: 'Additional fields'
       region: content
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
@@ -213,18 +192,6 @@ content:
     third_party_settings: {  }
     type: file_url_generic
     region: content
-  field_is_eif_category:
-    weight: 16
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
-    region: content
-  field_is_eif_recommendation:
-    weight: 15
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
   field_is_landing_page:
     weight: 14
     settings:
@@ -299,13 +266,6 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
-  field_is_show_eira_related:
-    weight: 11
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_is_solution_type:
     type: options_select
     weight: 8
@@ -344,14 +304,6 @@ content:
     weight: 5
     settings: {  }
     third_party_settings: {  }
-    region: content
-  field_short_id:
-    weight: 2
-    settings:
-      size: 60
-      placeholder: 'Minimum 4 characters required.'
-    third_party_settings: {  }
-    type: string_textfield
     region: content
   field_spatial_coverage:
     type: entity_reference_autocomplete
@@ -404,6 +356,7 @@ hidden:
   field_is_webdav_creation: true
   field_is_webdav_url: true
   field_is_wiki: true
+  field_short_id: true
   field_site_featured: true
   field_site_pinned: true
   langcode: true
