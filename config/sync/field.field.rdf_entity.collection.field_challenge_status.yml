@@ -1,0 +1,29 @@
+uuid: 42aec274-8b7f-4130-905d-ba6ae0227367
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_challenge_status
+    - rdf_entity.rdfentity.collection
+    - taxonomy.vocabulary.challenge_status
+id: rdf_entity.collection.field_challenge_status
+field_name: field_challenge_status
+entity_type: rdf_entity
+bundle: collection
+label: 'challenge status'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      challenge_status: challenge_status
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
