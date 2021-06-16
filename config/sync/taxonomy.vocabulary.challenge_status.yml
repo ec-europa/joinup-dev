@@ -1,0 +1,13 @@
+uuid: 8ae9fbe1-d59b-4702-9700-2c51cc462bb5
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_taxonomy
+third_party_settings:
+  rdf_taxonomy:
+    locked: false
+name: 'Challenge Status'
+vid: challenge_status
+description: ''
+weight: 0
