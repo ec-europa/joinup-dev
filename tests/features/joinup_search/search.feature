@@ -23,6 +23,10 @@ Feature: Global search
     And news content:
       | title                 | body             | collection                   | topic                   | spatial coverage | state     |
       | El Celler de Can Roca | The best in town | Molecular cooking collection | Statistics and Analysis | Luxembourg       | validated |
+      | Dummy news 1          | Dummy body       | Molecular cooking collection | E-inclusion             | Luxembourg       | validated |
+      | Dummy news 2          | Dummy body       | Molecular cooking collection | E-inclusion             | Luxembourg       | validated |
+      | Dummy news 3          | Dummy body       | Molecular cooking collection | E-inclusion             | Luxembourg       | validated |
+      | Dummy news 4          | Dummy body       | Molecular cooking collection | E-inclusion             | Luxembourg       | validated |
 
     Given I am logged in as a user with the "authenticated" role
     # @todo The search page cache should be cleared when new content is added.
@@ -37,31 +41,58 @@ Feature: Global search
     # Facets should be in place.
     And the option with text "Any topic" from select facet "topic" is selected
     And the "topic" select facet should contain the following options:
-      | Any topic                   |
-      | Demography (2)              |
-      | Social and Political (2)    |
-      | Info (1)                    |
-      | Statistics and Analysis (1) |
+      | Any topic               |
+      | Social and Political    |
+      | E-inclusion             |
+      | Demography              |
+      | Info                    |
+      | Statistics and Analysis |
+    # Since the topics are indented by a whitespace, and the whitespaces are trimmed in the step above, we are testing
+    # the full response in order to ensure that the results are indented properly. The &nbsp; character below is the
+    # printable space character.
+    # @todo and WARNING. The following   character is supported by the old 3.4 selenium server. Change this in the
+    # new infrastructure with the &nbsp; encoded character.
+    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic/category%23social-and-political\"> Social and Political</option>"
+    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23e-inclusion\">  E-inclusion</option>"
+    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23demography\">  Demography</option>"
+    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic/category%23info\"> Info</option>"
+    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23statistics-and-analysis\">  Statistics and Analysis</option>"
     And the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
       | Any location       |
+      | Luxembourg (5)     |
       | Belgium (1)        |
       | European Union (1) |
-      | Luxembourg (1)     |
     # Check that only one search field is available. In an earlier version of
     # Joinup there were two search fields, but this was confusing users.
     And there should be exactly 1 "search field" on the page
 
-    # Test the topic facet.
-    When I select "Demography" from the "topic" select facet
-    Then the option with text "Demography (2)" from select facet "topic" is selected
+    When I select "Social and Political" from the "topic" select facet
+    Then the option with text "Social and Political" from select facet "topic" is selected
+    And the "topic" select facet should contain the following options:
+      | Any topic               |
+      | Social and Political    |
+      | E-inclusion             |
+      | Demography              |
+      | Info                    |
+      | Statistics and Analysis |
+    # The tiles appear because the parent term is selected even though they do not have a direct reference there.
+    And I should see the "Dummy news 1" tile
+    And I should see the "Dummy news 2" tile
+    And I should see the "Dummy news 3" tile
+    And I should see the "Dummy news 4" tile
+
+    # Test the topic facet. The space prefixing "Demography" is due to the hierarchy.
+    When I select " Demography" from the "topic" select facet
+    Then the option with text "Demography" from select facet "topic" is selected
     # The selected option moves to the last position by default.
     And the "topic" select facet should contain the following options:
-      | Any topic                   |
-      | Social and Political (2)    |
-      | Info (1)                    |
-      | Statistics and Analysis (1) |
-      | Demography (2)              |
+      | Any topic               |
+      | Social and Political    |
+      | E-inclusion             |
+      | Demography              |
+      | Info                    |
+      | Statistics and Analysis |
 
     Then the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
@@ -80,11 +111,11 @@ Feature: Global search
       | Any location       |
       | European Union (1) |
       | Belgium (1)        |
-    Then the option with text "Demography (1)" from select facet "topic" is selected
+    Then the option with text "Demography" from select facet "topic" is selected
     And the "topic" select facet should contain the following options:
-      | Any topic                |
-      | Social and Political (1) |
-      | Demography (1)           |
+      | Any topic            |
+      | Social and Political |
+      | Demography           |
     And I should see the "Molecular cooking collection" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Spherification" tile
@@ -95,24 +126,25 @@ Feature: Global search
     Then I should see the text "Content types" in the "Left sidebar" region
 
     # Select link in the 'type' facet.
-    When I check the "News (1)" checkbox from the "Content types" facet
+    When I check the "News (5)" checkbox from the "Content types" facet
     Then the "News" content checkbox item should be selected
-    And the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (1)"
+    And the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (5)"
 
     When I check the "Solutions (2)" checkbox from the "Content types" facet
     Then the "Solutions" content checkbox item should be selected
     And the "News" content checkbox item should be selected
-    Then the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (1)"
+    Then the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (5)"
     And the "topic" select facet should contain the following options:
-      | Any topic                   |
-      | Demography (1)              |
-      | Info (1)                    |
-      | Social and Political (1)    |
-      | Statistics and Analysis (1) |
+      | Any topic               |
+      | Social and Political    |
+      | E-inclusion             |
+      | Demography              |
+      | Info                    |
+      | Statistics and Analysis |
     And the "spatial coverage" select facet should contain the following options:
       | Any location       |
+      | Luxembourg (5)     |
       | European Union (1) |
-      | Luxembourg (1)     |
     And I should not see the "Molecular cooking collection" tile
     And I should see the "El Celler de Can Roca" tile
     But I should see the "Spherification" tile
