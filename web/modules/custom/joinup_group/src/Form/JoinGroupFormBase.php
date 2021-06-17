@@ -160,10 +160,29 @@ abstract class JoinGroupFormBase extends FormBase {
     $this->group = $group;
     $this->user = $this->loadUser((int) $user->id());
 
+    // Inform anonymous users that they need to authenticate to join the group.
+    if ($this->user->isAnonymous()) {
+      $parameters = ['rdf_entity' => $this->group->id()];
+      if ($this->accessManager->checkNamedRoute('joinup_group.authenticate_to_join', $parameters)) {
+        $form['authenticate'] = [
+          '#type' => 'link',
+          '#title' => $this->getJoinSubmitLabel(),
+          '#url' => Url::fromRoute('joinup_group.authenticate_to_join', $parameters),
+          '#attributes' => [
+            'class' => ['use-ajax'],
+            'data-dialog-type' => 'modal',
+            'data-dialog-options' => Json::encode([
+              'width' => 'auto',
+            ]),
+          ],
+        ];
+        $form['#attached']['library'][] = 'core/drupal.ajax';
+      }
+    }
+
     // In case the user is not a member or does not have a pending membership,
     // give the possibility to request one.
-    $membership = $this->getUserNonBlockedMembership();
-    if (empty($membership)) {
+    elseif (empty($membership = $this->getUserNonBlockedMembership())) {
       $form['join'] = [
         '#type' => 'submit',
         '#value' => $this->getJoinSubmitLabel(),

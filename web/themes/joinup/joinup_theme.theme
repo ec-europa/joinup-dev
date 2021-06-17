@@ -1609,6 +1609,12 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
   ];
 
   switch ($form_id) {
+    case 'join_group_anonymous_redirect':
+      // Show the cancel button in light blue.
+      $form['actions']['cancel']['#attributes']['class'][] = 'button--blue-light';
+      $form['actions']['cancel']['#attributes']['class'][] = 'button--small';
+      break;
+
     case 'join_group_form':
       // Add class for join collection button.
       $form['join']['#attributes']['class'][] = 'button--blue-light';
