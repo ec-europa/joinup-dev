@@ -205,7 +205,7 @@ class SubscribeToCollectionForm extends FormBase {
   }
 
   /**
-   * AJAX callback showing a form to subscribe to the collection after joining.
+   * AJAX callback showing a confirmation after joining, and closing the modal.
    *
    * @param array $form
    *   The form.
