@@ -1,4 +1,4 @@
-FROM php:7.3.28-apache-stretch
+FROM php:7.3.29-apache-stretch
 
 ARG composer_version="1.7.2"
 ARG drush_version="8.1.17"
