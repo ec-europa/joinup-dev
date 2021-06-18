@@ -113,7 +113,7 @@ Feature: Creating a test (solution) in the TRR collection.
 
     # The GITB compliant field is only shown when the solution has a certain solution type.
     When I am logged in as a "facilitator" of the "TRR solution foo" solution
-    When I go to the "TRR Distribution foo" asset distribution edit form
+    When I go to the edit form of the "TRR Distribution foo" distribution
     Then the following fields should be present "GITB compliant"
 
     When I go to the homepage of the "TRR release foo" release
@@ -121,7 +121,7 @@ Feature: Creating a test (solution) in the TRR collection.
     Then the following fields should be present "GITB compliant"
 
     When I am logged in as a "facilitator" of the "TRR solution bar" solution
-    When I go to the "TRR Distribution bar" asset distribution edit form
+    When I go to the edit form of the "TRR Distribution foo" distribution
     Then the following fields should not be present "GITB compliant"
 
     When I go to the homepage of the "TRR release bar" release

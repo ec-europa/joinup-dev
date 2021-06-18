@@ -181,7 +181,7 @@ Feature:
       | France Report  |
       | Romania Report |
 
-    When I go to the "tallinn_report" content "Romania Report" edit screen
+    When I go to the edit form of the "Romania Report" "tallinn report"
     And I press "Save"
     And I go to the "Tallinn Ministerial Declaration" collection
     And I click "Implementation monitoring" in the "Left sidebar" region
@@ -193,14 +193,14 @@ Feature:
 
     # A moderator is able to change any report's author.
     Given I am logged in as chef
-    When I visit the tallinn_report content "Romania Report" edit screen
+    When I go to the edit form of the "Romania Report" "tallinn report"
     And I fill in "Authored by" with "dominique"
     When I press "Save"
     Then I should see the error message "The user dominique cannot be set as author of this report as he/she already owns 'France Report'."
 
     # Test the same but as facilitator to verify the functionality for him as well.
     Given I am logged in as "sherlock"
-    When I visit the tallinn_report content "Romania Report" edit screen
+    When I go to the edit form of the "Romania Report" "tallinn report"
     And I fill in "Authored by" with "vasile"
     When I press "Save"
     Then I should see "Tallinn report Romania Report has been updated."
@@ -211,7 +211,7 @@ Feature:
     # A user can change its own report but not other's. In
     # the same time he's not able to change the node owner.
     Given I am logged in as vasile
-    When I visit the tallinn_report content "Romania Report" edit screen
+    When I go to the edit form of the "Romania Report" "tallinn report"
     Then I should get a 200 HTTP response
     And the following fields should not be present "Authored by"
 
@@ -231,5 +231,5 @@ Feature:
     And I should see "This is done"
 
     # The user cannot edit a report owned by someone else.
-    Given I visit the tallinn_report content "France Report" edit screen
+    When I go to the edit form of the "France Report" "tallinn report"
     Then I should get a 403 HTTP response

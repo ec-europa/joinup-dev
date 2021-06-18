@@ -96,13 +96,13 @@ Feature: Following discussions
     # relevant fields are changed.
     And the mail collector cache is empty
     And I am logged in as "Dr. Hans Zarkov"
-    When I go to the discussion content "Rare Butter" edit screen
+    And I go to the edit form of the "Rare Butter" discussion
     And I press "Update"
     Then 0 e-mails should have been sent
 
     # When relevant fields of a discussion are changed, the subscribers are
     # receiving a notification.
-    Given I go to the discussion content "Rare Butter" edit screen
+    Given I go to the edit form of the "Rare Butter" discussion
     And I fill in "Content" with "The old content was wrong."
     And I press "Update"
     Then the following email should have been sent:
@@ -125,7 +125,7 @@ Feature: Following discussions
     # notification will be sent, regardless if a relevant field is changed.
     Given the mail collector cache is empty
     And I am logged in as a moderator
-    When I go to the discussion content "Rare Butter" edit screen
+    When I go to the edit form of the "Rare Butter" discussion
     And I fill in "Content" with "Is this change triggering notifications?"
     And I fill in "Motivation" with "Reporting this content..."
     And I press "Report"

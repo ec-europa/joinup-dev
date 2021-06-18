@@ -1,8 +1,9 @@
 name: Legal
-type: module
 description: 'Deals with the legal aspects of using Joinup as an end-user.'
-core: 8.x
+type: module
 package: Joinup
+core_version_requirement: ^8.9 || ^9.1
+php: 7.1
 
 dependencies:
   - entity_legal:entity_legal
