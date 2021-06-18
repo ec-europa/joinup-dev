@@ -14,14 +14,14 @@ Feature:
       | collection | Collection with child          |
 
     When I am logged in as a moderator
-    And I go to the "Collection with child" collection delete form
+    And I go to the delete form of the "Collection with child" collection
     Then I should not see the button "Delete"
     And I should see the heading "The collection Collection with child cannot be deleted because it contains the following solutions:"
     But I should see the link "Child of collection with child"
     And I should see the text "You can delete your solutions or transfer them to another collection."
 
     Given I delete the "Child of collection with child" solution
-    And I go to the "Collection with child" collection delete form
+    And I go to the delete form of the "Collection with child" collection
     Then I should see the heading "Are you sure you want to delete collection Collection with child?"
     And I should see the text "This action cannot be undone."
     When I press "Delete"

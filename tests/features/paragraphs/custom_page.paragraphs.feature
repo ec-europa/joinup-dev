@@ -57,14 +57,14 @@ Feature:
 
     # Normal members cannot add maps.
     When I am logged in as "Zohan"
-    And I go to the custom_page "Don't Mess with the Zohan" edit screen
+    And I go to the edit form of the "Don't Mess with the Zohan" "custom page"
     Then I should see the button "Add Simple paragraph"
     And I should not see the button "Add Map"
     But I should not see the button "Add IFrame"
 
     # Facilitators can add maps.
     When I am logged in as a facilitator of the "Paragraphs collection" collection
-    And I go to the custom_page "Don't Mess with the Zohan" edit screen
+    And I go to the edit form of the "Don't Mess with the Zohan" "custom page"
     Then I should see the button "Add Simple paragraph"
     And I should see the button "Add Map"
     But I should not see the button "Add IFrame"
@@ -76,7 +76,7 @@ Feature:
 
     # Moderators can add maps.
     Given I am logged in as a moderator
-    And I go to the custom_page "Don't Mess with the Zohan" edit screen
+    And I go to the edit form of the "Don't Mess with the Zohan" "custom page"
     Then I should see the button "Add Simple paragraph"
     And I should see the button "Add Map"
     And I should see the button "Add IFrame"
@@ -89,7 +89,7 @@ Feature:
     And I should see "I'm half Australian, half Mt. Everest"
     And the response should contain "{\"foo\":\"bar\"}"
 
-    When I go to the custom_page "Don't Mess with the Zohan" edit screen
+    When I go to the edit form of the "Don't Mess with the Zohan" "custom page"
     And I press "Add IFrame"
     And I fill in "Iframe URL" with "http://example.com"
     And I press "Save"
