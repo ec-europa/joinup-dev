@@ -204,7 +204,7 @@ Feature: Collection membership administration
     # Check that Dr House can't edit the collection.
     When I am logged in as "Gregory House"
     And I go to the "Medical diagnosis" collection
-    Then I go to the "Medical diagnosis" collection edit form
+    And I go to the edit form of the "Medical diagnosis" collection
     Then I should see the heading "Access denied"
 
     # Dr Cuddy promotes Dr House to facilitator.
@@ -227,8 +227,7 @@ Feature: Collection membership administration
 
     # Dr House can now edit the collection.
     When I am logged in as "Gregory House"
-    And I go to the "Medical diagnosis" collection
-    Then I go to the "Medical diagnosis" collection edit form
+    And I go to the edit form of the "Medical diagnosis" collection
     Then I should not see the heading "Access denied"
 
   Scenario: Privileged members should be allowed to add users to a collection.

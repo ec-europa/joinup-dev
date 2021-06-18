@@ -315,7 +315,7 @@ Feature: Global search
     Then the page should show only the tiles "Zzolution"
 
     Given I am logged in as a moderator
-    When I visit the "ZzoluDistro" asset distribution edit form
+    When I go to the edit form of the "ZzoluDistro" distribution
     And I fill in "Title" with "DistroZzolu"
     And I fill in "Description" with "Nietzsche's"
     And I press the "Remove" button
@@ -324,6 +324,7 @@ Feature: Global search
     And I select "CSV" from "Format"
     And I select "Human Language" from "Representation technique"
     And I press "Save"
+    Then I should see the heading "DistroZzolu"
 
     # Repeat the previous searches to prove that the initial keywords were
     # removed from the Search API index.
@@ -381,7 +382,7 @@ Feature: Global search
     When I enter "ReleazzDistro" in the search bar and press enter
     Then I should see "No content found for your search."
 
-    And the following distribution:
+    Given the following distribution:
       | title                    | ReleazzDistro                     |
       | parent                   | Releazz                           |
       | description              | Dracula                           |
@@ -405,7 +406,7 @@ Feature: Global search
     Then the page should show only the tiles "Releazz"
 
     Given I am logged in as a moderator
-    When I visit the "ReleazzDistro" asset distribution edit form
+    When I go to the edit form of the "ReleazzDistro" distribution
     And I fill in "Title" with "DistroReleazz"
     And I fill in "Description" with "Zorro"
     And I press the "Remove" button
