@@ -47,23 +47,6 @@ class AssetReleaseContext extends RawDrupalContext {
   }
 
   /**
-   * Navigates to the edit form of a release.
-   *
-   * @param string $release
-   *   The title of the release.
-   *
-   * @When I go to the :release release edit form
-   * @When I visit the :release release edit form
-   *
-   * @throws \Drupal\Core\Entity\EntityMalformedException
-   */
-  public function visitEditAssetDistribution(string $release): void {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
-    $entity = $this->getAssetReleaseByName($release);
-    $this->visitPath($entity->toUrl('edit-form')->toString());
-  }
-
-  /**
    * Creates a number of asset_releases with data provided in a table.
    *
    * Table format:

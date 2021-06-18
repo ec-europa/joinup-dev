@@ -155,7 +155,7 @@ Feature: Group member permissions table
       | title                          | state     | collection           | author           |
       | Election of Boy Archchancellor | validated | Approximate accuracy | Horace Worblehat |
       | The Wizards' Excuse Me         | draft     | Approximate accuracy | Mustrum Ridcully |
-    When I go to the event content "Election of Boy Archchancellor" edit screen
+    When I go to the edit form of the "Election of Boy Archchancellor" event
     Then I should see the button "Request deletion"
     And I should see the button "Propose changes"
     But I should not see the link "Delete"
@@ -198,7 +198,7 @@ Feature: Group member permissions table
       | title                                               | state     | collection                                  | author           |
       | Beating the bounds                                  | validated | Dust, miscellaneous particles and filaments | Ponder Stibbons  |
       | Archchancellor Bowell's Remembrance's Bun and Penny | draft     | Dust, miscellaneous particles and filaments | Mustrum Ridcully |
-    When I go to the event content "Beating the bounds" edit screen
+    When I go to the edit form of the "Beating the bounds" event
     Then I should see the link "Delete"
     And I should see the button "Update"
     But I should not see the button "Request deletion"
@@ -247,7 +247,7 @@ Feature: Group member permissions table
       | title                       | state     | collection           | author           |
       | The Convivium               | validated | Creative uncertainty | Henry Porter     |
       | The Hunting of the Megapode | draft     | Creative uncertainty | Mustrum Ridcully |
-    When I go to the event content "The Convivium" edit screen
+    When I go to the edit form of the "The Convivium" event
     Then I should see the button "Request deletion"
     And I should see the button "Propose changes"
     But I should not see the link "Delete"
@@ -290,7 +290,7 @@ Feature: Group member permissions table
       | title                                     | state     | collection      | author           |
       | Gaudy night                               | validated | Woolly thinking | Rincewind        |
       | Archchancellor Preserved Bigger's Bequest | draft     | Woolly thinking | Mustrum Ridcully |
-    When I go to the event content "Gaudy night" edit screen
+    When I go to the edit form of the "Gaudy night" event
     Then I should see the link "Delete"
     And I should see the button "Update"
     But I should not see the button "Request deletion"
@@ -401,7 +401,7 @@ Feature: Group member permissions table
       | title             | state     | solution                     | author           |
       | Head of the River | validated | Prehumous morbid bibliomancy | Dr. John Hicks   |
       | Poore Boys Funne  | draft     | Prehumous morbid bibliomancy | Mustrum Ridcully |
-    When I go to the event content "Head of the River" edit screen
+    When I go to the edit form of the "Head of the River" event
     Then I should see the button "Request deletion"
     And I should see the button "Propose changes"
     But I should not see the link "Delete"
@@ -444,7 +444,7 @@ Feature: Group member permissions table
       | title                         | state     | collection                    | author           |
       | May Morning                   | validated | Posthumous morbid bibliomancy | Hex              |
       | A veritable heyhoe-rumbledown | draft     | Posthumous morbid bibliomancy | Mustrum Ridcully |
-    When I go to the event content "May Morning" edit screen
+    When I go to the edit form of the "May Morning" event
     Then I should see the link "Delete"
     And I should see the button "Update"
     But I should not see the button "Request deletion"
