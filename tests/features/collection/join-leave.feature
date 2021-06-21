@@ -133,7 +133,7 @@ Feature: Joining and leaving collections through the web interface
     Then I should not see the link "Add members"
 
   @javascript
-  Scenario: Close the modal dialog with the cancel button.
+  Scenario: Close the modal dialogs with the cancel button.
     Given collections:
       | title            | abstract                      | closed | description                       | state     |
       | Sapient Pearwood | Grows in magic-polluted areas | no     | This tree is impervious to magic. | validated |
@@ -144,19 +144,35 @@ Feature: Joining and leaving collections through the web interface
       | collection       | user          | roles |
       | Sapient Pearwood | Stewe Griffin |       |
 
+    # Anonymous users can cancel the "Authenticate to join" modal.
+    Given I am an anonymous user
+    And I go to the homepage of the "Sapient Pearwood" collection
+    # This is actually a link which is styled as a button.
+    When I click "Join this collection"
+    Then a modal should open
+    And I should see the text "Sign in to join"
+
+    When I press "Cancel" in the "Modal buttons" region
+    And I wait for AJAX to finish
+    Then I should not see the text "Sign in to join"
+    # Since this is a modal, the dialog simply closes instead of redirecting to
+    # another page. This is why the collection title is still displayed.
+    But I should see the heading "Sapient Pearwood"
+
+    # Members can cancel the "Leave collection" modal.
     Given I am logged in as "Stewe Griffin"
     And I go to the homepage of the "Sapient Pearwood" collection
-    And I click "Read more"
+    When I click "Read more"
     Then I should see the heading "About Sapient Pearwood"
 
-    And I press "You're a member"
+    When I press "You're a member"
     And I wait for animations to finish
     And I click "Leave this collection"
-    And a modal should open
+    Then a modal should open
 
     When I press "Cancel" in the "Modal buttons" region
     And I wait for AJAX to finish
     Then I should not see the text "Leave collection"
     # Since this is a modal, the dialog simply closes and the user is not redirected
     # to the overview page. This is why the title from "About" is still displayed.
-    And I should see the heading "About Sapient Pearwood"
+    But I should see the heading "About Sapient Pearwood"
