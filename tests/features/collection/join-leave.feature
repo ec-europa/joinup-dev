@@ -25,7 +25,8 @@ Feature: Joining and leaving collections through the web interface
     # Anonymous users should be able to join a collection but not leave one.
     Given I am an anonymous user
     When I go to the homepage of the "Überwaldean Land Eels" collection
-    Then I should see the "Join this collection" button
+    # This is a link which is styled as a button.
+    Then I should see the link "Join this collection"
     But I should not see the link "Leave this collection"
 
     # Authenticated users can join. The Join button should be hidden if the user

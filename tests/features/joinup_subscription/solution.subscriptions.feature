@@ -19,11 +19,11 @@ Feature: Subscribing to a solution
       | Username          |
       | Cornilius Darcias |
 
-  @javascript
   Scenario: Subscribe to a solution as an anonymous user
     When I am not logged in
     And I go to the "Some solution to subscribe" solution
-    Then I should see the button "Subscribe to this solution"
+    # This is a link which is styled as a button.
+    Then I should see the link "Subscribe to this solution"
 
   @javascript
   Scenario: Subscribe to a solution as a normal user
