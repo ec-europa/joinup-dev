@@ -49,7 +49,7 @@ Feature: Homepage
     #   page instead.
     When I click "Finance in EU"
     Then I should be on the advanced search page
-    And the option with text "Finance in EU (1)" from select facet "topic" is selected
+    And the option with text "Finance in EU" from select facet "topic" is selected
 
   @terms
   Scenario: Community content can be placed "In the spotlight" on the homepage
