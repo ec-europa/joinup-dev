@@ -85,7 +85,6 @@ module:
   joinup_paragraphs: 0
   joinup_rdf: 0
   joinup_rdf_graph: 0
-  joinup_rss: 0
   joinup_search: 0
   joinup_seo: 0
   joinup_sparql: 0
