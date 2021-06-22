@@ -2721,16 +2721,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.9.15",
+            "version": "8.9.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "4804cb039c1e21f841dc4eccb24dc4a90c8280c6"
+                "reference": "498effa27ae5111f53f04fbe80fd05369a88c53d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/4804cb039c1e21f841dc4eccb24dc4a90c8280c6",
-                "reference": "4804cb039c1e21f841dc4eccb24dc4a90c8280c6",
+                "url": "https://api.github.com/repos/drupal/core/zipball/498effa27ae5111f53f04fbe80fd05369a88c53d",
+                "reference": "498effa27ae5111f53f04fbe80fd05369a88c53d",
                 "shasum": ""
             },
             "require": {
@@ -2976,11 +2976,11 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2021-05-05T11:28:48+00:00"
+            "time": "2021-05-25T09:17:58+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "8.9.15",
+            "version": "8.9.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
@@ -3077,17 +3077,17 @@
         },
         {
             "name": "drupal/ctools",
-            "version": "3.6.0",
+            "version": "3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/ctools.git",
-                "reference": "8.x-3.6"
+                "reference": "8.x-3.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/ctools-8.x-3.6.zip",
-                "reference": "8.x-3.6",
-                "shasum": "9a849bb6ac9f4d02603d04b3265b35b7329e1ef5"
+                "url": "https://ftp.drupal.org/files/projects/ctools-8.x-3.7.zip",
+                "reference": "8.x-3.7",
+                "shasum": "b11c0981a1d2ab3cc9e8e614a337d8e2a2a70c0e"
             },
             "require": {
                 "drupal/core": "^8.8 || ^9"
@@ -3095,8 +3095,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-3.6",
-                    "datestamp": "1620838181",
+                    "version": "8.x-3.7",
+                    "datestamp": "1623860918",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6816,6 +6816,10 @@
                     "homepage": "https://www.drupal.org/user/245817"
                 },
                 {
+                    "name": "jsacksick",
+                    "homepage": "https://www.drupal.org/user/972218"
+                },
+                {
                     "name": "robeano",
                     "homepage": "https://www.drupal.org/user/67660"
                 },
@@ -10254,7 +10258,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-11-25T21:59:37+00:00"
+            "time": "2020-10-26T14:41:29+00:00"
         },
         {
             "name": "stack/builder",
@@ -18128,6 +18132,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2020-11-30T07:30:19+00:00"
         },
         {

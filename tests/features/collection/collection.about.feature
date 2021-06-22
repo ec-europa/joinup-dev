@@ -56,7 +56,7 @@ Feature: About page
 
     # When there is no abstract, the description should be shown in the homepage.
     When I am logged in as a "moderator"
-    And I go to the "Fitness at work" collection edit form
+    And I go to the edit form of the "Fitness at work" collection
     And I fill in "Abstract" with ""
     And I press "Publish"
     Then I should see the heading "Fitness at work"

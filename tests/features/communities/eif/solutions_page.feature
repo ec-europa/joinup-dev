@@ -65,7 +65,7 @@ Feature: As a user, visiting the EIF Toolbox page, I want to be able to filter
     And the menu link "Solutions" is in the active trail
 
     Given I am logged in as a moderator
-    When I go to the "Solution 3" solution edit form
+    When I go to the edit form of the "Solution 3" solution
     And I select "Recommendation 7" from "EIF reference"
     And I check the box "Semantic assets"
     # Other require fields...

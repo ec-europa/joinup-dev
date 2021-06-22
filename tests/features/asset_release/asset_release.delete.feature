@@ -37,7 +37,7 @@ Feature: Asset release "delete" functionality.
   Scenario: "Delete" action should redirect users to the parent solution.
     # Navigating through UI should redirect the user to the solution homepage.
     When I am logged in as a "moderator"
-    And I go to the "Yet another release" release edit form
+    And I go to the edit form of the "Yet another release" release
     And I click "Delete"
     And I press "Delete"
     Then I should be on "/collection/yet-another-collection/solution/yet-another-solution"

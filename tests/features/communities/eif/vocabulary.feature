@@ -20,11 +20,11 @@ Feature:
       | collection | EIF Toolbox       |
 
     Given I am logged in as a facilitator of the "Some EIF solution" solution
-    When I go to the "Some EIF solution" solution edit form
+    When I go to the edit form of the "Some EIF solution" solution
     Then the following fields should not be present "EIF reference, EIF category"
 
     Given I am logged in as a moderator
-    When I go to the "Some EIF solution" solution edit form
+    When I go to the edit form of the "Some EIF solution" solution
     Then the following fields should be present "EIF reference, EIF category"
 
     When I press "Publish"

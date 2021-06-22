@@ -76,7 +76,7 @@ Feature:
     Then the page should be cached
 
     # Edit the group entity.
-    Given I go to the "Tallinn Ministerial Declaration" collection edit form
+    When I go to the edit form of the "Tallinn Ministerial Declaration" collection
     And I fill in "Description" with "Hooli"
     When I press "Publish"
     And I go to "/api/v1/communities/tallinn/report"
@@ -85,7 +85,7 @@ Feature:
     Then the page should be cached
 
     # Edit any report.
-    Given I go to the tallinn_report content "Malta" edit screen
+    When I go to the edit form of the "Malta" "tallinn report"
     And I press "Save"
     When I go to "/api/v1/communities/tallinn/report"
     Then the page should not be cached
