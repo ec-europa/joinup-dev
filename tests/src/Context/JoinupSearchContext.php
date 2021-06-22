@@ -285,7 +285,7 @@ class JoinupSearchContext extends RawDrupalContext {
    *
    * @Then the option with text :option from select facet :select is selected
    */
-  public function assertSelectFacetOptionSelected($option, $select) {
+  public function assertSelectFacetOptionSelected(string $option, string $select): void {
     $element = $this->findFacetByAlias($select, NULL, 'select');
     if (!$element) {
       throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
