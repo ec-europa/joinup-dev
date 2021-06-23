@@ -85,7 +85,6 @@ module:
   joinup_paragraphs: 0
   joinup_rdf: 0
   joinup_rdf_graph: 0
-  joinup_rss: 0
   joinup_search: 0
   joinup_seo: 0
   joinup_sparql: 0
@@ -139,7 +138,6 @@ module:
   rdf_draft: 0
   rdf_entity: 0
   rdf_entity_provenance: 0
-  rdf_export: 0
   rdf_schema_field_validation: 0
   rdf_taxonomy: 0
   redirect: 0
