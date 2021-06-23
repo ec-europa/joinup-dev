@@ -373,7 +373,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | Duplicate | dupe,DuPe               | duplicate sysnonym          | A World of Things |
 
     # Hard to fill a multi-value field, so we'll pre-create it with duplicates.
-    When I go to the glossary content "Duplicate" edit screen
+    When I go to the edit form of the "Duplicate" glossary
     And I press "Save"
     Then I should see the error message "The 'DuPe' synonym is duplicated. Keep only one entry."
 

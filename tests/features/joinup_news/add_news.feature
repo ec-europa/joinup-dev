@@ -103,7 +103,7 @@ Feature: Creation of news through the UI.
     Given I am logged in as a moderator
 
     # Upload works.
-    When I go to the news content "The Great Opening" edit screen
+    When I go to the edit form of the "The Great Opening" news
     And I attach the file "logo.png" to "Logo"
     And I wait for AJAX to finish
 
