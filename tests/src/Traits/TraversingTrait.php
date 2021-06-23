@@ -79,21 +79,26 @@ trait TraversingTrait {
    *
    * @param \Behat\Mink\Element\NodeElement $element
    *   The select node element.
-   * @param string $option
+   * @param string $expected
    *   The select option.
    *
    * @throws \Exception
    *   Thrown if there is no selected option or the selected option is not the
    *   correct one.
    */
-  protected function assertSelectedOption(NodeElement $element, string $option): void {
+  protected function assertSelectedOption(NodeElement $element, string $expected): void {
     $option_element = $element->find('xpath', '//option[@selected="selected"]');
     if (!$option_element) {
       throw new \Exception('No option is selected in the requested select');
     }
+    $actual = $option_element->getText();
 
-    if (trim($option_element->getText()) !== $option) {
-      throw new \Exception(sprintf('The option "%s" was not selected in the page %s, %s was selected', $option, $this->getSession()->getCurrentUrl(), $option_element->getHtml()));
+    // Ignore duplicated whitespace.
+    $actual = preg_replace("/\s{2,}/", " ", $actual);
+    $expected = preg_replace("/\s{2,}/", " ", $expected);
+
+    if (trim($actual) !== $expected) {
+      throw new \Exception(sprintf('The option "%s" was not selected in the page %s, %s was selected', $expected, $this->getSession()->getCurrentUrl(), $option_element->getHtml()));
     }
   }
 
@@ -111,8 +116,16 @@ trait TraversingTrait {
    */
   protected function assertSelectAvailableOptions(NodeElement $element, TableNode $table): void {
     $available_options = $this->getSelectOptions($element);
-
     $rows = $table->getColumn(0);
+
+    // Ignore duplicated whitespace.
+    $strip_multiple_spaces = function (string $option): string {
+      $option = preg_replace("/\s{2,}/", " ", $option);
+      return $option;
+    };
+    $available_options = array_map($strip_multiple_spaces, $available_options);
+    $rows = array_map($strip_multiple_spaces, $rows);
+
     Assert::assertEquals($rows, $available_options);
   }
 
