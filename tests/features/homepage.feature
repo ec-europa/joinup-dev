@@ -171,7 +171,7 @@ Feature: Homepage
     And I should see the "RNA vaccines" tile
 
   @terms @javascript
-  Scenario: Discover topics block shows a list of topics.
+  Scenario Outline: Discover topics block shows a list of topics.
     Given collection:
       | title | Clash of vania's |
       | state | validated        |
@@ -182,7 +182,8 @@ Feature: Homepage
       | type  | label                            |
       | topic | Employment and Support Allowance |
       | topic | E-justice                        |
-    When I am on the homepage
+    When I <logged in>
+    And I am on the homepage
     Then I should see the link "Employment and Support Allowance" in the "Discover topics block"
     And I should see the link "E-justice" in the "Discover topics block"
     When I click "E-justice"
@@ -215,3 +216,8 @@ Feature: Homepage
       | Social and Political |
     When I click "E-health Dpt."
     Then I should be on the advanced search page
+
+    Examples:
+      | logged in                                          |
+      | am not logged in                                   |
+      | am logged in as a user with the authenticated role |
