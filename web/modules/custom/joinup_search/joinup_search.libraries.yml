@@ -1,0 +1,16 @@
+advanced-search-facets:
+  js:
+    https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.js:
+      type: external
+    js/advanced-search-facets.js: {}
+  css:
+    component:
+      https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.css:
+        type: external
+      css/advanced-search-facets.css: {  }
+  dependencies:
+    # Switch to drupal/once and drop jQuery dependency on Drupal >= 9.2.
+    # See https://www.drupal.org/node/3158256
+    - core/drupal
+    - core/jquery
+    - core/jquery.once

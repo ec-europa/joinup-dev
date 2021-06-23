@@ -395,3 +395,11 @@ function joinup_search_views_pre_execute(ViewExecutable $view) {
   // Selecting the entity_created option itself won't affect the query.
   $view->getQuery()->sort('entity_created', 'DESC');
 }
+
+/**
+ * Implements hook_page_attachments().
+ */
+function joinup_search_page_attachments(array &$attachments): void {
+  // @todo Limit only to /search page.
+  $attachments['#attached']['library'][] = 'joinup_search/advanced-search-facets';
+}
