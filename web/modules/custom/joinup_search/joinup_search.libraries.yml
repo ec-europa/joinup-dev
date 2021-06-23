@@ -1,5 +1,7 @@
 advanced-search-facets:
   js:
+    # @todo Require via Composer.
+    # See https://asset-packagist.org/package/search?query=slim+select&platform=bower%2Cnpm
     https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.js:
       type: external
     js/advanced-search-facets.js: {}
