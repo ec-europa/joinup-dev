@@ -40,23 +40,28 @@ Feature: Global search
     And I should see the "Foam" tile
     # Facets should be in place.
     And the option with text "Any topic" from select facet "topic" is selected
+    # Terms are sorted alphabetically
     And the "topic" select facet should contain the following options:
       | Any topic               |
-      | Social and Political    |
-      | E-inclusion             |
-      | Demography              |
+      # Parent term.
       | Info                    |
+      # Child term.
       | Statistics and Analysis |
+      # Parent term.
+      | Social and Political    |
+      # Child terms.
+      | Demography              |
+      | E-inclusion             |
     # Since the topics are indented by a whitespace, and the whitespaces are trimmed in the step above, we are testing
     # the full response in order to ensure that the results are indented properly. The &nbsp; character below is the
     # printable space character.
     # @todo and WARNING. The following   character is supported by the old 3.4 selenium server. Change this in the
     # new infrastructure with the &nbsp; encoded character.
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic/category%23social-and-political\"> Social and Political</option>"
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23e-inclusion\">  E-inclusion</option>"
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23demography\">  Demography</option>"
     And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic/category%23info\"> Info</option>"
     And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23statistics-and-analysis\">  Statistics and Analysis</option>"
+    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic/category%23social-and-political\"> Social and Political</option>"
+    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23demography\">  Demography</option>"
+    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23e-inclusion\">  E-inclusion</option>"
     And the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
       | Any location       |
@@ -71,11 +76,11 @@ Feature: Global search
     Then the option with text "Social and Political" from select facet "topic" is selected
     And the "topic" select facet should contain the following options:
       | Any topic               |
-      | Social and Political    |
-      | E-inclusion             |
-      | Demography              |
       | Info                    |
       | Statistics and Analysis |
+      | Social and Political    |
+      | Demography              |
+      | E-inclusion             |
     # The tiles appear because the parent term is selected even though they do not have a direct reference there.
     And I should see the "Dummy news 1" tile
     And I should see the "Dummy news 2" tile
@@ -88,11 +93,11 @@ Feature: Global search
     # The selected option moves to the last position by default.
     And the "topic" select facet should contain the following options:
       | Any topic               |
-      | Social and Political    |
-      | E-inclusion             |
-      | Demography              |
       | Info                    |
       | Statistics and Analysis |
+      | Social and Political    |
+      | Demography              |
+      | E-inclusion             |
 
     Then the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
@@ -136,11 +141,11 @@ Feature: Global search
     Then the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (5)"
     And the "topic" select facet should contain the following options:
       | Any topic               |
-      | Social and Political    |
-      | E-inclusion             |
-      | Demography              |
       | Info                    |
       | Statistics and Analysis |
+      | Social and Political    |
+      | Demography              |
+      | E-inclusion             |
     And the "spatial coverage" select facet should contain the following options:
       | Any location       |
       | Luxembourg (5)     |
