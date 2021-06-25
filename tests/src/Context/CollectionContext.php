@@ -129,29 +129,6 @@ class CollectionContext extends RawDrupalContext {
   }
 
   /**
-   * Navigates to the edit form of a collection.
-   *
-   * @param string $collection
-   *   The title of the collection.
-   * @param string $form
-   *   The entity form. Either 'edit' or 'delete'.
-   *
-   * @throws \InvalidArgumentException
-   *   If an invalid $form parameter was passed.
-   *
-   * @When I go to the :collection collection :form form
-   * @When I visit the :collection collection :form form
-   */
-  public function visitCollectionForm(string $collection, string $form): void {
-    if (!in_array($form, ['edit', 'delete'])) {
-      throw new \InvalidArgumentException('Only "edit" and "delete" are allowed for the $form variable.');
-    }
-    $collection = $this->getCollectionByName($collection);
-    $path = $collection->toUrl("{$form}-form")->getInternalPath();
-    $this->visitPath($path);
-  }
-
-  /**
    * Navigates to the collections overview page.
    *
    * @todo This is currently dependent on the Joinup profile being installed,
@@ -632,7 +609,7 @@ class CollectionContext extends RawDrupalContext {
       }
 
       // Go to the edit form and check that the expected buttons are visible.
-      $this->visitCollectionForm($values['collection'], 'edit');
+      $this->visitEntityForm('edit', $values['collection'], 'collection');
       $buttons = $this->explodeCommaSeparatedStepArgument($values['buttons']);
       $this->assertSubmitButtonsVisible($buttons);
     }

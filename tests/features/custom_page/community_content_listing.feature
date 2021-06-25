@@ -398,7 +398,7 @@ Feature:
       | 20 year anniversary                   |
       | Rare Nintendo64 disk drive discovered |
 
-    Given I go to the news content "Current wars" edit screen
+    When I go to the edit form of the "Current wars" news
     And I fill in "Short title" with "Current wars is over"
     And I press "Update"
     Then I should see the heading "Current wars is over"

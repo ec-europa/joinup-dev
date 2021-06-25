@@ -124,7 +124,7 @@ Feature: "Add solution" visibility options.
     And I should see the heading "Espresso is the solution"
     When all e-mails have been sent
     And I am logged in as "Ruth Lee"
-    And I go to the "Espresso is the solution" solution edit form
+    When I go to the edit form of the "Espresso is the solution" solution
     And I press "Publish"
     # The name of the solution should exist in the block of the relative content in a collection.
     Then I should see the heading "Espresso is the solution"
@@ -300,7 +300,7 @@ Feature: "Add solution" visibility options.
       | contact information | Invisible Man                                     |
 
     Given I am logged in as a moderator
-    When I go to the "Cleaning solution" solution edit form
+    When I go to the edit form of the "Cleaning solution" solution
     When I click "Additional fields" tab
     And  I remove the first file from "Logo"
     And  I remove the first file from "Banner"

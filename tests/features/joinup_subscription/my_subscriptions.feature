@@ -218,7 +218,7 @@ Feature: My subscriptions
     And the following fields should not be present "Save changes"
 
     Given I am logged in as a moderator
-    When I go to the discussion content "Water supply" edit screen
+    When I go to the edit form of the "Water supply" discussion
     And I press "Publish"
     # @todo: a caching issue is causing the message to have empty fields when
     # rendered.
