@@ -67,7 +67,7 @@ Feature: "Add document" visibility options.
     And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
     Then I should see the heading "The Sparks of the Butterfly"
-    And I should see the success message "Document The Sparks of the Butterfly has been created."
+    And I should see the success message "Document The Sparks of the Butterfly has been created as draft."
     And I should see the link "test1.zip"
     And the "Winter of Beginning" solution has a document titled "The Sparks of the Butterfly"
     # Check that the link to the document is visible on the solution page.

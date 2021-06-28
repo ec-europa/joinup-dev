@@ -105,6 +105,10 @@ function joinup_workflow_entity_extra_field_info(): array {
  * Implements hook_form_alter().
  */
 function joinup_workflow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (in_array($form_id, joinup_workflow_get_custom_message_form_ids())) {
+    $form['actions']['submit']['#submit'][] = 'joinup_workflow_message_form_submit_alter';
+  }
+
   if (!in_array($form_id, joinup_workflow_get_motivation_form_ids())) {
     return;
   }
@@ -132,6 +136,21 @@ function joinup_workflow_get_motivation_form_ids() {
     'node_document_edit_form',
     'node_event_edit_form',
     'node_news_edit_form',
+  ];
+}
+
+/**
+ * Returns an array of form IDs that should have a custom draft message.
+ *
+ * @return array
+ *   An array of form IDs.
+ */
+function joinup_workflow_get_custom_message_form_ids() {
+  return [
+    'node_discussion_form',
+    'node_document_form',
+    'node_event_form',
+    'node_news_form',
   ];
 }
 
@@ -245,4 +264,25 @@ function joinup_workflow_is_motivation_required($entity_type_id, $workflow_id, $
   ];
 
   return !empty($required_transitions[$entity_type_id][$workflow_id]) && in_array($transition_id, $required_transitions[$entity_type_id][$workflow_id]);
+}
+
+/**
+ * Change notification when saving content as draft.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ */
+function joinup_workflow_message_form_submit_alter(array &$form, FormStateInterface $form_state) {
+  $node = $form_state->getFormObject()->getEntity();
+  if ($node->get('field_state')->getString() == 'draft') {
+    \Drupal::messenger()->deleteByType('status');
+    $args = [
+      '@type' => node_get_type_label($node),
+      '%title' => $node->getTitle(),
+      '%state' => $node->get('field_state')->getString(),
+    ];
+    \Drupal::messenger()->addStatus(t('@type %title has been created as %state.', $args));
+  }
 }

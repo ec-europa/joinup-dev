@@ -93,7 +93,7 @@ Feature: Document moderation
     Then I upload the file "test.zip" to "Upload a new file or enter a URL"
     And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
-    Then I should see the success message "Document An amazing document has been created"
+    Then I should see the success message "Document An amazing document has been created as draft."
 
     # Publish the content.
     When I click "Edit" in the "Entity actions" region

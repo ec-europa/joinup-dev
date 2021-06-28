@@ -158,7 +158,7 @@ Feature: News moderation.
     And I select "Employment and Support Allowance" from "Topic"
     And I press "Save as draft"
     # Check reference to news page.
-    Then I should see the success message "News Eagle joins the JL has been created."
+    Then I should see the success message "News Eagle joins the JL has been created as draft."
     And the "Eagle joins the JL" news content should not be published
     # Test a transition change.
     When I go to the "Eagle joins the JL" news

@@ -97,7 +97,7 @@ Feature: Event moderation
     And I fill the end time of the Date widget with "00:30:00"
     And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
-    Then I should see the success message "Event Rainbow of Worlds has been created"
+    Then I should see the success message "Event Rainbow of Worlds has been created as draft."
     And I should see the text "30/08 to 01/09/2018"
 
     # Publish the content.
