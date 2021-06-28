@@ -49,7 +49,7 @@ Feature: Homepage
     #   page instead.
     When I click "Finance in EU"
     Then I should be on the advanced search page
-    And the option with text "Finance in EU (1)" from select facet "topic" is selected
+    And the option with text "Finance in EU" from select facet "topic" is selected
 
   @terms
   Scenario: Community content can be placed "In the spotlight" on the homepage
@@ -187,4 +187,4 @@ Feature: Homepage
     And I should see the link "E-justice" in the "Discover topics block"
     When I click "E-justice"
     Then I should be on the advanced search page
-    And the option with text "E-justice (1)" from select facet "topic" is selected
+    And the option with text "E-justice" from select facet "topic" is selected
