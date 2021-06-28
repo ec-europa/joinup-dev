@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\collection\Entity\CollectionInterface;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\solution\Entity\SolutionInterface;
@@ -282,7 +283,9 @@ function joinup_workflow_message_form_submit_alter(array &$form, FormStateInterf
       '@type' => node_get_type_label($node),
       '%title' => $node->getTitle(),
       '%state' => $node->get('field_state')->getString(),
+      ':user' => Url::fromRoute('user.page')->toString(),
+      ':url' => $node->toUrl('canonical')->toString(),
     ];
-    \Drupal::messenger()->addStatus(t('@type %title has been created as %state.', $args));
+    \Drupal::messenger()->addStatus(t('@type <a href=":url">%title</a> has been created as %state. You can find it in the section "My unpublished content" located in your <a href=":user">My account page</a>, or in the aforementioned section under the Collection/Solution it was created in.', $args));
   }
 }
