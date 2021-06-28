@@ -236,7 +236,7 @@ Feature: As a site moderator I am able to import RDF files.
     And the "Solution 2" solution should be affiliated with the "NIO" collection
 
     # Check that the existing solution values were overridden.
-    Given I go to the "Solution 2" solution edit form
+    Given I go to the edit form of the "Solution 2" solution
     Then the "Title" field should contain "Solution 2"
     And the "Description" field should contain "This solution has a standalone distribution."
 
@@ -247,7 +247,7 @@ Feature: As a site moderator I am able to import RDF files.
 
     # Verify that the collection owner can edit the new solutions.
     When I am logged in as "CS Owner"
-    And I go to the "Solution 1" solution edit form
+    Given I go to the edit form of the "Solution 1" solution
     Then the response status code should be 200
 
     # Ensure that the og relation is set between the distribution and the solution.
@@ -310,7 +310,7 @@ Feature: As a site moderator I am able to import RDF files.
     And the "Solution 3" solution should be affiliated with the "NIO" collection
 
     # Check that the Topic value was not overridden.
-    Given I go to the "Solution 2" solution edit form
+    Given I go to the edit form of the "Solution 2" solution
     # The text is '-E-health' because of the '-' prepended to children options.
     And the option with text "-E-health" from select "Topic" is selected
     And I press "Publish"

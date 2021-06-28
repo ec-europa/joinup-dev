@@ -48,24 +48,6 @@ class AssetDistributionContext extends RawDrupalContext {
   }
 
   /**
-   * Navigates to the edit form of an asset distribution.
-   *
-   * @param string $asset_distribution
-   *   The title of the $asset_distribution.
-   *
-   * @When I go to the :asset_distribution asset distribution edit form
-   * @When I visit the :asset_distribution asset distribution edit form
-   *
-   * @throws \Drupal\Core\Entity\EntityMalformedException
-   */
-  public function visitEditAssetDistribution(string $asset_distribution): void {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
-    $entity = $this->getAssetDistributionByName($asset_distribution);
-    $path = $entity->toUrl('edit-form')->toString();
-    $this->visitPath($path);
-  }
-
-  /**
    * Creates a number of asset distributions with data provided in a table.
    *
    * @param \Behat\Gherkin\Node\TableNode $asset_distribution_table

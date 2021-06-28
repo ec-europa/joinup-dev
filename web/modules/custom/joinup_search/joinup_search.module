@@ -37,7 +37,7 @@ function joinup_search_theme($existing, $type, $theme, $path) {
       ],
     ],
     'joinup_search_global_search' => [
-      'variables' => ['filters' => []],
+      'variables' => ['filters' => [], 'template_suggestion' => ''],
     ],
   ];
 }
@@ -190,22 +190,15 @@ function joinup_search_search_api_index_items_alter(IndexInterface $index, array
  * types, one with a property set to false and one without the property, will
  * result in having the one without the property placed last.
  *
- * Set the "sticky" and "site_pinned" properties to all documents that are
- * missing them. The properties are prefixed with "bs_" because "b" stands for
- * boolean and "s" for single value, as they are used for sorting.
+ * Set the "sticky" property on all documents that are missing it. The property
+ * is prefixed with "bs_" because "b" stands for boolean and "s" for single
+ * value, as they are used for sorting.
  */
 function joinup_search_search_api_solr_documents_alter(&$documents, IndexInterface $index, array $items) {
   /** @var \Solarium\QueryType\Update\Query\Document\Document[] $documents */
   foreach ($documents as $document) {
     if (empty($document->getFields()['bs_sticky'])) {
       $document->setField('bs_sticky', FALSE);
-    }
-    if (!empty($document->getFields()['ss_search_api_id'])) {
-      /** @var \Drupal\search_api\Item\Item[] $items */
-      $id = $document->getFields()['ss_search_api_id'];
-      $entity = $items[$id]->getOriginalObject()->getValue();
-      $value = $entity->hasField('front_page_pinned') ? $entity->get('front_page_pinned')->value : 0;
-      $document->setField('bs_site_pinned', $value);
     }
   }
 }
@@ -219,7 +212,6 @@ function joinup_search_search_api_solr_field_mapping_alter(IndexInterface $index
   $mappings = [
     'entity_created' => 'ds_entity_created',
     'published_on' => 'ds_published_on',
-    'site_pinned' => 'bs_site_pinned',
   ];
 
   foreach ($mappings as $alias => $solr_field) {
@@ -394,4 +386,18 @@ function joinup_search_views_pre_execute(ViewExecutable $view) {
   // method to ensure legacy support.
   // Selecting the entity_created option itself won't affect the query.
   $view->getQuery()->sort('entity_created', 'DESC');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for the global search block.
+ *
+ * Includes the template suggestion that can be configured in the block settings
+ * for the global search block.
+ */
+function joinup_search_theme_suggestions_joinup_search_global_search(array $variables): array {
+  if (!empty($variables['template_suggestion'])) {
+    return ['joinup_search_global_search__' . $variables['template_suggestion']];
+  }
+
+  return [];
 }

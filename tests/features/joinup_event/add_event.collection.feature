@@ -129,7 +129,7 @@ Feature: "Add event" visibility options.
     Given I am logged in as a moderator
 
     # Upload works.
-    When I go to the event content "The Great Opening" edit screen
+    When I go to the edit form of the "The Great Opening" event
     And I attach the file "logo.png" to "Logo"
     And I wait for AJAX to finish
 

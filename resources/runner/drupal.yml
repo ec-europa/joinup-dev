@@ -158,10 +158,10 @@ drupal:
           'config_update_ui',
           'dblog',
           'devel',
-          'field_ui',
           'filecache',
           'joinup_cas_mock_server',
           'og_ui',
+          'page_manager_ui',
           'stage_file_proxy',
           'views_ui',
         ];

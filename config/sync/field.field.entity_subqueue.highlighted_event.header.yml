@@ -1,0 +1,19 @@
+uuid: 73111462-8761-4c09-8869-5f0483378687
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.highlighted_event
+    - field.storage.entity_subqueue.header
+id: entity_subqueue.highlighted_event.header
+field_name: header
+entity_type: entity_subqueue
+bundle: highlighted_event
+label: 'Header text'
+description: 'Optional header text which will be shown above the title of the highlighted event.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

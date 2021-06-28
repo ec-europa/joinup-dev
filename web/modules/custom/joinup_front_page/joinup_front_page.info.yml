@@ -4,9 +4,3 @@ type: module
 package: Joinup
 core_version_requirement: ^8.9 || ^9.1
 php: 7.1
-
-dependencies:
-  - 'drupal:user'
-  - 'joinup:joinup_menu'
-  - 'joinup:joinup_workflow'
-  - 'menu_admin_per_menu:menu_admin_per_menu'

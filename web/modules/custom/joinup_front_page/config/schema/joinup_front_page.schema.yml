@@ -1,7 +1,0 @@
-block.settings.recommended_content:
-  type: block_settings
-  label: 'Recommended content block settings'
-  mapping:
-    count:
-      type: integer
-      label: 'The number of items to show.'

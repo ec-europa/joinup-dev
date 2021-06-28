@@ -20,6 +20,7 @@ default:
         - Drupal\joinup\Context\CustomPageContext
         - Drupal\joinup\Context\DrupalContext
         - Drupal\joinup\Context\EifContext
+        - Drupal\joinup\Context\EntityQueueContext
         - Drupal\joinup\Context\EuplContext
         - Drupal\joinup\Context\Isa2AnalyticsContext
         - Drupal\joinup\Context\JoinupCommunityContentContext
@@ -30,7 +31,6 @@ default:
         - Drupal\joinup\Context\JoinupEuLoginContext
         - Drupal\joinup\Context\JoinupEventContext
         - Drupal\joinup\Context\JoinupFeaturedContext
-        - Drupal\joinup\Context\JoinupFrontPageContext
         - Drupal\joinup\Context\JoinupGroupContext
         - Drupal\joinup\Context\JoinupInviteContext
         - Drupal\joinup\Context\JoinupLegalContext
@@ -98,12 +98,14 @@ default:
         Comment: '.comments-section'
         Content listing field filter form: '.field--name-field-content-listing'
         Contact information inline form: '#edit-field-ar-contact-information-wrapper'
-        Content: '.section--content-middle'
+        Content: '.section--content-middle, main .layout-content'
         Cookie consent banner: '#cookie-consent-banner'
+        Discover topics block: '.block-views-blockdiscover-topics-block'
         Entity actions: '.block-local-tasks-block'
-        Footer: '.section--footer'
+        Footer: '.section--footer, footer'
         Header menu: '#block-joinup-theme-main-menu'
-        Header: '.section--featured'
+        Header: '.section--featured, .section-header'
+        Highlighted event: '.block-entityqueue--highlighted-event'
         Left sidebar: '.section--sidebar-left'
         Main solution vertical tab: '#edit-group-main'
         Management solution vertical tab: '#edit-group-management'
@@ -120,17 +122,17 @@ default:
         Plus button menu: 'div.add-content-menu'
         Primary menu: '.region-primary-menu'
         SevenHeader: '.region-header'
+        Statistics: '#block-statistics, #block-ventuno-statistics'
         Table of contents: '#block-table-of-contents'
         Table of contents outline: '#block-toc-outline'
         Unpublished content area: '.block-entity-unpublished'
-        Statistics: '#block-statistics'
       drupal:
         drupal_root: ${joinup.site_dir}
       selectors:
         message_selector: '.alert, .messages'
-        error_message_selector: '.alert.alert--error, .messages.message--error'
+        error_message_selector: '.alert.alert--error, .messages.messages--error'
         success_message_selector: '.alert.alert--status, .messages.messages--status'
-        warning_message_selector: '.alert.alert--warning, .messages.message--warning'
+        warning_message_selector: '.alert.alert--warning, .messages.messages--warning'
         login_form_selector: '#user-login-form'
       subcontexts:
         autoload: false

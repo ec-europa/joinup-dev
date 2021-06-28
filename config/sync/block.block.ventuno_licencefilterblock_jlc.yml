@@ -1,0 +1,27 @@
+uuid: 9a609508-9f90-4f57-a5a8-adccfae97b32
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_licence
+    - system
+  theme:
+    - ventuno
+id: ventuno_licencefilterblock_jlc
+theme: ventuno
+region: content
+weight: -17
+provider: null
+plugin: licence_filter_block
+settings:
+  id: licence_filter_block
+  label: 'Licence filter block (JLC)'
+  provider: joinup_licence
+  label_display: '0'
+  show_terms: false
+visibility:
+  request_path:
+    id: request_path
+    pages: /node/703242
+    negate: false
+    context_mapping: {  }

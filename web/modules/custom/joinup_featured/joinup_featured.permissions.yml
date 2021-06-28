@@ -1,0 +1,6 @@
+'feature entity':
+  title: 'Feature entity'
+  description: 'Promote an entity as featured in the website.'
+'unfeature entity':
+  title: 'Unfeature entity'
+  description: 'Removes an entity node from the featured ones in the website.'

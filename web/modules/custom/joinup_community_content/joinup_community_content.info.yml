@@ -14,11 +14,11 @@ dependencies:
   - drupal:text
   - joinup:joinup_core
   - joinup:joinup_featured
-  - joinup_front_page:joinup_front_page
   - joinup:joinup_group
   - joinup:joinup_publication_date
   - joinup:joinup_stats
   - joinup:joinup_workflow
+  - joinup:topic
   - joinup:workflow_state_permission
   - publication_date:publication_date
   - state_machine:state_machine

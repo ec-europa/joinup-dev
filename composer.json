@@ -30,9 +30,11 @@
         "drupal/email_registration": "^1.1",
         "drupal/embed_block": "^1.0",
         "drupal/entity_legal": "^3.0.0-beta2",
+        "drupal/entityqueue": "^1.2",
         "drupal/error_page": "^1.0",
         "drupal/facets": "1.6.0",
         "drupal/field_delimiter": "^1.1",
+        "drupal/field_formatter_range": "^1.1",
         "drupal/field_group": "^3.1",
         "drupal/field_permissions": "^1.1",
         "drupal/file_url": "~2.0",
@@ -44,6 +46,7 @@
         "drupal/image_library_widget": "^1.0",
         "drupal/inline_entity_form": "^1.0",
         "drupal/json_field": "^1.0",
+        "drupal/layout_builder_block": "^1.0",
         "drupal/linkit": "^5.0-beta11",
         "drupal/matomo": "^1.11",
         "drupal/matomo_reporting_api": "^2.2",
@@ -54,6 +57,7 @@
         "drupal/meta_entity": "^1.0-alpha2",
         "drupal/og": "dev-neutral-access-result as 1.x-dev",
         "drupal/og_menu": "^1.0-alpha4",
+        "drupal/page_manager": "^4.0@beta",
         "drupal/paragraphs": "^1.12",
         "drupal/paragraphs_jquery_ui_accordion": "^1.4",
         "drupal/password_policy": "3.0-alpha5",
@@ -77,12 +81,14 @@
         "drupal/state_machine": "^1.0",
         "drupal/subpathauto": "dev-1.x#fcd7c1c4c49d5ee1648630d92eb9da46e6bf25f0",
         "drupal/swiftmailer": "dev-1.x#694cbf25d8c026b0c7c118093696d151a7874754",
+        "drupal/theme_rule": "^1.0",
         "drupal/token": "~1.7",
         "drupal/video_embed_field": "~1.6",
         "drupal/view_unpublished": "^1.0",
         "drupal/views_autosubmit": "^1.2",
         "drupal/views_bulk_operations": "^2.6",
         "drupal/views_data_export": "^1.0",
+        "drupal/views_multiple_permissions": "^1.0",
         "drush/drush": "~10.3",
         "easyrdf/easyrdf": "1.0.0 as 0.9.2",
         "ec-europa/joinup-tallinn-dashboard": "dev-master",
@@ -166,7 +172,9 @@
             "web/modules/custom/joinup_publication_date/src/Entity/EntityPublicationTimeFallbackTrait.php",
             "web/modules/custom/joinup_publication_date/src/Entity/EntityPublicationTimeInterface.php",
             "web/modules/custom/joinup_publication_date/src/Entity/EntityPublicationTimeTrait.php",
-            "web/modules/custom/joinup_sparql/src/Driver/Database/joinup_sparql/Connection.php"
+            "web/modules/custom/joinup_sparql/src/Driver/Database/joinup_sparql/Connection.php",
+            "web/modules/custom/topic/src/Entity/TopicReferencingEntityInterface.php",
+            "web/modules/custom/topic/src/Entity/TopicReferencingEntityTrait.php"
         ],
         "psr-4": {
             "Joinup\\": "src"
@@ -274,6 +282,9 @@
                 "EntityConstraintValidationList::findByCode is inconsistent @see https://www.drupal.org/project/drupal/issues/3126654": "https://www.drupal.org/files/issues/2020-04-10/find_by_code_override-3126654-D8-4.patch",
                 "Cannot implement a custom user cancellation method @see https://www.drupal.org/project/drupal/issues/3135592": "https://www.drupal.org/files/issues/2020-05-11/3135592-3.patch",
                 "Allow to refine by bundle in EntityConverter @see https://www.drupal.org/project/drupal/issues/3155568": "https://www.drupal.org/files/issues/2020-06-30/3155568-4.patch"
+            },
+            "drupal/entityqueue": {
+                "Missing config schema for EntityQueueDragtableWidget @see Missing config schema for EntityQueueDragtableWidget": "https://git.drupalcode.org/project/entityqueue/-/merge_requests/3.diff"
             },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",

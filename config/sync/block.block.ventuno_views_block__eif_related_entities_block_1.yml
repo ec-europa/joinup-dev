@@ -1,0 +1,31 @@
+uuid: 47a586c9-3dd1-482d-9b60-7a49cbef67f1
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.eif_related_entities
+  module:
+    - joinup_core
+    - views
+  theme:
+    - ventuno
+id: ventuno_views_block__eif_related_entities_block_1
+theme: ventuno
+region: content
+weight: -9
+provider: null
+plugin: 'views_block:eif_related_entities-block_1'
+settings:
+  id: 'views_block:eif_related_entities-block_1'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - entity.taxonomy_term.canonical
+    negate: false
+    context_mapping: {  }

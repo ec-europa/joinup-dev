@@ -235,8 +235,12 @@ trait TraversingTrait {
     }
 
     $result = [];
-    foreach ($regionObj->findAll('css', '.listing__item--tile') as $element) {
-      $title_element = $element->find('css', ' .listing__title');
+    // @todo The `.listing__item--tile` selector is part of the original Joinup
+    //   theme and can be removed once we have fully migrated to the new theme.
+    foreach ($regionObj->findAll('css', '.listing__item--tile, article.tile') as $element) {
+      // @todo The `.listing__title` selector is part of the original Joinup
+      //   theme and can be removed once we migrated to the new theme.
+      $title_element = $element->find('css', ' .listing__title, h2 a');
       // Some tiles don't have a title, like the one to create a new collection
       // in the collections page.
       if ($title_element) {
@@ -261,7 +265,14 @@ trait TraversingTrait {
    *   Thrown when the element is not found.
    */
   protected function getTileByHeading(string $heading): NodeElement {
-    return $this->getListingByHeading('listing__item--tile', $heading);
+    // @todo The `.listing__item--tile` selector is part of the original Joinup
+    //   theme and can be removed once we have fully migrated to the new theme.
+    try {
+      return $this->getListingByHeading('listing__item--tile', $heading);
+    }
+    catch (ElementNotFoundException $e) {
+      return $this->getListingByHeading('tile', $heading);
+    }
   }
 
   /**
@@ -279,12 +290,22 @@ trait TraversingTrait {
    *   Thrown when the element is not found.
    */
   protected function getListingByHeading(string $type, string $heading): NodeElement {
-    // Locate all the items.
+    // Locate all the items in the old theme.
+    // @todo This can be removed once we are fully migrated to the new theme.
     $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " ' . $type . ' ")]';
     // That have a heading with the specified text.
     $xpath .= '[.//*[@class and contains(concat(" ", normalize-space(@class), " "), " listing__title ")][normalize-space()="' . $heading . '"]]';
 
     $item = $this->getSession()->getPage()->find('xpath', $xpath);
+
+    if (!$item) {
+      // Locate all the items.
+      $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " ' . $type . ' ")]';
+      // That have a heading with the specified text.
+      $xpath .= '[.//h2/a[normalize-space()="' . $heading . '"]]';
+
+      $item = $this->getSession()->getPage()->find('xpath', $xpath);
+    }
 
     if (!$item) {
       // Throw a specific exception, so it can be catched by steps that need to
@@ -579,19 +600,20 @@ trait TraversingTrait {
   }
 
   /**
-   * Finds an image element in a region given the file name.
+   * Checks if an image with a given file name exists in a given element.
    *
    * @param string $filename
    *   The file name.
-   * @param \Behat\Mink\Element\NodeElement|null $region
-   *   (optional) The region to check in.
+   * @param \Behat\Mink\Element\NodeElement|null $element
+   *   (optional) The element to check in. If omitted the entire page will be
+   *   checked.
    *
    * @return bool
-   *   Whether the element exists or not in the given region.
+   *   Whether the element exists or not in the given element or page.
    */
-  protected function findImageInRegion(string $filename, ?NodeElement $region = NULL): bool {
-    if (empty($region)) {
-      $region = $this->getSession()->getPage();
+  protected function hasImage(string $filename, ?NodeElement $element = NULL): bool {
+    if (empty($element)) {
+      $element = $this->getSession()->getPage();
     }
 
     // Drupal appends an underscore and a number to the filename when duplicate
@@ -604,9 +626,9 @@ trait TraversingTrait {
     $extension = $parts['extension'];
     $filename = $parts['filename'];
     $expression = '/src="[^"]*' . $filename . '(_\d+)?\.' . $extension . '[^"]*"/';
-    $elements = $region->findAll('xpath', "//img");
-    foreach ($elements as $element) {
-      $html = $element->getOuterHtml();
+    $image_elements = $element->findAll('xpath', "//img");
+    foreach ($image_elements as $image_element) {
+      $html = $image_element->getOuterHtml();
       if (preg_match($expression, $html)) {
         return TRUE;
       }
