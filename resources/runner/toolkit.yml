@@ -40,12 +40,6 @@ commands:
       command: testing:behat-setup
     - task: run
       command: joinup:compile-scss
-    - task: run
-      command: oe_bootstrap_theme:npm-run
-      arguments:
-        - dev
-      options:
-        npm-dir: web/themes/contrib/oe_bootstrap_theme
     - task: mkdir
       dir: ${env.DRUPAL_PRIVATE_FILE_SYSTEM}
     - task: mkdir
