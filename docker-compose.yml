@@ -27,7 +27,12 @@ services:
       MYSQL_DATABASE: 'db_name'
 
   redis:
-    image: redis:latest
+    image: "redis:alpine"
+    command: redis-server --requirepass sOmE_sEcUrE_pAsS
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=master
 
   virtuoso:
     image: tenforce/virtuoso
