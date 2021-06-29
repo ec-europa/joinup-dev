@@ -6,6 +6,7 @@ namespace Drupal\joinup_group\Entity;
 
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\joinup_bundle_class\LogoInterface;
 use Drupal\joinup_bundle_class\ShortIdInterface;
 use Drupal\joinup_front_page\Entity\PinnableToFrontpageInterface;
@@ -204,5 +205,16 @@ interface GroupInterface extends RdfInterface, LogoInterface, PinnableToFrontpag
    *   entity IDs.
    */
   public function getGroupContentIds(): array;
+
+  /**
+   * Returns the message to show to a new member when they join the group.
+   *
+   * @param \Drupal\og\OgMembershipInterface $membership
+   *   The new membership.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The success status message.
+   */
+  public function getNewMembershipSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup;
 
 }

@@ -8,6 +8,8 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\asset_release\Entity\AssetReleaseInterface;
 use Drupal\collection\Entity\CollectionInterface;
 use Drupal\collection\Exception\MissingCollectionException;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_bundle_class\LogoTrait;
@@ -20,6 +22,7 @@ use Drupal\joinup_group\Entity\PinnableGroupContentTrait;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeFallbackTrait;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
+use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -37,6 +40,7 @@ class Solution extends Rdf implements SolutionInterface {
   use PinnableGroupContentTrait;
   use PinnableToFrontpageTrait;
   use ShortIdTrait;
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -196,6 +200,13 @@ class Solution extends Rdf implements SolutionInterface {
       ]);
     }
     return $ids;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getNewMembershipSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup {
+    return $this->t('You have subscribed to this solution and will receive notifications for it. To manage your subscriptions go to <em>My subscriptions</em> in your user menu.');
   }
 
 }

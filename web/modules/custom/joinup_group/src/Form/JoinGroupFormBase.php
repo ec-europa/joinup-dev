@@ -143,17 +143,6 @@ abstract class JoinGroupFormBase extends FormBase {
   }
 
   /**
-   * Retrieves the success message for the new membership.
-   *
-   * @param \Drupal\og\OgMembershipInterface $membership
-   *   The new membership.
-   *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
-   *   The success status message.
-   */
-  abstract public function getSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup;
-
-  /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ?AccountProxyInterface $user = NULL, ?RdfInterface $group = NULL): array {
@@ -268,7 +257,8 @@ abstract class JoinGroupFormBase extends FormBase {
 
     $membership = $this->createMembership($state, $og_roles);
     $membership->save();
-    $this->messenger->addStatus($this->getSuccessMessage($membership));
+
+    $this->messenger->addStatus($this->group->getNewMembershipSuccessMessage($membership));
   }
 
   /**
