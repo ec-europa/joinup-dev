@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group\Form;
 
+use Drupal\collection\Entity\CollectionInterface;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Access\AccessManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -261,10 +262,9 @@ abstract class JoinGroupFormBase extends FormBase {
     $og_roles = [$this->loadOgRole($this->group->getEntityTypeId() . '-' . $this->group->bundle() . '-' . OgRoleInterface::AUTHENTICATED)];
 
     // Take into account the `field_ar_closed` in case of a collection.
-    $state = OgMembershipInterface::STATE_ACTIVE;
-    if ($this->group->hasField('field_ar_closed') && !$this->group->get('field_ar_closed')->isEmpty() && $this->group->get('field_ar_closed')->first()->value) {
-      $state = OgMembershipInterface::STATE_PENDING;
-    }
+    // @todo Collection specific code does not belong in the generic base class.
+    //    This should be moved to the `JoinCollectionForm` which extends this.
+    $state = $this->group instanceof CollectionInterface && $this->group->isClosed() ? OgMembershipInterface::STATE_PENDING : OgMembershipInterface::STATE_ACTIVE;
 
     $membership = $this->createMembership($state, $og_roles);
     $membership->save();

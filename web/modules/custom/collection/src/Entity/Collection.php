@@ -124,6 +124,13 @@ class Collection extends Rdf implements CollectionInterface {
   /**
    * {@inheritdoc}
    */
+  public function isClosed(): bool {
+    return (bool) $this->getMainPropertyValue('field_ar_closed');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function doGetGroupContentIds(): array {
     $ids = ['node' => $this->getNodeGroupContent()];
     $solutions = $this->getSolutions();
