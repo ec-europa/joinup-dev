@@ -10,12 +10,12 @@ use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_bundle_class\LogoTrait;
 use Drupal\joinup_bundle_class\ShortIdTrait;
 use Drupal\joinup_featured\FeaturedContentTrait;
-use Drupal\joinup_front_page\Entity\PinnableToFrontpageTrait;
 use Drupal\joinup_group\Entity\GroupTrait;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeFallbackTrait;
 use Drupal\joinup_workflow\ArchivableEntityTrait;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\topic\Entity\TopicReferencingEntityTrait;
 
 /**
  * Entity subclass for the 'collection' bundle.
@@ -30,8 +30,8 @@ class Collection extends Rdf implements CollectionInterface {
   use JoinupBundleClassFieldAccessTrait;
   use JoinupBundleClassMetaEntityTrait;
   use LogoTrait;
-  use PinnableToFrontpageTrait;
   use ShortIdTrait;
+  use TopicReferencingEntityTrait;
 
   /**
    * {@inheritdoc}

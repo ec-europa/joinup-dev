@@ -13,7 +13,6 @@ use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_bundle_class\LogoTrait;
 use Drupal\joinup_bundle_class\ShortIdTrait;
 use Drupal\joinup_featured\FeaturedContentTrait;
-use Drupal\joinup_front_page\Entity\PinnableToFrontpageTrait;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\GroupTrait;
 use Drupal\joinup_group\Entity\PinnableGroupContentTrait;
@@ -21,6 +20,7 @@ use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeFallbackTrait;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\topic\Entity\TopicReferencingEntityTrait;
 
 /**
  * Entity subclass for the 'solution' bundle.
@@ -35,8 +35,8 @@ class Solution extends Rdf implements SolutionInterface {
   use JoinupBundleClassMetaEntityTrait;
   use LogoTrait;
   use PinnableGroupContentTrait;
-  use PinnableToFrontpageTrait;
   use ShortIdTrait;
+  use TopicReferencingEntityTrait;
 
   /**
    * {@inheritdoc}

@@ -1,0 +1,73 @@
+uuid: 702b7316-78a2-4ad1-a40d-2e0fed240925
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.highlighted_event
+    - field.field.entity_subqueue.highlighted_event.external_url
+    - field.field.entity_subqueue.highlighted_event.header
+    - field.field.entity_subqueue.highlighted_event.link_text
+    - field.field.entity_subqueue.highlighted_event.link_to_external_url
+  module:
+    - link
+id: entity_subqueue.highlighted_event.default
+targetEntityType: entity_subqueue
+bundle: highlighted_event
+mode: default
+content:
+  external_url:
+    weight: 5
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  header:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  items:
+    label: hidden
+    type: entity_reference_label
+    weight: 0
+    region: content
+    settings:
+      link: true
+    third_party_settings: {  }
+  link_text:
+    weight: 4
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  link_to_external_url:
+    weight: 3
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  title:
+    label: hidden
+    type: string
+    weight: -10
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  langcode: true

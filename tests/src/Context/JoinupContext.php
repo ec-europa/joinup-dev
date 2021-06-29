@@ -33,6 +33,7 @@ use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\meta_entity\Entity\MetaEntity;
@@ -1861,7 +1862,17 @@ class JoinupContext extends RawDrupalContext {
       // Crete a fake node object to be able to reuse hooks that help with
       // preparing the field values.
       $fake_node = (object) $data;
+
+      // Retain data which is relied on by the node creation hooks.
       $fake_node->type = $bundle;
+      if ($node instanceof GroupContentInterface) {
+        $group = $node->getGroup();
+        $group_bundle = $group->bundle();
+        if (!isset($fake_node->$group_bundle)) {
+          $fake_node->$group_bundle = $group->label();
+        }
+      }
+
       $this->dispatchHooks('BeforeNodeCreateScope', $fake_node);
       $this->parseEntityFields('node', $fake_node);
       // Remove the type property as we cannot change that.
@@ -1963,30 +1974,6 @@ class JoinupContext extends RawDrupalContext {
 
     if (!$result) {
       throw new \Exception('The modal did not close.');
-    }
-  }
-
-  /**
-   * Checks the numbers in the 'statistics block' on the homepage.
-   *
-   * Table format:
-   * | Solutions | Collections | Content |
-   * | 89        | 41          | 25      |
-   *
-   * @param \Behat\Gherkin\Node\TableNode $statistics_table
-   *   The table containing the expected values for the statistics.
-   *
-   * @throws \UnexpectedValueException
-   *   Thrown when at least one of the expected values is not found.
-   *
-   * @Then I should see the following statistics:
-   */
-  public function assertHomepageStatistics(TableNode $statistics_table) {
-    foreach ($statistics_table->getRowsHash() as $type => $expected_value) {
-      $wrapper_selector = mb_strtolower("stats__wrapper__$type");
-      $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " ' . $wrapper_selector . ' ")]//div[contains(concat(" ", normalize-space(@class), " "), " stats__text--upper ")]';
-      $element = $this->getSession()->getPage()->find('xpath', $xpath);
-      Assert::assertEquals($expected_value, $element->getText());
     }
   }
 

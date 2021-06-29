@@ -396,15 +396,6 @@ field_settings:
       fields:
         - 'entity:node/field_site_featured'
         - 'entity:rdf_entity/field_site_featured'
-  site_pinned:
-    label: 'Site pinned'
-    property_path: aggregated_field
-    type: boolean
-    configuration:
-      type: union
-      fields:
-        - 'entity:node/front_page_pinned'
-        - 'entity:rdf_entity/front_page_pinned'
   spatial_coverage:
     label: 'Geographical coverage'
     property_path: aggregated_field

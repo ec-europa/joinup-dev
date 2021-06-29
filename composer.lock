@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b21c8b9c077b33c7d06b51fa74ea27b",
+    "content-hash": "62fa2227abf21034b84a07fedc2c32e3",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3702,6 +3702,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Missing config schema for EntityQueueDragtableWidget @see Missing config schema for EntityQueueDragtableWidget": "https://git.drupalcode.org/project/entityqueue/-/merge_requests/3.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

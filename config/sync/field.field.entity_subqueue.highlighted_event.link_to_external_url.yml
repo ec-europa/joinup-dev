@@ -1,0 +1,23 @@
+uuid: b55c7906-6a31-42ca-a3c0-9e91a585dcf3
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.highlighted_event
+    - field.storage.entity_subqueue.link_to_external_url
+id: entity_subqueue.highlighted_event.link_to_external_url
+field_name: link_to_external_url
+entity_type: entity_subqueue
+bundle: highlighted_event
+label: 'Link to external page'
+description: 'Check this to link directly to an external page, such as a registration form. Will link to the event page on Joinup when left unchecked.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

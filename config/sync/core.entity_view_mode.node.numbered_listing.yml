@@ -1,0 +1,10 @@
+uuid: a0f7ccf6-16c5-45d2-ad49-43ed9b6fc909
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.numbered_listing
+label: 'Numbered listing'
+targetEntityType: node
+cache: true

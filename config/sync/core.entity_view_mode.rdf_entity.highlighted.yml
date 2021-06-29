@@ -1,0 +1,10 @@
+uuid: 75ce62d2-486b-443a-9385-d3af07fc3e15
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+id: rdf_entity.highlighted
+label: Highlighted
+targetEntityType: rdf_entity
+cache: true
