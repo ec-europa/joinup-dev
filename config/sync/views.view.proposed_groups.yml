@@ -8,7 +8,7 @@ dependencies:
     - search_api
     - user
 id: proposed_groups
-label: 'Proposed challenges and solutions'
+label: 'Proposed challenges'
 module: views
 description: ''
 tag: ''
@@ -340,50 +340,6 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: search_api_string
-        rid_1:
-          id: rid_1
-          table: search_api_index_unpublished
-          field: rid
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value:
-            min: ''
-            max: ''
-            value: solution
-          group: 2
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            placeholder: ''
-            min_placeholder: ''
-            max_placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          plugin_id: search_api_string
         rid:
           id: rid
           table: search_api_index_unpublished
@@ -396,7 +352,7 @@ display:
             min: ''
             max: ''
             value: collection
-          group: 2
+          group: 1
           exposed: false
           expose:
             operator_id: ''
@@ -427,71 +383,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: search_api_string
-        rid_2:
-          id: rid_2
-          table: search_api_index_unpublished
-          field: rid
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value:
-            min: ''
-            max: ''
-            value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: rid_2_op
-            label: 'Rdf Type'
-            description: null
-            use_operator: false
-            operator: rid_2_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: rid_2
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            placeholder: null
-            min_placeholder: null
-            max_placeholder: null
-          is_grouped: true
-          group_info:
-            label: Bundle
-            description: ''
-            identifier: bundle
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items:
-              1:
-                title: Challenge
-                operator: '='
-                value:
-                  value: collection
-                  min: ''
-                  max: ''
-              2:
-                title: Solution
-                operator: '='
-                value:
-                  value: solution
-                  min: ''
-                  max: ''
-              3:
-                title: ''
-                operator: '='
-                value:
-                  value: ''
-                  min: ''
-                  max: ''
           plugin_id: search_api_string
       sorts:
         rdf_created:
@@ -520,7 +411,7 @@ display:
             label: Bundle
             identifier: rid
           plugin_id: search_api
-      title: 'Proposed challenges and solutions'
+      title: 'Proposed challenges'
       header: {  }
       footer: {  }
       empty: {  }
@@ -531,13 +422,11 @@ display:
         operator: AND
         groups:
           1: AND
-          2: OR
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url
         - url.query_args
         - 'url.query_args:sort_by'
         - 'url.query_args:sort_order'
@@ -553,10 +442,10 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/content/proposed-groups
+      path: admin/content/proposed-challenges
       menu:
         type: tab
-        title: 'Proposed groups'
+        title: 'Proposed challenges'
         description: ''
         expanded: false
         parent: system.admin_content
@@ -569,7 +458,6 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url
         - url.query_args
         - 'url.query_args:sort_by'
         - 'url.query_args:sort_order'
