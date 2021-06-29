@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - search_api.index.unpublished
-    - system.menu.admin
   module:
     - search_api
     - user
@@ -554,10 +553,15 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: dashboard/proposed-groups
+      path: admin/content/proposed-groups
       menu:
-        type: normal
-        title: 'Proposed challenges and solutions'
+        type: tab
+        title: 'Proposed groups'
+        description: ''
+        expanded: false
+        parent: system.admin_content
+        weight: 0
+        context: '0'
         menu_name: admin
       always_use_admin_theme: false
     cache_metadata:

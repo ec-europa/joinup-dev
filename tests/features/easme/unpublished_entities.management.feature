@@ -20,11 +20,11 @@ Feature:
       | Solution 6 | Challenge 5 | draft     |
 
     When I am logged in as a user with the authenticated role
-    And I go to "/dashboard/proposed-groups"
+    And I go to "/admin/content/proposed-groups"
     Then I should get an access denied error
 
     When I am logged in as a moderator
-    And I go to "/dashboard/proposed-groups"
+    And I go to "/admin/content/proposed-groups"
     Then I should see the link "Challenge 1"
     And I should see the link "Challenge 2"
     And I should see the link "Challenge 4"
