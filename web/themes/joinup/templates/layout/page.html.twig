@@ -51,6 +51,8 @@
 
     {% if is_front and not logged_in %}
       {% include directory ~ '/templates/parts/featured--anonymous.html.twig' %}
+    {% elseif is_front and logged_in %}
+      {% include directory ~ '/templates/parts/featured--logged.html.twig' %}
     {% elseif page.featured or is_blue_header %}
       <div class="section section--featured">
         {% if is_blue_header %}
