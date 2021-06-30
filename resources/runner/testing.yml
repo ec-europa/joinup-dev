@@ -42,6 +42,11 @@ phpcs:
   options:
     # Show the progress of the run.
     - p
+  arguments:
+    # The number of files to check in parallel. A good initial value is the
+    # number of available processor cores. If the system has fast storage then
+    # this can be increased further.
+    parallel: 1
   # Set this config to `false` in your `runner.yml` in order to disable running
   # PHP coding standards on Git push.
   run_on_push: true
