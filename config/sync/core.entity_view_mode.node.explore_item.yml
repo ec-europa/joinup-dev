@@ -1,0 +1,10 @@
+uuid: e0c84a53-1f94-4c43-96f6-e29f8cf59d5f
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.explore_item
+label: 'Explore item'
+targetEntityType: node
+cache: true
