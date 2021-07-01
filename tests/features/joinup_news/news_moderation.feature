@@ -158,7 +158,7 @@ Feature: News moderation.
     And I select "Employment and Support Allowance" from "Topic"
     And I press "Save as draft"
     # Check reference to news page.
-    Then I should see the success message 'News Eagle joins the JL has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection/Solution it was created in.'
+    Then I should see the success message 'News Eagle joins the JL has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
     And the "Eagle joins the JL" news content should not be published
     # Test a transition change.
     When I go to the "Eagle joins the JL" news
@@ -327,3 +327,33 @@ Feature: News moderation.
     Then I should see the success message "News Hawkgirl saves the planet has been updated."
     And I should see the heading "Hawkgirl saves the planet"
     And the "Hawkgirl saves the planet" "news" content should have 4 revisions
+
+  Scenario: Check message draft url when click in Title.
+    When I am logged in as "Eagle"
+    And I go to the homepage of the "Justice League" collection
+    And I click "Add news"
+    Then I should see the heading "Add news"
+    When I fill in the following:
+      | Short title | Whale joins the JL                   |
+      | Headline    | Whale from WWII                      |
+      | Content     | Specialized in close combat training |
+    And I select "Employment and Support Allowance" from "Topic"
+    And I press "Save as draft"
+    Then I should see the success message 'News Whale joins the JL has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    And I click "Whale joins the JL"
+    Then I should see the text "Specialized in close combat training"
+
+  Scenario: Check news when click in My account page.
+    When I am logged in as "Eagle"
+    And I go to the homepage of the "Justice League" collection
+    And I click "Add news"
+    Then I should see the heading "Add news"
+    When I fill in the following:
+      | Short title | Eagle joins the CE                   |
+      | Headline    | Eagle from WWVI                      |
+      | Content     | Specialized in close combat training |
+    And I select "Employment and Support Allowance" from "Topic"
+    And I press "Save as draft"
+    Then I should see the success message 'News Eagle joins the CE has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    And I click "My account page"
+    Then I should see the heading "Eagle joins the CE"
