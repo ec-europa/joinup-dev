@@ -188,3 +188,21 @@ Feature: Homepage
     When I click "E-justice"
     Then I should be on the advanced search page
     And the option with text "E-justice" from select facet "topic" is selected
+
+  @terms
+  Scenario: Discover topics block shows a list of topics.
+    Given collection:
+      | title | Clash of jonny's |
+      | state | validated        |
+    And news content:
+      | title                       | headline                 | collection        | topic                                      | state     | publication date     | body                                                                                                                                                                                                                                                 |
+      | Current biodiversity adapt  | Adapt habitats           | Clash of jonny's  | Finance in EU, Supplier exchange, E-health | validated | 2021-04-26T19:09:00Z | Here we combine global maps of human populations and land use over the past 12000 y with current biodiversity data to show that nearly three quarters of nature has long been shaped by histories of human habitation and use by indigenous peoples. |
+      | Environmental tests         | Test practices           | Clash of jonny's  | Employment and Support Allowance           | validated | 2021-01-27T16:12:00Z | With rare exceptions current biodiversity losses are caused not by human conversion or degradation of untouched ecosystems but rather by the appropriation colonization and intensification of use in lands inhabited and used by prior societies.   |
+      | Spatial construction        | Win of wildlands         | Clash of jonny's  | HR, Statistics and Analysis, E-justice     | validated | 2021-02-28T13:15:00Z | Global land use history confirms that empowering the environmental stewardship of Indigenous peoples and local communities will be critical to conserving biodiversity across the planet.                                                            |
+      | Easier transformations      | Ecosystem                | Clash of jonny's  | EU and European Policies                   | validated | 2021-03-29T10:18:00Z | Archaeological evidence shows that by 10000 BCE all societies employed ecologically transformative land use practices including burning hunting species propagation domestication cultivation have left long-term legacies across the biosphere.     |
+    When I am on the homepage
+    Then I should see the button "News" in the "Explore block"
+    And I should see the link "See more" in the "Explore block"
+    When I click "See more"
+    Then I should be on the advanced search page
+    And the option with text "News" from select facet "Content types" is selected

@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_front_page\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -107,7 +108,32 @@ class ExploreItemBlock extends BlockBase implements ContainerFactoryPluginInterf
     return [
       '#theme' => 'explore_block',
       '#data' => $data,
+      '#cache' => [
+        'contexts' => $this->getCacheContexts(),
+        'tags' => $this->getCacheTags(),
+      ],
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    $tags = [
+      'node:news',
+      'node:events',
+      'rdf_entity:solution',
+      'rdf_entity:collection',
+    ];
+
+    return Cache::mergeTags(parent::getCacheTags(), $tags);
   }
 
   /**
