@@ -578,7 +578,7 @@ display:
         description: ''
         expanded: false
         parent: ''
-        weight: -50
+        weight: -49
         context: '0'
         menu_name: main
       cache:

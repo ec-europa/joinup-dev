@@ -15,6 +15,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_front_page\FrontPagePinnedFieldItemList;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
+use Drupal\Core\Site\Settings;
 
 /**
  * Implements hook_entity_base_field_info().
@@ -99,12 +100,14 @@ function joinup_front_page_menu_link_content_update(MenuLinkContentInterface $en
  * Implements hook_theme().
  */
 function joinup_front_page_theme($existing, $type, $theme, $path) {
+  $url_subpath = Settings::get('url_subpath', '/');
   return [
     'statistics_block' => [
       'variables' => [
         'collection_count' => 0,
         'solution_count' => 0,
         'content_count' => 0,
+        'url_subpath' => $url_subpath,
       ],
     ],
   ];
