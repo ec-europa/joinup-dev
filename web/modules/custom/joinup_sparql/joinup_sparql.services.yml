@@ -9,3 +9,6 @@ services:
       - { name: http_middleware, priority: 401 }
   joinup_sparql.graph_store.helper:
     class: Drupal\joinup_sparql\JoinupSparqlGraphStoreHelper
+
+  joinup_sparql.vocabulary_fixtures.replace:
+    class: Drupal\joinup_sparql\VocabularyFixturesReplace
