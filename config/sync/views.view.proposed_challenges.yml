@@ -1,4 +1,4 @@
-uuid: b18a518a-0379-4dd2-bbff-e7624d2332ad
+uuid: 9af2fdcb-57af-40dd-aa4d-c5f3ab60190e
 langcode: en
 status: true
 dependencies:
@@ -7,7 +7,7 @@ dependencies:
   module:
     - search_api
     - user
-id: proposed_groups
+id: proposed_challenges
 label: 'Proposed challenges'
 module: views
 description: ''
@@ -51,6 +51,9 @@ display:
           offset: 0
           id: 0
           total_pages: null
+          tags:
+            previous: ‹‹
+            next: ››
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -59,9 +62,6 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          tags:
-            previous: ‹‹
-            next: ››
       style:
         type: table
         options:
@@ -74,21 +74,23 @@ display:
           summary: ''
           description: ''
           columns:
-            search_api_operations: search_api_operations
-            created: created
             label: label
+            rdf_created: rdf_created
+            search_api_operations: search_api_operations
           info:
-            search_api_operations:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            created:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
             label:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            rdf_created:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            search_api_operations:
               align: ''
               separator: ''
               empty_column: false
@@ -169,10 +171,10 @@ display:
             multi_separator: ', '
           entity_type: rdf_entity
           plugin_id: search_api_field
-        created:
-          id: created
-          table: search_api_datasource_unpublished_entity_rdf_entity
-          field: created
+        rdf_created:
+          id: rdf_created
+          table: search_api_index_unpublished
+          field: rdf_created
           relationship: none
           group_type: group
           admin_label: ''
@@ -243,7 +245,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: rdf_entity
           plugin_id: search_api_field
         search_api_operations:
           id: search_api_operations
@@ -398,23 +399,23 @@ display:
             label: 'Authored on'
             identifier: rdf_created
           plugin_id: search_api
-        rid:
-          id: rid
-          table: search_api_index_unpublished
-          field: rid
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: true
-          expose:
-            label: Bundle
-            identifier: rid
-          plugin_id: search_api
       title: 'Proposed challenges'
       header: {  }
       footer: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 'You are all done here :)'
+            format: content_editor
+          plugin_id: text
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
@@ -422,6 +423,7 @@ display:
         operator: AND
         groups:
           1: AND
+      use_ajax: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -435,6 +437,57 @@ display:
       tags:
         - 'config:search_api.index.unpublished'
         - 'search_api_list:unpublished'
+  block:
+    display_plugin: block
+    id: block
+    display_title: Block
+    position: 2
+    display_options:
+      display_extenders: {  }
+      use_more: true
+      defaults:
+        use_more: false
+        use_more_always: false
+        use_more_text: false
+        title: false
+        pager: false
+        use_ajax: false
+        sorts: false
+      use_more_always: false
+      use_more_text: 'View all'
+      title: 'Latest proposed challenges'
+      block_description: 'Latest proposed challenges'
+      pager:
+        type: some
+        options:
+          items_per_page: 5
+          offset: 0
+      use_ajax: true
+      sorts:
+        rdf_created:
+          id: rdf_created
+          table: search_api_index_unpublished
+          field: rdf_created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: 'Authored on'
+            identifier: rdf_created
+          plugin_id: search_api
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url.query_args
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:search_api.index.unpublished'
+        - 'search_api_list:unpublished'
   page:
     display_plugin: page
     id: page
@@ -442,7 +495,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/content/proposed-challenges
+      path: dashboard/proposed-challenges
       menu:
         type: tab
         title: 'Proposed challenges'

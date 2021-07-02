@@ -1,14 +1,15 @@
-uuid: 85ef81e9-81eb-4473-970a-58967e0c1adb
+uuid: b5a78f41-865c-4939-8b76-69d169dff038
 langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.og_audience
     - search_api.index.unpublished
   module:
     - search_api
     - user
-id: proposed_solutions_and_pledges
-label: 'Proposed solutions and pledges'
+id: proposed_pledges
+label: 'Proposed pledges'
 module: views
 description: ''
 tag: ''
@@ -24,7 +25,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'view unpublished rdf entity'
+          perm: 'administer nodes'
       cache:
         type: tag
         options: {  }
@@ -75,51 +76,16 @@ display:
           description: ''
           columns:
             title: title
-            label: label
-            nothing: nothing
-            entity_bundle: entity_bundle
-            created: created
-            created_1: created_1
-            nothing_1: nothing_1
+            og_audience: og_audience
             search_api_operations: search_api_operations
+            created: created
           info:
             title:
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            label:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            nothing:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            entity_bundle:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            created:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            created_1:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            nothing_1:
-              sortable: true
-              default_sort_order: asc
+            og_audience:
               align: ''
               separator: ''
               empty_column: false
@@ -129,7 +95,14 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-          default: nothing_1
+            created:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          default: created
           empty_table: false
       row:
         type: fields
@@ -141,153 +114,11 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
-        label:
-          id: label
-          table: search_api_datasource_unpublished_entity_rdf_entity
-          field: label
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-          entity_type: rdf_entity
-          plugin_id: search_api_field
-        nothing:
-          id: nothing
-          table: views
-          field: nothing
-          relationship: none
-          group_type: group
-          admin_label: ''
           label: Title
           exclude: false
           alter:
-            alter_text: true
-            text: '{{ title }}{{ label }}'
+            alter_text: false
+            text: ''
             make_link: false
             path: ''
             absolute: false
@@ -323,16 +154,38 @@ display:
           empty: ''
           hide_empty: false
           empty_zero: false
-          hide_alter_empty: false
-          plugin_id: custom
-        entity_bundle:
-          id: entity_bundle
-          table: search_api_index_unpublished
-          field: entity_bundle
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+          entity_type: node
+          plugin_id: search_api_field
+        og_audience:
+          id: og_audience
+          table: search_api_datasource_unpublished_entity_node
+          field: og_audience
           relationship: none
           group_type: group
           admin_label: ''
-          label: Bundle
+          label: Group
           exclude: false
           alter:
             alter_text: false
@@ -373,66 +226,11 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          link_to_item: false
-          use_highlighting: false
-          multi_type: separator
-          multi_separator: ', '
-          plugin_id: search_api
-        created:
-          id: created
-          table: search_api_datasource_unpublished_entity_node
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: timestamp
+          click_sort_column: target_id
+          type: entity_reference_label
           settings:
-            date_format: short
-            custom_date_format: ''
-            timezone: ''
-          group_column: value
+            link: true
+          group_column: target_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -443,105 +241,26 @@ display:
           separator: ', '
           field_api_classes: false
           field_rendering: true
-          fallback_handler: search_api_date
+          fallback_handler: search_api
           fallback_options:
-            date_format: date_only
-            custom_date_format: ''
-            timezone: ''
             link_to_item: false
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
           entity_type: node
           plugin_id: search_api_field
-        created_1:
-          id: created_1
-          table: search_api_datasource_unpublished_entity_rdf_entity
+        created:
+          id: created
+          table: search_api_index_unpublished
           field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: timestamp
-          settings:
-            date_format: short
-            custom_date_format: ''
-            timezone: ''
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_date
-          fallback_options:
-            date_format: date_only
-            custom_date_format: ''
-            timezone: ''
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-          entity_type: rdf_entity
-          plugin_id: search_api_field
-        nothing_1:
-          id: nothing_1
-          table: views
-          field: nothing
           relationship: none
           group_type: group
           admin_label: ''
           label: 'Authored on'
           exclude: false
           alter:
-            alter_text: true
-            text: '{{ created }}{{ created_1 }}'
+            alter_text: false
+            text: ''
             make_link: false
             path: ''
             absolute: false
@@ -577,8 +296,34 @@ display:
           empty: ''
           hide_empty: false
           empty_zero: false
-          hide_alter_empty: false
-          plugin_id: custom
+          hide_alter_empty: true
+          click_sort_column: value
+          type: timestamp
+          settings:
+            date_format: short
+            custom_date_format: ''
+            timezone: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api_date
+          fallback_options:
+            date_format: date_only
+            custom_date_format: ''
+            timezone: ''
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+          plugin_id: search_api_field
         search_api_operations:
           id: search_api_operations
           table: search_api_index_unpublished
@@ -586,7 +331,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: Actions
+          label: 'Operations links'
           exclude: false
           alter:
             alter_text: false
@@ -641,7 +386,7 @@ display:
           value:
             min: ''
             max: ''
-            value: solution
+            value: pledge
           group: 1
           exposed: false
           expose:
@@ -661,50 +406,6 @@ display:
             placeholder: ''
             min_placeholder: ''
             max_placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          plugin_id: search_api_string
-        entity_bundle_1:
-          id: entity_bundle_1
-          table: search_api_index_unpublished
-          field: entity_bundle
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value:
-            min: ''
-            max: ''
-            value: pledge
-          group: 1
-          exposed: false
-          expose:
-            operator_id: entity_bundle_1_op
-            label: Bundle
-            description: null
-            use_operator: false
-            operator: entity_bundle_1_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: entity_bundle_1
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            placeholder: null
-            min_placeholder: null
-            max_placeholder: null
           is_grouped: false
           group_info:
             label: ''
@@ -730,7 +431,7 @@ display:
             min: ''
             max: ''
             value: proposed
-          group: 2
+          group: 1
           exposed: false
           expose:
             operator_id: ''
@@ -762,19 +463,95 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: search_api_string
-      sorts: {  }
-      title: 'Proposed solutions and pledges'
+      sorts:
+        created:
+          id: created
+          table: search_api_index_unpublished
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: 'Authored on'
+            identifier: created
+          plugin_id: search_api
+      title: 'Proposed pledges'
       header: {  }
       footer: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 'You are all done here :)'
+            format: content_editor
+          plugin_id: text
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
-      filter_groups:
-        operator: AND
-        groups:
-          1: OR
-          2: AND
+      use_ajax: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.og_audience'
+        - 'config:search_api.index.unpublished'
+        - 'search_api_list:unpublished'
+  block:
+    display_plugin: block
+    id: block
+    display_title: Block
+    position: 2
+    display_options:
+      display_extenders: {  }
+      defaults:
+        use_ajax: false
+        use_more: false
+        use_more_always: false
+        use_more_text: false
+        pager: false
+        title: false
+        sorts: false
+      use_ajax: true
+      use_more: true
+      use_more_always: false
+      use_more_text: 'View all'
+      pager:
+        type: some
+        options:
+          items_per_page: 5
+          offset: 0
+      block_description: 'Latest proposed pledges'
+      title: 'Latest proposed pledges'
+      sorts:
+        created:
+          id: created
+          table: search_api_index_unpublished
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: 'Authored on'
+            identifier: created
+          plugin_id: search_api
     cache_metadata:
       max-age: -1
       contexts:
@@ -784,6 +561,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.og_audience'
         - 'config:search_api.index.unpublished'
         - 'search_api_list:unpublished'
   page:
@@ -793,25 +571,27 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/content/proposed-solutions-and-pledges
+      path: dashboard/proposed-pledges
       menu:
         type: tab
-        title: 'Proposed solutions and pledges'
+        title: 'Proposed pledges'
         description: ''
         expanded: false
-        parent: system.admin_content
+        parent: dashboard.page
         weight: 0
-        context: '1'
-        menu_name: admin
-      always_use_admin_theme: false
+        context: '0'
+        menu_name: account
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.og_audience'
         - 'config:search_api.index.unpublished'
         - 'search_api_list:unpublished'
