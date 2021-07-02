@@ -124,6 +124,9 @@ drupal:
         $settings['entity_update_batch_size'] = 50;
         $settings['entity_update_backup'] = TRUE;
 
+        // The url subpath of the project
+        $settings['url_subpath'] = '/';
+        if(getenv('URL_SUBPATH')) { $settings['url_subpath'] = getenv('URL_SUBPATH'); }
         // File system settings.
         $settings['file_private_path'] = getenv('DRUPAL_PRIVATE_FILE_SYSTEM');
         $settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH');

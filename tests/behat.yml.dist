@@ -64,7 +64,7 @@ default:
         - Drupal\Tests\message_digest\Behat\MessageDigestContext
         - Drupal\Tests\oe_webtools\Behat\WebtoolsMapsContext
         - Drupal\Tests\pipeline\Behat\PipelineContext
-        - Drupal\Tests\spdx\Behat\SpdxContext:
+        - Drupal\Tests\spdx\Behat\SpdxContext
         - FeatureContext
         - LoversOfBehat\TableExtension\Context\TableContext
       filters:

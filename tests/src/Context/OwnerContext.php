@@ -55,25 +55,9 @@ class OwnerContext extends RawDrupalContext {
    */
   public function givenOwner(TableNode $owners_table) {
     foreach ($owners_table->getHash() as $row) {
-      // If no type was specified, fallback to 'Private Individual(s)'.
-      $types = isset($row['type']) ? array_map('trim', explode(',', $row['type'])) : ['Private Individual(s)'];
 
-      $query = \Drupal::entityQuery('taxonomy_term');
-      $tids = $query
-        ->condition('vid', 'owner_type')
-        ->condition('name', $types, 'IN')
-        ->execute();
-
-      $found = array_map(function (TermInterface $term) {
-        return $term->label();
-      }, Term::loadMultiple($tids));
-
-      if ($not_found = array_diff($types, $found)) {
-        throw new \Exception('Non-existent owner types: ' . implode(', ', $not_found));
-      }
 
       $values = [
-        'field_owner_type' => $tids,
         'field_owner_name' => !empty($row['name']) ? $row['name'] : $this->getRandom()->name(8, TRUE),
       ];
 

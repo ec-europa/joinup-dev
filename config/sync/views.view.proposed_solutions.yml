@@ -1,19 +1,19 @@
-uuid: 06f9a4fb-b1f7-4a47-b217-8b3c26f1e388
+uuid: 43a0b094-c348-4fa6-a662-6d91db0fa97f
 langcode: en
 status: true
 dependencies:
   config:
-    - search_api.index.published
-    - system.menu.main
+    - search_api.index.unpublished
   module:
-    - joinup_material_design
+    - rdf_entity
     - search_api
-id: collections
-label: Challenges
+    - user
+id: proposed_solutions
+label: 'Proposed solutions'
 module: views
 description: ''
 tag: ''
-base_table: search_api_index_published
+base_table: search_api_index_unpublished
 base_field: search_api_id
 display:
   default:
@@ -23,16 +23,18 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'view unpublished rdf entity'
       cache:
-        type: search_api_tag
+        type: tag
         options: {  }
       query:
-        type: search_api_query
+        type: views_query
         options:
           bypass_access: false
           skip_access: false
+          preserve_facet_query_args: false
       exposed_form:
         type: basic
         options:
@@ -44,17 +46,12 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
-        type: full
+        type: mini
         options:
-          items_per_page: 11
+          items_per_page: 10
           offset: 0
           id: 0
           total_pages: null
-          tags:
-            previous: '‹ Previous'
-            next: 'Next ›'
-            first: '« First'
-            last: 'Last »'
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -63,40 +60,61 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          quantity: 9
+          tags:
+            previous: ‹‹
+            next: ››
       style:
-        type: tiles
+        type: table
         options:
+          grouping: {  }
           row_class: ''
           default_row_class: true
-          uses_fields: false
+          override: true
+          sticky: false
+          caption: ''
+          summary: ''
+          description: ''
+          columns:
+            label: label
+            created: created
+            entity_created: entity_created
+            search_api_operations: search_api_operations
+          info:
+            label:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            created:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            entity_created:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            search_api_operations:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          default: '-1'
+          empty_table: false
       row:
-        type: search_api
-        options:
-          view_modes:
-            'entity:node':
-              custom_page: default
-              document: default
-              event: view_mode_tile
-              news: default
-            'entity:rdf_entity':
-              asset_distribution: default
-              asset_release: default
-              collection: view_mode_tile
-              licence: default
-              solution: view_mode_tile
+        type: fields
       fields:
-        search_api_language:
-          table: search_api_index_published
-          field: search_api_language
-          id: search_api_language
-          entity_type: null
-          entity_field: null
-          plugin_id: search_api
+        label:
+          id: label
+          table: search_api_datasource_unpublished_entity_rdf_entity
+          field: label
           relationship: none
           group_type: group
           admin_label: ''
-          label: ''
+          label: Title
           exclude: false
           alter:
             alter_text: false
@@ -137,74 +155,37 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          link_to_item: false
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
           multi_type: separator
-          multi_separator: ', '
-        search_api_id:
-          id: search_api_id
-          table: search_api_index_published
-          field: search_api_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          set_precision: false
-          precision: 0
-          decimal: .
-          separator: ','
-          format_plural: false
-          format_plural_string: !!binary MQNAY291bnQ=
-          prefix: ''
-          suffix: ''
-          plugin_id: numeric
-        label:
-          id: label
-          table: search_api_datasource_published_entity_rdf_entity
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+          entity_type: rdf_entity
+          plugin_id: search_api_field
+        label_2:
+          id: label_2
+          table: search_api_entity_rdf_entity
           field: label
-          relationship: none
+          relationship: collection
           group_type: group
           admin_label: ''
-          label: ''
+          label: Title
           exclude: false
           alter:
             alter_text: false
@@ -237,7 +218,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -262,66 +243,20 @@ display:
           field_rendering: true
           fallback_handler: search_api
           fallback_options:
-            id: ''
-            table: ''
-            field: ''
-            relationship: none
-            group_type: group
-            admin_label: ''
-            label: ''
-            exclude: false
-            alter:
-              alter_text: false
-              text: ''
-              make_link: false
-              path: ''
-              absolute: false
-              external: false
-              replace_spaces: false
-              path_case: none
-              trim_whitespace: false
-              alt: ''
-              rel: ''
-              link_class: ''
-              prefix: ''
-              suffix: ''
-              target: ''
-              nl2br: false
-              max_length: 0
-              word_boundary: true
-              ellipsis: true
-              more_link: false
-              more_link_text: ''
-              more_link_path: ''
-              strip_tags: false
-              trim: false
-              preserve_tags: ''
-              html: false
-            element_type: ''
-            element_class: ''
-            element_label_type: ''
-            element_label_class: ''
-            element_label_colon: true
-            element_wrapper_type: ''
-            element_wrapper_class: ''
-            element_default_classes: true
-            empty: ''
-            hide_empty: false
-            empty_zero: false
-            hide_alter_empty: true
             link_to_item: false
+            use_highlighting: false
             multi_type: separator
             multi_separator: ', '
           entity_type: rdf_entity
           plugin_id: search_api_field
-        field_ar_description:
-          id: field_ar_description
-          table: search_api_index_published
-          field: field_ar_description
+        created:
+          id: created
+          table: search_api_datasource_unpublished_entity_rdf_entity
+          field: created
           relationship: none
           group_type: group
           admin_label: ''
-          label: ''
+          label: 'Authored on'
           exclude: false
           alter:
             alter_text: false
@@ -354,7 +289,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -363,8 +298,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: text_default
-          settings: {  }
+          type: timestamp
+          settings:
+            date_format: short
+            custom_date_format: ''
+            timezone: ''
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -376,64 +314,72 @@ display:
           separator: ', '
           field_api_classes: false
           field_rendering: true
-          fallback_handler: search_api
+          fallback_handler: search_api_date
           fallback_options:
-            id: ''
-            table: ''
-            field: ''
-            relationship: none
-            group_type: group
-            admin_label: ''
-            label: ''
-            exclude: false
-            alter:
-              alter_text: false
-              text: ''
-              make_link: false
-              path: ''
-              absolute: false
-              external: false
-              replace_spaces: false
-              path_case: none
-              trim_whitespace: false
-              alt: ''
-              rel: ''
-              link_class: ''
-              prefix: ''
-              suffix: ''
-              target: ''
-              nl2br: false
-              max_length: 0
-              word_boundary: true
-              ellipsis: true
-              more_link: false
-              more_link_text: ''
-              more_link_path: ''
-              strip_tags: false
-              trim: false
-              preserve_tags: ''
-              html: false
-            element_type: ''
-            element_class: ''
-            element_label_type: ''
-            element_label_class: ''
-            element_label_colon: true
-            element_wrapper_type: ''
-            element_wrapper_class: ''
-            element_default_classes: true
-            empty: ''
-            hide_empty: false
-            empty_zero: false
-            hide_alter_empty: true
+            date_format: date_only
+            custom_date_format: ''
+            timezone: ''
             link_to_item: false
+            use_highlighting: false
             multi_type: separator
             multi_separator: ', '
+          entity_type: rdf_entity
           plugin_id: search_api_field
+        search_api_operations:
+          id: search_api_operations
+          table: search_api_index_unpublished
+          field: search_api_operations
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Actions
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          destination: false
+          plugin_id: search_api_entity_operations
       filters:
-        rid:
-          id: rid
-          table: search_api_index_published
-          field: rid
+        entity_state:
+          id: entity_state
+          table: search_api_index_unpublished
+          field: entity_state
           relationship: none
           group_type: group
           admin_label: ''
@@ -441,51 +387,7 @@ display:
           value:
             min: ''
             max: ''
-            value: collection
-          group: 1
-          exposed: false
-          expose:
-            operator_id: rid_op
-            label: 'Rdf Type'
-            description: ''
-            use_operator: false
-            operator: rid_op
-            identifier: rid
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              moderator: '0'
-              administrator: '0'
-            operator_limit_selection: false
-            operator_list: {  }
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          plugin_id: search_api_string
-        keywords:
-          id: keywords
-          table: search_api_index_published
-          field: keywords
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '!='
-          value:
-            min: ''
-            max: ''
-            value: EUvsVirus
+            value: proposed
           group: 1
           exposed: false
           expose:
@@ -517,82 +419,191 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: search_api_text
+          plugin_id: search_api_string
+        rid:
+          id: rid
+          table: search_api_index_unpublished
+          field: rid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: solution
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: search_api_string
       sorts:
-        site_pinned:
-          id: site_pinned
-          table: search_api_index_published
-          field: site_pinned
+        rdf_created:
+          id: rdf_created
+          table: search_api_index_unpublished
+          field: rdf_created
           relationship: none
           group_type: group
           admin_label: ''
-          order: DESC
+          order: ASC
           exposed: false
           expose:
-            label: ''
-            identifier: site_pinned
+            label: 'Authored on'
+            identifier: rdf_created
           plugin_id: search_api
-        entity_created:
-          id: entity_created
-          table: search_api_index_published
-          field: entity_created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: false
-          expose:
-            label: ''
-            identifier: entity_created
-          plugin_id: search_api
-      title: Challenges
+      title: 'Proposed solutions'
       header: {  }
       footer: {  }
-      empty: {  }
-      relationships: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 'You are all done here :)'
+            format: content_editor
+          plugin_id: text
+      relationships:
+        collection:
+          id: collection
+          table: search_api_datasource_unpublished_entity_rdf_entity
+          field: collection
+          relationship: none
+          group_type: group
+          admin_label: 'Collections: Rdf entity'
+          required: false
+          skip_access: false
+          entity_type: rdf_entity
+          plugin_id: search_api
       arguments: {  }
       display_extenders: {  }
-      show_admin_links: false
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      use_ajax: false
     cache_metadata:
       max-age: -1
       contexts:
-        - collection_owner
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
         - 'user.node_grants:view'
+        - user.permissions
       tags:
-        - 'config:search_api.index.published'
-        - 'search_api_list:published'
-  page_1:
+        - 'config:search_api.index.unpublished'
+        - 'search_api_list:unpublished'
+  block:
+    display_plugin: block
+    id: block
+    display_title: Block
+    position: 2
+    display_options:
+      display_extenders: {  }
+      use_more: true
+      defaults:
+        use_more: false
+        use_more_always: false
+        use_more_text: false
+        pager: false
+        title: false
+        use_ajax: false
+        sorts: false
+      use_more_always: false
+      use_more_text: 'View all'
+      pager:
+        type: some
+        options:
+          items_per_page: 5
+          offset: 0
+      title: 'Latest proposed solution'
+      block_description: 'Latest proposed solutions'
+      use_ajax: true
+      sorts:
+        rdf_created:
+          id: rdf_created
+          table: search_api_index_unpublished
+          field: rdf_created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: 'Authored on'
+            identifier: rdf_created
+          plugin_id: search_api
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url.query_args
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:search_api.index.unpublished'
+        - 'search_api_list:unpublished'
+  page:
     display_plugin: page
-    id: page_1
+    id: page
     display_title: Page
     position: 1
     display_options:
       display_extenders: {  }
-      path: challenges
+      path: dashboard/proposed-solutions
       menu:
-        type: normal
-        title: Challenges
+        type: tab
+        title: 'Proposed challenges'
         description: ''
         expanded: false
-        parent: ''
-        weight: -49
+        parent: system.admin_content
+        weight: 0
         context: '0'
-        menu_name: main
-      cache:
-        type: none
+        menu_name: admin
+      always_use_admin_theme: false
       defaults:
-        cache: false
+        sorts: true
     cache_metadata:
       max-age: -1
       contexts:
-        - collection_owner
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
         - 'user.node_grants:view'
+        - user.permissions
       tags:
-        - 'config:search_api.index.published'
-        - 'search_api_list:published'
+        - 'config:search_api.index.unpublished'
+        - 'search_api_list:unpublished'

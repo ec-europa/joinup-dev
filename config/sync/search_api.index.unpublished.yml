@@ -20,6 +20,7 @@ dependencies:
     - field.storage.node.field_event_agenda
     - field.storage.node.field_event_date
     - field.storage.rdf_entity.field_is_description
+    - field.storage.rdf_entity.field_is_eif_recommendation
     - field.storage.rdf_entity.field_is_pinned_in
     - field.storage.rdf_entity.field_is_solution_type
     - field.storage.rdf_entity.field_isr_description
@@ -36,13 +37,6 @@ dependencies:
     - field.storage.user.field_user_organisation
     - field.storage.rdf_entity.field_is_contact_information
     - field.storage.rdf_entity.field_ci_name
-    - field.storage.rdf_entity.field_isr_contact_information
-    - field.storage.rdf_entity.field_ad_description
-    - field.storage.rdf_entity.field_ar_description
-    - field.storage.rdf_entity.field_is_description
-    - field.storage.rdf_entity.field_isr_description
-    - field.storage.rdf_entity.field_licence_description
-    - field.storage.rdf_entity.field_is_eif_recommendation
     - field.storage.rdf_entity.field_is_owner
     - field.storage.rdf_entity.field_owner_name
     - field.storage.rdf_entity.field_isr_contact_information
@@ -114,6 +108,18 @@ field_settings:
         - 'entity:rdf_entity/collection'
         - 'entity:rdf_entity/field_isr_is_version_of'
         - 'entity:rdf_entity/og_audience'
+  entity_state:
+    label: State
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_state'
+        - 'entity:rdf_entity/field_ar_state'
+        - 'entity:rdf_entity/field_is_state'
+        - 'entity:rdf_entity/field_isr_state'
+        - 'entity:rdf_entity/field_status'
   field_ad_description:
     label: 'Description » Processed text'
     datasource_id: 'entity:rdf_entity'
@@ -470,7 +476,7 @@ datasource_settings:
         - glossary
         - news
         - newsletter
-        - tallinn_report
+        - pledge
         - video
     languages:
       default: true
