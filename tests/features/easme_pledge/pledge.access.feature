@@ -39,8 +39,8 @@ Feature:
 
   Scenario Outline: Proper roles should have proper submit buttons in the pledge creation form.
     Given pledge content:
-      | title       | description           | solution                                 | author       | state   |
-      | Some pledge | We would like to help | Possible solution to institute challenge | Pledge Owner | <state> |
+      | title       | description           | solution                                 | author       |
+      | Some pledge | We would like to help | Possible solution to institute challenge | Pledge Owner |
 
     When I am logged in as a user with the "<role>" role
     And I go to the "Possible solution to institute challenge" solution

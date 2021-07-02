@@ -793,6 +793,9 @@ class JoinupContext extends RawDrupalContext {
         'state' => 'field_state',
         'publication date' => 'published_at',
       ],
+      'pledge' => [
+        'state' => 'field_state',
+      ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
