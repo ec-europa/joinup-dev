@@ -251,7 +251,7 @@ function joinup_workflow_is_motivation_required($entity_type_id, $workflow_id, $
 }
 
 /**
- * Implements hook_form_node_form_alter().
+ * Implements hook_form_BASE_FORM_ID_alter().
  */
 function joinup_workflow_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['actions']['submit']['#submit'][] = 'joinup_workflow_message_form_submit_alter';
@@ -270,7 +270,7 @@ function joinup_workflow_message_form_submit_alter(array &$form, FormStateInterf
 
   if ($node instanceof CommunityContentInterface) {
     $messenger = \Drupal::messenger();
-    if ($node->get('field_state')->value == 'draft') {
+    if ($node->get('field_state')->value === 'draft') {
       $status_messages = $messenger->messagesByType('status');
       $messenger->deleteByType('status');
       $args = [
@@ -283,7 +283,7 @@ function joinup_workflow_message_form_submit_alter(array &$form, FormStateInterf
 
       foreach ($status_messages as $message) {
         if ($message instanceof MarkupInterface) {
-          if ((string) $message != (string) t('@type %title has been created.', $args)) {
+          if ((string) $message != t('@type %title has been created.', $args)) {
             $messenger->addStatus($message);
           }
         }
