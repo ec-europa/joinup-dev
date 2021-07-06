@@ -11,6 +11,7 @@ use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
@@ -118,6 +119,32 @@ class JoinupGroupContext extends RawDrupalContext {
     if (!$link->hasClass('group-menu-link-external')) {
       throw new ExpectationFailedException("Link '{$link_label}' should point to a resource outside the current group but it doesn't.");
     };
+  }
+
+  /**
+   * Checks that a cookie is set that tracks which group a user wants to join.
+   *
+   * An anonymous user can join a group only after they sign in or register. A
+   * cookie is set which will track which group the user wanted to join.
+   *
+   * @param string $label
+   *   The label of the group the user wants to join.
+   *
+   * @Then a cookie should be set that allows me to join :label after authenticating
+   */
+  public function assertAnonGroupJoinTrackingCookiePresent(string $label): void {
+    $cookie = $this->getSession()->getCookie('join_group');
+    $entity = $this->getRdfEntityByLabelUnchanged($label);
+    Assert::assertEquals($entity->id(), $cookie, "A cookie was expected to track that an anonymous user wants to join the '$label' group.");
+  }
+
+  /**
+   * Checks that no cookie is set that tracks which group a user wants to join.
+   *
+   * @Then the cookie that tracks which group I want to join should not be set
+   */
+  public function assertNoAnonGroupJoinTrackingCookiePresent(): void {
+    Assert::assertEmpty($this->getSession()->getCookie('join_group'), 'No cookie should be set that tracks which group an anonymous user wants to join.');
   }
 
 }
