@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\collection\Form;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Ajax\AjaxResponse;
@@ -64,6 +65,13 @@ class SubscribeToCollectionForm extends FormBase {
   protected $formBuilder;
 
   /**
+   * The time keeping service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $time;
+
+  /**
    * Constructs a SubscribeToCollectionForm.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -74,12 +82,15 @@ class SubscribeToCollectionForm extends FormBase {
    *   The messenger service.
    * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
    *   The form builder.
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   The time keeping service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $membership_manager, MessengerInterface $messenger, FormBuilderInterface $form_builder) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $membership_manager, MessengerInterface $messenger, FormBuilderInterface $form_builder, TimeInterface $time) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $membership_manager;
     $this->messenger = $messenger;
     $this->formBuilder = $form_builder;
+    $this->time = $time;
   }
 
   /**
@@ -90,7 +101,8 @@ class SubscribeToCollectionForm extends FormBase {
       $container->get('entity_type.manager'),
       $container->get('og.membership_manager'),
       $container->get('messenger'),
-      $container->get('form_builder')
+      $container->get('form_builder'),
+      $container->get('datetime.time')
     );
   }
 
@@ -290,6 +302,12 @@ class SubscribeToCollectionForm extends FormBase {
   /**
    * AJAX callback showing the subscribe form in a modal dialog.
    *
+   * This is shown in response to a cookie being present which was set when the
+   * user expressed their desire to join the collection before they logged in.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The collection the user has joined.
+   *
    * @return \Drupal\Core\Ajax\AjaxResponse
    *   The AJAX response.
    */
@@ -301,6 +319,14 @@ class SubscribeToCollectionForm extends FormBase {
 
     $response = new AjaxResponse();
     $response->addCommand(new OpenModalDialogCommand($title, $modal_form, ['width' => '500']));
+
+    // This modal should only be shown once, immediately after the user logs in.
+    // Deleting the cookie ensures it will not be shown again.
+    setcookie('join_group', '', $this->time->getRequestTime() - 86400, '/');
+
+    // Ensure the response is not cached, this code needs to run so the cookie
+    // can be deleted.
+    $response->setMaxAge(0);
 
     return $response;
   }
