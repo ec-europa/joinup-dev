@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_core\Plugin\Field\FieldType;
 
+use Drupal\Core\TypedData\ComputedItemListTrait;
 use Drupal\link\Plugin\Field\FieldType\LinkItem;
 
 /**
@@ -25,64 +26,55 @@ use Drupal\link\Plugin\Field\FieldType\LinkItem;
  */
 class ReportLinkItem extends LinkItem {
 
-  /**
-   * Whether or not the value has been calculated.
-   *
-   * @var bool
-   */
-  protected $isCalculated = FALSE;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __get($name) {
-    $this->ensureCalculated();
-    return parent::__get($name);
-  }
+  use ComputedItemListTrait;
 
   /**
    * {@inheritdoc}
    */
   public function isEmpty() {
-    $this->ensureCalculated();
-    return parent::isEmpty();
+    $this->ensureComputedValue();
+    $value = parent::get('uri')->getValue();
+    return $value === NULL || $value === '';
   }
 
   /**
    * {@inheritdoc}
    */
   public function getValue() {
-    $this->ensureCalculated();
-    return parent::getValue();
+    $this->ensureComputedValue();
+    return $this->getValue();
   }
 
   /**
-   * Makes sure that the value is populated.
-   *
-   * Normal fields get their data from the database and are populated if there
-   * is data available. Since this is a computed field we need to make sure
-   * there is always data available ourselves.
-   *
-   * This trick has been borrowed from issue #2846554 which does the same for
-   * the PathItem field.
-   *
-   * @todo Remove this when issue #2392845 is fixed.
-   *
-   * @see https://www.drupal.org/node/2392845
-   * @see https://www.drupal.org/node/2846554
+   * {@inheritdoc}
    */
-  protected function ensureCalculated() {
-    if (!$this->isCalculated) {
-      $entity = $this->getEntity();
-      if (!$entity->isNew()) {
-        $url = $this->getEntity()->toUrl()->toString();
-        $value = [
-          'uri' => 'internal:/contact?category=report&uri=' . $url,
-          'title' => $this->t('Report abusive content'),
-        ];
-        $this->setValue($value);
-      }
-      $this->isCalculated = TRUE;
+  public function set($property_name, $value, $notify = TRUE) {
+    // There is a conflict between
+    // \Drupal\Core\TypedData\Plugin\DataType\Map::set
+    // and \Drupal\Core\TypedData\ComputedItemListTrait::set so we are
+    // overriding the function to match the one from the Map.
+    parent::set($property_name, $value);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function computeValue() {
+    $entity = $this->getEntity();
+    if (!$entity->isNew()) {
+      $url = $this->getEntity()->toUrl()->toString();
+      $value = [
+        'uri' => 'internal:/contact',
+        'title' => $this->t('Report abusive content'),
+        'options' => [
+          'query' => [
+            'category' => 'report',
+            'uri' => $url,
+            'destination' => $url,
+          ],
+        ],
+      ];
+      $this->setValue($value);
     }
   }
 
