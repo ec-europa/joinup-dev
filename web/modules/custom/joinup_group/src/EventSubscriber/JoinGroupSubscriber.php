@@ -83,9 +83,7 @@ class JoinGroupSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents(): array {
     return [
       ExternalAuthEvents::LOGIN => 'onLogin',
-      CasAccountLinkEvents::POST_LINK => [
-        ['onPostLink', 100],
-      ],
+      CasAccountLinkEvents::POST_LINK => [['onPostLink', 100]],
     ];
   }
 

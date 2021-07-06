@@ -2,8 +2,8 @@ subscribe_dialog:
   js:
     js/subscribe-dialog.js: {}
   dependencies:
-    - core/jquery
-    - core/js-cookie
     - core/drupal
     - core/drupal.ajax
     - core/drupalSettings
+    - core/jquery
+    - core/js-cookie
