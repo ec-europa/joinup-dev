@@ -328,6 +328,7 @@ Feature: News moderation.
     And I should see the heading "Hawkgirl saves the planet"
     And the "Hawkgirl saves the planet" "news" content should have 4 revisions
 
+  @terms
   Scenario: Check message draft url when click in Title.
     When I am logged in as "Eagle"
     And I go to the homepage of the "Justice League" collection
@@ -343,6 +344,7 @@ Feature: News moderation.
     And I click "Whale joins the JL"
     Then I should see the text "Specialized in close combat training"
 
+  @terms
   Scenario: Check news when click in My account page.
     When I am logged in as "Eagle"
     And I go to the homepage of the "Justice League" collection
