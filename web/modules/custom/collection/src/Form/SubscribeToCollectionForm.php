@@ -8,6 +8,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\PrependCommand;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
@@ -56,6 +57,13 @@ class SubscribeToCollectionForm extends FormBase {
   protected $messenger;
 
   /**
+   * The form builder.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
    * Constructs a SubscribeToCollectionForm.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -64,11 +72,14 @@ class SubscribeToCollectionForm extends FormBase {
    *   The membership manager service.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
+   * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
+   *   The form builder.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $membership_manager, MessengerInterface $messenger) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $membership_manager, MessengerInterface $messenger, FormBuilderInterface $form_builder) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $membership_manager;
     $this->messenger = $messenger;
+    $this->formBuilder = $form_builder;
   }
 
   /**
@@ -78,7 +89,8 @@ class SubscribeToCollectionForm extends FormBase {
     return new static(
       $container->get('entity_type.manager'),
       $container->get('og.membership_manager'),
-      $container->get('messenger')
+      $container->get('messenger'),
+      $container->get('form_builder')
     );
   }
 
@@ -241,6 +253,56 @@ class SubscribeToCollectionForm extends FormBase {
   public function access(RdfInterface $rdf_entity): AccessResultInterface {
     $user = $this->getUser();
     return AccessResult::allowedIf($user->isAuthenticated() && !empty($this->getUserNonBlockedMembership($rdf_entity)));
+  }
+
+  /**
+   * Access check for showing the subscribe form after authenticating a user.
+   *
+   * When an anonymous user wants to join a collection they first need to log in
+   * and are then redirected back to the collection homepage so they can opt in
+   * to the notification subscription. The desired collection is tracked in a
+   * cookie. At the moment the user is logged in they will immediately become a
+   * member of the collection but still need to opt in to notifications.
+   *
+   * This validates the following before showing the dialog:
+   * - The cookie keeping track of the collection to join is present.
+   * - The cookie tracks this collection.
+   * - The user is an unblocked member of the collection.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The collection the user has joined.
+   *
+   * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result.
+   *
+   * @see \Drupal\joinup_group\EventSubscriber\JoinGroupSubscriber::onLogin()
+   */
+  public function accessToSubscribeDialogAfterAuthenticating(RdfInterface $rdf_entity): AccessResultInterface {
+    $cookie_id = $this->getRequest()->cookies->get('join_group', '');
+    $user = $this->getUser();
+    return AccessResult::allowedIf(
+      $cookie_id === $rdf_entity->id()
+      && $user->isAuthenticated()
+      && !empty($this->getUserNonBlockedMembership($rdf_entity))
+    );
+  }
+
+  /**
+   * AJAX callback showing the subscribe form in a modal dialog.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   The AJAX response.
+   */
+  public function showSubscribeDialog(RdfInterface $rdf_entity): AjaxResponse {
+    $title = $this->t('Welcome to %collection', ['%collection' => $rdf_entity->label()]);
+
+    $modal_form = $this->formBuilder->getForm(SubscribeToCollectionForm::class, $rdf_entity);
+    $modal_form['#attached']['library'][] = 'core/drupal.dialog.ajax';
+
+    $response = new AjaxResponse();
+    $response->addCommand(new OpenModalDialogCommand($title, $modal_form, ['width' => '500']));
+
+    return $response;
   }
 
   /**
