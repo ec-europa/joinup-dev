@@ -53,6 +53,11 @@ Feature: Joining and leaving collections through the web interface
     And I should see the button "No thanks" in the "Modal buttons" region
     And I should see the button "Subscribe" in the "Modal buttons" region
 
+    # The modal should not open when visiting the page for a second time.
+    When I reload the page
+    And I wait for AJAX to finish
+    Then I should not see the text "Welcome to Reannual plants"
+
     # Clean up the user that was created manually during the scenario.
     Then I delete the "Iodine Maccalariat" user
 
