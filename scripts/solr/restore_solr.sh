@@ -61,6 +61,10 @@ if [ "${CORE}" == '' ] || [ "${SNAPSHOT_DIR}" == '' ] || [ "${SNAPSHOT_NAME}" ==
   exit 1;
 fi
 
+if [ ! -z "${SNAPSHOT_DIR%%/*}" ] || ! pathchk -p "${SNAPSHOT_DIR}"; then
+  error "The --snapshot-dir path should be absolute!"
+fi
+
 CORE_EXISTS=`curl -sS "${SOLR_SERVER_URL}/admin/cores?action=STATUS&core=${CORE}&wt=xml" |grep -o '<long name="uptime">'`
 
 if [ "${CORE_EXISTS}" == '' ]; then
