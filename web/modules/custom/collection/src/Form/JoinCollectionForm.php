@@ -21,13 +21,6 @@ use Drupal\rdf_entity\RdfInterface;
 class JoinCollectionForm extends JoinGroupFormBase {
 
   /**
-   * The state of the new membership the user will get.
-   *
-   * @var string
-   */
-  protected $membershipState;
-
-  /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ?AccountProxyInterface $user = NULL, ?RdfInterface $group = NULL): array {
