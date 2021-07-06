@@ -1619,6 +1619,12 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
       // Add class for join collection button.
       $form['join']['#attributes']['class'][] = 'button--blue-light';
 
+      // Make the 'Join' link that opens a modal for anonymous users appear as a
+      // button.
+      if (isset($form['authenticate'])) {
+        $form['authenticate']['#attributes']['class'] = array_merge($link_button_classes, $form['authenticate']['#attributes']['class'] ?? []);
+      }
+
       if (isset($form['pending'])) {
         // Add classes for pending membership link.
         $form['pending']['#attributes']['class'] = array_merge($link_button_classes, ['button--small']);
