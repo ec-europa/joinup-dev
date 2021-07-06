@@ -190,7 +190,7 @@ Feature: Homepage
     And the option with text "E-justice" from select facet "topic" is selected
 
   @terms
-  Scenario: Discover topics block shows a list of topics.
+  Scenario: Explore block shows a list of news.
     Given collection:
       | title | Clash of jonny's |
       | state | validated        |
