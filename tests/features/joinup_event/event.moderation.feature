@@ -97,7 +97,7 @@ Feature: Event moderation
     And I fill the end time of the Date widget with "00:30:00"
     And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
-    Then I should see the success message "Event Rainbow of Worlds has been created"
+    Then I should see the success message 'Event Rainbow of Worlds has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
     And I should see the text "30/08 to 01/09/2018"
 
     # Publish the content.
@@ -141,3 +141,41 @@ Feature: Event moderation
     And the current workflow state should be "Proposed"
     And I press "Publish"
     Then I should see the heading "The event is amazing"
+
+  Scenario: Check message draft url when click in Title.
+    When I am logged in as "Rosa Vaughn"
+    And I go to the homepage of the "Wet Lords" collection
+    And I click "Add event"
+    When I fill in the following:
+      | Title             | Rainbow Beach                     |
+      | Short title       | Rainbow Beach                     |
+      | Description       | This is going to be an amazing event. |
+      | Physical location | Worlds crossroad                      |
+    And I fill the start date of the Date widget with "2018-08-30"
+    And I fill the start time of the Date widget with "23:59:00"
+    And I fill the end date of the Date widget with "2018-09-01"
+    And I fill the end time of the Date widget with "00:30:00"
+    And I select "EU and European Policies" from "Topic"
+    And I press "Save as draft"
+    Then I should see the success message 'Event Rainbow Beach has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    And I click "Rainbow Beach"
+    Then I should see the text "This is going to be an amazing event."
+
+  Scenario: Check event when click in My account page.
+    When I am logged in as "Rosa Vaughn"
+    And I go to the homepage of the "Wet Lords" collection
+    And I click "Add event"
+    When I fill in the following:
+      | Title             | Rainbow vinyls                     |
+      | Short title       | Rainbow vinyls                     |
+      | Description       | This is going to be an amazing event. |
+      | Physical location | Worlds crossroad                      |
+    And I fill the start date of the Date widget with "2018-08-30"
+    And I fill the start time of the Date widget with "23:59:00"
+    And I fill the end date of the Date widget with "2018-09-01"
+    And I fill the end time of the Date widget with "00:30:00"
+    And I select "EU and European Policies" from "Topic"
+    And I press "Save as draft"
+    Then I should see the success message 'Event Rainbow vinyls has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    And I click "My account page"
+    Then I should see the heading "Rainbow vinyls"
