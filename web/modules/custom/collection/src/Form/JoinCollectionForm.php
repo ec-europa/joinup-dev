@@ -10,9 +10,7 @@ use Drupal\Core\Ajax\PrependCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\joinup_group\Form\JoinGroupFormBase;
-use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**

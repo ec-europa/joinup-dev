@@ -33,6 +33,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @see \Drupal\collection\Form\JoinCollectionForm::showSubscribeDialog()
  */
 class SubscribeToCollectionForm extends FormBase {
+
   /**
    * The entity type manager service.
    *
@@ -230,6 +231,9 @@ class SubscribeToCollectionForm extends FormBase {
 
   /**
    * Access check for the form.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The collection for which to check access.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
