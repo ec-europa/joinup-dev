@@ -427,3 +427,10 @@ Feature:
     And I should see the text "Licence details for the bar licence."
     And I should see the button "Licence text"
     But I should not see the text "Licence details for the foo licence."
+
+  @javascript
+  Scenario: Check JLA entry Disclose source.
+    Given I am an anonymous user
+    When I visit the "JLA" custom page
+    And I should see the text "Disclose source"
+    And the response should contain "<a data-licence-category=\"disclose-source\" href=\"#\" title=\"The source code of distributed derivatives must be publicly available\">Disclose source</a>"
