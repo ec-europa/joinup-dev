@@ -29,7 +29,9 @@ class Collection extends Rdf implements CollectionInterface {
   use EntityPublicationTimeFallbackTrait;
   use EntityWorkflowStateTrait;
   use FeaturedContentTrait;
-  use GroupTrait;
+  use GroupTrait {
+    createMembership as protected createMembershipTrait;
+  }
   use JoinupBundleClassFieldAccessTrait;
   use JoinupBundleClassMetaEntityTrait;
   use LogoTrait;
@@ -123,6 +125,19 @@ class Collection extends Rdf implements CollectionInterface {
     return [
       'link_only_first' => (bool) $meta_entity->get('glossary_link_only_first')->value,
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function createMembership(?int $uid = NULL, ?string $role = 'member', ?string $state = NULL): OgMembershipInterface {
+    // If the membership state is not defined, default to 'active' for open
+    // collections, and 'pending' for closed collections.
+    if (empty($state)) {
+      $state = $this->isClosed() ? OgMembershipInterface::STATE_PENDING : OgMembershipInterface::STATE_ACTIVE;
+    }
+
+    return $this->createMembershipTrait($uid, $role, $state);
   }
 
   /**

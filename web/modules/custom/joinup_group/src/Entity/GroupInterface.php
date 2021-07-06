@@ -53,6 +53,39 @@ interface GroupInterface extends RdfInterface, LogoInterface, PinnableToFrontpag
   public function getMembership(?int $uid = NULL, array $states = [OgMembershipInterface::STATE_ACTIVE]): ?OgMembershipInterface;
 
   /**
+   * Creates a membership for the given user in the current group.
+   *
+   * @param int|null $uid
+   *   The ID of the user that will become a member. Defaults to the current
+   *   user.
+   * @param string|null $role
+   *   The role to assign to the user. Can be either 'member', 'author, or
+   *   'facilitator'. Owners cannot be added using this method since every group
+   *   has a single owner which is assigned when the group is created or
+   *   transferred. Defaults to 'member'.
+   * @param string|null $state
+   *   The state of the membership. It may be of the following constants:
+   *   - OgMembershipInterface::STATE_ACTIVE
+   *   - OgMembershipInterface::STATE_PENDING
+   *   - OgMembershipInterface::STATE_BLOCKED.
+   *   Defaults to the most appropriate state: 'active' for solutions and open
+   *   collections, and 'pending' for closed collections.
+   *
+   * @return \Drupal\og\OgMembershipInterface
+   *   The membership that was created.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when an error occurs during the saving of the membership.
+   * @throws \Drupal\joinup_group\Exception\MembershipExistsException
+   *   Thrown when the user already has a membership.
+   * @throws \InvalidArgumentException
+   *   Thrown when the passed in role does not exist, when a membership for an
+   *   owner is created, or when the passed in user ID does not match an
+   *   existing user.
+   */
+  public function createMembership(?int $uid = NULL, ?string $role = 'member', ?string $state = NULL): OgMembershipInterface;
+
+  /**
    * Determines whether a user has a group permission in the group.
    *
    * The following conditions will result in a positive result:
