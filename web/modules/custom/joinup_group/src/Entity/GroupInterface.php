@@ -250,4 +250,19 @@ interface GroupInterface extends RdfInterface, LogoInterface, PinnableToFrontpag
    */
   public function getNewMembershipSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup;
 
+  /**
+   * Returns the number of members in the group.
+   *
+   * @param array $states
+   *   An array of membership states to check. Can contain one or more of:
+   *   - OgMembershipInterface::STATE_ACTIVE
+   *   - OgMembershipInterface::STATE_PENDING
+   *   - OgMembershipInterface::STATE_BLOCKED
+   *   Defaults to checking active members.
+   *
+   * @return int
+   *   The number of members.
+   */
+  public function getMemberCount(array $states = [OgMembershipInterface::STATE_ACTIVE]): int;
+
 }

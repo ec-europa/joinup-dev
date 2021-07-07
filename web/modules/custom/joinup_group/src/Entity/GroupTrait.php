@@ -185,6 +185,18 @@ trait GroupTrait {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getMemberCount(array $states = [OgMembershipInterface::STATE_ACTIVE]): int {
+    return (int) \Drupal::entityQuery('og_membership')
+      ->condition('entity_type', 'rdf_entity')
+      ->condition('entity_id', $this->id())
+      ->condition('state', $states, 'IN')
+      ->count()
+      ->execute();
+  }
+
+  /**
    * Processes and returns a list of group content entities.
    *
    * @return array
