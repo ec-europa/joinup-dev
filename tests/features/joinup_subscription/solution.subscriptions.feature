@@ -19,11 +19,45 @@ Feature: Subscribing to a solution
       | Username          |
       | Cornilius Darcias |
 
+  @javascript
   Scenario: Subscribe to a solution as an anonymous user
+    Given CAS users:
+      | Username         | E-mail      | Password |
+      | Jonathan Teatime | jon@ankh.am | j0nathan |
+    And the following legal document version:
+      | Document     | Label | Published | Acceptance label                                                                                   | Content                                                    |
+      | Legal notice | 1.1   | yes       | I have read and accept the <a href="[entity_legal_document:url]">[entity_legal_document:label]</a> | The information on this site is subject to a disclaimer... |
+
     When I am not logged in
     And I go to the "Some solution to subscribe" solution
     # This is a link which is styled as a button.
     Then I should see the link "Subscribe to this solution"
+    And the "Some solution to subscribe" solution should have 0 active members
+
+    When I click "Subscribe to this solution"
+    Then I should see the text "Sign in to subscribe"
+    And I should see "Only signed in users can subscribe to this solution. Please sign in or register an account on EU Login."
+    But the cookie that tracks which group I want to join should not be set
+    When I press "Sign in / Register" in the "Modal buttons" region
+    Then I should see the heading "Sign in to continue"
+    And a cookie should be set that allows me to join "Some solution to subscribe" after authenticating
+
+    When I fill in "E-mail address" with "jon@ankh.am"
+    And I fill in "Password" with "j0nathan"
+    And I press "Log in"
+    And I select the radio button "I am a new user (create a new account)"
+    And I check the "I have read and accept the Legal notice" material checkbox
+    And I press "Next"
+
+    # The user should be redirected to the solution and be presented with a
+    # welcome message.
+    Then I should see the heading "Some solution to subscribe"
+    And I should see the success message "You have been logged in."
+    And I should see the success message "You have subscribed to this solution and will receive notifications for it. To manage your subscriptions go to My subscriptions in your user menu."
+    And the "Some solution to subscribe" solution should have 1 active member
+
+    # Clean up the user that was created manually during the scenario.
+    Then I delete the "Jonathan Teatime" user
 
   @javascript
   Scenario: Subscribe to a solution as a normal user
