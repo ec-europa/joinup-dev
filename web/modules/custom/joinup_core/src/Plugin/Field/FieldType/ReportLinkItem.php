@@ -42,7 +42,7 @@ class ReportLinkItem extends LinkItem {
    */
   public function getValue() {
     $this->ensureComputedValue();
-    return $this->getValue();
+    return parent::getValue();
   }
 
   /**
