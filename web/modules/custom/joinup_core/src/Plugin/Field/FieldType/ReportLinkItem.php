@@ -31,6 +31,18 @@ class ReportLinkItem extends LinkItem {
   /**
    * {@inheritdoc}
    */
+  public function get($index) {
+    // There is a conflict between
+    // \Drupal\Core\TypedData\Plugin\DataType\Map::get
+    // and \Drupal\Core\TypedData\ComputedItemListTrait::get so we are
+    // overriding the function to match the one from the Map.
+    $this->ensureComputedValue();
+    return parent::get($index);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function isEmpty() {
     $this->ensureComputedValue();
     $value = parent::get('uri')->getValue();
