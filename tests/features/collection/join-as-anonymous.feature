@@ -197,3 +197,33 @@ Feature: Joining a collection as an anonymous user
     When I reload the page
     And I wait for AJAX to finish
     Then I should not see the text "Welcome to Vul nuts"
+
+  Scenario: Show relevant message to a blocked user that tries to rejoin a collection as anonymous
+    Given users:
+      | Username         |
+      | Hepzibah Whitlow |
+    And CAS users:
+      | Username         | E-mail           | Password | Local username   |
+      | Hepzibah Whitlow | hepzibah@ankh.am | wh1tl0w  | Hepzibah Whitlow |
+    And collection user membership:
+      | collection      | user             | state   |
+      | Reannual plants | Hepzibah Whitlow | blocked |
+
+    Given I am an anonymous user
+    When I go to the homepage of the "Reannual plants" collection
+    And I click "Join this collection"
+    Then I should see the text "Sign in to join"
+    When I press "Sign in / Register"
+    Then I should see the heading "Sign in to continue"
+
+    When I fill in "E-mail address" with "hepzibah@ankh.am"
+    And I fill in "Password" with "wh1tl0w"
+    And I press "Log in"
+
+    Then I should see the heading "Reannual plants"
+    And I should see the success message "You have been logged in."
+    And I should see the success message "You cannot join Reannual plants because your account has been blocked."
+
+    # The message should only be shown once.
+    When I reload the page
+    And I should not see the success message "You cannot join Reannual plants because your account has been blocked."

@@ -108,6 +108,35 @@ Feature: Subscribing to a solution
     And I should see the success message "You have subscribed to this solution and will receive notifications for it. To manage your subscriptions go to My subscriptions in your user menu."
     And the "Some solution to subscribe" solution should have 1 active member
 
+  Scenario: Show relevant message to a blocked user that tries to resubscribe as anonymous
+    Given users:
+      | Username     |
+      | Cosmo Lavish |
+    And CAS users:
+      | Username     | E-mail             | Password | Local username |
+      | Cosmo Lavish | cosmo@lavish.co.am | c0sm0    | Cosmo Lavish   |
+    And solution user membership:
+      | solution                   | user         | state   |
+      | Some solution to subscribe | Cosmo Lavish | blocked |
+
+    Given I am an anonymous user
+    When I go to the homepage of the "Some solution to subscribe" solution
+    And I click "Subscribe to this solution"
+    And I press "Sign in / Register"
+    Then I should see the heading "Sign in to continue"
+
+    When I fill in "E-mail address" with "cosmo@lavish.co.am"
+    And I fill in "Password" with "c0sm0"
+    And I press "Log in"
+
+    Then I should see the heading "Some solution to subscribe"
+    And I should see the success message "You have been logged in."
+    And I should see the success message "You cannot subscribe to Some solution to subscribe because your account has been blocked."
+
+    # The message should only be shown once.
+    When I reload the page
+    And I should not see the success message "You cannot subscribe to Some solution to subscribe because your account has been blocked."
+
   @javascript
   Scenario: Subscribe to a solution as a normal user
     When I am logged in as "Cornilius Darcias"
