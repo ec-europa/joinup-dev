@@ -3,51 +3,50 @@ langcode: en
 status: true
 dependencies:
   module:
-    - asset_distribution
-    - custom_page
-    - joinup_featured
-    - joinup_search
-    - meta_entity
+    - search_api_solr
     - node
     - paragraphs
-    - publication_date
+    - meta_entity
     - rdf_entity
-    - rdf_taxonomy
-    - search_api
-    - search_api_solr
+    - publication_date
     - taxonomy
+    - rdf_taxonomy
     - user
+    - search_api
+    - asset_distribution
+    - custom_page
+    - joinup_search
   config:
-    - field.storage.meta_entity.count
-    - field.storage.meta_entity.field_featured
-    - field.storage.meta_entity.field_pinned_in
-    - field.storage.node.body
     - field.storage.node.field_event_agenda
-    - field.storage.node.field_event_date
-    - field.storage.node.field_location
-    - field.storage.node.field_news_headline
-    - field.storage.node.field_organisation
     - field.storage.node.field_paragraphs_body
+    - field.storage.paragraph.field_body
+    - field.storage.node.body
+    - field.storage.node.field_event_date
+    - field.storage.meta_entity.field_featured
+    - field.storage.node.field_news_headline
+    - field.storage.node.field_location
+    - field.storage.node.field_organisation
+    - field.storage.meta_entity.field_pinned_in
     - field.storage.node.field_scope
     - field.storage.node.field_short_title
-    - field.storage.paragraph.field_body
-    - field.storage.rdf_entity.field_ad_description
+    - field.storage.meta_entity.count
     - field.storage.rdf_entity.field_ar_abstract
-    - field.storage.rdf_entity.field_ar_description
+    - field.storage.rdf_entity.field_isr_contact_information
     - field.storage.rdf_entity.field_ci_name
     - field.storage.rdf_entity.field_is_contact_information
+    - field.storage.rdf_entity.field_licence_spdx_licence
+    - field.storage.rdf_entity.field_ad_description
+    - field.storage.rdf_entity.field_ar_description
     - field.storage.rdf_entity.field_is_description
+    - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_licence_description
     - field.storage.rdf_entity.field_is_eif_category
     - field.storage.rdf_entity.field_is_eif_recommendation
-    - field.storage.rdf_entity.field_is_owner
-    - field.storage.rdf_entity.field_is_solution_type
-    - field.storage.rdf_entity.field_isr_contact_information
-    - field.storage.rdf_entity.field_isr_description
     - field.storage.rdf_entity.field_isr_owner
-    - field.storage.rdf_entity.field_isr_release_notes
-    - field.storage.rdf_entity.field_licence_description
-    - field.storage.rdf_entity.field_licence_spdx_licence
     - field.storage.rdf_entity.field_owner_name
+    - field.storage.rdf_entity.field_is_owner
+    - field.storage.rdf_entity.field_isr_release_notes
+    - field.storage.rdf_entity.field_is_solution_type
     - field.storage.taxonomy_term.field_eif_identifier
     - field.storage.taxonomy_term.field_eif_related_term
     - field.storage.user.field_user_family_name
@@ -557,6 +556,7 @@ field_settings:
       type: union
       fields:
         - 'entity:node/field_document_spatial_coverage'
+        - 'entity:node/field_event_spatial_coverage'
         - 'entity:node/field_news_spatial_coverage'
         - 'entity:rdf_entity/field_spatial_coverage'
   sticky:
