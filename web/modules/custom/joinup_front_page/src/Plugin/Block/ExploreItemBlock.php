@@ -86,22 +86,22 @@ class ExploreItemBlock extends BlockBase implements ContainerFactoryPluginInterf
       'solutions' => [
         'name' => $this->t('Solutions'),
         'data' => $this->getRdfEntity('solution'),
-        'url' => '/search?keys=solutions',
+        'url' => '/search?keys=&f[0]=type%3Asolution',
       ],
       'collections' => [
         'name' => $this->t('Collections'),
         'data' => $this->getRdfEntity('collection'),
-        'url' => '/search?keys=collections',
+        'url' => '/search?keys=&f[0]=type%3Acollection',
       ],
       'news' => [
         'name' => $this->t('News'),
         'data' => $this->getContent('news'),
-        'url' => '/search?keys=news',
+        'url' => '/search?keys=&f[0]=type%3Anews',
       ],
       'events' => [
         'name' => $this->t('Events'),
         'data' => $this->getContent('events'),
-        'url' => '/search?keys=events',
+        'url' => '/search?keys=&f[0]=type%3Aevent',
       ],
     ];
 
