@@ -119,7 +119,7 @@ Feature: Global search
     And I should not see the "El Celler de Can Roca" tile
 
   @javascript
-  Scenario: Content can be found with a full-text search.
+  Scenario: Alphabetical order for the spatial coverage in the search page.
     Given the following owner:
       | name              | type    |
       | Responsible owner | Company |
