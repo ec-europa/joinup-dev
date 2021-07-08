@@ -60,6 +60,40 @@ Feature: Subscribing to a solution
     Then I delete the "Jonathan Teatime" user
 
   @javascript
+  Scenario: Logged out users can subscribe to a solution after logging in
+    Given users:
+      | Username                  |
+      | Bergholt Stuttley Johnson |
+    Given CAS users:
+      | Username                  | E-mail                   | Password | Local username            |
+      | Bergholt Stuttley Johnson | berg@stuttley-johnson.am | berghol7 | Bergholt Stuttley Johnson |
+
+    When I am not logged in
+    And I go to the "Some solution to subscribe" solution
+    # This is a link which is styled as a button.
+    Then I should see the link "Subscribe to this solution"
+    And the "Some solution to subscribe" solution should have 0 active members
+
+    When I click "Subscribe to this solution"
+    Then I should see the text "Sign in to subscribe"
+    And I should see "Only signed in users can subscribe to this solution. Please sign in or register an account on EU Login."
+    But the cookie that tracks which group I want to join should not be set
+    When I press "Sign in / Register" in the "Modal buttons" region
+    Then I should see the heading "Sign in to continue"
+    And a cookie should be set that allows me to join "Some solution to subscribe" after authenticating
+
+    When I fill in "E-mail address" with "berg@stuttley-johnson.am"
+    And I fill in "Password" with "berghol7"
+    And I press "Log in"
+
+    # The user should be redirected to the solution and be presented with a
+    # welcome message.
+    Then I should see the heading "Some solution to subscribe"
+    And I should see the success message "You have been logged in."
+    And I should see the success message "You have subscribed to this solution and will receive notifications for it. To manage your subscriptions go to My subscriptions in your user menu."
+    And the "Some solution to subscribe" solution should have 1 active member
+
+  @javascript
   Scenario: Subscribe to a solution as a normal user
     When I am logged in as "Cornilius Darcias"
     And I go to the "Some solution to subscribe" solution
