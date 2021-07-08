@@ -14,6 +14,7 @@ use Drupal\cas_account_link\Event\Events\CasAccountLinkPostLinkEvent;
 use Drupal\externalauth\Event\ExternalAuthEvents;
 use Drupal\externalauth\Event\ExternalAuthLoginEvent;
 use Drupal\joinup_group\Entity\GroupInterface;
+use Drupal\og\OgMembershipInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -100,12 +101,21 @@ class JoinGroupSubscriber implements EventSubscriberInterface {
   public function onLogin(ExternalAuthLoginEvent $event): void {
     if ($group = $this->getGroup()) {
       try {
-        // Subscribe the user to the group.
-        $membership = $group->createMembership((int) $event->getAccount()->id());
-        $this->messenger->addStatus($group->getNewMembershipSuccessMessage($membership));
+        $uid = (int) $event->getAccount()->id();
+        if ($membership = $group->getMembership($uid, OgMembershipInterface::ALL_STATES)) {
+          // The user is already subscribed. Delete the cookie and show an
+          // appropriate message.
+          $this->messenger->addStatus($group->getExistingMembershipMessage($membership));
+          $this->deleteCookie();
+        }
+        else {
+          // Subscribe the user to the group.
+          $membership = $group->createMembership((int) $event->getAccount()->id());
+          $this->messenger->addStatus($group->getNewMembershipSuccessMessage($membership));
+        }
 
-        // Redirect to the group page so the user has the opportunity to
-        // subscribe to group notifications.
+        // Redirect to the group page so the user sees a confirmation and has
+        // the opportunity to subscribe to group notifications.
         $url = $group->toUrl();
         if ($url instanceof Url) {
           $this->requestStack->getCurrentRequest()->query->set('destination', $url->toString());

@@ -56,6 +56,21 @@ Feature: Subscribing to a solution
     And I should see the success message "You have subscribed to this solution and will receive notifications for it. To manage your subscriptions go to My subscriptions in your user menu."
     And the "Some solution to subscribe" solution should have 1 active member
 
+    # Now that the user is subscribed, if we log out and try to subscribe again
+    # as an anonymous user, we should be shown an appropriate message.
+    When I am not logged in
+    And I go to the "Some solution to subscribe" solution
+    And I click "Subscribe to this solution"
+    And I press "Sign in / Register" in the "Modal buttons" region
+    Then I should see the heading "Sign in to continue"
+
+    When I fill in "E-mail address" with "jon@ankh.am"
+    And I fill in "Password" with "j0nathan"
+    And I press "Log in"
+    Then I should see the heading "Some solution to subscribe"
+    And I should see the success message "You have been logged in."
+    And I should see the success message "You are already subscribed to Some solution to subscribe."
+
     # Clean up the user that was created manually during the scenario.
     Then I delete the "Jonathan Teatime" user
 

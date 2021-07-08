@@ -60,7 +60,23 @@ Feature: Joining a collection as an anonymous user
     And I wait for AJAX to finish
     Then I should not see the text "Welcome to Reannual plants"
 
-    # Now try the same for a closed collection.
+    # Now that the user is a member, if we log out and try to join again as an
+    # anonymous user, we should be shown an appropriate message.
+    Given I am an anonymous user
+    When I go to the homepage of the "Reannual plants" collection
+    And I click "Join this collection"
+    And I press "Sign in / Register" in the "Modal buttons" region
+    Then I should see the heading "Sign in to continue"
+
+    When I fill in "E-mail address" with "iodine@ankh.am"
+    And I fill in "Password" with "10d1ne"
+    And I press "Log in"
+    Then I should see the heading "Reannual plants"
+    And I should see the success message "You have been logged in."
+    And I should see the success message "You already are a member of Reannual plants."
+    And I should not see the text "Welcome to Reannual plants"
+
+    # Now repeat the whole procedure for a closed collection.
     Given I am an anonymous user
     When I go to the homepage of the "Vul nuts" collection
     Then I should see the link "Join this collection"
@@ -86,6 +102,19 @@ Feature: Joining a collection as an anonymous user
     And I should see the text "Want to receive notifications, too?" in the "Modal content"
     And I should see the button "No thanks" in the "Modal buttons" region
     And I should see the button "Subscribe" in the "Modal buttons" region
+
+    Given I am an anonymous user
+    When I go to the homepage of the "Vul nuts" collection
+    And I click "Join this collection"
+    And I press "Sign in / Register" in the "Modal buttons" region
+    Then I should see the heading "Sign in to continue"
+
+    When I fill in "E-mail address" with "iodine@ankh.am"
+    And I fill in "Password" with "10d1ne"
+    And I press "Log in"
+    Then I should see the heading "Vul nuts"
+    And I should see the success message "You have already joined the Vul nuts collection but your membership still needs to be approved by a facilitator."
+    And I should not see the text "Welcome to Vul nuts"
 
     # Clean up the user that was created manually during the scenario.
     Then I delete the "Iodine Maccalariat" user

@@ -251,6 +251,17 @@ interface GroupInterface extends RdfInterface, LogoInterface, PinnableToFrontpag
   public function getNewMembershipSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup;
 
   /**
+   * Returns the message to show to a member when they attempt to rejoin.
+   *
+   * @param \Drupal\og\OgMembershipInterface $membership
+   *   The existing membership.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The status message.
+   */
+  public function getExistingMembershipMessage(OgMembershipInterface $membership): TranslatableMarkup;
+
+  /**
    * Returns the number of members in the group.
    *
    * @param array $states

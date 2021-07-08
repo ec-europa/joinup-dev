@@ -162,6 +162,25 @@ class Collection extends Rdf implements CollectionInterface {
   /**
    * {@inheritdoc}
    */
+  public function getExistingMembershipMessage(OgMembershipInterface $membership): TranslatableMarkup {
+    $parameters = [
+      '%group' => $this->getName(),
+    ];
+    switch ($membership->getState()) {
+      case OgMembershipInterface::STATE_BLOCKED:
+        return $this->t('You cannot join %group because your account has been blocked.', $parameters);
+
+      case OgMembershipInterface::STATE_PENDING:
+        return $this->t('You have already joined the %group collection but your membership still needs to be approved by a facilitator.', $parameters);
+
+      default:
+        return $this->t('You already are a member of %group.', $parameters);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function doGetGroupContentIds(): array {
     $ids = ['node' => $this->getNodeGroupContent()];
     $solutions = $this->getSolutions();

@@ -209,4 +209,20 @@ class Solution extends Rdf implements SolutionInterface {
     return $this->t('You have subscribed to this solution and will receive notifications for it. To manage your subscriptions go to <em>My subscriptions</em> in your user menu.');
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getExistingMembershipMessage(OgMembershipInterface $membership): TranslatableMarkup {
+    $parameters = [
+      '%group' => $this->getName(),
+    ];
+    switch ($membership->getState()) {
+      case OgMembershipInterface::STATE_BLOCKED:
+        return $this->t('You cannot subscribe to %group because your account has been blocked.', $parameters);
+
+      default:
+        return $this->t('You are already subscribed to %group.', $parameters);
+    }
+  }
+
 }
