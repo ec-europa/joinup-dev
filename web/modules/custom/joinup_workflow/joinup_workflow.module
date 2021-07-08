@@ -225,10 +225,6 @@ function joinup_workflow_is_motivation_required($entity_type_id, $workflow_id, $
         'report',
         'request_changes',
       ],
-      'node:discussion:post_moderated' => [
-        'report',
-        'request_changes',
-      ],
     ],
     'rdf_entity' => [
       'collection_workflow' => [
