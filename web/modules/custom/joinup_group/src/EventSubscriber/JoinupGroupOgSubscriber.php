@@ -11,6 +11,7 @@ use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent;
 use Drupal\og\Event\PermissionEventInterface as OgPermissionEventInterface;
+use Drupal\og\GroupContentOperationPermission;
 use Drupal\og\GroupPermission;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -43,7 +44,10 @@ class JoinupGroupOgSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-      OgPermissionEventInterface::EVENT_NAME => [['provideOgGroupPermissions']],
+      OgPermissionEventInterface::EVENT_NAME => [
+        ['provideOgGroupPermissions'],
+        ['checkWorkflowGroupPermissions'],
+      ],
       'joinup_workflow.unchanged_workflow_state_update' => 'onUnchangedWorkflowStateUpdate',
     ];
   }
@@ -96,6 +100,21 @@ class JoinupGroupOgSubscriber implements EventSubscriberInterface {
     if ($state === 'validated') {
       $event->setLabel($this->t('Publish'));
       $event->setWeight(-20);
+    }
+  }
+
+  /**
+   * Check OG permissions for content.
+   *
+   * @param \Drupal\og\Event\PermissionEventInterface $event
+   *   The OG permission event.
+   */
+  public function checkWorkflowGroupPermissions(OgPermissionEventInterface $event): void {
+    $permissions = $event->getPermissions();
+    foreach ($permissions as $permission) {
+      if ($permission instanceof GroupContentOperationPermission) {
+        $event->deletePermission($permission->getName());
+      }
     }
   }
 
