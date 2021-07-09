@@ -84,6 +84,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     And I go to the "CC notify post approve proposed" discussion
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
+    Then 1 e-mail should have been sent
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                               |
       | subject   | Joinup: Content has been updated                                                                                                                                        |
@@ -96,6 +97,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"
+    Then 1 e-mail should have been sent
     Then the following email should not have been sent:
       | recipient | CC member                                                                                                                |
       | subject   | Joinup: Content has been deleted                                                                                         |
