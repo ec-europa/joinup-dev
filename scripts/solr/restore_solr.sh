@@ -57,27 +57,13 @@ if ! [[ $TIMEOUT =~ ${TIMEOUT_PATTERN} ]] ; then
   error "Timeout needs to be numeric!";
 fi
 
-if [ "${CORE}" == '' ] || [ "${SNAPSHOT_NAME}" == '' ]; then
+if [ "${CORE}" == '' ] || [ "${SNAPSHOT_DIR}" == '' ] || [ "${SNAPSHOT_NAME}" == '' ]; then
   show_help;
   exit 1;
 fi
 
-# Assume the current dir if no snapshot dir has been passed.
-if [ "${SNAPSHOT_DIR}" == '' ]; then
-  SNAPSHOT_DIR=${CURRENT_DIR}
-fi
-
-if [ ! -d "${SNAPSHOT_DIR}" ]; then
-  error "The '${SNAPSHOT_DIR}' directory doesn't exist!";
-fi
-
-# Normalize the snapshot dir to an absolute path.
-cd ${SNAPSHOT_DIR}
-SNAPSHOT_DIR=$(pwd)
-cd ${CURRENT_DIR}
-
-if [ ! -d "${SNAPSHOT_DIR}/snapshot.${SNAPSHOT_NAME}" ]; then
-  error "The '${SNAPSHOT_DIR}' directory doesn't contain a '${SNAPSHOT_NAME}' snapshot!";
+if [ ! -z "${SNAPSHOT_DIR%%/*}" ] || ! pathchk -p "${SNAPSHOT_DIR}"; then
+  error "The --snapshot-dir path should be absolute!"
 fi
 
 CORE_EXISTS=`curl -sS "${SOLR_SERVER_URL}/admin/cores?action=STATUS&core=${CORE}&wt=xml" |grep -o '<long name="uptime">'`
