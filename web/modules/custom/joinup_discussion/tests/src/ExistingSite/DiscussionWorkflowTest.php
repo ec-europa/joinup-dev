@@ -48,6 +48,7 @@ class DiscussionWorkflowTest extends CommunityContentWorkflowTestBase {
     $data = parent::updateAccessProvider();
     foreach (['collection', 'solution'] as $bundle) {
       foreach (['userModerator', 'userOgFacilitator'] as $user) {
+        $data[$bundle][GroupInterface::PRE_MODERATION]['validated']['any'][$user][] = 'archived';
         $data[$bundle][GroupInterface::POST_MODERATION]['validated']['any'][$user][] = 'archived';
       }
     }
@@ -63,6 +64,12 @@ class DiscussionWorkflowTest extends CommunityContentWorkflowTestBase {
     foreach (['collection', 'solution'] as $bundle) {
       $data[$bundle][GroupInterface::POST_MODERATION]['archived']['own'] = TRUE;
       $data[$bundle][GroupInterface::POST_MODERATION]['archived']['any'] = [
+        'userModerator',
+        'userOgFacilitator',
+      ];
+
+      $data[$bundle][GroupInterface::PRE_MODERATION]['archived']['own'] = TRUE;
+      $data[$bundle][GroupInterface::PRE_MODERATION]['archived']['any'] = [
         'userModerator',
         'userOgFacilitator',
       ];
