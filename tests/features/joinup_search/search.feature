@@ -163,6 +163,39 @@ Feature: Global search
     But I should not see the "Spherification" tile
     And I should not see the "El Celler de Can Roca" tile
 
+  @javascript
+  Scenario: Alphabetical order for the spatial coverage in the search page.
+    Given the following owner:
+      | name              | type    |
+      | Responsible owner | Company |
+    And the following contact:
+      | name  | Go-to contact     |
+      | email | go-to@example.com |
+    And the following collections:
+      | title            | description                                          | abstract                       | state     |
+      | Collection alpha | <p>collection <strong>beta</strong> description.</p> | The collection gamma abstract. | validated |
+      | Col for Sol      | <p>collection for the solution.</p>                  | The col for sol abstract.      | validated |
+    And event content:
+      | title             | short title       | body                                | spatial coverage | agenda         | location       | organisation        | scope         | keywords | collection       | state     |
+      | Event Omega       | Event short delta | The epsilon event content.          | Greece           | Event agenda.  | Some place     | European Commission | International | Alphabet | Collection alpha | validated |
+      | Alternative event | Alt event         | This event stays in the background. | Luxembourg       | To be planned. | Event location | Event organisation  |               |          | Collection alpha | validated |
+    And document content:
+      | title          | document type | short title          | body                                    | spatial coverage | keywords | collection       | state     |
+      | Document omega | Document      | Document short delta | A document consists of epsilon strings. | Luxembourg       | Alphabet | Collection alpha | validated |
+
+    When I visit the search page
+    And the "spatial coverage" select facet should contain the following options:
+      | Any location     |
+      | Greece   (1)     |
+      | Luxembourg   (2) |
+    When I select "Luxembourg" from the "spatial coverage" select facet
+    Then the option with text "Luxembourg   (2)" from select facet "spatial coverage" is selected
+    # The countries are still sorted alphabetically even though the Luxembourg value is selected and has more results.
+    And the "spatial coverage" select facet should contain the following options:
+      | Any location     |
+      | Greece   (1)     |
+      | Luxembourg   (2) |
+
   Scenario: Content can be found with a full-text search.
     Given the following owner:
       | name              | type    |
