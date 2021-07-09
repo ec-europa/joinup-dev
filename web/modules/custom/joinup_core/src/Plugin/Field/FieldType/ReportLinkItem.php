@@ -65,6 +65,8 @@ class ReportLinkItem extends LinkItem {
     // \Drupal\Core\TypedData\Plugin\DataType\Map::set
     // and \Drupal\Core\TypedData\ComputedItemListTrait::set so we are
     // overriding the function to match the one from the Map.
+    // This is needed because we are extending LinkItem which is a normal non-
+    // computed field. If we were a 'real' computed field this is not needed.
     parent::set($property_name, $value);
   }
 
