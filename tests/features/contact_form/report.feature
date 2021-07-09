@@ -51,10 +51,10 @@ Feature: Submit the contact form
       | recipient_mail | balourdos@example.rg               |
       | subject        | Joinup: Contact form notification  |
       | body           | We will reply as soon as possible. |
+    And I should see the heading "Event to report"
 
     # Now the reporter requires also a copy of its message.
-    When I go to the "Event to report" event
-    And I click "Report"
+    When I click "Report"
     And I fill in the following:
       | First name     | Gavin                                                                                                     |
       | Last name      | Belson                                                                                                    |
