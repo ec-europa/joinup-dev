@@ -156,20 +156,16 @@ Feature: Following discussions
     And I click "Delete" in the "Entity actions" region
     And I press "Delete"
 
-    Then the following email should not have been sent:
+    Then the following email should have been sent:
       | recipient_mail | dale@example.com                                                                                     |
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
       | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
-    And the following email should not have been sent:
+    And the following email should have been sent:
       | recipient_mail | flash@example.com                                                                                    |
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
       | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
-    And the following email should not have been sent:
+    And the following email should have been sent:
       | recipient_mail | hans@example.com                                                                                     |
-      | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
-    And the following email should not have been sent:
-      | recipient_mail | ming@example.com                                                                                     |
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
       | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
 
