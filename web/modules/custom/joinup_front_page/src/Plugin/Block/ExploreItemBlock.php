@@ -12,7 +12,16 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides an explore item block.
+ * Provides a block that allows the user to explore recent content.
+ *
+ * This block is placed on the front page and shows a swipeable list of recently
+ * published content of 4 types: collections, solutions, news and events. The
+ * intention is that users can get a quick view of what is new on Joinup.
+ *
+ * For each content type the 12 most recent items are shown. They are rendered
+ * using the `explore_item` view mode which is exclusive for this block.
+ *
+ * The user can switch between the 4 types by clicking on tabs.
  *
  * @Block(
  *   id = "joinup_front_page_explore_item",
