@@ -102,6 +102,7 @@ default:
         Cookie consent banner: '#cookie-consent-banner'
         Discover topics block: '.block-views-blockdiscover-topics-block'
         Entity actions: '.block-local-tasks-block'
+        Explore block: '.block-joinup-front-page-explore-item'
         Footer: '.section--footer, footer'
         Header menu: '#block-joinup-theme-main-menu'
         Header: '.section--featured, .section-header'
@@ -126,7 +127,6 @@ default:
         Table of contents: '#block-table-of-contents'
         Table of contents outline: '#block-toc-outline'
         Unpublished content area: '.block-entity-unpublished'
-        Explore block: '.block-joinup-front-page-explore-item'
       drupal:
         drupal_root: ${joinup.site_dir}
       selectors:
