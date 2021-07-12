@@ -411,7 +411,7 @@ function joinup_search_form_views_exposed_form_alter(array &$form, FormStateInte
     unset($form['sort_by']['#options']['relevance']);
 
     if ($user_input['sort_by'] === 'relevance') {
-      $user_input['sort_by'] = 'creation-date';
+      $user_input['sort_by'] = 'last-updated-date';
     }
     $form_state->setUserInput($user_input);
   }
