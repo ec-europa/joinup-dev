@@ -65,6 +65,12 @@ class PhpCodingStandardsCommands extends AbstractCommands {
       $this->appendArgument($document, $root_element, implode('', $config->get('phpcs.options')));
     }
 
+    if ($config->has('phpcs.arguments')) {
+      foreach ($config->get('phpcs.arguments') as $name => $value) {
+        $this->appendArgument($document, $root_element, (string) $value, $name);
+      }
+    }
+
     // Save the file.
     file_put_contents($config->get('phpcs.file.config'), $document->saveXML());
 
