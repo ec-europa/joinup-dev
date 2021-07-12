@@ -102,7 +102,7 @@ default:
         Cookie consent banner: '#cookie-consent-banner'
         Discover topics block: '.block-views-blockdiscover-topics-block'
         Entity actions: '.block-local-tasks-block'
-        Explore block: '.block-joinup-front-page-explore-item'
+        Explore block: '.block-joinup-front-page-explore-block'
         Footer: '.section--footer, footer'
         Header menu: '#block-joinup-theme-main-menu'
         Header: '.section--featured, .section-header'

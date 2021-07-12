@@ -24,11 +24,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * The user can switch between the 4 types by clicking on tabs.
  *
  * @Block(
- *   id = "joinup_front_page_explore_item",
- *   admin_label = @Translation("Explore item")
+ *   id = "joinup_front_page_explore_block",
+ *   admin_label = @Translation("Explore block")
  * )
  */
-class ExploreItemBlock extends BlockBase implements ContainerFactoryPluginInterface {
+class ExploreBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * Node view mode.
@@ -42,7 +42,7 @@ class ExploreItemBlock extends BlockBase implements ContainerFactoryPluginInterf
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityManager;
+  protected $entityTypeManager;
 
   /**
    * The messenger.
@@ -68,9 +68,9 @@ class ExploreItemBlock extends BlockBase implements ContainerFactoryPluginInterf
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_manager, MessengerInterface $messenger) {
+  public function __construct(array $configuration, string $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_manager, MessengerInterface $messenger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->entityManager = $entity_manager;
+    $this->entityTypeManager = $entity_manager;
     $this->messenger = $messenger;
   }
 
@@ -127,13 +127,6 @@ class ExploreItemBlock extends BlockBase implements ContainerFactoryPluginInterf
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts() {
-    return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getCacheTags() {
     $tags = [
       'node:news',
@@ -157,16 +150,16 @@ class ExploreItemBlock extends BlockBase implements ContainerFactoryPluginInterf
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  private function getContent($type): array {
+  public function getContent(string $type): array {
     $content = [];
-    $entity = $this->entityManager->getStorage('node');
-    $view_builder = $this->entityManager->getViewBuilder('node');
+    $entity = $this->entityTypeManager->getStorage('node');
+    $view_builder = $this->entityTypeManager->getViewBuilder('node');
     $query = $entity->getQuery();
 
     $ids = $query->condition('status', 1)
       ->condition('type', $type)
       ->sort('created')
-      ->pager(12)
+      ->range(0, 12)
       ->execute();
 
     $entities = $entity->loadMultiple($ids);
@@ -189,21 +182,21 @@ class ExploreItemBlock extends BlockBase implements ContainerFactoryPluginInterf
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  private function getRdfEntity($type): array {
+  public function getRdfEntity(string $type): array {
     $rdf = [];
-    $entity = $this->entityManager->getStorage('rdf_entity');
-    $view_builder = $this->entityManager->getViewBuilder('rdf_entity');
+    $entity = $this->entityTypeManager->getStorage('rdf_entity');
+    $view_builder = $this->entityTypeManager->getViewBuilder('rdf_entity');
     $query = $entity->getQuery();
 
     $ids = $query->condition('rid', $type)
       ->sort('created')
-      ->pager(12)
+      ->range(0, 12)
       ->execute();
 
     $entities = $entity->loadMultiple($ids);
 
-    foreach ($entities as $node) {
-      $rdf[] = $view_builder->view($node, $this->viewMode);
+    foreach ($entities as $rdf_entity) {
+      $rdf[] = $view_builder->view($rdf_entity, $this->viewMode);
     }
 
     return $rdf;
