@@ -258,16 +258,17 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | mod      | moderator |
       | fac1     |           |
     And the following collections:
-      | title                    | description                                                                       | state     |
-      | Collection With Glossary | The Battle of Evermore of the battle and the BATTLE. Call it everMore or EVERmore | validated |
-      | The Other Collection     | desc                                                                              | validated |
+      | title                    | description                                                                                            | state     |
+      | Collection With Glossary | The Battle of Evermore of the batTle and the BATTLE. Call it everMore or EVERmore. Also, battle again. | validated |
+      | The Other Collection     | desc                                                                                                   | validated |
     And the following collection user membership:
       | collection               | user | roles       |
       | Collection With Glossary | fac  | facilitator |
       | The Other Collection     | fac1 | facilitator |
     And glossary content:
-      | title  | synonyms | definition | collection               |
-      | battle | evermore | def        | Collection With Glossary |
+      | title        | synonyms | definition                                | collection               |
+      | battle       | evermore | def                                       | Collection With Glossary |
+      | battle again |          | Not to be confused with a battle of sheep | Collection With Glossary |
 
     Given I am an anonymous user
     When I go to the "Collection With Glossary" collection
@@ -304,7 +305,10 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     # Only the first occurrence should be highlighted.
     And I should see the link "Battle"
     And I should see the link "Evermore"
-    But I should not see the link "battle"
+    And I should see the link "battle again"
+    And the response should contain "<a href=\"/collection/collection-glossary/glossary/term/battle\" class=\"glossary-term\" title=\"def\">Battle</a>"
+    And the response should contain "<a href=\"/collection/collection-glossary/glossary/term/battle-again\" class=\"glossary-term\" title=\"Not to be confused with a battle of sheep\">battle again</a>"
+    But I should not see the link "batTle"
     And I should not see the link "BATTLE"
     And I should not see the link "everMore"
     And I should not see the link "EVERmore"
@@ -315,11 +319,12 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
 
     # All terms should be highlighted.
     Then I should see the link "Battle"
-    And I should see the link "battle"
+    And I should see the link "batTle"
     And I should see the link "BATTLE"
     And I should see the link "Evermore"
     And I should see the link "everMore"
     And I should see the link "EVERmore"
+    And I should see the link "battle again"
 
     When I click "Glossary"
     Then I should see the link "Glossary settings"
