@@ -40,29 +40,34 @@ Feature: Global search
     And I should see the "Foam" tile
     # Facets should be in place.
     And the option with text "Any topic" from select facet "topic" is selected
+    # Terms are sorted alphabetically
     And the "topic" select facet should contain the following options:
       | Any topic               |
-      | Social and Political    |
-      | E-inclusion             |
-      | Demography              |
+      # Parent term.
       | Info                    |
+      # Child term.
       | Statistics and Analysis |
+      # Parent term.
+      | Social and Political    |
+      # Child terms.
+      | Demography              |
+      | E-inclusion             |
     # Since the topics are indented by a whitespace, and the whitespaces are trimmed in the step above, we are testing
     # the full response in order to ensure that the results are indented properly. The &nbsp; character below is the
     # printable space character.
     # @todo and WARNING. The following   character is supported by the old 3.4 selenium server. Change this in the
     # new infrastructure with the &nbsp; encoded character.
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic/category%23social-and-political\"> Social and Political</option>"
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23e-inclusion\">  E-inclusion</option>"
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23demography\">  Demography</option>"
     And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic/category%23info\"> Info</option>"
     And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23statistics-and-analysis\">  Statistics and Analysis</option>"
+    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic/category%23social-and-political\"> Social and Political</option>"
+    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23demography\">  Demography</option>"
+    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23e-inclusion\">  E-inclusion</option>"
     And the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
       | Any location       |
-      | Luxembourg (5)     |
       | Belgium (1)        |
       | European Union (1) |
+      | Luxembourg (5)     |
     # Check that only one search field is available. In an earlier version of
     # Joinup there were two search fields, but this was confusing users.
     And there should be exactly 1 "search field" on the page
@@ -71,11 +76,11 @@ Feature: Global search
     Then the option with text "Social and Political" from select facet "topic" is selected
     And the "topic" select facet should contain the following options:
       | Any topic               |
-      | Social and Political    |
-      | E-inclusion             |
-      | Demography              |
       | Info                    |
       | Statistics and Analysis |
+      | Social and Political    |
+      | Demography              |
+      | E-inclusion             |
     # The tiles appear because the parent term is selected even though they do not have a direct reference there.
     And I should see the "Dummy news 1" tile
     And I should see the "Dummy news 2" tile
@@ -88,11 +93,11 @@ Feature: Global search
     # The selected option moves to the last position by default.
     And the "topic" select facet should contain the following options:
       | Any topic               |
-      | Social and Political    |
-      | E-inclusion             |
-      | Demography              |
       | Info                    |
       | Statistics and Analysis |
+      | Social and Political    |
+      | Demography              |
+      | E-inclusion             |
 
     Then the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
@@ -136,11 +141,11 @@ Feature: Global search
     Then the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (5)"
     And the "topic" select facet should contain the following options:
       | Any topic               |
-      | Social and Political    |
-      | E-inclusion             |
-      | Demography              |
       | Info                    |
       | Statistics and Analysis |
+      | Social and Political    |
+      | Demography              |
+      | E-inclusion             |
     And the "spatial coverage" select facet should contain the following options:
       | Any location       |
       | Luxembourg (5)     |
@@ -157,6 +162,39 @@ Feature: Global search
     And I should see the "Foam" tile
     But I should not see the "Spherification" tile
     And I should not see the "El Celler de Can Roca" tile
+
+  @javascript
+  Scenario: Alphabetical order for the spatial coverage in the search page.
+    Given the following owner:
+      | name              | type    |
+      | Responsible owner | Company |
+    And the following contact:
+      | name  | Go-to contact     |
+      | email | go-to@example.com |
+    And the following collections:
+      | title            | description                                          | abstract                       | state     |
+      | Collection alpha | <p>collection <strong>beta</strong> description.</p> | The collection gamma abstract. | validated |
+      | Col for Sol      | <p>collection for the solution.</p>                  | The col for sol abstract.      | validated |
+    And event content:
+      | title             | short title       | body                                | spatial coverage | agenda         | location       | organisation        | scope         | keywords | collection       | state     |
+      | Event Omega       | Event short delta | The epsilon event content.          | Greece           | Event agenda.  | Some place     | European Commission | International | Alphabet | Collection alpha | validated |
+      | Alternative event | Alt event         | This event stays in the background. | Luxembourg       | To be planned. | Event location | Event organisation  |               |          | Collection alpha | validated |
+    And document content:
+      | title          | document type | short title          | body                                    | spatial coverage | keywords | collection       | state     |
+      | Document omega | Document      | Document short delta | A document consists of epsilon strings. | Luxembourg       | Alphabet | Collection alpha | validated |
+
+    When I visit the search page
+    And the "spatial coverage" select facet should contain the following options:
+      | Any location     |
+      | Greece   (1)     |
+      | Luxembourg   (2) |
+    When I select "Luxembourg" from the "spatial coverage" select facet
+    Then the option with text "Luxembourg   (2)" from select facet "spatial coverage" is selected
+    # The countries are still sorted alphabetically even though the Luxembourg value is selected and has more results.
+    And the "spatial coverage" select facet should contain the following options:
+      | Any location     |
+      | Greece   (1)     |
+      | Luxembourg   (2) |
 
   Scenario: Content can be found with a full-text search.
     Given the following owner:
