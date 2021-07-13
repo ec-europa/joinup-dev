@@ -109,7 +109,7 @@ class ExploreBlock extends BlockBase implements ContainerFactoryPluginInterface 
       ],
       'events' => [
         'name' => $this->t('Events'),
-        'data' => $this->getContent('events'),
+        'data' => $this->getContent('event'),
         'url' => '/search?keys=&f[0]=type%3Aevent',
       ],
     ];
@@ -158,7 +158,7 @@ class ExploreBlock extends BlockBase implements ContainerFactoryPluginInterface 
 
     $ids = $query->condition('status', 1)
       ->condition('type', $type)
-      ->sort('created')
+      ->sort('created', 'DESC')
       ->range(0, 12)
       ->execute();
 
@@ -189,7 +189,8 @@ class ExploreBlock extends BlockBase implements ContainerFactoryPluginInterface 
     $query = $entity->getQuery();
 
     $ids = $query->condition('rid', $type)
-      ->sort('created')
+      ->graphs(['default'])
+      ->sort('created', 'DESC')
       ->range(0, 12)
       ->execute();
 

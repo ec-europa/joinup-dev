@@ -113,8 +113,8 @@ third_party_settings:
             uuid: 4044431f-0d0a-46f8-af2f-aa11270f596a
             region: content
             configuration:
-              id: 'field_block:rdf_entity:solution:changed'
-              label: Changed
+              id: 'field_block:rdf_entity:solution:created'
+              label: 'Authored on'
               provider: layout_builder
               label_display: '0'
               formatter:
@@ -148,7 +148,7 @@ targetEntityType: rdf_entity
 bundle: solution
 mode: explore_item
 content:
-  changed:
+  created:
     type: timestamp
     weight: 2
     region: content
