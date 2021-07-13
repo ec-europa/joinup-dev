@@ -29,6 +29,21 @@ entity.rdf_entity.member_overview:
           - solution
     _og_entity_type_id: rdf_entity
 
+joinup_group.authenticate_to_join:
+  path: '/rdf_entity/{rdf_entity}/authenticate-to-join'
+  defaults:
+    _form: '\Drupal\joinup_group\Form\JoinGroupAnonymousRedirectForm'
+    _title_callback: '\Drupal\joinup_group\Form\JoinGroupAnonymousRedirectForm::getTitle'
+  requirements:
+    _user_is_logged_in: 'FALSE'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+        bundle:
+          - collection
+          - solution
+
 joinup_group.membership_delete_action.confirm:
   path: '/group/delete/membership'
   defaults:

@@ -23,7 +23,6 @@ use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup_collection\JoinupCollectionHelper;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_group\ContentCreationOptions;
-use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
 use Drupal\sparql_entity_storage\UriEncoder;
@@ -382,48 +381,6 @@ class CollectionContext extends RawDrupalContext {
    */
   public function assertCollectionCount(int $number): void {
     $this->assertRdfEntityCount($number, 'collection');
-  }
-
-  /**
-   * Checks the number of members in a given collection.
-   *
-   * In OG parlance a group member can be any kind of entity, but this only
-   * checks which Users are members of the collection.
-   *
-   * @param string $collection
-   *   The name of the collection to check.
-   * @param int $number
-   *   The expected number of members in the collection.
-   * @param string $membership_state
-   *   The state of the membership. Can be either active, pending or blocked.
-   *
-   * @throws \Exception
-   *   Thrown when the number of members does not not match the expectation.
-   *
-   * @Then the :collection collection should have :number :membership_state member(s)
-   */
-  public function assertMemberCount(string $collection, int $number, string $membership_state): void {
-    $states = [
-      OgMembershipInterface::STATE_ACTIVE,
-      OgMembershipInterface::STATE_PENDING,
-      OgMembershipInterface::STATE_BLOCKED,
-    ];
-
-    if (!in_array($membership_state, $states)) {
-      throw new \Exception("Invalid membership state '{$membership_state}' found.");
-    }
-
-    $collection = $this->getCollectionByName($collection);
-    $actual = \Drupal::entityQuery('og_membership')
-      ->condition('entity_type', 'rdf_entity')
-      ->condition('entity_id', $collection->id())
-      ->condition('state', $membership_state)
-      ->count()
-      ->execute();
-
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of {$membership_state} members. Expected number: $number, actual number: $actual.");
-    }
   }
 
   /**

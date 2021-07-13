@@ -6,6 +6,7 @@ namespace Drupal\joinup_group\Entity;
 
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\joinup_bundle_class\LogoInterface;
 use Drupal\joinup_bundle_class\ShortIdInterface;
 use Drupal\og\OgMembershipInterface;
@@ -50,6 +51,39 @@ interface GroupInterface extends RdfInterface, LogoInterface, ShortIdInterface, 
    *   Thrown when the OG module is not enabled.
    */
   public function getMembership(?int $uid = NULL, array $states = [OgMembershipInterface::STATE_ACTIVE]): ?OgMembershipInterface;
+
+  /**
+   * Creates a membership for the given user in the current group.
+   *
+   * @param int|null $uid
+   *   The ID of the user that will become a member. Defaults to the current
+   *   user.
+   * @param string|null $role
+   *   The role to assign to the user. Can be either 'member', 'author, or
+   *   'facilitator'. Owners cannot be added using this method since every group
+   *   has a single owner which is assigned when the group is created or
+   *   transferred. Defaults to 'member'.
+   * @param string|null $state
+   *   The state of the membership. It may be of the following constants:
+   *   - OgMembershipInterface::STATE_ACTIVE
+   *   - OgMembershipInterface::STATE_PENDING
+   *   - OgMembershipInterface::STATE_BLOCKED.
+   *   Defaults to the most appropriate state: 'active' for solutions and open
+   *   collections, and 'pending' for closed collections.
+   *
+   * @return \Drupal\og\OgMembershipInterface
+   *   The membership that was created.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when an error occurs during the saving of the membership.
+   * @throws \Drupal\joinup_group\Exception\MembershipExistsException
+   *   Thrown when the user already has a membership.
+   * @throws \InvalidArgumentException
+   *   Thrown when the passed in role does not exist, when a membership for an
+   *   owner is created, or when the passed in user ID does not match an
+   *   existing user.
+   */
+  public function createMembership(?int $uid = NULL, ?string $role = 'member', ?string $state = NULL): OgMembershipInterface;
 
   /**
    * Determines whether a user has a group permission in the group.
@@ -204,5 +238,42 @@ interface GroupInterface extends RdfInterface, LogoInterface, ShortIdInterface, 
    *   entity IDs.
    */
   public function getGroupContentIds(): array;
+
+  /**
+   * Returns the message to show to a new member when they join the group.
+   *
+   * @param \Drupal\og\OgMembershipInterface $membership
+   *   The new membership.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The success status message.
+   */
+  public function getNewMembershipSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup;
+
+  /**
+   * Returns the message to show to a member when they attempt to rejoin.
+   *
+   * @param \Drupal\og\OgMembershipInterface $membership
+   *   The existing membership.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The status message.
+   */
+  public function getExistingMembershipMessage(OgMembershipInterface $membership): TranslatableMarkup;
+
+  /**
+   * Returns the number of members in the group.
+   *
+   * @param array $states
+   *   An array of membership states to check. Can contain one or more of:
+   *   - OgMembershipInterface::STATE_ACTIVE
+   *   - OgMembershipInterface::STATE_PENDING
+   *   - OgMembershipInterface::STATE_BLOCKED
+   *   Defaults to checking active members.
+   *
+   * @return int
+   *   The number of members.
+   */
+  public function getMemberCount(array $states = [OgMembershipInterface::STATE_ACTIVE]): int;
 
 }

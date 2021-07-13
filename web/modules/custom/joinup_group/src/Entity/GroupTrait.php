@@ -7,9 +7,12 @@ namespace Drupal\joinup_group\Entity;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\Entity\OutdatedContentTrait;
+use Drupal\og\Entity\OgRole;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
+use Drupal\og\OgRoleInterface;
+use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
 /**
@@ -29,6 +32,66 @@ trait GroupTrait {
     $uid = $uid ?? \Drupal::currentUser()->id();
 
     return $this->getMembershipManager()->getMembership($this, $uid, $states);
+  }
+
+  /**
+   * Creates a membership for the given user in the current group.
+   *
+   * @param int|null $uid
+   *   The ID of the user that will become a member. Defaults to the current
+   *   user.
+   * @param string|null $role
+   *   The role to assign to the user. Can be either 'member', 'author', or
+   *   'facilitator'. Owners cannot be added using this method since every group
+   *   has a single owner which is assigned when the group is created or
+   *   transferred. Defaults to 'member'.
+   * @param string|null $state
+   *   The state of the membership. It may be of the following constants:
+   *   - OgMembershipInterface::STATE_ACTIVE
+   *   - OgMembershipInterface::STATE_PENDING
+   *   - OgMembershipInterface::STATE_BLOCKED.
+   *   Defaults to the most appropriate state: 'active' for solutions and open
+   *   collections, and 'pending' for closed collections.
+   *
+   * @return \Drupal\og\OgMembershipInterface
+   *   The membership that was created.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when an error occurs during the saving of the membership.
+   */
+  public function createMembership(?int $uid = NULL, ?string $role = 'member', ?string $state = NULL): OgMembershipInterface {
+    // Default to the current user.
+    $uid = $uid ?? \Drupal::currentUser()->id();
+
+    // Default to an active membership.
+    $state = $state ?? OgMembershipInterface::STATE_ACTIVE;
+
+    // Validate the user.
+    $user = User::load($uid);
+    if (!$user instanceof UserInterface) {
+      throw new \InvalidArgumentException('Cannot create membership for non-existing user.');
+    }
+    if ($user->isAnonymous()) {
+      throw new \InvalidArgumentException('Cannot create membership for an anonymous user.');
+    }
+
+    // Validate the role. We cannot create additional memberships for owners /
+    // administrators since in Joinup every group has a single owner.
+    if (!in_array($role, ['member', 'author', 'facilitator'])) {
+      throw new \InvalidArgumentException("Cannot create membership with role '$role'.");
+    }
+
+    $og_role = OgRole::loadByGroupAndName($this, $role);
+    if (!$og_role instanceof OgRoleInterface) {
+      throw new \InvalidArgumentException("Can not create membership because the '$role' could not be loaded.");
+    }
+
+    $membership = $this->getMembershipManager()->createMembership($this, $user);
+    $membership->setState($state);
+    $membership->setRoles([$og_role]);
+    $membership->save();
+
+    return $membership;
   }
 
   /**
@@ -119,6 +182,18 @@ trait GroupTrait {
       });
     });
     return $group_content;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getMemberCount(array $states = [OgMembershipInterface::STATE_ACTIVE]): int {
+    return (int) \Drupal::entityQuery('og_membership')
+      ->condition('entity_type', 'rdf_entity')
+      ->condition('entity_id', $this->id())
+      ->condition('state', $states, 'IN')
+      ->count()
+      ->execute();
   }
 
   /**

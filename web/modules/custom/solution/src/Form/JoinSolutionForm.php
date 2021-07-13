@@ -48,13 +48,6 @@ class JoinSolutionForm extends JoinGroupFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup {
-    return $this->t('You have subscribed to this solution and will receive notifications for it. To manage your subscriptions go to <em>My subscriptions</em> in your user menu.');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function createMembership(string $state, array $roles): OgMembershipInterface {
     $membership = parent::createMembership($state, $roles);
 

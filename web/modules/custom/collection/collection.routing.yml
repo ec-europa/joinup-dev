@@ -11,6 +11,18 @@ collection.subscribe_to_collection_form:
         type: entity:rdf_entity
         bundle:
           - collection
+collection.subscribe_to_collection_form.after_authenticating:
+  path: '/ajax/collection/{rdf_entity}/subscribe/auth'
+  defaults:
+    _controller: Drupal\collection\Form\SubscribeToCollectionForm::showSubscribeDialog
+  requirements:
+    _custom_access: \Drupal\collection\Form\SubscribeToCollectionForm::accessToSubscribeDialogAfterAuthenticating
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+        bundle:
+          - collection
 collection.glossary_page:
   path: /rdf_entity/{rdf_entity}/glossary/{letter}
   defaults:

@@ -10,35 +10,14 @@ use Drupal\Core\Ajax\PrependCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\joinup_group\Form\JoinGroupFormBase;
-use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\sparql_entity_storage\UriEncoder;
 
 /**
  * A simple form with a button to join or leave a collection.
  */
 class JoinCollectionForm extends JoinGroupFormBase {
-
-  /**
-   * The state of the new membership the user will get.
-   *
-   * @var string
-   */
-  protected $membershipState;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup {
-    $parameters = [
-      '%group' => $this->group->getName(),
-      ':bundle' => $this->group->bundle(),
-    ];
-    return $membership->getState() === OgMembershipInterface::STATE_ACTIVE ?
-      $this->t('You are now a member of %group.', $parameters) :
-      $this->t('Your membership to the %group :bundle is under approval.', $parameters);
-  }
 
   /**
    * {@inheritdoc}
@@ -53,6 +32,15 @@ class JoinCollectionForm extends JoinGroupFormBase {
     if (empty($membership)) {
       // Show the subscription dialog in a modal on join.
       $form['join']['#ajax'] = ['callback' => '::showSubscribeDialog'];
+    }
+    else {
+      // Show the subscription dialog in a modal on page load, if the user has
+      // just authenticated after indicating their desire to join.
+      $form['#attached']['library'][] = 'collection/subscribe_dialog';
+      $form['#attached']['drupalSettings']['joinGroupData'] = [
+        'sparqlEncodedId' => UriEncoder::encodeUrl($group->id()),
+        'id' => $group->id(),
+      ];
     }
 
     return $form;
