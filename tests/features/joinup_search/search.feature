@@ -65,9 +65,9 @@ Feature: Global search
     And the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
       | Any location       |
-      | Luxembourg (5)     |
       | Belgium (1)        |
       | European Union (1) |
+      | Luxembourg (5)     |
     # Check that only one search field is available. In an earlier version of
     # Joinup there were two search fields, but this was confusing users.
     And there should be exactly 1 "search field" on the page
