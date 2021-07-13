@@ -523,8 +523,9 @@ Feature: Global search
     When I am on the homepage
     Then I enter "" in the search bar and press enter
     Then I should be on the advanced search page
-    And the option with text "Last Updated Date" from select "Sort by" is selected
-    Then I should see the following tiles in the correct order:
+    When I check the "News (3)" checkbox from the "Content types" facet
+    Then the option with text "Last Updated Date" from select "Sort by" is selected
+    And I should see the following tiles in the correct order:
       | Relativity is the mood             |
       | Relativity news: Relativity car    |
       | Absolutely fantastic               |
