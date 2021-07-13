@@ -61,6 +61,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
   public static function getSubscribedEvents(): array {
     $events[NotificationEvents::COMMENT_CRUD] = [
       ['onCreate'],
+      ['onCreateParentOwners'],
       ['onUpdate'],
       ['onDelete'],
     ];
@@ -101,6 +102,41 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
     $user_data = self::RECIPIENTS['create'];
     $user_data = $this->getUsersMessages($user_data);
     $this->sendUserDataMessages($user_data);
+  }
+
+  /**
+   * Sends notifications to the content owner and possibly the parent comment.
+   *
+   * @param \Drupal\joinup_notification\Event\NotificationEvent $event
+   *   The notifications event.
+   */
+  public function onCreateParentOwners(NotificationEvent $event): void {
+    $this->initialize($event);
+    if (!$this->appliesOnCreate()) {
+      return;
+    }
+
+    $message_data = [];
+    /** @var \Drupal\comment\CommentInterface $comment */
+    $comment = $event->getEntity();
+
+    if ($parent_entity = $comment->getCommentedEntity()) {
+      // Do not send an email if the user replied to their own comment.
+      if ($comment->getOwnerId() !== $parent_entity->getOwnerId()) {
+        $uid = $parent_entity->getOwnerId();
+        $message_data[self::TEMPLATE_CREATE][$uid] = $uid;
+      }
+    }
+
+    if ($parent_comment = $comment->getParentComment()) {
+      // Do not send an email if the user replied to their own comment.
+      if ($comment->getOwnerId() !== $parent_comment->getOwnerId()) {
+        $uid = $parent_comment->getOwnerId();
+        $message_data[self::TEMPLATE_CREATE][$uid] = $uid;
+      }
+    }
+
+    $this->sendUserDataMessages($message_data);
   }
 
   /**
