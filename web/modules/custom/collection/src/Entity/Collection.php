@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\collection\Entity;
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_bundle_class\LogoTrait;
@@ -14,6 +16,7 @@ use Drupal\joinup_group\Entity\GroupTrait;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeFallbackTrait;
 use Drupal\joinup_workflow\ArchivableEntityTrait;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
+use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\topic\Entity\TopicReferencingEntityTrait;
 
@@ -26,11 +29,14 @@ class Collection extends Rdf implements CollectionInterface {
   use EntityPublicationTimeFallbackTrait;
   use EntityWorkflowStateTrait;
   use FeaturedContentTrait;
-  use GroupTrait;
+  use GroupTrait {
+    createMembership as protected createMembershipTrait;
+  }
   use JoinupBundleClassFieldAccessTrait;
   use JoinupBundleClassMetaEntityTrait;
   use LogoTrait;
   use ShortIdTrait;
+  use StringTranslationTrait;
   use TopicReferencingEntityTrait;
 
   /**
@@ -119,6 +125,57 @@ class Collection extends Rdf implements CollectionInterface {
     return [
       'link_only_first' => (bool) $meta_entity->get('glossary_link_only_first')->value,
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function createMembership(?int $uid = NULL, ?string $role = 'member', ?string $state = NULL): OgMembershipInterface {
+    // If the membership state is not defined, default to 'active' for open
+    // collections, and 'pending' for closed collections.
+    if (empty($state)) {
+      $state = $this->isClosed() ? OgMembershipInterface::STATE_PENDING : OgMembershipInterface::STATE_ACTIVE;
+    }
+
+    return $this->createMembershipTrait($uid, $role, $state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isClosed(): bool {
+    return (bool) $this->getMainPropertyValue('field_ar_closed');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getNewMembershipSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup {
+    $parameters = [
+      '%group' => $this->getName(),
+    ];
+    return $membership->getState() === OgMembershipInterface::STATE_ACTIVE ?
+      $this->t('You are now a member of %group.', $parameters) :
+      $this->t('Your membership to the %group collection is under approval.', $parameters);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getExistingMembershipMessage(OgMembershipInterface $membership): TranslatableMarkup {
+    $parameters = [
+      '%group' => $this->getName(),
+    ];
+    switch ($membership->getState()) {
+      case OgMembershipInterface::STATE_BLOCKED:
+        return $this->t('You cannot join %group because your account has been blocked.', $parameters);
+
+      case OgMembershipInterface::STATE_PENDING:
+        return $this->t('You have already joined the %group collection but your membership still needs to be approved by a facilitator.', $parameters);
+
+      default:
+        return $this->t('You already are a member of %group.', $parameters);
+    }
   }
 
   /**
