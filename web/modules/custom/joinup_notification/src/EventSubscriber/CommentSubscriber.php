@@ -122,7 +122,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
 
     if ($parent_entity = $comment->getCommentedEntity()) {
       // Do not send an email if the user replied to their own comment.
-      if ($comment->getOwnerId() !== $parent_entity->getOwnerId()) {
+      if ($comment->getOwnerId() !== $parent_entity->getOwnerId() && $parent_entity->getOwner()->isAuthenticated()) {
         $uid = $parent_entity->getOwnerId();
         $message_data[self::TEMPLATE_CREATE][$uid] = $uid;
       }
@@ -130,7 +130,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
 
     if ($parent_comment = $comment->getParentComment()) {
       // Do not send an email if the user replied to their own comment.
-      if ($comment->getOwnerId() !== $parent_comment->getOwnerId()) {
+      if ($comment->getOwnerId() !== $parent_comment->getOwnerId() && $parent_comment->getOwner()->isAuthenticated()) {
         $uid = $parent_comment->getOwnerId();
         $message_data[self::TEMPLATE_CREATE][$uid] = $uid;
       }
