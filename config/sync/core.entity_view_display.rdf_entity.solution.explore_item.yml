@@ -195,6 +195,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  changed: true
   collections: true
   created: true
   download_total: true
