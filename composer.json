@@ -97,8 +97,7 @@
         "jacklmoore/autosize": "dev-master",
         "masterminds/html5": "^2.7",
         "ml/json-ld": "^1.2",
-        "openeuropa/composer-artifacts": "^0.1.3",
-        "openeuropa/oe_bootstrap_theme": "1.0.0-alpha1",
+        "openeuropa/oe_bootstrap_theme": "dev-php-7.1",
         "openeuropa/oe_webtools": "1.7.0",
         "openeuropa/webtools-geocoding-provider": "~0.1",
         "pear/console_table": "~1.3",
@@ -218,15 +217,6 @@
         ]
     },
     "extra": {
-        "artifacts": {
-            "openeuropa/oe_bootstrap_theme": {
-                "dist": {
-                    "_todo": "Replace with the actual release artifact. Ref. https://github.com/openeuropa/oe_bootstrap_theme/issues/9",
-                    "url": "https://github.com/Joinup/oe_bootstrap_theme/files/6802311/{project-name}-{pretty-version}.tar.gz",
-                    "type": "tar"
-                }
-            }
-        },
         "installer-paths": {
             "drush/Commands/{$name}": ["type:drupal-drush"],
             "drush/contrib/{$name}": ["type:drupal-drush"],
@@ -427,6 +417,11 @@
         {
             "type": "vcs",
             "url": "https://github.com/gizra/og.git"
+        },
+        {
+            "_readme": "Temporary repository in which theme assets are committed. Obsolete once we have a functional CI pipeline that allows us to compile the assets on the fly.",
+            "type": "vcs",
+            "url": "https://github.com/Joinup/oe_bootstrap_theme.git"
         },
         {
             "type": "vcs",
