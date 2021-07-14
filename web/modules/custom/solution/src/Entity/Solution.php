@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\solution\Entity;
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\asset_release\Entity\AssetReleaseInterface;
 use Drupal\collection\Entity\CollectionInterface;
 use Drupal\collection\Exception\MissingCollectionException;
@@ -20,6 +22,7 @@ use Drupal\joinup_group\Entity\PinnableGroupContentTrait;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeFallbackTrait;
 use Drupal\joinup_workflow\EntityWorkflowStateTrait;
+use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -37,6 +40,7 @@ class Solution extends Rdf implements SolutionInterface {
   use PinnableGroupContentTrait;
   use PinnableToFrontpageTrait;
   use ShortIdTrait;
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -196,6 +200,29 @@ class Solution extends Rdf implements SolutionInterface {
       ]);
     }
     return $ids;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getNewMembershipSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup {
+    return $this->t('You have subscribed to this solution and will receive notifications for it. To manage your subscriptions go to <em>My subscriptions</em> in your user menu.');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getExistingMembershipMessage(OgMembershipInterface $membership): TranslatableMarkup {
+    $parameters = [
+      '%group' => $this->getName(),
+    ];
+    switch ($membership->getState()) {
+      case OgMembershipInterface::STATE_BLOCKED:
+        return $this->t('You cannot subscribe to %group because your account has been blocked.', $parameters);
+
+      default:
+        return $this->t('You are already subscribed to %group.', $parameters);
+    }
   }
 
 }

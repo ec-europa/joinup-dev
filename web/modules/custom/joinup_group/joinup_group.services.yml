@@ -17,6 +17,11 @@ services:
     class: Drupal\joinup_group\EventSubscriber\GroupMenuLinksSubscriber
     tags:
       - { name: event_subscriber }
+  joinup_group.join_group_subscriber:
+    class: Drupal\joinup_group\EventSubscriber\JoinGroupSubscriber
+    arguments: ['@entity_type.manager', '@datetime.time', '@request_stack', '@messenger']
+    tags:
+      - { name: event_subscriber }
   joinup_group.node_access_grants:
     class: Drupal\joinup_group\JoinupGroupNodeAccessGrants
     arguments: ['@database', '@cache.static']
