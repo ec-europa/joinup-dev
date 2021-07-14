@@ -44,6 +44,14 @@ Release procedure
    sidebar. Find the release in the table, click the three-dot 'Actions' menu
    and choose 'Release'. Set the correct date for the release.
 1. Merge back master into develop.
+1. Create a ticket on the Jira board of the devops (project FPFIS SUPP) with
+   the labels "deploy, fpfis-classified, joinup, release, upgrade" and a link to
+   the release tag on Github. Link this ticket with the release ticket on the
+   Joinup board.
+1. Communicate this ticket with the devops team and decide on a timeslot for the
+   release.
+1. Communicate the release time with the functional team so they can announce
+   this on the Joinup homepage.
 1. Create a followup PR against develop that cleans up the update and deploy
    scripts, and a corresponding Jira ticket, and move this in QA.
 1. After the PR is merged and the release is deployed, move the release ticket
