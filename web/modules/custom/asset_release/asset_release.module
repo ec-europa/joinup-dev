@@ -330,18 +330,6 @@ function asset_release_title_version_is_unique(AssetReleaseInterface $asset_rele
 
 /**
  * Implements hook_form_FORM_ID_alter().
- *
- * For releases, put a permission control on who can edit the creation date.
- * This applies in edit forms only.
- */
-function asset_release_form_rdf_entity_asset_release_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (isset($form['created'])) {
-    $form['created']['#access'] = \Drupal::currentUser()->hasPermission('access release create field');
-  }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
  */
 function asset_release_form_rdf_entity_asset_release_delete_form_alter(array &$form, FormStateInterface $form_state, string $form_id) {
   $form['actions']['submit']['#submit'][] = 'asset_release_delete_redirect';
