@@ -1,3 +1,0 @@
-access release create field:
-  title: 'Access the "Authored on" field of the release entities.'
-  description: 'This does not force the field to be visible. It only controls the access to it.'
