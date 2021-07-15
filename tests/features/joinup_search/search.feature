@@ -542,7 +542,6 @@ Feature: Global search
       | Absolutely nonesense               |
     And I should be on "/search?keys=Relativity&sort_by=last-updated-date"
 
-  @javascript
   Scenario: When not entering any keywords the last updated content should be shown first
     Given collections:
       | title             | description       | state     |
