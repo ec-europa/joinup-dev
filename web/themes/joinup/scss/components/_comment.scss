@@ -19,6 +19,10 @@
   &:first-of-type {
     border-top: none;
   }
+
+  .permalink {
+    text-decoration: none;
+  }
 }
 
 .comment-item__user-picture {
@@ -239,7 +243,7 @@
       z-index: 2;
     }
   }
- 
+
   > .comment-item + .indented {
     margin-top: -30px;
     z-index: 10;
