@@ -14,6 +14,7 @@ use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\collection\Entity\CollectionInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
@@ -25,6 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * A simple form with a button to join or leave a collection.
  */
 abstract class JoinGroupFormBase extends FormBase {
+
   /**
    * The entity type manager service.
    *
@@ -141,17 +143,6 @@ abstract class JoinGroupFormBase extends FormBase {
   }
 
   /**
-   * Retrieves the success message for the new membership.
-   *
-   * @param \Drupal\og\OgMembershipInterface $membership
-   *   The new membership.
-   *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
-   *   The success status message.
-   */
-  abstract public function getSuccessMessage(OgMembershipInterface $membership): TranslatableMarkup;
-
-  /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ?AccountProxyInterface $user = NULL, ?RdfInterface $group = NULL): array {
@@ -159,10 +150,29 @@ abstract class JoinGroupFormBase extends FormBase {
     $this->group = $group;
     $this->user = $this->loadUser((int) $user->id());
 
+    // Inform anonymous users that they need to authenticate to join the group.
+    if ($this->user->isAnonymous()) {
+      $parameters = ['rdf_entity' => $this->group->id()];
+      if ($this->accessManager->checkNamedRoute('joinup_group.authenticate_to_join', $parameters)) {
+        $form['authenticate'] = [
+          '#type' => 'link',
+          '#title' => $this->getJoinSubmitLabel(),
+          '#url' => Url::fromRoute('joinup_group.authenticate_to_join', $parameters),
+          '#attributes' => [
+            'class' => ['use-ajax'],
+            'data-dialog-type' => 'modal',
+            'data-dialog-options' => Json::encode([
+              'width' => 'auto',
+            ]),
+          ],
+        ];
+        $form['#attached']['library'][] = 'core/drupal.ajax';
+      }
+    }
+
     // In case the user is not a member or does not have a pending membership,
     // give the possibility to request one.
-    $membership = $this->getUserNonBlockedMembership();
-    if (empty($membership)) {
+    elseif (empty($membership = $this->getUserNonBlockedMembership())) {
       $form['join'] = [
         '#type' => 'submit',
         '#value' => $this->getJoinSubmitLabel(),
@@ -222,8 +232,8 @@ abstract class JoinGroupFormBase extends FormBase {
     // Only authenticated users can join a group.
     if ($this->user->isAnonymous()) {
       $form_state->setErrorByName('user', $this->t('<a href=":login">Sign in</a> or <a href=":register">register</a> to change your group membership.', [
-        ':login' => $this->urlGenerator->generateFromRoute('user.login'),
-        ':register' => $this->urlGenerator->generateFromRoute('user.register'),
+        ':login' => Url::fromRoute('user.login')->toString(),
+        ':register' => Url::fromRoute('user.register')->toString(),
       ]));
     }
 
@@ -241,14 +251,14 @@ abstract class JoinGroupFormBase extends FormBase {
     $og_roles = [$this->loadOgRole($this->group->getEntityTypeId() . '-' . $this->group->bundle() . '-' . OgRoleInterface::AUTHENTICATED)];
 
     // Take into account the `field_ar_closed` in case of a collection.
-    $state = OgMembershipInterface::STATE_ACTIVE;
-    if ($this->group->hasField('field_ar_closed') && !$this->group->get('field_ar_closed')->isEmpty() && $this->group->get('field_ar_closed')->first()->value) {
-      $state = OgMembershipInterface::STATE_PENDING;
-    }
+    // @todo Collection specific code does not belong in the generic base class.
+    //   This should be moved to the `JoinCollectionForm` which extends this.
+    $state = $this->group instanceof CollectionInterface && $this->group->isClosed() ? OgMembershipInterface::STATE_PENDING : OgMembershipInterface::STATE_ACTIVE;
 
     $membership = $this->createMembership($state, $og_roles);
     $membership->save();
-    $this->messenger->addStatus($this->getSuccessMessage($membership));
+
+    $this->messenger->addStatus($this->group->getNewMembershipSuccessMessage($membership));
   }
 
   /**
@@ -283,7 +293,7 @@ abstract class JoinGroupFormBase extends FormBase {
    *   True if the form can be accessed, false otherwise.
    */
   public function access(): bool {
-    return $this->currentUser()->isAuthenticated() && $this->getRouteMatch()->getRouteName() !== 'joinup_group.leave_confirm_form';
+    return $this->getRouteMatch()->getRouteName() !== 'joinup_group.leave_confirm_form';
   }
 
   /**
