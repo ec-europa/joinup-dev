@@ -30,7 +30,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The event object.
    */
-  public function contactForm(NotificationEvent $event) {
+  public function contactForm(NotificationEvent $event): void {
     if ($event->getOperation() !== 'contact') {
       return;
     }
@@ -60,7 +60,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
    * @return \Drupal\Core\Entity\EntityInterface|null
    *   The entity object or null in any other case.
    */
-  protected function getEntityFromUrl($uri) {
+  protected function getEntityFromUrl($uri): ?EntityInterface {
     try {
       $url = Url::fromUri($uri);
     }
@@ -108,7 +108,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
    * @return bool
    *   If the delivery succeeded.
    */
-  protected function sendReportMessage(NotificationEvent $event) {
+  protected function sendReportMessage(NotificationEvent $event): bool {
     $message = $event->getEntity();
     $entity = $this->getEntityFromUrl($message->get('field_contact_url')->first()->uri);
     // If there is no entity found, do not send an email.
@@ -145,7 +145,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
    * @return array
    *   The user data array.
    */
-  protected function getReportUserData() {
+  protected function getReportUserData(): array {
     return [
       'roles' => [
         'moderator' => [
@@ -172,7 +172,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
    * @return array
    *   An array of arguments, keyed by the token-styled id.
    */
-  protected function generateReportArguments(EntityInterface $message) {
+  protected function generateReportArguments(EntityInterface $message): array {
     $arguments = [];
     $arguments['@actor:field_user_first_name'] = $message->get('field_contact_first_name')->first()->value;
     $arguments['@actor:field_user_last_name'] = $message->get('field_contact_last_name')->first()->value;
@@ -199,8 +199,8 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
   /**
    * {@inheritdoc}
    */
-  protected function getConfigurationName() {
-    return NULL;
+  protected function getConfigurationName(): string {
+    return '';
   }
 
 }
