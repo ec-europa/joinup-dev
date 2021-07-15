@@ -528,16 +528,42 @@ Feature: Global search
       | Absolutely nonesense               |
     And I should be on "/search?keys=Relativity&sort_by=relevance"
 
-    Given I select "Creation Date" from "Sort by"
+    Given I select "Creation date" from "Sort by"
     Then I should see the following tiles in the correct order:
       | Absolutely nonesense               |
       | Relativity news: Relativity theory |
       | Relativity is the word             |
     And I should be on "/search?keys=Relativity&sort_by=creation-date"
 
-    Given I select "Last Updated Date" from "Sort by"
+    Given I select "Last updated date" from "Sort by"
     Then I should see the following tiles in the correct order:
       | Relativity is the word             |
       | Relativity news: Relativity theory |
       | Absolutely nonesense               |
     And I should be on "/search?keys=Relativity&sort_by=last-updated-date"
+
+  Scenario: When not entering any keywords the last updated content should be shown first
+    Given collections:
+      | title             | description       | state     |
+      | World collection  | Some custom data. | validated |
+    And news content:
+      | title                              | body                                                              | collection        | state     | created    | changed    |
+      | Relativity is the mood             | No one cares about the body.                                      | World collection  | validated | 01/01/2020 | 03/08/2020 |
+      | Absolutely fantastic               | Some news are not worth it but I will add relativity here anyway. | World collection  | validated | 03/01/2020 | 01/08/2020 |
+      | Relativity news: Relativity car    | I do care about the relativity keyword in the body.               | World collection  | validated | 02/01/2020 | 02/08/2020 |
+
+    When I visit the search page
+    # Filter on the content type so that we have a stable search result, which
+    # is not affected by unrelated content (such as user accounts created during
+    # the installation of the test site).
+    And I check the "News (3)" checkbox from the "Content types" facet
+    # Check that the default sorting option remains unchanged. It should still
+    # show "Relevance" even though the results are actually sorted by last
+    # updated time. The reason for this is that the user should still be free to
+    # enter keywords and get relevant results, without having to manually change
+    # the sorting options.
+    Then the option with text "Relevance" from select "Sort by" is selected
+    And I should see the following tiles in the correct order:
+      | Relativity is the mood             |
+      | Relativity news: Relativity car    |
+      | Absolutely fantastic               |
