@@ -528,14 +528,14 @@ Feature: Global search
       | Absolutely nonesense               |
     And I should be on "/search?keys=Relativity&sort_by=relevance"
 
-    Given I select "Creation Date" from "Sort by"
+    Given I select "Creation date" from "Sort by"
     Then I should see the following tiles in the correct order:
       | Absolutely nonesense               |
       | Relativity news: Relativity theory |
       | Relativity is the word             |
     And I should be on "/search?keys=Relativity&sort_by=creation-date"
 
-    Given I select "Last Updated Date" from "Sort by"
+    Given I select "Last updated date" from "Sort by"
     Then I should see the following tiles in the correct order:
       | Relativity is the word             |
       | Relativity news: Relativity theory |

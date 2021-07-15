@@ -369,7 +369,7 @@ display:
           order: DESC
           exposed: true
           expose:
-            label: 'Creation Date'
+            label: 'Creation date'
             identifier: creation-date
           plugin_id: search_api
         entity_changed:
@@ -382,7 +382,7 @@ display:
           order: DESC
           exposed: true
           expose:
-            label: 'Last Updated Date'
+            label: 'Last updated date'
             identifier: last-updated-date
           plugin_id: search_api
       title: ''
