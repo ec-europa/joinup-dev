@@ -1,0 +1,29 @@
+uuid: ed460e0f-8b15-4e00-aff6-a63cfda3de1c
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.topic
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - ventuno
+id: ventuno_topic_facet
+theme: ventuno
+region: sidebar
+weight: -20
+provider: null
+plugin: 'facet_block:topic'
+settings:
+  id: 'facet_block:topic'
+  label: 'Search page - Topic facet'
+  provider: facets
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes:
+      - view.search.page_1
+    negate: false
+    context_mapping: {  }

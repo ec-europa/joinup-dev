@@ -18,12 +18,13 @@ facet_source_id: 'search_api:views_page__search__page_1'
 widget:
   type: dropdown
   config:
-    show_numbers: true
+    show_numbers: false
     default_option_label: 'Any topic'
+    child_prefix: ' '
     arbitrary_facet_plugin: _none
 query_operator: or
-use_hierarchy: false
-expand_hierarchy: false
+use_hierarchy: true
+expand_hierarchy: true
 enable_parent_when_child_gets_disabled: true
 hard_limit: 0
 exclude: false
@@ -32,7 +33,7 @@ processor_configs:
   active_widget_order:
     processor_id: active_widget_order
     weights:
-      sort: -2
+      sort: -8
     settings:
       sort: DESC
   aggregated_entity_reference_label:
@@ -50,13 +51,13 @@ processor_configs:
   count_widget_order:
     processor_id: count_widget_order
     weights:
-      sort: -1
+      sort: -9
     settings:
       sort: DESC
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
-      sort: 0
+      sort: -10
     settings:
       sort: ASC
   url_processor_handler:

@@ -1,0 +1,22 @@
+uuid: 90daa2e5-1876-4200-94a8-b8361418b445
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - ventuno
+_core:
+  default_config_hash: U8VHHZGmwUulZiUO6NVs1BXf9rRtY6zwNoAc6c-3rP8
+id: ventuno_messages
+theme: ventuno
+region: content_top
+weight: -20
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  provider: system
+  label_display: '0'
+visibility: {  }

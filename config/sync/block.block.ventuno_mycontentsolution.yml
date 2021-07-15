@@ -1,0 +1,25 @@
+uuid: 38e9efdb-b251-47f6-a736-1abb772e5e62
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.solution_my_content
+  module:
+    - facets
+  theme:
+    - ventuno
+_core:
+  default_config_hash: 4kmIiw6gImpiApek0WfYh1_nUGT94-3fbLPXvH_ClaM
+id: ventuno_mycontentsolution
+theme: ventuno
+region: sidebar
+weight: -13
+provider: null
+plugin: 'facet_block:solution_my_content'
+settings:
+  id: 'facet_block:solution_my_content'
+  label: 'Solutions - My content'
+  provider: facets
+  label_display: '0'
+  block_id: mycontentsolution
+visibility: {  }

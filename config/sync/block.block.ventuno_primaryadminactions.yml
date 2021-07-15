@@ -1,0 +1,18 @@
+uuid: dca157ae-92ff-4f6f-882a-b5dd6b5cc3b2
+langcode: en
+status: true
+dependencies:
+  theme:
+    - ventuno
+id: ventuno_primaryadminactions
+theme: ventuno
+region: content
+weight: -22
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

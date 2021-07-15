@@ -1,0 +1,23 @@
+uuid: 5c617e77-2dbb-4387-9fa9-aa5508e02050
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.authoredon
+  module:
+    - facets
+  theme:
+    - ventuno
+id: ventuno_authoredon
+theme: ventuno
+region: sidebar
+weight: -25
+provider: null
+plugin: 'facet_block:authoredon'
+settings:
+  id: 'facet_block:authoredon'
+  label: 'Authored on'
+  provider: facets
+  label_display: visible
+  block_id: authoredon
+visibility: {  }

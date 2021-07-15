@@ -1,0 +1,25 @@
+uuid: e4475911-fd67-4c7f-9285-bd2360e23aa8
+langcode: en
+status: true
+dependencies:
+  module:
+    - eif
+  theme:
+    - ventuno
+id: ventuno_eifrecomendationsselector
+theme: ventuno
+region: content
+weight: -8
+provider: null
+plugin: eif_recommendation_selector
+settings:
+  id: eif_recommendation_selector
+  label: 'EIF recomendations selector'
+  provider: eif
+  label_display: '0'
+visibility:
+  eif_solutions_page:
+    id: eif_solutions_page
+    eif_solutions: true
+    negate: false
+    context_mapping: {  }

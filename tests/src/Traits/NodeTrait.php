@@ -27,7 +27,7 @@ trait NodeTrait {
    * @throws \InvalidArgumentException
    *   Thrown when a node with the given name does not exist.
    */
-  public function getNodeByTitle(string $title, ?string $bundle = NULL): ?NodeInterface {
+  public static function getNodeByTitle(string $title, ?string $bundle = NULL): ?NodeInterface {
     $query = \Drupal::entityQuery('node')
       ->condition('title', $title)
       ->accessCheck(FALSE)

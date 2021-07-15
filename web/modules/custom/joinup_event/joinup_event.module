@@ -8,7 +8,12 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldItemInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\TypedData\Exception\MissingDataException;
+use Drupal\entityqueue\EntitySubqueueInterface;
 use Drupal\joinup_event\Entity\Event;
 use Drupal\joinup_event\Entity\EventInterface;
 use Drupal\joinup_event\Plugin\Field\FieldFormatter\WebtoolsMapFormatter;
@@ -47,6 +52,72 @@ function joinup_event_entity_type_alter(array &$entity_types): void {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function joinup_event_theme($existing, $type, $theme, $path) {
+  return [
+    // Use a custom template for the highlighted event on the homepage.
+    'node__event__highlighted' => [
+      'base hook' => 'node',
+      'template' => 'node--event--highlighted',
+    ],
+  ];
+}
+
+/**
+ * Prepares variables for the highlighted event template.
+ *
+ * Default template: node--event--highlighted.html.twig.
+ *
+ * The highlighted event is displayed on the homepage and is managed through an
+ * entityqueue. It has a number of additional fields (header text and a call to
+ * action button) which are stored on the entityqueue object. This retrieves
+ * this data and makes it available for the template.
+ *
+ * @param array $variables
+ *   An associative array of template variables as prepared by
+ *   template_preprocess_node().
+ *
+ * @see hook_entity_type_build()
+ * @see \Drupal\Core\Field\BaseFieldDefinition::setDisplayConfigurable()
+ */
+function template_preprocess_node__event__highlighted(array &$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['node'];
+
+  $subqueue = \Drupal::entityTypeManager()->getStorage('entity_subqueue')->load('highlighted_event');
+  if ($subqueue instanceof EntitySubqueueInterface) {
+    if ($subqueue->getItemPosition($node) !== FALSE) {
+      // Define a function to retrieve the main values from subqueue fields.
+      $get_value = function (string $field_name) use ($subqueue) {
+        $field_item_list = $subqueue->get($field_name);
+        if ($field_item_list instanceof FieldItemListInterface) {
+          try {
+            $field_item = $field_item_list->first();
+          }
+          catch (MissingDataException $e) {
+            return NULL;
+          }
+          if ($field_item instanceof FieldItemInterface) {
+            $property_name = $field_item::mainPropertyName();
+            return $field_item->$property_name;
+          }
+        }
+        return NULL;
+      };
+
+      $variables['header'] = $get_value('header');
+      $variables['link_text'] = $get_value('link_text') ?? t('Read more');
+      $links_to_external_url = (bool) $get_value('link_to_external_url');
+      $external_url = $get_value('external_url');
+      if ($links_to_external_url && $external_url) {
+        $variables['url'] = $external_url;
+      }
+    }
+  }
+}
+
+/**
  * Implements template_preprocess_fieldset().
  */
 function joinup_event_preprocess_fieldset(array &$variables): void {
@@ -54,6 +125,13 @@ function joinup_event_preprocess_fieldset(array &$variables): void {
   if (isset($variables['element']['#id']) && $variables['element']['#id'] === 'group-event-location') {
     $variables['legend_span']['attributes']->addClass('js-form-required form-required');
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_event_form_entity_subqueue_highlighted_event_edit_form_alter(array &$form, FormStateInterface $form_state): void {
+  $form['external_url']['#states']['visible'][':input[name="link_to_external_url[value]"]']['checked'] = TRUE;
 }
 
 /**

@@ -9,15 +9,13 @@
  * @ingroup themeable
  */
 #}
-<div class="search-bar search-bar--header search-bar--white mdl-textfield mdl-js-textfield mdl-chipfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
-    <label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon" for="search-bar__input">
-        <span class="search-bar__icon icon icon--search"></span>
-    </label>
+<div class="search-bar">
+    <label for="search-bar__input">{{ 'Search'|trans }}</label>
 
-    <form action="{{ path("view.search.page_1") }}" class="search-bar__input-container mdl-textfield__expandable-holder">
+    <form action="{{ path("view.search.page_1") }}">
         {% for id, filter in filters %}
-            <input type="hidden" class="mdl-chipfield__input" name="f[]" value="{{ id }}" data-description="{{ filter }}">
+            <input type="hidden" class="search-bar__chip" name="f[]" value="{{ id }}" data-description="{{ filter }}">
         {% endfor %}
-        <input class="search-bar__input mdl-textfield__input" type="text" name="keys" id="search-bar__input">
+        <input class="search-bar__input" type="text" name="keys" id="search-bar__input">
     </form>
 </div>

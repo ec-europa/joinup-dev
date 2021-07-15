@@ -6,7 +6,7 @@ core_version_requirement: ^8.9 || ^9.1
 php: 7.1
 
 dependencies:
+  - 'joinup:topic'
   - 'joinup_bundle_class:joinup_bundle_class'
-  - 'joinup_front_page:joinup_front_page'
   - 'og:og'
   - 'og_menu:og_menu'

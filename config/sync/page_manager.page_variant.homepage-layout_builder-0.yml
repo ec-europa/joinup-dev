@@ -1,0 +1,198 @@
+uuid: 072fdcb3-436c-4081-8d65-12d72adb4f75
+langcode: en
+status: true
+dependencies:
+  config:
+    - page_manager.page.homepage
+id: homepage-layout_builder-0
+label: 'Layout Builder'
+variant: layout_builder
+variant_settings:
+  id: layout_builder
+  uuid: c6b4a07e-d959-4562-a8a9-96a8c2a46ae9
+  label: null
+  weight: 0
+  sections:
+    -
+      layout_id: layout_twocol_section
+      layout_settings:
+        label: 'Search and topic discovery'
+        column_widths: 50-50
+      components:
+        ed59ccf8-a4f3-40fd-984b-094b964019e3:
+          uuid: ed59ccf8-a4f3-40fd-984b-094b964019e3
+          region: first
+          configuration:
+            id: joinup_search_global_search
+            label: 'Global search'
+            provider: joinup_search
+            label_display: '0'
+            template_suggestion: homepage
+            context_mapping: {  }
+          additional: {  }
+          weight: 1
+        d01d2c31-5d45-4bad-b722-1044de906ffa:
+          uuid: d01d2c31-5d45-4bad-b722-1044de906ffa
+          region: first
+          configuration:
+            id: layout_builder_block
+            label: 'Search top'
+            provider: layout_builder_block
+            label_display: '0'
+            text: "<p>Find the interoperability <strong>solutions you need</strong></p>\r\n"
+            format: content_editor
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+        92757bf1-d70d-4a3d-a086-2e431b16e707:
+          uuid: 92757bf1-d70d-4a3d-a086-2e431b16e707
+          region: first
+          configuration:
+            id: layout_builder_block
+            label: 'Search bottom'
+            provider: layout_builder_block
+            label_display: '0'
+            text: "<p>Need more search options? Use our <a href=\"/search\">advanced search</a></p>\r\n"
+            format: content_editor
+            context_mapping: {  }
+          additional: {  }
+          weight: 2
+        fdf6b367-2ded-47ac-99d1-26e9beae4382:
+          uuid: fdf6b367-2ded-47ac-99d1-26e9beae4382
+          region: second
+          configuration:
+            id: 'views_block:discover_topics-block'
+            label: ''
+            provider: views
+            label_display: visible
+            views_label: ''
+            items_per_page: none
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+      third_party_settings: {  }
+    -
+      layout_id: joinup_layout_twocol_60_40
+      layout_settings:
+        label: 'Spotlight and highlighted solution'
+      components:
+        26488b6d-5ac8-4c62-a3dc-137f6dced5c5:
+          uuid: 26488b6d-5ac8-4c62-a3dc-137f6dced5c5
+          region: first
+          configuration:
+            id: 'views_block:in_the_spotlight-block'
+            label: ''
+            provider: views
+            label_display: visible
+            views_label: ''
+            items_per_page: none
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+        204e8ccb-280d-4ee4-b598-74b9f96d6496:
+          uuid: 204e8ccb-280d-4ee4-b598-74b9f96d6496
+          region: second
+          configuration:
+            id: 'entityqueue_block:highlighted_solution'
+            label: 'Highlighted solution'
+            provider: entityqueue_block
+            label_display: visible
+            view_mode: highlighted
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+      third_party_settings: {  }
+    -
+      layout_id: joinup_layout_twocol_60_40
+      layout_settings:
+        label: 'News and events'
+      components:
+        52bba3fe-70ac-478a-9bda-2bbb24a9a8a1:
+          uuid: 52bba3fe-70ac-478a-9bda-2bbb24a9a8a1
+          region: first
+          configuration:
+            id: 'views_block:latest_news-block'
+            label: ''
+            provider: views
+            label_display: visible
+            views_label: ''
+            items_per_page: none
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+        7cc83b30-0be3-4f89-940b-3e7f72d7b16d:
+          uuid: 7cc83b30-0be3-4f89-940b-3e7f72d7b16d
+          region: second
+          configuration:
+            id: 'entityqueue_block:highlighted_event'
+            label: 'Highlighted event'
+            provider: entityqueue_block
+            label_display: visible
+            view_mode: highlighted
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+      third_party_settings: {  }
+    -
+      layout_id: joinup_layout_twocolfooter_onecol_67_33
+      layout_settings:
+        label: About
+      components:
+        b0ffc367-218e-4407-bb94-bd9682a9552e:
+          uuid: b0ffc367-218e-4407-bb94-bd9682a9552e
+          region: first
+          configuration:
+            id: layout_builder_block
+            label: 'What''s Joinup about?'
+            provider: layout_builder_block
+            label_display: visible
+            text: "<p>Joinup is a collaborative platform created by the European Commission and funded by the European Union via the <a href=\"https://ec.europa.eu/isa2/\" target=\"_blank\">Interoperability solutions for public administrations, businesses and citizens</a> (ISA2) Programme.</p>\r\n"
+            format: content_editor
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+        e1eeef2d-dde1-4aa3-af7b-a6709184d497:
+          uuid: e1eeef2d-dde1-4aa3-af7b-a6709184d497
+          region: second
+          configuration:
+            id: layout_builder_block
+            label: 'Who is it for?'
+            provider: layout_builder_block
+            label_display: visible
+            text: '<p>Joinup offers several services that aim to help <strong>e-Government professionals</strong> share their experience with each other. Joinup supports them to find, choose, re-use, develop and implement interoperability solutions.</p>'
+            format: content_editor
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+        e82de3d1-2e2f-4244-8ba8-c147ba44d577:
+          uuid: e82de3d1-2e2f-4244-8ba8-c147ba44d577
+          region: two_col_footer
+          configuration:
+            id: layout_builder_block
+            label: 'For fresh start on creating content'
+            provider: layout_builder_block
+            label_display: '0'
+            text: "<p>For fresh start on creating content</p>\r\n\r\n<p><a href=\"/collection/joinup/help-videos\">How to video</a>&nbsp;<a href=\"/guided-tour\">Guided tour</a>&nbsp;<a href=\"/collection/joinup/faq\">FAQ</a></p>\r\n"
+            format: content_editor
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+        6ab0ceea-4541-4153-8b64-227e02369d30:
+          uuid: 6ab0ceea-4541-4153-8b64-227e02369d30
+          region: third
+          configuration:
+            id: layout_builder_block
+            label: 'New Joinup video'
+            provider: layout_builder_block
+            label_display: '0'
+            text: "<p>{\"preview_thumbnail\":\"/sites/default/files/styles/video_embed_wysiwyg_preview/public/video_thumbnails/vodYK2bH05I.jpg?itok=LYHRRAiE\",\"video_url\":\"https://youtu.be/vodYK2bH05I\",\"settings\":{\"responsive\":true,\"width\":\"854\",\"height\":\"480\",\"autoplay\":false},\"settings_summary\":[\"Embedded Video (Responsive).\"]}</p>\r\n"
+            format: content_editor
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+      third_party_settings: {  }
+page: homepage
+weight: 0
+selection_criteria: {  }
+selection_logic: and
+static_context: {  }

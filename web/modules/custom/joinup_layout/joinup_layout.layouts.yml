@@ -1,0 +1,40 @@
+joinup_layout_twocol_60_40:
+  label: 'Joinup 60/40'
+  path: layouts/twocol-60-40
+  template: joinup-layout--twocol-60-40
+  library: joinup_layout/twocol_60_40
+  category: 'Columns: 2'
+  default_region: first
+  icon_map:
+    - [top]
+    - [first, second]
+    - [bottom]
+  regions:
+    top:
+      label: Top
+    first:
+      label: First
+    second:
+      label: Second
+    bottom:
+      label: Bottom
+
+joinup_layout_twocolfooter_onecol_67_33:
+  label: 'Joinup three columns, two with common footer'
+  path: layouts/twocolfooter-onecol-67-33
+  template: joinup-layout--twocolfooter-onecol-67-33
+  library: joinup_layout/twocolfooter_onecol_67_33
+  category: 'Columns: 3'
+  default_region: first
+  icon_map:
+    - [first, second, third]
+    - [two_col_footer]
+  regions:
+    first:
+      label: First
+    second:
+      label: Second
+    third:
+      label: Third
+    two_col_footer:
+      label: Two column footer
