@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\joinup_discussion\Entity\Discussion;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
@@ -268,6 +269,12 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   protected function appliesOnDelete() {
     // If any of the workflow related properties are empty, return early.
     if (!$this->entity instanceof EntityWorkflowStateInterface) {
+      return FALSE;
+    }
+
+    if ($this->entity instanceof Discussion) {
+      // Discussions send their own notification for the deletion of the entity.
+      // @see \Drupal\joinup_discussion\EventSubscriber\SubscribedDiscussionSubscriber::notifyOnDiscussionDeletion.
       return FALSE;
     }
 

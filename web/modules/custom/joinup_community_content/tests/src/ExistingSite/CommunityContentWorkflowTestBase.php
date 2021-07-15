@@ -1074,7 +1074,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
    *   An array of workflow states.
    */
   protected function getPublishedStates(): array {
-    return ['validated'];
+    return ['validated', 'archived'];
   }
 
 }

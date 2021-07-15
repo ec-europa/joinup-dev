@@ -4,7 +4,7 @@ package: Custom
 type: theme
 core_version_requirement: ^8 || ^9
 php: 7.1
-base theme: classy
+base theme: oe_bootstrap_theme
 
 regions:
   header: Header

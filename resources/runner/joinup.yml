@@ -17,6 +17,7 @@ commands:
   joinup:compile-scss:
     - task: mkdir
       dir: ${scss.output_dir}
+    # Compile SCSS for the old theme.
     - task: run
       command: assets:compile-scss
       arguments:
@@ -25,3 +26,11 @@ commands:
       options:
         style: ${scss.style}
         import-dir: ${scss.import_dir}
+    # Compile assets for the new base theme (includes SCSS and JS).
+    # TODO Restore when we have moved to the new infrastructure.
+    #- task: run
+    #  command: oe_bootstrap_theme:npm-run
+    #  arguments:
+    #    - dev
+    #  options:
+    #    npm-dir: web/themes/contrib/oe_bootstrap_theme
