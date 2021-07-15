@@ -557,7 +557,12 @@ Feature: Global search
     # is not affected by unrelated content (such as user accounts created during
     # the installation of the test site).
     And I check the "News (3)" checkbox from the "Content types" facet
-    Then the option with text "Last Updated Date" from select "Sort by" is selected
+    # Check that the default sorting option remains unchanged. It should still
+    # show "Relevance" even though the results are actually sorted by last
+    # updated time. The reason for this is that the user should still be free to
+    # enter keywords and get relevant results, without having to manually change
+    # the sorting options.
+    Then the option with text "Relevance" from select "Sort by" is selected
     And I should see the following tiles in the correct order:
       | Relativity is the mood             |
       | Relativity news: Relativity car    |
