@@ -49,4 +49,15 @@ interface CollectionInterface extends RdfInterface, EntityPublicationTimeInterfa
    */
   public function getGlossarySettings(): array;
 
+  /**
+   * Whether or not the collection is closed.
+   *
+   * In a closed collection users can only become members after being approved
+   * by a facilitator. The user memberships will be initially in pending state.
+   *
+   * @return bool
+   *   TRUE if the collection is closed, FALSE if it is open.
+   */
+  public function isClosed(): bool;
+
 }
