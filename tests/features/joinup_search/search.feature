@@ -550,8 +550,8 @@ Feature: Global search
     And news content:
       | title                              | body                                                              | collection        | state     | created    | changed    |
       | Relativity is the mood             | No one cares about the body.                                      | World collection  | validated | 01/01/2020 | 03/08/2020 |
-      | Relativity news: Relativity car    | I do care about the relativity keyword in the body.               | World collection  | validated | 02/01/2020 | 02/08/2020 |
       | Absolutely fantastic               | Some news are not worth it but I will add relativity here anyway. | World collection  | validated | 03/01/2020 | 01/08/2020 |
+      | Relativity news: Relativity car    | I do care about the relativity keyword in the body.               | World collection  | validated | 02/01/2020 | 02/08/2020 |
 
     When I am on the homepage
     Then I enter "" in the search bar and press enter
