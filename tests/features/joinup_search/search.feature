@@ -553,9 +553,7 @@ Feature: Global search
       | Absolutely fantastic               | Some news are not worth it but I will add relativity here anyway. | World collection  | validated | 03/01/2020 | 01/08/2020 |
       | Relativity news: Relativity car    | I do care about the relativity keyword in the body.               | World collection  | validated | 02/01/2020 | 02/08/2020 |
 
-    When I am on the homepage
-    Then I enter "" in the search bar and press enter
-    Then I should be on the advanced search page
+    When I visit the search page
     When I check the "News (3)" checkbox from the "Content types" facet
     Then the option with text "Last Updated Date" from select "Sort by" is selected
     And I should see the following tiles in the correct order:
