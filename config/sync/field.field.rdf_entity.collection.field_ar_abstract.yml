@@ -10,16 +10,17 @@ dependencies:
     - text
 third_party_settings:
   allowed_formats:
-    basic_html: basic_html
+    abstract_html: abstract_html
     content_editor: '0'
+    basic_html: '0'
     eira_format: '0'
-    full_html: '0'
     glossary_html: '0'
     licence: '0'
-    plain_text: '0'
     restricted_html: '0'
     simple_html: '0'
     simple_text: '0'
+    full_html: '0'
+    plain_text: '0'
 _core:
   default_config_hash: 1VOX4tmugcY6Vy3QcRmHxAkjRp7JR3DWZznLsDjPFRM
 id: rdf_entity.collection.field_ar_abstract

@@ -102,6 +102,7 @@ permissions:
   - 'update paragraph content accordion_item'
   - 'update paragraph content content_listing'
   - 'update paragraph content simple_paragraph'
+  - 'use text format abstract_html'
   - 'use text format basic_html'
   - 'use text format content_editor'
   - 'use text format glossary_html'
