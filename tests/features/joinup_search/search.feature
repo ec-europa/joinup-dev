@@ -543,7 +543,7 @@ Feature: Global search
     And I should be on "/search?keys=Relativity&sort_by=last-updated-date"
 
   @javascript
-  Scenario: Empty Advanced search.
+  Scenario: When not entering any keywords the last updated content should be shown first
     Given collections:
       | title             | description       | state     |
       | World collection  | Some custom data. | validated |
@@ -554,7 +554,10 @@ Feature: Global search
       | Relativity news: Relativity car    | I do care about the relativity keyword in the body.               | World collection  | validated | 02/01/2020 | 02/08/2020 |
 
     When I visit the search page
-    When I check the "News (3)" checkbox from the "Content types" facet
+    # Filter on the content type so that we have a stable search result, which
+    # is not affected by unrelated content (such as user accounts created during
+    # the installation of the test site).
+    And I check the "News (3)" checkbox from the "Content types" facet
     Then the option with text "Last Updated Date" from select "Sort by" is selected
     And I should see the following tiles in the correct order:
       | Relativity is the mood             |
