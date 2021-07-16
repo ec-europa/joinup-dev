@@ -40,18 +40,12 @@ Feature: Asset release moderation
       | Release notes  | We go live.              |
     And I press "Save as draft"
     Then I should see the heading "Release of the dark ship 1"
-    # Ensure that owners do not have access to override the creation date.
-    # @see ISAICP-4068
-    But I should not see the text "Authored on"
-    And I should not see the following warning messages:
+    But I should not see the following warning messages:
       | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
     When I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Draft"
     And I should see the workflow buttons "Save as draft, Publish"
-    # Ensure that owners have access to creation date.
-    # @see ISAICP-6550
-    But I should see the text "Authored on"
     When I fill in "Release number" with "v1"
     And I press "Publish"
     Then I should see the heading "Release of the dark ship v1"
