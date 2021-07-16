@@ -10,8 +10,10 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent;
+use Drupal\og\Event\GroupContentEntityOperationAccessEventInterface;
 use Drupal\og\Event\PermissionEventInterface as OgPermissionEventInterface;
 use Drupal\og\GroupPermission;
+use Drupal\og\OgMembershipInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -43,7 +45,12 @@ class JoinupGroupOgSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-      OgPermissionEventInterface::EVENT_NAME => [['provideOgGroupPermissions']],
+      GroupContentEntityOperationAccessEventInterface::EVENT_NAME => [
+        ['preventBlockedUsersFromEditingOrDeletingContent'],
+      ],
+      OgPermissionEventInterface::EVENT_NAME => [
+        ['provideOgGroupPermissions'],
+      ],
       'joinup_workflow.unchanged_workflow_state_update' => 'onUnchangedWorkflowStateUpdate',
     ];
   }
@@ -96,6 +103,27 @@ class JoinupGroupOgSubscriber implements EventSubscriberInterface {
     if ($state === 'validated') {
       $event->setLabel($this->t('Publish'));
       $event->setWeight(-20);
+    }
+  }
+
+  /**
+   * Prevents blocked users from editing or deleting their content.
+   *
+   * @param \Drupal\og\Event\GroupContentEntityOperationAccessEventInterface $event
+   *   The event fired when a group content entity operation is performed.
+   */
+  public function preventBlockedUsersFromEditingOrDeletingContent(GroupContentEntityOperationAccessEventInterface $event): void {
+    // Blocked users should not be able to edit or delete content in groups.
+    // The main use case for this is to prevent vandalism when a member is
+    // removed or blocked.
+    if (in_array($event->getOperation(), ['update', 'delete'])) {
+      $user = $event->getUser();
+      /** @var \Drupal\joinup_group\Entity\GroupInterface $group */
+      $group = $event->getGroup();
+      $membership = $group->getMembership((int) $user->id(), OgMembershipInterface::ALL_STATES);
+      if ($membership && $membership->isBlocked()) {
+        $event->denyAccess();
+      }
     }
   }
 

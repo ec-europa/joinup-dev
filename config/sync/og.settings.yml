@@ -3,7 +3,7 @@ groups:
   rdf_entity:
     - collection
     - solution
-node_access_strict: false
+node_access_strict: true
 delete_orphans: true
 delete_orphans_plugin_id: simple
 group_resolvers:
