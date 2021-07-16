@@ -19,7 +19,6 @@ permissions:
   - 'access messages overview'
   - 'access pipeline report'
   - 'access pipeline selector'
-  - 'access release create field'
   - 'access toolbar'
   - 'access uri converter'
   - 'add site alerts'
