@@ -33,11 +33,11 @@ Feature: "Add release" visibility options.
       | title          | description        | documentation | owner                | state     |
       | Release Test 1 | test description 1 | text.pdf      | Organisation example | validated |
     And the following release:
-      | title             | Chasing shadows           |
-      | is version of     | Release Test 1            |
-      | release number    | 1.0                       |
-      | state             | validated                 |
-      | creation date     | 2014-08-30 23:59:00       |
+      | title          | Chasing shadows     |
+      | is version of  | Release Test 1      |
+      | release number | 1.0                 |
+      | state          | validated           |
+      | creation date  | 2014-08-30 23:59:00 |
 
     # Check that the release should have a unique combination of title and
     # version number.
