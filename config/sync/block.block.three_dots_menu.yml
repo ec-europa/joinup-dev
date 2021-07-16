@@ -9,9 +9,9 @@ theme: joinup_theme
 region: featured
 weight: -17
 provider: null
-plugin: local_tasks_block
+plugin: joinup_local_tasks_block
 settings:
-  id: local_tasks_block
+  id: joinup_local_tasks_block
   label: Tabs
   provider: core
   label_display: '0'

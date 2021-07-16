@@ -103,3 +103,14 @@ field.formatter.settings.entity_reference_custom_link:
     limit:
       type: integer
       label: limit
+
+block.settings.joinup_local_tasks_block:
+  type: block_settings
+  label: 'Tabs block'
+  mapping:
+    primary:
+      type: boolean
+      label: 'Whether primary tabs are shown'
+    secondary:
+      type: boolean
+      label: 'Whether secondary tabs are shown'
