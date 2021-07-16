@@ -17,6 +17,9 @@ node:pre_moderated:
       label: Proposed
     deletion_request:
       label: 'Deletion request'
+    archived:
+      label: Archived
+      published: true
   transitions:
     save_as_draft:
       label: 'Save as draft'
@@ -65,58 +68,14 @@ node:pre_moderated:
       label: 'Reject deletion'
       from: [deletion_request]
       to: validated
+    disable:
+      label: Disable
+      from: [validated]
+      to: archived
 # The workflow of the community content for a post moderated parent.
 node:post_moderated:
   id: post_moderated
   label: "Post moderated"
-  group: community_content
-  states:
-    __new__:
-      label: New
-    draft:
-      label: Draft
-    validated:
-      label: Published
-      published: true
-    needs_update:
-      label: Needs update
-    proposed:
-      label: Proposed
-  transitions:
-    save_as_draft:
-      label: 'Save as draft'
-      from: [__new__]
-      to: draft
-    save_new_draft:
-      label: 'Save new draft'
-      from: [validated]
-      to: draft
-    propose_from_reported:
-      label: 'Propose'
-      from: [needs_update]
-      to: proposed
-    publish:
-      label: 'Publish'
-      from: [__new__, draft]
-      to: validated
-    approve_proposed:
-      label: 'Publish'
-      from: [proposed]
-      to: validated
-    report:
-      label: 'Report'
-      from: [validated]
-      to: needs_update
-    request_changes:
-      label: 'Request changes'
-      from: [validated]
-      to: proposed
-# The workflow of the discussion entity for a post moderated parent.
-# Discussions include an archived state so a separate workflow is defined.
-# TODO: Should be moved into the 'joinup_discussion' module.
-node:discussion:post_moderated:
-  id: discussion
-  label: "Discussion (Post moderated)"
   group: community_content
   states:
     __new__:

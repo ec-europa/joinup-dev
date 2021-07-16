@@ -22,6 +22,6 @@ default_value:
     value: __new__
 default_value_callback: ''
 settings:
-  workflow: 'node:discussion:post_moderated'
-  workflow_callback: ''
+  workflow: ''
+  workflow_callback: joinup_community_content_workflow_selector
 field_type: state
