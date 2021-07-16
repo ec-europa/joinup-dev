@@ -46,8 +46,10 @@ class JoinupLocalTasksBlock extends OriginalBlock {
 
       // Do not display single tabs if the only tab points to the same page.
       $visible_children = Element::getVisibleChildren($links['tabs']);
+      $cacheability = $cacheability->merge($links['cacheability']);
+      $count = count($visible_children);
       $tabs += [
-        '#primary' => (count($visible_children) === 1 && key($visible_children) === $this->routeMatch->getRouteName()) ? [] : $links['tabs'],
+        '#primary' => ($count === 0 || ($count === 1 && key($visible_children) === $this->routeMatch->getRouteName())) ? [] : $links['tabs'],
       ];
     }
     if ($config['secondary']) {
@@ -55,9 +57,10 @@ class JoinupLocalTasksBlock extends OriginalBlock {
       // Do not display single tabs if the only tab points to the same page.
       $visible_children = Element::getVisibleChildren($links['tabs']);
       $cacheability = $cacheability->merge($links['cacheability']);
-      // Do not display single tabs.
+      $count = count($visible_children);
+      // Do not display single tabs if the only tab points to the same page.
       $tabs += [
-        '#primary' => (count($visible_children) === 1 && key($visible_children) === $this->routeMatch->getRouteName()) ? [] : $links['tabs'],
+        '#secondary' => ($count === 0 || ($count === 1 && key($visible_children) === $this->routeMatch->getRouteName())) ? [] : $links['tabs'],
       ];
     }
 
