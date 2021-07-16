@@ -104,6 +104,12 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
     /** @var \Drupal\Core\Cache\RefinableCacheableDependencyInterface $cache_metadata */
     [$replacements, $cache_metadata] = $this->getReplacementsMap($collection);
 
+    // The reverse ksort will ensure that when, for any reason, there are terms
+    // that overlap together, like "exchange", "exchange currency" and "exchange
+    // platform", it is ensured, that terms with longer terms, are replaced
+    // first and the shorter terms are coming last.
+    krsort($replacements);
+
     // This collection has no glossary term entries.
     if (empty($replacements)) {
       return $result->addCacheableDependency($cache_metadata);
