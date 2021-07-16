@@ -1,0 +1,10 @@
+uuid: 60ab696a-6ae6-4788-bf1e-a704dd6e1e82
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+id: rdf_entity.explore_item
+label: 'Explore item'
+targetEntityType: rdf_entity
+cache: true

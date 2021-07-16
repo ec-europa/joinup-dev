@@ -517,4 +517,73 @@ class JoinupCommunityContentContext extends RawDrupalContext {
     }
   }
 
+  /**
+   * Checks the contents of the "Explore" block.
+   *
+   * This is showing a number of community content
+   * (collections, solutions, news and events) on the homepage.
+   *
+   * This also checks if the content is in the correct order and if the total
+   * number of content items is correct.
+   *
+   * @codingStandardsIgnoreStart
+   * Table format:
+   *  | type       | title                         | date                   | description                                                                                                                                                                                                                                          |
+   *  | solution   | Cities of Italy               | 2020-01-01 17:36 +0200 | Sum is therefore                                                                                                                                                                                                                                     |
+   *  | collection | Products of Italy             | 2019-08-14 17:36 +0200 | Lorem Ipsum is therefore
+   * @codingStandardsIgnoreEnd
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   A table containing the expected content of the explore section.
+   *
+   * @Then the explore section should contain the following content:
+   */
+  public function assertExplore(TableNode $table) {
+    $columns = $table->getColumnsHash();
+    $articles = $this->getSession()->getPage()->findAll('css', '.block-joinup-front-page-explore-block article');
+    Assert::assertEquals(count($columns), count($articles), sprintf('Expected %d items in the "Explore" section but found %d items.', count($columns), count($articles)));
+
+    foreach ($columns as $expected_data) {
+      $actual_data = array_shift($articles);
+      $type = $expected_data['type'];
+
+      // Check title text.
+      $actual_title = $actual_data->find('css', 'h2')->getText();
+      Assert::assertEquals($expected_data['title'], $actual_title, sprintf('Expected title "%s" for %s in the "Explore" section but instead found "%s".', $expected_data['title'], $type, $actual_title));
+
+      if (in_array($type, ['collection', 'solution'])) {
+        $rdf_entity = self::getEntityByLabel('rdf_entity', $actual_title);
+        $xpath = '//h2/a[@href = "' . $rdf_entity->toUrl()->toString() . '"]';
+
+        // Check the body text.
+        $actual_body = $actual_data->find('css', '.field--type-text-long')->getText();
+
+        // Check date.
+        $actual_date = $actual_data->find('css', '.field--type-created')->getText();
+
+      }
+      else {
+        $node = self::getNodeByTitle($actual_title);
+        $xpath = '//h2/a[@href = "' . $node->toUrl()->toString() . '"]';
+
+        // Check the body text.
+        $actual_body = $actual_data->find('css', '.field--name-body')->getText();
+
+        // Check date.
+        $actual_date = $actual_data->find('css', '.field--name-published-at')->getText();
+      }
+
+      // Check that title links to the canonical page of the
+      // news, event, solution and collection.
+      Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('%s "%s" does not link to the canonical page.', $type, $actual_title));
+
+      // Check the body/description text.
+      Assert::assertEquals($expected_data['description'], $actual_body, sprintf('The body text for the %s "%s" in the "Explore" section does not contain the expected text.', $type, $actual_title));
+
+      // Check date.
+      Assert::assertEquals(date("m/d/y", strtotime($expected_data['date'])), $actual_date, sprintf('The date for the %s "%s" in the "Explore" section does not contain the expected format.', $type, $actual_title));
+
+    }
+  }
+
 }
