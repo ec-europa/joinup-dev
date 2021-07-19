@@ -26,28 +26,28 @@ Feature:
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
-    And the following fields should not be present "Add related content, Allow shared content"
+    And the following fields should not be present "Show related content, Allow shared content"
     # The button appears in a non-javascript environment. The dropdown needs to be pressed in a javascript
     # enabled browser.
     And I should see the button "Add Content listing"
     # Fill in title so that CSS will not complain about empty field when pressing a button.
     When I fill in "Title" with "Hello world"
     And I press "Add Content listing"
-    And the following fields should be present "Add related content, Allow shared content"
+    And the following fields should be present "Show related content, Allow shared content"
     And the following fields should not be present "Query presets, Limit"
 
     Given I am logged in as a moderator
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
-    And the following fields should not be present "Add related content, Allow shared content"
+    And the following fields should not be present "Show related content, Allow shared content"
     # The button appears in a non-javascript environment. The dropdown needs to be pressed in a javascript
     # enabled browser.
     And I should see the button "Add Content listing"
     # Fill in title so that CSS will not complain about empty field when pressing a button.
     When I fill in "Title" with "Hello world"
     And I press "Add Content listing"
-    And the following fields should be present "Add related content, Allow shared content, Query presets, Limit"
+    And the following fields should be present "Show related content, Allow shared content, Query presets, Limit"
     And I should see the button "Add and configure filter"
 
   Scenario: Configure a custom page to show a community content listing.
@@ -119,7 +119,7 @@ Feature:
     And I should not see the "NEC VR4300 CPU" tile
 
     When I click "Edit" in the "Entity actions" region
-    And I uncheck "Add related content"
+    And I uncheck "Show related content"
     And I press "Save"
     Then I should not see the "Rare Nintendo64 disk drive discovered" tile
     And I should not see the "20 year anniversary" tile
