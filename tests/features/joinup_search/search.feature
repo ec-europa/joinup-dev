@@ -114,8 +114,8 @@ Feature: Global search
     Then the option with text "Belgium (1)" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
       | Any location       |
-      | European Union (1) |
       | Belgium (1)        |
+      | European Union (1) |
     Then the option with text "Demography" from select facet "topic" is selected
     And the "topic" select facet should contain the following options:
       | Any topic            |
