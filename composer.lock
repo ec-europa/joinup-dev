@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d0ee5bc3986befbca1f97af6732ae25c",
+    "content-hash": "7b7113201287c97caf0ffd0a051c45fa",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3829,7 +3829,8 @@
                 },
                 "patches_applied": {
                     "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
-                    "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "https://www.drupal.org/files/issues/2021-05-17/3213582-facets-1.6-1.7.patch"
+                    "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "https://www.drupal.org/files/issues/2021-05-17/3213582-facets-1.6-1.7.patch",
+                    "Configurable dropdown child prefix. @see https://www.drupal.org/project/facets/issues/3214662": "https://git.drupalcode.org/project/facets/-/merge_requests/20.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6085,7 +6086,8 @@
                     "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
                     "Add a static method that knows to index a given entity @see https://www.drupal.org/project/search_api/issues/3106342": "https://www.drupal.org/files/issues/2020-01-14/3106342-6.patch",
                     "Bulk Form field for SAPI @see https://www.drupal.org/project/search_api/issues/3117171": "https://www.drupal.org/files/issues/2020-04-01/3117171-13.patch",
-                    "Some bulk form field options are missing schema @see https://www.drupal.org/project/search_api/issues/3195199": "https://git.drupalcode.org/project/search_api/-/merge_requests/6.diff"
+                    "Some bulk form field options are missing schema @see https://www.drupal.org/project/search_api/issues/3195199": "https://git.drupalcode.org/project/search_api/-/merge_requests/6.diff",
+                    "Duplicate dependencies @see https://www.drupal.org/project/search_api/issues/3111635": "https://www.drupal.org/files/issues/2020-02-08/3111635-8--fix_duplicate_dependencies.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -8191,7 +8193,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2021-05-17T17:56:07+00:00"
+            "time": "2018-10-31T20:10:45+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",
@@ -10349,7 +10351,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2021-05-20T17:05:25+00:00"
+            "time": "2020-11-25T21:59:37+00:00"
         },
         {
             "name": "stack/builder",
