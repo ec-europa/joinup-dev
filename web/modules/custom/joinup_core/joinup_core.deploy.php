@@ -13,10 +13,3 @@
  */
 
 declare(strict_types = 1);
-
-/**
- * Update the Licence legal type vocabulary.
- */
-function joinup_core_deploy_0107300(array &$sandbox): void {
-  \Drupal::service('joinup_rdf.vocabulary_fixtures.helper')->importFixtures('licence-legal-type', TRUE);
-}
