@@ -120,4 +120,41 @@ JS;
     }
   }
 
+  /**
+   * Checks that a WYSIWYG editor has the correct buttons.
+   *
+   * This works by discovering the editor type in the HTML, and then loading the
+   * configuration from the database. This makes sure it also works in non-JS
+   * browsers.
+   *
+   * @param string $label
+   *   The label of the field containing the WYSIWYG editor to inspect.
+   * @param string $buttons
+   *   A comma-separated list of buttons that should be present, in the correct
+   *   order.
+   *
+   * @Then the :label wysiwyg editor should have the buttons :buttons
+   */
+  public function assertWysiwygButtons(string $label, string $buttons) {
+    /** @var \Drupal\ckeditor\CKEditorPluginManager $ckeditor_plugin_manager */
+    $ckeditor_plugin_manager = \Drupal::service('plugin.manager.ckeditor.plugin');
+
+    $editor = $this->getWysiwygEditorEntity($label);
+
+    // Retrieve the buttons that are available for this editor instance, but
+    // filter out the separators. We are only concerned with the buttons.
+    $enabled_buttons = array_filter($ckeditor_plugin_manager->getEnabledButtons($editor), function (string $id): bool {
+      return $id !== '-';
+    });
+
+    // Replace the button IDs with human readable labels.
+    $button_data = array_reduce($ckeditor_plugin_manager->getButtons(), 'array_merge', []);
+    $enabled_buttons = array_map(function (string $id) use ($button_data) {
+      return (string) $button_data[$id]['label'];
+    }, $enabled_buttons);
+
+    $expected_buttons = array_map('trim', explode(',', $buttons));
+    Assert::assertEquals(array_values($expected_buttons), array_values($enabled_buttons));
+  }
+
 }
