@@ -3,8 +3,8 @@ langcode: en
 status: true
 dependencies: {  }
 id: collection_banner
-label: 'Collection banner'
-description: 'Pre-uploaded images to be used as banner for collections.'
+label: 'Community banner'
+description: 'Pre-uploaded images to be used as banner for communities.'
 source: image
 queue_thumbnail_downloads: false
 new_revision: false

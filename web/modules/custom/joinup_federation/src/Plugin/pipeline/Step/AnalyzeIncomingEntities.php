@@ -302,8 +302,8 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     if ($activity->isNew()) {
       return 'not_federated';
     }
-    // If the solution is already associated with another collection, we can't
-    // federate it in the scope of this pipeline's collection.
+    // If the solution is already associated with another community, we can't
+    // federate it in the scope of this pipeline's community.
     elseif ($activity->get('provenance_associated_with')->value !== $collection_id) {
       return 'invalid_collection';
     }

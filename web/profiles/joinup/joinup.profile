@@ -155,7 +155,7 @@ function joinup_entity_access(EntityInterface $entity, $operation, AccountInterf
   // entities are also group content moderators are also granted access to the
   // OG Menu administration pages. Let's specifically deny access to these,
   // since we are handling the menu items transparently whenever custom pages
-  // are created or deleted. Moderators and collection facilitators should only
+  // are created or deleted. Moderators and community facilitators should only
   // have access to the edit form of an OG Menu instance so they can rearrange
   // the custom pages, but not to the entity forms of the menu items themselves.
   // In fact, nobody should have access to these pages except UID 1.
@@ -209,7 +209,7 @@ function joinup_inline_entity_form_reference_form_alter(&$reference_form, &$form
  *
  * - Disable access to the revision information vertical tab.
  *   This prevents access to the revision log and the revision checkbox too.
- * - Disable access to the comment settings. These are managed on collection
+ * - Disable access to the comment settings. These are managed on community
  *   level.
  * - Disable access to the meta information.
  * - Allow access to the uid field only to the moderators.
@@ -344,7 +344,7 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
     ],
   ];
 
-  // The next check asserts that the group is either a collection or a solution
+  // The next check asserts that the group is either a community or a solution
   // but for solutions, only community content are allowed to be pinned, not
   // related solutions.
   if ($group && ($group instanceof CollectionInterface || $entity instanceof CommunityContentInterface && $group instanceof SolutionInterface)) {

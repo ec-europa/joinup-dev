@@ -13,7 +13,7 @@ id: rdf_entity.collection.field_collection_content
 field_name: field_collection_content
 entity_type: rdf_entity
 bundle: collection
-label: 'Collection content'
+label: 'Community content'
 description: ''
 required: false
 translatable: false

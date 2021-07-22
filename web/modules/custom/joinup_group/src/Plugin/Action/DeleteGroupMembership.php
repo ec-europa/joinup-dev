@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @Action(
  *   id = "joinup_og_membership_delete_action",
- *   label = @Translation("Delete the selected membership(s) from solution/collection"),
+ *   label = @Translation("Delete the selected membership(s) from solution/community"),
  *   type = "og_membership",
  *   confirm_form_route_name = "joinup_group.membership_delete_action.confirm",
  * )
@@ -83,7 +83,7 @@ class DeleteGroupMembership extends DeleteOgMembership {
    */
   public function access($membership, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     /** @var \Drupal\og\Entity\OgMembership $membership */
-    // 'Joinup' collection membership cannot be revoked.
+    // 'Joinup' community membership cannot be revoked.
     if ($membership->getGroupId() === JoinupCollectionHelper::getCollectionId()) {
       return $return_as_object ? AccessResult::forbidden() : FALSE;
     }

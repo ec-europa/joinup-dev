@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: p--OjEkHKa4NzPYJzXiaqyK_hmal4RQYLwG4ReWMXLo
 template: col_arc_del_no_request
-label: 'Collection archive/delete without request'
+label: 'Community archive/delete without request'
 description: 'Template id 13 - This will be sent in case the deletion/archival happened without request'
 text:
   1:

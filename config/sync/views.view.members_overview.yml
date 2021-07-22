@@ -13,7 +13,7 @@ dependencies:
 id: members_overview
 label: 'Members overview (public)'
 module: views
-description: 'The public list of members of a collection or solution'
+description: 'The public list of members of a community or solution'
 tag: ''
 base_table: og_membership
 base_field: id

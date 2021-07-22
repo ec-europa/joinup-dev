@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @Condition(
  *   id = "collection",
- *   label = @Translation("Collections"),
+ *   label = @Translation("Communities"),
  *   context = {
  *     "og" = @ContextDefinition("entity:rdf_entity:collection", label = @Translation("Collection"))
  *   }
@@ -49,7 +49,7 @@ class Collection extends ConditionPluginBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
-    // Certain form elements may return 'collections' as 0/1. Cast here to
+    // Certain form elements may return 'communities' as 0/1. Cast here to
     // ensure the data is in the expected type.
     $this->configuration['collections'] = (bool) $form_state->getValue('collections');
     parent::submitConfigurationForm($form, $form_state);

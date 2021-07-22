@@ -250,7 +250,7 @@ class DeleteGroupMembershipConfirmForm extends ConfirmFormBase {
         'collection',
         'solution',
       ])) {
-        throw new \LogicException("The group can only be a collections or a solutions.");
+        throw new \LogicException("The group can only be a communities or a solutions.");
       }
     }
 

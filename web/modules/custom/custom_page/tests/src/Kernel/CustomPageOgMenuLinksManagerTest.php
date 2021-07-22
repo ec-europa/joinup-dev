@@ -124,7 +124,7 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
    * Tests the custom page OG menu link updater service.
    */
   public function testCustomPageOgMenuLinkUpdater() {
-    // Create 2 collections.
+    // Create 2 communities.
     $collection_ids = $ogmenu_instance_ids = [];
     foreach ([1, 2] as $index) {
       Rdf::create([

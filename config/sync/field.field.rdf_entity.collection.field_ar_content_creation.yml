@@ -12,7 +12,7 @@ field_name: field_ar_content_creation
 entity_type: rdf_entity
 bundle: collection
 label: 'Content creation'
-description: 'Choose which users can create content (news, events, discussions and documents) in the collection.'
+description: 'Choose which users can create content (news, events, discussions and documents) in the community.'
 required: true
 translatable: false
 default_value:

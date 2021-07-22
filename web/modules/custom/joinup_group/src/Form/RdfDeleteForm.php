@@ -12,7 +12,7 @@ use Drupal\rdf_entity\Form\RdfDeleteForm as OriginalForm;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Prevents deletion of collections if there is an existing child solution.
+ * Prevents deletion of communities if there is an existing child solution.
  */
 class RdfDeleteForm extends OriginalForm {
 
@@ -42,7 +42,7 @@ class RdfDeleteForm extends OriginalForm {
       return parent::getDescription();
     }
 
-    return $this->t('You can delete your solutions or transfer them to another collection.');
+    return $this->t('You can delete your solutions or transfer them to another community.');
   }
 
   /**

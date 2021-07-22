@@ -5,7 +5,7 @@ dependencies:
   config:
     - filter.format.full_html
 template: col_propose_edit_own
-label: 'Collection propose after edit - Owner'
+label: 'Community propose after edit - Owner'
 description: 'Template id 5'
 text:
   -

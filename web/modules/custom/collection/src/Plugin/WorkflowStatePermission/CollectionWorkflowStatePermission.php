@@ -12,7 +12,7 @@ use Drupal\joinup_group\Plugin\WorkflowStatePermission\GroupWorkflowStatePermiss
  * Checks whether changing workflow states is permitted for a given user.
  *
  * Depending on the user role some workflow states are not available. For
- * example if a collection is in the 'validated' state a facilitator can only
+ * example if a community is in the 'validated' state a facilitator can only
  * change the state to 'proposed' or 'draft', while a moderator can change to
  * any state.
  *

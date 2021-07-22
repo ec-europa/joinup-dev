@@ -136,7 +136,7 @@ class ChangeCollectionForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state): void {
     parent::validateForm($form, $form_state);
     if ($form_state->getValue('source_collection')->id() === $form_state->getValue('destination_collection')) {
-      $form_state->setErrorByName('destination_collection', $this->t('The destination collection cannot be the same as the source collection.'));
+      $form_state->setErrorByName('destination_collection', $this->t('The destination collection cannot be the same as the source community.'));
     }
   }
 

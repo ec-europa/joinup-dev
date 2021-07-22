@@ -13,7 +13,7 @@ field_name: field_spatial_coverage
 entity_type: rdf_entity
 bundle: collection
 label: 'Geographical coverage'
-description: 'Add a country name relevant to the content of this collection.'
+description: 'Add a country name relevant to the content of this community.'
 required: false
 translatable: false
 default_value: {  }

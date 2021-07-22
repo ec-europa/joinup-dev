@@ -1,5 +1,5 @@
 name: Collection
-description: 'Provides Collections for the Joinup project.'
+description: 'Provides Communities for the Joinup project.'
 type: module
 package: Joinup
 core_version_requirement: ^8.9 || ^9.1

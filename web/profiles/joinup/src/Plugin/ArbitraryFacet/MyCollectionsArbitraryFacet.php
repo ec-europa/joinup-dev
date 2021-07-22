@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @ArbitraryFacet(
  *   id = "my_collections",
- *   label = @Translation("My collections"),
+ *   label = @Translation("My communities"),
  * )
  */
 class MyCollectionsArbitraryFacet extends ArbitraryFacetBase implements ContainerFactoryPluginInterface {
@@ -65,7 +65,7 @@ class MyCollectionsArbitraryFacet extends ArbitraryFacetBase implements Containe
       'featured' => [
         'field_name' => 'site_featured',
         'field_condition' => 'true',
-        'label' => $this->t('Featured collections'),
+        'label' => $this->t('Featured communities'),
       ],
     ];
 
@@ -73,7 +73,7 @@ class MyCollectionsArbitraryFacet extends ArbitraryFacetBase implements Containe
       $definition['mine'] = [
         'field_name' => 'entity_author',
         'field_condition' => $this->currentUser->id(),
-        'label' => $this->t('My collections'),
+        'label' => $this->t('My communities'),
       ];
     }
 

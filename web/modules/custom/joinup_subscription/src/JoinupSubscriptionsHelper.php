@@ -14,7 +14,7 @@ class JoinupSubscriptionsHelper {
   /**
    * An array of group content bundles that can be subscribed to.
    *
-   * Users subscribing to collections or solutions can opt to receive updates
+   * Users subscribing to communities or solutions can opt to receive updates
    * about all community content, and collection subscribers can also get
    * information about new solutions that are published in the collection.
    */

@@ -127,16 +127,16 @@ function owner_form_alter_validate(&$form, FormStateInterface $form_state) {
     !empty($element['#state_id']) &&
     // Check if we are transitioning to "Request deletion".
     $element['#state_id'] === 'deletion_request' &&
-    // Check if the owner is still referenced by one or more collections.
+    // Check if the owner is still referenced by one or more communities.
     owner_is_owner_referenced($entity)
   ) {
-    // Compile a list of collections that are referencing the owner, to show in
+    // Compile a list of communities that are referencing the owner, to show in
     // the form validation error message.
     $collection_labels = array_map(function (RdfInterface $collection) {
       return '"' . $collection->label() . '"';
     }, owner_get_references($entity));
 
-    $form_state->setError($element, new TranslatableMarkup('The owner cannot be deleted since it owns the following collections: @collections. Please set a different owner for these collections before requesting deletion.', [
+    $form_state->setError($element, new TranslatableMarkup('The owner cannot be deleted since it owns the following communities: @collections. Please set a different owner for these communities before requesting deletion.', [
       '@collections' => implode(', ', $collection_labels),
     ]));
   }
@@ -223,10 +223,10 @@ function owner_is_owner_referenced(EntityInterface $entity) {
 }
 
 /**
- * Returns the collections that reference the given owner.
+ * Returns the communities that reference the given owner.
  *
  * @param \Drupal\Core\Entity\EntityInterface $entity
- *   The owner entity for which to return the referencing collections.
+ *   The owner entity for which to return the referencing communities.
  *
  * @return \Drupal\rdf_entity\Entity\Rdf[]
  *   An array of referencing collection entities.

@@ -43,9 +43,9 @@ function joinup_federation_test_entity_bundle_field_info_alter(&$fields, EntityT
     return;
   }
 
-  // Computed field, that represents the collections a solution is part of.
+  // Computed field, that represents the communities a solution is part of.
   $fields['collection'] = BaseFieldDefinition::create('entity_reference')
-    ->setLabel(t('Collections'))
+    ->setLabel(t('Communities'))
     ->setName('collection')
     ->setTargetEntityTypeId('rdf_entity')
     ->setTargetBundle('solution')

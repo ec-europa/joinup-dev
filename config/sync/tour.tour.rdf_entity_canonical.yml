@@ -12,7 +12,7 @@ tips:
   collection_content:
     id: collection_content
     plugin: text
-    body: 'The content area displays items that have been created or shared within a collection. This is the default view when entering a collection.'
+    body: 'The content area displays items that have been created or shared within a collection. This is the default view when entering a community.'
     weight: 1
     location: left
     attributes:
@@ -52,7 +52,7 @@ tips:
   join:
     id: join
     plugin: text
-    body: 'By joining a collection you become a member, with the ability to create content for it.'
+    body: 'By joining a community you become a member, with the ability to create content for it.'
     weight: 6
     location: right
     attributes:

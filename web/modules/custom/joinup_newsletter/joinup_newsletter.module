@@ -24,7 +24,7 @@ function joinup_newsletter_form_rdf_entity_collection_edit_form_alter(&$form, Fo
 /**
  * Implements hook_entity_prepare_view().
  *
- * Collections should show a newsletter subscription form in the last tile. For
+ * Communities should show a newsletter subscription form in the last tile. For
  * this to work we need to reduce the number of tiles shown by 1 if the
  * newsletter subscription is enabled.
  */
@@ -34,7 +34,7 @@ function joinup_newsletter_entity_prepare_view(string $entity_type_id, array $en
   }
 
   foreach ($entities as $entity) {
-    // Skip everything but collections.
+    // Skip everything but communities.
     if (!$entity instanceof CollectionInterface) {
       continue;
     }

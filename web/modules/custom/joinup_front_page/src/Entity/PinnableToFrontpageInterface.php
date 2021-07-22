@@ -9,7 +9,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 /**
  * Interface for entities that can be pinned to the frontpage.
  *
- * Moderators can pin collections, solutions and community content to the Joinup
+ * Moderators can pin communities, solutions and community content to the Joinup
  * front page.
  *
  * *Note that this interface is NOT for pinning entities in groups*

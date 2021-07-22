@@ -16,7 +16,7 @@
   };
 
   /**
-   * Adds visual cues for content pinned inside the parent collection.
+   * Adds visual cues for content pinned inside the parent community.
    *
    * @type {Drupal~behavior}
    *
@@ -27,7 +27,7 @@
     attach: function (context) {
       var group = $('[data-drupal-group-context]').data('drupal-group-context');
 
-      // If there is no global collection context, bail out.
+      // If there is no global community context, bail out.
       if (!group) {
         return;
       }
@@ -37,7 +37,7 @@
         var parent = $this.data('drupal-parent-id');
         var affiliated = $this.data('drupal-pinned-in') || '';
 
-        // Show the cue only when the global collection context is the same
+        // Show the cue only when the global community context is the same
         // as the parent of the tile.
         if (parent !== group && affiliated.split(',').indexOf(group) === -1) {
           return;

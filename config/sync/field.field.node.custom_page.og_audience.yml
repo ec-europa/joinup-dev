@@ -14,7 +14,7 @@ field_name: og_audience
 entity_type: node
 bundle: custom_page
 label: Group
-description: 'The collection this custom page belongs to.'
+description: 'The community this custom page belongs to.'
 required: false
 translatable: false
 default_value: {  }

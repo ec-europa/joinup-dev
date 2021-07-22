@@ -9,7 +9,7 @@ dependencies:
     - joinup_material_design
     - search_api
 id: collections
-label: Collections
+label: Communities
 module: views
 description: ''
 tag: ''
@@ -501,7 +501,7 @@ display:
             label: ''
             identifier: entity_created
           plugin_id: search_api
-      title: Collections
+      title: Communities
       header: {  }
       footer: {  }
       empty: {  }
@@ -528,8 +528,8 @@ display:
       path: collections
       menu:
         type: normal
-        title: Collections
-        description: 'Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community.'
+        title: Communities
+        description: 'Communities are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community.'
         expanded: false
         parent: ''
         weight: -49

@@ -5,7 +5,7 @@ dependencies:
   config:
     - filter.format.full_html
 template: col_approve_new
-label: 'Collection approve new'
+label: 'Community approve new'
 description: 'Template id 2'
 text:
   -

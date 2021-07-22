@@ -5,7 +5,7 @@ dependencies:
   config:
     - filter.format.full_html
 template: col_req_arch_del
-label: 'Collection request archival/deletion'
+label: 'Community request archival/deletion'
 description: 'Template id 8'
 text:
   -

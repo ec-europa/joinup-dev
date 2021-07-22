@@ -103,7 +103,7 @@ class JoinupFederationInvalidTestingPipeline extends JoinupFederationPipelinePlu
         return '';
 
       case 'invalid':
-        return 'http://invalid-collection-id';
+        return 'http://invalid-community-id';
 
       case 'from_annotation':
         $this->pluginDefinition['collection'] = 'http://from-annotation';

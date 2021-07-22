@@ -132,7 +132,7 @@ class Collection extends Rdf implements CollectionInterface {
    */
   public function createMembership(?int $uid = NULL, ?string $role = 'member', ?string $state = NULL): OgMembershipInterface {
     // If the membership state is not defined, default to 'active' for open
-    // collections, and 'pending' for closed collections.
+    // communities, and 'pending' for closed communities.
     if (empty($state)) {
       $state = $this->isClosed() ? OgMembershipInterface::STATE_PENDING : OgMembershipInterface::STATE_ACTIVE;
     }

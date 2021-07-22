@@ -124,7 +124,7 @@ class ManualUpload extends JoinupFederationStepPluginBase implements PipelineSte
    *   The file ID.
    *
    * @return array
-   *   A collection of triples.
+   *   A community of triples.
    */
   protected function fileToRdfPhp(int $fid): array {
     $file = File::load($fid);

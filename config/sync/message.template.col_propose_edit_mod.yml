@@ -5,7 +5,7 @@ dependencies:
   config:
     - filter.format.full_html
 template: col_propose_edit_mod
-label: 'Collection propose after edit - Moderators'
+label: 'Community propose after edit - Moderators'
 description: 'Template id 4'
 text:
   -

@@ -294,12 +294,12 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     $arguments['@transition:motivation'] = $motivation;
     $arguments['@entity:hasPublished:status'] = $this->hasPublished ? 'an update of the' : 'a new';
 
-    // Add arguments related to the parent collection or solution.
+    // Add arguments related to the parent community or solution.
     $parent = JoinupGroupHelper::getGroup($entity);
     if (!empty($parent)) {
       $arguments += MessageArgumentGenerator::getGroupArguments($parent);
 
-      // If the role is not yet set, get it from the parent collection|solution.
+      // If the role is not yet set, get it from the parent community|solution.
       if (empty($arguments['@actor:role'])) {
         $membership = $this->membershipManager->getMembership($parent, $actor->id());
         if (!empty($membership)) {

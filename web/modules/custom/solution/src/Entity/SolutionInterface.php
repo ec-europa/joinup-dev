@@ -52,15 +52,15 @@ interface SolutionInterface extends RdfInterface, CollectionContentInterface, En
   public function getLatestRelease(): ?AssetReleaseInterface;
 
   /**
-   * Returns the collections this solution is affiliated with.
+   * Returns the communities this solution is affiliated with.
    *
    * @return \Drupal\collection\Entity\CollectionInterface[]
-   *   The affiliated collections, keyed by collection ID.
+   *   The affiliated communities, keyed by collection ID.
    */
-  public function getAffiliatedCollections(): array;
+  public function getAffiliatedCommunities(): array;
 
   /**
-   * Returns the IDs of the collections this solution is affiliated with.
+   * Returns the IDs of the communities this solution is affiliated with.
    *
    * @return string[]
    *   The affiliated collection IDs.

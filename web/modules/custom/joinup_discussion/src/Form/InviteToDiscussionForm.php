@@ -185,7 +185,7 @@ class InviteToDiscussionForm extends InviteFormBase {
     if ($node instanceof DiscussionInterface && $node->isPublished()) {
       // Only allow access if the current user is a group administrator (a.k.a.
       // the user is a moderator), has permission to invite users to discussions
-      // in the solution or collection that contains the discussion (a.k.a. the
+      // in the solution or community that contains the discussion (a.k.a. the
       // user is a facilitator), or the author of the discussion itself.
       $user = $account->getAccount();
       $group = $node->getGroup();

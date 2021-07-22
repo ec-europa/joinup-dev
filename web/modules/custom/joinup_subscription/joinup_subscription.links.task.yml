@@ -5,7 +5,7 @@ joinup_subscription.subscriptions:
   weight: 0
 
 joinup_subscription.my_subscriptions.collections:
-  title: 'Collections'
+  title: 'Communities'
   route_name: joinup_subscription.my_subscriptions
   route_parameters:
     subscription_type: 'collection'

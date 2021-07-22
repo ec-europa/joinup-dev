@@ -9,12 +9,12 @@ use Drupal\og\OgResolvedGroupCollectionInterface;
 use Drupal\og\Plugin\OgGroupResolver\RouteGroupResolver;
 
 /**
- * Resolves the collection from the route.
+ * Resolves the community from the route.
  *
  * @OgGroupResolver(
  *   id = "collection_from_route",
- *   label = "Collection entity from current route",
- *   description = @Translation("Checks if the current route is a collection entity path."),
+ *   label = "Community entity from current route",
+ *   description = @Translation("Checks if the current route is a community entity path."),
  * )
  */
 class CollectionRouteGroupResolver extends RouteGroupResolver {

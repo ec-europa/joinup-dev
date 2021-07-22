@@ -22,7 +22,7 @@ field_name: field_ar_description
 entity_type: rdf_entity
 bundle: collection
 label: Description
-description: 'Description of the collection (compulsory in English, other languages are optionals)'
+description: 'Description of the community (compulsory in English, other languages are optionals)'
 required: true
 translatable: true
 default_value: {  }

@@ -11,7 +11,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a block with the proposed collections and solutions.
+ * Provides a block with the proposed communities and solutions.
  *
  * @Block(
  *   id = "proposed_entities",

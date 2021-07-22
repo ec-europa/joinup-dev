@@ -17,7 +17,7 @@ class RouteSubscriber extends RouteSubscriberBase {
    */
   protected function alterRoutes(RouteCollection $collection) {
     // Override the confirmation form to delete multiple users with our version
-    // that prevents deletion of users that are sole owners of collections.
+    // that prevents deletion of users that are sole owners of communities.
     if ($route = $collection->get('user.multiple_cancel_confirm')) {
       $route->addDefaults([
         '_form' => '\Drupal\joinup_group\Form\UserMultipleCancelConfirm',

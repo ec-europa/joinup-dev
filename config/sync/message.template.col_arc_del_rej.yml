@@ -5,7 +5,7 @@ dependencies:
   config:
     - filter.format.full_html
 template: col_arc_del_rej
-label: 'Collection archive/delete reject - Owner'
+label: 'Community archive/delete reject - Owner'
 description: 'Template id 10'
 text:
   -

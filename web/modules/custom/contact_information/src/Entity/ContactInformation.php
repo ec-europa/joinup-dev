@@ -49,7 +49,7 @@ class ContactInformation extends Rdf implements ContactInformationInterface {
     // references our entity with the RDF type `dcat#contactPoint`. The best way
     // to get the data we need is to add an additional condition that limits the
     // results on the target bundles. This will make sure only the graphs for
-    // collections and solutions are queried, instead of querying every possible
+    // communities and solutions are queried, instead of querying every possible
     // graph.
     $query->condition('rid', JoinupGroupHelper::GROUP_BUNDLES, 'IN');
     $ids = $query->execute();

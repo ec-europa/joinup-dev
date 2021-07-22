@@ -146,7 +146,7 @@ class GroupMenuBlock extends OgMenuBlock {
       'node_type' => 'custom_page',
     ]);
     // In normal usage all groups have a menu instance, but this is not
-    // guaranteed under all circumstances (e.g. for collection that are created
+    // guaranteed under all circumstances (e.g. for community that are created
     // automatically as solution parents in tests). Fall back to a "safe" URL.
     $edit_navigation_menu_url = '#';
     $menu_instance = $this->getOgMenuInstance();

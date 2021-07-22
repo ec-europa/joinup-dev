@@ -126,7 +126,7 @@ function joinup_community_content_workflow_selector(EntityInterface $entity): ?s
   if (!$entity instanceof CommunityContentInterface || !in_array($entity->bundle(), $bundles)) {
     // This does not apply to discussions because of this functional decision:
     // "By default (this cannot be modified) discussions created into the
-    // collection and comments posted on any content items of the collection are
+    // community and comments posted on any content items of the community are
     // post-moderated."
     // The reasoning behind this is that everyone should always be free to start
     // a discussion without facilitator intervention.
@@ -169,14 +169,14 @@ function joinup_community_content_theme($existing, $type, $theme, $path) {
 /**
  * Preprocess function for the "advanced_search_pseudo_facet" theme hook.
  *
- * This is a link to the search page that is shown on the collection and
+ * This is a link to the search page that is shown on the community and
  * solution homepages. It takes the current facet settings from the query
  * arguments and forwards them to the search page so that similar search results
  * are being shown there.
  *
  * @param array $variables
  *   An associative array containing:
- *   - entity: The collection or solution that is being forwarded to the search
+ *   - entity: The community or solution that is being forwarded to the search
  *     page.
  */
 function template_preprocess_advanced_search_pseudo_facet(array &$variables) {
@@ -190,7 +190,7 @@ function template_preprocess_advanced_search_pseudo_facet(array &$variables) {
     $facet_arguments = [];
   }
 
-  // Add a filter for the current collection or solution.
+  // Add a filter for the current community or solution.
   $facet_arguments[] = 'group:' . $variables['entity']->id();
   $options = ['query' => ['f' => joinup_community_content_translate_facet_arguments($facet_arguments)]];
   $variables['link'] = [
@@ -206,7 +206,7 @@ function template_preprocess_advanced_search_pseudo_facet(array &$variables) {
  */
 function joinup_community_content_theme_suggestions_container_alter(array &$suggestions, array $variables) {
   // Add a theme suggestion to the container of the inline facets region of
-  // collections and solutions so that a fake "Advanced search" facet can be
+  // communities and solutions so that a fake "Advanced search" facet can be
   // appended to the inline facets.
   if ($variables['theme_hook_original'] === 'container__facet_region__inline_facets') {
     if (in_array(
@@ -221,9 +221,9 @@ function joinup_community_content_theme_suggestions_container_alter(array &$sugg
 /**
  * Translates facet IDs in a facet arguments array for use on the search page.
  *
- * The collection and solution homepages are a different 'facet source' than the
+ * The community and solution homepages are a different 'facet source' than the
  * actual search page, meaning that they are using facets with different IDs. If
- * we want to forward a filtered search from a collection or solution homepage
+ * we want to forward a filtered search from a community or solution homepage
  * then the facet IDs need to be translated to match the ones from the search
  * page.
  *

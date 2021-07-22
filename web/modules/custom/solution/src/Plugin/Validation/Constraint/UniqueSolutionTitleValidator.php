@@ -16,7 +16,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  * This is the validator for the UniqueSolutionTitle.
  *
  * The following checks make sure that a solution must have a unique title among
- * within their collections.
+ * within their communities.
  *
  * @see \Drupal\solution\Plugin\Validation\Constraint\UniqueSolutionTitle
  */

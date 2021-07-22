@@ -130,7 +130,7 @@ class Solution extends Rdf implements SolutionInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAffiliatedCollections(): array {
+  public function getAffiliatedCommunities(): array {
     $collections = [];
     foreach ($this->getReferencedEntities('collection') as $collection) {
       $collections[$collection->id()] = $collection;
@@ -149,7 +149,7 @@ class Solution extends Rdf implements SolutionInterface {
    * {@inheritdoc}
    */
   public function getPinnableGroups(): array {
-    return $this->getAffiliatedCollections();
+    return $this->getAffiliatedCommunities();
   }
 
   /**

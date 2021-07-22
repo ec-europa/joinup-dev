@@ -11,7 +11,7 @@ use Drupal\joinup_group\Form\UnshareForm as OriginalForm;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Form to unshare a solution from within collections.
+ * Form to unshare a solution from within communities.
  *
  * The methods are different from the parent class because the route is a sub
  * link of the `/rdf_entity/{rdf_entity}` route path. That means that we cannot

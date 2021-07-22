@@ -38,16 +38,16 @@ class PinnableEntitiesTest extends JoinupExistingSiteTestBase {
    * Test getting groups for a pinned entity if the group has been deleted.
    *
    * This is a regression test for a fatal error that was occurring when content
-   * was pinned in a collection and the collection was subsequently deleted. The
+   * was pinned in a community and the community was subsequently deleted. The
    * method was unexpectedly returning an array containing NULL values rather
    * than groups.
    */
   public function testGetGroupsWherePinnedWithDeletedGroup() {
-    // Create a test collection.
+    // Create a test community.
     $collection = Collection::create();
     $collection->setWorkflowState('validated')->save();
 
-    // Create a test news article inside the collection.
+    // Create a test news article inside the community.
     /** @var \Drupal\joinup_news\Entity\NewsInterface $news */
     $news = News::create([
       'title' => $this->randomString(),
@@ -55,11 +55,11 @@ class PinnableEntitiesTest extends JoinupExistingSiteTestBase {
     ]);
     $news->save();
 
-    // Pin the news article inside the collection.
+    // Pin the news article inside the community.
     $news->pin($collection);
 
     // Check the groups where the entity is pinned. This should return an array
-    // containing 1 single result: the test collection.
+    // containing 1 single result: the test community.
     $result = $this->getGroupsWherePinned($news);
     $this->assertCount(1, $result);
 
@@ -67,7 +67,7 @@ class PinnableEntitiesTest extends JoinupExistingSiteTestBase {
     $this->assertInstanceOf(CollectionInterface::class, $pinned_group);
     $this->assertEquals($collection->id(), $pinned_group->id());
 
-    // Delete the collection.
+    // Delete the community.
     $collection->delete();
 
     // Check the groups where the entity is pinned again. This should now

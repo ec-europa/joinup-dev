@@ -3,8 +3,8 @@ langcode: en
 status: true
 dependencies: {  }
 id: collection_logo
-label: 'Collection logo'
-description: 'Pre-uploaded images to be used as logo for collections.'
+label: 'Community logo'
+description: 'Pre-uploaded images to be used as logo for communities.'
 source: image
 queue_thumbnail_downloads: false
 new_revision: false

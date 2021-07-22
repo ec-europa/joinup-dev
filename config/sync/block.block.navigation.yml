@@ -17,7 +17,7 @@ provider: null
 plugin: 'group_menu_block:navigation'
 settings:
   id: 'group_menu_block:navigation'
-  label: 'Collection | Solution menu'
+  label: 'Community | Solution menu'
   provider: joinup_core
   label_display: '0'
   level: 1

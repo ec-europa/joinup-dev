@@ -125,7 +125,7 @@ function joinup_discussion_comment_create_access(AccountInterface $account, arra
     if ($discussion instanceof DiscussionInterface) {
       $collection = $discussion->getCollection();
       return AccessResult::forbiddenIf(
-        // Either the top collection or the discussion are archived.
+        // Either the top community or the discussion are archived.
         $collection->isArchived() || $discussion->isArchived()
       )
         ->addCacheableDependency($collection)

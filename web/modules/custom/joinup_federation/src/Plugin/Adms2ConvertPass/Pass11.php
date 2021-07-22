@@ -30,13 +30,13 @@ class Pass11 extends JoinupFederationAdms2ConvertPassPluginBase {
   public function convert(array $data): void {
     // The following query will have the owner type change its type in owners
     // found in classes with both the old versions of the definitions of
-    // collections, solutions, releases and distributions to avoid conflicts
+    // communities, solutions, releases and distributions to avoid conflicts
     // with other passes.
     $query = <<<QUERY
 WITH <{$data['sink_graph']}>
 DELETE { ?owner <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/dc/terms/publisher> }
 INSERT { ?owner <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Agent> }
-WHERE { 
+WHERE {
   ?subject a ?subject_type .
   ?subject <http://purl.org/dc/terms/publisher> ?owner .
   ?owner a <http://purl.org/dc/terms/publisher> .

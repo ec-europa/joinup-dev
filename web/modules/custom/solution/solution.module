@@ -65,11 +65,11 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
     return;
   }
 
-  // Computed field, that represents the collections a solution is part of.
+  // Computed field, that represents the communities a solution is part of.
   $fields['collection'] = BaseFieldDefinition::create('entity_reference')
-    ->setLabel(t('Collections'))
+    ->setLabel(t('Communities'))
     ->setName('collection')
-    ->setDescription(t('The collections this solution belongs to.'))
+    ->setDescription(t('The communities this solution belongs to.'))
     ->setTargetEntityTypeId('rdf_entity')
     ->setTargetBundle('solution')
     ->setSetting('target_type', 'rdf_entity')
@@ -100,7 +100,7 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
     ->setCardinality(1)
     ->setClass(SolutionLatestReleasesFieldItemList::class);
 
-  // Make sure a solution's title is unique among the collections it belongs to.
+  // Make sure a solution's title is unique among the communities it belongs to.
   if (!empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueSolutionTitle', []);
   }
@@ -172,7 +172,7 @@ function solution_form_rdf_entity_solution_edit_form_alter(array &$form, FormSta
   }
 
   if (!\Drupal::service('solution.title_duplicate_helper')->titleIsUnique($form_state->getFormObject()->getEntity())) {
-    \Drupal::messenger()->addMessage(t('A solution with the same name exists in a different collection.'), 'warning');
+    \Drupal::messenger()->addMessage(t('A solution with the same name exists in a different community.'), 'warning');
   }
 }
 
@@ -227,12 +227,12 @@ function solution_entity_extra_field_info(): array {
     ];
     $display['download_total'] = [
       'label' => t('Total distribution downloads'),
-      'description' => t('The total downloads of all distributions in this collection.'),
+      'description' => t('The total downloads of all distributions in this community.'),
       'visible' => FALSE,
     ];
     $display['collections'] = [
-      'label' => t('Collections'),
-      'description' => t('The collections this solution is affiliated to.'),
+      'label' => t('Communities'),
+      'description' => t('The communities this solution is affiliated to.'),
       'visible' => FALSE,
     ];
     $display['read_more'] = [
@@ -335,7 +335,7 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
   }
 
   // Show the collection the solution belongs to. A solution can be affiliated
-  // to multiple collections, but for now we show only the first one.
+  // to multiple communities, but for now we show only the first one.
   // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3635
   if ($display->getComponent('collections') && !$solution->get('collection')->isEmpty()) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
@@ -523,7 +523,7 @@ function solution_rdf_entity_predelete(EntityInterface $entity) {
 }
 
 /**
- * Invalidate the cache of collections the solution belongs to.
+ * Invalidate the cache of communities the solution belongs to.
  *
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The solution.
@@ -532,7 +532,7 @@ function solution_invalidate_collection(EntityInterface $entity) {
   if ($entity->isNew()) {
     return;
   }
-  // Solutions aren't group content of collections. However, they appear
+  // Solutions aren't group content of communities. However, they appear
   // alongside group content in collection overviews.
   // For this reason, we clear the collection group cache tags whenever a
   // solution is saved.
@@ -550,15 +550,15 @@ function solution_invalidate_collection(EntityInterface $entity) {
 }
 
 /**
- * Retrieves collections affiliated with the given solution from the database.
+ * Retrieves communities affiliated with the given solution from the database.
  *
- * Only use this function if you need to retrieve a fresh set of collections
+ * Only use this function if you need to retrieve a fresh set of communities
  * from the database. For all other cases, use the computed 'collection' field:
  *
  * $collections = $solution->collection->getValue();
  *
  * @param \Drupal\rdf_entity\RdfInterface $solution
- *   The solution for which to retrieve the affiliated collections.
+ *   The solution for which to retrieve the affiliated communities.
  *
  * @return array
  *   The collection IDs.
@@ -606,7 +606,7 @@ function solution_rdf_entity_update(EntityInterface $entity) {
 /**
  * Implements hook_ENTITY_TYPE_delete().
  *
- * When a published solution is deleted, the parent collections should have
+ * When a published solution is deleted, the parent communities should have
  * their changed timestamp updated.
  */
 function solution_rdf_entity_delete(RdfInterface $solution) {
@@ -617,7 +617,7 @@ function solution_rdf_entity_delete(RdfInterface $solution) {
   $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
   $ids = solution_get_collection_ids($solution);
   if ($ids) {
-    // Touch the parent collections in order to update their changed timestamp.
+    // Touch the parent communities in order to update their changed timestamp.
     $request_time = \Drupal::time()->getRequestTime();
     /** @var \Drupal\rdf_entity\RdfInterface $collection */
     foreach ($storage->loadMultiple($ids) as $collection) {

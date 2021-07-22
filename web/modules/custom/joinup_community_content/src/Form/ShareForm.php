@@ -10,7 +10,7 @@ use Drupal\joinup_group\Form\ShareForm as OriginalForm;
 use Drupal\node\NodeInterface;
 
 /**
- * Form to share a solution inside collections.
+ * Form to share a solution inside communities.
  *
  * The methods are different from the parent class because the route is a sub
  * link of the `/node/{node}` route path. That means that we cannot have the

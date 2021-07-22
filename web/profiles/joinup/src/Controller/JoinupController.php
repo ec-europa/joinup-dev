@@ -16,7 +16,7 @@ class JoinupController extends ControllerBase {
   /**
    * Provides propose forms for rdf entities.
    *
-   * This is used for the propose form of collections.
+   * This is used for the propose form of communities.
    *
    * @param \Drupal\rdf_entity\RdfEntityTypeInterface $rdf_type
    *   The RDF bundle entity for which to generate the propose form.

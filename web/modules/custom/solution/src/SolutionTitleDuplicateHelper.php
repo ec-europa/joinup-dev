@@ -100,7 +100,7 @@ class SolutionTitleDuplicateHelper implements SolutionTitleDuplicateHelperInterf
     /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $storage */
     $storage = $this->entityTypeManager->getStorage('rdf_entity');
 
-    // The relationship between a solution and its collections is not on the
+    // The relationship between a solution and its communities is not on the
     // child entity but on the parent. This means we cannot use a simple query.
     // Retrieve all solutions with the same title.
     $query = $storage->getQuery()

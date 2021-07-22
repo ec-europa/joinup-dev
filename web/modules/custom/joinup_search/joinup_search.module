@@ -104,7 +104,7 @@ function joinup_search_module_implements_alter(&$implementations, $hook) {
 /**
  * Implements hook_search_api_query_alter().
  *
- * Sets a default search ordering for the content displayed in the collections'
+ * Sets a default search ordering for the content displayed in the communities'
  * and solutions' overview page as well as the custom pages.
  *
  * @throws \Drupal\search_api\SearchApiException

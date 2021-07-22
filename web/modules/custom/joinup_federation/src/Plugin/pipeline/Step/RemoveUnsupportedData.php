@@ -37,12 +37,12 @@ class RemoveUnsupportedData extends JoinupFederationStepPluginBase implements Pi
     $rdf_entity_bundle_uris = [];
     /** @var \Drupal\sparql_entity_storage\SparqlMappingInterface $mapping */
     foreach (SparqlMapping::loadMultiple() as $mapping) {
-      // Only add rdf:type URI for RDF entities. We exclude the 'collection' RDF
+      // Only add rdf:type URI for RDF entities. We exclude the 'community' RDF
       // entity bundle because:
       // - Usually a pipeline is already an effect of an existing Joinup
-      //   collection. A pipeline will most likely be a 1-1 mapped to an
-      //   existing collection.
-      // - Collections are exposing also a lot of Joinup/Drupal specific logic
+      //   community. A pipeline will most likely be a 1-1 mapped to an
+      //   existing community.
+      // - Communities are exposing also a lot of Joinup/Drupal specific logic
       //   (such as OG, etc.) and that cannot be provided via an import.
       // We also exclude licenses are these are not supposed to be imported by
       // any external repository. Licenses that do not exist as an option in
