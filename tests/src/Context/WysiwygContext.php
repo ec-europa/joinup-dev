@@ -92,7 +92,7 @@ class WysiwygContext extends RawDrupalContext {
    * iframe with a role tag. The dropdown "Format" has to be clicked prior to
    * having the iframe available.
    *
-   * @param string $field
+   * @param string $label
    *   The name of the field that contains the Wysiwyg editor to check.
    * @param string $format_tags
    *   Comma-separated list of paragraph formats to check.
@@ -102,11 +102,11 @@ class WysiwygContext extends RawDrupalContext {
    *
    * @Then the paragraph formats in the :field field should not contain the :format_tags format(s)
    */
-  public function assertNotFormatInCkeditorExists($field, $format_tags) {
+  public function assertNotFormatInCkeditorExists(string $label, string $format_tags): void {
     if (!$this->browserSupportsJavaScript()) {
       throw new \Exception('This step requires javascript to run.');
     }
-    $element = $this->getSession()->getPage()->findField($field);
+    $element = $this->getSession()->getPage()->findField($label);
     $element_id = $element->getAttribute('id');
     $format_tags = $this->explodeCommaSeparatedStepArgument($format_tags);
     $has_tags_condition = <<<JS
