@@ -7,8 +7,8 @@ dependencies:
     - media
 _core:
   default_config_hash: _EOmoFGHhTjV4rORLrzpQZv9C6rnPb8LVLDoNMqBz7Us
-name: 'Abstract HTML'
-format: abstract_html
+name: 'Essential HTML'
+format: essential_html
 weight: 0
 filters:
   filter_url:

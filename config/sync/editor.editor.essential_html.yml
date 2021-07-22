@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - filter.format.abstract_html
+    - filter.format.essential_html
   module:
     - ckeditor
     - editor_file
@@ -16,7 +16,7 @@ third_party_settings:
     max_size: ''
 _core:
   default_config_hash: ITcPM1V9LiLznqMKrh0tbJyUGoOO9Z7bebEe5KDHKLd
-format: abstract_html
+format: essential_html
 editor: ckeditor
 settings:
   toolbar:

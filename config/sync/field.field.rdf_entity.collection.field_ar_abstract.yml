@@ -10,10 +10,10 @@ dependencies:
     - text
 third_party_settings:
   allowed_formats:
-    abstract_html: abstract_html
     basic_html: '0'
     content_editor: '0'
     eira_format: '0'
+    essential_html: essential_html
     full_html: '0'
     glossary_html: '0'
     licence: '0'
