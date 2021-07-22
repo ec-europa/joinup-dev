@@ -32,7 +32,7 @@ class WysiwygContext extends RawDrupalContext {
    *
    * @When I enter :text in the :label wysiwyg editor
    */
-  public function enterTextInWysiwyg($text, $label) {
+  public function enterTextInWysiwyg(string $text, string $label): void {
     // If we are running in a JavaScript enabled browser, first click the
     // 'Source' button so we can enter the text as HTML and get the same result
     // as in a non-JS browser.
@@ -55,7 +55,7 @@ class WysiwygContext extends RawDrupalContext {
    *
    * @Then I press the button :button in the :label wysiwyg editor
    */
-  public function pressButtonInWysiwyg($button, $label) {
+  public function pressButtonInWysiwyg(string $button, string $label): void {
     self::assertJavaScriptEnabledBrowser();
 
     $this->pressWysiwygButton($label, $button);
@@ -69,7 +69,7 @@ class WysiwygContext extends RawDrupalContext {
    *
    * @Then I should see the :label wysiwyg editor
    */
-  public function assertWysiwyg($label) {
+  public function assertWysiwyg(string $label): void {
     Assert::assertTrue($this->hasWysiwyg($label));
   }
 
@@ -81,7 +81,7 @@ class WysiwygContext extends RawDrupalContext {
    *
    * @Then the :label field should not have a wysiwyg editor
    */
-  public function assertNoWysiwyg($label) {
+  public function assertNoWysiwyg(string $label): void {
     Assert::assertFalse($this->hasWysiwyg($label));
   }
 
