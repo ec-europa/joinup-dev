@@ -355,6 +355,16 @@ Feature:
     And I press "Save"
     Then I should see the error message "Invalid search field specified: unknown_field."
 
+  Scenario: Empty query presets and query builder field show a validation error.
+    Given I am logged in as a moderator
+    When I go to the homepage of the "Nintendo64" collection
+    And I click "Add custom page"
+    Then I should see the heading "Add custom page"
+    When I fill in "Title" with "Empty queries"
+    And I press "Add Content listing"
+    And I press "Save"
+    Then I should see the error message "You need to add a filter in the Content listing block"
+
   @terms
   Scenario: Global search setting allows for site-wide content in the content listing.
     Given I am logged in as a moderator
