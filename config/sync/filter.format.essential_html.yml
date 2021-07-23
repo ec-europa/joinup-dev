@@ -59,3 +59,9 @@ filters:
       default_view_mode: default
       allowed_media_types: {  }
       allowed_view_modes: {  }
+  collection_glossary:
+    id: collection_glossary
+    provider: collection
+    status: true
+    weight: 0
+    settings: {  }
