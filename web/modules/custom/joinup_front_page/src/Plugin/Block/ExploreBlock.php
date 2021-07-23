@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\joinup_front_page\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -120,6 +119,7 @@ class ExploreBlock extends BlockBase implements ContainerFactoryPluginInterface 
       '#cache' => [
         'contexts' => $this->getCacheContexts(),
         'tags' => $this->getCacheTags(),
+        'max-age' => $this->getCacheMaxAge(),
       ],
     ];
   }
@@ -127,15 +127,28 @@ class ExploreBlock extends BlockBase implements ContainerFactoryPluginInterface 
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags() {
-    $tags = [
-      'node:news',
-      'node:events',
-      'rdf_entity:solution',
-      'rdf_entity:collection',
-    ];
+  public function getCacheContexts() {
+    // This block shows fixed content which doesn't vary by any context.
+    return [];
+  }
 
-    return Cache::mergeTags(parent::getCacheTags(), $tags);
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheMaxAge() {
+    // Refresh the content at least once every 6 hours.
+    return 60 * 60 * 6;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    // Since this block is shown on the front page it should not be invalidated
+    // whenever any of the content types shown in it change. The front page is
+    // heavily trafficked and too frequent cache invalidations might affect
+    // performance.
+    return [];
   }
 
   /**
