@@ -206,10 +206,11 @@ class CollectionContext extends RawDrupalContext {
     }
 
     // Set the default filter format for the abstract field.
-    if (!empty($fields['field_ar_abstract'])) {
-      $fields['field_ar_abstract:value'] = $fields['field_ar_abstract'];
-      $fields['field_ar_abstract:format'] = 'essential_html';
-      unset($fields['field_ar_abstract']);
+    if (!empty($fields['field_ar_abstract'][0]) && empty($fields['field_ar_abstract'][0]['format'])) {
+      $value = $fields['field_ar_abstract'][0];
+      unset($fields['field_ar_abstract'][0]);
+      $fields['field_ar_abstract'][0]['value'] = $value;
+      $fields['field_ar_abstract'][0]['format'] = 'essential_html';
     }
 
     return $fields;
