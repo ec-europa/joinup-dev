@@ -293,6 +293,12 @@ Feature: Homepage
     And I should see the button "News" in the "Explore block"
     And I should see the button "Events" in the "Explore block"
     And I should see the link "See more" in the "Explore block"
+
+    And the page should be cacheable
+    And the page should not be cached
+    When I reload the page
+    Then the page should be cached
+
     When I click "See more"
     Then I should be on the advanced search page
     And the "Solutions" content checkbox item should be selected
