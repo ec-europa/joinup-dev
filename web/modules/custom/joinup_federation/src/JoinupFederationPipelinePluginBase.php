@@ -146,7 +146,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    */
   public function prepare() {
     if (empty($this->getCollection())) {
-      return $this->t('The %pipeline import pipeline is not linked to any collection. Contact the site administrator.', [
+      return $this->t('The %pipeline import pipeline is not linked to any community. Contact the site administrator.', [
         '%pipeline' => $this->getPluginDefinition()['label'],
       ]);
     }
