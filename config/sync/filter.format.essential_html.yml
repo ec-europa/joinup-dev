@@ -50,6 +50,12 @@ filters:
         youtube_playlist: 0
       autoplay: false
       responsive: true
+  collection_glossary:
+    id: collection_glossary
+    provider: collection
+    status: true
+    weight: 0
+    settings: {  }
   media_embed:
     id: media_embed
     provider: media
@@ -59,9 +65,3 @@ filters:
       default_view_mode: default
       allowed_media_types: {  }
       allowed_view_modes: {  }
-  collection_glossary:
-    id: collection_glossary
-    provider: collection
-    status: true
-    weight: 0
-    settings: {  }
