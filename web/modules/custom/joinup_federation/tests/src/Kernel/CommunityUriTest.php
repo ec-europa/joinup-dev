@@ -73,7 +73,7 @@ class CommunityUriTest extends StepTestBase {
   public function testMissedCommunityUri(): void {
     $this->container->get('state')->set('joinup_federation.test.collection', 'missed');
     $error = strip_tags($this->pipeline->prepare()->__toString());
-    $this->assertEquals('The Joinup federation pipeline community URI testing import pipeline is not linked to any community. Contact the site administrator.', $error);
+    $this->assertEquals('The Joinup federation pipeline collection URI testing import pipeline is not linked to any community. Contact the site administrator.', $error);
   }
 
   /**

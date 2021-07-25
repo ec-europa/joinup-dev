@@ -71,7 +71,7 @@ class EifContext extends RawDrupalContext {
       'rid' => 'solution',
       'id' => EifInterface::EIF_ID,
       'label' => 'EIF Toolbox',
-      'community' => 'http://nifo.community',
+      'collection' => 'http://nifo.community',
       'field_is_state' => 'validated',
       'field_topic' => 'http://example.com/term/1',
       'field_is_owner' => 'http://example.com/owner',

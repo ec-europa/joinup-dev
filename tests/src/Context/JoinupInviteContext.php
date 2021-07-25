@@ -78,7 +78,7 @@ class JoinupInviteContext extends RawDrupalContext {
         'invitation_bundle' => 'discussion',
         'message_template' => InviteToDiscussionForm::TEMPLATE_DISCUSSION_INVITE,
       ],
-      'community' => [
+      'collection' => [
         'invitation_bundle' => 'group_membership',
         'message_template' => InviteToGroupForm::TEMPLATES['community'],
       ],

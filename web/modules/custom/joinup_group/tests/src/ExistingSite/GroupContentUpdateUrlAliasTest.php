@@ -37,7 +37,7 @@ class GroupContentUpdateUrlAliasTest extends JoinupExistingSiteTestBase {
 
     $this->createContent();
 
-    // Check that the collection content is correctly computed and predictable.
+    // Check that the community content is correctly computed and predictable.
     $this->assertSame([
       // The creation order is determined, same is the node IDs order.
       'node' => [
@@ -196,7 +196,7 @@ class GroupContentUpdateUrlAliasTest extends JoinupExistingSiteTestBase {
     // Edit the the collection.
     $edit = ['field_short_id[0][value]' => 'xyz789'];
     $this->drupalPostForm($this->entity['rdf_entity']['collection']['1']->toUrl('edit-form'), $edit, 'Publish');
-    $this->assertSession()->pageTextContains("You've added a collection short ID: xyz789. It will take some time until the collection content URLs will be updated.");
+    $this->assertSession()->pageTextContains("You've added a community short ID: xyz789. It will take some time until the community content URLs will be updated.");
 
     // Process both queues.
     $this->drush('queue:run', ['joinup_group:group_update']);
@@ -280,14 +280,14 @@ class GroupContentUpdateUrlAliasTest extends JoinupExistingSiteTestBase {
     $this->drupalPostForm($this->entity['rdf_entity']['solution']['1']->toUrl('edit-form'), $edit, 'Publish');
     $this->assertSession()->pageTextContains("You've changed the solution's short ID from abc123 to other-id. It will take some time until the solution content URLs will be updated.");
     $this->drupalPostForm($this->entity['rdf_entity']['collection']['1']->toUrl('edit-form'), $edit, 'Publish');
-    $this->assertSession()->pageTextContains("You've changed the collection's short ID from xyz789 to other-id. It will take some time until the collection content URLs will be updated.");
+    $this->assertSession()->pageTextContains("You've changed the community's short ID from xyz789 to other-id. It will take some time until the community content URLs will be updated.");
 
     // Test the success message on short ID delete.
     $edit = ['field_short_id[0][value]' => ''];
     $this->drupalPostForm($this->entity['rdf_entity']['solution']['1']->toUrl('edit-form'), $edit, 'Publish');
     $this->assertSession()->pageTextContains("You've removed the solution's short ID: other-id. It will take some time until the solution content URLs will be updated.");
     $this->drupalPostForm($this->entity['rdf_entity']['collection']['1']->toUrl('edit-form'), $edit, 'Publish');
-    $this->assertSession()->pageTextContains("You've removed the collection's short ID: other-id. It will take some time until the collection content URLs will be updated.");
+    $this->assertSession()->pageTextContains("You've removed the community's short ID: other-id. It will take some time until the community content URLs will be updated.");
   }
 
   /**

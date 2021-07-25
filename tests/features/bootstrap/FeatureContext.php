@@ -2036,7 +2036,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertEntityCreationDate(string $title, string $bundle): void {
     $rdf_bundles = [
-      'community',
+      'collection',
       'solution',
       'asset_release',
       'asset_distribution',

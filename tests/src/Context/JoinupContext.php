@@ -799,7 +799,7 @@ class JoinupContext extends RawDrupalContext {
         'state' => 'field_state',
       ],
       'shared' => [
-        'community' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+        'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'shared on' => 'field_shared_in',
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'topic' => 'field_topic',

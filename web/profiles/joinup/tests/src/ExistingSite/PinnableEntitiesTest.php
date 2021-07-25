@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup\Kernel;
 
 use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
-use Drupal\collection\Entity\Collection;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\Community;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
 use Drupal\joinup_news\Entity\News;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -44,7 +44,7 @@ class PinnableEntitiesTest extends JoinupExistingSiteTestBase {
    */
   public function testGetGroupsWherePinnedWithDeletedGroup() {
     // Create a test community.
-    $community = Collection::create();
+    $community = Community::create();
     $community->setWorkflowState('validated')->save();
 
     // Create a test news article inside the community.
@@ -64,7 +64,7 @@ class PinnableEntitiesTest extends JoinupExistingSiteTestBase {
     $this->assertCount(1, $result);
 
     $pinned_group = reset($result);
-    $this->assertInstanceOf(CollectionInterface::class, $pinned_group);
+    $this->assertInstanceOf(CommunityInterface::class, $pinned_group);
     $this->assertEquals($community->id(), $pinned_group->id());
 
     // Delete the community.

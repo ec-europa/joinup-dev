@@ -50,8 +50,8 @@ class ConfigTest extends JoinupExistingSiteTestBase {
    * {@inheritdoc}
    */
   public function tearDown(): void {
-    // Re-enable mail collection.
-    $this->startMailCommunity();
+    // Re-enable mail community.
+    $this->startMailCollection();
     parent::tearDown();
   }
 
