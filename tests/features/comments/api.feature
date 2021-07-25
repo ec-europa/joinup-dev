@@ -19,9 +19,10 @@ Feature: Creating comments through the API
     Given I am an anonymous user
     When I go to the content page of the type "<content type>" with the title "Current effective hashrate"
     Then I should see the following lines of text:
-      | RX 580 undervolting |
+      | RX 580 undervolting        |
       | Hashrate, shares & workers |
       | Mon, 21/08/2017 - 09:08    |
+
 
     Examples:
       | content type |
