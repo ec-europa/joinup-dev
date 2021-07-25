@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   confirm_form_route_name = "solution.change_collection",
  * )
  */
-class ChangeCollectionAction extends ActionBase implements ContainerFactoryPluginInterface {
+class ChangeCommunityAction extends ActionBase implements ContainerFactoryPluginInterface {
 
   /**
    * The private tempstore.

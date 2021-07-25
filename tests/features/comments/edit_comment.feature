@@ -4,7 +4,7 @@ Feature: Edit a comment
   I should receive notifications when someone edits a comment.
 
   Scenario: Edit a comment.
-    Given the following collections:
+    Given the following communities:
       | title              | state     | closed |
       | Structural pension | validated | no     |
     And users:
@@ -12,7 +12,7 @@ Feature: Edit a comment
       | Sons of anarchy        | sonsofanarchy@example.com          |           | Sons       | Anarchy     |
       | Comment edit moderator | comment.edit.moderator@example.com | moderator | Steeve     | Roberts     |
     And news content:
-      | title            | body                                                | collection         | state     |
+      | title            | body                                                | community         | state     |
       | Paying with cash | How could this ever happen? Moral panic on its way! | Structural pension | validated |
     And comments:
       | subject                       | field_body       | author          | parent           |

@@ -14,18 +14,18 @@ Feature: As a user of the website
     And the following owner:
       | name            |
       | Martin Gonzalez |
-    And the following collections:
+    And the following communities:
       | title                | description          | logo     | banner     | owner           | contact information | state            | topic                   |
       | Willing Fairy        | Willing Fairy        | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | draft            | Statistics and Analysis |
       | The Fallen Thoughts  | The Fallen Thoughts  | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | proposed         | Finance in EU           |
       | Destruction of Scent | Destruction of Scent | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | validated        | Supplier exchange       |
       | The School's Stars   | The School's Stars   | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | archival request | E-justice               |
       | Boy in the Dreams    | Boy in the Dreams    | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | archived         | E-health                |
-    And the following collection user memberships:
-      | collection           | user      | roles              |
+    And the following community user memberships:
+      | community           | user      | roles              |
       | Destruction of Scent | Cornelius | owner, facilitator |
-    When I am logged in as a "facilitator" of the "Willing Fairy" collection
-    And I go to the homepage of the "Willing Fairy" collection
+    When I am logged in as a "facilitator" of the "Willing Fairy" community
+    And I go to the homepage of the "Willing Fairy" community
     Then I should see the heading "Willing Fairy"
     And I should see the link "View draft"
     And I should see the link "View"
@@ -35,12 +35,12 @@ Feature: As a user of the website
     # @todo: Fix the visibility issue.
     And I should see the link "Edit" in the "Entity actions" region
 
-    # I should not be able to view draft collections I'm not a facilitator of.
-    When I go to the homepage of the "The Fallen Thoughts" collection
+    # I should not be able to view draft communities I'm not a facilitator of.
+    When I go to the homepage of the "The Fallen Thoughts" community
     Then I should see the heading "Access denied"
 
-    When I am logged in as a "facilitator" of the "Destruction of Scent" collection
-    And I go to the homepage of the "Destruction of Scent" collection
+    When I am logged in as a "facilitator" of the "Destruction of Scent" community
+    And I go to the homepage of the "Destruction of Scent" community
     Then I should see the heading "Destruction of Scent"
     # Since it's validated, the normal view is the published view and the
     # "View draft" should not be shown.
@@ -71,14 +71,14 @@ Feature: As a user of the website
 
     # Ensure that the message is not shown to non privileged users.
     When I am an anonymous user
-    And I go to the homepage of the "Destruction of Scent" collection
+    And I go to the homepage of the "Destruction of Scent" community
     And I should not see the following warning messages:
       | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
 
-    # Publish draft version of the collection.
+    # Publish draft version of the community.
     When I am logged in as a moderator
-    And I go to the homepage of the "Construction of Scent" collection
+    And I go to the homepage of the "Construction of Scent" community
     And I click "Edit"
     Then the current workflow state should be "Draft"
     When I press "Publish"
@@ -88,6 +88,6 @@ Feature: As a user of the website
 
     # Ensure that the users do not lose their membership.
     When I am logged in as "Cornelius"
-    And I go to the homepage of the "Construction of Scent" collection
+    And I go to the homepage of the "Construction of Scent" community
     Then I should not see the link "View Draft"
     But I should see the link "Edit" in the "Entity actions" region

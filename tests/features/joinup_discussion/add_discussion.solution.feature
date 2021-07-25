@@ -5,13 +5,13 @@ Feature: "Add discussion" visibility options.
   I need to be able to add "Discussion" content through UI.
 
   Scenario: "Add discussion" button should not be shown to normal members, authenticated users and anonymous users.
-    Given the following collection:
+    Given the following community:
       | title  | Collective Eager Sliver |
       | logo   | logo.png                |
       | banner | banner.jpg              |
       | state  | validated               |
     And the following solutions:
-      | title              | collection              | logo     | banner     | state     |
+      | title              | community              | logo     | banner     | state     |
       | Eager Sliver       | Collective Eager Sliver | logo.png | banner.jpg | validated |
       | The Silent Bridges | Collective Eager Sliver | logo.png | banner.jpg | validated |
 
@@ -36,13 +36,13 @@ Feature: "Add discussion" visibility options.
 
   @terms @uploadFiles:test.zip
   Scenario: Add discussion as a facilitator.
-    Given the following collection:
+    Given the following community:
       | title  | Collective Emerald in the Luck |
       | logo   | logo.png                       |
       | banner | banner.jpg                     |
       | state  | validated                      |
     And the following solutions:
-      | title               | collection                     | logo     | banner     | state     |
+      | title               | community                     | logo     | banner     | state     |
       | Emerald in the Luck | Collective Emerald in the Luck | logo.png | banner.jpg | validated |
     And I am logged in as a facilitator of the "Emerald in the Luck" solution
 

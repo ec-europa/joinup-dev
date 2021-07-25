@@ -1,7 +1,7 @@
 @api @group-b
 Feature:
   As a privileged user
-  I want to create custom pages inside unpublished collections or solutions
+  I want to create custom pages inside unpublished communities or solutions
   So that I can prepare all the pages before publishing them
 
   Scenario Outline: Access to custom pages should be restricted to unprivileged users
@@ -10,7 +10,7 @@ Feature:
       | Drafty things   | draft     |
       | Validated tools | validated |
     And custom_page content:
-      | title        | body         | collection      | logo     |
+      | title        | body         | community      | logo     |
       | About means  | Sample text. | Drafty things   | logo.png |
       | About places | Sample text. | Validated tools | logo.png |
 
@@ -34,5 +34,5 @@ Feature:
 
     Examples:
       | group      |
-      | collection |
+      | community |
       | solution   |

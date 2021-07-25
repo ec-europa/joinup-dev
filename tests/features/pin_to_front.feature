@@ -11,19 +11,19 @@ Feature: Pinning content to the front page
     And the following contact:
       | name  | Arushi Papke     |
       | email | aripap@yahoo.com |
-    And the following collections:
+    And the following communities:
       | title       | state     | creation date | owner             | contact information |
       | Risky Sound | validated | 2017-12-21    | Timofei Håkansson | Arushi Papke        |
       | Tuna Moving | validated | 2018-02-28    |                   |                     |
     And the following solutions:
-      | title            | collection  | state     | creation date |
+      | title            | community  | state     | creation date |
       | D minor          | Risky Sound | validated | 2017-12-22    |
       | Migration routes | Tuna Moving | validated | 2018-01-31    |
     And users:
       | Username      | E-mail                    |
       | Burke Abraham | burke.abraham@example.com |
-    And the following collection user memberships:
-      | collection  | user          | roles       |
+    And the following community user memberships:
+      | community  | user          | roles       |
       | Risky Sound | Burke Abraham | facilitator |
       | Tuna Moving | Burke Abraham | facilitator |
     And the following solution user memberships:
@@ -37,7 +37,7 @@ Feature: Pinning content to the front page
 
   Scenario Outline: Moderators can pin and unpin content to the front page.
     Given <content type> content:
-      | title               | collection  | state     | visits | created    |
+      | title               | community  | state     | visits | created    |
       | Loudest instruments | Risky Sound | validated | 4390   | 2017-03-29 |
       | Handmade oboes      | Risky Sound | validated | 948    | 2017-04-25 |
     And the following "content" entities are pinned to the front page:
@@ -134,7 +134,7 @@ Feature: Pinning content to the front page
       | discussion   | Discussion |
       | news         | News       |
 
-  Scenario Outline: Moderators can pin and unpin collections and solutions to the front page.
+  Scenario Outline: Moderators can pin and unpin communities and solutions to the front page.
     When I am an anonymous user
     And I am on the homepage
     And I click "<header link>" in the "Header" region
@@ -188,7 +188,7 @@ Feature: Pinning content to the front page
 
     Examples:
       | header link | pinned      | unpinned         | label      |
-      | Collections | Risky Sound | Tuna Moving      | Collection |
+      | Communities | Risky Sound | Tuna Moving      | Community |
       | Solutions   | D minor     | Migration routes | Solution   |
 
   Scenario: Front page menu access.
@@ -203,7 +203,7 @@ Feature: Pinning content to the front page
   @javascript
   Scenario: Front page menu re-ordering.
     Given news content:
-      | title                | collection  | state     | visits | created    |
+      | title                | community  | state     | visits | created    |
       | Entry to be disabled | Risky Sound | validated | 0      | 2017-03-29 |
       | Some low visit news  | Risky Sound | validated | 948    | 2017-04-25 |
     And the following "content" entities are pinned to the front page:
@@ -279,19 +279,19 @@ Feature: Pinning content to the front page
       | Username        | E-mail              | Roles     |
       | Jocelyn Modpeel | jocymod@example.com | moderator |
     And I am logged in as "Jocelyn Modpeel"
-    And I visit the collection overview page
+    And I visit the community overview page
     When I click the contextual link "Pin to front page" in the "Tuna Moving" tile
-    Then I should see the success message "Collection Tuna Moving has been set as pinned content."
+    Then I should see the success message "Community Tuna Moving has been set as pinned content."
     When I click the contextual link "Unpin from front page" in the "Tuna Moving" tile
-    Then I should see the success message "Collection Tuna Moving has been removed from the pinned contents."
+    Then I should see the success message "Community Tuna Moving has been removed from the pinned contents."
 
     # Log out and back in. This should clear the cached CSRF tokens and the
     # contextual links should keep working.
     When I log out
     And I am logged in as "Jocelyn Modpeel"
-    And I visit the collection overview page
+    And I visit the community overview page
     And I click the contextual link "Pin to front page" in the "Tuna Moving" tile
-    Then I should see the success message "Collection Tuna Moving has been set as pinned content."
+    Then I should see the success message "Community Tuna Moving has been set as pinned content."
 
   # Regression test for a bug that caused moderators to see links to pin owners
   # and contact information entities to the front page in about pages.

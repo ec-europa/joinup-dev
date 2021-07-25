@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *
  * Cache context ID: 'collection'.
  */
-class CollectionCacheContext implements CacheContextInterface, ContainerAwareInterface {
+class CommunityCacheContext implements CacheContextInterface, ContainerAwareInterface {
 
   use ContainerAwareTrait;
 
@@ -27,7 +27,7 @@ class CollectionCacheContext implements CacheContextInterface, ContainerAwareInt
   protected $requestStack;
 
   /**
-   * Constructs a new CollectionCacheContext service.
+   * Constructs a new CommunityCacheContext service.
    *
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   The request stack.
@@ -40,16 +40,16 @@ class CollectionCacheContext implements CacheContextInterface, ContainerAwareInt
    * {@inheritdoc}
    */
   public static function getLabel() {
-    return t('Collection');
+    return t('Community');
   }
 
   /**
    * {@inheritdoc}
    */
   public function getContext() {
-    /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    if (($collection = $this->requestStack->getCurrentRequest()->get('rdf_entity')) && $collection->bundle() == 'collection') {
-      return 'collection.' . $collection->id();
+    /** @var \Drupal\rdf_entity\RdfInterface $community */
+    if (($community = $this->requestStack->getCurrentRequest()->get('rdf_entity')) && $community->bundle() == 'collection') {
+      return 'collection.' . $community->id();
     }
     return 'collection.none';
   }

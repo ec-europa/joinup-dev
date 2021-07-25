@@ -35,12 +35,12 @@ Feature:
     And the following fields should be disabled "First name,Family name,Allow user to log in via CAS,CAS Username,Email,Username,Password,Confirm password,Photo,Country of origin,Professional domain,Business title,Organisation,Enable the search field,Facebook,GitHub,LinkedIn,SlideShare,Twitter,Vimeo,Youtube,Save"
 
   Scenario: A moderator deletes a user using the administrative UI.
-    Given the following collection:
-      | title | Test collection      |
+    Given the following community:
+      | title | Test community      |
       | state | validated |
     And news content:
-      | title     | author       | collection      | state     |
-      | News item | alicia__1997 | Test collection | validated |
+      | title     | author       | community      | state     |
+      | News item | alicia__1997 | Test community | validated |
 
     Given I am logged in as a moderator
     And I click "People"
@@ -72,22 +72,22 @@ Feature:
     And the "Alicia Potter" user doesn't exist
 
     # The content created by an account deleted via admin UI has been deleted.
-    When I go to "/collection/test-collection/news/news-item"
+    When I go to "/community/test-community/news/news-item"
     Then the response status code should be 404
 
   Scenario: Cancel own account.
-    Given the following collection:
-      | title | Test collection      |
+    Given the following community:
+      | title | Test community      |
       | state | validated |
     And news content:
-      | title     | author       | collection      | state     |
-      | News item | alicia__1997 | Test collection | validated |
+      | title     | author       | community      | state     |
+      | News item | alicia__1997 | Test community | validated |
     And document content:
-      | title | author       | collection      | state     |
-      | Docky | alicia__1997 | Test collection | validated |
+      | title | author       | community      | state     |
+      | Docky | alicia__1997 | Test community | validated |
     And discussion content:
-      | title  | collection      | state     |
-      | Disqus | Test collection | validated |
+      | title  | community      | state     |
+      | Disqus | Test community | validated |
     And comments:
       | subject  | field_body   | author       | parent |
       | Awesome! | Let's use it | alicia__1997 | Disqus |

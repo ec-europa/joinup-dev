@@ -9,7 +9,7 @@
        - Banner
        - Moderation
        - hasVersion (for releases that refer to the solution through isVersionOf)
-       - Collection (Computed field)
+       - Community (Computed field)
        - Topic
        - Workflow status
      Release:

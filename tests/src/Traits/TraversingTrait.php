@@ -224,8 +224,8 @@ trait TraversingTrait {
     $result = [];
     foreach ($regionObj->findAll('css', '.listing__item--tile') as $element) {
       $title_element = $element->find('css', ' .listing__title');
-      // Some tiles don't have a title, like the one to create a new collection
-      // in the collections page.
+      // Some tiles don't have a title, like the one to create a new community
+      // in the communities page.
       if ($title_element) {
         $title = $title_element->getText();
         $result[$title] = $element;
@@ -332,19 +332,19 @@ trait TraversingTrait {
    */
   protected static function getFacetIdFromAlias(string $alias): string {
     $mappings = [
-      'collection type' => 'collection_type',
-      'collection topic' => 'collection_topic',
-      'collection/solution' => 'group',
+      'community type' => 'community_type',
+      'community topic' => 'community_topic',
+      'community/solution' => 'group',
       'topic' => 'topic',
       'solution topic' => 'solution_topic',
       'solution spatial coverage' => 'solution_spatial_coverage',
       'spatial coverage' => 'spatial_coverage',
       'My solutions content' => 'solution_my_content',
-      'My collections content' => 'collection_my_content',
+      'My communities content' => 'community_my_content',
       'My content' => 'content_my_content',
       'Event date' => 'event_date',
       'EIF recommendations' => 'category',
-      'Collection event date' => 'collection_event_type',
+      'Community event date' => 'community_event_type',
       'Content types' => 'type',
       'eif principle' => 'principle',
       'eif interoperability layer' => 'interoperability_layer',

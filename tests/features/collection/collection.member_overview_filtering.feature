@@ -14,13 +14,13 @@ Feature: Type something to filter the listing the member list
       | brookebeau | Brooke     | Kingsley    |           | brookebeau@example.com |
       | iambroke   | Nell       | Gibb        |           | iambroke@example.com   |
       | queenson   | Queen      | Emerson     |           | queenson@example.com   |
-    And the following collection:
+    And the following community:
       | title         | Coffee makers                  |
       | description   | Coffee is needed for survival. |
       | state         | validated                      |
       | creation date | 01-01-2018                     |
-    And the following collection user memberships:
-      | collection    | user       | roles       | created          | state   |
+    And the following community user memberships:
+      | community    | user       | roles       | created          | state   |
       | Coffee makers | emeritous  | owner       | 01-01-2018 00:00 | active  |
       | Coffee makers | user049230 | facilitator | 02-01-2018 00:00 | active  |
       | Coffee makers | kingseamus |             | 05-07-2018 00:00 | active  |
@@ -40,7 +40,7 @@ Feature: Type something to filter the listing the member list
       | kingseamus |
       | queenson   |
 
-  Scenario: Moderators should be able to filter users in the table in the collection members page.
+  Scenario: Moderators should be able to filter users in the table in the community members page.
     Given I am logged in as "séamusline"
     And I am on the members page of "Coffee makers"
     When I fill in "Type something to filter the list" with "bro"
@@ -49,19 +49,19 @@ Feature: Type something to filter the listing the member list
     Then the "member administration" table should contain the following columns:
       | Name            | Member since            | State   | Roles                                    |
       | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
-      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
+      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Community owner, Community facilitator |
     # Clicking "Name" will sort the table by descending name order.
     When I click "Name"
     Then the "member administration" table should contain the following columns:
       | Name            | Member since            | State   | Roles                                    |
-      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
+      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Community owner, Community facilitator |
       | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
 
     # Clicking "Member since" will sort the table by ascending created order.
     When I click "Member since"
     Then the "member administration" table should contain the following columns:
       | Name            | Member since            | State   | Roles                                    |
-      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
+      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Community owner, Community facilitator |
       | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
 
     # Clicking "Member since" again will sort the table by descending created order.
@@ -69,20 +69,20 @@ Feature: Type something to filter the listing the member list
     Then the "member administration" table should contain the following columns:
       | Name            | Member since            | State   | Roles                                    |
       | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
-      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
+      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Community owner, Community facilitator |
 
     # Clicking "State" will sort the table by ascending state order.
     When I click "State"
     Then the "member administration" table should contain the following columns:
       | Name            | Member since            | State   | Roles                                    |
-      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
+      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Community owner, Community facilitator |
       | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
 
     # Clicking "State" again will sort the table by descending state order.
     When I click "State"
     Then the "member administration" table should contain the following columns:
       | Name            | Member since            | State   | Roles                                    |
-      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
+      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Community owner, Community facilitator |
       | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
 
     When I fill in "Type something to filter the list" with "King"

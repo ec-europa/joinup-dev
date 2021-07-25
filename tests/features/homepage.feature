@@ -11,13 +11,13 @@ Feature: Homepage
     # At the very start of the test there is no content yet.
     Then I should see the following statistics:
       | Solutions   | 0 |
-      | Collections | 0 |
+      | Communities | 0 |
       | Content     | 0 |
     # Test that the page is successfully cached.
     When I reload the page
     Then the page should be cached
 
-    Given the following collections:
+    Given the following communities:
       | title               | state            |
       | Political sciences  | draft            |
       | Forms of government | proposed         |
@@ -25,32 +25,32 @@ Feature: Homepage
       | Elections           | archival request |
       | Party structure     | archived         |
     And the following solutions:
-      | title             | state            | collection     |
+      | title             | state            | community     |
       | Economic theory   | draft            | Social classes |
       | Economic history  | proposed         | Social classes |
       | Laws of economics | validated        | Social classes |
       | Planned economy   | needs update     | Social classes |
       | Economic growth   | blacklisted      | Social classes |
     And custom_page content:
-      | title                | collection     |
+      | title                | community     |
       | Developing economics | Social classes |
     And discussion content:
-      | title                         | state        | collection     |
+      | title                         | state        | community     |
       | Prosperity economics          | needs update | Social classes |
       | Cost-benefit analysis         | proposed     | Social classes |
       | Economic systems              | validated    | Social classes |
       | Socialist schools before Marx | archived     | Social classes |
     And document content:
-      | title               | state     | collection     |
+      | title               | state     | community     |
       | Socialist economics | validated | Social classes |
     And event content:
-      | title                         | state        | collection     |
+      | title                         | state        | community     |
       | Trotskism                     | draft        | Social classes |
       | Corporative economic theories | validated    | Social classes |
       | Social economics              | needs update | Social classes |
       | Labour theory                 | proposed     | Social classes |
     And news content:
-      | title                | state            | collection     |
+      | title                | state            | community     |
       | Regional economy     | draft            | Social classes |
       | World economy        | proposed         | Social classes |
       | Economic cooperation | validated        | Social classes |
@@ -61,7 +61,7 @@ Feature: Homepage
     When I reload the page
     Then I should see the following statistics:
       | Solutions   | 1 |
-      | Collections | 3 |
+      | Communities | 3 |
       | Content     | 5 |
     # The cache should have been cleared when new content is created.
     And the page should not be cached
@@ -109,13 +109,13 @@ Feature: Homepage
       | Economic dynamics             |
       | Economic cycles               |
 
-    # Check if the "Collections" link leads to the pre-filtered search results.
-    # This shows collections in the "validated' state.
+    # Check if the "Communities" link leads to the pre-filtered search results.
+    # This shows communities in the "validated' state.
     # 'archival request', and 'archived'.
     When I go to the homepage
     Then I should see the text "Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions."
-    When I click "Collections" in the "Header" region
-    Then I should see the heading "Collections"
+    When I click "Communities" in the "Header" region
+    Then I should see the heading "Communities"
     And I should see the following lines of text:
       | Social classes  |
       | Elections       |
@@ -188,7 +188,7 @@ Feature: Homepage
     But I should see the link "Sign in"
 
     # The header should still be shown in the other pages.
-    When I click "Collections"
+    When I click "Communities"
     Then I should see the small header
 
     When I am logged in as a user with the "authenticated" role
@@ -200,7 +200,7 @@ Feature: Homepage
     And the page should be cacheable
 
     # The header should still be shown in the other pages.
-    When I click "Collections"
+    When I click "Communities"
     Then I should see the small header
 
   Scenario: Only specific social network links are available in the footer.

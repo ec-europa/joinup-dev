@@ -7,8 +7,8 @@ namespace Drupal\collection\Exception;
 /**
  * Exception thrown when the required reference to a collection is missing.
  *
- * @see \Drupal\collection\Entity\CollectionContentInterface::getCollection()
+ * @see \Drupal\collection\Entity\CommunityContentInterface::getCommunity()
  */
-class MissingCollectionException extends \Exception {
+class MissingCommunityException extends \Exception {
 
 }

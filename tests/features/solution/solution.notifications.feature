@@ -7,8 +7,8 @@ Feature: Solution notifications
   I need to receive email that inform me regarding solution transitions.
 
   Scenario: Notifications are sent every time a related transition is applied to a solution.
-    Given the following collection:
-      | title | Collection of random solutions |
+    Given the following community:
+      | title | Community of random solutions |
       | logo  | logo.png                       |
       | state | validated                      |
     And the following owner:
@@ -23,14 +23,14 @@ Feature: Solution notifications
       | Ramiro Myers |           | Ramiro     | Myers       | ramiro.myers@example.com |
       | Edith Poole  |           | Edith      | Poole       | edith.poole@example.com  |
     And the following solutions:
-      | title                                                 | author       | description | logo     | banner     | owner              | contact information | state        | topic       | solution type | collection                     |
-      | Solution notification to propose changes              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated    | E-inclusion | Business      | Collection of random solutions |
-      | Solution notification to blacklist                    | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated    | E-inclusion | Business      | Collection of random solutions |
-      | Solution notification to publish from blacklisted     | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | blacklisted  | E-inclusion | Business      | Collection of random solutions |
-      | Solution notification to request changes              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated    | E-inclusion | Business      | Collection of random solutions |
-      | Solution notification to propose from request changes | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | needs update | E-inclusion | Business      | Collection of random solutions |
-      | Solution notification to delete by moderator team     | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated    | E-inclusion | Business      | Collection of random solutions |
-      | Solution notification to delete by owner              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated    | E-inclusion | Business      | Collection of random solutions |
+      | title                                                 | author       | description | logo     | banner     | owner              | contact information | state        | topic       | solution type | community                     |
+      | Solution notification to propose changes              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated    | E-inclusion | Business      | Community of random solutions |
+      | Solution notification to blacklist                    | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated    | E-inclusion | Business      | Community of random solutions |
+      | Solution notification to publish from blacklisted     | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | blacklisted  | E-inclusion | Business      | Community of random solutions |
+      | Solution notification to request changes              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated    | E-inclusion | Business      | Community of random solutions |
+      | Solution notification to propose from request changes | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | needs update | E-inclusion | Business      | Community of random solutions |
+      | Solution notification to delete by moderator team     | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated    | E-inclusion | Business      | Community of random solutions |
+      | Solution notification to delete by owner              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated    | E-inclusion | Business      | Community of random solutions |
 
     When I am logged in as "Pat Harper"
 

@@ -1,8 +1,8 @@
 @api @group-a @terms
-Feature: Collection membership administration
+Feature: Community membership administration
   In order to build a community
-  As a collection facilitator
-  I need to be able to manager collection members
+  As a community facilitator
+  I need to be able to manager community members
 
   Background:
     Given the following owner:
@@ -20,11 +20,11 @@ Feature: Collection membership administration
       | Donald Duck       |       | donald_duck@example.com       | Donald     | Duck        |
       | Turkey Ham        |       | turkey_ham@example.com        | Turkey     | Ham         |
       | Cam Bridge        |       | cambridge@example.com         | Cam        | Bridge      |
-    And the following collections:
+    And the following communities:
       | title             | description               | logo     | banner     | owner        | contact information                    | closed | state     |
       | Medical diagnosis | 10 patients in 10 minutes | logo.png | banner.jpg | James Wilson | Princeton-Plainsboro Teaching Hospital | yes    | validated |
-    And the following collection user memberships:
-      | collection        | user              | roles                      | state   |
+    And the following community user memberships:
+      | community        | user              | roles                      | state   |
       | Medical diagnosis | Lisa Cuddy        | administrator, facilitator | active  |
       | Medical diagnosis | Turkey Ham        | facilitator                | active  |
       | Medical diagnosis | Gregory House     |                            | active  |
@@ -40,25 +40,25 @@ Feature: Collection membership administration
   Scenario: Request a membership
     When I am logged in as "Donald Duck"
     And all e-mails have been sent
-    And I go to the "Medical diagnosis" collection
-    And I press the "Join this collection" button
-    Then I should see the success message "Your membership to the Medical diagnosis collection is under approval."
-    And the email sent to "Lisa Cuddy" with subject "Joinup: A user has requested to join your collection" contains the following lines of text:
+    And I go to the "Medical diagnosis" community
+    And I press the "Join this community" button
+    Then I should see the success message "Your membership to the Medical diagnosis community is under approval."
+    And the email sent to "Lisa Cuddy" with subject "Joinup: A user has requested to join your community" contains the following lines of text:
       | text                                                                               |
-      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
+      | Donald Duck has requested to join your community "Medical diagnosis" as a member. |
       | To approve or reject this request, click on                                        |
       | If you think this action is not clear or not due, please contact Joinup Support at |
-      | /collection/medical-diagnosis/members                                              |
+      | /community/medical-diagnosis/members                                              |
     And the following email should have been sent:
       | recipient | Turkey Ham                                                                         |
-      | subject   | Joinup: A user has requested to join your collection                               |
-      | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
+      | subject   | Joinup: A user has requested to join your community                               |
+      | body      | Donald Duck has requested to join your community "Medical diagnosis" as a member. |
 
   @email
   Scenario: Approve a membership
     # Check that a member with pending state does not have access to add new content.
     Given I am logged in as "Kathie Cumbershot"
-    When I go to the "Medical diagnosis" collection
+    When I go to the "Medical diagnosis" community
     Then I should not see the plus button menu
     And I should not see the link "Add news"
 
@@ -78,7 +78,7 @@ Feature: Collection membership administration
       | Delete the selected membership(s)                               |
       | Add the author role to the selected members                     |
       | Add the facilitator role to the selected members                |
-      | Transfer the ownership of the collection to the selected member |
+      | Transfer the ownership of the community to the selected member |
       | Remove the facilitator role from the selected members           |
       | Remove the author role from the selected members                |
     # Assert that the user does not see the default OG tab.
@@ -89,18 +89,18 @@ Feature: Collection membership administration
     Then I should see the following success messages:
       | success messages                                         |
       | Approve the pending membership(s) was applied to 1 item. |
-    And the email sent to "Kathie Cumbershot" with subject "Joinup: Your request to join the collection Medical diagnosis was approved" contains the following lines of text:
+    And the email sent to "Kathie Cumbershot" with subject "Joinup: Your request to join the community Medical diagnosis was approved" contains the following lines of text:
       | text                                                                            |
-      | Lisa Cuddy has approved your request to join the "Medical diagnosis" collection |
-    But the email sent to "Kathie Cumbershot" with subject "Joinup: Your request to join the collection Medical diagnosis was approved" should not contain the following lines of text:
+      | Lisa Cuddy has approved your request to join the "Medical diagnosis" community |
+    But the email sent to "Kathie Cumbershot" with subject "Joinup: Your request to join the community Medical diagnosis was approved" should not contain the following lines of text:
       | text                                                                                |
-      | You will receive weekly notifications for newly created content on this collection. |
+      | You will receive weekly notifications for newly created content on this community. |
       | To manage your notifications go to "My subscriptions" in the user menu.             |
       | If you think this action is not clear or not due, please contact Joinup Support at  |
 
     # Check new privileges.
     When I am logged in as "Kathie Cumbershot"
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     # Check that I see one of the random links that requires an active membership.
     Then I should see the plus button menu
     Then I should see the link "Add news"
@@ -109,8 +109,8 @@ Feature: Collection membership administration
   Scenario: Request a membership with subscription and approve it
     When I am logged in as "Cam Bridge"
     And all e-mails have been sent
-    And I go to the "Medical diagnosis" collection
-    And I press the "Join this collection" button
+    And I go to the "Medical diagnosis" community
+    And I press the "Join this community" button
     Then a modal should open
     And I should see the text "Want to receive notifications, too?"
 
@@ -121,7 +121,7 @@ Feature: Collection membership administration
     # Approve a membership.
     Given I am logged in as "Lisa Cuddy"
     When all e-mails have been sent
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
 
     And I open the group sidebar menu
     And I click "Members" in the "Left sidebar"
@@ -131,10 +131,10 @@ Feature: Collection membership administration
     Then I should see the following success messages:
       | success messages                                         |
       | Approve the pending membership(s) was applied to 1 item. |
-    And the email sent to "Cam Bridge" with subject "Joinup: Your request to join the collection Medical diagnosis was approved" contains the following lines of text:
+    And the email sent to "Cam Bridge" with subject "Joinup: Your request to join the community Medical diagnosis was approved" contains the following lines of text:
       | text                                                                                             |
-      | Lisa Cuddy has approved your request to join and subscribe to the "Medical diagnosis" collection |
-      | You will receive weekly notifications for newly created content on this collection.              |
+      | Lisa Cuddy has approved your request to join and subscribe to the "Medical diagnosis" community |
+      | You will receive weekly notifications for newly created content on this community.              |
       | To manage your notifications go to "My subscriptions" in the user menu.                          |
       | If you think this action is not clear or not due, please contact Joinup Support at               |
 
@@ -153,8 +153,8 @@ Feature: Collection membership administration
     Then I select "Delete the selected membership(s)" from "Action"
 
     When I press the "Apply to selected items" button
-    Then I should see the heading "Are you sure you want to delete the selected membership from the 'Medical diagnosis' collection?"
-    And I should see "The member Kathie Cumbershot will be deleted from the 'Medical diagnosis' collection."
+    Then I should see the heading "Are you sure you want to delete the selected membership from the 'Medical diagnosis' community?"
+    And I should see "The member Kathie Cumbershot will be deleted from the 'Medical diagnosis' community."
     And I should see "This action cannot be undone."
 
     Given I click "Cancel"
@@ -164,53 +164,53 @@ Feature: Collection membership administration
     Then I select "Delete the selected membership(s)" from "Action"
 
     When I press the "Apply to selected items" button
-    Then I should see the heading "Are you sure you want to delete the selected membership from the 'Medical diagnosis' collection?"
+    Then I should see the heading "Are you sure you want to delete the selected membership from the 'Medical diagnosis' community?"
 
     When I press "Confirm"
     Then I should see the following success messages:
       | success messages                                                                       |
-      | The member Kathie Cumbershot has been deleted from the 'Medical diagnosis' collection. |
+      | The member Kathie Cumbershot has been deleted from the 'Medical diagnosis' community. |
     And the following email should have been sent:
       | recipient | Kathie Cumbershot                                                               |
-      | subject   | Joinup: Your request to join the collection Medical diagnosis was rejected      |
-      | body      | Lisa Cuddy has rejected your request to join the "Medical diagnosis" collection |
+      | subject   | Joinup: Your request to join the community Medical diagnosis was rejected      |
+      | body      | Lisa Cuddy has rejected your request to join the "Medical diagnosis" community |
 
-    # Delete multiple members from collection.
+    # Delete multiple members from community.
     Given I check the box "Update the member Gregory House"
     And I check the box "Update the member Turkey Ham"
 
     When I select "Delete the selected membership(s)" from "Action"
     And I press the "Apply to selected items" button
-    Then I should see the heading "Are you sure you want to delete the selected memberships from the 'Medical diagnosis' collection?"
+    Then I should see the heading "Are you sure you want to delete the selected memberships from the 'Medical diagnosis' community?"
     And I should see "The following members:"
     And I should see "Gregory House"
     And I should see "Turkey Ham"
-    And I should see "will be deleted from the 'Medical diagnosis' collection."
+    And I should see "will be deleted from the 'Medical diagnosis' community."
     And I should see "This action cannot be undone."
 
     Given I press "Confirm"
-    Then I should see the success message "The following members were removed from the 'Medical diagnosis' collection: Gregory House, Turkey Ham"
+    Then I should see the success message "The following members were removed from the 'Medical diagnosis' community: Gregory House, Turkey Ham"
     And I should see "Lisa Cuddy" in the "Lisa Cuddy" row
 
     # Check new privileges.
     When I am logged in as "Kathie Cumbershot"
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     # Check that I see one of the random links that requires an active membership.
     Then I should not see the plus button menu
-    And I should see the button "Join this collection"
+    And I should see the button "Join this community"
 
   @email
   Scenario: Assign a new role to a member
-    # Check that Dr House can't edit the collection.
+    # Check that Dr House can't edit the community.
     When I am logged in as "Gregory House"
-    And I go to the "Medical diagnosis" collection
-    And I go to the edit form of the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
+    And I go to the edit form of the "Medical diagnosis" community
     Then I should see the heading "Access denied"
 
     # Dr Cuddy promotes Dr House to facilitator.
     When I am logged in as "Lisa Cuddy"
     And all e-mails have been sent
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     Then I click "Members" in the "Left sidebar"
     # Assert that the user does not see the default OG tab.
     Then I should not see the link "Group"
@@ -223,36 +223,36 @@ Feature: Collection membership administration
     And the following email should have been sent:
       | recipient | Gregory House                                                                      |
       | subject   | Your role has been changed to facilitator                                          |
-      | body      | Lisa Cuddy has changed your role in collection "Medical diagnosis" to facilitator. |
+      | body      | Lisa Cuddy has changed your role in community "Medical diagnosis" to facilitator. |
 
-    # Dr House can now edit the collection.
+    # Dr House can now edit the community.
     When I am logged in as "Gregory House"
-    And I go to the edit form of the "Medical diagnosis" collection
+    And I go to the edit form of the "Medical diagnosis" community
     Then I should not see the heading "Access denied"
 
-  Scenario: Privileged members should be allowed to add users to a collection.
+  Scenario: Privileged members should be allowed to add users to a community.
     Given users:
       | Username  | E-mail                 | First name | Family name |
       | jbelanger | j.belanger@example.com | Jeannette  | Belanger    |
       | dwightone | dwight1@example.com    | Christian  | Dwight      |
 
     When I am not logged in
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     And I click "Members" in the "Left sidebar"
     Then I should not see the link "Add members"
 
     When I am logged in as an authenticated
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     And I click "Members" in the "Left sidebar"
     Then I should not see the link "Add members"
 
     When I am logged in as "dwightone"
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     And I click "Members" in the "Left sidebar"
     Then I should not see the link "Add members"
 
     When I am logged in as "Lisa Cuddy"
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     And I click "Members" in the "Left sidebar"
     Then I should see the link "Add members"
     When I click "Add members"
@@ -311,19 +311,19 @@ Feature: Collection membership administration
       | Christian Dwight |
     When I select "Facilitator" from "Role"
     And I press "Add members"
-    Then I should see the success message "Successfully added the role Collection facilitator to the selected users."
+    Then I should see the success message "Successfully added the role Community facilitator to the selected users."
     And I should see the link "Christian Dwight"
 
     # Try new privileges.
     When I am logged in as "dwightone"
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     And I click "Members" in the "Left sidebar"
     Then I should see the link "Add members"
     When I click "Add members"
     Then I should see the heading "Add members"
 
     When I am logged in as "jbelanger"
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     And I click "Members" in the "Left sidebar"
     Then I should not see the link "Add members"
 
@@ -332,12 +332,12 @@ Feature: Collection membership administration
       | Username | Roles | E-mail                   | First name | Family name |
       | qux98765 |       | eric_foreman@example.com | Eric       | Foreman     |
       | xyzzy123 |       | eric_drexler@example.com | Eric       | Drexler     |
-    And the following collection user memberships:
-      | collection        | user     | state  |
+    And the following community user memberships:
+      | community        | user     | state  |
       | Medical diagnosis | qux98765 | active |
       | Medical diagnosis | xyzzy123 | active |
     When I am logged in as "Lisa Cuddy"
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     When I click "Members" in the "Left sidebar"
     Then I should see a table with 5 columns
     # By default the table should be sorted alphabetically.
@@ -361,29 +361,29 @@ Feature: Collection membership administration
       | Eric Drexler      |
 
   @email
-  Scenario: Privileged members should be allowed to invite users to a collection.
+  Scenario: Privileged members should be allowed to invite users to a community.
     Given users:
       | Username  | E-mail                 | First name | Family name |
       | jbelanger | j.belanger@example.com | Jeannette  | Belanger    |
       | dwightone | dwight1@example.com    | Christian  | Dwight      |
 
     When I am not logged in
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     And I click "Members" in the "Left sidebar"
     Then I should not see the link "Invite members"
 
     When I am logged in as an authenticated
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     And I click "Members" in the "Left sidebar"
     Then I should not see the link "Invite members"
 
     When I am logged in as "dwightone"
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     And I click "Members" in the "Left sidebar"
     Then I should not see the link "Invite members"
 
     When I am logged in as "Lisa Cuddy"
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     And I click "Members" in the "Left sidebar"
     Then I should see the link "Invite members"
     When I click "Invite members"
@@ -403,14 +403,14 @@ Feature: Collection membership administration
     Then I should see the success message "2 users have been invited to this group."
     And the following email should have been sent:
       | recipient | dwightone                                                                                                 |
-      | subject   | Invitation from Lisa Cuddy to join collection Medical diagnosis.                                          |
-      | body      | You have been invited by Lisa Cuddy to join the collection Medical diagnosis as a collection facilitator. |
+      | subject   | Invitation from Lisa Cuddy to join community Medical diagnosis.                                          |
+      | body      | You have been invited by Lisa Cuddy to join the community Medical diagnosis as a community facilitator. |
 
     # Accept the invitation directly.
     When I am logged in as "dwightone"
-    And I accept the invitation for the "Medical diagnosis" collection group
-    Then I should see the text "You have been promoted to collection facilitator"
-    And I go to the "Medical diagnosis" collection
+    And I accept the invitation for the "Medical diagnosis" community group
+    Then I should see the text "You have been promoted to community facilitator"
+    And I go to the "Medical diagnosis" community
     And I click "Members" in the "Left sidebar"
     Then I should see the link "Add members"
     And I should see the link "Invite members"
@@ -418,18 +418,18 @@ Feature: Collection membership administration
     Then I should see the heading "Invite members"
 
     # Trying to take action again on the invitation again informs the user about it.
-    When I accept the invitation for the "Medical diagnosis" collection group
+    When I accept the invitation for the "Medical diagnosis" community group
     Then I should see the message "You have already accepted the invitation."
-    When I reject the invitation for the "Medical diagnosis" collection group
+    When I reject the invitation for the "Medical diagnosis" community group
     Then I should see the message "You have already accepted the invitation."
 
-    # Join the collection manually and trigger the invitation.
+    # Join the community manually and trigger the invitation.
     When I am logged in as "jbelanger"
-    And I go to the "Medical diagnosis" collection
-    And I press the "Join this collection" button
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
+    And I press the "Join this community" button
+    And I go to the "Medical diagnosis" community
     And I click "Members" in the "Left sidebar"
-    # The Medical diagnosis collection is closed so normally the membership should be pending.
+    # The Medical diagnosis community is closed so normally the membership should be pending.
     # However, since there is an active invitation, both the status and the initial roles are overridden.
     # Being able to view the links below mean that the membership is active and the user is a facilitator.
     Then I should see the link "Add members"
@@ -440,12 +440,12 @@ Feature: Collection membership administration
     Given users:
       | Username       | E-mail                     | First name | Family name |
       | pending_member | pending_member@example.com | Pending    | Member      |
-    And the following collection user membership:
-      | collection        | user           | state   |
+    And the following community user membership:
+      | community        | user           | state   |
       | Medical diagnosis | pending_member | pending |
 
     When I am logged in as "Lisa Cuddy"
-    And I go to the "Medical diagnosis" collection
+    And I go to the "Medical diagnosis" community
     And I click "Members" in the "Left sidebar"
     When I click "Invite members"
 

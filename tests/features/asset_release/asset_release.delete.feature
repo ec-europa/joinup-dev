@@ -12,8 +12,8 @@ Feature: Asset release "delete" functionality.
       | name        | Yet another contact           |
       | email       | yetanothercontact@example.com |
       | Website URL | http://example.com            |
-    And the following collection:
-      | title | Yet another collection |
+    And the following community:
+      | title | Yet another community |
       | state | validated              |
     And the following solution:
       | title               | Yet another solution       |
@@ -21,7 +21,7 @@ Feature: Asset release "delete" functionality.
       | documentation       | text.pdf                   |
       | owner               | Yet another owner          |
       | contact information | Yet another contact        |
-      | collection          | Yet another collection     |
+      | community          | Yet another community     |
       | state               | validated                  |
     And the following release:
       | title               | Yet another release  |
@@ -40,4 +40,4 @@ Feature: Asset release "delete" functionality.
     And I go to the edit form of the "Yet another release" release
     And I click "Delete"
     And I press "Delete"
-    Then I should be on "/collection/yet-another-collection/solution/yet-another-solution"
+    Then I should be on "/community/yet-another-community/solution/yet-another-solution"

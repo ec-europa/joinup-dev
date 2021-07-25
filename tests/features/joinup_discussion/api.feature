@@ -5,11 +5,11 @@ Feature: Discussion API
   I need to be able to use the Node API to handle the "Discussion" bundle
 
   Scenario: Programmatically create a discussion
-    And the following collection:
+    And the following community:
       | title | Parallel programming |
       | state | validated            |
     Given discussion content:
-      | title                | content                  | collection           | state     |
+      | title                | content                  | community           | state     |
       | Fearless concurrency | Let us have a discussion | Parallel programming | validated |
     Then I should have a "Discussion" page titled "Fearless concurrency"
 

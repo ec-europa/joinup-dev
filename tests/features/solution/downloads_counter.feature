@@ -5,12 +5,12 @@ Feature:
   @clearStaticCache
   Scenario: Check solution downloads counter
     # Create the dummy data to work with.
-    Given the following collection:
+    Given the following community:
       | title | Ocean studies |
     Given the following solution:
       | title       | Climate change tracker                            |
       | description | Atlantic salmon arrived after the Little Ice Age. |
-      | collection  | Ocean studies                                     |
+      | community  | Ocean studies                                     |
       | state       | validated                                         |
     Given the following distributions:
       | title                 | description          | parent                 | downloads |

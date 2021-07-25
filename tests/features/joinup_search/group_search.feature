@@ -2,10 +2,10 @@
 Feature: Search inside groups
   In order to quickly find content inside the group I am currently perusing
   As a user of Joinup
-  I want to be able to launch a search limited to my current collection or solution
+  I want to be able to launch a search limited to my current community or solution
 
   Background:
-    Given collection:
+    Given community:
       | title            | Chalet construction |
       | logo             | logo.png            |
       | moderation       | no                  |
@@ -17,28 +17,28 @@ Feature: Search inside groups
       | description | Ways to construct foundations on hills and mountains. |
       | banner      | banner.jpg                                            |
       | logo        | logo.png                                              |
-      | collection  | Chalet construction                                   |
+      | community  | Chalet construction                                   |
       | state       | validated                                             |
     And discussion content:
-      | title      | body                           | state     | collection          | solution             |
+      | title      | body                           | state     | community          | solution             |
       | Room sizes | What are the ideal dimensions? | validated | Chalet construction |                      |
       | Terrace?   | Want a decent sized terrace    | validated |                     | Inclined foundations |
     And document content:
-      | title       | body               | state     | collection          | solution             |
+      | title       | body               | state     | community          | solution             |
       | Ground plan | A classic design   | validated | Chalet construction |                      |
       | Rock types  | Ranked by hardness | validated |                     | Inclined foundations |
     And event content:
-      | title                        | body                              | state     | collection          | solution             |
+      | title                        | body                              | state     | community          | solution             |
       | Opening of the winter season | Ski resorts will open in December | validated | Chalet construction |                      |
       | Presenting DrillMaster X88   | Our most finely ground drill bit  | validated |                     | Inclined foundations |
     And news content:
-      | title             | body            | collection          | solution             | topic                   | spatial coverage | state     |
+      | title             | body            | community          | solution             | topic                   | spatial coverage | state     |
       | Natural materials | Ground feel     | Chalet construction |                      | Statistics and Analysis | Switzerland      | validated |
       | Still frozen      | Maybe next week |                     | Inclined foundations |                         | Austria          | validated |
     And custom_page content:
-      | title     | body                             | collection          | solution             |
+      | title     | body                             | community          | solution             |
       | Resources | Here are some interesting links. | Chalet construction |                      |
-      | Geography | A collection of height maps.     |                     | Inclined foundations |
+      | Geography | A community of height maps.     |                     | Inclined foundations |
     And releases:
       | title     | release number | release notes              | is version of        | state     |
       | Pre-alpha | 0.0-alpha0     | Only works on flat ground. | Inclined foundations | validated |
@@ -48,33 +48,33 @@ Feature: Search inside groups
 
   @javascript
   Scenario: Group filters are shown as chips
-    # Pages that do not belong to a collection or solution do not have chips in
+    # Pages that do not belong to a community or solution do not have chips in
     # the search field.
     When I am on the homepage
     Then the page should not contain any chips
-    When I visit the collection overview
+    When I visit the community overview
     Then the page should not contain any chips
     When I visit the solution overview
     Then the page should not contain any chips
     When I visit the contact form
     Then the page should not contain any chips
 
-    # Check that the name of the collection is shown as a chip in the search
-    # field on the collection homepage. The chips are initially hidden but will
+    # Check that the name of the community is shown as a chip in the search
+    # field on the community homepage. The chips are initially hidden but will
     # appear after clicking on the search icon to open the search bar.
-    When I go to the homepage of the "Chalet construction" collection
+    When I go to the homepage of the "Chalet construction" community
     And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Chalet construction |
 
-    # Do a search without entering any keywords. Because the collection is shown
+    # Do a search without entering any keywords. Because the community is shown
     # as a chip in the search field the search results should be filtered and
-    # only show the content of the collection.
+    # only show the content of the community.
     When I submit the search by pressing enter
-    Then the option with text "Chalet construction   (6)" from select facet "collection/solution" is selected
+    Then the option with text "Chalet construction   (6)" from select facet "community/solution" is selected
     And the page should show the tiles "Room sizes, Ground plan, Opening of the winter season, Natural materials, Resources, Inclined foundations"
 
-    # Check that other types of pages in the collection also show the collection
+    # Check that other types of pages in the community also show the community
     # as a chip.
     When I go to the "Room sizes" discussion
     And I open the search bar by clicking on the search icon
@@ -117,7 +117,7 @@ Feature: Search inside groups
     # as a chip in the search field the search results should be filtered and
     # only show the content of the solution.
     When I submit the search by pressing enter
-    Then the option with text "Inclined foundations   (6)" from select facet "collection/solution" is selected
+    Then the option with text "Inclined foundations   (6)" from select facet "community/solution" is selected
     Then the page should show the tiles "Pre-alpha, Presenting DrillMaster X88, Rock types, Still frozen, Geography, Terrace?"
 
     # Do a search with a keyword. The chip for the solution should be present
@@ -127,7 +127,7 @@ Feature: Search inside groups
     Then the page should show the following chip:
       | Inclined foundations |
     When I enter "ground" in the search bar and press enter
-    Then the option with text "Inclined foundations   (2)" from select facet "collection/solution" is selected
+    Then the option with text "Inclined foundations   (2)" from select facet "community/solution" is selected
     And the page should show the tiles "Pre-alpha, Presenting DrillMaster X88"
 
     # Do a search with a keyword after removing the chip for the solution. The
@@ -136,7 +136,7 @@ Feature: Search inside groups
     When I open the search bar by clicking on the search icon
     And I press the remove button on the chip "Inclined foundations"
     And I enter "ground" in the search bar and press enter
-    Then the option with text "Any Collection or Solution" from select facet "collection/solution" is selected
+    Then the option with text "Any Community or Solution" from select facet "community/solution" is selected
     Then the page should show the tiles "Ground plan, Pre-alpha, Natural materials, Presenting DrillMaster X88"
 
     # Do a search with a keyword and removing the chip for the solution after
@@ -148,7 +148,7 @@ Feature: Search inside groups
     And I submit the search by pressing enter
     Then the page should show the tiles "Ground plan, Pre-alpha, Natural materials, Presenting DrillMaster X88"
 
-    # Check that other types of pages in the solution also show the collection
+    # Check that other types of pages in the solution also show the community
     # as a chip.
     When I go to the "Terrace?" discussion
     And I open the search bar by clicking on the search icon
@@ -191,7 +191,7 @@ Feature: Search inside groups
   @clearStaticCache
   Scenario: Group search caching
     # Initially the cache is cold.
-    When I go to the homepage of the "Chalet construction" collection
+    When I go to the homepage of the "Chalet construction" community
     Then the page should show the following chip:
       | Chalet construction |
     And the page should not be cached
@@ -200,10 +200,10 @@ Feature: Search inside groups
     Then the page should show the following chip:
       | Chalet construction |
     And the page should be cached
-    # Check that changing the name of the collection correctly invalidates the
+    # Check that changing the name of the community correctly invalidates the
     # cache.
-    When I change the name of the "Chalet construction" collection to "Chalet destruction"
-    And I go to the homepage of the "Chalet destruction" collection
+    When I change the name of the "Chalet construction" community to "Chalet destruction"
+    And I go to the homepage of the "Chalet destruction" community
     Then the page should show the following chip:
       | Chalet destruction |
     And the page should not be cached
@@ -214,12 +214,12 @@ Feature: Search inside groups
 
   @javascript
   Scenario: Group filters remain active in the search bar when viewing search results
-    When I go to the homepage of the "Chalet construction" collection
+    When I go to the homepage of the "Chalet construction" community
     And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Chalet construction |
     When I enter "ground" in the search bar and press enter
-    Then the option with text "Chalet construction   (2)" from select facet "collection/solution" is selected
+    Then the option with text "Chalet construction   (2)" from select facet "community/solution" is selected
     And the page should show the tiles "Ground plan, Natural materials"
     And the page should show the following chip:
       | Chalet construction |
@@ -231,14 +231,14 @@ Feature: Search inside groups
   @javascript
   Scenario: Group filter chips appear in search bar after selecting them in facets
     When I visit the search page
-    Then the option with text "Any Collection or Solution" from select facet "collection/solution" is selected
+    Then the option with text "Any Community or Solution" from select facet "community/solution" is selected
     And I should see 12 tiles
 
     When I open the search bar by clicking on the search icon
     Then the page should not contain any chips
 
-    When I select "Inclined foundations" from the "collection/solution" select facet
-    Then the option with text "Inclined foundations   (6)" from select facet "collection/solution" is selected
+    When I select "Inclined foundations" from the "community/solution" select facet
+    Then the option with text "Inclined foundations   (6)" from select facet "community/solution" is selected
     And I should see 6 tiles
 
     When I open the search bar by clicking on the search icon
@@ -247,7 +247,7 @@ Feature: Search inside groups
 
     # The filter chip should remain active when doing another search.
     When I enter "ground" in the search bar and press enter
-    Then the option with text "Inclined foundations   (2)" from select facet "collection/solution" is selected
+    Then the option with text "Inclined foundations   (2)" from select facet "community/solution" is selected
     And I should see 2 tiles
     When I open the search bar by clicking on the search icon
     Then the page should show the following chip:

@@ -5,7 +5,7 @@ Feature: Release API
   I need to be able to use the Release API
 
   Scenario: Programmatically create a solution
-    Given the following collection:
+    Given the following community:
       | title            | Solution API foo         |
       | logo             | logo.png                 |
       | moderation       | yes                      |
@@ -13,7 +13,7 @@ Feature: Release API
       | state            | validated                |
     And the following solution:
       | title            | My first solution                    |
-      | collection       | Solution API foo                     |
+      | community       | Solution API foo                     |
       | description      | A sample solution                    |
       | documentation    | text.pdf                             |
       | content creation | registered users                     |
@@ -31,8 +31,8 @@ Feature: Release API
       | is version of  | My first solution |
     Then I should have 1 release
 
-  Scenario: Programmatically create a collection using only the mandatory fields
-    Given the following collection:
+  Scenario: Programmatically create a community using only the mandatory fields
+    Given the following community:
       | title            | Solution API bar         |
       | logo             | logo.png                 |
       | moderation       | yes                      |
@@ -40,7 +40,7 @@ Feature: Release API
       | state            | validated                |
     And the following solution:
       | title            | My first solution mandatory |
-      | collection       | Solution API bar            |
+      | community       | Solution API bar            |
       | description      | Another sample solution     |
       | content creation | registered users            |
       | state            | validated                   |

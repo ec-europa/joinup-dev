@@ -14,7 +14,7 @@ Feature: About this solution
       | name                 | type                         |
       | Nova Pharmaceuticals | Company, Industry consortium |
       | Senatier             | National authority           |
-    And collection:
+    And community:
       | title | Monoclonal Antibody Development |
       | state | validated                       |
     And solutions:
@@ -37,7 +37,7 @@ Feature: About this solution
       | solution type       | Non-binding Instrument, Service Discovery Service |
       | spatial coverage    | Italy, Egypt                                      |
       | status              | Under development                                 |
-      | collection          | Monoclonal Antibody Development                   |
+      | community          | Monoclonal Antibody Development                   |
 
     # The link to the about page should be visible on the solution homepage.
     When I am not logged in
@@ -49,7 +49,7 @@ Feature: About this solution
     When I click "About"
 
     # Clean URLs should be applied to the "About" subpage.
-    Then I should be on "/collection/monoclonal-antibody-development/solution/size-exclusion-chromatography/about"
+    Then I should be on "/community/monoclonal-antibody-development/solution/size-exclusion-chromatography/about"
 
     # The description.
     Then I should see the text "Separating molecules by size."

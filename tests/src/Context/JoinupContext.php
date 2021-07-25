@@ -129,12 +129,12 @@ class JoinupContext extends RawDrupalContext {
    * @param string $roles
    *   A comma separated list of roles to assign to the user.
    * @param string $rdf_entity
-   *   The label of the collection or solution of which the user is a member.
+   *   The label of the community or solution of which the user is a member.
    * @param string $rdf_entity_bundle
-   *   The RDF entity bundle, either 'collection' or 'solution'.
+   *   The RDF entity bundle, either 'community' or 'solution'.
    *
    * @throws \Exception
-   *   Thrown when a collection or solution with the given label doesn't exist.
+   *   Thrown when a community or solution with the given label doesn't exist.
    *
    * @Given I am logged in as a user with the :role role(s) of the :rdf_entity :rdf_entity_bundle
    * @Given I am logged in as a/an :role of the :rdf_entity :rdf_entity_bundle
@@ -170,20 +170,20 @@ class JoinupContext extends RawDrupalContext {
   }
 
   /**
-   * Changes the role of a user within a collection or solution.
+   * Changes the role of a user within a community or solution.
    *
    * Use this to e.g. test promotion or demotion of facilitators.
    *
    * @param string $rdf_entity
-   *   The label of the collection or solution of which the user is a member.
+   *   The label of the community or solution of which the user is a member.
    * @param string $rdf_entity_bundle
-   *   The RDF entity bundle, either 'collection' or 'solution'.
+   *   The RDF entity bundle, either 'community' or 'solution'.
    * @param string $roles
    *   A comma separated list of roles to assign to the user. All previously
    *   assigned roles will be discarded.
    *
    * @throws \Exception
-   *   Thrown when a collection or solution with the given label doesn't exist.
+   *   Thrown when a community or solution with the given label doesn't exist.
    *
    * @Given my role(s) in the :rdf_entity :rdf_entity_bundle change(s) to :roles
    */
@@ -202,19 +202,19 @@ class JoinupContext extends RawDrupalContext {
   }
 
   /**
-   * Changes the membership state of a user within a collection or solution.
+   * Changes the membership state of a user within a community or solution.
    *
    * Use this to e.g. test approval of pending memberships, or blocking users.
    *
    * @param string $rdf_entity
-   *   The label of the collection or solution of which the user is a member.
+   *   The label of the community or solution of which the user is a member.
    * @param string $rdf_entity_bundle
-   *   The RDF entity bundle, either 'collection' or 'solution'.
+   *   The RDF entity bundle, either 'community' or 'solution'.
    * @param string $state
    *   The new membership state, one of 'active', 'pending' or 'blocked'.
    *
    * @throws \Exception
-   *   Thrown when a collection or solution with the given label doesn't exist.
+   *   Thrown when a community or solution with the given label doesn't exist.
    *
    * @Given my membership state in the :rdf_entity :rdf_entity_bundle changes to :state
    */
@@ -612,7 +612,7 @@ class JoinupContext extends RawDrupalContext {
    * This allows us to:
    * - use human readable labels like 'short title' in test scenarios, and map
    *   them to the actual field names like 'field_short_title'.
-   * - use human readable values such as a collection name instead of the URL
+   * - use human readable values such as a community name instead of the URL
    *   that is actually used in the OG reference field.
    *
    * @param \Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope $scope
@@ -634,7 +634,7 @@ class JoinupContext extends RawDrupalContext {
       if ($name !== $alias) {
         unset($node->$alias);
         // Don't set empty values, since we can have multiple aliases that point
-        // to the same field (e.g. 'collection' and 'solution' both use the same
+        // to the same field (e.g. 'community' and 'solution' both use the same
         // 'og_audience' field).
         if (!empty($value)) {
           $node->$name = $value;
@@ -666,8 +666,8 @@ class JoinupContext extends RawDrupalContext {
       }
     }
 
-    // Replace collection and solution group references that use titles with the
-    // actual URI. Note that this fails if a URI is supplied for a collection or
+    // Replace community and solution group references that use titles with the
+    // actual URI. Note that this fails if a URI is supplied for a community or
     // solution in a Behat test. This is by design, the URIs are not exposed to
     // end users of the site so they should not be used in BDD scenarios.
     if (!empty($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD})) {
@@ -799,7 +799,7 @@ class JoinupContext extends RawDrupalContext {
         'state' => 'field_state',
       ],
       'shared' => [
-        'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+        'community' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'shared on' => 'field_shared_in',
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'topic' => 'field_topic',
@@ -1971,7 +1971,7 @@ class JoinupContext extends RawDrupalContext {
    * Checks the numbers in the 'statistics block' on the homepage.
    *
    * Table format:
-   * | Solutions | Collections | Content |
+   * | Solutions | Communities | Content |
    * | 89        | 41          | 25      |
    *
    * @param \Behat\Gherkin\Node\TableNode $statistics_table
@@ -2410,7 +2410,7 @@ class JoinupContext extends RawDrupalContext {
    * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4352
    */
   public function assertTileNotMarkedAsFeatured($heading, $type) {
-    if (in_array($type, ['collection', 'solution'])) {
+    if (in_array($type, ['community', 'solution'])) {
       $entity_type_id = 'rdf_entity';
     }
     elseif (in_array($type, CommunityContentHelper::BUNDLES)) {

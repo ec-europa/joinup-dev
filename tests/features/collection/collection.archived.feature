@@ -1,8 +1,8 @@
 @api @terms @group-a
-Feature: Creating content and commenting on archived collection
-  In order to not waste time on maintaining legacy collections
-  As a collection owner
-  I want to be able to archive old collections
+Feature: Creating content and commenting on archived community
+  In order to not waste time on maintaining legacy communities
+  As a community owner
+  I want to be able to archive old communities
 
   Background: Check access to the Post comment form
     Given users:
@@ -16,16 +16,16 @@ Feature: Creating content and commenting on archived collection
     And the following owner:
       | name          |
       | April Hawkins |
-    And the following collections:
+    And the following communities:
       | title               | description         | logo     | banner     | owner         | contact information | state     | topic                   |
       | The Willing Consort | The Willing Consort | logo.png | banner.jpg | April Hawkins | Jody Rodriquez      | validated | Statistics and Analysis |
-    And the following collection user memberships:
-      | collection          | user        | roles              |
+    And the following community user memberships:
+      | community          | user        | roles              |
       | The Willing Consort | Karl Fields | owner, facilitator |
 
-  Scenario: 'Comment form' should not be accessible on an archived collection content.
+  Scenario: 'Comment form' should not be accessible on an archived community content.
     Given discussion content:
-      | title               | collection          | state     |
+      | title               | community          | state     |
       | The Weeping's Stars | The Willing Consort | validated |
     When I am logged in as "Lee Reeves"
     And I go to the "The Weeping's Stars" discussion
@@ -33,11 +33,11 @@ Feature: Creating content and commenting on archived collection
     And I should see the button "Post comment"
 
     When I am logged in as "Karl Fields"
-    And I go to the "The Willing Consort" collection
+    And I go to the "The Willing Consort" community
     And I click "Edit"
     And I press "Request archival"
     And I am logged in as a moderator
-    And I go to the "The Willing Consort" collection
+    And I go to the "The Willing Consort" community
     And I click "Edit"
     When I fill in "Motivation" with "As you wish."
     And I press "Archive"
@@ -57,16 +57,16 @@ Feature: Creating content and commenting on archived collection
 
   Scenario: 'Add community content' menu items should not be visible in the archived connection.
     When I am logged in as "Karl Fields"
-    And I go to the "The Willing Consort" collection
+    And I go to the "The Willing Consort" community
     And I click "Edit"
     And I press "Request archival"
     And I am logged in as a moderator
-    And I go to the "The Willing Consort" collection
+    And I go to the "The Willing Consort" community
     And I click "Edit"
     When I fill in "Motivation" with "As you wish."
     And I press "Archive"
 
     # We only need to check that privileged users do not have access anymore.
-    And I am logged in as a facilitator of the "The Willing Consort" collection
-    And I go to the "The Willing Consort" collection
+    And I am logged in as a facilitator of the "The Willing Consort" community
+    And I go to the "The Willing Consort" community
     Then I should not see the plus button menu

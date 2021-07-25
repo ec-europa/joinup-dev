@@ -12,7 +12,7 @@ use Drupal\Component\Uuid\Php;
 trait RandomGeneratorTrait {
 
   /**
-   * Returns a random URI ID for the collection.
+   * Returns a random URI ID for the community.
    *
    * @return string
    *   A string URI

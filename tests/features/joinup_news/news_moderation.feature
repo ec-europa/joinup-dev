@@ -11,8 +11,8 @@
   # cannot be tested through the UI and are only for ensuring proper
   # functionality.
 Feature: News moderation.
-  As a member, facilitator or collection owner
-  In order to manage news about my collection
+  As a member, facilitator or community owner
+  In order to manage news about my community
   I need to be able to have a workflow based news management system.
 
   Background:
@@ -29,12 +29,12 @@ Feature: News moderation.
       | Cheetah       | ihatewonderwoman@example.com      |           |
       | Mirror Master | mirrormirroronthewall@example.com |           |
       | Metallo       | kryptoniteEverywhere@example.com  |           |
-    Given collections:
+    Given communities:
       | title          | moderation | state     | content creation |
       | Justice League | no         | validated | members          |
       | Legion of Doom | yes        | validated | members          |
-    And the following collection user memberships:
-      | collection     | user          | roles       |
+    And the following community user memberships:
+      | community     | user          | roles       |
       | Justice League | Superman      | owner       |
       | Justice League | Hawkgirl      | facilitator |
       | Justice League | Eagle         | member      |
@@ -44,7 +44,7 @@ Feature: News moderation.
       | Legion of Doom | Mirror Master | member      |
       | Legion of Doom | Cheetah       | member      |
     And "news" content:
-      | title                         | headline                                    | body                                                                    | state            | author        | collection     |
+      | title                         | headline                                    | body                                                                    | state            | author        | community     |
       | Creating Justice League       | 6 Members to start with                     | TBD                                                                     | draft            | Eagle         | Justice League |
       | Hawkgirl is a spy             | Her race lies in another part of the galaxy | Hawkgirl has been giving information about Earth to Thanagarians.       | proposed         | Eagle         | Justice League |
       | Hawkgirl helped Green Lantern | Hawkgirl went against Thanagarians?         | It was all of a sudden when Hawkgirl turned her back to her own people. | validated        | Eagle         | Justice League |
@@ -66,7 +66,7 @@ Feature: News moderation.
 
   Scenario Outline: Members, facilitators and owners can see and add news.
     Given I am logged in as "<user>"
-    And I go to the homepage of the "<title>" collection
+    And I go to the homepage of the "<title>" community
     Then I should see the link "Add news"
     When I click "Add news"
     Then I should see the heading "Add news"
@@ -74,71 +74,71 @@ Feature: News moderation.
     And the following buttons should not be present "<unavailable buttons>"
     Examples:
       | user          | title          | available buttons               | unavailable buttons                                 |
-      # Post-moderated collection, member
+      # Post-moderated community, member
       | Eagle         | Justice League | Save as draft, Publish          | Propose, Request changes, Request deletion, Preview |
-      # Post-moderated collection, facilitator
+      # Post-moderated community, facilitator
       | Hawkgirl      | Justice League | Save as draft, Publish          | Propose, Request changes, Request deletion, Preview |
-      # Post-moderated collection, owner
+      # Post-moderated community, owner
       | Superman      | Justice League | Save as draft, Publish          | Propose, Request changes, Request deletion, Preview |
-      # Pre-moderated collection, member
+      # Pre-moderated community, member
       | Mirror Master | Legion of Doom | Save as draft, Propose          | Publish, Request changes, Request deletion, Preview |
-      # Pre-moderated collection, facilitator
+      # Pre-moderated community, facilitator
       | Metallo       | Legion of Doom | Save as draft, Publish, Propose | Request changes, Request deletion, Preview          |
-      # Pre-moderated collection, owner
+      # Pre-moderated community, owner
       | Vandal Savage | Legion of Doom | Save as draft, Publish, Propose | Request changes, Request deletion, Preview          |
 
   Scenario: Anonymous users and non-members cannot see the 'Add news' button.
     # Check visibility for anonymous users.
     When I am not logged in
-    And I go to the homepage of the "Justice League" collection
+    And I go to the homepage of the "Justice League" community
     Then I should not see the link "Add news"
     # Check visibility for authenticated users.
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the homepage of the "Justice League" community
     Then I should not see the link "Add news"
-    # User from another collection should not be able to see the 'Add news'.
+    # User from another community should not be able to see the 'Add news'.
     When I am logged in as "Cheetah"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the homepage of the "Justice League" community
     Then I should not see the link "Add news"
 
   Scenario: "Add news" button should only be shown to moderators and group members.
     # Check visibility for anonymous users.
     When I am not logged in
-    And I go to the homepage of the "Justice League" collection
+    And I go to the homepage of the "Justice League" community
     Then I should not see the link "Add news"
     # Check visibility for authenticated users.
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the homepage of the "Justice League" community
     Then I should not see the link "Add news"
     # Site moderators should be able to add news.
     When I am logged in as "Batman"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the homepage of the "Justice League" community
     Then I should see the link "Add news"
-    # User from another collection should not be able to see the 'Add news'.
+    # User from another community should not be able to see the 'Add news'.
     When I am logged in as "Cheetah"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the homepage of the "Justice League" community
     Then I should not see the link "Add news"
     # Owners should be able to add news.
     When I am logged in as "Superman"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the homepage of the "Justice League" community
     Then I should see the link "Add news"
     # Facilitators should be able to add news.
     When I am logged in as "Hawkgirl"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the homepage of the "Justice League" community
     Then I should see the link "Add news"
     # A normal member should be able to add news.
     When I am logged in as "Eagle"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the homepage of the "Justice League" community
     Then I should see the link "Add news"
 
   @terms
-  Scenario: Add news as a member to a post-moderated collection.
+  Scenario: Add news as a member to a post-moderated community.
     # Add news as a member.
     # There is no need to check for a facilitator because when he creates news,
     # he does it as a member. The transitions are the same for post moderated
-    # collections in terms of news creation.
+    # communities in terms of news creation.
     When I am logged in as "Eagle"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the homepage of the "Justice League" community
     And I click "Add news"
     Then I should see the heading "Add news"
     And the following fields should be present "Headline, Short title, Logo, Content, Topic, Keywords, Geographical coverage"
@@ -158,7 +158,7 @@ Feature: News moderation.
     And I select "Employment and Support Allowance" from "Topic"
     And I press "Save as draft"
     # Check reference to news page.
-    Then I should see the success message 'News Eagle joins the JL has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    Then I should see the success message 'News Eagle joins the JL has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Community it was created in.'
     And the "Eagle joins the JL" news content should not be published
     # Test a transition change.
     When I go to the "Eagle joins the JL" news
@@ -175,10 +175,10 @@ Feature: News moderation.
     Then I should see the link "Eagle joins the JL"
 
   @terms
-  Scenario: Add news as a member to a pre-moderated collection and get it validated by a facilitator.
+  Scenario: Add news as a member to a pre-moderated community and get it validated by a facilitator.
     # Add news as a member.
     When I am logged in as "Cheetah"
-    And I go to the homepage of the "Legion of Doom" collection
+    And I go to the homepage of the "Legion of Doom" community
     And I click "Add news"
     And the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request changes, Request deletion, Preview"
@@ -193,7 +193,7 @@ Feature: News moderation.
     Then I should not see the success message "News <em>Cheetah kills WonderWoman</em> has been created."
     And I should see the heading "Cheetah kills WonderWoman"
     And the "Cheetah kills WonderWoman" news content should not be published
-    And I should see the text "Collection"
+    And I should see the text "Community"
     And I should see the text "Legion of Doom"
     When I go to the "Cheetah kills WonderWoman" news
     Then I should see the link "Edit"
@@ -270,7 +270,7 @@ Feature: News moderation.
       | Metallo  | Stealing complete             | Propose                                 | Save as draft, Request deletion, Preview                           |
       | Metallo  | Kill the sun                  | Reject deletion                         | Save as draft, Propose, Request changes, Request deletion, Preview |
 
-  Scenario Outline: Facilitators cannot view unpublished content of another collection.
+  Scenario Outline: Facilitators cannot view unpublished content of another community.
     Given I am logged in as "<user>"
     And I go to the "<title>" news
     Then I should see the heading "Access denied"
@@ -331,7 +331,7 @@ Feature: News moderation.
   @terms
   Scenario: Check message draft url when click in Title.
     When I am logged in as "Eagle"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the homepage of the "Justice League" community
     And I click "Add news"
     Then I should see the heading "Add news"
     When I fill in the following:
@@ -340,14 +340,14 @@ Feature: News moderation.
       | Content     | Specialized in close combat training |
     And I select "Employment and Support Allowance" from "Topic"
     And I press "Save as draft"
-    Then I should see the success message 'News Whale joins the JL has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    Then I should see the success message 'News Whale joins the JL has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Community it was created in.'
     And I click "Whale joins the JL"
     Then I should see the text "Specialized in close combat training"
 
   @terms
   Scenario: Check news when click in My account page.
     When I am logged in as "Eagle"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the homepage of the "Justice League" community
     And I click "Add news"
     Then I should see the heading "Add news"
     When I fill in the following:
@@ -356,6 +356,6 @@ Feature: News moderation.
       | Content     | Specialized in close combat training |
     And I select "Employment and Support Allowance" from "Topic"
     And I press "Save as draft"
-    Then I should see the success message 'News Eagle joins the CE has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    Then I should see the success message 'News Eagle joins the CE has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Community it was created in.'
     And I click "My account page"
     Then I should see the heading "Eagle joins the CE"

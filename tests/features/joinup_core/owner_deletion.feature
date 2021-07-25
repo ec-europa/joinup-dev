@@ -1,5 +1,5 @@
 @api @group-b
-Feature: Deletion of collection and solution owners
+Feature: Deletion of community and solution owners
   As a site owner
   In order to avoid my groups becoming orphaned
   I should be able to prevent moderators from deleting all owners of a group.
@@ -53,5 +53,5 @@ Feature: Deletion of collection and solution owners
 
     Examples:
       | type       |
-      | collection |
+      | community |
       | solution   |

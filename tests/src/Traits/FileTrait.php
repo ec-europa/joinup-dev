@@ -43,7 +43,7 @@ trait FileTrait {
       throw new \Exception("File '$filename' was not found in file path '$files_path'.");
     }
     // Copy the file into the public files folder and turn it into a File
-    // entity before linking it to the collection.
+    // entity before linking it to the community.
     $uri = 'public://' . $filename;
     $destination = \Drupal::service('file_system')->copy($path, $uri);
     $file = File::create(['uri' => $destination, 'filename' => $filename]);
@@ -99,7 +99,7 @@ trait FileTrait {
    * @AfterScenario @api
    */
   public function cleanFiles() {
-    // Remove the image entities that were attached to the collections.
+    // Remove the image entities that were attached to the communities.
     foreach ($this->files as $file) {
       $file->delete();
     }

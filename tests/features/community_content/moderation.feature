@@ -5,7 +5,7 @@ Feature: Moderate community content
   I need to be able to see a list of content that requires moderation
 
   Scenario: Content moderation overview
-    Given the following collection:
+    Given the following community:
       | title            | Black hole research |
       | state            | validated           |
       | content creation | members             |
@@ -19,8 +19,8 @@ Feature: Moderate community content
 
     # Before adding content, check that the 'empty message' is displayed on the
     # content moderation overview.
-    When I am logged in as a facilitator of the "Black hole research" collection
-    And I go to the homepage of the "Black hole research" collection
+    When I am logged in as a facilitator of the "Black hole research" community
+    And I go to the homepage of the "Black hole research" community
     # Contextual links should not be shown in the group header. All contextual
     # actions are instead handled through the "Entity actions". Since both are
     # themed similarly (as a "three dot menu") it is too confusing to have both
@@ -31,9 +31,9 @@ Feature: Moderate community content
     And I should see the text "Nothing to moderate. Enjoy your day!"
 
     # Add community content of all possible types in all possible states, to
-    # both the collection and solution.
+    # both the community and solution.
     Given discussion content:
-      | title                         | body                 | collection          | solution              | state        | author         |
+      | title                         | body                 | community          | solution              | state        | author         |
       | The information paradox       | Info Paradox         | Black hole research |                       | needs update | Marco Farfarer |
       | Black-body spectrum radiation | Hawking radiation    | Black hole research |                       | proposed     | Marco Farfarer |
       | The holographic principle     | String theory        | Black hole research |                       | validated    | Marco Farfarer |
@@ -43,7 +43,7 @@ Feature: Moderate community content
       | Stellar flares                | Dim red dwarfs       |                     | Survey For Supernovae | validated    | Marco Farfarer |
       | Upgrading CCD cameras         | Liquid cooled        |                     | Survey For Supernovae | archived     | Marco Farfarer |
     And document content:
-      | title                         | body                          | collection          | solution              | state            |
+      | title                         | body                          | community          | solution              | state            |
       | A multiwavelength study       | Optical and infrared          | Black hole research |                       | draft            |
       | X-Ray Transient V616          | Weak ¹²CO absorption          | Black hole research |                       | needs update     |
       | K-band spectroscopy           | Small amount of flux          | Black hole research |                       | proposed         |
@@ -55,7 +55,7 @@ Feature: Moderate community content
       | J-band light curves           | Wilson-Devinney modeling      |                     | Survey For Supernovae | validated        |
       | Physics of the Neupert effect | Observed temporal correlation |                     | Survey For Supernovae | deletion request |
     And event content:
-      | title                                   | body                         | collection          | solution              | state            |
+      | title                                   | body                         | community          | solution              | state            |
       | Thick-target collisional bremsstrahlung | Chromospheric evaporation    | Black hole research |                       | draft            |
       | Conductive cooling losses               | Single-loop geometry         | Black hole research |                       | needs update     |
       | Source of SXR plasma supply and heating | Fast electrons are not       | Black hole research |                       | proposed         |
@@ -67,7 +67,7 @@ Feature: Moderate community content
       | Evolution of dust-to-metals ratio       | Dust at high redshift        |                     | Survey For Supernovae | validated        |
       | Total V-band extinction                 | Fitting the afterglow SED    |                     | Survey For Supernovae | deletion request |
     And news content:
-      | title                         | body                        | collection          | solution              | state            |
+      | title                         | body                        | community          | solution              | state            |
       | Magnetosphere boundary        | Gas shock                   | Black hole research |                       | draft            |
       | Ambient magnetized medium     | Dust depletion level        | Black hole research |                       | needs update     |
       | Stellar wind charged particle | Follow spiral paths         | Black hole research |                       | proposed         |
@@ -79,7 +79,7 @@ Feature: Moderate community content
       | H-rich Wolf-Rayet star        | Polarimetric analysis       |                     | Survey For Supernovae | validated        |
       | Quasi-homogeneous evolution   | Mass-transfer was avoided   |                     | Survey For Supernovae | deletion request |
 
-    # Check if all content that requires moderation shows up for the collection.
+    # Check if all content that requires moderation shows up for the community.
     When I reload the page
     Then I should see the following headings:
       | Black-body spectrum radiation           |
@@ -179,7 +179,7 @@ Feature: Moderate community content
     # Approve the content, and check that it no longer shows up in the moderation overview.
     When I press "Publish"
     Then I should see the success message "Discussion Black-body spectrum radiation has been updated."
-    When I go to the homepage of the "Black hole research" collection
+    When I go to the homepage of the "Black hole research" community
     And I click "Moderate content" in the "Entity actions" region
     Then I should see the heading "Content moderation"
     And I should not see the text "Black-body spectrum radiation"
@@ -307,28 +307,28 @@ Feature: Moderate community content
   @javascript
   Scenario: Filtering the content moderation overview
 
-    Given the following collection:
+    Given the following community:
       | title | Neutron stars |
       | state | validated     |
 
     And discussion content:
-      | title                       | body                  | collection    | state    |
+      | title                       | body                  | community    | state    |
       | Rotation-powered pulsations | Millisecond pulsars   | Neutron stars | proposed |
       | The Recycling concept       | An epoch of accretion | Neutron stars | proposed |
     And document content:
-      | title          | body                          | collection    | state            |
+      | title          | body                          | community    | state            |
       | Donor star     | Spun up to millisecond period | Neutron stars | proposed         |
       | High frequency | Slow 1.2 second spin          | Neutron stars | deletion request |
       | Cluster        | Eddington luminosity          | Neutron stars | deletion request |
     And event content:
-      | title      | body        | collection    | state    |
+      | title      | body        | community    | state    |
       | Accelerate | Wide binary | Neutron stars | proposed |
     And news content:
-      | title                   | body                             | collection    | state            |
+      | title                   | body                             | community    | state            |
       | Metal-rich star cluster | Standard pulsar recycling theory | Neutron stars | deletion request |
 
-    When I am logged in as a facilitator of the "Neutron stars" collection
-    And I go to the homepage of the "Neutron stars" collection
+    When I am logged in as a facilitator of the "Neutron stars" community
+    And I go to the homepage of the "Neutron stars" community
     And I open the header local tasks menu
     And I click "Moderate content" in the "Entity actions" region
     Then I should see the heading "Content moderation"
@@ -381,18 +381,18 @@ Feature: Moderate community content
 
     Given user:
       | Username | leo |
-    And the following collection:
+    And the following community:
       | title      | Black hole research |
       | state      | validated           |
       | moderation | yes                 |
-    And the following collection user membership:
-      | collection          | user |
+    And the following community user membership:
+      | community          | user |
       | Black hole research | leo  |
 
     Given I am logged in as "leo"
 
     # Test event.
-    And I go to the homepage of the "Black hole research" collection
+    And I go to the homepage of the "Black hole research" community
     When I click "Add event" in the plus button menu
     And I fill in the following:
       | Title            | Alice in Wonderland |
@@ -411,7 +411,7 @@ Feature: Moderate community content
     And I should see the heading "Edit Event Alice in Wonderland"
     And I should see the button "Upload"
     # Test news.
-    And I go to the homepage of the "Black hole research" collection
+    And I go to the homepage of the "Black hole research" community
     When I click "Add news" in the plus button menu
     And I fill in the following:
       | Short title | Declared the ultimate metal                                                                   |

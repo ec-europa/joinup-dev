@@ -115,29 +115,29 @@ Feature: User profile
       | Anise Edwardson   | anise.edwardson@example.com   |            |             |
       | Jayson Granger    | jayson.granger@example.com    |            |             |
       | Clarette Fairburn | clarette.fairburn@example.com | Clarette   | Fairburn    |
-    And the following collections:
+    And the following communities:
       | title                 | description                           | logo     | banner     | state     | creation date    |
       | Botanic E.D.E.N.      | European Deep Earth Nurturing project | logo.png | banner.jpg | validated | 2017-02-23 10:00 |
       | Ethic flower handling | Because even flowers have feelings.   | logo.png | banner.jpg | validated | 2017-02-23 12:00 |
     And the following solutions:
-      | title              | collection            | description                                     | logo     | banner     | state     | creation date    |
+      | title              | community            | description                                     | logo     | banner     | state     | creation date    |
       | E.C.O. fertilizers | Botanic E.D.E.N.      | Ecologic cool organic fertilizers production.   | logo.png | banner.jpg | validated | 2017-02-23 13:00 |
       | SOUND project      | Ethic flower handling | Music playlist for growing flowers with rhythm. | logo.png | banner.jpg | validated | 2017-02-23 14:01 |
     And discussion content:
-      | title                          | author          | collection            | state     | created          |
+      | title                          | author          | community            | state     | created          |
       | Repopulating blue iris         | Corwin Robert   | Botanic E.D.E.N.      | validated | 2018-06-15 16:00 |
       | Best topsoil for plant comfort | Anise Edwardson | Ethic flower handling | validated | 2018-09-01 19:30 |
     And document content:
-      | title                    | author        | collection       | state     | created          |
+      | title                    | author        | community       | state     | created          |
       | Cherry blossoms schedule | Corwin Robert | Botanic E.D.E.N. | validated | 2017-05-13 16:00 |
     And event content:
-      | title                | author        | collection       | state     | created          |
+      | title                | author        | community       | state     | created          |
       | Spring blossom party | Corwin Robert | Botanic E.D.E.N. | validated | 2018-06-27 18:00 |
     And news content:
-      | title                         | author        | collection       | state     | created         |
+      | title                         | author        | community       | state     | created         |
       | Discovered new flower species | Corwin Robert | Botanic E.D.E.N. | validated | 2018-11-15 9:01 |
     And video content:
-      | title                 | author        | collection       | state     | created         |
+      | title                 | author        | community       | state     | created         |
       | Planting a tree howto | Corwin Robert | Botanic E.D.E.N. | validated | 2017-10-30 9:30 |
     # Contact information and owner tiles should never be shown.
     And the following contact:
@@ -148,8 +148,8 @@ Feature: User profile
     And the following owner:
       | type                  | name                 | author        |
       | Private Individual(s) | Somboon De Laurentis | Corwin Robert |
-    And the following collection user membership:
-      | user          | collection       |
+    And the following community user membership:
+      | user          | community       |
       | Corwin Robert | Botanic E.D.E.N. |
     And the following solution user membership:
       | user          | solution      |
@@ -198,15 +198,15 @@ Feature: User profile
     And the HTML title of the page should be delwin999
     And I should not see the "Page title" region
 
-  Scenario: The user profile page is updated when the user joins or leaves a collection
+  Scenario: The user profile page is updated when the user joins or leaves a community
     Given users:
       | Username      | E-mail                           |
       | Korben Dallas | k.dallas@cabs.services.zorg.corp |
-    And collection:
+    And community:
       | title | Federated Army Veterans |
       | state | validated               |
     # Visit the user profile page for the first time. It should not yet be
-    # cached and we should not see anything about the collection since we are
+    # cached and we should not see anything about the community since we are
     # not a member.
     When I am an anonymous user
     And I go to the public profile of "Korben Dallas"
@@ -217,11 +217,11 @@ Feature: User profile
     When I reload the page
     Then the page should be cached
 
-    # Join the collection. Now the cache of the user profile page should be
-    # cleared and the collection that was joined should show up.
+    # Join the community. Now the cache of the user profile page should be
+    # cleared and the community that was joined should show up.
     Given I am logged in as "Korben Dallas"
-    And I go to the homepage of the "Federated Army Veterans" collection
-    And I press the "Join this collection" button
+    And I go to the homepage of the "Federated Army Veterans" community
+    And I press the "Join this community" button
 
     When I am an anonymous user
     And I go to the public profile of "Korben Dallas"
@@ -232,11 +232,11 @@ Feature: User profile
     When I reload the page
     Then the page should be cached
 
-    # Leave the collection. Now the cache of the user profile page should be
-    # cleared and the collection that was left should no longer show up.
+    # Leave the community. Now the cache of the user profile page should be
+    # cleared and the community that was left should no longer show up.
     Given I am logged in as "Korben Dallas"
-    And I go to the homepage of the "Federated Army Veterans" collection
-    And I click "Leave this collection"
+    And I go to the homepage of the "Federated Army Veterans" community
+    And I click "Leave this community"
     And I press the "Confirm" button
 
     When I am an anonymous user

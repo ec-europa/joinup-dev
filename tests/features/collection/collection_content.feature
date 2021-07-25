@@ -1,32 +1,32 @@
 @api @terms @group-a
-Feature: Collection content
+Feature: Community content
   As a user of the website
-  I want to access the content of a collection
+  I want to access the content of a community
   So that I can find the information I'm looking for.
 
   Background:
-    Given the following collections:
+    Given the following communities:
       | title                     | state     |
-      | Turin Egyptian Collection | validated |
+      | Turin Egyptian Community | validated |
     And the following solution:
       | title      | Tomb Of Unknown Restoration |
-      | collection | Turin Egyptian Collection   |
+      | community | Turin Egyptian Community   |
       | state      | validated                   |
     And discussion content:
-      | title                                 | body                                                                    | state     | collection                |
-      | Bigger than Egyptian Museum of Cairo? | <p><a href="#link">Link to the museum</a> web<strong>site</strong>.</p> | validated | Turin Egyptian Collection |
+      | title                                 | body                                                                    | state     | community                |
+      | Bigger than Egyptian Museum of Cairo? | <p><a href="#link">Link to the museum</a> web<strong>site</strong>.</p> | validated | Turin Egyptian Community |
     And document content:
-      | title           | body                                             | state     | collection                |
-      | Upper Floor Map | <p>A sample <a href="#link">map</a> example.</p> | validated | Turin Egyptian Collection |
+      | title           | body                                             | state     | community                |
+      | Upper Floor Map | <p>A sample <a href="#link">map</a> example.</p> | validated | Turin Egyptian Community |
     And event content:
-      | title                                     | state     | collection                |
-      | Opening of the Hellenistic Period Section | validated | Turin Egyptian Collection |
+      | title                                     | state     | community                |
+      | Opening of the Hellenistic Period Section | validated | Turin Egyptian Community |
     And news content:
-      | title                          | body                                                           | state     | collection                |
-      | Turin Egyptian Museum Reopened | <p>After <em>more than</em> <a href="#link">two years</a>.</p> | validated | Turin Egyptian Collection |
+      | title                          | body                                                           | state     | community                |
+      | Turin Egyptian Museum Reopened | <p>After <em>more than</em> <a href="#link">two years</a>.</p> | validated | Turin Egyptian Community |
     And video content:
-      | title                                  | state     | collection                |
-      | Watch the mummy conservation technique | validated | Turin Egyptian Collection |
+      | title                                  | state     | community                |
+      | Watch the mummy conservation technique | validated | Turin Egyptian Community |
 
   Scenario: Publishing new solutions should result in counters being properly updated.
     Given owner:
@@ -35,7 +35,7 @@ Feature: Collection content
 
     # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4436
     Given I am logged in as a moderator
-    And I go to the homepage of the "Turin Egyptian Collection" collection
+    And I go to the homepage of the "Turin Egyptian Community" community
 
     # The solution counters do not include the unpublished solutions.
     Then I should see the link "Solution (1)"
@@ -46,7 +46,7 @@ Feature: Collection content
     And I press "Yes"
     And I fill in the following:
       | Title                 | Solution from draft to validated                                    |
-      | Description           | Testing that publishing a solution, updates the collection content. |
+      | Description           | Testing that publishing a solution, updates the community content. |
       | Geographical coverage | Switzerland                                                         |
       | Name                  | Costas Papazoglou                                                   |
       | E-mail address        | CostasPapazoglou@example.com                                        |
@@ -58,7 +58,7 @@ Feature: Collection content
     And I press "Publish"
     Then I should see the heading "Solution from draft to validated"
 
-    When I go to the homepage of the "Turin Egyptian Collection" collection
+    When I go to the homepage of the "Turin Egyptian Community" community
     # Since there are 2 solutions, the link moved in first since it is the type of content with most items.
     # When the facet tab is displayed, the text is "@count Solutions", while if it is in the "More" dropdown, it shows
     # as "Solutions (@count)".
@@ -73,7 +73,7 @@ Feature: Collection content
     And I press "Save as draft"
     Then I should see the heading "Solution from draft to validated"
 
-    When I go to the homepage of the "Turin Egyptian Collection" collection
+    When I go to the homepage of the "Turin Egyptian Community" community
     Then I see the text "2 Solution" in the "Header" region
     And I should see the link "2 Solutions"
     Then I delete the "Solution from draft to validated" solution
@@ -81,7 +81,7 @@ Feature: Collection content
 
   @clearStaticCache
   Scenario: Content type facet labels should show the plural form when multiple results are available.
-    Given I go to the homepage of the "Turin Egyptian Collection" collection
+    Given I go to the homepage of the "Turin Egyptian Community" community
     Then the "Discussion" content tab is displayed
     And the "Document" content tab is displayed
     And the "Event" content tab is displayed
@@ -91,23 +91,23 @@ Feature: Collection content
 
     Given the following solution:
       | title      | Protecting Artifacts      |
-      | collection | Turin Egyptian Collection |
+      | community | Turin Egyptian Community |
       | state      | validated                 |
     And discussion content:
-      | title                              | state     | collection                |
-      | Is the entrance free for children? | validated | Turin Egyptian Collection |
+      | title                              | state     | community                |
+      | Is the entrance free for children? | validated | Turin Egyptian Community |
     And document content:
-      | title                   | state     | collection                |
-      | Fire Safety Regulations | validated | Turin Egyptian Collection |
+      | title                   | state     | community                |
+      | Fire Safety Regulations | validated | Turin Egyptian Community |
     And event content:
-      | title                        | state     | collection                |
-      | Cleopatra Jewelry Exhibition | validated | Turin Egyptian Collection |
+      | title                        | state     | community                |
+      | Cleopatra Jewelry Exhibition | validated | Turin Egyptian Community |
     And news content:
-      | title                                  | state     | collection                |
-      | Museum Temporary Closed Next Wednesday | validated | Turin Egyptian Collection |
+      | title                                  | state     | community                |
+      | Museum Temporary Closed Next Wednesday | validated | Turin Egyptian Community |
     And video content:
-      | title                              | state     | collection                |
-      | Understand the restoration process | validated | Turin Egyptian Collection |
+      | title                              | state     | community                |
+      | Understand the restoration process | validated | Turin Egyptian Community |
 
     Given I reload the page
     Then the "Discussions" content tab is displayed
@@ -118,7 +118,7 @@ Feature: Collection content
     And I should see the link "Videos (2)"
 
   Scenario: Links and markup should be stripped from tiles abstract.
-    Given I go to the homepage of the "Turin Egyptian Collection" collection
+    Given I go to the homepage of the "Turin Egyptian Community" community
     # Check the discussion tile.
     Then I should see the "Bigger than Egyptian Museum of Cairo?" tile
     # Check into the HTML so that we assert that actually the HTML has been stripped.

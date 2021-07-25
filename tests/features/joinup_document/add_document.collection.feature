@@ -1,36 +1,36 @@
 @api @group-b
 Feature: "Add document" visibility options.
   In order to manage documents
-  As a collection member
+  As a community member
   I need to be able to add "Document" content through UI.
 
   Scenario: "Add document" button should not be shown to normal members, authenticated users and anonymous users.
-    Given the following collections:
+    Given the following communities:
       | title                   | logo     | banner     | state     |
       | Ring of Truth           | logo.png | banner.jpg | validated |
       | The Storms of the Waves | logo.png | banner.jpg | validated |
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Ring of Truth" collection
+    And I go to the homepage of the "Ring of Truth" community
     Then I should not see the link "Add document"
 
     When I am an anonymous user
-    And I go to the homepage of the "Ring of Truth" collection
+    And I go to the homepage of the "Ring of Truth" community
     Then I should not see the link "Add document"
 
-    When I am logged in as a member of the "Ring of Truth" collection
-    And I go to the homepage of the "Ring of Truth" collection
+    When I am logged in as a member of the "Ring of Truth" community
+    And I go to the homepage of the "Ring of Truth" community
     Then I should see the link "Add document"
 
-    When I am logged in as a "facilitator" of the "Ring of Truth" collection
-    And I go to the homepage of the "Ring of Truth" collection
+    When I am logged in as a "facilitator" of the "Ring of Truth" community
+    And I go to the homepage of the "Ring of Truth" community
     Then I should see the link "Add document"
-    # I should not be able to add a document to a different collection
-    When I go to the homepage of the "The Storms of the Waves" collection
+    # I should not be able to add a document to a different community
+    When I go to the homepage of the "The Storms of the Waves" community
     Then I should not see the link "Add document"
 
     When I am logged in as a "moderator"
-    And I go to the homepage of the "Ring of Truth" collection
+    And I go to the homepage of the "Ring of Truth" community
     Then I should see the link "Add document"
 
   @terms @uploadFiles:test.zip
@@ -40,16 +40,16 @@ Feature: "Add document" visibility options.
       | First name  | Eirik             |
       | Family name | Andries           |
       | E-mail      | eandr@example.com |
-    And collections:
+    And communities:
       | title                | logo     | banner     | state     |
       | Hunter in the Swords | logo.png | banner.jpg | validated |
-    And the following collection user membership:
-      | collection           | user      | roles       |
+    And the following community user membership:
+      | community           | user      | roles       |
       | Hunter in the Swords | napcheese | facilitator |
-    # Log in as a facilitator of the "Hunter in the Swords" collection.
+    # Log in as a facilitator of the "Hunter in the Swords" community.
     Given I am logged in as napcheese
 
-    When I go to the homepage of the "Hunter in the Swords" collection
+    When I go to the homepage of the "Hunter in the Swords" community
     And I click "Add document" in the plus button menu
     Then I should see the heading "Add document"
     And the following fields should be present "Title, Short title, Type, Topic, Keywords, Geographical coverage, Licence, Description, Upload a new file or enter a URL"
@@ -75,17 +75,17 @@ Feature: "Add document" visibility options.
     And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
     Then I should see the heading "An amazing document"
-    And I should see the success message 'Document An amazing document has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    And I should see the success message 'Document An amazing document has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Community it was created in.'
     And I should see the link "test.zip"
     # Check that the full author name is shown instead of the username.
     And I should see the link "Eirik Andries" in the "Content" region
     But I should not see the link "napcheese" in the "Content" region
-    # Check that the link to the document is visible on the collection page.
-    When I go to the homepage of the "Hunter in the Swords" collection
+    # Check that the link to the document is visible on the community page.
+    When I go to the homepage of the "Hunter in the Swords" community
     Then I should see the link "An amazing document"
 
     # Check that the publication date field is prefilled with the current time.
-    When I go to the homepage of the "Hunter in the Swords" collection
+    When I go to the homepage of the "Hunter in the Swords" community
     And I click "Add document" in the plus button menu
     Then I see "Publication date" filled with the current time
 
@@ -93,7 +93,7 @@ Feature: "Add document" visibility options.
   # revision is created for a document that has a remote file attached.
   # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3670
   Scenario: Remote URLs can be used in documents.
-    Given the following collection:
+    Given the following community:
       | title | Strong Lasers |
       | state | validated     |
     And licence:
@@ -101,10 +101,10 @@ Feature: "Add document" visibility options.
       | description | CC0 is a legal tool for waiving as many rights as legally possible. |
       | type        | Public domain                                                       |
     And document content:
-      | title       | document type | short title | file type | file                   | body                 | licence               | state     | collection    |
+      | title       | document type | short title | file type | file                   | body                 | licence               | state     | community    |
       | Laser types | document      | L-Types     | remote    | http://www.example.com | List of laser types. | Creative Commons Zero | validated | Strong Lasers |
 
-    When I am logged in as a facilitator of the "Strong Lasers" collection
+    When I am logged in as a facilitator of the "Strong Lasers" community
     And I go to the "Laser types" document
     And I click "Edit" in the "Entity actions" region
     And I press "Update"

@@ -76,7 +76,7 @@ trait OgTrait {
   protected function convertOgRoleNamesToIds(array $roles, EntityInterface $group): array {
     $role_prefix = $group->getEntityTypeId() . '-' . $group->bundle() . '-';
     foreach ($roles as $key => $role) {
-      // What is called a "collection owner" or a "solution owner" in Joinup, is
+      // What is called a "community owner" or a "solution owner" in Joinup, is
       // known as an "administrator" in OG.
       $role = $role === 'owner' ? 'administrator' : $role;
       $roles[$key] = $role_prefix . $role;
@@ -236,8 +236,8 @@ trait OgTrait {
       $role_names = explode(',', $values['roles']);
       $role_names = array_map('trim', $role_names);
       // Every owner is also a facilitator. In Joinup the facilitator role is
-      // assigned to the owner when they create the collection. Since in this
-      // step the collections are already created, mimick this behaviour by
+      // assigned to the owner when they create the community. Since in this
+      // step the communities are already created, mimick this behaviour by
       // making sure every owner also has the 'facilitator' role.
       if (in_array('owner', $role_names) && !in_array('facilitator', $role_names)) {
         $role_names[] = 'facilitator';

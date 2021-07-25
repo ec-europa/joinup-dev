@@ -15,16 +15,16 @@ Feature: Subscribers report
       | dope     |       | Dope       | Ice         |
       | young    |       | Young      | G           |
       | lil      |       | Lil        | Mama        |
-    And collections:
+    And communities:
       | title             | state     |
       | Marine ecosystems | validated |
       | Plant science     | validated |
     And solutions:
-      | title                 | state     | collection        |
+      | title                 | state     | community        |
       | Seagrass meadows      | validated | Marine ecosystems |
       | Intertidal seagrasses | validated | Plant science     |
-    And collection user memberships:
-      | collection        | user    | roles       |
+    And community user memberships:
+      | community        | user    | roles       |
       | Marine ecosystems | busta   | facilitator |
       | Marine ecosystems | method  |             |
       | Marine ecosystems | biz     |             |
@@ -51,8 +51,8 @@ Feature: Subscribers report
       | Intertidal seagrasses | dope    |             |
       | Intertidal seagrasses | young   |             |
       | Intertidal seagrasses | lil     |             |
-    And collection content subscriptions:
-      | collection        | user    | subscriptions                   |
+    And community content subscriptions:
+      | community        | user    | subscriptions                   |
       | Marine ecosystems | busta   | document, news, solution        |
       | Marine ecosystems | method  | document, solution              |
       | Marine ecosystems | biz     | discussion, event               |
@@ -113,11 +113,11 @@ Feature: Subscribers report
     And the "subscribers report" table should contain:
       | Group                 | Type       | Subscribers | Solution | Discussion | Document | Event | News |
       | Intertidal seagrasses | solution   | 6           | 0        | 3          | 2        | 4     | 4    |
-      | Marine ecosystems     | collection | 6           | 4        | 2          | 5        | 3     | 2    |
-      | Plant science         | collection | 6           | 0        | 3          | 4        | 5     | 2    |
+      | Marine ecosystems     | community | 6           | 4        | 2          | 5        | 3     | 2    |
+      | Plant science         | community | 6           | 0        | 3          | 4        | 5     | 2    |
       | Seagrass meadows      | solution   | 6           | 0        | 4          | 5        | 5     | 1    |
     When I go to the subscribers report for "Marine ecosystems"
-    # Check that the collection header is shown.
+    # Check that the community header is shown.
     Then I should see the heading "Marine ecosystems" in the "Header" region
     And I should see the heading "Subscribers report" in the "Page title"
     And the "subscribers report" table should contain:

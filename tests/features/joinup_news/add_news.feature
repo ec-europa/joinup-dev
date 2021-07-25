@@ -5,13 +5,13 @@ Feature: Creation of news through the UI.
   I need to be able to create news through the UI.
 
   @uploadFiles:logo.png,test.zip
-  Scenario: Share the news in other collections/solutions.
+  Scenario: Share the news in other communities/solutions.
     Given user:
       | Username    | isotopedancer      |
       | First name  | Milana             |
       | Family name | Laninga            |
       | E-mail      | milana@example.com |
-    And the following collections:
+    And the following communities:
       | title            | description                                 | logo     | banner     | state     |
       | Metal fans       | "Share the love for nickel, tungsten & co." | logo.png | banner.jpg | validated |
       | Hardcore diggers | We dig up stuff hidden beneath the earth.   | logo.png | banner.jpg | validated |
@@ -25,8 +25,8 @@ Feature: Creation of news through the UI.
       | solution                  | user          | roles       |
       | Density catalogue project | isotopedancer | facilitator |
 
-    When I am logged in as a "facilitator" of the "Metal fans" collection
-    And I go to the homepage of the "Metal fans" collection
+    When I am logged in as a "facilitator" of the "Metal fans" community
+    And I go to the homepage of the "Metal fans" community
     Then the following fields should not be present "Shared on, Motivation"
 
     # Log in as a facilitator of the "Density catalogue project" solution
@@ -93,11 +93,11 @@ Feature: Creation of news through the UI.
 
   @javascript @generateMedia @uploadFiles:logo.png
   Scenario: Test the image library widget.
-    Given the following collection:
+    Given the following community:
       | title | Stream of Dreams |
       | state | validated        |
     And news content:
-      | title             | collection       | headline      | body      | state     |
+      | title             | community       | headline      | body      | state     |
       | The Great Opening | Stream of Dreams | Here we go... | It opens! | validated |
 
     Given I am logged in as a moderator

@@ -1,7 +1,7 @@
 @api @terms @group-b
 Feature: Group member permissions table
   In order to get an overview of which actions I can take in a group
-  As a member of a collection or solution
+  As a member of a community or solution
   I need to be able to see which permissions I have
 
   Scenario:
@@ -14,7 +14,7 @@ Feature: Group member permissions table
       | Dr. John Hicks   |
       | Hex              |
       | Mustrum Ridcully |
-    Given the following collections:
+    Given the following communities:
       | title                                       | state     | content creation         | moderation |
       | Applied astrology                           | validated | facilitators and authors | yes        |
       | Illiberal studies                           | validated | facilitators and authors | no         |
@@ -28,8 +28,8 @@ Feature: Group member permissions table
       | Extreme horticulture          | validated | facilitators and authors | no         |
       | Prehumous morbid bibliomancy  | validated | registered users         | yes        |
       | Posthumous morbid bibliomancy | validated | registered users         | no         |
-    And the following collection user memberships:
-      | collection                                  | user             | roles       |
+    And the following community user memberships:
+      | community                                  | user             | roles       |
       | Approximate accuracy                        | Horace Worblehat |             |
       | Dust, miscellaneous particles and filaments | Ponder Stibbons  |             |
       | Creative uncertainty                        | Henry Porter     |             |
@@ -49,7 +49,7 @@ Feature: Group member permissions table
       | Prehumous morbid bibliomancy  | Mustrum Ridcully | facilitator |
       | Posthumous morbid bibliomancy | Mustrum Ridcully | facilitator |
 
-    # Collection. Content creation: authors and facilitators. Moderated.
+    # Community. Content creation: authors and facilitators. Moderated.
     And I am on the members page of "Applied astrology"
     When I click "Member permissions"
     Then the "member permissions" table should be:
@@ -69,8 +69,8 @@ Feature: Group member permissions table
     # displayed in the table. Only the most common case ("member") is checked.
     # This is already covered in other scenarios, but having a check here will
     # alert us to update the tables if permissions change.
-    Given I am logged in as a member of the "Applied astrology" collection
-    When I go to the homepage of the "Applied astrology" collection
+    Given I am logged in as a member of the "Applied astrology" community
+    When I go to the homepage of the "Applied astrology" community
     # Can not start a discussion.
     Then I should not see the link "Add discussion"
     # Can not propose or publish content.
@@ -78,12 +78,12 @@ Feature: Group member permissions table
     And I should not see the link "Add event"
     And I should not see the link "Add news"
     Given event content:
-      | title             | state | collection        | author           |
+      | title             | state | community        | author           |
       | The Poor Scholars | draft | Applied astrology | Mustrum Ridcully |
     When I go to the content page of the type event with the title "The Poor Scholars"
     Then I should get an access denied error
 
-    # Collection. Content creation: authors and facilitators. Not moderated.
+    # Community. Content creation: authors and facilitators. Not moderated.
     And I am on the members page of "Illiberal studies"
     When I click "Member permissions"
     Then the "member permissions" table should be:
@@ -99,8 +99,8 @@ Feature: Group member permissions table
       | Delete any content                          |        |        | ✓           | ✓     |
       | Manage users                                |        |        | ✓           | ✓     |
 
-    Given I am logged in as a member of the "Illiberal studies" collection
-    When I go to the homepage of the "Illiberal studies" collection
+    Given I am logged in as a member of the "Illiberal studies" community
+    When I go to the homepage of the "Illiberal studies" community
     # Can not start a discussion.
     Then I should not see the link "Add discussion"
     # Can not propose or publish content.
@@ -108,13 +108,13 @@ Feature: Group member permissions table
     And I should not see the link "Add event"
     And I should not see the link "Add news"
     Given event content:
-      | title    | state | collection        | author           |
+      | title    | state | community        | author           |
       | Rag Week | draft | Illiberal studies | Mustrum Ridcully |
     When I go to the content page of the type event with the title "Rag Week"
     Then I should get an access denied error
 
 
-    # Collection. Content creation: members. Moderated.
+    # Community. Content creation: members. Moderated.
     Given I am on the members page of "Approximate accuracy"
     When I click "Member permissions"
     Then the "member permissions" table should be:
@@ -137,7 +137,7 @@ Feature: Group member permissions table
       | Manage users                                               |        |        | ✓           | ✓     |
 
     Given I am logged in as "Horace Worblehat"
-    When I go to the homepage of the "Approximate accuracy" collection
+    When I go to the homepage of the "Approximate accuracy" community
     # Can start a discussion.
     And I click "Add discussion"
     Then I should see the button "Publish"
@@ -152,7 +152,7 @@ Feature: Group member permissions table
     Then I should see the button "Propose"
     But I should not see the button "Publish"
     Given event content:
-      | title                          | state     | collection           | author           |
+      | title                          | state     | community           | author           |
       | Election of Boy Archchancellor | validated | Approximate accuracy | Horace Worblehat |
       | The Wizards' Excuse Me         | draft     | Approximate accuracy | Mustrum Ridcully |
     When I go to the edit form of the "Election of Boy Archchancellor" event
@@ -163,7 +163,7 @@ Feature: Group member permissions table
     When I go to the content page of the type event with the title "The Wizards' Excuse Me"
     Then I should get an access denied error
 
-    # Collection. Content creation: members. Not moderated.
+    # Community. Content creation: members. Not moderated.
     Given I am on the members page of "Dust, miscellaneous particles and filaments"
     When I click "Member permissions"
     Then the "member permissions" table should be:
@@ -180,7 +180,7 @@ Feature: Group member permissions table
       | Manage users                                |        |        | ✓           | ✓     |
 
     Given I am logged in as "Ponder Stibbons"
-    When I go to the homepage of the "Dust, miscellaneous particles and filaments" collection
+    When I go to the homepage of the "Dust, miscellaneous particles and filaments" community
     # Can start a discussion.
     And I click "Add discussion"
     Then I should see the button "Publish"
@@ -195,7 +195,7 @@ Feature: Group member permissions table
     Then I should see the button "Publish"
     But I should not see the button "Propose"
     Given event content:
-      | title                                               | state     | collection                                  | author           |
+      | title                                               | state     | community                                  | author           |
       | Beating the bounds                                  | validated | Dust, miscellaneous particles and filaments | Ponder Stibbons  |
       | Archchancellor Bowell's Remembrance's Bun and Penny | draft     | Dust, miscellaneous particles and filaments | Mustrum Ridcully |
     When I go to the edit form of the "Beating the bounds" event
@@ -206,7 +206,7 @@ Feature: Group member permissions table
     When I go to the content page of the type event with the title "Archchancellor Bowell's Remembrance's Bun and Penny"
     Then I should get an access denied error
 
-    # Collection. Content creation: any user. Moderated.
+    # Community. Content creation: any user. Moderated.
     Given I am on the members page of "Creative uncertainty"
     When I click "Member permissions"
     Then the "member permissions" table should be:
@@ -229,7 +229,7 @@ Feature: Group member permissions table
       | Manage users                                               |        |        | ✓           | ✓     |
 
     Given I am logged in as "Henry Porter"
-    When I go to the homepage of the "Creative uncertainty" collection
+    When I go to the homepage of the "Creative uncertainty" community
     # Can start a discussion.
     And I click "Add discussion"
     Then I should see the button "Publish"
@@ -244,7 +244,7 @@ Feature: Group member permissions table
     Then I should see the button "Propose"
     But I should not see the button "Publish"
     Given event content:
-      | title                       | state     | collection           | author           |
+      | title                       | state     | community           | author           |
       | The Convivium               | validated | Creative uncertainty | Henry Porter     |
       | The Hunting of the Megapode | draft     | Creative uncertainty | Mustrum Ridcully |
     When I go to the edit form of the "The Convivium" event
@@ -255,7 +255,7 @@ Feature: Group member permissions table
     When I go to the content page of the type event with the title "The Hunting of the Megapode"
     Then I should get an access denied error
 
-    # Collection. Content creation: any user. Not moderated.
+    # Community. Content creation: any user. Not moderated.
     Given I am on the members page of "Woolly thinking"
     When I click "Member permissions"
     Then the "member permissions" table should be:
@@ -272,7 +272,7 @@ Feature: Group member permissions table
       | Manage users                                |        |        | ✓           | ✓     |
 
     Given I am logged in as "Rincewind"
-    When I go to the homepage of the "Woolly thinking" collection
+    When I go to the homepage of the "Woolly thinking" community
     # Can start a discussion.
     And I click "Add discussion"
     Then I should see the button "Publish"
@@ -287,7 +287,7 @@ Feature: Group member permissions table
     Then I should see the button "Publish"
     But I should not see the button "Propose"
     Given event content:
-      | title                                     | state     | collection      | author           |
+      | title                                     | state     | community      | author           |
       | Gaudy night                               | validated | Woolly thinking | Rincewind        |
       | Archchancellor Preserved Bigger's Bequest | draft     | Woolly thinking | Mustrum Ridcully |
     When I go to the edit form of the "Gaudy night" event
@@ -441,7 +441,7 @@ Feature: Group member permissions table
     Then I should see the button "Publish"
     But I should not see the button "Propose"
     Given event content:
-      | title                         | state     | collection                    | author           |
+      | title                         | state     | community                    | author           |
       | May Morning                   | validated | Posthumous morbid bibliomancy | Hex              |
       | A veritable heyhoe-rumbledown | draft     | Posthumous morbid bibliomancy | Mustrum Ridcully |
     When I go to the edit form of the "May Morning" event
@@ -454,7 +454,7 @@ Feature: Group member permissions table
 
   # The permissions table should not be accessible for non-public groups.
   Scenario: Access the membership permissions information table
-    Given the following collections:
+    Given the following communities:
       | title                | state     |
       | Valid Bibliomancy    | validated |
       | Draft Bibliomancy    | draft     |

@@ -2,7 +2,7 @@
 Feature: Licence API
   In order to manage licences programmatically
   As a backend developer
-  I need to be able to use the Collection API
+  I need to be able to use the Community API
 
   Scenario: Programmatically create a licence
     Given the following licence:

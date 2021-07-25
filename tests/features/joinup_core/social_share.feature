@@ -5,11 +5,11 @@ Feature: Sharing content on social networks
   So that useful information has more visibility
 
   Scenario Outline: Sharing content on Facebook and Twitter.
-    Given the following collection:
+    Given the following community:
       | title | Social networks |
       | state | validated       |
     And <content type> content:
-      | title                 | collection      | state     |
+      | title                 | community      | state     |
       | Important information | Social networks | validated |
 
     When I am an anonymous user
@@ -31,11 +31,11 @@ Feature: Sharing content on social networks
       | news         |
 
   Scenario: Sharing solutions on social media.
-    Given the following collection:
+    Given the following community:
       | title | Social networks |
       | state | validated       |
     And solutions:
-      | title              | collection      | state     |
+      | title              | community      | state     |
       | Important solution | Social networks | validated |
 
     When I am logged in as a user with the "authenticated" role

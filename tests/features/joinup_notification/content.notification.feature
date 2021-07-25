@@ -11,21 +11,21 @@ Feature: Content notification system
       | Sylvester Toft | sylvester.toft@example.com |           |
       | Reed Mondy     | reed.mondy@example.com     |           |
       | Jerrard Verity | jerrard.verity@example.com | moderator |
-    And the following collection:
+    And the following community:
       | title | Communication tools |
       | state | validated           |
     And the following solution:
       | title | Smoke signals code standard |
       | state | validated                   |
-    And the following collection user membership:
-      | collection          | user           | roles |
+    And the following community user membership:
+      | community          | user           | roles |
       | Communication tools | Devyn Queshire | owner |
     And the following solution user membership:
       | solution                    | user           | roles       |
       | Smoke signals code standard | Sylvester Toft | facilitator |
       | Smoke signals code standard | Reed Mondy     | facilitator |
     And news content:
-      | title                              | headline                            | body                                 | state     | collection          |
+      | title                              | headline                            | body                                 | state     | community          |
       | Infrared long-range communications | Prototype built by a young student. | Bringing Internet access through IR. | validated | Communication tools |
     And event content:
       | title                              | short title         | body                                  | state    | solution                    | start date          | end date            |
@@ -40,10 +40,10 @@ Feature: Content notification system
     And I press "Save new draft"
     Then 1 e-mail should have been sent
     And the following email should have been sent:
-      | template  | Message to collection facilitators when a community content is updated by a moderator                         |
+      | template  | Message to community facilitators when a community content is updated by a moderator                         |
       | recipient | Devyn Queshire                                                                                                |
-      | subject   | Joinup: user Jerrard Verity updated a News of your collection                                                 |
-      | body      | Devyn Queshire, Jerrard Verity updated the News "Communication tools" in your Communication tools collection. |
+      | subject   | Joinup: user Jerrard Verity updated a News of your community                                                 |
+      | body      | Devyn Queshire, Jerrard Verity updated the News "Communication tools" in your Communication tools community. |
 
     Given all the e-mails have been sent
     When I go to the "Smoke signals pre-conference party" event
@@ -64,7 +64,7 @@ Feature: Content notification system
     And I press "Delete"
     Then 1 e-mail should have been sent
     And the following email should have been sent:
-      | template  | Message to collection facilitators when a community content is deleted by a moderator                                                    |
+      | template  | Message to community facilitators when a community content is deleted by a moderator                                                    |
       | recipient | Devyn Queshire                                                                                                                           |
       | subject   | Joinup: your news "Infrared long-range communications" was deleted                                                                       |
       | body      | Dear Devyn Queshire, your news "Infrared long-range communications" was successfully deleted. Kinds regards, The Joinup Support Team. |

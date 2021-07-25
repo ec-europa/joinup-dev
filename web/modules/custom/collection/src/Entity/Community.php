@@ -23,7 +23,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 /**
  * Entity subclass for the 'collection' bundle.
  */
-class Collection extends Rdf implements CollectionInterface {
+class Community extends Rdf implements CommunityInterface {
 
   use ArchivableEntityTrait;
   use EntityPublicationTimeFallbackTrait;
@@ -44,7 +44,7 @@ class Collection extends Rdf implements CollectionInterface {
    *
    * phpcs:disable Generic.CodeAnalysis.UselessOverridingMethod.Found
    */
-  public static function create(array $values = []): CollectionInterface {
+  public static function create(array $values = []): CommunityInterface {
     // Delegate to the parent method. This is only overridden to provide the
     // correct return type.
     return parent::create($values);

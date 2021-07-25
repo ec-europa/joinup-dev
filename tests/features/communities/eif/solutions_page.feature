@@ -7,14 +7,14 @@ Feature: As a user, visiting the EIF Toolbox page, I want to be able to filter
     Given owner:
       | name | type    |
       | ACME | Company |
-    And collection:
+    And community:
       | title | Parent    |
       | state | validated |
     And solutions:
-      | title      | eif reference                      | eif category    | collection | state     |
+      | title      | eif reference                      | eif category    | community | state     |
       | Solution 1 | Recommendation 1, Recommendation 2 | Common services | Parent     | validated |
 
-    When I go to "/collection/nifo-collection/solution/eif-toolbox/solutions"
+    When I go to "/community/nifo-community/solution/eif-toolbox/solutions"
     Then I should see the following tiles in the correct order:
       | Solution 1 |
 
@@ -28,7 +28,7 @@ Feature: As a user, visiting the EIF Toolbox page, I want to be able to filter
     And I should not see the link "Semantic assets"
 
     Given solutions:
-      | title      | eif reference    | eif category                      | collection | state     | owner |
+      | title      | eif reference    | eif category                      | community | state     | owner |
       | Solution 2 | Recommendation 4 | Common services, Assessment tools | Parent     | validated |       |
       | Solution 3 |                  |                                   | Parent     | validated | ACME  |
 
@@ -76,7 +76,7 @@ Feature: As a user, visiting the EIF Toolbox page, I want to be able to filter
     And I select "Public Policy Cycle" from "Solution type"
     And I press "Publish"
 
-    When I go to "/collection/nifo-collection/solution/eif-toolbox/solutions"
+    When I go to "/community/nifo-community/solution/eif-toolbox/solutions"
     # Updating a solution invalidates the page cache.
     Then the page should not be cached
     But I reload the page
@@ -112,7 +112,7 @@ Feature: As a user, visiting the EIF Toolbox page, I want to be able to filter
 
     # Test the pager.
     Given solutions:
-      | title       | eif reference    | eif category    | collection | state     |
+      | title       | eif reference    | eif category    | community | state     |
       | Solution 3  | Recommendation 4 | Common services | Parent     | validated |
       | Solution 4  | Recommendation 4 | Common services | Parent     | validated |
       | Solution 5  | Recommendation 4 | Common services | Parent     | validated |
@@ -156,22 +156,22 @@ Feature: As a user, visiting the EIF Toolbox page, I want to be able to filter
 
   @javascript
   Scenario: Test the recommendation selector.
-    When I go to "/collection/nifo-collection/solution/eif-toolbox/solutions"
+    When I go to "/community/nifo-community/solution/eif-toolbox/solutions"
     Then the option with text "Filter Solutions by Recommendation" from select "Jump to recommendation" is selected
     And I select "Solutions implementing Recommendation 17" from "Jump to recommendation"
     Then I should see the heading "Recommendation 17"
 
   Scenario: Test that links behave like a normal menu.
-    Given collection:
+    Given community:
       | title | Parent    |
       | state | validated |
     And solutions:
-      | title      | eif reference    | eif category     | collection | state     |
+      | title      | eif reference    | eif category     | community | state     |
       | Solution 1 | Recommendation 4 | Assessment tools | Parent     | validated |
       | Solution 2 | Recommendation 4 | Common services  | Parent     | validated |
 
     When I am an anonymous user
-    And I go to "/collection/nifo-collection/solution/eif-toolbox/solutions"
+    And I go to "/community/nifo-community/solution/eif-toolbox/solutions"
     Then "All" should be the active item in the "Content" region
 
     When I click "Common services"

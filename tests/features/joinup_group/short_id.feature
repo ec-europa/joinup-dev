@@ -4,8 +4,8 @@ Feature:
   In order to make the URL of my group easier to read
   I need to be able to provide a short ID to my group.
 
-  Scenario: Short IDs are unique in collections.
-    Given the following collections:
+  Scenario: Short IDs are unique in communities.
+    Given the following communities:
       | title              | short ID | state     |
       | Scientific Studies | sst-2020 | validated |
     And owner:
@@ -13,12 +13,12 @@ Feature:
       | Organisation example | Company |
 
     When I am logged in as an "authenticated user"
-    And I go to the propose collection form
+    And I go to the propose community form
 
     # Assert the Short ID description is present.
     Then I should see the following lines of text:
-      | Used as the web address (URL). Example: a collection named 'European Commission' could use 'eu-commission'. |
-      | Cannot be changed once the collection is published.                                                         |
+      | Used as the web address (URL). Example: a community named 'European Commission' could use 'eu-commission'. |
+      | Cannot be changed once the community is published.                                                         |
       | The ID is between 4-26 characters and consists of lowercase letters, numbers and the dash symbol (-).       |
 
     When I press "Add existing" at the "Owner" field
@@ -43,12 +43,12 @@ Feature:
     And I press "Propose"
     And I should see the heading "Structural Solar Traces"
 
-    When I go to the edit form of the "Structural Solar Traces" collection
+    When I go to the edit form of the "Structural Solar Traces" community
     Then the following fields should not be disabled "Short ID"
 
-    # Publish the collection.
+    # Publish the community.
     When I am logged in as a moderator
-    When I go to the edit form of the "Structural Solar Traces" collection
+    When I go to the edit form of the "Structural Solar Traces" community
     And I press "Publish"
     Then I should see the heading "Structural Solar Traces"
 
@@ -57,27 +57,27 @@ Feature:
     Then the following fields should not be disabled "Short ID"
 
     # Check that the field is not editable any more for facilitators once the
-    # collection is published.
-    When I am logged in as a facilitator of the "Structural Solar Traces" collection
-    When I go to the edit form of the "Structural Solar Traces" collection
+    # community is published.
+    When I am logged in as a facilitator of the "Structural Solar Traces" community
+    When I go to the edit form of the "Structural Solar Traces" community
     Then the following fields should be disabled "Short ID"
 
-    Then I delete the "Structural Solar Traces" collection
+    Then I delete the "Structural Solar Traces" community
     And I delete the "Contact person" contact information
 
   Scenario: Short IDs are unique in solutions.
-    Given the following collections:
+    Given the following communities:
       | title              | short ID | state     |
       | Scientific Studies | sst-2020 | validated |
     And solutions:
-      | title                         | short ID | state     | collection         |
+      | title                         | short ID | state     | community         |
       | Who knows what a solution is? | wkwasi   | validated | Scientific Studies |
     And owner:
       | name                 | type    |
       | Organisation example | Company |
 
-    When I am logged in as a facilitator of the "Scientific Studies" collection
-    And I go to the homepage of the "Scientific Studies" collection
+    When I am logged in as a facilitator of the "Scientific Studies" community
+    And I go to the homepage of the "Scientific Studies" community
     And I click "Add solution"
     And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
     And I press "Yes"
@@ -111,7 +111,7 @@ Feature:
     Then I should see the error message "This value is not valid."
 
     # The short ID is only unique among solutions, it is OK to reuse an existing
-    # short ID from a collection.
+    # short ID from a community.
     And I fill in "Short ID" with "sst-2020"
     And I press "Propose"
     Then I should see the heading "I know what a solution is"

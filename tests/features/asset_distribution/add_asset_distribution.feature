@@ -5,13 +5,13 @@ Feature: Add distribution through the UI
   I need to be able to add "Distribution" RDF entities through the UI.
 
   Background:
-    Given the following collection:
+    Given the following community:
       | title      | Asset Distribution Test |
       | logo       | logo.png                |
       | state      | validated               |
      And the following solution:
       | title       | Solution random x name           |
-      | collection  | Asset Distribution Test          |
+      | community  | Asset Distribution Test          |
       | description | Some reusable random description |
       | state       | validated                        |
     And the following release:
@@ -78,7 +78,7 @@ Feature: Add distribution through the UI
     When I open the plus button menu
     Then I should see the link "Add distribution"
 
-    Given I am logged in as a "member" of the "Asset Distribution Test" collection
+    Given I am logged in as a "member" of the "Asset Distribution Test" community
     And I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
     When I open the plus button menu
     Then I should not see the link "Add distribution"

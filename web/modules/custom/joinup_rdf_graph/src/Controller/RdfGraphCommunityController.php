@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides method controllers for RDF graph entity collection.
  */
-class RdfGraphCollectionController extends ControllerBase {
+class RdfGraphCommunityController extends ControllerBase {
 
   /**
    * The service container.

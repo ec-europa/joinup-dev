@@ -5,15 +5,15 @@ Feature:
   I need to be able to give extra permissions to authors.
 
   Scenario Outline: Authors can add content regardless of group settings.
-    Given collection:
-      | title | Author collection |
+    Given community:
+      | title | Author community |
       | state | validated         |
     And solution:
       | title            | Author solution    |
       | moderation       | <moderation>       |
       | content creation | <content creation> |
       | state            | validated          |
-      | collection       | Author collection  |
+      | community       | Author community  |
 
     When I am logged in as an "author" of the "Author solution" solution
     And I go to the "Author solution" solution

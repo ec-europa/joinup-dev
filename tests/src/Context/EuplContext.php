@@ -33,7 +33,7 @@ class EuplContext extends RawDrupalContext {
   use RdfEntityTrait;
 
   /**
-   * Creates the standard 'EUPL' collection and several dependencies.
+   * Creates the standard 'EUPL' community and several dependencies.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    *   Thrown when one of the entities could not be created, for example because
@@ -51,7 +51,7 @@ class EuplContext extends RawDrupalContext {
 
     // Create the EUPL entity.
     Rdf::create([
-      'rid' => 'collection',
+      'rid' => 'community',
       'id' => Eupl::EUPL_COMMUNITY_ID,
       'label' => 'EUPL',
       'field_ar_state' => 'validated',
@@ -60,7 +60,7 @@ class EuplContext extends RawDrupalContext {
 
     Rdf::create([
       'rid' => 'solution',
-      'collection' => Eupl::EUPL_COMMUNITY_ID,
+      'community' => Eupl::EUPL_COMMUNITY_ID,
       'id' => Eupl::JLA_SOLUTION,
       'label' => 'Joinup Licensing Assistant',
       'field_is_state' => 'validated',
@@ -449,9 +449,9 @@ class EuplContext extends RawDrupalContext {
       $entity_repository->loadEntityByUuid('node', $uuid)->delete();
     }
 
-    $collection = Rdf::load(Eupl::EUPL_COMMUNITY_ID);
-    $collection->skip_notification = TRUE;
-    $collection->delete();
+    $community = Rdf::load(Eupl::EUPL_COMMUNITY_ID);
+    $community->skip_notification = TRUE;
+    $community->delete();
 
     $solution = Rdf::load(Eupl::JLA_SOLUTION);
     $solution->skip_notification = TRUE;

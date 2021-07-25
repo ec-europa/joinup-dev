@@ -32,9 +32,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @todo Move this into the joinup_subscription module to solve a circular
  *   dependency.
  * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6330
- * @see \Drupal\collection\Form\JoinCollectionForm::showSubscribeDialog()
+ * @see \Drupal\collection\Form\JoinCommunityForm::showSubscribeDialog()
  */
-class SubscribeToCollectionForm extends FormBase {
+class SubscribeToCommunityForm extends FormBase {
 
   /**
    * The entity type manager service.
@@ -72,7 +72,7 @@ class SubscribeToCollectionForm extends FormBase {
   protected $time;
 
   /**
-   * Constructs a SubscribeToCollectionForm.
+   * Constructs a SubscribeToCommunityForm.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
@@ -163,9 +163,9 @@ class SubscribeToCollectionForm extends FormBase {
       '#type' => 'submit',
       '#value' => $this->t('Subscribe'),
       // This form is opened via AJAX in a modal dialog that is triggered by
-      // submitting the JoinCollectionForm. By default Drupal will send the
+      // submitting the JoinCommunityForm. By default Drupal will send the
       // AJAX requests to the route of the original form, which in this case
-      // would be the JoinCollectionForm. We need to manually specify the
+      // would be the JoinCommunityForm. We need to manually specify the
       // callback URL and the query argument that triggers AJAX so that this
       // form will be loaded.
       // @see https://www.drupal.org/project/drupal/issues/2934463
@@ -191,10 +191,10 @@ class SubscribeToCollectionForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state): void {
     parent::validateForm($form, $form_state);
 
-    $collection = $this->loadCollection($form_state->getValue('collection_id'));
+    $community = $this->loadCommunity($form_state->getValue('collection_id'));
 
     // The user should be a non-blocked member of the collection.
-    $membership = $this->getUserNonBlockedMembership($collection);
+    $membership = $this->getUserNonBlockedMembership($community);
     if (empty($membership)) {
       $form_state->setErrorByName('collection', $this->t('Please join the collection before subscribing to it.'));
     }
@@ -204,7 +204,7 @@ class SubscribeToCollectionForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-    $collection = $this->loadCollection($form_state->getValue('collection_id'));
+    $community = $this->loadCommunity($form_state->getValue('collection_id'));
 
     $subscription_bundles = [];
     foreach (JoinupSubscriptionsHelper::SUBSCRIPTION_BUNDLES['collection'] as $entity_type => $bundles) {
@@ -216,13 +216,13 @@ class SubscribeToCollectionForm extends FormBase {
       }
     }
 
-    $membership = $this->getUserNonBlockedMembership($collection);
+    $membership = $this->getUserNonBlockedMembership($community);
     $membership->set('subscription_bundles', $subscription_bundles)->save();
 
     // Check if the user is pending, so we can adapt the messages for the user.
     $is_pending = !empty($membership) && $membership->isPending();
 
-    $parameters = ['%collection' => $collection->getName()];
+    $parameters = ['%collection' => $community->getName()];
     $message = $is_pending ?
       $this->t('You have been subscribed to %collection and will receive weekly notifications once your membership is approved.', $parameters) :
       $this->t('You have been subscribed to %collection and will receive weekly notifications. To manage your notifications go to <em>My subscriptions</em> in your user menu.', $parameters);
@@ -314,7 +314,7 @@ class SubscribeToCollectionForm extends FormBase {
   public function showSubscribeDialog(RdfInterface $rdf_entity): AjaxResponse {
     $title = $this->t('Welcome to %collection', ['%collection' => $rdf_entity->label()]);
 
-    $modal_form = $this->formBuilder->getForm(SubscribeToCollectionForm::class, $rdf_entity);
+    $modal_form = $this->formBuilder->getForm(SubscribeToCommunityForm::class, $rdf_entity);
     $modal_form['#attached']['library'][] = 'core/drupal.dialog.ajax';
 
     $response = new AjaxResponse();
@@ -334,14 +334,14 @@ class SubscribeToCollectionForm extends FormBase {
   /**
    * Returns a membership of the user that is active or pending.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $collection
+   * @param \Drupal\rdf_entity\RdfInterface $community
    *   The group entity.
    *
    * @return \Drupal\og\OgMembershipInterface|null
    *   The membership of the user or null.
    */
-  protected function getUserNonBlockedMembership(RdfInterface $collection): ?OgMembershipInterface {
-    return $this->membershipManager->getMembership($collection, $this->getUser()->id(), [
+  protected function getUserNonBlockedMembership(RdfInterface $community): ?OgMembershipInterface {
+    return $this->membershipManager->getMembership($community, $this->getUser()->id(), [
       OgMembershipInterface::STATE_ACTIVE,
       OgMembershipInterface::STATE_PENDING,
     ]);
@@ -350,14 +350,14 @@ class SubscribeToCollectionForm extends FormBase {
   /**
    * Loads the collection with the given ID.
    *
-   * @param string $collection_id
+   * @param string $community_id
    *   The collection ID.
    *
    * @return \Drupal\rdf_entity\RdfInterface
    *   The collection.
    */
-  protected function loadCollection(string $collection_id): RdfInterface {
-    return $this->entityTypeManager->getStorage('rdf_entity')->load($collection_id);
+  protected function loadCommunity(string $community_id): RdfInterface {
+    return $this->entityTypeManager->getStorage('rdf_entity')->load($community_id);
   }
 
   /**

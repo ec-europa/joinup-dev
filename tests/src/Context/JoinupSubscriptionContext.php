@@ -125,9 +125,9 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * Subscribes the given users to the given group content bundles.
    *
    * Table format:
-   * | collection   | user   | subscriptions                     |
-   * | Collection A | user A | discussion, document, event, news |
-   * | Collection B | user B | discussion, event                 |
+   * | community   | user   | subscriptions                     |
+   * | Community A | user A | discussion, document, event, news |
+   * | Community B | user B | discussion, event                 |
    *
    * @param \Behat\Gherkin\Node\TableNode $subscription_table
    *   A table with the data for subscribing the users.
@@ -138,7 +138,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *   Thrown when a membership cannot be updated with the new subscriptions.
    * @throws \Exception
    *   Thrown if a membership is not found for a given user in a given
-   *   collection.
+   *   community.
    *
    * @Given (the following ):bundle content subscriptions:
    */
@@ -229,7 +229,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @throws \Exception
    *   Thrown when the card or the button is not found.
    *
-   * @Given I should see the :button button on the :collection subscription card
+   * @Given I should see the :button button on the :community subscription card
    */
   public function assertButtonExistsOnSubscriptionCard(string $button, string $label): void {
     $card = $this->getGroupSubscriptionCardByHeading($label);
@@ -396,8 +396,8 @@ class JoinupSubscriptionContext extends RawDrupalContext {
     /** @var \Drupal\Core\Session\AccountInterface $account */
     $account = User::load($user->uid);
 
-    foreach ($subscriptions->getRowsHash() as $collection_label => $expected_bundle_ids) {
-      $group = self::getRdfEntityByLabel($collection_label);
+    foreach ($subscriptions->getRowsHash() as $community_label => $expected_bundle_ids) {
+      $group = self::getRdfEntityByLabel($community_label);
       $membership = $this->getMembershipByGroupAndUser($group, $account, OgMembershipInterface::ALL_STATES);
       $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
 
@@ -587,7 +587,7 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    *
    * This will check that there is exactly 1 digest mail in the collector for
    * the given user, and that the mail will contain the expected sections (both
-   * collection headers and community content) in the expected order.
+   * community headers and community content) in the expected order.
    *
    * Table format:
    * | title   |

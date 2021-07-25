@@ -4,13 +4,13 @@ Feature: Multilingual search
 
   Scenario: Anonymous user sees English version only
     Given the language "ca" is enabled
-    And the following collection:
-      | title            | Molecular cooking collection |
+    And the following community:
+      | title            | Molecular cooking community |
       | logo             | logo.png                     |
       | moderation       | no                           |
       | topic            | Demography                   |
       | spatial coverage | Belgium                      |
       | state            | validated                    |
-    And the multilingual "El celler de Can Roca" solution of "Molecular cooking collection" collection
-    When I go to the "Molecular cooking collection" collection
+    And the multilingual "El celler de Can Roca" solution of "Molecular cooking community" community
+    When I go to the "Molecular cooking community" community
     Then I should see 1 tile

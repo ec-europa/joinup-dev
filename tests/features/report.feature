@@ -5,11 +5,11 @@ Feature: Report inappropriate content
   I want to provide a "Report" button on community content
 
   Scenario Outline: Report inappropriate community content
-    Given collection:
+    Given community:
       | title | Deployment tools |
       | state | validated        |
     And "<type>" content:
-      | title   | body   | collection       | state     |
+      | title   | body   | community       | state     |
       | <title> | <body> | Deployment tools | validated |
     Given I am not logged in
     When I go to the content page of the type "<type>" with the title "<title>"

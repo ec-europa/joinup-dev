@@ -11,17 +11,17 @@ Feature: Site search
     Then the response should contain "\"search\":{\"keyword\":\"sample text 1\"}"
 
   Scenario: Search results should contain a total count when results are available.
-    And the following collections:
+    And the following communities:
       | title                  | description               | abstract               | state     |
-      | Collection total count | No description available. | No abstract available. | validated |
+      | Community total count | No description available. | No abstract available. | validated |
     And news content:
-      | title                | headline             | body               | collection             | state     |
-      | News total count     | News total count     | No body available. | Collection total count | validated |
-      | News total count new | News total count new | No body available. | Collection total count | draft     |
+      | title                | headline             | body               | community             | state     |
+      | News total count     | News total count     | No body available. | Community total count | validated |
+      | News total count new | News total count new | No body available. | Community total count | draft     |
     When I am on the homepage
     And I enter "total count" in the search bar and press enter
     Then I should see the following tiles in the correct order:
-      | Collection total count |
+      | Community total count |
       | News total count       |
     And the response should contain "\"search\":{\"keyword\":\"total count\",\"count\":2}"
 
@@ -29,7 +29,7 @@ Feature: Site search
     When I am logged in as a moderator
     And I enter "total count" in the search bar and press enter
     Then I should see the following tiles in the correct order:
-      | Collection total count |
+      | Community total count |
       | News total count       |
     And the response should contain "\"search\":{\"keyword\":\"total count\",\"count\":2}"
 
@@ -38,7 +38,7 @@ Feature: Site search
     And I press "Publish"
     And I enter "total count" in the search bar and press enter
     Then I should see the following tiles in the correct order:
-      | Collection total count |
+      | Community total count |
       | News total count       |
       | News total count new   |
     And the response should contain "\"search\":{\"keyword\":\"total count\",\"count\":3}"

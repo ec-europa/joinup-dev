@@ -1,11 +1,11 @@
 @api @group-a
-Feature: Subscribing to community content in collections
-  As a member of a collection
+Feature: Subscribing to community content in communities
+  As a member of a community
   I want to receive a periodic digest listing newly published content
   So that I can stay informed
 
   Background:
-    Given the following collections:
+    Given the following communities:
       | title                | state     |
       | Products of Bulgaria | validated |
       | Cities of Bulgaria   | validated |
@@ -14,16 +14,16 @@ Feature: Subscribing to community content in collections
       | hristo   | hristo@example.bg | Hristo     | Draganov     | daily                  |
       | bisera   | bisera@example.bg | Bisera     | Kaloyancheva | weekly                 |
       | kalin    | kalin@primer.bg   | Kalin      | Antov        | monthly                |
-    And the following collection user memberships:
-      | collection           | user   | roles       |
+    And the following community user memberships:
+      | community           | user   | roles       |
       | Products of Bulgaria | hristo |             |
       | Products of Bulgaria | bisera |             |
       | Products of Bulgaria | kalin  |             |
       | Cities of Bulgaria   | hristo |             |
       | Cities of Bulgaria   | bisera |             |
       | Cities of Bulgaria   | kalin  | facilitator |
-    And the following collection content subscriptions:
-      | collection           | user   | subscriptions                        |
+    And the following community content subscriptions:
+      | community           | user   | subscriptions                        |
       | Products of Bulgaria | hristo | discussion, event, news, solution    |
       | Products of Bulgaria | bisera | discussion, document, news           |
       | Products of Bulgaria | kalin  | document, event                      |
@@ -34,27 +34,27 @@ Feature: Subscribing to community content in collections
     And the mail collector cache is empty
 
   @email
-  Scenario: Receive a digest of content that is published in my collections
+  Scenario: Receive a digest of content that is published in my communities
     Given discussion content:
-      | title      | body                      | collection           | state     | author |
+      | title      | body                      | community           | state     | author |
       | Duck liver | Rich buttery and delicate | Products of Bulgaria | validated | hristo |
       | Sofia      | Grows without aging       | Cities of Bulgaria   | validated | kalin  |
       | Ruse       | Little Vienna             | Cities of Bulgaria   | proposed  | kalin  |
     And document content:
-      | title           | body                   | collection           | state     | author |
+      | title           | body                   | community           | state     | author |
       | Canned cherries | Sour cherries for pies | Products of Bulgaria | validated | bisera |
       | Plovdiv         | Seven hills            | Cities of Bulgaria   | validated | hristo |
     And event content:
-      | title           | body           | collection           | state     | author | start date          | end date            |
+      | title           | body           | community           | state     | author | start date          | end date            |
       | Sunflower seeds | A tasty snack  | Products of Bulgaria | validated | bisera | 2019-11-28T11:12:13 | 2019-11-28T11:12:13 |
       | Varna           | Summer capital | Cities of Bulgaria   | draft     | kalin  | 2019-12-05T12:00:00 | 2019-12-15T12:00:00 |
       | Stara Zagora    | Historic       | Cities of Bulgaria   | validated | hristo | 2020-01-18T18:30:00 | 2020-01-19T00:00:00 |
     And news content:
-      | title    | body                        | collection           | state     | author |
+      | title    | body                        | community           | state     | author |
       | Rose oil | A widely used essential oil | Products of Bulgaria | validated | bisera |
       | Burgas   | City of dreams              | Cities of Bulgaria   | validated | hristo |
     And solutions:
-      | title          | description                      | collection           | state     | author |
+      | title          | description                      | community           | state     | author |
       | Double seaming | The rolls roll around the chuck  | Products of Bulgaria | proposed  | kalin  |
       | Belt conveyors | As troughed belts gently slope   | Products of Bulgaria | validated | bisera |
       | New urbanism   | Context-appropriate architecture | Cities of Bulgaria   | validated | hristo |

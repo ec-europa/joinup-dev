@@ -49,17 +49,17 @@ class JoinupLegalContext extends RawDrupalContext {
    *
    * Required: Document, Label, Acceptance label.
    *
-   * @param \Behat\Gherkin\Node\TableNode $collection_table
-   *   The collection data.
+   * @param \Behat\Gherkin\Node\TableNode $community_table
+   *   The community data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
    * @Given (the following )legal document version(s):
    */
-  public function givenLegalDocumentVersions(TableNode $collection_table): void {
+  public function givenLegalDocumentVersions(TableNode $community_table): void {
     $published = [];
-    foreach ($collection_table->getColumnsHash() as $version) {
+    foreach ($community_table->getColumnsHash() as $version) {
       $values = [];
       // Replace the column aliases with the actual field names.
       foreach ($version as $key => $value) {
@@ -67,7 +67,7 @@ class JoinupLegalContext extends RawDrupalContext {
           $values[static::ALIASES[$key]] = $value;
         }
         else {
-          throw new \Exception("Unknown column '$key' in collection table.");
+          throw new \Exception("Unknown column '$key' in community table.");
         }
       }
 

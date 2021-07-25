@@ -1795,8 +1795,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function generateMedia(): void {
     $media_type_ids = [
-      'collection_banner',
-      'collection_logo',
+      'community_banner',
+      'community_logo',
       'solution_banner',
       'solution_logo',
       'event_logo',
@@ -2036,7 +2036,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertEntityCreationDate(string $title, string $bundle): void {
     $rdf_bundles = [
-      'collection',
+      'community',
       'solution',
       'asset_release',
       'asset_distribution',
@@ -2199,7 +2199,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @param string $offset
    *   An "1 based" offset of the image.
    * @param string $content_type
-   *   The type of content: collection, solution, event, news.
+   *   The type of content: community, solution, event, news.
    * @param string $image_type
    *   The field label.
    *
@@ -2250,7 +2250,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Asserts that a given image from the image library was added to an entity.
    *
    * @param string $content_type
-   *   The type of content: collection, solution, event, news.
+   *   The type of content: community, solution, event, news.
    * @param string $title
    *   The content title.
    * @param string $image_type
@@ -2292,7 +2292,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   protected function getImageLibraryBrowserMapping(): array {
     return [
-      'collection' => [
+      'community' => [
         'type' => 'rdf_entity',
         'fields' => [
           'logo' => 'field_ar_logo',
@@ -2325,7 +2325,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Validates the parameters passed to image library step definitions.
    *
    * @param string $content_type
-   *   The type of content: collection, solution, event, news.
+   *   The type of content: community, solution, event, news.
    * @param string $image_type
    *   The type of image; logo, banner.
    * @param string $offset

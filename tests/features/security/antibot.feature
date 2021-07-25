@@ -16,30 +16,30 @@ Feature: As a visitor or logged-in user, when I want to post content, the form
     Given users:
       | Username |
       | Günther  |
-    And the following collection:
+    And the following community:
       | title | Family photos |
       | state | validated     |
     And discussion content:
-      | title      | collection    | state     |
+      | title      | community    | state     |
       | Let's talk | Family photos | validated |
     And event content:
-      | title    | collection    | state     |
+      | title    | community    | state     |
       | Birthday | Family photos | validated |
     And news content:
-      | title       | collection    | state     |
+      | title       | community    | state     |
       | Got married | Family photos | validated |
 
     Given I am logged in as "Günther"
-    And I go to the homepage of the "Family photos" collection
+    And I go to the homepage of the "Family photos" community
     Then the form is protected by Antibot
 
-    When I press "Join this collection"
+    When I press "Join this community"
     Then I should see the success message "You are now a member of Family photos."
     And a modal should open
     Then the form is protected by Antibot
 
     When I press "No thanks" in the "Modal buttons" region
-    And I go to the homepage of the "Family photos" collection
+    And I go to the homepage of the "Family photos" community
     And I click "Add discussion" in the plus button menu
     Then the form is protected by Antibot
 

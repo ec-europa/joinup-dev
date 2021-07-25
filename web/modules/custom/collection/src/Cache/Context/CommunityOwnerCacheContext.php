@@ -24,13 +24,13 @@ use Drupal\joinup_group\Cache\Context\GroupOwnerCacheContext;
  *
  * Cache context ID: 'collection_owner'
  */
-class CollectionOwnerCacheContext extends GroupOwnerCacheContext {
+class CommunityOwnerCacheContext extends GroupOwnerCacheContext {
 
   /**
    * {@inheritdoc}
    */
   public static function getLabel() {
-    return t('Collection owner');
+    return t('Community owner');
   }
 
   /**

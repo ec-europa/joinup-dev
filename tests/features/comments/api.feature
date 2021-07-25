@@ -5,11 +5,11 @@ Feature: Creating comments through the API
   I need to be able to programmatically create comments
 
   Scenario Outline: Creating comments on community content
-    Given collection:
+    Given community:
       | title | Hashrate, shares & workers |
       | state | validated                  |
     And <content type> content:
-      | title                      | body                                  | collection                 | state     |
+      | title                      | body                                  | community                 | state     |
       | Current effective hashrate | Ethash is the proof of work algorithm | Hashrate, shares & workers | validated |
     And user:
       | Username | Vasundhara Guadarrama |

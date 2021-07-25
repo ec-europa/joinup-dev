@@ -5,25 +5,25 @@ Feature:
   I need to be able to configure community content listing
 
   Background:
-    Given the following collections:
+    Given the following communities:
       | title      | logo     | banner     | state     |
       | Nintendo64 | logo.png | banner.jpg | validated |
       | Emulators  | logo.png | banner.jpg | validated |
     And news content:
-      | title                                 | collection | created           | content                          | state     |
+      | title                                 | community | created           | content                          | state     |
       | Rare Nintendo64 disk drive discovered | Nintendo64 | 2018-10-01 4:26am | Magnetic drive called 64DD.      | validated |
       | NEC VR4300 CPU                        | Emulators  | 2018-10-03 4:27am | Update of the emulation library. | validated |
     And event content:
-      | title               | collection | created           | body                                        | state     |
+      | title               | community | created           | body                                        | state     |
       | 20 year anniversary | Nintendo64 | 2018-10-01 4:29am | The console was released in September 1996. | validated |
     And discussion content:
-      | title                           | collection | content                 | created          | state     |
+      | title                           | community | content                 | created          | state     |
       | What's your favourite N64 game? | Nintendo64 | Post title and reasons. | 2018-11-17 10:17 | validated |
       | Searching for green pad.        | Nintendo64 | Looking for a used one. | 2018-11-17 10:18 | validated |
 
   Scenario: Community content listing widget should be shown to facilitators and moderators.
-    Given I am logged in as a facilitator of the "Nintendo64" collection
-    When I go to the homepage of the "Nintendo64" collection
+    Given I am logged in as a facilitator of the "Nintendo64" community
+    When I go to the homepage of the "Nintendo64" community
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
     And the following fields should not be present "Add related content, Allow shared content"
@@ -37,7 +37,7 @@ Feature:
     And the following fields should not be present "Query presets, Limit"
 
     Given I am logged in as a moderator
-    When I go to the homepage of the "Nintendo64" collection
+    When I go to the homepage of the "Nintendo64" community
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
     And the following fields should not be present "Add related content, Allow shared content"
@@ -51,13 +51,13 @@ Feature:
     And I should see the button "Add and configure filter"
 
   Scenario: Configure a custom page to show a community content listing.
-    Given I am logged in as a facilitator of the "Nintendo64" collection
-    When I go to the homepage of the "Nintendo64" collection
+    Given I am logged in as a facilitator of the "Nintendo64" community
+    When I go to the homepage of the "Nintendo64" community
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
     When I fill in the following:
       | Title | Latest content                        |
-      | Body  | Shows all content for this collection |
+      | Body  | Shows all content for this community |
     And I press "Add Content listing"
     Then I should see the text "Related content from the community will be displayed below the one that you are publishing."
     And I should see the text "Display content shared from other communities."
@@ -67,7 +67,7 @@ Feature:
     Then I should see the heading "Latest content"
     And I should see the "Rare Nintendo64 disk drive discovered" tile
     And I should see the "20 year anniversary" tile
-    # Content from other collections should not be shown.
+    # Content from other communities should not be shown.
     But I should not see the "NEC VR4300 CPU" tile
 
     # Change the page to list only news.
@@ -76,7 +76,7 @@ Feature:
     And I click "Edit" in the "Entity actions" region
     And I fill in the following:
       | Title | Latest news                        |
-      | Body  | Shows all news for this collection |
+      | Body  | Shows all news for this community |
     And I fill in "Query presets" with "entity_bundle|news"
     And I press "Save"
     Then I should see the heading "Latest news"
@@ -84,7 +84,7 @@ Feature:
     But I should not see the "20 year anniversary" tile
     And I should not see the "NEC VR4300 CPU" tile
 
-    Given I am logged in as a facilitator of the "Nintendo64" collection
+    Given I am logged in as a facilitator of the "Nintendo64" community
     And I go to the "Latest news" custom page
     When I click "Edit" in the "Entity actions" region
     And I check "Allow shared content"
@@ -94,7 +94,7 @@ Feature:
     But I should not see the "20 year anniversary" tile
     And I should not see the "NEC VR4300 CPU" tile
 
-    # Share a news inside the collection.
+    # Share a news inside the community.
     When I go to the "NEC VR4300 CPU" news
     And I click "Share"
     And I check "Nintendo64"
@@ -107,7 +107,7 @@ Feature:
     But I should not see the "20 year anniversary" tile
 
     # The news is removed from the list as soon as it's removed from sharing.
-    When I go to the homepage of the "Nintendo64" collection
+    When I go to the homepage of the "Nintendo64" community
     And I click the contextual link "Unshare" in the "NEC VR4300 CPU" tile
     And I check "Nintendo64"
     And I press "Submit"
@@ -127,8 +127,8 @@ Feature:
 
   @javascript
   Scenario: Configure a custom page to show specific tiles.
-    Given I am logged in as a facilitator of the "Nintendo64" collection
-    When I go to the homepage of the "Nintendo64" collection
+    Given I am logged in as a facilitator of the "Nintendo64" community
+    When I go to the homepage of the "Nintendo64" community
     And I click "Add custom page" in the plus button menu
     Then I should see the heading "Add custom page"
     When I fill in "Title" with "Chosen content"
@@ -174,7 +174,7 @@ Feature:
       | What's your favourite N64 game?       |
       | Rare Nintendo64 disk drive discovered |
 
-    # Content that doesn't belong to the collection won't show up, even when selected.
+    # Content that doesn't belong to the community won't show up, even when selected.
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I select "News" from "Available filters"
@@ -187,7 +187,7 @@ Feature:
       | What's your favourite N64 game?       |
       | Rare Nintendo64 disk drive discovered |
 
-    # Content shared on the collection will be shown.
+    # Content shared on the community will be shown.
     When I go to the "NEC VR4300 CPU" news
     And I click "Share"
     And I check "Nintendo64"
@@ -214,7 +214,7 @@ Feature:
     Given the following solution:
       | title      | N64 cartridge cleaner |
       | state      | validated             |
-      | collection | Nintendo64            |
+      | community | Nintendo64            |
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     # Simulate reordering and removal of rows.
@@ -247,7 +247,7 @@ Feature:
 
     # When a query preset is entered, the query builder should not be available
     # anymore to facilitators.
-    Given I am logged in as a facilitator of the "Nintendo64" collection
+    Given I am logged in as a facilitator of the "Nintendo64" community
     And I go to the "Chosen content" custom page
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
@@ -261,16 +261,16 @@ Feature:
     Then the following field should be present "Available filters"
 
   Scenario: Content type tabs should be mutually exclusive and show only items with results.
-    Given I am logged in as a facilitator of the "Nintendo64" collection
-    When I go to the homepage of the "Nintendo64" collection
+    Given I am logged in as a facilitator of the "Nintendo64" community
+    When I go to the homepage of the "Nintendo64" community
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
     When I fill in the following:
-      | Title | Collection content                        |
-      | Body  | Shows all the content for this collection |
+      | Title | Community content                        |
+      | Body  | Shows all the content for this community |
     And I press "Add Content listing"
     And I press "Save"
-    Then I should see the heading "Collection content"
+    Then I should see the heading "Community content"
     # Verify that unwanted facets are not shown in the page.
     And I should see the following facet items "Discussion, Event, News" in this order
     And I should see the following tiles in the correct order:
@@ -291,12 +291,12 @@ Feature:
 
   Scenario: Test listing by keywords that contain the same word.
     Given document content:
-      | title        | keywords            | content     | collection | state     |
+      | title        | keywords            | content     | community | state     |
       | User's Guide | nintendo64 manuals  | User manual | Nintendo64 | validated |
       | Licence      | nintendo64 licences | Licence     | Nintendo64 | validated |
     And I am logged in as a moderator
 
-    When I go to the homepage of the "Nintendo64" collection
+    When I go to the homepage of the "Nintendo64" community
     And I click "Add custom page"
 
     When I fill in the following:
@@ -313,7 +313,7 @@ Feature:
     Then I should see the "User's Guide" tile
     But I should not see the "Licence" tile
 
-    When I go to the homepage of the "Nintendo64" collection
+    When I go to the homepage of the "Nintendo64" community
     And I click "Add custom page"
 
     When I fill in the following:
@@ -332,7 +332,7 @@ Feature:
 
   Scenario: Invalid entries in the query presets field show a validation error.
     Given I am logged in as a moderator
-    When I go to the homepage of the "Nintendo64" collection
+    When I go to the homepage of the "Nintendo64" community
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
     When I fill in "Title" with "Query presets validation"
@@ -358,7 +358,7 @@ Feature:
   @terms
   Scenario: Global search setting allows for site-wide content in the content listing.
     Given I am logged in as a moderator
-    When I go to the homepage of the "Nintendo64" collection
+    When I go to the homepage of the "Nintendo64" community
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
     When I fill in the following:
@@ -378,7 +378,7 @@ Feature:
 
     # Ensure that when content is created or editted in another group,
     # the page cache is invalidated.
-    Given I go to the homepage of the "Emulators" collection
+    Given I go to the homepage of the "Emulators" community
     And I click "Add news" in the plus button menu
     When I fill in the following:
       | Short title | Current wars               |
@@ -388,7 +388,7 @@ Feature:
     And I press "Publish"
     Then I should see the heading "Current wars"
 
-    When I go to the homepage of the "Nintendo64" collection
+    When I go to the homepage of the "Nintendo64" community
     And I click "All content" in the "Left sidebar" region
     And I should see the following tiles in the correct order:
       | Current wars                          |
@@ -403,7 +403,7 @@ Feature:
     And I press "Update"
     Then I should see the heading "Current wars is over"
 
-    When I go to the homepage of the "Nintendo64" collection
+    When I go to the homepage of the "Nintendo64" community
     And I click "All content" in the "Left sidebar" region
     And I should see the following tiles in the correct order:
       | Current wars is over                  |

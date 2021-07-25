@@ -1,5 +1,5 @@
 @api @group-b
-Feature: As a group (collection or solution) owner or site moderator
+Feature: As a group (community or solution) owner or site moderator
   In order to manage my group
   I should be able to transfer the group ownership.
 
@@ -12,11 +12,11 @@ Feature: As a group (collection or solution) owner or site moderator
       | shy      |                         | Ásdís      | Sigurðsdóttir |
       | light    | moderator               | Bjartur    | Jóhannsson    |
       | frozen   |                         | Edda       | Agnarsdóttir  |
-    And the following collection:
+    And the following community:
       | title | Intensive Language Learning |
       | state | validated                   |
-    And the following collection user memberships:
-      | collection                  | user   | roles       |
+    And the following community user memberships:
+      | community                  | user   | roles       |
       | Intensive Language Learning | loner  |             |
       | Intensive Language Learning | cruel  | owner       |
       | Intensive Language Learning | shy    | facilitator |
@@ -87,9 +87,9 @@ Feature: As a group (collection or solution) owner or site moderator
 
     Examples:
       | user  | option exists | type       | type capitalized | title                       | full name               |
-      | happy | contain       | collection | Collection       | Intensive Language Learning | The Joinup Support Team |
-      | light | contain       | collection | Collection       | Intensive Language Learning | The Joinup Support Team |
-      | cruel | not contain   | collection | Collection       | Intensive Language Learning | Finnur Robertsson       |
+      | happy | contain       | community | Community       | Intensive Language Learning | The Joinup Support Team |
+      | light | contain       | community | Community       | Intensive Language Learning | The Joinup Support Team |
+      | cruel | not contain   | community | Community       | Intensive Language Learning | Finnur Robertsson       |
       | happy | contain       | solution   | Solution         | Learn German in 1 Month     | The Joinup Support Team |
       | light | contain       | solution   | Solution         | Learn German in 1 Month     | The Joinup Support Team |
       | cruel | not contain   | solution   | Solution         | Learn German in 1 Month     | Finnur Robertsson       |
@@ -101,19 +101,19 @@ Feature: As a group (collection or solution) owner or site moderator
 
     Examples:
       | type       | title                       |
-      | collection | Intensive Language Learning |
+      | community | Intensive Language Learning |
       | solution   | Learn German in 1 Month     |
 
-  Scenario: Collection owner cannot transfer ownership of a child solution, neither viceversa.
-    Given the following collection:
+  Scenario: Community owner cannot transfer ownership of a child solution, neither viceversa.
+    Given the following community:
       | title | Babylon   |
       | state | validated |
     And the following solution:
       | title      | Rivers Of Babylon |
-      | collection | Babylon           |
+      | community | Babylon           |
       | state      | validated         |
-    And collection user membership:
-      | collection | user  | roles       |
+    And community user membership:
+      | community | user  | roles       |
       | Babylon    | shy   | owner       |
       | Babylon    | loner | facilitator |
     And solution user membership:
@@ -144,5 +144,5 @@ Feature: As a group (collection or solution) owner or site moderator
 
     Examples:
       | group type | type capitalized | title                       |
-      | collection | Collection       | Intensive Language Learning |
+      | community | Community       | Intensive Language Learning |
       | solution   | Solution         | Learn German in 1 Month     |

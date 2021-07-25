@@ -5,14 +5,14 @@ Feature: Embed of videos into the page.
   I should be able to embed a restricted set of videos in the page.
 
   Background:
-    Given the following collection:
+    Given the following community:
       | title       | Beer brewing corporation             |
       | description | Beer is the real nectar of the gods. |
       | state       | validated                            |
 
   Scenario: As a community content editor I can embed video iframes from allowed providers into the content field.
-    Given I am logged in as a "facilitator" of the "Beer brewing corporation" collection
-    And I go to the homepage of the "Beer brewing corporation" collection
+    Given I am logged in as a "facilitator" of the "Beer brewing corporation" community
+    And I go to the homepage of the "Beer brewing corporation" community
     And I click "Add news" in the plus button menu
 
     Then I fill in the following:
@@ -47,8 +47,8 @@ Feature: Embed of videos into the page.
 
   @javascript
   Scenario Outline: A video embed button should be shown to community content editors.
-    Given I am logged in as a "facilitator" of the "Beer brewing corporation" collection
-    And I go to the homepage of the "Beer brewing corporation" collection
+    Given I am logged in as a "facilitator" of the "Beer brewing corporation" community
+    And I go to the homepage of the "Beer brewing corporation" community
     When I open the plus button menu
     And I click "Add news"
     When I fill in the following:
@@ -75,8 +75,8 @@ Feature: Embed of videos into the page.
       | https://audiovisual.ec.europa.eu/embed/index.html?sitelang=en&ref=I-087075 | //europa.eu/webtools/crs/iframe/?oriurl=%2F%2Faudiovisual.ec.europa.eu%2Fembed%2Findex.html%3Fref%3DI-087075%26lg%3Den%26starttime%3D0%26autoplay%3Dfalse |
 
   Scenario: Forcing auto-play into the content of an entity will not trigger the auto-play.
-    Given I am logged in as a "facilitator" of the "Beer brewing corporation" collection
-    And I go to the homepage of the "Beer brewing corporation" collection
+    Given I am logged in as a "facilitator" of the "Beer brewing corporation" community
+    And I go to the homepage of the "Beer brewing corporation" community
     And I click "Add news"
     When I fill in the following:
       | Headline    | Some test video |

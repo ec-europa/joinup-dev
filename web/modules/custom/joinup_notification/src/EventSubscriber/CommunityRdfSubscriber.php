@@ -6,7 +6,7 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Handles notifications related to communities.
  */
-class CollectionRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+class CommunityRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 
   use StringTranslationTrait;
 
@@ -97,7 +97,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    */
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
-    if (!$this->entity instanceof CollectionInterface) {
+    if (!$this->entity instanceof CommunityInterface) {
       return;
     }
 
@@ -434,14 +434,14 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   protected function notifySolutionOwners(EntityInterface $solution) {
     // Count communities that are not archived and are affiliated to the
     // solution.
-    $collection_count = $this->entityTypeManager->getStorage('rdf_entity')->getQuery()
+    $community_count = $this->entityTypeManager->getStorage('rdf_entity')->getQuery()
       ->condition('rid', 'collection')
       ->condition('field_ar_affiliates', $solution->id())
       ->condition('field_ar_state', 'archived', '!=')
       ->count()
       ->execute();
 
-    $template_id = $collection_count ? self::TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ALL : self::TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ORPHANED;
+    $template_id = $community_count ? self::TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ALL : self::TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ORPHANED;
     $user_data = [
       'og_roles' => [
         'rdf_entity-solution-administrator' => [
@@ -464,7 +464,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    *   Whether the event applies.
    */
   protected function appliesOnCommunities() {
-    return $this->entity instanceof CollectionInterface;
+    return $this->entity instanceof CommunityInterface;
   }
 
   /**

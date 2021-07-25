@@ -8,7 +8,7 @@ Feature: News API
     Given the following owner:
       | name            |
       | Rufus Drumknott |
-    And the following collection:
+    And the following community:
       | title            | Le Foie Heureux          |
       | owner            | Rufus Drumknott          |
       | logo             | logo.png                 |
@@ -16,6 +16,6 @@ Feature: News API
       | content creation | facilitators and authors |
       | state            | validated                |
     And news content:
-      | title      | body                                     | collection      |
+      | title      | body                                     | community      |
       | Dummy News | This is some dummy content like foo:bar. | Le Foie Heureux |
     Then I should have a "News" page titled "Dummy News"

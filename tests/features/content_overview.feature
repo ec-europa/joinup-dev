@@ -23,23 +23,23 @@ Feature: Content Overview
       | batbull      | Simba      | Hobson      | simba3000@hotmail.de |
       | welshbuzzard | Titus      | Nicotera    | nicotito@example.org |
       | hatchingegg  | Korinna    | Morin       | korimor@example.com  |
-    And the following collections:
+    And the following communities:
       | title             | description        | state     | moderation |
-      | Rumble collection | Sample description | validated | yes        |
+      | Rumble community | Sample description | validated | yes        |
     And "event" content:
-      | title                | collection        | state     | created           |
-      | Seventh Windows      | Rumble collection | validated | 2018-10-03 4:21am |
-      | A Night at the Opera | Rumble collection | validated | 2018-10-03 4:17am |
+      | title                | community        | state     | created           |
+      | Seventh Windows      | Rumble community | validated | 2018-10-03 4:21am |
+      | A Night at the Opera | Rumble community | validated | 2018-10-03 4:17am |
     And "news" content:
-      | title            | collection        | state     | author       | created           |
-      | The Playful Tale | Rumble collection | validated | batbull      | 2018-10-03 4:26am |
-      | Night of Shadow  | Rumble collection | proposed  | welshbuzzard | 2018-10-03 4:26am |
+      | title            | community        | state     | author       | created           |
+      | The Playful Tale | Rumble community | validated | batbull      | 2018-10-03 4:26am |
+      | Night of Shadow  | Rumble community | proposed  | welshbuzzard | 2018-10-03 4:26am |
     And "document" content:
-      | title             | collection        | state     | created           |
-      | History of Flight | Rumble collection | validated | 2018-10-03 4:19am |
+      | title             | community        | state     | created           |
+      | History of Flight | Rumble community | validated | 2018-10-03 4:19am |
     And "discussion" content:
-      | title            | collection        | state     | author      | created           |
-      | The Men's Female | Rumble collection | validated | hatchingegg | 2018-10-03 4:18am |
+      | title            | community        | state     | author      | created           |
+      | The Men's Female | Rumble community | validated | hatchingegg | 2018-10-03 4:18am |
 
     # Check that visiting as a moderator does not create cache for all users.
     When I am logged in as a user with the "moderator" role
@@ -49,7 +49,7 @@ Feature: Content Overview
     And the page should be cacheable
     And I should see the following facet items "Discussion, Document, News, Events" in this order
     And the "Events" content tab is displayed
-    And I should not see the following facet items "Collection"
+    And I should not see the following facet items "Community"
     And I should see the following tiles in the correct order:
       | The Playful Tale     |
       | Seventh Windows      |
@@ -61,7 +61,7 @@ Feature: Content Overview
     And I should see the "History of Flight" tile
     And I should see the "The Men's Female" tile
     And I should see the "A Night at the Opera" tile
-    And I should not see the "Rumble collection" tile
+    And I should not see the "Rumble community" tile
     And I should not see the "Night of Shadow" tile
 
     # The tiles for discussion and news entities should not display the author
@@ -84,7 +84,7 @@ Feature: Content Overview
     And I should see the "History of Flight" tile
     And I should see the "The Men's Female" tile
     And I should see the "A Night at the Opera" tile
-    But I should not see the "Rumble collection" tile
+    But I should not see the "Rumble community" tile
     And I should not see the "Night of Shadow" tile
     And the page should be cacheable
 
@@ -98,7 +98,7 @@ Feature: Content Overview
     And I should see the "History of Flight" tile
     And I should see the "The Men's Female" tile
     And I should see the "A Night at the Opera" tile
-    But I should not see the "Rumble collection" tile
+    But I should not see the "Rumble community" tile
     And I should not see the "Night of Shadow" tile
     And the page should be cacheable
 
@@ -113,21 +113,21 @@ Feature: Content Overview
       | Username        | E-mail                       |
       | michaelanewport | michaela.newport@example.com |
       | nenaroberts     | nena.roberts@example.com     |
-    And the following collections:
+    And the following communities:
       | title            | state     |
       | Timely Xylophone | validated |
     And "event" content:
-      | title            | collection       | state     |
+      | title            | community       | state     |
       | Sticky Vegetable | Timely Xylophone | validated |
     And "news" content:
-      | title            | collection       | state     | author          | featured |
+      | title            | community       | state     | author          | featured |
       | Early Avenue     | Timely Xylophone | validated | michaelanewport | yes      |
       | Itchy Artificial | Timely Xylophone | validated | nenaroberts     | no       |
     And "document" content:
-      | title             | collection       | state     |
+      | title             | community       | state     |
       | Limousine Scarlet | Timely Xylophone | validated |
     And "discussion" content:
-      | title                  | collection       | state     | author          | featured |
+      | title                  | community       | state     | author          | featured |
       | Hideous Dreaded Monkey | Timely Xylophone | validated | michaelanewport | yes      |
 
     When I am logged in as "michaelanewport"
@@ -198,21 +198,21 @@ Feature: Content Overview
       | Username        | E-mail                       |
       | claricemitchell | clarice.mitchell@example.com |
       | jeffreypayne    | jeffrey.payne@example.com    |
-    And collection:
+    And community:
       | title | Barbaric Avenue |
       | state | validated       |
     And event content:
-      | title                | collection      | start date   | end date            | created    | state     | author          |
+      | title                | community      | start date   | end date            | created    | state     | author          |
       | Bitter Finger        | Barbaric Avenue | now -1 years | now -1 years +1 day | now -4 day | validated | claricemitchell |
       | Frozen Barbershop    | Barbaric Avenue | now -1 day   | now +1 day          | now -3 day | validated | claricemitchell |
       | Frozen Breeze        | Barbaric Avenue | now +2 day   | now +4 day          | now -2 day | validated | claricemitchell |
       | Flying Official Fish | Barbaric Avenue | now -3 day   | now -1 day          | now        | validated | jeffreypayne    |
     # Technical: use a separate step to create an event associated to the anonymous user.
     And event content:
-      | title          | collection      | start date  | end date    | created    | state     |
+      | title          | community      | start date  | end date    | created    | state     |
       | Autumn Boiling | Barbaric Avenue | now +1 week | now +1 week | now -5 day | validated |
     And discussion content:
-      | title           | collection      | state     | created   |
+      | title           | community      | state     | created   |
       | Purple Poseidon | Barbaric Avenue | validated | yesterday |
 
     When I am logged in as claricemitchell

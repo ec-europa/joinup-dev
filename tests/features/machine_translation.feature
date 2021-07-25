@@ -6,40 +6,40 @@ Feature: Machine translation
 
   @javascript
   Scenario: Translation link is only visible on content focused pages
-    Given collection:
+    Given community:
       | title | Brexit    |
       | state | validated |
     And event content:
-      | title                      | collection | state     |
+      | title                      | community | state     |
       | Confiscating of sandwiches | Brexit     | validated |
     And news content:
-      | title                   | collection | state     |
+      | title                   | community | state     |
       | Supply chain disruption | Brexit     | validated |
     And document content:
-      | title                           | collection | state     |
+      | title                           | community | state     |
       | Increased postal delivery costs | Brexit     | validated |
     And discussion content:
-      | title                                    | collection | state     |
+      | title                                    | community | state     |
       | Restriction on animal-based food imports | Brexit     | validated |
     And custom_page content:
-      | title                      | collection | state     |
+      | title                      | community | state     |
       | Increased credit card fees | Brexit     | validated |
     And glossary content:
-      | title               | abbreviation | summary                 | definition                | collection |
+      | title               | abbreviation | summary                 | definition                | community |
       | Digital portability | DP           | Availability of content | Across streaming services | Brexit     |
     And solution:
       | title      | Rejoin the EU |
       | state      | validated     |
-      | collection | Brexit        |
+      | community | Brexit        |
 
     When I am logged in as a moderator
-    # Inside a collection sidebar, only custom pages, glossary terms (but not
+    # Inside a community sidebar, only custom pages, glossary terms (but not
     # the glossary overview) and the about page should be translatable.
-    When I go to the edit form of the "Brexit" collection
+    When I go to the edit form of the "Brexit" community
     Then I should not see any Webtools eTrans elements
-    When I go to the delete form of the "Brexit" collection
+    When I go to the delete form of the "Brexit" community
     Then I should not see any Webtools eTrans elements
-    When I go to the "Brexit" collection
+    When I go to the "Brexit" community
     Then I should not see any Webtools eTrans elements
     When I click "Members"
     Then I should not see any Webtools eTrans elements
@@ -87,7 +87,7 @@ Feature: Machine translation
     Then I should not see any Webtools eTrans elements
     When I visit the search page
     Then I should not see any Webtools eTrans elements
-    When I click "Collections" in the "Header menu" region
+    When I click "Communities" in the "Header menu" region
     Then I should not see any Webtools eTrans elements
     When I click "Solutions" in the "Header menu" region
     Then I should not see any Webtools eTrans elements

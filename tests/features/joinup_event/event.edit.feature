@@ -6,11 +6,11 @@ Feature: "Event page" editing.
 
   @terms
   Scenario: Add and remove map
-    Given collections:
+    Given communities:
       | title  | logo     | banner     | state     |
       | Heroes | logo.png | banner.jpg | validated |
-    And I am logged in as a facilitator of the "Heroes" collection
-    When I go to the homepage of the "Heroes" collection
+    And I am logged in as a facilitator of the "Heroes" community
+    When I go to the homepage of the "Heroes" community
     And I click "Add event" in the plus button menu
     When I fill in the following:
       | Title             | Best event                                               |
@@ -34,15 +34,15 @@ Feature: "Event page" editing.
     Given users:
       | Username |
       | <user>   |
-    And the following collections:
+    And the following communities:
       | title        | description        | state     | moderation |
-      | <collection> | Sample description | validated | yes        |
-    And the following collection user memberships:
-      | collection   | user   | roles  |
-      | <collection> | <user> | <role> |
+      | <community> | Sample description | validated | yes        |
+    And the following community user memberships:
+      | community   | user   | roles  |
+      | <community> | <user> | <role> |
     And "event" content:
-      | title   | author | collection   | state     |
-      | <event> | <user> | <collection> | validated |
+      | title   | author | community   | state     |
+      | <event> | <user> | <community> | validated |
     When I am logged in as "<user>"
     And I go to the "<event>" event
     Then I should see the link "Edit" in the "Entity actions" region
@@ -51,7 +51,7 @@ Feature: "Event page" editing.
     And I go to the "<event>" event
     Then I should see the link "Edit" in the "Entity actions" region
     Examples:
-      | user           | collection        | event                    | role        |
+      | user           | community        | event                    | role        |
       | Kristina Silva | Gate of Flames    | Gate of Flames           |             |
       | Irvin West     | Bare Past         | Name of Consort          | member      |
       | Emilio Garcia  | The Final Bridges | The Dreaming of the Game | facilitator |

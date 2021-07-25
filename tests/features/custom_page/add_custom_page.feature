@@ -5,7 +5,7 @@ Feature: "Add custom page" visibility options.
   I need to be able to add "Custom page" content through UI.
 
   Background:
-    Given collections:
+    Given communities:
       | title           | logo     | state     |
       | Open Collective | logo.png | validated |
       | Code Camp       | logo.png | validated |
@@ -53,7 +53,7 @@ Feature: "Add custom page" visibility options.
 
     Examples:
       | title     | group      |
-      | Code Camp | collection |
+      | Code Camp | community |
       | Parachute | solution   |
 
   @uploadFiles:test.zip
@@ -102,7 +102,7 @@ Feature: "Add custom page" visibility options.
 
     Examples:
       | first title | second title    | group      |
-      | Code Camp   | Open Collective | collection |
+      | Code Camp   | Open Collective | community |
       | Parachute   | Skydiving       | solution   |
 
   Scenario: Moderators can access the "Add custom page" menu item.
@@ -111,9 +111,9 @@ Feature: "Add custom page" visibility options.
       | Falstad  | moderator |
 
     Given I am logged in as "Falstad"
-    When I go to the homepage of the "Open Collective" collection
+    When I go to the homepage of the "Open Collective" community
     Then I should see the link "Add custom page" in the "Plus button menu"
-    When I go to the homepage of the "Code Camp" collection
+    When I go to the homepage of the "Code Camp" community
     Then I should see the link "Add custom page" in the "Plus button menu"
     When I go to the homepage of the "Parachute" solution
     Then I should see the link "Add custom page" in the "Plus button menu"
@@ -122,13 +122,13 @@ Feature: "Add custom page" visibility options.
 
   @javascript
   Scenario: Long list of attachments should be collapsed.
-    Given the following collection:
+    Given the following community:
       | title | Aggressive Rubber |
       | state | validated         |
     # Create custom pages with 5 and 6 attachments.
     # 5 is the limit before adding the "Show more" functionality.
     And custom_page content:
-      | title          | body                 | collection        | attachments                                                          |
+      | title          | body                 | community        | attachments                                                          |
       | Rubber bands   | The aggressive ones. | Aggressive Rubber | empty.rdf, empty_pdf.pdf, invalid_adms.rdf, test.zip, text.pdf       |
       | Elastic rubber | Also aggressive.     | Aggressive Rubber | ada.png, alan.jpg, blaise.jpg, charles.jpg, leonardo.jpg, linus.jpeg |
 

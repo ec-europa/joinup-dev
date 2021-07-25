@@ -18,12 +18,12 @@ Feature:
       | og:image:type | image/svg+xml                                                                                                                                                                                                              |
     And the HTML title of the page should be "Joinup"
 
-    When I click "Collections"
+    When I click "Communities"
     Then the following meta tags should available in the html:
       | identifier    | value                                      |
-      | og:url        | __base_url__/collections                   |
+      | og:url        | __base_url__/communities                   |
       | og:site_name  | Joinup                                     |
-      | og:title      | Collections                                |
+      | og:title      | Communities                                |
       | og:image      | __base_url__/themes/joinup/images/logo.svg |
       | og:image:type | image/svg+xml                              |
 

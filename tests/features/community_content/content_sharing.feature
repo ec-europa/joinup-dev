@@ -1,7 +1,7 @@
 @api @email @group-b
-Feature: Sharing content between collections
+Feature: Sharing content between communities
   As a privileged user
-  I want to share content between collections
+  I want to share content between communities
   So that useful information has more visibility
 
   @javascript
@@ -41,7 +41,7 @@ Feature: Sharing content between collections
     Then a modal should open
     And the following fields should not be present "Classic Rock, Hip-Hop, Power ballad, Drum'n'Bass"
 
-    # This "authenticated user" is not member of any collections or solution, so they can
+    # This "authenticated user" is not member of any communities or solution, so they can
     # share only in social networks.
     When I am logged in as an "authenticated user"
     And I go to the content page of the type "<content type>" with the title "Interesting content"
@@ -49,7 +49,7 @@ Feature: Sharing content between collections
     Then a modal should open
     And the following fields should not be present "Classic Rock, Hip-Hop, Power ballad, Drum'n'Bass"
 
-    # A member of a single collection or solution which is the one where the content was
+    # A member of a single community or solution which is the one where the content was
     # created can share on social networks only.
     When I am logged in as "Marjolein Rye"
     And I go to the content page of the type "<content type>" with the title "Interesting content"
@@ -154,13 +154,13 @@ Feature: Sharing content between collections
 
     Examples:
       | content type | group type |
-      | event        | collection |
+      | event        | community |
       | event        | solution   |
-      | document     | collection |
+      | document     | community |
       | document     | solution   |
-      | discussion   | collection |
+      | discussion   | community |
       | discussion   | solution   |
-      | news         | collection |
+      | news         | community |
       | news         | solution   |
 
   @javascript
@@ -226,13 +226,13 @@ Feature: Sharing content between collections
 
     Examples:
       | content type | group type |
-      | event        | collection |
+      | event        | community |
       | event        | solution   |
-      | document     | collection |
+      | document     | community |
       | document     | solution   |
-      | discussion   | collection |
+      | discussion   | community |
       | discussion   | solution   |
-      | news         | collection |
+      | news         | community |
       | news         | solution   |
 
   @javascript
@@ -274,43 +274,43 @@ Feature: Sharing content between collections
 
     Examples:
       | content type | group type |
-      | event        | collection |
+      | event        | community |
       | event        | solution   |
-      | document     | collection |
+      | document     | community |
       | document     | solution   |
-      | discussion   | collection |
+      | discussion   | community |
       | discussion   | solution   |
-      | news         | collection |
+      | news         | community |
       | news         | solution   |
 
   Scenario: Shared pinned content is erroneously shown first.
-    Given collections:
+    Given communities:
       | title         | state     |
       | Milky Way     | validated |
       | Chocolate Way | validated |
     And "document" content:
-      | title                 | collection    | shared on     | state     | created    | pinned |
+      | title                 | community    | shared on     | state     | created    | pinned |
       | Milky Way content     | Milky Way     | Chocolate Way | validated | 2017-06-04 | yes    |
       | Chocolate Way content | Chocolate Way |               | validated | 2017-06-05 | no     |
-    When I go to the homepage of the "Chocolate Way" collection
+    When I go to the homepage of the "Chocolate Way" community
     Then I should see the following tiles in the correct order:
       | Chocolate Way content |
       | Milky Way content     |
 
   @javascript
   Scenario Outline: The sharing options should be shown in a modal window.
-    Given collections:
+    Given communities:
       | title   | state     |
       | Secrets | validated |
       | Gossip  | validated |
     And <content type> content:
-      | title                 | collection | state     |
+      | title                 | community | state     |
       | An unshareable secret | Secrets    | validated |
     And users:
       | Username        | E-mail                |
       | Sanjica Sauvage | sanjisauv@example.com |
-    And the following collection user memberships:
-      | collection | user            |
+    And the following community user memberships:
+      | community | user            |
       | Secrets    | Sanjica Sauvage |
       | Gossip     | Sanjica Sauvage |
     And I am an anonymous user
@@ -322,7 +322,7 @@ Feature: Sharing content between collections
       | Twitter  |
       | Linkedin |
 
-    # Check that the collection the content is shared on is immediately shown in the "Shared on" tiles.
+    # Check that the community the content is shared on is immediately shown in the "Shared on" tiles.
     Given I am logged in as "Sanjica Sauvage"
     When I go to the content page of the type "<content type>" with the title "An unshareable secret"
     And I click "Share"

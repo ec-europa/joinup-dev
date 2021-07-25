@@ -11,15 +11,15 @@ Feature: "Discussion page" editing.
     Given users:
       | Username |
       | <user>   |
-    And the following collections:
+    And the following communities:
       | title        | description        | state     |
-      | <collection> | Sample description | validated |
-    And the following collection user memberships:
-      | collection   | user   | roles  |
-      | <collection> | <user> | <role> |
+      | <community> | Sample description | validated |
+    And the following community user memberships:
+      | community   | user   | roles  |
+      | <community> | <user> | <role> |
     And "discussion" content:
-      | title        | author | collection   | state     |
-      | <discussion> | <user> | <collection> | validated |
+      | title        | author | community   | state     |
+      | <discussion> | <user> | <community> | validated |
     When I am logged in as "<user>"
     And I go to the "<discussion>" discussion
     Then I should see the link "Edit" in the "Entity actions" region
@@ -28,7 +28,7 @@ Feature: "Discussion page" editing.
     And I go to the "<discussion>" discussion
     Then I should see the link "Edit" in the "Entity actions" region
     Examples:
-      | user           | collection      | discussion             | role        |
+      | user           | community      | discussion             | role        |
       | Bennie Sherman | Missing Lover   | The Seventh Planet     | member      |
       | Kristy Cortez  | Witch of Secret | The Waves of the Flame | facilitator |
 

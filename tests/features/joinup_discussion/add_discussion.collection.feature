@@ -1,36 +1,36 @@
 @api @group-b
-Feature: Discussions added to collections
+Feature: Discussions added to communities
   In order to manage discussions
-  As a collection member
+  As a community member
   I need to be able to add "Discussion" content through UI.
 
   Scenario: "Add discussion" button should not be shown to normal members, authenticated users and anonymous users.
-    Given the following collections:
+    Given the following communities:
       | title              | logo     | banner     | state     |
       | The Fallen History | logo.png | banner.jpg | validated |
       | White Sons         | logo.png | banner.jpg | validated |
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "The Fallen History" collection
+    And I go to the homepage of the "The Fallen History" community
     Then I should not see the link "Add discussion"
 
     When I am an anonymous user
-    And I go to the homepage of the "The Fallen History" collection
+    And I go to the homepage of the "The Fallen History" community
     Then I should not see the link "Add discussion"
 
-    When I am logged in as a member of the "The Fallen History" collection
-    And I go to the homepage of the "The Fallen History" collection
+    When I am logged in as a member of the "The Fallen History" community
+    And I go to the homepage of the "The Fallen History" community
     Then I should see the link "Add discussion"
 
-    When I am logged in as a "facilitator" of the "The Fallen History" collection
-    And I go to the homepage of the "The Fallen History" collection
+    When I am logged in as a "facilitator" of the "The Fallen History" community
+    And I go to the homepage of the "The Fallen History" community
     Then I should see the link "Add discussion"
-    # I should not be able to add a discussion to a different collection
-    When I go to the homepage of the "White Sons" collection
+    # I should not be able to add a discussion to a different community
+    When I go to the homepage of the "White Sons" community
     Then I should not see the link "Add discussion"
 
     When I am logged in as a "moderator"
-    And I go to the homepage of the "The Fallen History" collection
+    And I go to the homepage of the "The Fallen History" community
     Then I should see the link "Add discussion"
 
   @terms @uploadFiles:test.zip
@@ -40,15 +40,15 @@ Feature: Discussions added to collections
       | First name  | Kesha                                 |
       | Family name | Pontecorvo                            |
       | E-mail      | kesha.pontecorvo@ec-europa.example.eu |
-    And collections:
+    And communities:
       | title                  | logo     | banner     | state     |
       | The World of the Waves | logo.png | banner.jpg | validated |
-    And the following collection user membership:
-      | collection             | user      | roles       |
+    And the following community user membership:
+      | community             | user      | roles       |
       | The World of the Waves | kesha1988 | facilitator |
     And I am logged in as kesha1988
 
-    When I go to the homepage of the "The World of the Waves" collection
+    When I go to the homepage of the "The World of the Waves" community
     And I click "Add discussion" in the plus button menu
     Then I should see the heading "Add discussion"
     And the following fields should be present "Title, Content, Topic, Add a new file"
@@ -80,7 +80,7 @@ Feature: Discussions added to collections
     # Verify that the author is visible on the page.
     And I should see the text "Kesha Pontecorvo"
     And I should see the success message "Discussion An amazing discussion has been created."
-    And the "The World of the Waves" collection has a discussion titled "An amazing discussion"
+    And the "The World of the Waves" community has a discussion titled "An amazing discussion"
 
     # Attachments should be visible.
     And I should see the text "Attachments"
@@ -91,8 +91,8 @@ Feature: Discussions added to collections
     But I should not see the text "State" in the "Content" region
     And I should not see the text "Validated" in the "Content" region
 
-    # Check that the tile for the discussion is visible on the collection page.
-    When I go to the homepage of the "The World of the Waves" collection
+    # Check that the tile for the discussion is visible on the community page.
+    When I go to the homepage of the "The World of the Waves" community
     Then I should see the link "An amazing discussion"
     And I should not see the text "Kesha Pontecorvo" in the "An amazing discussion" tile
     # Initially there are 0 comments on the discussion.

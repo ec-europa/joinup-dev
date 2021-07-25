@@ -9,19 +9,19 @@ use Drupal\joinup_group\Entity\GroupContentTrait;
 /**
  * Reusable methods for node collection content.
  */
-trait NodeCollectionContentTrait {
+trait NodeCommunityContentTrait {
 
   use GroupContentTrait;
 
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): CollectionInterface {
+  public function getCommunity(): CommunityInterface {
     $group = $this->getGroup();
-    if (!$group instanceof CollectionInterface) {
-      return $group->getCollection();
+    if (!$group instanceof CommunityInterface) {
+      return $group->getCommunity();
     }
-    /** @var \Drupal\collection\Entity\CollectionInterface $group */
+    /** @var \Drupal\collection\Entity\CommunityInterface $group */
     return $group;
   }
 

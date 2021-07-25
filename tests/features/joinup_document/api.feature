@@ -8,7 +8,7 @@ Feature: Document API
     Given the following owner:
       | name        |
       | Joinup Derp |
-    And the following collection:
+    And the following community:
       | title            | Joinup document name     |
       | owner            | Joinup Derp              |
       | logo             | logo.png                 |
@@ -16,6 +16,6 @@ Feature: Document API
       | content creation | facilitators and authors |
       | state            | validated                |
     And document content:
-      | title    | document type | short title | body               | collection           |
+      | title    | document type | short title | body               | community           |
       | JD title | Document      | Short       | Dummy description. | Joinup document name |
     Then I should have a "Document" page titled "JD title"

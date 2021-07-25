@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\collection\Plugin\WorkflowStatePermission;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\joinup_group\Plugin\WorkflowStatePermission\GroupWorkflowStatePermissionBase;
 
 /**
@@ -20,13 +20,13 @@ use Drupal\joinup_group\Plugin\WorkflowStatePermission\GroupWorkflowStatePermiss
  *   id = "collection",
  * )
  */
-class CollectionWorkflowStatePermission extends GroupWorkflowStatePermissionBase {
+class CommunityWorkflowStatePermission extends GroupWorkflowStatePermissionBase {
 
   /**
    * {@inheritdoc}
    */
   public function applies(EntityInterface $entity): bool {
-    return $entity instanceof CollectionInterface;
+    return $entity instanceof CommunityInterface;
   }
 
 }

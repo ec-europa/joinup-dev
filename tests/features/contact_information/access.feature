@@ -24,7 +24,7 @@ Feature: Contact information access
       | name   | info             |
       | email  | info@dataflow.be |
       | author | Michiel Lucas    |
-    And collection:
+    And community:
       | title               | Ausy software solutions |
       | description         | A software company      |
       | logo                | logo.png                |
@@ -32,9 +32,9 @@ Feature: Contact information access
       | owner               | Ausy BENELUX            |
       | contact information | info                    |
       | state               | validated               |
-    And the following collection user memberships:
-      | collection              | user          | roles       |
+    And the following community user memberships:
+      | community              | user          | roles       |
       | Ausy software solutions | Michiel Lucas | facilitator |
     When I am logged in as "Michiel Lucas"
-    When I go to the edit form of the "Ausy software solutions" collection
+    When I go to the edit form of the "Ausy software solutions" community
     Then I should see the button "Edit" in the "Contact information inline form" region

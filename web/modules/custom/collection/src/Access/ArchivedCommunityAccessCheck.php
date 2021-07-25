@@ -8,13 +8,13 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 use Symfony\Component\Routing\Route;
 
 /**
  * Provides an access checker for the '_archived_collection' requirement.
  */
-class ArchivedCollectionAccessCheck implements AccessInterface {
+class ArchivedCommunityAccessCheck implements AccessInterface {
 
   /**
    * Checks access for routes having the '_archived_collection' requirement.
@@ -36,10 +36,10 @@ class ArchivedCollectionAccessCheck implements AccessInterface {
       throw new \Exception("Invalid value '{$requirement}' for route '_archived_collection' requirement.");
     }
 
-    $collection = $route_match->getParameter('rdf_entity');
+    $community = $route_match->getParameter('rdf_entity');
 
     // If the collection is archived, content creation is not allowed.
-    if ($collection instanceof CollectionInterface && $collection->getWorkflowState() === 'archived') {
+    if ($community instanceof CommunityInterface && $community->getWorkflowState() === 'archived') {
       return AccessResult::forbidden();
     }
 

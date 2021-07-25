@@ -58,7 +58,7 @@ class JoinupGroupContext extends RawDrupalContext {
   }
 
   /**
-   * Navigates to the about page of a collection or solution.
+   * Navigates to the about page of a community or solution.
    *
    * @param string $label
    *   The label of the group for which to visit the about page.
@@ -80,7 +80,7 @@ class JoinupGroupContext extends RawDrupalContext {
    * the first one is checked.
    *
    * @param string $group_label
-   *   The name of the collection or solution to check.
+   *   The name of the community or solution to check.
    * @param string $group_type
    *   The type of the group.
    * @param string $content_title
@@ -96,7 +96,7 @@ class JoinupGroupContext extends RawDrupalContext {
     $group = $this->getRdfEntityByLabel($group_label, $group_type);
     $node = $this->getNodeByTitle($content_title);
     if ($node->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->target_id !== $group->id()) {
-      throw new \Exception("The node '$content_title' is not associated with collection '{$group->label()}'.");
+      throw new \Exception("The node '$content_title' is not associated with community '{$group->label()}'.");
     }
   }
 
@@ -157,7 +157,7 @@ class JoinupGroupContext extends RawDrupalContext {
    * @param string $label
    *   The name of the group to check.
    * @param string $type
-   *   The group type, either 'collection' or 'solution'.
+   *   The group type, either 'community' or 'solution'.
    * @param int $number
    *   The expected number of members in the group.
    * @param string $membership_state

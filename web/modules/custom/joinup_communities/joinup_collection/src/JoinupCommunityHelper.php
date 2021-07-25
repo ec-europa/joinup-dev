@@ -7,9 +7,9 @@ namespace Drupal\joinup_collection;
 use Drupal\Core\Site\Settings;
 
 /**
- * Helper class for the Joinup Collection module.
+ * Helper class for the Joinup Community module.
  */
-class JoinupCollectionHelper {
+class JoinupCommunityHelper {
 
   /**
    * The default entity ID of the Joinup collection.
@@ -25,7 +25,7 @@ class JoinupCollectionHelper {
    * @return string
    *   The entity ID.
    */
-  public static function getCollectionId(): string {
+  public static function getCommunityId(): string {
     return Settings::get('joinup_collection.collection_id', static::JOINUP_COLLECTION_DEFAULT_ENTITY_ID);
   }
 

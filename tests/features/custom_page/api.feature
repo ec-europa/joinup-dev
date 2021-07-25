@@ -8,7 +8,7 @@ Feature: Custom page API
     Given the following owner:
       | name            |
       | Rufus Drumknott |
-    And the following collection:
+    And the following community:
       | title            | Le Foie Heureux          |
       | owner            | Rufus Drumknott          |
       | logo             | logo.png                 |
@@ -16,7 +16,7 @@ Feature: Custom page API
       | content creation | facilitators and authors |
       | state            | validated                |
     And custom_page content:
-      | title      | body                                     | collection      |
+      | title      | body                                     | community      |
       | Dummy page | This is some dummy content like foo:bar. | Le Foie Heureux |
      # @Fixme unimplemented. See ISAICP-2369
      # | Exclude from menu |                                              |

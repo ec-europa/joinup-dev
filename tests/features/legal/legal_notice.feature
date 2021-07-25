@@ -177,17 +177,17 @@ Feature:
     And CAS users:
       | Username        | E-mail                  | Password | Local username  |
       | Sergeant Pepper | pepper@royalnavy.mod.uk | p3pp3r   | Sergeant Pepper |
-    And collections:
+    And communities:
       | title              | state     |
       | Land of submarines | validated |
 
     Given I am an anonymous user
-    When I go to the homepage of the "Land of submarines" collection
-    And I click "Join this collection"
+    When I go to the homepage of the "Land of submarines" community
+    And I click "Join this community"
     Then I should see the text "Sign in to join"
 
-    # When an anonymous user is trying to join a collection, they are first
-    # redirected to the login form, and then redirected back to the collection
+    # When an anonymous user is trying to join a community, they are first
+    # redirected to the login form, and then redirected back to the community
     # so they can opt in to receive email notifications. However, if the user
     # has not yet accepted the current legal notice, they should be redirected
     # to the legal notice form first.
@@ -206,7 +206,7 @@ Feature:
     And I should see the warning message "You must accept this agreement before continuing."
 
     # After accepting the legal notice form we should finally be redirected to
-    # the collection homepage.
+    # the community homepage.
     When I check "Accept Version 2.0!"
     And I press "Submit"
     Then I should see the heading "Land of submarines"

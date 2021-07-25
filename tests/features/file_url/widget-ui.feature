@@ -6,15 +6,15 @@ Feature: User interface for the File URL field
 
   @javascript
   Scenario: Interact with both the 'File upload' and 'External URL' options
-    Given the following collection:
+    Given the following community:
       | title | Caterpillar, use headbutt |
       | logo  | logo.png                  |
       | state | validated                 |
 
-    Given I am logged in as a member of the "Caterpillar, use headbutt" collection
+    Given I am logged in as a member of the "Caterpillar, use headbutt" community
     # An example of the File URL field is the "Documentation" field in the
     # solution form.
-    And I go to the add solution form of the "Caterpillar, use headbutt" collection
+    And I go to the add solution form of the "Caterpillar, use headbutt" community
 
     # Initially, only the radio button selector should be visible, but no option
     # is selected.

@@ -10,9 +10,9 @@ use Drupal\og\GroupPermission;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Event subscribers for the Collection module.
+ * Event subscribers for the Community module.
  */
-class CollectionEventSubscriber implements EventSubscriberInterface {
+class CommunityEventSubscriber implements EventSubscriberInterface {
 
   use StringTranslationTrait;
 

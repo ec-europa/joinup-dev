@@ -5,12 +5,12 @@ Feature: Input filter
   The HTML I can use in the WYSIWYG editor gets filtered
 
   Background:
-    Given the following collection:
+    Given the following community:
       | title | Netflix group |
       | logo  | logo.png      |
       | state | validated     |
     And news content:
-      | title                   | headline                           | body                                                                                                                                                                                                                                                                                                                                                                                                                                           | collection    | state     |
+      | title                   | headline                           | body                                                                                                                                                                                                                                                                                                                                                                                                                                           | community    | state     |
       | Jessica Jones returns   | Netflix releases new Marvel series | <iframe width="560" height="315" src="https://www.youtube.com/embed/nWHUjuJ8zxE" frameborder="0" allowfullscreen></iframe>                                                                                                                                                                                                                                                                                                                     | Netflix group | validated |
       | Luke cage               | Some shady iframe                  | <iframe width="50" height="50" src="https://www.example.com" ></iframe>                                                                                                                                                                                                                                                                                                                                                                        | Netflix group | validated |
       | Ragged Crying           | Ragged Crying                      | <h1>test h1</h1> <h2>test h2</h2> <h3>test h3</h3> <h4>test h4</h4> <h5>test h5</h5> <h6>test h6</h6>                                                                                                                                                                                                                                                                                                                                          | Netflix group | validated |
@@ -22,7 +22,7 @@ Feature: Input filter
       # Since area coordinates contains commas and we don't want this to be interpreted as multiple values we need to enclose the value with double quotes and escape the quotes in the HTML.
       | Image map               | A map encompasses 1 or more areas  | "<map name=""imagemap""><area shape=""circle"" coords=""50,50,25"" href=""/"" alt=""Homepage""/></map><img usemap=""imagemap"" src=""/images/my-image.png"" alt=""Imagemap example"" />"                                                                                                                                                                                                                                                       | Netflix group | validated |
     And discussion content:
-      | title      | body             | collection    | state     |
+      | title      | body             | community    | state     |
       | Discussion | Start discussion | Netflix group | validated |
 
   Scenario: Ensure all required formats are supported in the content editor.

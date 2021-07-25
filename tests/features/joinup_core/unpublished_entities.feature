@@ -4,7 +4,7 @@ Feature: Unpublished content of the website
   As a user of the website
   I want to be able to find unpublished content that I can work on
 
-  Scenario: Interact with unpublished entities in collections.
+  Scenario: Interact with unpublished entities in communities.
     Given the following owner:
       | name            | type                    |
       | Owner something | Non-Profit Organisation |
@@ -17,18 +17,18 @@ Feature: Unpublished content of the website
       | Preston Fields |       |
       | Brenda Day     |       |
       | Phillip Shaw   |       |
-    And the following collections:
+    And the following communities:
       | title               | description         | state     | content creation | moderation | abstract     | topic             | owner           | contact information |
       | Invisible Boyfriend | Invisible Boyfriend | validated | members          | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
       | Grey Swords         | Invisible Boyfriend | proposed  | members          | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
       | Nothing of Slaves   | Invisible Boyfriend | draft     | members          | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
-    And the following collection user memberships:
-      | collection          | user           | roles         |
+    And the following community user memberships:
+      | community          | user           | roles         |
       | Invisible Boyfriend | Ed Abbott      | authenticated |
       | Invisible Boyfriend | Preston Fields | authenticated |
       | Invisible Boyfriend | Phillip Shaw   | facilitator   |
     And "event" content:
-      | title                                 | created           | author    | collection          | state     |
+      | title                                 | created           | author    | community          | state     |
       | The Ragged Streams                    | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | proposed  |
       | Storms of Touch                       | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | validated |
       | The Male of the Gift                  | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | validated |
@@ -37,14 +37,14 @@ Feature: Unpublished content of the website
       | Mists outside the planes of construct | 2018-10-04 8:31am | Ed Abbott | Grey Swords         | draft     |
       | Mists that are published maybe?       | 2018-10-04 8:31am | Ed Abbott | Grey Swords         | validated |
     And glossary content:
-      | title    | synonyms | summary                 | author    | created           | definition                                  | collection          | status      |
+      | title    | synonyms | summary                 | author    | created           | definition                                  | community          | status      |
       | Alphabet | ABC      | Summary of Alphabet     | Ed Abbott | 2018-10-04 8:29am | Long, long definition field                 | Invisible Boyfriend | published   |
       | Colors   | CLR      | Summary of Colors       | Ed Abbott | 2018-10-04 8:29am | Colors definition field                     | Invisible Boyfriend | unpublished |
       | Smells   | SML      | Smells Like Teen Spirit | Ed Abbott | 2018-10-04 8:31am | With the lights out, it's less dangerous... | Invisible Boyfriend | unpublished |
 
     # The owner should be able to see all content.
     When I am logged in as "Ed Abbott"
-    And I go to the "Invisible Boyfriend" collection
+    And I go to the "Invisible Boyfriend" community
     Then I should see the "The Ragged Streams" tile
     And I should see the "Storms of Touch" tile
     And I should see the "The Male of the Gift" tile
@@ -52,7 +52,7 @@ Feature: Unpublished content of the website
 
     # The facilitator should not be able to see content that only have a draft state.
     When I am logged in as "Phillip Shaw"
-    And I go to the "Invisible Boyfriend" collection
+    And I go to the "Invisible Boyfriend" community
     Then I should see the "The Ragged Streams" tile
     And I should see the "Storms of Touch" tile
     And I should see the "The Male of the Gift" tile
@@ -76,7 +76,7 @@ Feature: Unpublished content of the website
       | Colors                                |
       | Smells                                |
 
-    # The moderator should see the proposed collections on his dashboard.
+    # The moderator should see the proposed communities on his dashboard.
     When I am logged in as a moderator
     And I go to the dashboard
     Then I should see the "Grey Swords" tile
@@ -85,7 +85,7 @@ Feature: Unpublished content of the website
 
     # Other members should only see the published items.
     When I am logged in as "Preston Fields"
-    And I go to the "Invisible Boyfriend" collection
+    And I go to the "Invisible Boyfriend" community
     Then I should see the "Storms of Touch" tile
     And I should see the "The Male of the Gift" tile
     But I should not see the "The Ragged Streams" tile
@@ -93,7 +93,7 @@ Feature: Unpublished content of the website
 
     # Other authenticated users should only see the published items.
     When I am logged in as "Brenda Day"
-    And I go to the "Invisible Boyfriend" collection
+    And I go to the "Invisible Boyfriend" community
     Then I should see the "Storms of Touch" tile
     And I should see the "The Male of the Gift" tile
     But I should not see the "The Ragged Streams" tile
@@ -109,24 +109,24 @@ Feature: Unpublished content of the website
     And I fill in "Physical location" with "Somewhere"
     And I fill in "Motivation" with "Some regression issues"
     And I press "Request changes"
-    And I go to the homepage of the "Invisible Boyfriend" collection
+    And I go to the homepage of the "Invisible Boyfriend" community
     Then I should see the "The Male of the Gift" tile
     And I should see the "The Gift of the Female" tile
     When I am logged in as "Preston Fields"
-    And I go to the "Invisible Boyfriend" collection
+    And I go to the "Invisible Boyfriend" community
     Then I should see the "The Male of the Gift" tile
     But I should not see the "The Gift of the Female" tile
 
     # Publishing a parent should update the index of the children as well.
     When I am logged in as a moderator
-    And I go to the homepage of the "Grey Swords" collection
+    And I go to the homepage of the "Grey Swords" community
     When I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Grey Swords"
 
     # An anonymous user should see the even in the newly saved version.
     When I am not logged in
-    And I go to the homepage of the "Grey Swords" collection
+    And I go to the homepage of the "Grey Swords" community
     Then I should see the heading "Grey Swords"
     And I should not see the following tiles in the "Unpublished content area" region:
       | Mists that are published maybe? |
@@ -134,7 +134,7 @@ Feature: Unpublished content of the website
 
     # Unpublished content is ordered by creation date.
     When I am logged in as "Ed Abbott"
-    And I go to the homepage of the "Grey Swords" collection
+    And I go to the homepage of the "Grey Swords" community
     And I should see the following tiles in the correct order:
       # Published content appears first in the content listing.
       | Mists that are published maybe?       |

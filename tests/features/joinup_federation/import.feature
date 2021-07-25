@@ -2,7 +2,7 @@
 Feature: As a site moderator I am able to import RDF files.
 
   Background:
-    Given collection:
+    Given community:
       | uri   | http://administracionelectronica.gob.es/ctt |
       | title | Spain                                       |
       | state | validated                                   |
@@ -18,7 +18,7 @@ Feature: As a site moderator I am able to import RDF files.
       | - Select -                               |
       | Danish Public Sector Interoperability    |
       | EU Schemantic Interoperability Catalogue |
-      | Joinup collection                        |
+      | Joinup community                        |
       | Slovenian Interoperability Portal - NIO  |
       | Spain - Center for Technology Transfer   |
 
@@ -107,7 +107,7 @@ Feature: As a site moderator I am able to import RDF files.
       | Spain - Center for Technology Transfer execution stopped with errors in Joinup compliance validation step. Please review the following errors: |
     And I should see the heading "Errors executing Spain - Center for Technology Transfer"
     And I should see the following lines of text:
-      | A solution titled Solution 1 already exists in this collection.                        |
+      | A solution titled Solution 1 already exists in this community.                        |
       | The referenced entity (rdf_entity: http://example.com/owner/invalid) does not exist.   |
       | The referenced entity (rdf_entity: http://example.com/contact/invalid) does not exist. |
       | This value should not be null.                                                         |
@@ -117,15 +117,15 @@ Feature: As a site moderator I am able to import RDF files.
   Scenario: Test a successful import.
     Given user:
       | Username    | CS Owner                |
-      | First name  | Collection and solution |
+      | First name  | Community and solution |
       | Family name | Owner                   |
       | E-mail      | csowner@example.com     |
-    And collection:
+    And community:
       | uri   | http://nio.gov.si/nio/ |
       | title | NIO                    |
       | state | validated              |
     And solutions:
-      | uri                           | title                       | collection | description         | state     | modification date |
+      | uri                           | title                       | community | description         | state     | modification date |
       | http://example.com/solution/2 | Local version of Solution 2 | NIO        | Initial description | validated | 15-07-2018        |
     And the following solution user membership:
       | solution                    | user     | roles                      | state  |
@@ -138,8 +138,8 @@ Feature: As a site moderator I am able to import RDF files.
       | parent            | Local version of Solution 2                |
       | creation date     | 15-07-2018                                 |
       | modification date | 15-07-2018                                 |
-    And the following collection user membership:
-      | collection | user     | roles                      | state  |
+    And the following community user membership:
+      | community | user     | roles                      | state  |
       | NIO        | CS Owner | facilitator, administrator | active |
     # Hash for solution 2 includes the title 'Local version of solution 2' so
     # that it will detect changes in the first attempt.
@@ -167,7 +167,7 @@ Feature: As a site moderator I am able to import RDF files.
       | Pipeline                                 | Last executed |
       | Danish Public Sector Interoperability    | Never         |
       | EU Schemantic Interoperability Catalogue | Never         |
-      | Joinup collection                        | Never         |
+      | Joinup community                        | Never         |
       | Slovenian Interoperability Portal - NIO  | Never         |
       | Spain - Center for Technology Transfer   | Never         |
 
@@ -232,8 +232,8 @@ Feature: As a site moderator I am able to import RDF files.
       | About    |
 
     # Check the affiliation of federated solutions.
-    But the "Solution 1" solution should be affiliated with the "NIO" collection
-    And the "Solution 2" solution should be affiliated with the "NIO" collection
+    But the "Solution 1" solution should be affiliated with the "NIO" community
+    And the "Solution 2" solution should be affiliated with the "NIO" community
 
     # Check that the existing solution values were overridden.
     Given I go to the edit form of the "Solution 2" solution
@@ -245,7 +245,7 @@ Feature: As a site moderator I am able to import RDF files.
     And I press "Publish"
     Then I should see the heading "Solution 2"
 
-    # Verify that the collection owner can edit the new solutions.
+    # Verify that the community owner can edit the new solutions.
     When I am logged in as "CS Owner"
     Given I go to the edit form of the "Solution 1" solution
     Then the response status code should be 200
@@ -305,9 +305,9 @@ Feature: As a site moderator I am able to import RDF files.
     And the "Linux" entity is not blacklisted for federation
 
     # Check the affiliation of federated solutions.
-    And the "Solution 1" solution should be affiliated with the "NIO" collection
-    And the "Solution 2" solution should be affiliated with the "NIO" collection
-    And the "Solution 3" solution should be affiliated with the "NIO" collection
+    And the "Solution 1" solution should be affiliated with the "NIO" community
+    And the "Solution 2" solution should be affiliated with the "NIO" community
+    And the "Solution 3" solution should be affiliated with the "NIO" community
 
     # Check that the Topic value was not overridden.
     Given I go to the edit form of the "Solution 2" solution
@@ -327,7 +327,7 @@ Feature: As a site moderator I am able to import RDF files.
       | Pipeline                                 | Last executed |
       | Danish Public Sector Interoperability    | Never         |
       | EU Schemantic Interoperability Catalogue | Never         |
-      | Joinup collection                        | Never         |
+      | Joinup community                        | Never         |
       | Slovenian Interoperability Portal - NIO  | 0 days ago    |
       | Spain - Center for Technology Transfer   | Never         |
 
@@ -360,8 +360,8 @@ Feature: As a site moderator I am able to import RDF files.
     # Solution 2 is deleted automatically by Behat.
     And I delete the "Solution 3" solution
 
-  @joinup_collection
-  Scenario: Test that solutions cannot be re-federated in a different collection.
+  @joinup_community
+  Scenario: Test that solutions cannot be re-federated in a different community.
     Given I click "ADMS-AP importer" in the "Administration toolbar" region
     And I select "Spain - Center for Technology Transfer" from "Data pipeline"
     And I press "Execute"
@@ -382,20 +382,20 @@ Feature: As a site moderator I am able to import RDF files.
       | The Spain - Center for Technology Transfer execution has finished with success. |
     And I should see the heading "Successfully executed Spain - Center for Technology Transfer import pipeline"
 
-    # Try to federate in a different collection.
-    Given I visit "/admin/content/pipeline/joinup_collection/execute"
+    # Try to federate in a different community.
+    Given I visit "/admin/content/pipeline/joinup_community/execute"
     And I attach the file "single_solution_valid_adms.rdf" to "File"
     And I press "Upload"
 
     When I press "Next"
     And I wait for the pipeline batch job to finish
 
-    Then I should see "Joinup collection: User selection"
+    Then I should see "Joinup community: User selection"
     # The url of the entity is not included as the alias with the base url is included.
     And I should see the text "Federation record exists with "
 
     # The federation was incomplete. Reset the pipeline to conclude the test.
-    Then I visit "/admin/content/pipeline/joinup_collection/reset"
+    Then I visit "/admin/content/pipeline/joinup_community/reset"
     # We manually delete the imported entities as they are not tracked by Behat
     # and, as a consequence, will not be automatically deleted after test. Also
     # this is a good test to check that the entities were imported and exist.

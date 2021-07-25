@@ -1,7 +1,7 @@
 @api @group-a
 Feature:
   In order to be able to have the solutions categorized properly through the EIF Toolbox
-  As the collection owner
+  As the community owner
   I need to have the EIF recommendations available.
 
   Scenario: EIF recommendations are available to view.
@@ -11,13 +11,13 @@ Feature:
     And I should see the text "The coordination function ensures that needs are identified and appropriate services are invoked and orchestrated to provide a European public service."
 
   Scenario: EIF recommendations field is accessible to moderators only.
-    Given collection:
+    Given community:
       | title | EIF Toolbox |
       | state | validated   |
     And solution:
       | title      | Some EIF solution |
       | state      | validated         |
-      | collection | EIF Toolbox       |
+      | community | EIF Toolbox       |
 
     Given I am logged in as a facilitator of the "Some EIF solution" solution
     When I go to the edit form of the "Some EIF solution" solution
@@ -30,13 +30,13 @@ Feature:
     When I press "Publish"
 
   Scenario: EIF recommendations are not visible to the end user.
-    Given collection:
+    Given community:
       | title | EIF Toolbox |
       | state | validated   |
     And solution:
       | title         | Some EIF solution |
       | state         | validated         |
-      | collection    | EIF Toolbox       |
+      | community    | EIF Toolbox       |
       | eif reference | Recommendation 1  |
       | eif category  | Common services   |
 
@@ -51,11 +51,11 @@ Feature:
 
   @terms
   Scenario: Solutions referencing an EIF term should appear in the corresponding page.
-    Given collection:
+    Given community:
       | title | EIF Toolbox |
       | state | validated   |
     And solutions:
-      | title    | state     | topic      | collection  | eif reference                      |
+      | title    | state     | topic      | community  | eif reference                      |
       | Balker   | validated |            | EIF Toolbox | Recommendation 1, Recommendation 2 |
       | Corridor | validated |            | EIF Toolbox | Recommendation 1                   |
       | Lager    | validated | Demography | EIF Toolbox |                                    |

@@ -72,7 +72,7 @@ Feature: Solutions Overview
     Given users:
       | Username      | E-mail                            |
       | Madam Shirley | i.dont.see.the.future@example.com |
-    And the following collection:
+    And the following community:
       | title | Pikachu, I choose you |
       | logo  | logo.png              |
       | state | validated             |
@@ -131,7 +131,7 @@ Feature: Solutions Overview
 
     # Add new solution as a moderator to directly publish it.
     And I am logged in as a moderator
-    When I go to the add solution form of the "Pikachu, I choose you" collection
+    When I go to the add solution form of the "Pikachu, I choose you" community
     Then I should see the heading "Add Solution"
     When I fill in the following:
       | Title                 | Colonies in Earth                                                      |
@@ -175,21 +175,21 @@ Feature: Solutions Overview
       | Marjorie Parker | marjorie.parker@example.com |
       | Ryker Brandon   | ryker.brandon@example.com   |
       | Joann Womack    | joann.womack@example.com    |
-    And the following collections:
+    And the following communities:
       | title                 | state     |
       | Insane Wooden Crystal | validated |
     And the following solutions:
-      | title                        | collection            | state     | featured | author          |
+      | title                        | community            | state     | featured | author          |
       | Subdivision Morbid           | Insane Wooden Crystal | validated | yes      | Marjorie Parker |
       | Long Tungsten                | Insane Wooden Crystal | validated | no       | Ryker Brandon   |
       | Hungry Disappointed Tungsten | Insane Wooden Crystal | validated | yes      | Marjorie Parker |
       | Lost Yard                    | Insane Wooden Crystal | validated | no       | Joann Womack    |
       | Lost Scattered Fish          | Insane Wooden Crystal | validated | no       | Joann Womack    |
       | Silver Gravel                | Insane Wooden Crystal | validated | no       | Joann Womack    |
-    # Technical: use a separate step to create a collection associated to the anonymous user.
+    # Technical: use a separate step to create a community associated to the anonymous user.
     And the following solution:
       | title      | Flag Rough            |
-      | collection | Insane Wooden Crystal |
+      | community | Insane Wooden Crystal |
       | state      | validated             |
       | featured   | no                    |
 
@@ -209,7 +209,7 @@ Feature: Solutions Overview
       | All solutions          |
     And the page should be cacheable
     # Regression test to ensure that the facets are cached by user.
-    # Subsequent page loads of the collections page would lead to cached facets
+    # Subsequent page loads of the communities page would lead to cached facets
     # to be leaked to other users.
     # @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
     When I click "All solutions" in the "My solutions content" inline facet
@@ -232,7 +232,7 @@ Feature: Solutions Overview
       | All solutions          |
     And the page should be cacheable
     # Verify that the facets are cached for the correct user by visiting again
-    # the collections page without any facet filter.
+    # the communities page without any facet filter.
     When I click "All solutions" in the "My solutions content" inline facet
     Then the "My solutions content" inline facet should allow selecting the following values:
       | Featured solutions (2) |

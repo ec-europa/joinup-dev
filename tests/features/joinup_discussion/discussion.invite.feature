@@ -20,17 +20,17 @@ Feature: Invite members to subscribe to discussions
       | solution                | user         | roles       |
       | Stainless Steel Siphons | theacuteone  | member      |
       | Stainless Steel Siphons | Glory Ruskin | facilitator |
-    And the following collection:
+    And the following community:
       | title       | The Siphon Community |
       | description | We just love siphons |
       | state       | validated            |
-    And the following collection user membership:
-      | collection           | user             | roles       |
+    And the following community user membership:
+      | community           | user             | roles       |
       | The Siphon Community | Lynwood Crawford | member      |
       | The Siphon Community | theacuteone      | member      |
       | The Siphon Community | Glory Ruskin     | facilitator |
     And discussion content:
-      | title                            | content                            | author           | state     | collection           | solution                |
+      | title                            | content                            | author           | state     | community           | solution                |
       | For your lifetime                | Are you kidding?                   | Lynwood Crawford | validated |                      | Stainless Steel Siphons |
       | Concerned about dissolved gases? | Gas might get trapped in a siphon. | Lynwood Crawford | validated | The Siphon Community |                         |
       | The flying droplet siphon        | Liquid tensile strength.           | Lynwood Crawford | draft     | The Siphon Community |                         |
@@ -45,7 +45,7 @@ Feature: Invite members to subscribe to discussions
     When I go to the "The flying droplet siphon" discussion
     Then I should not see the link "Invite"
 
-    # Users not a member of the collection/solution cannot invite other users.
+    # Users not a member of the community/solution cannot invite other users.
     Given I am logged in as "paternoster"
     When I go to the "For your lifetime" discussion
     Then I should not see the link "Invite"
@@ -54,7 +54,7 @@ Feature: Invite members to subscribe to discussions
     When I go to the "The flying droplet siphon" discussion
     Then I should not see the link "Invite"
 
-    # Regular members of the collection/solution cannot invite other users.
+    # Regular members of the community/solution cannot invite other users.
     Given I am logged in as "theacuteone"
     When I go to the "For your lifetime" discussion
     Then I should not see the link "Invite"

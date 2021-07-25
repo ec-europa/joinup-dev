@@ -3,9 +3,9 @@ Feature: Add comments
   As a visitor of the website I can leave a comment on community content.
 
   Background:
-    Given the following collections:
+    Given the following communities:
       | title             | state     | closed |
-      | Gossip collection | validated | no     |
+      | Gossip community | validated | no     |
     And users:
       | Username        | E-mail                 | Roles | First name | Family name |
       | Miss tell tales | tell.tales@example.com |       | Miss       | Tales       |
@@ -17,17 +17,17 @@ Feature: Add comments
   Scenario Outline: Make an authenticated comment, skips moderation.
 
     Given solutions:
-      | title                | collection        | state     |
-      | Gossip girl solution | Gossip collection | validated |
+      | title                | community        | state     |
+      | Gossip girl solution | Gossip community | validated |
     And users:
       | Username          | E-mail                        | Roles     | First name | Family name |
       | Comment moderator | comment.moderator@example.com | moderator | Comment    | Moderator   |
       | Layonel Sarok     | layonel.sarok@example.com     |           | Layonel    | Sarok       |
       | Korma Salya       | korma.salya@example.com       |           | Korma      | Salya       |
-    And the following collection user memberships:
-      | collection        | user          | roles                      |
-      | Gossip collection | Layonel Sarok | administrator, facilitator |
-      | Gossip collection | Korma Salya   | facilitator                |
+    And the following community user memberships:
+      | community        | user          | roles                      |
+      | Gossip community | Layonel Sarok | administrator, facilitator |
+      | Gossip community | Korma Salya   | facilitator                |
     And the following solution user memberships:
       | solution             | user          | roles                      |
       | Gossip girl solution | Layonel Sarok | administrator, facilitator |
@@ -77,18 +77,18 @@ Feature: Add comments
 
     Examples:
       | content type | title               | state     | parent     | parent title         |
-      | news         | Scandalous news     | validated | collection | Gossip collection    |
-      | event        | Celebrity gathering | validated | collection | Gossip collection    |
-      | discussion   | Is gossip bad?      | validated | collection | Gossip collection    |
-      | document     | Wikileaks           | validated | collection | Gossip collection    |
+      | news         | Scandalous news     | validated | community | Gossip community    |
+      | event        | Celebrity gathering | validated | community | Gossip community    |
+      | discussion   | Is gossip bad?      | validated | community | Gossip community    |
+      | document     | Wikileaks           | validated | community | Gossip community    |
       # Add an example also for solutions to ensure the variables are properly replaced.
       | news         | Scandalous news     | validated | solution   | Gossip girl solution |
 
   Scenario Outline: Posting comments.
 
     Given <content type> content:
-      | title   | body                                                | collection        | state   |
-      | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <state> |
+      | title   | body                                                | community        | state   |
+      | <title> | How could this ever happen? Moral panic on its way! | Gossip community | <state> |
     Given I am logged in as "Miss tell tales"
     And all e-mails have been sent
     When I go to the content page of the type "<content type>" with the title "<title>"
@@ -151,12 +151,12 @@ Feature: Add comments
 
   Scenario Outline: Comments are disallowed for anonymous users.
 
-    Given the following collections:
+    Given the following communities:
       | title          | state     | closed |
-      | Shy collection | validated | yes    |
+      | Shy community | validated | yes    |
     And <content type> content:
-      | title   | body                                                | collection   | state   |
-      | <title> | How could this ever happen? Moral panic on its way! | <collection> | <state> |
+      | title   | body                                                | community   | state   |
+      | <title> | How could this ever happen? Moral panic on its way! | <community> | <state> |
 
     # Anonymous users should not be able to comment.
     Given I am an anonymous user
@@ -174,12 +174,12 @@ Feature: Add comments
     And I should see the button "Post comment"
 
     Examples:
-      | collection        | content type | title                     | state     |
-      | Shy collection    | news         | Scandalous news           | validated |
-      | Shy collection    | event        | Celebrity gathering       | validated |
-      | Shy collection    | discussion   | Is gossip bad?            | validated |
-      | Shy collection    | document     | Wikileaks                 | validated |
-      | Gossip collection | news         | Rihanna wears pope outfit | validated |
-      | Gossip collection | event        | Taylor Swift wedding      | validated |
-      | Gossip collection | discussion   | Is gossip good?           | validated |
-      | Gossip collection | document     | Celebrity scandals 2019   | validated |
+      | community        | content type | title                     | state     |
+      | Shy community    | news         | Scandalous news           | validated |
+      | Shy community    | event        | Celebrity gathering       | validated |
+      | Shy community    | discussion   | Is gossip bad?            | validated |
+      | Shy community    | document     | Wikileaks                 | validated |
+      | Gossip community | news         | Rihanna wears pope outfit | validated |
+      | Gossip community | event        | Taylor Swift wedding      | validated |
+      | Gossip community | discussion   | Is gossip good?           | validated |
+      | Gossip community | document     | Celebrity scandals 2019   | validated |

@@ -5,13 +5,13 @@ Feature: "Add document" visibility options.
   I need to be able to add "Document" content through UI.
 
   Scenario: "Add document" button should not be shown to normal members, authenticated users and anonymous users.
-    Given the following collection:
+    Given the following community:
       | title  | Collective Seventh Name |
       | logo   | logo.png                |
       | banner | banner.jpg              |
       | state  | validated               |
     And the following solutions:
-      | title               | collection              | logo     | banner     | state     |
+      | title               | community              | logo     | banner     | state     |
       | Seventh Name        | Collective Seventh Name | logo.png | banner.jpg | validated |
       | The Obsessed Stream | Collective Seventh Name | logo.png | banner.jpg | validated |
 
@@ -36,13 +36,13 @@ Feature: "Add document" visibility options.
 
   @terms
   Scenario: Add document as a facilitator.
-    Given the following collection:
+    Given the following community:
       | title  | Collective Winter of Beginning |
       | logo   | logo.png                       |
       | banner | banner.jpg                     |
       | state  | validated                      |
     And the following solutions:
-      | title               | collection                     | logo     | banner     | state     |
+      | title               | community                     | logo     | banner     | state     |
       | Winter of Beginning | Collective Winter of Beginning | logo.png | banner.jpg | validated |
     And I am logged in as a facilitator of the "Winter of Beginning" solution
 

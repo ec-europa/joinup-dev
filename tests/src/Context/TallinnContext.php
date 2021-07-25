@@ -26,7 +26,7 @@ class TallinnContext extends RawDrupalContext {
   use RdfEntityTrait;
 
   /**
-   * Creates the standard 'Tallinn' collection and several dependencies.
+   * Creates the standard 'Tallinn' community and several dependencies.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    *   Thrown when one of the entities could not be created, for example because
@@ -64,7 +64,7 @@ class TallinnContext extends RawDrupalContext {
 
     // Create the Tallinn entity.
     Rdf::create([
-      'rid' => 'collection',
+      'rid' => 'community',
       'id' => Tallinn::TALLINN_COMMUNITY_ID,
       'label' => 'Tallinn Ministerial Declaration',
       'field_ar_state' => 'validated',
@@ -129,9 +129,9 @@ class TallinnContext extends RawDrupalContext {
     $node->field_paragraphs_body->entity->delete();
     $node->delete();
 
-    $collection = Rdf::load(Tallinn::TALLINN_COMMUNITY_ID);
-    $collection->skip_notification = TRUE;
-    $collection->delete();
+    $community = Rdf::load(Tallinn::TALLINN_COMMUNITY_ID);
+    $community->skip_notification = TRUE;
+    $community->delete();
 
     // Delete related entities.
     foreach (['http://example.com/term/2', 'http://example.com/term/1'] as $id) {

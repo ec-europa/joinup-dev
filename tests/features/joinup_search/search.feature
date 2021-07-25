@@ -9,20 +9,20 @@ Feature: Global search
   # Ref. https://www.drupal.org/project/facets/issues/2937191
   @javascript
   Scenario: Anonymous user can find items
-    Given the following collection:
-      | title            | Molecular cooking collection |
+    Given the following community:
+      | title            | Molecular cooking community |
       | logo             | logo.png                     |
       | moderation       | no                           |
       | topic            | Demography                   |
       | spatial coverage | Belgium                      |
       | state            | validated                    |
     And the following solutions:
-      | title          | collection                   | description                                                                                                                          | topic      | spatial coverage | state     |
-      | Spherification | Molecular cooking collection | Spherification is the culinary process of shaping a liquid into spheres                                                              | Demography | European Union   | validated |
-      | Foam           | Molecular cooking collection | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" |            |                  | validated |
+      | title          | community                   | description                                                                                                                          | topic      | spatial coverage | state     |
+      | Spherification | Molecular cooking community | Spherification is the culinary process of shaping a liquid into spheres                                                              | Demography | European Union   | validated |
+      | Foam           | Molecular cooking community | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" |            |                  | validated |
     And news content:
-      | title                 | body             | collection                   | topic                   | spatial coverage | state     |
-      | El Celler de Can Roca | The best in town | Molecular cooking collection | Statistics and Analysis | Luxembourg       | validated |
+      | title                 | body             | community                   | topic                   | spatial coverage | state     |
+      | El Celler de Can Roca | The best in town | Molecular cooking community | Statistics and Analysis | Luxembourg       | validated |
 
     Given I am logged in as a user with the "authenticated" role
     # @todo The search page cache should be cleared when new content is added.
@@ -30,7 +30,7 @@ Feature: Global search
     And the cache has been cleared
     When I visit the search page
     # All content is visible.
-    Then I should see the "Molecular cooking collection" tile
+    Then I should see the "Molecular cooking community" tile
     And I should see the "El Celler de Can Roca" tile
     And I should see the "Spherification" tile
     And I should see the "Foam" tile
@@ -63,7 +63,7 @@ Feature: Global search
       | Any location         |
       | Belgium   (1)        |
       | European Union   (1) |
-    And I should see the "Molecular cooking collection" tile
+    And I should see the "Molecular cooking community" tile
     And I should see the "Spherification" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Foam" tile
@@ -79,7 +79,7 @@ Feature: Global search
     And the "topic" select facet should contain the following options:
       | Any topic        |
       | Demography   (1) |
-    And I should see the "Molecular cooking collection" tile
+    And I should see the "Molecular cooking community" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Spherification" tile
     And I should not see the "Foam" tile
@@ -91,12 +91,12 @@ Feature: Global search
     # Select link in the 'type' facet.
     When I check the "News (1)" checkbox from the "Content types" facet
     Then the "News" content checkbox item should be selected
-    And the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (1)"
+    And the "Content types" checkbox facet should allow selecting the following values "Community (1), Solutions (2), News (1)"
 
     When I check the "Solutions (2)" checkbox from the "Content types" facet
     Then the "Solutions" content checkbox item should be selected
     And the "News" content checkbox item should be selected
-    Then the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (1)"
+    Then the "Content types" checkbox facet should allow selecting the following values "Community (1), Solutions (2), News (1)"
     And the "topic" select facet should contain the following options:
       | Any topic                     |
       | Demography   (1)              |
@@ -105,7 +105,7 @@ Feature: Global search
       | Any location         |
       | European Union   (1) |
       | Luxembourg   (1)     |
-    And I should not see the "Molecular cooking collection" tile
+    And I should not see the "Molecular cooking community" tile
     And I should see the "El Celler de Can Roca" tile
     But I should see the "Spherification" tile
     And I should see the "Foam" tile
@@ -113,7 +113,7 @@ Feature: Global search
     # Launch a text search.
     When I open the search bar by clicking on the search icon
     And I enter "Cooking" in the search bar and press enter
-    Then I should see the "Molecular cooking collection" tile
+    Then I should see the "Molecular cooking community" tile
     And I should see the "Foam" tile
     But I should not see the "Spherification" tile
     And I should not see the "El Celler de Can Roca" tile
@@ -126,17 +126,17 @@ Feature: Global search
     And the following contact:
       | name  | Go-to contact     |
       | email | go-to@example.com |
-    And the following collections:
+    And the following communities:
       | title            | description                                          | abstract                       | state     |
-      | Collection alpha | <p>collection <strong>beta</strong> description.</p> | The collection gamma abstract. | validated |
-      | Col for Sol      | <p>collection for the solution.</p>                  | The col for sol abstract.      | validated |
+      | Community alpha | <p>community <strong>beta</strong> description.</p> | The community gamma abstract. | validated |
+      | Col for Sol      | <p>community for the solution.</p>                  | The col for sol abstract.      | validated |
     And event content:
-      | title             | short title       | body                                | spatial coverage | agenda         | location       | organisation        | scope         | keywords | collection       | state     |
-      | Event Omega       | Event short delta | The epsilon event content.          | Greece           | Event agenda.  | Some place     | European Commission | International | Alphabet | Collection alpha | validated |
-      | Alternative event | Alt event         | This event stays in the background. | Luxembourg       | To be planned. | Event location | Event organisation  |               |          | Collection alpha | validated |
+      | title             | short title       | body                                | spatial coverage | agenda         | location       | organisation        | scope         | keywords | community       | state     |
+      | Event Omega       | Event short delta | The epsilon event content.          | Greece           | Event agenda.  | Some place     | European Commission | International | Alphabet | Community alpha | validated |
+      | Alternative event | Alt event         | This event stays in the background. | Luxembourg       | To be planned. | Event location | Event organisation  |               |          | Community alpha | validated |
     And document content:
-      | title          | document type | short title          | body                                    | spatial coverage | keywords | collection       | state     |
-      | Document omega | Document      | Document short delta | A document consists of epsilon strings. | Luxembourg       | Alphabet | Collection alpha | validated |
+      | title          | document type | short title          | body                                    | spatial coverage | keywords | community       | state     |
+      | Document omega | Document      | Document short delta | A document consists of epsilon strings. | Luxembourg       | Alphabet | Community alpha | validated |
 
     When I visit the search page
     And the "spatial coverage" select facet should contain the following options:
@@ -158,12 +158,12 @@ Feature: Global search
     And the following contact:
       | name  | Go-to contact     |
       | email | go-to@example.com |
-    And the following collections:
+    And the following communities:
       | title            | description                                          | abstract                       | state     |
-      | Collection alpha | <p>collection <strong>beta</strong> description.</p> | The collection gamma abstract. | validated |
-      | Col for Sol      | <p>collection for the solution.</p>                  | The col for sol abstract.      | validated |
+      | Community alpha | <p>community <strong>beta</strong> description.</p> | The community gamma abstract. | validated |
+      | Col for Sol      | <p>community for the solution.</p>                  | The col for sol abstract.      | validated |
     And the following solutions:
-      | title          | description                                                | keywords | owner             | contact information | collection  | state     |
+      | title          | description                                                | keywords | owner             | contact information | community  | state     |
       | Solution alpha | <p>This is the solution <strong>beta</strong> description. | Alphabet | Responsible owner | Go-to contact       | Col for Sol | validated |
     And the following releases:
       | title         | release number | release notes                               | keywords | is version of  | owner             | contact information | state     |
@@ -175,56 +175,56 @@ Feature: Global search
       | title         | description                         |
       | Licence Alpha | A beta description for the licence. |
     And news content:
-      | title      | headline            | body                      | keywords | collection       | state     |
-      | News omega | News headline delta | The epsilon news content. | Alphabet | Collection alpha | validated |
+      | title      | headline            | body                      | keywords | community       | state     |
+      | News omega | News headline delta | The epsilon news content. | Alphabet | Community alpha | validated |
     And event content:
-      | title             | short title       | body                                | agenda         | location       | organisation        | scope         | keywords | collection       | solution       | state     |
+      | title             | short title       | body                                | agenda         | location       | organisation        | scope         | keywords | community       | solution       | state     |
       | Event Omega       | Event short delta | The epsilon event content.          | Event agenda.  | Some place     | European Commission | International | Alphabet |                  | Solution alpha | validated |
-      | Alternative event | Alt event         | This event stays in the background. | To be planned. | Event location | Event organisation  |               |          | Collection alpha |                | validated |
+      | Alternative event | Alt event         | This event stays in the background. | To be planned. | Event location | Event organisation  |               |          | Community alpha |                | validated |
     And document content:
-      | title          | document type | short title          | body                                    | keywords | collection       | state     |
-      | Document omega | Document      | Document short delta | A document consists of epsilon strings. | Alphabet | Collection alpha | validated |
+      | title          | document type | short title          | body                                    | keywords | community       | state     |
+      | Document omega | Document      | Document short delta | A document consists of epsilon strings. | Alphabet | Community alpha | validated |
     And discussion content:
       | title            | body                                                              | solution       | state     |
       | Discussion omega | <p>Does anybody has idea why this <em>epsilon</em> is everywhere? | Solution alpha | validated |
     And custom_page content:
-      | title      | body                                     | collection       |
-      | Page omega | This is just an epsilon but should work. | Collection alpha |
+      | title      | body                                     | community       |
+      | Page omega | This is just an epsilon but should work. | Community alpha |
     And video content:
-      | title       | body          | field_video                                 | collection       |
-      | Video alpha | Slap like now | https://www.youtube.com/watch?v=JhGf8ZY0tN8 | Collection alpha |
+      | title       | body          | field_video                                 | community       |
+      | Video alpha | Slap like now | https://www.youtube.com/watch?v=JhGf8ZY0tN8 | Community alpha |
     And users:
       | Username     | E-mail                      | First name | Family name | Organisation |
       | jenlyle      | jenessa.carlyle@example.com | Jenessa    | Carlyle     | Clyffco      |
       | ulyssesfrees | ulysses.freeman@example.com | Ulysses    | Freeman     | Omero snc    |
 
     When I visit the search page
-    Then the "Content types" checkbox facet should allow selecting the following values "Collections (2), Solution (1), News (1), Events (2), Document (1), Discussion (1), Release (1), Custom page (1), Licence (1), Video (1)"
+    Then the "Content types" checkbox facet should allow selecting the following values "Communities (2), Solution (1), News (1), Events (2), Document (1), Discussion (1), Release (1), Custom page (1), Licence (1), Video (1)"
 
     # "Alpha" is used in all the rdf entities titles.
     When I enter "Alpha" in the search bar and press enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha, Video alpha"
+    Then the page should show the tiles "Community alpha, Solution alpha, Release Alpha, Licence Alpha, Video alpha"
 
     # "Omega" is used in all the node entities titles. Since the content of
-    # custom pages is added to their collection, we also match the collection.
+    # custom pages is added to their community, we also match the community.
     When I enter "omega" in the search bar and press enter
-    Then the page should show the tiles "Collection alpha, News omega, Event Omega, Document omega, Discussion omega, Page omega"
+    Then the page should show the tiles "Community alpha, News omega, Event Omega, Document omega, Discussion omega, Page omega"
 
     # "Beta" is used in all the rdf entities body fields.
     When I enter "beta" in the search bar and press enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha"
+    Then the page should show the tiles "Community alpha, Solution alpha, Release Alpha, Licence Alpha"
 
     # "Epsilon" is used in all the node entities body fields.
     When I enter "epsilon" in the search bar and press enter
-    Then the page should show the tiles "Collection alpha, News omega, Event Omega, Document omega, Discussion omega, Page omega"
+    Then the page should show the tiles "Community alpha, News omega, Event Omega, Document omega, Discussion omega, Page omega"
 
     # "Alphabet" is used in all the keywords fields.
     When I enter "Alphabet" in the search bar and press enter
     Then the page should show the tiles "Solution alpha, Release Alpha, News omega, Event Omega, Document omega"
 
-    # "Gamma" is used in the collection abstract.
+    # "Gamma" is used in the community abstract.
     When I enter "gamma" in the search bar and press enter
-    Then the page should show the tiles "Collection alpha"
+    Then the page should show the tiles "Community alpha"
 
     # "Delta" is used in headline and short titles.
     When I enter "delta" in the search bar and press enter
@@ -265,34 +265,34 @@ Feature: Global search
     # and the search page.
     Given I am on the homepage
     Then I should not see the link "Advanced search"
-    Given I visit the collection overview
+    Given I visit the community overview
     Then I should see the link "Advanced search"
     When I click "Advanced search"
     Then I should be on the advanced search page
     But I should not see the link "Advanced search"
 
-  Scenario: Collections and solutions are shown first in search results with the same relevance.
-    Given collections:
+  Scenario: Communities and solutions are shown first in search results with the same relevance.
+    Given communities:
       | title                           | description                         | state     |
       | Ornithology: the study of birds | Ornithology is a branch of zoology. | validated |
       | Husky Flying Xylophone          | A strange instrument.               | validated |
     And the following solution:
       | title       | Bird outposts in the wild            |
-      | collection  | Ornithology: the study of birds      |
+      | community  | Ornithology: the study of birds      |
       | description | Exotic wings and where to find them. |
       | state       | validated                            |
     And custom_page content:
-      | title           | body                                  | collection                      |
+      | title           | body                                  | community                      |
       | Disturbed birds | Flocks of trained pigeons flying off. | Ornithology: the study of birds |
     And news content:
-      | title                               | body                            | collection                      | state     |
+      | title                               | body                            | community                      | state     |
       | Chickens are small birds            | Birds domesticated in India.    | Ornithology: the study of birds | validated |
       | Found a xylophone from 1600 in Asia | Oldest instrument of this type. | Husky Flying Xylophone          | validated |
     And event content:
-      | title         | body                   | collection                      | state     |
+      | title         | body                   | community                      | state     |
       | Bird spotting | Roosters crow at dawn. | Ornithology: the study of birds | validated |
     And discussion content:
-      | title                             | body                    | collection                      | state     |
+      | title                             | body                    | community                      | state     |
       | Best place to find an exotic bird | Somewhere exotic maybe? | Ornithology: the study of birds | validated |
     And user:
       | Username    | Bird watcher |
@@ -496,28 +496,28 @@ Feature: Global search
     When I enter "Human Language" in the search bar and press enter
     Then I should see "No content found for your search."
 
-  Scenario: Collections are found by their keywords.
-    Given the following collection:
-      | title    | Collection sample       |
+  Scenario: Communities are found by their keywords.
+    Given the following community:
+      | title    | Community sample       |
       | keywords | unique, key-definitions |
       | state    | validated               |
 
     When I enter "key-definitions" in the search bar and press enter
-    Then the page should show only the tiles "Collection sample"
+    Then the page should show only the tiles "Community sample"
 
     When I enter "unique" in the search bar and press enter
-    Then the page should show only the tiles "Collection sample"
+    Then the page should show only the tiles "Community sample"
 
   @javascript
   Scenario: Users are able to select the sort order.
-    Given collections:
+    Given communities:
       | title             | description       | state     |
-      | Custom collection | Some custom data. | validated |
+      | Custom community | Some custom data. | validated |
     And news content:
-      | title                              | body                                                              | collection        | state     | created    | changed    |
-      | Relativity is the word             | No one cares about the body.                                      | Custom collection | validated | 01/01/2019 | 03/08/2019 |
-      | Relativity news: Relativity theory | I do care about the relativity keyword in the body.               | Custom collection | validated | 02/01/2019 | 02/08/2019 |
-      | Absolutely nonesense               | Some news are not worth it but I will add relativity here anyway. | Custom collection | validated | 03/01/2019 | 01/08/2019 |
+      | title                              | body                                                              | community        | state     | created    | changed    |
+      | Relativity is the word             | No one cares about the body.                                      | Custom community | validated | 01/01/2019 | 03/08/2019 |
+      | Relativity news: Relativity theory | I do care about the relativity keyword in the body.               | Custom community | validated | 02/01/2019 | 02/08/2019 |
+      | Absolutely nonesense               | Some news are not worth it but I will add relativity here anyway. | Custom community | validated | 03/01/2019 | 01/08/2019 |
 
     When I am on the homepage
     And I enter "Relativity" in the search bar and press enter

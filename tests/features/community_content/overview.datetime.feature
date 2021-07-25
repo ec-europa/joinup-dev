@@ -5,11 +5,11 @@ Feature:
   I want to have publication and update dates presented in the overview of my content.
 
   Scenario Outline: Last update date shown for specific content bundles.
-    Given the following collection:
+    Given the following community:
       | title | Gravitational wave detectors |
       | state | validated                    |
     And <type> content:
-      | title | created                         | <publication field name>        | changed                         | collection                   | state     |
+      | title | created                         | <publication field name>        | changed                         | community                   | state     |
       | LIGO  | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 25 Dec 2019 14:00:00 +0100 | Wed, 25 Dec 2019 15:00:00 +0100 | Gravitational wave detectors | validated |
 
     When I go to the "LIGO" <type>
@@ -24,31 +24,31 @@ Feature:
     And I should see the text "Last update: 26/12/2019"
 
     # Pinning and unpinning the content should not change the update timestamp.
-    Given I am logged in as a facilitator of the "Gravitational wave detectors" collection
-    When I go to the homepage of the "Gravitational wave detectors" collection
+    Given I am logged in as a facilitator of the "Gravitational wave detectors" community
+    When I go to the homepage of the "Gravitational wave detectors" community
     And I click the contextual link "Pin" in the "LIGO" tile
-    Then I should see the success message "LIGO has been pinned in the collection Gravitational wave detectors."
+    Then I should see the success message "LIGO has been pinned in the community Gravitational wave detectors."
     When I go to the "LIGO" <type>
     Then I should see the text "Published on: 25/12/2019"
     And I should see the text "Last update: 26/12/2019"
 
-    When I go to the homepage of the "Gravitational wave detectors" collection
+    When I go to the homepage of the "Gravitational wave detectors" community
     And I click the contextual link "Unpin" in the "LIGO" tile
-    Then I should see the success message "LIGO has been unpinned in the collection Gravitational wave detectors."
+    Then I should see the success message "LIGO has been unpinned in the community Gravitational wave detectors."
     When I go to the "LIGO" <type>
     Then I should see the text "Published on: 25/12/2019"
     And I should see the text "Last update: 26/12/2019"
 
     # Featuring and unfeaturing also should not change the update timestamp.
     Given I am logged in as a moderator
-    When I go to the homepage of the "Gravitational wave detectors" collection
+    When I go to the homepage of the "Gravitational wave detectors" community
     And I click the contextual link "Feature" in the "LIGO" tile
     Then I should see the success message "LIGO has been set as featured content."
     When I go to the "LIGO" <type>
     Then I should see the text "Published on: 25/12/2019"
     And I should see the text "Last update: 26/12/2019"
 
-    When I go to the homepage of the "Gravitational wave detectors" collection
+    When I go to the homepage of the "Gravitational wave detectors" community
     And I click the contextual link "Remove from featured" in the "LIGO" tile
     Then I should see the success message "LIGO has been removed from the featured contents."
     When I go to the "LIGO" <type>
@@ -64,11 +64,11 @@ Feature:
 
   @terms
   Scenario: Documents without a publication date should show the published_at property.
-    Given the following collection:
+    Given the following community:
       | title | Gravitational pull detectors |
       | state | validated                    |
-    When I am logged in as a facilitator of the "Gravitational pull detectors" collection
-    And I go to the "Gravitational pull detectors" collection
+    When I am logged in as a facilitator of the "Gravitational pull detectors" community
+    And I go to the "Gravitational pull detectors" community
     And I click "Add document"
     And I fill in the following:
       | Title       | POLI |
@@ -89,11 +89,11 @@ Feature:
 
   @terms
   Scenario: Draft documents without a publication date should only show the last updated time.
-    Given the following collection:
+    Given the following community:
       | title | Gravitational pull detectors |
       | state | validated                    |
-    When I am logged in as a facilitator of the "Gravitational pull detectors" collection
-    And I go to the "Gravitational pull detectors" collection
+    When I am logged in as a facilitator of the "Gravitational pull detectors" community
+    And I go to the "Gravitational pull detectors" community
     And I click "Add document"
     And I fill in the following:
       | Title       | POLI |

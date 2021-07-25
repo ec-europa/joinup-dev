@@ -54,31 +54,31 @@ Feature:
     And I should see the "Tile discussion" tile
     But I should not see the "Tile licence" tile
 
-  Scenario: Present custom page collection listings in tiles.
+  Scenario: Present custom page community listings in tiles.
     Given the following owner:
       | name                   | type    |
       | Some fancy named owner | Company |
     And the following contact:
       | name  | Some fancy named contact |
       | email | who.cares@example.com    |
-    And the following collections:
+    And the following communities:
       | title           | description | owner                  | contact information      | state     |
-      | Tile collection | Meh...      | Some fancy named owner | Some fancy named contact | validated |
+      | Tile community | Meh...      | Some fancy named owner | Some fancy named contact | validated |
     And news content:
-      | title     | headline  | body   | collection      | state     |
-      | Tile news | Tile news | Meh... | Tile collection | validated |
+      | title     | headline  | body   | community      | state     |
+      | Tile news | Tile news | Meh... | Tile community | validated |
     And event content:
-      | title      | short title | body   | agenda        | location   | organisation        | scope         | collection      | state     |
-      | Tile event | Tile event  | Meh... | Event agenda. | Some place | European Commission | International | Tile collection | validated |
+      | title      | short title | body   | agenda        | location   | organisation        | scope         | community      | state     |
+      | Tile event | Tile event  | Meh... | Event agenda. | Some place | European Commission | International | Tile community | validated |
     And document content:
-      | title         | document type | short title | body   | collection      | state     |
-      | Tile document | Document      | Meh...      | Meh... | Tile collection | validated |
+      | title         | document type | short title | body   | community      | state     |
+      | Tile document | Document      | Meh...      | Meh... | Tile community | validated |
     And discussion content:
-      | title           | body   | collection      | state     |
-      | Tile discussion | Meh... | Tile collection | validated |
+      | title           | body   | community      | state     |
+      | Tile discussion | Meh... | Tile community | validated |
 
     When I am logged in as a moderator
-    And I go to the homepage of the "Tile collection" collection
+    And I go to the homepage of the "Tile community" community
     And I click "Add custom page"
 
     When I fill in the following:

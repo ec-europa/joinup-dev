@@ -11,14 +11,14 @@ Feature:
     And the following contact:
       | name  | Sitemap secretariat             |
       | email | sitemap.secretariat@example.com |
-    And the following collections:
+    And the following communities:
       | title                        | state     |
-      | Sitemap collection draft     | draft     |
-      | Sitemap collection validated | validated |
+      | Sitemap community draft     | draft     |
+      | Sitemap community validated | validated |
     And the following solutions:
-      | title                      | description                 | owner         | contact information | collection                   | state     |
-      | Sitemap solution draft     | Sitemap keywords everywhere | Sitemap owner | Sitemap secretariat | Sitemap collection validated | draft     |
-      | Sitemap solution validated | Sitemap keywords everywhere | Sitemap owner | Sitemap secretariat | Sitemap collection validated | validated |
+      | title                      | description                 | owner         | contact information | community                   | state     |
+      | Sitemap solution draft     | Sitemap keywords everywhere | Sitemap owner | Sitemap secretariat | Sitemap community validated | draft     |
+      | Sitemap solution validated | Sitemap keywords everywhere | Sitemap owner | Sitemap secretariat | Sitemap community validated | validated |
     And the following releases:
       | title             | release number | release notes | is version of              | owner         | contact information | state     |
       | Sitemap release 1 | 1              | New release   | Sitemap solution validated | Sitemap owner | Sitemap secretariat | validated |
@@ -30,10 +30,10 @@ Feature:
       | title           | description |
       | Sitemap licence | Not allowed |
     And "custom_page" content:
-      | title                                           | collection                   | body | logo     | langcode |
-      | Sitemap custom page of draft                    | Sitemap collection draft     | N/A  | logo.png | en       |
-      | Sitemap custom page of validated                | Sitemap collection validated | N/A  | logo.png | en       |
-      | Sitemap custom page of validated but in Spanish | Sitemap collection validated | N/A  | logo.png | es       |
+      | title                                           | community                   | body | logo     | langcode |
+      | Sitemap custom page of draft                    | Sitemap community draft     | N/A  | logo.png | en       |
+      | Sitemap custom page of validated                | Sitemap community validated | N/A  | logo.png | en       |
+      | Sitemap custom page of validated but in Spanish | Sitemap community validated | N/A  | logo.png | es       |
     And news content:
       | title                                    | headline     | body              | solution                   | state     | publication date                |
       | Sitemap news draft                       | Sitemap news | Sitemap news body | Sitemap solution validated | draft     |                                 |
@@ -59,7 +59,7 @@ Feature:
     Given I run cron
     And I visit "/sitemap.xml"
     Then I should see the absolute urls of the following RDF entities:
-      | Sitemap collection validated |
+      | Sitemap community validated |
       | Sitemap solution validated   |
       | Sitemap release 1            |
     And I should see the absolute urls of the following content entities:
@@ -70,7 +70,7 @@ Feature:
       | Sitemap news validated but old   |
 
     But I should not see the absolute urls of the following RDF entities:
-      | Sitemap collection draft |
+      | Sitemap community draft |
       | Sitemap solution draft   |
       | Sitemap release 2        |
       | Sitemap distribution     |
@@ -100,8 +100,8 @@ Feature:
       | Sitemap news validated and recent |
 
     But I should not see the absolute urls of the following RDF entities:
-      | Sitemap collection draft     |
-      | Sitemap collection validated |
+      | Sitemap community draft     |
+      | Sitemap community validated |
       | Sitemap distribution         |
       | Sitemap solution draft       |
       | Sitemap solution validated   |
@@ -132,7 +132,7 @@ Feature:
     # longer considered as a hot topic and has moved to the standard sitemap.
     And I visit "/sitemap.xml"
     Then I should see the absolute urls of the following RDF entities:
-      | Sitemap collection validated |
+      | Sitemap community validated |
       | Sitemap solution validated   |
       | Sitemap release 1            |
     And I should see the absolute urls of the following content entities:
@@ -144,7 +144,7 @@ Feature:
       | Sitemap news validated but old    |
 
     But I should not see the absolute urls of the following RDF entities:
-      | Sitemap collection draft |
+      | Sitemap community draft |
       | Sitemap solution draft   |
       | Sitemap release 2        |
       | Sitemap distribution     |

@@ -5,15 +5,15 @@ Feature: SEO for news articles.
   I need proper metatag to be encapsulated in the html code.
 
   Scenario: Basic metatags are attached as JSON schema on the page.
-    Given collections:
+    Given communities:
       | title                      | state     |
-      | Joinup SEO news collection | validated |
+      | Joinup SEO news community | validated |
     And users:
       | Username          | E-mail                 | First name | Family name |
       | Joinup SEO author | joinup.seo@example.com | Kurk       | Smith       |
     And "news" content:
-      | title           | headline                    | logo     | body          | created                         | publication date                | changed                         | state     | author            | collection                 |
-      | Joinup SEO news | Headline of Joinup SEO news | logo.png | Body of news. | Sun, 01 Dec 2019 13:00:00 +0100 | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | validated | Joinup SEO author | Joinup SEO news collection |
+      | title           | headline                    | logo     | body          | created                         | publication date                | changed                         | state     | author            | community                 |
+      | Joinup SEO news | Headline of Joinup SEO news | logo.png | Body of news. | Sun, 01 Dec 2019 13:00:00 +0100 | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | validated | Joinup SEO author | Joinup SEO news community |
 
     When I visit the "Joinup SEO news" news
     Then the metatag JSON should be attached in the page
@@ -27,7 +27,7 @@ Feature: SEO for news articles.
       | datePublished       | 2019-12-25T13:00:00+0100                                                |
       | dateModified        | 2020-01-01T13:00:00+0100                                                |
       # __base_url__ will be replaced with the base url of the website.
-      | mainEntityOfPage    | __base_url__/collection/joinup-seo-news-collection/news/joinup-seo-news |
+      | mainEntityOfPage    | __base_url__/community/joinup-seo-news-community/news/joinup-seo-news |
     And the metatag graph of the item with "name" "Joinup SEO news" should have the following "image" properties:
       | property             | value       |
       | @type                | ImageObject |
@@ -52,7 +52,7 @@ Feature: SEO for news articles.
     And the following meta tags should available in the html:
       | identifier             | value                                                                   |
       | description            | Body of news.                                                           |
-      | og:url                 | __base_url__/collection/joinup-seo-news-collection/news/joinup-seo-news |
+      | og:url                 | __base_url__/community/joinup-seo-news-community/news/joinup-seo-news |
       | og:site_name           | Joinup                                                                  |
       | og:title               | Joinup SEO news                                                         |
       | og:description         | Body of news.                                                           |

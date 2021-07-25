@@ -85,15 +85,15 @@ class CustomPageContext extends RawDrupalContext {
   }
 
   /**
-   * Checks the number of custom pages a collection or solution has.
+   * Checks the number of custom pages a community or solution has.
    *
    * @param int $count
    *   The expected number of custom pages.
    * @param string $name
-   *   The name of the collection or solution to which the custom pages belong.
+   *   The name of the community or solution to which the custom pages belong.
    * @param string $type
    *   The RDF entity type to which the custom pages belong. Can be either
-   *   'collection' or 'solution'.
+   *   'community' or 'solution'.
    *
    * @throws \Exception
    *   Thrown when the count is incorrect.
@@ -161,7 +161,7 @@ class CustomPageContext extends RawDrupalContext {
         'og_group_entity_type' => $group->getEntityTypeId(),
         'og_group' => $group->id(),
       ],
-      'entity.ogmenu.collection' => [],
+      'entity.ogmenu.community' => [],
       'entity.ogmenu.solution' => [],
       'entity.ogmenu.add_form' => [],
       'entity.ogmenu.overview_form' => ['ogmenu' => $menu],
@@ -189,7 +189,7 @@ class CustomPageContext extends RawDrupalContext {
    * @param string $label
    *   The group label.
    * @param string $type
-   *   The group type, either 'collection' or 'solution'.
+   *   The group type, either 'community' or 'solution'.
    * @param int $count
    *   The expected number of visible menu items.
    *
@@ -217,7 +217,7 @@ class CustomPageContext extends RawDrupalContext {
    * @param string $label
    *   The group label.
    * @param string $type
-   *   The group type, either 'collection' or 'solution'.
+   *   The group type, either 'community' or 'solution'.
    * @param int $count
    *   The expected number of items in the menu.
    *
@@ -240,7 +240,7 @@ class CustomPageContext extends RawDrupalContext {
    * @param string $label
    *   The group label.
    * @param string $type
-   *   The group type, either 'collection' or 'solution'.
+   *   The group type, either 'community' or 'solution'.
    *
    * @When I :operation :title in the :menu menu of the :label :type
    */
@@ -296,7 +296,7 @@ class CustomPageContext extends RawDrupalContext {
    * @param string $group_label
    *   The group label.
    * @param string $group_type
-   *   The group type, either 'collection' or 'solution'.
+   *   The group type, either 'community' or 'solution'.
    *
    * @return \Drupal\Core\Menu\MenuLinkTreeElement[]
    *   The menu tree.
