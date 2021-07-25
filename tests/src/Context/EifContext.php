@@ -57,7 +57,7 @@ class EifContext extends RawDrupalContext {
 
     // Create the NIFO sample community.
     Rdf::create([
-      'rid' => 'community',
+      'rid' => 'collection',
       'id' => 'http://nifo.community',
       'label' => 'NIFO community',
       'field_ar_state' => 'validated',

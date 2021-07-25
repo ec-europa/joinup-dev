@@ -64,7 +64,7 @@ class TallinnContext extends RawDrupalContext {
 
     // Create the Tallinn entity.
     Rdf::create([
-      'rid' => 'community',
+      'rid' => 'collection',
       'id' => Tallinn::TALLINN_COMMUNITY_ID,
       'label' => 'Tallinn Ministerial Declaration',
       'field_ar_state' => 'validated',

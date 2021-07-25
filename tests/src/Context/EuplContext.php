@@ -51,7 +51,7 @@ class EuplContext extends RawDrupalContext {
 
     // Create the EUPL entity.
     Rdf::create([
-      'rid' => 'community',
+      'rid' => 'collection',
       'id' => Eupl::EUPL_COMMUNITY_ID,
       'label' => 'EUPL',
       'field_ar_state' => 'validated',

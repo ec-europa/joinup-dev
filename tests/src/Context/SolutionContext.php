@@ -228,7 +228,7 @@ class SolutionContext extends RawDrupalContext {
     if (empty($values['community'])) {
       $label = $this->getRandom()->sentences(3);
       $community = Rdf::create([
-        'rid' => 'community',
+        'rid' => 'collection',
         'label' => $label,
         'field_ar_state' => 'validated',
       ]);
