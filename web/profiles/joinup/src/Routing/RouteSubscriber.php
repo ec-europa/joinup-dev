@@ -15,7 +15,7 @@ class RouteSubscriber extends RouteSubscriberBase {
   /**
    * {@inheritdoc}
    */
-  protected function alterRoutes(RouteCollection $collection) {
+  protected function alterRoutes(RouteCollection $community) {
     // Since all content in Joinup is related to a community we use custom
     // forms that allow people to add content inside a community. The standard
     // node / RDF entity forms should not be used for creating new content - the
@@ -35,7 +35,7 @@ class RouteSubscriber extends RouteSubscriberBase {
       'view.frontpage.page_1',
     ];
     foreach ($routes as $route) {
-      if ($route = $collection->get($route)) {
+      if ($route = $community->get($route)) {
         $route->addRequirements(['_uid_1_only' => 'TRUE']);
       }
     }

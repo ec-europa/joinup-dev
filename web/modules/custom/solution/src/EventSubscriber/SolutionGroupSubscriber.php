@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\solution\EventSubscriber;
 
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\joinup_group\Event\AddGroupContentEvent;
 use Drupal\joinup_group\EventSubscriber\AddGroupContentEventSubscriberBase;
 
@@ -17,7 +17,7 @@ class SolutionGroupSubscriber extends AddGroupContentEventSubscriberBase {
    * {@inheritdoc}
    */
   public function addLinks(AddGroupContentEvent $event): void {
-    if ($event->getGroup() instanceof CollectionInterface) {
+    if ($event->getGroup() instanceof CommunityInterface) {
       parent::addLinks($event);
     }
   }

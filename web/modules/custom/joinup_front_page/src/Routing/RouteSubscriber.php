@@ -17,8 +17,8 @@ class RouteSubscriber extends RouteSubscriberBase {
   /**
    * {@inheritdoc}
    */
-  protected function alterRoutes(RouteCollection $collection) {
-    $routes = $collection->all();
+  protected function alterRoutes(RouteCollection $community) {
+    $routes = $community->all();
     foreach ($routes as $route_name => $route) {
       switch ($route_name) {
         case 'entity.menu.add_link_form':

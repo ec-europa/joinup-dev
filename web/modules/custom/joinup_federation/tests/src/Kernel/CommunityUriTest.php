@@ -13,7 +13,7 @@ use Drupal\rdf_entity\Entity\RdfEntityType;
  *
  * @group joinup_federation
  */
-class CollectionUriTest extends StepTestBase {
+class CommunityUriTest extends StepTestBase {
 
   use ConfigTestTrait;
 
@@ -70,7 +70,7 @@ class CollectionUriTest extends StepTestBase {
   /**
    * Test the missed community URI.
    */
-  public function testMissedCollectionUri(): void {
+  public function testMissedCommunityUri(): void {
     $this->container->get('state')->set('joinup_federation.test.collection', 'missed');
     $error = strip_tags($this->pipeline->prepare()->__toString());
     $this->assertEquals('The Joinup federation pipeline community URI testing import pipeline is not linked to any community. Contact the site administrator.', $error);
@@ -79,7 +79,7 @@ class CollectionUriTest extends StepTestBase {
   /**
    * Test the invalid community URI.
    */
-  public function testInvalidCollectionUri(): void {
+  public function testInvalidCommunityUri(): void {
     $this->container->get('state')->set('joinup_federation.test.collection', 'invalid');
     $this->expectException(PipelineStepPrepareLogicException::class);
     $this->expectExceptionMessage("A community with URI 'http://invalid-community-id' does not exist.");
@@ -89,9 +89,9 @@ class CollectionUriTest extends StepTestBase {
   /**
    * Test the community URI declared in annotation.
    */
-  public function testCollectionUriFromAnnotation(): void {
+  public function testCommunityUriFromAnnotation(): void {
     $this->container->get('state')->set('joinup_federation.test.collection', 'from_annotation');
-    $this->assertEquals('http://from-annotation', $this->pipeline->getCollection());
+    $this->assertEquals('http://from-annotation', $this->pipeline->getCommunity());
   }
 
 }

@@ -338,12 +338,12 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
   // to multiple communities, but for now we show only the first one.
   // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3635
   if ($display->getComponent('collections') && !$solution->get('collection')->isEmpty()) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
-    $collection = $solution->get('collection')->first()->entity;
+    /** @var \Drupal\rdf_entity\Entity\Rdf $community */
+    $community = $solution->get('collection')->first()->entity;
     $build['collections'] = [
       '#theme_wrappers' => ['container__stats_no_label'],
       'prefix' => ['#markup' => '<span class="stats__icon icon icon--collections"></span>'],
-      'link' => $collection->toLink($collection->label())->toRenderable(),
+      'link' => $community->toLink($community->label())->toRenderable(),
     ];
   }
 
@@ -540,9 +540,9 @@ function solution_invalidate_collection(EntityInterface $entity) {
     $ids = solution_get_collection_ids($entity);
     if ($ids) {
       $tags = [];
-      /** @var \Drupal\rdf_entity\RdfInterface $collection */
-      foreach (Rdf::loadMultiple($ids) as $collection) {
-        $tags = Cache::mergeTags($tags, $collection->getCacheTagsToInvalidate());
+      /** @var \Drupal\rdf_entity\RdfInterface $community */
+      foreach (Rdf::loadMultiple($ids) as $community) {
+        $tags = Cache::mergeTags($tags, $community->getCacheTagsToInvalidate());
       }
       Cache::invalidateTags(Cache::buildTags('og-group-content', $tags));
     }
@@ -555,7 +555,7 @@ function solution_invalidate_collection(EntityInterface $entity) {
  * Only use this function if you need to retrieve a fresh set of communities
  * from the database. For all other cases, use the computed 'collection' field:
  *
- * $collections = $solution->collection->getValue();
+ * $communities = $solution->collection->getValue();
  *
  * @param \Drupal\rdf_entity\RdfInterface $solution
  *   The solution for which to retrieve the affiliated communities.
@@ -619,10 +619,10 @@ function solution_rdf_entity_delete(RdfInterface $solution) {
   if ($ids) {
     // Touch the parent communities in order to update their changed timestamp.
     $request_time = \Drupal::time()->getRequestTime();
-    /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    foreach ($storage->loadMultiple($ids) as $collection) {
-      $collection->skip_notification = TRUE;
-      $collection->setChangedTime($request_time)->save();
+    /** @var \Drupal\rdf_entity\RdfInterface $community */
+    foreach ($storage->loadMultiple($ids) as $community) {
+      $community->skip_notification = TRUE;
+      $community->setChangedTime($request_time)->save();
     }
   }
 }

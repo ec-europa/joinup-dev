@@ -33,7 +33,7 @@ for which content bundles they want to receive notifications.
 
 When a user joins a collection they will be presented with a modal dialog that
 allows them to subscribe immediately after joining. This modal dialog can be
-found in the Collection module.
+found in the Community module.
 For solutions, a user sees a button to subscribe instead but becomes a member
 nonetheless.
 

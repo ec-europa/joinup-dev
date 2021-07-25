@@ -37,33 +37,33 @@ class OutdatedContentTest extends JoinupExistingSiteTestBase {
 
     $this->now = time();
 
-    /** @var \Drupal\collection\Entity\CollectionInterface $collection */
-    $collection = $this->createRdfEntity([
+    /** @var \Drupal\collection\Entity\CommunityInterface $community */
+    $community = $this->createRdfEntity([
       'rid' => 'collection',
       'field_ar_state' => 'validated',
     ]);
     /** @var \Drupal\joinup_discussion\Entity\DiscussionInterface $discussion */
     $discussion = $this->createNode([
       'type' => 'discussion',
-      'og_audience' => $collection,
+      'og_audience' => $community,
       'published_at' => strtotime('-3 years -1 minute', $this->now),
     ]);
     /** @var \Drupal\joinup_document\Entity\DocumentInterface $document */
     $document = $this->createNode([
       'type' => 'document',
-      'og_audience' => $collection,
+      'og_audience' => $community,
       'published_at' => strtotime('-3 years +1 minute', $this->now),
     ]);
     /** @var \Drupal\joinup_event\Entity\EventInterface $event */
     $event = $this->createNode([
       'type' => 'event',
-      'og_audience' => $collection,
+      'og_audience' => $community,
       'published_at' => strtotime('-40 years', $this->now),
     ]);
     /** @var \Drupal\joinup_news\Entity\NewsInterface $news */
     $news = $this->createNode([
       'type' => 'news',
-      'og_audience' => $collection,
+      'og_audience' => $community,
       'published_at' => strtotime('-5 years', $this->now),
     ]);
 

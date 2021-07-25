@@ -15,14 +15,14 @@ class RouteSubscriber extends RouteSubscriberBase {
   /**
    * {@inheritdoc}
    */
-  protected function alterRoutes(RouteCollection $collection) {
-    if ($route = $collection->get('entity.user.canonical')) {
+  protected function alterRoutes(RouteCollection $community) {
+    if ($route = $community->get('entity.user.canonical')) {
       $route->addDefaults([
         '_title_callback' => 'joinup_user_canonical_title',
       ]);
     }
 
-    $collection->get('entity.user.cancel_form')->addRequirements([
+    $community->get('entity.user.cancel_form')->addRequirements([
       // Only active and blocked accounts can be cancelled.
       '_user_status' => 'active,blocked',
     ]);

@@ -38,8 +38,8 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
    */
   protected function computeValue() {
     if ($this->getEntity()->id()) {
-      foreach ($this->getAffiliation() as $delta => $collection_id) {
-        $this->list[$delta] = $this->createItem($delta, ['target_id' => $collection_id]);
+      foreach ($this->getAffiliation() as $delta => $community_id) {
+        $this->list[$delta] = $this->createItem($delta, ['target_id' => $community_id]);
       }
     }
   }

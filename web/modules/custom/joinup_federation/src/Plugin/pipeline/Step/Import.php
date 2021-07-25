@@ -100,7 +100,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
     $memberships = $membership_storage->loadByProperties([
       'entity_type' => 'rdf_entity',
       'entity_bundle' => 'collection',
-      'entity_id' => $this->pipeline->getCollection(),
+      'entity_id' => $this->pipeline->getCommunity(),
       'roles' => 'rdf_entity-collection-administrator',
     ]);
 
@@ -221,26 +221,26 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
     }
 
     // If this plugin was not configured to assign a collection, exit early.
-    if (!$collection_id = $this->getPipeline()->getCollection()) {
+    if (!$community_id = $this->getPipeline()->getCommunity()) {
       return;
     }
 
     if (!$entity_exists) {
-      $incoming_solution->set('collection', $collection_id);
+      $incoming_solution->set('collection', $community_id);
       return;
     }
 
     // Check for collection mismatch when federating an existing solution.
     $match = FALSE;
     foreach ($incoming_solution->get('collection') as $item) {
-      if ($item->target_id === $collection_id) {
+      if ($item->target_id === $community_id) {
         $match = TRUE;
         break;
       }
     }
 
     if (!$match) {
-      throw new \Exception("Plugin '3_way_merge' is configured to assign the '$collection_id' collection but the existing solution '{$incoming_solution->id()}' has '{$incoming_solution->collection->target_id}' as collection.");
+      throw new \Exception("Plugin '3_way_merge' is configured to assign the '$community_id' collection but the existing solution '{$incoming_solution->id()}' has '{$incoming_solution->collection->target_id}' as collection.");
     }
     // For an existing solution we don't make any changes to its affiliation.
   }

@@ -250,7 +250,7 @@ class GroupContentUpdateUrlAliasTest extends JoinupExistingSiteTestBase {
     $this->drupalGet($this->entity['node']['news']['1.2']->toUrl());
     $assert->addressEquals('/collection/xyz789/solution/abc123/news/news-12');
     $this->drupalGet($this->entity['node']['custom_page']['1']->toUrl());
-    // Collection's nodes.
+    // Community's nodes.
     $assert->addressEquals('/collection/xyz789/custompage-1');
     $this->drupalGet($this->entity['node']['custom_page']['2']->toUrl());
     $assert->addressEquals('/collection/xyz789/custompage-2');
@@ -310,7 +310,7 @@ class GroupContentUpdateUrlAliasTest extends JoinupExistingSiteTestBase {
       'event',
       'news',
     ];
-    $collection_node_bundles = array_merge($solution_node_bundles, ['glossary']);
+    $community_node_bundles = array_merge($solution_node_bundles, ['glossary']);
 
     $this->createRdfEntity([
       'id' => 'http://example.com/owner',
@@ -404,9 +404,9 @@ class GroupContentUpdateUrlAliasTest extends JoinupExistingSiteTestBase {
         ]);
       }
     }
-    // Collection nodes.
+    // Community nodes.
     for ($i = 1; $i <= 2; $i++) {
-      foreach ($collection_node_bundles as $bundle) {
+      foreach ($community_node_bundles as $bundle) {
         $this->entity['node'][$bundle]["${i}"] = $this->createNode([
           'type' => $bundle,
           'title' => "{$bundle} {$i}",

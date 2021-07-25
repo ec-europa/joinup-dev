@@ -22,8 +22,8 @@ class TokenTest extends JoinupExistingSiteTestBase {
   /**
    * Tests the parent_collection token.
    */
-  public function testParentCollection(): void {
-    $collection = $this->createRdfEntity([
+  public function testParentCommunity(): void {
+    $community = $this->createRdfEntity([
       'rid' => 'collection',
       'title' => $this->randomMachineName(),
       'field_ar_state' => 'validated',
@@ -32,7 +32,7 @@ class TokenTest extends JoinupExistingSiteTestBase {
     $solution = $this->createRdfEntity([
       'rid' => 'solution',
       'title' => $this->randomMachineName(),
-      'collection' => $collection,
+      'collection' => $community,
       'field_is_state' => 'validated',
     ]);
 
@@ -52,7 +52,7 @@ class TokenTest extends JoinupExistingSiteTestBase {
     // Check both the token itself and one of the recursively generated
     // tokens.
     $tokens = [
-      'parent_collection' => $collection->label(),
+      'parent_collection' => $community->label(),
       'parent_collection:rid:target_id' => 'collection',
     ];
 

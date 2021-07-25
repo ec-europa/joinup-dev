@@ -6,7 +6,7 @@ namespace Drupal\solution\Entity;
 
 use Drupal\asset_distribution\Entity\DistributionsParentInterface;
 use Drupal\asset_release\Entity\AssetReleaseInterface;
-use Drupal\collection\Entity\CollectionContentInterface;
+use Drupal\collection\Entity\CommunitiesContentInterface;
 use Drupal\joinup_featured\FeaturedContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
@@ -17,7 +17,7 @@ use Drupal\rdf_entity\RdfInterface;
 /**
  * Interface for solution entities in Joinup.
  */
-interface SolutionInterface extends RdfInterface, CollectionContentInterface, EntityPublicationTimeInterface, EntityWorkflowStateInterface, FeaturedContentInterface, PinnableGroupContentInterface, GroupInterface, DistributionsParentInterface {
+interface SolutionInterface extends RdfInterface, CommunitiesContentInterface, EntityPublicationTimeInterface, EntityWorkflowStateInterface, FeaturedContentInterface, PinnableGroupContentInterface, GroupInterface, DistributionsParentInterface {
 
   /**
    * Returns teh child releases.
@@ -54,7 +54,7 @@ interface SolutionInterface extends RdfInterface, CollectionContentInterface, En
   /**
    * Returns the communities this solution is affiliated with.
    *
-   * @return \Drupal\collection\Entity\CollectionInterface[]
+   * @return \Drupal\collection\Entity\CommunityInterface[]
    *   The affiliated communities, keyed by collection ID.
    */
   public function getAffiliatedCommunities(): array;
@@ -65,6 +65,6 @@ interface SolutionInterface extends RdfInterface, CollectionContentInterface, En
    * @return string[]
    *   The affiliated collection IDs.
    */
-  public function getAffiliatedCollectionIds(): array;
+  public function getAffiliatedCommunityIds(): array;
 
 }

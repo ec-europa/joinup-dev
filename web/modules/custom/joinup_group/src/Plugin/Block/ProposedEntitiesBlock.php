@@ -97,11 +97,11 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
     $solution_sub_condition = $query->andConditionGroup();
     $solution_sub_condition->condition('rid', 'solution');
     $solution_sub_condition->condition('field_is_state', 'proposed');
-    $collection_sub_condition = $query->andConditionGroup();
-    $collection_sub_condition->condition('rid', 'collection');
-    $collection_sub_condition->condition('field_ar_state', 'proposed');
+    $community_sub_condition = $query->andConditionGroup();
+    $community_sub_condition->condition('rid', 'collection');
+    $community_sub_condition->condition('field_ar_state', 'proposed');
     $query->condition($solution_sub_condition);
-    $query->condition($collection_sub_condition);
+    $query->condition($community_sub_condition);
     $results = $query->execute();
 
     $entities = $storage->loadMultiple($results, ['draft']);

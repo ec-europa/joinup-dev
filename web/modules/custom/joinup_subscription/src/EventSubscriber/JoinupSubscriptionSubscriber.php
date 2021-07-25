@@ -25,7 +25,7 @@ class JoinupSubscriptionSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-      GroupReportsEventInterface::EVENT_NAME => ['onGroupReportsCollection'],
+      GroupReportsEventInterface::EVENT_NAME => ['onGroupReportsCommunity'],
     ];
   }
 
@@ -39,7 +39,7 @@ class JoinupSubscriptionSubscriber implements EventSubscriberInterface {
    *
    * @see \Drupal\joinup_subscription\Controller\SubscribersReportController
    */
-  public function onGroupReportsCollection(GroupReportsEventInterface $event) {
+  public function onGroupReportsCommunity(GroupReportsEventInterface $event) {
     $event->addGroupReport(new GroupReport(
       'subscribers',
       $this->t('Subscribers report'),

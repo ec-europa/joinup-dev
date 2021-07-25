@@ -114,7 +114,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): string {
+  public function getCommunity(): string {
     // Allow also to set the pipeline collection ID from pipeline annotation.
     if (!empty($this->getPluginDefinition()['collection'])) {
       return $this->getPluginDefinition()['collection'];
@@ -145,7 +145,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    * {@inheritdoc}
    */
   public function prepare() {
-    if (empty($this->getCollection())) {
+    if (empty($this->getCommunity())) {
       return $this->t('The %pipeline import pipeline is not linked to any community. Contact the site administrator.', [
         '%pipeline' => $this->getPluginDefinition()['label'],
       ]);

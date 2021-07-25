@@ -10,7 +10,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\solution\Form\JoinSolutionForm;
 
 /**
- * Defines a service for #lazy_builder callbacks for the Collection module.
+ * Defines a service for #lazy_builder callbacks for the Community module.
  */
 class SolutionLazyBuilders {
 
@@ -36,7 +36,7 @@ class SolutionLazyBuilders {
   protected $currentUser;
 
   /**
-   * Constructs a new CollectionLazyBuilders object.
+   * Constructs a new CommunityLazyBuilders object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
@@ -52,7 +52,7 @@ class SolutionLazyBuilders {
   }
 
   /**
-   * Lazy builder callback; builds the Join Collection form.
+   * Lazy builder callback; builds the Join Community form.
    *
    * @param string $solution_id
    *   The solution ID.

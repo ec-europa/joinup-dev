@@ -132,12 +132,12 @@ function owner_form_alter_validate(&$form, FormStateInterface $form_state) {
   ) {
     // Compile a list of communities that are referencing the owner, to show in
     // the form validation error message.
-    $collection_labels = array_map(function (RdfInterface $collection) {
-      return '"' . $collection->label() . '"';
+    $community_labels = array_map(function (RdfInterface $community) {
+      return '"' . $community->label() . '"';
     }, owner_get_references($entity));
 
     $form_state->setError($element, new TranslatableMarkup('The owner cannot be deleted since it owns the following communities: @collections. Please set a different owner for these communities before requesting deletion.', [
-      '@collections' => implode(', ', $collection_labels),
+      '@collections' => implode(', ', $community_labels),
     ]));
   }
 }

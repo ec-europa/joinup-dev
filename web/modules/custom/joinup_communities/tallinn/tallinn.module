@@ -143,11 +143,11 @@ function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account
   // community members are able to access any report.
   $access_policy = \Drupal::state()->get('tallinn.access_policy', 'restricted');
   if (in_array($access_policy, ['collection', 'public'])) {
-    /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    if ($collection = $node->og_audience->entity) {
+    /** @var \Drupal\rdf_entity\RdfInterface $community */
+    if ($community = $node->og_audience->entity) {
       /** @var \Drupal\og\MembershipManagerInterface $og_membership_manager */
       $og_membership_manager = \Drupal::service('og.membership_manager');
-      if ($og_membership_manager->isMember($collection, $account->id())) {
+      if ($og_membership_manager->isMember($community, $account->id())) {
         return AccessResult::allowed();
       }
     }

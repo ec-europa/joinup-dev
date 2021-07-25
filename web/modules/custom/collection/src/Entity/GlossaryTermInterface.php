@@ -9,7 +9,7 @@ use Drupal\node\NodeInterface;
 /**
  * Interface for glossary terms in Joinup.
  */
-interface GlossaryTermInterface extends NodeInterface, CollectionContentInterface {
+interface GlossaryTermInterface extends NodeInterface, CommunitiesContentInterface {
 
   /**
    * Returns a list o synonyms of the glossary term.

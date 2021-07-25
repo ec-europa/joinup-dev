@@ -14,7 +14,7 @@ use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
@@ -251,9 +251,9 @@ abstract class JoinGroupFormBase extends FormBase {
     $og_roles = [$this->loadOgRole($this->group->getEntityTypeId() . '-' . $this->group->bundle() . '-' . OgRoleInterface::AUTHENTICATED)];
 
     // Take into account the `field_ar_closed` in case of a collection.
-    // @todo Collection specific code does not belong in the generic base class.
-    //   This should be moved to the `JoinCollectionForm` which extends this.
-    $state = $this->group instanceof CollectionInterface && $this->group->isClosed() ? OgMembershipInterface::STATE_PENDING : OgMembershipInterface::STATE_ACTIVE;
+    // @todo Community specific code does not belong in the generic base class.
+    //   This should be moved to the `JoinCommunityForm` which extends this.
+    $state = $this->group instanceof CommunityInterface && $this->group->isClosed() ? OgMembershipInterface::STATE_PENDING : OgMembershipInterface::STATE_ACTIVE;
 
     $membership = $this->createMembership($state, $og_roles);
     $membership->save();

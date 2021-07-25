@@ -20,7 +20,7 @@ class GroupTokensTest extends JoinupExistingSiteTestBase {
    * Tests tokens defined by joinup_group.
    */
   public function testGroupDefinedTokens() {
-    $collection = $this->createRdfEntity([
+    $community = $this->createRdfEntity([
       'rid' => 'collection',
       'label' => $this->randomString(),
       'field_ar_state' => 'validated',
@@ -30,7 +30,7 @@ class GroupTokensTest extends JoinupExistingSiteTestBase {
       'rid' => 'solution',
       'field_is_state' => 'validated',
       'label' => $this->randomString(),
-      'collection' => $collection->id(),
+      'collection' => $community->id(),
     ]);
 
     $standalone_distribution = $this->createRdfEntity([
@@ -59,11 +59,11 @@ class GroupTokensTest extends JoinupExistingSiteTestBase {
     ];
 
     $tokens = [
-      'parent_collection' => $collection->label(),
-      'parent_collection:id:value' => $collection->id(),
-      'parent_collection:label:value' => $collection->label(),
+      'parent_collection' => $community->label(),
+      'parent_collection:id:value' => $community->id(),
+      'parent_collection:label:value' => $community->label(),
       // URL::toString generates an aliased path.
-      'parent_collection:url' => $collection->toUrl('canonical')->toString(),
+      'parent_collection:url' => $community->toUrl('canonical')->toString(),
     ];
 
     foreach ($entities_to_test as $entity) {

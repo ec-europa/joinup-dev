@@ -96,15 +96,15 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
     }
 
     // Ensure that the collection still exists and the URI is correct.
-    $collection_id = $this->getPipeline()->getCollection();
+    $community_id = $this->getPipeline()->getCommunity();
 
-    if (empty($collection_id) || empty($this->entityTypeManager->getStorage('rdf_entity')->load($collection_id))) {
-      $exception = new PipelineStepPrepareLogicException("A community with URI '{$collection_id}' does not exist.");
+    if (empty($community_id) || empty($this->entityTypeManager->getStorage('rdf_entity')->load($community_id))) {
+      $exception = new PipelineStepPrepareLogicException("A community with URI '{$community_id}' does not exist.");
       // The error is for the user display. The exception message above is for
       // the tests.
       $exception->setError([
         '#markup' => $this->t("A community with URI ':collection_id' does not exist.", [
-          ':collection_id' => $collection_id,
+          ':collection_id' => $community_id,
         ]),
       ]);
       throw $exception;

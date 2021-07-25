@@ -12,7 +12,7 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Url;
 use Drupal\cached_computed_field\Event\RefreshExpiredFieldsEventInterface;
 use Drupal\cached_computed_field\EventSubscriber\RefreshExpiredFieldsSubscriberBase;
-use Drupal\cached_computed_field\ExpiredItemCollection;
+use Drupal\cached_computed_field\ExpiredItemCommunity;
 use Drupal\cached_computed_field\ExpiredItemInterface;
 use Drupal\file_url\Entity\RemoteFile;
 use Drupal\joinup_stats\Entity\StatisticInterface;
@@ -254,13 +254,13 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * Invalid entries can be items that their entities don't exist or have not
    * expired yet.
    *
-   * @param \Drupal\cached_computed_field\ExpiredItemCollection $items
+   * @param \Drupal\cached_computed_field\ExpiredItemCommunity $items
    *   A collection of items.
    *
-   * @return \Drupal\cached_computed_field\ExpiredItemCollection
+   * @return \Drupal\cached_computed_field\ExpiredItemCommunity
    *   The filtered collection of items.
    */
-  protected function filterInvalidItems(ExpiredItemCollection $items): ExpiredItemCollection {
+  protected function filterInvalidItems(ExpiredItemCommunity $items): ExpiredItemCommunity {
     $valid_items = [];
     foreach ($items as $item) {
       // Only refresh the field if it has actually expired. It might have been
@@ -288,19 +288,19 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       $valid_items[] = $item;
     }
 
-    return new ExpiredItemCollection($valid_items);
+    return new ExpiredItemCommunity($valid_items);
   }
 
   /**
    * Builds a set of subqueries to send to Matomo.
    *
-   * @param \Drupal\cached_computed_field\ExpiredItemCollection $items
+   * @param \Drupal\cached_computed_field\ExpiredItemCommunity $items
    *   A collection of items.
    *
    * @return \Matomo\ReportingApi\QueryInterface
    *   A Matomo reporting query object.
    */
-  protected function buildQuery(ExpiredItemCollection $items): QueryInterface {
+  protected function buildQuery(ExpiredItemCommunity $items): QueryInterface {
     // All requests are sent by POST method to handle the amount of concurrent
     // requests in terms of request length.
     $this->matomoQueryFactory->getQueryFactory()->getHttpClient()->setMethod('POST');

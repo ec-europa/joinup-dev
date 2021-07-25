@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\tallinn\Entity;
 
-use Drupal\collection\Entity\NodeCollectionContentTrait;
+use Drupal\collection\Entity\NodeCommunityContentTrait;
 use Drupal\node\Entity\Node;
 
 /**
@@ -12,6 +12,6 @@ use Drupal\node\Entity\Node;
  */
 class TallinnReport extends Node implements TallinnReportInterface {
 
-  use NodeCollectionContentTrait;
+  use NodeCommunityContentTrait;
 
 }

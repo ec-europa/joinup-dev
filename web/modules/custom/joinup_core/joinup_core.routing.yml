@@ -23,7 +23,7 @@ joinup_core.id_redirect:
     # Even though we are using a custom processor to alter the UUID value to not
     # include the /, we need to set the value of UUID to match '.+' because the
     # Drupal routing system uses by default the '[^/]' for route parameters.
-    # @see \Drupal\Core\Routing\Router::doMatchCollection()
+    # @see \Drupal\Core\Routing\Router::doMatchCommunity()
     uuid: '.+'
 
 joinup_core.rdf_entity_uri_web_converter_page:

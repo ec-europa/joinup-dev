@@ -8,7 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -35,7 +35,7 @@ function joinup_newsletter_entity_prepare_view(string $entity_type_id, array $en
 
   foreach ($entities as $entity) {
     // Skip everything but communities.
-    if (!$entity instanceof CollectionInterface) {
+    if (!$entity instanceof CommunityInterface) {
       continue;
     }
 
@@ -51,9 +51,9 @@ function joinup_newsletter_entity_prepare_view(string $entity_type_id, array $en
     // subscription form will be shown in the last tile. This means that we
     // should reduce the number of tiles retrieved from 12 to 11, so that there
     // is room to show the form as the final tile.
-    /** @var \Drupal\search_api_field\Plugin\Field\FieldType\SearchItemInterface $collection_content */
-    $collection_content = $entity->get('field_collection_content')->first();
-    $collection_content->setLimit(11);
+    /** @var \Drupal\search_api_field\Plugin\Field\FieldType\SearchItemInterface $community_content */
+    $community_content = $entity->get('field_collection_content')->first();
+    $community_content->setLimit(11);
   }
 
 }

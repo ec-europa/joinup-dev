@@ -11,7 +11,7 @@ use Drupal\joinup_group\Entity\GroupContentInterface;
  *
  * This comprises community content, custom pages, and solutions.
  */
-interface CommunityContentInterface extends GroupContentInterface {
+interface CommunitiesContentInterface extends GroupContentInterface {
 
   /**
    * Returns the collection to which this entity belongs.

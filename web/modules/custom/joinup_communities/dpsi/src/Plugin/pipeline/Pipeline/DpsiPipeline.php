@@ -33,7 +33,7 @@ class DpsiPipeline extends JoinupFederationPipelinePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): string {
+  public function getCommunity(): string {
     return 'http://digitaliser.dk';
   }
 

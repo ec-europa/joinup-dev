@@ -34,15 +34,15 @@ class UserCancelTest extends JoinupExistingSiteTestBase {
     /** @var \Drupal\user\UserDataInterface $user_data */
     $user_data = $this->container->get('user.data');
 
-    $collection = $this->createRdfEntity([
+    $community = $this->createRdfEntity([
       'rid' => 'collection',
-      'label' => 'Collection',
+      'label' => 'Community',
       'field_ar_state' => 'validated',
     ]);
     $solution = $this->createRdfEntity([
       'rid' => 'solution',
       'label' => 'Solution',
-      'collection' => $collection,
+      'collection' => $community,
       'field_is_state' => 'validated',
     ]);
 
@@ -106,7 +106,7 @@ class UserCancelTest extends JoinupExistingSiteTestBase {
     $this->assertSame($username, $authmap->get($account->id(), 'cas'));
 
     // Add account membership to collection and solution.
-    $og_membership->createMembership($collection, $account)->save();
+    $og_membership->createMembership($community, $account)->save();
     $og_membership->createMembership($solution, $account)->save();
 
     // Add some user data.

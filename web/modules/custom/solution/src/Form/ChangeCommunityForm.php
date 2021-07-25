@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a form to select the destination collection when moving solutions.
  */
-class ChangeCollectionForm extends FormBase {
+class ChangeCommunityForm extends FormBase {
 
   /**
    * The private tempstore.

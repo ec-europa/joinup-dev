@@ -93,13 +93,13 @@ class SolutionAffiliationTest extends KernelTestBase {
    *
    * @dataProvider affiliationProvider
    */
-  public function testAffiliation(string $collection_state, string $solution_state): void {
+  public function testAffiliation(string $community_state, string $solution_state): void {
     foreach (range(1, 3) as $delta) {
       Rdf::create([
         'rid' => 'collection',
         'id' => "http://example.com/collection/{$delta}",
-        'label' => "Collection {$delta}",
-        'field_ar_state' => $collection_state,
+        'label' => "Community {$delta}",
+        'field_ar_state' => $community_state,
       ])->save();
       // Warm the cache.
       Rdf::load("http://example.com/collection/{$delta}");
@@ -127,7 +127,7 @@ class SolutionAffiliationTest extends KernelTestBase {
     $this->assertCount(1, $affiliates);
     $this->assertSame('http://example.com/solution', $affiliates->target_id);
 
-    // Collection 1 is preserved but collection 2 is replaced with 3.
+    // Community 1 is preserved but collection 2 is replaced with 3.
     $solution->set('collection', [
       'http://example.com/collection/1',
       'http://example.com/collection/3',
@@ -194,7 +194,7 @@ class SolutionAffiliationTest extends KernelTestBase {
     Rdf::create([
       'rid' => 'collection',
       'id' => "http://example.com/collection/1",
-      'label' => "Collection 1",
+      'label' => "Community 1",
       'field_ar_state' => 'validated',
     ])->save();
 

@@ -7,11 +7,11 @@ namespace Drupal\joinup_collection\Plugin\pipeline\Pipeline;
 use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
 
 /**
- * The data pipeline for the Joinup collection.
+ * The data pipeline for the Joinup community.
  *
  * @PipelinePipeline(
  *   id = "joinup_collection",
- *   label = @Translation("Joinup collection"),
+ *   label = @Translation("Joinup community"),
  *   steps = {
  *     "manual_upload",
  *     "remove_unsupported_data",
@@ -28,12 +28,12 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *   },
  * )
  */
-class JoinupCollectionPipeline extends JoinupFederationPipelinePluginBase {
+class JoinupCommunityPipeline extends JoinupFederationPipelinePluginBase {
 
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): string {
+  public function getCommunity(): string {
     return 'http://data.europa.eu/w21/df34e3a2-207b-4910-a804-344931654e20';
   }
 

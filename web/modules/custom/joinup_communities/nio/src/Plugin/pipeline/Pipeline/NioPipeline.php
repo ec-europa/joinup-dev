@@ -33,7 +33,7 @@ class NioPipeline extends JoinupFederationPipelinePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): string {
+  public function getCommunity(): string {
     return 'http://nio.gov.si/nio/';
   }
 

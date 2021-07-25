@@ -7,7 +7,7 @@ namespace Drupal\joinup_group\Entity;
 /**
  * Interface for entities that can be pinned in groups.
  *
- * Collection and solution facilitators have the ability to "pin" selected
+ * Community and solution facilitators have the ability to "pin" selected
  * entities in their groups. A pinned entity will be prominently displayed in
  * the group homepage, giving it more visibility. Pinned items are shown first
  * and have a visual indication (a pin icon) to signify their importance to the

@@ -8,9 +8,9 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Render\BubbleableMetadata;
-use Drupal\collection\Entity\CollectionContentInterface;
-use Drupal\collection\Entity\CollectionInterface;
-use Drupal\collection\Exception\MissingCollectionException;
+use Drupal\collection\Entity\CommunitiesContentInterface;
+use Drupal\collection\Entity\CommunityInterface;
+use Drupal\collection\Exception\MissingCommunityException;
 use Drupal\joinup_bundle_class\ShortIdInterface;
 use Drupal\solution\Entity\SolutionContentInterface;
 use Drupal\solution\Exception\MissingSolutionException;
@@ -50,11 +50,11 @@ function joinup_group_tokens(string $type, array $tokens, array $data, array $op
   $token_service = \Drupal::token();
   $rdf_entity = $data['rdf_entity'];
 
-  $get_parent_collection = function (CollectionContentInterface $rdf_entity): ?CollectionInterface {
+  $get_parent_collection = function (CommunitiesContentInterface $rdf_entity): ?CommunityInterface {
     try {
-      return $rdf_entity->getCollection();
+      return $rdf_entity->getCommunity();
     }
-    catch (MissingCollectionException $e) {
+    catch (MissingCommunityException $e) {
       // Unexpected case of a missing collection for group content. Let's log an
       // error but this is not fatal so allow the token generation to continue.
       \Drupal::logger('joinup_group')->error('Failed to generate token for RDF entity with ID @id due to missing parent collection', ['@id' => $rdf_entity->id()]);
@@ -82,7 +82,7 @@ function joinup_group_tokens(string $type, array $tokens, array $data, array $op
               break;
             }
           }
-          if ($rdf_entity instanceof CollectionContentInterface && $parent_collection = $get_parent_collection($rdf_entity)) {
+          if ($rdf_entity instanceof CommunitiesContentInterface && $parent_collection = $get_parent_collection($rdf_entity)) {
             $bubbleable_metadata->addCacheableDependency($parent_collection);
             $replacements[$original] = $parent_collection->label();
           }
@@ -99,8 +99,8 @@ function joinup_group_tokens(string $type, array $tokens, array $data, array $op
   }
 
   // Allow to descend further into the solution's parent collection.
-  if (($collection_tokens = $token_service->findWithPrefix($tokens, 'parent_collection')) && $rdf_entity instanceof CollectionContentInterface && $collection = $get_parent_collection($rdf_entity)) {
-    $replacements += $token_service->generate('rdf_entity', $collection_tokens, ['rdf_entity' => $collection], $options, $bubbleable_metadata);
+  if (($community_tokens = $token_service->findWithPrefix($tokens, 'parent_collection')) && $rdf_entity instanceof CommunitiesContentInterface && $community = $get_parent_collection($rdf_entity)) {
+    $replacements += $token_service->generate('rdf_entity', $community_tokens, ['rdf_entity' => $community], $options, $bubbleable_metadata);
   }
 
   return $replacements;

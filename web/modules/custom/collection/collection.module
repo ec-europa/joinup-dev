@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Main functions and hook implementations of the Collection module.
+ * Main functions and hook implementations of the Community module.
  */
 
 declare(strict_types = 1);
@@ -16,8 +16,8 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\collection\Entity\Collection;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\Community;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\collection\Entity\GlossaryTerm;
 use Drupal\collection\Plugin\Field\FieldType\LastUpdatedFieldItemList;
 use Drupal\node\NodeInterface;
@@ -81,7 +81,7 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
  */
 function collection_entity_bundle_info_alter(&$bundles) {
   if (!empty($bundles['rdf_entity']['collection'])) {
-    $bundles['rdf_entity']['collection']['class'] = Collection::class;
+    $bundles['rdf_entity']['collection']['class'] = Community::class;
   }
   if (!empty($bundles['node']['glossary'])) {
     $bundles['node']['glossary']['class'] = GlossaryTerm::class;
@@ -143,7 +143,7 @@ function collection_rdf_entity_insert(EntityInterface $entity) {
  * node.
  */
 function collection_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if (!$entity instanceof CollectionInterface || $account->isAnonymous() || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
+  if (!$entity instanceof CommunityInterface || $account->isAnonymous() || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
     return AccessResult::neutral();
   }
 
@@ -181,7 +181,7 @@ function collection_rdf_entity_access(EntityInterface $entity, $operation, Accou
  * Default graph is published. Draft graph is draft.
  */
 function collection_rdf_entity_presave(RdfInterface $entity) {
-  if (!$entity instanceof CollectionInterface) {
+  if (!$entity instanceof CommunityInterface) {
     return;
   }
 
@@ -225,7 +225,7 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
  * - When the entity is saved into the default graph, the draft must be deleted.
  */
 function collection_rdf_entity_update(EntityInterface $entity) {
-  if (!$entity instanceof CollectionInterface || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
+  if (!$entity instanceof CommunityInterface || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
     return;
   }
 
@@ -254,17 +254,17 @@ function collection_module_implements_alter(&$implementations, $hook) {
  */
 function collection_entity_extra_field_info() {
   $fields = [];
-  $collection = RdfEntityType::load('collection');
+  $community = RdfEntityType::load('collection');
 
   // This hook can fire before the collection bundle config is defined, in that
   // case we have nothing meaningful to add.
-  if (empty($collection)) {
+  if (empty($community)) {
     return [];
   }
 
   // Add the join/leave collection form as field.
   // @todo will be removed in ISAICP-2743
-  $display = &$fields['rdf_entity'][$collection->id()]['display'];
+  $display = &$fields['rdf_entity'][$community->id()]['display'];
   $display['join_collection'] = [
     'label' => t('Join collection'),
     'description' => t('Shows the join/leave collection form'),
@@ -298,14 +298,14 @@ function collection_entity_extra_field_info() {
  * Shows extra fields for the collection bundle.
  */
 function collection_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if (!$entity instanceof CollectionInterface) {
+  if (!$entity instanceof CommunityInterface) {
     return;
   }
 
   if ($display->getComponent('join_collection')) {
     $build['join_collection'] = [
       '#lazy_builder' => [
-        'collection.lazy_builders:renderJoinCollectionForm',
+        'collection.lazy_builders:renderJoinCommunityForm',
         [$entity->id()],
       ],
       '#create_placeholder' => TRUE,
@@ -357,7 +357,7 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
  * Implements hook_ENTITY_TYPE_view_alter().
  */
 function collection_rdf_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
-  if (!$entity instanceof CollectionInterface || $display->getMode() !== 'default') {
+  if (!$entity instanceof CommunityInterface || $display->getMode() !== 'default') {
     return;
   }
 

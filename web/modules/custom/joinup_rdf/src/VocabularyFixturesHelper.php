@@ -47,9 +47,9 @@ class VocabularyFixturesHelper implements VocabularyFixturesHelperInterface {
         'graph' => 'http://licence-legal-type',
         'filename' => 'licence-legal-type.rdf',
         'extra queries' => [
-          'WITH <http://licence-legal-type> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };',
+          'WITH <http://licence-legal-type> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Community . };',
           'WITH <http://licence-legal-type> INSERT { ?subject skos:topConceptOf <http://joinup.eu/legal-type#> } WHERE { ?subject a skos:Concept . FILTER NOT EXISTS { ?subject skos:topConceptOf <http://joinup.eu/legal-type#> } };',
-          'WITH <http://licence-legal-type> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };',
+          'WITH <http://licence-legal-type> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Community . ?collection skos:member ?member };',
         ],
       ],
     ];

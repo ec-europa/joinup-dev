@@ -123,12 +123,12 @@ function joinup_discussion_comment_create_access(AccountInterface $account, arra
   if (isset($context['commented_entity'])) {
     $discussion = $context['commented_entity'];
     if ($discussion instanceof DiscussionInterface) {
-      $collection = $discussion->getCollection();
+      $community = $discussion->getCommunity();
       return AccessResult::forbiddenIf(
         // Either the top community or the discussion are archived.
-        $collection->isArchived() || $discussion->isArchived()
+        $community->isArchived() || $discussion->isArchived()
       )
-        ->addCacheableDependency($collection)
+        ->addCacheableDependency($community)
         ->addCacheableDependency($discussion);
     }
   }

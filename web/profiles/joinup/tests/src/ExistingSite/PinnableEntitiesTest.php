@@ -44,19 +44,19 @@ class PinnableEntitiesTest extends JoinupExistingSiteTestBase {
    */
   public function testGetGroupsWherePinnedWithDeletedGroup() {
     // Create a test community.
-    $collection = Collection::create();
-    $collection->setWorkflowState('validated')->save();
+    $community = Collection::create();
+    $community->setWorkflowState('validated')->save();
 
     // Create a test news article inside the community.
     /** @var \Drupal\joinup_news\Entity\NewsInterface $news */
     $news = News::create([
       'title' => $this->randomString(),
-      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $collection->id(),
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $community->id(),
     ]);
     $news->save();
 
     // Pin the news article inside the community.
-    $news->pin($collection);
+    $news->pin($community);
 
     // Check the groups where the entity is pinned. This should return an array
     // containing 1 single result: the test community.
@@ -65,10 +65,10 @@ class PinnableEntitiesTest extends JoinupExistingSiteTestBase {
 
     $pinned_group = reset($result);
     $this->assertInstanceOf(CollectionInterface::class, $pinned_group);
-    $this->assertEquals($collection->id(), $pinned_group->id());
+    $this->assertEquals($community->id(), $pinned_group->id());
 
     // Delete the community.
-    $collection->delete();
+    $community->delete();
 
     // Check the groups where the entity is pinned again. This should now
     // return an empty array.

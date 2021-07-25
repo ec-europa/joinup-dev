@@ -60,7 +60,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
     // Create the solution RDF type.
     RdfEntityType::create(['rid' => 'solution', 'name' => 'Solution'])->save();
     // Create the collection bundle.
-    RdfEntityType::create(['rid' => 'collection', 'name' => 'Collection'])->save();
+    RdfEntityType::create(['rid' => 'collection', 'name' => 'Community'])->save();
 
     $this->importConfigs([
        // Create the 'default', 'draft' and 'staging' graphs.

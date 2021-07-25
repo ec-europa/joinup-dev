@@ -59,8 +59,8 @@ class StateMachineRevisionsRouteSubscriber extends RouteSubscriberBase {
   /**
    * {@inheritdoc}
    */
-  protected function alterRoutes(RouteCollection $collection) {
-    foreach ($collection as $route) {
+  protected function alterRoutes(RouteCollection $community) {
+    foreach ($community as $route) {
       $this->setLatestRevisionFlag($route);
     }
   }

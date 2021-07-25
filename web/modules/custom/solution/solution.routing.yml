@@ -54,7 +54,7 @@ solution.unshare_form:
 solution.change_collection:
   path: '/rdf_entity/{rdf_entity}/change-collection'
   defaults:
-    _form: Drupal\solution\Form\ChangeCollectionForm
+    _form: Drupal\solution\Form\ChangeCommunityForm
     _title: 'Select a destination collection'
   requirements:
     _permission: 'manage solutions'

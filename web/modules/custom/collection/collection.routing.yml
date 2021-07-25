@@ -1,10 +1,10 @@
-# Collection routing definition
+# Community routing definition
 collection.subscribe_to_collection_form:
   path: '/ajax/collection/{rdf_entity}/subscribe'
   defaults:
-    _form: \Drupal\collection\Form\SubscribeToCollectionForm
+    _form: \Drupal\collection\Form\SubscribeToCommunityForm
   requirements:
-    _custom_access: \Drupal\collection\Form\SubscribeToCollectionForm::access
+    _custom_access: \Drupal\collection\Form\SubscribeToCommunityForm::access
   options:
     parameters:
       rdf_entity:
@@ -14,9 +14,9 @@ collection.subscribe_to_collection_form:
 collection.subscribe_to_collection_form.after_authenticating:
   path: '/ajax/collection/{rdf_entity}/subscribe/auth'
   defaults:
-    _controller: Drupal\collection\Form\SubscribeToCollectionForm::showSubscribeDialog
+    _controller: Drupal\collection\Form\SubscribeToCommunityForm::showSubscribeDialog
   requirements:
-    _custom_access: \Drupal\collection\Form\SubscribeToCollectionForm::accessToSubscribeDialogAfterAuthenticating
+    _custom_access: \Drupal\collection\Form\SubscribeToCommunityForm::accessToSubscribeDialogAfterAuthenticating
   options:
     parameters:
       rdf_entity:
@@ -40,10 +40,10 @@ collection.glossary_page:
 collection.settings_form:
   path: '/rdf_entity/{rdf_entity}/settings'
   defaults:
-    _controller: Drupal\collection\Controller\CollectionSettingsController::settings
-    _title_callback: Drupal\collection\Controller\CollectionSettingsController::title
+    _controller: Drupal\collection\Controller\CommunitySettingsController::settings
+    _title_callback: Drupal\collection\Controller\CommunitySettingsController::title
   requirements:
-    _custom_access: Drupal\collection\Controller\CollectionSettingsController::access
+    _custom_access: Drupal\collection\Controller\CommunitySettingsController::access
   options:
     parameters:
       rdf_entity:

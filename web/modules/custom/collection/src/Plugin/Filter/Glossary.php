@@ -9,9 +9,9 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\collection\Entity\CollectionContentInterface;
-use Drupal\collection\Entity\CollectionInterface;
-use Drupal\collection\Exception\MissingCollectionException;
+use Drupal\collection\Entity\CommunitiesContentInterface;
+use Drupal\collection\Entity\CommunityInterface;
+use Drupal\collection\Exception\MissingCommunityException;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
 use Drupal\og\OgContextInterface;
@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @Filter(
  *   id = "collection_glossary",
- *   title = @Translation("Collection glossary"),
+ *   title = @Translation("Community glossary"),
  *   description = @Translation("Replaces glossary terms with their link version."),
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_IRREVERSIBLE,
  * )
@@ -95,14 +95,14 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
   public function process($text, $langcode): FilterProcessResult {
     $result = new FilterProcessResult($text);
 
-    $collection = $this->getCollection();
+    $community = $this->getCommunity();
     // A collection context cannot be detected.
-    if (!isset($collection)) {
+    if (!isset($community)) {
       return $result;
     }
 
     /** @var \Drupal\Core\Cache\RefinableCacheableDependencyInterface $cache_metadata */
-    [$replacements, $cache_metadata] = $this->getReplacementsMap($collection);
+    [$replacements, $cache_metadata] = $this->getReplacementsMap($community);
 
     // The reverse ksort will ensure that when, for any reason, there are terms
     // that overlap together, like "exchange", "exchange currency" and "exchange
@@ -126,9 +126,9 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
       return $result->addCacheableDependency($cache_metadata);
     }
 
-    $link_only_first = $collection->getGlossarySettings()['link_only_first'];
+    $link_only_first = $community->getGlossarySettings()['link_only_first'];
     // Invalidate the cache when the collection glossary settings are changing.
-    $cache_metadata->addCacheableDependency($collection->get('settings')->entity);
+    $cache_metadata->addCacheableDependency($community->get('settings')->entity);
 
     $document = Html::load($text);
     $text_nodes = (new \DOMXPath($document))->evaluate("//text()");
@@ -192,7 +192,7 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
   /**
    * Builds and returns a replacements map.
    *
-   * @param \Drupal\collection\Entity\CollectionInterface $collection
+   * @param \Drupal\collection\Entity\CommunityInterface $community
    *   The collection for which to return the replacements map.
    *
    * @return array
@@ -203,19 +203,19 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
    *        - summary: A summary to be used as tooltip.
    *     1: An object containing the cacheable metadata.
    */
-  protected function getReplacementsMap(CollectionInterface $collection): array {
+  protected function getReplacementsMap(CommunityInterface $community): array {
     // Make sure the filter cache invalidates when a new glossary term is added
     // in this collection.
     $cache_metadata = (new CacheableMetadata())
       ->addCacheTags(
-        Cache::buildTags('og-group-content', $collection->getCacheTagsToInvalidate())
+        Cache::buildTags('og-group-content', $community->getCacheTagsToInvalidate())
       );
 
     $map = [];
     $node_storage = $this->entityTypeManager->getStorage('node');
     $nids = $node_storage->getQuery()
       ->condition('type', 'glossary')
-      ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $collection->id())
+      ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $community->id())
       ->condition('status', TRUE)
       ->execute();
 
@@ -254,24 +254,24 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
    * context they belong to. We do not have access to the field that contains
    * the text.
    *
-   * @return \Drupal\collection\Entity\CollectionInterface|null
+   * @return \Drupal\collection\Entity\CommunityInterface|null
    *   The collection, or NULL if no collection could be derived from the
    *   context.
    *
    * @see https://www.drupal.org/project/drupal/issues/226963
    */
-  protected function getCollection(): ?CollectionInterface {
+  protected function getCommunity(): ?CommunityInterface {
     $group = NULL;
     if ($group = $this->ogContext->getGroup()) {
       // Other kind of group? Maybe a solution which is collection content?
-      if ($group instanceof CollectionContentInterface) {
+      if ($group instanceof CommunitiesContentInterface) {
         try {
-          $group = $group->getCollection();
+          $group = $group->getCommunity();
         }
-        catch (MissingCollectionException $e) {
+        catch (MissingCommunityException $e) {
           // The content is orphaned. Log an error but allow the request to
           // continue, this is not fatal.
-          $this->logger->error('Collection could not be retrieved from entity of type %type and ID %id', [
+          $this->logger->error('Community could not be retrieved from entity of type %type and ID %id', [
             '%type' => $group->getEntityTypeId(),
             '%id' => $group->id(),
           ]);
@@ -279,7 +279,7 @@ class Glossary extends FilterBase implements ContainerFactoryPluginInterface {
       }
     }
 
-    if ($group instanceof CollectionInterface) {
+    if ($group instanceof CommunityInterface) {
       return $group;
     }
 
