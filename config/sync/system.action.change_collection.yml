@@ -5,7 +5,7 @@ dependencies:
   module:
     - solution
 id: change_collection
-label: 'Move to other collection'
+label: 'Move to other community'
 type: rdf_entity
 plugin: change_collection
 weight: 0

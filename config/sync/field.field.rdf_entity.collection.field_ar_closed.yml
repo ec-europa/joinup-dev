@@ -20,6 +20,6 @@ default_value:
     value: 0
 default_value_callback: ''
 settings:
-  on_label: 'Closed collection'
-  off_label: 'Open collection'
+  on_label: 'Closed community'
+  off_label: 'Open community'
 field_type: boolean

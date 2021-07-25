@@ -14,7 +14,7 @@ type: search_api_field
 settings:
   index: published
   facet_regions:
-    top: 'Collection content top'
+    top: 'Community content top'
   view_modes:
     'entity:node':
       custom_page: view_mode_tile

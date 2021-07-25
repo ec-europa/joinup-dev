@@ -6,7 +6,7 @@ dependencies:
     - filter.format.full_html
 template: col_deletion_by_moderator
 label: 'Community deleted by moderator'
-description: 'Moderator deletes a collection'
+description: 'Moderator deletes a community'
 text:
   -
     value: 'Joinup: Your community has been deleted by the moderation team'

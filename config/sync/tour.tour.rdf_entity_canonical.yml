@@ -28,7 +28,7 @@ tips:
   collection_menu:
     id: collection_menu
     plugin: text
-    body: 'The navigation menu provides access to a collection''s main sections, such as the members list, its description, etc.'
+    body: 'The navigation menu provides access to a community''s main sections, such as the members list, its description, etc.'
     weight: 3
     location: right
     attributes:

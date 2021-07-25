@@ -39,7 +39,7 @@ tips:
   anonymous_solutions:
     id: anonymous_solutions
     plugin: text
-    body: 'Lists all Joinup solutions, which are the main collaborative spaces organised around a collection''s sub-topic.'
+    body: 'Lists all Joinup solutions, which are the main collaborative spaces organised around a community''s sub-topic.'
     weight: 4
     location: left
     attributes:
@@ -47,7 +47,7 @@ tips:
   authenticated_solutions:
     id: authenticated_solutions
     plugin: text
-    body: 'Lists all Joinup solutions, which are the main collaborative spaces organised around a collection''s sub-topic.'
+    body: 'Lists all Joinup solutions, which are the main collaborative spaces organised around a community''s sub-topic.'
     weight: 5
     location: left
     attributes:

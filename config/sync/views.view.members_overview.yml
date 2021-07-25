@@ -542,7 +542,7 @@ display:
             label: ''
             identifier: field_user_family_name_value
           plugin_id: standard
-      title: 'Collection members'
+      title: 'Community members'
       header: {  }
       footer: {  }
       empty: {  }

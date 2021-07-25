@@ -15,7 +15,7 @@ id: node.news.og_audience
 field_name: og_audience
 entity_type: node
 bundle: news
-label: Collection
+label: Community
 description: 'The community this entity belongs to.'
 required: false
 translatable: false
