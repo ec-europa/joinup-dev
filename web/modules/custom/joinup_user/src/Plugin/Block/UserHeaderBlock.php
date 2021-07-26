@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "user_header_block",
  *   admin_label = @Translation("User header"),
- *   context = {
+ *   context_definitions = {
  *     "user_route" = @ContextDefinition("entity:user", label = @Translation("User from URL"))
  *   }
  * )

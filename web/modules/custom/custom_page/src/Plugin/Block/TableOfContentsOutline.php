@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *  id = "toc_outline",
  *  admin_label = @Translation("Table of contents outline"),
  *  category = @Translation("Custom page"),
- *  context = {
+ *  context_definitions = {
  *    "og" = @ContextDefinition("entity", label = @Translation("Group")),
  *    "node" = @ContextDefinition("entity", label = @Translation("Custom page")),
  *  },
