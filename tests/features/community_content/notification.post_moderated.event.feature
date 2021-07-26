@@ -31,7 +31,7 @@ Feature: Notification test for the event transitions on a post moderated parent.
     # Test 'create' operation.
     When all e-mails have been sent
     And I am logged in as "CC member"
-    And I go to the "CC post community" community
+    And I go to the "CC post community" collection
     And I click "Add event" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Description" with "CC notify create publish"

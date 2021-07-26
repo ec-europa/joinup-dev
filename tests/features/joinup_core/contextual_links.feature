@@ -10,7 +10,7 @@ Feature:
       | title | Revisions community |
       | state | validated            |
     When I am logged in as a moderator
-    And I go to the "Revisions community" community
+    And I go to the "Revisions community" collection
     And I click "Add news" in the plus button menu
     And I fill in the following:
       | Short title | Revisions community published          |
@@ -30,8 +30,8 @@ Feature:
     Then I should see the heading "Revisions community has been published"
     But I should not see the link "Revisions" in the "Entity actions" region
 
-    When I am logged in as a facilitator of the "Revisions community" community
-    And I go to the homepage of the "Revisions community" community
+    When I am logged in as a facilitator of the "Revisions community" collection
+    And I go to the homepage of the "Revisions community" collection
     Then I should not see the link "Revisions" in the "Entity actions" region
 
   @javascript

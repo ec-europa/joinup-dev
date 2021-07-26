@@ -10,7 +10,7 @@ Feature:
       | state | validated       |
     Given the following solution:
       | title           | Test solution                        |
-      | community      | Test community                      |
+      | collection      | Test community                      |
       | landing page    | http://foo-example.com/landing       |
       | webdav creation | no                                   |
       | webdav url      | http://joinup.eu/solution/foo/webdav |

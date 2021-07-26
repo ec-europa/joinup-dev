@@ -11,8 +11,8 @@ Feature:
       | content creation | <content creation> |
       | state            | validated          |
 
-    When I am logged in as an "author" of the "Author community" community
-    And I go to the "Author community" community
+    When I am logged in as an "author" of the "Author community" collection
+    And I go to the "Author community" collection
     Then I should see the following links:
       | Add solution   |
       | Add news       |

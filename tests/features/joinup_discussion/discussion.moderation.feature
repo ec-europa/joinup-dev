@@ -23,7 +23,7 @@ Feature: Discussion moderation
 
     # A member of the community can create a discussion.
     When I am logged in as "Gabe Rogers"
-    And I go to the homepage of the "DIY community" community
+    And I go to the homepage of the "DIY community" collection
     And I click "Add discussion" in the plus button menu
     And I fill in the following:
       | Title   | Best method to cut logs        |

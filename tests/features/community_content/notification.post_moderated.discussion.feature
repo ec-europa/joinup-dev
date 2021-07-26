@@ -31,7 +31,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     # Test 'create' operation.
     When all e-mails have been sent
     And I am logged in as "CC member"
-    And I go to the "CC post community" community
+    And I go to the "CC post community" collection
     And I click "Add discussion" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Content" with "CC notify create publish"
@@ -107,7 +107,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     But the following email should have been sent:
       | recipient | CC member                                                                                                          |
       | subject   | Joinup: The discussion "CC notify post delete" was deleted in the space of "CC post community"                    |
-      | body      | for your information, the discussion "CC notify post delete" was deleted from the "CC post community" community. |
+      | body      | for your information, the discussion "CC notify post delete" was deleted from the "CC post community" collection. |
 
     Examples:
       | moderation | roles  |

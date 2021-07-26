@@ -35,7 +35,7 @@ Feature: Community content
 
     # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4436
     Given I am logged in as a moderator
-    And I go to the homepage of the "Turin Egyptian Community" community
+    And I go to the homepage of the "Turin Egyptian community" collection
 
     # The solution counters do not include the unpublished solutions.
     Then I should see the link "Solution (1)"
@@ -58,7 +58,7 @@ Feature: Community content
     And I press "Publish"
     Then I should see the heading "Solution from draft to validated"
 
-    When I go to the homepage of the "Turin Egyptian Community" community
+    When I go to the homepage of the "Turin Egyptian community" collection
     # Since there are 2 solutions, the link moved in first since it is the type of content with most items.
     # When the facet tab is displayed, the text is "@count Solutions", while if it is in the "More" dropdown, it shows
     # as "Solutions (@count)".
@@ -73,7 +73,7 @@ Feature: Community content
     And I press "Save as draft"
     Then I should see the heading "Solution from draft to validated"
 
-    When I go to the homepage of the "Turin Egyptian Community" community
+    When I go to the homepage of the "Turin Egyptian community" collection
     Then I see the text "2 Solution" in the "Header" region
     And I should see the link "2 Solutions"
     Then I delete the "Solution from draft to validated" solution
@@ -81,7 +81,7 @@ Feature: Community content
 
   @clearStaticCache
   Scenario: Content type facet labels should show the plural form when multiple results are available.
-    Given I go to the homepage of the "Turin Egyptian Community" community
+    Given I go to the homepage of the "Turin Egyptian community" collection
     Then the "Discussion" content tab is displayed
     And the "Document" content tab is displayed
     And the "Event" content tab is displayed
@@ -118,7 +118,7 @@ Feature: Community content
     And I should see the link "Videos (2)"
 
   Scenario: Links and markup should be stripped from tiles abstract.
-    Given I go to the homepage of the "Turin Egyptian Community" community
+    Given I go to the homepage of the "Turin Egyptian community" collection
     # Check the discussion tile.
     Then I should see the "Bigger than Egyptian Museum of Cairo?" tile
     # Check into the HTML so that we assert that actually the HTML has been stripped.

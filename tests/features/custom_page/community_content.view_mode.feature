@@ -78,7 +78,7 @@ Feature:
       | Tile discussion | Meh... | Tile community | validated |
 
     When I am logged in as a moderator
-    And I go to the homepage of the "Tile community" community
+    And I go to the homepage of the "Tile community" collection
     And I click "Add custom page"
 
     When I fill in the following:

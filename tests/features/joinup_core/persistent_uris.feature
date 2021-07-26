@@ -63,7 +63,7 @@ Feature:
       | title           | body            | collection            | state     |
       | Persistent page | Persistent page | Persistent community | validated |
 
-    When I go to the "Persistent community" community
+    When I go to the "Persistent community" collection
     And I click "About"
     Then the persistent url should contain "http://data.europa.eu/w21"
 

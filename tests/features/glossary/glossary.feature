@@ -361,7 +361,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     Then I should see the error message "The Glossary term glossary term name value (XFiles) is already taken by XFiles."
 
     # It should be possible to have the same term name in different communities.
-    When I go to the "Other community" community
+    When I go to the "Other community" collection
     And I click "Add glossary term" in the plus button menu
     And I fill in the following:
       | Glossary term name | XFiles         |
