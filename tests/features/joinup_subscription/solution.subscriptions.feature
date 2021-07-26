@@ -14,7 +14,7 @@ Feature: Subscribing to a solution
     And solution:
       | title      | Some solution to subscribe |
       | state      | validated                  |
-      | community | Some parent community     |
+      | collection | Some parent community     |
     And users:
       | Username          |
       | Cornilius Darcias |

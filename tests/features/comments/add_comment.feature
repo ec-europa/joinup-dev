@@ -17,7 +17,7 @@ Feature: Add comments
   Scenario Outline: Make an authenticated comment, skips moderation.
 
     Given solutions:
-      | title                | community        | state     |
+      | title                | collection        | state     |
       | Gossip girl solution | Gossip community | validated |
     And users:
       | Username          | E-mail                        | Roles     | First name | Family name |
@@ -25,7 +25,7 @@ Feature: Add comments
       | Layonel Sarok     | layonel.sarok@example.com     |           | Layonel    | Sarok       |
       | Korma Salya       | korma.salya@example.com       |           | Korma      | Salya       |
     And the following community user memberships:
-      | community        | user          | roles                      |
+      | collection        | user          | roles                      |
       | Gossip community | Layonel Sarok | administrator, facilitator |
       | Gossip community | Korma Salya   | facilitator                |
     And the following solution user memberships:
@@ -77,17 +77,17 @@ Feature: Add comments
 
     Examples:
       | content type | title               | state     | parent     | parent title         |
-      | news         | Scandalous news     | validated | community | Gossip community    |
-      | event        | Celebrity gathering | validated | community | Gossip community    |
-      | discussion   | Is gossip bad?      | validated | community | Gossip community    |
-      | document     | Wikileaks           | validated | community | Gossip community    |
+      | news         | Scandalous news     | validated | collection | Gossip community    |
+      | event        | Celebrity gathering | validated | collection | Gossip community    |
+      | discussion   | Is gossip bad?      | validated | collection | Gossip community    |
+      | document     | Wikileaks           | validated | collection | Gossip community    |
       # Add an example also for solutions to ensure the variables are properly replaced.
       | news         | Scandalous news     | validated | solution   | Gossip girl solution |
 
   Scenario Outline: Posting comments.
 
     Given <content type> content:
-      | title   | body                                                | community        | state   |
+      | title   | body                                                | collection        | state   |
       | <title> | How could this ever happen? Moral panic on its way! | Gossip community | <state> |
     Given I am logged in as "Miss tell tales"
     And all e-mails have been sent
@@ -155,7 +155,7 @@ Feature: Add comments
       | title          | state     | closed |
       | Shy community | validated | yes    |
     And <content type> content:
-      | title   | body                                                | community   | state   |
+      | title   | body                                                | collection   | state   |
       | <title> | How could this ever happen? Moral panic on its way! | <community> | <state> |
 
     # Anonymous users should not be able to comment.
@@ -174,7 +174,7 @@ Feature: Add comments
     And I should see the button "Post comment"
 
     Examples:
-      | community        | content type | title                     | state     |
+      | collection        | content type | title                     | state     |
       | Shy community    | news         | Scandalous news           | validated |
       | Shy community    | event        | Celebrity gathering       | validated |
       | Shy community    | discussion   | Is gossip bad?            | validated |

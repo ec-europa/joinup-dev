@@ -87,9 +87,9 @@ Feature: As a group (community or solution) owner or site moderator
 
     Examples:
       | user  | option exists | type       | type capitalized | title                       | full name               |
-      | happy | contain       | community | Community       | Intensive Language Learning | The Joinup Support Team |
-      | light | contain       | community | Community       | Intensive Language Learning | The Joinup Support Team |
-      | cruel | not contain   | community | Community       | Intensive Language Learning | Finnur Robertsson       |
+      | happy | contain       | collection | Community       | Intensive Language Learning | The Joinup Support Team |
+      | light | contain       | collection | Community       | Intensive Language Learning | The Joinup Support Team |
+      | cruel | not contain   | collection | Community       | Intensive Language Learning | Finnur Robertsson       |
       | happy | contain       | solution   | Solution         | Learn German in 1 Month     | The Joinup Support Team |
       | light | contain       | solution   | Solution         | Learn German in 1 Month     | The Joinup Support Team |
       | cruel | not contain   | solution   | Solution         | Learn German in 1 Month     | Finnur Robertsson       |
@@ -101,7 +101,7 @@ Feature: As a group (community or solution) owner or site moderator
 
     Examples:
       | type       | title                       |
-      | community | Intensive Language Learning |
+      | collection | Intensive Language Learning |
       | solution   | Learn German in 1 Month     |
 
   Scenario: Community owner cannot transfer ownership of a child solution, neither viceversa.
@@ -110,10 +110,10 @@ Feature: As a group (community or solution) owner or site moderator
       | state | validated |
     And the following solution:
       | title      | Rivers Of Babylon |
-      | community | Babylon           |
+      | collection | Babylon           |
       | state      | validated         |
     And community user membership:
-      | community | user  | roles       |
+      | collection | user  | roles       |
       | Babylon    | shy   | owner       |
       | Babylon    | loner | facilitator |
     And solution user membership:
@@ -144,5 +144,5 @@ Feature: As a group (community or solution) owner or site moderator
 
     Examples:
       | group type | type capitalized | title                       |
-      | community | Community       | Intensive Language Learning |
+      | collection | Community       | Intensive Language Learning |
       | solution   | Solution         | Learn German in 1 Month     |

@@ -18,14 +18,14 @@ Feature: Content notification system
       | title | Smoke signals code standard |
       | state | validated                   |
     And the following community user membership:
-      | community          | user           | roles |
+      | collection          | user           | roles |
       | Communication tools | Devyn Queshire | owner |
     And the following solution user membership:
       | solution                    | user           | roles       |
       | Smoke signals code standard | Sylvester Toft | facilitator |
       | Smoke signals code standard | Reed Mondy     | facilitator |
     And news content:
-      | title                              | headline                            | body                                 | state     | community          |
+      | title                              | headline                            | body                                 | state     | collection          |
       | Infrared long-range communications | Prototype built by a young student. | Bringing Internet access through IR. | validated | Communication tools |
     And event content:
       | title                              | short title         | body                                  | state    | solution                    | start date          | end date            |

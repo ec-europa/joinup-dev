@@ -15,7 +15,7 @@ Feature: Subscribing to community content in communities
       | bisera   | bisera@example.bg | Bisera     | Kaloyancheva | weekly                 |
       | kalin    | kalin@primer.bg   | Kalin      | Antov        | monthly                |
     And the following community user memberships:
-      | community           | user   | roles       |
+      | collection           | user   | roles       |
       | Products of Bulgaria | hristo |             |
       | Products of Bulgaria | bisera |             |
       | Products of Bulgaria | kalin  |             |
@@ -23,7 +23,7 @@ Feature: Subscribing to community content in communities
       | Cities of Bulgaria   | bisera |             |
       | Cities of Bulgaria   | kalin  | facilitator |
     And the following community content subscriptions:
-      | community           | user   | subscriptions                        |
+      | collection           | user   | subscriptions                        |
       | Products of Bulgaria | hristo | discussion, event, news, solution    |
       | Products of Bulgaria | bisera | discussion, document, news           |
       | Products of Bulgaria | kalin  | document, event                      |
@@ -36,7 +36,7 @@ Feature: Subscribing to community content in communities
   @email
   Scenario: Receive a digest of content that is published in my communities
     Given discussion content:
-      | title      | body                      | community           | state     | author |
+      | title      | body                      | collection           | state     | author |
       | Duck liver | Rich buttery and delicate | Products of Bulgaria | validated | hristo |
       | Sofia      | Grows without aging       | Cities of Bulgaria   | validated | kalin  |
       | Ruse       | Little Vienna             | Cities of Bulgaria   | proposed  | kalin  |

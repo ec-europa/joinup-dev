@@ -128,7 +128,7 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      | visible items 1 | visible items 2 | visible items 3 |
-      | community | 4               | 5               | 4               |
+      | collection | 4               | 5               | 4               |
       | solution   | 3               | 4               | 3               |
 
   @javascript
@@ -160,7 +160,7 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      |
-      | community |
+      | collection |
       | solution   |
 
   Scenario Outline: Synchronize titles of custom pages and menu links
@@ -185,7 +185,7 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      |
-      | community |
+      | collection |
       | solution   |
 
   Scenario Outline: Only the links below the topmost page are rendered in TOC.
@@ -283,7 +283,7 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      |
-      | community |
+      | collection |
       | solution   |
 
   @javascript
@@ -422,7 +422,7 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      |
-      | community |
+      | collection |
       | solution   |
 
   Scenario Outline: Show appropriate menu entries in the table of contents outline.
@@ -508,7 +508,7 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      |
-      | community |
+      | collection |
       | solution   |
 
   @javascript
@@ -545,7 +545,7 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      |
-      | community |
+      | collection |
       | solution   |
 
   Scenario Outline: Test that the edit link appears next to the "About" page.
@@ -567,5 +567,5 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      | label      |
-      | community | Community |
+      | collection | Community |
       | solution   | Solution   |

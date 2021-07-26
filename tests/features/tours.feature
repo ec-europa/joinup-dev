@@ -13,7 +13,7 @@ Feature: Tours
       | path             | expectation   |
       | /                | should be     |
       | /keep-up-to-date | should be     |
-      | /communities     | should not be |
+      | /collections     | should not be |
       | /solutions       | should not be |
       # Recheck some URLs to ensure that cache contexts are working.
       | /                | should be     |
@@ -30,7 +30,7 @@ Feature: Tours
       | path             | expectation   |
       | /                | should be     |
       | /keep-up-to-date | should be     |
-      | /communities     | should not be |
+      | /collections     | should not be |
       | /solutions       | should not be |
       # Recheck some URLs to ensure that cache contexts are working.
       | /                | should be     |

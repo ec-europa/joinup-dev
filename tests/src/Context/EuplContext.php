@@ -497,7 +497,7 @@ class EuplContext extends RawDrupalContext {
     foreach ($html_manipulator->filter('.icon--check-2') as $node) {
       // Insert an 'x' character the licence comparer table checked cells so
       // that the tests are able to identify them.
-      // @see tests/features/communities/eupl/jla.feature
+      // @see tests/features/collections/eupl/jla.feature
       $node->textContent = 'x';
     }
     $scope->setHtml($html_manipulator->html());

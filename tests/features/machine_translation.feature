@@ -10,27 +10,27 @@ Feature: Machine translation
       | title | Brexit    |
       | state | validated |
     And event content:
-      | title                      | community | state     |
+      | title                      | collection | state     |
       | Confiscating of sandwiches | Brexit     | validated |
     And news content:
-      | title                   | community | state     |
+      | title                   | collection | state     |
       | Supply chain disruption | Brexit     | validated |
     And document content:
-      | title                           | community | state     |
+      | title                           | collection | state     |
       | Increased postal delivery costs | Brexit     | validated |
     And discussion content:
-      | title                                    | community | state     |
+      | title                                    | collection | state     |
       | Restriction on animal-based food imports | Brexit     | validated |
     And custom_page content:
-      | title                      | community | state     |
+      | title                      | collection | state     |
       | Increased credit card fees | Brexit     | validated |
     And glossary content:
-      | title               | abbreviation | summary                 | definition                | community |
+      | title               | abbreviation | summary                 | definition                | collection |
       | Digital portability | DP           | Availability of content | Across streaming services | Brexit     |
     And solution:
       | title      | Rejoin the EU |
       | state      | validated     |
-      | community | Brexit        |
+      | collection | Brexit        |
 
     When I am logged in as a moderator
     # Inside a community sidebar, only custom pages, glossary terms (but not

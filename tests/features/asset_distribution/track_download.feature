@@ -15,7 +15,7 @@ Feature: Asset distribution editing.
       | state | validated                       |
     And solution:
       | title      | OpenBSD                         |
-      | community | Berkeley Software Distributions |
+      | collection | Berkeley Software Distributions |
       | state      | validated                       |
     And release:
       | title          | Winter of 95 |

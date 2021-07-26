@@ -11,7 +11,7 @@ Feature:
     And solution:
       | title      | Child of community with child |
       | state      | <solution state>               |
-      | community | Community with child          |
+      | collection | Community with child          |
 
     When I am logged in as a moderator
     And I go to the delete form of the "Community with child" community

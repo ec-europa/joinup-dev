@@ -33,7 +33,7 @@ Feature: Contact information access
       | contact information | info                    |
       | state               | validated               |
     And the following community user memberships:
-      | community              | user          | roles       |
+      | collection              | user          | roles       |
       | Ausy software solutions | Michiel Lucas | facilitator |
     When I am logged in as "Michiel Lucas"
     When I go to the edit form of the "Ausy software solutions" community

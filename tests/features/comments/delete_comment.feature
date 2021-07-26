@@ -13,13 +13,13 @@ Feature: Delete comments
       | Vicky visitor        | vicky.visitor@example.com     | Vicky       | visitor     |
       | Do Re Mi Facilitator | doremifacilitator@example.com | Do Re Mi    | Facilitator |
     And news content:
-      | title                          | body                              | community            | state     |
+      | title                          | body                              | collection            | state     |
       | RDF Schemas for government use | Home for DCAT, ADMS, and the like | Semantic web fanatics | validated |
     And comments:
       | subject         | field_body       | author          | parent                         |
       | ADMS is awesome | Let's all use it | Tim Berners Lee | RDF Schemas for government use |
     And the following community user memberships:
-      | community            | user                 | roles       |
+      | collection            | user                 | roles       |
       | Semantic web fanatics | Do Re Mi Facilitator | facilitator |
 
   Scenario: Delete comments

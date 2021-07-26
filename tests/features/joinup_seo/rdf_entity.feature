@@ -23,7 +23,7 @@ Feature: SEO for RDF entities.
 
     Examples:
       | type       | link        | graph type      |
-      | community | Communities | AssetRepository |
+      | collection | Communities | AssetRepository |
       | solution   | Solutions   | Asset           |
 
   Scenario: Basic JSON meta information for releases and distributions.

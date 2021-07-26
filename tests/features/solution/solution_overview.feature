@@ -189,7 +189,7 @@ Feature: Solutions Overview
     # Technical: use a separate step to create a community associated to the anonymous user.
     And the following solution:
       | title      | Flag Rough            |
-      | community | Insane Wooden Crystal |
+      | collection | Insane Wooden Crystal |
       | state      | validated             |
       | featured   | no                    |
 

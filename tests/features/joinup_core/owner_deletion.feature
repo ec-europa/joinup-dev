@@ -53,5 +53,5 @@ Feature: Deletion of community and solution owners
 
     Examples:
       | type       |
-      | community |
+      | collection |
       | solution   |

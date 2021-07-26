@@ -10,14 +10,14 @@ Feature:
       | Nintendo64 | logo.png | banner.jpg | validated |
       | Emulators  | logo.png | banner.jpg | validated |
     And news content:
-      | title                                 | community | created           | content                          | state     |
+      | title                                 | collection | created           | content                          | state     |
       | Rare Nintendo64 disk drive discovered | Nintendo64 | 2018-10-01 4:26am | Magnetic drive called 64DD.      | validated |
       | NEC VR4300 CPU                        | Emulators  | 2018-10-03 4:27am | Update of the emulation library. | validated |
     And event content:
-      | title               | community | created           | body                                        | state     |
+      | title               | collection | created           | body                                        | state     |
       | 20 year anniversary | Nintendo64 | 2018-10-01 4:29am | The console was released in September 1996. | validated |
     And discussion content:
-      | title                           | community | content                 | created          | state     |
+      | title                           | collection | content                 | created          | state     |
       | What's your favourite N64 game? | Nintendo64 | Post title and reasons. | 2018-11-17 10:17 | validated |
       | Searching for green pad.        | Nintendo64 | Looking for a used one. | 2018-11-17 10:18 | validated |
 
@@ -214,7 +214,7 @@ Feature:
     Given the following solution:
       | title      | N64 cartridge cleaner |
       | state      | validated             |
-      | community | Nintendo64            |
+      | collection | Nintendo64            |
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     # Simulate reordering and removal of rows.
@@ -291,7 +291,7 @@ Feature:
 
   Scenario: Test listing by keywords that contain the same word.
     Given document content:
-      | title        | keywords            | content     | community | state     |
+      | title        | keywords            | content     | collection | state     |
       | User's Guide | nintendo64 manuals  | User manual | Nintendo64 | validated |
       | Licence      | nintendo64 licences | Licence     | Nintendo64 | validated |
     And I am logged in as a moderator

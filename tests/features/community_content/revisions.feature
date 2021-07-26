@@ -192,14 +192,14 @@ Feature:
     # everyone should always be free to start a discussion. See ISAICP-2265.
     Examples:
       | group type | content type | moderation | final title   | moderate action | join button                | leave link                     |
-      | community | discussion   | yes        | Goodbi world  | Update          | Join this community       | Leave this community          |
-      | community | document     | yes        | Goodbye world | Publish         | Join this community       | Leave this community          |
-      | community | event        | yes        | Goodbye world | Publish         | Join this community       | Leave this community          |
-      | community | news         | yes        | Goodbye world | Publish         | Join this community       | Leave this community          |
-      | community | discussion   | no         | Goodbi world  | Update          | Join this community       | Leave this community          |
-      | community | document     | no         | Goodbi world  | Update          | Join this community       | Leave this community          |
-      | community | event        | no         | Goodbi world  | Update          | Join this community       | Leave this community          |
-      | community | news         | no         | Goodbi world  | Update          | Join this community       | Leave this community          |
+      | collection | discussion   | yes        | Goodbi world  | Update          | Join this community       | Leave this community          |
+      | collection | document     | yes        | Goodbye world | Publish         | Join this community       | Leave this community          |
+      | collection | event        | yes        | Goodbye world | Publish         | Join this community       | Leave this community          |
+      | collection | news         | yes        | Goodbye world | Publish         | Join this community       | Leave this community          |
+      | collection | discussion   | no         | Goodbi world  | Update          | Join this community       | Leave this community          |
+      | collection | document     | no         | Goodbi world  | Update          | Join this community       | Leave this community          |
+      | collection | event        | no         | Goodbi world  | Update          | Join this community       | Leave this community          |
+      | collection | news         | no         | Goodbi world  | Update          | Join this community       | Leave this community          |
       | solution   | discussion   | yes        | Goodbi world  | Update          | Subscribe to this solution | Unsubscribe from this solution |
       | solution   | document     | yes        | Goodbye world | Publish         | Subscribe to this solution | Unsubscribe from this solution |
       | solution   | news         | yes        | Goodbye world | Publish         | Subscribe to this solution | Unsubscribe from this solution |

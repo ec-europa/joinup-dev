@@ -62,7 +62,7 @@ Feature: My subscriptions
       | Barnard's Star | draft     | A low mass red dwarf at around 6 light years distance.         |
       | Wolf 359       | proposed  | Wolf 359 is a red dwarf star located in the constellation Leo. |
     And the following community user memberships:
-      | community     | user             | roles       |
+      | collection     | user             | roles       |
       | Alpha Centauri | Auric Goldfinger | member      |
       | Barnard's Star | Auric Goldfinger | owner       |
       | Wolf 359       | Auric Goldfinger | facilitator |
@@ -185,13 +185,13 @@ Feature: My subscriptions
       | title | Malicious plans |
       | state | validated       |
     And the following community user memberships:
-      | community      | user             |
+      | collection      | user             |
       | Malicious plans | Auric Goldfinger |
     And the following community content subscriptions:
-      | community      | user             | subscriptions |
+      | collection      | user             | subscriptions |
       | Malicious plans | Auric Goldfinger | discussion    |
     And discussion content:
-      | title        | body                   | community      | state | author           |
+      | title        | body                   | collection      | state | author           |
       | Water supply | Contaminate it with GB | Malicious plans | draft | Auric Goldfinger |
 
     Given I am logged in as "Auric Goldfinger"

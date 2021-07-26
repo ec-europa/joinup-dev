@@ -11,7 +11,7 @@ Feature: "Add event" visibility options.
       | banner | banner.jpg              |
       | state  | validated               |
     And the following solutions:
-      | title           | community              | logo     | banner     | state     |
+      | title           | collection              | logo     | banner     | state     |
       | Ragged Tower    | Collective Ragged tower | logo.png | banner.jpg | validated |
       | Prince of Magic | Collective Ragged tower | logo.png | banner.jpg | validated |
 
@@ -42,7 +42,7 @@ Feature: "Add event" visibility options.
       | banner | banner.jpg                      |
       | state  | validated                       |
     And the following solutions:
-      | title                | community                      | logo     | banner     | state     |
+      | title                | collection                      | logo     | banner     | state     |
       | The Luscious Bridges | Collective The Luscious Bridges | logo.png | banner.jpg | validated |
     And I am logged in as a facilitator of the "The Luscious Bridges" solution
     When I go to the homepage of the "The Luscious Bridges" solution

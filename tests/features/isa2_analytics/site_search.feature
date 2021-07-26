@@ -15,7 +15,7 @@ Feature: Site search
       | title                  | description               | abstract               | state     |
       | Community total count | No description available. | No abstract available. | validated |
     And news content:
-      | title                | headline             | body               | community             | state     |
+      | title                | headline             | body               | collection             | state     |
       | News total count     | News total count     | No body available. | Community total count | validated |
       | News total count new | News total count new | No body available. | Community total count | draft     |
     When I am on the homepage

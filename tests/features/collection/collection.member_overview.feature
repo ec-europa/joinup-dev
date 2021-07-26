@@ -35,7 +35,7 @@ Feature: Community membership overview
       | title           | description        | logo     | banner     | owner          | contact information | state     |
       | Jubilant Robots | Fresh oil harvest! | logo.png | banner.jpg | Ayodele Sommer | Nita Yang           | validated |
     And the following community user memberships:
-      | community      | user                  | roles       | state   |
+      | collection      | user                  | roles       | state   |
       | Jubilant Robots | Ruby Valenta          | owner       |         |
       | Jubilant Robots | Bohumil Unterbrink    | facilitator |         |
       | Jubilant Robots | Isabell Zahariev      |             | blocked |
@@ -63,7 +63,7 @@ Feature: Community membership overview
     Then I should see the heading "Members"
 
     # Check that clean URLs are being applied to the "members" subpage.
-    And I should be on "/community/jubilant-robots/members"
+    And I should be on "/collection/jubilant-robots/members"
 
     And I should see the following tiles in the correct order:
       | Aali Dalton           |

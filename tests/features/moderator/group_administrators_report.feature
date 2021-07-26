@@ -21,7 +21,7 @@ Feature: Group administrators report
       | melissa  | melissa     | Kevorkian   | mkevorkian@fishes.co.uk      |
 
     And community user memberships:
-      | community         | user    | roles                      | state   |
+      | collection         | user    | roles                      | state   |
       | Large living birds | najib   | administrator              | active  |
       | bony fishes        | victor  | administrator, facilitator | active  |
       | Large living birds | melor   | facilitator                | active  |

@@ -9,7 +9,7 @@ Feature: Subscribing to community content in solutions
       | title    | state     |
       | Bulgaria | validated |
     Given the following solutions:
-      | title                | state     | community |
+      | title                | state     | collection |
       | Products of Bulgaria | validated | Bulgaria   |
       | Cities of Bulgaria   | validated | Bulgaria   |
     And users:

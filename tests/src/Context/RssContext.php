@@ -53,7 +53,7 @@ class RssContext extends RawMinkContext {
    *
    * Table format:
    * | title       | link               | description         | ... |
-   * | Joinup feed | /community/joinup | RSS feed for Joinup | ... |
+   * | Joinup feed | /collection/joinup | RSS feed for Joinup | ... |
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The channel elements data.

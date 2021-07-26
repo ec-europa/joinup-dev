@@ -12,7 +12,7 @@ Feature: SEO for discussion forum posts.
       | Username          | E-mail                 | First name | Family name |
       | Joinup SEO author | joinup.seo@example.com | Kindle     | eReader     |
     And "discussion" content:
-      | title                           | publication date                | changed                         | content                                                      | author            | attachments         | keywords                       | state     | community                       |
+      | title                           | publication date                | changed                         | content                                                      | author            | attachments         | keywords                       | state     | collection                       |
       | Discussions are now forum posts | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | This discussion is to ensure that SEO tags are set properly. | Joinup SEO author | test.zip, test1.zip | seo, tags, metatag, schema.org | validated | Joinup SEO discussion community |
 
     When I visit the "Discussions are now forum posts" discussion
@@ -27,7 +27,7 @@ Feature: SEO for discussion forum posts.
       | datePublished       | 2019-12-25T13:00:00+0100                                                                            |
       | isAccessibleForFree | True                                                                                                |
       | dateModified        | 2020-01-01T13:00:00+0100                                                                            |
-      | mainEntityOfPage    | __base_url__/community/joinup-seo-discussion-community/discussion/discussions-are-now-forum-posts |
+      | mainEntityOfPage    | __base_url__/collection/joinup-seo-discussion-community/discussion/discussions-are-now-forum-posts |
     # Adding numerical property values is turning the "about" property into an array comparison.
     And the metatag graph of the item with "name" "Discussions are now forum posts" should have the following "about" properties:
       | property | value      |
@@ -40,7 +40,7 @@ Feature: SEO for discussion forum posts.
       | @type    | ImageObject                                                                                                                                     |
       # Discussions don't have an image field but an image is required by google. Add the Joinup logo as the image of
       # all discussions.
-      | url      | https://joinup.ec.europa.eu/sites/default/files/styles/logo/public/community/logo/2019-04/190404-logo-JOINUP-blue-2.png |
+      | url      | https://joinup.ec.europa.eu/sites/default/files/styles/logo/public/collection/logo/2019-04/190404-logo-JOINUP-blue-2.png |
     # The index is the delta in the field attachment, with 0 meaning the first of the values.
     And the metatag graph of the item with "name" "Discussions are now forum posts" should have the following "sharedContent" properties in index 0:
       | property | value                                                    |
@@ -77,7 +77,7 @@ Feature: SEO for discussion forum posts.
     And the following meta tags should available in the html:
       | identifier     | value                                                                                               |
       | description    | This discussion is to ensure that SEO tags are set properly.                                        |
-      | og:url         | __base_url__/community/joinup-seo-discussion-community/discussion/discussions-are-now-forum-posts |
+      | og:url         | __base_url__/collection/joinup-seo-discussion-community/discussion/discussions-are-now-forum-posts |
       | og:site_name   | Joinup                                                                                              |
       | og:title       | Discussions are now forum posts                                                                     |
       | og:description | This discussion is to ensure that SEO tags are set properly.                                        |

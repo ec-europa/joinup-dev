@@ -17,11 +17,11 @@ Feature: Global search
       | spatial coverage | Belgium                      |
       | state            | validated                    |
     And the following solutions:
-      | title          | community                   | description                                                                                                                          | topic      | spatial coverage | state     |
+      | title          | collection                   | description                                                                                                                          | topic      | spatial coverage | state     |
       | Spherification | Molecular cooking community | Spherification is the culinary process of shaping a liquid into spheres                                                              | Demography | European Union   | validated |
       | Foam           | Molecular cooking community | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" |            |                  | validated |
     And news content:
-      | title                 | body             | community                   | topic                   | spatial coverage | state     |
+      | title                 | body             | collection                   | topic                   | spatial coverage | state     |
       | El Celler de Can Roca | The best in town | Molecular cooking community | Statistics and Analysis | Luxembourg       | validated |
 
     Given I am logged in as a user with the "authenticated" role
@@ -131,11 +131,11 @@ Feature: Global search
       | Community alpha | <p>community <strong>beta</strong> description.</p> | The community gamma abstract. | validated |
       | Col for Sol      | <p>community for the solution.</p>                  | The col for sol abstract.      | validated |
     And event content:
-      | title             | short title       | body                                | spatial coverage | agenda         | location       | organisation        | scope         | keywords | community       | state     |
+      | title             | short title       | body                                | spatial coverage | agenda         | location       | organisation        | scope         | keywords | collection       | state     |
       | Event Omega       | Event short delta | The epsilon event content.          | Greece           | Event agenda.  | Some place     | European Commission | International | Alphabet | Community alpha | validated |
       | Alternative event | Alt event         | This event stays in the background. | Luxembourg       | To be planned. | Event location | Event organisation  |               |          | Community alpha | validated |
     And document content:
-      | title          | document type | short title          | body                                    | spatial coverage | keywords | community       | state     |
+      | title          | document type | short title          | body                                    | spatial coverage | keywords | collection       | state     |
       | Document omega | Document      | Document short delta | A document consists of epsilon strings. | Luxembourg       | Alphabet | Community alpha | validated |
 
     When I visit the search page
@@ -163,7 +163,7 @@ Feature: Global search
       | Community alpha | <p>community <strong>beta</strong> description.</p> | The community gamma abstract. | validated |
       | Col for Sol      | <p>community for the solution.</p>                  | The col for sol abstract.      | validated |
     And the following solutions:
-      | title          | description                                                | keywords | owner             | contact information | community  | state     |
+      | title          | description                                                | keywords | owner             | contact information | collection  | state     |
       | Solution alpha | <p>This is the solution <strong>beta</strong> description. | Alphabet | Responsible owner | Go-to contact       | Col for Sol | validated |
     And the following releases:
       | title         | release number | release notes                               | keywords | is version of  | owner             | contact information | state     |
@@ -175,23 +175,23 @@ Feature: Global search
       | title         | description                         |
       | Licence Alpha | A beta description for the licence. |
     And news content:
-      | title      | headline            | body                      | keywords | community       | state     |
+      | title      | headline            | body                      | keywords | collection       | state     |
       | News omega | News headline delta | The epsilon news content. | Alphabet | Community alpha | validated |
     And event content:
-      | title             | short title       | body                                | agenda         | location       | organisation        | scope         | keywords | community       | solution       | state     |
+      | title             | short title       | body                                | agenda         | location       | organisation        | scope         | keywords | collection       | solution       | state     |
       | Event Omega       | Event short delta | The epsilon event content.          | Event agenda.  | Some place     | European Commission | International | Alphabet |                  | Solution alpha | validated |
       | Alternative event | Alt event         | This event stays in the background. | To be planned. | Event location | Event organisation  |               |          | Community alpha |                | validated |
     And document content:
-      | title          | document type | short title          | body                                    | keywords | community       | state     |
+      | title          | document type | short title          | body                                    | keywords | collection       | state     |
       | Document omega | Document      | Document short delta | A document consists of epsilon strings. | Alphabet | Community alpha | validated |
     And discussion content:
       | title            | body                                                              | solution       | state     |
       | Discussion omega | <p>Does anybody has idea why this <em>epsilon</em> is everywhere? | Solution alpha | validated |
     And custom_page content:
-      | title      | body                                     | community       |
+      | title      | body                                     | collection       |
       | Page omega | This is just an epsilon but should work. | Community alpha |
     And video content:
-      | title       | body          | field_video                                 | community       |
+      | title       | body          | field_video                                 | collection       |
       | Video alpha | Slap like now | https://www.youtube.com/watch?v=JhGf8ZY0tN8 | Community alpha |
     And users:
       | Username     | E-mail                      | First name | Family name | Organisation |
@@ -278,21 +278,21 @@ Feature: Global search
       | Husky Flying Xylophone          | A strange instrument.               | validated |
     And the following solution:
       | title       | Bird outposts in the wild            |
-      | community  | Ornithology: the study of birds      |
+      | collection  | Ornithology: the study of birds      |
       | description | Exotic wings and where to find them. |
       | state       | validated                            |
     And custom_page content:
-      | title           | body                                  | community                      |
+      | title           | body                                  | collection                      |
       | Disturbed birds | Flocks of trained pigeons flying off. | Ornithology: the study of birds |
     And news content:
-      | title                               | body                            | community                      | state     |
+      | title                               | body                            | collection                      | state     |
       | Chickens are small birds            | Birds domesticated in India.    | Ornithology: the study of birds | validated |
       | Found a xylophone from 1600 in Asia | Oldest instrument of this type. | Husky Flying Xylophone          | validated |
     And event content:
-      | title         | body                   | community                      | state     |
+      | title         | body                   | collection                      | state     |
       | Bird spotting | Roosters crow at dawn. | Ornithology: the study of birds | validated |
     And discussion content:
-      | title                             | body                    | community                      | state     |
+      | title                             | body                    | collection                      | state     |
       | Best place to find an exotic bird | Somewhere exotic maybe? | Ornithology: the study of birds | validated |
     And user:
       | Username    | Bird watcher |
@@ -514,7 +514,7 @@ Feature: Global search
       | title             | description       | state     |
       | Custom community | Some custom data. | validated |
     And news content:
-      | title                              | body                                                              | community        | state     | created    | changed    |
+      | title                              | body                                                              | collection        | state     | created    | changed    |
       | Relativity is the word             | No one cares about the body.                                      | Custom community | validated | 01/01/2019 | 03/08/2019 |
       | Relativity news: Relativity theory | I do care about the relativity keyword in the body.               | Custom community | validated | 02/01/2019 | 02/08/2019 |
       | Absolutely nonesense               | Some news are not worth it but I will add relativity here anyway. | Custom community | validated | 03/01/2019 | 01/08/2019 |

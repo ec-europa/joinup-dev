@@ -18,7 +18,7 @@ use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
-use Drupal\joinup_community\JoinupCommunityHelper;
+use Drupal\joinup_collection\JoinupCommunityHelper;
 use Drupal\joinup_group\ContentCreationOptions;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
@@ -86,7 +86,7 @@ class CommunityContext extends RawDrupalContext {
    * @When I visit the propose community form
    */
   public function visitProposeCommunityForm(): void {
-    $this->visitPath('propose/community');
+    $this->visitPath('propose/collection');
   }
 
   /**
@@ -122,7 +122,7 @@ class CommunityContext extends RawDrupalContext {
    *   Thrown when a community with the given title does not exist.
    */
   protected function getCommunityByName(string $title): RdfInterface {
-    return $this->getRdfEntityByLabel($title, 'community');
+    return $this->getRdfEntityByLabel($title, 'collection');
   }
 
   /**
@@ -137,7 +137,7 @@ class CommunityContext extends RawDrupalContext {
    * @When I visit the community overview( page)
    */
   public function visitCommunityOverviewPage(): void {
-    $this->visitPath('/communities');
+    $this->visitPath('/collections');
   }
 
   /**
@@ -249,7 +249,7 @@ class CommunityContext extends RawDrupalContext {
     }
 
     // Convert any entity reference field label value with the entity id.
-    $fields = $this->convertEntityReferencesValues('rdf_entity', 'community', $this->parseRdfEntityFields($fields));
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'collection', $this->parseRdfEntityFields($fields));
 
     return $fields;
   }
@@ -284,8 +284,8 @@ class CommunityContext extends RawDrupalContext {
       'yes',
     ]);
 
-    /** @var \Drupal\community\Entity\CommunityInterface $community */
-    $community = $this->createRdfEntity('community', $values);
+    /** @var \Drupal\collection\Entity\CommunityInterface $community */
+    $community = $this->createRdfEntity('collection', $values);
 
     if ($is_featured) {
       $community->feature();
@@ -386,7 +386,7 @@ class CommunityContext extends RawDrupalContext {
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | community               | user          | roles                      | state   |
+   * | collection               | user          | roles                      | state   |
    * | Interoperability Friends | Verence II    | facilitator, administrator | active  |
    * | Electronic Surveillance  | Letice Earwig |                            | blocked |
    * @codingStandardsIgnoreEnd
@@ -407,7 +407,7 @@ class CommunityContext extends RawDrupalContext {
    */
   public function givenCommunityUserMemberships(TableNode $membership_table): void {
     foreach ($membership_table->getColumnsHash() as $values) {
-      $group = $this->getCommunityByName($values['community']);
+      $group = $this->getCommunityByName($values['collection']);
       $this->givenUserMembership($group, $values);
     }
   }
@@ -475,7 +475,7 @@ class CommunityContext extends RawDrupalContext {
       throw new \Exception("User {$username} could not be found.");
     }
 
-    $community = $this->getRdfEntityByLabel($rdf_entity, 'community');
+    $community = $this->getRdfEntityByLabel($rdf_entity, 'collection');
     $owner_roles = [
       OgRoleInterface::ADMINISTRATOR,
       OgRoleInterface::AUTHENTICATED,
@@ -536,7 +536,7 @@ class CommunityContext extends RawDrupalContext {
    * it when the currently logged in user can be discarded.
    *
    * Table format:
-   * | community   | user | buttons         |
+   * | collection   | user | buttons         |
    * | Community A | John | Save as draft   |
    * | Community B | Jack | Update, Publish |
    *
@@ -564,7 +564,7 @@ class CommunityContext extends RawDrupalContext {
       }
 
       // Go to the edit form and check that the expected buttons are visible.
-      $this->visitEntityForm('edit', $values['community'], 'community');
+      $this->visitEntityForm('edit', $values['collection'], 'collection');
       $buttons = $this->explodeCommaSeparatedStepArgument($values['buttons']);
       $this->assertSubmitButtonsVisible($buttons);
     }
@@ -574,7 +574,7 @@ class CommunityContext extends RawDrupalContext {
    * Checks that a user has access to the delete button on the community form.
    *
    * Table format:
-   * | community   | user | delete link |
+   * | collection   | user | delete link |
    * | Community A | John | yes         |
    * | Community B | Jack | no          |
    *
@@ -589,7 +589,7 @@ class CommunityContext extends RawDrupalContext {
   public function verifyDeleteLinkVisibility(TableNode $check_table): void {
     foreach ($check_table->getColumnsHash() as $values) {
       $user = $this->getUserByName($values['user']);
-      $community = $this->getCommunityByName($values['community']);
+      $community = $this->getCommunityByName($values['collection']);
       $visible = $values['delete link'] === 'yes';
       $this->assertGroupEntityOperation($visible, 'delete', $community, $user);
     }
@@ -604,7 +604,7 @@ class CommunityContext extends RawDrupalContext {
    * @Given I am about to leave( the) :label( community)
    */
   public function visitCommunityLeaveConfirmationPage(string $label): void {
-    $community = $this->getEntityByLabel('rdf_entity', $label, 'community');
+    $community = $this->getEntityByLabel('rdf_entity', $label, 'collection');
     $encoded_id = UriEncoder::encodeUrl($community->id());
     $this->visitPath("/rdf_entity/$encoded_id/leave");
   }
@@ -639,8 +639,8 @@ class CommunityContext extends RawDrupalContext {
 
     $failures = [];
     foreach ($this->explodeCommaSeparatedStepArgument($labels) as $label) {
-      /** @var \Drupal\community\Entity\CommunityInterface $community */
-      $community = $this->getEntityByLabel('rdf_entity', $label, 'community');
+      /** @var \Drupal\collection\Entity\CommunityInterface $community */
+      $community = $this->getEntityByLabel('rdf_entity', $label, 'collection');
       if (!$community->getMembership((int) $account->id(), [])) {
         $failures[] = $label;
       }

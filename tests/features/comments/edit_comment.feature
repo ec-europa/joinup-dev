@@ -12,7 +12,7 @@ Feature: Edit a comment
       | Sons of anarchy        | sonsofanarchy@example.com          |           | Sons       | Anarchy     |
       | Comment edit moderator | comment.edit.moderator@example.com | moderator | Steeve     | Roberts     |
     And news content:
-      | title            | body                                                | community         | state     |
+      | title            | body                                                | collection         | state     |
       | Paying with cash | How could this ever happen? Moral panic on its way! | Structural pension | validated |
     And comments:
       | subject                       | field_body       | author          | parent           |

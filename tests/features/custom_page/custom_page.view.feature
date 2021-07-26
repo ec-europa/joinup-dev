@@ -34,5 +34,5 @@ Feature:
 
     Examples:
       | group      |
-      | community |
+      | collection |
       | solution   |

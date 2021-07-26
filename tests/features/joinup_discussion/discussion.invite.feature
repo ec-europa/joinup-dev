@@ -25,12 +25,12 @@ Feature: Invite members to subscribe to discussions
       | description | We just love siphons |
       | state       | validated            |
     And the following community user membership:
-      | community           | user             | roles       |
+      | collection           | user             | roles       |
       | The Siphon Community | Lynwood Crawford | member      |
       | The Siphon Community | theacuteone      | member      |
       | The Siphon Community | Glory Ruskin     | facilitator |
     And discussion content:
-      | title                            | content                            | author           | state     | community           | solution                |
+      | title                            | content                            | author           | state     | collection           | solution                |
       | For your lifetime                | Are you kidding?                   | Lynwood Crawford | validated |                      | Stainless Steel Siphons |
       | Concerned about dissolved gases? | Gas might get trapped in a siphon. | Lynwood Crawford | validated | The Siphon Community |                         |
       | The flying droplet siphon        | Liquid tensile strength.           | Lynwood Crawford | draft     | The Siphon Community |                         |

@@ -27,7 +27,7 @@ Feature:
     Then I should see the error message "Live links are allowed only for internal URLs pointing to content within the website."
 
     # RDF entities are not allowed either.
-    When I fill in "Link" with "/community/flagging-community"
+    When I fill in "Link" with "/collection/flagging-community"
     And I press "Save"
     Then I should see the error message "Live links are allowed only for internal URLs pointing to content within the website."
 
@@ -36,7 +36,7 @@ Feature:
     And I press "Save"
     Then I should see the error message "Live links are allowed only for internal URLs pointing to content within the website."
 
-    When I fill in "Link" with "/community/flagging-community/news/some-title"
+    When I fill in "Link" with "/collection/flagging-community/news/some-title"
     And I press "Save"
     Then I should see the success message "The menu link has been saved."
     And I should see the bell icon in the support menu
@@ -67,7 +67,7 @@ Feature:
     When I go to "/admin/structure/menu/manage/support"
     And I click "Add link"
     And I fill in "Menu link title" with "Check what's new"
-    And I fill in "Link" with "/community/flagging-community/news/some-title"
+    And I fill in "Link" with "/collection/flagging-community/news/some-title"
     And I check "Live link"
 
     # Since the "Live link" field is not visible after one link is saved as live link, we are creating a

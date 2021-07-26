@@ -73,6 +73,6 @@ Feature: Custom pages enhance search results for their communities/solutions
 
     Examples:
       | group      |
-      | community |
+      | collection |
       | solution   |
 

@@ -16,6 +16,6 @@ Feature: Event API
       | content creation | facilitators and authors |
       | state            | validated                |
     And event content:
-      | title       | short title | body                                     | community       | start date          | end date            |
+      | title       | short title | body                                     | collection       | start date          | end date            |
       | Dummy Event | Short       | This is some dummy content like foo:bar. | Le Event Heureux | 2016-03-15T11:12:12 | 2016-03-15T11:12:12 |
     Then I should have a "Event" page titled "Dummy Event"

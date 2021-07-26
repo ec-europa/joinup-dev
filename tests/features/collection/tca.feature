@@ -13,18 +13,18 @@ Feature: Community TCA agreement
 
   Scenario: TCA agreement page is not accessible by anonymous users.
     When I am not logged in
-    And I visit "/communities"
+    And I visit "/collections"
     And I click "Create community"
     Then I should see the heading "Sign in to continue"
 
   Scenario: Authenticated users can access the TCA agreement page.
     When I am logged in as a user with the "authenticated" role
-    And I visit "/communities"
+    And I visit "/collections"
     And I click "Create community"
     Then I should see the heading "Why create a Community?"
     And I should see the text "In order to create the Community you need first check the field below and then press the Yes button to proceed."
     When I press "No thanks"
-    Then the url should match "/communities"
+    Then the url should match "/collections"
 
     When I click "Create community"
     And I press "Yes"
@@ -40,7 +40,7 @@ Feature: Community TCA agreement
       | Legal notice | 1.1   | yes       | I have read and accept the <a href="[entity_legal_document:url]">[entity_legal_document:label]</a> | The information on this site is subject to a disclaimer... |
 
     When I am logged in as a user with the "authenticated" role
-    And I visit "/communities"
+    And I visit "/collections"
     Then I should see the warning message "You must accept this agreement before continuing."
 
     Given I check "I have read and accept the Legal notice"

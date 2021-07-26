@@ -9,7 +9,7 @@ Feature: As a moderator I want to be able to move solutions to other community.
       | http://example.com/destination | Destination | validated |
 
     And solutions:
-      | title      | community | state     |
+      | title      | collection | state     |
       | Solution 1 | Source     | validated |
       | Solution 2 | Source     | validated |
       | Solution 3 | Source     | validated |
@@ -19,13 +19,13 @@ Feature: As a moderator I want to be able to move solutions to other community.
     Given I am an anonymous user
     When I go to the homepage of the "Source" community
     Then I should not see the link "Manage solutions"
-    When I go to "/rdf_entity/http_e_f_fexample_ccom_fsource/change-community"
+    When I go to "/rdf_entity/http_e_f_fexample_ccom_fsource/change-collection"
     Then I should see the heading "Sign in to continue"
 
     Given I am logged in as an "authenticated"
     When I go to the homepage of the "Source" community
     Then I should not see the link "Manage solutions"
-    When I go to "/rdf_entity/http_e_f_fexample_ccom_fsource/change-community"
+    When I go to "/rdf_entity/http_e_f_fexample_ccom_fsource/change-collection"
     Then I should get an access denied error
 
     Given I am logged in as a moderator
@@ -46,7 +46,7 @@ Feature: As a moderator I want to be able to move solutions to other community.
     When I press "Apply to selected items"
     Then I should see the heading "Select a destination community"
     And I should see the following lines of text:
-      | The following solutions from Source community will be moved to a new community: |
+      | The following solutions from Source collection will be moved to a new collection: |
       | Solution 1                                                                        |
       | Solution 4                                                                        |
 

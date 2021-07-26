@@ -10,7 +10,7 @@ Feature: User authentication
 
     Examples:
       | path          |
-      | communities   |
+      | collection    |
       | user/login    |
       | user/password |
       | user/register |
@@ -47,8 +47,8 @@ Feature: User authentication
       | licence                                             |
       | licence/add                                         |
       | media/add                                           |
-      | media/add/community_banner                         |
-      | media/add/community_logo                           |
+      | media/add/collection_banner                         |
+      | media/add/collection_logo                           |
       | media/add/event_logo                                |
       | media/add/news_logo                                 |
       | media/add/solution_banner                           |
@@ -61,14 +61,14 @@ Feature: User authentication
       | node/add/glossary                                   |
       | node/add/news                                       |
       | outdated-content-threshold                          |
-      | propose/community                                  |
+      | propose/collection                                  |
       | propose/solution                                    |
       | rdf-graph                                           |
       | rdf-graph/add                                       |
       | rdf_entity/add                                      |
       | rdf_entity/add/asset_distribution                   |
       | rdf_entity/add/asset_release                        |
-      | rdf_entity/add/community                           |
+      | rdf_entity/add/collection                           |
       | rdf_entity/add/contact_information                  |
       | rdf_entity/add/licence                              |
       | rdf_entity/add/owner                                |
@@ -92,8 +92,8 @@ Feature: User authentication
 
     Examples:
       | path               |
-      | communities        |
-      | propose/community |
+      | collections        |
+      | propose/collection |
       | user               |
       | user/subscriptions |
 
@@ -128,8 +128,8 @@ Feature: User authentication
       | licence                                             |
       | licence/add                                         |
       | media/add                                           |
-      | media/add/community_banner                         |
-      | media/add/community_logo                           |
+      | media/add/collection_banner                         |
+      | media/add/collection_logo                           |
       | media/add/event_logo                                |
       | media/add/news_logo                                 |
       | media/add/solution_banner                           |
@@ -148,7 +148,7 @@ Feature: User authentication
       | rdf_entity/add                                      |
       | rdf_entity/add/asset_distribution                   |
       | rdf_entity/add/asset_release                        |
-      | rdf_entity/add/community                           |
+      | rdf_entity/add/collection                           |
       | rdf_entity/add/contact_information                  |
       | rdf_entity/add/licence                              |
       | rdf_entity/add/owner                                |
@@ -188,14 +188,14 @@ Feature: User authentication
       | licence                                     |
       | licence/add                                 |
       | media/add                                   |
-      | media/add/community_banner                 |
-      | media/add/community_logo                   |
+      | media/add/collection_banner                 |
+      | media/add/collection_logo                   |
       | media/add/event_logo                        |
       | media/add/news_logo                         |
       | media/add/solution_banner                   |
       | media/add/solution_logo                     |
       | outdated-content-threshold                  |
-      | propose/community                          |
+      | propose/collection                          |
 
   Scenario Outline: Moderator cannot access restricted pages
     Given I am logged in as a user with the "moderator" role
@@ -226,7 +226,7 @@ Feature: User authentication
       | rdf_entity/add                                      |
       | rdf_entity/add/asset_distribution                   |
       | rdf_entity/add/asset_release                        |
-      | rdf_entity/add/community                           |
+      | rdf_entity/add/collection                           |
       | rdf_entity/add/contact_information                  |
       | rdf_entity/add/licence                              |
       | rdf_entity/add/owner                                |
@@ -242,7 +242,7 @@ Feature: User authentication
       | admin/config/search/redirect               |
       | admin/reporting/distribution-downloads     |
       | admin/reporting/distribution-downloads/csv |
-      | communities                                |
+      | collections                                |
 
   Scenario Outline: Administrator cannot access pages intended for site building and development
     Given I am logged in as a user with the "administrator" role
@@ -271,7 +271,7 @@ Feature: User authentication
       | rdf_entity/add                     |
       | rdf_entity/add/asset_distribution  |
       | rdf_entity/add/asset_release       |
-      | rdf_entity/add/community          |
+      | rdf_entity/add/collection          |
       | rdf_entity/add/contact_information |
       | rdf_entity/add/licence             |
       | rdf_entity/add/owner               |

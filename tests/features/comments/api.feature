@@ -9,7 +9,7 @@ Feature: Creating comments through the API
       | title | Hashrate, shares & workers |
       | state | validated                  |
     And <content type> content:
-      | title                      | body                                  | community                 | state     |
+      | title                      | body                                  | collection                 | state     |
       | Current effective hashrate | Ethash is the proof of work algorithm | Hashrate, shares & workers | validated |
     And user:
       | Username | Vasundhara Guadarrama |

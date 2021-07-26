@@ -64,7 +64,7 @@ Feature: SEO for news articles.
     And the following meta tags should available in the html:
       | identifier      | value                                                                      |
       | description     | Body of event.                                                             |
-      | og:url          | __base_url__/community/joinup-seo-event-community/event/joinup-seo-event |
+      | og:url          | __base_url__/collection/joinup-seo-event-community/event/joinup-seo-event |
       | og:site_name    | Joinup                                                                     |
       | og:title        | Joinup SEO event                                                           |
       | og:description  | Body of event.                                                             |
@@ -82,7 +82,7 @@ Feature: SEO for news articles.
 
     Examples:
       | web url                                       | expected url                                                               | location                           | expected location |
-      |                                               | __base_url__/community/joinup-seo-event-community/event/joinup-seo-event | Rue Belliard 28, Brussels, Belgium | Rue Belliard 28   |
+      |                                               | __base_url__/collection/joinup-seo-event-community/event/joinup-seo-event | Rue Belliard 28, Brussels, Belgium | Rue Belliard 28   |
       # Urls need a title value in the 0 index and a url in the 1 index of the
       # value to work, otherwise it is parsed wrongly.
       # @see: \Drupal\Driver\Fields\Drupal8\LinkHandler::expand

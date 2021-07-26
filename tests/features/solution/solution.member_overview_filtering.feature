@@ -21,7 +21,7 @@ Feature: Type something to filter the listing the member list
       | title       | Coffee grinders                      |
       | description | Grind more coffee, make more coffee. |
       | state       | validated                            |
-      | community  | Coffee lovers                        |
+      | collection  | Coffee lovers                        |
     And the following solution user memberships:
       | solution        | user         | roles       |
       | Coffee grinders | ledge        | owner       |

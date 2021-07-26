@@ -154,13 +154,13 @@ Feature: Sharing content between communities
 
     Examples:
       | content type | group type |
-      | event        | community |
+      | event        | collection |
       | event        | solution   |
-      | document     | community |
+      | document     | collection |
       | document     | solution   |
-      | discussion   | community |
+      | discussion   | collection |
       | discussion   | solution   |
-      | news         | community |
+      | news         | collection |
       | news         | solution   |
 
   @javascript
@@ -226,13 +226,13 @@ Feature: Sharing content between communities
 
     Examples:
       | content type | group type |
-      | event        | community |
+      | event        | collection |
       | event        | solution   |
-      | document     | community |
+      | document     | collection |
       | document     | solution   |
-      | discussion   | community |
+      | discussion   | collection |
       | discussion   | solution   |
-      | news         | community |
+      | news         | collection |
       | news         | solution   |
 
   @javascript
@@ -274,13 +274,13 @@ Feature: Sharing content between communities
 
     Examples:
       | content type | group type |
-      | event        | community |
+      | event        | collection |
       | event        | solution   |
-      | document     | community |
+      | document     | collection |
       | document     | solution   |
-      | discussion   | community |
+      | discussion   | collection |
       | discussion   | solution   |
-      | news         | community |
+      | news         | collection |
       | news         | solution   |
 
   Scenario: Shared pinned content is erroneously shown first.
@@ -304,13 +304,13 @@ Feature: Sharing content between communities
       | Secrets | validated |
       | Gossip  | validated |
     And <content type> content:
-      | title                 | community | state     |
+      | title                 | collection | state     |
       | An unshareable secret | Secrets    | validated |
     And users:
       | Username        | E-mail                |
       | Sanjica Sauvage | sanjisauv@example.com |
     And the following community user memberships:
-      | community | user            |
+      | collection | user            |
       | Secrets    | Sanjica Sauvage |
       | Gossip     | Sanjica Sauvage |
     And I am an anonymous user

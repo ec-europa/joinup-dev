@@ -21,7 +21,7 @@ Feature: Tests the community last update time.
       | creation date     | 2001-01-03       |
       | author            | The Cleaner      |
     And the following solutions:
-      | title           | community       | state     | modification date | creation date | author      | contact information   | owner | description                    |
+      | title           | collection       | state     | modification date | creation date | author      | contact information   | owner | description                    |
       | Roof Hole Cover | Household Wizard | validated | 2010-07-05T23:03  | 2001-01-01    | The Cleaner | Your Cleaning Company | Sean  | Keep your roof in a good shape |
       | Mosquito Killer | Household Wizard | proposed  | 2017-05-03T11:45  | 2001-01-02    | The Cleaner | Your Cleaning Company | Sean  | Quiet nights                   |
     And I am logged in as "The Cleaner"
@@ -33,7 +33,7 @@ Feature: Tests the community last update time.
     Then the response should contain "2011-05-06T21:56"
 
     Given document content:
-      | title           | document type | state     | changed          | created    | community       | body               |
+      | title           | document type | state     | changed          | created    | collection       | body               |
       | Get Rid of Rats | Document      | validated | 2012-01-17T07:38 | 2001-01-04 | Household Wizard | Rats everywhere... |
 
     And I reload the page
@@ -41,7 +41,7 @@ Feature: Tests the community last update time.
     Then the response should contain "2012-01-17T07:38"
 
     Given discussion content:
-      | title           | state     | changed          | created    | community       |
+      | title           | state     | changed          | created    | collection       |
       | Household Forum | validated | 2013-04-19T15:18 | 2001-01-05 | Household Wizard |
 
     And I reload the page
@@ -49,7 +49,7 @@ Feature: Tests the community last update time.
     Then the response should contain "2013-04-19T15:18"
 
     Given event content:
-      | title        | state     | changed          | created    | community       |
+      | title        | state     | changed          | created    | collection       |
       | Cleaning Day | validated | 2014-06-06T22:46 | 2001-01-06 | Household Wizard |
 
     And I reload the page
@@ -57,7 +57,7 @@ Feature: Tests the community last update time.
     Then the response should contain "2014-06-06T22:46"
 
     Given news content:
-      | title                 | state | changed          | created    | community       |
+      | title                 | state | changed          | created    | collection       |
       | The New Grass Trimmer | draft | 2015-11-08T01:05 | 2001-01-07 | Household Wizard |
 
     And I reload the page
@@ -67,7 +67,7 @@ Feature: Tests the community last update time.
     But the response should contain "2014-06-06T22:46"
 
     Given custom_page content:
-      | title          | changed          | created    | community       |
+      | title          | changed          | created    | collection       |
       | The Kids Space | 2016-05-06T05:29 | 2001-01-07 | Household Wizard |
 
     And I reload the page

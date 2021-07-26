@@ -11,7 +11,7 @@ Feature: Add distribution through the UI
       | state      | validated               |
      And the following solution:
       | title       | Solution random x name           |
-      | community  | Asset Distribution Test          |
+      | collection  | Asset Distribution Test          |
       | description | Some reusable random description |
       | state       | validated                        |
     And the following release:

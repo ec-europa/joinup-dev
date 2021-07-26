@@ -9,7 +9,7 @@ Feature: Report inappropriate content
       | title | Deployment tools |
       | state | validated        |
     And "<type>" content:
-      | title   | body   | community       | state     |
+      | title   | body   | collection       | state     |
       | <title> | <body> | Deployment tools | validated |
     Given I am not logged in
     When I go to the content page of the type "<type>" with the title "<title>"

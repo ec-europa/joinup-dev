@@ -14,12 +14,12 @@ Feature: Unsubscribe from communities
       | Kenny's house        | draft     |
       | Koon's hideout       | proposed  |
     And the following community user memberships:
-      | community           | user         | roles       |
+      | collection           | user         | roles       |
       | Southpark elementary | Eric Cartman | member      |
       | Kenny's house        | Eric Cartman | owner       |
       | Koon's hideout       | Eric Cartman | facilitator |
     And the following community content subscriptions:
-      | community           | user         | subscriptions                     |
+      | collection           | user         | subscriptions                     |
       | Southpark elementary | Eric Cartman | discussion, document, event, news |
       | Kenny's house        | Eric Cartman | discussion, document, event, news |
       | Koon's hideout       | Eric Cartman | discussion, document, event, news |

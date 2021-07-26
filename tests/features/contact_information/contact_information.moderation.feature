@@ -21,7 +21,7 @@ Feature: Contact Information moderation
       | topic       | E-inclusion                                   |
       | state       | draft                                         |
     And community user membership:
-      | community                   | user                  | roles       |
+      | collection                   | user                  | roles       |
       | Games of the Anglo-Saxon age | Sæwine Cynebald       | facilitator |
       | Games of the Anglo-Saxon age | Secondary facilitator | facilitator |
 
@@ -131,7 +131,7 @@ Feature: Contact Information moderation
       | contact information | Secreteriat           |
       | state               | validated             |
     And the following community user memberships:
-      | community            | user            | roles       |
+      | collection            | user            | roles       |
       | Saint Louis solutions | Sown Carnberry  |             |
       | Saint Louis solutions | Saint Louis CEO | facilitator |
 

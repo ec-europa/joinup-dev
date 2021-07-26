@@ -1,7 +1,7 @@
 @api @group-a
 Feature: Solution TCA agreement
   In order to ensure activity by facilitators
-  As a site owner and/or a community owner
+  As a site owner and/or a collection owner
   I want users to sign the TCA agreement before creating a solution.
 
   Scenario: Authenticated users can access the solution TCA agreement page.

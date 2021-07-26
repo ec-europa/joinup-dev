@@ -15,7 +15,7 @@ use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a form to select the destination collection when moving solutions.
+ * Provides a form to select the destination community when moving solutions.
  */
 class ChangeCommunityForm extends FormBase {
 
@@ -110,7 +110,7 @@ class ChangeCommunityForm extends FormBase {
     ];
 
     $form['destination_collection'] = [
-      '#title' => $this->t('Select the destination collection'),
+      '#title' => $this->t('Select the destination community'),
       '#type' => 'entity_autocomplete',
       '#target_type' => 'rdf_entity',
       '#selection_handler' => 'default:rdf_entity',
@@ -136,7 +136,7 @@ class ChangeCommunityForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state): void {
     parent::validateForm($form, $form_state);
     if ($form_state->getValue('source_collection')->id() === $form_state->getValue('destination_collection')) {
-      $form_state->setErrorByName('destination_collection', $this->t('The destination collection cannot be the same as the source community.'));
+      $form_state->setErrorByName('destination_collection', $this->t('The destination community cannot be the same as the source community.'));
     }
   }
 

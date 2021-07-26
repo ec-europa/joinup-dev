@@ -13,7 +13,7 @@ Feature: Asset distribution editing.
       | title | Community example |
       | state | validated          |
     And the following solutions:
-      | title      | community         | description        | state     |
+      | title      | collection         | description        | state     |
       | Solution A | Community example | Sample description | validated |
       | Solution B | Community example | Sample description | validated |
     And the following licence:

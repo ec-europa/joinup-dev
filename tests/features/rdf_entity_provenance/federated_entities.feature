@@ -24,7 +24,7 @@ Feature: In order to avoid users changing federated values
       | state               | validated                |
     And the following solution:
       | title               | A federated solution                 |
-      | community          | A federated community               |
+      | collection          | A federated community               |
       | description         | This is a federated solution         |
       | owner               | John Federator                       |
       | contact information | John Federator's contact             |
@@ -77,7 +77,7 @@ Feature: In order to avoid users changing federated values
 
     Examples:
       | label                    | type         | fields disabled                                                                                              | fields not disabled                                                                                   |
-      | A federated community   | community   | Title, Description, Contact information, Owner                                                               | Abstract, Access URL, Topic, Moderated, Content creation, Motivation, Logo, Banner, Closed community |
+      | A federated community    | collection   | Title, Description, Contact information, Owner                                                               | Abstract, Access URL, Topic, Moderated, Content creation, Motivation, Logo, Banner, Closed community |
       | A federated solution     | solution     | Title, Description, Contact information, Owner, Keywords, Related solutions, Status, Languages, Landing page | Topic, Moderated, Content creation, Motivation, Logo, Banner, Metrics pager                           |
       | A federated release      | release      | Name, Release number, Keywords, Status, Language                                                             | Motivation                                                                                            |
       | A federated distribution | distribution | Title, Description, Access URL, Format, Status, Licence                                                      |                                                                                                       |

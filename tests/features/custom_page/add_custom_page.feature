@@ -53,7 +53,7 @@ Feature: "Add custom page" visibility options.
 
     Examples:
       | title     | group      |
-      | Code Camp | community |
+      | Code Camp | collection |
       | Parachute | solution   |
 
   @uploadFiles:test.zip
@@ -102,7 +102,7 @@ Feature: "Add custom page" visibility options.
 
     Examples:
       | first title | second title    | group      |
-      | Code Camp   | Open Collective | community |
+      | Code Camp   | Open Collective | collection |
       | Parachute   | Skydiving       | solution   |
 
   Scenario: Moderators can access the "Add custom page" menu item.

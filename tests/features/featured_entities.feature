@@ -136,5 +136,5 @@ Feature: Featuring content site-wide
 
     Examples:
       | header link | featured                      | unfeatured                  | label      | content type |
-      | Communities | Tidy Neutron                  | Reborn Eternal Gamma        | Community | community   |
+      | Communities | Tidy Neutron                  | Reborn Eternal Gamma        | collection | community   |
       | Solutions   | Opensource neutron generators | Gamma-sensible spectroscopy | Solution   | solution     |

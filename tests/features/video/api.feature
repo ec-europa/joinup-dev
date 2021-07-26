@@ -28,5 +28,5 @@ Feature: Video API
     Then I should see the "Dummy Video" tile
     Examples:
       | group type |
-      | community |
+      | collection |
       | solution   |

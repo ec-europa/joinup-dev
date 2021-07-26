@@ -188,7 +188,7 @@ Feature: Pinning content to the front page
 
     Examples:
       | header link | pinned      | unpinned         | label      |
-      | Communities | Risky Sound | Tuna Moving      | Community |
+      | Communities | Risky Sound | Tuna Moving      | collection |
       | Solutions   | D minor     | Migration routes | Solution   |
 
   Scenario: Front page menu access.

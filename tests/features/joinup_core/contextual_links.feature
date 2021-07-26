@@ -48,7 +48,7 @@ Feature:
     And solution:
       | title               | Share solution   |
       | state               | validated        |
-      | community          | Share community |
+      | collection          | Share community |
       | contact information | Somebody         |
       | owner               | Some owner       |
 

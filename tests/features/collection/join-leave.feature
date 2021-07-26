@@ -101,7 +101,7 @@ Feature: Joining and leaving communities through the web interface
       | state  | validated         |
       | author | insect researcher |
     And the following community user memberships:
-      | community  | user                | roles |
+      | collection  | user                | roles |
       | Insectarium | insect researcher   | owner |
       | Insectarium | newcomer researcher |       |
 
@@ -135,7 +135,7 @@ Feature: Joining and leaving communities through the web interface
       | Username      |
       | Stewe Griffin |
     And the following community user memberships:
-      | community       | user          | roles |
+      | collection       | user          | roles |
       | Sapient Pearwood | Stewe Griffin |       |
 
     # Anonymous users can cancel the "Authenticate to join" modal.

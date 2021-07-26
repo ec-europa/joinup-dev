@@ -53,5 +53,5 @@ Feature: "Custom page" deleteing.
 
     Examples:
       | group      |
-      | community |
+      | collection |
       | solution   |

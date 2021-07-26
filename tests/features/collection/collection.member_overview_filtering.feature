@@ -20,7 +20,7 @@ Feature: Type something to filter the listing the member list
       | state         | validated                      |
       | creation date | 01-01-2018                     |
     And the following community user memberships:
-      | community    | user       | roles       | created          | state   |
+      | collection    | user       | roles       | created          | state   |
       | Coffee makers | emeritous  | owner       | 01-01-2018 00:00 | active  |
       | Coffee makers | user049230 | facilitator | 02-01-2018 00:00 | active  |
       | Coffee makers | kingseamus |             | 05-07-2018 00:00 | active  |

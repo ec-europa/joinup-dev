@@ -112,10 +112,10 @@ Feature: Communities Overview
       | spatial coverage | Belgium    |
       | state            | validated  |
     And news content:
-      | title                             | body                             | community | topic                   | spatial coverage | state     |
+      | title                             | body                             | collection | topic                   | spatial coverage | state     |
       | Jira will be down for maintenance | As always, during business hours | Jira       | Statistics and Analysis | Luxembourg       | validated |
     And custom_page content:
-      | title            | body                                       | community |
+      | title            | body                                       | collection |
       | Maintenance page | Jira is re-indexing. Go and drink a coffee | Jira       |
     When I go to the homepage of the "Jira" community
     Then I should see the "Jira will be down for maintenance" tile
@@ -123,7 +123,7 @@ Feature: Communities Overview
 
   Scenario: Community overview active trail should persist on urls with arguments.
     Given I am an anonymous user
-    And I visit "/communities?a=1"
+    And I visit "/collections?a=1"
     Then "Communities" should be the active item in the "Header menu" menu
 
   Scenario: Users are able to filter communities they have created or that are featured site-wide.

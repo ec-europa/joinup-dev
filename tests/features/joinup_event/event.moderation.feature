@@ -28,7 +28,7 @@ Feature: Event moderation
       | contact information | Evs contact           |
       | topic               | E-inclusion           |
     And the following community user membership:
-      | community | user           | roles       |
+      | collection | user           | roles       |
       | Wet Lords  | Rosa Vaughn    | member      |
       | Wet Lords  | Patricia Lynch | facilitator |
 

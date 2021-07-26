@@ -20,7 +20,7 @@ Feature: Community homepage
       | Under the mountain                      | Under the mountain | Hobbit owner | logo.png | yes        | no     | validated |
       | Exactly the same community, but closed | Under the mountain | Hobbit owner | logo.png | yes        | yes    | validated |
     And the following community user memberships:
-      | community                              | user   | roles       |
+      | collection                              | user   | roles       |
       | Under the mountain                      | Thorin | facilitator |
       | Under the mountain                      | Fili   |             |
       | Under the mountain                      | Kili   |             |

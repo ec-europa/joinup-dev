@@ -44,7 +44,7 @@ Feature:
     Then I should see the link "Take a tour"
     And I should see the link "Contact support"
 
-    When I go to "/communities"
+    When I go to "/collections"
     Then I should not see the link "Take a tour"
     But I should see the link "Contact support"
 

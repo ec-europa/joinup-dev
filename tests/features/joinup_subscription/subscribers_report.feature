@@ -20,11 +20,11 @@ Feature: Subscribers report
       | Marine ecosystems | validated |
       | Plant science     | validated |
     And solutions:
-      | title                 | state     | community        |
+      | title                 | state     | collection        |
       | Seagrass meadows      | validated | Marine ecosystems |
       | Intertidal seagrasses | validated | Plant science     |
     And community user memberships:
-      | community        | user    | roles       |
+      | collection        | user    | roles       |
       | Marine ecosystems | busta   | facilitator |
       | Marine ecosystems | method  |             |
       | Marine ecosystems | biz     |             |
@@ -52,7 +52,7 @@ Feature: Subscribers report
       | Intertidal seagrasses | young   |             |
       | Intertidal seagrasses | lil     |             |
     And community content subscriptions:
-      | community        | user    | subscriptions                   |
+      | collection        | user    | subscriptions                   |
       | Marine ecosystems | busta   | document, news, solution        |
       | Marine ecosystems | method  | document, solution              |
       | Marine ecosystems | biz     | discussion, event               |
@@ -113,8 +113,8 @@ Feature: Subscribers report
     And the "subscribers report" table should contain:
       | Group                 | Type       | Subscribers | Solution | Discussion | Document | Event | News |
       | Intertidal seagrasses | solution   | 6           | 0        | 3          | 2        | 4     | 4    |
-      | Marine ecosystems     | community | 6           | 4        | 2          | 5        | 3     | 2    |
-      | Plant science         | community | 6           | 0        | 3          | 4        | 5     | 2    |
+      | Marine ecosystems     | collection | 6           | 4        | 2          | 5        | 3     | 2    |
+      | Plant science         | collection | 6           | 0        | 3          | 4        | 5     | 2    |
       | Seagrass meadows      | solution   | 6           | 0        | 4          | 5        | 5     | 1    |
     When I go to the subscribers report for "Marine ecosystems"
     # Check that the community header is shown.

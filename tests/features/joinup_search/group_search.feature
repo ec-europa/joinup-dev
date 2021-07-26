@@ -17,26 +17,26 @@ Feature: Search inside groups
       | description | Ways to construct foundations on hills and mountains. |
       | banner      | banner.jpg                                            |
       | logo        | logo.png                                              |
-      | community  | Chalet construction                                   |
+      | collection  | Chalet construction                                   |
       | state       | validated                                             |
     And discussion content:
-      | title      | body                           | state     | community          | solution             |
+      | title      | body                           | state     | collection          | solution             |
       | Room sizes | What are the ideal dimensions? | validated | Chalet construction |                      |
       | Terrace?   | Want a decent sized terrace    | validated |                     | Inclined foundations |
     And document content:
-      | title       | body               | state     | community          | solution             |
+      | title       | body               | state     | collection          | solution             |
       | Ground plan | A classic design   | validated | Chalet construction |                      |
       | Rock types  | Ranked by hardness | validated |                     | Inclined foundations |
     And event content:
-      | title                        | body                              | state     | community          | solution             |
+      | title                        | body                              | state     | collection          | solution             |
       | Opening of the winter season | Ski resorts will open in December | validated | Chalet construction |                      |
       | Presenting DrillMaster X88   | Our most finely ground drill bit  | validated |                     | Inclined foundations |
     And news content:
-      | title             | body            | community          | solution             | topic                   | spatial coverage | state     |
+      | title             | body            | collection          | solution             | topic                   | spatial coverage | state     |
       | Natural materials | Ground feel     | Chalet construction |                      | Statistics and Analysis | Switzerland      | validated |
       | Still frozen      | Maybe next week |                     | Inclined foundations |                         | Austria          | validated |
     And custom_page content:
-      | title     | body                             | community          | solution             |
+      | title     | body                             | collection          | solution             |
       | Resources | Here are some interesting links. | Chalet construction |                      |
       | Geography | A community of height maps.     |                     | Inclined foundations |
     And releases:

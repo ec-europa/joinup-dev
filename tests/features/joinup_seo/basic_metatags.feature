@@ -21,7 +21,7 @@ Feature:
     When I click "Communities"
     Then the following meta tags should available in the html:
       | identifier    | value                                      |
-      | og:url        | __base_url__/communities                   |
+      | og:url        | __base_url__/collections                   |
       | og:site_name  | Joinup                                     |
       | og:title      | Communities                                |
       | og:image      | __base_url__/themes/joinup/images/logo.svg |

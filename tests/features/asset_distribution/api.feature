@@ -13,7 +13,7 @@ Feature: Distribution API
       | state            | validated                             |
     And the following solution:
       | title            | Asset distribution solution           |
-      | community       | Asset distribution community API foo |
+      | collection       | Asset distribution community API foo |
       | description      | Asset distribution sample solution    |
       | documentation    | text.pdf                              |
       | content creation | registered users                      |
@@ -47,7 +47,7 @@ Feature: Distribution API
       | state            | validated                        |
     And the following solution:
       | title            | AD first solution mandatory short |
-      | community       | Asset distribution short API bar  |
+      | collection       | Asset distribution short API bar  |
       | description      | Another sample solution           |
       | content creation | registered users                  |
       | state            | validated                         |

@@ -62,7 +62,7 @@ Feature: Solution membership overview
     Then I should see the heading "Members"
 
     # Check that clean URLs are being applied to the "members" subpage.
-    And I should be on "/community/growing-community/solution/growing-zone/members"
+    And I should be on "/collection/growing-community/solution/growing-zone/members"
 
     And I should see the following tiles in the correct order:
       | Ariadna Astrauskas |

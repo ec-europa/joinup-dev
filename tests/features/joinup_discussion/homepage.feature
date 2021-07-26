@@ -10,7 +10,7 @@ Feature: Discussion homepage
       | Development through bricolage | Bricolage 101.    | validated |
       | Carrots love tomatoes         | Truth is out now. | validated |
     And discussion content:
-      | title         | state     | community                    | shared on             |
+      | title         | state     | collection                    | shared on             |
       | Tools cabinet | validated | Development through bricolage | Carrots love tomatoes |
 
     When I go to the "Tools cabinet" discussion

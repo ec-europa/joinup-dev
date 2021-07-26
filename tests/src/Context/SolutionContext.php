@@ -68,7 +68,7 @@ class SolutionContext extends RawDrupalContext {
    */
   public function visitAddSolutionForm($community) {
     $community = $this->getRdfEntityByLabel($community);
-    $solution_url = Url::fromRoute('solution.community_solution.add', [
+    $solution_url = Url::fromRoute('solution.collection_solution.add', [
       'rdf_entity' => $community->id(),
     ]);
 
@@ -225,7 +225,7 @@ class SolutionContext extends RawDrupalContext {
    * @see \Drupal\solution\SolutionAffiliationFieldItemList::preSave()
    */
   protected function ensureParentCommunity(array &$values): void {
-    if (empty($values['community'])) {
+    if (empty($values['collection'])) {
       $label = $this->getRandom()->sentences(3);
       $community = Rdf::create([
         'rid' => 'collection',
@@ -233,7 +233,7 @@ class SolutionContext extends RawDrupalContext {
         'field_ar_state' => 'validated',
       ]);
       $community->save();
-      $values['community'] = $label;
+      $values['collection'] = $label;
       // Track this community.
       $this->rdfEntities[$community->id()] = $community;
 
@@ -355,8 +355,8 @@ class SolutionContext extends RawDrupalContext {
 
     $this->rdfEntities[$solution->id()] = $solution;
 
-    if (!empty($values['pinned_in_community'])) {
-      foreach (explode(',', $values['pinned_in_community']) as $group_label) {
+    if (!empty($values['pinned_in_collection'])) {
+      foreach (explode(',', $values['pinned_in_collection']) as $group_label) {
         $group = self::getRdfEntityByLabel(trim($group_label));
         if (!$group instanceof GroupInterface) {
           throw new \Exception("Cannot pin solution {$solution->label()} in $group_label since it does not exist or is not a group.");
@@ -547,16 +547,15 @@ class SolutionContext extends RawDrupalContext {
       'source code repository' => 'field_is_source_code_repository',
       'spatial coverage' => 'field_spatial_coverage',
       'status' => 'field_status',
-      'topic' => 'field_topic',
       'translation' => 'field_is_translation',
       'webdav creation' => 'field_is_webdav_creation',
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
       'state' => 'field_is_state',
-      'community' => 'community',
-      'communities' => 'community',
+      'collection' => 'collection',
+      'collections' => 'collection',
       'featured' => 'feature',
-      'pinned in' => 'pinned_in_community',
+      'pinned in' => 'pinned_in_collection',
       'shared on' => 'field_is_shared_in',
     ];
   }
@@ -612,8 +611,8 @@ class SolutionContext extends RawDrupalContext {
     }
 
     // The solution affiliation could be multi-value.
-    if (isset($fields['community'])) {
-      $fields['community'] = $this->explodeCommaSeparatedStepArgument($fields['community']);
+    if (isset($fields['collection'])) {
+      $fields['collection'] = $this->explodeCommaSeparatedStepArgument($fields['collection']);
     }
 
     // Convert any entity reference field label value with the entity ID.
@@ -712,7 +711,7 @@ class SolutionContext extends RawDrupalContext {
    * @Given the multilingual :title solution of :community community
    */
   public function theMultilingualSolution(string $title, string $community): void {
-    $community = $this->getEntityByLabel('rdf_entity', $community, 'community');
+    $community = $this->getEntityByLabel('rdf_entity', $community, 'collection');
     $values = [
       'label' => $title,
       'field_is_state' => 'validated',
@@ -751,7 +750,7 @@ class SolutionContext extends RawDrupalContext {
   public function assertCommunityAffiliation($community_label, $solution_label) {
     $solution = $this->getRdfEntityByLabel($solution_label, 'solution');
     $ids = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'community')
+      ->condition('rid', 'collection')
       ->condition('label', $community_label)
       ->condition('field_ar_affiliates', $solution->id())
       ->execute();

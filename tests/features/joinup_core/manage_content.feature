@@ -71,9 +71,9 @@ Feature:
     And the response should contain "News;\"Exports Leap Despite Currency Gain\";"
     And the response should contain "/news/exports-leap-despite-currency-gain"
     And the response should contain "\"Custom page\";HOWTOs;"
-    And the response should contain "/community/vintage-art/howtos"
+    And the response should contain "/collection/vintage-art/howtos"
     And the response should contain "\"Custom page\";\"Looking for Support?\";"
-    And the response should contain "/community/vintage-art/looking-support"
+    And the response should contain "/collection/vintage-art/looking-support"
 
     When I go to the homepage of the "Vintage Art" community
     Then I should see the link "Manage content"

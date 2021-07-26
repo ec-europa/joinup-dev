@@ -10,7 +10,7 @@ Feature: Community content
       | Turin Egyptian Community | validated |
     And the following solution:
       | title      | Tomb Of Unknown Restoration |
-      | community | Turin Egyptian Community   |
+      | collection | Turin Egyptian Community   |
       | state      | validated                   |
     And discussion content:
       | title                                 | body                                                                    | state     | community                |
@@ -91,7 +91,7 @@ Feature: Community content
 
     Given the following solution:
       | title      | Protecting Artifacts      |
-      | community | Turin Egyptian Community |
+      | collection | Turin Egyptian Community |
       | state      | validated                 |
     And discussion content:
       | title                              | state     | community                |

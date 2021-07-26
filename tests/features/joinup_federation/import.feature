@@ -125,7 +125,7 @@ Feature: As a site moderator I am able to import RDF files.
       | title | NIO                    |
       | state | validated              |
     And solutions:
-      | uri                           | title                       | community | description         | state     | modification date |
+      | uri                           | title                       | collection | description         | state     | modification date |
       | http://example.com/solution/2 | Local version of Solution 2 | NIO        | Initial description | validated | 15-07-2018        |
     And the following solution user membership:
       | solution                    | user     | roles                      | state  |
@@ -139,7 +139,7 @@ Feature: As a site moderator I am able to import RDF files.
       | creation date     | 15-07-2018                                 |
       | modification date | 15-07-2018                                 |
     And the following community user membership:
-      | community | user     | roles                      | state  |
+      | collection | user     | roles                      | state  |
       | NIO        | CS Owner | facilitator, administrator | active |
     # Hash for solution 2 includes the title 'Local version of solution 2' so
     # that it will detect changes in the first attempt.

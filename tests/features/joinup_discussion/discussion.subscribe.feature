@@ -12,7 +12,7 @@ Feature: Following discussions
       | Username | Dr. Hans Zarkov  |
       | E-mail   | hans@example.com |
     And discussion content:
-      | title       | body                                                             | community     | state     | author          |
+      | title       | body                                                             | collection     | state     | author          |
       | Rare Butter | I think that the rarest butter out there is the milky way butter | Dairy products | validated | Dr. Hans Zarkov |
       | Rare Whey   | Whey is the liquid remaining after milk has been curdled.        | Dairy products | draft     | Dr. Hans Zarkov |
     Then the "Rare butter" discussion should have 0 subscribers
@@ -60,7 +60,7 @@ Feature: Following discussions
       | debater     | flash@example.com | Flash      | Gordon      | daily                  |
       | facilitator | ming@example.com  | Ming       | Merciless   | weekly                 |
     And the following community user membership:
-      | community     | user        | roles       |
+      | collection     | user        | roles       |
       | Dairy products | facilitator | facilitator |
     And the following discussion subscriptions:
       | username | title       |
@@ -176,7 +176,7 @@ Feature: Following discussions
     # Now try to delete a published discussion. The notifications should be sent
     # in this case.
     Given discussion content:
-      | title     | body                                                   | community     | state     | author          |
+      | title     | body                                                   | collection     | state     | author          |
       | Rare feta | Made from milk from the exclusive Manx Loaghtan sheep. | Dairy products | validated | Dr. Hans Zarkov |
     And discussion subscriptions:
       | username    | title     |

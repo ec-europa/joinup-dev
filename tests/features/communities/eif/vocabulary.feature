@@ -17,7 +17,7 @@ Feature:
     And solution:
       | title      | Some EIF solution |
       | state      | validated         |
-      | community | EIF Toolbox       |
+      | collection | EIF Toolbox       |
 
     Given I am logged in as a facilitator of the "Some EIF solution" solution
     When I go to the edit form of the "Some EIF solution" solution

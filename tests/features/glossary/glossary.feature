@@ -11,11 +11,11 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | title | A World of Things |
       | state | validated         |
     And the following community user membership:
-      | community        | user   | roles     |
+      | collection        | user   | roles     |
       | A World of Things | <user> | <og role> |
     And the following solution:
       | title      | Things To Come    |
-      | community | A World of Things |
+      | collection | A World of Things |
       | state      | validated         |
 
     Given I am logged in as <user>
@@ -59,7 +59,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     And I should not see the glossary navigator
 
     Given glossary content:
-      | title    | synonyms                | summary             | definition                       | community        |
+      | title    | synonyms                | summary             | definition                       | collection        |
       | XRatings | XRT,X.R.T.,extraratings | Summary of XRatings | Long, long body definition field | A World of Things |
 
     When I go to the "A World of Things" community
@@ -77,7 +77,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     And I should not see the glossary navigator
 
     Given glossary content:
-      | title    | synonyms              | summary                 | definition                                  | community        |
+      | title    | synonyms              | summary                 | definition                                  | collection        |
       | Alphabet | ABC,alphabeta,alfabet | Summary of Alphabet     | Long, long definition field                 | A World of Things |
       | Colors   | CLR                   | Summary of Colors       | Colors definition field                     | A World of Things |
       | Smells   | SML                   | Smells Like Teen Spirit | With the lights out, it's less dangerous... | A World of Things |
@@ -172,10 +172,10 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | title    | body              | solution         |
       | Schedule | Colors everywhere | Under The Bridge |
     And discussion content:
-      | title        | content                   | community               | state     |
+      | title        | content                   | collection               | state     |
       | The Big Talk | The Alphabet. Call it ABC | Community With Glossary | validated |
     And document content:
-      | title             | body             | community               | state     |
+      | title             | body             | collection               | state     |
       | Authentic Papyrus | Alphabet is back | Community With Glossary | validated |
     And event content:
       | title      | body                              | solution         | state     |
@@ -184,7 +184,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | title         | body                                       | solution         | state     |
       | Won at Bingo! | aBC is for ALPHABET what CLR is for Colors | Under The Bridge | validated |
     And glossary content:
-      | title    | synonyms  | summary                  | definition                  | community               |
+      | title    | synonyms  | summary                  | definition                  | collection               |
       | Alphabet | ABC       | Summary of Alphabet      | Long, long definition field | Community With Glossary |
       | Colors   | CLR,colrs | Summary of Colors        | Colors definition field     | Community With Glossary |
       | S/ashy   | /S\|ASH   | S/ashes Like an Ion Beam | Cutting things in ha/f      | Community With Glossary |
@@ -262,11 +262,11 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | Community With Glossary | The Battle of Evermore of the batTle and the BATTLE. Call it everMore or EVERmore. Also, battle again. | validated |
       | The Other Community     | desc                                                                                                   | validated |
     And the following community user membership:
-      | community               | user | roles       |
+      | collection               | user | roles       |
       | Community With Glossary | fac  | facilitator |
       | The Other Community     | fac1 | facilitator |
     And glossary content:
-      | title        | synonyms | definition                                | community               |
+      | title        | synonyms | definition                                | collection               |
       | battle       | evermore | def                                       | Community With Glossary |
       | battle again |          | Not to be confused with a battle of sheep | Community With Glossary |
 
@@ -306,8 +306,8 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     And I should see the link "Battle"
     And I should see the link "Evermore"
     And I should see the link "battle again"
-    And the response should contain "<a href=\"/community/community-glossary/glossary/term/battle\" class=\"glossary-term\" title=\"def\">Battle</a>"
-    And the response should contain "<a href=\"/community/community-glossary/glossary/term/battle-again\" class=\"glossary-term\" title=\"Not to be confused with a battle of sheep\">battle again</a>"
+    And the response should contain "<a href=\"/collection/collection-glossary/glossary/term/battle\" class=\"glossary-term\" title=\"def\">Battle</a>"
+    And the response should contain "<a href=\"/collection/collection-glossary/glossary/term/battle-again\" class=\"glossary-term\" title=\"Not to be confused with a battle of sheep\">battle again</a>"
     But I should not see the link "batTle"
     And I should not see the link "BATTLE"
     And I should not see the link "everMore"
@@ -341,7 +341,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | Other community  | validated |
 
     And the following community user membership:
-      | community        | user | roles       |
+      | collection        | user | roles       |
       | A World of Things | ben  | facilitator |
       | Other community  | ben  | facilitator |
 
@@ -371,7 +371,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
 
     # Test glossary term name and synonyms overlapping.
     And glossary content:
-      | title     | synonyms                | definition                  | community        |
+      | title     | synonyms                | definition                  | collection        |
       | Alphabet  | ABC, XYZ, whatever      | Long, long definition field | A World of Things |
       | Colors    | CLR,colrs               | Colors definition field     | A World of Things |
       | XRatings  | XRT,X.R.T.,extraratings | definition                  | Other community  |

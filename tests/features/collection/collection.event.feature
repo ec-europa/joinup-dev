@@ -12,7 +12,7 @@ Feature: As a user of the website
       | title | Fairy Tail |
       | state | validated  |
     And event content:
-      | title                     | community | start date   | end date            | created    | state     | author         |
+      | title                     | collection | start date   | end date            | created    | state     | author         |
       | Sweet Palm                | Fairy Tail | now -1 years | now -1 years +1 day | now -5 day | validated | katerpillar    |
       | Melted Hairdresser        | Fairy Tail | now -2 day   | now +2 day          | now -4 day | validated | katerpillar    |
       | Hot Air                   | Fairy Tail | now +3 day   | now +5 day          | now -3 day | validated | katerpillar    |
@@ -20,7 +20,7 @@ Feature: As a user of the website
       # The "Spring Freezing" event is associated with the anonymous user.
       | Spring Freezing           | Fairy Tail | now +1 week  | now +1 week         | now -6 day | validated |                |
     And discussion content:
-      | title       | community | state     | created   |
+      | title       | collection | state     | created   |
       | Yellow Zeus | Fairy Tail | validated | yesterday |
 
     When I am logged in as "katerpillar"

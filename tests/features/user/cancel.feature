@@ -39,7 +39,7 @@ Feature:
       | title | Test community      |
       | state | validated |
     And news content:
-      | title     | author       | community      | state     |
+      | title     | author       | collection     | state     |
       | News item | alicia__1997 | Test community | validated |
 
     Given I am logged in as a moderator
@@ -72,21 +72,21 @@ Feature:
     And the "Alicia Potter" user doesn't exist
 
     # The content created by an account deleted via admin UI has been deleted.
-    When I go to "/community/test-community/news/news-item"
+    When I go to "/collection/test-community/news/news-item"
     Then the response status code should be 404
 
   Scenario: Cancel own account.
     Given the following community:
       | title | Test community      |
-      | state | validated |
+      | state | validated           |
     And news content:
-      | title     | author       | community      | state     |
+      | title     | author       | collection     | state     |
       | News item | alicia__1997 | Test community | validated |
     And document content:
-      | title | author       | community      | state     |
+      | title | author       | collection     | state     |
       | Docky | alicia__1997 | Test community | validated |
     And discussion content:
-      | title  | community      | state     |
+      | title  | collection     | state     |
       | Disqus | Test community | validated |
     And comments:
       | subject  | field_body   | author       | parent |

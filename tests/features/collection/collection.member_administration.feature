@@ -24,7 +24,7 @@ Feature: Community membership administration
       | title             | description               | logo     | banner     | owner        | contact information                    | closed | state     |
       | Medical diagnosis | 10 patients in 10 minutes | logo.png | banner.jpg | James Wilson | Princeton-Plainsboro Teaching Hospital | yes    | validated |
     And the following community user memberships:
-      | community        | user              | roles                      | state   |
+      | collection        | user              | roles                      | state   |
       | Medical diagnosis | Lisa Cuddy        | administrator, facilitator | active  |
       | Medical diagnosis | Turkey Ham        | facilitator                | active  |
       | Medical diagnosis | Gregory House     |                            | active  |
@@ -48,7 +48,7 @@ Feature: Community membership administration
       | Donald Duck has requested to join your community "Medical diagnosis" as a member. |
       | To approve or reject this request, click on                                        |
       | If you think this action is not clear or not due, please contact Joinup Support at |
-      | /community/medical-diagnosis/members                                              |
+      | /collection/medical-diagnosis/members                                              |
     And the following email should have been sent:
       | recipient | Turkey Ham                                                                         |
       | subject   | Joinup: A user has requested to join your community                               |
@@ -333,7 +333,7 @@ Feature: Community membership administration
       | qux98765 |       | eric_foreman@example.com | Eric       | Foreman     |
       | xyzzy123 |       | eric_drexler@example.com | Eric       | Drexler     |
     And the following community user memberships:
-      | community        | user     | state  |
+      | collection        | user     | state  |
       | Medical diagnosis | qux98765 | active |
       | Medical diagnosis | xyzzy123 | active |
     When I am logged in as "Lisa Cuddy"
@@ -441,7 +441,7 @@ Feature: Community membership administration
       | Username       | E-mail                     | First name | Family name |
       | pending_member | pending_member@example.com | Pending    | Member      |
     And the following community user membership:
-      | community        | user           | state   |
+      | collection        | user           | state   |
       | Medical diagnosis | pending_member | pending |
 
     When I am logged in as "Lisa Cuddy"

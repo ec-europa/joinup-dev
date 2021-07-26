@@ -20,10 +20,10 @@ Feature: Subscribing to community newsletters
       | title    | description             | logo     | banner     | owner             | contact information   | state     | topic                   |
       | Volkor X | We do not come in peace | logo.png | banner.jpg | Antonios Katsaros | Charalambos Demetriou | validated | Statistics and Analysis |
     And "news" content:
-      | title      | community | state     | author          |
+      | title      | collection | state     | author          |
       | Hypersleep | Volkor X   | validated | Tatiana Andreas |
     And the following community user memberships:
-      | community | user               | roles       |
+      | collection | user               | roles       |
       | Volkor X   | Filippos Demetriou | owner       |
       | Volkor X   | Tatiana Andreas    | facilitator |
 

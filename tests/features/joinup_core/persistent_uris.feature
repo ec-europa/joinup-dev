@@ -12,7 +12,7 @@ Feature:
       | uri   | http://data.europa.eu/w21/37b8103e-26e5-4c81-8ce5-43ced02ff7d0 |
     And the following solution:
       | title       | Persistent solution                                            |
-      | community  | Persistent community                                          |
+      | collection  | Persistent community                                          |
       | description | Persistent solution                                            |
       | state       | validated                                                      |
       | uri         | http://data.europa.eu/w21/ffb0ffc9-7704-45d3-95b3-42706b6320e5 |
@@ -48,19 +48,19 @@ Feature:
       | http://data.europa.eu/dr8/Dream/Domain | Dream Domain | You're safe from pain in the dream domain. |
 
     And discussion content:
-      | title                 | body                  | community            | state     |
+      | title                 | body                  | collection            | state     |
       | Persistent discussion | Persistent discussion | Persistent community | validated |
     And document content:
-      | title               | body                | community            | state     |
+      | title               | body                | collection            | state     |
       | Persistent document | Persistent document | Persistent community | validated |
     And event content:
-      | title            | body             | community            | state     |
+      | title            | body             | collection            | state     |
       | Persistent event | Persistent event | Persistent community | validated |
     And news content:
-      | title           | body            | community            | state     |
+      | title           | body            | collection            | state     |
       | Persistent news | Persistent news | Persistent community | validated |
     And custom_page content:
-      | title           | body            | community            | state     |
+      | title           | body            | collection            | state     |
       | Persistent page | Persistent page | Persistent community | validated |
 
     When I go to the "Persistent community" community

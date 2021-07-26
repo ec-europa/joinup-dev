@@ -40,4 +40,4 @@ Feature: Asset release "delete" functionality.
     And I go to the edit form of the "Yet another release" release
     And I click "Delete"
     And I press "Delete"
-    Then I should be on "/community/yet-another-community/solution/yet-another-solution"
+    Then I should be on "/collection/yet-another-community/solution/yet-another-solution"

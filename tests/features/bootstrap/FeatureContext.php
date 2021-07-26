@@ -2292,7 +2292,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   protected function getImageLibraryBrowserMapping(): array {
     return [
-      'community' => [
+      'collection' => [
         'type' => 'rdf_entity',
         'fields' => [
           'logo' => 'field_ar_logo',

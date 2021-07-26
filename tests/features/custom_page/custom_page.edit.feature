@@ -55,5 +55,5 @@ Feature: "Custom page" editing.
 
     Examples:
       | group      |
-      | community |
+      | collection |
       | solution   |

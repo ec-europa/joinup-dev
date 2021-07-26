@@ -27,7 +27,7 @@ Feature: SEO for news articles.
       | datePublished       | 2019-12-25T13:00:00+0100                                                |
       | dateModified        | 2020-01-01T13:00:00+0100                                                |
       # __base_url__ will be replaced with the base url of the website.
-      | mainEntityOfPage    | __base_url__/community/joinup-seo-news-community/news/joinup-seo-news |
+      | mainEntityOfPage    | __base_url__/collection/joinup-seo-news-community/news/joinup-seo-news |
     And the metatag graph of the item with "name" "Joinup SEO news" should have the following "image" properties:
       | property             | value       |
       | @type                | ImageObject |
@@ -52,7 +52,7 @@ Feature: SEO for news articles.
     And the following meta tags should available in the html:
       | identifier             | value                                                                   |
       | description            | Body of news.                                                           |
-      | og:url                 | __base_url__/community/joinup-seo-news-community/news/joinup-seo-news |
+      | og:url                 | __base_url__/collection/joinup-seo-news-community/news/joinup-seo-news |
       | og:site_name           | Joinup                                                                  |
       | og:title               | Joinup SEO news                                                         |
       | og:description         | Body of news.                                                           |
