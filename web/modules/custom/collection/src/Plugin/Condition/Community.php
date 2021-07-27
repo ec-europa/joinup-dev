@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Condition(
  *   id = "collection",
  *   label = @Translation("Communities"),
- *   context = {
+ *   context_definitions = {
  *     "og" = @ContextDefinition("entity:rdf_entity:collection", label = @Translation("Community"))
  *   }
  * )
