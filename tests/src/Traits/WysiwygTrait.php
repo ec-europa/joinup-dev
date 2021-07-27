@@ -185,4 +185,58 @@ trait WysiwygTrait {
     return $editor;
   }
 
+  /**
+   * Returns the buttons that are shown in the editor with the given label.
+   *
+   * Note that this returns different labels depending on whether or not the
+   * browser supports JavaScript. For example a non-JS browser will return
+   * 'Blockquote' while a JS browser will return 'Block Quote'.
+   *
+   * @param string $label
+   *   The label of the field to which the WYSIWYG editor is attached.
+   * @param \Behat\Mink\Element\TraversableElement|null $region
+   *   (optional) The region where the editor is expected to be located.
+   *   Defaults to the entire page.
+   *
+   * @return string[]
+   *   An array of button labels.
+   *
+   * @throws \Drupal\joinup\Exception\WysiwygEditorNotFoundException
+   *   Thrown when the WYSIWYG editor with the given label is not found in the
+   *   page.
+   */
+  protected function getWysiwygButtons(string $label, ?TraversableElement $region = NULL): array {
+    assert(method_exists($this, 'browserSupportsJavaScript'), __METHOD__ . ' depends on BrowserCapabilityDetectionTrait. Please include it in your class.');
+
+    if ($this->browserSupportsJavaScript()) {
+      $editor = $this->getWysiwyg($label, $region);
+      $button_elements = $editor->findAll('xpath', '//a[contains(concat(" ", normalize-space(@class), " "), " cke_button ")]/span[contains(@id, "_label")]');
+
+      $buttons = array_map(function (NodeElement $element): string {
+        return trim($element->getHtml());
+      }, $button_elements);
+    }
+    else {
+      // When no JS is available the editor is not loaded in the page. Retrieve
+      // the buttons from the editor config.
+      /** @var \Drupal\ckeditor\CKEditorPluginManager $ckeditor_plugin_manager */
+      $ckeditor_plugin_manager = \Drupal::service('plugin.manager.ckeditor.plugin');
+      $editor = $this->getWysiwygEditorEntity($label);
+
+      // Retrieve the buttons that are available for this editor instance, but
+      // filter out the separators. We are only concerned with the buttons.
+      $buttons = array_filter($ckeditor_plugin_manager->getEnabledButtons($editor), function (string $id): bool {
+        return $id !== '-';
+      });
+
+      // Replace the button IDs with human readable labels.
+      $button_data = array_reduce($ckeditor_plugin_manager->getButtons(), 'array_merge', []);
+      $buttons = array_map(function (string $id) use ($button_data) {
+        return (string) $button_data[$id]['label'];
+      }, $buttons);
+    }
+
+    return $buttons;
+  }
+
 }
