@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_core\Plugin\Block;
 
 use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Menu\Plugin\Block\LocalTasksBlock as OriginalBlock;
+use Drupal\Core\Menu\Plugin\Block\LocalTasksBlock;
 use Drupal\Core\Render\Element;
 
 /**
@@ -26,7 +26,7 @@ use Drupal\Core\Render\Element;
  *   admin_label = @Translation("Tabs"),
  * )
  */
-class JoinupLocalTasksBlock extends OriginalBlock {
+class JoinupLocalTasksBlock extends LocalTasksBlock {
 
   /**
    * {@inheritdoc}
