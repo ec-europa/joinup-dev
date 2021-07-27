@@ -17,7 +17,7 @@ trait WysiwygTrait {
   /**
    * Presses the given WYSIWYG button.
    *
-   * @param string $field
+   * @param string $label
    *   The field label of the field to which the WYSIWYG editor is attached. For
    *   example 'Body'.
    * @param string $button
@@ -30,8 +30,8 @@ trait WysiwygTrait {
    *   Thrown when the button is not found, or if there are multiple buttons
    *   with the same title.
    */
-  public function pressWysiwygButton(string $field, string $button, ?TraversableElement $region = NULL): void {
-    $wysiwyg = $this->getWysiwyg($field, $region);
+  public function pressWysiwygButton(string $label, string $button, ?TraversableElement $region = NULL): void {
+    $wysiwyg = $this->getWysiwyg($label, $region);
     $button_elements = $wysiwyg->findAll('xpath', '//a[@title="' . $button . '"]');
     if (empty($button_elements)) {
       throw new \Exception("Could not find the '$button' button.");
@@ -48,7 +48,7 @@ trait WysiwygTrait {
    *
    * If there is any text existing it will be replaced.
    *
-   * @param string $field
+   * @param string $label
    *   The field label of the field to which the WYSIWYG editor is attached. For
    *   example 'Body'.
    * @param string $text
@@ -61,14 +61,14 @@ trait WysiwygTrait {
    *   Thrown when the textarea could not be found or if there are multiple
    *   textareas.
    */
-  public function setWysiwygText(string $field, string $text, ?TraversableElement $region = NULL): void {
-    $wysiwyg = $this->getWysiwyg($field, $region);
+  public function setWysiwygText(string $label, string $text, ?TraversableElement $region = NULL): void {
+    $wysiwyg = $this->getWysiwyg($label, $region);
     $textarea_elements = $wysiwyg->findAll('xpath', '//textarea');
     if (empty($textarea_elements)) {
-      throw new \Exception("Could not find the textarea for the '$field' field.");
+      throw new \Exception("Could not find the textarea for the '$label' field.");
     }
     if (count($textarea_elements) > 1) {
-      throw new \Exception("Multiple textareas found for '$field'.");
+      throw new \Exception("Multiple textareas found for '$label'.");
     }
     $textarea = reset($textarea_elements);
     $textarea->setValue($text);
@@ -77,7 +77,7 @@ trait WysiwygTrait {
   /**
    * Checks whether a WYSIWYG editor with the given field label is present.
    *
-   * @param string $field
+   * @param string $label
    *   The label of the field to which the WYSIWYG editor is attached.
    * @param \Behat\Mink\Element\TraversableElement|null $region
    *   (optional) The region where the editor is expected to be located.
@@ -89,9 +89,9 @@ trait WysiwygTrait {
    * @throws \Exception
    *   Thrown when the field label or editor is present more than once.
    */
-  public function hasWysiwyg(string $field, ?TraversableElement $region = NULL): bool {
+  public function hasWysiwyg(string $label, ?TraversableElement $region = NULL): bool {
     try {
-      $this->getWysiwyg($field, $region);
+      $this->getWysiwyg($label, $region);
       return TRUE;
     }
     // Only catch the specific exception that is thrown when the WYSIWYG editor
@@ -106,7 +106,7 @@ trait WysiwygTrait {
    *
    * This is hardcoded on the CKE editor which is included with Drupal core.
    *
-   * @param string $field
+   * @param string $label
    *   The label of the field to which the WYSIWYG editor is attached.
    * @param \Behat\Mink\Element\TraversableElement|null $region
    *   (optional) The region where the editor is expected to be located.
@@ -118,18 +118,18 @@ trait WysiwygTrait {
    * @throws \Drupal\joinup\Exception\WysiwygEditorNotFoundException
    *   Thrown when the field label or wysiwyg editor is not found.
    */
-  protected function getWysiwyg(string $field, ?TraversableElement $region = NULL): TraversableElement {
+  protected function getWysiwyg(string $label, ?TraversableElement $region = NULL): TraversableElement {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }
 
-    $label_elements = $region->findAll('xpath', '//label[text()="' . $field . '"]');
+    $label_elements = $region->findAll('xpath', '//label[text()="' . $label . '"]');
     if (empty($label_elements)) {
-      throw new WysiwygEditorNotFoundException("Could not find the '$field' field label.");
+      throw new WysiwygEditorNotFoundException("Could not find the '$label' field label.");
     }
 
     if (count($label_elements) > 1) {
-      throw new \Exception("Found multiple instances of the '$field' field label.");
+      throw new \Exception("Found multiple instances of the '$label' field label.");
     }
 
     $label_element = reset($label_elements);
@@ -137,11 +137,11 @@ trait WysiwygTrait {
 
     $wysiwyg_elements = $region->findAll('xpath', '//div[@id="' . $wysiwyg_id . '"]');
     if (empty($wysiwyg_elements)) {
-      throw new WysiwygEditorNotFoundException("Could not find the '$field' wysiwyg editor.");
+      throw new WysiwygEditorNotFoundException("Could not find the '$label' wysiwyg editor.");
     }
 
     if (count($wysiwyg_elements) > 1) {
-      throw new \Exception("Found multiple wysiwyg editors with the '$field' field label.");
+      throw new \Exception("Found multiple wysiwyg editors with the '$label' field label.");
     }
 
     return reset($wysiwyg_elements);
@@ -150,7 +150,7 @@ trait WysiwygTrait {
   /**
    * Returns the Editor entity that is associated with the given field label.
    *
-   * @param string $field
+   * @param string $label
    *   The label of the field to which the WYSIWYG editor is attached.
    * @param \Behat\Mink\Element\TraversableElement|null $region
    *   (optional) The region where the editor is expected to be located.
@@ -162,24 +162,24 @@ trait WysiwygTrait {
    * @throws \Drupal\joinup\Exception\WysiwygEditorNotFoundException
    *   Thrown when the field label or wysiwyg editor is not found.
    */
-  protected function getWysiwygEditorEntity(string $field, ?TraversableElement $region = NULL): Editor {
+  protected function getWysiwygEditorEntity(string $label, ?TraversableElement $region = NULL): Editor {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }
 
     // Find the hidden editor select input element.
-    $editor_select_element = $region->find('xpath', '//textarea[@id=//label[text()="' . $field . '"]/@for]/ancestor::*[contains(concat(" ", normalize-space(@class), " "), " form-wrapper ")][position() = 1]//input[@type = "hidden"]');
+    $editor_select_element = $region->find('xpath', '//textarea[@id=//label[text()="' . $label . '"]/@for]/ancestor::*[contains(concat(" ", normalize-space(@class), " "), " form-wrapper ")][position() = 1]//input[@type = "hidden"]');
     if (!$editor_select_element instanceof NodeElement) {
-      throw new WysiwygEditorNotFoundException("Could not find the '$field' wysiwyg editor.");
+      throw new WysiwygEditorNotFoundException("Could not find the '$label' wysiwyg editor.");
     }
 
     $editor_id = $editor_select_element->getValue();
     if (empty($editor_id)) {
-      throw new WysiwygEditorNotFoundException("Could not find the machine name of the '$field' wysiwyg editor.");
+      throw new WysiwygEditorNotFoundException("Could not find the machine name of the '$label' wysiwyg editor.");
     }
     $editor = Editor::load($editor_id);
     if (!$editor instanceof Editor) {
-      throw new WysiwygEditorNotFoundException("Could not load the editor entity for the '$field' wysiwyg editor.");
+      throw new WysiwygEditorNotFoundException("Could not load the editor entity for the '$label' wysiwyg editor.");
     }
 
     return $editor;
