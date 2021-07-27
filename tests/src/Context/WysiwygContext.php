@@ -19,10 +19,6 @@ class WysiwygContext extends RawDrupalContext {
   use UtilityTrait;
   use WysiwygTrait;
 
-  const ICON_MAPPING = [
-    'image' => 'cke_button__drupalimage_icon',
-  ];
-
   /**
    * Enters the given text in the given WYSIWYG editor.
    *
@@ -148,39 +144,18 @@ JS;
   /**
    * Asserts that a given WYSIWYG editor contains a certain button.
    *
-   * @param string $button
-   *   The mapping for the button.
    * @param string $label
-   *   The label of the editor.
+   *   The label of the field containing the WYSIWYG editor to inspect.
+   * @param string $button
+   *   The button label.
    *
    * @Given the :button button should be available in the :label wysiwyg editor
    */
-  public function wysiwygContainsIcon(string $button, string $label): void {
-    $identifier = $this->getEditorIconMapping($button);
-    $region = $this->getWysiwyg($label);
-    $icon = $region->find('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " cke_inner ")]//span[contains(concat(" ", normalize-space(@class), " "), " ' . $identifier . ' ")]');
-    if (empty($icon)) {
-      throw new \Exception("No '{$button}' icon was found in the '$label' editor.");
+  public function wysiwygContainsButton(string $label, string $button): void {
+    $available_buttons = $this->getWysiwygButtons($label);
+    if (!in_array($button, $available_buttons)) {
+      throw new \Exception("No '{$button}' button was found in the '$label' editor.");
     }
-  }
-
-  /**
-   * Maps the string to an identifier that encapsulates the icon in an editor.
-   *
-   * @param string $mapping
-   *   The string mapping.
-   *
-   * @return string
-   *   The identifier that the icon can be searched with.
-   */
-  protected function getEditorIconMapping(string $mapping): string {
-    if (!in_array($mapping, array_keys(WysiwygContext::ICON_MAPPING))) {
-      $mapping_keys = array_keys(WysiwygContext::ICON_MAPPING);
-      $mapping_keys = implode("', '", $mapping_keys);
-      throw new \InvalidArgumentException("Cannot find the '{$mapping}' mapping. Only '{$mapping_keys}' are allowed");
-    }
-
-    return WysiwygContext::ICON_MAPPING[$mapping];
   }
 
 }
