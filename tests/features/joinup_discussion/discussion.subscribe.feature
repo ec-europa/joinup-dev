@@ -149,8 +149,6 @@ Feature: Following discussions
       | body           | the Moderator, has requested you to modify the discussion - "Rare Butter" |
     And 1 e-mail should have been sent
 
-    # Delete the discussion and check that no notifications are sent. Since the
-    # discussion is not published nobody should be notified.
     Given the mail collector cache is empty
     When I go to the "Rare Butter" discussion
     And I click "Delete" in the "Entity actions" region
@@ -173,8 +171,7 @@ Feature: Following discussions
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
       | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
 
-    # Now try to delete a published discussion. The notifications should be sent
-    # in this case.
+    # Now check the notifications sent for a published discussion.
     Given discussion content:
       | title     | body                                                   | collection     | state     | author          |
       | Rare feta | Made from milk from the exclusive Manx Loaghtan sheep. | Dairy products | validated | Dr. Hans Zarkov |
