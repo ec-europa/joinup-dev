@@ -27,6 +27,7 @@
         "drupal/digital_size_formatter": "~2.0",
         "drupal/dynamic_entity_reference": "~2.0",
         "drupal/editor_file": "~1.5",
+        "drupal/email_confirmer": "^1.0@beta",
         "drupal/email_registration": "^1.1",
         "drupal/embed_block": "^1.0",
         "drupal/entity_legal": "^3.0.0-beta2",

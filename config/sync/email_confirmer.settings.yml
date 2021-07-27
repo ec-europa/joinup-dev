@@ -1,0 +1,21 @@
+hash_expiration: 86400
+restrict_same_ip: false
+resendrequest_delay: 900
+confirmation_lifetime: 604800
+confirmation_request:
+  subject: 'Request for confirmation of email address from [site:name]'
+  body: "We have received a request to confirm [email-confirmer:confirmation-mail] on [site:name] website at [site:url]. Please, reply to this request using the link below.\n\n[email-confirmer:confirmation-url]"
+confirmation_response:
+  skip_confirmation_form: false
+  questions:
+    pending: 'Proceed to confirm your email address.'
+    expired: 'This email confirmation process has expired.'
+    cancelled: 'This email confirmation process was cancelled.'
+    confirmed: 'Your email address was confirmed.'
+  url:
+    confirm: '<front>'
+    cancel: '<front>'
+    error: '<front>'
+langcode: en
+_core:
+  default_config_hash: mZPvli4k5ulC_BcD35Yk2c8mlzSa6xwRkustThIT4jk

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d0ee5bc3986befbca1f97af6732ae25c",
+    "content-hash": "bfa154b4ab8b269fe10584a1a5b90331",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3412,6 +3412,50 @@
             "homepage": "https://www.drupal.org/project/editor_file",
             "support": {
                 "source": "https://git.drupalcode.org/project/editor_file"
+            }
+        },
+        {
+            "name": "drupal/email_confirmer",
+            "version": "1.0.0-beta6",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/email_confirmer.git",
+                "reference": "8.x-1.0-beta6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/email_confirmer-8.x-1.0-beta6.zip",
+                "reference": "8.x-1.0-beta6",
+                "shasum": "fb465d0c127666a76b074cd0c245fff1ffd780f7"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0-beta6",
+                    "datestamp": "1613906468",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "manuel.adan",
+                    "homepage": "https://www.drupal.org/user/516420"
+                }
+            ],
+            "description": "Email confirmation service. Provides a common API for email address confirmation.",
+            "homepage": "https://www.drupal.org/project/email_confirmer",
+            "support": {
+                "source": "https://git.drupalcode.org/project/email_confirmer"
             }
         },
         {
@@ -8191,7 +8235,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2021-05-17T17:56:07+00:00"
+            "time": "2018-10-31T20:10:45+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",
@@ -10349,7 +10393,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2021-05-20T17:05:25+00:00"
+            "time": "2020-08-03T19:59:39+00:00"
         },
         {
             "name": "stack/builder",
@@ -18316,6 +18360,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2020-11-30T07:30:19+00:00"
         },
         {
@@ -19360,6 +19405,7 @@
         "dkarv/mdl-chip-input": 20,
         "drupal/cas_attributes": 20,
         "drupal/config_ignore": 20,
+        "drupal/email_confirmer": 10,
         "drupal/og": 20,
         "drupal/site_verify": 20,
         "drupal/subpathauto": 20,
