@@ -13,7 +13,7 @@ Feature:
       | title       | Pathauto solution   |
       | description | Pathauto solution   |
       | state       | validated           |
-      | community  | Pathauto community |
+      | collection  | Pathauto community |
     And the following release:
       | title          | Pathauto release  |
       | release number | 23                |
@@ -28,24 +28,24 @@ Feature:
       | title       | Pathauto licence |
       | description | Pathauto licence |
     And discussion content:
-      | title                 | body                  | community          | solution          | state     |
-      | Pathauto discussion   | Pathauto discussion   | Pathauto community |                   | validated |
+      | title                 | body                  | collection          | solution          | state     |
+      | Pathauto discussion   | Pathauto discussion   | Pathauto community  |                   | validated |
       | Pathauto discussion 2 | Pathauto discussion 2 |                     | Pathauto solution | validated |
     And document content:
-      | title               | body                | community          | solution          | state     |
-      | Pathauto document   | Pathauto document   | Pathauto community |                   | validated |
+      | title               | body                | collection          | solution          | state     |
+      | Pathauto document   | Pathauto document   | Pathauto community  |                   | validated |
       | Pathauto document 2 | Pathauto document 2 |                     | Pathauto solution | validated |
     And event content:
-      | title            | body             | community          | solution          | state     |
+      | title            | body             | collection          | solution          | state     |
       | Pathauto event   | Pathauto event   | Pathauto community |                   | validated |
       | Pathauto event 2 | Pathauto event 2 |                     | Pathauto solution | validated |
     And news content:
-      | title           | body            | community          | solution          | state     |
-      | Pathauto news   | Pathauto news   | Pathauto community |                   | validated |
+      | title           | body            | collection          | solution          | state     |
+      | Pathauto news   | Pathauto news   | Pathauto community  |                   | validated |
       | Pathauto news 2 | Pathauto news 2 |                     | Pathauto solution | validated |
     And custom_page content:
-      | title                    | body          | community          | solution          | state     |
-      | Pathauto community page | Pathauto page | Pathauto community |                   | validated |
+      | title                    | body          | collection          | solution          | state     |
+      | Pathauto community page | Pathauto page | Pathauto community   |                   | validated |
       | Pathauto solution page   | Pathauto page |                     | Pathauto solution | validated |
 
     When I go to the "Pathauto community" collection

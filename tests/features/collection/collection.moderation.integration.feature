@@ -22,7 +22,7 @@ Feature: As a user of the website
       | The School's Stars   | The School's Stars   | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | archival request | E-justice               |
       | Boy in the Dreams    | Boy in the Dreams    | logo.png | banner.jpg | Martin Gonzalez | Marty Kelley        | archived         | E-health                |
     And the following community user memberships:
-      | community           | user      | roles              |
+      | collection           | user      | roles              |
       | Destruction of Scent | Cornelius | owner, facilitator |
     When I am logged in as a "facilitator" of the "Willing Fairy" community
     And I go to the homepage of the "Willing Fairy" community

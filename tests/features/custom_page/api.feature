@@ -16,7 +16,7 @@ Feature: Custom page API
       | content creation | facilitators and authors |
       | state            | validated                |
     And custom_page content:
-      | title      | body                                     | community      |
+      | title      | body                                     | collection      |
       | Dummy page | This is some dummy content like foo:bar. | Le Foie Heureux |
      # @Fixme unimplemented. See ISAICP-2369
      # | Exclude from menu |                                              |

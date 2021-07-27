@@ -33,7 +33,7 @@ Feature: Moderate community content
     # Add community content of all possible types in all possible states, to
     # both the community and solution.
     Given discussion content:
-      | title                         | body                 | community          | solution              | state        | author         |
+      | title                         | body                 | collection          | solution              | state        | author         |
       | The information paradox       | Info Paradox         | Black hole research |                       | needs update | Marco Farfarer |
       | Black-body spectrum radiation | Hawking radiation    | Black hole research |                       | proposed     | Marco Farfarer |
       | The holographic principle     | String theory        | Black hole research |                       | validated    | Marco Farfarer |
@@ -43,7 +43,7 @@ Feature: Moderate community content
       | Stellar flares                | Dim red dwarfs       |                     | Survey For Supernovae | validated    | Marco Farfarer |
       | Upgrading CCD cameras         | Liquid cooled        |                     | Survey For Supernovae | archived     | Marco Farfarer |
     And document content:
-      | title                         | body                          | community          | solution              | state            |
+      | title                         | body                          | collection          | solution              | state            |
       | A multiwavelength study       | Optical and infrared          | Black hole research |                       | draft            |
       | X-Ray Transient V616          | Weak ¹²CO absorption          | Black hole research |                       | needs update     |
       | K-band spectroscopy           | Small amount of flux          | Black hole research |                       | proposed         |
@@ -55,7 +55,7 @@ Feature: Moderate community content
       | J-band light curves           | Wilson-Devinney modeling      |                     | Survey For Supernovae | validated        |
       | Physics of the Neupert effect | Observed temporal correlation |                     | Survey For Supernovae | deletion request |
     And event content:
-      | title                                   | body                         | community          | solution              | state            |
+      | title                                   | body                         | collection          | solution              | state            |
       | Thick-target collisional bremsstrahlung | Chromospheric evaporation    | Black hole research |                       | draft            |
       | Conductive cooling losses               | Single-loop geometry         | Black hole research |                       | needs update     |
       | Source of SXR plasma supply and heating | Fast electrons are not       | Black hole research |                       | proposed         |
@@ -67,7 +67,7 @@ Feature: Moderate community content
       | Evolution of dust-to-metals ratio       | Dust at high redshift        |                     | Survey For Supernovae | validated        |
       | Total V-band extinction                 | Fitting the afterglow SED    |                     | Survey For Supernovae | deletion request |
     And news content:
-      | title                         | body                        | community          | solution              | state            |
+      | title                         | body                        | collection          | solution              | state            |
       | Magnetosphere boundary        | Gas shock                   | Black hole research |                       | draft            |
       | Ambient magnetized medium     | Dust depletion level        | Black hole research |                       | needs update     |
       | Stellar wind charged particle | Follow spiral paths         | Black hole research |                       | proposed         |
@@ -312,19 +312,19 @@ Feature: Moderate community content
       | state | validated     |
 
     And discussion content:
-      | title                       | body                  | community    | state    |
+      | title                       | body                  | collection    | state    |
       | Rotation-powered pulsations | Millisecond pulsars   | Neutron stars | proposed |
       | The Recycling concept       | An epoch of accretion | Neutron stars | proposed |
     And document content:
-      | title          | body                          | community    | state            |
+      | title          | body                          | collection    | state            |
       | Donor star     | Spun up to millisecond period | Neutron stars | proposed         |
       | High frequency | Slow 1.2 second spin          | Neutron stars | deletion request |
       | Cluster        | Eddington luminosity          | Neutron stars | deletion request |
     And event content:
-      | title      | body        | community    | state    |
+      | title      | body        | collection    | state    |
       | Accelerate | Wide binary | Neutron stars | proposed |
     And news content:
-      | title                   | body                             | community    | state            |
+      | title                   | body                             | collection    | state            |
       | Metal-rich star cluster | Standard pulsar recycling theory | Neutron stars | deletion request |
 
     When I am logged in as a facilitator of the "Neutron stars" community
@@ -386,7 +386,7 @@ Feature: Moderate community content
       | state      | validated           |
       | moderation | yes                 |
     And the following community user membership:
-      | community          | user |
+      | collection          | user |
       | Black hole research | leo  |
 
     Given I am logged in as "leo"

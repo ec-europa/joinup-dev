@@ -15,12 +15,12 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | title              | state     | content creation | moderation   |
       | CC post community | validated | members          | <moderation> |
     And the following community user memberships:
-      | community         | user           | roles       |
+      | collection         | user           | roles       |
       | CC post community | CC owner       | owner       |
       | CC post community | CC facilitator | facilitator |
       | CC post community | CC member      | <roles>     |
     And news content:
-      | title                          | author    | body | headline                       | community         | field_state  |
+      | title                          | author    | body | headline                       | collection        | field_state  |
       | CCN post publish               | CC member | body | CCN post publish               | CC post community | draft        |
       | CCN post request changes       | CC member | body | CCN post request changes       | CC post community | validated    |
       | CCN post report                | CC member | body | CCN post report                | CC post community | validated    |

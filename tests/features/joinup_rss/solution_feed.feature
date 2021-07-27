@@ -12,7 +12,7 @@ Feature: Solution RSS feed.
       | title | Unrandomed community |
       | state | validated             |
     And solutions:
-      | title             | state     | author  | creation date          | community            |
+      | title             | state     | author  | creation date          | collection           |
       | Lantern Domestic  | validated | scorlan | 2018-12-18 08:00 +0100 | Unrandomed community |
       | Deuteron Lonesome | draft     | scorlan | 2019-01-05 10:00 +0100 | Unrandomed community |
     And solution user memberships:

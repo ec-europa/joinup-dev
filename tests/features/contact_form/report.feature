@@ -15,10 +15,10 @@ Feature: Submit the contact form
       | title                                 | state     | abstract     | description   |
       | Community with inappropriate content | validated | No one cares | No one cares. |
     And the following community user memberships:
-      | community                            | user         | roles              |
+      | collection                           | user         | roles              |
       | Community with inappropriate content | Report owner | owner, facilitator |
     And event content:
-      | title           | author      | body | location  | community                            | field_state |
+      | title           | author      | body | location  | collection                           | field_state |
       | Event to report | Report user | body | Somewhere | Community with inappropriate content | validated   |
 
     # There should be a link to the contact form in the footer.

@@ -289,7 +289,7 @@ Feature: Sharing content between communities
       | Milky Way     | validated |
       | Chocolate Way | validated |
     And "document" content:
-      | title                 | community    | shared on     | state     | created    | pinned |
+      | title                 | collection    | shared on     | state     | created    | pinned |
       | Milky Way content     | Milky Way     | Chocolate Way | validated | 2017-06-04 | yes    |
       | Chocolate Way content | Chocolate Way |               | validated | 2017-06-05 | no     |
     When I go to the homepage of the "Chocolate Way" community

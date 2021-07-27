@@ -44,7 +44,7 @@ Feature: "Add document" visibility options.
       | title                | logo     | banner     | state     |
       | Hunter in the Swords | logo.png | banner.jpg | validated |
     And the following community user membership:
-      | community           | user      | roles       |
+      | collection           | user      | roles       |
       | Hunter in the Swords | napcheese | facilitator |
     # Log in as a facilitator of the "Hunter in the Swords" community.
     Given I am logged in as napcheese
@@ -101,7 +101,7 @@ Feature: "Add document" visibility options.
       | description | CC0 is a legal tool for waiving as many rights as legally possible. |
       | type        | Public domain                                                       |
     And document content:
-      | title       | document type | short title | file type | file                   | body                 | licence               | state     | community    |
+      | title       | document type | short title | file type | file                   | body                 | licence               | state     | collection    |
       | Laser types | document      | L-Types     | remote    | http://www.example.com | List of laser types. | Creative Commons Zero | validated | Strong Lasers |
 
     When I am logged in as a facilitator of the "Strong Lasers" community

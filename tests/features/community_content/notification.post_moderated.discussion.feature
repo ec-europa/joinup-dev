@@ -15,12 +15,12 @@ Feature: Notification test for the discussion transitions on a post moderated pa
       | title              | state     | content creation | moderation   |
       | CC post community | validated | members          | <moderation> |
     And the following community user memberships:
-      | community         | user           | roles       |
+      | collection         | user           | roles       |
       | CC post community | CC owner       | owner       |
       | CC post community | CC facilitator | facilitator |
       | CC post community | CC member      | <roles>     |
     And discussion content:
-      | title                                | author    | body | community         | field_state  |
+      | title                                | author    | body | collection        | field_state  |
       | CC notify post publish               | CC member | body | CC post community | draft        |
       | CC notify post request changes       | CC member | body | CC post community | validated    |
       | CC notify post report                | CC member | body | CC post community | validated    |
@@ -119,7 +119,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
       | title                   | state     |
       | Event Horizon Telescope | validated |
     And discussion content:
-      | title                            | community              | state     |
+      | title                            | collection              | state     |
       | How do the jets fire into space? | Event Horizon Telescope | validated |
     And users:
       | Username         |
@@ -127,7 +127,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
       | Cambria Falconer |
       | Monroe Fearchar  |
     And community user memberships:
-      | community              | user           | roles              |
+      | collection              | user           | roles              |
       | Event Horizon Telescope | Lindsey McCray | owner, facilitator |
     And discussion subscriptions:
       | username         | title                            |

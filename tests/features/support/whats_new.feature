@@ -9,7 +9,7 @@ Feature:
       | title               | state     |
       | Flagging community | validated |
     And news content:
-      | title      | headline   | state     | community          |
+      | title      | headline   | state     | collection         |
       | Some title | Some title | validated | Flagging community |
 
   Scenario: Only content entity internal URLs are allowed for flagging menu items.

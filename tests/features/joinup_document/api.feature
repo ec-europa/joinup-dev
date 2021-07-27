@@ -16,6 +16,6 @@ Feature: Document API
       | content creation | facilitators and authors |
       | state            | validated                |
     And document content:
-      | title    | document type | short title | body               | community           |
+      | title    | document type | short title | body               | collection           |
       | JD title | Document      | Short       | Dummy description. | Joinup document name |
     Then I should have a "Document" page titled "JD title"

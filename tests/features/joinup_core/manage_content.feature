@@ -11,20 +11,20 @@ Feature:
       | Vintage Art  | validated |
       | Decadent Art | validated |
     And document content:
-      | title             | document type | community  | state     |
+      | title             | document type | collection  | state     |
       | The Panama Papers | Document      | Vintage Art | validated |
       | The Area 51 File  | Document      | Vintage Art | draft     |
     And discussion content:
-      | title               | community  | state     |
+      | title               | collection  | state     |
       | The Ultimate Debate | Vintage Art | validated |
     And event content:
-      | title                    | community  | state     |
+      | title                    | collection  | state     |
       | Version 2.0 Launch Party | Vintage Art | validated |
     And news content:
-      | title                              | community  | state     |
+      | title                              | collection  | state     |
       | Exports Leap Despite Currency Gain | Vintage Art | validated |
     And custom_page content:
-      | title                | community  |
+      | title                | collection  |
       | HOWTOs               | Vintage Art |
       | Looking for Support? | Vintage Art |
     And the following custom page menu structure:

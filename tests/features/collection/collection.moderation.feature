@@ -43,7 +43,7 @@ Feature: Community moderation
       | The Shard's Hunter  | The Shard's Hunter  | logo.png | banner.jpg | Simon Sandoval | Francis             | archival request |
       | Luck in the Abyss   | Luck in the Abyss   | logo.png | banner.jpg | Simon Sandoval | Francis             | archived         |
     And the following community user memberships:
-      | community          | user         | roles       |
+      | collection          | user         | roles       |
       | Deep Past           | Erika Reid   | owner       |
       | The Licking Silence | Erika Reid   | owner       |
       | Person of Wizards   | Erika Reid   | owner       |
@@ -65,7 +65,7 @@ Feature: Community moderation
     # When I click the "Edit" link
     # Then the state field should have only the given states available.
     Then for the following community, the corresponding user should have the corresponding available state buttons:
-      | community          | user            | buttons                                           |
+      | collection          | user            | buttons                                           |
 
       # The owner is also a facilitator so the only UATable part of the owner is that they have the ability to
       # request archival and delete the community when the community is validated.
@@ -100,7 +100,7 @@ Feature: Community moderation
     # page that is styled as a button. It should only be available to the owner
     # of a validated community.
     And the visibility of the delete link should be as follows for these users in these communities:
-      | community          | user            | delete link |
+      | collection          | user            | delete link |
       | Person of Wizards   | Erika Reid      | yes         |
       | The Shard's Hunter  | Erika Reid      | no          |
       | Luck in the Abyss   | Erika Reid      | no          |

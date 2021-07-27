@@ -41,20 +41,20 @@ Feature: Subscribing to community content in communities
       | Sofia      | Grows without aging       | Cities of Bulgaria   | validated | kalin  |
       | Ruse       | Little Vienna             | Cities of Bulgaria   | proposed  | kalin  |
     And document content:
-      | title           | body                   | community           | state     | author |
+      | title           | body                   | collection           | state     | author |
       | Canned cherries | Sour cherries for pies | Products of Bulgaria | validated | bisera |
       | Plovdiv         | Seven hills            | Cities of Bulgaria   | validated | hristo |
     And event content:
-      | title           | body           | community           | state     | author | start date          | end date            |
+      | title           | body           | collection           | state     | author | start date          | end date            |
       | Sunflower seeds | A tasty snack  | Products of Bulgaria | validated | bisera | 2019-11-28T11:12:13 | 2019-11-28T11:12:13 |
       | Varna           | Summer capital | Cities of Bulgaria   | draft     | kalin  | 2019-12-05T12:00:00 | 2019-12-15T12:00:00 |
       | Stara Zagora    | Historic       | Cities of Bulgaria   | validated | hristo | 2020-01-18T18:30:00 | 2020-01-19T00:00:00 |
     And news content:
-      | title    | body                        | community           | state     | author |
+      | title    | body                        | collection           | state     | author |
       | Rose oil | A widely used essential oil | Products of Bulgaria | validated | bisera |
       | Burgas   | City of dreams              | Cities of Bulgaria   | validated | hristo |
     And solutions:
-      | title          | description                      | community           | state     | author |
+      | title          | description                      | collection           | state     | author |
       | Double seaming | The rolls roll around the chuck  | Products of Bulgaria | proposed  | kalin  |
       | Belt conveyors | As troughed belts gently slope   | Products of Bulgaria | validated | bisera |
       | New urbanism   | Context-appropriate architecture | Cities of Bulgaria   | validated | hristo |

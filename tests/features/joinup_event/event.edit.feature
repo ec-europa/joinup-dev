@@ -38,10 +38,10 @@ Feature: "Event page" editing.
       | title        | description        | state     | moderation |
       | <community> | Sample description | validated | yes        |
     And the following community user memberships:
-      | community   | user   | roles  |
+      | collection   | user   | roles  |
       | <community> | <user> | <role> |
     And "event" content:
-      | title   | author | community   | state     |
+      | title   | author | collection   | state     |
       | <event> | <user> | <community> | validated |
     When I am logged in as "<user>"
     And I go to the "<event>" event
@@ -51,7 +51,7 @@ Feature: "Event page" editing.
     And I go to the "<event>" event
     Then I should see the link "Edit" in the "Entity actions" region
     Examples:
-      | user           | community        | event                    | role        |
+      | user           | collection        | event                    | role        |
       | Kristina Silva | Gate of Flames    | Gate of Flames           |             |
       | Irvin West     | Bare Past         | Name of Consort          | member      |
       | Emilio Garcia  | The Final Bridges | The Dreaming of the Game | facilitator |

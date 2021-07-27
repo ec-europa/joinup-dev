@@ -15,12 +15,12 @@ Feature: Notification test for the news transitions on a pre moderated parent.
       | title             | state     | content creation | moderation |
       | CC pre community | validated | members          | yes        |
     And the following community user memberships:
-      | community        | user           | roles       |
+      | collection        | user           | roles       |
       | CC pre community | CC owner       | owner       |
       | CC pre community | CC facilitator | facilitator |
       | CC pre community | CC member      |             |
     And news content:
-      | title                         | author         | body | headline                      | community        | field_state      |
+      | title                         | author         | body | headline                      | collection        | field_state      |
       # The next one belongs to a facilitator because there is no published version for that and thus,
       # the facilitator would not have access to the entity.
       | CCN pre publish               | CC facilitator | body | CCN pre publish               | CC pre community | draft            |

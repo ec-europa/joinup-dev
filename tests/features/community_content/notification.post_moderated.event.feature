@@ -15,12 +15,12 @@ Feature: Notification test for the event transitions on a post moderated parent.
       | title              | state     | content creation | moderation   |
       | CC post community | validated | members          | <moderation> |
     And the following community user memberships:
-      | community         | user           | roles       |
+      | collection         | user           | roles       |
       | CC post community | CC owner       | owner       |
       | CC post community | CC facilitator | facilitator |
       | CC post community | CC member      | <roles>     |
     And event content:
-      | title                                | author    | body | location                       | community         | field_state  |
+      | title                                | author    | body | location                       | collection         | field_state  |
       | CC notify post publish               | CC member | body | Half Moon Street, London       | CC post community | draft        |
       | CC notify post request changes       | CC member | body | Quai d'Orleans, Paris          | CC post community | validated    |
       | CC notify post report                | CC member | body | Rue du Mont Thabor, Paris      | CC post community | validated    |

@@ -9,7 +9,7 @@ Feature: Create community content through the API
       | title | End user documentation |
       | state | validated              |
     And "<type>" content:
-      | title   | body | community             | field_state      |
+      | title   | body | collection             | field_state      |
       | <title> | body | End user documentation | <workflow state> |
     Then the community content with title "<title>" should have the publication state "<publication state>"
 

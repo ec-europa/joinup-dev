@@ -13,7 +13,7 @@ Feature: Release API
       | state            | validated                |
     And the following solution:
       | title            | My first solution                    |
-      | community       | Solution API foo                     |
+      | collection       | Solution API foo                     |
       | description      | A sample solution                    |
       | documentation    | text.pdf                             |
       | content creation | registered users                     |
@@ -40,7 +40,7 @@ Feature: Release API
       | state            | validated                |
     And the following solution:
       | title            | My first solution mandatory |
-      | community       | Solution API bar            |
+      | collection       | Solution API bar            |
       | description      | Another sample solution     |
       | content creation | registered users            |
       | state            | validated                   |

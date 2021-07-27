@@ -55,7 +55,7 @@ interface SolutionInterface extends RdfInterface, CommunitiesContentInterface, E
    * Returns the communities this solution is affiliated with.
    *
    * @return \Drupal\collection\Entity\CommunityInterface[]
-   *   The affiliated communities, keyed by collection ID.
+   *   The affiliated communities, keyed by community ID.
    */
   public function getAffiliatedCommunities(): array;
 

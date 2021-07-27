@@ -9,7 +9,7 @@ Feature:
       | title | Gravitational wave detectors |
       | state | validated                    |
     And <type> content:
-      | title | created                         | <publication field name>        | changed                         | community                   | state     |
+      | title | created                         | <publication field name>        | changed                         | collection                   | state     |
       | LIGO  | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 25 Dec 2019 14:00:00 +0100 | Wed, 25 Dec 2019 15:00:00 +0100 | Gravitational wave detectors | validated |
 
     When I go to the "LIGO" <type>

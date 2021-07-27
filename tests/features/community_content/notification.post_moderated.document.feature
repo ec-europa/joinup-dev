@@ -15,12 +15,12 @@ Feature: Notification test for the document transitions on a post moderated pare
       | title         | state     | content creation | moderation   |
       | CC community | validated | members          | <moderation> |
     And the following community user memberships:
-      | community    | user           | roles       |
+      | collection    | user           | roles       |
       | CC community | CC owner       | owner       |
       | CC community | CC facilitator | facilitator |
       | CC community | CC member      | <roles>     |
     And document content:
-      | title                                | author    | body | document type | community    | field_state  |
+      | title                                | author    | body | document type | collection    | field_state  |
       | CC notify post publish               | CC member | body | Document      | CC community | draft        |
       | CC notify post request changes       | CC member | body | Document      | CC community | validated    |
       | CC notify post report                | CC member | body | Document      | CC community | validated    |

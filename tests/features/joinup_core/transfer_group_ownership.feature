@@ -16,7 +16,7 @@ Feature: As a group (community or solution) owner or site moderator
       | title | Intensive Language Learning |
       | state | validated                   |
     And the following community user memberships:
-      | community                  | user   | roles       |
+      | collection                  | user   | roles       |
       | Intensive Language Learning | loner  |             |
       | Intensive Language Learning | cruel  | owner       |
       | Intensive Language Learning | shy    | facilitator |

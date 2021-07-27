@@ -72,13 +72,13 @@ Feature: Add community content
       | title | The afternoon shift |
       | state | validated           |
     And discussion content:
-      | title             | content         | author    | state | community          | created    |
+      | title             | content         | author    | state | collection          | created    |
       | Sample discussion | Sample content. | Publisher | draft | The afternoon shift | 01-01-2010 |
     And event content:
-      | title        | body            | location          | author    | community          | state | created    |
+      | title        | body            | location          | author    | collection          | state | created    |
       | Sample event | Sample content. | Buckingham Palace | Publisher | The afternoon shift | draft | 01-01-2010 |
     And news content:
-      | title       | headline    | body            | state | author    | community          | created    |
+      | title       | headline    | body            | state | author    | collection          | created    |
       | Sample news | Sample news | Sample content. | draft | Publisher | The afternoon shift | 01-01-2010 |
 
     When I am logged in as "Publisher"
@@ -180,7 +180,7 @@ Feature: Add community content
       | title | The night watch |
       | state | validated       |
     And <content type> content:
-      | title                   | community      | state     |
+      | title                   | collection      | state     |
       | The glorious revolution | The night watch | validated |
     When I go to the content page of the type "<content type>" with the title "The glorious revolution"
     Then I should see the text <label> in the "Page title" region

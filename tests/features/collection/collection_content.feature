@@ -13,7 +13,7 @@ Feature: Community content
       | collection | Turin Egyptian Community   |
       | state      | validated                   |
     And discussion content:
-      | title                                 | body                                                                    | state     | community                |
+      | title                                 | body                                                                    | state     | collection                |
       | Bigger than Egyptian Museum of Cairo? | <p><a href="#link">Link to the museum</a> web<strong>site</strong>.</p> | validated | Turin Egyptian Community |
     And document content:
       | title           | body                                             | state     | community                |

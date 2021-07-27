@@ -12,10 +12,10 @@ Feature: "Document page" editing.
       | title        | description        | state     |
       | <community> | Sample description | validated |
     And the following community user memberships:
-      | community   | user   | roles  |
+      | collection   | user   | roles  |
       | <community> | <user> | <role> |
     And "document" content:
-      | title      | author | community   | state     |
+      | title      | author | collection   | state     |
       | <document> | <user> | <community> | validated |
     When I am logged in as "<user>"
     And I go to the "<document>" document
@@ -25,7 +25,7 @@ Feature: "Document page" editing.
     And I go to the "<document>" document
     Then I should see the link "Edit" in the "Entity actions" region
     Examples:
-      | user           | community      | document               | role        |
+      | user           | collection      | document               | role        |
       | Billie Stanley | Seventh Shores  | Fire of Female         | member      |
       | Tamara Kelley  | The Bold Stones | The Tales of the Twins | facilitator |
 

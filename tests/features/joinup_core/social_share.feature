@@ -9,7 +9,7 @@ Feature: Sharing content on social networks
       | title | Social networks |
       | state | validated       |
     And <content type> content:
-      | title                 | community      | state     |
+      | title                 | collection      | state     |
       | Important information | Social networks | validated |
 
     When I am an anonymous user
@@ -35,7 +35,7 @@ Feature: Sharing content on social networks
       | title | Social networks |
       | state | validated       |
     And solutions:
-      | title              | community      | state     |
+      | title              | collection      | state     |
       | Important solution | Social networks | validated |
 
     When I am logged in as a user with the "authenticated" role

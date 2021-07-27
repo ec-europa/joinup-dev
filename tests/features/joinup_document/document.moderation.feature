@@ -28,7 +28,7 @@ Feature: Document moderation
       | contact information | Dis contact                     |
       | topic               | E-inclusion                     |
     And the following community user membership:
-      | community      | user            | roles       |
+      | collection      | user            | roles       |
       | The Naked Ashes | Gretchen Greene | member      |
       | The Naked Ashes | Kirk Collier    | facilitator |
 

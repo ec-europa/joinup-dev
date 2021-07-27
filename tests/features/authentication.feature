@@ -10,7 +10,7 @@ Feature: User authentication
 
     Examples:
       | path          |
-      | collection    |
+      | collections   |
       | user/login    |
       | user/password |
       | user/register |
