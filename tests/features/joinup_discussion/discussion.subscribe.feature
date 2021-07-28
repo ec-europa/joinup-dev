@@ -106,18 +106,18 @@ Feature: Following discussions
     And I fill in "Content" with "The old content was wrong."
     And I press "Update"
     Then the following email should have been sent:
-      | recipient_mail     | dale@example.com                                                                  |
-      | subject            | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+      | recipient_mail | dale@example.com                                                                  |
+      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     And the following email should have been sent:
-      | recipient_mail     | flash@example.com                                                                 |
-      | subject            | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+      | recipient_mail | flash@example.com                                                                 |
+      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     # The author of the discussion update doesn't receive any notification.
     But the following email should not have been sent:
-      | recipient_mail     | hans@example.com                                                                  |
-      | subject            | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+      | recipient_mail | hans@example.com                                                                  |
+      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     # Check that no other mails have been unexpectedly sent.
     Then 2 e-mails should have been sent
 
@@ -138,7 +138,7 @@ Feature: Following discussions
       | mail_subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
       | mail_body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     And the following email should not have been sent:
-      | recipient_mail | ming@example.com                                                                 |
+      | recipient_mail | ming@example.com                                                                  |
       | mail_subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
       | mail_body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     # The notification that a moderator requests a modification should still be
@@ -149,22 +149,20 @@ Feature: Following discussions
       | body           | the Moderator, has requested you to modify the discussion - "Rare Butter" |
     And 1 e-mail should have been sent
 
-    # Delete the discussion and check that no notifications are sent. Since the
-    # discussion is not published nobody should be notified.
     Given the mail collector cache is empty
     When I go to the "Rare Butter" discussion
     And I click "Delete" in the "Entity actions" region
     And I press "Delete"
 
-    Then the following email should not have been sent:
+    Then the following email should have been sent:
       | recipient_mail | dale@example.com                                                                                     |
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
       | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
-    And the following email should not have been sent:
+    And the following email should have been sent:
       | recipient_mail | flash@example.com                                                                                    |
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
       | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
-    And the following email should not have been sent:
+    And the following email should have been sent:
       | recipient_mail | hans@example.com                                                                                     |
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
       | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
@@ -173,8 +171,7 @@ Feature: Following discussions
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
       | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
 
-    # Now try to delete a published discussion. The notifications should be sent
-    # in this case.
+    # Now check the notifications sent for a published discussion.
     Given discussion content:
       | title     | body                                                   | collection     | state     | author          |
       | Rare feta | Made from milk from the exclusive Manx Loaghtan sheep. | Dairy products | validated | Dr. Hans Zarkov |

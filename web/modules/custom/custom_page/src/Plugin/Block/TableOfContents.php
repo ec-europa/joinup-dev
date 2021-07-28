@@ -14,7 +14,7 @@ use Drupal\joinup_group\Plugin\Block\GroupMenuBlock;
  *   id = "custom_page_toc:navigation",
  *   admin_label = @Translation("Custom page TOC"),
  *   category = @Translation("Custom page"),
- *   context = {
+ *   context_definitions = {
  *     "og" = @ContextDefinition("entity", label = @Translation("Group")),
  *   },
  * ),
