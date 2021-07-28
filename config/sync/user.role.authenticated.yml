@@ -111,6 +111,7 @@ permissions:
   - 'update paragraph content simple_paragraph'
   - 'use text format basic_html'
   - 'use text format content_editor'
+  - 'use text format essential_html'
   - 'use text format glossary_html'
   - 'use text format simple_html'
   - 'view compatibility documents'

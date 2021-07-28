@@ -117,7 +117,7 @@ Feature: Collection content
     And I should see the link "Solutions (2)"
     And I should see the link "Videos (2)"
 
-  Scenario: Links and markup should be stripped from tiles abstract.
+  Scenario: Links and markup should be stripped from tiles summary.
     Given I go to the homepage of the "Turin Egyptian Collection" collection
     # Check the discussion tile.
     Then I should see the "Bigger than Egyptian Museum of Cairo?" tile
