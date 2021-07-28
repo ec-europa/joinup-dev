@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the Joinup front page module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_theme().
+ */
+function joinup_front_page_theme(): array {
+  return [
+    'explore_block' => [
+      'variables' => [
+        'data' => [],
+      ],
+    ],
+  ];
+}

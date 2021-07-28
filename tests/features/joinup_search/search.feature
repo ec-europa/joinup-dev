@@ -148,8 +148,8 @@ Feature: Global search
       | E-inclusion             |
     And the "spatial coverage" select facet should contain the following options:
       | Any location       |
-      | Luxembourg (5)     |
       | European Union (1) |
+      | Luxembourg (5)     |
     And I should not see the "Molecular cooking collection" tile
     And I should see the "El Celler de Can Roca" tile
     But I should see the "Spherification" tile
