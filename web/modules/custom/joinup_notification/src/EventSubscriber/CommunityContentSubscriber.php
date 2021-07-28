@@ -101,7 +101,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   /**
    * {@inheritdoc}
    */
-  protected function initialize(NotificationEvent $event) {
+  protected function initialize(NotificationEvent $event): void {
     parent::initialize($event);
 
     // Only initialize the workflow if it is available. It is unavailable when
@@ -128,7 +128,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The event object.
    */
-  public function onCreate(NotificationEvent $event) {
+  public function onCreate(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnCreate()) {
       return;
@@ -148,7 +148,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @return bool
    *   Whether the event applies.
    */
-  protected function appliesOnCreate() {
+  protected function appliesOnCreate(): bool {
     // If there is no original version, then it is not an update.
     if (isset($this->entity->original)) {
       return FALSE;
@@ -168,7 +168,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The event object.
    */
-  public function onUpdate(NotificationEvent $event) {
+  public function onUpdate(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnUpdate()) {
       return;
@@ -217,7 +217,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @return bool
    *   Whether the event applies.
    */
-  protected function appliesOnUpdate() {
+  protected function appliesOnUpdate(): bool {
     // If there is no original version, then it is not an update.
     if ($this->entity->isNew()) {
       return FALSE;
@@ -237,7 +237,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The event object.
    */
-  public function onDelete(NotificationEvent $event) {
+  public function onDelete(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnDelete()) {
       return;
@@ -266,7 +266,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @return bool
    *   Whether the event applies.
    */
-  protected function appliesOnDelete() {
+  protected function appliesOnDelete(): bool {
     // If any of the workflow related properties are empty, return early.
     if (!$this->entity instanceof EntityWorkflowStateInterface) {
       return FALSE;
@@ -284,7 +284,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   /**
    * {@inheritdoc}
    */
-  protected function getConfigurationName() {
+  protected function getConfigurationName(): string {
     return 'joinup_notification.notifications.community_content';
   }
 

@@ -59,9 +59,10 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     $events[NotificationEvents::COMMENT_CRUD] = [
       ['onCreate'],
+      ['onCreateParentOwners'],
       ['onUpdate'],
       ['onDelete'],
     ];
@@ -72,7 +73,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
   /**
    * {@inheritdoc}
    */
-  protected function initialize(NotificationEvent $event) {
+  protected function initialize(NotificationEvent $event): void {
     parent::initialize($event);
     /** @var \Drupal\comment\CommentInterface $comment */
     $comment = $this->entity;
@@ -93,7 +94,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The event object.
    */
-  public function onCreate(NotificationEvent $event) {
+  public function onCreate(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnCreate()) {
       return;
@@ -105,12 +106,47 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
   }
 
   /**
+   * Sends notifications to the content owner and possibly the parent comment.
+   *
+   * @param \Drupal\joinup_notification\Event\NotificationEvent $event
+   *   The notifications event.
+   */
+  public function onCreateParentOwners(NotificationEvent $event): void {
+    $this->initialize($event);
+    if (!$this->appliesOnCreate()) {
+      return;
+    }
+
+    $message_data = [];
+    /** @var \Drupal\comment\CommentInterface $comment */
+    $comment = $event->getEntity();
+
+    if ($parent_entity = $comment->getCommentedEntity()) {
+      // Do not send an email if the user replied to their own comment.
+      if ($comment->getOwnerId() !== $parent_entity->getOwnerId() && $parent_entity->getOwner()->isAuthenticated()) {
+        $uid = $parent_entity->getOwnerId();
+        $message_data[self::TEMPLATE_CREATE][$uid] = $uid;
+      }
+    }
+
+    if ($parent_comment = $comment->getParentComment()) {
+      // Do not send an email if the user replied to their own comment.
+      if ($comment->getOwnerId() !== $parent_comment->getOwnerId() && $parent_comment->getOwner()->isAuthenticated()) {
+        $uid = $parent_comment->getOwnerId();
+        $message_data[self::TEMPLATE_CREATE][$uid] = $uid;
+      }
+    }
+
+    $this->sendUserDataMessages($message_data);
+  }
+
+  /**
    * Checks if the event applies for the create operation.
    *
    * @return bool
    *   Whether the event applies.
    */
-  protected function appliesOnCreate() {
+  protected function appliesOnCreate(): bool {
     if ($this->operation !== 'create') {
       return FALSE;
     }
@@ -128,7 +164,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The event object.
    */
-  public function onUpdate(NotificationEvent $event) {
+  public function onUpdate(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnUpdate()) {
       return;
@@ -145,7 +181,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
    * @return bool
    *   Whether the event applies.
    */
-  protected function appliesOnUpdate() {
+  protected function appliesOnUpdate(): bool {
     if ($this->operation !== 'update') {
       return FALSE;
     }
@@ -163,7 +199,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The event object.
    */
-  public function onDelete(NotificationEvent $event) {
+  public function onDelete(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnDelete()) {
       return;
@@ -180,7 +216,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
    * @return bool
    *   Whether the event applies.
    */
-  protected function appliesOnDelete() {
+  protected function appliesOnDelete(): bool {
     if ($this->operation !== 'delete') {
       return FALSE;
     }
@@ -198,7 +234,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
    * @return bool
    *   Whether the event applies.
    */
-  protected function appliesOnComments() {
+  protected function appliesOnComments(): bool {
     if ($this->entity->getEntityTypeId() !== 'comment') {
       return FALSE;
     }
@@ -214,7 +250,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
   /**
    * {@inheritdoc}
    */
-  protected function getConfigurationName() {
+  protected function getConfigurationName(): string {
     return '';
   }
 

@@ -95,7 +95,7 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
   /**
    * {@inheritdoc}
    */
-  protected function initialize(NotificationEvent $event) {
+  protected function initialize(NotificationEvent $event): void {
     parent::initialize($event);
     if (!$this->entity instanceof CommunityInterface) {
       return;
@@ -116,7 +116,7 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event.
    */
-  public function onCreate(NotificationEvent $event) {
+  public function onCreate(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnCreate()) {
       return;
@@ -133,7 +133,7 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
    * @return bool
    *   Whether the conditions apply.
    */
-  protected function appliesOnCreate() {
+  protected function appliesOnCreate(): bool {
     if (!$this->appliesOnCommunities()) {
       return FALSE;
     }
@@ -161,7 +161,7 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event.
    */
-  public function onUpdate(NotificationEvent $event) {
+  public function onUpdate(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnUpdate()) {
       return;
@@ -198,7 +198,7 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
    * @return bool
    *   Whether the conditions apply.
    */
-  protected function appliesOnUpdate() {
+  protected function appliesOnUpdate(): bool {
     if (!$this->appliesOnCommunities()) {
       return FALSE;
     }
@@ -232,7 +232,7 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event.
    */
-  public function onDelete(NotificationEvent $event) {
+  public function onDelete(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnDelete()) {
       return;
@@ -247,7 +247,7 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
    * @return bool
    *   Whether the conditions apply.
    */
-  protected function appliesOnDelete() {
+  protected function appliesOnDelete(): bool {
     if (!$this->appliesOnCommunities()) {
       return FALSE;
     }
@@ -278,7 +278,7 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
    * the moderators, otherwise, send templates 4, 5 to the owner and the
    * moderator respectively.
    */
-  protected function notificationPropose() {
+  protected function notificationPropose(): void {
     if (!$this->hasPublished) {
       $user_data = ['roles' => ['moderator' => [self::TEMPLATE_PROPOSE_NEW]]];
     }
@@ -307,7 +307,7 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
    * Notification 1 is sent when a new entity is published. 6 is sent when a
    * modification is approved.
    */
-  protected function notificationValidate() {
+  protected function notificationValidate(): void {
     $template_id = $this->hasPublished ? self::TEMPLATE_APPROVE_EDIT : self::TEMPLATE_APPROVE_NEW;
     $user_data = [
       'og_roles' => [
@@ -324,7 +324,7 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
    *
    * Notification id 8.
    */
-  protected function notificationRequestArchivalDeletion() {
+  protected function notificationRequestArchivalDeletion(): void {
     $template_id = self::TEMPLATE_REQUEST_ARCHIVAL_DELETION;
     $user_data = ['roles' => ['moderator' => [$template_id]]];
     $this->getUsersAndSend($user_data);
@@ -335,7 +335,7 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
    *
    * Notification id 10.
    */
-  protected function notificationRejectArchivalDeletion() {
+  protected function notificationRejectArchivalDeletion(): void {
     $template_id = self::TEMPLATE_ARCHIVE_DELETE_REJECT;
     $user_data = [
       'og_roles' => [
@@ -358,7 +358,7 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
    * or deleted without prior request.
    * Only one of both are sent depending on the current state of the community.
    */
-  protected function notificationArchiveDelete() {
+  protected function notificationArchiveDelete(): void {
     // Template id 9. Notify the owner.
     $template_id = $this->isTransitionRequested() ? self::TEMPLATE_ARCHIVE_DELETE_APPROVE_OWNER : self::TEMPLATE_ARCHIVE_DELETE_NO_REQUEST;
 
@@ -431,7 +431,7 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
    * @todo This might need to be moved to the solution subscriber once it is
    *   created, in order to remove weird workarounds.
    */
-  protected function notifySolutionOwners(EntityInterface $solution) {
+  protected function notifySolutionOwners(EntityInterface $solution): void {
     // Count communities that are not archived and are affiliated to the
     // solution.
     $community_count = $this->entityTypeManager->getStorage('rdf_entity')->getQuery()
@@ -463,14 +463,14 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
    * @return bool
    *   Whether the event applies.
    */
-  protected function appliesOnCommunities() {
+  protected function appliesOnCommunities(): bool {
     return $this->entity instanceof CommunityInterface;
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getConfigurationName() {
+  protected function getConfigurationName(): string {
     return '';
   }
 
@@ -551,7 +551,7 @@ class CommunityRdfSubscriber extends NotificationSubscriberBase implements Event
    *
    * @see ::getUsersMessages()
    */
-  protected function getUsersAndSend(array $user_data) {
+  protected function getUsersAndSend(array $user_data): void {
     $user_data = $this->getUsersMessages($user_data);
     $this->sendUserDataMessages($user_data);
   }
