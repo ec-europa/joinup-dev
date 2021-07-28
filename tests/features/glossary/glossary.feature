@@ -152,7 +152,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | title       | Collection With Glossary                                                                        |
       | state       | validated                                                                                       |
       | description | Colors of Paradise. Abbreviated as CLR. <a href="/contact"><strong>Colors of Dream</strong></a> |
-      | abstract    | The Alphabet is back, and it's s/ashy.                                                          |
+      | abstract    | The Alphabet is back and it's s/ashy.                                                           |
     And solution:
       | title       | Under The Bridge         |
       | description | No Colors                |

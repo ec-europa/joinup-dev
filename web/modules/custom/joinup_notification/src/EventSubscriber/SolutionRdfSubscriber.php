@@ -130,7 +130,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   /**
    * {@inheritdoc}
    */
-  protected function initialize(NotificationEvent $event) {
+  protected function initialize(NotificationEvent $event): void {
     parent::initialize($event);
 
     // Only initialize the workflow if available. It is not available when the
@@ -154,7 +154,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event.
    */
-  public function onCreate(NotificationEvent $event) {
+  public function onCreate(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnCreate()) {
       return;
@@ -171,7 +171,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * @return bool
    *   Whether the conditions apply.
    */
-  protected function appliesOnCreate() {
+  protected function appliesOnCreate(): bool {
     if (!$this->appliesOnSolutions()) {
       return FALSE;
     }
@@ -197,7 +197,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event.
    */
-  public function onUpdate(NotificationEvent $event) {
+  public function onUpdate(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnUpdate()) {
       return;
@@ -246,7 +246,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * @return bool
    *   Whether the conditions apply.
    */
-  protected function appliesOnUpdate() {
+  protected function appliesOnUpdate(): bool {
     if (!$this->appliesOnSolutions()) {
       return FALSE;
     }
@@ -277,7 +277,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    *
    * Notifications ids handled: 1, 7, 16.
    */
-  protected function notificationPropose() {
+  protected function notificationPropose(): void {
     switch ($this->fromState) {
       case 'validated':
         $user_data = [
@@ -316,7 +316,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    *
    * Notification IDs handled: 2, 14.
    */
-  protected function notificationValidate() {
+  protected function notificationValidate(): void {
     switch ($this->fromState) {
       case 'proposed':
         $user_data = [
@@ -353,7 +353,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event.
    */
-  public function onDelete(NotificationEvent $event) {
+  public function onDelete(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnDelete()) {
       return;
@@ -376,7 +376,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * @return bool
    *   Whether the conditions apply.
    */
-  protected function appliesOnDelete() {
+  protected function appliesOnDelete(): bool {
     if (!$this->appliesOnSolutions()) {
       return FALSE;
     }
@@ -394,7 +394,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * @return bool
    *   Whether the event applies.
    */
-  protected function appliesOnSolutions() {
+  protected function appliesOnSolutions(): bool {
     if ($this->entity->getEntityTypeId() !== 'rdf_entity') {
       return FALSE;
     }
@@ -409,7 +409,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   /**
    * {@inheritdoc}
    */
-  protected function getConfigurationName() {
+  protected function getConfigurationName(): string {
     return '';
   }
 
@@ -454,7 +454,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    *
    * @see joinup_notification_rdf_entity_presave()
    */
-  protected function hasPublishedVersion(EntityInterface $entity) {
+  protected function hasPublishedVersion(EntityInterface $entity): bool {
     if (isset($entity->hasPublished)) {
       return ($entity->hasPublished);
     }
@@ -473,7 +473,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    *
    * @see ::getUsersMessages()
    */
-  protected function getUsersAndSend(array $user_data, array $bcc_data = []) {
+  protected function getUsersAndSend(array $user_data, array $bcc_data = []): void {
     $message_values = [];
     $user_data = $this->getUsersMessages($user_data);
     if (!empty($bcc_data)) {

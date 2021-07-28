@@ -31,16 +31,6 @@ create:
           - cc_transition_publish
         rdf_entity-solution-administrator:
           - cc_transition_publish
-  'node:discussion:post_moderated':
-    publish:
-      roles:
-        moderator:
-          - cc_transition_publish
-      og_roles:
-        rdf_entity-collection-administrator:
-          - cc_transition_publish
-        rdf_entity-solution-administrator:
-          - cc_transition_publish
 update:
   'node:pre_moderated':
     propose:
@@ -97,34 +87,6 @@ update:
       owner:
         - cc_transition_reject_deletion
   'node:post_moderated':
-    publish:
-      roles:
-        moderator:
-          - cc_transition_publish
-      og_roles:
-        rdf_entity-collection-administrator:
-          - cc_transition_publish
-        rdf_entity-solution-administrator:
-          - cc_transition_publish
-    approve_proposed:
-      owner:
-        - cc_transition_approve_proposed
-    report:
-      owner:
-        - cc_transition_report
-    request_changes:
-      owner:
-        - cc_transition_request_changes
-    propose_from_reported:
-      roles:
-        moderator:
-          - cc_transition_propose_reported
-      og_roles:
-        rdf_entity-collection-administrator:
-          - cc_transition_propose_reported
-        rdf_entity-solution-administrator:
-          - cc_transition_propose_reported
-  'node:discussion:post_moderated':
     publish:
       roles:
         moderator:
