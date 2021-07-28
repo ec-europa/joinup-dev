@@ -146,6 +146,7 @@ Feature:
   Scenario: Anonymous using the support contact form.
     Given I am on "/contact"
     Then I should see "I have read and accept the Legal notice"
+    And I should see "Before you submit your request check our FAQ section in case it covers your query/issue."
 
     Given I fill in "First name" with "Eleanor"
     And I fill in "Last name" with "Rigby"
@@ -169,6 +170,7 @@ Feature:
 
     When I am on "/contact"
     Then I should not see "I have read and accept the Legal notice"
+    And I should see "Before you submit your request check our FAQ section in case it covers your query/issue."
 
   Scenario: Legal notice redirect takes precedence over other redirects.
     Given users:

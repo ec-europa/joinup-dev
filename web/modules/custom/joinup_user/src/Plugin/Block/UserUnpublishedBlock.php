@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "user_unpublished",
  *   admin_label = @Translation("Unpublished content of user"),
- *   context = {
+ *   context_definitions = {
  *     "user_route" = @ContextDefinition("entity:user", label = @Translation("User from URL"))
  *   }
  * )
