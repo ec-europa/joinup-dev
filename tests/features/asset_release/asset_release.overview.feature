@@ -9,7 +9,7 @@ Feature: Asset distribution overview on solution.
       | title | End of Past |
       | state | validated   |
     And the following solutions:
-      | title            | community  | description        | state     |
+      | title            | collection  | description        | state     |
       | Lovely Butterfly | End of Past | Sample description | validated |
 
     # A solution with no releases or standalone distributions has no button.

@@ -43,7 +43,7 @@ Feature: Notification test for the community transitions.
       | NC Solution1 | NCS owner | owner |
       | NC Solution2 | NCS owner | owner |
     And the following community user memberships:
-      | community             | user           | roles              |
+      | collection             | user           | roles              |
       | NC to propose          | NC owner       | owner, facilitator |
       | NC to validate         | NC owner       | owner, facilitator |
       | NC to propose edit     | NC owner       | owner, facilitator |

@@ -9,10 +9,10 @@ Feature: Tests membership to Joinup community.
   Scenario: As a newly registered user I'm automatically member of the 'Joinup'
     community and I cannot leave.
 
-    Given I am logged in as a user with the member role of the "An arbitrary community" collection
+    Given I am logged in as a user with the member role of the "An arbitrary community" community
     Then I am member of "Joinup" community
 
-    And I go to the homepage of the "An arbitrary community" collection
+    And I go to the homepage of the "An arbitrary community" community
     Then I should see the link "Leave this community"
 
     When I go to the homepage of the "Joinup" community

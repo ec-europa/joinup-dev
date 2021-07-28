@@ -48,7 +48,7 @@ Feature:
       | Pathauto community page | Pathauto page | Pathauto community   |                   | validated |
       | Pathauto solution page   | Pathauto page |                     | Pathauto solution | validated |
 
-    When I go to the "Pathauto community" collection
+    When I go to the "Pathauto community" community
     Then the url should match "community/pathauto-community"
     When I go to the "Pathauto solution" solution
     Then the url should match "community/pathauto-community/solution/pathauto-solution"

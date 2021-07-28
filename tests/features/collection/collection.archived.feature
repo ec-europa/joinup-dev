@@ -20,12 +20,12 @@ Feature: Creating content and commenting on archived community
       | title               | description         | logo     | banner     | owner         | contact information | state     | topic                   |
       | The Willing Consort | The Willing Consort | logo.png | banner.jpg | April Hawkins | Jody Rodriquez      | validated | Statistics and Analysis |
     And the following community user memberships:
-      | community          | user        | roles              |
+      | collection          | user        | roles              |
       | The Willing Consort | Karl Fields | owner, facilitator |
 
   Scenario: 'Comment form' should not be accessible on an archived community content.
     Given discussion content:
-      | title               | community          | state     |
+      | title               | collection          | state     |
       | The Weeping's Stars | The Willing Consort | validated |
     When I am logged in as "Lee Reeves"
     And I go to the "The Weeping's Stars" discussion

@@ -378,7 +378,7 @@ class CommunityContext extends RawDrupalContext {
    * @Then I should have :number community(s)
    */
   public function assertCommunityCount(int $number): void {
-    $this->assertRdfEntityCount($number, 'community');
+    $this->assertRdfEntityCount($number, 'collection');
   }
 
   /**
@@ -391,7 +391,7 @@ class CommunityContext extends RawDrupalContext {
    * | Electronic Surveillance  | Letice Earwig |                            | blocked |
    * @codingStandardsIgnoreEnd
    *
-   * Only the 'community' and 'user' columns are required. Multiple comma
+   * Only the 'collection' and 'user' columns are required. Multiple comma
    * separated roles can be passed.
    *
    * The state can be empty, or one of 'active', 'pending', or 'blocked'. If the
@@ -550,7 +550,7 @@ class CommunityContext extends RawDrupalContext {
    * following state buttons should be available for the user on the
    * community'.
    *
-   * @Then for the following community, the corresponding user should have the corresponding (available )state buttons:
+   * @Then for the following collection, the corresponding user should have the corresponding (available )state buttons:
    */
   public function verifyStateButtons(TableNode $check_table): void {
     foreach ($check_table->getColumnsHash() as $values) {

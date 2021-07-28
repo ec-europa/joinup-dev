@@ -11,6 +11,6 @@ Feature: Multilingual search
       | topic            | Demography                   |
       | spatial coverage | Belgium                      |
       | state            | validated                    |
-    And the multilingual "El celler de Can Roca" solution of "Molecular cooking community" collection
-    When I go to the "Molecular cooking community" collection
+    And the multilingual "El celler de Can Roca" solution of "Molecular cooking community" community
+    When I go to the "Molecular cooking community" community
     Then I should see 1 tile

@@ -16,14 +16,14 @@ Feature: Pinning content to the front page
       | Risky Sound | validated | 2017-12-21    | Timofei Håkansson | Arushi Papke        |
       | Tuna Moving | validated | 2018-02-28    |                   |                     |
     And the following solutions:
-      | title            | community  | state     | creation date |
+      | title            | collection  | state     | creation date |
       | D minor          | Risky Sound | validated | 2017-12-22    |
       | Migration routes | Tuna Moving | validated | 2018-01-31    |
     And users:
       | Username      | E-mail                    |
       | Burke Abraham | burke.abraham@example.com |
     And the following community user memberships:
-      | community  | user          | roles       |
+      | collection  | user          | roles       |
       | Risky Sound | Burke Abraham | facilitator |
       | Tuna Moving | Burke Abraham | facilitator |
     And the following solution user memberships:
@@ -37,7 +37,7 @@ Feature: Pinning content to the front page
 
   Scenario Outline: Moderators can pin and unpin content to the front page.
     Given <content type> content:
-      | title               | community  | state     | visits | created    |
+      | title               | collection  | state     | visits | created    |
       | Loudest instruments | Risky Sound | validated | 4390   | 2017-03-29 |
       | Handmade oboes      | Risky Sound | validated | 948    | 2017-04-25 |
     And the following "content" entities are pinned to the front page:
@@ -188,7 +188,7 @@ Feature: Pinning content to the front page
 
     Examples:
       | header link | pinned      | unpinned         | label      |
-      | Communities | Risky Sound | Tuna Moving      | collection |
+      | Communities | Risky Sound | Tuna Moving      | Community  |
       | Solutions   | D minor     | Migration routes | Solution   |
 
   Scenario: Front page menu access.
@@ -203,7 +203,7 @@ Feature: Pinning content to the front page
   @javascript
   Scenario: Front page menu re-ordering.
     Given news content:
-      | title                | community  | state     | visits | created    |
+      | title                | collection  | state     | visits | created    |
       | Entry to be disabled | Risky Sound | validated | 0      | 2017-03-29 |
       | Some low visit news  | Risky Sound | validated | 948    | 2017-04-25 |
     And the following "content" entities are pinned to the front page:

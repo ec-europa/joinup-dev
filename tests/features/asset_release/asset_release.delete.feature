@@ -21,7 +21,7 @@ Feature: Asset release "delete" functionality.
       | documentation       | text.pdf                   |
       | owner               | Yet another owner          |
       | contact information | Yet another contact        |
-      | community          | Yet another community     |
+      | collection          | Yet another community     |
       | state               | validated                  |
     And the following release:
       | title               | Yet another release  |

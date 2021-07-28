@@ -174,7 +174,7 @@ Feature: Add comments
     And I should see the button "Post comment"
 
     Examples:
-      | collection        | content type | title                     | state     |
+      | community        | content type | title                     | state     |
       | Shy community    | news         | Scandalous news           | validated |
       | Shy community    | event        | Celebrity gathering       | validated |
       | Shy community    | discussion   | Is gossip bad?            | validated |

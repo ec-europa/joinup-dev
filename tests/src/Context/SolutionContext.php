@@ -113,7 +113,7 @@ class SolutionContext extends RawDrupalContext {
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | title        | description            | state                                             | community      | documentation | closed | creation date    | content creation | featured | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
+   * | title        | description            | state                                             | collection      | documentation | closed | creation date    | content creation | featured | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
    * | Foo solution | This is a foo solution | draft|proposed|validated|needs update|blacklisted | Some community | text.pdf      | yes    | 28-01-1995 12:05 | no               | yes      | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
    * | Bar solution | This is a bar solution | validated                                         |                 | text.pdf      | no     | 28-01-1995 12:06 | yes              | no       | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
    * @codingStandardsIgnoreEnd
@@ -716,7 +716,7 @@ class SolutionContext extends RawDrupalContext {
       'label' => $title,
       'field_is_state' => 'validated',
       'field_is_description' => "English description",
-      'community' => $community->id(),
+      'collection' => $community->id(),
     ];
     $solution = $this->createRdfEntity('solution', $values);
     // Fill with the specific content translation fields and fall-back to

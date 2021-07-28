@@ -73,7 +73,7 @@ Feature: Solution API
       | user              | community               | roles       |
       | Solution API user | This is a klm community | facilitator |
     And I am logged in as "Solution API user"
-    When I visit the "This is a klm community" collection
+    When I visit the "This is a klm community" community
     # And I click on element ".mdl-button__ripple-container"
     Then I should see the link "Add solution"
     And I click "Add solution"

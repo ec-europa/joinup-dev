@@ -9,8 +9,8 @@ Feature: Solution TCA agreement
       | title | Agreed community |
       | state | validated         |
 
-    When I am logged in as a facilitator of the "Agreed community" collection
-    And I go to the "Agreed community" collection
+    When I am logged in as a facilitator of the "Agreed community" community
+    And I go to the "Agreed community" community
     And I click "Add solution" in the plus button menu
 
     Then I should see the heading "Terms of agreement"

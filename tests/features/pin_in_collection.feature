@@ -19,7 +19,7 @@ Feature: Pinning entities inside communities
       | Andy Cross      | andy.cross@example.com      |
       | Xanthia Gilbert | xanthia.gilbert@example.com |
     And the following community user memberships:
-      | community    | user            | roles       |
+      | collection    | user            | roles       |
       | Orange Wrench | Rozanne Minett  | facilitator |
       | Cloudy Beam   | Rozanne Minett  | facilitator |
       | Orange Wrench | Tyron Ingram    |             |
@@ -28,10 +28,10 @@ Feature: Pinning entities inside communities
 
   Scenario Outline: Facilitators can pin and unpin community content inside their communities.
     Given discussion content:
-      | title                       | community    | state     |
+      | title                       | collection    | state     |
       | What is the HEX for orange? | Orange Wrench | validated |
     And <content type> content:
-      | title              | community    | state     | pinned |
+      | title              | collection    | state     | pinned |
       | Very important     | Orange Wrench | validated | yes    |
       | Useful information | Orange Wrench | validated | no     |
 
@@ -74,7 +74,7 @@ Feature: Pinning entities inside communities
     And I should not see the contextual link "Pin" in the "Very important" tile
 
     When I click the contextual link "Unpin" in the "Very important" tile
-    Then I should see the success message "<label> Very important has been unpinned in the community Orange Wrench."
+    Then I should see the success message "<label> Very important has been unpinned in the collection Orange Wrench."
     # Todo: Due to an environment related issue on CPHP this is causing random
     #   failures which cannot be replicated in production. Re-enable this check
     #   once we have updated to a more recent version of Solr. See ISAICP-6245.
@@ -86,7 +86,7 @@ Feature: Pinning entities inside communities
     But I should not see the contextual link "Unpin" in the "Very important" tile
 
     When I click the contextual link "Pin" in the "Useful information" tile
-    Then I should see the success message "<label> Useful information has been pinned in the community Orange Wrench."
+    Then I should see the success message "<label> Useful information has been pinned in the collection Orange Wrench."
     # Todo: Due to an environment related issue on CPHP this is causing random
     #   failures which cannot be replicated in production. Re-enable this check
     #   once we have updated to a more recent version of Solr. See ISAICP-6245.
@@ -111,12 +111,12 @@ Feature: Pinning entities inside communities
 
   Scenario: Facilitators can pin and unpin solutions inside their communities.
     Given discussion content:
-      | title                         | community    | state     | pinned | created    |
+      | title                         | collection    | state     | pinned | created    |
       | Where can I find this wrench? | Orange Wrench | validated | no     | 2017-11-20 |
       | Any thoughts about blue?      | Orange Wrench | validated | yes    | 2017-10-03 |
       | Multi stratus beaming         | Cloudy Beam   | validated | no     | 2017-11-05 |
     And solutions:
-      | title            | community                 | state     | pinned in     | creation date |
+      | title            | collection                 | state     | pinned in     | creation date |
       | Wrench catalogue | Orange Wrench              | validated | Orange Wrench | 2017-10-12    |
       | Orange estimator | Orange Wrench, Cloudy Beam | validated |               | 2017-10-02    |
 
@@ -168,7 +168,7 @@ Feature: Pinning entities inside communities
 
     When I go to the homepage of the "Orange Wrench" community
     When I click the contextual link "Unpin" in the "Wrench catalogue" tile
-    Then I should see the success message "Solution Wrench catalogue has been unpinned in the community Orange Wrench."
+    Then I should see the success message "Solution Wrench catalogue has been unpinned in the collection Orange Wrench."
     And I should see the following tiles in the correct order:
       | Any thoughts about blue?      |
       | Where can I find this wrench? |
@@ -178,7 +178,7 @@ Feature: Pinning entities inside communities
     But I should not see the contextual link "Unpin" in the "Wrench catalogue" tile
 
     When I click the contextual link "Pin" in the "Orange estimator" tile
-    Then I should see the success message "Solution Orange estimator has been pinned in the community Orange Wrench."
+    Then I should see the success message "Solution Orange estimator has been pinned in the collection Orange Wrench."
     And I should see the following tiles in the correct order:
       | Any thoughts about blue?      |
       | Orange estimator              |
@@ -196,7 +196,7 @@ Feature: Pinning entities inside communities
     And I should not see the contextual link "Unpin" in the "Orange estimator" tile
 
     When I click the contextual link "Pin" in the "Orange estimator" tile
-    Then I should see the success message "Solution Orange estimator has been pinned in the community Cloudy Beam."
+    Then I should see the success message "Solution Orange estimator has been pinned in the collection Cloudy Beam."
     And I should see the following tiles in the correct order:
       | Orange estimator      |
       | Multi stratus beaming |
@@ -211,10 +211,10 @@ Feature: Pinning entities inside communities
   @javascript
   Scenario: Last update time of a solution is not affected by (un)pinning.
     Given discussion content:
-      | title                        | community    | state     | pinned | created    |
+      | title                        | collection    | state     | pinned | created    |
       | What kind of wrench is this? | Orange Wrench | validated | no     | 2017-11-20 |
     And solutions:
-      | title                | community    | state     | pinned in     | creation date |
+      | title                | collection    | state     | pinned in     | creation date |
       | Drop forged wrenches | Orange Wrench | validated | Orange Wrench | 2017-10-12    |
     And I am logged in as "Rozanne Minett"
 
@@ -231,7 +231,7 @@ Feature: Pinning entities inside communities
 
     When I go to the homepage of the "Orange Wrench" community
     When I click the contextual link "Unpin" in the "Drop forged wrenches" tile
-    Then I should see the success message "Solution Drop forged wrenches has been unpinned in the community Orange Wrench."
+    Then I should see the success message "Solution Drop forged wrenches has been unpinned in the collection Orange Wrench."
 
     When I visit the search page
     And I select "Last Updated Date" from "Sort by"
@@ -243,7 +243,7 @@ Feature: Pinning entities inside communities
 
     When I go to the homepage of the "Orange Wrench" community
     When I click the contextual link "Pin" in the "Drop forged wrenches" tile
-    Then I should see the success message "Solution Drop forged wrenches has been pinned in the community Orange Wrench."
+    Then I should see the success message "Solution Drop forged wrenches has been pinned in the collection Orange Wrench."
 
     # Check that the "last update" timestamp has not been affected. We can check
     # this in the search page.
@@ -258,7 +258,7 @@ Feature: Pinning entities inside communities
   @javascript
   Scenario Outline: Pinned content tiles should show a visual cue only in their community homepage.
     Given <content type> content:
-      | title         | community    | state     | pinned | shared on   |
+      | title         | collection    | state     | pinned | shared on   |
       | Lantern FAQs  | Orange Wrench | validated | yes    | Cloudy Beam |
       | Lantern terms | Orange Wrench | validated | no     |             |
 
@@ -297,7 +297,7 @@ Feature: Pinning entities inside communities
   @javascript
   Scenario: Pinned solutions tiles should show a visual cue only in their community homepage.
     Given solutions:
-      | title             | community                 | state     | pinned in     |
+      | title             | collection                 | state     | pinned in     |
       | Positive sunshine | Orange Wrench              | validated | Orange Wrench |
       # Note: it is not yet possible to affiliate a solution to multiple communities from the UI.
       | Fast lightning    | Orange Wrench, Cloudy Beam | validated | Cloudy Beam   |

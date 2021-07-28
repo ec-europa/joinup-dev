@@ -206,7 +206,7 @@ Feature: Joining a community as an anonymous user
       | Username         | E-mail           | Password | Local username   |
       | Hepzibah Whitlow | hepzibah@ankh.am | wh1tl0w  | Hepzibah Whitlow |
     And community user membership:
-      | community      | user             | state   |
+      | collection      | user             | state   |
       | Reannual plants | Hepzibah Whitlow | blocked |
 
     Given I am an anonymous user

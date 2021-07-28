@@ -11,8 +11,8 @@ Feature:
 
   @javascript
   Scenario: Paragraph sections are multivalue and sort-able.
-    Given I am logged in as a facilitator of the "Paragraphs community" collection
-    And I go to the "Paragraphs community" collection
+    Given I am logged in as a facilitator of the "Paragraphs community" community
+    And I go to the "Paragraphs community" community
     And I open the plus button menu
     And I click "Add custom page"
     And I fill in "Title" with "Paragraphs page"
@@ -63,7 +63,7 @@ Feature:
     But I should not see the button "Add IFrame"
 
     # Facilitators can add maps.
-    When I am logged in as a facilitator of the "Paragraphs community" collection
+    When I am logged in as a facilitator of the "Paragraphs community" community
     And I go to the edit form of the "Don't Mess with the Zohan" "custom page"
     Then I should see the button "Add Simple paragraph"
     And I should see the button "Add Map"
@@ -102,7 +102,7 @@ Feature:
   @javascript
   Scenario Outline: Add an accordion to the custom page.
     Given I am logged in as a <role>
-    And I go to the "Paragraphs community" collection
+    And I go to the "Paragraphs community" community
     And I open the plus button menu
     And I click "Add custom page"
     And I fill in "Title" with "Paragraphs accordion page"
@@ -145,4 +145,4 @@ Feature:
     Examples:
       | role                                                  |
       | moderator                                             |
-      | facilitator of the "Paragraphs community" collection |
+      | facilitator of the "Paragraphs community" community |

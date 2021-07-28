@@ -60,7 +60,7 @@ class EuplContext extends RawDrupalContext {
 
     Rdf::create([
       'rid' => 'solution',
-      'community' => Eupl::EUPL_COMMUNITY_ID,
+      'collection' => Eupl::EUPL_COMMUNITY_ID,
       'id' => Eupl::JLA_SOLUTION,
       'label' => 'Joinup Licensing Assistant',
       'field_is_state' => 'validated',

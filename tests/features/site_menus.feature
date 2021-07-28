@@ -72,6 +72,6 @@ Feature: Site menus
     And I see the "a" element with the "title" attribute set to "A Solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories." in the "Header menu" region
     And I see the "a" element with the "title" attribute set to "KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Communities and Solutions." in the "Header menu" region
 
-    When I am logged in as a user with the facilitator role of the "Some community" collection
-    And I go to the "Some community" collection
+    When I am logged in as a user with the facilitator role of the "Some community" community
+    And I go to the "Some community" community
     Then I see the "button" element with the "title" attribute set to "Create content" in the "Plus button menu" region
