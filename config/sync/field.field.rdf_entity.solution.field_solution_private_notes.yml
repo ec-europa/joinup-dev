@@ -1,0 +1,34 @@
+uuid: a53426d1-508c-4cb7-83c9-949e53db6055
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_solution_private_notes
+    - rdf_entity.rdfentity.solution
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    content_editor: content_editor
+    basic_html: '0'
+    eira_format: '0'
+    glossary_html: '0'
+    licence: '0'
+    restricted_html: '0'
+    simple_html: '0'
+    simple_text: '0'
+    full_html: '0'
+    plain_text: '0'
+id: rdf_entity.solution.field_solution_private_notes
+field_name: field_solution_private_notes
+entity_type: rdf_entity
+bundle: solution
+label: 'Private notes'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

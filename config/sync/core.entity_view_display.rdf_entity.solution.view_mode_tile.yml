@@ -45,6 +45,8 @@ dependencies:
     - field.field.rdf_entity.solution.field_short_id
     - field.field.rdf_entity.solution.field_site_featured
     - field.field.rdf_entity.solution.field_site_pinned
+    - field.field.rdf_entity.solution.field_solution_private_file
+    - field.field.rdf_entity.solution.field_solution_private_notes
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
     - field.field.rdf_entity.solution.field_topic
@@ -145,6 +147,8 @@ hidden:
   field_short_id: true
   field_site_featured: true
   field_site_pinned: true
+  field_solution_private_file: true
+  field_solution_private_notes: true
   field_spatial_coverage: true
   field_status: true
   field_topic: true

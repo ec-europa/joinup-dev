@@ -1,0 +1,39 @@
+uuid: df2835c4-d51c-4146-b687-ce7d95c7a67b
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - file
+    - rdf_entity
+    - sparql_entity_storage
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      target_id:
+        predicate: 'http://joinup.eu/solution/private_files'
+        format: 'xsd:integer'
+      display:
+        predicate: ''
+        format: no_format
+      description:
+        predicate: ''
+        format: no_format
+  field_permissions:
+    permission_type: public
+id: rdf_entity.field_solution_private_file
+field_name: field_solution_private_file
+entity_type: rdf_entity
+type: file
+settings:
+  display_field: false
+  display_default: false
+  uri_scheme: private
+  target_type: file
+module: file
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

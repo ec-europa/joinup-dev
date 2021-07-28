@@ -1,0 +1,28 @@
+uuid: 60510ed9-b294-40b7-9038-fcb470377852
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_solution_private_file
+    - rdf_entity.rdfentity.solution
+  module:
+    - file
+id: rdf_entity.solution.field_solution_private_file
+field_name: field_solution_private_file
+entity_type: rdf_entity
+bundle: solution
+label: 'Private files'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: 'solution-private-files/[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'txt doc docx ppt pptx xls xlsx pdf zip jpg png jpeg'
+  max_filesize: '50 MB'
+  description_field: false
+  description_field_required: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

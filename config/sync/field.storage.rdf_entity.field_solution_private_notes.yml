@@ -1,0 +1,32 @@
+uuid: ef3213ea-3774-4c9b-97b8-2daeecf7e9b4
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - rdf_entity
+    - sparql_entity_storage
+    - text
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      value:
+        predicate: 'http://joinup.eu/solution/private_notes'
+        format: t_literal
+      format:
+        predicate: 'http://joinup.eu/solution/private_notes#format'
+        format: literal
+  field_permissions:
+    permission_type: public
+id: rdf_entity.field_solution_private_notes
+field_name: field_solution_private_notes
+entity_type: rdf_entity
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
