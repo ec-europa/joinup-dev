@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\contact_form\ContactFormEvents;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\user\Entity\User;
@@ -30,7 +31,12 @@ use Drupal\user\Entity\User;
  *    success message informing the user that their message has been
  *    successfully sent.
  */
-function contact_form_form_message_contact_form_submission_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function contact_form_form_message_contact_form_submission_form_alter(&$form, FormStateInterface $form_state, string $form_id): void {
+  $arguments = [
+    ':faq-url' => Url::fromUri('base:/collection/joinup/faq')->toString(),
+  ];
+  $form['#prefix'] = '<p>' . (string) t('Before you submit your request check our <a href=":faq-url">FAQ</a> section in case it covers your query/issue.', $arguments) . '</p>';
+
   // Fill in the credentials if the user is logged in.
   $user = \Drupal::currentUser();
   if ($user->isAuthenticated()) {
