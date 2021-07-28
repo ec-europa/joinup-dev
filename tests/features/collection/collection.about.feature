@@ -61,7 +61,8 @@ Feature: About page
     And I press "Publish"
     Then I should see the heading "Fitness at work"
     And the page should contain the html text "This community is intended to show ways of being <strong>fit while working</strong>"
-    And I should see the text "Vivamus libero leo blandit a ornare non sollicitudin iaculis…" in the Content region
-    But I should not see the text "malesuada eros auctor eget. Curabitur at" in the Content region
+    And I should see the text "In consequat sapien risus a malesuada…" in the Content region
+    But I should not see the text "Vivamus libero leo blandit a ornare non sollicitudin iaculis" in the Content region
+    And I should not see the text "malesuada eros auctor eget. Curabitur at" in the Content region
     When I click "Read more" in the "Content" region
     Then I should see the heading "About Fitness at work"

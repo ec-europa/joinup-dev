@@ -1,7 +1,7 @@
 @api @terms @group-b
 Feature: Group member permissions table
   In order to get an overview of which actions I can take in a group
-  As a member of a community or solution
+  As a member of a collection or solution
   I need to be able to see which permissions I have
 
   Scenario:
@@ -29,7 +29,7 @@ Feature: Group member permissions table
       | Prehumous morbid bibliomancy  | validated | registered users         | yes        |
       | Posthumous morbid bibliomancy | validated | registered users         | no         |
     And the following community user memberships:
-      | community                                  | user             | roles       |
+      | collection                                  | user             | roles       |
       | Approximate accuracy                        | Horace Worblehat |             |
       | Dust, miscellaneous particles and filaments | Ponder Stibbons  |             |
       | Creative uncertainty                        | Henry Porter     |             |
@@ -71,14 +71,13 @@ Feature: Group member permissions table
     # alert us to update the tables if permissions change.
     Given I am logged in as a member of the "Applied astrology" community
     When I go to the homepage of the "Applied astrology" community
-    # Can not start a discussion.
-    Then I should not see the link "Add discussion"
     # Can not propose or publish content.
+    Then I should not see the link "Add discussion"
     And I should not see the link "Add document"
     And I should not see the link "Add event"
     And I should not see the link "Add news"
     Given event content:
-      | title             | state | community        | author           |
+      | title             | state | collection        | author           |
       | The Poor Scholars | draft | Applied astrology | Mustrum Ridcully |
     When I go to the content page of the type event with the title "The Poor Scholars"
     Then I should get an access denied error
@@ -101,14 +100,13 @@ Feature: Group member permissions table
 
     Given I am logged in as a member of the "Illiberal studies" community
     When I go to the homepage of the "Illiberal studies" community
-    # Can not start a discussion.
-    Then I should not see the link "Add discussion"
     # Can not propose or publish content.
+    Then I should not see the link "Add discussion"
     And I should not see the link "Add document"
     And I should not see the link "Add event"
     And I should not see the link "Add news"
     Given event content:
-      | title    | state | community        | author           |
+      | title    | state | collection        | author           |
       | Rag Week | draft | Illiberal studies | Mustrum Ridcully |
     When I go to the content page of the type event with the title "Rag Week"
     Then I should get an access denied error
@@ -138,10 +136,10 @@ Feature: Group member permissions table
 
     Given I am logged in as "Horace Worblehat"
     When I go to the homepage of the "Approximate accuracy" community
-    # Can start a discussion.
-    And I click "Add discussion"
-    Then I should see the button "Publish"
     # Can propose content but not publish.
+    And I click "Add discussion"
+    Then I should see the button "Propose"
+    But I should not see the button "Publish"
     When I click "Add document"
     Then I should see the button "Propose"
     But I should not see the button "Publish"
@@ -152,7 +150,7 @@ Feature: Group member permissions table
     Then I should see the button "Propose"
     But I should not see the button "Publish"
     Given event content:
-      | title                          | state     | community           | author           |
+      | title                          | state     | collection           | author           |
       | Election of Boy Archchancellor | validated | Approximate accuracy | Horace Worblehat |
       | The Wizards' Excuse Me         | draft     | Approximate accuracy | Mustrum Ridcully |
     When I go to the edit form of the "Election of Boy Archchancellor" event
@@ -181,10 +179,10 @@ Feature: Group member permissions table
 
     Given I am logged in as "Ponder Stibbons"
     When I go to the homepage of the "Dust, miscellaneous particles and filaments" community
-    # Can start a discussion.
+    # Can publish content but not propose.
     And I click "Add discussion"
     Then I should see the button "Publish"
-    # Can publish content but not propose.
+    But I should not see the button "Propose"
     When I click "Add document"
     Then I should see the button "Publish"
     But I should not see the button "Propose"
@@ -195,7 +193,7 @@ Feature: Group member permissions table
     Then I should see the button "Publish"
     But I should not see the button "Propose"
     Given event content:
-      | title                                               | state     | community                                  | author           |
+      | title                                               | state     | collection                                  | author           |
       | Beating the bounds                                  | validated | Dust, miscellaneous particles and filaments | Ponder Stibbons  |
       | Archchancellor Bowell's Remembrance's Bun and Penny | draft     | Dust, miscellaneous particles and filaments | Mustrum Ridcully |
     When I go to the edit form of the "Beating the bounds" event
@@ -230,10 +228,10 @@ Feature: Group member permissions table
 
     Given I am logged in as "Henry Porter"
     When I go to the homepage of the "Creative uncertainty" community
-    # Can start a discussion.
-    And I click "Add discussion"
-    Then I should see the button "Publish"
     # Can propose content but not publish.
+    And I click "Add discussion"
+    Then I should see the button "Propose"
+    But I should not see the button "Publish"
     When I click "Add document"
     Then I should see the button "Propose"
     But I should not see the button "Publish"
@@ -244,7 +242,7 @@ Feature: Group member permissions table
     Then I should see the button "Propose"
     But I should not see the button "Publish"
     Given event content:
-      | title                       | state     | community           | author           |
+      | title                       | state     | collection           | author           |
       | The Convivium               | validated | Creative uncertainty | Henry Porter     |
       | The Hunting of the Megapode | draft     | Creative uncertainty | Mustrum Ridcully |
     When I go to the edit form of the "The Convivium" event
@@ -273,10 +271,10 @@ Feature: Group member permissions table
 
     Given I am logged in as "Rincewind"
     When I go to the homepage of the "Woolly thinking" community
-    # Can start a discussion.
+    # Can publish content but not propose.
     And I click "Add discussion"
     Then I should see the button "Publish"
-    # Can publish content but not propose.
+    But I should not see the button "Propose"
     When I click "Add document"
     Then I should see the button "Publish"
     But I should not see the button "Propose"
@@ -287,7 +285,7 @@ Feature: Group member permissions table
     Then I should see the button "Publish"
     But I should not see the button "Propose"
     Given event content:
-      | title                                     | state     | community      | author           |
+      | title                                     | state     | collection      | author           |
       | Gaudy night                               | validated | Woolly thinking | Rincewind        |
       | Archchancellor Preserved Bigger's Bequest | draft     | Woolly thinking | Mustrum Ridcully |
     When I go to the edit form of the "Gaudy night" event
@@ -316,9 +314,8 @@ Feature: Group member permissions table
 
     Given I am logged in as a member of the "Applied anthropics" solution
     When I go to the homepage of the "Applied anthropics" solution
-    # Can not start a discussion.
-    Then I should not see the link "Add discussion"
     # Can not propose or publish content.
+    Then I should not see the link "Add discussion"
     And I should not see the link "Add document"
     And I should not see the link "Add event"
     And I should not see the link "Add news"
@@ -347,9 +344,8 @@ Feature: Group member permissions table
 
     Given I am logged in as a member of the "Extreme horticulture" solution
     When I go to the homepage of the "Extreme horticulture" solution
-    # Can not start a discussion.
-    Then I should not see the link "Add discussion"
     # Can not propose or publish content.
+    Then I should not see the link "Add discussion"
     And I should not see the link "Add document"
     And I should not see the link "Add event"
     And I should not see the link "Add news"
@@ -384,10 +380,10 @@ Feature: Group member permissions table
 
     Given I am logged in as "Dr. John Hicks"
     When I go to the homepage of the "Prehumous morbid bibliomancy" solution
-    # Can start a discussion.
-    And I click "Add discussion"
-    Then I should see the button "Publish"
     # Can propose content but not publish.
+    And I click "Add discussion"
+    Then I should see the button "Propose"
+    But I should not see the button "Publish"
     When I click "Add document"
     Then I should see the button "Propose"
     But I should not see the button "Publish"
@@ -427,10 +423,10 @@ Feature: Group member permissions table
 
     Given I am logged in as "Hex"
     When I go to the homepage of the "Posthumous morbid bibliomancy" solution
-    # Can start a discussion.
+    # Can publish content but not propose.
     And I click "Add discussion"
     Then I should see the button "Publish"
-    # Can publish content but not propose.
+    But I should not see the button "Propose"
     When I click "Add document"
     Then I should see the button "Publish"
     But I should not see the button "Propose"
@@ -441,7 +437,7 @@ Feature: Group member permissions table
     Then I should see the button "Publish"
     But I should not see the button "Propose"
     Given event content:
-      | title                         | state     | community                    | author           |
+      | title                         | state     | collection                    | author           |
       | May Morning                   | validated | Posthumous morbid bibliomancy | Hex              |
       | A veritable heyhoe-rumbledown | draft     | Posthumous morbid bibliomancy | Mustrum Ridcully |
     When I go to the edit form of the "May Morning" event

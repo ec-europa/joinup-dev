@@ -162,3 +162,39 @@ Feature: "Add custom page" visibility options.
     Then the "linus.jpeg" link in the Content region should not be visible
     And the "Show more" link in the Content region should be visible
     But I should not see the link "Show less" in the Content region
+
+  Scenario Outline: Creating a custom page with a title that already exists.
+    And custom_page content:
+      | title        | body        | <group>       |
+      | Rubber boots | For outside | <first title> |
+
+    # It should not be possible to create a custom page with a duplicate title.
+    Given I am logged in as a facilitator of the "<first title>" <group>
+    When I go to the homepage of the "<first title>" <group>
+    And I click the contextual link "Add new page" in the "Left sidebar" region
+    Then I should see the heading "Add custom page"
+
+    When I fill in the following:
+      | Title | Rubber boots |
+    And I enter "We love mud!" in the "Body" wysiwyg editor
+    And I press "Save"
+    Then I should see the error message "The Custom page title value (Rubber boots) is already taken by Rubber boots."
+
+    # It should still be possible to create a custom page with the existing
+    # title in a different group.
+    Given I am logged in as a facilitator of the "<second title>" <group>
+    When I go to the homepage of the "<second title>" <group>
+    And I click the contextual link "Add new page" in the "Left sidebar" region
+    Then I should see the heading "Add custom page"
+
+    When I fill in the following:
+      | Title | Rubber boots |
+    And I enter "We love mud!" in the "Body" wysiwyg editor
+    And I press "Save"
+    Then I should see the heading "Rubber boots"
+    And I should see the success message "Custom page Rubber boots has been created."
+
+    Examples:
+      | first title | second title    | group      |
+      | Code Camp   | Open Collective | collection |
+      | Parachute   | Skydiving       | solution   |

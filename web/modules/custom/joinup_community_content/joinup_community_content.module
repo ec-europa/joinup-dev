@@ -122,16 +122,8 @@ function joinup_community_content_attachment_file_process($element, FormStateInt
  *    community content.
  */
 function joinup_community_content_workflow_selector(EntityInterface $entity): ?string {
-  $bundles = ['document', 'event', 'news'];
-  if (!$entity instanceof CommunityContentInterface || !in_array($entity->bundle(), $bundles)) {
-    // This does not apply to discussions because of this functional decision:
-    // "By default (this cannot be modified) discussions created into the
-    // community and comments posted on any content items of the community are
-    // post-moderated."
-    // The reasoning behind this is that everyone should always be free to start
-    // a discussion without facilitator intervention.
-    // Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2265
-    throw new \InvalidArgumentException('This function can only be called for community content apart from discussion.');
+  if (!$entity instanceof CommunityContentInterface) {
+    throw new \InvalidArgumentException('This function can only be called for community content.');
   }
 
   try {
@@ -206,7 +198,7 @@ function template_preprocess_advanced_search_pseudo_facet(array &$variables) {
  */
 function joinup_community_content_theme_suggestions_container_alter(array &$suggestions, array $variables) {
   // Add a theme suggestion to the container of the inline facets region of
-  // communities and solutions so that a fake "Advanced search" facet can be
+  // commmunities and solutions so that a fake "Advanced search" facet can be
   // appended to the inline facets.
   if ($variables['theme_hook_original'] === 'container__facet_region__inline_facets') {
     if (in_array(
@@ -302,7 +294,7 @@ function joinup_community_content_form_node_revision_revert_confirm_alter(&$form
 
   // This does not apply to discussions because of this functional decision:
   // "By default (this cannot be modified) discussions created into the
-  // collection and comments posted on any content items of the collection are
+  // community and comments posted on any content items of the community are
   // post-moderated."
   // The reasoning behind this is that everyone should always be free to start a
   // discussion without facilitator intervention.

@@ -7,26 +7,26 @@ Feature: Community content
   Background:
     Given the following communities:
       | title                     | state     |
-      | Turin Egyptian Community | validated |
+      | Turin Egyptian Collection | validated |
     And the following solution:
       | title      | Tomb Of Unknown Restoration |
-      | collection | Turin Egyptian Community   |
+      | collection | Turin Egyptian Collection   |
       | state      | validated                   |
     And discussion content:
       | title                                 | body                                                                    | state     | collection                |
-      | Bigger than Egyptian Museum of Cairo? | <p><a href="#link">Link to the museum</a> web<strong>site</strong>.</p> | validated | Turin Egyptian Community |
+      | Bigger than Egyptian Museum of Cairo? | <p><a href="#link">Link to the museum</a> web<strong>site</strong>.</p> | validated | Turin Egyptian Collection |
     And document content:
       | title           | body                                             | state     | collection                |
-      | Upper Floor Map | <p>A sample <a href="#link">map</a> example.</p> | validated | Turin Egyptian Community |
+      | Upper Floor Map | <p>A sample <a href="#link">map</a> example.</p> | validated | Turin Egyptian Collection |
     And event content:
       | title                                     | state     | collection                |
-      | Opening of the Hellenistic Period Section | validated | Turin Egyptian Community |
+      | Opening of the Hellenistic Period Section | validated | Turin Egyptian Collection |
     And news content:
       | title                          | body                                                           | state     | collection                |
-      | Turin Egyptian Museum Reopened | <p>After <em>more than</em> <a href="#link">two years</a>.</p> | validated | Turin Egyptian Community |
+      | Turin Egyptian Museum Reopened | <p>After <em>more than</em> <a href="#link">two years</a>.</p> | validated | Turin Egyptian Collection |
     And video content:
       | title                                  | state     | collection                |
-      | Watch the mummy conservation technique | validated | Turin Egyptian Community |
+      | Watch the mummy conservation technique | validated | Turin Egyptian Collection |
 
   Scenario: Publishing new solutions should result in counters being properly updated.
     Given owner:
@@ -35,7 +35,7 @@ Feature: Community content
 
     # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-4436
     Given I am logged in as a moderator
-    And I go to the homepage of the "Turin Egyptian community" community
+    And I go to the homepage of the "Turin Egyptian Community" community
 
     # The solution counters do not include the unpublished solutions.
     Then I should see the link "Solution (1)"
@@ -58,7 +58,7 @@ Feature: Community content
     And I press "Publish"
     Then I should see the heading "Solution from draft to validated"
 
-    When I go to the homepage of the "Turin Egyptian community" community
+    When I go to the homepage of the "Turin Egyptian Community" community
     # Since there are 2 solutions, the link moved in first since it is the type of content with most items.
     # When the facet tab is displayed, the text is "@count Solutions", while if it is in the "More" dropdown, it shows
     # as "Solutions (@count)".
@@ -73,7 +73,7 @@ Feature: Community content
     And I press "Save as draft"
     Then I should see the heading "Solution from draft to validated"
 
-    When I go to the homepage of the "Turin Egyptian community" community
+    When I go to the homepage of the "Turin Egyptian Community" community
     Then I see the text "2 Solution" in the "Header" region
     And I should see the link "2 Solutions"
     Then I delete the "Solution from draft to validated" solution
@@ -81,7 +81,7 @@ Feature: Community content
 
   @clearStaticCache
   Scenario: Content type facet labels should show the plural form when multiple results are available.
-    Given I go to the homepage of the "Turin Egyptian community" community
+    Given I go to the homepage of the "Turin Egyptian Community" community
     Then the "Discussion" content tab is displayed
     And the "Document" content tab is displayed
     And the "Event" content tab is displayed
@@ -117,8 +117,8 @@ Feature: Community content
     And I should see the link "Solutions (2)"
     And I should see the link "Videos (2)"
 
-  Scenario: Links and markup should be stripped from tiles abstract.
-    Given I go to the homepage of the "Turin Egyptian community" community
+  Scenario: Links and markup should be stripped from tiles summary.
+    Given I go to the homepage of the "Turin Egyptian Community" community
     # Check the discussion tile.
     Then I should see the "Bigger than Egyptian Museum of Cairo?" tile
     # Check into the HTML so that we assert that actually the HTML has been stripped.

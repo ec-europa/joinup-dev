@@ -79,18 +79,18 @@ Feature: Following discussions
     And the following email should have been sent:
       | recipient_mail | dale@example.com                                                                              |
       | subject        | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
-      | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" community. |
+      | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" community.  |
     # The user 'debater' is also a discussion subscriber but because he's the
     # author of the comment, he will not receive the notification.
     And the following email should not have been sent:
       | recipient_mail | flash@example.com                                                                             |
       | subject        | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
-      | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" community. |
+      | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" community.  |
     # Discussion author is receiving the notifications too.
     And the following email should have been sent:
       | recipient_mail | hans@example.com                                                                              |
       | subject        | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
-      | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" community. |
+      | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" community.  |
 
     # No E-mail notification is sent when the discussion is updated but no
     # relevant fields are changed.
@@ -106,18 +106,18 @@ Feature: Following discussions
     And I fill in "Content" with "The old content was wrong."
     And I press "Update"
     Then the following email should have been sent:
-      | recipient_mail     | dale@example.com                                                                  |
-      | subject            | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body               | The discussion "Rare Butter" was updated in the "Dairy products" community.      |
+      | recipient_mail | dale@example.com                                                                  |
+      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" community.       |
     And the following email should have been sent:
-      | recipient_mail     | flash@example.com                                                                 |
-      | subject            | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body               | The discussion "Rare Butter" was updated in the "Dairy products" community.      |
+      | recipient_mail | flash@example.com                                                                 |
+      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" community.       |
     # The author of the discussion update doesn't receive any notification.
     But the following email should not have been sent:
-      | recipient_mail     | hans@example.com                                                                  |
-      | subject            | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body               | The discussion "Rare Butter" was updated in the "Dairy products" community.      |
+      | recipient_mail | hans@example.com                                                                  |
+      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" community.       |
     # Check that no other mails have been unexpectedly sent.
     Then 2 e-mails should have been sent
 
@@ -132,15 +132,15 @@ Feature: Following discussions
     Then the following email should not have been sent:
       | recipient_mail | dale@example.com                                                                  |
       | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body           | The discussion "Rare Butter" was updated in the "Dairy products" community.      |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" community.       |
     And the following email should not have been sent:
       | recipient_mail | flash@example.com                                                                 |
       | mail_subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | mail_body      | The discussion "Rare Butter" was updated in the "Dairy products" community.      |
+      | mail_body      | The discussion "Rare Butter" was updated in the "Dairy products" community.       |
     And the following email should not have been sent:
-      | recipient_mail | ming@example.com                                                                 |
+      | recipient_mail | ming@example.com                                                                  |
       | mail_subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | mail_body      | The discussion "Rare Butter" was updated in the "Dairy products" community.      |
+      | mail_body      | The discussion "Rare Butter" was updated in the "Dairy products" community.       |
     # The notification that a moderator requests a modification should still be
     # sent to the content author.
     But the following email should have been sent:
@@ -149,32 +149,29 @@ Feature: Following discussions
       | body           | the Moderator, has requested you to modify the discussion - "Rare Butter" |
     And 1 e-mail should have been sent
 
-    # Delete the discussion and check that no notifications are sent. Since the
-    # discussion is not published nobody should be notified.
     Given the mail collector cache is empty
     When I go to the "Rare Butter" discussion
     And I click "Delete" in the "Entity actions" region
     And I press "Delete"
 
-    Then the following email should not have been sent:
+    Then the following email should have been sent:
       | recipient_mail | dale@example.com                                                                                     |
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" community. |
-    And the following email should not have been sent:
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" community.  |
+    And the following email should have been sent:
       | recipient_mail | flash@example.com                                                                                    |
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" community. |
-    And the following email should not have been sent:
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" community.  |
+    And the following email should have been sent:
       | recipient_mail | hans@example.com                                                                                     |
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" community. |
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" community.  |
     And the following email should not have been sent:
       | recipient_mail | ming@example.com                                                                                     |
       | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" community. |
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" community.  |
 
-    # Now try to delete a published discussion. The notifications should be sent
-    # in this case.
+    # Now check the notifications sent for a published discussion.
     Given discussion content:
       | title     | body                                                   | collection     | state     | author          |
       | Rare feta | Made from milk from the exclusive Manx Loaghtan sheep. | Dairy products | validated | Dr. Hans Zarkov |
@@ -191,21 +188,21 @@ Feature: Following discussions
     Then the following email should have been sent:
       | recipient_mail | dale@example.com                                                                                   |
       | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" community. |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" community.  |
     # Discussion author is receiving the notifications too.
     And the following email should have been sent:
       | recipient_mail | hans@example.com                                                                                   |
       | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" community. |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" community.  |
     # The user 'facilitator' is also a discussion subscriber but because she's
     # the person who has deleted the comment, she will not receive the
     # notification.
     But the following email should not have been sent:
       | recipient_mail | ming@example.com                                                                                   |
       | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" community. |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" community.  |
     # Flash Gordon is not subscribed. He should not retrieve the message.
     And the following email should not have been sent:
       | recipient_mail | flash@example.com                                                                                  |
       | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" community. |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" community.  |

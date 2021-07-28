@@ -15,7 +15,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
       | title              | state     | content creation | moderation   |
       | CC post community | validated | members          | <moderation> |
     And the following community user memberships:
-      | collection         | user           | roles       |
+      | collection        | user           | roles       |
       | CC post community | CC owner       | owner       |
       | CC post community | CC facilitator | facilitator |
       | CC post community | CC member      | <roles>     |
@@ -40,11 +40,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                   |
       | subject   | Joinup: Content has been published                                                                                                                                         |
-      | body      | CC Member has published the new discussion - "CC notify create publish" in the community: "CC post community".You can access the new content at the following link: http |
-    And the following email should have been sent:
-      | recipient | Notify moderator                                                                                                                                                           |
-      | subject   | Joinup: Content has been published                                                                                                                                         |
-      | body      | CC Member has published the new discussion - "CC notify create publish" in the community: "CC post community".You can access the new content at the following link: http |
+      | body      | CC Member has published the new discussion - "CC notify create publish" in the community: "CC post community".You can access the new content at the following link: http   |
 
     # Test 'update' operation.
     When all e-mails have been sent
@@ -68,7 +64,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                                                                         |
       | subject   | Joinup: Content has been updated                                                                                                                                                                                  |
-      | body      | the Facilitator, CC Facilitator has requested you to modify the discussion - "CC notify post request changes" in the community: "CC post community", with the following motivation: "Can you do some changes?". |
+      | body      | the Facilitator, CC Facilitator has requested you to modify the discussion - "CC notify post request changes" in the community: "CC post community", with the following motivation: "Can you do some changes?".   |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -81,17 +77,18 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                                                                |
       | subject   | Joinup: Content has been updated                                                                                                                                                                         |
-      | body      | the Facilitator, CC Facilitator has requested you to modify the discussion - "CC notify post report" in the community: "CC post community", with the following motivation: "Your content is reported". |
+      | body      | the Facilitator, CC Facilitator has requested you to modify the discussion - "CC notify post report" in the community: "CC post community", with the following motivation: "Your content is reported".   |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
     And I go to the "CC notify post approve proposed" discussion
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
+    Then 1 e-mail should have been sent
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                               |
       | subject   | Joinup: Content has been updated                                                                                                                                        |
-      | body      | the Facilitator, CC Facilitator has approved your request of publication of the discussion - "CC notify post approve proposed" in the community: "CC post community". |
+      | body      | the Facilitator, CC Facilitator has approved your request of publication of the discussion - "CC notify post approve proposed" in the community: "CC post community".   |
 
     # Test 'delete' operation.
     When all e-mails have been sent
@@ -100,14 +97,15 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"
+    Then 1 e-mail should have been sent
     Then the following email should not have been sent:
       | recipient | CC member                                                                                                                |
       | subject   | Joinup: Content has been deleted                                                                                         |
-      | body      | Facilitator CC Facilitator has deleted the discussion - "CC notify post delete" in the community: "CC post community". |
+      | body      | Facilitator CC Facilitator has deleted the discussion - "CC notify post delete" in the community: "CC post community".   |
     But the following email should have been sent:
       | recipient | CC member                                                                                                          |
-      | subject   | Joinup: The discussion "CC notify post delete" was deleted in the space of "CC post community"                    |
-      | body      | for your information, the discussion "CC notify post delete" was deleted from the "CC post community" community. |
+      | subject   | Joinup: The discussion "CC notify post delete" was deleted in the space of "CC post community"                     |
+      | body      | for your information, the discussion "CC notify post delete" was deleted from the "CC post community" community.   |
 
     Examples:
       | moderation | roles  |

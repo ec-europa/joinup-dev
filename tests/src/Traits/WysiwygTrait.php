@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup\Traits;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Element\TraversableElement;
+use Drupal\editor\Entity\Editor;
 use Drupal\joinup\Exception\WysiwygEditorNotFoundException;
 
 /**
@@ -143,6 +145,44 @@ trait WysiwygTrait {
     }
 
     return reset($wysiwyg_elements);
+  }
+
+  /**
+   * Returns the Editor entity that is associated with the given field label.
+   *
+   * @param string $field
+   *   The label of the field to which the WYSIWYG editor is attached.
+   * @param \Behat\Mink\Element\TraversableElement|null $region
+   *   (optional) The region where the editor is expected to be located.
+   *   Defaults to the entire page.
+   *
+   * @return \Drupal\editor\Entity\Editor
+   *   The Editor entity.
+   *
+   * @throws \Drupal\joinup\Exception\WysiwygEditorNotFoundException
+   *   Thrown when the field label or wysiwyg editor is not found.
+   */
+  protected function getWysiwygEditorEntity(string $field, ?TraversableElement $region = NULL): Editor {
+    if (empty($region)) {
+      $region = $this->getSession()->getPage();
+    }
+
+    // Find the hidden editor select input element.
+    $editor_select_element = $region->find('xpath', '//textarea[@id=//label[text()="' . $field . '"]/@for]/ancestor::*[contains(concat(" ", normalize-space(@class), " "), " form-wrapper ")][position() = 1]//input[@type = "hidden"]');
+    if (!$editor_select_element instanceof NodeElement) {
+      throw new WysiwygEditorNotFoundException("Could not find the '$field' wysiwyg editor.");
+    }
+
+    $editor_id = $editor_select_element->getValue();
+    if (empty($editor_id)) {
+      throw new WysiwygEditorNotFoundException("Could not find the machine name of the '$field' wysiwyg editor.");
+    }
+    $editor = Editor::load($editor_id);
+    if (!$editor instanceof Editor) {
+      throw new WysiwygEditorNotFoundException("Could not load the editor entity for the '$field' wysiwyg editor.");
+    }
+
+    return $editor;
   }
 
 }
