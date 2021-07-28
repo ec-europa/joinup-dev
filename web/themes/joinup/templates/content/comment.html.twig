@@ -86,6 +86,11 @@
       <div class="details__element">
         <div class="value gray">{{ created }}</div>
       </div>
+      {% if permalink_raw %}
+        <div class="details__element">
+          <a class="permalink" href="{{ permalink_raw }}" alt="{{ 'Permalink'|t }}" title="{{ 'Permalink'|t }}"><span class="icon icon--anchor"></span><span class="visually-hidden">{{ 'Permalink'|t }}</span></a>
+        </div>
+      {% endif %}
     </div>
 
     <div class="{{ content_classes|join(' ') }}">

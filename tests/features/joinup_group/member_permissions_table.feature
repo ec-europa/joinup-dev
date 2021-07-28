@@ -71,9 +71,8 @@ Feature: Group member permissions table
     # alert us to update the tables if permissions change.
     Given I am logged in as a member of the "Applied astrology" collection
     When I go to the homepage of the "Applied astrology" collection
-    # Can not start a discussion.
-    Then I should not see the link "Add discussion"
     # Can not propose or publish content.
+    Then I should not see the link "Add discussion"
     And I should not see the link "Add document"
     And I should not see the link "Add event"
     And I should not see the link "Add news"
@@ -101,9 +100,8 @@ Feature: Group member permissions table
 
     Given I am logged in as a member of the "Illiberal studies" collection
     When I go to the homepage of the "Illiberal studies" collection
-    # Can not start a discussion.
-    Then I should not see the link "Add discussion"
     # Can not propose or publish content.
+    Then I should not see the link "Add discussion"
     And I should not see the link "Add document"
     And I should not see the link "Add event"
     And I should not see the link "Add news"
@@ -138,10 +136,10 @@ Feature: Group member permissions table
 
     Given I am logged in as "Horace Worblehat"
     When I go to the homepage of the "Approximate accuracy" collection
-    # Can start a discussion.
-    And I click "Add discussion"
-    Then I should see the button "Publish"
     # Can propose content but not publish.
+    And I click "Add discussion"
+    Then I should see the button "Propose"
+    But I should not see the button "Publish"
     When I click "Add document"
     Then I should see the button "Propose"
     But I should not see the button "Publish"
@@ -181,10 +179,10 @@ Feature: Group member permissions table
 
     Given I am logged in as "Ponder Stibbons"
     When I go to the homepage of the "Dust, miscellaneous particles and filaments" collection
-    # Can start a discussion.
+    # Can publish content but not propose.
     And I click "Add discussion"
     Then I should see the button "Publish"
-    # Can publish content but not propose.
+    But I should not see the button "Propose"
     When I click "Add document"
     Then I should see the button "Publish"
     But I should not see the button "Propose"
@@ -230,10 +228,10 @@ Feature: Group member permissions table
 
     Given I am logged in as "Henry Porter"
     When I go to the homepage of the "Creative uncertainty" collection
-    # Can start a discussion.
-    And I click "Add discussion"
-    Then I should see the button "Publish"
     # Can propose content but not publish.
+    And I click "Add discussion"
+    Then I should see the button "Propose"
+    But I should not see the button "Publish"
     When I click "Add document"
     Then I should see the button "Propose"
     But I should not see the button "Publish"
@@ -273,10 +271,10 @@ Feature: Group member permissions table
 
     Given I am logged in as "Rincewind"
     When I go to the homepage of the "Woolly thinking" collection
-    # Can start a discussion.
+    # Can publish content but not propose.
     And I click "Add discussion"
     Then I should see the button "Publish"
-    # Can publish content but not propose.
+    But I should not see the button "Propose"
     When I click "Add document"
     Then I should see the button "Publish"
     But I should not see the button "Propose"
@@ -316,9 +314,8 @@ Feature: Group member permissions table
 
     Given I am logged in as a member of the "Applied anthropics" solution
     When I go to the homepage of the "Applied anthropics" solution
-    # Can not start a discussion.
-    Then I should not see the link "Add discussion"
     # Can not propose or publish content.
+    Then I should not see the link "Add discussion"
     And I should not see the link "Add document"
     And I should not see the link "Add event"
     And I should not see the link "Add news"
@@ -347,9 +344,8 @@ Feature: Group member permissions table
 
     Given I am logged in as a member of the "Extreme horticulture" solution
     When I go to the homepage of the "Extreme horticulture" solution
-    # Can not start a discussion.
-    Then I should not see the link "Add discussion"
     # Can not propose or publish content.
+    Then I should not see the link "Add discussion"
     And I should not see the link "Add document"
     And I should not see the link "Add event"
     And I should not see the link "Add news"
@@ -384,10 +380,10 @@ Feature: Group member permissions table
 
     Given I am logged in as "Dr. John Hicks"
     When I go to the homepage of the "Prehumous morbid bibliomancy" solution
-    # Can start a discussion.
-    And I click "Add discussion"
-    Then I should see the button "Publish"
     # Can propose content but not publish.
+    And I click "Add discussion"
+    Then I should see the button "Propose"
+    But I should not see the button "Publish"
     When I click "Add document"
     Then I should see the button "Propose"
     But I should not see the button "Publish"
@@ -427,10 +423,10 @@ Feature: Group member permissions table
 
     Given I am logged in as "Hex"
     When I go to the homepage of the "Posthumous morbid bibliomancy" solution
-    # Can start a discussion.
+    # Can publish content but not propose.
     And I click "Add discussion"
     Then I should see the button "Publish"
-    # Can publish content but not propose.
+    But I should not see the button "Propose"
     When I click "Add document"
     Then I should see the button "Publish"
     But I should not see the button "Propose"

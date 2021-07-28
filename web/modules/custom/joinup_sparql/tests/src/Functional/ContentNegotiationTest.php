@@ -22,6 +22,11 @@ class ContentNegotiationTest extends BrowserTestBase {
   use SparqlConnectionTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
    * Formats to be tested.
    *
    * @var string[]
