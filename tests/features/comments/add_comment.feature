@@ -42,6 +42,7 @@ Feature: Add comments
     Then the following fields should be present "user_homepage"
     # Authenticated users can use a rich text editor to enter comments.
     And I should see the "Create comment" wysiwyg editor
+    And the "Image" button should be available in the "Create comment" wysiwyg editor
     When I enter "Mr scandal was doing something weird the other day." in the "Create comment" wysiwyg editor
     And I wait for the spam protection time limit to pass
     And I press "Post comment"
