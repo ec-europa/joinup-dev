@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_community_content\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
+use Drupal\og\OgMembershipInterface;
 use Drupal\Tests\joinup_workflow\ExistingSite\JoinupWorkflowExistingSiteTestBase;
 use Drupal\joinup_group\ContentCreationOptions;
 use Drupal\joinup_group\Entity\GroupInterface;
@@ -24,7 +25,7 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
   use NodeCreationTrait;
 
   /**
-   * A user assigned as an owner to document entities.
+   * The owner of the community content.
    *
    * @var \Drupal\Core\Session\AccountInterface
    */
@@ -85,12 +86,20 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
   protected $workflowAccess;
 
   /**
+   * The access control handler for Node entities.
+   *
+   * @var \Drupal\Core\Entity\EntityAccessControlHandlerInterface
+   */
+  protected $nodeAccessControlHandler;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp(): void {
     parent::setUp();
 
     $this->workflowAccess = $this->container->get('joinup_community_content.community_content_workflow_access');
+    $this->nodeAccessControlHandler = $this->container->get('entity_type.manager')->getAccessControlHandler('node');
     $this->userOwner = $this->createUser();
     $this->userAnonymous = new AnonymousUserSession();
     $this->userAuthenticated = $this->createUser();
@@ -254,9 +263,28 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
             'status' => $this->isPublishedState($content_state),
           ]);
 
-          $expected_own_access = isset($ownership_data['own']) && $ownership_data['own'] === TRUE;
+          // A content author who is an active member of the group can delete
+          // their own content if the workflow allows it.
+          // @see CommunityContentWorkflowAccessControlHandler::entityDeleteAccess()
+          $membership = $this->ogMembershipManager->createMembership($parent, $this->userOwner);
+          $membership->save();
+          // Entity access has a static cache which we must reset manually.
+          $this->nodeAccessControlHandler->resetCache();
           $access = $this->entityAccess->access($content, $operation, $this->userOwner);
-          $this->assertEquals($expected_own_access, $access);
+          $this->assertEquals($ownership_data['own']['member'], $access, $content_state);
+
+          // Check a content author who has been blocked by a facilitator.
+          $membership->setState(OgMembershipInterface::STATE_BLOCKED)->save();
+          $this->nodeAccessControlHandler->resetCache();
+          $access = $this->entityAccess->access($content, $operation, $this->userOwner);
+          $this->assertEquals($ownership_data['own']['blocked'], $access);
+
+          // Check a content author who is no longer a member of the group. They
+          // might have left or been removed by a facilitator.
+          $membership->delete();
+          $this->nodeAccessControlHandler->resetCache();
+          $access = $this->entityAccess->access($content, $operation, $this->userOwner);
+          $this->assertEquals($ownership_data['own']['non-member'], $access);
 
           $allowed_roles = $ownership_data['any'];
           $non_allowed_roles = array_diff($test_roles, $allowed_roles);
@@ -799,7 +827,9 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
    *  'parent bundle' => [
    *    'moderation' => [
    *      'state' => [
-   *        'own' => true|false,
+   *        'own' => [
+   *          'membership status' => true|false,
+   *        ],
    *        'any' => [
    *           'user variable',
    *           'user variable',
@@ -813,6 +843,9 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
    * No parent state needs to be checked as it does not affect the possibility
    * to create document.
    *
+   * The membership status represents the status of the owner within the group
+   * that hosts the content. Can be 'member', 'blocked' or 'non-member'.
+   *
    * @return array
    *   Test cases.
    */
@@ -821,30 +854,54 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
       'collection' => [
         GroupInterface::PRE_MODERATION => [
           'draft' => [
-            'own' => TRUE,
+            'own' => [
+              'member' => TRUE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
             ],
           ],
           'proposed' => [
+            'own' => [
+              'member' => FALSE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
               'userOgFacilitator',
             ],
           ],
           'validated' => [
+            'own' => [
+              'member' => FALSE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
               'userOgFacilitator',
             ],
           ],
           'needs_update' => [
+            'own' => [
+              'member' => FALSE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
               'userOgFacilitator',
             ],
           ],
           'deletion_request' => [
+            'own' => [
+              'member' => FALSE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
               'userOgFacilitator',
@@ -853,27 +910,43 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
         ],
         GroupInterface::POST_MODERATION => [
           'draft' => [
-            'own' => TRUE,
+            'own' => [
+              'member' => TRUE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
             ],
           ],
           'proposed' => [
-            'own' => TRUE,
+            'own' => [
+              'member' => TRUE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
               'userOgFacilitator',
             ],
           ],
           'validated' => [
-            'own' => TRUE,
+            'own' => [
+              'member' => TRUE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
               'userOgFacilitator',
             ],
           ],
           'needs_update' => [
-            'own' => TRUE,
+            'own' => [
+              'member' => TRUE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
               'userOgFacilitator',
@@ -884,30 +957,54 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
       'solution' => [
         GroupInterface::PRE_MODERATION => [
           'draft' => [
-            'own' => TRUE,
+            'own' => [
+              'member' => TRUE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
             ],
           ],
           'proposed' => [
+            'own' => [
+              'member' => FALSE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
               'userOgFacilitator',
             ],
           ],
           'validated' => [
+            'own' => [
+              'member' => FALSE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
               'userOgFacilitator',
             ],
           ],
           'needs_update' => [
+            'own' => [
+              'member' => FALSE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
               'userOgFacilitator',
             ],
           ],
           'deletion_request' => [
+            'own' => [
+              'member' => FALSE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
               'userOgFacilitator',
@@ -916,27 +1013,43 @@ abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSi
         ],
         GroupInterface::POST_MODERATION => [
           'draft' => [
-            'own' => TRUE,
+            'own' => [
+              'member' => TRUE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
             ],
           ],
           'proposed' => [
-            'own' => TRUE,
+            'own' => [
+              'member' => TRUE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
               'userOgFacilitator',
             ],
           ],
           'validated' => [
-            'own' => TRUE,
+            'own' => [
+              'member' => TRUE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
               'userOgFacilitator',
             ],
           ],
           'needs_update' => [
-            'own' => TRUE,
+            'own' => [
+              'member' => TRUE,
+              'blocked' => FALSE,
+              'non-member' => FALSE,
+            ],
             'any' => [
               'userModerator',
               'userOgFacilitator',
