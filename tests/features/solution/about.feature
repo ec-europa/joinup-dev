@@ -37,7 +37,7 @@ Feature: About this solution
       | solution type       | Non-binding Instrument, Service Discovery Service |
       | spatial coverage    | Italy, Egypt                                      |
       | status              | Under development                                 |
-      | community          | Monoclonal Antibody Development                   |
+      | collection          | Monoclonal Antibody Development                   |
 
     # The link to the about page should be visible on the solution homepage.
     When I am not logged in

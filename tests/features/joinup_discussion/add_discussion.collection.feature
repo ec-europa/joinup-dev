@@ -44,7 +44,7 @@ Feature: Discussions added to communities
       | title                  | logo     | banner     | state     |
       | The World of the Waves | logo.png | banner.jpg | validated |
     And the following community user membership:
-      | community             | user      | roles       |
+      | collection             | user      | roles       |
       | The World of the Waves | kesha1988 | facilitator |
     And I am logged in as kesha1988
 

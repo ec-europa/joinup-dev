@@ -51,7 +51,7 @@ Feature: Community membership administration
       | /collection/medical-diagnosis/members                                              |
     And the following email should have been sent:
       | recipient | Turkey Ham                                                                         |
-      | subject   | Joinup: A user has requested to join your community                               |
+      | subject   | Joinup: A user has requested to join your community                                |
       | body      | Donald Duck has requested to join your community "Medical diagnosis" as a member. |
 
   @email
@@ -168,10 +168,10 @@ Feature: Community membership administration
 
     When I press "Confirm"
     Then I should see the following success messages:
-      | success messages                                                                       |
+      | success messages                                                                      |
       | The member Kathie Cumbershot has been deleted from the 'Medical diagnosis' community. |
     And the following email should have been sent:
-      | recipient | Kathie Cumbershot                                                               |
+      | recipient | Kathie Cumbershot                                                              |
       | subject   | Joinup: Your request to join the community Medical diagnosis was rejected      |
       | body      | Lisa Cuddy has rejected your request to join the "Medical diagnosis" community |
 
@@ -402,8 +402,8 @@ Feature: Community membership administration
     And I press "Invite members"
     Then I should see the success message "2 users have been invited to this group."
     And the following email should have been sent:
-      | recipient | dwightone                                                                                                 |
-      | subject   | Invitation from Lisa Cuddy to join community Medical diagnosis.                                          |
+      | recipient | dwightone                                                                                               |
+      | subject   | Invitation from Lisa Cuddy to join community Medical diagnosis.                                         |
       | body      | You have been invited by Lisa Cuddy to join the community Medical diagnosis as a community facilitator. |
 
     # Accept the invitation directly.

@@ -40,6 +40,12 @@ class JoinupInviteContext extends RawDrupalContext {
    * @When I :action the invitation for the :title :bundle :type
    */
   public function acceptInvitation(string $action, string $title, string $bundle, string $type): void {
+
+    // Rename "Collection to Community".
+    if ($bundle == 'community') {
+      $bundle = 'collection';
+    }
+
     if (!in_array($type, ['group', 'content'])) {
       throw new \InvalidArgumentException("Unknown type '$action'. Valid actions are 'group' and 'content'.");
     }
@@ -80,7 +86,7 @@ class JoinupInviteContext extends RawDrupalContext {
       ],
       'collection' => [
         'invitation_bundle' => 'group_membership',
-        'message_template' => InviteToGroupForm::TEMPLATES['community'],
+        'message_template' => InviteToGroupForm::TEMPLATES['collection'],
       ],
       'solution' => [
         'invitation_bundle' => 'group_membership',

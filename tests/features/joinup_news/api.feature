@@ -16,6 +16,6 @@ Feature: News API
       | content creation | facilitators and authors |
       | state            | validated                |
     And news content:
-      | title      | body                                     | community      |
+      | title      | body                                     | collection      |
       | Dummy News | This is some dummy content like foo:bar. | Le Foie Heureux |
     Then I should have a "News" page titled "Dummy News"

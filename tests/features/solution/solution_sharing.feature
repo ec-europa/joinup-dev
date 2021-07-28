@@ -16,7 +16,7 @@ Feature: As a privileged user
       | Community share candidate 1 | logo.png | validated |
       | Community share candidate 2 | logo.png | validated |
     And the following solutions:
-      | title                 | description         | logo     | banner     | state     | community                |
+      | title                 | description         | logo     | banner     | state     | collection                |
       | Solution to be shared | Doesn't affect test | logo.png | banner.jpg | validated | Community share original |
     And the following solution user memberships:
       | solution              | user        | roles       |

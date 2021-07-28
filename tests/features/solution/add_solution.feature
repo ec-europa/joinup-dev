@@ -66,7 +66,7 @@ Feature: "Add solution" visibility options.
       | Ruth Lee      | moderator | Ruth.Lee@test.com      | Ruth       | Lee         |
       | Wendell Silva |           | Wendell.Silva@test.com | Wendell    | Silva       |
     And community user memberships:
-      | community        | user          | roles              |
+      | collection        | user          | roles              |
       | Belgian barista's | Wendell Silva | owner, facilitator |
 
     When all e-mails have been sent
@@ -227,7 +227,7 @@ Feature: "Add solution" visibility options.
     And the following solution:
       | title       | Climate change tracker                            |
       | description | Atlantic salmon arrived after the Little Ice Age. |
-      | community  | Ocean studies                                     |
+      | collection  | Ocean studies                                     |
       | state       | validated                                         |
     And the following owner:
       | name                | type                             |

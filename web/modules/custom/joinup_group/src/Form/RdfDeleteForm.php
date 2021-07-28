@@ -28,7 +28,7 @@ class RdfDeleteForm extends OriginalForm {
       ]);
     }
 
-    return $this->t('The collection %collection cannot be deleted because it contains the following solutions:', [
+    return $this->t('The community %collection cannot be deleted because it contains the following solutions:', [
       '%collection' => $entity->label(),
     ]);
   }

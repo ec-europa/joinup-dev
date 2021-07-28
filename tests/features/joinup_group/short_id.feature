@@ -43,12 +43,12 @@ Feature:
     And I press "Propose"
     And I should see the heading "Structural Solar Traces"
 
-    When I go to the edit form of the "Structural Solar Traces" community
+    When I go to the edit form of the "Structural Solar Traces" collection
     Then the following fields should not be disabled "Short ID"
 
     # Publish the community.
     When I am logged in as a moderator
-    When I go to the edit form of the "Structural Solar Traces" community
+    When I go to the edit form of the "Structural Solar Traces" collection
     And I press "Publish"
     Then I should see the heading "Structural Solar Traces"
 
@@ -59,7 +59,7 @@ Feature:
     # Check that the field is not editable any more for facilitators once the
     # community is published.
     When I am logged in as a facilitator of the "Structural Solar Traces" community
-    When I go to the edit form of the "Structural Solar Traces" community
+    When I go to the edit form of the "Structural Solar Traces" collection
     Then the following fields should be disabled "Short ID"
 
     Then I delete the "Structural Solar Traces" community
@@ -70,7 +70,7 @@ Feature:
       | title              | short ID | state     |
       | Scientific Studies | sst-2020 | validated |
     And solutions:
-      | title                         | short ID | state     | community         |
+      | title                         | short ID | state     | collection         |
       | Who knows what a solution is? | wkwasi   | validated | Scientific Studies |
     And owner:
       | name                 | type    |

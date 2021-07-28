@@ -97,7 +97,7 @@ Feature: Creation of news through the UI.
       | title | Stream of Dreams |
       | state | validated        |
     And news content:
-      | title             | community       | headline      | body      | state     |
+      | title             | collection       | headline      | body      | state     |
       | The Great Opening | Stream of Dreams | Here we go... | It opens! | validated |
 
     Given I am logged in as a moderator

@@ -140,6 +140,12 @@ class JoinupContext extends RawDrupalContext {
    * @see \Drupal\DrupalExtension\Context\DrupalContext::assertAuthenticatedByRole()
    */
   public function assertAuthenticatedByOgRole($roles, $rdf_entity, $rdf_entity_bundle) {
+
+    // Rename "Collection to Community".
+    if ($rdf_entity_bundle == 'community') {
+      $rdf_entity_bundle = 'collection';
+    }
+
     $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bundle);
     if (!$entity) {
       throw new \Exception("No entity found with label $rdf_entity");
@@ -469,6 +475,11 @@ class JoinupContext extends RawDrupalContext {
    * @When I visit the :action form of the :title :bundle
    */
   public function goToEntityForm(string $action, string $title, string $bundle): void {
+    // Rename "Collection to Community".
+    if ($bundle == 'community') {
+      $bundle = 'collection';
+    }
+
     $this->visitEntityForm($action, $title, $bundle);
   }
 

@@ -11,7 +11,7 @@ Feature: "Add document" visibility options.
       | banner | banner.jpg              |
       | state  | validated               |
     And the following solutions:
-      | title               | community              | logo     | banner     | state     |
+      | title               | collection              | logo     | banner     | state     |
       | Seventh Name        | Collective Seventh Name | logo.png | banner.jpg | validated |
       | The Obsessed Stream | Collective Seventh Name | logo.png | banner.jpg | validated |
 
@@ -42,7 +42,7 @@ Feature: "Add document" visibility options.
       | banner | banner.jpg                     |
       | state  | validated                      |
     And the following solutions:
-      | title               | community                     | logo     | banner     | state     |
+      | title               | collection                     | logo     | banner     | state     |
       | Winter of Beginning | Collective Winter of Beginning | logo.png | banner.jpg | validated |
     And I am logged in as a facilitator of the "Winter of Beginning" solution
 

@@ -11,6 +11,7 @@ use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\Og;
@@ -67,7 +68,7 @@ class LeaveGroupConfirmForm extends ConfirmFormBase {
    */
   public function getQuestion(): TranslatableMarkup {
     return $this->t('Leave :group', [
-      ':group' => $this->group->bundle(),
+      ':group' => $this->group instanceof CommunityInterface ? 'community' : $this->group->bundle(),
     ]);
   }
 
@@ -77,7 +78,7 @@ class LeaveGroupConfirmForm extends ConfirmFormBase {
   public function getDescription(): TranslatableMarkup {
     return $this->t("Are you sure you want to leave the %label :type?<br />By leaving the :type you will be no longer able to publish content in it or receive notifications from it.", [
       '%label' => $this->group->getName(),
-      ':type' => $this->group->bundle(),
+      ':type' => $this->group instanceof CommunityInterface ? 'community' : $this->group->bundle(),
     ]);
   }
 
@@ -101,7 +102,7 @@ class LeaveGroupConfirmForm extends ConfirmFormBase {
 
     if ($this->group->isSoleGroupOwner((int) $this->currentUser()->id())) {
       $form['description']['#markup'] = $this->t('You are owner of this :type. Before you leave this :type, you should transfer the ownership to another member.', [
-        ':type' => $this->group->bundle(),
+        ':type' => $this->group instanceof CommunityInterface ? 'community' : $this->group->bundle(),
       ]);
       $form['actions']['submit']['#access'] = FALSE;
     }

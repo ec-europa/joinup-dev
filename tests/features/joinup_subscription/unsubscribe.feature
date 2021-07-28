@@ -76,7 +76,7 @@ Feature: Unsubscribe from communities
     Then I should see the following success messages:
       | success messages                                            |
       | You will no longer receive notifications for the following: |
-      | Communities                                                 |
+      | Collections                                                 |
       | Kenny's house                                               |
       | Koon's hideout                                              |
       | Southpark elementary                                        |

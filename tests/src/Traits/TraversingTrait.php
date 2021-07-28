@@ -333,7 +333,7 @@ trait TraversingTrait {
   protected static function getFacetIdFromAlias(string $alias): string {
     $mappings = [
       'community type' => 'community_type',
-      'community topic' => 'community_topic',
+      'community topic' => 'collection_topic',
       'community/solution' => 'group',
       'topic' => 'topic',
       'solution topic' => 'solution_topic',

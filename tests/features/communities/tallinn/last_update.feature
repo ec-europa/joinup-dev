@@ -10,7 +10,7 @@ Feature:
 
   Scenario: Tallinn reports that have never been updated should not show last update date.
     Given tallinn_report content:
-      | title          | community                      | created    | changed    |
+      | title          | collection                      | created    | changed    |
       | Romania Report | Tallinn Ministerial Declaration | 02-07-2018 | 02-07-2018 |
     When I am logged in as "karma"
     And I go to the "Tallinn Ministerial Declaration" community
@@ -20,7 +20,7 @@ Feature:
 
   Scenario: Tallinn reports that have been updated should show last update date.
     Given tallinn_report content:
-      | title          | community                      | created    | changed    |
+      | title          | collection                      | created    | changed    |
       | Romania Report | Tallinn Ministerial Declaration | 01-07-2018 | 02-07-2018 |
     When I am logged in as "karma"
     And I go to the "Tallinn Ministerial Declaration" community

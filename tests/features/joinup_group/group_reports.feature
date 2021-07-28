@@ -20,11 +20,11 @@ Feature:
       | Muscle tissue formation  | validated |
       | Cultured meat technology | validated |
     And solutions:
-      | title                         | state     | community               |
+      | title                         | state     | collection               |
       | Aligning myotubes             | validated | Muscle tissue formation  |
       | Increasing global meat demand | validated | Cultured meat technology |
     And community user memberships:
-      | community                  | user   | roles       |
+      | collection                  | user   | roles       |
       | Muscle tissue formation     | keiko  | facilitator |
       | Muscle tissue formation     | juro   |             |
       | Cultured meat technology    | daichi | facilitator |

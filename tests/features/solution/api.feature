@@ -13,7 +13,7 @@ Feature: Solution API
       | state            | validated                |
     And the following solution:
       | title            | My first solution                    |
-      | community       | Solution API foo                     |
+      | collection       | Solution API foo                     |
       | description      | A sample solution                    |
       | logo             | logo.png                             |
       | banner           | banner.jpg                           |
@@ -35,7 +35,7 @@ Feature: Solution API
       | state            | validated                |
     And the following solution:
       | title            | My first solution mandatory |
-      | community       | Solution API bar            |
+      | collection       | Solution API bar            |
       | description      | Another sample solution     |
       | content creation | registered users            |
       | state            | validated                   |
@@ -49,7 +49,7 @@ Feature: Solution API
       | title       | Inflatable rooster             |
       | description | For placing near a white house |
       | state       | validated                      |
-      | community  | Inflatable mascots             |
+      | collection  | Inflatable mascots             |
     Then I should have 1 solution
     And the "Inflatable rooster" solution should be affiliated with the "Inflatable mascots" community
 
@@ -70,7 +70,7 @@ Feature: Solution API
       | content creation | facilitators and authors |
       | state            | validated                |
     And the following community user memberships:
-      | user              | community               | roles       |
+      | user              | collection               | roles       |
       | Solution API user | This is a klm community | facilitator |
     And I am logged in as "Solution API user"
     When I visit the "This is a klm community" community

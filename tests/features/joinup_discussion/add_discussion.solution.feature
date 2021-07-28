@@ -11,7 +11,7 @@ Feature: "Add discussion" visibility options.
       | banner | banner.jpg              |
       | state  | validated               |
     And the following solutions:
-      | title              | community              | logo     | banner     | state     |
+      | title              | collection              | logo     | banner     | state     |
       | Eager Sliver       | Collective Eager Sliver | logo.png | banner.jpg | validated |
       | The Silent Bridges | Collective Eager Sliver | logo.png | banner.jpg | validated |
 
@@ -42,7 +42,7 @@ Feature: "Add discussion" visibility options.
       | banner | banner.jpg                     |
       | state  | validated                      |
     And the following solutions:
-      | title               | community                     | logo     | banner     | state     |
+      | title               | collection                     | logo     | banner     | state     |
       | Emerald in the Luck | Collective Emerald in the Luck | logo.png | banner.jpg | validated |
     And I am logged in as a facilitator of the "Emerald in the Luck" solution
 

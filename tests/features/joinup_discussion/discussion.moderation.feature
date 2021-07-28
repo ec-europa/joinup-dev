@@ -17,7 +17,7 @@ Feature: Discussion moderation
       | content creation | members                                  |
       | state            | validated                                |
     And the following community user membership:
-      | community     | user            | roles       |
+      | collection     | user            | roles       |
       | DIY community | Gabe Rogers     | member      |
       | DIY community | Brigham Salvage | facilitator |
 
@@ -102,11 +102,11 @@ Feature: Discussion moderation
       | content creation | members                                        |
       | state            | validated                                      |
     And the following community user membership:
-      | community                   | user          | roles       |
+      | collection                   | user          | roles       |
       | Valentine's day survival kit | Vince Rome    | member      |
       | Valentine's day survival kit | Lance Rustici | facilitator |
     And discussion content:
-      | title                        | content                    | author     | state     | community                   |
+      | title                        | content                    | author     | state     | collection                   |
       | What's the best escape gift? | Buying chocolate is risky. | Vince Rome | validated | Valentine's day survival kit |
     And comments:
       | message                   | author        | mail                 | name       | parent                       |

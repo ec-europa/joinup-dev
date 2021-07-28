@@ -1795,8 +1795,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function generateMedia(): void {
     $media_type_ids = [
-      'community_banner',
-      'community_logo',
+      'collection_banner',
+      'collection_logo',
       'solution_banner',
       'solution_logo',
       'event_logo',

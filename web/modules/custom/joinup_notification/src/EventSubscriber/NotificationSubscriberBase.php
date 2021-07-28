@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Url;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
@@ -306,7 +307,7 @@ abstract class NotificationSubscriberBase {
     $arguments = [];
 
     $arguments['@entity:title'] = $entity->label();
-    $arguments['@entity:bundle'] = $entity->bundle();
+    $arguments['@entity:bundle'] = $entity instanceof CommunityInterface ? 'community' : $entity->bundle();
     $arguments['@entity:url'] = $entity->toUrl('canonical')->setAbsolute()->toString();
     $arguments['@user:my_subscriptions'] = Url::fromRoute('joinup_subscription.my_subscriptions')->setAbsolute()->toString();
 

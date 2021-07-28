@@ -383,7 +383,7 @@ class CommunityContext extends RawDrupalContext {
    * @param int $number
    *   The expected number of communities.
    *
-   * @Then I should have :number community(s)
+   * @Then I should have :number communities
    */
   public function assertCommunityCount(int $number): void {
     $this->assertRdfEntityCount($number, 'collection');
@@ -558,7 +558,7 @@ class CommunityContext extends RawDrupalContext {
    * following state buttons should be available for the user on the
    * community'.
    *
-   * @Then for the following collection, the corresponding user should have the corresponding (available )state buttons:
+   * @Then for the following community, the corresponding user should have the corresponding (available )state buttons:
    */
   public function verifyStateButtons(TableNode $check_table): void {
     foreach ($check_table->getColumnsHash() as $values) {

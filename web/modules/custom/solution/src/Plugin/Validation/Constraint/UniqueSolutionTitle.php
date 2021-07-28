@@ -21,6 +21,6 @@ class UniqueSolutionTitle extends Constraint {
    *
    * @var string
    */
-  public $message = 'A solution titled %value already exists in this collection. Please choose a different title.';
+  public $message = 'A solution titled %value already exists in this community. Please choose a different title.';
 
 }

@@ -107,7 +107,7 @@ Feature: As a site moderator I am able to import RDF files.
       | Spain - Center for Technology Transfer execution stopped with errors in Joinup compliance validation step. Please review the following errors: |
     And I should see the heading "Errors executing Spain - Center for Technology Transfer"
     And I should see the following lines of text:
-      | A solution titled Solution 1 already exists in this collection.                        |
+      | A solution titled Solution 1 already exists in this community.                         |
       | The referenced entity (rdf_entity: http://example.com/owner/invalid) does not exist.   |
       | The referenced entity (rdf_entity: http://example.com/contact/invalid) does not exist. |
       | This value should not be null.                                                         |
@@ -167,7 +167,7 @@ Feature: As a site moderator I am able to import RDF files.
       | Pipeline                                 | Last executed |
       | Danish Public Sector Interoperability    | Never         |
       | EU Schemantic Interoperability Catalogue | Never         |
-      | Joinup community                        | Never         |
+      | Joinup community                         | Never         |
       | Slovenian Interoperability Portal - NIO  | Never         |
       | Spain - Center for Technology Transfer   | Never         |
 

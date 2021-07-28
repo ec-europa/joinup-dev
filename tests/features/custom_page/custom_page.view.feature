@@ -10,7 +10,7 @@ Feature:
       | Drafty things   | draft     |
       | Validated tools | validated |
     And custom_page content:
-      | title        | body         | community      | logo     |
+      | title        | body         | collection      | logo     |
       | About means  | Sample text. | Drafty things   | logo.png |
       | About places | Sample text. | Validated tools | logo.png |
 

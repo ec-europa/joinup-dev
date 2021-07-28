@@ -19,11 +19,11 @@ Feature:
       | Gilfoyle |           |
       | Jared    | moderator |
     And the following community user membership:
-      | community                      | user     | roles       |
+      | collection                      | user     | roles       |
       | Tallinn Ministerial Declaration | Monica   |             |
       | Tallinn Ministerial Declaration | Gilfoyle | facilitator |
     And tallinn_report content:
-      | title | community                      |
+      | title | collection                      |
       | Malta | Tallinn Ministerial Declaration |
 
     Given I am an anonymous user

@@ -133,7 +133,7 @@ class SubscribeToCommunityForm extends FormBase {
 
     $intro_message = $is_pending ?
       $this->t('When your membership is approved you will be able to publish content in it.') :
-      $this->t('You have joined the collection and you are now able to publish content in it.');
+      $this->t('You have joined the community and you are now able to publish content in it.');
 
     $form['intro'] = [
       '#type' => 'html_tag',

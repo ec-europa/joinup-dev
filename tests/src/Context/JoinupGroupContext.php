@@ -169,6 +169,12 @@ class JoinupGroupContext extends RawDrupalContext {
    * @Then the :label :type should have :number :membership_state member(s)
    */
   public function assertMemberCount(string $label, string $type, int $number, string $membership_state): void {
+
+    // Rename "Collection to Community".
+    if ($type == 'community') {
+      $type = 'collection';
+    }
+
     $states = [
       OgMembershipInterface::STATE_ACTIVE,
       OgMembershipInterface::STATE_PENDING,

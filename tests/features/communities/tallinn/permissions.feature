@@ -16,12 +16,12 @@ Feature:
       | sherlock  |           |
       | watson    |           |
     And the following community user memberships:
-      | community                      | user      | roles       |
+      | collection                      | user      | roles       |
       | Tallinn Ministerial Declaration | vasile    |             |
       | Tallinn Ministerial Declaration | dominique |             |
       | Tallinn Ministerial Declaration | sherlock  | facilitator |
     And tallinn_report content:
-      | title          | author    | community                      |
+      | title          | author    | collection                      |
       | Romania Report | gheorghe  | Tallinn Ministerial Declaration |
       | France Report  | dominique | Tallinn Ministerial Declaration |
 

@@ -34,7 +34,7 @@ Feature: News moderation.
       | Justice League | no         | validated | members          |
       | Legion of Doom | yes        | validated | members          |
     And the following community user memberships:
-      | community     | user          | roles       |
+      | collection     | user          | roles       |
       | Justice League | Superman      | owner       |
       | Justice League | Hawkgirl      | facilitator |
       | Justice League | Eagle         | member      |
@@ -44,7 +44,7 @@ Feature: News moderation.
       | Legion of Doom | Mirror Master | member      |
       | Legion of Doom | Cheetah       | member      |
     And "news" content:
-      | title                         | headline                                    | body                                                                    | state            | author        | community     |
+      | title                         | headline                                    | body                                                                    | state            | author        | collection     |
       | Creating Justice League       | 6 Members to start with                     | TBD                                                                     | draft            | Eagle         | Justice League |
       | Hawkgirl is a spy             | Her race lies in another part of the galaxy | Hawkgirl has been giving information about Earth to Thanagarians.       | proposed         | Eagle         | Justice League |
       | Hawkgirl helped Green Lantern | Hawkgirl went against Thanagarians?         | It was all of a sudden when Hawkgirl turned her back to her own people. | validated        | Eagle         | Justice League |

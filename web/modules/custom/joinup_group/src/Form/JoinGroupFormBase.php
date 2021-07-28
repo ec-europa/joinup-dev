@@ -126,7 +126,7 @@ abstract class JoinGroupFormBase extends FormBase {
    */
   public function getJoinSubmitLabel(): TranslatableMarkup {
     return $this->t('Join this :type', [
-      ':type' => $this->group->bundle(),
+      ':type' => $this->group instanceof CommunityInterface ? 'community' : $this->group->bundle(),
     ]);
   }
 
@@ -138,7 +138,7 @@ abstract class JoinGroupFormBase extends FormBase {
    */
   public function getLeaveSubmitLabel(): TranslatableMarkup {
     return $this->t('Leave this :type', [
-      ':type' => $this->group->bundle(),
+      ':type' => $this->group instanceof CommunityInterface ? 'community' : $this->group->bundle(),
     ]);
   }
 

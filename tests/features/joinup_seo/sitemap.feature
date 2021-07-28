@@ -16,7 +16,7 @@ Feature:
       | Sitemap community draft     | draft     |
       | Sitemap community validated | validated |
     And the following solutions:
-      | title                      | description                 | owner         | contact information | community                   | state     |
+      | title                      | description                 | owner         | contact information | collection                   | state     |
       | Sitemap solution draft     | Sitemap keywords everywhere | Sitemap owner | Sitemap secretariat | Sitemap community validated | draft     |
       | Sitemap solution validated | Sitemap keywords everywhere | Sitemap owner | Sitemap secretariat | Sitemap community validated | validated |
     And the following releases:
@@ -30,7 +30,7 @@ Feature:
       | title           | description |
       | Sitemap licence | Not allowed |
     And "custom_page" content:
-      | title                                           | community                   | body | logo     | langcode |
+      | title                                           | collection                   | body | logo     | langcode |
       | Sitemap custom page of draft                    | Sitemap community draft     | N/A  | logo.png | en       |
       | Sitemap custom page of validated                | Sitemap community validated | N/A  | logo.png | en       |
       | Sitemap custom page of validated but in Spanish | Sitemap community validated | N/A  | logo.png | es       |

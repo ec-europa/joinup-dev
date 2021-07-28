@@ -64,7 +64,7 @@ Feature: Community moderation
     # If the expected states are not empty, then I see the "Edit" link.
     # When I click the "Edit" link
     # Then the state field should have only the given states available.
-    Then for the following collection, the corresponding user should have the corresponding available state buttons:
+    Then for the following community, the corresponding user should have the corresponding available state buttons:
       | collection          | user            | buttons                                           |
 
       # The owner is also a facilitator so the only UATable part of the owner is that they have the ability to

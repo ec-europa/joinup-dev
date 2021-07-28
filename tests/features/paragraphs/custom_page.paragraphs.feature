@@ -49,10 +49,10 @@ Feature:
       | Username |
       | Zohan    |
     And the following community user membership:
-      | community            | user  |
+      | collection            | user  |
       | Paragraphs community | Zohan |
     And custom_page content:
-      | title                     | body        | community            | author |
+      | title                     | body        | collection           | author |
       | Don't Mess with the Zohan | Wanna mess? | Paragraphs community | Zohan  |
 
     # Normal members cannot add maps.

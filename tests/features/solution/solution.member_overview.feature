@@ -32,7 +32,7 @@ Feature: Solution membership overview
       | title       | Growing zone       |
       | description | Soil and gravel    |
       | state       | validated          |
-      | community  | Growing community |
+      | collection  | Growing community |
     And the following solution user memberships:
       | solution     | user                | roles       | state   |
       | Growing zone | Ariadna Astrauskas  | owner       |         |

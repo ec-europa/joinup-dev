@@ -15,10 +15,10 @@ Feature: "Discussion page" editing.
       | title        | description        | state     |
       | <community> | Sample description | validated |
     And the following community user memberships:
-      | community   | user   | roles  |
+      | collection   | user   | roles  |
       | <community> | <user> | <role> |
     And "discussion" content:
-      | title        | author | community   | state     |
+      | title        | author | collection   | state     |
       | <discussion> | <user> | <community> | validated |
     When I am logged in as "<user>"
     And I go to the "<discussion>" discussion

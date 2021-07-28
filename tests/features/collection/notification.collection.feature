@@ -33,7 +33,7 @@ Feature: Notification test for the community transitions.
       | NC to delete           | validated        | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
       | NC to delete by mod    | validated        | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
     And the following solutions:
-      | title        | communities                          | logo     | banner     | state     |
+      | title        | collections                          | logo     | banner     | state     |
       # Has only one affiliate.
       | NC Solution1 | NC to archive                        | logo.png | banner.jpg | validated |
       # Has more than one affiliate.

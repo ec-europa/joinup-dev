@@ -143,6 +143,11 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @Given (the following ):bundle content subscriptions:
    */
   public function subscribeToGroupContent(TableNode $subscription_table, string $bundle): void {
+    // Rename "Collection to Community".
+    if ($bundle == 'community') {
+      $bundle = 'collection';
+    }
+
     foreach ($subscription_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values[$bundle], $bundle);
       $user = $this->getUserByName($values['user']);

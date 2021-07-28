@@ -131,7 +131,7 @@ Feature: Solutions Overview
 
     # Add new solution as a moderator to directly publish it.
     And I am logged in as a moderator
-    When I go to the add solution form of the "Pikachu, I choose you" community
+    When I go to the add solution form of the "Pikachu, I choose you" collection
     Then I should see the heading "Add Solution"
     When I fill in the following:
       | Title                 | Colonies in Earth                                                      |
@@ -179,7 +179,7 @@ Feature: Solutions Overview
       | title                 | state     |
       | Insane Wooden Crystal | validated |
     And the following solutions:
-      | title                        | community            | state     | featured | author          |
+      | title                        | collection            | state     | featured | author          |
       | Subdivision Morbid           | Insane Wooden Crystal | validated | yes      | Marjorie Parker |
       | Long Tungsten                | Insane Wooden Crystal | validated | no       | Ryker Brandon   |
       | Hungry Disappointed Tungsten | Insane Wooden Crystal | validated | yes      | Marjorie Parker |

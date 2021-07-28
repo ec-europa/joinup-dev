@@ -65,16 +65,16 @@ Feature:
       | title           | description | owner                  | contact information      | state     |
       | Tile community | Meh...      | Some fancy named owner | Some fancy named contact | validated |
     And news content:
-      | title     | headline  | body   | community      | state     |
+      | title     | headline  | body   | collection     | state     |
       | Tile news | Tile news | Meh... | Tile community | validated |
     And event content:
-      | title      | short title | body   | agenda        | location   | organisation        | scope         | community      | state     |
+      | title      | short title | body   | agenda        | location   | organisation        | scope         | collection      | state     |
       | Tile event | Tile event  | Meh... | Event agenda. | Some place | European Commission | International | Tile community | validated |
     And document content:
-      | title         | document type | short title | body   | community      | state     |
+      | title         | document type | short title | body   | collection      | state     |
       | Tile document | Document      | Meh...      | Meh... | Tile community | validated |
     And discussion content:
-      | title           | body   | community      | state     |
+      | title           | body   | collection      | state     |
       | Tile discussion | Meh... | Tile community | validated |
 
     When I am logged in as a moderator

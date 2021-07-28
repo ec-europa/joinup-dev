@@ -21,7 +21,7 @@ Feature: Solution editing.
     # In UAT this can be done by creating the community through the UI
     # with the related user.
     And the following community user memberships:
-      | community         | user         | roles       |
+      | collection         | user         | roles       |
       | Community example | Yancy Burton | facilitator |
     And solution:
       | title               | Another solution  |

@@ -13,7 +13,7 @@ Feature:
       | moderation       | <moderation>       |
       | content creation | <content creation> |
       | state            | validated          |
-      | community       | Author community  |
+      | collection       | Author community  |
 
     When I am logged in as an "author" of the "Author solution" solution
     And I go to the "Author solution" solution

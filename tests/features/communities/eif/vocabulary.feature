@@ -36,7 +36,7 @@ Feature:
     And solution:
       | title         | Some EIF solution |
       | state         | validated         |
-      | community    | EIF Toolbox       |
+      | collection    | EIF Toolbox       |
       | eif reference | Recommendation 1  |
       | eif category  | Common services   |
 
@@ -55,7 +55,7 @@ Feature:
       | title | EIF Toolbox |
       | state | validated   |
     And solutions:
-      | title    | state     | topic      | community  | eif reference                      |
+      | title    | state     | topic      | collection  | eif reference                      |
       | Balker   | validated |            | EIF Toolbox | Recommendation 1, Recommendation 2 |
       | Corridor | validated |            | EIF Toolbox | Recommendation 1                   |
       | Lager    | validated | Demography | EIF Toolbox |                                    |

@@ -7,7 +7,7 @@ _core:
 name: Community
 rid: collection
 description: 'Communities are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community.'
-label_singular: collection
-label_plural: collections
+label_singular: community
+label_plural: communities
 label_count:
   no_count_capitalize: !!binary Q29sbGVjdGlvbgNDb2xsZWN0aW9ucw==

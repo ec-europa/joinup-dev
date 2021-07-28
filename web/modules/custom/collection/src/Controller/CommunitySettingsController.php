@@ -14,7 +14,7 @@ use Drupal\og\OgAccessInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Controller class for collection settings.
+ * Controller class for community settings.
  */
 class CommunitySettingsController extends ControllerBase {
 
@@ -65,7 +65,7 @@ class CommunitySettingsController extends ControllerBase {
    *   The content as a render array.
    */
   public function title(CommunityInterface $rdf_entity): MarkupInterface {
-    return $this->t('@collection collection settings', [
+    return $this->t('@collection community settings', [
       '@collection' => $rdf_entity->label(),
     ]);
   }

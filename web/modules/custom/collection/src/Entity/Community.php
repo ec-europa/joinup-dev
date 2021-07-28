@@ -156,7 +156,7 @@ class Community extends Rdf implements CommunityInterface {
     ];
     return $membership->getState() === OgMembershipInterface::STATE_ACTIVE ?
       $this->t('You are now a member of %group.', $parameters) :
-      $this->t('Your membership to the %group collection is under approval.', $parameters);
+      $this->t('Your membership to the %group community is under approval.', $parameters);
   }
 
   /**

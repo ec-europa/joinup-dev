@@ -9,16 +9,16 @@ Feature: Display of reports for the Tallinn initiative.
       | Username     |
       | Jayda Ingham |
     And the following community user memberships:
-      | community                      | user         | roles       |
+      | collection                      | user         | roles       |
       | Tallinn Ministerial Declaration | Jayda Ingham | facilitator |
     Given news content:
-      | title           | community                      | state     |
+      | title           | collection                      | state     |
       | Results are out | Tallinn Ministerial Declaration | validated |
     And document content:
-      | title                                  | community                      | state     |
+      | title                                  | collection                      | state     |
       | Ministerial Declaration on eGovernment | Tallinn Ministerial Declaration | validated |
     And tallinn_report content:
-      | title        | author       | community                      |
+      | title        | author       | collection                      |
       | Italy report | Jayda Ingham | Tallinn Ministerial Declaration |
 
     # All content except reports should be shown in the community overview.

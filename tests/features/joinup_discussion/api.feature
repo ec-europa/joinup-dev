@@ -9,7 +9,7 @@ Feature: Discussion API
       | title | Parallel programming |
       | state | validated            |
     Given discussion content:
-      | title                | content                  | community           | state     |
+      | title                | content                  | collection           | state     |
       | Fearless concurrency | Let us have a discussion | Parallel programming | validated |
     Then I should have a "Discussion" page titled "Fearless concurrency"
 
