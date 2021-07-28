@@ -44,7 +44,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
   /**
    * {@inheritdoc}
    */
-  protected function initialize(NotificationEvent $event) {
+  protected function initialize(NotificationEvent $event): void {
     /** @var \Drupal\og\Entity\OgMembership $membership */
     $this->membership = $event->getEntity();
     $this->entity = $this->membership->getGroup();
@@ -58,7 +58,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event.
    */
-  public function onCreate(NotificationEvent $event) {
+  public function onCreate(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnCreate()) {
       return;
@@ -86,7 +86,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
    * @return bool
    *   Whether the conditions apply.
    */
-  protected function appliesOnCreate() {
+  protected function appliesOnCreate(): bool {
     if ($this->operation !== 'create') {
       return FALSE;
     }
@@ -106,7 +106,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event.
    */
-  public function onUpdate(NotificationEvent $event) {
+  public function onUpdate(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnUpdate()) {
       return;
@@ -131,7 +131,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
    * @return bool
    *   Whether the conditions apply.
    */
-  protected function appliesOnUpdate() {
+  protected function appliesOnUpdate(): bool {
     if ($this->operation !== 'update') {
       return FALSE;
     }
@@ -156,7 +156,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event.
    */
-  public function onDelete(NotificationEvent $event) {
+  public function onDelete(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnDelete()) {
       return;
@@ -177,7 +177,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
    * @return bool
    *   Whether the conditions apply.
    */
-  protected function appliesOnDelete() {
+  protected function appliesOnDelete(): bool {
     if ($this->operation !== 'delete') {
       return FALSE;
     }
@@ -200,7 +200,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
   /**
    * {@inheritdoc}
    */
-  protected function getConfigurationName() {
+  protected function getConfigurationName(): string {
     return '';
   }
 
@@ -235,7 +235,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
    * @return string
    *   The url.
    */
-  protected function getMembersUrl() {
+  protected function getMembersUrl(): string {
     $entity_type_id = $this->entity->getEntityTypeId();
     $route_name = 'entity.rdf_entity.member_overview';
     $route_parameters = [
