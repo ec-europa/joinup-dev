@@ -1,0 +1,6 @@
+view solution private fields:
+  title: 'View private fields'
+  description: 'Allow users to view the solution private fields.'
+edit solution private fields:
+  title: 'Edit solution private fields'
+  description: 'Allows users to edit the solution private fields.'

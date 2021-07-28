@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\solution\EventSubscriber;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\og\Event\PermissionEventInterface as OgPermissionEventInterface;
 use Drupal\og\GroupContentOperationPermission;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -21,7 +22,10 @@ class SolutionOgSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-      OgPermissionEventInterface::EVENT_NAME => [['provideOgGroupPermissions']],
+      OgPermissionEventInterface::EVENT_NAME => [
+        ['provideOgGroupPermissions'],
+        ['provideEasmeGroupPermissions']
+      ],
     ];
   }
 
@@ -48,6 +52,27 @@ class SolutionOgSubscriber implements EventSubscriberInterface {
         'bundle' => 'solution',
       ]),
     ]);
+  }
+
+  /**
+   * Declare OG permissions for collections.
+   *
+   * @param \Drupal\og\Event\PermissionEventInterface $event
+   *   The OG permission event.
+   */
+  public function provideDefaultOgPermissions(OgPermissionEventInterface $event) {
+    if ($event->getGroupEntityTypeId() === 'rdf_entity' && in_array($event->getGroupBundleId(), JoinupGroupHelper::GROUP_BUNDLES)) {
+      $event->setPermissions([
+        new GroupPermission([
+          'name' => 'view solution private fields',
+          'title' => $this->t('Allow users to view the solution private fields'),
+        ]),
+        new GroupPermission([
+          'name' => 'edit solution private fields',
+          'title' => $this->t('Allow users to edit the solution private fields'),
+        ]),
+      ]);
+    }
   }
 
 }

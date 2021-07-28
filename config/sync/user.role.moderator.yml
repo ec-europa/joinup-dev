@@ -62,6 +62,7 @@ permissions:
   - 'edit own field_is_eif_recommendation'
   - 'edit owner rdf entity'
   - 'edit short id after publication'
+  - 'edit solution private fields'
   - 'execute dpsi pipeline'
   - 'execute eu_sic pipeline'
   - 'execute joinup_collection pipeline'
@@ -90,4 +91,5 @@ permissions:
   - 'view own field_is_eif_recommendation'
   - 'view rdf entity overview'
   - 'view rdf_entity draft graph'
+  - 'view solution private fields'
   - 'view unpublished rdf entity'

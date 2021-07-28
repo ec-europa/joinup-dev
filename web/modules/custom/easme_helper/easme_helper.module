@@ -5,6 +5,7 @@
  * Contains easme_helper.module.
  */
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\easme_helper\Controller\SubRequestController;
 use Drupal\Core\Form\FormStateInterface;
@@ -138,5 +139,61 @@ function easme_helper_user_status_list_simple() {
     $result[$key] = $item['label'];
   }
   return $result;
+}
+
+/**
+ * Implements hook_entity_field_access_alter().
+ *
+ * Handles the private notes and the private files of solutions.
+ * Private notes and files are editable by the owner of the solution but
+ * viewable by the owner of the solution and the owner of the challenge. It can
+ * act as a form of trusted data field.
+ *
+ * Moderators will have access to both fields anyway.
+ */
+function easme_helper_entity_field_access_alter(array &$grants, array $context) {
+  // If the user has the 'access private ' permission then
+  $fields = ['field_solution_private_notes', 'field_solution_private_file'];
+
+  /** @var \Drupal\Core\Field\FieldDefinitionInterface $field_definition */
+  $field_definition = $context['field_definition'];
+  if (!in_array($field_definition->getName(), $fields)) {
+    return;
+  }
+
+  // Handle first the global users. If the user has the 'view/edit solution
+  // private fields permission (defined in easme_helper.permissions.yml), then
+  // return and do not disallow anything.
+  /** @var \Drupal\Core\Session\AccountProxyInterface $user */
+  $user = $context['account'];
+  $permission = $context['operation'] . ' solution private fields';
+  if ($user->hasPermission($permission)) {
+    // Return allows all access. If the user does NOT have global access, he is
+    // still allowed to go forward and check for group permissions.
+    return;
+  }
+
+  // If a solution is new, do not do anything. The user that creates the
+  // solution will be the owner.
+  /** @var \Drupal\solution\Entity\SolutionInterface $solution */
+  $solution = $context['items']->getParent()->getEntity();
+  if ($solution->isNew()) {
+    return;
+  }
+
+  $og_access = \Drupal::getContainer()->get('og.access');
+  // OG needs to explicitly allow in order to grant access.
+  if ($og_access->userAccess($solution, $permission, $context['account'])->isAllowed()) {
+    return;
+  }
+
+  $collection = $solution->getGroup();
+  if ($og_access->userAccess($collection, $permission, $context['account'])->isAllowed()) {
+    return;
+  }
+
+  $grants[':default'] = AccessResult::forbidden()
+    ->inheritCacheability($grants[':default'])
+    ->addCacheableDependency($context['items']->getEntity());
 }
 
