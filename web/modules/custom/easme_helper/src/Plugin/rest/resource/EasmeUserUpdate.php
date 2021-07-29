@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\easme_helper\Plugin\rest\resource;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\easme_helper\Controller\SubRequestController;
-use Drupal\rest\ResourceResponse;
 use Drupal\rest\Plugin\ResourceBase;
+use Drupal\rest\ResourceResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -25,9 +25,9 @@ use Symfony\Component\HttpFoundation\Request;
 class EasmeUserUpdate extends ResourceBase {
 
   /**
-   * jsonapi.base_path config property.
+   * Jsonapi.base_path config property.
    *
-   * @var $jsonApiBasePath
+   * @var string
    */
   protected $jsonApiBasePath;
 
@@ -43,15 +43,16 @@ class EasmeUserUpdate extends ResourceBase {
   /**
    * Responds to POST requests.
    *
-   * @param Symfony\Component\HttpFoundation\Request $request
-   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The request object.
    * @param string $uuid
+   *   The UUID.
    *
-   * @return Drupal\rest\ResourceResponse
+   * @return \Drupal\rest\ResourceResponse
+   *   The response object.
    */
   public function post(Request $request, string $uuid) {
     // Process the JSON:API sub-request.
-
     // Prepare the request.
     $httpKernel = \Drupal::service('http_kernel.basic');
     $requestStack = \Drupal::requestStack();

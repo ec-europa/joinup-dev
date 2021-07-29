@@ -14,6 +14,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
@@ -27,7 +28,7 @@ use Drupal\message\MessageInterface;
 use Drupal\node\NodeInterface;
 use Drupal\oe_newsroom_newsletter\Form\NewsletterSubscribeForm;
 use Drupal\user\Entity\User;
-use Drupal\Core\Site\Settings;
+
 /**
  * Gives meta properties about forms based on routes.
  *
@@ -417,7 +418,7 @@ function joinup_theme_preprocess_page(&$variables) {
   // Set title back in the global page variables.
   $variables['title'] = $title;
 
-  $variables['url_subpath'] =Settings::get('url_subpath', '/') ;
+  $variables['url_subpath'] = Settings::get('url_subpath', '/');
   // Move title on batch pages from header to content.
   if ($route_name == 'system.batch_page.html') {
     unset($variables['page']['header']['#type']);

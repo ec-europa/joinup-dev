@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\easme_helper\Controller;
 
 use Drupal\Core\Config\ConfigFactory;
-use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Routing\RedirectResponse;
 
 /**
  * Controller routines for general routes.
@@ -17,19 +17,19 @@ class GeneralController extends ControllerBase {
   /**
    * The easme_settings configuration object.
    *
-   * @var \Drupal\Core\Config\ImmutableConfig;
+   * @var \Drupal\Core\Config\ImmutableConfig
    */
-  protected $easme_config;
+  protected $easmeConfig;
 
   /**
-   * Class constructor.
+   * Constructs an instance of the GeneralController class.
    *
    * @param \Drupal\Core\Config\ConfigFactory $config_factory
    *   An instance of ConfigFactoryInterface.
    */
   public function __construct(ConfigFactory $config_factory) {
     $this->configFactory = $config_factory;
-    $this->easme_config = $this->configFactory->get('easme_helper.settings');
+    $this->easmeConfig = $this->configFactory->get('easme_helper.settings');
   }
 
   /**
@@ -48,9 +48,9 @@ class GeneralController extends ControllerBase {
    *   Returns a redirect to the defined page.
    */
   public function redirectFromCommunitySite() {
-    $message = t("Thank you. Your profile will be updated shortly.");
-    \Drupal::messenger()->addMessage($message);
-    return $this->redirect($this->easme_config->get('urls.redirect_from_community_site'));
+    $message = $this->t("Thank you. Your profile will be updated shortly.");
+    $this->messenger()->addMessage($message);
+    return $this->redirect($this->easmeConfig->get('urls.redirect_from_community_site'));
   }
 
   /**
@@ -60,7 +60,7 @@ class GeneralController extends ControllerBase {
    *   Returns a redirect to the Community site contact page.
    */
   public function contactPage() {
-    return new TrustedRedirectResponse($this->easme_config->get('urls.community_site') . '/contact?back_to=challenge');
+    return new TrustedRedirectResponse($this->easmeConfig->get('urls.community_site') . '/contact?back_to=challenge');
   }
 
 }

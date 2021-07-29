@@ -24,7 +24,7 @@ class SolutionOgSubscriber implements EventSubscriberInterface {
     return [
       OgPermissionEventInterface::EVENT_NAME => [
         ['provideOgGroupPermissions'],
-        ['provideEasmeGroupPermissions']
+        ['provideEasmeGroupPermissions'],
       ],
     ];
   }

@@ -364,10 +364,14 @@ class SolutionContext extends RawDrupalContext {
       if (!empty($values[$field_name])) {
         foreach ($values[$field_name] as &$filename) {
           if (empty($file_data['property'])) {
-            $filename = [$this->createFile($filename, NULL, $file_data['wrapper'])->id()];
+            $filename = [
+              $this->createFile($filename, NULL, $file_data['wrapper'])->id(),
+            ];
           }
           else {
-            $filename = [$file_data['property'] => $this->createFile($filename, NULL, $file_data['wrapper'])->id()];
+            $filename = [
+              $file_data['property'] => $this->createFile($filename, NULL, $file_data['wrapper'])->id(),
+            ];
           }
         }
       }

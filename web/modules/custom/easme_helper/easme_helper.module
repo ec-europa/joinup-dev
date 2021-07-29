@@ -5,10 +5,11 @@
  * Contains easme_helper.module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\easme_helper\Controller\SubRequestController;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
  * Implements hook_help().
@@ -152,7 +153,7 @@ function easme_helper_user_status_list_simple() {
  * Moderators will have access to both fields anyway.
  */
 function easme_helper_entity_field_access_alter(array &$grants, array $context) {
-  // If the user has the 'access private ' permission then
+  // If the user has the 'access private ' permission then.
   $fields = ['field_solution_private_notes', 'field_solution_private_file'];
 
   /** @var \Drupal\Core\Field\FieldDefinitionInterface $field_definition */
@@ -168,8 +169,8 @@ function easme_helper_entity_field_access_alter(array &$grants, array $context) 
   $user = $context['account'];
   $permission = $context['operation'] . ' solution private fields';
   if ($user->hasPermission($permission)) {
-    // Return allows all access. If the user does NOT have global access, he is
-    // still allowed to go forward and check for group permissions.
+    // Return allows all access. If the user does NOT have global access, they
+    // are still allowed to go forward and check for group permissions.
     return;
   }
 

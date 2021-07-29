@@ -5,6 +5,8 @@
  * Builds placeholder replacement tokens for EASME related data.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Render\BubbleableMetadata;
 
 /**

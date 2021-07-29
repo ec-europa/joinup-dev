@@ -1,30 +1,33 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\easme_helper\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
- * Class SubRequestController.
- *
- * @package Drupal\easme_helper\Controller
+ * SubRequestController controller.
  */
 class SubRequestController extends ControllerBase implements ContainerInjectionInterface {
 
   /**
    * Symfony\Component\HttpKernel\HttpKernelInterface definition.
    *
-   * @var Symfony\Component\HttpKernel\HttpKernelInterface
+   * @var \Symfony\Component\HttpKernel\HttpKernelInterface
+   *   The HTTP Kernel service.
    */
   protected $httpKernel;
 
   /**
+   * The \Symfony\Component\HttpFoundation\RequestStack definition.
+   *
    * @var \Symfony\Component\HttpFoundation\RequestStack
+   *   The \Symfony\Component\HttpFoundation\RequestStack definition.
    */
   protected $requestStack;
 
@@ -55,8 +58,8 @@ class SubRequestController extends ControllerBase implements ContainerInjectionI
    *
    * @throws \Exception
    */
-  public function subRequest($path, $method = 'GET', array $parameters = [], $content = NULL, $headers = []) {
-    $sub_request = Request::create($path, $method, $parameters, $cookies = [], $files = [], $server = [], $content);
+  public function subRequest($path, $method = 'GET', array $parameters = [], $content = NULL, array $headers = []) {
+    $sub_request = Request::create($path, $method, $parameters, [], [], [], $content);
 
     // Set headers if any.
     if (!empty($headers)) {
@@ -66,9 +69,7 @@ class SubRequestController extends ControllerBase implements ContainerInjectionI
     }
 
     $sub_request->setSession($this->requestStack->getCurrentRequest()->getSession());
-
     $subResponse = $this->httpKernel->handle($sub_request, HttpKernelInterface::SUB_REQUEST, FALSE);
-
     return $subResponse->getContent();
   }
 

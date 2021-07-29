@@ -12,8 +12,6 @@ use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
-use Drupal\taxonomy\Entity\Term;
-use Drupal\taxonomy\TermInterface;
 
 /**
  * Behat step definitions for testing owners.
@@ -55,7 +53,6 @@ class OwnerContext extends RawDrupalContext {
    */
   public function givenOwner(TableNode $owners_table) {
     foreach ($owners_table->getHash() as $row) {
-
 
       $values = [
         'field_owner_name' => !empty($row['name']) ? $row['name'] : $this->getRandom()->name(8, TRUE),
