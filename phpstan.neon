@@ -7,12 +7,14 @@ parameters:
             # calling the \Drupal methods is not applicable in Behat test code.
             message: '#\\Drupal calls should be avoided in classes, use dependency injection instead#'
             path: tests/src/*
-    excludes_analyse:
+    excludePaths:
         # For some reasons, ContinuousPHP reports:
         # > Class Drupal\Sniffs\NamingConventions\ValidFunctionNameSniff not
         # > found and could not be autoloaded.
         # TODO: Investigate and re-add the PHPCS sniff file to static analysis.
         - src/CodingStandards/Sniffs/NamingConventions/ValidUpdateNameSniff.php
+    scanFiles:
+        - web/modules/contrib/og/src/OgMembershipInterface.php
 includes:
     - vendor/mglaman/phpstan-drupal/extension.neon
     - vendor/phpstan/phpstan-deprecation-rules/rules.neon

@@ -59,7 +59,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
   /**
    * {@inheritdoc}
    */
-  protected function initialize(NotificationEvent $event) {
+  protected function initialize(NotificationEvent $event): void {
     parent::initialize($event);
     if ($this->entity->bundle() !== 'asset_distribution') {
       return;
@@ -76,7 +76,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event.
    */
-  public function onUpdate(NotificationEvent $event) {
+  public function onUpdate(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnUpdate()) {
       return;
@@ -101,7 +101,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
    * @return bool
    *   Whether the conditions apply.
    */
-  protected function appliesOnUpdate() {
+  protected function appliesOnUpdate(): bool {
     if (!$this->appliesOnReleases()) {
       return FALSE;
     }
@@ -121,7 +121,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event.
    */
-  public function onDelete(NotificationEvent $event) {
+  public function onDelete(NotificationEvent $event): void {
     $this->initialize($event);
     if (!$this->appliesOnDelete()) {
       return;
@@ -146,7 +146,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
    * @return bool
    *   Whether the conditions apply.
    */
-  protected function appliesOnDelete() {
+  protected function appliesOnDelete(): bool {
     if (!$this->appliesOnReleases()) {
       return FALSE;
     }
@@ -164,7 +164,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
    * @return bool
    *   Whether the event applies.
    */
-  protected function appliesOnReleases() {
+  protected function appliesOnReleases(): bool {
     if ($this->entity->getEntityTypeId() !== 'rdf_entity') {
       return FALSE;
     }
@@ -179,7 +179,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
   /**
    * {@inheritdoc}
    */
-  protected function getConfigurationName() {
+  protected function getConfigurationName(): string {
     return '';
   }
 
@@ -244,7 +244,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
    *
    * @see ::getUsersMessages()
    */
-  protected function getUsersAndSend(array $user_data) {
+  protected function getUsersAndSend(array $user_data): void {
     $user_data = $this->getUsersMessages($user_data);
     $this->sendUserDataMessages($user_data);
   }
@@ -255,7 +255,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
    * @return string
    *   The current state.
    */
-  protected function getReleaseState() {
+  protected function getReleaseState(): string {
     return $this->entity->get('field_is_state')->first()->value;
   }
 
