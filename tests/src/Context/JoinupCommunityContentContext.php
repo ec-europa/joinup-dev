@@ -547,42 +547,28 @@ class JoinupCommunityContentContext extends RawDrupalContext {
       $actual_data = array_shift($articles);
       $type = $expected_data['type'];
 
-      // Check title text.
-      $actual_title = $actual_data->find('css', 'h2')->getText();
-      Assert::assertEquals($expected_data['title'], $actual_title, sprintf('Expected title "%s" for %s in the "Explore" section but instead found "%s".', $expected_data['title'], $type, $actual_title));
-
       if (in_array($type, ['collection', 'solution'])) {
-        $rdf_entity = self::getEntityByLabel('rdf_entity', $actual_title);
-        $xpath = '//h2/a[@href = "' . $rdf_entity->toUrl()->toString() . '"]';
-
-        // Check the body text.
-        $actual_body = $actual_data->find('css', '.field--type-text-long')->getText();
-
-        // Check date.
-        $actual_date = $actual_data->find('css', '.field--type-created')->getText();
-
+        $entity = self::getEntityByLabel('rdf_entity', $expected_data['title']);
       }
       else {
-        $node = self::getNodeByTitle($actual_title);
-        $xpath = '//h2/a[@href = "' . $node->toUrl()->toString() . '"]';
-
-        // Check the body text.
-        $actual_body = $actual_data->find('css', '.field--name-body')->getText();
-
-        // Check date.
-        $actual_date = $actual_data->find('css', '.field--name-published-at')->getText();
+        $entity = self::getNodeByTitle($expected_data['title']);
       }
 
       // Check that title links to the canonical page of the
       // news, event, solution and collection.
-      Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('%s "%s" does not link to the canonical page.', $type, $actual_title));
+      $xpath = '//h2/a[@href = "' . $entity->toUrl()->toString() . '" and contains(., "' . $expected_data['title'] . '")]';
+      Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('%s "%s" does not have the correct title which links to the canonical page.', $type, $expected_data['title']));
 
       // Check the body/description text.
-      Assert::assertEquals($expected_data['description'], $actual_body, sprintf('The body text for the %s "%s" in the "Explore" section does not contain the expected text.', $type, $actual_title));
+      $xpath = '//*[text() = "' . $expected_data['description'] . '"]';
+      Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('The body text for the %s "%s" in the "Explore" section does not contain the expected text.', $type, $expected_data['title']));
 
       // Check date.
-      Assert::assertEquals(date("m/d/y", strtotime($expected_data['date'])), $actual_date, sprintf('The date for the %s "%s" in the "Explore" section does not contain the expected format.', $type, $actual_title));
-
+      // @todo We should use our standard date format dd/mm/yyyy instead of this
+      //   weird format.
+      $expected_date = date("m/d/y", strtotime($expected_data['date']));
+      $xpath = '//*[text() = "' . $expected_date . '"]';
+      Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('The date for the %s "%s" in the "Explore" section does not contain the expected format.', $type, $expected_data['title']));
     }
   }
 
