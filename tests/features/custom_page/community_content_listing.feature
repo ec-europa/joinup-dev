@@ -59,6 +59,10 @@ Feature:
       | Title | Latest content                        |
       | Body  | Shows all content for this collection |
     And I press "Add Content listing"
+    And I fill in "Query presets" with:
+        """
+        entity_bundle|event,news|IN
+        """
     Then I should see the text "Related content from the community will be displayed below the one that you are publishing."
     And I should see the text "Display content shared from other communities."
     And I should see the text "Note: the content shown is dynamic, filtered live each time users will visualise the page. As a result, new content might be shown and old content can be altered or deleted."
@@ -138,6 +142,10 @@ Feature:
     Given I press "List additional actions"
     And I press "Add Content listing"
     And I wait for AJAX to finish
+    And I fill in "Query presets" with:
+        """
+        entity_bundle|discussion,event,news|IN
+        """
     And I press "Save"
     Then I should see the heading "Chosen content"
     And I should see the following tiles in the correct order:
@@ -375,6 +383,10 @@ Feature:
       | Title | All content     |
       | Body  | Show EVERYTHING |
     And I press "Add Content listing"
+    And I fill in "Query presets" with:
+        """
+        entity_bundle|discussion,event,news|IN
+        """
     And I check "Global search"
     And I press "Save"
     Then I should see the heading "All content"
