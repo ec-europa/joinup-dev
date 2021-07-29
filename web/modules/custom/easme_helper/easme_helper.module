@@ -196,4 +196,3 @@ function easme_helper_entity_field_access_alter(array &$grants, array $context) 
     ->inheritCacheability($grants[':default'])
     ->addCacheableDependency($context['items']->getEntity());
 }
-
