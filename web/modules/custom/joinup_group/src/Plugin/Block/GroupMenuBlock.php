@@ -19,7 +19,7 @@ use Drupal\og_menu\Plugin\Block\OgMenuBlock;
  *   admin_label = @Translation("Group menu"),
  *   category = @Translation("Group"),
  *   deriver = "Drupal\og_menu\Plugin\Derivative\OgMenuBlock",
- *   context = {
+ *   context_definitions = {
  *     "og" = @ContextDefinition("entity", label = @Translation("Group")),
  *   },
  * )
