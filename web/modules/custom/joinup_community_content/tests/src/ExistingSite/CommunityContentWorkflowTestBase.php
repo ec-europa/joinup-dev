@@ -5,13 +5,13 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_community_content\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
-use Drupal\og\OgMembershipInterface;
 use Drupal\Tests\joinup_workflow\ExistingSite\JoinupWorkflowExistingSiteTestBase;
 use Drupal\joinup_group\ContentCreationOptions;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
 use weitzman\DrupalTestTraits\Entity\NodeCreationTrait;
 
