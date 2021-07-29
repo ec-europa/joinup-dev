@@ -24,6 +24,7 @@ Feature: Add comments
       | Comment moderator | comment.moderator@example.com | moderator | Comment    | Moderator   |
       | Layonel Sarok     | layonel.sarok@example.com     |           | Layonel    | Sarok       |
       | Korma Salya       | korma.salya@example.com       |           | Korma      | Salya       |
+      | Salma Coster      | salma.coster@example.com      |           | Salma      | Coster      |
     And the following collection user memberships:
       | collection        | user          | roles                      |
       | Gossip collection | Layonel Sarok | administrator, facilitator |
@@ -33,8 +34,8 @@ Feature: Add comments
       | Gossip girl solution | Layonel Sarok | administrator, facilitator |
       | Gossip girl solution | Korma Salya   | facilitator                |
     And <content type> content:
-      | title   | body                                                | <parent>       | state   |
-      | <title> | How could this ever happen? Moral panic on its way! | <parent title> | <state> |
+      | title   | body                                                | <parent>       | state   | author       |
+      | <title> | How could this ever happen? Moral panic on its way! | <parent title> | <state> | Salma Coster |
     Given I am logged in as "Miss tell tales"
     And all e-mails have been sent
     When I go to the content page of the type "<content type>" with the title "<title>"
@@ -42,6 +43,7 @@ Feature: Add comments
     Then the following fields should be present "user_homepage"
     # Authenticated users can use a rich text editor to enter comments.
     And I should see the "Create comment" wysiwyg editor
+    And the "Image" button should be available in the "Create comment" wysiwyg editor
     When I enter "Mr scandal was doing something weird the other day." in the "Create comment" wysiwyg editor
     And I wait for the spam protection time limit to pass
     And I press "Post comment"
@@ -67,13 +69,38 @@ Feature: Add comments
       | Miss Tales posted a comment in <parent> "<parent title>".                               |
       | To view the comment click                                                               |
       | If you think this action is not clear or not due, please contact Joinup Support at http |
+    # Owner receives an email.
+    And the email sent to "Salma Coster" with subject "Joinup: A new comment has been created." contains the following lines of text:
+      | text                                                                                    |
+      | Miss Tales posted a comment in <parent> "<parent title>".                               |
+      | To view the comment click                                                               |
+      | If you think this action is not clear or not due, please contact Joinup Support at http |
 
     # Verify the anchored link works properly.
     When I am logged in as "Comment moderator"
     And I click the comment link from the last email sent to "Comment moderator"
     Then I should see the heading "<title>"
     And I should see the text "Mr scandal was doing something weird the other day."
-    And the page should point to the anchor from the URL
+
+    When I am logged in as "Salma Coster"
+    And I click the comment link from the last email sent to "Salma Coster"
+    And all e-mails have been sent
+    And I click "Reply"
+    And I should see the "Create comment" wysiwyg editor
+    When I enter "I am replying in user's comment." in the "Create comment" wysiwyg editor
+    And I wait for the spam protection time limit to pass
+    And I press "Post comment"
+    # Parent comment owner receives an email.
+    And the email sent to "Miss tell tales" with subject "Joinup: A new comment has been created." contains the following lines of text:
+      | text                                                                                    |
+      | Salma Coster posted a comment in <parent> "<parent title>".                             |
+      | To view the comment click                                                               |
+      | If you think this action is not clear or not due, please contact Joinup Support at http |
+    # The owner of the content does not receive a notification due to being the actor.
+    And the following email should not have been sent:
+      | recipient | Salma Coster                            |
+      | subject   | Joinup: A new comment has been created. |
+      | body      | Salma Coster posted a comment in        |
 
     Examples:
       | content type | title               | state     | parent     | parent title         |
@@ -85,7 +112,6 @@ Feature: Add comments
       | news         | Scandalous news     | validated | solution   | Gossip girl solution |
 
   Scenario Outline: Posting comments.
-
     Given <content type> content:
       | title   | body                                                | collection        | state   |
       | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <state> |

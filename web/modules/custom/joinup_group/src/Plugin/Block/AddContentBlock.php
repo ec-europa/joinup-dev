@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @Block(
  *   id = "add_content_block",
  *   admin_label = @Translation("Add content"),
- *   context = {
+ *   context_definitions = {
  *     "og" = @ContextDefinition("entity", label = @Translation("Organic group"))
  *   },
  * )
