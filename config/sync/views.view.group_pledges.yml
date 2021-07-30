@@ -155,7 +155,20 @@ display:
       title: Pledges
       header: {  }
       footer: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 'No pledges available yet.'
+            format: content_editor
+          plugin_id: text
       relationships: {  }
       arguments:
         og_audience_target_id:
@@ -213,6 +226,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
+      block_description: 'Group pledges'
     cache_metadata:
       max-age: -1
       contexts:
