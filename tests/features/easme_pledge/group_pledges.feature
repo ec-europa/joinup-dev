@@ -37,13 +37,14 @@ Feature: Group overview of pledges.
       | Pledge 1 |
 
     And I should see the text "Monetary" in the "Pledge 1" tile
-    And I should see the text "Owner 1" in the "Pledge 1" tile
+    # Anonymous users do not have access to view the owner of the pledge.
+    And I should not see the text "Owner 1" in the "Pledge 1" tile
     And I should see the text "Loan" in the "Pledge 2" tile
-    And I should see the text "Owner 2" in the "Pledge 2" tile
+    And I should not see the text "Owner 2" in the "Pledge 2" tile
     And I should see the text "Resources" in the "Pledge 3" tile
-    And I should see the text "Owner 3" in the "Pledge 3" tile
+    And I should not see the text "Owner 3" in the "Pledge 3" tile
     And I should see the text "Other" in the "Pledge 4" tile
-    And I should see the text "Owner 4" in the "Pledge 4" tile
+    And I should not see the text "Owner 4" in the "Pledge 4" tile
 
     Examples:
       | group     |
