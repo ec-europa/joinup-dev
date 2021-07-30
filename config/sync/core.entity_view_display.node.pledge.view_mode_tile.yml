@@ -14,6 +14,7 @@ dependencies:
   module:
     - link
     - options
+    - template_suggestion
     - text
     - user
 id: node.pledge.view_mode_tile
@@ -30,7 +31,7 @@ content:
     region: content
   field_pledge_contribution_type:
     weight: 2
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: list_default
@@ -39,13 +40,15 @@ content:
     type: entity_reference_label
     weight: 4
     region: content
-    label: above
+    label: hidden
     settings:
-      link: true
-    third_party_settings: {  }
+      link: false
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
   field_state:
     weight: 5
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: list_default
@@ -59,7 +62,7 @@ content:
     type: timestamp
     weight: 6
     region: content
-    label: above
+    label: hidden
     settings:
       date_format: medium
       custom_date_format: ''

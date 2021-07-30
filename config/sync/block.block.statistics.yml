@@ -5,7 +5,6 @@ dependencies:
   module:
     - joinup_front_page
     - system
-    - user
   theme:
     - joinup_theme
 id: statistics
