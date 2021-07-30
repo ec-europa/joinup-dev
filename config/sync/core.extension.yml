@@ -35,6 +35,7 @@ module:
   editor_file: 0
   eif: 0
   eira: 0
+  email_confirmer: 0
   email_registration: 0
   embed_block: 0
   entity_legal: 0

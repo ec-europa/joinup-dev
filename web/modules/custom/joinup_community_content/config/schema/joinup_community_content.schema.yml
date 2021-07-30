@@ -43,14 +43,6 @@ joinup_community_content.permission_scheme:
             sequence:
               label: 'Transition id'
               type: joinup_community_content.workflow_ownership_settings
-        node:discussion:post_moderated:
-          type: sequence
-          sequence:
-            label: 'Workflow id'
-            type: sequence
-            sequence:
-              label: 'Transition id'
-              type: joinup_community_content.workflow_ownership_settings
     delete:
       label: 'Delete permissions'
       type: sequence
