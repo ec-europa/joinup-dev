@@ -11,6 +11,9 @@ Feature: Following discussions
     And user:
       | Username | Dr. Hans Zarkov  |
       | E-mail   | hans@example.com |
+    And the following collection user membership:
+      | collection     | user            |
+      | Dairy products | Dr. Hans Zarkov |
     And discussion content:
       | title       | body                                                             | collection     | state     | author          |
       | Rare Butter | I think that the rarest butter out there is the milky way butter | Dairy products | validated | Dr. Hans Zarkov |
