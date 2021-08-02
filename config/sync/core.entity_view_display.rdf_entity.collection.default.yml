@@ -15,6 +15,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
+    - field.field.rdf_entity.collection.field_challenge_status
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
@@ -100,6 +101,14 @@ content:
     third_party_settings:
       template_suggestion:
         template_suggestion: p_wrapper
+  field_challenge_status:
+    weight: 6
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   field_collection_content:
     weight: 4
     label: above

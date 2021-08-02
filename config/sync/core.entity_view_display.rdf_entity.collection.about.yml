@@ -16,6 +16,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
+    - field.field.rdf_entity.collection.field_challenge_status
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_keywords
     - field.field.rdf_entity.collection.field_newsletter
@@ -169,6 +170,7 @@ hidden:
   field_ar_banner: true
   field_ar_logo: true
   field_ar_state: true
+  field_challenge_status: true
   field_collection_content: true
   field_keywords: true
   field_newsletter: true
