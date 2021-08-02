@@ -11,7 +11,7 @@ Feature: Homepage
     # At the very start of the test there is no content yet.
     Then I should see the following statistics:
       | Solutions   | 0 |
-      | Communities | 0 |
+      | Collections | 0 |
       | Content     | 0 |
     # Test that the page is successfully cached.
     When I reload the page
@@ -25,32 +25,32 @@ Feature: Homepage
       | Elections           | archival request |
       | Party structure     | archived         |
     And the following solutions:
-      | title             | state            | community     |
+      | title             | state            | collection     |
       | Economic theory   | draft            | Social classes |
       | Economic history  | proposed         | Social classes |
       | Laws of economics | validated        | Social classes |
       | Planned economy   | needs update     | Social classes |
       | Economic growth   | blacklisted      | Social classes |
     And custom_page content:
-      | title                | community     |
+      | title                | collection     |
       | Developing economics | Social classes |
     And discussion content:
-      | title                         | state        | community     |
+      | title                         | state        | collection     |
       | Prosperity economics          | needs update | Social classes |
       | Cost-benefit analysis         | proposed     | Social classes |
       | Economic systems              | validated    | Social classes |
       | Socialist schools before Marx | archived     | Social classes |
     And document content:
-      | title               | state     | community     |
+      | title               | state     | collection     |
       | Socialist economics | validated | Social classes |
     And event content:
-      | title                         | state        | community     |
+      | title                         | state        | collection     |
       | Trotskism                     | draft        | Social classes |
       | Corporative economic theories | validated    | Social classes |
       | Social economics              | needs update | Social classes |
       | Labour theory                 | proposed     | Social classes |
     And news content:
-      | title                | state            | community     |
+      | title                | state            | collection     |
       | Regional economy     | draft            | Social classes |
       | World economy        | proposed         | Social classes |
       | Economic cooperation | validated        | Social classes |
@@ -61,7 +61,7 @@ Feature: Homepage
     When I reload the page
     Then I should see the following statistics:
       | Solutions   | 1 |
-      | Communities | 3 |
+      | Collections | 3 |
       | Content     | 5 |
     # The cache should have been cleared when new content is created.
     And the page should not be cached

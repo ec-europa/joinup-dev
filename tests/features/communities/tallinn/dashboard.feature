@@ -27,31 +27,31 @@ Feature:
       | Malta | Tallinn Ministerial Declaration |
 
     Given I am an anonymous user
-    When I go to "/api/v1/collections/tallinn/report"
+    When I go to "/api/v1/communities/tallinn/report"
     Then I should get an access denied error
     When I go to "/admin/config/content/tallinn"
     Then I should see the heading "Sign in to continue"
 
     Given I am logged in as Dinesh
-    When I go to "/api/v1/collections/tallinn/report"
+    When I go to "/api/v1/communities/tallinn/report"
     Then I should get an access denied error
     When I go to "/admin/config/content/tallinn"
     Then I should get an access denied error
 
     Given I am logged in as Monica
-    When I go to "/api/v1/collections/tallinn/report"
+    When I go to "/api/v1/communities/tallinn/report"
     Then I should get an access denied error
     When I go to "/admin/config/content/tallinn"
     Then I should get an access denied error
 
     Given I am logged in as Gilfoyle
-    When I go to "/api/v1/collections/tallinn/report"
+    When I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
     When I go to "/admin/config/content/tallinn"
     Then I should get an access denied error
 
     Given I am logged in as Jared
-    When I go to "/api/v1/collections/tallinn/report"
+    When I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
     And the page should be cached
     When I go to "/admin/config/content/tallinn"
@@ -67,7 +67,7 @@ Feature:
       | Access policy successfully updated. |
     And the radio button "Community (moderators and Tallinn community members)" from field "Access to Tallinn Ministerial Declaration data" should be selected
 
-    Given I go to "/api/v1/collections/tallinn/report"
+    Given I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
 
     # After changing the access policy, the cache has been cleared.
@@ -79,7 +79,7 @@ Feature:
     When I go to the edit form of the "Tallinn Ministerial Declaration" community
     And I fill in "Description" with "Hooli"
     When I press "Publish"
-    And I go to "/api/v1/collections/tallinn/report"
+    And I go to "/api/v1/communities/tallinn/report"
     Then the page should not be cached
     When I reload the page
     Then the page should be cached
@@ -87,25 +87,25 @@ Feature:
     # Edit any report.
     When I go to the edit form of the "Malta" "tallinn report"
     And I press "Save"
-    When I go to "/api/v1/collections/tallinn/report"
+    When I go to "/api/v1/communities/tallinn/report"
     Then the page should not be cached
     When I reload the page
     Then the page should be cached
 
     Given I am logged in as Gilfoyle
-    And I go to "/api/v1/collections/tallinn/report"
+    And I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
 
     Given I am logged in as Monica
-    And I go to "/api/v1/collections/tallinn/report"
+    And I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
 
     Given I am logged in as Dinesh
-    And I go to "/api/v1/collections/tallinn/report"
+    And I go to "/api/v1/communities/tallinn/report"
     Then I should get an access denied error
 
     Given I am an anonymous user
-    And I go to "/api/v1/collections/tallinn/report"
+    And I go to "/api/v1/communities/tallinn/report"
     Then I should get an access denied error
 
     Given I am logged in as Jared
@@ -122,7 +122,7 @@ Feature:
       | Access policy successfully updated. |
     And the radio button "Public" from field "Access to Tallinn Ministerial Declaration data" should be selected
 
-    Given I go to "/api/v1/collections/tallinn/report"
+    Given I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
 
     # After changing the access policy, the cache has been cleared.
@@ -131,15 +131,15 @@ Feature:
     Then the page should be cached
 
     Given I am logged in as Gilfoyle
-    When I go to "/api/v1/collections/tallinn/report"
+    When I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
 
     Given I am logged in as Dinesh
-    When I go to "/api/v1/collections/tallinn/report"
+    When I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
 
     Given I am an anonymous user
-    When I go to "/api/v1/collections/tallinn/report"
+    When I go to "/api/v1/communities/tallinn/report"
     # Due to a bug the report is not accessible for anonymous users.
     # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5509
     # Then the response status code should be 200

@@ -23,9 +23,14 @@ function joinup_rss_preprocess_views_view_rss__group_feed__rss_feed(&$variables)
   $encoded_uri_id = $variables['view']->args[0];
   $group = Rdf::load(UriEncoder::decodeUrl($encoded_uri_id));
 
+  // Rename "Collection to Community".
+  $bundle = $group->bundle();
+  if ($bundle == 'collection') {
+    $bundle = 'community';
+  }
   $replacements = [
     '@label' => $group->label(),
-    '@bundle' => $group->bundle(),
+    '@bundle' => $bundle,
   ];
 
   $variables['title'] = t('Latest updates from the @label @bundle', $replacements);
@@ -63,11 +68,16 @@ function joinup_rss_page_attachments(array &$attachments): void {
   ])->setAbsolute();
 
   if ($url->access()) {
+    // Rename "Collection to Community".
+    $bundle = $entity->bundle();
+    if ($bundle == 'collection') {
+      $bundle = 'community';
+    }
     $attachments['#attached']['feed'][] = [
       $url->toString(),
       t('Latest updates from the @label @bundle', [
         '@label' => $entity->label(),
-        '@bundle' => $entity->bundle(),
+        '@bundle' => $bundle,
       ]),
     ];
   }

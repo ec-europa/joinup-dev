@@ -69,7 +69,7 @@ Feature: Solution homepage
       | Disappointed Steel | validated |
       | Random Arm         | validated |
     And the following solutions:
-      | title       | state     | communities                   |
+      | title       | state     | collections                   |
       | Robotic arm | validated | Disappointed Steel            |
       | ARM9        | validated | Disappointed Steel,Random Arm |
 

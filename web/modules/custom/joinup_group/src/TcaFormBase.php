@@ -81,11 +81,16 @@ abstract class TcaFormBase extends FormBase {
       ]),
     ];
 
+    // Rename "Collection to Community".
+    $bundle = $this->getEntityBundle();
+    if ($bundle == 'collection') {
+      $bundle = 'community';
+    }
     $form['tca_agreement'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('I have read and accept <a href=":legal_notice_url">the legal notice</a> and I commit to manage my :bundle on a regular basis.', [
         ':legal_notice_url' => Url::fromRoute('entity.entity_legal_document.canonical', ['entity_legal_document' => 'legal_notice'], ['absolute' => TRUE])->toString(),
-        ':bundle' => $this->getEntityBundle(),
+        ':bundle' => $bundle,
       ]),
     ];
 

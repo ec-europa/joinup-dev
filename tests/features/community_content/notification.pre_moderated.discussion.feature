@@ -1,6 +1,6 @@
 @api @email @terms @group-b
 Feature: Notification test for the discussion transitions on a pre moderated parent.
-  In order to manage my collections
+  In order to manage my community
   As an owner of the collection
   I want to receive a notification when an entity is proposed.
 
@@ -11,10 +11,10 @@ Feature: Notification test for the discussion transitions on a pre moderated par
       | CC owner         |           | notify_owner@test.com       | CC         | Owner       |
       | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator |
       | CC member        |           | notify_member@test.com      | CC         | Member      |
-    And collections:
+    And communities:
       | title             | state     | content creation | moderation |
       | CC pre collection | validated | members          | yes        |
-    And the following collection user memberships:
+    And the following community user memberships:
       | collection        | user           | roles       |
       | CC pre collection | CC owner       | owner       |
       | CC pre collection | CC facilitator | facilitator |
@@ -38,7 +38,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
     # Test 'create' operation.
     When all e-mails have been sent
     And I am logged in as "CC member"
-    And I go to the "CC pre collection" collection
+    And I go to the "CC pre collection" community
     And I click "Add discussion" in the plus button menu
     And I fill in "Title" with "CC notify create propose"
     And I fill in "Content" with "CC notify create propose"
@@ -51,7 +51,7 @@ Feature: Notification test for the discussion transitions on a pre moderated par
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
-    And I go to the "CC pre collection" collection
+    And I go to the "CC pre collection" community
     And I click "Add discussion" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Content" with "CC notify create publish"
