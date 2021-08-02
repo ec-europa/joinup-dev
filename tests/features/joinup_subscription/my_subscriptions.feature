@@ -73,7 +73,7 @@ Feature: My subscriptions
     And I open the account menu
     And I click "My subscriptions"
     Then I should see the heading "My subscriptions"
-    And I should see the link "Collections"
+    And I should see the link "Communities"
     And I should see the link "Solutions"
     And I should see the text "No community memberships yet. Join one or more communities to subscribe to their content!"
     And I should see the text "No solution memberships yet. Join one or more solutions to subscribe to their content!"

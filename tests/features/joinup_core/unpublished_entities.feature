@@ -23,12 +23,12 @@ Feature: Unpublished content of the website
       | Grey Swords         | Invisible Boyfriend | proposed  | members          | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
       | Nothing of Slaves   | Invisible Boyfriend | draft     | members          | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
     And the following community user memberships:
-      | community          | user           | roles         |
+      | collection          | user           | roles         |
       | Invisible Boyfriend | Ed Abbott      | authenticated |
       | Invisible Boyfriend | Preston Fields | authenticated |
       | Invisible Boyfriend | Phillip Shaw   | facilitator   |
     And "event" content:
-      | title                                 | created           | author    | community          | state     |
+      | title                                 | created           | author    | collection          | state     |
       | The Ragged Streams                    | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | proposed  |
       | Storms of Touch                       | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | validated |
       | The Male of the Gift                  | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | validated |
@@ -37,7 +37,7 @@ Feature: Unpublished content of the website
       | Mists outside the planes of construct | 2018-10-04 8:31am | Ed Abbott | Grey Swords         | draft     |
       | Mists that are published maybe?       | 2018-10-04 8:31am | Ed Abbott | Grey Swords         | validated |
     And glossary content:
-      | title    | synonyms | summary                 | author    | created           | definition                                  | community          | status      |
+      | title    | synonyms | summary                 | author    | created           | definition                                  | collection          | status      |
       | Alphabet | ABC      | Summary of Alphabet     | Ed Abbott | 2018-10-04 8:29am | Long, long definition field                 | Invisible Boyfriend | published   |
       | Colors   | CLR      | Summary of Colors       | Ed Abbott | 2018-10-04 8:29am | Colors definition field                     | Invisible Boyfriend | unpublished |
       | Smells   | SML      | Smells Like Teen Spirit | Ed Abbott | 2018-10-04 8:31am | With the lights out, it's less dangerous... | Invisible Boyfriend | unpublished |

@@ -67,11 +67,17 @@ abstract class TcaFormBase extends FormBase {
       $form['tca'] = $block->build();
     }
 
+    // Rename "Collection to Community".
+    $bundle = $this->getEntityBundle();
+    if ($this->getEntityBundle() == 'collection') {
+      $bundle = 'community';
+    }
+
     $form['warning'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
       '#value' => $this->t('In order to create the :bundle you need first check the field below and then press the <em>Yes</em> button to proceed.', [
-        ':bundle' => ucfirst($this->getEntityBundle()),
+        ':bundle' => ucfirst($bundle),
       ]),
     ];
 
@@ -108,7 +114,12 @@ abstract class TcaFormBase extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state): void {
     if ($form_state->getValue('tca_agreement') === 0) {
-      $form_state->setError($form['tca_agreement'], "You have to agree that you will manage your {$this->getEntityBundle()} on a regular basis.");
+      // Rename "Collection to Community".
+      $bundle = $this->getEntityBundle();
+      if ($this->getEntityBundle() == 'collection') {
+        $bundle = 'community';
+      }
+      $form_state->setError($form['tca_agreement'], "You have to agree that you will manage your {$bundle} on a regular basis.");
     }
     parent::validateForm($form, $form_state);
   }

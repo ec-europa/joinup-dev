@@ -344,7 +344,7 @@ trait TraversingTrait {
       'My content' => 'content_my_content',
       'Event date' => 'event_date',
       'EIF recommendations' => 'category',
-      'Community event date' => 'community_event_type',
+      'Community event date' => 'collection_event_type',
       'Content types' => 'type',
       'eif principle' => 'principle',
       'eif interoperability layer' => 'interoperability_layer',

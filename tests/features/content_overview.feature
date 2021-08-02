@@ -27,18 +27,18 @@ Feature: Content Overview
       | title             | description        | state     | moderation |
       | Rumble community | Sample description | validated | yes        |
     And "event" content:
-      | title                | community        | state     | created           |
+      | title                | collection        | state     | created           |
       | Seventh Windows      | Rumble community | validated | 2018-10-03 4:21am |
       | A Night at the Opera | Rumble community | validated | 2018-10-03 4:17am |
     And "news" content:
-      | title            | community        | state     | author       | created           |
+      | title            | collection        | state     | author       | created           |
       | The Playful Tale | Rumble community | validated | batbull      | 2018-10-03 4:26am |
       | Night of Shadow  | Rumble community | proposed  | welshbuzzard | 2018-10-03 4:26am |
     And "document" content:
-      | title             | community        | state     | created           |
+      | title             | collection        | state     | created           |
       | History of Flight | Rumble community | validated | 2018-10-03 4:19am |
     And "discussion" content:
-      | title            | community        | state     | author      | created           |
+      | title            | collection        | state     | author      | created           |
       | The Men's Female | Rumble community | validated | hatchingegg | 2018-10-03 4:18am |
 
     # Check that visiting as a moderator does not create cache for all users.
@@ -117,17 +117,17 @@ Feature: Content Overview
       | title            | state     |
       | Timely Xylophone | validated |
     And "event" content:
-      | title            | community       | state     |
+      | title            | collection       | state     |
       | Sticky Vegetable | Timely Xylophone | validated |
     And "news" content:
-      | title            | community       | state     | author          | featured |
+      | title            | collection       | state     | author          | featured |
       | Early Avenue     | Timely Xylophone | validated | michaelanewport | yes      |
       | Itchy Artificial | Timely Xylophone | validated | nenaroberts     | no       |
     And "document" content:
-      | title             | community       | state     |
+      | title             | collection       | state     |
       | Limousine Scarlet | Timely Xylophone | validated |
     And "discussion" content:
-      | title                  | community       | state     | author          | featured |
+      | title                  | collection       | state     | author          | featured |
       | Hideous Dreaded Monkey | Timely Xylophone | validated | michaelanewport | yes      |
 
     When I am logged in as "michaelanewport"
@@ -202,17 +202,17 @@ Feature: Content Overview
       | title | Barbaric Avenue |
       | state | validated       |
     And event content:
-      | title                | community      | start date   | end date            | created    | state     | author          |
+      | title                | collection      | start date   | end date            | created    | state     | author          |
       | Bitter Finger        | Barbaric Avenue | now -1 years | now -1 years +1 day | now -4 day | validated | claricemitchell |
       | Frozen Barbershop    | Barbaric Avenue | now -1 day   | now +1 day          | now -3 day | validated | claricemitchell |
       | Frozen Breeze        | Barbaric Avenue | now +2 day   | now +4 day          | now -2 day | validated | claricemitchell |
       | Flying Official Fish | Barbaric Avenue | now -3 day   | now -1 day          | now        | validated | jeffreypayne    |
     # Technical: use a separate step to create an event associated to the anonymous user.
     And event content:
-      | title          | community      | start date  | end date    | created    | state     |
+      | title          | collection      | start date  | end date    | created    | state     |
       | Autumn Boiling | Barbaric Avenue | now +1 week | now +1 week | now -5 day | validated |
     And discussion content:
-      | title           | community      | state     | created   |
+      | title           | collection      | state     | created   |
       | Purple Poseidon | Barbaric Avenue | validated | yesterday |
 
     When I am logged in as claricemitchell

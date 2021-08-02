@@ -14,13 +14,13 @@ Feature: Community API
       | content creation | facilitators and authors |
       | topic            | E-health                 |
       | state            | validated                |
-    Then I should have 1 community
+    Then I should have 1 communities
 
   Scenario: Programmatically create a community using only the name
     Given the following community:
       | title | EU Interoperability Support Group |
       | state | validated                         |
-    Then I should have 1 community
+    Then I should have 1 communities
 
   @uploadFiles:logo.png,banner.jpg
   Scenario: Assign ownership when a community is created through UI.

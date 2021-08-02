@@ -131,7 +131,7 @@ Feature: Solutions Overview
 
     # Add new solution as a moderator to directly publish it.
     And I am logged in as a moderator
-    When I go to the add solution form of the "Pikachu, I choose you" collection
+    When I go to the add solution form of the "Pikachu, I choose you" community
     Then I should see the heading "Add Solution"
     When I fill in the following:
       | Title                 | Colonies in Earth                                                      |

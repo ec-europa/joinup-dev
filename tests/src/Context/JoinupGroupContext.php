@@ -93,7 +93,12 @@ class JoinupGroupContext extends RawDrupalContext {
    * @Then the :group_label :group_type should have a community content titled :group_title
    */
   public function assertNodeOgMembership(string $group_label, string $group_type, string $content_title): void {
-    $group = $this->getRdfEntityByLabel($group_label, $group_type);
+    // Rename "Collection to Community".
+    $bundle = $group_type;
+    if ($group_type == 'community') {
+      $bundle = 'collection';
+    }
+    $group = $this->getRdfEntityByLabel($group_label, $bundle);
     $node = $this->getNodeByTitle($content_title);
     if ($node->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->target_id !== $group->id()) {
       throw new \Exception("The node '$content_title' is not associated with community '{$group->label()}'.");

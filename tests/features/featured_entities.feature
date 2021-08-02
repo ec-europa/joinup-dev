@@ -10,7 +10,7 @@ Feature: Featuring content site-wide
       | Tidy Neutron         | validated | yes      |
       | Reborn Eternal Gamma | validated | no       |
     And the following solutions:
-      | title                         | community           | state     | featured |
+      | title                         | collection           | state     | featured |
       | Opensource neutron generators | Tidy Neutron         | validated | yes      |
       | Gamma-sensible spectroscopy   | Reborn Eternal Gamma | validated | no       |
     And users:
@@ -18,7 +18,7 @@ Feature: Featuring content site-wide
       | Niles Turner    | niles.turner@example.com |           |
       | Modston Modster | modston@example.org      | moderator |
     And the following community user memberships:
-      | community           | user         | roles       |
+      | collection           | user         | roles       |
       | Tidy Neutron         | Niles Turner | facilitator |
       | Reborn Eternal Gamma | Niles Turner | facilitator |
     And the following solution user memberships:
@@ -28,7 +28,7 @@ Feature: Featuring content site-wide
 
   Scenario Outline: Moderators can feature and unfeature content site-wide.
     Given <content type> content:
-      | title                               | community   | state     | featured |
+      | title                               | collection   | state     | featured |
       | Ionizing radiation types            | Tidy Neutron | validated | no       |
       | Elementary particles standard model | Tidy Neutron | validated | yes      |
 
@@ -136,5 +136,5 @@ Feature: Featuring content site-wide
 
     Examples:
       | header link | featured                      | unfeatured                  | label      | content type |
-      | Communities | Tidy Neutron                  | Reborn Eternal Gamma        | collection | community   |
+      | Communities | Tidy Neutron                  | Reborn Eternal Gamma        | Community  | collection   |
       | Solutions   | Opensource neutron generators | Gamma-sensible spectroscopy | Solution   | solution     |

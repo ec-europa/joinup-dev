@@ -23,7 +23,7 @@ Feature: Solution notifications
       | Ramiro Myers |           | Ramiro     | Myers       | ramiro.myers@example.com |
       | Edith Poole  |           | Edith      | Poole       | edith.poole@example.com  |
     And the following solutions:
-      | title                                                 | author       | description | logo     | banner     | owner              | contact information | state        | topic       | solution type | community                     |
+      | title                                                 | author       | description | logo     | banner     | owner              | contact information | state        | topic       | solution type | collection                     |
       | Solution notification to propose changes              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated    | E-inclusion | Business      | Community of random solutions |
       | Solution notification to blacklist                    | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated    | E-inclusion | Business      | Community of random solutions |
       | Solution notification to publish from blacklisted     | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | blacklisted  | E-inclusion | Business      | Community of random solutions |

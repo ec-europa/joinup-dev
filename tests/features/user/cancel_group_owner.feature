@@ -18,7 +18,7 @@ Feature:
     # In UAT this can be done by creating the community through the UI
     # with the related user.
     And the following community user memberships:
-      | community              | user          | roles                      |
+      | collection              | user          | roles                      |
       | Lugia was just released | Hazel Olson   | administrator, facilitator |
       | Articuno is hunted      | Amelia Barker | administrator, facilitator |
     And the following solution user membership:
@@ -41,8 +41,8 @@ Feature:
     But I should see the following lines of text:
       | User Hazel Olson cannot be deleted as they are currently the sole owner of these groups:   |
       | User Amelia Barker cannot be deleted as they are currently the sole owner of these groups: |
-      | Community                                                                                 |
-      | Communities                                                                                |
+      | Collection                                                                                 |
+      | Collections                                                                                |
       | Solution                                                                                   |
     And I should see the following links:
       | Lugia was just released      |

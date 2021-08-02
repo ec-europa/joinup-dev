@@ -201,10 +201,15 @@ abstract class JoinGroupFormBase extends FormBase {
         ];
       }
       else {
+        // Rename "Collection to Community".
+        $bundle = $this->group->bundle();
+        if ($this->group->bundle() == 'collection') {
+          $bundle = 'community';
+        }
         $form['leave']['#confirm'] = [
           '#markup' => $this->t('You cannot leave the %label :type', [
             '%label' => $this->group->label(),
-            ':type' => $this->group->bundle(),
+            ':type' => $bundle,
           ]),
         ];
       }

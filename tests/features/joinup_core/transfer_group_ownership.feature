@@ -87,9 +87,9 @@ Feature: As a group (community or solution) owner or site moderator
 
     Examples:
       | user  | option exists | type       | type capitalized | title                       | full name               |
-      | happy | contain       | collection | Community       | Intensive Language Learning | The Joinup Support Team |
-      | light | contain       | collection | Community       | Intensive Language Learning | The Joinup Support Team |
-      | cruel | not contain   | collection | Community       | Intensive Language Learning | Finnur Robertsson       |
+      | happy | contain       | community  | Community       | Intensive Language Learning | The Joinup Support Team |
+      | light | contain       | community  | Community       | Intensive Language Learning | The Joinup Support Team |
+      | cruel | not contain   | community  | Community       | Intensive Language Learning | Finnur Robertsson       |
       | happy | contain       | solution   | Solution         | Learn German in 1 Month     | The Joinup Support Team |
       | light | contain       | solution   | Solution         | Learn German in 1 Month     | The Joinup Support Team |
       | cruel | not contain   | solution   | Solution         | Learn German in 1 Month     | Finnur Robertsson       |
@@ -144,5 +144,5 @@ Feature: As a group (community or solution) owner or site moderator
 
     Examples:
       | group type | type capitalized | title                       |
-      | collection | Community       | Intensive Language Learning |
+      | community  | Community       | Intensive Language Learning |
       | solution   | Solution         | Learn German in 1 Month     |

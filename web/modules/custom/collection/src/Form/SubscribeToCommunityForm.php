@@ -148,7 +148,7 @@ class SubscribeToCommunityForm extends FormBase {
     $form['description'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => $this->t('You can receive weekly notifications for this collection, by selecting the subscribe button below:'),
+      '#value' => $this->t('You can receive weekly notifications for this community, by selecting the subscribe button below:'),
     ];
     $form['actions'] = [
       '#type' => 'actions',

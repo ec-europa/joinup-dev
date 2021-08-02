@@ -1109,6 +1109,10 @@ class JoinupContext extends RawDrupalContext {
    * @Then the :parent :parent_bundle has a :content_bundle titled :content
    */
   public function assertContentOgMembership($parent, $parent_bundle, $content_bundle, $content) {
+    // Rename "Collection to Community".
+    if ($parent_bundle == 'community') {
+      $parent_bundle = 'collection';
+    }
     $this->assertOgMembership($parent, $parent_bundle, $content, $content_bundle);
   }
 

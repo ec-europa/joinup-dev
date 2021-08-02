@@ -383,7 +383,7 @@ Feature: As a site moderator I am able to import RDF files.
     And I should see the heading "Successfully executed Spain - Center for Technology Transfer import pipeline"
 
     # Try to federate in a different community.
-    Given I visit "/admin/content/pipeline/joinup_community/execute"
+    Given I visit "/admin/content/pipeline/joinup_collection/execute"
     And I attach the file "single_solution_valid_adms.rdf" to "File"
     And I press "Upload"
 
@@ -395,7 +395,7 @@ Feature: As a site moderator I am able to import RDF files.
     And I should see the text "Federation record exists with "
 
     # The federation was incomplete. Reset the pipeline to conclude the test.
-    Then I visit "/admin/content/pipeline/joinup_community/reset"
+    Then I visit "/admin/content/pipeline/joinup_collection/reset"
     # We manually delete the imported entities as they are not tracked by Behat
     # and, as a consequence, will not be automatically deleted after test. Also
     # this is a good test to check that the entities were imported and exist.

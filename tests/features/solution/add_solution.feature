@@ -241,7 +241,7 @@ Feature: "Add solution" visibility options.
     And I press "Yes"
     And I fill in "Title" with "Climate change tracker"
     And I press "Propose"
-    Then I should see the error message "A solution titled Climate change tracker already exists in this collection. Please choose a different title."
+    Then I should see the error message "A solution titled Climate change tracker already exists in this community. Please choose a different title."
 
     # If a solution with a duplicate name is created in a different community
     # then this is allowed to be submitted but a warning should be shown to the

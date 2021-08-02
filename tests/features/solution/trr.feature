@@ -13,7 +13,7 @@ Feature: Creating a test (solution) in the TRR community.
       | title | Friends of the test repository |
       | state | validated                      |
     And the following community user memberships:
-      | community                     | user  | roles |
+      | collection                     | user  | roles |
       | Friends of the test repository | Wobbe | owner |
     And the following owner:
       | name | type                         |

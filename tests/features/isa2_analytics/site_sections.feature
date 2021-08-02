@@ -14,7 +14,7 @@ Feature: Site sections
       | collection | The Polygone Project |
       | state      | validated            |
     And discussion content:
-      | title         | body       | state     | community           |
+      | title         | body       | state     | collection           |
       | Deep Carnival | Now online | validated | The Polygone Project |
     And event content:
       | title                      | state     | solution         |

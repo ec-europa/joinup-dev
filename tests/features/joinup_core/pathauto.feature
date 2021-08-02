@@ -49,30 +49,30 @@ Feature:
       | Pathauto solution page   | Pathauto page |                     | Pathauto solution | validated |
 
     When I go to the "Pathauto community" community
-    Then the url should match "community/pathauto-community"
+    Then the url should match "collection/pathauto-community"
     When I go to the "Pathauto solution" solution
-    Then the url should match "community/pathauto-community/solution/pathauto-solution"
+    Then the url should match "collection/pathauto-community/solution/pathauto-solution"
     When I go to the "Pathauto release" release
-    Then the url should match "community/pathauto-community/solution/pathauto-solution/release/23"
+    Then the url should match "collection/pathauto-community/solution/pathauto-solution/release/23"
     When I go to the "Pathauto distribution" distribution
-    Then the url should match "community/pathauto-community/solution/pathauto-solution/distribution/pathauto-distribution"
+    Then the url should match "collection/pathauto-community/solution/pathauto-solution/distribution/pathauto-distribution"
     When I visit the "Pathauto document" document
-    Then the url should match "community/pathauto-community/document/pathauto-document"
+    Then the url should match "collection/pathauto-community/document/pathauto-document"
     When I visit the "Pathauto document 2" document
-    Then the url should match "community/pathauto-community/solution/pathauto-solution/document/pathauto-document-2"
+    Then the url should match "collection/pathauto-community/solution/pathauto-solution/document/pathauto-document-2"
     When I visit the "Pathauto discussion" discussion
-    Then the url should match "community/pathauto-community/discussion/pathauto-discussion"
+    Then the url should match "collection/pathauto-community/discussion/pathauto-discussion"
     When I visit the "Pathauto discussion 2" discussion
-    Then the url should match "community/pathauto-community/solution/pathauto-solution/discussion/pathauto-discussion-2"
+    Then the url should match "collection/pathauto-community/solution/pathauto-solution/discussion/pathauto-discussion-2"
     When I visit the "Pathauto event" event
-    Then the url should match "community/pathauto-community/event/pathauto-event"
+    Then the url should match "collection/pathauto-community/event/pathauto-event"
     When I visit the "Pathauto event 2" event
-    Then the url should match "community/pathauto-community/solution/pathauto-solution/event/pathauto-event-2"
+    Then the url should match "collection/pathauto-community/solution/pathauto-solution/event/pathauto-event-2"
     When I visit the "Pathauto news" news
-    Then the url should match "community/pathauto-community/news/pathauto-news"
+    Then the url should match "collection/pathauto-community/news/pathauto-news"
     When I visit the "Pathauto news 2" news
-    Then the url should match "community/pathauto-community/solution/pathauto-solution/news/pathauto-news-2"
+    Then the url should match "collection/pathauto-community/solution/pathauto-solution/news/pathauto-news-2"
     When I visit the "Pathauto community page" custom page
-    Then the url should match "community/pathauto-community/pathauto-community-page"
+    Then the url should match "collection/pathauto-community/pathauto-community-page"
     When I visit the "Pathauto solution page" custom page
-    Then the url should match "community/pathauto-community/solution/pathauto-solution/pathauto-solution-page"
+    Then the url should match "collection/pathauto-community/solution/pathauto-solution/pathauto-solution-page"

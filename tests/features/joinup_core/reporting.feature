@@ -44,7 +44,7 @@ Feature:
       | Monday's Artificial | validated |
       | Restless Burst      | validated |
     And solutions:
-      | title           | community          | state     | creation date    | modification date | solution type                                      |
+      | title           | collection          | state     | creation date    | modification date | solution type                                      |
       | Worthy Puppet   | Monday's Artificial | validated | 2003-01-31T23:00 | 2015-12-07T13:57  | Interoperability Specification, Networking Service |
       | Long Artificial | Restless Burst      | validated | 2012-09-14T00:00 | 2012-12-04T16:19  | Data Set Catalogue                                 |
       | Beta Frozen     | Restless Burst      | validated | 2017-10-15T14:54 | 2017-11-24T12:43  | e-Signature Creation Service                       |
