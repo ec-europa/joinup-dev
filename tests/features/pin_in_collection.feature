@@ -74,7 +74,7 @@ Feature: Pinning entities inside communities
     And I should not see the contextual link "Pin" in the "Very important" tile
 
     When I click the contextual link "Unpin" in the "Very important" tile
-    Then I should see the success message "<label> Very important has been unpinned in the collection Orange Wrench."
+    Then I should see the success message "<label> Very important has been unpinned in the community Orange Wrench."
     # Todo: Due to an environment related issue on CPHP this is causing random
     #   failures which cannot be replicated in production. Re-enable this check
     #   once we have updated to a more recent version of Solr. See ISAICP-6245.
@@ -86,7 +86,7 @@ Feature: Pinning entities inside communities
     But I should not see the contextual link "Unpin" in the "Very important" tile
 
     When I click the contextual link "Pin" in the "Useful information" tile
-    Then I should see the success message "<label> Useful information has been pinned in the collection Orange Wrench."
+    Then I should see the success message "<label> Useful information has been pinned in the community Orange Wrench."
     # Todo: Due to an environment related issue on CPHP this is causing random
     #   failures which cannot be replicated in production. Re-enable this check
     #   once we have updated to a more recent version of Solr. See ISAICP-6245.
@@ -168,7 +168,7 @@ Feature: Pinning entities inside communities
 
     When I go to the homepage of the "Orange Wrench" community
     When I click the contextual link "Unpin" in the "Wrench catalogue" tile
-    Then I should see the success message "Solution Wrench catalogue has been unpinned in the collection Orange Wrench."
+    Then I should see the success message "Solution Wrench catalogue has been unpinned in the community Orange Wrench."
     And I should see the following tiles in the correct order:
       | Any thoughts about blue?      |
       | Where can I find this wrench? |
@@ -178,7 +178,7 @@ Feature: Pinning entities inside communities
     But I should not see the contextual link "Unpin" in the "Wrench catalogue" tile
 
     When I click the contextual link "Pin" in the "Orange estimator" tile
-    Then I should see the success message "Solution Orange estimator has been pinned in the collection Orange Wrench."
+    Then I should see the success message "Solution Orange estimator has been pinned in the community Orange Wrench."
     And I should see the following tiles in the correct order:
       | Any thoughts about blue?      |
       | Orange estimator              |
@@ -196,7 +196,7 @@ Feature: Pinning entities inside communities
     And I should not see the contextual link "Unpin" in the "Orange estimator" tile
 
     When I click the contextual link "Pin" in the "Orange estimator" tile
-    Then I should see the success message "Solution Orange estimator has been pinned in the collection Cloudy Beam."
+    Then I should see the success message "Solution Orange estimator has been pinned in the community Cloudy Beam."
     And I should see the following tiles in the correct order:
       | Orange estimator      |
       | Multi stratus beaming |
@@ -231,7 +231,7 @@ Feature: Pinning entities inside communities
 
     When I go to the homepage of the "Orange Wrench" community
     When I click the contextual link "Unpin" in the "Drop forged wrenches" tile
-    Then I should see the success message "Solution Drop forged wrenches has been unpinned in the collection Orange Wrench."
+    Then I should see the success message "Solution Drop forged wrenches has been unpinned in the community Orange Wrench."
 
     When I visit the search page
     And I select "Last Updated Date" from "Sort by"
@@ -243,7 +243,7 @@ Feature: Pinning entities inside communities
 
     When I go to the homepage of the "Orange Wrench" community
     When I click the contextual link "Pin" in the "Drop forged wrenches" tile
-    Then I should see the success message "Solution Drop forged wrenches has been pinned in the collection Orange Wrench."
+    Then I should see the success message "Solution Drop forged wrenches has been pinned in the community Orange Wrench."
 
     # Check that the "last update" timestamp has not been affected. We can check
     # this in the search page.

@@ -431,6 +431,10 @@ class JoinupSubscriptionContext extends RawDrupalContext {
    * @Then I should not be subscribed to the :label :bundle
    */
   public function assertNoGroupContentSubscriptions(string $label, string $bundle): void {
+    // Rename "Collection to Community".
+    if ($bundle == 'community') {
+      $bundle = 'collection';
+    }
     $user = $this->getUserManager()->getCurrentUser();
     $account = User::load($user->uid);
     $group = self::getRdfEntityByLabel($label, $bundle);

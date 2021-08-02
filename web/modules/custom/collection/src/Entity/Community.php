@@ -171,7 +171,7 @@ class Community extends Rdf implements CommunityInterface {
         return $this->t('You cannot join %group because your account has been blocked.', $parameters);
 
       case OgMembershipInterface::STATE_PENDING:
-        return $this->t('You have already joined the %group collection but your membership still needs to be approved by a facilitator.', $parameters);
+        return $this->t('You have already joined the %group community but your membership still needs to be approved by a facilitator.', $parameters);
 
       default:
         return $this->t('You already are a member of %group.', $parameters);

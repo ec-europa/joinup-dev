@@ -2209,6 +2209,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @When I select image #:offset as :content_type :image_type
    */
   public function selectImageFromTheFieldImageLibraryBrowser(string $offset, string $content_type, string $image_type): void {
+    // Rename "Collection to Community".
+    if ($content_type == 'community') {
+      $content_type = 'collection';
+    }
     $this->validateImageLibraryBrowserStepDefinitionParams($content_type, $image_type, $offset);
     $map = $this->getImageLibraryBrowserMapping();
 
