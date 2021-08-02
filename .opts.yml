@@ -10,3 +10,6 @@ upgrade_commands:
     - ./vendor/bin/drush deploy --yes
     - rm disable-config-readonly
     - ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer --yes
+
+solr_image: registry.fpfis.eu/ec-europa/digit-joinup-reference:solr
+virtuoso_image: registry.fpfis.eu/ec-europa/digit-joinup-reference:virtuoso
