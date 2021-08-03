@@ -11,6 +11,8 @@ upgrade_commands:
     - rm disable-config-readonly
     - ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer --yes
 
+solr: True
 solr_image: registry.fpfis.eu/ec-europa/digit-joinup-reference:solr
+
 virtuoso_image: registry.fpfis.eu/ec-europa/digit-joinup-reference:virtuoso
 install_clean: Yes
