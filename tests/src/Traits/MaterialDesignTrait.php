@@ -224,7 +224,7 @@ trait MaterialDesignTrait {
 
     // Wait until the animation completes and the radio button is selected.
     $xpath = '//label[text()="' . $label . '"]/../parent::label[contains(concat(" ", normalize-space(@class), " "), " is-checked ")]/span[contains(concat(" ", normalize-space(@class), " "), " mdl-radio__ripple-container ")]';
-    $end = microtime(TRUE) + 5;
+    $end = microtime(TRUE) + 10;
     do {
       usleep(100000);
       // The plus button opening animation runs from the top right to the
