@@ -794,9 +794,13 @@ class JoinupContext extends RawDrupalContext {
         'publication date' => 'published_at',
       ],
       'pledge' => [
+        'contribution type' => 'field_pledge_contribution_type',
+        'owner' => 'field_pledge_owner',
         'state' => 'field_state',
       ],
       'shared' => [
+        'challenge' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+        // Keep the collection for legacy purposes.
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'policy domain' => 'field_policy_domain',

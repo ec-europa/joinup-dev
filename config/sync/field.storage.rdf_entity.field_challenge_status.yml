@@ -1,0 +1,30 @@
+uuid: 0630d086-3206-44d9-9195-ec73ee54dabf
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - rdf_entity
+    - sparql_entity_storage
+    - taxonomy
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      target_id:
+        predicate: 'http://www.w3.org/ns/dcat#theme'
+        format: resource
+  field_permissions:
+    permission_type: public
+id: rdf_entity.field_challenge_status
+field_name: field_challenge_status
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

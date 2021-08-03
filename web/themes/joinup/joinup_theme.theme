@@ -531,7 +531,10 @@ function joinup_theme_preprocess_menu(&$variables) {
   $account = \Drupal::currentUser()->getAccount();
   $user = User::load($account->id(), TRUE);
   $photo = $user->get('field_user_photo');
-  $variables['profile_icon'] = '/themes/joinup/images/user-profile-icon.png';
+
+  $url_subpath = $variables['url_subpath'] ?? '';
+
+  $variables['profile_icon'] = $url_subpath . '/themes/joinup/images/user-profile-icon.png';
   if (!$photo->isEmpty()) {
     $reference = $photo->first()->getValue();
     /** @var \Drupal\file\Entity\File $file */

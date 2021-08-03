@@ -1,0 +1,40 @@
+uuid: 4d6a6b37-7711-4f6c-9261-990dd8d2b5a1
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.group_pledges
+  module:
+    - ctools
+    - joinup_core
+    - views
+  theme:
+    - joinup_theme
+id: views_block__group_pledges_block
+theme: joinup_theme
+region: content_bottom
+weight: -30
+provider: null
+plugin: 'views_block:group_pledges-block'
+settings:
+  id: 'views_block:group_pledges-block'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  'entity_bundle:rdf_entity':
+    id: 'entity_bundle:rdf_entity'
+    bundles:
+      collection: collection
+      solution: solution
+    negate: false
+    context_mapping:
+      rdf_entity: '@rdf_entity.rdf_entity_route_context:rdf_entity'
+  request_route:
+    id: request_route
+    routes: entity.rdf_entity.canonical
+    negate: false
+    context_mapping: {  }

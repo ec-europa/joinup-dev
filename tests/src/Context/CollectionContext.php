@@ -99,6 +99,8 @@ class CollectionContext extends RawDrupalContext {
    *
    * @When I go to (the homepage of )the :collection collection
    * @When I visit (the homepage of )the :collection collection
+   * @When I go to (the homepage of )the :collection challenge
+   * @When I visit (the homepage of )the :collection challenge
    *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    */
