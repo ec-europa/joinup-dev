@@ -13,6 +13,7 @@ dependencies:
   module:
     - link
     - options
+    - template_suggestion
     - text
     - user
 id: node.pledge.default
@@ -39,7 +40,9 @@ content:
     label: above
     settings:
       link: true
-    third_party_settings: {  }
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
     type: entity_reference_label
     region: content
   field_state:

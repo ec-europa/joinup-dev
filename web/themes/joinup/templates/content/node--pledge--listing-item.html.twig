@@ -78,17 +78,20 @@
 <div {{ attributes.addClass(classes) }}>
   <div class="listing__image icon-pledge icon-card--grey">
     <a href="{{ url }}" class="icon-card__link">
-      <span class="icon-card__inner">
-        <span class="icon-card__icon icon icon--pledge"></span>
-      </span>
+      <div class="listing__field">
+        <div class="listing__link"><a href="{{ url }}"></a></div>
+        {{ title_prefix }}
+        <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
+        {{ title_suffix }}
+      </div>
     </a>
   </div>
   <div class="listing__metadata">
     <div class="listing__field">
-      <div class="listing__link"><a href="{{ url }}"></a></div>
-      {{ title_prefix }}
-      <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
-      {{ title_suffix }}
+      {{ content.field_pledge_owner }}
+    </div>
+    <div class="listing__field">
+      {{ content.field_pledge_contribution_type }}
     </div>
     <div class="listing__field listing__stats mdl-card__actions">
       <div class="listing__stat">
