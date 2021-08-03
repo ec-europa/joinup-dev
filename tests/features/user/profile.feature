@@ -149,7 +149,7 @@ Feature: User profile
       | type                  | name                 | author        |
       | Private Individual(s) | Somboon De Laurentis | Corwin Robert |
     And the following community user membership:
-      | user          | collection       |
+      | user          | community        |
       | Corwin Robert | Botanic E.D.E.N. |
     And the following solution user membership:
       | user          | solution      |

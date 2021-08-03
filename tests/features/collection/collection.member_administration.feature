@@ -24,7 +24,7 @@ Feature: Community membership administration
       | title             | description               | logo     | banner     | owner        | contact information                    | closed | state     |
       | Medical diagnosis | 10 patients in 10 minutes | logo.png | banner.jpg | James Wilson | Princeton-Plainsboro Teaching Hospital | yes    | validated |
     And the following community user memberships:
-      | collection        | user              | roles                      | state   |
+      | community         | user              | roles                      | state   |
       | Medical diagnosis | Lisa Cuddy        | administrator, facilitator | active  |
       | Medical diagnosis | Turkey Ham        | facilitator                | active  |
       | Medical diagnosis | Gregory House     |                            | active  |
@@ -333,7 +333,7 @@ Feature: Community membership administration
       | qux98765 |       | eric_foreman@example.com | Eric       | Foreman     |
       | xyzzy123 |       | eric_drexler@example.com | Eric       | Drexler     |
     And the following community user memberships:
-      | collection        | user     | state  |
+      | community         | user     | state  |
       | Medical diagnosis | qux98765 | active |
       | Medical diagnosis | xyzzy123 | active |
     When I am logged in as "Lisa Cuddy"
@@ -441,7 +441,7 @@ Feature: Community membership administration
       | Username       | E-mail                     | First name | Family name |
       | pending_member | pending_member@example.com | Pending    | Member      |
     And the following community user membership:
-      | collection        | user           | state   |
+      | community         | user           | state   |
       | Medical diagnosis | pending_member | pending |
 
     When I am logged in as "Lisa Cuddy"

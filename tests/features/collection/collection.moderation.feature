@@ -43,7 +43,7 @@ Feature: Community moderation
       | The Shard's Hunter  | The Shard's Hunter  | logo.png | banner.jpg | Simon Sandoval | Francis             | archival request |
       | Luck in the Abyss   | Luck in the Abyss   | logo.png | banner.jpg | Simon Sandoval | Francis             | archived         |
     And the following community user memberships:
-      | collection          | user         | roles       |
+      | community           | user         | roles       |
       | Deep Past           | Erika Reid   | owner       |
       | The Licking Silence | Erika Reid   | owner       |
       | Person of Wizards   | Erika Reid   | owner       |

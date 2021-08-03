@@ -77,10 +77,10 @@ Feature: Add comments
 
     Examples:
       | content type | title               | state     | parent     | parent title         |
-      | news         | Scandalous news     | validated | collection | Gossip community    |
-      | event        | Celebrity gathering | validated | collection | Gossip community    |
-      | discussion   | Is gossip bad?      | validated | collection | Gossip community    |
-      | document     | Wikileaks           | validated | collection | Gossip community    |
+      | news         | Scandalous news     | validated | community  | Gossip community    |
+      | event        | Celebrity gathering | validated | community  | Gossip community    |
+      | discussion   | Is gossip bad?      | validated | community  | Gossip community    |
+      | document     | Wikileaks           | validated | community  | Gossip community    |
       # Add an example also for solutions to ensure the variables are properly replaced.
       | news         | Scandalous news     | validated | solution   | Gossip girl solution |
 

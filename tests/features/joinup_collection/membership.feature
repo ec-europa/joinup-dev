@@ -30,7 +30,7 @@ Feature: Tests membership to Joinup community.
       | joe      | joe@example.com  |
       | jane     | jane@example.com |
     And the following community user membership:
-      | collection              | user |
+      | community              | user |
       | An arbitrary community | joe  |
     Then user "joe" is member of "Joinup" community
     And user "jane" is member of "Joinup" community

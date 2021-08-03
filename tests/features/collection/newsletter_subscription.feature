@@ -23,7 +23,7 @@ Feature: Subscribing to community newsletters
       | title      | collection | state     | author          |
       | Hypersleep | Volkor X   | validated | Tatiana Andreas |
     And the following community user memberships:
-      | collection | user               | roles       |
+      | community  | user               | roles       |
       | Volkor X   | Filippos Demetriou | owner       |
       | Volkor X   | Tatiana Andreas    | facilitator |
 

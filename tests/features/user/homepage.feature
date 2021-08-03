@@ -28,7 +28,7 @@ Feature: Homepage feature
       | Magenta Mountain          | Magenta Mountain          | E-health          | Legion Constitution | validated | 5064   | 2017-11-30 16:00 |
       | Lightning Lass' Powers    | Lightning Lass' Powers    | Demography        | Legion Constitution | validated | 2951   | 2016-09-22 16:00 |
     And the following community user memberships:
-      | collection        | user         | roles |
+      | community         | user         | roles |
       | The Sacred Future | Henry Austin |       |
 
     When I am logged in as "Henry Austin"

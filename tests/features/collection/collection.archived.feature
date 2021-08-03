@@ -20,7 +20,7 @@ Feature: Creating content and commenting on archived community
       | title               | description         | logo     | banner     | owner         | contact information | state     | topic                   |
       | The Willing Consort | The Willing Consort | logo.png | banner.jpg | April Hawkins | Jody Rodriquez      | validated | Statistics and Analysis |
     And the following community user memberships:
-      | collection          | user        | roles              |
+      | community           | user        | roles              |
       | The Willing Consort | Karl Fields | owner, facilitator |
 
   Scenario: 'Comment form' should not be accessible on an archived community content.

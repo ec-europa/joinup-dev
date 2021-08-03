@@ -415,7 +415,7 @@ class CommunityContext extends RawDrupalContext {
    */
   public function givenCommunityUserMemberships(TableNode $membership_table): void {
     foreach ($membership_table->getColumnsHash() as $values) {
-      $group = $this->getCommunityByName($values['collection']);
+      $group = $this->getCommunityByName($values['community']);
       $this->givenUserMembership($group, $values);
     }
   }

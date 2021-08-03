@@ -60,7 +60,7 @@ Feature: Following discussions
       | debater     | flash@example.com | Flash      | Gordon      | daily                  |
       | facilitator | ming@example.com  | Ming       | Merciless   | weekly                 |
     And the following community user membership:
-      | collection     | user        | roles       |
+      | community      | user        | roles       |
       | Dairy products | facilitator | facilitator |
     And the following discussion subscriptions:
       | username | title       |

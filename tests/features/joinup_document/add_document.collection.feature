@@ -44,7 +44,7 @@ Feature: "Add document" visibility options.
       | title                | logo     | banner     | state     |
       | Hunter in the Swords | logo.png | banner.jpg | validated |
     And the following community user membership:
-      | collection           | user      | roles       |
+      | community            | user      | roles       |
       | Hunter in the Swords | napcheese | facilitator |
     # Log in as a facilitator of the "Hunter in the Swords" community.
     Given I am logged in as napcheese

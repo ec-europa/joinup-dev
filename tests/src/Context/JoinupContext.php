@@ -223,6 +223,10 @@ class JoinupContext extends RawDrupalContext {
    * @Given my membership state in the :rdf_entity :rdf_entity_bundle changes to :state
    */
   public function updateGroupState($rdf_entity, $rdf_entity_bundle, $state) {
+    // Rename "Collection to Community".
+    if ($rdf_entity_bundle == 'community') {
+      $rdf_entity_bundle = 'collection';
+    }
     $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bundle);
     if (!$entity) {
       throw new \Exception("No entity found with label $rdf_entity");

@@ -19,7 +19,7 @@ Feature:
       | Gilfoyle |           |
       | Jared    | moderator |
     And the following community user membership:
-      | collection                      | user     | roles       |
+      | community                       | user     | roles       |
       | Tallinn Ministerial Declaration | Monica   |             |
       | Tallinn Ministerial Declaration | Gilfoyle | facilitator |
     And tallinn_report content:

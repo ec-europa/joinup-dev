@@ -7,26 +7,26 @@ Feature: Community content
   Background:
     Given the following communities:
       | title                     | state     |
-      | Turin Egyptian Collection | validated |
+      | Turin Egyptian Community  | validated |
     And the following solution:
       | title      | Tomb Of Unknown Restoration |
-      | collection | Turin Egyptian Collection   |
+      | collection | Turin Egyptian Community    |
       | state      | validated                   |
     And discussion content:
       | title                                 | body                                                                    | state     | collection                |
-      | Bigger than Egyptian Museum of Cairo? | <p><a href="#link">Link to the museum</a> web<strong>site</strong>.</p> | validated | Turin Egyptian Collection |
+      | Bigger than Egyptian Museum of Cairo? | <p><a href="#link">Link to the museum</a> web<strong>site</strong>.</p> | validated | Turin Egyptian Community  |
     And document content:
       | title           | body                                             | state     | collection                |
-      | Upper Floor Map | <p>A sample <a href="#link">map</a> example.</p> | validated | Turin Egyptian Collection |
+      | Upper Floor Map | <p>A sample <a href="#link">map</a> example.</p> | validated | Turin Egyptian Community  |
     And event content:
       | title                                     | state     | collection                |
-      | Opening of the Hellenistic Period Section | validated | Turin Egyptian Collection |
+      | Opening of the Hellenistic Period Section | validated | Turin Egyptian Community  |
     And news content:
       | title                          | body                                                           | state     | collection                |
-      | Turin Egyptian Museum Reopened | <p>After <em>more than</em> <a href="#link">two years</a>.</p> | validated | Turin Egyptian Collection |
+      | Turin Egyptian Museum Reopened | <p>After <em>more than</em> <a href="#link">two years</a>.</p> | validated | Turin Egyptian Community  |
     And video content:
       | title                                  | state     | collection                |
-      | Watch the mummy conservation technique | validated | Turin Egyptian Collection |
+      | Watch the mummy conservation technique | validated | Turin Egyptian Community  |
 
   Scenario: Publishing new solutions should result in counters being properly updated.
     Given owner:

@@ -154,13 +154,13 @@ Feature: Sharing content between communities
 
     Examples:
       | content type | group type |
-      | event        | collection |
+      | event        | community  |
       | event        | solution   |
-      | document     | collection |
+      | document     | community  |
       | document     | solution   |
-      | discussion   | collection |
+      | discussion   | community  |
       | discussion   | solution   |
-      | news         | collection |
+      | news         | community  |
       | news         | solution   |
 
   @javascript
@@ -226,13 +226,13 @@ Feature: Sharing content between communities
 
     Examples:
       | content type | group type |
-      | event        | collection |
+      | event        | community  |
       | event        | solution   |
-      | document     | collection |
+      | document     | community  |
       | document     | solution   |
-      | discussion   | collection |
+      | discussion   | community  |
       | discussion   | solution   |
-      | news         | collection |
+      | news         | community  |
       | news         | solution   |
 
   @javascript
@@ -274,13 +274,13 @@ Feature: Sharing content between communities
 
     Examples:
       | content type | group type |
-      | event        | collection |
+      | event        | community  |
       | event        | solution   |
-      | document     | collection |
+      | document     | community  |
       | document     | solution   |
-      | discussion   | collection |
+      | discussion   | community  |
       | discussion   | solution   |
-      | news         | collection |
+      | news         | community  |
       | news         | solution   |
 
   Scenario: Shared pinned content is erroneously shown first.

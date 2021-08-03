@@ -2270,6 +2270,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the :title :content_type :image_type is image #:offset
    */
   public function assertImageFromTheFieldImageLibraryBrowser(string $content_type, string $title, string $image_type, string $offset): void {
+    // Rename "Collection to Community".
+    if ($content_type == 'community') {
+      $content_type = 'collection';
+    }
     $this->validateImageLibraryBrowserStepDefinitionParams($content_type, $image_type, $offset);
     $map = $this->getImageLibraryBrowserMapping();
     $entity = $this->getEntityByLabel($map[$content_type]['type'], $title, $content_type);

@@ -25,7 +25,7 @@ Feature: Invite members to subscribe to discussions
       | description | We just love siphons |
       | state       | validated            |
     And the following community user membership:
-      | collection           | user             | roles       |
+      | community            | user             | roles       |
       | The Siphon Community | Lynwood Crawford | member      |
       | The Siphon Community | theacuteone      | member      |
       | The Siphon Community | Glory Ruskin     | facilitator |

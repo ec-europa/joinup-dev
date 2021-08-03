@@ -70,7 +70,7 @@ Feature: Solution API
       | content creation | facilitators and authors |
       | state            | validated                |
     And the following community user memberships:
-      | user              | collection               | roles       |
+      | user              | community               | roles       |
       | Solution API user | This is a klm community | facilitator |
     And I am logged in as "Solution API user"
     When I visit the "This is a klm community" community

@@ -16,7 +16,7 @@ Feature:
       | sherlock  |           |
       | watson    |           |
     And the following community user memberships:
-      | collection                      | user      | roles       |
+      | community                       | user      | roles       |
       | Tallinn Ministerial Declaration | vasile    |             |
       | Tallinn Ministerial Declaration | dominique |             |
       | Tallinn Ministerial Declaration | sherlock  | facilitator |

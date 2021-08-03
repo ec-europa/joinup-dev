@@ -15,7 +15,7 @@ Feature: Submit the contact form
       | title                                 | state     | abstract     | description   |
       | Community with inappropriate content | validated | No one cares | No one cares. |
     And the following community user memberships:
-      | collection                           | user         | roles              |
+      | community                            | user         | roles              |
       | Community with inappropriate content | Report owner | owner, facilitator |
     And event content:
       | title           | author      | body | location  | collection                           | field_state |

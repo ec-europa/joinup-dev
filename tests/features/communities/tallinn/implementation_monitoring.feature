@@ -9,7 +9,7 @@ Feature: Display of reports for the Tallinn initiative.
       | Username     |
       | Jayda Ingham |
     And the following community user memberships:
-      | collection                      | user         | roles       |
+      | community                       | user         | roles       |
       | Tallinn Ministerial Declaration | Jayda Ingham | facilitator |
     Given news content:
       | title           | collection                      | state     |

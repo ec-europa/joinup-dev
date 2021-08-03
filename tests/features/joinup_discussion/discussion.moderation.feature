@@ -17,7 +17,7 @@ Feature: Discussion moderation
       | content creation | members                                  |
       | state            | validated                                |
     And the following community user membership:
-      | collection     | user            | roles       |
+      | community     | user            | roles       |
       | DIY community | Gabe Rogers     | member      |
       | DIY community | Brigham Salvage | facilitator |
 
@@ -102,7 +102,7 @@ Feature: Discussion moderation
       | content creation | members                                        |
       | state            | validated                                      |
     And the following community user membership:
-      | collection                   | user          | roles       |
+      | community                    | user          | roles       |
       | Valentine's day survival kit | Vince Rome    | member      |
       | Valentine's day survival kit | Lance Rustici | facilitator |
     And discussion content:

@@ -49,7 +49,7 @@ Feature:
       | Username |
       | Zohan    |
     And the following community user membership:
-      | collection            | user  |
+      | community            | user  |
       | Paragraphs community | Zohan |
     And custom_page content:
       | title                     | body        | collection           | author |

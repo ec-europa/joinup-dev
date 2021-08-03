@@ -15,7 +15,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | title              | state     | content creation | moderation   |
       | CC post community | validated | members          | <moderation> |
     And the following community user memberships:
-      | collection         | user           | roles       |
+      | community         | user           | roles       |
       | CC post community | CC owner       | owner       |
       | CC post community | CC facilitator | facilitator |
       | CC post community | CC member      | <roles>     |

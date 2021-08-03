@@ -274,7 +274,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
 
     // Generate the rest of the properties.
     $arguments['@parent:title'] = $this->parent->label();
-    $arguments['@parent:bundle'] = $this->parent->bundle();
+    $arguments['@parent:bundle'] = $this->parent instanceof CommunityInterface ? 'community' : $this->parent->bundle();
     $arguments['@parent:url'] = $this->parent->toUrl('canonical', ['absolute' => TRUE])->toString();
 
     $arguments += MessageArgumentGenerator::getGroupArguments($this->group);

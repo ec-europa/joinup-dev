@@ -12,7 +12,7 @@ Feature: "Document page" editing.
       | title        | description        | state     |
       | <community> | Sample description | validated |
     And the following community user memberships:
-      | collection   | user   | roles  |
+      | community   | user   | roles  |
       | <community> | <user> | <role> |
     And "document" content:
       | title      | author | collection   | state     |

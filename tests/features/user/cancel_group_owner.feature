@@ -18,7 +18,7 @@ Feature:
     # In UAT this can be done by creating the community through the UI
     # with the related user.
     And the following community user memberships:
-      | collection              | user          | roles                      |
+      | community               | user          | roles                      |
       | Lugia was just released | Hazel Olson   | administrator, facilitator |
       | Articuno is hunted      | Amelia Barker | administrator, facilitator |
     And the following solution user membership:

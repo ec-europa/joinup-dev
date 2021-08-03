@@ -11,7 +11,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | title | A World of Things |
       | state | validated         |
     And the following community user membership:
-      | collection        | user   | roles     |
+      | community         | user   | roles     |
       | A World of Things | <user> | <og role> |
     And the following solution:
       | title      | Things To Come    |
@@ -262,7 +262,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | Community With Glossary | The Battle of Evermore of the batTle and the BATTLE. Call it everMore or EVERmore. Also, battle again. | validated |
       | The Other Community     | desc                                                                                                   | validated |
     And the following community user membership:
-      | collection               | user | roles       |
+      | community               | user | roles       |
       | Community With Glossary | fac  | facilitator |
       | The Other Community     | fac1 | facilitator |
     And glossary content:
