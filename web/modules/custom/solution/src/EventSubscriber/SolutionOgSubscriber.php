@@ -55,12 +55,12 @@ class SolutionOgSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Declare OG permissions for collections.
+   * Declare OG permissions for the private fields.
    *
    * @param \Drupal\og\Event\PermissionEventInterface $event
    *   The OG permission event.
    */
-  public function provideDefaultOgPermissions(OgPermissionEventInterface $event) {
+  public function provideEasmeGroupPermissions(OgPermissionEventInterface $event) {
     if ($event->getGroupEntityTypeId() === 'rdf_entity' && in_array($event->getGroupBundleId(), JoinupGroupHelper::GROUP_BUNDLES)) {
       $event->setPermissions([
         new GroupPermission([
