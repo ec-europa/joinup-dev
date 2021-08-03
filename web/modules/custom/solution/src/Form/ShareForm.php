@@ -10,7 +10,7 @@ use Drupal\joinup_group\Form\ShareForm as OriginalForm;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Form to share a solution inside collections.
+ * Form to share a solution inside communities.
  *
  * The methods are different from the parent class because the route is a sub
  * link of the `/rdf_entity/{rdf_entity}` route path. That means that we cannot

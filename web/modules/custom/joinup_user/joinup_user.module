@@ -357,7 +357,7 @@ function joinup_user_search_api_query_search_api_field_field_user_content_alter(
       $groups = reset($subset);
       // If the user is the owner of the profile, show a warning message.
       if ($user->id() === $current_user->id()) {
-        \Drupal::messenger()->addMessage(t('You have joined a large number of collections and solutions.<br /> Only the content of the first 100 groups is shown.'), 'warning');
+        \Drupal::messenger()->addMessage(t('You have joined a large number of communities and solutions.<br /> Only the content of the first 100 groups is shown.'), 'warning');
       }
     }
     $or = $query->createConditionGroup('OR');

@@ -4,7 +4,7 @@ Feature: SEO for RDF entities.
   in order for my RDF entities to be better visible on the web
   I need proper meta information to be encapsulated in the html code.
 
-  Scenario Outline: Basic JSON meta information for collections and solutions.
+  Scenario Outline: Basic JSON meta information for communities and solutions.
     Given the following <type>:
       | title | SEO entity |
       | state | validated  |
@@ -23,7 +23,7 @@ Feature: SEO for RDF entities.
 
     Examples:
       | type       | link        | graph type      |
-      | collection | Collections | AssetRepository |
+      | community  | Communities | AssetRepository |
       | solution   | Solutions   | Asset           |
 
   Scenario: Basic JSON meta information for releases and distributions.

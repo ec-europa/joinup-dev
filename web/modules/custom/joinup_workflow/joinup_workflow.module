@@ -15,7 +15,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
 use Drupal\solution\Entity\SolutionInterface;
@@ -171,7 +171,7 @@ function joinup_workflow_motivation_form_validate(array &$form, FormStateInterfa
   // @todo Remove this when the 'reject_deletion' and 'reject_archival' for
   //   rdf_entities are separate transitions.
   // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3644
-  if ($entity instanceof CollectionInterface && $transition->getId() === 'validate' && $from_state !== 'archival_request') {
+  if ($entity instanceof CommunityInterface && $transition->getId() === 'validate' && $from_state !== 'archival_request') {
     $required = FALSE;
   }
   // @todo Remove this when the 'reject_deletion' and 'proposed_from_validated'

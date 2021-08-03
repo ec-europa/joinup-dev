@@ -5,7 +5,7 @@ Feature: "Add document" visibility options.
   I need to be able to add "Document" content through UI.
 
   Scenario: "Add document" button should not be shown to normal members, authenticated users and anonymous users.
-    Given the following collection:
+    Given the following community:
       | title  | Collective Seventh Name |
       | logo   | logo.png                |
       | banner | banner.jpg              |
@@ -36,7 +36,7 @@ Feature: "Add document" visibility options.
 
   @terms
   Scenario: Add document as a facilitator.
-    Given the following collection:
+    Given the following community:
       | title  | Collective Winter of Beginning |
       | logo   | logo.png                       |
       | banner | banner.jpg                     |

@@ -10,7 +10,7 @@ field_name: field_short_id
 entity_type: rdf_entity
 bundle: collection
 label: 'Short ID'
-description: "Used as the web address (URL). Example: a collection named 'European Commission' could use 'eu-commission'.\r\nCannot be changed once the collection is published.\r\nThe ID is between 4-26 characters and consists of lowercase letters, numbers and the dash symbol (-)."
+description: "Used as the web address (URL). Example: a community named 'European Commission' could use 'eu-commission'.\r\nCannot be changed once the community is published.\r\nThe ID is between 4-26 characters and consists of lowercase letters, numbers and the dash symbol (-)."
 required: false
 translatable: false
 default_value: {  }

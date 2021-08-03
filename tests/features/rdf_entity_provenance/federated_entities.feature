@@ -14,8 +14,8 @@ Feature: In order to avoid users changing federated values
       | title       | A federated licence       |
       | description | Licence agreement details |
       | type        | Public domain             |
-    And the following collection:
-      | title               | A federated collection   |
+    And the following community:
+      | title               | A federated community   |
       | logo                | logo.png                 |
       | moderation          | yes                      |
       | owner               | John Federator           |
@@ -24,7 +24,7 @@ Feature: In order to avoid users changing federated values
       | state               | validated                |
     And the following solution:
       | title               | A federated solution                 |
-      | collection          | A federated collection               |
+      | collection          | A federated community               |
       | description         | This is a federated solution         |
       | owner               | John Federator                       |
       | contact information | John Federator's contact             |
@@ -52,7 +52,7 @@ Feature: In order to avoid users changing federated values
     And the following provenance activities:
       | associated with    | entity                   | enabled |
       | http://example.com | A federated solution     | yes     |
-      | http://example.com | A federated collection   | yes     |
+      | http://example.com | A federated community   | yes     |
       | http://example.com | A federated release      | yes     |
       | http://example.com | A federated distribution | yes     |
       | http://example.com | John Federator           | yes     |
@@ -61,7 +61,7 @@ Feature: In order to avoid users changing federated values
 
   Scenario: Verify that API functions properly.
     Then I should have 7 provenance activities
-    And "A federated collection" should have a related provenance activity
+    And "A federated community" should have a related provenance activity
     And "A federated solution" should have a related provenance activity
     And "A federated release" should have a related provenance activity
     And "A federated distribution" should have a related provenance activity
@@ -77,7 +77,7 @@ Feature: In order to avoid users changing federated values
 
     Examples:
       | label                    | type         | fields disabled                                                                                              | fields not disabled                                                                                   |
-      | A federated collection   | collection   | Title, Description, Contact information, Owner                                                               | Abstract, Access URL, Topic, Moderated, Content creation, Motivation, Logo, Banner, Closed collection |
+      | A federated community    | community    | Title, Description, Contact information, Owner                                                               | Abstract, Access URL, Topic, Moderated, Content creation, Motivation, Logo, Banner, Closed community |
       | A federated solution     | solution     | Title, Description, Contact information, Owner, Keywords, Related solutions, Status, Languages, Landing page | Topic, Moderated, Content creation, Motivation, Logo, Banner, Metrics pager                           |
       | A federated release      | release      | Name, Release number, Keywords, Status, Language                                                             | Motivation                                                                                            |
       | A federated distribution | distribution | Title, Description, Access URL, Format, Status, Licence                                                      |                                                                                                       |

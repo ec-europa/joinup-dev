@@ -12,7 +12,7 @@ Feature: Contact Information moderation
     And owner:
       | type                          | name               |
       | Non-Governmental Organisation | Anglo-Saxon Museum |
-    And collection:
+    And community:
       | title       | Games of the Anglo-Saxon age                  |
       | description | There were many different board games played. |
       | logo        | logo.png                                      |
@@ -20,14 +20,14 @@ Feature: Contact Information moderation
       | owner       | Anglo-Saxon Museum                            |
       | topic       | E-inclusion                                   |
       | state       | draft                                         |
-    And collection user membership:
+    And community user membership:
       | collection                   | user                  | roles       |
       | Games of the Anglo-Saxon age | Sæwine Cynebald       | facilitator |
       | Games of the Anglo-Saxon age | Secondary facilitator | facilitator |
 
-    # Add contact information to the collection as a facilitator.
+    # Add contact information to the community as a facilitator.
     When I am logged in as "Sæwine Cynebald"
-    And I go to the homepage of the "Games of the Anglo-Saxon age" collection
+    And I go to the homepage of the "Games of the Anglo-Saxon age" community
     And I click "Edit" in the "Entity actions" region
     And I fill in "Name" with "Mildþryð Mildgyð"
     And I fill in "E-mail address" with "mildred@anglo-saxon-museum.co.uk"
@@ -122,7 +122,7 @@ Feature: Contact Information moderation
       | name   | Secreteriat      |
       | email  | info@example.com |
       | author | Sown Carnberry   |
-    And collection:
+    And community:
       | title               | Saint Louis solutions |
       | description         | A software company    |
       | logo                | logo.png              |
@@ -130,7 +130,7 @@ Feature: Contact Information moderation
       | owner               | Saint Louis           |
       | contact information | Secreteriat           |
       | state               | validated             |
-    And the following collection user memberships:
+    And the following community user memberships:
       | collection            | user            | roles       |
       | Saint Louis solutions | Sown Carnberry  |             |
       | Saint Louis solutions | Saint Louis CEO | facilitator |
@@ -146,6 +146,6 @@ Feature: Contact Information moderation
     And I click "Edit" in the "Entity actions"
     And the following 1 button should be present "Update"
     And I should see the link "Delete"
-    When I go to the edit form of the "Saint Louis solutions" collection
+    When I go to the edit form of the "Saint Louis solutions" community
     Then I should see the button "Edit" in the "Contact information inline form" region
     Then I should see the button "Remove" in the "Contact information inline form" region

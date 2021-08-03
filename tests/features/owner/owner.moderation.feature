@@ -14,7 +14,7 @@ Feature: Owner moderation
       | Good food eaters | Non-Profit Organisation |
 
     When I am logged in as "Raeburn Hibbert"
-    And I go to the propose collection form
+    And I go to the propose community form
     And I fill in the following:
       | Title  | The healthy food European project |
       # Contact information data.
@@ -34,7 +34,7 @@ Feature: Owner moderation
     When I press "Create owner"
     Then I should see "EU healthy movement"
 
-    # Save the collection to finalise the creation of the owner entity.
+    # Save the community to finalise the creation of the owner entity.
     When I press "Propose"
     Then I should see the heading "The healthy food European project"
 
@@ -56,7 +56,7 @@ Feature: Owner moderation
     Then I should see the heading "Edit Owner EU healthy group"
     And the following 3 buttons should be present "Update, Request changes, Request deletion"
     And the current workflow state should be "Validated"
-    # Deletion should not be possible as the owner entity is referenced by the collection.
+    # Deletion should not be possible as the owner entity is referenced by the community.
     And I should not see the link "Delete"
     And I press "Request changes"
     Then I should see the heading "EU healthy group"
@@ -90,23 +90,23 @@ Feature: Owner moderation
     Then I should see the heading "EU healthy group"
 
     # The facilitator asks for deletion. This is rejected since the owner is
-    # used by the collection.
+    # used by the community.
     When I am logged in as "Raeburn Hibbert"
     And I go to the homepage of the "EU healthy group" owner
     And I click "Edit" in the "Entity actions" region
     And the following 2 buttons should be present "Update, Request deletion"
     And the current workflow state should be "Validated"
     And I press "Request deletion"
-    Then I should see the error message 'The owner cannot be deleted since it owns the following collections: "The healthy food European project". Please set a different owner for these collections before requesting deletion.'
+    Then I should see the error message 'The owner cannot be deleted since it owns the following communities: "The healthy food European project". Please set a different owner for these communities before requesting deletion.'
 
-    # Also a moderator cannot delete the owner as it's used by the collection.
+    # Also a moderator cannot delete the owner as it's used by the community.
     When I am logged in as a moderator
     And I go to the homepage of the "EU healthy group" owner
     And I click "Edit" in the "Entity actions" region
     Then I should not see the link "Delete"
 
-    # Change the owner in the collection.
-    When I go to the homepage of the "The healthy food European project" collection
+    # Change the owner in the community.
+    When I go to the homepage of the "The healthy food European project" community
     And I click "Edit"
     And I click the 'Additional fields' tab
     And I press "Remove" at the "Owner" field
@@ -116,7 +116,7 @@ Feature: Owner moderation
     And I fill in "Owner" with "Good food eaters"
     And I press "Add owner"
     Then I should see "Good food eaters"
-    # Keep the collection as proposed.
+    # Keep the community as proposed.
     And I press "Propose"
     Then I should see the heading "The healthy food European project"
 
@@ -141,5 +141,5 @@ Feature: Owner moderation
     Then I should not see the link "EU healthy group"
 
     # Final cleanup.
-    Then I delete the "The healthy food European project" collection
+    Then I delete the "The healthy food European project" community
     And I delete the "Duche Baggins" contact information

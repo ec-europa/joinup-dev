@@ -8,8 +8,8 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\asset_release\Entity\AssetReleaseInterface;
-use Drupal\collection\Entity\CollectionInterface;
-use Drupal\collection\Exception\MissingCollectionException;
+use Drupal\collection\Entity\CommunityInterface;
+use Drupal\collection\Exception\MissingCommunityException;
 use Drupal\joinup_bundle_class\JoinupBundleClassFieldAccessTrait;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_bundle_class\LogoTrait;
@@ -45,13 +45,13 @@ class Solution extends Rdf implements SolutionInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): CollectionInterface {
+  public function getCommunity(): CommunityInterface {
     try {
-      /** @var \Drupal\collection\Entity\CollectionInterface $group */
+      /** @var \Drupal\collection\Entity\CommunityInterface $group */
       $group = $this->getGroup();
     }
     catch (MissingGroupException $exception) {
-      throw new MissingCollectionException($exception->getMessage(), 0, $exception);
+      throw new MissingCommunityException($exception->getMessage(), 0, $exception);
     }
     return $group;
   }
@@ -64,13 +64,13 @@ class Solution extends Rdf implements SolutionInterface {
     if (!$field_item || $field_item->isEmpty()) {
       throw new MissingGroupException();
     }
-    $collection = $field_item->entity;
-    if (empty($collection)) {
+    $community = $field_item->entity;
+    if (empty($community)) {
       // The collection entity can be empty in case it has been deleted and the
       // affiliated solutions have not yet been garbage collected.
       throw new MissingGroupException();
     }
-    return $collection;
+    return $community;
   }
 
   /**
@@ -130,18 +130,18 @@ class Solution extends Rdf implements SolutionInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAffiliatedCollections(): array {
-    $collections = [];
-    foreach ($this->getReferencedEntities('collection') as $collection) {
-      $collections[$collection->id()] = $collection;
+  public function getAffiliatedCommunities(): array {
+    $communities = [];
+    foreach ($this->getReferencedEntities('collection') as $community) {
+      $communities[$community->id()] = $community;
     }
-    return $collections;
+    return $communities;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getAffiliatedCollectionIds(): array {
+  public function getAffiliatedCommunityIds(): array {
     return $this->getReferencedEntityIds('collection')['rdf_entity'] ?? [];
   }
 
@@ -149,14 +149,14 @@ class Solution extends Rdf implements SolutionInterface {
    * {@inheritdoc}
    */
   public function getPinnableGroups(): array {
-    return $this->getAffiliatedCollections();
+    return $this->getAffiliatedCommunities();
   }
 
   /**
    * {@inheritdoc}
    */
   public function getPinnableGroupIds(): array {
-    return $this->getAffiliatedCollectionIds();
+    return $this->getAffiliatedCommunityIds();
   }
 
   /**

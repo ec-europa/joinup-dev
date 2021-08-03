@@ -1,11 +1,11 @@
 @api @tallinn
 Feature:
   - As a moderator I am able to set the access policy for dashboard data.
-  - As a collection member I'm able to access the dashboard data when the access
-    policy is set to collection.
+  - As a community member I'm able to access the dashboard data when the access
+    policy is set to community.
   - As an anonymous or as a regular user I'm able to access the dashboard data
     only when the access policy is set to public.
-  - As a moderator or as a Tallinn collection facilitator I'm able to access the
+  - As a moderator or as a Tallinn community facilitator I'm able to access the
     dashboard data regardless of the access policy.
   - Data returned by the dashboard endpoint is cached and the cache is
     invalidated when any of the report entities or the group entity are updated.
@@ -18,8 +18,8 @@ Feature:
       | Monica   |           |
       | Gilfoyle |           |
       | Jared    | moderator |
-    And the following collection user membership:
-      | collection                      | user     | roles       |
+    And the following community user membership:
+      | community                       | user     | roles       |
       | Tallinn Ministerial Declaration | Monica   |             |
       | Tallinn Ministerial Declaration | Gilfoyle | facilitator |
     And tallinn_report content:
@@ -57,15 +57,15 @@ Feature:
     When I go to "/admin/config/content/tallinn"
     Then the response status code should be 200
     And I should see the heading "Tallinn Settings"
-    And the radio button "Restricted (moderators and Tallinn collection facilitators)" from field "Access to Tallinn Ministerial Declaration data" should be selected
+    And the radio button "Restricted (moderators and Tallinn community facilitators)" from field "Access to Tallinn Ministerial Declaration data" should be selected
 
-    # Make the dashboard data endpoint limited to collection.
-    Given I select the radio button "Collection (moderators and Tallinn collection members)"
+    # Make the dashboard data endpoint limited to community.
+    Given I select the radio button "Community (moderators and Tallinn community members)"
     When I press "Save configuration"
     Then I should see the following success messages:
       | success messages                    |
       | Access policy successfully updated. |
-    And the radio button "Collection (moderators and Tallinn collection members)" from field "Access to Tallinn Ministerial Declaration data" should be selected
+    And the radio button "Community (moderators and Tallinn community members)" from field "Access to Tallinn Ministerial Declaration data" should be selected
 
     Given I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
@@ -76,7 +76,7 @@ Feature:
     Then the page should be cached
 
     # Edit the group entity.
-    When I go to the edit form of the "Tallinn Ministerial Declaration" collection
+    When I go to the edit form of the "Tallinn Ministerial Declaration" community
     And I fill in "Description" with "Hooli"
     When I press "Publish"
     And I go to "/api/v1/communities/tallinn/report"
@@ -112,7 +112,7 @@ Feature:
     When I go to "/admin/config/content/tallinn"
     Then the response status code should be 200
     And I should see the heading "Tallinn Settings"
-    And the radio button "Collection (moderators and Tallinn collection members)" from field "Access to Tallinn Ministerial Declaration data" should be selected
+    And the radio button "Community (moderators and Tallinn community members)" from field "Access to Tallinn Ministerial Declaration data" should be selected
 
     # Make the dashboard data endpoint public.
     Given I select the radio button "Public"

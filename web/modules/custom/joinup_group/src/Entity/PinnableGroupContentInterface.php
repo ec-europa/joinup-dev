@@ -7,14 +7,14 @@ namespace Drupal\joinup_group\Entity;
 /**
  * Interface for entities that can be pinned in groups.
  *
- * Collection and solution facilitators have the ability to "pin" selected
+ * Community and solution facilitators have the ability to "pin" selected
  * entities in their groups. A pinned entity will be prominently displayed in
  * the group homepage, giving it more visibility. Pinned items are shown first
  * and have a visual indication (a pin icon) to signify their importance to the
  * viewer.
  *
  * Currently the following bundles can be pinned:
- * - Solutions: can be pinned in all the collections they are affiliated with.
+ * - Solutions: can be pinned in all the communities they are affiliated with.
  * - Community content: can be pinned only in their own solution of collection.
  *
  * Other group content (such as custom pages) cannot be pinned.
@@ -81,7 +81,7 @@ interface PinnableGroupContentInterface extends GroupContentInterface {
    * Returns a list of groups the given entity can be pinned in.
    *
    * Community content can only be pinned in their parent collection or
-   * solution. Solutions can be pinned in any of their affiliated collections.
+   * solution. Solutions can be pinned in any of their affiliated communities.
    *
    * @return \Drupal\joinup_group\Entity\GroupInterface[]
    *   A list of groups the entity can be pinned in, keyed by group ID.
@@ -92,7 +92,7 @@ interface PinnableGroupContentInterface extends GroupContentInterface {
    * Returns a list of IDs of groups the given entity can be pinned in.
    *
    * Community content can only be pinned in their parent collection or
-   * solution. Solutions can be pinned in any of their affiliated collections.
+   * solution. Solutions can be pinned in any of their affiliated communities.
    *
    * @return string[]
    *   A list of IDs of groups the entity can be pinned in.

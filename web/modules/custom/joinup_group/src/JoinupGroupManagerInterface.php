@@ -13,7 +13,7 @@ use Drupal\og\OgMembershipInterface;
 interface JoinupGroupManagerInterface {
 
   /**
-   * Retrieves all the collections where a user is the sole owner.
+   * Retrieves all the communities where a user is the sole owner.
    *
    * @param \Drupal\Core\Session\AccountInterface $user
    *   The user to retrieve memberships for.

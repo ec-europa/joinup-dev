@@ -197,7 +197,7 @@ trait EntityTrait {
    */
   protected function forceSearchApiReindex(ContentEntityInterface $entity): void {
     // Invalidate any static cache, so that all computed fields are calculated
-    // with updated values (e.g. the "collection" computed field of solutions).
+    // with updated values (e.g. the "community" computed field of solutions).
     \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->resetCache([$entity->id()]);
     ContentEntity::indexEntity($entity);
   }

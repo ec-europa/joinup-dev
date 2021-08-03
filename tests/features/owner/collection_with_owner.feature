@@ -2,15 +2,15 @@
 Feature: Creation of owners through UI
   In order to manage owners
   As a user
-  I need to be able to create owners, or add existing, through the UI when proposing a collection.
+  I need to be able to create owners, or add existing, through the UI when proposing a community.
 
   @terms @uploadFiles:logo.png,banner.jpg
-  Scenario: Propose a collection
+  Scenario: Propose a community
     Given the following owner:
       | name                                                                                                                                                                                                                                                           | type    |
       | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fermentum ante arcu. Vivamus nisl turpis, fringilla ut ante sit amet, bibendum iaculis ante. Nullam vel nisl vehicula, rutrum ante nec, placerat dolor. Sed id odio imperdiet, efficitur lacus | Company |
     And I am logged in as a user with the "authenticated" role
-    When I go to the propose collection form
+    When I go to the propose community form
     Then the following field widgets should be present "Contact information, Owner"
     When I fill in the following:
       | Title       | Classical and Ancient Mythology                                                                      |
@@ -73,6 +73,6 @@ Feature: Creation of owners through UI
     When I press "Save"
     Then I should see the heading "Classical and Ancient Mythology"
 
-    # Clean up the collection that was created.
-    Then I delete the "Classical and Ancient Mythology" collection
+    # Clean up the community that was created.
+    Then I delete the "Classical and Ancient Mythology" community
     And I delete the "Larry Joe" contact information

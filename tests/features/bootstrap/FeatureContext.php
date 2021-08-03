@@ -2199,7 +2199,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @param string $offset
    *   An "1 based" offset of the image.
    * @param string $content_type
-   *   The type of content: collection, solution, event, news.
+   *   The type of content: community, solution, event, news.
    * @param string $image_type
    *   The field label.
    *
@@ -2209,6 +2209,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @When I select image #:offset as :content_type :image_type
    */
   public function selectImageFromTheFieldImageLibraryBrowser(string $offset, string $content_type, string $image_type): void {
+    // Rename "Collection to Community".
+    if ($content_type == 'community') {
+      $content_type = 'collection';
+    }
     $this->validateImageLibraryBrowserStepDefinitionParams($content_type, $image_type, $offset);
     $map = $this->getImageLibraryBrowserMapping();
 
@@ -2250,7 +2254,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Asserts that a given image from the image library was added to an entity.
    *
    * @param string $content_type
-   *   The type of content: collection, solution, event, news.
+   *   The type of content: community, solution, event, news.
    * @param string $title
    *   The content title.
    * @param string $image_type
@@ -2266,6 +2270,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the :title :content_type :image_type is image #:offset
    */
   public function assertImageFromTheFieldImageLibraryBrowser(string $content_type, string $title, string $image_type, string $offset): void {
+    // Rename "Collection to Community".
+    if ($content_type == 'community') {
+      $content_type = 'collection';
+    }
     $this->validateImageLibraryBrowserStepDefinitionParams($content_type, $image_type, $offset);
     $map = $this->getImageLibraryBrowserMapping();
     $entity = $this->getEntityByLabel($map[$content_type]['type'], $title, $content_type);
@@ -2325,7 +2333,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Validates the parameters passed to image library step definitions.
    *
    * @param string $content_type
-   *   The type of content: collection, solution, event, news.
+   *   The type of content: community, solution, event, news.
    * @param string $image_type
    *   The type of image; logo, banner.
    * @param string $offset

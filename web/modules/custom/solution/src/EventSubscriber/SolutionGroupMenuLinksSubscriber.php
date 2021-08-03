@@ -37,7 +37,7 @@ class SolutionGroupMenuLinksSubscriber implements EventSubscriberInterface {
     if ($solution instanceof SolutionInterface) {
       $link = [
         'uri' => Url::fromRoute('collection.glossary_page', [
-          'rdf_entity' => $solution->getCollection()->id(),
+          'rdf_entity' => $solution->getCommunity()->id(),
           'letter' => NULL,
         ])->toUriString(),
         'options' => [

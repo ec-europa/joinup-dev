@@ -89,7 +89,7 @@ class FrontPageMenuController extends ControllerBase {
    *
    * For nodes, the redirect will be to the collection/solution to which they
    * belong.
-   * For collections/solutions, the redirect will be to their canonical page.
+   * For communities/solutions, the redirect will be to their canonical page.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The content entity being handled.

@@ -6,7 +6,7 @@ dependencies:
     - filter.format.full_html
 template: group_content_subscription
 label: 'Group content subscription'
-description: 'Digest message sent when new content is published in a user''s subscribed collections and solutions'
+description: 'Digest message sent when new content is published in a user''s subscribed communities and solutions'
 text:
   -
     value: '<p>[message:field_group_content:entity]</p>'

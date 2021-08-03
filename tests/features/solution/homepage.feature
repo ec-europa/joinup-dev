@@ -63,8 +63,8 @@ Feature: Solution homepage
     And I should see the "Jira will be down for maintenance" tile
     And I should not see the "Maintenance page" tile
 
-  Scenario: A link to the first collection a solution is affiliated to should be shown in the solution header.
-    Given collections:
+  Scenario: A link to the first community a solution is affiliated to should be shown in the solution header.
+    Given communities:
       | title              | state     |
       | Disappointed Steel | validated |
       | Random Arm         | validated |

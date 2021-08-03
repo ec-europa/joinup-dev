@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_community_content\Entity;
 
-use Drupal\collection\Entity\NodeCollectionContentTrait;
+use Drupal\collection\Entity\NodeCommunityContentTrait;
 use Drupal\joinup_bundle_class\JoinupBundleClassMetaEntityTrait;
 use Drupal\joinup_core\Entity\OutdatedContentTrait;
 use Drupal\joinup_featured\FeaturedContentTrait;
@@ -29,7 +29,7 @@ abstract class CommunityContentBase extends Node implements CommunityContentInte
   use EntityWorkflowStateTrait;
   use FeaturedContentTrait;
   use JoinupBundleClassMetaEntityTrait;
-  use NodeCollectionContentTrait;
+  use NodeCommunityContentTrait;
   use OutdatedContentTrait;
   use PinnableGroupContentTrait;
   use PinnableToFrontpageTrait;

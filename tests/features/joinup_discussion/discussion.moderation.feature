@@ -10,20 +10,20 @@ Feature: Discussion moderation
       | Username        |
       | Gabe Rogers     |
       | Brigham Salvage |
-    And the following collection:
-      | title            | DIY collection                           |
-      | description      | Collection of "Do it yourself" projects. |
+    And the following community:
+      | title            | DIY community                           |
+      | description      | Community of "Do it yourself" projects. |
       | logo             | logo.png                                 |
       | content creation | members                                  |
       | state            | validated                                |
-    And the following collection user membership:
-      | collection     | user            | roles       |
-      | DIY collection | Gabe Rogers     | member      |
-      | DIY collection | Brigham Salvage | facilitator |
+    And the following community user membership:
+      | community     | user            | roles       |
+      | DIY community | Gabe Rogers     | member      |
+      | DIY community | Brigham Salvage | facilitator |
 
-    # A member of the collection can create a discussion.
+    # A member of the community can create a discussion.
     When I am logged in as "Gabe Rogers"
-    And I go to the homepage of the "DIY collection" collection
+    And I go to the homepage of the "DIY community" community
     And I click "Add discussion" in the plus button menu
     And I fill in the following:
       | Title   | Best method to cut logs        |
@@ -95,14 +95,14 @@ Feature: Discussion moderation
       | Vince Rome    | vince.rome@example.com    |
       | Lance Rustici | lance.rustici@example.com |
       | Denny Winslow | denny.winslow@example.com |
-    And the following collection:
+    And the following community:
       | title            | Valentine's day survival kit                   |
       | description      | How to survive the most scary day of the year. |
       | logo             | logo.png                                       |
       | content creation | members                                        |
       | state            | validated                                      |
-    And the following collection user membership:
-      | collection                   | user          | roles       |
+    And the following community user membership:
+      | community                    | user          | roles       |
       | Valentine's day survival kit | Vince Rome    | member      |
       | Valentine's day survival kit | Lance Rustici | facilitator |
     And discussion content:

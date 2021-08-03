@@ -10,7 +10,7 @@ dependencies:
 _core:
   default_config_hash: jgzVZMiTkzndw2OXTvFznC8I0CqkWdxVOOUwUBZxYWo
 id: collection_content
-label: 'Collection content'
+label: 'Community content'
 module: views
 description: ''
 tag: ''
@@ -198,7 +198,7 @@ display:
           not: false
           plugin_id: search_api
       display_extenders: {  }
-      display_comment: 'The collection content as displayed on the collection overview. This is displayed as an extra field on the Collection entity. See collection_entity_extra_field_info() and collection_rdf_entity_view().'
+      display_comment: 'The community content as displayed on the community overview. This is displayed as an extra field on the Community entity. See collection_entity_extra_field_info() and collection_rdf_entity_view().'
     cache_metadata:
       max-age: -1
       contexts:

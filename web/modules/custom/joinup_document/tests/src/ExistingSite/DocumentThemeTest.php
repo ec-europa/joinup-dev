@@ -31,7 +31,7 @@ class DocumentThemeTest extends ExistingSiteBase {
    * Tests that the logo affects relative fields in the listing tile.
    */
   public function testDocumentLogoListing(): void {
-    $collection = $this->createRdfEntity([
+    $community = $this->createRdfEntity([
       'rid' => 'collection',
       'label' => $this->randomString(),
       'field_ar_state' => 'validated',
@@ -40,7 +40,7 @@ class DocumentThemeTest extends ExistingSiteBase {
     $document = $this->createNode([
       'type' => 'document',
       'title' => 'Document title',
-      'og_audience' => $collection->id(),
+      'og_audience' => $community->id(),
       'body' => 'Hello document body',
       'field_keywords' => ['keyword_sample'],
       'field_short_title' => 'DocTitle',

@@ -1,11 +1,11 @@
 @api @group-a
-Feature: Subscribing to community content in collections
-  As a member of a collection
+Feature: Subscribing to community content in communities
+  As a member of a community
   I want to receive a periodic digest listing newly published content
   So that I can stay informed
 
   Background:
-    Given the following collections:
+    Given the following communities:
       | title                | state     |
       | Products of Bulgaria | validated |
       | Cities of Bulgaria   | validated |
@@ -14,7 +14,7 @@ Feature: Subscribing to community content in collections
       | hristo   | hristo@example.bg | Hristo     | Draganov     | daily                  |
       | bisera   | bisera@example.bg | Bisera     | Kaloyancheva | weekly                 |
       | kalin    | kalin@primer.bg   | Kalin      | Antov        | monthly                |
-    And the following collection user memberships:
+    And the following community user memberships:
       | collection           | user   | roles       |
       | Products of Bulgaria | hristo |             |
       | Products of Bulgaria | bisera |             |
@@ -22,7 +22,7 @@ Feature: Subscribing to community content in collections
       | Cities of Bulgaria   | hristo |             |
       | Cities of Bulgaria   | bisera |             |
       | Cities of Bulgaria   | kalin  | facilitator |
-    And the following collection content subscriptions:
+    And the following community content subscriptions:
       | collection           | user   | subscriptions                        |
       | Products of Bulgaria | hristo | discussion, event, news, solution    |
       | Products of Bulgaria | bisera | discussion, document, news           |
@@ -34,7 +34,7 @@ Feature: Subscribing to community content in collections
     And the mail collector cache is empty
 
   @email
-  Scenario: Receive a digest of content that is published in my collections
+  Scenario: Receive a digest of content that is published in my communities
     Given discussion content:
       | title      | body                      | collection           | state     | author |
       | Duck liver | Rich buttery and delicate | Products of Bulgaria | validated | hristo |

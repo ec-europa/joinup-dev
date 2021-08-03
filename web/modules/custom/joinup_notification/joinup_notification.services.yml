@@ -15,7 +15,7 @@ services:
     tags:
       - { name: event_subscriber }
   joinup_notification.collection.rdf.subscriber:
-    class: Drupal\joinup_notification\EventSubscriber\CollectionRdfSubscriber
+    class: Drupal\joinup_notification\EventSubscriber\CommunityRdfSubscriber
     parent: joinup_notification.notification_subscriber_base
     tags:
       - { name: event_subscriber }

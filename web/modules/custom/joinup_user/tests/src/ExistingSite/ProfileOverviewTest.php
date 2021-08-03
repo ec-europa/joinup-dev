@@ -70,18 +70,18 @@ class ProfileOverviewTest extends JoinupExistingSiteTestBase {
     // Sign a user up for more than 100 groups in total. Also the owner will
     // transparently become a member of all these groups.
     for ($count = 0; $count < 52; $count++) {
-      $collection = $this->createRdfEntity([
+      $community = $this->createRdfEntity([
         'rid' => 'collection',
-        'label' => 'Collection ' . $count,
+        'label' => 'Community ' . $count,
         'field_ar_state' => 'validated',
         'uid' => $this->owner->id(),
       ]);
 
-      $og_membership_manager->createMembership($collection, $this->member)->save();
+      $og_membership_manager->createMembership($community, $this->member)->save();
       $solution = $this->createRdfEntity([
         'rid' => 'solution',
         'label' => 'Solution ' . $count,
-        'collection' => $collection,
+        'collection' => $community,
         'field_is_state' => 'validated',
         'uid' => $this->owner->id(),
       ]);
@@ -97,33 +97,33 @@ class ProfileOverviewTest extends JoinupExistingSiteTestBase {
     $this->drupalLogin($this->owner);
     $this->drupalGet("/user/{$this->owner->id()}");
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContainsOnce('You have joined a large number of collections and solutions.');
+    $this->assertSession()->pageTextContainsOnce('You have joined a large number of communities and solutions.');
 
     // Assert the user does not see the same message on another user's profile
     // that is also a member of too many groups.
     $this->drupalGet("/user/{$this->member->id()}");
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextNotContains('You have joined a large number of collections and solutions.');
+    $this->assertSession()->pageTextNotContains('You have joined a large number of communities and solutions.');
 
     // Assert that changing to the member user and visiting their own profile
     // will show the warning (ensure lack of message is not cached).
     $this->drupalLogin($this->member);
     $this->drupalGet("/user/{$this->member->id()}");
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContainsOnce('You have joined a large number of collections and solutions.');
+    $this->assertSession()->pageTextContainsOnce('You have joined a large number of communities and solutions.');
 
     // Assert that the user that is logged in does not see their message in
     // other profiles without many groups.
     $this->drupalGet("/user/{$this->authenticated->id()}");
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextNotContains('You have joined a large number of collections and solutions.');
+    $this->assertSession()->pageTextNotContains('You have joined a large number of communities and solutions.');
 
     // Assert anonymous users cannot see the message in a profile with many
     // groups.
     $this->drupalLogout();
     $this->drupalGet("/user/{$this->owner->id()}");
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextNotContains('You have joined a large number of collections and solutions.');
+    $this->assertSession()->pageTextNotContains('You have joined a large number of communities and solutions.');
   }
 
 }

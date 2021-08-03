@@ -16,9 +16,9 @@ class TcaForm extends TcaFormBase {
   /**
    * The collection group from the route.
    *
-   * @var \Drupal\collection\Entity\CollectionInterface
+   * @var \Drupal\collection\Entity\CommunityInterface
    */
-  protected $collection;
+  protected $community;
 
   /**
    * {@inheritdoc}

@@ -97,17 +97,17 @@ class JoinupFederationInvalidTestingPipeline extends JoinupFederationPipelinePlu
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): string {
+  public function getCommunity(): string {
     switch ($this->stateStorage->get('joinup_federation.test.collection')) {
       case 'missed':
         return '';
 
       case 'invalid':
-        return 'http://invalid-collection-id';
+        return 'http://invalid-community-id';
 
       case 'from_annotation':
         $this->pluginDefinition['collection'] = 'http://from-annotation';
-        return parent::getCollection();
+        return parent::getCommunity();
     }
     throw new \Exception('Invalid test case');
   }

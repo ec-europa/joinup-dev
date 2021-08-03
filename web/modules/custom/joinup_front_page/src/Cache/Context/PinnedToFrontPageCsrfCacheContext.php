@@ -22,7 +22,7 @@ use Drupal\Core\Cache\Context\CacheContextInterface;
  * introduces a high granularity in the cache. We are still using it since the
  * contextual links placeholders take up very little cache space, and we don't
  * want to lose the ability to detect regressions in cacheability of important
- * pages such as the collections / solutions overviews and homepages.
+ * pages such as the communities / solutions overviews and homepages.
  *
  * This cache context has an identical twin but the code has not been put in a
  * shared base class to avoid introducing unwanted module dependencies. This

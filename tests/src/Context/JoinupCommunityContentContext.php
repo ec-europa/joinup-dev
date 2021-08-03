@@ -31,7 +31,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
   use TraversingTrait;
 
   /**
-   * Asserts that a tile is not marked as shared from another collection.
+   * Asserts that a tile is not marked as shared from another community.
    *
    * @param string $heading
    *   The heading of the tile.
@@ -50,20 +50,20 @@ class JoinupCommunityContentContext extends RawDrupalContext {
   }
 
   /**
-   * Asserts that a tile is marked as shared from a certain collection.
+   * Asserts that a tile is marked as shared from a certain community.
    *
    * @param string $heading
    *   The heading of the tile.
-   * @param string $collection
-   *   The collection that the content was shared from.
+   * @param string $community
+   *   The community that the content was shared from.
    *
    * @throws |Exception
    *   Thrown when the tile is not marked as shared, or it's marked as shared
-   *   from the wrong collection.
+   *   from the wrong community.
    *
-   * @Then the :heading tile should be marked as shared from :collection
+   * @Then the :heading tile should be marked as shared from :community
    */
-  public function assertTileMarkedAsShared(string $heading, string $collection): void {
+  public function assertTileMarkedAsShared(string $heading, string $community): void {
     $element = $this->getTileByHeading($heading);
 
     $share = $element->find('css', '.icon--shared');
@@ -78,8 +78,8 @@ class JoinupCommunityContentContext extends RawDrupalContext {
     }
 
     $title_attribute = $parent->getAttribute('title');
-    if ($title_attribute !== "Shared from $collection") {
-      throw new \Exception("The tile '$heading' is marked as shared from $title_attribute, but it should be '$collection'.");
+    if ($title_attribute !== "Shared from $community") {
+      throw new \Exception("The tile '$heading' is marked as shared from $title_attribute, but it should be '$community'.");
     }
   }
 

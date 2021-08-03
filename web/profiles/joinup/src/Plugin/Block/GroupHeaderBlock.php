@@ -10,7 +10,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides the block used as a header on collection and solution pages.
+ * Provides the block used as a header on community and solution pages.
  *
  * This header contains the name of the group, as well as some statistics and
  * the join / leave buttons.
@@ -71,7 +71,7 @@ class GroupHeaderBlock extends BlockBase implements ContainerFactoryPluginInterf
     $view_builder = $this->entityTypeManager->getViewBuilder($group->getEntityTypeId());
 
     // We render the related view mode only in this block. Additional modules,
-    // like collection and solution, will add more elements directly.
+    // like community and solution, will add more elements directly.
     $build['group'] = $view_builder->view($group, 'group_header');
 
     return $build;

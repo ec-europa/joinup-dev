@@ -5,7 +5,7 @@ Feature: "Add event" visibility options.
   I need to be able to add "Event" content through UI.
 
   Scenario: "Add event" button should not be shown to normal members, authenticated users and anonymous users.
-    Given the following collection:
+    Given the following community:
       | title  | Collective Ragged tower |
       | logo   | logo.png                |
       | banner | banner.jpg              |
@@ -36,7 +36,7 @@ Feature: "Add event" visibility options.
 
   @terms @uploadFiles:test.zip
   Scenario: Add event as a facilitator.
-    Given the following collection:
+    Given the following community:
       | title  | Collective The Luscious Bridges |
       | logo   | logo.png                        |
       | banner | banner.jpg                      |

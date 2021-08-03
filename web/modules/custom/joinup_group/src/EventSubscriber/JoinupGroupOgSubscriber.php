@@ -72,7 +72,7 @@ class JoinupGroupOgSubscriber implements EventSubscriberInterface {
   /**
    * Determines if a group can be updated without changing workflow state.
    *
-   * This applies both to collections and solutions. It also updates the label
+   * This applies both to communities and solutions. It also updates the label
    * for the button that saves a group without changing state and moves it to
    * the leftmost position.
    *

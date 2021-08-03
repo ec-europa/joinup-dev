@@ -33,7 +33,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
   protected $configFactory;
 
   /**
-   * Constructs a CollectionWorkflowStatePermissions object.
+   * Constructs a CommunityWorkflowStatePermissions object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.

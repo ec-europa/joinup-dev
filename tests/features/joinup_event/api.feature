@@ -8,7 +8,7 @@ Feature: Event API
     Given the following owner:
       | name        | type    |
       | Event Owner | Company |
-    And the following collection:
+    And the following community:
       | title            | Le Event Heureux         |
       | owner            | Event Owner              |
       | logo             | logo.png                 |

@@ -14,7 +14,7 @@ use Drupal\rdf_entity\RdfInterface;
 /**
  * Interface for collection entities in Joinup.
  */
-interface CollectionInterface extends RdfInterface, EntityPublicationTimeInterface, EntityWorkflowStateInterface, GroupInterface, FeaturedContentInterface, ArchivableEntityInterface {
+interface CommunityInterface extends RdfInterface, EntityPublicationTimeInterface, EntityWorkflowStateInterface, GroupInterface, FeaturedContentInterface, ArchivableEntityInterface {
 
   /**
    * Returns the solutions that are affiliated with this collection.

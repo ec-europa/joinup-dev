@@ -1,21 +1,21 @@
 @api
-Feature: Collection RSS feed.
-  In order to stay up to date with collection updates
+Feature: Community RSS feed.
+  In order to stay up to date with community updates
   As a user of Joinup
-  I want to subscribe to RSS feeds for each collection
+  I want to subscribe to RSS feeds for each community
 
-  Scenario: Collection RSS feed.
+  Scenario: Community RSS feed.
     Given users:
       | Username | First name | Family name |
       | alejake  | Aleta      | Jakeman     |
       | forest   | Forest     | Robinson    |
       | otto     | Otto       | Drake       |
-    And collections:
+    And communities:
       | title             | state     |
       | Indigo Monkey     | validated |
       | Dreaded Scissors  | validated |
       | Remote Electrical | draft     |
-    And collection user memberships:
+    And community user memberships:
       | collection       | user    | role        |
       | Indigo Monkey    | alejake | facilitator |
       | Indigo Monkey    | forest  | facilitator |
@@ -46,14 +46,14 @@ Feature: Collection RSS feed.
       | List of devices   | Available remote electrical devices.            | validated |        | 2019-02-08 09:00 +0100 | Remote Electrical |
 
     When I am an anonymous user
-    And I go to the homepage of the "Indigo Monkey" collection
-    Then the page should contain an RSS autodiscovery link with title "Latest updates from the Indigo Monkey collection" pointing to "/collection/indigo-monkey/feed.xml"
+    And I go to the homepage of the "Indigo Monkey" community
+    Then the page should contain an RSS autodiscovery link with title "Latest updates from the Indigo Monkey community" pointing to "/collection/indigo-monkey/feed.xml"
     And the page should contain 1 RSS autodiscovery link
     When I click "RSS feed" in the "Entity actions" region
     Then I should see a valid RSS feed
     And the RSS feed channel elements should be:
-      | title       | Latest updates from the Indigo Monkey collection                                                                   |
-      | description | This feed contains the latest published content from the Indigo Monkey collection, including the newest solutions. |
+      | title       | Latest updates from the Indigo Monkey community                                                                   |
+      | description | This feed contains the latest published content from the Indigo Monkey community, including the newest solutions. |
       | link        | /collection/indigo-monkey                                                                                          |
     And the RSS feed should have 7 items
     And the RSS feed items should be:
@@ -66,14 +66,14 @@ Feature: Collection RSS feed.
       | Custom page: Indigo variations                             | /collection/indigo-monkey/indigo-variations                              | The four major tones of indigo are listed here.                                        | Sun, 15 Oct 2017 18:30:00 +0200 | Forest Robinson |
       | Document: Indigo technical paper                           | /collection/indigo-monkey/document/indigo-technical-paper                | All technical information about the rare indigo monkeys.                               | Mon, 30 May 2016 12:21:00 +0200 | Aleta Jakeman   |
 
-    When I go to the homepage of the "Dreaded Scissors" collection
-    Then the page should contain an RSS autodiscovery link with title "Latest updates from the Dreaded Scissors collection" pointing to "/collection/dreaded-scissors/feed.xml"
+    When I go to the homepage of the "Dreaded Scissors" community
+    Then the page should contain an RSS autodiscovery link with title "Latest updates from the Dreaded Scissors community" pointing to "/collection/dreaded-scissors/feed.xml"
     And the page should contain 1 RSS autodiscovery link
     When I click "RSS feed" in the "Entity actions" region
     Then I should see a valid RSS feed
     And the RSS feed channel elements should be:
-      | title       | Latest updates from the Dreaded Scissors collection                                                                   |
-      | description | This feed contains the latest published content from the Dreaded Scissors collection, including the newest solutions. |
+      | title       | Latest updates from the Dreaded Scissors community                                                                   |
+      | description | This feed contains the latest published content from the Dreaded Scissors community, including the newest solutions. |
       | link        | /collection/dreaded-scissors                                                                                          |
     And the RSS feed items should be:
       | title                                   | link                                                                | description                                                                                                                                                                                            | publication date                | author     |
@@ -90,7 +90,7 @@ Feature: Collection RSS feed.
     Then I should see the link "RSS feed" in the "Entity actions" region
     And the page should contain 1 RSS autodiscovery links
 
-    When I am logged in as a facilitator of the "Remote Electrical" collection
-    And I go to the homepage of the "Remote Electrical" collection
+    When I am logged in as a facilitator of the "Remote Electrical" community
+    And I go to the homepage of the "Remote Electrical" community
     Then I should not see the link "RSS feed" in the "Entity actions" region
     And the page should contain 0 RSS autodiscovery links

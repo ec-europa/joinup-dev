@@ -32,7 +32,7 @@ class AssetReleaseWorkflowStatePermission extends PluginBase implements Workflow
   protected $configFactory;
 
   /**
-   * Constructs a CollectionWorkflowStatePermissions object.
+   * Constructs a CommunityWorkflowStatePermissions object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.

@@ -5,7 +5,7 @@ dependencies:
   config:
     - filter.format.full_html
 template: col_arc_del_sol_generic
-label: 'Collection archive/delete affiliates generic'
+label: 'Community archive/delete affiliates generic'
 description: 'Template 12 - This will be sent instead of template 11 if there are affiliates left in the solution'
 text:
   -

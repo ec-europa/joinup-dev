@@ -16,22 +16,22 @@ class JoinupEuLoginRouteSubscriber extends RouteSubscriberBase {
   /**
    * {@inheritdoc}
    */
-  protected function alterRoutes(RouteCollection $collection): void {
+  protected function alterRoutes(RouteCollection $community): void {
     // Remove the route to bulk add CAS users. This functionality is offered by
     // the CAS module to all roles with the `administer users` permission but
     // this functionality is not required in the functional specifications, and
     // is not clear for the moderators in its current form.
-    $collection->remove('cas.bulk_add_cas_users');
+    $community->remove('cas.bulk_add_cas_users');
 
     // User registration should redirect to EU Login register.
-    if ($route = $collection->get('user.register')) {
+    if ($route = $community->get('user.register')) {
       $route
         ->setDefaults(['_controller' => UserRegisterRedirectController::class . '::redirectUserRegister'])
         ->setRequirements(['_user_is_logged_in' => 'FALSE']);
     }
 
     // Password reset should not be available anymore.
-    if ($route = $collection->get('user.login')) {
+    if ($route = $community->get('user.login')) {
       $route->setRequirements(['_access' => 'FALSE']);
     }
   }

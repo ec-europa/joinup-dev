@@ -1,8 +1,8 @@
 @api @javascript @terms @clearStaticCache @group-a
-Feature: Tests the collection last update time.
+Feature: Tests the community last update time.
 
-  Scenario: As a user visiting a collection, I want to see the collection last
-    update time as the maximum changed time of the collection itself, its
+  Scenario: As a user visiting a community, I want to see the community last
+    update time as the maximum changed time of the community itself, its
     affiliate solutions, community content and custom pages.
 
     Given users:
@@ -14,7 +14,7 @@ Feature: Tests the collection last update time.
     And the following owner:
       | name | type                  |
       | Sean | Private Individual(s) |
-    And the following collection:
+    And the following community:
       | title             | Household Wizard |
       | state             | validated        |
       | modification date | 2011-05-06T21:56 |
@@ -26,9 +26,9 @@ Feature: Tests the collection last update time.
       | Mosquito Killer | Household Wizard | proposed  | 2017-05-03T11:45  | 2001-01-02    | The Cleaner | Your Cleaning Company | Sean  | Quiet nights                   |
     And I am logged in as "The Cleaner"
 
-    Given I go to the homepage of the "Household Wizard" collection
+    Given I go to the homepage of the "Household Wizard" community
     # The newest is 'Mosquito Killer' solution but because is not validated, it
-    # doesn't count. The winner is 'Household Wizard' collection because is
+    # doesn't count. The winner is 'Household Wizard' community because is
     # newer than 'Roof Hole Cover' solution.
     Then the response should contain "2011-05-06T21:56"
 
@@ -37,7 +37,7 @@ Feature: Tests the collection last update time.
       | Get Rid of Rats | Document      | validated | 2012-01-17T07:38 | 2001-01-04 | Household Wizard | Rats everywhere... |
 
     And I reload the page
-    # The document is the newest thus will give the collection updated time.
+    # The document is the newest thus will give the community updated time.
     Then the response should contain "2012-01-17T07:38"
 
     Given discussion content:
@@ -45,7 +45,7 @@ Feature: Tests the collection last update time.
       | Household Forum | validated | 2013-04-19T15:18 | 2001-01-05 | Household Wizard |
 
     And I reload the page
-    # The discussion is the newest thus will give the collection updated time.
+    # The discussion is the newest thus will give the community updated time.
     Then the response should contain "2013-04-19T15:18"
 
     Given event content:
@@ -53,7 +53,7 @@ Feature: Tests the collection last update time.
       | Cleaning Day | validated | 2014-06-06T22:46 | 2001-01-06 | Household Wizard |
 
     And I reload the page
-    # The event is the newest thus will give the collection updated time.
+    # The event is the newest thus will give the community updated time.
     Then the response should contain "2014-06-06T22:46"
 
     Given news content:
@@ -62,7 +62,7 @@ Feature: Tests the collection last update time.
 
     And I reload the page
     # The event is the newest but is not validated, so it doesn't influence the
-    # collection updated time.
+    # community updated time.
     Then the response should not contain "2015-11-08T01:05"
     But the response should contain "2014-06-06T22:46"
 
@@ -71,7 +71,7 @@ Feature: Tests the collection last update time.
       | The Kids Space | 2016-05-06T05:29 | 2001-01-07 | Household Wizard |
 
     And I reload the page
-    # The custom page is the newest thus will give the collection updated time.
+    # The custom page is the newest thus will give the community updated time.
     Then the response should contain "2016-05-06T05:29"
 
     When I go to the edit form of the "Get Rid of Rats" document
@@ -93,7 +93,7 @@ Feature: Tests the collection last update time.
     And I open the header local tasks menu
     Given I click "Delete"
     When I press "Delete"
-    And I go to the homepage of the "Household Wizard" collection
+    And I go to the homepage of the "Household Wizard" community
     # The deletion of community content node changes the last updated time.
     Then I should see "few seconds ago"
 
@@ -106,7 +106,7 @@ Feature: Tests the collection last update time.
     And I select "Demography" from "Topic"
     And I press "Publish"
 
-    When I go to the homepage of the "Household Wizard" collection
+    When I go to the homepage of the "Household Wizard" community
     Then I should see "few seconds ago"
 
     Given I wait until the page contains the text "about a minute ago"
@@ -116,6 +116,6 @@ Feature: Tests the collection last update time.
     Given I go to the edit form of the "Roof Hole Cover" solution
     And I click "Delete"
     When I press "Delete"
-    And I go to the homepage of the "Household Wizard" collection
+    And I go to the homepage of the "Household Wizard" community
     # The deletion of community content node refreshes the last updated time.
     Then I should see "few seconds ago"

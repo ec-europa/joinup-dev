@@ -8,15 +8,15 @@ use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\meta_entity\MetaEntityRepositoryInterface;
 use Drupal\og\OgAccessInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Controller class for collection settings.
+ * Controller class for community settings.
  */
-class CollectionSettingsController extends ControllerBase {
+class CommunitySettingsController extends ControllerBase {
 
   /**
    * The meta entity repository service.
@@ -58,14 +58,14 @@ class CollectionSettingsController extends ControllerBase {
   /**
    * Provides a controller for the 'collection.settings_form' route title.
    *
-   * @param \Drupal\collection\Entity\CollectionInterface $rdf_entity
+   * @param \Drupal\collection\Entity\CommunityInterface $rdf_entity
    *   The collection.
    *
    * @return \Drupal\Component\Render\MarkupInterface
    *   The content as a render array.
    */
-  public function title(CollectionInterface $rdf_entity): MarkupInterface {
-    return $this->t('@collection collection settings', [
+  public function title(CommunityInterface $rdf_entity): MarkupInterface {
+    return $this->t('@collection community settings', [
       '@collection' => $rdf_entity->label(),
     ]);
   }
@@ -73,13 +73,13 @@ class CollectionSettingsController extends ControllerBase {
   /**
    * Provides a controller for the 'collection.settings_form' route.
    *
-   * @param \Drupal\collection\Entity\CollectionInterface $rdf_entity
+   * @param \Drupal\collection\Entity\CommunityInterface $rdf_entity
    *   The collection.
    *
    * @return array
    *   The content as a render array.
    */
-  public function settings(CollectionInterface $rdf_entity): array {
+  public function settings(CommunityInterface $rdf_entity): array {
     $meta_entity = $this->metaEntityRepository->getMetaEntityForEntity($rdf_entity, 'collection_settings');
     $form_state_additions = [
       'redirect' => Url::fromRoute('entity.rdf_entity.canonical', [
@@ -92,13 +92,13 @@ class CollectionSettingsController extends ControllerBase {
   /**
    * Povides an access controller for the 'collection.settings_form' route.
    *
-   * @param \Drupal\collection\Entity\CollectionInterface $rdf_entity
+   * @param \Drupal\collection\Entity\CommunityInterface $rdf_entity
    *   The collection.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function access(CollectionInterface $rdf_entity): AccessResultInterface {
+  public function access(CommunityInterface $rdf_entity): AccessResultInterface {
     $meta_entity = $this->metaEntityRepository->getMetaEntityForEntity($rdf_entity, 'collection_settings');
     $access_result = $meta_entity->access('update', NULL, TRUE);
     if ($access_result->isAllowed()) {

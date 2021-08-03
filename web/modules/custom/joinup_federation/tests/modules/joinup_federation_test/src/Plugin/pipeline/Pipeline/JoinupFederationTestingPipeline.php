@@ -31,7 +31,7 @@ class JoinupFederationTestingPipeline extends JoinupFederationPipelinePluginBase
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): string {
+  public function getCommunity(): string {
     return 'http://catalog';
   }
 

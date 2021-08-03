@@ -7,11 +7,11 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     Given users:
       | Username | Roles  |
       | <user>   | <role> |
-    And the following collection:
+    And the following community:
       | title | A World of Things |
       | state | validated         |
-    And the following collection user membership:
-      | collection        | user   | roles     |
+    And the following community user membership:
+      | community         | user   | roles     |
       | A World of Things | <user> | <og role> |
     And the following solution:
       | title      | Things To Come    |
@@ -19,7 +19,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | state      | validated         |
 
     Given I am logged in as <user>
-    When I go to the "A World of Things" collection
+    When I go to the "A World of Things" community
 
     Then I should see the following group menu items in the specified order:
       | text     |
@@ -62,7 +62,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | title    | synonyms                | summary             | definition                       | collection        |
       | XRatings | XRT,X.R.T.,extraratings | Summary of XRatings | Long, long body definition field | A World of Things |
 
-    When I go to the "A World of Things" collection
+    When I go to the "A World of Things" community
     And I click "Glossary"
     And I should see the link "XFiles"
     And I should see "Summary of the main glossary term definition"
@@ -82,7 +82,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | Colors   | CLR                   | Summary of Colors       | Colors definition field                     | A World of Things |
       | Smells   | SML                   | Smells Like Teen Spirit | With the lights out, it's less dangerous... | A World of Things |
 
-    When I go to the "A World of Things" collection
+    When I go to the "A World of Things" community
     And I click "Glossary"
     Then the page should not be cached
     And I should see the link "Alphabet"
@@ -147,9 +147,9 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | nick | moderator |             | should see      |
       | wade |           | facilitator | should not see  |
 
-  Scenario: Glossary terms should be shown as links in collection content
-    Given collection:
-      | title       | Collection With Glossary                                                                        |
+  Scenario: Glossary terms should be shown as links in community content
+    Given community:
+      | title       | Community With Glossary                                                                        |
       | state       | validated                                                                                       |
       | description | Colors of Paradise. Abbreviated as CLR. <a href="/contact"><strong>Colors of Dream</strong></a> |
       | abstract    | The Alphabet is back and it's s/ashy.                                                           |
@@ -157,7 +157,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | title       | Under The Bridge         |
       | description | No Colors                |
       | state       | validated                |
-      | collection  | Collection With Glossary |
+      | collection  | Community With Glossary |
     And release:
       | title          | Summer of 69          |
       | release number | 6.22                  |
@@ -173,10 +173,10 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | Schedule | Colors everywhere | Under The Bridge |
     And discussion content:
       | title        | content                   | collection               | state     |
-      | The Big Talk | The Alphabet. Call it ABC | Collection With Glossary | validated |
+      | The Big Talk | The Alphabet. Call it ABC | Community With Glossary | validated |
     And document content:
       | title             | body             | collection               | state     |
-      | Authentic Papyrus | Alphabet is back | Collection With Glossary | validated |
+      | Authentic Papyrus | Alphabet is back | Community With Glossary | validated |
     And event content:
       | title      | body                              | solution         | state     |
       | Soho Night | Any cOLOrs You Like. Maybe colrs? | Under The Bridge | validated |
@@ -185,11 +185,11 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | Won at Bingo! | aBC is for ALPHABET what CLR is for Colors | Under The Bridge | validated |
     And glossary content:
       | title    | synonyms  | summary                  | definition                  | collection               |
-      | Alphabet | ABC       | Summary of Alphabet      | Long, long definition field | Collection With Glossary |
-      | Colors   | CLR,colrs | Summary of Colors        | Colors definition field     | Collection With Glossary |
-      | S/ashy   | /S\|ASH   | S/ashes Like an Ion Beam | Cutting things in ha/f      | Collection With Glossary |
+      | Alphabet | ABC       | Summary of Alphabet      | Long, long definition field | Community With Glossary |
+      | Colors   | CLR,colrs | Summary of Colors        | Colors definition field     | Community With Glossary |
+      | S/ashy   | /S\|ASH   | S/ashes Like an Ion Beam | Cutting things in ha/f      | Community With Glossary |
 
-    When I go to the "Collection With Glossary" collection
+    When I go to the "Community With Glossary" community
     When I click "Overview"
     And I click "Alphabet"
     Then I see the heading "Alphabet"
@@ -257,57 +257,57 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | fac      |           |
       | mod      | moderator |
       | fac1     |           |
-    And the following collections:
+    And the following communities:
       | title                    | description                                                                                            | state     |
-      | Collection With Glossary | The Battle of Evermore of the batTle and the BATTLE. Call it everMore or EVERmore. Also, battle again. | validated |
-      | The Other Collection     | desc                                                                                                   | validated |
-    And the following collection user membership:
-      | collection               | user | roles       |
-      | Collection With Glossary | fac  | facilitator |
-      | The Other Collection     | fac1 | facilitator |
+      | Community With Glossary | The Battle of Evermore of the batTle and the BATTLE. Call it everMore or EVERmore. Also, battle again. | validated |
+      | The Other Community     | desc                                                                                                   | validated |
+    And the following community user membership:
+      | community               | user | roles       |
+      | Community With Glossary | fac  | facilitator |
+      | The Other Community     | fac1 | facilitator |
     And glossary content:
       | title        | synonyms | definition                                | collection               |
-      | battle       | evermore | def                                       | Collection With Glossary |
-      | battle again |          | Not to be confused with a battle of sheep | Collection With Glossary |
+      | battle       | evermore | def                                       | Community With Glossary |
+      | battle again |          | Not to be confused with a battle of sheep | Community With Glossary |
 
     Given I am an anonymous user
-    When I go to the "Collection With Glossary" collection
+    When I go to the "Community With Glossary" community
     Then I should not see the link "Settings" in the "Entity actions" region
     When I click "Glossary"
     Then I should not see the link "Glossary settings"
 
     Given I am logged in as regular
-    When I go to the "Collection With Glossary" collection
+    When I go to the "Community With Glossary" community
     Then I should not see the link "Settings" in the "Entity actions" region
     When I click "Glossary"
     Then I should not see the link "Glossary settings"
 
     Given I am logged in as fac1
-    When I go to the "Collection With Glossary" collection
+    When I go to the "Community With Glossary" community
     Then I should not see the link "Settings" in the "Entity actions" region
     When I click "Glossary"
     Then I should not see the link "Glossary settings"
 
     Given I am logged in as mod
-    When I go to the "Collection With Glossary" collection
+    When I go to the "Community With Glossary" community
     Then I should see the link "Settings" in the "Entity actions" region
     When I click "Glossary"
     Then I should see the link "Glossary settings"
 
     Given I am logged in as fac
-    When I go to the "Collection With Glossary" collection
+    When I go to the "Community With Glossary" community
     And I click "Settings" in the "Entity actions" region
-    Then I should see the heading "Collection With Glossary collection settings"
+    Then I should see the heading "Community With Glossary community settings"
     And the "Highlight only the first term appearance" checkbox should be checked
 
-    When I go to the "Collection With Glossary" collection
+    When I go to the "Community With Glossary" community
 
     # Only the first occurrence should be highlighted.
     And I should see the link "Battle"
     And I should see the link "Evermore"
     And I should see the link "battle again"
-    And the response should contain "<a href=\"/collection/collection-glossary/glossary/term/battle\" class=\"glossary-term\" title=\"def\">Battle</a>"
-    And the response should contain "<a href=\"/collection/collection-glossary/glossary/term/battle-again\" class=\"glossary-term\" title=\"Not to be confused with a battle of sheep\">battle again</a>"
+    And the response should contain "<a href=\"/collection/community-glossary/glossary/term/battle\" class=\"glossary-term\" title=\"def\">Battle</a>"
+    And the response should contain "<a href=\"/collection/community-glossary/glossary/term/battle-again\" class=\"glossary-term\" title=\"Not to be confused with a battle of sheep\">battle again</a>"
     But I should not see the link "batTle"
     And I should not see the link "BATTLE"
     And I should not see the link "everMore"
@@ -329,24 +329,24 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     When I click "Glossary"
     Then I should see the link "Glossary settings"
     When I click "Glossary settings"
-    Then I should see the heading "Collection With Glossary collection settings"
+    Then I should see the heading "Community With Glossary community settings"
 
   Scenario: Test glossary term name and synonyms collision.
     Given users:
       | Username |
       | ben      |
-    And the following collections:
+    And the following communities:
       | title             | state     |
       | A World of Things | validated |
-      | Other collection  | validated |
+      | Other community  | validated |
 
-    And the following collection user membership:
+    And the following community user membership:
       | collection        | user | roles       |
       | A World of Things | ben  | facilitator |
-      | Other collection  | ben  | facilitator |
+      | Other community  | ben  | facilitator |
 
     Given I am logged in as ben
-    When I go to the "A World of Things" collection
+    When I go to the "A World of Things" community
     And I click "Add glossary term" in the plus button menu
     And I fill in the following:
       | Glossary term name | XFiles     |
@@ -360,8 +360,8 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     When I press "Save"
     Then I should see the error message "The Glossary term glossary term name value (XFiles) is already taken by XFiles."
 
-    # It should be possible to have the same term name in different collections.
-    When I go to the "Other collection" collection
+    # It should be possible to have the same term name in different communities.
+    When I go to the "Other community" community
     And I click "Add glossary term" in the plus button menu
     And I fill in the following:
       | Glossary term name | XFiles         |
@@ -374,7 +374,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | title     | synonyms                | definition                  | collection        |
       | Alphabet  | ABC, XYZ, whatever      | Long, long definition field | A World of Things |
       | Colors    | CLR,colrs               | Colors definition field     | A World of Things |
-      | XRatings  | XRT,X.R.T.,extraratings | definition                  | Other collection  |
+      | XRatings  | XRT,X.R.T.,extraratings | definition                  | Other community  |
       | Duplicate | dupe,DuPe               | duplicate sysnonym          | A World of Things |
 
     # Hard to fill a multi-value field, so we'll pre-create it with duplicates.
@@ -382,7 +382,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     And I press "Save"
     Then I should see the error message "The 'DuPe' synonym is duplicated. Keep only one entry."
 
-    When I go to the "A World of Things" collection
+    When I go to the "A World of Things" community
     And I click "Add glossary term" in the plus button menu
     And I fill in the following:
       # Test also if the match is case insensitive.
@@ -421,7 +421,7 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
       | This glossary term (xyz) name is already used as synonym of Alphabet. You should remove that synonym before using this name. |
       | Some synonyms are already used in other glossary terms either as term name or as term synonyms: colrs in Colors.             |
 
-    # But is allowed to overlap if the other term is in a different collection.
+    # But is allowed to overlap if the other term is in a different community.
     When I fill in "Glossary term name" with "XRatings"
     And I fill in "Synonym" with "extraratings"
     And I press "Save"

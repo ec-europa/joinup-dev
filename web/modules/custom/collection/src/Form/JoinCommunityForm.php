@@ -17,7 +17,7 @@ use Drupal\sparql_entity_storage\UriEncoder;
 /**
  * A simple form with a button to join or leave a collection.
  */
-class JoinCollectionForm extends JoinGroupFormBase {
+class JoinCommunityForm extends JoinGroupFormBase {
 
   /**
    * {@inheritdoc}
@@ -74,7 +74,7 @@ class JoinCollectionForm extends JoinGroupFormBase {
 
       $title = $this->t('Welcome to %collection', ['%collection' => $this->group->label()]);
 
-      $modal_form = $this->formBuilder->getForm(SubscribeToCollectionForm::class, $this->group);
+      $modal_form = $this->formBuilder->getForm(SubscribeToCommunityForm::class, $this->group);
       $modal_form['#attached']['library'][] = 'core/drupal.dialog.ajax';
 
       $response->addCommand(new OpenModalDialogCommand($title, $modal_form, ['width' => '500']));

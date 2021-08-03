@@ -51,7 +51,7 @@ trait GroupTrait {
    *   - OgMembershipInterface::STATE_PENDING
    *   - OgMembershipInterface::STATE_BLOCKED.
    *   Defaults to the most appropriate state: 'active' for solutions and open
-   *   collections, and 'pending' for closed collections.
+   *   communities, and 'pending' for closed communities.
    *
    * @return \Drupal\og\OgMembershipInterface
    *   The membership that was created.

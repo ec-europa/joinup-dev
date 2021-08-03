@@ -1,12 +1,12 @@
 @api
 Feature: Group administrators report
-  In order to have easy access to data about people with administrative roles in collections and solutions
+  In order to have easy access to data about people with administrative roles in communities and solutions
   As a moderator
   I want to be able to see a report about group administrators and be able to download the data
 
   # Lower case entries in the scenario ensure case insensitive comparison.
-  Scenario: Show a list of people with administrative roles in collections
-    Given collections:
+  Scenario: Show a list of people with administrative roles in communities
+    Given communities:
       | title              |
       | Large living birds |
       | bony fishes        |
@@ -20,7 +20,7 @@ Feature: Group administrators report
       | victor   | Victor      | Otto        | votto@fishes.co.uk           |
       | melissa  | melissa     | Kevorkian   | mkevorkian@fishes.co.uk      |
 
-    And collection user memberships:
+    And community user memberships:
       | collection         | user    | roles                      | state   |
       | Large living birds | najib   | administrator              | active  |
       | bony fishes        | victor  | administrator, facilitator | active  |

@@ -16,7 +16,7 @@ Feature: Event moderation
     And the following contact:
       | name  | Evs contact             |
       | email | evs.contact@example.com |
-    And the following collection:
+    And the following community:
       | title               | Wet Lords             |
       | description         | The Forgotten Female. |
       | logo                | logo.png              |
@@ -27,25 +27,25 @@ Feature: Event moderation
       | owner               | Alma Lee              |
       | contact information | Evs contact           |
       | topic               | E-inclusion           |
-    And the following collection user membership:
+    And the following community user membership:
       | collection | user           | roles       |
       | Wet Lords  | Rosa Vaughn    | member      |
       | Wet Lords  | Patricia Lynch | facilitator |
 
   @javascript
   Scenario: Available transitions change to match content creation and moderation settings.
-    # For post-moderated collections with content creation set to allow all
+    # For post-moderated communities with content creation set to allow all
     # users to create content, authenticated users that are not members can
     # create events.
     When I am logged in as "Salvador Thomas"
-    And I go to the homepage of the "Wet Lords" collection
+    And I go to the homepage of the "Wet Lords" community
     And I click "Add event" in the plus button menu
-    # Post moderated collections allow publishing content directly.
+    # Post moderated communities allow publishing content directly.
     And I should see the button "Publish"
 
-    # Edit the collection and set it as moderated.
+    # Edit the community and set it as moderated.
     When I am logged in as a moderator
-    And I go to the homepage of the "Wet Lords" collection
+    And I go to the homepage of the "Wet Lords" community
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
@@ -56,20 +56,20 @@ Feature: Event moderation
     # The parent group is now pre-moderated: authenticated non-member users
     # should still be able to create events but not to publish them.
     When I am logged in as "Salvador Thomas"
-    And I go to the homepage of the "Wet Lords" collection
+    And I go to the homepage of the "Wet Lords" community
     And I click "Add event" in the plus button menu
     Then I should not see the button "Publish"
     And I should see the button "Propose"
     But I should see the button "Save as draft"
 
-    # Edit the collection and set it to allow only members to create new
+    # Edit the community and set it to allow only members to create new
     # content.
     When I am logged in as a moderator
-    And I go to the homepage of the "Wet Lords" collection
+    And I go to the homepage of the "Wet Lords" community
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    And I check "Closed collection"
+    And I check "Closed community"
     And I wait for AJAX to finish
     And I select the radio button "Only members can create content."
     And I press "Publish"
@@ -79,12 +79,12 @@ Feature: Event moderation
 
     # Non-members should not be able to create events anymore.
     When I am logged in as "Salvador Thomas"
-    And I go to the homepage of the "Wet Lords" collection
+    And I go to the homepage of the "Wet Lords" community
     Then the plus button menu should be empty
 
   Scenario: Transit events from one state to another.
     When I am logged in as "Rosa Vaughn"
-    And I go to the homepage of the "Wet Lords" collection
+    And I go to the homepage of the "Wet Lords" community
     And I click "Add event"
     When I fill in the following:
       | Title             | Rainbow of Worlds                     |
@@ -97,7 +97,7 @@ Feature: Event moderation
     And I fill the end time of the Date widget with "00:30:00"
     And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
-    Then I should see the success message 'Event Rainbow of Worlds has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    Then I should see the success message 'Event Rainbow of Worlds has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Community it was created in.'
     And I should see the text "30/08 to 01/09/2018"
 
     # Publish the content.
@@ -111,7 +111,7 @@ Feature: Event moderation
 
     # Request modification as facilitator.
     When I am logged in as "Patricia Lynch"
-    And I go to the homepage of the "Wet Lords" collection
+    And I go to the homepage of the "Wet Lords" community
     And I click "The Fire of the Nothing"
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
@@ -122,7 +122,7 @@ Feature: Event moderation
     Given I fill in "Motivation" with "Request some regression changes"
     And I press "Request changes"
     When I am logged in as "Rosa Vaughn"
-    And I go to the homepage of the "Wet Lords" collection
+    And I go to the homepage of the "Wet Lords" community
     And I click "The Fire of the Nothing"
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
@@ -133,7 +133,7 @@ Feature: Event moderation
 
     # Approve changes as facilitator.
     When I am logged in as "Patricia Lynch"
-    And I go to the homepage of the "Wet Lords" collection
+    And I go to the homepage of the "Wet Lords" community
     And I click "The Fire of the Nothing"
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
@@ -144,7 +144,7 @@ Feature: Event moderation
 
   Scenario: Check message draft url when click in Title.
     When I am logged in as "Rosa Vaughn"
-    And I go to the homepage of the "Wet Lords" collection
+    And I go to the homepage of the "Wet Lords" community
     And I click "Add event"
     When I fill in the following:
       | Title             | Rainbow Beach                     |
@@ -157,13 +157,13 @@ Feature: Event moderation
     And I fill the end time of the Date widget with "00:30:00"
     And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
-    Then I should see the success message 'Event Rainbow Beach has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    Then I should see the success message 'Event Rainbow Beach has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Community it was created in.'
     And I click "Rainbow Beach"
     Then I should see the text "This is going to be an amazing event."
 
   Scenario: Check event when click in My account page.
     When I am logged in as "Rosa Vaughn"
-    And I go to the homepage of the "Wet Lords" collection
+    And I go to the homepage of the "Wet Lords" community
     And I click "Add event"
     When I fill in the following:
       | Title             | Rainbow vinyls                     |
@@ -176,6 +176,6 @@ Feature: Event moderation
     And I fill the end time of the Date widget with "00:30:00"
     And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
-    Then I should see the success message 'Event Rainbow vinyls has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    Then I should see the success message 'Event Rainbow vinyls has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Community it was created in.'
     And I click "My account page"
     Then I should see the heading "Rainbow vinyls"

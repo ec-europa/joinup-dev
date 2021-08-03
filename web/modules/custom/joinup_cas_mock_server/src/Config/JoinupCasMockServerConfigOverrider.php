@@ -58,7 +58,7 @@ class JoinupCasMockServerConfigOverrider implements ConfigFactoryOverrideInterfa
   /**
    * {@inheritdoc}
    */
-  public function createConfigObject($name, $collection = StorageInterface::DEFAULT_COLLECTION) {
+  public function createConfigObject($name, $community = StorageInterface::DEFAULT_COLLECTION) {
     return NULL;
   }
 

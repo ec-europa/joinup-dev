@@ -42,12 +42,12 @@ class EifGroupResolver extends RouteGroupResolver {
   /**
    * {@inheritdoc}
    */
-  public function resolve(OgResolvedGroupCollectionInterface $collection): void {
+  public function resolve(OgResolvedGroupCollectionInterface $community): void {
     if ($entity = $this->getContentEntity()) {
       if ($entity->id() === EifInterface::EIF_ID || ($entity instanceof RdfTerm && $entity->bundle() === 'eif_recommendation')) {
         /** @var \Drupal\solution\Entity\SolutionInterface $solution */
         if ($solution = $this->entityTypeManager->getStorage('rdf_entity')->load(EifInterface::EIF_ID)) {
-          $collection->addGroup($solution, ['route']);
+          $community->addGroup($solution, ['route']);
           $this->stopPropagation();
         }
       }
@@ -58,7 +58,7 @@ class EifGroupResolver extends RouteGroupResolver {
       /** @var \Drupal\custom_page\Entity\CustomPageInterface $custom_page */
       $custom_page = $this->routeMatch->getParameter('node');
       $solution = $custom_page->getGroup();
-      $collection->addGroup($solution, ['route']);
+      $community->addGroup($solution, ['route']);
       $this->stopPropagation();
     }
   }

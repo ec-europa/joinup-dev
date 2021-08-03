@@ -8,7 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\joinup_collection\JoinupCollectionHelper;
+use Drupal\joinup_collection\JoinupCommunityHelper;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -20,8 +20,8 @@ use Drupal\user\UserInterface;
  * Add the 'Joinup' collection membership to every new user.
  */
 function joinup_collection_user_insert(UserInterface $account): void {
-  /** @var \Drupal\collection\Entity\CollectionInterface $joinup_collection */
-  if ($joinup_collection = Rdf::load(JoinupCollectionHelper::getCollectionId())) {
+  /** @var \Drupal\collection\Entity\CommunityInterface $joinup_collection */
+  if ($joinup_collection = Rdf::load(JoinupCommunityHelper::getCommunityId())) {
     // Add the membership only it doesn't exist yet.
     if (!$membership = $joinup_collection->getMembership((int) $account->id(), [])) {
       OgMembership::create()
@@ -48,7 +48,7 @@ function joinup_collection_form_views_form_og_members_overview_default_alter(&$f
   // The first view argument is the entity type.
   if (isset($view->args[0]) && $view->args[0] === 'rdf_entity') {
     // The second view argument is the group entity ID.
-    if (!empty($view->args[1]) && $view->args[1] === JoinupCollectionHelper::getCollectionId()) {
+    if (!empty($view->args[1]) && $view->args[1] === JoinupCommunityHelper::getCommunityId()) {
       unset($form['header']['og_membership_bulk_form']['action']['#options']['joinup_og_membership_delete_action']);
     }
   }

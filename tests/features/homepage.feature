@@ -17,7 +17,7 @@ Feature: Homepage
     When I reload the page
     Then the page should be cached
 
-    Given the following collections:
+    Given the following communities:
       | title               | state            |
       | Political sciences  | draft            |
       | Forms of government | proposed         |
@@ -109,13 +109,13 @@ Feature: Homepage
       | Economic dynamics             |
       | Economic cycles               |
 
-    # Check if the "Collections" link leads to the pre-filtered search results.
-    # This shows collections in the "validated' state.
+    # Check if the "Communities" link leads to the pre-filtered search results.
+    # This shows communities in the "validated' state.
     # 'archival request', and 'archived'.
     When I go to the homepage
     Then I should see the text "Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions."
-    When I click "Collections" in the "Header" region
-    Then I should see the heading "Collections"
+    When I click "Communities" in the "Header" region
+    Then I should see the heading "Communities"
     And I should see the following lines of text:
       | Social classes  |
       | Elections       |
@@ -188,7 +188,7 @@ Feature: Homepage
     But I should see the link "Sign in"
 
     # The header should still be shown in the other pages.
-    When I click "Collections"
+    When I click "Communities"
     Then I should see the small header
 
     When I am logged in as a user with the "authenticated" role
@@ -200,7 +200,7 @@ Feature: Homepage
     And the page should be cacheable
 
     # The header should still be shown in the other pages.
-    When I click "Collections"
+    When I click "Communities"
     Then I should see the small header
 
   Scenario: Only specific social network links are available in the footer.

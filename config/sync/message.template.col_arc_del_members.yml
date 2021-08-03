@@ -5,8 +5,8 @@ dependencies:
   config:
     - filter.format.full_html
 template: col_arc_del_members
-label: 'Collection archive/delete members'
-description: 'Template id 14 - Sent to all members when a collection is archived/deleted'
+label: 'Community archive/delete members'
+description: 'Template id 14 - Sent to all members when a community is archived/deleted'
 text:
   -
     value: '<p>The @entity:bundle @entity:title was @transition:request_action:past.</p>'

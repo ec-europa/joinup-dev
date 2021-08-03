@@ -1,11 +1,11 @@
 @api @group-b
-Feature: Subscribing to community content in collections and solutions
+Feature: Subscribing to community content in communities and solutions
   As an avid fan of Joinup
   I want to receive a periodic digest listing newly published content
   So that I can stay informed about everything
 
   Background:
-    Given the following collections:
+    Given the following communities:
       | title              | state     |
       | Black hole imaging | validated |
     And the following solutions:
@@ -16,14 +16,14 @@ Feature: Subscribing to community content in collections and solutions
       | Username  | E-mail               | First name  | Family name | Notification frequency |
       | jpluminet | jpluminet@example.fr | Jean-Pierre | Luminet     | daily                  |
       | junfukue  | jun.fukue@example.jp | Jun         | Fukue       | weekly                 |
-    And the following collection user memberships:
+    And the following community user memberships:
       | collection         | user      | roles |
       | Black hole imaging | jpluminet |       |
     And the following solution user memberships:
       | solution              | user      | roles |
       | Null geodesics        | jpluminet |       |
       | Bolometric appearance | jpluminet |       |
-    And the following collection content subscriptions:
+    And the following community content subscriptions:
       | collection         | user      | subscriptions                               |
       | Black hole imaging | jpluminet | discussion, document, event, news, solution |
     And the following solution content subscriptions:
@@ -54,7 +54,7 @@ Feature: Subscribing to community content in collections and solutions
       | Newtonian context | Projecting ellipses        |                    | Bolometric appearance | validated | hristo |
 
     # The group content digest should contain the content posted in the
-    # collection and the solution.
+    # community and the solution.
     Then the daily group content subscription digest for jpluminet should match the following messages:
       | Active galactic nuclei |
       | Doppler effect         |

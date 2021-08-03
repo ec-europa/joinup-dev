@@ -5,7 +5,7 @@ Feature: Asset distribution overview on solution.
   I need to be able to view the releases of a solution.
 
   Scenario: Releases should be available in the overview page.
-    Given the following collection:
+    Given the following community:
       | title | End of Past |
       | state | validated   |
     And the following solutions:

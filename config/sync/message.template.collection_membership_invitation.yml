@@ -5,14 +5,14 @@ dependencies:
   config:
     - filter.format.full_html
 template: collection_membership_invitation
-label: 'Collection membership invitation'
-description: 'Sent when a user is invited to join a collection.'
+label: 'Community membership invitation'
+description: 'Sent when a user is invited to join a community.'
 text:
   -
     value: '<p>Invitation from @actor:full_name to join @entity:bundle @entity:title.<p>'
     format: full_html
   -
-    value: "You have been invited by @actor:full_name to join the @entity:bundle <a href=\"@entity:url\">@entity:title</a> as a @invitation:role.\r\nIf you wish to do so, you can click <a href=\"@invitation:accept_url\">@invitation:accept_url</a>, or follow the abovementioned link to enter the collection’s space and then click on the button JOIN THIS COLLECTION, which is located in the banner area.\r\nLast, don’t forget that as a collection member you can take advantage of Joinup's subscription notifications, and receive updates when new content is available in the collection."
+    value: "You have been invited by @actor:full_name to join the @entity:bundle <a href=\"@entity:url\">@entity:title</a> as a @invitation:role.\r\nIf you wish to do so, you can click <a href=\"@invitation:accept_url\">@invitation:accept_url</a>, or follow the abovementioned link to enter the collection’s space and then click on the button JOIN THIS COMMUNITY, which is located in the banner area.\r\nLast, don’t forget that as a community member you can take advantage of Joinup's subscription notifications, and receive updates when new content is available in the community."
     format: full_html
 settings:
   'token options':

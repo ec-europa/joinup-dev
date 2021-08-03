@@ -116,7 +116,7 @@ Feature: User profile
       | Anise Edwardson   | anise.edwardson@example.com   |            |             |
       | Jayson Granger    | jayson.granger@example.com    |            |             |
       | Clarette Fairburn | clarette.fairburn@example.com | Clarette   | Fairburn    |
-    And the following collections:
+    And the following communities:
       | title                 | description                           | logo     | banner     | state     | creation date    |
       | Botanic E.D.E.N.      | European Deep Earth Nurturing project | logo.png | banner.jpg | validated | 2017-02-23 10:00 |
       | Ethic flower handling | Because even flowers have feelings.   | logo.png | banner.jpg | validated | 2017-02-23 12:00 |
@@ -149,8 +149,8 @@ Feature: User profile
     And the following owner:
       | type                  | name                 | author        |
       | Private Individual(s) | Somboon De Laurentis | Corwin Robert |
-    And the following collection user membership:
-      | user          | collection       |
+    And the following community user membership:
+      | user          | community        |
       | Corwin Robert | Botanic E.D.E.N. |
     And the following solution user membership:
       | user          | solution      |
@@ -199,15 +199,15 @@ Feature: User profile
     And the HTML title of the page should be delwin999
     And I should not see the "Page title" region
 
-  Scenario: The user profile page is updated when the user joins or leaves a collection
+  Scenario: The user profile page is updated when the user joins or leaves a community
     Given users:
       | Username      | E-mail                           |
       | Korben Dallas | k.dallas@cabs.services.zorg.corp |
-    And collection:
+    And community:
       | title | Federated Army Veterans |
       | state | validated               |
     # Visit the user profile page for the first time. It should not yet be
-    # cached and we should not see anything about the collection since we are
+    # cached and we should not see anything about the community since we are
     # not a member.
     When I am an anonymous user
     And I go to the public profile of "Korben Dallas"
@@ -218,11 +218,11 @@ Feature: User profile
     When I reload the page
     Then the page should be cached
 
-    # Join the collection. Now the cache of the user profile page should be
-    # cleared and the collection that was joined should show up.
+    # Join the community. Now the cache of the user profile page should be
+    # cleared and the community that was joined should show up.
     Given I am logged in as "Korben Dallas"
-    And I go to the homepage of the "Federated Army Veterans" collection
-    And I press the "Join this collection" button
+    And I go to the homepage of the "Federated Army Veterans" community
+    And I press the "Join this community" button
 
     When I am an anonymous user
     And I go to the public profile of "Korben Dallas"
@@ -233,11 +233,11 @@ Feature: User profile
     When I reload the page
     Then the page should be cached
 
-    # Leave the collection. Now the cache of the user profile page should be
-    # cleared and the collection that was left should no longer show up.
+    # Leave the community. Now the cache of the user profile page should be
+    # cleared and the community that was left should no longer show up.
     Given I am logged in as "Korben Dallas"
-    And I go to the homepage of the "Federated Army Veterans" collection
-    And I click "Leave this collection"
+    And I go to the homepage of the "Federated Army Veterans" community
+    And I click "Leave this community"
     And I press the "Confirm" button
 
     When I am an anonymous user

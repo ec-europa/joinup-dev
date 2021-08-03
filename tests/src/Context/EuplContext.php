@@ -33,7 +33,7 @@ class EuplContext extends RawDrupalContext {
   use RdfEntityTrait;
 
   /**
-   * Creates the standard 'EUPL' collection and several dependencies.
+   * Creates the standard 'EUPL' community and several dependencies.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    *   Thrown when one of the entities could not be created, for example because
@@ -449,9 +449,9 @@ class EuplContext extends RawDrupalContext {
       $entity_repository->loadEntityByUuid('node', $uuid)->delete();
     }
 
-    $collection = Rdf::load(Eupl::EUPL_COMMUNITY_ID);
-    $collection->skip_notification = TRUE;
-    $collection->delete();
+    $community = Rdf::load(Eupl::EUPL_COMMUNITY_ID);
+    $community->skip_notification = TRUE;
+    $community->delete();
 
     $solution = Rdf::load(Eupl::JLA_SOLUTION);
     $solution->skip_notification = TRUE;
@@ -497,7 +497,7 @@ class EuplContext extends RawDrupalContext {
     foreach ($html_manipulator->filter('.icon--check-2') as $node) {
       // Insert an 'x' character the licence comparer table checked cells so
       // that the tests are able to identify them.
-      // @see tests/features/communities/eupl/jla.feature
+      // @see tests/features/collections/eupl/jla.feature
       $node->textContent = 'x';
     }
     $scope->setHtml($html_manipulator->html());

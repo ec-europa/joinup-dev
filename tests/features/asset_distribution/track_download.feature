@@ -10,7 +10,7 @@ Feature: Asset distribution editing.
       | title       | Postcard licence                     |
       | description | Send a postcard from where you live. |
       | type        | Attribution                          |
-    And collection:
+    And community:
       | title | Berkeley Software Distributions |
       | state | validated                       |
     And solution:
@@ -33,7 +33,7 @@ Feature: Asset distribution editing.
       | Marianne Sherburne | marianne.herburne@example.com |
 
     When I am logged in as "Bradley Emmett"
-    And I go to the "Berkeley Software Distributions" collection
+    And I go to the "Berkeley Software Distributions" community
     And I click "OpenBSD"
     And I click "Download releases"
     Then I should see "Releases for OpenBSD solution"

@@ -6,14 +6,14 @@ namespace Drupal\collection\EventSubscriber;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\joinup_group\Event\GroupMenuLinksEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Listens to group events.
  */
-class CollectionGroupMenuLinksSubscriber implements EventSubscriberInterface {
+class CommunityGroupMenuLinksSubscriber implements EventSubscriberInterface {
 
   use StringTranslationTrait;
 
@@ -34,7 +34,7 @@ class CollectionGroupMenuLinksSubscriber implements EventSubscriberInterface {
    */
   public function addLinks(GroupMenuLinksEvent $event): void {
     $group = $event->getGroup();
-    if ($group instanceof CollectionInterface) {
+    if ($group instanceof CommunityInterface) {
       $link = [
         'uri' => Url::fromRoute('collection.glossary_page', [
           'rdf_entity' => $group->id(),

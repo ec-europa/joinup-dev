@@ -8,8 +8,8 @@ Feature: Display of reports for the Tallinn initiative.
     Given users:
       | Username     |
       | Jayda Ingham |
-    And the following collection user memberships:
-      | collection                      | user         | roles       |
+    And the following community user memberships:
+      | community                       | user         | roles       |
       | Tallinn Ministerial Declaration | Jayda Ingham | facilitator |
     Given news content:
       | title           | collection                      | state     |
@@ -21,9 +21,9 @@ Feature: Display of reports for the Tallinn initiative.
       | title        | author       | collection                      |
       | Italy report | Jayda Ingham | Tallinn Ministerial Declaration |
 
-    # All content except reports should be shown in the collection overview.
+    # All content except reports should be shown in the community overview.
     Given I am logged in as "Jayda Ingham"
-    When I go to the "Tallinn Ministerial Declaration" collection
+    When I go to the "Tallinn Ministerial Declaration" community
     Then I should see the "Results are out" tile
     And I should see the "Ministerial Declaration on eGovernment" tile
 

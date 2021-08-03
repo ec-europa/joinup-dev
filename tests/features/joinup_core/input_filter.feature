@@ -5,7 +5,7 @@ Feature: Input filter
   The HTML I can use in the WYSIWYG editor gets filtered
 
   Background:
-    Given the following collection:
+    Given the following community:
       | title | Netflix group |
       | logo  | logo.png      |
       | state | validated     |

@@ -5,7 +5,7 @@ Feature: Subscribing to community content in solutions
   So that I can stay informed
 
   Background:
-    Given the following collections:
+    Given the following communities:
       | title    | state     |
       | Bulgaria | validated |
     Given the following solutions:

@@ -161,7 +161,7 @@ class ExportGroupAdministratorsForm extends FormBase {
     if ($batch_operations) {
       $batch = [
         'title' => 'Exporting group administrators list',
-        'init_message' => 'Starting collection of user data.',
+        'init_message' => 'Starting community of user data.',
         'operations' => $batch_operations,
         'finished' => [$this, 'storeToCache'],
       ];

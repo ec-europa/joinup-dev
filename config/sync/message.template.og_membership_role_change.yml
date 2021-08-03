@@ -6,7 +6,7 @@ dependencies:
     - filter.format.full_html
 template: og_membership_role_change
 label: 'Group membership role change'
-description: 'Message sent when a user receives a new role inside a collection or solution.'
+description: 'Message sent when a user receives a new role inside a community or solution.'
 text:
   -
     value: '<p>Your role has been changed to @membership:roles</p>'

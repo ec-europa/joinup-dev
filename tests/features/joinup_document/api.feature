@@ -8,7 +8,7 @@ Feature: Document API
     Given the following owner:
       | name        |
       | Joinup Derp |
-    And the following collection:
+    And the following community:
       | title            | Joinup document name     |
       | owner            | Joinup Derp              |
       | logo             | logo.png                 |

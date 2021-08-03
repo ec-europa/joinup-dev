@@ -7,7 +7,7 @@
 // .icon--asset_distribution  - Asset distribution icon
 // .icon--asset_release       - Asset release icon
 // .icon--business-case       - Business case icon
-// .icon--collections         - Collection icon
+// .icon--community         - Community icon
 // .icon--custom_page         - Custom page icon
 // .icon--discussion          - Discussion icon
 // .icon--document            - Document icon
@@ -110,8 +110,8 @@ $waat-icons-font-path: "../fonts/waat-icons/waat-icons";
   color: $color-orange;
 }
 
-.icon--collection:before,
-.icon--collections:before {
+.icon--community:before,
+.icon--communities:before {
   content: "";
   color: $color-green-new;
 }

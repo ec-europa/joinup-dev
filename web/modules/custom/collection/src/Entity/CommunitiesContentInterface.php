@@ -11,18 +11,18 @@ use Drupal\joinup_group\Entity\GroupContentInterface;
  *
  * This comprises community content, custom pages, and solutions.
  */
-interface CollectionContentInterface extends GroupContentInterface {
+interface CommunitiesContentInterface extends GroupContentInterface {
 
   /**
    * Returns the collection to which this entity belongs.
    *
-   * @return \Drupal\collection\Entity\CollectionInterface
+   * @return \Drupal\collection\Entity\CommunityInterface
    *   The collection. It could be the parent collection or a collection
    *   ancestor.
    *
-   * @throws \Drupal\collection\Exception\MissingCollectionException
+   * @throws \Drupal\collection\Exception\MissingCommunityException
    *   Thrown when the collection has not been set on the entity.
    */
-  public function getCollection(): CollectionInterface;
+  public function getCommunity(): CommunityInterface;
 
 }

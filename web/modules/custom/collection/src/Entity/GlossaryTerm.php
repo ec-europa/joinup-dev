@@ -11,7 +11,7 @@ use Drupal\node\Entity\Node;
  */
 class GlossaryTerm extends Node implements GlossaryTermInterface {
 
-  use NodeCollectionContentTrait;
+  use NodeCommunityContentTrait;
 
   /**
    * {@inheritdoc}

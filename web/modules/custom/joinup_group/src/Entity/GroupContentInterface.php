@@ -10,7 +10,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
  * Interface for entities that are group content.
  *
  * The following group types can be returned for these bundles:
- * - collections: community content, custom pages, and solutions.
+ * - communities: community content, custom pages, and solutions.
  * - solutions: asset releases and asset distributions.
  */
 interface GroupContentInterface extends ContentEntityInterface {

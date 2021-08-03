@@ -307,7 +307,7 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
     $arguments['@transition:motivation'] = $motivation;
     $arguments['@entity:field_isr_release_number'] = $entity->getVersion();
 
-    // Add arguments related to the parent collection or solution.
+    // Add arguments related to the parent community or solution.
     $parent = JoinupGroupHelper::getGroup($entity);
     if (!empty($parent)) {
       $arguments += MessageArgumentGenerator::getGroupArguments($parent);

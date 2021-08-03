@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_collection\Routing;
 
 use Drupal\Core\Routing\RouteSubscriberBase;
-use Drupal\joinup_collection\Controller\JoinupCollectionLeaveController;
+use Drupal\joinup_collection\Controller\JoinupCommunityLeaveController;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
@@ -16,9 +16,9 @@ class RouteSubscriber extends RouteSubscriberBase {
   /**
    * {@inheritdoc}
    */
-  public function alterRoutes(RouteCollection $collection) {
-    if ($route = $collection->get('joinup_group.leave_confirm_form')) {
-      $route->setRequirement('_custom_access', JoinupCollectionLeaveController::class . '::access');
+  public function alterRoutes(RouteCollection $community) {
+    if ($route = $community->get('joinup_group.leave_confirm_form')) {
+      $route->setRequirement('_custom_access', JoinupCommunityLeaveController::class . '::access');
     }
   }
 

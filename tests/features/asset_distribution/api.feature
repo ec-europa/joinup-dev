@@ -5,15 +5,15 @@ Feature: Distribution API
   I need to be able to use the Distribution API
 
   Scenario: Programmatically create a distribution
-    Given the following collection:
-      | title            | Asset distribution collection API foo |
+    Given the following community:
+      | title            | Asset distribution community API foo |
       | logo             | logo.png                              |
       | moderation       | yes                                   |
       | content creation | facilitators and authors              |
       | state            | validated                             |
     And the following solution:
       | title            | Asset distribution solution           |
-      | collection       | Asset distribution collection API foo |
+      | collection       | Asset distribution community API foo |
       | description      | Asset distribution sample solution    |
       | documentation    | text.pdf                              |
       | content creation | registered users                      |
@@ -39,7 +39,7 @@ Feature: Distribution API
     And I should have 1 distribution
 
   Scenario: Programmatically create a distribution using only the mandatory fields
-    Given the following collection:
+    Given the following community:
       | title            | Asset distribution short API bar |
       | logo             | logo.png                         |
       | moderation       | yes                              |

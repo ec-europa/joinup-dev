@@ -6,25 +6,25 @@ Feature: Solution moderation
 
   # Access checks are not being made here. They are run in the solution add feature.
   Scenario: 'Save as draft' and 'Propose' states are available but moderators should also see 'Publish' state.
-    Given the following collection:
-      | title | Collection propose state test |
+    Given the following community:
+      | title | Community propose state test |
       | logo  | logo.png                      |
       | state | validated                     |
 
-    When I am logged in as a member of the "Collection propose state test" collection
-    And I go to the add solution form of the "Collection propose state test" collection
+    When I am logged in as a member of the "Community propose state test" community
+    And I go to the add solution form of the "Community propose state test" community
     Then the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request changes, Blacklist"
     And I should not see the link "Delete"
 
     When I am logged in as a user with the "moderator" role
-    And I go to the add solution form of the "Collection propose state test" collection
+    And I go to the add solution form of the "Community propose state test" community
     Then the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request changes, Blacklist"
     And I should not see the link "Delete"
 
-    When I am logged in as a "facilitator" of the "Collection propose state test" collection
-    And I go to the homepage of the "Collection propose state test" collection
+    When I am logged in as a "facilitator" of the "Community propose state test" community
+    And I go to the homepage of the "Community propose state test" community
     And I click "Add solution"
     And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
     And I press "Yes"

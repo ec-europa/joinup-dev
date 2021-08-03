@@ -10,7 +10,7 @@ Feature: Navigation menu for custom pages
       | Rainbow tables   | logo.png | validated |
       | Cripple Mr Onion | logo.png | validated |
 
-    # By default, a link to the collection canonical page and a link to the
+    # By default, a link to the community canonical page and a link to the
     # about page are added to the menu.
     When I am logged in as a facilitator of the "Rainbow tables" <group>
     And I go to the homepage of the "Rainbow tables" <group>
@@ -59,7 +59,7 @@ Feature: Navigation menu for custom pages
 
     # The form to add a new menu link should not be accessible by anyone. This
     # is functionality provided by Drupal which is intended for webmasters. We
-    # are showing the menu overview to collection facilitators so they can
+    # are showing the menu overview to community facilitators so they can
     # reorder the navigation menu, but they should not be able to access the
     # related menu administration screens.
     And I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" <group>
@@ -68,8 +68,8 @@ Feature: Navigation menu for custom pages
     # is visible for all users.
     When I enable "About us" in the navigation menu of the "Rainbow tables" <group>
 
-    # Create a few custom pages in the second collection so we can check if the
-    # right menu shows up in each collection.
+    # Create a few custom pages in the second community so we can check if the
+    # right menu shows up in each community.
     Given custom_page content:
       | title           | body                                                                                                                                  | <group>          |
       | Eights are wild | You cannot Cripple Mr Onion if your running flush contains more wild eights than the Lesser or Great Onion you are trying to cripple. | Cripple Mr Onion |
@@ -78,15 +78,15 @@ Feature: Navigation menu for custom pages
     # Test as a normal member of the group.
     Given I am logged in as a member of the "Rainbow tables" <group>
     When I go to the homepage of the "Rainbow tables" <group>
-    # Members of the collection should not have access to the administration
+    # Members of the community should not have access to the administration
     # pages.
     Then I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" <group>
     # The navigation link from the current group should be visible, but not
-    # the link from the second collection.
+    # the link from the second community.
     And I should see the link "About us" in the "Navigation menu"
     But I should not see the link "Eights are wild" in the "Navigation menu"
     And I should not see the link "Eights are null" in the "Navigation menu"
-    # Test the navigation link of the second collection.
+    # Test the navigation link of the second community.
     When I go to the homepage of the "Cripple Mr Onion" <group>
     Then I should see the link "Eights are wild" in the "Navigation menu"
     And I should see the link "Eights are null" in the "Navigation menu"
@@ -102,7 +102,7 @@ Feature: Navigation menu for custom pages
     And I should see the link "About us" in the "Navigation menu"
     But I should not see the link "Eights are wild" in the "Navigation menu"
     And I should not see the link "Eights are null" in the "Navigation menu"
-    # Test the navigation link of the second collection.
+    # Test the navigation link of the second community.
     When I go to the homepage of the "Cripple Mr Onion" <group>
     Then I should see the link "Eights are wild" in the "Navigation menu"
     And I should see the link "Eights are null" in the "Navigation menu"
@@ -115,7 +115,7 @@ Feature: Navigation menu for custom pages
     # pages.
     Then I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" <group>
 
-    # The navigation link from the current collection should be visible, but not
+    # The navigation link from the current community should be visible, but not
     # the link from the second group.
     And I should see the link "About us" in the "Navigation menu"
     But I should not see the link "Eights are wild" in the "Navigation menu"
@@ -128,7 +128,7 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      | visible items 1 | visible items 2 | visible items 3 |
-      | collection | 4               | 5               | 4               |
+      | community  | 4               | 5               | 4               |
       | solution   | 3               | 4               | 3               |
 
   @javascript
@@ -160,7 +160,7 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      |
-      | collection |
+      | community  |
       | solution   |
 
   Scenario Outline: Synchronize titles of custom pages and menu links
@@ -185,7 +185,7 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      |
-      | collection |
+      | community  |
       | solution   |
 
   Scenario Outline: Only the links below the topmost page are rendered in TOC.
@@ -283,7 +283,7 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      |
-      | collection |
+      | community  |
       | solution   |
 
   @javascript
@@ -422,7 +422,7 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      |
-      | collection |
+      | community  |
       | solution   |
 
   Scenario Outline: Show appropriate menu entries in the table of contents outline.
@@ -508,7 +508,7 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      |
-      | collection |
+      | community  |
       | solution   |
 
   @javascript
@@ -545,7 +545,7 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      |
-      | collection |
+      | community  |
       | solution   |
 
   Scenario Outline: Test that the edit link appears next to the "About" page.
@@ -567,5 +567,5 @@ Feature: Navigation menu for custom pages
 
     Examples:
       | group      | label      |
-      | collection | Collection |
+      | community  | Community |
       | solution   | Solution   |

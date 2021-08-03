@@ -67,19 +67,30 @@ abstract class TcaFormBase extends FormBase {
       $form['tca'] = $block->build();
     }
 
+    // Rename "Collection to Community".
+    $bundle = $this->getEntityBundle();
+    if ($this->getEntityBundle() == 'collection') {
+      $bundle = 'community';
+    }
+
     $form['warning'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
       '#value' => $this->t('In order to create the :bundle you need first check the field below and then press the <em>Yes</em> button to proceed.', [
-        ':bundle' => ucfirst($this->getEntityBundle()),
+        ':bundle' => ucfirst($bundle),
       ]),
     ];
 
+    // Rename "Collection to Community".
+    $bundle = $this->getEntityBundle();
+    if ($bundle == 'collection') {
+      $bundle = 'community';
+    }
     $form['tca_agreement'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('I have read and accept <a href=":legal_notice_url">the legal notice</a> and I commit to manage my :bundle on a regular basis.', [
         ':legal_notice_url' => Url::fromRoute('entity.entity_legal_document.canonical', ['entity_legal_document' => 'legal_notice'], ['absolute' => TRUE])->toString(),
-        ':bundle' => $this->getEntityBundle(),
+        ':bundle' => $bundle,
       ]),
     ];
 
@@ -108,7 +119,12 @@ abstract class TcaFormBase extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state): void {
     if ($form_state->getValue('tca_agreement') === 0) {
-      $form_state->setError($form['tca_agreement'], "You have to agree that you will manage your {$this->getEntityBundle()} on a regular basis.");
+      // Rename "Collection to Community".
+      $bundle = $this->getEntityBundle();
+      if ($this->getEntityBundle() == 'collection') {
+        $bundle = 'community';
+      }
+      $form_state->setError($form['tca_agreement'], "You have to agree that you will manage your {$bundle} on a regular basis.");
     }
     parent::validateForm($form, $form_state);
   }

@@ -17,7 +17,7 @@ interface JoinupFederationPipelineInterface extends PipelinePipelineInterface {
    * @return string
    *   The URI of the collection.
    */
-  public function getCollection(): string;
+  public function getCommunity(): string;
 
   /**
    * Returns the graph URI for a specific federation graph.

@@ -5,14 +5,14 @@ Feature:
   All semantic assets need to have a persistent URI
 
   Scenario: Entities should have distinct URI pattern
-    Given the following collection:
-      | title | Persistent collection                                          |
+    Given the following community:
+      | title | Persistent community                                          |
       | logo  | logo.png                                                       |
       | state | validated                                                      |
       | uri   | http://data.europa.eu/w21/37b8103e-26e5-4c81-8ce5-43ced02ff7d0 |
     And the following solution:
       | title       | Persistent solution                                            |
-      | collection  | Persistent collection                                          |
+      | collection  | Persistent community                                          |
       | description | Persistent solution                                            |
       | state       | validated                                                      |
       | uri         | http://data.europa.eu/w21/ffb0ffc9-7704-45d3-95b3-42706b6320e5 |
@@ -49,21 +49,21 @@ Feature:
 
     And discussion content:
       | title                 | body                  | collection            | state     |
-      | Persistent discussion | Persistent discussion | Persistent collection | validated |
+      | Persistent discussion | Persistent discussion | Persistent community | validated |
     And document content:
       | title               | body                | collection            | state     |
-      | Persistent document | Persistent document | Persistent collection | validated |
+      | Persistent document | Persistent document | Persistent community | validated |
     And event content:
       | title            | body             | collection            | state     |
-      | Persistent event | Persistent event | Persistent collection | validated |
+      | Persistent event | Persistent event | Persistent community | validated |
     And news content:
       | title           | body            | collection            | state     |
-      | Persistent news | Persistent news | Persistent collection | validated |
+      | Persistent news | Persistent news | Persistent community | validated |
     And custom_page content:
       | title           | body            | collection            | state     |
-      | Persistent page | Persistent page | Persistent collection | validated |
+      | Persistent page | Persistent page | Persistent community | validated |
 
-    When I go to the "Persistent collection" collection
+    When I go to the "Persistent community" community
     And I click "About"
     Then the persistent url should contain "http://data.europa.eu/w21"
 
@@ -108,7 +108,7 @@ Feature:
     Then I should see the heading "Persistent solution"
 
     Given I am on "data/w21/37b8103e-26e5-4c81-8ce5-43ced02ff7d0"
-    Then I should see the heading "Persistent collection"
+    Then I should see the heading "Persistent community"
 
     Given I am on "data/w21/98004ec9-62f3-4734-a1b6-af7e4838b09c"
     Then I should see the heading "Persistent release 23"

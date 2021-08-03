@@ -17,11 +17,11 @@ Feature: Joinup should be ADMS-AP compliant.
       | title       | Foo licence       |
       | description | Some nice licence |
       | type        | Attribution       |
-    And the following collection:
+    And the following community:
       | title               | Morbid Scattered Microphone    |
       | author              | Andre Munson                   |
       | abstract            | Abstract.                      |
-      | description         | Description of the collection. |
+      | description         | Description of the community. |
       | access url          | http://www.example.com/msm/    |
       | logo                | logo.png                       |
       | banner              | banner.jpg                     |

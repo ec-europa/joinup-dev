@@ -52,7 +52,7 @@ class UniqueShortIdInsensitiveValidator extends ConstraintValidator implements C
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     $entity = $items->getEntity();
     if ($entity->getEntityTypeId() !== 'rdf_entity') {
-      throw new \RuntimeException('UniqueShortidInsensitiveConstraint can only be applied to collections and solutions because the SQL like condition is not case insensitive.');
+      throw new \RuntimeException('UniqueShortidInsensitiveConstraint can only be applied to communities and solutions because the SQL like condition is not case insensitive.');
     }
 
     // Short ID has cardinality 1. Does not need to iterate over other deltas.

@@ -9,11 +9,11 @@ use Drupal\pipeline\Exception\PipelineStepPrepareLogicException;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 
 /**
- * Tests the invalid pipeline collection URI..
+ * Tests the invalid pipeline community URI..
  *
  * @group joinup_federation
  */
-class CollectionUriTest extends StepTestBase {
+class CommunityUriTest extends StepTestBase {
 
   use ConfigTestTrait;
 
@@ -47,8 +47,8 @@ class CollectionUriTest extends StepTestBase {
     parent::setUp();
 
     $this->installSchema('system', ['key_value_expire']);
-    // Create the collection bundle.
-    RdfEntityType::create(['rid' => 'collection', 'name' => 'Collection'])->save();
+    // Create the community bundle.
+    RdfEntityType::create(['rid' => 'collection', 'name' => 'Community'])->save();
     // Create graph and mapping.
     $this->importConfigs([
       'sparql_entity_storage.graph.default',
@@ -68,30 +68,30 @@ class CollectionUriTest extends StepTestBase {
   }
 
   /**
-   * Test the missed collection URI.
+   * Test the missed community URI.
    */
-  public function testMissedCollectionUri(): void {
+  public function testMissedCommunityUri(): void {
     $this->container->get('state')->set('joinup_federation.test.collection', 'missed');
     $error = strip_tags($this->pipeline->prepare()->__toString());
-    $this->assertEquals('The Joinup federation pipeline collection URI testing import pipeline is not linked to any collection. Contact the site administrator.', $error);
+    $this->assertEquals('The Joinup federation pipeline collection URI testing import pipeline is not linked to any community. Contact the site administrator.', $error);
   }
 
   /**
-   * Test the invalid collection URI.
+   * Test the invalid community URI.
    */
-  public function testInvalidCollectionUri(): void {
+  public function testInvalidCommunityUri(): void {
     $this->container->get('state')->set('joinup_federation.test.collection', 'invalid');
     $this->expectException(PipelineStepPrepareLogicException::class);
-    $this->expectExceptionMessage("A collection with URI 'http://invalid-collection-id' does not exist.");
+    $this->expectExceptionMessage("A community with URI 'http://invalid-community-id' does not exist.");
     $this->runPipelinePrepare('add_joinup_vocabularies');
   }
 
   /**
-   * Test the collection URI declared in annotation.
+   * Test the community URI declared in annotation.
    */
-  public function testCollectionUriFromAnnotation(): void {
+  public function testCommunityUriFromAnnotation(): void {
     $this->container->get('state')->set('joinup_federation.test.collection', 'from_annotation');
-    $this->assertEquals('http://from-annotation', $this->pipeline->getCollection());
+    $this->assertEquals('http://from-annotation', $this->pipeline->getCommunity());
   }
 
 }

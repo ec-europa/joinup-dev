@@ -34,7 +34,7 @@ Feature:
 
   Scenario Outline: Test user support menu usage.
 
-    Given the following collections:
+    Given the following communities:
       | title            | state     |
       | Hotel California | validated |
 
@@ -52,7 +52,7 @@ Feature:
     Then I should see the link "Take a tour"
     And I should see the link "Contact support"
 
-    When I go to the homepage of the "Hotel California" collection
+    When I go to the homepage of the "Hotel California" community
     Then I should see the link "Take a tour"
     And I should see the link "Contact support"
 

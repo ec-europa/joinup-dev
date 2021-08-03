@@ -6,11 +6,11 @@ Feature: "Event page" editing.
 
   @terms
   Scenario: Add and remove map
-    Given collections:
+    Given communities:
       | title  | logo     | banner     | state     |
       | Heroes | logo.png | banner.jpg | validated |
-    And I am logged in as a facilitator of the "Heroes" collection
-    When I go to the homepage of the "Heroes" collection
+    And I am logged in as a facilitator of the "Heroes" community
+    When I go to the homepage of the "Heroes" community
     And I click "Add event" in the plus button menu
     When I fill in the following:
       | Title             | Best event                                               |
@@ -34,15 +34,15 @@ Feature: "Event page" editing.
     Given users:
       | Username |
       | <user>   |
-    And the following collections:
+    And the following communities:
       | title        | description        | state     | moderation |
-      | <collection> | Sample description | validated | yes        |
-    And the following collection user memberships:
+      | <community> | Sample description | validated | yes        |
+    And the following community user memberships:
       | collection   | user   | roles  |
-      | <collection> | <user> | <role> |
+      | <community> | <user> | <role> |
     And "event" content:
       | title   | author | collection   | state     |
-      | <event> | <user> | <collection> | validated |
+      | <event> | <user> | <community> | validated |
     When I am logged in as "<user>"
     And I go to the "<event>" event
     Then I should see the link "Edit" in the "Entity actions" region

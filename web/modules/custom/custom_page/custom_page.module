@@ -69,7 +69,7 @@ function custom_page_node_insert(EntityInterface $entity) {
   }
 
   // The content of custom pages is included in the search index of their
-  // collections and solutions, so that the parent group can be found when
+  // communities and solutions, so that the parent group can be found when
   // searching for keywords contained in their custom pages. Make sure to
   // reindex the parent group so that the new custom page is included.
   // @see \Drupal\custom_page\Plugin\search_api\processor\IncludeCustomPageContent
@@ -118,7 +118,7 @@ function custom_page_node_update(NodeInterface $entity) {
   }
 
   // The content of custom pages is included in the search index of their
-  // collections and solutions, so that the parent group can be found when
+  // communities and solutions, so that the parent group can be found when
   // searching for keywords contained in their custom pages. Make sure to
   // reindex the parent group so that the changed content is included.
   // @see \Drupal\custom_page\Plugin\search_api\processor\IncludeCustomPageContent
@@ -140,7 +140,7 @@ function custom_page_node_delete(NodeInterface $entity) {
   }
 
   // The content of custom pages is included in the search index of their
-  // collections and solutions, so that the parent group can be found when
+  // communities and solutions, so that the parent group can be found when
   // searching for keywords contained in their custom pages. Make sure to
   // reindex the parent group so that the deleted content is no longer included.
   // @see \Drupal\custom_page\Plugin\search_api\processor\IncludeCustomPageContent

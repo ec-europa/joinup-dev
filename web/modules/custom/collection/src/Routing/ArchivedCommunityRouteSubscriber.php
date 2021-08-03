@@ -10,13 +10,13 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * Listens to the 'joinup_group.add_content' route.
  */
-class ArchivedCollectionRouteSubscriber extends RouteSubscriberBase {
+class ArchivedCommunityRouteSubscriber extends RouteSubscriberBase {
 
   /**
    * {@inheritdoc}
    */
-  protected function alterRoutes(RouteCollection $collection) {
-    if ($route = $collection->get('joinup_group.add_content')) {
+  protected function alterRoutes(RouteCollection $community) {
+    if ($route = $community->get('joinup_group.add_content')) {
       $route->setRequirement('_archived_collection', 'TRUE');
     }
   }

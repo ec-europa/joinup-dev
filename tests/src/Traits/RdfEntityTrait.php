@@ -10,7 +10,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Helper methods for using collections in tests.
+ * Helper methods for using communities in tests.
  */
 trait RdfEntityTrait {
 

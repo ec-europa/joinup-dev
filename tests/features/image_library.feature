@@ -35,8 +35,8 @@ Feature:
 
     Examples:
       | media type label  | entity bundle | type   | extension |
-      | Collection banner | collection    | banner | jpg       |
-      | Collection logo   | collection    | logo   | png       |
+      | Community banner  | collection    | banner | jpg       |
+      | Community logo    | collection    | logo   | png       |
       | Solution banner   | solution      | banner | jpg       |
       | Solution logo     | solution      | logo   | png       |
       | News logo         | news          | logo   | png       |

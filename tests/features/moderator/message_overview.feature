@@ -56,7 +56,7 @@ Feature: Solutions message overview
       | name                 | type    |
       | Organisation example | Company |
     And I am logged in as an "authenticated user"
-    When I go to the propose collection form
+    When I go to the propose community form
     When I fill in the following:
       | Title                 | Message overview proposal |
       | Description           | Doesn't matter.           |
@@ -72,12 +72,12 @@ Feature: Solutions message overview
     And I click "Reporting" in the "Administration toolbar" region
     And I click "Messages overview"
     Then I should see the following lines of text:
-      | User proposed collection Message overview proposal                                 |
-      | has proposed collection "Message overview proposal".                               |
+      | User proposed community Message overview proposal                                 |
+      | has proposed community "Message overview proposal".                               |
       | To approve or reject this proposal, please go to                                   |
       | You'll be able to provide feedback.                                                |
       | The requestor will be notified of your decision and feedback.                      |
       | If you think this action is not clear or not due, please contact Joinup Support at |
 
-    # Clean up the collection that was created.
-    Then I delete the "Message overview proposal" collection
+    # Clean up the community that was created.
+    Then I delete the "Message overview proposal" community

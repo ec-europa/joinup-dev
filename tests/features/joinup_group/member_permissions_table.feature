@@ -14,7 +14,7 @@ Feature: Group member permissions table
       | Dr. John Hicks   |
       | Hex              |
       | Mustrum Ridcully |
-    Given the following collections:
+    Given the following communities:
       | title                                       | state     | content creation         | moderation |
       | Applied astrology                           | validated | facilitators and authors | yes        |
       | Illiberal studies                           | validated | facilitators and authors | no         |
@@ -28,7 +28,7 @@ Feature: Group member permissions table
       | Extreme horticulture          | validated | facilitators and authors | no         |
       | Prehumous morbid bibliomancy  | validated | registered users         | yes        |
       | Posthumous morbid bibliomancy | validated | registered users         | no         |
-    And the following collection user memberships:
+    And the following community user memberships:
       | collection                                  | user             | roles       |
       | Approximate accuracy                        | Horace Worblehat |             |
       | Dust, miscellaneous particles and filaments | Ponder Stibbons  |             |
@@ -49,7 +49,7 @@ Feature: Group member permissions table
       | Prehumous morbid bibliomancy  | Mustrum Ridcully | facilitator |
       | Posthumous morbid bibliomancy | Mustrum Ridcully | facilitator |
 
-    # Collection. Content creation: authors and facilitators. Moderated.
+    # Community. Content creation: authors and facilitators. Moderated.
     And I am on the members page of "Applied astrology"
     When I click "Member permissions"
     Then the "member permissions" table should be:
@@ -69,8 +69,8 @@ Feature: Group member permissions table
     # displayed in the table. Only the most common case ("member") is checked.
     # This is already covered in other scenarios, but having a check here will
     # alert us to update the tables if permissions change.
-    Given I am logged in as a member of the "Applied astrology" collection
-    When I go to the homepage of the "Applied astrology" collection
+    Given I am logged in as a member of the "Applied astrology" community
+    When I go to the homepage of the "Applied astrology" community
     # Can not propose or publish content.
     Then I should not see the link "Add discussion"
     And I should not see the link "Add document"
@@ -82,7 +82,7 @@ Feature: Group member permissions table
     When I go to the content page of the type event with the title "The Poor Scholars"
     Then I should get an access denied error
 
-    # Collection. Content creation: authors and facilitators. Not moderated.
+    # Community. Content creation: authors and facilitators. Not moderated.
     And I am on the members page of "Illiberal studies"
     When I click "Member permissions"
     Then the "member permissions" table should be:
@@ -98,8 +98,8 @@ Feature: Group member permissions table
       | Delete any content                          |        |        | ✓           | ✓     |
       | Manage users                                |        |        | ✓           | ✓     |
 
-    Given I am logged in as a member of the "Illiberal studies" collection
-    When I go to the homepage of the "Illiberal studies" collection
+    Given I am logged in as a member of the "Illiberal studies" community
+    When I go to the homepage of the "Illiberal studies" community
     # Can not propose or publish content.
     Then I should not see the link "Add discussion"
     And I should not see the link "Add document"
@@ -112,7 +112,7 @@ Feature: Group member permissions table
     Then I should get an access denied error
 
 
-    # Collection. Content creation: members. Moderated.
+    # Community. Content creation: members. Moderated.
     Given I am on the members page of "Approximate accuracy"
     When I click "Member permissions"
     Then the "member permissions" table should be:
@@ -135,7 +135,7 @@ Feature: Group member permissions table
       | Manage users                                               |        |        | ✓           | ✓     |
 
     Given I am logged in as "Horace Worblehat"
-    When I go to the homepage of the "Approximate accuracy" collection
+    When I go to the homepage of the "Approximate accuracy" community
     # Can propose content but not publish.
     And I click "Add discussion"
     Then I should see the button "Propose"
@@ -161,7 +161,7 @@ Feature: Group member permissions table
     When I go to the content page of the type event with the title "The Wizards' Excuse Me"
     Then I should get an access denied error
 
-    # Collection. Content creation: members. Not moderated.
+    # Community. Content creation: members. Not moderated.
     Given I am on the members page of "Dust, miscellaneous particles and filaments"
     When I click "Member permissions"
     Then the "member permissions" table should be:
@@ -178,7 +178,7 @@ Feature: Group member permissions table
       | Manage users                                |        |        | ✓           | ✓     |
 
     Given I am logged in as "Ponder Stibbons"
-    When I go to the homepage of the "Dust, miscellaneous particles and filaments" collection
+    When I go to the homepage of the "Dust, miscellaneous particles and filaments" community
     # Can publish content but not propose.
     And I click "Add discussion"
     Then I should see the button "Publish"
@@ -204,7 +204,7 @@ Feature: Group member permissions table
     When I go to the content page of the type event with the title "Archchancellor Bowell's Remembrance's Bun and Penny"
     Then I should get an access denied error
 
-    # Collection. Content creation: any user. Moderated.
+    # Community. Content creation: any user. Moderated.
     Given I am on the members page of "Creative uncertainty"
     When I click "Member permissions"
     Then the "member permissions" table should be:
@@ -227,7 +227,7 @@ Feature: Group member permissions table
       | Manage users                                               |        |        | ✓           | ✓     |
 
     Given I am logged in as "Henry Porter"
-    When I go to the homepage of the "Creative uncertainty" collection
+    When I go to the homepage of the "Creative uncertainty" community
     # Can propose content but not publish.
     And I click "Add discussion"
     Then I should see the button "Propose"
@@ -253,7 +253,7 @@ Feature: Group member permissions table
     When I go to the content page of the type event with the title "The Hunting of the Megapode"
     Then I should get an access denied error
 
-    # Collection. Content creation: any user. Not moderated.
+    # Community. Content creation: any user. Not moderated.
     Given I am on the members page of "Woolly thinking"
     When I click "Member permissions"
     Then the "member permissions" table should be:
@@ -270,7 +270,7 @@ Feature: Group member permissions table
       | Manage users                                |        |        | ✓           | ✓     |
 
     Given I am logged in as "Rincewind"
-    When I go to the homepage of the "Woolly thinking" collection
+    When I go to the homepage of the "Woolly thinking" community
     # Can publish content but not propose.
     And I click "Add discussion"
     Then I should see the button "Publish"
@@ -450,7 +450,7 @@ Feature: Group member permissions table
 
   # The permissions table should not be accessible for non-public groups.
   Scenario: Access the membership permissions information table
-    Given the following collections:
+    Given the following communities:
       | title                | state     |
       | Valid Bibliomancy    | validated |
       | Draft Bibliomancy    | draft     |

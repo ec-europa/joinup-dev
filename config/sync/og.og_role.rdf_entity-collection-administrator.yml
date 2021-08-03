@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: kPZrK7XWi0O_33gCHryjO4R1VJdSRzEL9B1HHnq2EEk
 id: rdf_entity-collection-administrator
-label: 'Collection owner'
+label: 'Community owner'
 weight: 2
 is_admin: null
 group_type: rdf_entity

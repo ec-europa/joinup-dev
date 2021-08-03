@@ -12,6 +12,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\joinup_invite\Entity\Invitation;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\InvitationMessageHelperInterface;
@@ -522,7 +523,7 @@ abstract class InviteFormBase extends FormBase {
     $arguments = [];
 
     $arguments['@entity:title'] = $entity->label();
-    $arguments['@entity:bundle'] = $entity->bundle();
+    $arguments['@entity:bundle'] = $entity instanceof CommunityInterface ? 'community' : $entity->bundle();
     $arguments['@entity:url'] = $entity->toUrl('canonical', [
       'absolute' => TRUE,
     ])->toString();

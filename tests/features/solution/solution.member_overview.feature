@@ -25,14 +25,14 @@ Feature: Solution membership overview
       | Glædwine Ruskin     | Glædwine   | Ruskin      | linus.jpeg   | Comptroller                     |
       | Pocahontas Mathieu  | Pocahontas | Mathieu     | blaise.jpg   | Chief Communications Officer    |
       | Callista Wronski    | Callista   | Wronski     | richard.jpg  | Founder                         |
-    And collection:
-      | title | Growing collection |
+    And community:
+      | title | Growing community |
       | state | validated          |
     And the following solution:
       | title       | Growing zone       |
       | description | Soil and gravel    |
       | state       | validated          |
-      | collection  | Growing collection |
+      | collection  | Growing community |
     And the following solution user memberships:
       | solution     | user                | roles       | state   |
       | Growing zone | Ariadna Astrauskas  | owner       |         |
@@ -62,7 +62,7 @@ Feature: Solution membership overview
     Then I should see the heading "Members"
 
     # Check that clean URLs are being applied to the "members" subpage.
-    And I should be on "/collection/growing-collection/solution/growing-zone/members"
+    And I should be on "/collection/growing-community/solution/growing-zone/members"
 
     And I should see the following tiles in the correct order:
       | Ariadna Astrauskas |
@@ -91,7 +91,7 @@ Feature: Solution membership overview
     Then I should see the "Peter Proudfoots" tile
     And I should see the "Pocahontas Mathieu" tile
 
-    # Check the filter on the user roles inside the collection.
+    # Check the filter on the user roles inside the community.
     And the available options in the "Roles" select should be "- Any - (14), Owner (1), Facilitator (4)"
     And the option "- Any - (14)" should be selected
 

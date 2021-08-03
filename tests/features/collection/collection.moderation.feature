@@ -1,19 +1,19 @@
 @api @email @group-a
-Feature: Collection moderation
-  In order to manage collections programmatically
+Feature: Community moderation
+  In order to manage communities programmatically
   As a user of the website
-  I need to be able to transit the collections from one state to another.
+  I need to be able to transit the communities from one state to another.
 
-  # Access checks are not being made here. They are run in the collection add feature.
+  # Access checks are not being made here. They are run in the community add feature.
   Scenario: 'Draft' and 'Propose' states are available but moderators should also see 'Validated' state.
     When I am logged in as an "authenticated user"
-    And I go to the propose collection form
+    And I go to the propose community form
     Then the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request archival, Archive"
     And I should not see the link "Delete"
 
     When I am logged in as a user with the "moderator" role
-    And I go to the propose collection form
+    And I go to the propose community form
     Then the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request archival, Archive"
     And I should not see the link "Delete"
@@ -31,19 +31,19 @@ Feature: Collection moderation
       | Velma Smith     |           |
       # Moderator.
       | Lena Richardson | moderator |
-      # Owner of all the collections.
+      # Owner of all the communities.
       | Erika Reid      |           |
-      # Facilitator of all the collections.
+      # Facilitator of all the communities.
       | Carole James    |           |
-    And the following collections:
+    And the following communities:
       | title               | description         | logo     | banner     | owner          | contact information | state            |
       | Deep Past           | Azure ship          | logo.png | banner.jpg | Simon Sandoval | Francis             | draft            |
       | The Licking Silence | The Licking Silence | logo.png | banner.jpg | Simon Sandoval | Francis             | proposed         |
       | Person of Wizards   | Person of Wizards   | logo.png | banner.jpg | Simon Sandoval | Francis             | validated        |
       | The Shard's Hunter  | The Shard's Hunter  | logo.png | banner.jpg | Simon Sandoval | Francis             | archival request |
       | Luck in the Abyss   | Luck in the Abyss   | logo.png | banner.jpg | Simon Sandoval | Francis             | archived         |
-    And the following collection user memberships:
-      | collection          | user         | roles       |
+    And the following community user memberships:
+      | community           | user         | roles       |
       | Deep Past           | Erika Reid   | owner       |
       | The Licking Silence | Erika Reid   | owner       |
       | Person of Wizards   | Erika Reid   | owner       |
@@ -55,20 +55,20 @@ Feature: Collection moderation
       | The Shard's Hunter  | Carole James | facilitator |
       | Luck in the Abyss   | Carole James | facilitator |
 
-    # The following table tests the allowed transitions in a collection.
+    # The following table tests the allowed transitions in a community.
     # For each entry, the following steps must be performed:
     # Login with the given user (or a user with the same permissions).
-    # Go to the homepage of the given collection.
+    # Go to the homepage of the given community.
     # If the expected states (states column) are empty, I should not have access
     # to the edit screen.
     # If the expected states are not empty, then I see the "Edit" link.
     # When I click the "Edit" link
     # Then the state field should have only the given states available.
-    Then for the following collection, the corresponding user should have the corresponding available state buttons:
+    Then for the following community, the corresponding user should have the corresponding available state buttons:
       | collection          | user            | buttons                                           |
 
       # The owner is also a facilitator so the only UATable part of the owner is that they have the ability to
-      # request archival and delete the collection when the collection is validated.
+      # request archival and delete the community when the community is validated.
       | Deep Past           | Erika Reid      | Save as draft, Propose                            |
       | The Licking Silence | Erika Reid      | Propose, Save as draft                            |
       # Person of Wizards has a published version so the facilitator can publish directly.
@@ -78,7 +78,7 @@ Feature: Collection moderation
       | The Shard's Hunter  | Erika Reid      |                                                   |
       | Luck in the Abyss   | Erika Reid      |                                                   |
 
-      # The following collections do not follow the rule above and should be
+      # The following communities do not follow the rule above and should be
       # tested as shown.
       | Deep Past           | Carole James    | Save as draft, Propose                            |
       | The Licking Silence | Carole James    | Propose, Save as draft                            |
@@ -98,8 +98,8 @@ Feature: Collection moderation
 
     # The 'Delete' action is not a button but a link leading to a confirmation
     # page that is styled as a button. It should only be available to the owner
-    # of a validated collection.
-    And the visibility of the delete link should be as follows for these users in these collections:
+    # of a validated community.
+    And the visibility of the delete link should be as follows for these users in these communities:
       | collection          | user            | delete link |
       | Person of Wizards   | Erika Reid      | yes         |
       | The Shard's Hunter  | Erika Reid      | no          |
@@ -125,7 +125,7 @@ Feature: Collection moderation
     Given I am logged in as "Carole James"
 
     # Expected access.
-    And I go to the "Deep Past" collection
+    And I go to the "Deep Past" community
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
@@ -134,7 +134,7 @@ Feature: Collection moderation
     And I should not see the link "Delete"
 
     # Expected access.
-    When I go to the "The Licking Silence" collection
+    When I go to the "The Licking Silence" community
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
@@ -145,7 +145,7 @@ Feature: Collection moderation
     # One check for the moderator.
     Given I am logged in as "Lena Richardson"
     # Expected access.
-    And I go to the "Deep Past" collection
+    And I go to the "Deep Past" community
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
@@ -154,12 +154,12 @@ Feature: Collection moderation
     # The delete button is actually a link that is styled to look like a button.
     And I should see the link "Delete"
 
-    # Check that the owner can delete their own collection.
+    # Check that the owner can delete their own community.
     Given I am logged in as "Erika Reid"
-    And I go to the "Person of Wizards" collection
+    And I go to the "Person of Wizards" community
     When I click "Edit"
     And I click "Delete"
-    Then I should see the heading "Are you sure you want to delete collection Person of Wizards?"
+    Then I should see the heading "Are you sure you want to delete community Person of Wizards?"
     And I should see "This action cannot be undone."
     When I press "Delete"
     # @todo: check that a success message is shown.
@@ -167,7 +167,7 @@ Feature: Collection moderation
     Then I should be on the homepage
 
   @terms
-  Scenario: Published collections should be shown in the collections overview page.
+  Scenario: Published communities should be shown in the communities overview page.
     # Regression test for ticket ISAICP-2889.
     Given the following owner:
       | name             | type    |
@@ -175,7 +175,7 @@ Feature: Collection moderation
     And the following contact:
       | name  | Partyanimal             |
       | email | partyanimal@example.com |
-    And collection:
+    And community:
       | title               | Some berry pie     |
       | description         | Berries are tasty. |
       | logo                | logo.png           |
@@ -185,28 +185,28 @@ Feature: Collection moderation
       | topic               | Supplier exchange  |
       | state               | proposed           |
     When I am on the homepage
-    And I click "Collections"
+    And I click "Communities"
     Then I should not see the heading "Some berry pie"
     When I am logged in as a moderator
     And I am on the homepage
-    And I click "Collections"
+    And I click "Communities"
     Then I should not see the text "Some berry pie"
 
     When I go to my dashboard
     Then I should see the "Some berry pie" tile
-    When I go to the homepage of the "Some berry pie" collection
+    When I go to the homepage of the "Some berry pie" community
     And I click "Edit"
     And I fill in "Title" with "No berry pie"
     And I press "Publish"
     Then I should see the heading "No berry pie"
 
     When I am on the homepage
-    And I click "Collections"
+    And I click "Communities"
     Then I should see the text "No berry pie"
     And I should not see the text "Some berry pie"
 
   @javascript @terms @uploadFiles:logo.png,banner.jpg
-  Scenario: Moderate an open collection
+  Scenario: Moderate an open community
     # Regression test for a bug that caused the slider that controls the
     # content creation setting to revert to default state when the form is
     # resubmitted, as happens during moderation. Ref. ISAICP-3200.
@@ -214,11 +214,11 @@ Feature: Collection moderation
     # has been replaced with the Content creation radio buttons, but we are
     # keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
-    # Propose a collection, filling in the required fields.
-    When I go to the propose collection form
+    # Propose a community, filling in the required fields.
+    When I go to the propose community form
     Then the "Main fields" tab should be active
-    And the "Main fields" tab summary should be "Contains all the fields to be mandatorily filled to create a collection"
-    And the "Additional fields" tab summary should be "Contains all optional fields providing additional information on the collection"
+    And the "Main fields" tab summary should be "Contains all the fields to be mandatorily filled to create a community"
+    And the "Additional fields" tab summary should be "Contains all optional fields providing additional information on the community"
     And I fill in the following:
       | Title  | Spectres in fog        |
       # Contact information data.
@@ -252,7 +252,7 @@ Feature: Collection moderation
     When I press "Propose"
     Then I should see the heading "Spectres in fog"
     When I am logged in as a user with the "moderator" role
-    And I go to the homepage of the "Spectres in fog" collection
+    And I go to the homepage of the "Spectres in fog" community
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
@@ -266,7 +266,7 @@ Feature: Collection moderation
     Then the radio button "Any user can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
-    Then I delete the "Spectres in fog" collection
+    Then I delete the "Spectres in fog" community
     And I delete the "Katsumoto" owner
     And I delete the "A secretary in the fog" contact information
 
@@ -278,7 +278,7 @@ Feature: Collection moderation
     # has been replaced with the Content creation radio buttons, but we are
     # keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
-    When I go to the propose collection form
+    When I go to the propose community form
     And I fill in the following:
       | Title  | Domestic bovins    |
       # Contact information data.
@@ -298,7 +298,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I select the radio button "Any user can create content."
 
-    # Save the collection.
+    # Save the community.
     When I press "Propose"
     Then I should see the heading "Domestic bovins"
     # Edit again.
@@ -308,19 +308,19 @@ Feature: Collection moderation
     Then the radio button "Any user can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
-    Then I delete the "Domestic bovins" collection
+    Then I delete the "Domestic bovins" community
     And I delete the "Garnett Clifton" owner
     And I delete the "Domestic secretary" contact information
 
   @javascript @terms @uploadFiles:logo.png,banner.jpg
   Scenario: Changing Content creation value - regression #2
     # Regression test for a bug that causes the wrong content creation value
-    # to be saved after the "Closed collection" checkbox is checked.
-    # Note that the "Closed collection" option no longer exists and that the
+    # to be saved after the "Closed community" checkbox is checked.
+    # Note that the "Closed community" option no longer exists and that the
     # legacy eLibrary slider has been replaced with the Content creation radio
     # buttons, but we are keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
-    When I go to the propose collection form
+    When I go to the propose community form
     And I fill in the following:
       | Title  | Theft of Body        |
       # Contact information data.
@@ -340,7 +340,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I select the radio button "Only facilitators and authors can create content."
 
-    # Save the collection.
+    # Save the community.
     When I press "Propose"
     Then I should see the heading "Theft of Body"
     # Edit again.
@@ -350,20 +350,20 @@ Feature: Collection moderation
     Then the radio button "Only facilitators and authors can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
-    Then I delete the "Theft of Body" collection
+    Then I delete the "Theft of Body" community
     And I delete the "Coretta Simonson" owner
     And I delete the "Secretary of thieves" contact information
 
   @javascript @terms @uploadFiles:logo.png,banner.jpg
   Scenario: Changing Content creation value - regression #3
     # Regression test for a bug that happens when an "Add more" button on a
-    # multi-value widget is clicked and then the "Closed collection" checkbox
+    # multi-value widget is clicked and then the "Closed community" checkbox
     # is checked.
-    # @see collection_form_rdf_entity_form_alter()
-    # Note that the "Closed collection" option no longer exists but we are
+    # @see community_form_rdf_entity_form_alter()
+    # Note that the "Closed community" option no longer exists but we are
     # keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
-    When I go to the propose collection form
+    When I go to the propose community form
     And I fill in the following:
       | Title  | Silken Emperor    |
       # Contact information data.
@@ -385,7 +385,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I select the radio button "Only facilitators and authors can create content."
 
-    # Save the collection.
+    # Save the community.
     When I press "Propose"
     Then I should see the heading "Silken Emperor"
     # Edit again.
@@ -395,19 +395,19 @@ Feature: Collection moderation
     Then the radio button "Only facilitators and authors can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
-    Then I delete the "Silken Emperor" collection
+    Then I delete the "Silken Emperor" community
     And I delete the "Terrance Nash" owner
     And I delete the "Secretary of Silk" contact information
 
   @javascript @terms @uploadFiles:logo.png,banner.jpg
   Scenario: Changing Content creation value - regression #4
-    # Regression test for a bug that happens when the "Closed collection" checkbox
+    # Regression test for a bug that happens when the "Closed community" checkbox
     # is checked and then an "Add more" button on a multi-value widget is clicked.
-    # @see collection_form_rdf_entity_form_alter()
-    # Note that the "Closed collection" option no longer exists but we are
+    # @see community_form_rdf_entity_form_alter()
+    # Note that the "Closed community" option no longer exists but we are
     # keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
-    When I go to the propose collection form
+    When I go to the propose community form
     And I fill in the following:
       | Title  | The blue ships          |
       # Contact information data.
@@ -430,7 +430,7 @@ Feature: Collection moderation
     When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
 
-    # Save the collection.
+    # Save the community.
     When I press "Propose"
     Then I should see the heading "The blue ships"
     # Edit again.
@@ -440,6 +440,6 @@ Feature: Collection moderation
     Then the radio button "Only facilitators and authors can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
-    Then I delete the "The blue ships" collection
+    Then I delete the "The blue ships" community
     And I delete the "Mable Pelley" owner
     And I delete the "Secretary of the harbor" contact information

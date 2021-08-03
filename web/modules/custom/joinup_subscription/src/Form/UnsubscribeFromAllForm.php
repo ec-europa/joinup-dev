@@ -96,7 +96,7 @@ class UnsubscribeFromAllForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getDescription(): MarkupInterface {
-    return $this->t('Are you sure you want to unsubscribe from all collections and/or solutions? You will stop receiving news and updates, including the pending memberships, from the following:');
+    return $this->t('Are you sure you want to unsubscribe from all communities and/or solutions? You will stop receiving news and updates, including the pending memberships, from the following:');
   }
 
   /**
@@ -232,7 +232,7 @@ class UnsubscribeFromAllForm extends ConfirmFormBase {
   }
 
   /**
-   * Access check for the UnsubscribeFromAllCollectionsForm.
+   * Access check for the UnsubscribeFromAllCommunitiesForm.
    *
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user.

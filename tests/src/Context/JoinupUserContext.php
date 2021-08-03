@@ -25,7 +25,7 @@ class JoinupUserContext extends RawDrupalContext {
   use UtilityTrait;
 
   /**
-   * Navigates to the canonical page display of a collection.
+   * Navigates to the canonical page display of a community.
    *
    * @param string $user
    *   The user name.

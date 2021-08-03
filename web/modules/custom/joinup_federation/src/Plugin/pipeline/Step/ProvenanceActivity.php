@@ -127,7 +127,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
 
     $current_user_id = $this->currentUser->id();
     $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity(array_keys($ids));
-    $collection_id = $this->getPipeline()->getCollection();
+    $community_id = $this->getPipeline()->getCommunity();
     // Create or update provenance activity records for all entities.
     foreach ($activities as $id => $activity) {
       $activity
@@ -137,7 +137,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
         // import or has not been imported as unchanged. Otherwise, it is marked
         // as disabled - blacklisted.
         ->set('provenance_enabled', $ids[$id] || isset($this->getBatchValue('unchanged_ids')[$id]))
-        ->set('provenance_associated_with', $collection_id)
+        ->set('provenance_associated_with', $community_id)
         ->set('provenance_hash', $this->getPersistentDataValue('entity_hashes')[$id])
         ->save();
     }

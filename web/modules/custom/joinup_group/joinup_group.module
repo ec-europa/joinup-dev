@@ -124,7 +124,7 @@ function joinup_group_form_rdf_entity_form_alter(&$form, FormStateInterface $for
 
   if ($entity instanceof GroupInterface) {
     // If the entity has been published, only moderators can edit the short ID.
-    // @todo Implement the EntityPublishedInterface for collections and
+    // @todo Implement the EntityPublishedInterface for communities and
     //   solutions once we have the bundle classes in.
     $has_published_version = $entity->hasGraph('default');
     if (isset($form['field_short_id']) && $has_published_version && !\Drupal::currentUser()->hasPermission('edit short id after publication')) {
@@ -210,7 +210,7 @@ function joinup_group_rdf_entity_insert(RdfInterface $group): void {
 /**
  * Implements hook_ENTITY_TYPE_presave().
  *
- * Provide default images for collections and solutions in case they are empty.
+ * Provide default images for communities and solutions in case they are empty.
  */
 function joinup_group_rdf_entity_presave(EntityInterface $entity) {
   if (!$entity instanceof GroupInterface) {
@@ -364,7 +364,7 @@ function joinup_group_og_user_access_alter(array &$permissions, CacheableMetadat
  * Implements hook_form_FORM_ID_alter().
  *
  * Adds result counts to the role options on the membership overview for
- * collections and solutions.
+ * communities and solutions.
  */
 function joinup_group_form_views_exposed_form_alter(&$form, FormStateInterface $form_state) {
   /** @var \Drupal\views\ViewExecutable $view */
@@ -411,7 +411,7 @@ function joinup_group_form_views_exposed_form_alter(&$form, FormStateInterface $
   $exposed_options = array_merge([NULL], array_keys($group_items));
 
   foreach ($exposed_options as $exposed_option) {
-    // We have different roles for collections and solutions, only keep the
+    // We have different roles for communities and solutions, only keep the
     // relevant ones.
     if (!empty($exposed_option) && strpos($group_items[$exposed_option]['value'], $group->bundle()) === FALSE) {
       unset($form['roles_target_id']['#options'][$exposed_option]);

@@ -124,7 +124,7 @@ function tallinn_node_create_access(AccountInterface $account, array $context, $
  * Implements hook_node_access().
  *
  * Tallinn entities are only accessible by the owners, the facilitators of the
- * Tallinn collection and the moderators.
+ * Tallinn community and the moderators.
  */
 function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account) {
   if ($node->getType() !== 'tallinn_report' || $op !== 'view') {
@@ -140,14 +140,14 @@ function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account
   }
 
   // If the Tallinn access policy is in 'collection' or 'public' mode, all
-  // collection members are able to access any report.
+  // community members are able to access any report.
   $access_policy = \Drupal::state()->get('tallinn.access_policy', 'restricted');
   if (in_array($access_policy, ['collection', 'public'])) {
-    /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    if ($collection = $node->og_audience->entity) {
+    /** @var \Drupal\rdf_entity\RdfInterface $community */
+    if ($community = $node->og_audience->entity) {
       /** @var \Drupal\og\MembershipManagerInterface $og_membership_manager */
       $og_membership_manager = \Drupal::service('og.membership_manager');
-      if ($og_membership_manager->isMember($collection, $account->id())) {
+      if ($og_membership_manager->isMember($community, $account->id())) {
         return AccessResult::allowed();
       }
     }
@@ -166,7 +166,7 @@ function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account
 /**
  * Implements hook_search_api_query_TAG_alter().
  *
- * Do not show the tallinn report records as part of the collection content
+ * Do not show the tallinn report records as part of the community content
  * field. They will be shown in the corresponding page.
  */
 function tallinn_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {

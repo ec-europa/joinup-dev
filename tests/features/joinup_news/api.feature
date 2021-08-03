@@ -8,7 +8,7 @@ Feature: News API
     Given the following owner:
       | name            |
       | Rufus Drumknott |
-    And the following collection:
+    And the following community:
       | title            | Le Foie Heureux          |
       | owner            | Rufus Drumknott          |
       | logo             | logo.png                 |

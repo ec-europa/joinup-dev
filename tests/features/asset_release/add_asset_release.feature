@@ -90,7 +90,7 @@ Feature: "Add release" visibility options.
     And I delete the "Chasing flares" release
 
   Scenario: Do not allow access to the page if the parent is not a solution.
-    Given the following collection:
+    Given the following community:
       | uri   | http://example1regression |
       | title | The Stripped Stream       |
       | state | validated                 |

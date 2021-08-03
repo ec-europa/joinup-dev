@@ -124,12 +124,12 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
    * Tests the custom page OG menu link updater service.
    */
   public function testCustomPageOgMenuLinkUpdater() {
-    // Create 2 collections.
-    $collection_ids = $ogmenu_instance_ids = [];
+    // Create 2 communities.
+    $community_ids = $ogmenu_instance_ids = [];
     foreach ([1, 2] as $index) {
       Rdf::create([
         'rid' => 'collection',
-        'id' => $collection_ids[$index] = "http://example.com/$index",
+        'id' => $community_ids[$index] = "http://example.com/$index",
         'label' => $this->randomString(),
       ])->save();
       // Create also the paired OG menu link instance. Normally this is
@@ -138,7 +138,7 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
       // @see joinup_core_rdf_entity_insert()
       $ogmenu_instance = OgMenuInstance::create([
         'type' => 'navigation',
-        OgGroupAudienceHelperInterface::DEFAULT_FIELD => $collection_ids[$index],
+        OgGroupAudienceHelperInterface::DEFAULT_FIELD => $community_ids[$index],
       ]);
       $ogmenu_instance->save();
       $ogmenu_instance_ids[$index] = $ogmenu_instance->id();
@@ -149,7 +149,7 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
     $custom_page = Node::create([
       'type' => 'custom_page',
       'title' => $this->randomString(),
-      'og_audience' => $collection_ids[1],
+      'og_audience' => $community_ids[1],
     ]);
     $custom_page->save();
 
@@ -157,7 +157,7 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
     $this->assertMenuLink($ogmenu_instance_ids[1], $custom_page->id());
 
     // Move the custom page in the 2nd collection.
-    $custom_page->set('og_audience', $collection_ids[2])->save();
+    $custom_page->set('og_audience', $community_ids[2])->save();
 
     // Check that the menu link has been removed from the 1st collection.
     $this->assertNotMenuLink($ogmenu_instance_ids[1], $custom_page->id());

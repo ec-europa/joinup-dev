@@ -16,7 +16,7 @@ Feature:
     Then I should see the heading "Public Service Provider"
 
   Scenario Outline: Convert a URL of an entity.
-    Given collections:
+    Given communities:
       | uri   | title     | state     |
       | <uri> | <heading> | validated |
 
@@ -32,7 +32,7 @@ Feature:
 
     Examples:
       | uri                            | heading                                   |
-      | http://test.com/example/simple | Rdf ID Converter Collection simple        |
-      | http://test.com/example/       | Rdf ID Converter Collection slash         |
-      | http://test.com/example#       | Rdf ID Converter Collection hash pound    |
-      | http://test.com/example?       | Rdf ID Converter Collection question mark |
+      | http://test.com/example/simple | Rdf ID Converter Community simple        |
+      | http://test.com/example/       | Rdf ID Converter Community slash         |
+      | http://test.com/example#       | Rdf ID Converter Community hash pound    |
+      | http://test.com/example?       | Rdf ID Converter Community question mark |

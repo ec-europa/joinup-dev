@@ -6,15 +6,15 @@ Feature:
 
   @terms
   Scenario: Revisions link availability.
-    Given collection:
-      | title | Revisions collection |
+    Given community:
+      | title | Revisions community |
       | state | validated            |
     When I am logged in as a moderator
-    And I go to the "Revisions collection" collection
+    And I go to the "Revisions community" community
     And I click "Add news" in the plus button menu
     And I fill in the following:
-      | Short title | Revisions collection published          |
-      | Headline    | Revisions collection has been published |
+      | Short title | Revisions community published          |
+      | Headline    | Revisions community has been published |
     And I enter "We are proud to announce another useless test entity." in the "Content" wysiwyg editor
     And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
@@ -27,17 +27,17 @@ Feature:
     And I click "Revisions" in the "Entity actions" region
     And I click the last "Delete" link
     And I press "Delete"
-    Then I should see the heading "Revisions collection has been published"
+    Then I should see the heading "Revisions community has been published"
     But I should not see the link "Revisions" in the "Entity actions" region
 
-    When I am logged in as a facilitator of the "Revisions collection" collection
-    And I go to the homepage of the "Revisions collection" collection
+    When I am logged in as a facilitator of the "Revisions community" community
+    And I go to the homepage of the "Revisions community" community
     Then I should not see the link "Revisions" in the "Entity actions" region
 
   @javascript
   Scenario: Only solutions should have the share contextual link available.
-    Given collection:
-      | title | Share collection |
+    Given community:
+      | title | Share community |
       | state | validated        |
     And contact:
       | name  | Somebody             |
@@ -48,7 +48,7 @@ Feature:
     And solution:
       | title               | Share solution   |
       | state               | validated        |
-      | collection          | Share collection |
+      | collection          | Share community |
       | contact information | Somebody         |
       | owner               | Some owner       |
 
@@ -57,5 +57,5 @@ Feature:
     And I click "About"
     Then I should not see the contextual link "Share"
 
-    When I click "Collections"
+    When I click "Communities"
     Then I should not see the contextual link "Share"

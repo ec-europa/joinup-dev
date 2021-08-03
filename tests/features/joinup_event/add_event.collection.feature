@@ -1,46 +1,46 @@
 @api @group-b
 Feature: "Add event" visibility options.
   In order to manage events
-  As a collection member
+  As a community member
   I need to be able to add "Event" content through UI.
 
   Scenario: "Add event" button should not be shown to normal members, authenticated users and anonymous users.
-    Given the following collections:
+    Given the following communities:
       | title               | logo     | banner     | state     |
       | The Stripped Stream | logo.png | banner.jpg | validated |
       | Years in the Nobody | logo.png | banner.jpg | validated |
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "The Stripped Stream" collection
+    And I go to the homepage of the "The Stripped Stream" community
     Then I should not see the link "Add event"
 
     When I am an anonymous user
-    And I go to the homepage of the "The Stripped Stream" collection
+    And I go to the homepage of the "The Stripped Stream" community
     Then I should not see the link "Add event"
 
-    When I am logged in as a member of the "The Stripped Stream" collection
-    And I go to the homepage of the "The Stripped Stream" collection
+    When I am logged in as a member of the "The Stripped Stream" community
+    And I go to the homepage of the "The Stripped Stream" community
     Then I should see the link "Add event"
 
-    When I am logged in as a "facilitator" of the "The Stripped Stream" collection
-    And I go to the homepage of the "The Stripped Stream" collection
+    When I am logged in as a "facilitator" of the "The Stripped Stream" community
+    And I go to the homepage of the "The Stripped Stream" community
     Then I should see the link "Add event"
-    # I should not be able to add a event to a different collection
-    When I go to the homepage of the "Years in the Nobody" collection
+    # I should not be able to add a event to a different community
+    When I go to the homepage of the "Years in the Nobody" community
     Then I should not see the link "Add event"
 
     When I am logged in as a "moderator"
-    And I go to the homepage of the "The Stripped Stream" collection
+    And I go to the homepage of the "The Stripped Stream" community
     Then I should see the link "Add event"
 
   @terms @uploadFiles:test.zip
   Scenario: Add event as a facilitator.
-    Given collections:
+    Given communities:
       | title            | logo     | banner     | state     |
       | Stream of Dreams | logo.png | banner.jpg | validated |
-    And I am logged in as a facilitator of the "Stream of Dreams" collection
+    And I am logged in as a facilitator of the "Stream of Dreams" community
 
-    When I go to the homepage of the "Stream of Dreams" collection
+    When I go to the homepage of the "Stream of Dreams" community
     And I click "Add event" in the plus button menu
     Then I should see the heading "Add event"
     And the following fields should be present "Title, Short title, Description, Agenda, Logo, Contact email, Website, Physical location, Organisation, Organisation type, Topic, Add a new file, Keywords, Scope, Geographical coverage"
@@ -88,7 +88,7 @@ Feature: "Add event" visibility options.
     But I should not see the text "National"
     And I should not see the text "Regional"
     And I should see the text "Rue Belliard 28, Brussels, Belgium"
-    But I should see the success message 'Event An amazing event has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    But I should see the success message 'Event An amazing event has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Community it was created in.'
     And I should see the text "Event date:"
     And I should see the text "29 to 30/08/2018"
     And I should see a map centered on latitude 4.370375 and longitude 50.842156
@@ -99,10 +99,10 @@ Feature: "Add event" visibility options.
       | longitude   | 4.370375                           |
     And I should see the link "Joinup homepage"
     And I should see the link "https://drupal.org"
-    And the "Stream of Dreams" collection has a event titled "An amazing event"
+    And the "Stream of Dreams" community has a event titled "An amazing event"
     And I should not see the text "France"
-    # Check that the link to the event is visible on the collection page.
-    When I go to the homepage of the "Stream of Dreams" collection
+    # Check that the link to the event is visible on the community page.
+    When I go to the homepage of the "Stream of Dreams" community
     Then I should see the link "An amazing event"
 
     # Check if the event date range is shown in an understandable format if the
@@ -119,7 +119,7 @@ Feature: "Add event" visibility options.
 
   @javascript @generateMedia @uploadFiles:logo.png
   Scenario: Test the image library widget.
-    Given the following collection:
+    Given the following community:
       | title | Stream of Dreams |
       | state | validated        |
     And event content:

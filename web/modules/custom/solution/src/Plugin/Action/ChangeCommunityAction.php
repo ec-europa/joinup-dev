@@ -17,12 +17,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @Action(
  *   id = "change_collection",
- *   label = @Translation("Move to other collection"),
+ *   label = @Translation("Move to other community"),
  *   type = "rdf_entity",
  *   confirm_form_route_name = "solution.change_collection",
  * )
  */
-class ChangeCollectionAction extends ActionBase implements ContainerFactoryPluginInterface {
+class ChangeCommunityAction extends ActionBase implements ContainerFactoryPluginInterface {
 
   /**
    * The private tempstore.

@@ -14,7 +14,7 @@ Feature: Type something to filter the listing the member list
       | rightone     | Wright     | Jackson     |           |
       | brighty      | Lavonne    | Atkins      |           |
       | scanner      | Pucky      | Muck        |           |
-    And the following collection:
+    And the following community:
       | title | Coffee lovers |
       | state | validated     |
     And the following solution:

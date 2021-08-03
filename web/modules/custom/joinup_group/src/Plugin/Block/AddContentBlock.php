@@ -80,7 +80,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
   public function getCacheTags() {
     // We need to invalidate the cache whenever the parent group changes since
     // the available options in the add content block depend on certain settings
-    // of the parent collection, such as the workflow status and the content
+    // of the parent community, such as the workflow status and the content
     // creation option.
     /** @var \Drupal\rdf_entity\RdfInterface $group */
     $group = $this->getContext('og')->getContextValue();
@@ -92,7 +92,7 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
    */
   public function getCacheContexts() {
     $context = parent::getCacheContexts();
-    // The links are only visible for certain roles on certain collections.
+    // The links are only visible for certain roles on certain communities.
     // Normally cache contexts are added automatically but these links depend on
     // an optional context which we manage ourselves.
     return Cache::mergeContexts($context, [

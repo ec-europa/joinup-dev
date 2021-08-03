@@ -19,7 +19,7 @@ Feature: Related solution
       | Python     |                   | Get stuff done.                     | text.pdf      | yes             | no         | logo.png | banner.jpg | Demography | validated |               | Kalikatoures | Kalikatoura         |
       | Javascript | Java              | Java is related to javascript. Huh? | text.pdf      | no              | no         | logo.png | banner.jpg | Demography | validated | Citizen       | Kalikatoures | Kalikatoura         |
 
-    # Scenario A. A collection owner manages his own collection.
+    # Scenario A. A community owner manages his own community.
     When I visit the "Java" solution
     # Referenced through EIRA building block.
     Then I see the "PHP" tile

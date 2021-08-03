@@ -5,8 +5,8 @@ Feature: Subscribing to a solution
   I want to persuade new members to subscribe to my solution
 
   Background:
-    Given collection:
-      | title       | Some parent collection |
+    Given community:
+      | title       | Some parent community |
       | abstract    | Abstract               |
       | description | Description            |
       | closed      | yes                    |
@@ -14,7 +14,7 @@ Feature: Subscribing to a solution
     And solution:
       | title      | Some solution to subscribe |
       | state      | validated                  |
-      | collection | Some parent collection     |
+      | collection | Some parent community     |
     And users:
       | Username          |
       | Cornilius Darcias |

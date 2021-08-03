@@ -5,7 +5,7 @@ Feature:
 
   Scenario: Test moderator and anonymous user perspectives.
 
-    Given the following collections:
+    Given the following communities:
       | title            | state     |
       | Outdated content | validated |
     And the following solutions:

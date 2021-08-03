@@ -15,7 +15,7 @@ provider: null
 plugin: collection_settings_link
 settings:
   id: collection_settings_link
-  label: 'Collection settings link'
+  label: 'Community settings link'
   provider: collection
   label_display: '0'
 visibility:

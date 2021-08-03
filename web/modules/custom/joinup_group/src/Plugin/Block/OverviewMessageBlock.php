@@ -13,7 +13,7 @@ use Drupal\Core\Routing\CurrentRouteMatch;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * A block showing the introduction text on collection and solution overviews.
+ * A block showing the introduction text on community and solution overviews.
  *
  * @Block(
  *  id = "overview_message_block",

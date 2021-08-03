@@ -52,7 +52,7 @@ trait MailCollectorTrait {
   }
 
   /**
-   * Retrieves emails sent to the user from the email collection.
+   * Retrieves emails sent to the user from the email community.
    *
    * @param \Drupal\user\UserInterface $user
    *   The user for which to retrieve emails.

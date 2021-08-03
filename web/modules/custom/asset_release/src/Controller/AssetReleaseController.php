@@ -58,7 +58,7 @@ class AssetReleaseController extends ControllerBase {
    * is auto completed.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The collection rdf_entity.
+   *   The community rdf_entity.
    *
    * @return array
    *   Return the form array to be rendered.

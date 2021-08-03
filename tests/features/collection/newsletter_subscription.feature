@@ -1,7 +1,7 @@
 @api @terms @group-a
-Feature: Subscribing to collection newsletters
-  In order to promote my collection
-  As a collection owner
+Feature: Subscribing to community newsletters
+  In order to promote my community
+  As a community owner
   I want to be allow members to subscribe to my newsletter
 
   Background:
@@ -16,30 +16,30 @@ Feature: Subscribing to collection newsletters
     And the following owner:
       | name              |
       | Antonios Katsaros |
-    And the following collections:
+    And the following communities:
       | title    | description             | logo     | banner     | owner             | contact information   | state     | topic                   |
       | Volkor X | We do not come in peace | logo.png | banner.jpg | Antonios Katsaros | Charalambos Demetriou | validated | Statistics and Analysis |
     And "news" content:
       | title      | collection | state     | author          |
       | Hypersleep | Volkor X   | validated | Tatiana Andreas |
-    And the following collection user memberships:
-      | collection | user               | roles       |
+    And the following community user memberships:
+      | community  | user               | roles       |
       | Volkor X   | Filippos Demetriou | owner       |
       | Volkor X   | Tatiana Andreas    | facilitator |
 
-  Scenario: Only moderators can enter the subscription information for a collection.
+  Scenario: Only moderators can enter the subscription information for a community.
     Given I am logged in as a moderator
-    And I go to the "Volkor X" collection
+    And I go to the "Volkor X" community
     When I click "Edit" in the "Entity actions" region
     Then the following fields should be present "Enable newsletter subscriptions, Universe acronym, Newsletter service ID"
 
     When I am logged in as "Filippos Demetriou"
-    And I go to the "Volkor X" collection
+    And I go to the "Volkor X" community
     When I click "Edit" in the "Entity actions" region
     Then the following fields should not be present "Enable newsletter subscriptions, Universe acronym, Newsletter service ID"
 
     When I am logged in as "Tatiana Andreas"
-    And I go to the "Volkor X" collection
+    And I go to the "Volkor X" community
     When I click "Edit" in the "Entity actions" region
     Then the following fields should not be present "Enable newsletter subscriptions, Universe acronym, Newsletter service ID"
 
@@ -47,7 +47,7 @@ Feature: Subscribing to collection newsletters
     # When the newsletter subscriptions are not enabled the subscription form
     # should not be shown.
     Given I am logged in as a moderator
-    And I go to the "Volkor X" collection
+    And I go to the "Volkor X" community
     Then I should not see the newsletter subscription form in the last tile
 
     # If "Enable newsletter subscriptions" is not checked then it should be
@@ -89,7 +89,7 @@ Feature: Subscribing to collection newsletters
   @javascript @newsroom_newsletter
   Scenario: Subscribe to a newsletter
     Given I am logged in as "Magdalini Kokinos"
-    When I go to the "Volkor X" collection
+    When I go to the "Volkor X" community
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
@@ -113,7 +113,7 @@ Feature: Subscribing to collection newsletters
       | Thank you for subscribing to our newsletter. |
 
     # When a user resubscribes it is polite to inform about this.
-    When I go to the "Volkor X" collection
+    When I go to the "Volkor X" community
     And I press "Subscribe"
     And I wait for AJAX to finish
     Then I should see the following success messages:

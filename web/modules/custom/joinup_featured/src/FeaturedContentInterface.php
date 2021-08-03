@@ -15,7 +15,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
  * featured content.
  *
  * Only moderators can decide which content is features, but all users can see
- * it. It applies to collections, solutions and community content.
+ * it. It applies to communities, solutions and community content.
  */
 interface FeaturedContentInterface extends ContentEntityInterface {
 

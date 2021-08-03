@@ -5,15 +5,15 @@ Feature: SEO for discussion forum posts.
   I need proper metatag to be encapsulated in the html code.
 
   Scenario: Basic metatags are attached as JSON schema on the page.
-    Given collections:
+    Given communities:
       | title                            | state     |
-      | Joinup SEO discussion collection | validated |
+      | Joinup SEO discussion community | validated |
     And users:
       | Username          | E-mail                 | First name | Family name |
       | Joinup SEO author | joinup.seo@example.com | Kindle     | eReader     |
     And "discussion" content:
       | title                           | publication date                | changed                         | content                                                      | author            | attachments         | keywords                       | state     | collection                       |
-      | Discussions are now forum posts | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | This discussion is to ensure that SEO tags are set properly. | Joinup SEO author | test.zip, test1.zip | seo, tags, metatag, schema.org | validated | Joinup SEO discussion collection |
+      | Discussions are now forum posts | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | This discussion is to ensure that SEO tags are set properly. | Joinup SEO author | test.zip, test1.zip | seo, tags, metatag, schema.org | validated | Joinup SEO discussion community |
 
     When I visit the "Discussions are now forum posts" discussion
     Then the metatag JSON should be attached in the page
@@ -27,7 +27,7 @@ Feature: SEO for discussion forum posts.
       | datePublished       | 2019-12-25T13:00:00+0100                                                                            |
       | isAccessibleForFree | True                                                                                                |
       | dateModified        | 2020-01-01T13:00:00+0100                                                                            |
-      | mainEntityOfPage    | __base_url__/collection/joinup-seo-discussion-collection/discussion/discussions-are-now-forum-posts |
+      | mainEntityOfPage    | __base_url__/collection/joinup-seo-discussion-community/discussion/discussions-are-now-forum-posts |
     # Adding numerical property values is turning the "about" property into an array comparison.
     And the metatag graph of the item with "name" "Discussions are now forum posts" should have the following "about" properties:
       | property | value      |
@@ -77,7 +77,7 @@ Feature: SEO for discussion forum posts.
     And the following meta tags should available in the html:
       | identifier     | value                                                                                               |
       | description    | This discussion is to ensure that SEO tags are set properly.                                        |
-      | og:url         | __base_url__/collection/joinup-seo-discussion-collection/discussion/discussions-are-now-forum-posts |
+      | og:url         | __base_url__/collection/joinup-seo-discussion-community/discussion/discussions-are-now-forum-posts |
       | og:site_name   | Joinup                                                                                              |
       | og:title       | Discussions are now forum posts                                                                     |
       | og:description | This discussion is to ensure that SEO tags are set properly.                                        |

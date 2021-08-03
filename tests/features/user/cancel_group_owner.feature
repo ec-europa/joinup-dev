@@ -7,7 +7,7 @@ Feature:
       | Username      | Roles | E-mail                   | First name | Family name |
       | Hazel Olson   |       | HazelOlson@example.com   | Hazel      | Olson       |
       | Amelia Barker |       | AmeliaBarker@example.com | Amelia     | Barker      |
-    And collections:
+    And communities:
       | title                   | state     |
       | Lugia was just released | validated |
       | Articuno is hunted      | validated |
@@ -15,10 +15,10 @@ Feature:
       | title                        | state     |
       | Random chat machine learning | validated |
     # Assign facilitator role in order to allow creation of a solution.
-    # In UAT this can be done by creating the collection through the UI
+    # In UAT this can be done by creating the community through the UI
     # with the related user.
-    And the following collection user memberships:
-      | collection              | user          | roles                      |
+    And the following community user memberships:
+      | community               | user          | roles                      |
       | Lugia was just released | Hazel Olson   | administrator, facilitator |
       | Articuno is hunted      | Amelia Barker | administrator, facilitator |
     And the following solution user membership:

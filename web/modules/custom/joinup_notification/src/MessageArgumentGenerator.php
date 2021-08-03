@@ -7,6 +7,7 @@ namespace Drupal\joinup_notification;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Url;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\user\Entity\Role;
@@ -97,7 +98,7 @@ class MessageArgumentGenerator {
   public static function getGroupArguments(EntityInterface $group): array {
     $arguments = [
       '@group:title' => $group->label(),
-      '@group:bundle' => $group->bundle(),
+      '@group:bundle' => $group instanceof CommunityInterface ? 'community' : $group->bundle(),
     ];
 
     try {

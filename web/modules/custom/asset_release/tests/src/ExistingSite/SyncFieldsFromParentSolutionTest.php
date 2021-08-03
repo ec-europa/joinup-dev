@@ -78,7 +78,7 @@ class SyncFieldsFromParentSolutionTest extends JoinupExistingSiteTestBase {
       'rid' => 'collection',
       'id' => 'http://example.com/collection',
       'field_ar_state' => 'validated',
-      'label' => 'Collection',
+      'label' => 'Community',
     ]);
 
     // Create two solutions to be related.

@@ -39,7 +39,7 @@ Feature:
 
   # This scenario is a light test to avoid regressions.
   Scenario: Moderators can access the list of published solutions and filter them by dates and type.
-    Given the following collections:
+    Given the following communities:
       | title               | state     |
       | Monday's Artificial | validated |
       | Restless Burst      | validated |

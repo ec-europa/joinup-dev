@@ -5,7 +5,7 @@ Feature: Creating comments through the API
   I need to be able to programmatically create comments
 
   Scenario Outline: Creating comments on community content
-    Given collection:
+    Given community:
       | title | Hashrate, shares & workers |
       | state | validated                  |
     And <content type> content:

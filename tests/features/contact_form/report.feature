@@ -11,15 +11,15 @@ Feature: Submit the contact form
       | Report moderator | moderator | report_moderator@test.com | Frank      | Sinatra     |
       | Report user      |           | report_user@test.com      | Rudi       | Sinatra     |
       | Report owner     |           | report_owner@test.com     | Clark      | The machine |
-    And collections:
+    And communities:
       | title                                 | state     | abstract     | description   |
-      | Collection with inappropriate content | validated | No one cares | No one cares. |
-    And the following collection user memberships:
-      | collection                            | user         | roles              |
-      | Collection with inappropriate content | Report owner | owner, facilitator |
+      | Community with inappropriate content | validated | No one cares | No one cares. |
+    And the following community user memberships:
+      | community                            | user         | roles              |
+      | Community with inappropriate content | Report owner | owner, facilitator |
     And event content:
-      | title           | author      | body | location  | collection                            | field_state |
-      | Event to report | Report user | body | Somewhere | Collection with inappropriate content | validated   |
+      | title           | author      | body | location  | collection                           | field_state |
+      | Event to report | Report user | body | Somewhere | Community with inappropriate content | validated   |
 
     # There should be a link to the contact form in the footer.
     Given I am not logged in
@@ -36,7 +36,7 @@ Feature: Submit the contact form
     Then I wait for the spam protection time limit to pass
     And I press "Submit"
 
-    # The moderator, the collection owner and the owner should receive the notifications.
+    # The moderator, the community owner and the owner should receive the notifications.
     Then the following email should have been sent:
       | template  | Report contact form                                                                                                                                                                             |
       | recipient | Report moderator                                                                                                                                                                                |

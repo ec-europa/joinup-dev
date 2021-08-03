@@ -10,7 +10,7 @@ use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\node\NodeInterface;
 use Drupal\views\Views;
 
@@ -29,13 +29,13 @@ class GlossaryController extends ControllerBase {
   /**
    * Provides an access callback for the 'collection.glossary_page' route.
    *
-   * @param \Drupal\collection\Entity\CollectionInterface $rdf_entity
+   * @param \Drupal\collection\Entity\CommunityInterface $rdf_entity
    *   The collection entity.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function access(CollectionInterface $rdf_entity): AccessResultInterface {
+  public function access(CommunityInterface $rdf_entity): AccessResultInterface {
     $tags = Cache::buildTags('og-group-content', $rdf_entity->getCacheTagsToInvalidate());
     return AccessResult::allowedIf($this->hasGlossaryTerms($rdf_entity))
       ->addCacheTags($tags);
@@ -44,7 +44,7 @@ class GlossaryController extends ControllerBase {
   /**
    * Provides a controller for the 'collection.glossary_page' route.
    *
-   * @param \Drupal\collection\Entity\CollectionInterface $rdf_entity
+   * @param \Drupal\collection\Entity\CommunityInterface $rdf_entity
    *   The collection entity.
    * @param string|null $letter
    *   (optional) An optional letter to filter the glossary on.
@@ -52,7 +52,7 @@ class GlossaryController extends ControllerBase {
    * @return array
    *   The output render array.
    */
-  public function glossary(CollectionInterface $rdf_entity, ?string $letter = NULL): array {
+  public function glossary(CommunityInterface $rdf_entity, ?string $letter = NULL): array {
     $navigator = [
       '#theme' => 'glossary_navigator',
       '#url' => Url::fromRoute('collection.glossary_page', [
@@ -83,33 +83,33 @@ class GlossaryController extends ControllerBase {
   /**
    * Returns the glossary page title.
    *
-   * @param \Drupal\collection\Entity\CollectionInterface $rdf_entity
+   * @param \Drupal\collection\Entity\CommunityInterface $rdf_entity
    *   The collection entity.
    *
    * @return \Drupal\Component\Render\MarkupInterface
    *   The translated title.
    */
-  public function title(CollectionInterface $rdf_entity): MarkupInterface {
+  public function title(CommunityInterface $rdf_entity): MarkupInterface {
     return $this->t('@group glossary', ['@group' => $rdf_entity->label()]);
   }
 
   /**
    * Finds out if the collection has glossary term entries.
    *
-   * @param \Drupal\collection\Entity\CollectionInterface $rdf_entity
+   * @param \Drupal\collection\Entity\CommunityInterface $rdf_entity
    *   The collection entity.
    *
    * @return bool
    *   If the collection has glossary term entries.
    */
-  protected function hasGlossaryTerms(CollectionInterface $rdf_entity): bool {
+  protected function hasGlossaryTerms(CommunityInterface $rdf_entity): bool {
     return (bool) $this->getGlossaryTermLetters($rdf_entity);
   }
 
   /**
    * Returns a list of unique uppercase letters extracted from glossary terms.
    *
-   * @param \Drupal\collection\Entity\CollectionInterface $rdf_entity
+   * @param \Drupal\collection\Entity\CommunityInterface $rdf_entity
    *   The collection entity.
    *
    * @return string[]
@@ -121,7 +121,7 @@ class GlossaryController extends ControllerBase {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    *   Thrown when the node entity type is not defined.
    */
-  protected function getGlossaryTermLetters(CollectionInterface $rdf_entity): array {
+  protected function getGlossaryTermLetters(CommunityInterface $rdf_entity): array {
     if (!isset($this->letters)) {
       $this->letters = [];
       $storage = $this->entityTypeManager()->getStorage('node');

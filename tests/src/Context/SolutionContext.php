@@ -60,16 +60,16 @@ class SolutionContext extends RawDrupalContext {
   /**
    * Navigates to the add solution form.
    *
-   * @param string $collection
-   *   The parent collection.
+   * @param string $community
+   *   The parent community.
    *
-   * @When I go to the add solution form of the :collection collection
-   * @When I visit the add solution form of the :collection collection
+   * @When I go to the add solution form of the :community community
+   * @When I visit the add solution form of the :community community
    */
-  public function visitAddSolutionForm($collection) {
-    $collection = $this->getRdfEntityByLabel($collection);
+  public function visitAddSolutionForm($community) {
+    $community = $this->getRdfEntityByLabel($community);
     $solution_url = Url::fromRoute('solution.collection_solution.add', [
-      'rdf_entity' => $collection->id(),
+      'rdf_entity' => $community->id(),
     ]);
 
     $this->visitPath($solution_url->getInternalPath());
@@ -114,7 +114,7 @@ class SolutionContext extends RawDrupalContext {
    * Table format:
    * @codingStandardsIgnoreStart
    * | title        | description            | state                                             | collection      | documentation | closed | creation date    | content creation | featured | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
-   * | Foo solution | This is a foo solution | draft|proposed|validated|needs update|blacklisted | Some collection | text.pdf      | yes    | 28-01-1995 12:05 | no               | yes      | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
+   * | Foo solution | This is a foo solution | draft|proposed|validated|needs update|blacklisted | Some community | text.pdf      | yes    | 28-01-1995 12:05 | no               | yes      | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
    * | Bar solution | This is a bar solution | validated                                         |                 | text.pdf      | no     | 28-01-1995 12:06 | yes              | no       | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
    * @codingStandardsIgnoreEnd
    *
@@ -143,7 +143,7 @@ class SolutionContext extends RawDrupalContext {
         }
       }
 
-      $this->ensureParentCollection($values);
+      $this->ensureParentCommunity($values);
       $values = $this->convertValueAliases($values);
 
       $this->createSolution($values);
@@ -161,7 +161,7 @@ class SolutionContext extends RawDrupalContext {
    * | logo                | logo.jpg                                                       |
    * | moderation          | no|yes                                                         |
    * | closed              | no|yes                                                         |
-   * | collection          | Example collection                                             |
+   * | community          | Example community                                             |
    * | contact information | Grahame Paterson, Aulay MacFarlane                             |
    * | documentation       | text.pdf                                                       |
    * | content creation    | facilitators|members|registered users                          |
@@ -205,18 +205,18 @@ class SolutionContext extends RawDrupalContext {
       }
     }
 
-    $this->ensureParentCollection($values);
+    $this->ensureParentCommunity($values);
     $values = $this->convertValueAliases($values);
 
     $this->createSolution($values);
   }
 
   /**
-   * Make sure that the solution being created has a parent collection.
+   * Make sure that the solution being created has a parent community.
    *
-   * For some tests the solution's parent collection has no relevance. Such
-   * tests are allowed to omit an explicit collection creation. We're creating
-   * here a dummy parent collection just to satisfy the data integrity
+   * For some tests the solution's parent community has no relevance. Such
+   * tests are allowed to omit an explicit community creation. We're creating
+   * here a dummy parent community just to satisfy the data integrity
    * constraint.
    *
    * @param array $values
@@ -224,20 +224,20 @@ class SolutionContext extends RawDrupalContext {
    *
    * @see \Drupal\solution\SolutionAffiliationFieldItemList::preSave()
    */
-  protected function ensureParentCollection(array &$values): void {
+  protected function ensureParentCommunity(array &$values): void {
     if (empty($values['collection'])) {
       $label = $this->getRandom()->sentences(3);
-      $collection = Rdf::create([
+      $community = Rdf::create([
         'rid' => 'collection',
         'label' => $label,
         'field_ar_state' => 'validated',
       ]);
-      $collection->save();
+      $community->save();
       $values['collection'] = $label;
-      // Track this collection.
-      $this->rdfEntities[$collection->id()] = $collection;
+      // Track this community.
+      $this->rdfEntities[$community->id()] = $community;
 
-      // Remove any links created by this collection because they might produce
+      // Remove any links created by this community because they might produce
       // name collisions with the solution. E.g. the left sidebar link 'About'.
       // @todo Remove this workaround in ISAICP-5597.
       // @see tests/features/custom_page/navigation_menu.feature
@@ -246,7 +246,7 @@ class SolutionContext extends RawDrupalContext {
       $storage = $entity_type_manager->getStorage('ogmenu_instance');
       $og_menu_instance_ids = $storage->getQuery()
         ->condition('type', 'navigation')
-        ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $collection->id())
+        ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $community->id())
         ->execute();
       $storage->delete($storage->loadMultiple($og_menu_instance_ids));
     }
@@ -547,7 +547,6 @@ class SolutionContext extends RawDrupalContext {
       'source code repository' => 'field_is_source_code_repository',
       'spatial coverage' => 'field_spatial_coverage',
       'status' => 'field_status',
-      'topic' => 'field_topic',
       'translation' => 'field_is_translation',
       'webdav creation' => 'field_is_webdav_creation',
       'webdav url' => 'field_is_webdav_url',
@@ -709,15 +708,15 @@ class SolutionContext extends RawDrupalContext {
   /**
    * Creates a simple multilingual solution.
    *
-   * @Given the multilingual :title solution of :collection collection
+   * @Given the multilingual :title solution of :community community
    */
-  public function theMultilingualSolution(string $title, string $collection): void {
-    $collection = $this->getEntityByLabel('rdf_entity', $collection, 'collection');
+  public function theMultilingualSolution(string $title, string $community): void {
+    $community = $this->getEntityByLabel('rdf_entity', $community, 'collection');
     $values = [
       'label' => $title,
       'field_is_state' => 'validated',
       'field_is_description' => "English description",
-      'collection' => $collection->id(),
+      'collection' => $community->id(),
     ];
     $solution = $this->createRdfEntity('solution', $values);
     // Fill with the specific content translation fields and fall-back to
@@ -736,27 +735,27 @@ class SolutionContext extends RawDrupalContext {
   }
 
   /**
-   * Checks that the given solution is affiliated with the given collection.
+   * Checks that the given solution is affiliated with the given community.
    *
-   * @param string $collection_label
-   *   The name of the collection to check.
+   * @param string $community_label
+   *   The name of the community to check.
    * @param string $solution_label
    *   The name of the solution to check.
    *
    * @throws \Exception
-   *   Thrown when the solution is not affiliated with the collection.
+   *   Thrown when the solution is not affiliated with the community.
    *
-   * @Then the :solution_label solution should be affiliated with the :collection_label collection
+   * @Then the :solution_label solution should be affiliated with the :community_label community
    */
-  public function assertCollectionAffiliation($collection_label, $solution_label) {
+  public function assertCommunityAffiliation($community_label, $solution_label) {
     $solution = $this->getRdfEntityByLabel($solution_label, 'solution');
     $ids = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'collection')
-      ->condition('label', $collection_label)
+      ->condition('label', $community_label)
       ->condition('field_ar_affiliates', $solution->id())
       ->execute();
     if (!$ids) {
-      throw new \Exception("The '$solution_label' solution is not affiliated with the '$collection_label' collection but it should be.");
+      throw new \Exception("The '$solution_label' solution is not affiliated with the '$community_label' community but it should be.");
     }
   }
 

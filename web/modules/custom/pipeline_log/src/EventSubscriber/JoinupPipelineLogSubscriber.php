@@ -52,8 +52,8 @@ class JoinupPipelineLogSubscriber implements EventSubscriberInterface {
    */
   public function onPipelineSuccess(PipelineSuccessEvent $event): void {
     $pipeline_id = $event->getPipeline()->getPluginId();
-    $collection = $this->keyValue->get('joinup_pipeline_log');
-    $collection->set($pipeline_id, $this->time->getRequestTime());
+    $community = $this->keyValue->get('joinup_pipeline_log');
+    $community->set($pipeline_id, $this->time->getRequestTime());
   }
 
   /**

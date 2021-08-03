@@ -14,7 +14,7 @@ Feature: About this solution
       | name                 | type                         |
       | Nova Pharmaceuticals | Company, Industry consortium |
       | Senatier             | National authority           |
-    And collection:
+    And community:
       | title | Monoclonal Antibody Development |
       | state | validated                       |
     And solutions:

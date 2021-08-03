@@ -8,15 +8,15 @@ Feature: "Document page" editing.
     Given users:
       | Username |
       | <user>   |
-    And the following collections:
+    And the following communities:
       | title        | description        | state     |
-      | <collection> | Sample description | validated |
-    And the following collection user memberships:
-      | collection   | user   | roles  |
-      | <collection> | <user> | <role> |
+      | <community> | Sample description | validated |
+    And the following community user memberships:
+      | community   | user   | roles  |
+      | <community> | <user> | <role> |
     And "document" content:
       | title      | author | collection   | state     |
-      | <document> | <user> | <collection> | validated |
+      | <document> | <user> | <community> | validated |
     When I am logged in as "<user>"
     And I go to the "<document>" document
     Then I should see the link "Edit" in the "Entity actions" region

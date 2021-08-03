@@ -6,6 +6,7 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
@@ -265,7 +266,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
     // parent.
     /** @var \Drupal\comment\CommentInterface $entity */
     $arguments['@entity:title'] = $entity->label();
-    $arguments['@entity:bundle'] = $entity->bundle();
+    $arguments['@entity:bundle'] = $entity instanceof CommunityInterface ? 'community' : $entity->bundle();
     $arguments['@entity:url'] = $this->parent->toUrl('canonical', [
       'absolute' => TRUE,
       'fragment' => 'comment-' . $entity->id(),
@@ -273,7 +274,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
 
     // Generate the rest of the properties.
     $arguments['@parent:title'] = $this->parent->label();
-    $arguments['@parent:bundle'] = $this->parent->bundle();
+    $arguments['@parent:bundle'] = $this->parent instanceof CommunityInterface ? 'community' : $this->parent->bundle();
     $arguments['@parent:url'] = $this->parent->toUrl('canonical', ['absolute' => TRUE])->toString();
 
     $arguments += MessageArgumentGenerator::getGroupArguments($this->group);

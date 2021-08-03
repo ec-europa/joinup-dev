@@ -59,7 +59,7 @@ Feature: Pinning content entities inside solutions
     Then I should not see the contextual links "Pin, Unpin" in the "Useful information" tile
     And I should not see the contextual links "Pin, Unpin" in the "Very important" tile
 
-    # Collection members cannot pin nor unpin content.
+    # Community members cannot pin nor unpin content.
     When I am logged in as "Tyron Lannister"
     And I go to the homepage of the "Blue Wrench" solution
     Then I should not see the contextual links "Pin, Unpin" in the "Useful information" tile

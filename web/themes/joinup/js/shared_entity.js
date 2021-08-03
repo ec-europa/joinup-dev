@@ -9,7 +9,7 @@
    * Theme function that renders a visual cue for shared content.
    *
    * @param {string} collection
-   *   The collection name.
+   *   The community name.
    *
    * @returns {string}
    *   The HTML for the shared content visual cue.
@@ -21,7 +21,7 @@
   };
 
   /**
-   * Adds visual cues for content shared from a collection to another.
+   * Adds visual cues for content shared from a community to another.
    *
    * @type {Drupal~behavior}
    *
@@ -32,7 +32,7 @@
     attach: function (context) {
       var collection = $('[data-drupal-group-context]').data('drupal-group-context');
 
-      // If there is no global collection context, bail out.
+      // If there is no global community context, bail out.
       if (!collection) {
         return;
       }
@@ -41,7 +41,7 @@
         var $this = $(this);
         var parent = $this.data('drupal-parent-id');
 
-        // If the content comes from the current global collection context,
+        // If the content comes from the current global community context,
         // do not add any cue.
         if (parent === collection) {
           return;

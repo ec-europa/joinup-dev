@@ -22,7 +22,7 @@
         }
       }
       catch (err) {
-        // Collection ID was not URL encoded. Remove the invalid cookie.
+        // Community ID was not URL encoded. Remove the invalid cookie.
         cookies.remove('join_group');
       }
     }

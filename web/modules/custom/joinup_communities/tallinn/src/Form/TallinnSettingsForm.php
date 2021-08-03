@@ -58,8 +58,8 @@ class TallinnSettingsForm extends FormBase {
         '#title' => $this->t('Access to Tallinn Ministerial Declaration data'),
         '#options' => [
           'public' => $this->t('Public'),
-          'collection' => $this->t('Collection (moderators and Tallinn collection members)'),
-          'restricted' => $this->t('Restricted (moderators and Tallinn collection facilitators)'),
+          'collection' => $this->t('Community (moderators and Tallinn community members)'),
+          'restricted' => $this->t('Restricted (moderators and Tallinn community facilitators)'),
         ],
         '#default_value' => $this->state->get('tallinn.access_policy', 'restricted'),
       ],

@@ -5,22 +5,22 @@ Feature:
   I need to be able to present the solutions and the recommendations in the EIF Toolbox.
 
   Scenario: Recommendations page is only accessible through the EIF Toolbox solution.
-    Given the following collection:
-      | title | Test collection |
+    Given the following community:
+      | title | Test community |
       | state | validated       |
     Given the following solution:
       | title           | Test solution                        |
-      | collection      | Test collection                      |
+      | collection      | Test community                      |
       | landing page    | http://foo-example.com/landing       |
       | webdav creation | no                                   |
       | webdav url      | http://joinup.eu/solution/foo/webdav |
       | wiki            | http://example.wiki/foobar/wiki      |
       | state           | validated                            |
     When I am logged in as a moderator
-    And I go to "/collection/test-collection/solution/test-solution"
+    And I go to "/collection/test-community/solution/test-solution"
     Then I should see the heading "Test solution"
 
-    When I go to "/collection/test-collection/solution/test-solution/recommendations"
+    When I go to "/collection/test-community/solution/test-solution/recommendations"
     Then the response status code should be 404
 
     # Visibility of recommendations page depends on the view access of the
@@ -29,9 +29,9 @@ Feature:
     # that deletes the validated version of the entity.
     Given the workflow state of the "EIF Toolbox" solution is changed to "blacklisted"
     And I am not logged in
-    When I go to "/collection/nifo-collection/solution/eif-toolbox"
+    When I go to "/collection/nifo-community/solution/eif-toolbox"
     Then I should see the heading "Sign in to continue"
-    When I go to "/collection/nifo-collection/solution/eif-toolbox/recommendations"
+    When I go to "/collection/nifo-community/solution/eif-toolbox/recommendations"
     Then the response status code should be 404
 
   Scenario: The recommendations categories are properly sorted.

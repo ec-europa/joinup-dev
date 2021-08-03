@@ -1,7 +1,7 @@
 @api @email @terms @group-b
 Feature: Notification test for the document transitions on a post moderated parent.
-  In order to manage my collections
-  As an owner of the collection
+  In order to manage my communities
+  As an owner of the community
   I want to receive a notification when an entity is proposed.
 
   Scenario Outline: Notifications should be sent whenever a document is going through a relevant transition.
@@ -11,27 +11,27 @@ Feature: Notification test for the document transitions on a post moderated pare
       | CC owner         |           | notify_owner@test.com       | CC         | Owner       |
       | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator |
       | CC member        |           | notify_member@test.com      | CC         | Member      |
-    And collections:
+    And communities:
       | title         | state     | content creation | moderation   |
-      | CC collection | validated | members          | <moderation> |
-    And the following collection user memberships:
+      | CC community | validated | members          | <moderation> |
+    And the following community user memberships:
       | collection    | user           | roles       |
-      | CC collection | CC owner       | owner       |
-      | CC collection | CC facilitator | facilitator |
-      | CC collection | CC member      | <roles>     |
+      | CC community | CC owner       | owner       |
+      | CC community | CC facilitator | facilitator |
+      | CC community | CC member      | <roles>     |
     And document content:
       | title                                | author    | body | document type | collection    | field_state  |
-      | CC notify post publish               | CC member | body | Document      | CC collection | draft        |
-      | CC notify post request changes       | CC member | body | Document      | CC collection | validated    |
-      | CC notify post report                | CC member | body | Document      | CC collection | validated    |
-      | CC notify post propose from reported | CC member | body | Document      | CC collection | needs_update |
-      | CC notify post approve proposed      | CC member | body | Document      | CC collection | proposed     |
-      | CC notify post delete                | CC member | body | Document      | CC collection | validated    |
+      | CC notify post publish               | CC member | body | Document      | CC community | draft        |
+      | CC notify post request changes       | CC member | body | Document      | CC community | validated    |
+      | CC notify post report                | CC member | body | Document      | CC community | validated    |
+      | CC notify post propose from reported | CC member | body | Document      | CC community | needs_update |
+      | CC notify post approve proposed      | CC member | body | Document      | CC community | proposed     |
+      | CC notify post delete                | CC member | body | Document      | CC community | validated    |
 
     # Test 'create' operation.
     When all e-mails have been sent
     And I am logged in as "CC member"
-    And I go to the "CC collection" collection
+    And I go to the "CC community" community
     And I click "Add document" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Description" with "Sample body."
@@ -41,7 +41,7 @@ Feature: Notification test for the document transitions on a post moderated pare
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                            |
       | subject   | Joinup: Content has been published                                                                                                                                  |
-      | body      | CC Member has published the new document - "CC notify create publish" in the collection: "CC collection".You can access the new content at the following link: http |
+      | body      | CC Member has published the new document - "CC notify create publish" in the community: "CC community".You can access the new content at the following link: http |
 
     # Test 'update' operation.
     When all e-mails have been sent
@@ -52,7 +52,7 @@ Feature: Notification test for the document transitions on a post moderated pare
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                |
       | subject   | Joinup: Content has been published                                                                      |
-      | body      | CC Member has published the new document - "CC notify post publish" in the collection: "CC collection". |
+      | body      | CC Member has published the new document - "CC notify post publish" in the community: "CC community". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -65,7 +65,7 @@ Feature: Notification test for the document transitions on a post moderated pare
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                                                                  |
       | subject   | Joinup: Content has been updated                                                                                                                                                                           |
-      | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify post request changes" in the collection: "CC collection", with the following motivation: "Can you do some changes?". |
+      | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify post request changes" in the community: "CC community", with the following motivation: "Can you do some changes?". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -78,7 +78,7 @@ Feature: Notification test for the document transitions on a post moderated pare
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                                                         |
       | subject   | Joinup: Content has been updated                                                                                                                                                                  |
-      | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify post report" in the collection: "CC collection", with the following motivation: "Your content is reported". |
+      | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify post report" in the community: "CC community", with the following motivation: "Your content is reported". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -88,7 +88,7 @@ Feature: Notification test for the document transitions on a post moderated pare
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                        |
       | subject   | Joinup: Content has been updated                                                                                                                                 |
-      | body      | the Facilitator, CC Facilitator has approved your request of publication of the document - "CC notify post approve proposed" in the collection: "CC collection". |
+      | body      | the Facilitator, CC Facilitator has approved your request of publication of the document - "CC notify post approve proposed" in the community: "CC community". |
 
     # Test 'delete' operation.
     When all e-mails have been sent
@@ -100,7 +100,7 @@ Feature: Notification test for the document transitions on a post moderated pare
     Then the following email should have been sent:
       | recipient | CC member                                                                                                         |
       | subject   | Joinup: Content has been deleted                                                                                  |
-      | body      | Facilitator CC Facilitator has deleted the document - "CC notify post delete" in the collection: "CC collection". |
+      | body      | Facilitator CC Facilitator has deleted the document - "CC notify post delete" in the community: "CC community". |
 
     Examples:
       | moderation | roles  |

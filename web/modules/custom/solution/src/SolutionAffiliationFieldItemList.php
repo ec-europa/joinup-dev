@@ -12,7 +12,7 @@ use Drupal\rdf_entity\RdfInterface;
 /**
  * Defines a field item list class for the solution's 'collection' field.
  *
- * In ADMS-AP collections point to solutions. The reverse relation would have
+ * In ADMS-AP communities point to solutions. The reverse relation would have
  * been more logical, and this is quite inconvenient, especially for the search
  * index. This field computes the reverse relationship but is a read-write
  * field, allowing also to set the parent collection.
@@ -38,8 +38,8 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
    */
   protected function computeValue() {
     if ($this->getEntity()->id()) {
-      foreach ($this->getAffiliation() as $delta => $collection_id) {
-        $this->list[$delta] = $this->createItem($delta, ['target_id' => $collection_id]);
+      foreach ($this->getAffiliation() as $delta => $community_id) {
+        $this->list[$delta] = $this->createItem($delta, ['target_id' => $community_id]);
       }
     }
   }
@@ -145,14 +145,14 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
       return;
     }
 
-    // Collect the ids of the collections that were affected by changes.
+    // Collect the ids of the communities that were affected by changes.
     $affected_ids += array_unique(array_merge($new_ids, $existing_ids));
 
     $connection->query($this->getDeleteQuery($graph_uris, $field_uri, $solution));
     $connection->query($this->getInsertQuery($graph_uris, $field_uri, $solution, $new_ids));
 
     if ($affected_ids) {
-      // Clear the cache of collections that were affected by changes.
+      // Clear the cache of communities that were affected by changes.
       \Drupal::service('entity_type.manager')->getStorage('rdf_entity')->resetCache($affected_ids);
     }
   }
@@ -174,7 +174,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
   }
 
   /**
-   * Returns the graph IDs that the collections exists in.
+   * Returns the graph IDs that the communities exists in.
    *
    * Not to be confused with the final graphs the values will be inserted in.
    *

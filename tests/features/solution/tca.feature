@@ -5,12 +5,12 @@ Feature: Solution TCA agreement
   I want users to sign the TCA agreement before creating a solution.
 
   Scenario: Authenticated users can access the solution TCA agreement page.
-    Given the following collection:
-      | title | Agreed collection |
+    Given the following community:
+      | title | Agreed community |
       | state | validated         |
 
-    When I am logged in as a facilitator of the "Agreed collection" collection
-    And I go to the "Agreed collection" collection
+    When I am logged in as a facilitator of the "Agreed community" community
+    And I go to the "Agreed community" community
     And I click "Add solution" in the plus button menu
 
     Then I should see the heading "Terms of agreement"

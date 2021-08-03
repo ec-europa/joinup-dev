@@ -10,17 +10,17 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a 'Collection' condition.
+ * Provides a 'Community' condition.
  *
  * @Condition(
  *   id = "collection",
- *   label = @Translation("Collections"),
+ *   label = @Translation("Communities"),
  *   context_definitions = {
- *     "og" = @ContextDefinition("entity:rdf_entity:collection", label = @Translation("Collection"))
+ *     "og" = @ContextDefinition("entity:rdf_entity:collection", label = @Translation("Community"))
  *   }
  * )
  */
-class Collection extends ConditionPluginBase implements ContainerFactoryPluginInterface {
+class Community extends ConditionPluginBase implements ContainerFactoryPluginInterface {
 
   /**
    * {@inheritdoc}
@@ -38,7 +38,7 @@ class Collection extends ConditionPluginBase implements ContainerFactoryPluginIn
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form['collections'] = [
-      '#title' => $this->t('Show on Collection pages'),
+      '#title' => $this->t('Show on Community pages'),
       '#type' => 'checkbox',
       '#default_value' => $this->configuration['collections'],
     ];
@@ -49,7 +49,7 @@ class Collection extends ConditionPluginBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
-    // Certain form elements may return 'collections' as 0/1. Cast here to
+    // Certain form elements may return 'communities' as 0/1. Cast here to
     // ensure the data is in the expected type.
     $this->configuration['collections'] = (bool) $form_state->getValue('collections');
     parent::submitConfigurationForm($form, $form_state);
@@ -59,7 +59,7 @@ class Collection extends ConditionPluginBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function summary() {
-    return $this->t('Collection pages');
+    return $this->t('Community pages');
   }
 
   /**

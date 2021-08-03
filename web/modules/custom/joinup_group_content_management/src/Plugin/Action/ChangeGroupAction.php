@@ -269,7 +269,7 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
     ];
 
     $form['group'] = [
-      '#title' => $this->t('Select the destination collection or solution'),
+      '#title' => $this->t('Select the destination community or solution'),
       '#type' => 'entity_autocomplete',
       '#target_type' => 'rdf_entity',
       '#selection_handler' => 'default:rdf_entity',

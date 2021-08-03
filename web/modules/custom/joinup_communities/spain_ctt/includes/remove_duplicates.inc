@@ -107,12 +107,12 @@ function _spain_ctt_duplicates_collection_relations() {
   // The id of the ctt collection.
   $id = 'http://administracionelectronica.gob.es/ctt';
 
-  $collection = Rdf::load($id);
+  $community = Rdf::load($id);
   foreach (_span_ctt_get_duplicated_ids() as $original_id => $duplicate_ids) {
-    $collection->field_ar_affiliates->appendItem($original_id);
+    $community->field_ar_affiliates->appendItem($original_id);
   }
-  $collection->skip_notification = TRUE;
-  $collection->save();
+  $community->skip_notification = TRUE;
+  $community->save();
 
   $connection = \Drupal::service('sparql.endpoint');
   // Update all other references.

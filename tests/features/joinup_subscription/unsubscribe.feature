@@ -1,24 +1,24 @@
 @api
-Feature: Unsubscribe from collections
+Feature: Unsubscribe from communities
   In order to reduce the amount of notifications I receive
   As a user of the website
-  I need to be able to easily unsubscribe from collections.
+  I need to be able to easily unsubscribe from communities.
 
   Scenario: Unsubscribe from all groups
     Given user:
       | Username | Eric Cartman             |
       | E-mail   | eric.cartman@example.com |
-    And collections:
+    And communities:
       | title                | state     |
       | Southpark elementary | validated |
       | Kenny's house        | draft     |
       | Koon's hideout       | proposed  |
-    And the following collection user memberships:
+    And the following community user memberships:
       | collection           | user         | roles       |
       | Southpark elementary | Eric Cartman | member      |
       | Kenny's house        | Eric Cartman | owner       |
       | Koon's hideout       | Eric Cartman | facilitator |
-    And the following collection content subscriptions:
+    And the following community content subscriptions:
       | collection           | user         | subscriptions                     |
       | Southpark elementary | Eric Cartman | discussion, document, event, news |
       | Kenny's house        | Eric Cartman | discussion, document, event, news |
@@ -55,8 +55,8 @@ Feature: Unsubscribe from collections
     Then I should see the heading "Unsubscribe from all?"
 
     And I should see the following lines of text:
-      | Are you sure you want to unsubscribe from all collections and/or solutions? You will stop receiving news and updates, including the pending memberships, from the following: |
-      | Collections                                                                                                                                                                  |
+      | Are you sure you want to unsubscribe from all communities and/or solutions? You will stop receiving news and updates, including the pending memberships, from the following: |
+      | Communities                                                                                                                                                                  |
       | Southpark elementary                                                                                                                                                         |
       | Kenny's house                                                                                                                                                                |
       | Koon's hideout                                                                                                                                                               |

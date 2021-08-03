@@ -4,7 +4,7 @@
  * Default theme implementation to display statistics about content on the site.
  *
  * Available variables:
- * - collection_count: the number of validated collections on the site.
+ * - collection_count: the number of validated communities on the site.
  * - solution_count: the number of validated solutions on the site.
  * - content_count: the number of validated news articles, discussions and
  *   events on the site.
@@ -18,7 +18,7 @@
       <div class="stats__icon icon icon--collections"></div>
       <div class="stats__text">
         <div class="stats__text--upper">{{ collection.count }}</div>
-        <div class="stats__text--lower">{{ 'Collections'|t }}</div>
+        <div class="stats__text--lower">{{ 'Communities'|t }}</div>
       </div>
     </a>
     <div class="stats__description">{{ 'Collaborate around thematics'|t }}</div>

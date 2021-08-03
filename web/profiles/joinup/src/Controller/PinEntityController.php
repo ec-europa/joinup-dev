@@ -9,7 +9,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
@@ -63,10 +63,15 @@ class PinEntityController extends ControllerBase {
   public function pin(PinnableGroupContentInterface $entity, GroupInterface $group) {
     $entity->pin($group);
 
+    // Rename "Collection to Community".
+    $bundle = $group->bundle();
+    if ($bundle == 'collection') {
+      $bundle = 'community';
+    }
     $this->messenger()->addMessage($this->t('@bundle %title has been pinned in the @group_bundle %group.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
       '%title' => $entity->label(),
-      '@group_bundle' => $group->bundle(),
+      '@group_bundle' => $bundle,
       '%group' => $group->label(),
     ]));
 
@@ -87,10 +92,15 @@ class PinEntityController extends ControllerBase {
   public function unpin(PinnableGroupContentInterface $entity, GroupInterface $group) {
     $entity->unpin($group);
 
+    // Rename "Collection to Community".
+    $bundle = $group->bundle();
+    if ($bundle == 'collection') {
+      $bundle = 'community';
+    }
     $this->messenger()->addMessage($this->t('@bundle %title has been unpinned in the @group_bundle %group.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
       '%title' => $entity->label(),
-      '@group_bundle' => $group->bundle(),
+      '@group_bundle' => $bundle,
       '%group' => $group->label(),
     ]));
 
@@ -173,7 +183,7 @@ class PinEntityController extends ControllerBase {
     // in the solution overview - as related solutions - to retrieve the
     // pin/unpin contextual link.
     if ($entity instanceof SolutionInterface) {
-      return $group instanceof CollectionInterface;
+      return $group instanceof CommunityInterface;
     }
     elseif ($entity instanceof CommunityContentInterface) {
       return $group instanceof GroupInterface;

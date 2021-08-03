@@ -10,9 +10,9 @@ use Drupal\og\GroupPermission;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Event subscribers for the Collection module.
+ * Event subscribers for the Community module.
  */
-class CollectionEventSubscriber implements EventSubscriberInterface {
+class CommunityEventSubscriber implements EventSubscriberInterface {
 
   use StringTranslationTrait;
 
@@ -26,7 +26,7 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Declare OG permissions for collections.
+   * Declare OG permissions for communities.
    *
    * @param \Drupal\og\Event\PermissionEventInterface $event
    *   The OG permission event.
@@ -36,11 +36,11 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
       $event->setPermissions([
         new GroupPermission([
           'name' => 'request collection deletion',
-          'title' => $this->t('Request to delete collections'),
+          'title' => $this->t('Request to delete communities'),
         ]),
         new GroupPermission([
           'name' => 'request collection archival',
-          'title' => $this->t('Request to archive collections'),
+          'title' => $this->t('Request to archive communities'),
         ]),
         new GroupPermission([
           'name' => 'invite members',
@@ -48,7 +48,7 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
         ]),
         new GroupPermission([
           'name' => 'approve membership requests',
-          'title' => $this->t('Approve requests to join collections'),
+          'title' => $this->t('Approve requests to join communities'),
         ]),
         new GroupPermission([
           'name' => 'invite facilitators',
@@ -63,8 +63,8 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
           'title' => $this->t('Accept invitation to become collection facilitator'),
         ]),
         new GroupPermission([
-          'name' => 'highlight collections',
-          'title' => $this->t('Highlight collections'),
+          'name' => 'highlight communities',
+          'title' => $this->t('Highlight communities'),
         ]),
       ]);
     }

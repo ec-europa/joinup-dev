@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Includes the content of custom pages in indexed group content.
  *
- * In many collections and solutions the bulk of the information about what the
+ * In many communities and solutions the bulk of the information about what the
  * project is about is contained in their custom pages rather than the "About"
  * page. This means that when users are searching for relevant keywords they
  * often do not get the group as a search result, but rather a custom page which
@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @SearchApiProcessor(
  *   id = "include_custom_page_content",
  *   label = @Translation("Include custom page content"),
- *   description = @Translation("Improves searchability of collections and solutions by including the content of custom pages."),
+ *   description = @Translation("Improves searchability of communities and solutions by including the content of custom pages."),
  *   stages = {
  *     "preprocess_index" = 0,
  *   },

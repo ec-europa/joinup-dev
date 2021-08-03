@@ -11,7 +11,7 @@ use Drupal\joinup_group\Form\UnshareForm as OriginalForm;
 use Drupal\node\NodeInterface;
 
 /**
- * Form to unshare a community content from within collections.
+ * Form to unshare a community content from within communities.
  *
  * The methods are different from the parent class because the route is a sub
  * link of the `/node/{node}` route path. That means that we cannot

@@ -1,42 +1,42 @@
 services:
   cache_context.collection:
-    class: Drupal\collection\Cache\CollectionCacheContext
+    class: Drupal\collection\Cache\CommunityCacheContext
     arguments: ['@request_stack']
     tags:
       - { name: cache.context }
   cache_context.collection_owner:
-    class: 'Drupal\collection\Cache\Context\CollectionOwnerCacheContext'
+    class: 'Drupal\collection\Cache\Context\CommunityOwnerCacheContext'
     arguments: ['@current_user', '@entity_type.manager', '@og.membership_manager', '@database', '@private_key']
     tags:
       - { name: 'cache.context'}
   collection.event_subscriber:
-    class: Drupal\collection\EventSubscriber\CollectionEventSubscriber
+    class: Drupal\collection\EventSubscriber\CommunityEventSubscriber
     tags:
       - { name: 'event_subscriber' }
   collection.fulfillment_guard:
-    class: Drupal\collection\Guard\CollectionFulfillmentGuard
+    class: Drupal\collection\Guard\CommunityFulfillmentGuard
     arguments: ['@current_user', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: collection }
   collection.achived_collection.route_subscriber:
-    class: Drupal\collection\Routing\ArchivedCollectionRouteSubscriber
+    class: Drupal\collection\Routing\ArchivedCommunityRouteSubscriber
     tags:
       - { name: 'event_subscriber' }
   collection.achived_collection.access_check:
-    class: Drupal\collection\Access\ArchivedCollectionAccessCheck
+    class: Drupal\collection\Access\ArchivedCommunityAccessCheck
     tags:
       - { name: access_check, applies_to: _archived_collection }
   collection.group_add_content.subscriber:
-    class: Drupal\collection\EventSubscriber\CollectionGroupSubscriber
+    class: Drupal\collection\EventSubscriber\CommunityGroupSubscriber
     arguments: ['@entity_type.manager']
     tags:
       - { name: event_subscriber }
   collection.group_menu_links:
-    class: Drupal\collection\EventSubscriber\CollectionGroupMenuLinksSubscriber
+    class: Drupal\collection\EventSubscriber\CommunityGroupMenuLinksSubscriber
     tags:
       - { name: event_subscriber }
   collection.lazy_builders:
-    class: Drupal\collection\CollectionLazyBuilders
+    class: Drupal\collection\CommunityLazyBuilders
     arguments: ['@entity_type.manager', '@form_builder', '@current_user']
   logger.channel.collection:
     parent: logger.channel_base

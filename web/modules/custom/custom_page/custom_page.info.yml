@@ -1,5 +1,5 @@
 name: 'Custom page'
-description: 'Custom content that belongs to a collection.'
+description: 'Custom content that belongs to a community.'
 type: module
 package: Joinup
 core_version_requirement: ^8.9 || ^9.1

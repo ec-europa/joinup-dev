@@ -6,7 +6,7 @@ Feature: Creation of contact information
 
   Scenario: Create a contact information
     Given I am logged in as an "authenticated user"
-    And I go to the propose collection form
+    And I go to the propose community form
     # Check that the help text for the website field is visible.
     Then I should see the description "This must be an external URL such as http://example.com." for the "Website URL" field
 

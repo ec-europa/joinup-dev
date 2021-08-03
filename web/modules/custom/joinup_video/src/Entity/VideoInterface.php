@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_video\Entity;
 
-use Drupal\collection\Entity\CollectionContentInterface;
+use Drupal\collection\Entity\CommunitiesContentInterface;
 use Drupal\joinup_publication_date\Entity\EntityPublicationTimeInterface;
 use Drupal\node\NodeInterface;
 
 /**
  * Interface for video entities in Joinup.
  */
-interface VideoInterface extends NodeInterface, CollectionContentInterface, EntityPublicationTimeInterface {
+interface VideoInterface extends NodeInterface, CommunitiesContentInterface, EntityPublicationTimeInterface {
 }

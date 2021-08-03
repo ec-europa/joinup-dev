@@ -10,9 +10,9 @@ dependencies:
     - search_api
     - solution
 id: manage_collection_solutions
-label: 'Manage collection solutions'
+label: 'Manage community solutions'
 module: views
-description: 'Allows management of solutions within a collection.'
+description: 'Allows management of solutions within a community.'
 tag: ''
 base_table: search_api_index_published
 base_field: search_api_id
@@ -456,7 +456,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'This collection contains no solutions yet.'
+            value: 'This community contains no solutions yet.'
             format: content_editor
           plugin_id: text
       relationships: {  }
@@ -524,7 +524,7 @@ display:
       menu:
         type: tab
         title: 'Manage solutions'
-        description: 'Manage solutions within this collection.'
+        description: 'Manage solutions within this community.'
         expanded: false
         parent: ''
         weight: 120

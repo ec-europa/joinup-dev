@@ -304,8 +304,8 @@ class JoinupCoreContext extends RawDrupalContext {
 
     Assert::assertNotEmpty($pipeline, "Pipeline {$pipeline_label} was not found.");
     $time = \Drupal::getContainer()->get('datetime.time');
-    $collection = \Drupal::getContainer()->get('keyvalue')->get('joinup_pipeline_log');
-    $collection->set($pipeline['id'], $time->getRequestTime() - ($days * 86400));
+    $community = \Drupal::getContainer()->get('keyvalue')->get('joinup_pipeline_log');
+    $community->set($pipeline['id'], $time->getRequestTime() - ($days * 86400));
   }
 
   /**
@@ -318,8 +318,8 @@ class JoinupCoreContext extends RawDrupalContext {
    * @Given no pipelines have run
    */
   public function givenNoPipelineRanYet(): void {
-    $collection = \Drupal::getContainer()->get('keyvalue')->get('joinup_pipeline_log');
-    $collection->deleteAll();
+    $community = \Drupal::getContainer()->get('keyvalue')->get('joinup_pipeline_log');
+    $community->deleteAll();
   }
 
 }

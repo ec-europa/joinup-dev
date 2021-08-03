@@ -18,7 +18,7 @@ use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
-use Drupal\joinup_collection\JoinupCollectionHelper;
+use Drupal\joinup_collection\JoinupCommunityHelper;
 use Drupal\joinup_group\ContentCreationOptions;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
@@ -28,9 +28,9 @@ use Drupal\user\Entity\User;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
- * Behat step definitions for testing collections.
+ * Behat step definitions for testing communities.
  */
-class CollectionContext extends RawDrupalContext {
+class CommunityContext extends RawDrupalContext {
 
   use EntityReferenceTrait;
   use EntityTrait;
@@ -73,60 +73,60 @@ class CollectionContext extends RawDrupalContext {
   ];
 
   /**
-   * Test collections.
+   * Test communities.
    *
    * @var \Drupal\rdf_entity\Entity\Rdf[]
    */
-  protected $collections = [];
+  protected $communities = [];
 
   /**
-   * Navigates to the propose collection form.
+   * Navigates to the propose community form.
    *
-   * @When I go to the propose collection form
-   * @When I visit the propose collection form
+   * @When I go to the propose community form
+   * @When I visit the propose community form
    */
-  public function visitProposeCollectionForm(): void {
+  public function visitProposeCommunityForm(): void {
     $this->visitPath('propose/collection');
   }
 
   /**
-   * Navigates to the canonical page display of a collection.
+   * Navigates to the canonical page display of a community.
    *
-   * @param string $collection
-   *   The title of the collection.
+   * @param string $community
+   *   The title of the community.
    *
-   * @When I go to (the homepage of )the :collection collection
-   * @When I visit (the homepage of )the :collection collection
+   * @When I go to (the homepage of )the :community community
+   * @When I visit (the homepage of )the :community community
    *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    */
-  public function visitCollection(string $collection): void {
+  public function visitCommunity(string $community): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
-    $entity = $this->getCollectionByName($collection);
+    $entity = $this->getCommunityByName($community);
     $this->visitPath($entity->toUrl()->toString());
   }
 
   /**
-   * Returns the Collection with the given title.
+   * Returns the Community with the given title.
    *
-   * If multiple collections have the same title,
+   * If multiple communities have the same title,
    * the first one will be returned.
    *
    * @param string $title
-   *   The collection title.
+   *   The community title.
    *
    * @return \Drupal\rdf_entity\RdfInterface
-   *   The collection.
+   *   The community.
    *
    * @throws \InvalidArgumentException
-   *   Thrown when a collection with the given title does not exist.
+   *   Thrown when a community with the given title does not exist.
    */
-  protected function getCollectionByName(string $title): RdfInterface {
+  protected function getCommunityByName(string $title): RdfInterface {
     return $this->getRdfEntityByLabel($title, 'collection');
   }
 
   /**
-   * Navigates to the collections overview page.
+   * Navigates to the communities overview page.
    *
    * @todo This is currently dependent on the Joinup profile being installed,
    *   since the view providing this overview page is exported in the profile.
@@ -134,44 +134,44 @@ class CollectionContext extends RawDrupalContext {
    *
    * @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5176
    *
-   * @When I visit the collection overview( page)
+   * @When I visit the community overview( page)
    */
-  public function visitCollectionOverviewPage(): void {
+  public function visitCommunityOverviewPage(): void {
     $this->visitPath('/collections');
   }
 
   /**
-   * Creates a number of collections with data provided in a table.
+   * Creates a number of communities with data provided in a table.
    *
    * Table format:
    * @codingStandardsIgnoreStart
    * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | content creation                                  | featured | logo | moderation | modification date | owner | state                                              |
-   * | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators and authors|members|registered users | yes      |      | yes        |                   |       |                                                    |
-   * | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators and authors|members|registered users | no       |      | no         |                   |       | draft|proposed|validated|archival request|archived |
+   * | Dog owner community    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators and authors|members|registered users | yes      |      | yes        |                   |       |                                                    |
+   * | Cats community 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators and authors|members|registered users | no       |      | no         |                   |       | draft|proposed|validated|archival request|archived |
    * @codingStandardsIgnoreEnd
    *
    * Only the title field is required.
    *
-   * @param \Behat\Gherkin\Node\TableNode $collection_table
-   *   The collection data.
+   * @param \Behat\Gherkin\Node\TableNode $community_table
+   *   The community data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )collections:
+   * @Given (the following )communities:
    */
-  public function givenCollections(TableNode $collection_table): void {
+  public function givenCommunities(TableNode $community_table): void {
     $aliases = self::FIELD_ALIASES;
 
-    foreach ($collection_table->getColumnsHash() as $collection) {
+    foreach ($community_table->getColumnsHash() as $community) {
       $values = [];
       // Replace the column aliases with the actual field names.
-      foreach ($collection as $key => $value) {
+      foreach ($community as $key => $value) {
         if (array_key_exists($key, $aliases)) {
           $values[$aliases[$key]] = $value;
         }
         else {
-          throw new \Exception("Unknown column '$key' in collection table.");
+          throw new \Exception("Unknown column '$key' in community table.");
         }
       }
 
@@ -181,7 +181,7 @@ class CollectionContext extends RawDrupalContext {
       // Provide default values.
       $values = $this->provideDefaultValues($values);
 
-      $this->createCollection($values);
+      $this->createCommunity($values);
     }
   }
 
@@ -263,18 +263,18 @@ class CollectionContext extends RawDrupalContext {
   }
 
   /**
-   * Creates a collection from the given property and field data.
+   * Creates a community from the given property and field data.
    *
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
    * @return \Drupal\rdf_entity\RdfInterface
-   *   A new collection entity.
+   *   A new community entity.
    *
    * @throws \Exception
    *   Thrown when a given image is not found.
    */
-  protected function createCollection(array $values): RdfInterface {
+  protected function createCommunity(array $values): RdfInterface {
     // Add images.
     $image_fields = ['field_ar_banner', 'field_ar_logo'];
     foreach ($image_fields as $field_name) {
@@ -285,37 +285,37 @@ class CollectionContext extends RawDrupalContext {
       }
     }
 
-    // If the collection is featured we need to create the meta entity that
-    // stores this information after creating the collection.
+    // If the community is featured we need to create the meta entity that
+    // stores this information after creating the community.
     $is_featured = in_array(strtolower((string) ($values['feature'] ?? '')), [
       'y',
       'yes',
     ]);
 
-    /** @var \Drupal\collection\Entity\CollectionInterface $collection */
-    $collection = $this->createRdfEntity('collection', $values);
+    /** @var \Drupal\collection\Entity\CommunityInterface $community */
+    $community = $this->createRdfEntity('collection', $values);
 
     if ($is_featured) {
-      $collection->feature();
+      $community->feature();
     }
 
-    $this->collections[$collection->id()] = $collection;
+    $this->communities[$community->id()] = $community;
 
     // We have to force reindex of affiliated solutions so the relationship
-    // with this collection will be indexed in Solr.
-    if (!$collection->get('field_ar_affiliates')->isEmpty()) {
-      foreach ($collection->get('field_ar_affiliates')->referencedEntities() as $solution) {
-        // Reindex the solution, so that the value of the "collection" computed
+    // with this community will be indexed in Solr.
+    if (!$community->get('field_ar_affiliates')->isEmpty()) {
+      foreach ($community->get('field_ar_affiliates')->referencedEntities() as $solution) {
+        // Reindex the solution, so that the value of the "community" computed
         // field will be populated and indexed correctly.
         $this->forceSearchApiReindex($solution);
       }
     }
 
-    return $collection;
+    return $community;
   }
 
   /**
-   * Creates a collection with data provided in a table.
+   * Creates a community with data provided in a table.
    *
    * @codingStandardsIgnoreStart
    * Table format:
@@ -332,25 +332,25 @@ class CollectionContext extends RawDrupalContext {
    *
    * Only the title field is required.
    *
-   * @param \Behat\Gherkin\Node\TableNode $collection_table
-   *   The collection data.
+   * @param \Behat\Gherkin\Node\TableNode $community_table
+   *   The community data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Given (the following )collection:
+   * @Given (the following )community:
    */
-  public function givenCollection(TableNode $collection_table): void {
+  public function givenCommunity(TableNode $community_table): void {
     $aliases = self::FIELD_ALIASES;
 
     $values = [];
     // Replace the column aliases with the actual field names.
-    foreach ($collection_table->getRowsHash() as $key => $value) {
+    foreach ($community_table->getRowsHash() as $key => $value) {
       if (array_key_exists($key, $aliases)) {
         $values[$aliases[$key]] = $value;
       }
       else {
-        throw new \Exception("Unknown column '$key' in collection table.");
+        throw new \Exception("Unknown column '$key' in community table.");
       }
     }
 
@@ -360,37 +360,37 @@ class CollectionContext extends RawDrupalContext {
     // Provide default values.
     $values = $this->provideDefaultValues($values);
 
-    $this->createCollection($values);
+    $this->createCommunity($values);
   }
 
   /**
-   * Deletes a collection.
+   * Deletes a community.
    *
-   * @param string $collection
-   *   The title of the collection.
+   * @param string $community
+   *   The title of the community.
    *
-   * @When I delete the :collection collection
+   * @When I delete the :community community
    */
-  public function deleteCollection(string $collection): void {
-    $collection = $this->getCollectionByName($collection);
-    $collection->skip_notification = TRUE;
-    $collection->delete();
+  public function deleteCommunity(string $community): void {
+    $community = $this->getCommunityByName($community);
+    $community->skip_notification = TRUE;
+    $community->delete();
   }
 
   /**
-   * Checks the number of available collections.
+   * Checks the number of available communities.
    *
    * @param int $number
-   *   The expected number of collections.
+   *   The expected number of communities.
    *
-   * @Then I should have :number collection(s)
+   * @Then I should have :number communities
    */
-  public function assertCollectionCount(int $number): void {
+  public function assertCommunityCount(int $number): void {
     $this->assertRdfEntityCount($number, 'collection');
   }
 
   /**
-   * Subscribes the given users to the given collections.
+   * Subscribes the given users to the given communities.
    *
    * Table format:
    * @codingStandardsIgnoreStart
@@ -409,13 +409,13 @@ class CollectionContext extends RawDrupalContext {
    *   The membership table.
    *
    * @throws \Exception
-   *   Thrown when a collection is not found.
+   *   Thrown when a community is not found.
    *
-   * @Given (the following )collection user membership(s):
+   * @Given (the following )community user membership(s):
    */
-  public function givenCollectionUserMemberships(TableNode $membership_table): void {
+  public function givenCommunityUserMemberships(TableNode $membership_table): void {
     foreach ($membership_table->getColumnsHash() as $values) {
-      $group = $this->getCollectionByName($values['collection']);
+      $group = $this->getCommunityByName($values['community']);
       $this->givenUserMembership($group, $values);
     }
   }
@@ -441,9 +441,9 @@ class CollectionContext extends RawDrupalContext {
    *    Throws an exception if the parent item is not found.
    *
    * @Given (the following )custom page(s) menu structure:
-   * @Given (the following )collection menu structure:
+   * @Given (the following )community menu structure:
    */
-  public function givenCollectionMenuStructure(TableNode $menu_table): void {
+  public function givenCommunityMenuStructure(TableNode $menu_table): void {
     /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
     $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
     foreach ($menu_table->getColumnsHash() as $values) {
@@ -462,9 +462,9 @@ class CollectionContext extends RawDrupalContext {
   }
 
   /**
-   * Asserts that a user is an owner of the given collection.
+   * Asserts that a user is an owner of the given community.
    *
-   * To be owner of a collection, a user should be an administrator,
+   * To be owner of a community, a user should be an administrator,
    * a facilitator and a member.
    *
    * @param string $username
@@ -475,26 +475,26 @@ class CollectionContext extends RawDrupalContext {
    * @throws \Exception
    *    Throws an exception when the user is not found.
    *
-   * @Given (the user ):username should be the owner of the :rdf_entity collection
+   * @Given (the user ):username should be the owner of the :rdf_entity community
    */
-  public function assertCollectionOwnership(string $username, string $rdf_entity): void {
+  public function assertCommunityOwnership(string $username, string $rdf_entity): void {
     $user = user_load_by_name($username);
     if (empty($user)) {
       throw new \Exception("User {$username} could not be found.");
     }
 
-    $collection = $this->getRdfEntityByLabel($rdf_entity, 'collection');
+    $community = $this->getRdfEntityByLabel($rdf_entity, 'collection');
     $owner_roles = [
       OgRoleInterface::ADMINISTRATOR,
       OgRoleInterface::AUTHENTICATED,
       'facilitator',
     ];
 
-    $this->assertOgGroupOwnership($user, $collection, $owner_roles);
+    $this->assertOgGroupOwnership($user, $community, $owner_roles);
   }
 
   /**
-   * Asserts that the current user is an owner of the given collection.
+   * Asserts that the current user is an owner of the given community.
    *
    * @param string $rdf_entity
    *   The label of the group entity.
@@ -502,42 +502,42 @@ class CollectionContext extends RawDrupalContext {
    * @throws \Exception
    *    Throws an exception when the user is not found.
    *
-   * @see assertCollectionOwnership()
+   * @see assertCommunityOwnership()
    *
-   * @Given I should own the :rdf_entity collection
+   * @Given I should own the :rdf_entity community
    */
-  public function assertCollectionOwnershipCurrentUser(string $rdf_entity): void {
+  public function assertCommunityOwnershipCurrentUser(string $rdf_entity): void {
     if (!$current_user = $this->userManager->getCurrentUser()) {
       throw new \Exception("No current user.");
     }
-    $this->assertCollectionOwnership($current_user->name, $rdf_entity);
+    $this->assertCommunityOwnership($current_user->name, $rdf_entity);
   }
 
   /**
-   * Removes any created collections.
+   * Removes any created communities.
    *
    * @AfterScenario @api
    */
-  public function cleanCollections(): void {
-    if (empty($this->collections)) {
+  public function cleanCommunities(): void {
+    if (empty($this->communities)) {
       return;
     }
 
-    // Since we might be cleaning up many collections, temporarily disable the
+    // Since we might be cleaning up many communities, temporarily disable the
     // feature to commit the index after every query.
     $this->disableCommitOnUpdate();
 
-    // Remove any collections that were created.
-    foreach ($this->collections as $collection) {
-      $collection->skip_notification = TRUE;
-      $collection->delete();
+    // Remove any communities that were created.
+    foreach ($this->communities as $community) {
+      $community->skip_notification = TRUE;
+      $community->delete();
     }
-    $this->collections = [];
+    $this->communities = [];
     $this->enableCommitOnUpdate();
   }
 
   /**
-   * Checks that a user has the available state options for the collection.
+   * Checks that a user has the available state options for the community.
    *
    * The method also checks that these options are the only options available.
    * This method will log in as each user in sequence, so take care to only use
@@ -545,20 +545,20 @@ class CollectionContext extends RawDrupalContext {
    *
    * Table format:
    * | collection   | user | buttons         |
-   * | Collection A | John | Save as draft   |
-   * | Collection B | Jack | Update, Publish |
+   * | Community A | John | Save as draft   |
+   * | Community B | Jack | Update, Publish |
    *
    * @param \Behat\Gherkin\Node\TableNode $check_table
-   *   The table with the triplets collection-user-buttons.
+   *   The table with the triplets community-user-buttons.
    *
    * @throws \Exception
    *    Thrown when the user does not exist.
    *
    * @todo Maybe there is a better definition available here like 'The
    * following state buttons should be available for the user on the
-   * collection'.
+   * community'.
    *
-   * @Then for the following collection, the corresponding user should have the corresponding (available )state buttons:
+   * @Then for the following community, the corresponding user should have the corresponding (available )state buttons:
    */
   public function verifyStateButtons(TableNode $check_table): void {
     foreach ($check_table->getColumnsHash() as $values) {
@@ -579,46 +579,46 @@ class CollectionContext extends RawDrupalContext {
   }
 
   /**
-   * Checks that a user has access to the delete button on the collection form.
+   * Checks that a user has access to the delete button on the community form.
    *
    * Table format:
    * | collection   | user | delete link |
-   * | Collection A | John | yes         |
-   * | Collection B | Jack | no          |
+   * | Community A | John | yes         |
+   * | Community B | Jack | no          |
    *
    * @param \Behat\Gherkin\Node\TableNode $check_table
-   *   The table with the triplets collection-user-link visibility.
+   *   The table with the triplets community-user-link visibility.
    *
    * @throws \Exception
    *    Thrown when the user does not exist.
    *
-   * @Then the visibility of the delete link should be as follows for these users in these collections:
+   * @Then the visibility of the delete link should be as follows for these users in these communities:
    */
   public function verifyDeleteLinkVisibility(TableNode $check_table): void {
     foreach ($check_table->getColumnsHash() as $values) {
       $user = $this->getUserByName($values['user']);
-      $collection = $this->getCollectionByName($values['collection']);
+      $community = $this->getCommunityByName($values['collection']);
       $visible = $values['delete link'] === 'yes';
-      $this->assertGroupEntityOperation($visible, 'delete', $collection, $user);
+      $this->assertGroupEntityOperation($visible, 'delete', $community, $user);
     }
   }
 
   /**
-   * Navigates to the collection leave confirmation form.
+   * Navigates to the community leave confirmation form.
    *
    * @param string $label
-   *   The label of the collection group.
+   *   The label of the community group.
    *
-   * @Given I am about to leave( the) :label( collection)
+   * @Given I am about to leave( the) :label( community)
    */
-  public function visitCollectionLeaveConfirmationPage(string $label): void {
-    $collection = $this->getEntityByLabel('rdf_entity', $label, 'collection');
-    $encoded_id = UriEncoder::encodeUrl($collection->id());
+  public function visitCommunityLeaveConfirmationPage(string $label): void {
+    $community = $this->getEntityByLabel('rdf_entity', $label, 'collection');
+    $encoded_id = UriEncoder::encodeUrl($community->id());
     $this->visitPath("/rdf_entity/$encoded_id/leave");
   }
 
   /**
-   * Asserts that a given or current user is member of collection list.
+   * Asserts that a given or current user is member of community list.
    *
    * @param string $labels
    *   A string of comma separated labels.
@@ -629,10 +629,10 @@ class CollectionContext extends RawDrupalContext {
    *   Thrown if a logged in user was not found or it was not passed, or if the
    *   assertion failed.
    *
-   * @Then I am member of :labels collection(s)
-   * @Then user :user_name is member of :labels collection(s)
+   * @Then I am member of :labels community(s)
+   * @Then user :user_name is member of :labels community(s)
    */
-  public function assertUserIsMemberOfCollection(string $labels, ?string $user_name = NULL): void {
+  public function assertUserIsMemberOfCommunity(string $labels, ?string $user_name = NULL): void {
     /** @var \Drupal\user\UserInterface $account */
     if (!$user_name) {
       $user = $this->getUserManager()->getCurrentUser();
@@ -647,46 +647,46 @@ class CollectionContext extends RawDrupalContext {
 
     $failures = [];
     foreach ($this->explodeCommaSeparatedStepArgument($labels) as $label) {
-      /** @var \Drupal\collection\Entity\CollectionInterface $collection */
-      $collection = $this->getEntityByLabel('rdf_entity', $label, 'collection');
-      if (!$collection->getMembership((int) $account->id(), [])) {
+      /** @var \Drupal\collection\Entity\CommunityInterface $community */
+      $community = $this->getEntityByLabel('rdf_entity', $label, 'collection');
+      if (!$community->getMembership((int) $account->id(), [])) {
         $failures[] = $label;
       }
     }
 
     if ($failures) {
-      throw new \Exception("User $user_name is not member of the next collections: '" . implode("', '", $failures) . "'");
+      throw new \Exception("User $user_name is not member of the next communities: '" . implode("', '", $failures) . "'");
     }
   }
 
   /**
-   * Updates the name of a collection.
+   * Updates the name of a community.
    *
-   * @param string $collection
-   *   The name of the collection to update.
+   * @param string $community
+   *   The name of the community to update.
    * @param string $name
-   *   The new anem for the collection.
+   *   The new anem for the community.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
-   *   Thrown when the updated collection cannot be saved.
+   *   Thrown when the updated community cannot be saved.
    *
-   * @When I change the name of the :collection collection to :name
+   * @When I change the name of the :community community to :name
    */
-  public function updateCollectionName(string $collection, string $name): void {
-    $entity = $this->getCollectionByName($collection);
+  public function updateCommunityName(string $community, string $name): void {
+    $entity = $this->getCommunityByName($community);
     $entity->setName($name)->save();
   }
 
   /**
-   * Creates the standard 'Joinup' collection.
+   * Creates the standard 'Joinup' community.
    *
-   * @BeforeScenario @joinup_collection&&@api
+   * @BeforeScenario @joinup_community&&@api
    *
-   * @see joinup_collection.module
+   * @see joinup_community.module
    */
-  public function createJoinupCollection(): void {
-    $this->createCollection([
-      'id' => JoinupCollectionHelper::getCollectionId(),
+  public function createJoinupCommunity(): void {
+    $this->createCommunity([
+      'id' => JoinupCommunityHelper::getCommunityId(),
       'label' => 'Joinup',
       'field_ar_state' => 'validated',
     ]);

@@ -7,11 +7,11 @@ namespace Drupal\solution\Plugin\Validation\Constraint;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Checks if a solution's title is unique within the collections it belongs to.
+ * Checks if a solution's title is unique within the communities it belongs to.
  *
  * @Constraint(
  *   id = "UniqueSolutionTitle",
- *   label = @Translation("Unique solution title within collections", context = "Validation"),
+ *   label = @Translation("Unique solution title within communities", context = "Validation"),
  * )
  */
 class UniqueSolutionTitle extends Constraint {
@@ -21,6 +21,6 @@ class UniqueSolutionTitle extends Constraint {
    *
    * @var string
    */
-  public $message = 'A solution titled %value already exists in this collection. Please choose a different title.';
+  public $message = 'A solution titled %value already exists in this community. Please choose a different title.';
 
 }

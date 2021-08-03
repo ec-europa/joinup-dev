@@ -5,7 +5,7 @@ Feature: Discussion API
   I need to be able to use the Node API to handle the "Discussion" bundle
 
   Scenario: Programmatically create a discussion
-    And the following collection:
+    And the following community:
       | title | Parallel programming |
       | state | validated            |
     Given discussion content:

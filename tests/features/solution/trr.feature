@@ -1,7 +1,7 @@
 @api
-Feature: Creating a test (solution) in the TRR collection.
+Feature: Creating a test (solution) in the TRR community.
   In order to create tests
-  As a collection facilitator
+  As a community facilitator
   I need to be able to add 'test'-enabled solutions.
 
   @terms @javascript
@@ -9,17 +9,17 @@ Feature: Creating a test (solution) in the TRR collection.
     Given users:
       | Username | Roles |
       | Wobbe    |       |
-    Given the following collection:
+    Given the following community:
       | title | Friends of the test repository |
       | state | validated                      |
-    And the following collection user memberships:
+    And the following community user memberships:
       | collection                     | user  | roles |
       | Friends of the test repository | Wobbe | owner |
     And the following owner:
       | name | type                         |
       | W3C  | Company, Industry consortium |
     When I am logged in as "Wobbe"
-    Given I go to the homepage of the "Friends of the test repository" collection
+    Given I go to the homepage of the "Friends of the test repository" community
     And I open the plus button menu
     And I click "Add solution"
     And I check the "I have read and accept the legal notice and I commit to manage my solution on a regular basis." material checkbox

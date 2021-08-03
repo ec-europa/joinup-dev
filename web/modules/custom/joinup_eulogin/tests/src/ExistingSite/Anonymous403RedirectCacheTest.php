@@ -55,19 +55,19 @@ class Anonymous403RedirectCacheTest extends JoinupExistingSiteTestBase {
   protected function getEntities(): array {
     $entities = [];
 
-    $collection = $this->createRdfEntity([
+    $community = $this->createRdfEntity([
       'rid' => 'collection',
       'field_ar_state' => 'draft',
       'title' => $this->randomString(),
     ]);
-    $collection->save();
-    $entities['field_ar_state'] = $collection;
+    $community->save();
+    $entities['field_ar_state'] = $community;
 
     $solution = $this->createRdfEntity([
       'rid' => 'solution',
       'field_is_state' => 'draft',
       'title' => $this->randomString(),
-      'collection' => $collection,
+      'collection' => $community,
     ]);
     $solution->save();
     $entities['field_is_state'] = $solution;
@@ -85,7 +85,7 @@ class Anonymous403RedirectCacheTest extends JoinupExistingSiteTestBase {
       'type' => 'custom_page',
       'status' => FALSE,
       'title' => $this->randomString(),
-      'og_audience' => $collection,
+      'og_audience' => $community,
     ]);
     $custom_page->save();
     $entities['status'] = $custom_page;
@@ -94,7 +94,7 @@ class Anonymous403RedirectCacheTest extends JoinupExistingSiteTestBase {
       'type' => 'discussion',
       'field_state' => 'draft',
       'title' => $this->randomString(),
-      'og_audience' => $collection,
+      'og_audience' => $community,
     ]);
     $discussion->save();
     $entities['field_state'] = $discussion;
@@ -103,7 +103,7 @@ class Anonymous403RedirectCacheTest extends JoinupExistingSiteTestBase {
       'type' => 'document',
       'field_state' => 'draft',
       'title' => $this->randomString(),
-      'og_audience' => $collection,
+      'og_audience' => $community,
     ]);
     $document->save();
     $entities['field_state'] = $document;
@@ -112,7 +112,7 @@ class Anonymous403RedirectCacheTest extends JoinupExistingSiteTestBase {
       'type' => 'event',
       'field_state' => 'draft',
       'title' => $this->randomString(),
-      'og_audience' => $collection,
+      'og_audience' => $community,
     ]);
     $event->save();
     $entities['field_state'] = $event;
@@ -121,7 +121,7 @@ class Anonymous403RedirectCacheTest extends JoinupExistingSiteTestBase {
       'type' => 'news',
       'field_state' => 'draft',
       'title' => $this->randomString(),
-      'og_audience' => $collection,
+      'og_audience' => $community,
     ]);
     $news->save();
     $entities['field_state'] = $news;

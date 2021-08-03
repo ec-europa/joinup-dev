@@ -5,7 +5,7 @@ Feature: Solution API
   I need to be able to use the Solution API
 
   Scenario: Programmatically create a solution
-    Given the following collection:
+    Given the following community:
       | title            | Solution API foo         |
       | logo             | logo.png                 |
       | moderation       | yes                      |
@@ -27,7 +27,7 @@ Feature: Solution API
     Then I should have 1 solution
 
   Scenario: Programmatically create a solution using only the mandatory fields
-    Given the following collection:
+    Given the following community:
       | title            | Solution API bar         |
       | logo             | logo.png                 |
       | moderation       | yes                      |
@@ -41,8 +41,8 @@ Feature: Solution API
       | state            | validated                   |
     Then I should have 1 solution
 
-  Scenario: Programmatically create a solution that is affiliated with a collection
-    Given the following collection:
+  Scenario: Programmatically create a solution that is affiliated with a community
+    Given the following community:
       | title | Inflatable mascots |
       | state | validated          |
     And the following solution:
@@ -51,7 +51,7 @@ Feature: Solution API
       | state       | validated                      |
       | collection  | Inflatable mascots             |
     Then I should have 1 solution
-    And the "Inflatable rooster" solution should be affiliated with the "Inflatable mascots" collection
+    And the "Inflatable rooster" solution should be affiliated with the "Inflatable mascots" community
 
   @terms @uploadFiles:logo.png,banner.jpg
   Scenario: Assign ownership during creation of solutions through UI
@@ -61,19 +61,19 @@ Feature: Solution API
     And users:
       | Username          |
       | Solution API user |
-    And the following collection:
-      | title            | This is a klm collection |
+    And the following community:
+      | title            | This is a klm community |
       | logo             | logo.png                 |
       | banner           | banner.jpg               |
       | moderation       | no                       |
       | closed           | no                       |
       | content creation | facilitators and authors |
       | state            | validated                |
-    And the following collection user memberships:
-      | user              | collection               | roles       |
-      | Solution API user | This is a klm collection | facilitator |
+    And the following community user memberships:
+      | user              | community               | roles       |
+      | Solution API user | This is a klm community | facilitator |
     And I am logged in as "Solution API user"
-    When I visit the "This is a klm collection" collection
+    When I visit the "This is a klm community" community
     # And I click on element ".mdl-button__ripple-container"
     Then I should see the link "Add solution"
     And I click "Add solution"

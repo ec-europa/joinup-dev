@@ -65,7 +65,7 @@ class CommunityContentHelper {
    *   A translated markup.
    */
   public static function getCommunityContentDescription(): MarkupInterface {
-    return t('KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Collections and Solutions.');
+    return t('KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Communities and Solutions.');
   }
 
 }

@@ -14,15 +14,15 @@ Feature: Solution editing.
     And users:
       | Username     | E-mail                   |
       | Yancy Burton | yancy.burton@example.com |
-    And collection:
-      | title | Collection example |
+    And community:
+      | title | Community example |
       | state | validated          |
     # Assign facilitator role in order to allow creation of a solution.
-    # In UAT this can be done by creating the collection through the UI
+    # In UAT this can be done by creating the community through the UI
     # with the related user.
-    And the following collection user memberships:
+    And the following community user memberships:
       | collection         | user         | roles       |
-      | Collection example | Yancy Burton | facilitator |
+      | Community example | Yancy Burton | facilitator |
     And solution:
       | title               | Another solution  |
       | description         | Just another one. |
@@ -35,7 +35,7 @@ Feature: Solution editing.
   @terms @uploadFiles:logo.png,banner.jpg
   Scenario: A solution owner can edit only its own solutions.
     When I am logged in as "Yancy Burton"
-    And I go to the homepage of the "Collection example" collection
+    And I go to the homepage of the "Community example" community
     And I click "Add solution"
     And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
     And I press "Yes"
@@ -111,7 +111,7 @@ Feature: Solution editing.
   @javascript
   Scenario: Test solution edit form vertical tabs.
     When I am logged in as "Yancy Burton"
-    And I go to the homepage of the "Collection example" collection
+    And I go to the homepage of the "Community example" community
     And I click "Add solution" in the plus button menu
     And I check the "I have read and accept the legal notice and I commit to manage my solution on a regular basis." material checkbox
     And I press "Yes"

@@ -5,7 +5,7 @@ Feature: Site sections
   So that I can better understand the needs of our users
 
   Background:
-    Given the following collection:
+    Given the following community:
       | uri   | http://joinup.eu/collection/the-polygone-project |
       | title | The Polygone Project                             |
       | state | validated                                        |
@@ -21,18 +21,18 @@ Feature: Site sections
       | Flat Beat 20th Anniversary | validated | Miss Fashionista |
 
   Scenario: Reporting of site sections to the analytics platform
-    # Check a couple of pages that do not belong to a particular collection or
+    # Check a couple of pages that do not belong to a particular community or
     # solution. These should not report any site sections.
     Given I am on the homepage
     Then the analytics report should not include a site section
-    Given I visit the collection overview
+    Given I visit the community overview
     Then the analytics report should not include a site section
     Given I visit the contact form
     Then the analytics report should not include a site section
 
-    # Now do a sample check of a collection and solution overview page, as well
+    # Now do a sample check of a community and solution overview page, as well
     # as some community content belonging to these groups.
-    Given I visit the "The Polygone Project" collection
+    Given I visit the "The Polygone Project" community
     Then the analytics report should include the site section "http://joinup.eu/collection/the-polygone-project"
     Given I visit the "Miss Fashionista" solution
     Then the analytics report should include the site section "http://joinup.eu/collection/the-polygone-project"

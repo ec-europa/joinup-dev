@@ -38,14 +38,14 @@ class LastUpdatedFieldItemList extends FieldItemList {
    *   Last updated timestamp.
    */
   protected function collectionLastUpdate() {
-    /** @var \Drupal\collection\Entity\CollectionInterface $collection */
-    $collection = $this->getEntity();
+    /** @var \Drupal\collection\Entity\CommunityInterface $community */
+    $community = $this->getEntity();
 
     // Store the collection changed timestamp.
-    $last_updated = $collection->getChangedTime();
+    $last_updated = $community->getChangedTime();
 
     // Check for a higher child solution changed timestamp.
-    foreach ($collection->getSolutions(TRUE) as $solution) {
+    foreach ($community->getSolutions(TRUE) as $solution) {
       if ($solution->getWorkflowState() === 'validated') {
         if ($solution->getChangedTime() > $last_updated) {
           $last_updated = $solution->getChangedTime();
@@ -56,7 +56,7 @@ class LastUpdatedFieldItemList extends FieldItemList {
     // Check for a higher community content or custom page changed timestamp.
     $node_storage = \Drupal::entityTypeManager()->getStorage('node');
     $nids = $node_storage->getQuery()
-      ->condition('og_audience', $collection->id())
+      ->condition('og_audience', $community->id())
       ->condition('status', TRUE)
       ->sort('changed', 'DESC')
       ->range(0, 1)

@@ -1,7 +1,7 @@
-# The route definition of the Collection propose form is located in the Joinup
-# profile rather than in the Collection module to avoid a circular dependency.
+# The route definition of the Community propose form is located in the Joinup
+# profile rather than in the Community module to avoid a circular dependency.
 # This route depends on the JoinupController, but Joinup already depends on the
-# Collection module.
+# Community module.
 rdf_entity.propose_form:
   path: '/propose/{rdf_type}'
   defaults:
@@ -18,7 +18,7 @@ joinup.collection_tca_form:
   path: '/joinup/tca/collection'
   defaults:
     _form: '\Drupal\joinup\Form\TcaForm'
-    _title: 'Why create a Collection?'
+    _title: 'Why create a Community?'
   requirements:
     _permission: 'propose collection rdf entity'
 

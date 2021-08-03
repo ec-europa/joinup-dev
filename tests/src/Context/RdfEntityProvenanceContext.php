@@ -47,7 +47,7 @@ class RdfEntityProvenanceContext extends RawDrupalContext {
    * provenance activities referring not imported entities.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
-   *   The collection data.
+   *   The community data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.

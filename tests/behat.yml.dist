@@ -14,7 +14,7 @@ default:
         - Drupal\joinup\Context\AdmsValidatorContext
         - Drupal\joinup\Context\AssetDistributionContext
         - Drupal\joinup\Context\AssetReleaseContext
-        - Drupal\joinup\Context\CollectionContext
+        - Drupal\joinup\Context\CommunityContext
         - Drupal\joinup\Context\ContactFormContext
         - Drupal\joinup\Context\ContactInformationContext
         - Drupal\joinup\Context\CustomPageContext

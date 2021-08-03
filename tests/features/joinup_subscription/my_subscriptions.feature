@@ -56,32 +56,32 @@ Feature: My subscriptions
 
   @javascript
   Scenario: Manage my subscriptions
-    Given collections:
+    Given communities:
       | title          | state     | abstract                                                       |
       | Alpha Centauri | validated | A triple star system at a distance of 4.3 light years.         |
       | Barnard's Star | draft     | A low mass red dwarf at around 6 light years distance.         |
       | Wolf 359       | proposed  | Wolf 359 is a red dwarf star located in the constellation Leo. |
-    And the following collection user memberships:
+    And the following community user memberships:
       | collection     | user             | roles       |
       | Alpha Centauri | Auric Goldfinger | member      |
       | Barnard's Star | Auric Goldfinger | owner       |
       | Wolf 359       | Auric Goldfinger | facilitator |
 
-    # Users that are not a member of any collections should see the empty text.
+    # Users that are not a member of any communities should see the empty text.
     Given I am logged in as an "authenticated user"
     # The "My subscriptions" link is present in the user menu in the top right.
     And I open the account menu
     And I click "My subscriptions"
     Then I should see the heading "My subscriptions"
-    And I should see the link "Collections"
+    And I should see the link "Communities"
     And I should see the link "Solutions"
-    And I should see the text "No collection memberships yet. Join one or more collections to subscribe to their content!"
+    And I should see the text "No community memberships yet. Join one or more communities to subscribe to their content!"
     And I should see the text "No solution memberships yet. Join one or more solutions to subscribe to their content!"
     But I should not see the link "Unsubscribe from all"
     And I should not see the text "Alpha Centauri"
 
-    # Log in as a user that is a member of 3 collections. The subscriptions for
-    # all 3 collections should be shown.
+    # Log in as a user that is a member of 3 communities. The subscriptions for
+    # all 3 communities should be shown.
     Given I am logged in as "Auric Goldfinger"
 
     # This step is actually a shortcut for
@@ -90,7 +90,7 @@ Feature: My subscriptions
     When I go to my subscriptions
 
     # The empty text should not be shown now.
-    Then I should not see the text "No collection memberships yet."
+    Then I should not see the text "No community memberships yet."
     And I should not see the link "Unsubscribe from all"
 
     And the following content subscriptions should be selected:
@@ -98,7 +98,7 @@ Feature: My subscriptions
       | Barnard's Star |  |
       | Wolf 359       |  |
 
-    # The collection abstracts were visible in an earlier version but were
+    # The community abstracts were visible in an earlier version but were
     # removed in a more recent design update. Let's ensure they do not pop back
     # into existence.
     And I should not see the following lines of text:
@@ -153,7 +153,7 @@ Feature: My subscriptions
       | Barnard's Star |            |
       | Wolf 359       |            |
 
-    # Re-try a change on the same collection.
+    # Re-try a change on the same community.
     Given I uncheck the "Discussion" checkbox of the "Alpha Centauri" subscription
     And the "Save changes" button on the "Alpha Centauri" subscription card should be enabled
     And the "Save changes" button on the "Barnard's Star" subscription card should be disabled
@@ -181,13 +181,13 @@ Feature: My subscriptions
 
   @javascript
   Scenario Outline: Change the notification frequency of my digests
-    Given collection:
+    Given community:
       | title | Malicious plans |
       | state | validated       |
-    And the following collection user memberships:
+    And the following community user memberships:
       | collection      | user             |
       | Malicious plans | Auric Goldfinger |
-    And the following collection content subscriptions:
+    And the following community content subscriptions:
       | collection      | user             | subscriptions |
       | Malicious plans | Auric Goldfinger | discussion    |
     And discussion content:

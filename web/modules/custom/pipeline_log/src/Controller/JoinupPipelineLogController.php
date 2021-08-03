@@ -35,7 +35,7 @@ class JoinupPipelineLogController extends ControllerBase {
    *
    * @var \Drupal\Core\KeyValueStore\KeyValueStoreInterface
    */
-  protected $pipelineCollection;
+  protected $pipelineCommunity;
 
   /**
    * The time service.
@@ -58,7 +58,7 @@ class JoinupPipelineLogController extends ControllerBase {
    */
   public function __construct(AccountInterface $current_user, KeyValueFactoryInterface $key_value, PipelinePipelinePluginManager $plugin_manager_pipeline_pipeline, TimeInterface $time) {
     $this->currentUser = $current_user;
-    $this->pipelineCollection = $key_value->get('joinup_pipeline_log');
+    $this->pipelineCommunity = $key_value->get('joinup_pipeline_log');
     $this->pipelineManager = $plugin_manager_pipeline_pipeline;
     $this->time = $time;
   }
@@ -85,7 +85,7 @@ class JoinupPipelineLogController extends ControllerBase {
       if (!$this->currentUser->hasPermission("execute {$plugin_id} pipeline")) {
         continue;
       }
-      $last_execute_time = $this->pipelineCollection->get($plugin_id);
+      $last_execute_time = $this->pipelineCommunity->get($plugin_id);
       // Convert to days or set to 'N/A'.
       $last_execute_time = $last_execute_time ? floor(($this->time->getRequestTime() - $last_execute_time) / 86400) : $this->t('Never');
       $rows[] = [

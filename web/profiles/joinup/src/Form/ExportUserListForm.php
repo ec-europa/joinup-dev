@@ -185,7 +185,7 @@ class ExportUserListForm extends FormBase {
     $_SESSION['export_filename'] = $form_state->getValue('filename');
     $batch = [
       'title' => 'Exporting user list',
-      'init_message' => 'Starting collection of user data.',
+      'init_message' => 'Starting community of user data.',
       'operations' => $batch_operations,
       'finished' => [$this, 'redirectToDownload'],
     ];

@@ -29,12 +29,12 @@ function solution_requirements($phase) {
       $severity = REQUIREMENT_ERROR;
     }
     else {
-      $value = t('All solutions have an affiliated collection.');
+      $value = t('All solutions have an affiliated community.');
       $severity = REQUIREMENT_OK;
     }
     $requirements['joinup_core_no_orphaned_solutions'] = [
       'title' => t('Orphaned solutions'),
-      'description' => t('All solutions should have an affiliated collection.'),
+      'description' => t('All solutions should have an affiliated community.'),
       'severity' => $severity,
       'value' => $value,
     ];

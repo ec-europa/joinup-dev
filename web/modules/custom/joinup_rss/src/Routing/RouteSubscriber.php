@@ -16,8 +16,8 @@ class RouteSubscriber extends RouteSubscriberBase {
   /**
    * {@inheritdoc}
    */
-  protected function alterRoutes(RouteCollection $collection) {
-    if ($route = $collection->get('view.group_feed.rss_feed')) {
+  protected function alterRoutes(RouteCollection $community) {
+    if ($route = $community->get('view.group_feed.rss_feed')) {
       $route->setRequirement('_custom_access', GroupFeedController::class . '::access');
     }
   }

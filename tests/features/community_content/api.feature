@@ -5,7 +5,7 @@ Feature: Create community content through the API
   I need to be able to create community content through the API
 
   Scenario Outline: Publication state of community content created through the API
-    Given collection:
+    Given community:
       | title | End user documentation |
       | state | validated              |
     And "<type>" content:

@@ -7,12 +7,12 @@ namespace Drupal\collection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\collection\Form\JoinCollectionForm;
+use Drupal\collection\Form\JoinCommunityForm;
 
 /**
- * Defines a service for #lazy_builder callbacks for the Collection module.
+ * Defines a service for #lazy_builder callbacks for the Community module.
  */
-class CollectionLazyBuilders {
+class CommunityLazyBuilders {
 
   /**
    * The entity type manager service.
@@ -36,7 +36,7 @@ class CollectionLazyBuilders {
   protected $currentUser;
 
   /**
-   * Constructs a new CollectionLazyBuilders object.
+   * Constructs a new CommunityLazyBuilders object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
@@ -52,17 +52,17 @@ class CollectionLazyBuilders {
   }
 
   /**
-   * Lazy builder callback; builds the Join Collection form.
+   * Lazy builder callback; builds the Join Community form.
    *
-   * @param string $collection_id
+   * @param string $community_id
    *   The collection ID.
    *
    * @return array
    *   A renderable array containing the comment form.
    */
-  public function renderJoinCollectionForm($collection_id) {
-    $collection = $this->entityTypeManager->getStorage('rdf_entity')->load($collection_id);
-    return $this->formBuilder->getForm(JoinCollectionForm::class, $this->currentUser, $collection);
+  public function renderJoinCommunityForm($community_id) {
+    $community = $this->entityTypeManager->getStorage('rdf_entity')->load($community_id);
+    return $this->formBuilder->getForm(JoinCommunityForm::class, $this->currentUser, $community);
   }
 
 }

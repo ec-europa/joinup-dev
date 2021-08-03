@@ -7,7 +7,7 @@ namespace Drupal\joinup_subscription\EventSubscriber;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\collection\Entity\CollectionContentInterface;
+use Drupal\collection\Entity\CommunitiesContentInterface;
 use Drupal\joinup_group\Entity\GroupContentInterface;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_notification\Event\NotificationEvent;
@@ -82,7 +82,7 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
     $entity = $event->getEntity();
 
     // Only notify if the newly created content is published.
-    if (!$entity instanceof CollectionContentInterface || !$entity->isPublished()) {
+    if (!$entity instanceof CommunitiesContentInterface || !$entity->isPublished()) {
       return;
     }
 
@@ -100,7 +100,7 @@ class GroupContentSubscriptionSubscriber implements EventSubscriberInterface {
     $entity = $event->getEntity();
 
     // Only notify if the content is being published for the first time.
-    if (!$entity instanceof CollectionContentInterface || !$entity->isPublished() || empty($entity->original) || $entity->original->isPublished() || !$this->isFirstPublishedRevision($entity)) {
+    if (!$entity instanceof CommunitiesContentInterface || !$entity->isPublished() || empty($entity->original) || $entity->original->isPublished() || !$this->isFirstPublishedRevision($entity)) {
       return;
     }
 

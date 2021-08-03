@@ -8,7 +8,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\og\OgContextInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -17,10 +17,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @Block(
  *   id = "collection_settings_link",
- *   admin_label = @Translation("Collection settings link"),
+ *   admin_label = @Translation("Community settings link"),
  * )
  */
-class CollectionSettingsLinkBlock extends BlockBase implements ContainerFactoryPluginInterface {
+class CommunitySettingsLinkBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * The OG context service.
@@ -65,11 +65,11 @@ class CollectionSettingsLinkBlock extends BlockBase implements ContainerFactoryP
     $build = [];
     $cache_metadata = (new CacheableMetadata())->addCacheContexts(['route']);
 
-    $collection = $this->ogContext->getGroup();
-    if ($collection && $collection instanceof CollectionInterface) {
-      $cache_metadata->addCacheableDependency($collection);
+    $community = $this->ogContext->getGroup();
+    if ($community && $community instanceof CommunityInterface) {
+      $cache_metadata->addCacheableDependency($community);
       $url = Url::fromRoute('collection.settings_form', [
-        'rdf_entity' => $collection->id(),
+        'rdf_entity' => $community->id(),
       ]);
       $build['link'] = [
         '#type' => 'link',

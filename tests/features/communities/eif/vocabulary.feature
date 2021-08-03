@@ -1,7 +1,7 @@
 @api @group-a
 Feature:
   In order to be able to have the solutions categorized properly through the EIF Toolbox
-  As the collection owner
+  As the community owner
   I need to have the EIF recommendations available.
 
   Scenario: EIF recommendations are available to view.
@@ -11,7 +11,7 @@ Feature:
     And I should see the text "The coordination function ensures that needs are identified and appropriate services are invoked and orchestrated to provide a European public service."
 
   Scenario: EIF recommendations field is accessible to moderators only.
-    Given collection:
+    Given community:
       | title | EIF Toolbox |
       | state | validated   |
     And solution:
@@ -30,7 +30,7 @@ Feature:
     When I press "Publish"
 
   Scenario: EIF recommendations are not visible to the end user.
-    Given collection:
+    Given community:
       | title | EIF Toolbox |
       | state | validated   |
     And solution:
@@ -51,7 +51,7 @@ Feature:
 
   @terms
   Scenario: Solutions referencing an EIF term should appear in the corresponding page.
-    Given collection:
+    Given community:
       | title | EIF Toolbox |
       | state | validated   |
     And solutions:

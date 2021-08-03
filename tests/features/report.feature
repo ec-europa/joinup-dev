@@ -5,7 +5,7 @@ Feature: Report inappropriate content
   I want to provide a "Report" button on community content
 
   Scenario Outline: Report inappropriate community content
-    Given collection:
+    Given community:
       | title | Deployment tools |
       | state | validated        |
     And "<type>" content:

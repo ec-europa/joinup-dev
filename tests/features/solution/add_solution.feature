@@ -5,11 +5,11 @@ Feature: "Add solution" visibility options.
   I need to be able to add "Solution" rdf entities through UI.
 
   Scenario: Required fields should be filled in
-    Given the following collection:
+    Given the following community:
       | title | Language parsers |
       | state | validated        |
-    And I am logged in as a facilitator of the "Language parsers" collection
-    And I go to the homepage of the "Language parsers" collection
+    And I am logged in as a facilitator of the "Language parsers" community
+    And I go to the homepage of the "Language parsers" community
     And I click "Add solution"
     And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
     And I press "Yes"
@@ -28,33 +28,33 @@ Feature: "Add solution" visibility options.
       | Solution type field is required.  |
 
   Scenario: "Add solution" button should only be shown to moderators and facilitators.
-    Given the following collection:
-      | title | Collection solution test |
+    Given the following community:
+      | title | Community solution test |
       | logo  | logo.png                 |
       | state | validated                |
 
     When I am logged in as a moderator
-    And I go to the homepage of the "Collection solution test" collection
+    And I go to the homepage of the "Community solution test" community
     Then I should see the link "Add solution"
 
-    When I am logged in as a "facilitator" of the "Collection solution test" collection
-    And I go to the homepage of the "Collection solution test" collection
+    When I am logged in as a "facilitator" of the "Community solution test" community
+    And I go to the homepage of the "Community solution test" community
     Then I should see the link "Add solution"
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Collection solution test" collection
+    And I go to the homepage of the "Community solution test" community
     Then I should not see the link "Add solution"
     # Regression test to ensure that the user has not access to the 'Propose solution' page.
     # @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-2842
     And I should not see the link "Propose solution"
 
     When I am an anonymous user
-    And I go to the homepage of the "Collection solution test" collection
+    And I go to the homepage of the "Community solution test" community
     Then I should not see the link "Add solution"
 
   @terms @email @uploadFiles:logo.png,banner.jpg
-  Scenario: Add solution as a collection facilitator.
-    Given the following collection:
+  Scenario: Add solution as a community facilitator.
+    Given the following community:
       | title | Belgian barista's |
       | logo  | logo.png          |
       | state | validated         |
@@ -65,13 +65,13 @@ Feature: "Add solution" visibility options.
       | Username      | Roles     | E-mail                 | First name | Family name |
       | Ruth Lee      | moderator | Ruth.Lee@test.com      | Ruth       | Lee         |
       | Wendell Silva |           | Wendell.Silva@test.com | Wendell    | Silva       |
-    And collection user memberships:
+    And community user memberships:
       | collection        | user          | roles              |
       | Belgian barista's | Wendell Silva | owner, facilitator |
 
     When all e-mails have been sent
     And I am logged in as "Wendell Silva"
-    And I go to the homepage of the "Belgian barista's" collection
+    And I go to the homepage of the "Belgian barista's" community
     And I click "Add solution"
     And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
     And I press "Yes"
@@ -126,7 +126,7 @@ Feature: "Add solution" visibility options.
     And I am logged in as "Ruth Lee"
     When I go to the edit form of the "Espresso is the solution" solution
     And I press "Publish"
-    # The name of the solution should exist in the block of the relative content in a collection.
+    # The name of the solution should exist in the block of the relative content in a community.
     Then I should see the heading "Espresso is the solution"
     # The description is shown in the overview.
     And I should see the text "This is a test text"
@@ -140,9 +140,9 @@ Feature: "Add solution" visibility options.
       | subject   | Joinup: Your solution has been accepted                                                                     |
       | body      | Your proposed interoperability solution: "Espresso is the solution" has been validated as per your request. |
 
-    When I am logged in as a facilitator of the "Belgian barista's" collection
+    When I am logged in as a facilitator of the "Belgian barista's" community
     # Make sure that when another solution is added, both are affiliated.
-    When I go to the homepage of the "Belgian barista's" collection
+    When I go to the homepage of the "Belgian barista's" community
     And I click "Add solution"
     And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
     And I press "Yes"
@@ -165,8 +165,8 @@ Feature: "Add solution" visibility options.
     And I press "Add owner"
     And I press "Propose"
     Then I should see the heading "V60 filter coffee solution"
-    # The name of the solution should exist in the block of the relative content in a collection.
-    When I go to the homepage of the "Belgian barista's" collection
+    # The name of the solution should exist in the block of the relative content in a community.
+    When I go to the homepage of the "Belgian barista's" community
     Then I should see the heading "Belgian barista's"
     And I should see the link "Espresso is the solution"
     # The proposed solution should not be visible since it's not yet validated.
@@ -184,11 +184,11 @@ Feature: "Add solution" visibility options.
     # buttons to leak into the solution create form, causing critical errors
     # when an invalid state button was pressed.
     # @see issue ISAICP-3209
-    Given the following collection:
+    Given the following community:
       | title | Language parsers |
       | state | validated        |
-    When I am logged in as a facilitator of the "Language parsers" collection
-    And I go to the homepage of the "Language parsers" collection
+    When I am logged in as a facilitator of the "Language parsers" community
+    And I go to the homepage of the "Language parsers" community
     And I click "Add solution"
     And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
     And I press "Yes"
@@ -220,7 +220,7 @@ Feature: "Add solution" visibility options.
 
   @terms
   Scenario: Create a solution with a name that already exists
-    Given the following collections:
+    Given the following communities:
       | title              | state     |
       | Ocean studies      | validated |
       | Glacier monitoring | validated |
@@ -233,21 +233,21 @@ Feature: "Add solution" visibility options.
       | name                | type                             |
       | University of Basel | Academia/Scientific organisation |
 
-    # No two solutions with the same name may be created in the same collection.
-    Given I am logged in as a member of the "Ocean studies" collection
-    When I go to the homepage of the "Ocean studies" collection
+    # No two solutions with the same name may be created in the same community.
+    Given I am logged in as a member of the "Ocean studies" community
+    When I go to the homepage of the "Ocean studies" community
     And I click "Add solution" in the plus button menu
     And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
     And I press "Yes"
     And I fill in "Title" with "Climate change tracker"
     And I press "Propose"
-    Then I should see the error message "A solution titled Climate change tracker already exists in this collection. Please choose a different title."
+    Then I should see the error message "A solution titled Climate change tracker already exists in this community. Please choose a different title."
 
-    # If a solution with a duplicate name is created in a different collection
+    # If a solution with a duplicate name is created in a different community
     # then this is allowed to be submitted but a warning should be shown to the
     # moderator when approving the proposal.
-    Given I am logged in as a member of the "Glacier monitoring" collection
-    When I go to the homepage of the "Glacier monitoring" collection
+    Given I am logged in as a member of the "Glacier monitoring" community
+    When I go to the homepage of the "Glacier monitoring" community
     And I click "Add solution" in the plus button menu
     And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
     And I press "Yes"
@@ -267,13 +267,13 @@ Feature: "Add solution" visibility options.
     # Check that the warning intended for moderators is not shown to regular
     # users.
     When I click "Edit" in the "Entity actions" region
-    Then I should not see the warning message "A solution with the same name exists in a different collection."
+    Then I should not see the warning message "A solution with the same name exists in a different community."
 
     Given I am logged in as a moderator
     And I go to my dashboard
     And I click "Climate change tracker"
     And I click "Edit" in the "Entity actions" region
-    Then I should see the warning message "A solution with the same name exists in a different collection."
+    Then I should see the warning message "A solution with the same name exists in a different community."
 
     # Clean up the entities that were created through the UI. We have no control
     # over which of the two identically named solutions is deleted first, so

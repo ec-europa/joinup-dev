@@ -4,20 +4,20 @@ declare(strict_types = 1);
 
 namespace Drupal\collection\Plugin\OgGroupResolver;
 
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\og\OgResolvedGroupCollectionInterface;
 use Drupal\og\Plugin\OgGroupResolver\RouteGroupResolver;
 
 /**
- * Resolves the collection from the route.
+ * Resolves the community from the route.
  *
  * @OgGroupResolver(
  *   id = "collection_from_route",
- *   label = "Collection entity from current route",
- *   description = @Translation("Checks if the current route is a collection entity path."),
+ *   label = "Community entity from current route",
+ *   description = @Translation("Checks if the current route is a community entity path."),
  * )
  */
-class CollectionRouteGroupResolver extends RouteGroupResolver {
+class CommunityRouteGroupResolver extends RouteGroupResolver {
 
   /**
    * {@inheritdoc}
@@ -31,9 +31,9 @@ class CollectionRouteGroupResolver extends RouteGroupResolver {
   /**
    * {@inheritdoc}
    */
-  public function resolve(OgResolvedGroupCollectionInterface $collection) {
-    if (($group = $this->getContentEntity()) && $group instanceof CollectionInterface) {
-      $collection->addGroup($group, ['route']);
+  public function resolve(OgResolvedGroupCollectionInterface $community) {
+    if (($group = $this->getContentEntity()) && $group instanceof CommunityInterface) {
+      $community->addGroup($group, ['route']);
       $this->stopPropagation();
     }
   }

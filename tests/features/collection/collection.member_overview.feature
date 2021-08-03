@@ -1,10 +1,10 @@
 @api @group-a
-Feature: Collection membership overview
+Feature: Community membership overview
   In order to foster my community and create a sense of belonging
-  As a collection member
+  As a community member
   I need to be able to see an overview of my fellow members
 
-  Scenario: Show the collection members as a list of tiles
+  Scenario: Show the community members as a list of tiles
     Given the following owner:
       | name           |
       | Ayodele Sommer |
@@ -31,10 +31,10 @@ Feature: Collection membership overview
       | Law Atteberry         | Law        | Atteberry   | linus.jpeg   | Comptroller                     |
       | Aniruddha Kováts      | Aniruddha  | Kováts      | blaise.jpg   | Chief Communications Officer    |
       | Aali Dalton           | Aali       | Dalton      | richard.jpg  | Founder                         |
-    And the following collections:
+    And the following communities:
       | title           | description        | logo     | banner     | owner          | contact information | state     |
       | Jubilant Robots | Fresh oil harvest! | logo.png | banner.jpg | Ayodele Sommer | Nita Yang           | validated |
-    And the following collection user memberships:
+    And the following community user memberships:
       | collection      | user                  | roles       | state   |
       | Jubilant Robots | Ruby Valenta          | owner       |         |
       | Jubilant Robots | Bohumil Unterbrink    | facilitator |         |
@@ -55,7 +55,7 @@ Feature: Collection membership overview
 
     # The membership overview should be accessible for anonymous users.
     When I am not logged in
-    And I go to the "Jubilant Robots" collection
+    And I go to the "Jubilant Robots" community
     Then I should see the link "Members" in the "Left sidebar"
 
     # The first 12 active members should be shown, ordered by first name - last name.
@@ -91,7 +91,7 @@ Feature: Collection membership overview
     Then I should see the "Suk Karpáti" tile
     And I should see the "Sukhrab Valenta" tile
 
-    # Check the filter on the user roles inside the collection.
+    # Check the filter on the user roles inside the community.
     And the available options in the "Roles" select should be "- Any - (14), Author (0), Facilitator (4), Owner (1)"
     And the option "- Any - (14)" should be selected
 

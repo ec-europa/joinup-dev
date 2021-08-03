@@ -1,10 +1,10 @@
 @api @terms @email @group-a
-Feature: Notification test for the collection transitions.
-  In order to manage my collections
-  As an user that is related to the collection
+Feature: Notification test for the community transitions.
+  In order to manage my communities
+  As an user that is related to the community
   I want to receive a notification when an event occurs
 
-  Scenario: Notifications should be sent whenever an event is occurring related to a collection.
+  Scenario: Notifications should be sent whenever an event is occurring related to a community.
     Given the following owner:
       | name       | type                    |
       | NC for all | Non-Profit Organisation |
@@ -20,7 +20,7 @@ Feature: Notification test for the collection transitions.
       | NC member1     |           | nc_member1@test.com     | NC         | Member1     |
       | NC member2     |           | nc_member2@test.com     | NC         | Member2     |
       | NCS owner      |           | ncs_owner@test.com      | NC         | Owner       |
-    And collections:
+    And communities:
       | title                  | state            | abstract     | description   | topic             | owner      | contact information        |
       | NC to propose          | draft            | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
       | NC to validate         | proposed         | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
@@ -42,7 +42,7 @@ Feature: Notification test for the collection transitions.
       | solution     | user      | roles |
       | NC Solution1 | NCS owner | owner |
       | NC Solution2 | NCS owner | owner |
-    And the following collection user memberships:
+    And the following community user memberships:
       | collection             | user           | roles              |
       | NC to propose          | NC owner       | owner, facilitator |
       | NC to validate         | NC owner       | owner, facilitator |
@@ -65,7 +65,7 @@ Feature: Notification test for the collection transitions.
     # Test 'create' operation.
     When all e-mails have been sent
     And I am logged in as "NC user"
-    When I go to the propose collection form
+    When I go to the propose community form
     When I fill in the following:
       | Title                 | NC proposed new     |
       | Description           | No one cares.       |
@@ -77,109 +77,109 @@ Feature: Notification test for the collection transitions.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "NC for all"
     And I press "Propose"
-    Then the email sent to "NC moderator" with subject "User NC proposed collection NC proposed new" contains the following lines of text:
+    Then the email sent to "NC moderator" with subject "User NC proposed community NC proposed new" contains the following lines of text:
       | text                                                                               |
-      | NC User has proposed collection "NC proposed new".                                 |
+      | NC User has proposed community "NC proposed new".                                 |
       | To approve or reject this proposal, please go to                                   |
       | If you think this action is not clear or not due, please contact Joinup Support at |
 
     # Clean up the manually created entities.
-    Then I delete the "NC proposed new" collection
+    Then I delete the "NC proposed new" community
     And I delete the "Super Sayan Academy" contact information
 
-    # Test 'propose' operation (on an existing collection)
+    # Test 'propose' operation (on an existing community)
     When all e-mails have been sent
     And I am logged in as "NC owner"
-    And I go to the homepage of the "NC to propose" collection
+    And I go to the homepage of the "NC to propose" community
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
-    Then the email sent to "NC moderator" with subject "User NC proposed collection NC to propose" contains the following lines of text:
+    Then the email sent to "NC moderator" with subject "User NC proposed community NC to propose" contains the following lines of text:
       | text                                                                               |
-      | NC Owner has proposed collection "NC to propose".                                  |
+      | NC Owner has proposed community "NC to propose".                                  |
       | To approve or reject this proposal, please go to                                   |
       | If you think this action is not clear or not due, please contact Joinup Support at |
 
     # Test 'request archival' operation.
     When all e-mails have been sent
-    And I go to the homepage of the "NC to request archival" collection
+    And I go to the homepage of the "NC to request archival" community
     And I click "Edit" in the "Entity actions" region
     And I press "Request archival"
-    Then the email sent to "NC moderator" with subject "User NC requested to archive collection NC to request archival" contains the following lines of text:
+    Then the email sent to "NC moderator" with subject "User NC requested to archive community NC to request archival" contains the following lines of text:
       | text                                                                               |
-      | NC Owner has requested to archive the collection "NC to request archival".         |
+      | NC Owner has requested to archive the community "NC to request archival".         |
       | To approve or reject this request, please go to                                    |
       | If you think this action is not clear or not due, please contact Joinup Support at |
 
-    # Test deletion of a collection by the owner.
+    # Test deletion of a community by the owner.
     When all e-mails have been sent
-    And I go to the homepage of the "NC to delete" collection
+    And I go to the homepage of the "NC to delete" community
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"
     Then 2 e-mails should have been sent
     Then the following email should have been sent:
       | recipient | NC member1                                                                  |
-      | subject   | The collection NC to delete was deleted.                                    |
-      | body      | The collection "NC to delete", of which you are a member, has been deleted. |
+      | subject   | The community NC to delete was deleted.                                    |
+      | body      | The community "NC to delete", of which you are a member, has been deleted. |
     And the following email should have been sent:
       | recipient | NC member2                                                                  |
-      | subject   | The collection NC to delete was deleted.                                    |
-      | body      | The collection "NC to delete", of which you are a member, has been deleted. |
+      | subject   | The community NC to delete was deleted.                                    |
+      | body      | The community "NC to delete", of which you are a member, has been deleted. |
 
     # Test 'propose edit' operation.
     When all e-mails have been sent
     And I am logged in as "NC facilitator"
-    And I go to the homepage of the "NC to propose edit" collection
+    And I go to the homepage of the "NC to propose edit" community
     And I click "Edit" in the "Entity actions" region
     And I fill in "Title" with "NC to propose edit proposed"
     And I press "Propose"
-    Then the email sent to "NC moderator" with subject "User NC proposed to edit collection NC to propose edit proposed" contains the following lines of text:
+    Then the email sent to "NC moderator" with subject "User NC proposed to edit community NC to propose edit proposed" contains the following lines of text:
       | text                                                                          |
-      | NC Facilitator has proposed to edit collection "NC to propose edit proposed". |
+      | NC Facilitator has proposed to edit community "NC to propose edit proposed". |
       | To approve or reject this proposal, please go to                              |
-    And the email sent to "NC owner" with subject "User NC proposed to edit collection NC to propose edit proposed" contains the following lines of text:
+    And the email sent to "NC owner" with subject "User NC proposed to edit community NC to propose edit proposed" contains the following lines of text:
       | text                                                                          |
-      | NC Facilitator has proposed to edit collection "NC to propose edit proposed". |
-      | To modify your collection, please go to                                       |
+      | NC Facilitator has proposed to edit community "NC to propose edit proposed". |
+      | To modify your community, please go to                                       |
 
     # Test the 'approve new' operation.
     When all e-mails have been sent
     And I am logged in as "NC moderator"
-    And I go to the homepage of the "NC to validate" collection
+    And I go to the homepage of the "NC to validate" community
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | NC owner                                                                          |
-      | subject   | Your proposal of collection NC to validate has been approved                      |
-      | body      | Your proposed collection "NC to validate" has been validated as per your request. |
+      | subject   | Your proposal of community NC to validate has been approved                      |
+      | body      | Your proposed community "NC to validate" has been validated as per your request. |
 
     # Test the 'approve proposed' that was proposed through the 'propose edit' operation.
     When all e-mails have been sent
-    And I go to the homepage of the "NC to propose edit proposed" collection
+    And I go to the homepage of the "NC to propose edit proposed" community
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
-    Then the email sent to "NC owner" with subject "Your request to edit collection NC to propose edit proposed has been approved." contains the following lines of text:
+    Then the email sent to "NC owner" with subject "Your request to edit community NC to propose edit proposed has been approved." contains the following lines of text:
       | text                                                                                  |
-      | Your proposal to edit the collection "NC to propose edit proposed" has been accepted. |
-      | You can verify the edited version of the collection at                                |
+      | Your proposal to edit the community "NC to propose edit proposed" has been accepted. |
+      | You can verify the edited version of the community at                                |
 
     # Test the 'reject archival' operation.
     When all e-mails have been sent
-    And I go to the homepage of the "NC to reject archival" collection
+    And I go to the homepage of the "NC to reject archival" community
     And I click "Edit" in the "Entity actions" region
     # @todo: This should change into a separate transition.
     And I press "Publish"
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "It will not be archived."
     And I press "Publish"
-    Then the email sent to "NC owner" with subject "Your request to archive collection NC to reject archival has been rejected" contains the following lines of text:
+    Then the email sent to "NC owner" with subject "Your request to archive community NC to reject archival has been rejected" contains the following lines of text:
       | text                                                                                      |
-      | NC Moderator has rejected your request to archive the collection "NC to reject archival". |
+      | NC Moderator has rejected your request to archive the community "NC to reject archival". |
       | The reason for rejection is: It will not be archived.                                     |
 
     # Test the 'archive' operation.
     When all e-mails have been sent
-    And I go to the homepage of the "NC to archive" collection
+    And I go to the homepage of the "NC to archive" community
     And I click "Edit" in the "Entity actions" region
     And I press "Archive"
     Then I should see the error message "This action requires you to fill in the motivation field"
@@ -187,42 +187,42 @@ Feature: Notification test for the collection transitions.
     And I press "Archive"
     Then the following email should have been sent:
       | recipient | NC owner                                                              |
-      | subject   | Your request to archive collection NC to archive has been approved.   |
-      | body      | The collection "NC to archive" has been archived as per your request. |
+      | subject   | Your request to archive community NC to archive has been approved.   |
+      | body      | The community "NC to archive" has been archived as per your request. |
     And the following email should have been sent:
       | recipient | NCS owner                                                                                                                                                                                                                                         |
-      | subject   | The collection NC to archive was archived. Your solution was affiliated only to the collection NC to archive, and as a consequence, your solution is not currently affiliated to any other collection. Please verify and take appropriate action. |
-      | body      | Since your solution "NC Solution1" was affiliated only with this archived collection, your solution is currently no longer affiliated to any other collection.                                                                                    |
+      | subject   | The community NC to archive was archived. Your solution was affiliated only to the community NC to archive, and as a consequence, your solution is not currently affiliated to any other community. Please verify and take appropriate action. |
+      | body      | Since your solution "NC Solution1" was affiliated only with this archived community, your solution is currently no longer affiliated to any other community.                                                                                    |
     And the following email should have been sent:
       | recipient | NCS owner                                                                                                                                                       |
-      | subject   | The collection NC to archive was archived                                                                                                                       |
-      | body      | The "NC to archive" collection, to which your "NC Solution2" solution was affiliated, was recently archived. Please verify the updated details of your solution |
+      | subject   | The community NC to archive was archived                                                                                                                       |
+      | body      | The "NC to archive" community, to which your "NC Solution2" solution was affiliated, was recently archived. Please verify the updated details of your solution |
     And the following email should have been sent:
       | recipient | NC member1                                                                                                                   |
-      | subject   | The collection NC to archive was archived.                                                                                   |
-      | body      | The collection "NC to archive", of which you are a member, has been archived. The reason for being archived is: As you wish. |
+      | subject   | The community NC to archive was archived.                                                                                   |
+      | body      | The community "NC to archive", of which you are a member, has been archived. The reason for being archived is: As you wish. |
     And the following email should have been sent:
       | recipient | NC member2                                                                                                                   |
-      | subject   | The collection NC to archive was archived.                                                                                   |
-      | body      | The collection "NC to archive", of which you are a member, has been archived. The reason for being archived is: As you wish. |
+      | subject   | The community NC to archive was archived.                                                                                   |
+      | body      | The community "NC to archive", of which you are a member, has been archived. The reason for being archived is: As you wish. |
 
-    # Test the deletion of a collection by a moderator. This should also inform
-    # the collection owner.
+    # Test the deletion of a community by a moderator. This should also inform
+    # the community owner.
     When all e-mails have been sent
-    And I go to the homepage of the "NC to delete by mod" collection
+    And I go to the homepage of the "NC to delete by mod" community
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"
     Then 3 e-mails should have been sent
     Then the following email should have been sent:
       | recipient | NC member1                                                                         |
-      | subject   | The collection NC to delete by mod was deleted.                                    |
-      | body      | The collection "NC to delete by mod", of which you are a member, has been deleted. |
+      | subject   | The community NC to delete by mod was deleted.                                    |
+      | body      | The community "NC to delete by mod", of which you are a member, has been deleted. |
     And the following email should have been sent:
       | recipient | NC member2                                                                         |
-      | subject   | The collection NC to delete by mod was deleted.                                    |
-      | body      | The collection "NC to delete by mod", of which you are a member, has been deleted. |
+      | subject   | The community NC to delete by mod was deleted.                                    |
+      | body      | The community "NC to delete by mod", of which you are a member, has been deleted. |
     And the following email should have been sent:
       | recipient | NC owner                                                              |
-      | subject   | Joinup: Your collection has been deleted by the moderation team       |
-      | body      | The Joinup moderation team deleted the collection NC to delete by mod |
+      | subject   | Joinup: Your community has been deleted by the moderation team       |
+      | body      | The Joinup moderation team deleted the community NC to delete by mod |

@@ -12,25 +12,25 @@ use Drupal\joinup_group\Cache\Context\GroupOwnerCacheContext;
  * This cache context should be used in any render elements that have different
  * content when shown to a collection owner.
  *
- * Example use case: the collection overview has an additional "My collections"
+ * Example use case: the collection overview has an additional "My communities"
  * facet that is shown only to collection owners.
  *
  * This is similar to OgRoleCacheContext but is much less granular, since we
  * only have a small number of collection owners as compared to members with
  * other roles.
  *
- * Since some users might own many collections the context key is presented as a
+ * Since some users might own many communities the context key is presented as a
  * hashed value.
  *
  * Cache context ID: 'collection_owner'
  */
-class CollectionOwnerCacheContext extends GroupOwnerCacheContext {
+class CommunityOwnerCacheContext extends GroupOwnerCacheContext {
 
   /**
    * {@inheritdoc}
    */
   public static function getLabel() {
-    return t('Collection owner');
+    return t('Community owner');
   }
 
   /**

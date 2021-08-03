@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\solution\Entity;
 
-use Drupal\collection\Entity\CollectionInterface;
-use Drupal\collection\Exception\MissingCollectionException;
+use Drupal\collection\Entity\CommunityInterface;
+use Drupal\collection\Exception\MissingCommunityException;
 use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\solution\Exception\MissingSolutionException;
 
@@ -17,16 +17,16 @@ trait SolutionContentTrait {
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): CollectionInterface {
+  public function getCommunity(): CommunityInterface {
     try {
       // Asset releases are 2nd level collection content, through a solution.
       $solution = $this->getSolution();
     }
     catch (MissingSolutionException $exception) {
-      throw new MissingCollectionException($exception->getMessage(), 0, $exception);
+      throw new MissingCommunityException($exception->getMessage(), 0, $exception);
     }
 
-    return $solution->getCollection();
+    return $solution->getCommunity();
   }
 
   /**

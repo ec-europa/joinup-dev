@@ -14,7 +14,7 @@ use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
 /**
  * Guard class for the transitions of the collection entity.
  */
-class CollectionFulfillmentGuard implements GuardInterface {
+class CommunityFulfillmentGuard implements GuardInterface {
 
   /**
    * Virtual state.
@@ -36,7 +36,7 @@ class CollectionFulfillmentGuard implements GuardInterface {
   protected $workflowStatePermission;
 
   /**
-   * Instantiates a CollectionFulfillmentGuard service.
+   * Instantiates a CommunityFulfillmentGuard service.
    *
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
@@ -53,7 +53,7 @@ class CollectionFulfillmentGuard implements GuardInterface {
    * {@inheritdoc}
    */
   public function allowed(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
-    /** @var \Drupal\collection\Entity\CollectionInterface $entity */
+    /** @var \Drupal\collection\Entity\CommunityInterface $entity */
     $to_state = $transition->getToState()->getId();
     // Disable virtual state.
     if ($to_state == self::NON_STATE) {

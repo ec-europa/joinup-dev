@@ -5,14 +5,14 @@ Feature:
   I need to be able to place paragraphs for content.
 
   Background:
-    Given the following collection:
-      | title | Paragraphs collection |
+    Given the following community:
+      | title | Paragraphs community |
       | state | validated             |
 
   @javascript
   Scenario: Paragraph sections are multivalue and sort-able.
-    Given I am logged in as a facilitator of the "Paragraphs collection" collection
-    And I go to the "Paragraphs collection" collection
+    Given I am logged in as a facilitator of the "Paragraphs community" community
+    And I go to the "Paragraphs community" community
     And I open the plus button menu
     And I click "Add custom page"
     And I fill in "Title" with "Paragraphs page"
@@ -48,12 +48,12 @@ Feature:
     Given users:
       | Username |
       | Zohan    |
-    And the following collection user membership:
-      | collection            | user  |
-      | Paragraphs collection | Zohan |
+    And the following community user membership:
+      | community            | user  |
+      | Paragraphs community | Zohan |
     And custom_page content:
-      | title                     | body        | collection            | author |
-      | Don't Mess with the Zohan | Wanna mess? | Paragraphs collection | Zohan  |
+      | title                     | body        | collection           | author |
+      | Don't Mess with the Zohan | Wanna mess? | Paragraphs community | Zohan  |
 
     # Normal members cannot add maps.
     When I am logged in as "Zohan"
@@ -63,7 +63,7 @@ Feature:
     But I should not see the button "Add IFrame"
 
     # Facilitators can add maps.
-    When I am logged in as a facilitator of the "Paragraphs collection" collection
+    When I am logged in as a facilitator of the "Paragraphs community" community
     And I go to the edit form of the "Don't Mess with the Zohan" "custom page"
     Then I should see the button "Add Simple paragraph"
     And I should see the button "Add Map"
@@ -102,7 +102,7 @@ Feature:
   @javascript
   Scenario Outline: Add an accordion to the custom page.
     Given I am logged in as a <role>
-    And I go to the "Paragraphs collection" collection
+    And I go to the "Paragraphs community" community
     And I open the plus button menu
     And I click "Add custom page"
     And I fill in "Title" with "Paragraphs accordion page"
@@ -145,4 +145,4 @@ Feature:
     Examples:
       | role                                                  |
       | moderator                                             |
-      | facilitator of the "Paragraphs collection" collection |
+      | facilitator of the "Paragraphs community" community |

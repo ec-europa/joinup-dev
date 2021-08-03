@@ -7,7 +7,7 @@ namespace Drupal\solution\Controller;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\solution\Entity\SolutionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -31,7 +31,7 @@ class SolutionController extends ControllerBase {
    *   Return the form array to be rendered.
    */
   public function add(RdfInterface $rdf_entity): array {
-    if (!$rdf_entity instanceof CollectionInterface) {
+    if (!$rdf_entity instanceof CommunityInterface) {
       throw new NotFoundHttpException();
     }
     $solution = $this->createNewSolution($rdf_entity);
@@ -53,7 +53,7 @@ class SolutionController extends ControllerBase {
    */
   public function createSolutionAccess(RdfInterface $rdf_entity): AccessResultInterface {
     // If the collection is archived, content creation is not allowed.
-    if (!$rdf_entity instanceof CollectionInterface || $rdf_entity->getWorkflowState() === 'archived') {
+    if (!$rdf_entity instanceof CommunityInterface || $rdf_entity->getWorkflowState() === 'archived') {
       return AccessResult::forbidden();
     }
 
@@ -70,16 +70,16 @@ class SolutionController extends ControllerBase {
   /**
    * Creates a new solution entity that is affiliated with the given collection.
    *
-   * @param \Drupal\collection\Entity\CollectionInterface $collection
+   * @param \Drupal\collection\Entity\CommunityInterface $community
    *   The collection to affiliate with the new solution.
    *
    * @return \Drupal\solution\Entity\SolutionInterface
    *   The unsaved solution entity.
    */
-  protected function createNewSolution(CollectionInterface $collection): SolutionInterface {
+  protected function createNewSolution(CommunityInterface $community): SolutionInterface {
     return $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'solution',
-      'collection' => [$collection->id()],
+      'collection' => [$community->id()],
     ]);
   }
 

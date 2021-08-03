@@ -1,16 +1,16 @@
 @api @group-b
 Feature: Add community content
-  In order to introduce my wisdom in my collections
-  As a member of a collection
+  In order to introduce my wisdom in my communities
+  As a member of a community
   I need to be able to add community content
 
   Scenario Outline: Advanced content and group administration should not be accessible for group members
-    Given the following collection:
+    Given the following community:
       | title | The night shift |
       | state | validated       |
 
-    When I am logged in as a "<member type>" of the "The night shift" collection
-    And I go to the homepage of the "The night shift" collection
+    When I am logged in as a "<member type>" of the "The night shift" community
+    And I go to the homepage of the "The night shift" community
     And I click "Add <content type>"
     Then I should see the heading "Add <content type>"
     But I should not see the following lines of text:
@@ -37,12 +37,12 @@ Feature: Add community content
       | member      | news         |
 
   Scenario Outline: Advanced content and group administration should not be accessible for moderators
-    Given the following collection:
+    Given the following community:
       | title | The night shift |
       | state | validated       |
 
     When I am logged in as a "moderator"
-    And I go to the homepage of the "The night shift" collection
+    And I go to the homepage of the "The night shift" community
     And I click "Add <content type>"
     Then I should see the heading "Add <content type>"
     And the following fields should be present "Authored by"
@@ -68,7 +68,7 @@ Feature: Add community content
     Given users:
       | Username  | E-mail                     | First name | Family name    | Roles     |
       | Publisher | publisher-example@test.com | Publisher  | Georgakopoulos | moderator |
-    And the following collection:
+    And the following community:
       | title | The afternoon shift |
       | state | validated           |
     And discussion content:
@@ -111,13 +111,13 @@ Feature: Add community content
 
   @terms
   Scenario: Directly publishing community content sets the correct publication date.
-    Given the following collections:
+    Given the following communities:
       | title        | description                  | logo     | banner     | state     |
       | CC container | Community content container. | logo.png | banner.jpg | validated |
-    And I am logged in as a "facilitator" of the "CC container" collection
+    And I am logged in as a "facilitator" of the "CC container" community
 
     # Create a published discussion.
-    When I go to the homepage of the "CC container" collection
+    When I go to the homepage of the "CC container" community
     And I click "Add discussion" in the plus button menu
     And I fill in the following:
       | Title   | Published community discussion |
@@ -128,7 +128,7 @@ Feature: Add community content
     And the publication date of the "Published community discussion" discussion should be equal to the created date
 
     # Create a published document.
-    When I go to the homepage of the "CC container" collection
+    When I go to the homepage of the "CC container" community
     And I click "Add document" in the plus button menu
     And I fill in the following:
       | Title       | Published community document |
@@ -141,7 +141,7 @@ Feature: Add community content
     And the publication date of the "Published community document" document should be equal to the created date
 
     # Create a published event.
-    When I go to the homepage of the "CC container" collection
+    When I go to the homepage of the "CC container" community
     And I click "Add event" in the plus button menu
     Then the following field should not be present "Summary"
     And I fill in the following:
@@ -163,7 +163,7 @@ Feature: Add community content
     # And the publication date of the "Published community event" event should be equal to the created date
 
     # Create a published news.
-    When I go to the homepage of the "CC container" collection
+    When I go to the homepage of the "CC container" community
     And I click "Add news" in the plus button menu
     Then the following field should not be present "Summary"
     And I fill in the following:
@@ -176,7 +176,7 @@ Feature: Add community content
     And the publication date of the "Published community news" news should be equal to the created date
 
   Scenario Outline: Community content type is indicated on the byline
-    Given the following collection:
+    Given the following community:
       | title | The night watch |
       | state | validated       |
     And <content type> content:

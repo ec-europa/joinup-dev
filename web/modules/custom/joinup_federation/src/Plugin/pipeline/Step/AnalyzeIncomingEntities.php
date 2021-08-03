@@ -295,16 +295,16 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *   The category ID.
    */
   protected function getCategory(RdfInterface $activity): string {
-    $collection_id = $this->getPipeline()->getCollection();
+    $community_id = $this->getPipeline()->getCommunity();
 
     // If the provenance activity record is new, there was no previous attempt
     // to federate this solution.
     if ($activity->isNew()) {
       return 'not_federated';
     }
-    // If the solution is already associated with another collection, we can't
-    // federate it in the scope of this pipeline's collection.
-    elseif ($activity->get('provenance_associated_with')->value !== $collection_id) {
+    // If the solution is already associated with another community, we can't
+    // federate it in the scope of this pipeline's community.
+    elseif ($activity->get('provenance_associated_with')->value !== $community_id) {
       return 'invalid_collection';
     }
     // If there is an existing provenance activity enabled record, this incoming

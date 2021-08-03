@@ -69,7 +69,7 @@ class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
    *
    * If the current page belongs to a certain group (collection or solution)
    * then this will be reported to Webtools Analytics as a "site section". This
-   * allows the visitor data to be analysed for specific collections and
+   * allows the visitor data to be analysed for specific communities and
    * solutions.
    *
    * @param \Drupal\oe_webtools_analytics\AnalyticsEventInterface $event
@@ -83,22 +83,22 @@ class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
     if ($group = $this->ogContext->getGroup()) {
       if ($group->bundle() === 'solution') {
 
-        $collection = NULL;
-        // Normally, the solution has the `collections` computed field that
-        // holds the list of collections that are affiliates to the solution.
+        $community = NULL;
+        // Normally, the solution has the `communities` computed field that
+        // holds the list of communities that are affiliates to the solution.
         // However, this method is fired during the preparation of the page
         // while the computation of the value takes place during the rendering
         // of the page.
         // @see \Drupal\Core\Render\MainContent\HtmlRenderer::renderResponse
-        if ($collections = solution_get_collection_ids($group)) {
+        if ($communities = solution_get_collection_ids($group)) {
           // Only the first affiliated collection should be used to set the site
           // section. This is considered to be the "main" collection. Any other
-          // collections are ignored since they would make the analytics results
+          // communities are ignored since they would make the analytics results
           // more difficult to interpret.
-          $collection_id = reset($collections);
-          $collection = $this->entityTypeManager->getStorage('rdf_entity')->load($collection_id);
+          $community_id = reset($communities);
+          $community = $this->entityTypeManager->getStorage('rdf_entity')->load($community_id);
         }
-        $group = $collection;
+        $group = $community;
       }
     }
 

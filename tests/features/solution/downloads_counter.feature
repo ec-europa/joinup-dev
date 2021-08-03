@@ -5,7 +5,7 @@ Feature:
   @clearStaticCache
   Scenario: Check solution downloads counter
     # Create the dummy data to work with.
-    Given the following collection:
+    Given the following community:
       | title | Ocean studies |
     Given the following solution:
       | title       | Climate change tracker                            |

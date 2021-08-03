@@ -1,11 +1,11 @@
 @api @group-a
-Feature: Custom pages enhance search results for their collections/solutions
+Feature: Custom pages enhance search results for their communities/solutions
   In order to increase the chances of my group to be found
   As a facilitator
   I want search results for keywords that match content in my custom pages to include my group
 
   @clearStaticCache
-  Scenario Outline: Collections and solutions are found when searching for keywords in custom pages
+  Scenario Outline: Communities and solutions are found when searching for keywords in custom pages
     Given the following <group>s:
       | title           | state     |
       | Buddy system    | draft     |

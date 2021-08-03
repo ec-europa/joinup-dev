@@ -23,7 +23,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 /**
  * Entity subclass for the 'collection' bundle.
  */
-class Collection extends Rdf implements CollectionInterface {
+class Community extends Rdf implements CommunityInterface {
 
   use ArchivableEntityTrait;
   use EntityPublicationTimeFallbackTrait;
@@ -44,7 +44,7 @@ class Collection extends Rdf implements CollectionInterface {
    *
    * phpcs:disable Generic.CodeAnalysis.UselessOverridingMethod.Found
    */
-  public static function create(array $values = []): CollectionInterface {
+  public static function create(array $values = []): CommunityInterface {
     // Delegate to the parent method. This is only overridden to provide the
     // correct return type.
     return parent::create($values);
@@ -132,7 +132,7 @@ class Collection extends Rdf implements CollectionInterface {
    */
   public function createMembership(?int $uid = NULL, ?string $role = 'member', ?string $state = NULL): OgMembershipInterface {
     // If the membership state is not defined, default to 'active' for open
-    // collections, and 'pending' for closed collections.
+    // communities, and 'pending' for closed communities.
     if (empty($state)) {
       $state = $this->isClosed() ? OgMembershipInterface::STATE_PENDING : OgMembershipInterface::STATE_ACTIVE;
     }
@@ -156,7 +156,7 @@ class Collection extends Rdf implements CollectionInterface {
     ];
     return $membership->getState() === OgMembershipInterface::STATE_ACTIVE ?
       $this->t('You are now a member of %group.', $parameters) :
-      $this->t('Your membership to the %group collection is under approval.', $parameters);
+      $this->t('Your membership to the %group community is under approval.', $parameters);
   }
 
   /**
@@ -171,7 +171,7 @@ class Collection extends Rdf implements CollectionInterface {
         return $this->t('You cannot join %group because your account has been blocked.', $parameters);
 
       case OgMembershipInterface::STATE_PENDING:
-        return $this->t('You have already joined the %group collection but your membership still needs to be approved by a facilitator.', $parameters);
+        return $this->t('You have already joined the %group community but your membership still needs to be approved by a facilitator.', $parameters);
 
       default:
         return $this->t('You already are a member of %group.', $parameters);

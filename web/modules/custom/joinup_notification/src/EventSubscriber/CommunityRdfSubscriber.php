@@ -6,7 +6,7 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\collection\Entity\CollectionInterface;
+use Drupal\collection\Entity\CommunityInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_workflow\EntityWorkflowStateInterface;
@@ -14,9 +14,9 @@ use Drupal\og\OgRoleInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Handles notifications related to collections.
+ * Handles notifications related to communities.
  */
-class CollectionRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+class CommunityRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 
   use StringTranslationTrait;
 
@@ -70,7 +70,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   protected $event;
 
   /**
-   * The source state of the collection.
+   * The source state of the community.
    *
    * @var string
    */
@@ -81,7 +81,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    */
   public static function getSubscribedEvents() {
     $events[NotificationEvents::RDF_ENTITY_CRUD] = [
-      // Notification id 1 - Propose new collection.
+      // Notification id 1 - Propose new community.
       ['onCreate'],
       // All notification Ids.
       ['onUpdate'],
@@ -97,7 +97,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    */
   protected function initialize(NotificationEvent $event): void {
     parent::initialize($event);
-    if (!$this->entity instanceof CollectionInterface) {
+    if (!$this->entity instanceof CommunityInterface) {
       return;
     }
 
@@ -111,7 +111,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   }
 
   /**
-   * Sends notification if the collection is created in proposed state.
+   * Sends notification if the community is created in proposed state.
    *
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event.
@@ -134,7 +134,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    *   Whether the conditions apply.
    */
   protected function appliesOnCreate(): bool {
-    if (!$this->appliesOnCollections()) {
+    if (!$this->appliesOnCommunities()) {
       return FALSE;
     }
 
@@ -154,7 +154,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   }
 
   /**
-   * Handles notifications on collection update.
+   * Handles notifications on community update.
    *
    * Notifications handled: All.
    *
@@ -199,7 +199,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    *   Whether the conditions apply.
    */
   protected function appliesOnUpdate(): bool {
-    if (!$this->appliesOnCollections()) {
+    if (!$this->appliesOnCommunities()) {
       return FALSE;
     }
 
@@ -225,7 +225,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   }
 
   /**
-   * Sends notification if the collection is deleted.
+   * Sends notification if the community is deleted.
    *
    * Notifications handled: 9, 12, 13, 14.
    *
@@ -248,7 +248,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    *   Whether the conditions apply.
    */
   protected function appliesOnDelete(): bool {
-    if (!$this->appliesOnCollections()) {
+    if (!$this->appliesOnCommunities()) {
       return FALSE;
     }
 
@@ -260,17 +260,17 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   }
 
   /**
-   * Sends a notification for proposing a collection.
+   * Sends a notification for proposing a community.
    *
    * @codingStandardsIgnoreStart
    * Notification id 1:
-   *  - Event: A new collection is proposed.
+   *  - Event: A new community is proposed.
    *  - Recipient: Moderators
    * Notification id 4:
-   *  - Event: A collection which has been published is proposed.
+   *  - Event: A community which has been published is proposed.
    *  - Recipient: Moderators
    * Notification id 5:
-   *  - Event: A collection which has been published is proposed.
+   *  - Event: A community which has been published is proposed.
    *  - Recipient: Owner
    *@codingStandardsIgnoreEnd
    *
@@ -301,7 +301,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   }
 
   /**
-   * Sends a notification for validating a collection.
+   * Sends a notification for validating a community.
    *
    * Notification id 2, 6.
    * Notification 1 is sent when a new entity is published. 6 is sent when a
@@ -348,15 +348,15 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   }
 
   /**
-   * Sends a notification on archiving a collection.
+   * Sends a notification on archiving a community.
    *
    * Notification id 9, 13, 14.
    *
    * Notification 9 notifies the owner that their request to archive/delete a
-   * collection was approved.
-   * Notification 13 notifies the owner that their collection has been archived
+   * community was approved.
+   * Notification 13 notifies the owner that their community has been archived
    * or deleted without prior request.
-   * Only one of both are sent depending on the current state of the collection.
+   * Only one of both are sent depending on the current state of the community.
    */
   protected function notificationArchiveDelete(): void {
     // Template id 9. Notify the owner.
@@ -432,16 +432,16 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    *   created, in order to remove weird workarounds.
    */
   protected function notifySolutionOwners(EntityInterface $solution): void {
-    // Count collections that are not archived and are affiliated to the
+    // Count communities that are not archived and are affiliated to the
     // solution.
-    $collection_count = $this->entityTypeManager->getStorage('rdf_entity')->getQuery()
+    $community_count = $this->entityTypeManager->getStorage('rdf_entity')->getQuery()
       ->condition('rid', 'collection')
       ->condition('field_ar_affiliates', $solution->id())
       ->condition('field_ar_state', 'archived', '!=')
       ->count()
       ->execute();
 
-    $template_id = $collection_count ? self::TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ALL : self::TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ORPHANED;
+    $template_id = $community_count ? self::TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ALL : self::TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ORPHANED;
     $user_data = [
       'og_roles' => [
         'rdf_entity-solution-administrator' => [
@@ -463,8 +463,8 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * @return bool
    *   Whether the event applies.
    */
-  protected function appliesOnCollections(): bool {
-    return $this->entity instanceof CollectionInterface;
+  protected function appliesOnCommunities(): bool {
+    return $this->entity instanceof CommunityInterface;
   }
 
   /**

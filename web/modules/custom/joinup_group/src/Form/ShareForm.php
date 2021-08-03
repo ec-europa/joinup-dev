@@ -15,7 +15,7 @@ use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 
 /**
- * Form to share a community content inside collections.
+ * Form to share a community content inside communities.
  */
 abstract class ShareForm extends ShareFormBase {
 
@@ -172,7 +172,7 @@ abstract class ShareForm extends ShareFormBase {
     }
 
     $user_groups = $this->getUserGroupsByPermission($this->getPermissionForAction('share'));
-    // Always show collections first.
+    // Always show communities first.
     uasort($user_groups, function (GroupInterface $group1, GroupInterface $group2): int {
       return $group1->bundle() <=> $group2->bundle();
     });

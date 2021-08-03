@@ -29,7 +29,7 @@ class EifContext extends RawDrupalContext {
   use StringTranslationTrait;
 
   /**
-   * Creates the standard 'EIF' solution and a random parent collection.
+   * Creates the standard 'EIF' solution and a random parent community.
    *
    * @BeforeScenario @eif_community&&@api
    */
@@ -55,11 +55,11 @@ class EifContext extends RawDrupalContext {
       'field_contact_email' => 'contact.email@example.com',
     ])->save();
 
-    // Create the NIFO sample collection.
+    // Create the NIFO sample community.
     Rdf::create([
       'rid' => 'collection',
-      'id' => 'http://nifo.collection',
-      'label' => 'NIFO collection',
+      'id' => 'http://nifo.community',
+      'label' => 'NIFO community',
       'field_ar_state' => 'validated',
       'field_topic' => 'http://example.com/term/1',
       'field_ar_owner' => 'http://example.com/owner',
@@ -71,7 +71,7 @@ class EifContext extends RawDrupalContext {
       'rid' => 'solution',
       'id' => EifInterface::EIF_ID,
       'label' => 'EIF Toolbox',
-      'collection' => 'http://nifo.collection',
+      'collection' => 'http://nifo.community',
       'field_is_state' => 'validated',
       'field_topic' => 'http://example.com/term/1',
       'field_is_owner' => 'http://example.com/owner',
@@ -143,7 +143,7 @@ class EifContext extends RawDrupalContext {
 
     $rdf_ids = [
       EifInterface::EIF_ID,
-      'http://nifo.collection',
+      'http://nifo.community',
       'http://example.com/owner',
       'http://example.com/contact',
     ];

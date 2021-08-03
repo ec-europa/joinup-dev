@@ -12,7 +12,7 @@ use Drupal\rdf_entity\RdfInterface;
  * Interface for contact information entities in Joinup.
  *
  * A contact information entity provides a name and contact details and is used
- * by collections, solutions and asset releases. The data is linked using a
+ * by communities, solutions and asset releases. The data is linked using a
  * standard entity reference field on the parent entity, and even though it can
  * be related to groups this is not considered group content.
  *

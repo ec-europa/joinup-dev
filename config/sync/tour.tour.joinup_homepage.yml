@@ -15,7 +15,7 @@ tips:
     id: welcome
     plugin: text
     label: 'Welcome to Joinup'
-    body: 'On this page you can find all the content published on the platform such as news, documents, collections, etc.'
+    body: 'On this page you can find all the content published on the platform such as news, documents, communities, etc.'
     weight: 1
     location: left
     attributes:
@@ -23,7 +23,7 @@ tips:
   anonymous_collections:
     id: anonymous_collections
     plugin: text
-    body: 'Lists all Joinup collections, which are the main collaborative spaces organised around a common topic.'
+    body: 'Lists all Joinup communities, which are the main collaborative spaces organised around a common topic.'
     weight: 2
     location: left
     attributes:
@@ -31,7 +31,7 @@ tips:
   authenticated_collections:
     id: authenticated_collections
     plugin: text
-    body: 'Lists all Joinup collections, which are the main collaborative spaces organised around a common topic.'
+    body: 'Lists all Joinup communities, which are the main collaborative spaces organised around a common topic.'
     weight: 3
     location: left
     attributes:
@@ -39,7 +39,7 @@ tips:
   anonymous_solutions:
     id: anonymous_solutions
     plugin: text
-    body: 'Lists all Joinup solutions, which are the main collaborative spaces organised around a collection''s sub-topic.'
+    body: 'Lists all Joinup solutions, which are the main collaborative spaces organised around a community''s sub-topic.'
     weight: 4
     location: left
     attributes:
@@ -47,7 +47,7 @@ tips:
   authenticated_solutions:
     id: authenticated_solutions
     plugin: text
-    body: 'Lists all Joinup solutions, which are the main collaborative spaces organised around a collection''s sub-topic.'
+    body: 'Lists all Joinup solutions, which are the main collaborative spaces organised around a community''s sub-topic.'
     weight: 5
     location: left
     attributes:

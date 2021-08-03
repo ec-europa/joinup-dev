@@ -29,7 +29,7 @@
 
       // If there is a global group context, bail out. We mark tiles as
       // globally featured only when we have no context, meaning we are in a
-      // "global" page (search, collections, solutions, content).
+      // "global" page (search, communities, solutions, content).
       if (group) {
         return;
       }

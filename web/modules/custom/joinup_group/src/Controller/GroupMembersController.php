@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Controller for routes that are showing lists of group memberships.
  *
  * This is currently used for showing:
- *   - The public member overview on collections, showing user tiles.
+ *   - The public member overview on communities, showing user tiles.
  *   - The member administration view that allows facilitators to manage members
  *     using bulk operations.
  *

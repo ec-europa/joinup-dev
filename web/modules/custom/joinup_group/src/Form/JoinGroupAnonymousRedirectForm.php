@@ -79,7 +79,7 @@ class JoinGroupAnonymousRedirectForm extends FormBase {
         // Business analysts have determined that we should use different
         // terminology for joining the different group types.
         '#value' => $this->t('Only signed in users can @action. Please sign in or register an account on EU Login.', [
-          '@action' => $this->group instanceof SolutionInterface ? $this->t('subscribe to this solution') : $this->t('join this collection'),
+          '@action' => $this->group instanceof SolutionInterface ? $this->t('subscribe to this solution') : $this->t('join this community'),
         ]),
       ],
       'actions' => [

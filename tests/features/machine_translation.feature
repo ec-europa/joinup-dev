@@ -6,7 +6,7 @@ Feature: Machine translation
 
   @javascript
   Scenario: Translation link is only visible on content focused pages
-    Given collection:
+    Given community:
       | title | Brexit    |
       | state | validated |
     And event content:
@@ -33,13 +33,13 @@ Feature: Machine translation
       | collection | Brexit        |
 
     When I am logged in as a moderator
-    # Inside a collection sidebar, only custom pages, glossary terms (but not
+    # Inside a community sidebar, only custom pages, glossary terms (but not
     # the glossary overview) and the about page should be translatable.
-    When I go to the edit form of the "Brexit" collection
+    When I go to the edit form of the "Brexit" community
     Then I should not see any Webtools eTrans elements
-    When I go to the delete form of the "Brexit" collection
+    When I go to the delete form of the "Brexit" community
     Then I should not see any Webtools eTrans elements
-    When I go to the "Brexit" collection
+    When I go to the "Brexit" community
     Then I should not see any Webtools eTrans elements
     When I click "Members"
     Then I should not see any Webtools eTrans elements
@@ -87,7 +87,7 @@ Feature: Machine translation
     Then I should not see any Webtools eTrans elements
     When I visit the search page
     Then I should not see any Webtools eTrans elements
-    When I click "Collections" in the "Header menu" region
+    When I click "Communities" in the "Header menu" region
     Then I should not see any Webtools eTrans elements
     When I click "Solutions" in the "Header menu" region
     Then I should not see any Webtools eTrans elements

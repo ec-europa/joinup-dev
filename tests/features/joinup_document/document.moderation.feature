@@ -16,7 +16,7 @@ Feature: Document moderation
     And the following contact:
       | name  | Dis contact             |
       | email | dis.contact@example.com |
-    And the following collection:
+    And the following community:
       | title               | The Naked Ashes                 |
       | description         | The wolverine is a Marvel hero. |
       | logo                | logo.png                        |
@@ -27,25 +27,25 @@ Feature: Document moderation
       | owner               | thisisanowner                   |
       | contact information | Dis contact                     |
       | topic               | E-inclusion                     |
-    And the following collection user membership:
+    And the following community user membership:
       | collection      | user            | roles       |
       | The Naked Ashes | Gretchen Greene | member      |
       | The Naked Ashes | Kirk Collier    | facilitator |
 
   @javascript
   Scenario: Available transitions change to match content creation and moderation settings.
-    # For post-moderated collections with content creation set to allow all
+    # For post-moderated communities with content creation set to allow all
     # users to create content, authenticated users that are not members can
     # create documents.
     When I am logged in as "Crab y Patties"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the homepage of the "The Naked Ashes" community
     And I click "Add document" in the plus button menu
-    # Post moderated collections allow publishing content directly.
+    # Post moderated communities allow publishing content directly.
     And I should see the button "Publish"
 
-    # Edit the collection and set it as moderated.
+    # Edit the community and set it as moderated.
     When I am logged in as a moderator
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the homepage of the "The Naked Ashes" community
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
@@ -56,16 +56,16 @@ Feature: Document moderation
     # The parent group is now pre-moderated: authenticated non-member users
     # should still be able to create documents but not to publish them.
     When I am logged in as "Crab y Patties"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the homepage of the "The Naked Ashes" community
     And I click "Add document" in the plus button menu
     Then I should not see the button "Publish"
     But I should see the button "Save as draft"
     And I should see the button "Propose"
 
-    # Edit the collection and set it to allow only members to create new
+    # Edit the community and set it to allow only members to create new
     # content.
     When I am logged in as a moderator
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the homepage of the "The Naked Ashes" community
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
@@ -77,13 +77,13 @@ Feature: Document moderation
 
     # Non-members should not be able to create documents anymore.
     When I am logged in as "Crab y Patties"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the homepage of the "The Naked Ashes" community
     Then the plus button menu should be empty
 
   @terms @uploadFiles:test.zip
   Scenario: Transit documents from one state to another.
     When I am logged in as "Gretchen Greene"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the homepage of the "The Naked Ashes" community
     And I click "Add document" in the plus button menu
     When I fill in the following:
       | Title       | An amazing document |
@@ -93,7 +93,7 @@ Feature: Document moderation
     Then I upload the file "test.zip" to "Upload a new file or enter a URL"
     And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
-    Then I should see the success message 'Document An amazing document has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    Then I should see the success message 'Document An amazing document has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Community it was created in.'
 
     # Publish the content.
     When I click "Edit" in the "Entity actions" region
@@ -104,7 +104,7 @@ Feature: Document moderation
 
     # Request modification as facilitator.
     When I am logged in as "Kirk Collier"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the homepage of the "The Naked Ashes" community
     And I click "A not so amazing document"
 
     # Regression check that the revision page loads properly.
@@ -121,7 +121,7 @@ Feature: Document moderation
     Given I fill in "Motivation" with "Request some regression changes"
     And I press "Request changes"
     When I am logged in as "Gretchen Greene"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the homepage of the "The Naked Ashes" community
     And I click "A not so amazing document"
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Proposed"
@@ -131,7 +131,7 @@ Feature: Document moderation
 
     # Approve changes as facilitator.
     When I am logged in as "Kirk Collier"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the homepage of the "The Naked Ashes" community
     And I click "A not so amazing document"
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Proposed"
@@ -141,7 +141,7 @@ Feature: Document moderation
 
   Scenario: Check message draft url when click in Title.
     When I am logged in as "Gretchen Greene"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the homepage of the "The Naked Ashes" community
     And I click "Add document" in the plus button menu
     When I fill in the following:
       | Title       | An amazing document about life |
@@ -151,13 +151,13 @@ Feature: Document moderation
     Then I upload the file "test.zip" to "Upload a new file or enter a URL"
     And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
-    Then I should see the success message 'Document An amazing document about life has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    Then I should see the success message 'Document An amazing document about life has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Community it was created in.'
     And I click "An amazing document about life"
     Then I should see the text "This is going to be an amazing document about life."
 
   Scenario: Check document when click in My account page.
     When I am logged in as "Gretchen Greene"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the homepage of the "The Naked Ashes" community
     And I click "Add document" in the plus button menu
     When I fill in the following:
       | Title       | An amazing document about health |
@@ -167,6 +167,6 @@ Feature: Document moderation
     Then I upload the file "test.zip" to "Upload a new file or enter a URL"
     And I select "EU and European Policies" from "Topic"
     And I press "Save as draft"
-    Then I should see the success message 'Document An amazing document about health has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Collection it was created in.'
+    Then I should see the success message 'Document An amazing document about health has been created as draft. You can find it in the section "My unpublished content" located in your My account page, or in the aforementioned section under the Community it was created in.'
     And I click "My account page"
     Then I should see the heading "An amazing document about health"

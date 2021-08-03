@@ -141,7 +141,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
     // @see https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-3427
     $this->entities = $this->getPinnedEntities($count);
 
-    // If the user is a member of one or more collections or solutions, show
+    // If the user is a member of one or more communities or solutions, show
     // the latest content from those.
     $group_ids = $this->ogMembershipManager->getUserGroupIds($this->currentUser->id());
     if (!empty($group_ids['rdf_entity'])) {

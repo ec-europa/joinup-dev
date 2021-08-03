@@ -59,7 +59,7 @@ class SolutionTitleDuplicateHelper implements SolutionTitleDuplicateHelperInterf
     $storage = $this->entityTypeManager->getStorage('rdf_entity');
 
     // Get the solution's affiliation.
-    if (!$collection_ids = $this->getCollectionIdsFromSolution($solution)) {
+    if (!$community_ids = $this->getCommunityIdsFromSolution($solution)) {
       // Normally a solution cannot exist without an affiliation but there are
       // certain exceptions, when the parent collection is not yet configured.
       // Such a case is the data federation, where the imported solutions are
@@ -71,8 +71,8 @@ class SolutionTitleDuplicateHelper implements SolutionTitleDuplicateHelperInterf
       return NULL;
     }
 
-    return !array_filter($storage->loadMultiple($solution_ids), function (RdfInterface $solution) use ($collection_ids): bool {
-      return (bool) array_intersect($this->getCollectionIdsFromSolution($solution), $collection_ids);
+    return !array_filter($storage->loadMultiple($solution_ids), function (RdfInterface $solution) use ($community_ids): bool {
+      return (bool) array_intersect($this->getCommunityIdsFromSolution($solution), $community_ids);
     });
   }
 
@@ -100,7 +100,7 @@ class SolutionTitleDuplicateHelper implements SolutionTitleDuplicateHelperInterf
     /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $storage */
     $storage = $this->entityTypeManager->getStorage('rdf_entity');
 
-    // The relationship between a solution and its collections is not on the
+    // The relationship between a solution and its communities is not on the
     // child entity but on the parent. This means we cannot use a simple query.
     // Retrieve all solutions with the same title.
     $query = $storage->getQuery()
@@ -130,7 +130,7 @@ class SolutionTitleDuplicateHelper implements SolutionTitleDuplicateHelperInterf
    * @return string[]
    *   A list of collection IDs.
    */
-  protected function getCollectionIdsFromSolution(RdfInterface $solution): array {
+  protected function getCommunityIdsFromSolution(RdfInterface $solution): array {
     return array_map(function (array $reference): string {
       return $reference['target_id'];
     }, $solution->get('collection')->getValue());
