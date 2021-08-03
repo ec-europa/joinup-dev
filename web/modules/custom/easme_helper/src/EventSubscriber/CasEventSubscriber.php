@@ -1,17 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\easme_helper\EventSubscriber;
 
-use Drupal\cas\Service\CasHelper;
-use Drupal\cas\Event\CasPreRegisterEvent;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
+use Drupal\cas\Event\CasPreRegisterEvent;
+use Drupal\cas\Service\CasHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class CasEventSubscriber.
- *
- * @package Drupal\easme_helper\CasEventSubscriber
+ * CasEventSubscriber class.
  */
 class CasEventSubscriber implements EventSubscriberInterface {
 

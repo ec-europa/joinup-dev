@@ -5,11 +5,11 @@ declare(strict_types = 1);
 namespace Drupal\easme_pledge\Controller;
 
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\Controller\CommunityContentController;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\node\NodeTypeInterface;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Controller that handles the form to add pledge entities to a solution.

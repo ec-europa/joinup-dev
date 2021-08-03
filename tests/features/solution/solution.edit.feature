@@ -1,4 +1,4 @@
-@api
+@api @terms
 Feature: Solution editing.
   In order to manage solutions
   As a solution owner or solution facilitator
@@ -32,7 +32,6 @@ Feature: Solution editing.
       | owner               | Acme inc.         |
       | state               | validated         |
 
-  @terms
   Scenario: A solution owner can edit only its own solutions.
     When I am logged in as "Yancy Burton"
     And I go to the homepage of the "Collection example" collection
@@ -94,7 +93,6 @@ Feature: Solution editing.
       | contact information | Seward Shawn  |
       | owner               | Acme inc.     |
       | state               | validated     |
-      | solution type       | Citizen       |
     When I am logged in as a facilitator of the "Solution B" solution
     And I go to the homepage of the "Solution B" solution
     Then I should see the link "Edit"

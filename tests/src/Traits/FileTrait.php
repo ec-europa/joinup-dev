@@ -26,6 +26,9 @@ trait FileTrait {
    * @param string $files_path
    *   The path of the directory where the file is located. Defaults to the path
    *   configured in the 'files_path' parameter in behat.yml.
+   * @param string $file_wrapper
+   *   (optional) The file wrapper for the file. Either public or private.
+   *   Defaults to public.
    *
    * @return \Drupal\file\Entity\File
    *   The file.
@@ -33,7 +36,7 @@ trait FileTrait {
    * @throws \Exception
    *   Throws an exception when the file is not found.
    */
-  protected function createFile($filename, $files_path = NULL) {
+  protected function createFile($filename, $files_path = NULL, $file_wrapper = 'public') {
     // Default to the 'files_path' mink parameter defined in behat.yml.
     if (empty($files_path)) {
       $files_path = $this->getMinkParameter('files_path');
@@ -44,7 +47,7 @@ trait FileTrait {
     }
     // Copy the file into the public files folder and turn it into a File
     // entity before linking it to the collection.
-    $uri = 'public://' . $filename;
+    $uri = $file_wrapper . '://' . $filename;
     $destination = \Drupal::service('file_system')->copy($path, $uri);
     $file = File::create(['uri' => $destination, 'filename' => $filename]);
     $file->save();

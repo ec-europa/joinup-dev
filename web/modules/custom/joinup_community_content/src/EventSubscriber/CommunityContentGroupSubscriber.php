@@ -18,10 +18,10 @@ class CommunityContentGroupSubscriber extends AddGroupContentEventSubscriberBase
   protected function getBundles(): array {
     return [
       'node' => [
-        //'news',
-        //'discussion',
+        // 'news',
+        // 'discussion',
         'document',
-        //'event',
+        // 'event',
       ],
     ];
   }

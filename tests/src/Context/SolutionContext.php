@@ -342,15 +342,37 @@ class SolutionContext extends RawDrupalContext {
    */
   protected function createSolution(array $values) {
     $file_fields = [
-      'field_is_documentation',
-      'field_is_banner',
-      'field_is_logo',
+      'field_is_documentation' => [
+        'wrapper' => 'public',
+        'property' => NULL,
+      ],
+      'field_is_banner' => [
+        'wrapper' => 'public',
+        'property' => NULL,
+      ],
+      'field_is_logo' => [
+        'wrapper' => 'public',
+        'property' => NULL,
+      ],
+      'field_solution_private_file' => [
+        'wrapper' => 'private',
+        'property' => 'target_id',
+      ],
     ];
 
-    foreach ($file_fields as $field_name) {
+    foreach ($file_fields as $field_name => $file_data) {
       if (!empty($values[$field_name])) {
         foreach ($values[$field_name] as &$filename) {
-          $filename = [$this->createFile($filename)->id()];
+          if (empty($file_data['property'])) {
+            $filename = [
+              $this->createFile($filename, NULL, $file_data['wrapper'])->id(),
+            ];
+          }
+          else {
+            $filename = [
+              $file_data['property'] => $this->createFile($filename, NULL, $file_data['wrapper'])->id(),
+            ];
+          }
         }
       }
     }
@@ -511,19 +533,19 @@ class SolutionContext extends RawDrupalContext {
   protected static function solutionFieldAliases() {
     // Mapping alias - field name.
     return [
-      'author' => 'uid',
-      'uri' => 'id',
-      'title' => 'label',
-      'short ID' => 'field_short_id',
       'affiliations requests' => 'field_is_affiliations_requests',
+      'author' => 'uid',
       'banner' => 'field_is_banner',
+      'collection' => 'collection',
+      'collections' => 'collection',
       'contact information' => 'field_is_contact_information',
       'content creation' => 'field_is_content_creation',
       'creation date' => 'created',
       'description' => 'field_is_description',
       'documentation' => 'field_is_documentation',
-      'eif reference' => 'field_is_eif_recommendation',
       'eif category' => 'field_is_eif_category',
+      'eif reference' => 'field_is_eif_recommendation',
+      'featured' => 'field_site_featured',
       'keywords' => 'field_keywords',
       'landing page' => 'field_is_landing_page',
       'language' => 'field_is_language',
@@ -533,25 +555,27 @@ class SolutionContext extends RawDrupalContext {
       'moderation' => 'field_is_moderation',
       'modification date' => 'changed',
       'owner' => 'field_is_owner',
+      'pinned in' => 'field_is_pinned_in',
+      'pinned to front page' => 'field_site_pinned',
       'policy domain' => 'field_policy_domain',
+      'private notes' => 'field_solution_private_notes',
+      'private file' => 'field_solution_private_file',
       'related by type' => 'field_is_show_eira_related',
       'related solutions' => 'field_is_related_solutions',
+      'shared on' => 'field_is_shared_in',
+      'short ID' => 'field_short_id',
       'solution type' => 'field_is_solution_type',
       'source code repository' => 'field_is_source_code_repository',
       'spatial coverage' => 'field_spatial_coverage',
+      'state' => 'field_is_state',
       'status' => 'field_status',
+      'title' => 'label',
       'topic' => 'field_topic',
       'translation' => 'field_is_translation',
+      'uri' => 'id',
       'webdav creation' => 'field_is_webdav_creation',
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
-      'state' => 'field_is_state',
-      'collection' => 'collection',
-      'collections' => 'collection',
-      'featured' => 'field_site_featured',
-      'pinned to front page' => 'field_site_pinned',
-      'pinned in' => 'field_is_pinned_in',
-      'shared on' => 'field_is_shared_in',
     ];
   }
 

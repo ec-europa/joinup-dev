@@ -1,13 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\easme_helper\Utility;
 
-use \Drupal\Core\Config\ConfigFactory;
+use Drupal\Core\Config\ConfigFactory;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Provides helper functions for EASME project.
  */
 class NotificationsHelper {
+
+  use StringTranslationTrait;
 
   /**
    * Drupal\Core\Config\ConfigFactory definition.
@@ -17,7 +22,7 @@ class NotificationsHelper {
   protected $configFactory;
 
   /**
-   * Class constructor.
+   * Constructs an instance of the NotificationHelper class.
    *
    * @param \Drupal\Core\Config\ConfigFactory $config_factory
    *   An instance of ConfigFactoryInterface.
@@ -45,7 +50,7 @@ class NotificationsHelper {
    */
   public function getNotificationsSignature() {
     $easme_helper_config = $this->configFactory->get('easme_helper.settings');
-    return t('<p>Kind regards,</p><p>The @site_name Team</p>', ['@site_name' => $easme_helper_config->get('notifications.site_name')]);
+    return $this->t('<p>Kind regards,</p><p>The @site_name Team</p>', ['@site_name' => $easme_helper_config->get('notifications.site_name')]);
   }
 
 }

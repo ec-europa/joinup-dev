@@ -12,7 +12,6 @@ use Drupal\Core\Render\Markup;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
-use Drupal\easme_helper\Utility\NotificationsHelper;
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
