@@ -31,7 +31,6 @@ use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
-use Drupal\joinup\Traits\WysiwygTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_group\Entity\GroupInterface;
 use Drupal\joinup_group\Entity\PinnableGroupContentInterface;
@@ -68,7 +67,6 @@ class JoinupContext extends RawDrupalContext {
   use UserTrait;
   use UtilityTrait;
   use WorkflowTrait;
-  use WysiwygTrait;
 
   /**
    * Creates a user with data provided in a table.
@@ -747,61 +745,62 @@ class JoinupContext extends RawDrupalContext {
     $aliases = [
       'custom_page' => [
         'attachments' => 'field_attachment',
-        'logo' => 'field_custom_page_logo',
         'body' => 'field_paragraphs_body',
+        'logo' => 'field_custom_page_logo',
       ],
       'discussion' => [
         'attachments' => 'field_attachment',
         'content' => 'body',
         'keywords' => 'field_keywords',
-        'state' => 'field_state',
         'publication date' => 'published_at',
+        'state' => 'field_state',
       ],
       'document' => [
-        'document type' => 'field_type',
         'document publication date' => 'field_document_publication_date',
+        'document type' => 'field_type',
         'file' => 'field_file',
         'keywords' => 'field_keywords',
         'licence' => 'field_licence',
         'logo' => 'field_document_logo',
+        'publication date' => 'published_at',
         'short title' => 'field_short_title',
         'spatial coverage' => 'field_document_spatial_coverage',
         'state' => 'field_state',
-        'publication date' => 'published_at',
       ],
       'event' => [
-        'keywords' => 'field_keywords',
-        'logo' => 'field_event_logo',
-        'short title' => 'field_short_title',
-        'start date' => 'field_event_date:value',
-        'end date' => 'field_event_date:end_value',
         'agenda' => 'field_event_agenda',
+        'end date' => 'field_event_date:end_value',
+        'keywords' => 'field_keywords',
         'location' => 'field_location',
+        'logo' => 'field_event_logo',
         'online location' => 'field_event_online_location',
         'organisation' => 'field_organisation',
-        'web url' => 'field_event_web_url',
-        'scope' => 'field_scope',
-        'state' => 'field_state',
         'publication date' => 'published_at',
+        'scope' => 'field_scope',
+        'short title' => 'field_short_title',
+        'spatial coverage' => 'field_event_spatial_coverage',
+        'start date' => 'field_event_date:value',
+        'state' => 'field_state',
+        'web url' => 'field_event_web_url',
       ],
       'glossary' => [
-        'synonyms' => 'field_glossary_synonyms',
         'definition' => 'field_glossary_definition:value',
         'summary' => 'field_glossary_definition:summary',
+        'synonyms' => 'field_glossary_synonyms',
       ],
       'news' => [
         'headline' => 'field_news_headline',
         'keywords' => 'field_keywords',
         'logo' => 'field_news_logo',
+        'publication date' => 'published_at',
         'spatial coverage' => 'field_news_spatial_coverage',
         'state' => 'field_state',
-        'publication date' => 'published_at',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+        'shared on' => 'field_shared_in',
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'topic' => 'field_topic',
-        'shared on' => 'field_shared_in',
         'visits' => 'visit_count',
       ],
     ];
@@ -1551,72 +1550,6 @@ class JoinupContext extends RawDrupalContext {
         throw new \Exception("The plus button menu is not empty.");
       }
     }
-  }
-
-  /**
-   * Enters the given text in the given WYSIWYG editor.
-   *
-   * If this is running on a JavaScript enabled browser it will first click the
-   * 'Source' button so the text can be entered as normal HTML.
-   *
-   * @param string $text
-   *   The text to enter in the WYSIWYG editor.
-   * @param string $label
-   *   The label of the field containing the WYSIWYG editor.
-   *
-   * @When I enter :text in the :label wysiwyg editor
-   */
-  public function enterTextInWysiwyg($text, $label) {
-    // If we are running in a JavaScript enabled browser, first click the
-    // 'Source' button so we can enter the text as HTML and get the same result
-    // as in a non-JS browser.
-    if ($this->browserSupportsJavaScript()) {
-      $this->pressWysiwygButton($label, 'Source');
-      $this->setWysiwygText($label, $text);
-    }
-    else {
-      $this->getSession()->getPage()->fillField($label, $text);
-    }
-  }
-
-  /**
-   * Presses a button in a given WYSIWYG editor.
-   *
-   * @param string $button
-   *   The label of the button to press.
-   * @param string $label
-   *   The label of the field containing the WYSIWYG editor.
-   *
-   * @Then I press the button :button in the :label wysiwyg editor
-   */
-  public function pressButtonInWysiwyg($button, $label) {
-    self::assertJavaScriptEnabledBrowser();
-
-    $this->pressWysiwygButton($label, $button);
-  }
-
-  /**
-   * Checks that a given field label is associated with a WYSIWYG editor.
-   *
-   * @param string $label
-   *   The label of the field containing the WYSIWYG editor.
-   *
-   * @Then I should see the :label wysiwyg editor
-   */
-  public function assertWysiwyg($label) {
-    Assert::assertTrue($this->hasWysiwyg($label));
-  }
-
-  /**
-   * Checks that a given field label is not associated with a WYSIWYG editor.
-   *
-   * @param string $label
-   *   The label of the field uncontaining the WYSIWYG editor.
-   *
-   * @Then the :label field should not have a wysiwyg editor
-   */
-  public function assertNoWysiwyg($label) {
-    Assert::assertFalse($this->hasWysiwyg($label));
   }
 
   /**
@@ -2456,41 +2389,6 @@ class JoinupContext extends RawDrupalContext {
       }
     }
     throw new \Exception(sprintf('The text "%s" was not found in the "%s" element in the "%s" region on the page %s', $text, $tag, $region, $this->getSession()->getCurrentUrl()));
-  }
-
-  /**
-   * Asserts that a ckeditor list contains an element.
-   *
-   * CKeditor stores the lists available in the header of the editor pane in an
-   * iframe with a role tag. The dropdown "Format" has to be clicked prior to
-   * having the iframe available.
-   *
-   * @param string $field
-   *   The name of the field that contains the Wysiwyg editor to check.
-   * @param string $format_tags
-   *   Comma-separated list of paragraph formats to check.
-   *
-   * @throws \Exception
-   *   Thrown when the formats were found in the format list.
-   *
-   * @Then the paragraph formats in the :field field should not contain the :format_tags format(s)
-   */
-  public function assertNotFormatInCkeditorExists($field, $format_tags) {
-    if (!$this->browserSupportsJavaScript()) {
-      throw new \Exception('This step requires javascript to run.');
-    }
-    $element = $this->getSession()->getPage()->findField($field);
-    $element_id = $element->getAttribute('id');
-    $format_tags = $this->explodeCommaSeparatedStepArgument($format_tags);
-    $has_tags_condition = <<<JS
-      return CKEDITOR.instances["$element_id"].config.format_tags;
-JS;
-    $found_tags = $this->getSession()->getDriver()->evaluateScript($has_tags_condition);
-    $found_tags_array = explode(';', $found_tags);
-    $invalid_tags = array_intersect($format_tags, $found_tags_array);
-    if (!empty($invalid_tags)) {
-      throw new \Exception(sprintf('The following elements were found in the format list but should not: %s.', implode(', ', $invalid_tags)));
-    }
   }
 
   /**

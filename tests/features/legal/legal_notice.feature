@@ -146,6 +146,7 @@ Feature:
   Scenario: Anonymous using the support contact form.
     Given I am on "/contact"
     Then I should see "I have read and accept the Legal notice"
+    And I should see "Before you submit your request check our FAQ section in case it covers your query/issue."
 
     Given I fill in "First name" with "Eleanor"
     And I fill in "Last name" with "Rigby"
@@ -169,3 +170,50 @@ Feature:
 
     When I am on "/contact"
     Then I should not see "I have read and accept the Legal notice"
+    And I should see "Before you submit your request check our FAQ section in case it covers your query/issue."
+
+  Scenario: Legal notice redirect takes precedence over other redirects.
+    Given users:
+      | Username        |
+      | Sergeant Pepper |
+    And CAS users:
+      | Username        | E-mail                  | Password | Local username  |
+      | Sergeant Pepper | pepper@royalnavy.mod.uk | p3pp3r   | Sergeant Pepper |
+    And collections:
+      | title              | state     |
+      | Land of submarines | validated |
+
+    Given I am an anonymous user
+    When I go to the homepage of the "Land of submarines" collection
+    And I click "Join this collection"
+    Then I should see the text "Sign in to join"
+
+    # When an anonymous user is trying to join a collection, they are first
+    # redirected to the login form, and then redirected back to the collection
+    # so they can opt in to receive email notifications. However, if the user
+    # has not yet accepted the current legal notice, they should be redirected
+    # to the legal notice form first.
+    Given the following legal document version:
+      | Document     | Label | Published | Acceptance label    | Content             |
+      | Legal notice | 2.0   | no        | Accept Version 2.0! | Version 2.0 content |
+    And the version "2.0" of "Legal notice" legal document is published
+
+    When I press "Sign in / Register"
+    Then I should see the heading "Sign in to continue"
+
+    When I fill in "E-mail address" with "pepper@royalnavy.mod.uk"
+    And I fill in "Password" with "p3pp3r"
+    And I press "Log in"
+    Then I should see the heading "Legal notice"
+    And I should see the warning message "You must accept this agreement before continuing."
+
+    # After accepting the legal notice form we should finally be redirected to
+    # the collection homepage.
+    When I check "Accept Version 2.0!"
+    And I press "Submit"
+    Then I should see the heading "Land of submarines"
+
+    # Quick check to see that the right messages are shown. The complete
+    # workflow is described in "join-as-anonymous.feature".
+    And I should see the success message "You have been logged in."
+    And I should see the success message "You are now a member of Land of submarines."

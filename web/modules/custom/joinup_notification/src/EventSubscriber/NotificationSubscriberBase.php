@@ -122,7 +122,7 @@ abstract class NotificationSubscriberBase {
    * @throws \Exception
    *    Thrown if the configuration file is not loaded.
    */
-  protected function initialize(NotificationEvent $event) {
+  protected function initialize(NotificationEvent $event): void {
     $this->entity = $event->getEntity();
     $this->operation = $event->getOperation();
     $this->config = $this->configFactory->get($this->getConfigurationName())->get($this->operation);
@@ -140,7 +140,7 @@ abstract class NotificationSubscriberBase {
    * @return array
    *   An array of message ids that every key is an array of user ids.
    */
-  protected function getUsersMessages(array $user_data, ?EntityInterface $entity = NULL) {
+  protected function getUsersMessages(array $user_data, ?EntityInterface $entity = NULL): array {
     $entity = $entity ?: $this->entity;
     // Ensure proper loops.
     $user_data += [
@@ -240,7 +240,7 @@ abstract class NotificationSubscriberBase {
    * @return array
    *   An array of user ids.
    */
-  protected function getRecipientIdsByRole($role_id) {
+  protected function getRecipientIdsByRole($role_id): array {
     return $this->entityTypeManager->getStorage('user')->getQuery()
       ->condition('status', 1)
       ->condition('roles', $role_id)
@@ -359,8 +359,8 @@ abstract class NotificationSubscriberBase {
    * @return string
    *   The optional configuration file name.
    */
-  protected function getConfigurationName() {
-    return NULL;
+  protected function getConfigurationName(): string {
+    return '';
   }
 
 }

@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "entity_unpublished",
  *   admin_label = @Translation("Unpublished content of group"),
- *   context = {
+ *   context_definitions = {
  *     "og" = @ContextDefinition("entity:rdf_entity", label = @Translation("Organic group"))
  *   }
  * )

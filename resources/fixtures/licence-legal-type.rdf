@@ -155,7 +155,7 @@
 
   <skos:Concept rdf:about="http://joinup.eu/legal-type#DiscloseSource">
     <skos:prefLabel xml:lang="en">Disclose source</skos:prefLabel>
-    <skos:definition xml:lang="en">The source code must be publicly available</skos:definition>
+    <skos:definition xml:lang="en">The source code of distributed derivatives must be publicly available</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
     <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#"/>
     <joinup:weight rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">11</joinup:weight>

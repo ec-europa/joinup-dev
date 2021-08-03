@@ -128,7 +128,7 @@
         "ec-europa/toolkit": "^4.4.6",
         "jcalderonzumba/gastonjs": "^1.2@dev",
         "lovers-of-behat/table-extension": "^1.2.0",
-        "mglaman/phpstan-drupal": "~0.12",
+        "mglaman/phpstan-drupal": "^0.12.12",
         "mikey179/vfsstream": "~1.6",
         "openeuropa/task-runner": "dev-php-7.1 as 1.0.0-beta7",
         "pear/http_request2": "~2.4",

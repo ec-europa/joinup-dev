@@ -469,9 +469,6 @@ function joinup_build_permalink(RouteMatchInterface $route_match) {
     return FALSE;
   }
 
-  /** @var \Drupal\Core\Entity\EntityInterface $entity */
-  $entity = NULL;
-
   if (!($parameters = $route_match->getRouteObject()->getOption('parameters')) || empty($parameters)) {
     return FALSE;
   }
@@ -1048,6 +1045,8 @@ function joinup_theme_preprocess_page_title__node__document(&$variables) {
 function joinup_theme_preprocess_comment(&$variables) {
   /** @var \Drupal\user\Entity\User $user */
   $user = $variables['user_picture']['#user'];
+  /** @var \Drupal\comment\CommentInterface $comment */
+  $comment = $variables['comment'];
   $photo_target = $user->get('field_user_photo')->getValue();
 
   $variables['author'] = [
@@ -1069,6 +1068,10 @@ function joinup_theme_preprocess_comment(&$variables) {
         ->addCacheTags($user->getEntityType()->getListCacheTags())
         ->applyTo($variables['profile_icon']);
     }
+  }
+
+  if (!$comment->in_preview) {
+    $variables['permalink_raw'] = $comment->permalink();
   }
 }
 
@@ -1609,9 +1612,21 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
   ];
 
   switch ($form_id) {
+    case 'join_group_anonymous_redirect':
+      // Show the cancel button in light blue.
+      $form['actions']['cancel']['#attributes']['class'][] = 'button--blue-light';
+      $form['actions']['cancel']['#attributes']['class'][] = 'button--small';
+      break;
+
     case 'join_group_form':
       // Add class for join collection button.
       $form['join']['#attributes']['class'][] = 'button--blue-light';
+
+      // Make the 'Join' link that opens a modal for anonymous users appear as a
+      // button.
+      if (isset($form['authenticate'])) {
+        $form['authenticate']['#attributes']['class'] = array_merge($link_button_classes, $form['authenticate']['#attributes']['class'] ?? []);
+      }
 
       if (isset($form['pending'])) {
         // Add classes for pending membership link.

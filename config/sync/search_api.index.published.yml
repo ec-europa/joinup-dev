@@ -5,7 +5,6 @@ dependencies:
   module:
     - asset_distribution
     - custom_page
-    - joinup_featured
     - joinup_search
     - meta_entity
     - node
@@ -557,6 +556,7 @@ field_settings:
       type: union
       fields:
         - 'entity:node/field_document_spatial_coverage'
+        - 'entity:node/field_event_spatial_coverage'
         - 'entity:node/field_news_spatial_coverage'
         - 'entity:rdf_entity/field_spatial_coverage'
   sticky:

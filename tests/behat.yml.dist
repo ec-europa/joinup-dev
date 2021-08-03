@@ -57,6 +57,7 @@ default:
             s3Bucket: ${env.BEHAT_S3_BUCKET}
         - Drupal\joinup\Context\SolutionContext
         - Drupal\joinup\Context\WhatsNewContext
+        - Drupal\joinup\Context\WysiwygContext
         - Drupal\Tests\cas_mock_server\Context\CasMockServerContext:
             attributes_map:
               firstName: First name
