@@ -23,21 +23,21 @@ Feature: About this solution
       | Polymer | validated |
       | Protein | proposed  |
     And solution:
-      | title               | Size exclusion chromatography                     |
-      | description         | Separating molecules by size.                     |
-      | logo                | logo.png                                          |
-      | banner              | banner.jpg                                        |
-      | contact information | Ariel Lucile, "Maiken Bine, Peer Milla"           |
-      | owner               | Nova Pharmaceuticals, Senatier                    |
-      | state               | validated                                         |
-      | documentation       | text.pdf                                          |
-      | language            | Italian, Kallawaya                                |
-      | topic               | Demography, E-inclusion                           |
-      | related solutions   | Gel, Polymer, Protein                             |
-      | solution type       | Non-binding Instrument, Service Discovery Service |
-      | spatial coverage    | Italy, Egypt                                      |
-      | status              | Under development                                 |
-      | collection          | Monoclonal Antibody Development                   |
+      | title               | Size exclusion chromatography                                       |
+      | description         | Separating molecules by size.                                       |
+      | logo                | logo.png                                                            |
+      | banner              | banner.jpg                                                          |
+      | contact information | Ariel Lucile, "Maiken Bine, Peer Milla"                             |
+      | owner               | Nova Pharmaceuticals, Senatier                                      |
+      | state               | validated                                                           |
+      | documentation       | text.pdf                                                            |
+      | language            | Italian, Kallawaya                                                  |
+      | topic               | Demography, E-inclusion                                             |
+      | related solutions   | Gel, Polymer, Protein                                               |
+      | solution type       | [ABB113] Non-binding Instrument, [ABB159] Service Discovery Service |
+      | spatial coverage    | Italy, Egypt                                                        |
+      | status              | Under development                                                   |
+      | collection          | Monoclonal Antibody Development                                     |
 
     # The link to the about page should be visible on the solution homepage.
     When I am not logged in

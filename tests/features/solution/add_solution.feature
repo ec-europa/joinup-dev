@@ -85,7 +85,7 @@ Feature: "Add solution" visibility options.
     # Regression test to endure that the language terms "Multilingual Code" are not present.
     And the available options in the "Language" select should not include the "Multilingual Code"
     And I should see the description "For best result the image must be larger than 2400x345 pixels." for the "Banner" field
-    And the "Solution type" field should contain the "IOP specification underpinning View, Legal View, Organisational View, deprecated" option groups
+    And the "Solution type" field should contain the "IOP specification underpinning View, Legal View, Organisational View" option groups
     When I fill in the following:
       | Title                 | Espresso is the solution                                      |
       | Description           | This is a test text                                           |
@@ -196,7 +196,7 @@ Feature: "Add solution" visibility options.
       | Title       | PHP comments parser                             |
       | Description | A simple parser that goes through PHP comments. |
     And I select "Data gathering, data processing" from "Topic"
-    And I select "Implementing Guideline" from "Solution type"
+    And I select "[ABB30] Data Policy" from "Solution type"
 
     # Submit the incomplete form, so error messages about missing fields will
     # be shown.
@@ -258,7 +258,7 @@ Feature: "Add solution" visibility options.
       | Name                  | Angela Crespi                               |
       | E-mail address        | angela_crespi@glacmon.basel-uni.ch          |
     And I select "Data gathering, data processing" from "Topic"
-    And I select "Logging Service" from "Solution type"
+    And I select "[ABB40] Data Transformation Service" from "Solution type"
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "University of Basel"
     And I press "Add owner"
@@ -291,13 +291,13 @@ Feature: "Add solution" visibility options.
       | email | invisible.man@example.com |
       | name  | Invisible Man             |
     And the following solution:
-      | title               | Cleaning solution                                 |
-      | description         | Use on metal surfaces.                            |
-      | owner               | Organisation example                              |
-      | state               | validated                                         |
-      | solution type       | Non-binding Instrument, Service Discovery Service |
-      | topic               | Employment and Support Allowance                  |
-      | contact information | Invisible Man                                     |
+      | title               | Cleaning solution                                                   |
+      | description         | Use on metal surfaces.                                              |
+      | owner               | Organisation example                                                |
+      | state               | validated                                                           |
+      | solution type       | [ABB113] Non-binding Instrument, [ABB159] Service Discovery Service |
+      | topic               | Employment and Support Allowance                                    |
+      | contact information | Invisible Man                                                       |
 
     Given I am logged in as a moderator
     When I go to the edit form of the "Cleaning solution" solution

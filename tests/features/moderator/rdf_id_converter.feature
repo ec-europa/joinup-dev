@@ -11,9 +11,9 @@ Feature:
     Then I should see the heading "Convert an RDF entity ID"
 
     # Deliberately add a blank space in the beginning and the end of the URI to ensure trimming.
-    When I fill in "RDF entity ID or a URL" with " http://data.europa.eu/dr8/PublicServiceProvider "
+    When I fill in "RDF entity ID or a URL" with " http://data.europa.eu/dr8/PublicServiceProvider"
     And I press "Go!"
-    Then I should see the heading "Public Service Provider"
+    Then I should see the heading "[ABB174] Public Service Provider"
 
   Scenario Outline: Convert a URL of an entity.
     Given collections:

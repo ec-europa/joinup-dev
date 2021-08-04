@@ -46,17 +46,17 @@ Feature: Creating a test (solution) in the TRR collection.
     # - Conformance Testing Service
     # - Conformance Testing Component
     # - Conformance Test Scenario
-    When I select "Conformance Testing Service" from "Solution type"
+    When I select "[ABB128] Conformance Testing Service" from "Solution type"
     Then the following fields should be visible "Test resource type, Actor, Business process, Product type, Standardization level"
     # TRR solutions have additional required fields.
     When I press "Propose"
     Then I should see the following error messages:
-      | error messages                                                                                        |
-      | The field Test resource type is required when Solution type is set to Conformance Testing Service.    |
-      | The field Actor is required when Solution type is set to Conformance Testing Service.                 |
-      | The field Business process is required when Solution type is set to Conformance Testing Service.      |
-      | The field Product type is required when Solution type is set to Conformance Testing Service.          |
-      | The field Standardization level is required when Solution type is set to Conformance Testing Service. |
+      | error messages                                                                                                          |
+      | The field Test resource type is required when Solution type is set to [ABB128] Conformance Testing Service.             |
+      | The field Actor is required when Solution type is set to [ABB128] Conformance Testing Service.                          |
+      | The field Business process is required when Solution type is set to [ABB128] Conformance Testing Service.               |
+      | The field Product type is required when Solution type is set to [ABB128] Conformance Testing Service.                   |
+      | The field Standardization level is required when Solution type is set to [ABB128] Conformance Testing Service.          |
 
     # Fill in TRR specific data.
     When I select "Agent" from "Actor"
@@ -67,21 +67,21 @@ Feature: Creating a test (solution) in the TRR collection.
     # "Test resource type" allowed values vary based on the solution type field.
     When I select "Test Suite" from "Test resource type"
     And I press "Propose"
-    Then I should see the error message 'Test resource type should be either "Test Bed", "Messaging Adapter" or "Document Validator" when solution type is set to "Test service" or "Conformance Testing Component".'
-    When I select "Test Scenario" from "Solution type"
+    Then I should see the error message 'Test resource type should be either "Test Bed", "Messaging Adapter" or "Document Validator" when solution type is set to "Test service" or "[ABB129] Conformance Testing Component".'
+    When I select "[ABB130] Conformance Test Scenario" from "Solution type"
     And I select "Messaging Adapter" from "Test resource type"
     And I press "Propose"
-    Then I should see the error message 'Test resource type should be either "Test Suite", "Test Case", "Test Assertion" or "Document Assertion Set" when solution type is set to "Conformance Test Scenario".'
+    Then I should see the error message 'Test resource type should be either "Test Suite", "Test Case", "Test Assertion" or "Document Assertion Set" when solution type is set to "[ABB129] Conformance Testing Component".'
     When I select "Test Suite" from "Test resource type"
     And I press "Propose"
     Then I should see the heading "Linked Open Data"
 
   Scenario: TRR distribution
     Given the following solution:
-      | title         | TRR solution foo          |
-      | description   | The test repository       |
-      | state         | validated                 |
-      | solution type | Conformance Test Scenario |
+      | title         | TRR solution foo                   |
+      | description   | The test repository                |
+      | state         | validated                          |
+      | solution type | [ABB130] Conformance Test Scenario |
     And the following solution:
       | title       | TRR solution bar    |
       | description | The test repository |
