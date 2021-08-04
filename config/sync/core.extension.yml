@@ -124,6 +124,7 @@ module:
   moderation: 0
   nio: 0
   node: 0
+  oe_bootstrap_theme_helper: 0
   oe_newsroom_newsletter: 0
   oe_webtools: 0
   oe_webtools_analytics: 0
@@ -196,6 +197,9 @@ module:
   topic: 0
   tour: 0
   trr: 0
+  ui_patterns: 0
+  ui_patterns_library: 0
+  ui_patterns_settings: 0
   user: 0
   video_embed_field: 0
   video_embed_wysiwyg: 0
@@ -222,6 +226,7 @@ theme:
   seven: 0
   joinup_theme: 0
   ventuno: 0
+  oe_bootstrap_theme: 0
 profile: joinup
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc

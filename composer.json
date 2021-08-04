@@ -97,6 +97,7 @@
         "jacklmoore/autosize": "dev-master",
         "masterminds/html5": "^2.7",
         "ml/json-ld": "^1.2",
+        "openeuropa/oe_bootstrap_theme": "dev-php-7.1",
         "openeuropa/oe_webtools": "1.7.0",
         "openeuropa/webtools-geocoding-provider": "~0.1",
         "pear/console_table": "~1.3",
@@ -360,6 +361,9 @@
             "drupal/views_autosubmit": {
                 "The views plugin options are missing schema @see https://www.drupal.org/i/3195213": "https://git.drupalcode.org/project/views_autosubmit/-/merge_requests/2.diff"
             },
+            "openeuropa/oe_bootstrap_theme": {
+                "Preserve link attributes in navigation menus @see https://github.com/openeuropa/oe_bootstrap_theme/pull/38": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_bootstrap_theme/pull/38.diff"
+            },
             "openeuropa/oe_webtools": {
                 "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                 "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
@@ -416,6 +420,11 @@
         {
             "type": "vcs",
             "url": "https://github.com/gizra/og.git"
+        },
+        {
+            "_readme": "Temporary repository in which theme assets are committed. Obsolete once we have a functional CI pipeline that allows us to compile the assets on the fly.",
+            "type": "vcs",
+            "url": "https://github.com/Joinup/oe_bootstrap_theme.git"
         },
         {
             "type": "vcs",
