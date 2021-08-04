@@ -38,7 +38,7 @@ services:
 #      - '3306:3306'
 
 
-  virtuoso:
+  sparql:
 # macOS users should override this value by uncommenting the following
 # 'volumes:' block.
 #    volumes:
