@@ -18,6 +18,7 @@ Feature: User profile
     And I should see the avatar "user_icon.png"
 
     But I should not see the text "Country of origin:" in the "Header" region
+    And I should not see the link "View" in the "Entity actions" region
 
     When I click "Edit"
     Then the following fields should be present "Current password, Email, Password, Confirm password, First name"
