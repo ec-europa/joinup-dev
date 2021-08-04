@@ -71,7 +71,7 @@ Feature: Creating a test (solution) in the TRR collection.
     When I select "[ABB130] Conformance Test Scenario" from "Solution type"
     And I select "Messaging Adapter" from "Test resource type"
     And I press "Propose"
-    Then I should see the error message 'Test resource type should be either "Test Suite", "Test Case", "Test Assertion" or "Document Assertion Set" when solution type is set to "Conformance Test Scenario".'
+    Then I should see the error message 'Test resource type should be either "Test Suite", "Test Case", "Test Assertion" or "Document Assertion Set" when solution type is set to "[ABB129] Conformance Testing Component".'
     When I select "Test Suite" from "Test resource type"
     And I press "Propose"
     Then I should see the heading "Linked Open Data"
