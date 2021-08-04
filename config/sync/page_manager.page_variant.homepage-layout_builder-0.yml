@@ -134,6 +134,23 @@ variant_settings:
           weight: 0
       third_party_settings: {  }
     -
+      layout_id: layout_onecol
+      layout_settings:
+        label: Explore
+      components:
+        1fed7729-7ac7-48e1-82a3-d915f3545d9c:
+          uuid: 1fed7729-7ac7-48e1-82a3-d915f3545d9c
+          region: content
+          configuration:
+            id: joinup_front_page_explore_block
+            label: Explore
+            provider: joinup_front_page
+            label_display: visible
+            context_mapping: {  }
+          additional: {  }
+          weight: 0
+      third_party_settings: {  }
+    -
       layout_id: joinup_layout_twocolfooter_onecol_67_33
       layout_settings:
         label: About

@@ -11,6 +11,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -375,5 +376,19 @@ function joinup_core_entity_view_alter(array &$build, EntityInterface $entity, E
     (new CacheableMetadata())
       ->addCacheableDependency(\Drupal::config('joinup_core.outdated_content_threshold'))
       ->applyTo($build);
+  }
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function joinup_core_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDependencyInterface &$cacheability) {
+  $routes = [
+    'entity.node.canonical',
+    'entity.rdf_entity.canonical',
+    'entity.user.canonical',
+  ];
+  if (in_array($route_name, $routes) && isset($data['tabs'][0][$route_name])) {
+    $data['tabs'][0][$route_name]['#access'] = FALSE;
   }
 }

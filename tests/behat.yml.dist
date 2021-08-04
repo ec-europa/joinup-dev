@@ -57,6 +57,7 @@ default:
             s3Bucket: ${env.BEHAT_S3_BUCKET}
         - Drupal\joinup\Context\SolutionContext
         - Drupal\joinup\Context\WhatsNewContext
+        - Drupal\joinup\Context\WysiwygContext
         - Drupal\Tests\cas_mock_server\Context\CasMockServerContext:
             attributes_map:
               firstName: First name
@@ -101,7 +102,8 @@ default:
         Content: '.section--content-middle, main .layout-content'
         Cookie consent banner: '#cookie-consent-banner'
         Discover topics block: '.block-views-blockdiscover-topics-block'
-        Entity actions: '.block-local-tasks-block'
+        Entity actions: '.block-joinup-local-tasks-block'
+        Explore block: '.block-joinup-front-page-explore-block'
         Footer: '.section--footer, footer'
         Header menu: '#block-joinup-theme-main-menu'
         Header: '.section--featured, .section-header'

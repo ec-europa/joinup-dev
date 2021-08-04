@@ -23,3 +23,16 @@ function joinup_front_page_preprocess_block(&$variables): void {
   $variables['#attached']['library'][] = 'core/jquery';
   $variables['#attached']['library'][] = 'core/drupal.dialog.ajax';
 }
+
+/**
+ * Implements hook_theme().
+ */
+function joinup_front_page_theme(): array {
+  return [
+    'explore_block' => [
+      'variables' => [
+        'data' => [],
+      ],
+    ],
+  ];
+}

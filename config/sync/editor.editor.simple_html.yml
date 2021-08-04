@@ -6,6 +6,14 @@ dependencies:
     - filter.format.simple_html
   module:
     - ckeditor
+    - editor_file
+third_party_settings:
+  editor_file:
+    status: true
+    scheme: public
+    directory: inline-files
+    extensions: txt
+    max_size: ''
 _core:
   default_config_hash: kytQpqFX48z3aotbDfyWqPy14XaWjxv1cC5RuxCoG58
 format: simple_html
@@ -25,14 +33,18 @@ settings:
             - DrupalLink
             - DrupalUnlink
         -
-          name: list
+          name: List
           items:
             - BulletedList
             - NumberedList
         -
-          name: quote
+          name: Quote
           items:
             - Blockquote
+        -
+          name: Image
+          items:
+            - DrupalImage
         -
           name: Tools
           items:
@@ -41,8 +53,22 @@ settings:
     drupallink:
       linkit_enabled: false
       linkit_profile: ''
-    language:
-      language_list: un
     stylescombo:
       styles: ''
-image_upload: {  }
+    language:
+      language_list: un
+    video_embed:
+      defaults:
+        children:
+          autoplay: true
+          responsive: true
+          width: '854'
+          height: '480'
+image_upload:
+  status: true
+  scheme: public
+  directory: comment-inline-images
+  max_size: 10M
+  max_dimensions:
+    width: null
+    height: null

@@ -469,9 +469,6 @@ function joinup_build_permalink(RouteMatchInterface $route_match) {
     return FALSE;
   }
 
-  /** @var \Drupal\Core\Entity\EntityInterface $entity */
-  $entity = NULL;
-
   if (!($parameters = $route_match->getRouteObject()->getOption('parameters')) || empty($parameters)) {
     return FALSE;
   }
@@ -1051,6 +1048,8 @@ function joinup_theme_preprocess_page_title__node__document(&$variables) {
 function joinup_theme_preprocess_comment(&$variables) {
   /** @var \Drupal\user\Entity\User $user */
   $user = $variables['user_picture']['#user'];
+  /** @var \Drupal\comment\CommentInterface $comment */
+  $comment = $variables['comment'];
   $photo_target = $user->get('field_user_photo')->getValue();
 
   $variables['author'] = [
@@ -1072,6 +1071,10 @@ function joinup_theme_preprocess_comment(&$variables) {
         ->addCacheTags($user->getEntityType()->getListCacheTags())
         ->applyTo($variables['profile_icon']);
     }
+  }
+
+  if (!$comment->in_preview) {
+    $variables['permalink_raw'] = $comment->permalink();
   }
 }
 
