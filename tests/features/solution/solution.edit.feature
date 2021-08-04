@@ -49,7 +49,7 @@ Feature: Solution editing.
     And I attach the file "banner.jpg" to "Banner"
     And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
     And I select "EU and European Policies" from "Topic"
-    And I select "Citizen" from "Solution type"
+    And I select "[ABB8] Citizen" from "Solution type"
 
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
@@ -89,14 +89,14 @@ Feature: Solution editing.
 
   Scenario: A solution facilitator can edit only the solutions he's associated with.
     Given the following solution:
-      | title               | Solution B    |
-      | description         | Second letter |
-      | logo                | logo.png      |
-      | banner              | banner.jpg    |
-      | contact information | Seward Shawn  |
-      | owner               | Acme inc.     |
-      | state               | validated     |
-      | solution type       | Citizen       |
+      | title               | Solution B           |
+      | description         | Second letter        |
+      | logo                | logo.png             |
+      | banner              | banner.jpg           |
+      | contact information | Seward Shawn         |
+      | owner               | Acme inc.            |
+      | state               | validated            |
+      | solution type       | [ABB8] Citizen       |
     When I am logged in as a facilitator of the "Solution B" solution
     And I go to the homepage of the "Solution B" solution
     Then I should see the link "Edit"
