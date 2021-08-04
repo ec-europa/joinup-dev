@@ -101,7 +101,7 @@ default:
         Contact information inline form: '#edit-field-ar-contact-information-wrapper'
         Content: '.section--content-middle'
         Cookie consent banner: '#cookie-consent-banner'
-        Entity actions: '.block-local-tasks-block'
+        Entity actions: '.block-joinup-local-tasks-block'
         Footer: '.section--footer'
         Header menu: '#block-joinup-theme-main-menu'
         Header: '.section--featured'
