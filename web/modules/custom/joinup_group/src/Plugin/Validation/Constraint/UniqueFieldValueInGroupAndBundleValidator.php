@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Validates the 'UniqueLabelInOgGroup' constraint.
+ * Validates the 'UniqueFieldValueInGroupAndBundle' constraint.
  */
 class UniqueFieldValueInGroupAndBundleValidator extends ConstraintValidator implements ContainerInjectionInterface {
 

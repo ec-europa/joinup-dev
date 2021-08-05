@@ -1,9 +1,9 @@
-uuid: a7b79aaa-90ce-487c-8daa-7a6cb5ea7683
+uuid: b5b557e1-2858-4759-920f-36679c6e0284
 langcode: en
 status: true
 dependencies:
   config:
-    - filter.format.simple_html
+    - filter.format.essential_html
   module:
     - ckeditor
     - editor_file
@@ -15,8 +15,8 @@ third_party_settings:
     extensions: txt
     max_size: ''
 _core:
-  default_config_hash: kytQpqFX48z3aotbDfyWqPy14XaWjxv1cC5RuxCoG58
-format: simple_html
+  default_config_hash: ITcPM1V9LiLznqMKrh0tbJyUGoOO9Z7bebEe5KDHKLd
+format: essential_html
 editor: ckeditor
 settings:
   toolbar:
@@ -25,36 +25,33 @@ settings:
         -
           name: Formatting
           items:
+            - Format
+            - '-'
             - Bold
             - Italic
+            - '-'
+            - RemoveFormat
         -
           name: Links
           items:
             - DrupalLink
             - DrupalUnlink
         -
-          name: List
+          name: Lists
           items:
-            - BulletedList
-            - NumberedList
-        -
-          name: Quote
-          items:
-            - Blockquote
-        -
-          name: Image
-          items:
-            - DrupalImage
+            - '-'
+            - Outdent
+            - Indent
         -
           name: Tools
           items:
             - Source
   plugins:
+    stylescombo:
+      styles: ''
     drupallink:
       linkit_enabled: false
       linkit_profile: ''
-    stylescombo:
-      styles: ''
     language:
       language_list: un
     video_embed:
@@ -65,10 +62,10 @@ settings:
           width: '854'
           height: '480'
 image_upload:
-  status: true
+  status: false
   scheme: public
-  directory: comment-inline-images
-  max_size: 10M
+  directory: inline-images
+  max_size: ''
   max_dimensions:
     width: null
     height: null
