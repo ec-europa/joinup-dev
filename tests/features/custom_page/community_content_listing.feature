@@ -110,7 +110,7 @@ Feature:
 
     When I go to the "Latest news" custom page
     Then I should see the "Rare Nintendo64 disk drive discovered" tile
-    And I should see the "NEC VR4300 CPU" tile
+    And I should not see the "NEC VR4300 CPU" tile
     But I should not see the "20 year anniversary" tile
 
     # The news is removed from the list as soon as it's removed from sharing.
@@ -150,15 +150,14 @@ Feature:
     And I fill in "Discussion" with "Searching for green pad."
     And I select "Discussion" from "Available filters"
     And I press "Add and configure filter"
-    When I select "Discussion" from "Available filters"
-    And I press "Add and configure filter"
-    And I fill in "Discussion" with "What's your favourite N64 game?"
+    And I fill in the 2nd "Discussion" with "What's your favourite N64 game?" in the "Custom content listing" field
     And I select "News" from "Available filters"
     And I press "Add and configure filter"
     And I fill in "News" with "Rare Nintendo64 disk drive discovered"
     And I select "Event" from "Available filters"
     And I press "Add and configure filter"
     And I fill in "Event" with "20 year anniversary"
+    Then I drag the table row in the "Content listing field filter form" region at position 4 up
     And I press "Save"
     Then I should see the heading "Chosen content"
     And I should see the following tiles in the correct order:
@@ -169,29 +168,12 @@ Feature:
 
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
-    Then the available options in the "Available filters" select should be "Discussion, Document, Event, News, Solution"
-    When I select "Discussion" from "Available filters"
-    And I press "Add and configure filter"
-    And I fill in "Discussion" with "What's your favourite N64 game?"
-    And I select "News" from "Available filters"
-    And I press "Add and configure filter"
-    And I fill in "News" with "Rare Nintendo64 disk drive discovered"
-    And I press "Save"
-    Then I should see the heading "Chosen content"
-    And I should see the following tiles in the correct order:
-      | What's your favourite N64 game?       |
-      | Rare Nintendo64 disk drive discovered |
-
-    When I open the header local tasks menu
-    And I click "Edit" in the "Entity actions" region
-    And I select "Event" from "Available filters"
-    And I press "Add and configure filter"
-    And I fill in "Event" with "20 year anniversary"
     And I drag the table row in the "Content listing field filter form" region at position 3 up
     And I drag the table row in the "Content listing field filter form" region at position 2 up
     And I press "Save"
     And I should see the following tiles in the correct order:
       | 20 year anniversary                   |
+      | Searching for green pad.              |
       | What's your favourite N64 game?       |
       | Rare Nintendo64 disk drive discovered |
 
@@ -200,11 +182,12 @@ Feature:
     And I click "Edit" in the "Entity actions" region
     And I select "News" from "Available filters"
     And I press "Add and configure filter"
-    And I fill in the latest "News" field with "NEC VR4300 CPU"
+    And I fill in the 2nd "News" with "NEC VR4300 CPU" in the "Custom content listing" field
     And I check "Allow shared content"
     And I press "Save"
     Then I should see the following tiles in the correct order:
       | 20 year anniversary                   |
+      | Searching for green pad.              |
       | What's your favourite N64 game?       |
       | Rare Nintendo64 disk drive discovered |
 
@@ -217,6 +200,7 @@ Feature:
     When I go to the "Chosen content" custom page
     Then I should see the following tiles in the correct order:
       | 20 year anniversary                   |
+      | Searching for green pad.              |
       | What's your favourite N64 game?       |
       | Rare Nintendo64 disk drive discovered |
       | NEC VR4300 CPU                        |
@@ -228,6 +212,7 @@ Feature:
     And I press "Save"
     Then I should see the following tiles in the correct order:
       | 20 year anniversary                   |
+      | Searching for green pad.              |
       | What's your favourite N64 game?       |
       | Rare Nintendo64 disk drive discovered |
 
@@ -252,8 +237,8 @@ Feature:
     And I fill in "Solution" with "N64 cartridge cleaner"
     And I press "Save"
     Then I should see the following tiles in the correct order:
+      | Searching for green pad.              |
       | What's your favourite N64 game?       |
-      | Rare Nintendo64 disk drive discovered |
       | N64 cartridge cleaner                 |
 
     # Query presets should still apply when available.
@@ -290,6 +275,18 @@ Feature:
       | Title | Collection content                        |
       | Body  | Shows all the content for this collection |
     And I press "Add Content listing"
+    And I select "Discussion" from "Available filters"
+    And I press "Add and configure filter"
+    And I fill in "Discussion" with "Searching for green pad."
+    And I select "Discussion" from "Available filters"
+    And I press "Add and configure filter"
+    And I fill in the 2nd "Discussion" with "What's your favourite N64 game?" in the "Custom content listing" field
+    And I select "Event" from "Available filters"
+    And I press "Add and configure filter"
+    And I fill in "Event" with "20 year anniversary"
+    And I select "News" from "Available filters"
+    And I press "Add and configure filter"
+    And I fill in "News" with "Rare Nintendo64 disk drive discovered"
     And I press "Save"
     Then I should see the heading "Collection content"
     # Verify that unwanted facets are not shown in the page.
