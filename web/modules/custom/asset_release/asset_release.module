@@ -330,6 +330,33 @@ function asset_release_title_version_is_unique(AssetReleaseInterface $asset_rele
 
 /**
  * Implements hook_form_FORM_ID_alter().
+ *
+ * For releases, publish time should only be allowed
+ * between the user's present time and past.
+ * This applies in edit forms only.
+ */
+function asset_release_form_rdf_entity_asset_release_edit_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  $form['#validate'][] = '_asset_release_edit_date_validate';
+}
+
+/**
+ * Validate publish time date.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function _asset_release_edit_date_validate(array &$form, FormStateInterface $form_state): void {
+  $dt_now = new DateTime();
+  $date_value = $form_state->getValue('created')[0]['value'];
+  if ($date_value->format('c') > $dt_now->format('c')) {
+    $form_state->setErrorByName('created', t('Your "Authored on" field date is greater than @date', ['@date' => $dt_now->format('c')]));
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
  */
 function asset_release_form_rdf_entity_asset_release_delete_form_alter(array &$form, FormStateInterface $form_state, string $form_id) {
   $form['actions']['submit']['#submit'][] = 'asset_release_delete_redirect';
