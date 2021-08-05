@@ -42,8 +42,8 @@ dependencies:
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_organisation
     - field.storage.meta_entity.count
-    - field.storage.rdf_entity.field_is_contact_information
     - field.storage.rdf_entity.field_ci_name
+    - field.storage.rdf_entity.field_is_contact_information
     - field.storage.rdf_entity.field_is_owner
     - field.storage.rdf_entity.field_owner_name
     - field.storage.rdf_entity.field_isr_contact_information
@@ -326,10 +326,10 @@ field_settings:
     property_path: 'visit_count:entity:count'
     type: integer
     dependencies:
-      module:
-        - meta_entity
       config:
         - field.storage.meta_entity.count
+      module:
+        - meta_entity
   id:
     label: ID
     datasource_id: 'entity:rdf_entity'
@@ -345,8 +345,8 @@ field_settings:
     type: text
     dependencies:
       config:
-        - field.storage.rdf_entity.field_is_contact_information
         - field.storage.rdf_entity.field_ci_name
+        - field.storage.rdf_entity.field_is_contact_information
       module:
         - rdf_entity
   is_field_owner_name:
@@ -367,8 +367,8 @@ field_settings:
     type: text
     dependencies:
       config:
-        - field.storage.rdf_entity.field_isr_contact_information
         - field.storage.rdf_entity.field_ci_name
+        - field.storage.rdf_entity.field_isr_contact_information
       module:
         - rdf_entity
   isr_field_owner_name:
@@ -422,21 +422,21 @@ field_settings:
     property_path: 'featured:entity:field_featured'
     type: string
     dependencies:
-      module:
-        - meta_entity
       config:
         - field.storage.meta_entity.field_featured
+      module:
+        - meta_entity
   node_pinned_in:
     label: 'Pinned in'
     datasource_id: 'entity:node'
     property_path: 'pinned_in:entity:field_pinned_in:entity:id'
     type: string
     dependencies:
+      config:
+        - field.storage.meta_entity.field_pinned_in
       module:
         - meta_entity
         - rdf_entity
-      config:
-        - field.storage.meta_entity.field_pinned_in
   parent:
     label: 'Term Parents'
     datasource_id: 'entity:taxonomy_term'
@@ -486,21 +486,21 @@ field_settings:
     property_path: 'featured:entity:field_featured'
     type: string
     dependencies:
-      module:
-        - meta_entity
       config:
         - field.storage.meta_entity.field_featured
+      module:
+        - meta_entity
   rdf_pinned_in:
     label: 'Pinned in'
     datasource_id: 'entity:rdf_entity'
     property_path: 'pinned_in:entity:field_pinned_in:entity:id'
     type: string
     dependencies:
+      config:
+        - field.storage.meta_entity.field_pinned_in
       module:
         - meta_entity
         - rdf_entity
-      config:
-        - field.storage.meta_entity.field_pinned_in
   reverse_eif_related_term_tid:
     label: 'Reverse » Related term » Term ID'
     datasource_id: 'entity:taxonomy_term'
@@ -616,7 +616,6 @@ datasource_settings:
         - document
         - event
         - news
-        - newsletter
         - tallinn_report
         - video
     languages:
@@ -643,6 +642,7 @@ datasource_settings:
         - eif_interoperability_layer
         - eif_principle
         - eif_recommendation
+        - topic
     languages:
       default: true
       selected: {  }

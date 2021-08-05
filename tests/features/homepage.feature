@@ -121,9 +121,9 @@ Feature: Homepage
     # When all the fields in the Highlighted event content listing are left
     # empty, a "Read more" link to the event page should be shown by default.
     Given the "Highlighted event" content listing has the following fields:
-      | header text  | |
-      | link text    | |
-      | external url | |
+      | header text  |  |
+      | link text    |  |
+      | external url |  |
     When I am on the homepage
     And I should see the heading "Florentine steak festival" in the "Highlighted event"
     And I should see the text "04 to 05/06/2021" in the "Highlighted event"
@@ -170,8 +170,8 @@ Feature: Homepage
     Then I should be on the search page
     And I should see the "RNA vaccines" tile
 
-  @terms
-  Scenario: Discover topics block shows a list of topics.
+  @terms @javascript
+  Scenario Outline: Discover topics block shows a list of topics.
     Given collection:
       | title | Clash of vania's |
       | state | validated        |
@@ -182,12 +182,45 @@ Feature: Homepage
       | type  | label                            |
       | topic | Employment and Support Allowance |
       | topic | E-justice                        |
-    When I am on the homepage
+    When I <logged in>
+    And I am on the homepage
     Then I should see the link "Employment and Support Allowance" in the "Discover topics block"
     And I should see the link "E-justice" in the "Discover topics block"
     When I click "E-justice"
     Then I should be on the advanced search page
     And the option with text "E-justice" from select facet "topic" is selected
+
+    # See more topics modal.
+    When I am on the homepage
+    Then I should see the link "See more topics" in the "Discover topics block"
+    And I should not see the text "Topic categories"
+    And I should not see the following links:
+      | Economy and Welfare  |
+      | eGov                 |
+      | E-health Dpt.        |
+      | HR Dpt.              |
+      | Info                 |
+      | Law and Justice      |
+      | Social and Political |
+
+    When I click "See more topics" in the "Discover topics block"
+    Then a modal should open
+    And I should see the text "Topic categories"
+    And I should see the following links:
+      | Economy and Welfare  |
+      | eGov                 |
+      | E-health Dpt.        |
+      | HR Dpt.              |
+      | Info                 |
+      | Law and Justice      |
+      | Social and Political |
+    When I click "E-health Dpt."
+    Then I should be on the advanced search page
+
+    Examples:
+      | logged in                                          |
+      | am not logged in                                   |
+      | am logged in as a user with the authenticated role |
 
   @terms
   Scenario: Explore block shows a list of news.
