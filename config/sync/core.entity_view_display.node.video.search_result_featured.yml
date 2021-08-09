@@ -1,0 +1,71 @@
+uuid: cc963e5d-8fa4-4a6e-a070-68340ed90544
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.search_result_featured
+    - field.field.node.video.body
+    - field.field.node.video.field_comments
+    - field.field.node.video.field_keywords
+    - field.field.node.video.field_video
+    - field.field.node.video.field_video_spatial_coverage
+    - field.field.node.video.og_audience
+    - node.type.video
+  module:
+    - layout_builder
+    - smart_trim
+    - template_suggestion
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+_core:
+  default_config_hash: xzNt7hZhWznm3WI85j5QUiqV3UiicNTPcB6Y0nm5icM
+id: node.video.search_result_featured
+targetEntityType: node
+bundle: video
+mode: search_result_featured
+content:
+  body:
+    label: hidden
+    type: smart_trim
+    weight: 0
+    settings:
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: ...
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      summary_handler: full
+      wrap_output: false
+      more_link: false
+      trim_options:
+        text: false
+        trim_zero: false
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+    region: content
+  published_at:
+    type: timestamp
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      date_format: date_only
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+hidden:
+  field_comments: true
+  field_keywords: true
+  field_video: true
+  field_video_spatial_coverage: true
+  langcode: true
+  links: true
+  og_audience: true
+  report: true

@@ -1,0 +1,75 @@
+uuid: f0892f6e-34d1-4964-80a2-3b9ae1532e48
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.search_result_featured
+    - field.field.node.discussion.body
+    - field.field.node.discussion.field_attachment
+    - field.field.node.discussion.field_keywords
+    - field.field.node.discussion.field_replies
+    - field.field.node.discussion.field_shared_in
+    - field.field.node.discussion.field_site_featured
+    - field.field.node.discussion.field_state
+    - field.field.node.discussion.field_topic
+    - field.field.node.discussion.og_audience
+    - node.type.discussion
+  module:
+    - layout_builder
+    - template_suggestion
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+_core:
+  default_config_hash: MH5IsqzkjyHQwMAIhBMkvdrrpJeonD3UC7kQpOvXJX0
+id: node.discussion.search_result_featured
+targetEntityType: node
+bundle: discussion
+mode: search_result_featured
+content:
+  body:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_topic:
+    weight: 0
+    label: hidden
+    settings:
+      link: true
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: comma_separated
+    type: entity_reference_label
+    region: content
+  published_at:
+    type: timestamp
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      date_format: date_only
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+hidden:
+  field_attachment: true
+  field_keywords: true
+  field_replies: true
+  field_shared_in: true
+  field_site_featured: true
+  field_state: true
+  flag_subscribe_discussions: true
+  invite_link: true
+  langcode: true
+  links: true
+  og_audience: true
+  report: true
+  share_link: true

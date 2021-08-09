@@ -1,0 +1,191 @@
+uuid: 253b7559-f557-4dd3-a5cd-acde2900b708
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.rdf_entity.search_result_featured
+    - field.field.rdf_entity.solution.field_is_actor
+    - field.field.rdf_entity.solution.field_is_affiliations_requests
+    - field.field.rdf_entity.solution.field_is_banner
+    - field.field.rdf_entity.solution.field_is_business_process
+    - field.field.rdf_entity.solution.field_is_contact_information
+    - field.field.rdf_entity.solution.field_is_content
+    - field.field.rdf_entity.solution.field_is_content_creation
+    - field.field.rdf_entity.solution.field_is_description
+    - field.field.rdf_entity.solution.field_is_distribution
+    - field.field.rdf_entity.solution.field_is_documentation
+    - field.field.rdf_entity.solution.field_is_eif_category
+    - field.field.rdf_entity.solution.field_is_eif_recommendation
+    - field.field.rdf_entity.solution.field_is_has_version
+    - field.field.rdf_entity.solution.field_is_included_asset
+    - field.field.rdf_entity.solution.field_is_issue_tracker
+    - field.field.rdf_entity.solution.field_is_landing_page
+    - field.field.rdf_entity.solution.field_is_language
+    - field.field.rdf_entity.solution.field_is_logo
+    - field.field.rdf_entity.solution.field_is_metrics_page
+    - field.field.rdf_entity.solution.field_is_moderation
+    - field.field.rdf_entity.solution.field_is_owner
+    - field.field.rdf_entity.solution.field_is_product_type
+    - field.field.rdf_entity.solution.field_is_related_solutions
+    - field.field.rdf_entity.solution.field_is_shared_in
+    - field.field.rdf_entity.solution.field_is_show_eira_related
+    - field.field.rdf_entity.solution.field_is_solution_type
+    - field.field.rdf_entity.solution.field_is_source_code_repository
+    - field.field.rdf_entity.solution.field_is_standardization_level
+    - field.field.rdf_entity.solution.field_is_state
+    - field.field.rdf_entity.solution.field_is_test_resource_type
+    - field.field.rdf_entity.solution.field_is_translation
+    - field.field.rdf_entity.solution.field_is_version
+    - field.field.rdf_entity.solution.field_is_webdav_creation
+    - field.field.rdf_entity.solution.field_is_webdav_url
+    - field.field.rdf_entity.solution.field_is_wiki
+    - field.field.rdf_entity.solution.field_keywords
+    - field.field.rdf_entity.solution.field_short_id
+    - field.field.rdf_entity.solution.field_site_featured
+    - field.field.rdf_entity.solution.field_spatial_coverage
+    - field.field.rdf_entity.solution.field_status
+    - field.field.rdf_entity.solution.field_topic
+    - rdf_entity.rdfentity.solution
+  module:
+    - field_group
+    - layout_builder
+    - search_api_field
+    - smart_trim
+    - template_suggestion
+    - user
+third_party_settings:
+  field_group:
+    group_solution_abstract_wrapper:
+      children:
+        - field_is_description
+        - read_more
+      parent_name: ''
+      weight: 0
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Abstract wrapper'
+      region: content
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: rdf_entity.solution.search_result_featured
+targetEntityType: rdf_entity
+bundle: solution
+mode: search_result_featured
+content:
+  field_is_content:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: search_api_field
+    region: content
+  field_is_description:
+    type: smart_trim
+    weight: 37
+    region: content
+    label: hidden
+    settings:
+      trim_length: 500
+      trim_type: chars
+      trim_suffix: …
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+      summary_handler: full
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: p_wrapper
+  field_is_shared_in:
+    type: entity_reference_entity_view
+    weight: 5
+    region: content
+    label: above
+    settings:
+      view_mode: view_mode_tile
+      link: false
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: entity_reference__listing_tile
+  rdf_entity_field_is_content_inline_facets:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  rdf_entity_field_is_content_top:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  read_more:
+    weight: 38
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  related_solutions:
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  changed: true
+  collections: true
+  created: true
+  download_total: true
+  field_is_actor: true
+  field_is_affiliations_requests: true
+  field_is_banner: true
+  field_is_business_process: true
+  field_is_contact_information: true
+  field_is_content_creation: true
+  field_is_distribution: true
+  field_is_documentation: true
+  field_is_eif_category: true
+  field_is_eif_recommendation: true
+  field_is_has_version: true
+  field_is_included_asset: true
+  field_is_issue_tracker: true
+  field_is_landing_page: true
+  field_is_language: true
+  field_is_logo: true
+  field_is_metrics_page: true
+  field_is_moderation: true
+  field_is_owner: true
+  field_is_product_type: true
+  field_is_related_solutions: true
+  field_is_show_eira_related: true
+  field_is_solution_type: true
+  field_is_source_code_repository: true
+  field_is_standardization_level: true
+  field_is_state: true
+  field_is_test_resource_type: true
+  field_is_translation: true
+  field_is_version: true
+  field_is_webdav_creation: true
+  field_is_webdav_url: true
+  field_is_wiki: true
+  field_keywords: true
+  field_short_id: true
+  field_site_featured: true
+  field_spatial_coverage: true
+  field_status: true
+  field_topic: true
+  label: true
+  langcode: true
+  og_group: true
+  releases_overview: true
+  share_link: true
+  solution_subscribe: true

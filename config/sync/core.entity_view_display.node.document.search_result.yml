@@ -1,0 +1,144 @@
+uuid: af9d6cea-aa61-417a-8373-20c224dbbeb8
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.search_result
+    - field.field.node.document.body
+    - field.field.node.document.field_comments
+    - field.field.node.document.field_document_logo
+    - field.field.node.document.field_document_publication_date
+    - field.field.node.document.field_document_spatial_coverage
+    - field.field.node.document.field_file
+    - field.field.node.document.field_keywords
+    - field.field.node.document.field_licence
+    - field.field.node.document.field_shared_in
+    - field.field.node.document.field_short_title
+    - field.field.node.document.field_site_featured
+    - field.field.node.document.field_state
+    - field.field.node.document.field_topic
+    - field.field.node.document.field_type
+    - field.field.node.document.og_audience
+    - node.type.document
+  module:
+    - field_delimiter
+    - field_formatter_range
+    - field_group
+    - layout_builder
+    - smart_trim
+    - template_suggestion
+    - user
+third_party_settings:
+  field_group:
+    group_categorisation:
+      children:
+        - field_licence
+        - field_type
+      parent_name: ''
+      weight: 17
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Categorisation
+      region: hidden
+    group_attachment:
+      children:
+        - field_file
+      parent_name: ''
+      weight: 18
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Attachment
+      region: hidden
+  layout_builder:
+    allow_custom: false
+    enabled: false
+_core:
+  default_config_hash: IBVftmfYLkfapLokxuyLrv1me4toJj5yidZu0ixGxQM
+id: node.document.search_result
+targetEntityType: node
+bundle: document
+mode: search_result
+content:
+  body:
+    label: hidden
+    type: smart_trim
+    weight: 1
+    settings:
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      summary_handler: full
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+    region: content
+  field_topic:
+    type: entity_reference_label
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+      field_formatter_range:
+        limit: 0
+        offset: 0
+        reverse: false
+      template_suggestion:
+        template_suggestion: ''
+  published_at:
+    type: timestamp
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      date_format: date_only
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+hidden:
+  field_comments: true
+  field_document_logo: true
+  field_document_publication_date: true
+  field_document_spatial_coverage: true
+  field_file: true
+  field_keywords: true
+  field_licence: true
+  field_shared_in: true
+  field_short_title: true
+  field_site_featured: true
+  field_state: true
+  field_type: true
+  langcode: true
+  links: true
+  og_audience: true
+  report: true
+  share_link: true

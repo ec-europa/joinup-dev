@@ -1,0 +1,119 @@
+uuid: 978a5028-f962-4c23-a304-51db11556438
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.search_result
+    - field.field.node.event.body
+    - field.field.node.event.field_attachment
+    - field.field.node.event.field_comments
+    - field.field.node.event.field_event_agenda
+    - field.field.node.event.field_event_contact_email
+    - field.field.node.event.field_event_coordinates
+    - field.field.node.event.field_event_date
+    - field.field.node.event.field_event_logo
+    - field.field.node.event.field_event_online_location
+    - field.field.node.event.field_event_spatial_coverage
+    - field.field.node.event.field_event_web_url
+    - field.field.node.event.field_keywords
+    - field.field.node.event.field_location
+    - field.field.node.event.field_organisation
+    - field.field.node.event.field_organisation_type
+    - field.field.node.event.field_scope
+    - field.field.node.event.field_shared_in
+    - field.field.node.event.field_short_title
+    - field.field.node.event.field_site_featured
+    - field.field.node.event.field_state
+    - field.field.node.event.field_topic
+    - field.field.node.event.og_audience
+    - node.type.event
+  module:
+    - field_delimiter
+    - field_formatter_range
+    - layout_builder
+    - smart_trim
+    - template_suggestion
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: node.event.search_result
+targetEntityType: node
+bundle: event
+mode: search_result
+content:
+  body:
+    label: hidden
+    type: smart_trim
+    weight: 0
+    settings:
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: ...
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      summary_handler: full
+      wrap_output: false
+      more_link: false
+      trim_options:
+        text: false
+        trim_zero: false
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+    region: content
+  field_topic:
+    type: entity_reference_label
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+      field_formatter_range:
+        limit: 0
+        offset: 0
+        reverse: false
+      template_suggestion:
+        template_suggestion: ''
+  published_at:
+    type: timestamp
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      date_format: date_only
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+hidden:
+  field_attachment: true
+  field_comments: true
+  field_event_agenda: true
+  field_event_contact_email: true
+  field_event_coordinates: true
+  field_event_date: true
+  field_event_logo: true
+  field_event_online_location: true
+  field_event_spatial_coverage: true
+  field_event_web_url: true
+  field_keywords: true
+  field_location: true
+  field_organisation: true
+  field_organisation_type: true
+  field_scope: true
+  field_shared_in: true
+  field_short_title: true
+  field_site_featured: true
+  field_state: true
+  langcode: true
+  links: true
+  og_audience: true
+  report: true
+  share_link: true

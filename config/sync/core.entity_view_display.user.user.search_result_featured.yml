@@ -1,0 +1,80 @@
+uuid: a0ed59f7-03a4-4a95-a535-8ceab98ecb8a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.user.search_result_featured
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_social_media
+    - field.field.user.user.field_user_business_title
+    - field.field.user.user.field_user_content
+    - field.field.user.user.field_user_family_name
+    - field.field.user.user.field_user_first_name
+    - field.field.user.user.field_user_frequency
+    - field.field.user.user.field_user_nationality
+    - field.field.user.user.field_user_organisation
+    - field.field.user.user.field_user_photo
+    - field.field.user.user.field_user_professional_domain
+    - image.style.horizontal_medium_image
+  module:
+    - image
+    - layout_builder
+    - template_suggestion
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: user.user.search_result_featured
+targetEntityType: user
+bundle: user
+mode: search_result_featured
+content:
+  field_user_business_title:
+    type: string
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_user_family_name:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_user_first_name:
+    type: string
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_user_photo:
+    type: image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      image_style: horizontal_medium_image
+      image_link: content
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+hidden:
+  field_last_password_reset: true
+  field_password_expiration: true
+  field_social_media: true
+  field_user_content: true
+  field_user_frequency: true
+  field_user_nationality: true
+  field_user_organisation: true
+  field_user_professional_domain: true
+  langcode: true
+  member_for: true
+  user_field_user_content_top: true
