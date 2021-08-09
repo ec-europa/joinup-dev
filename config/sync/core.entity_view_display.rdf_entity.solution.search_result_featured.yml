@@ -45,11 +45,12 @@ dependencies:
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
     - field.field.rdf_entity.solution.field_topic
+    - image.style.logo
     - rdf_entity.rdfentity.solution
   module:
     - field_group
+    - image
     - layout_builder
-    - search_api_field
     - smart_trim
     - template_suggestion
     - user
@@ -57,10 +58,17 @@ third_party_settings:
   field_group:
     group_solution_abstract_wrapper:
       children:
+        - field_topic
+        - label
+        - field_is_logo
         - field_is_description
+        - changed
+        - created
+        - field_is_content
+        - rdf_entity_field_is_content_top
         - read_more
       parent_name: ''
-      weight: 0
+      weight: 52
       format_type: html_element
       format_settings:
         id: ''
@@ -72,7 +80,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Abstract wrapper'
-      region: content
+      region: hidden
   layout_builder:
     allow_custom: false
     enabled: false
@@ -81,25 +89,42 @@ targetEntityType: rdf_entity
 bundle: solution
 mode: search_result_featured
 content:
-  field_is_content:
-    weight: 3
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: search_api_field
-    region: content
-  field_is_description:
-    type: smart_trim
-    weight: 37
+  changed:
+    type: timestamp
+    weight: 5
     region: content
     label: hidden
     settings:
-      trim_length: 500
+      date_format: date_only
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+  created:
+    type: timestamp
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      date_format: date_only
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+  field_is_description:
+    type: smart_trim
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      trim_length: 200
       trim_type: chars
       trim_suffix: …
-      wrap_class: trimmed
-      more_text: More
-      more_class: more-link
+      wrap_class: ''
+      more_text: ''
+      more_class: ''
       trim_options:
         text: true
         trim_zero: false
@@ -108,48 +133,43 @@ content:
       summary_handler: full
     third_party_settings:
       template_suggestion:
-        template_suggestion: p_wrapper
-  field_is_shared_in:
-    type: entity_reference_entity_view
-    weight: 5
+        template_suggestion: ''
+  field_is_logo:
+    type: image
+    weight: 3
     region: content
-    label: above
+    label: hidden
     settings:
-      view_mode: view_mode_tile
-      link: false
+      image_style: logo
+      image_link: content
     third_party_settings:
       template_suggestion:
-        template_suggestion: entity_reference__listing_tile
-  rdf_entity_field_is_content_inline_facets:
-    weight: 2
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  rdf_entity_field_is_content_top:
+        template_suggestion: ''
+  field_topic:
+    type: entity_reference_label
     weight: 1
     region: content
-    settings: {  }
+    label: hidden
+    settings:
+      link: true
     third_party_settings: {  }
-  read_more:
-    weight: 38
+  label:
+    type: string
+    weight: 2
     region: content
-    settings: {  }
-    third_party_settings: {  }
-  related_solutions:
-    weight: 4
-    region: content
-    settings: {  }
+    label: hidden
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
 hidden:
-  changed: true
   collections: true
-  created: true
   download_total: true
   field_is_actor: true
   field_is_affiliations_requests: true
   field_is_banner: true
   field_is_business_process: true
   field_is_contact_information: true
+  field_is_content: true
   field_is_content_creation: true
   field_is_distribution: true
   field_is_documentation: true
@@ -160,12 +180,12 @@ hidden:
   field_is_issue_tracker: true
   field_is_landing_page: true
   field_is_language: true
-  field_is_logo: true
   field_is_metrics_page: true
   field_is_moderation: true
   field_is_owner: true
   field_is_product_type: true
   field_is_related_solutions: true
+  field_is_shared_in: true
   field_is_show_eira_related: true
   field_is_solution_type: true
   field_is_source_code_repository: true
@@ -182,10 +202,12 @@ hidden:
   field_site_featured: true
   field_spatial_coverage: true
   field_status: true
-  field_topic: true
-  label: true
   langcode: true
   og_group: true
+  rdf_entity_field_is_content_inline_facets: true
+  rdf_entity_field_is_content_top: true
+  read_more: true
+  related_solutions: true
   releases_overview: true
   share_link: true
   solution_subscribe: true

@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * Themeing for rdf entities.
+ */
+#}
+
+{#
+// TODO: implement new ui_pattern
+{% set detail = content.field_ar_description %}
+{% block content %}
+  {{ pattern('search_item', {
+    'url': url,
+    'title': label,
+    'date': content.field_last_update,
+    'detail': detail,
+    'image': content.field_ar_logo,
+    'topic': content.field_topic,
+  }) }}
+{% endblock %}#}
+
+<article{{ attributes }}>
+  {{ title_prefix }}
+  {% if not page and not is_label_hidden %}
+    <h2{{ title_attributes }}>
+      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    </h2>
+  {% endif %}
+  {{ title_suffix }}
+  {{ content }}
+</article>
