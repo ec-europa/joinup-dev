@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "092bb39d407a4d61320885ff258e7ab9",
+    "content-hash": "3edfcac07780f6de416e748640dabb04",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2944,6 +2944,7 @@
                     "Menu link plugins should provide a way for the link to be conditionally hidden @see https://www.drupal.org/project/drupal/issues/2719609": "https://www.drupal.org/files/issues/2719609-2.patch",
                     "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-65.patch",
                     "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2019-04-04/2730631_85_0.patch",
+                    "Make the tab active when the fragment is present in URL @see https://www.drupal.org/project/drupal/issues/2752511": "https://www.drupal.org/files/issues/2021-08-04/vertical-tabs-2752511-94-D8.patch",
                     "Use comment access handler instead of hardcoding permissions @see https://www.drupal.org/project/drupal/issues/2879087": "https://www.drupal.org/files/issues/2020-11-08/2879087-106.patch",
                     "Add thread depth configuration to comments @see https://www.drupal.org/project/drupal/issues/2786587": "https://www.drupal.org/files/issues/2020-11-10/2786587-47-unofficial-8.9.x.patch",
                     "Views with a different query plugin created via the UI do not have the correct query plugin ID in the view config @see https://www.drupal.org/project/drupal/issues/2836237": "https://www.drupal.org/files/issues/2021-01-28/2836237-38.patch",
@@ -2957,7 +2958,7 @@
                     "EntityConstraintValidationList::findByCode is inconsistent @see https://www.drupal.org/project/drupal/issues/3126654": "https://www.drupal.org/files/issues/2020-04-10/find_by_code_override-3126654-D8-4.patch",
                     "Cannot implement a custom user cancellation method @see https://www.drupal.org/project/drupal/issues/3135592": "https://www.drupal.org/files/issues/2020-05-11/3135592-3.patch",
                     "Allow to refine by bundle in EntityConverter @see https://www.drupal.org/project/drupal/issues/3155568": "https://www.drupal.org/files/issues/2020-06-30/3155568-4.patch",
-                    "Make the tab active when the fragment is present in URL @see https://www.drupal.org/project/drupal/issues/2752511": "https://www.drupal.org/files/issues/2021-08-04/vertical-tabs-2752511-94-D8.patch"
+                    "Toolbar menu theme override omits the 'menu_name' variable @see https://www.drupal.org/project/drupal/issues/3227370": "https://www.drupal.org/files/issues/2021-08-09/3227370-3.patch"
                 }
             },
             "autoload": {
@@ -5986,7 +5987,7 @@
                     "datestamp": "1600173534",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
@@ -14671,7 +14672,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-2.4",
-                    "datestamp": "1601999178",
+                    "datestamp": "1629907119",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
