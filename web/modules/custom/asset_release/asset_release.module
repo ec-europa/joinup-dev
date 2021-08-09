@@ -329,13 +329,18 @@ function asset_release_title_version_is_unique(AssetReleaseInterface $asset_rele
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_form_alter().
  *
  * For releases, publish time should only be allowed
  * between the user's present time and past.
- * This applies in edit forms only.
+ * This applies in create/edit forms only.
  */
-function asset_release_form_rdf_entity_asset_release_edit_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function asset_release_form_alter(&$form, FormStateInterface $form_state, string $form_id): void {
+  $ids = ['rdf_entity_asset_release_form', 'rdf_entity_asset_release_edit_form'];
+  if (!in_array($form_id, $ids)) {
+    return;
+  }
+
   $form['#validate'][] = '_asset_release_edit_date_validate';
 }
 
