@@ -190,6 +190,7 @@ Feature: Global search
       | Luxembourg   (2) |
     When I select "Luxembourg" from the "spatial coverage" select facet
     Then the option with text "Luxembourg   (2)" from select facet "spatial coverage" is selected
+    And I should see the text "Search Results (2)"
     # The countries are still sorted alphabetically even though the Luxembourg value is selected and has more results.
     And the "spatial coverage" select facet should contain the following options:
       | Any location     |
@@ -248,16 +249,19 @@ Feature: Global search
 
     # "Alpha" is used in all the rdf entities titles.
     When I enter "Alpha" in the search bar and press enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha, Video alpha"
+    Then I should see the text "Search Results (5)"
+    And the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha, Video alpha"
 
     # "Omega" is used in all the node entities titles. Since the content of
     # custom pages is added to their collection, we also match the collection.
     When I enter "omega" in the search bar and press enter
-    Then the page should show the tiles "Collection alpha, News omega, Event Omega, Document omega, Discussion omega, Page omega"
+    Then I should see the text "Search Results (6)"
+    And the page should show the tiles "Collection alpha, News omega, Event Omega, Document omega, Discussion omega, Page omega"
 
     # "Beta" is used in all the rdf entities body fields.
     When I enter "beta" in the search bar and press enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha"
+    Then I should see the text "Search Results (4)"
+    And the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha"
 
     # "Epsilon" is used in all the node entities body fields.
     When I enter "epsilon" in the search bar and press enter
@@ -411,7 +415,8 @@ Feature: Global search
     When I enter "ubermensch" in the search bar and press enter
     Then I should see "No content found for your search."
     When I enter "zzolu-distro" in the search bar and press enter
-    Then I should see "No content found for your search."
+    Then I should not see the text "Search Results"
+    And I should see "No content found for your search."
     When I enter "apache" in the search bar and press enter
     Then the page should show only the tiles "Apache-2.0"
     When I enter "HTML" in the search bar and press enter
@@ -566,6 +571,7 @@ Feature: Global search
     When I am on the homepage
     And I enter "Relativity" in the search bar and press enter
     Then the option "Relevance" should be selected
+    And I should see the text "Search Results (3)"
     And I should see the following tiles in the correct order:
       | Relativity news: Relativity theory |
       | Relativity is the word             |
