@@ -630,4 +630,30 @@ class JoinupSearchContext extends RawDrupalContext {
     return reset($elements);
   }
 
+  /**
+   * Asserts that certain facet summary items are shown on the page.
+   *
+   * @param string $labels
+   *   A comma-separated list of facet item labels.
+   *
+   * @throws \Exception
+   *   Thrown when a wanted facet item is not shown in the page.
+   *
+   * @When I should see the following facet summary :labels
+   */
+  public function assertFacetSummary(string $labels): void {
+    $labels = $this->explodeCommaSeparatedStepArgument($labels);
+    $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' block-facets-summary-blocksearch-facets-summary ')]//li[contains(concat(' ', normalize-space(@class), ' '), ' facet-summary-item--facet ')]";
+    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    $present = [];
+
+    /** @var \Behat\Mink\Element\NodeElement $element */
+    foreach ($elements as $element) {
+      $present[] = $element->getText();
+    }
+
+    $present = array_map('trim', $present);
+    Assert::assertEquals($labels, $present);
+  }
+
 }
