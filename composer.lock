@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "376b1bf7d0de50b72fc372a33d5fddcd",
+    "content-hash": "b3719a7cffb85d1e85d5df36943358c6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -10349,7 +10349,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-08-03T19:59:39+00:00"
+            "time": "2019-04-02T18:33:21+00:00"
         },
         {
             "name": "stack/builder",
@@ -18316,7 +18316,6 @@
                     "type": "github"
                 }
             ],
-            "abandoned": true,
             "time": "2020-11-30T07:30:19+00:00"
         },
         {
