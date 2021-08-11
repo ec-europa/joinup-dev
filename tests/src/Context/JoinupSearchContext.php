@@ -656,4 +656,27 @@ class JoinupSearchContext extends RawDrupalContext {
     Assert::assertEquals($labels, $present);
   }
 
+  /**
+   * Remove facet summary item that are on the page.
+   *
+   * @param string $label
+   *   A facet summary item label.
+   *
+   * @throws \Exception
+   *   Thrown when a wanted facet item is not shown in the page.
+   *
+   * @When I should remove the following facet summary :label
+   */
+  public function removeFacetSummary(string $label): void {
+
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-summary-blocksearch-facets-summary ")]//span[text()="' . $label . '"]';
+    $element = $this->getSession()->getPage()->find('xpath', $xpath);
+
+    if (empty($element)) {
+      throw new \Exception("The $label facet summary item was not found in the page.");
+    }
+
+    $element->click();
+  }
+
 }

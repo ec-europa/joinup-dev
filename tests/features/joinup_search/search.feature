@@ -615,3 +615,9 @@ Feature: Global search
 
     Then I check the "Solutions (2)" checkbox from the "Content types" facet
     And I should see the following facet summary "News"
+
+    # Check if facet summary was remove correctly.
+    Then I check the "Collection (1)" checkbox from the "Content types" facet
+    And I should see the following facet summary "Collection, News"
+    Then I should remove the following facet summary "News"
+    And the page should show only the tiles "Radio cooking collection"
