@@ -52,9 +52,6 @@ default:
         - Drupal\joinup\Context\RssContext
         - Drupal\joinup\Context\ScreenshotContext:
             localDir: ${behat.screenshots.local.dir}
-            s3Dir: ${env.BEHAT_S3_DIR}
-            s3Region: ${env.BEHAT_S3_AWS_REGION}
-            s3Bucket: ${env.BEHAT_S3_BUCKET}
         - Drupal\joinup\Context\SolutionContext
         - Drupal\joinup\Context\WhatsNewContext
         - Drupal\joinup\Context\WysiwygContext
@@ -68,8 +65,10 @@ default:
         - Drupal\Tests\oe_webtools\Behat\WebtoolsMapsContext
         - Drupal\Tests\pipeline\Behat\PipelineContext
         - Drupal\Tests\spdx\Behat\SpdxContext
-        - FeatureContext
+        - Drupal\joinup\Context\FeatureContext
         - LoversOfBehat\TableExtension\Context\TableContext
+      paths:
+        - '%paths.base%/tests/features'
       filters:
         tags: '~@wip'
   extensions:
@@ -142,6 +141,6 @@ default:
         username_field: 'Email or username'
     FriendsOfBehat\ServiceContainerExtension:
       imports:
-        - ../vendor/drupaltest/behat-one-time-login/behat.services.yml
+        - ${joinup.dir}/vendor/drupaltest/behat-one-time-login/behat.services.yml
   formatters:
     ${behat.formatter.name}: ~
