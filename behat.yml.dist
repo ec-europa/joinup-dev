@@ -1,77 +1,97 @@
+# Suites defaults.
+.paths: &paths
+  - '%paths.base%/tests/features'
+.contexts: &contexts
+  - Drupal\joinup\Context\BootstrapDrupalContext
+  - Drupal\DrupalExtension\Context\DrushContext
+  - Drupal\DrupalExtension\Context\MarkupContext
+  - Drupal\DrupalExtension\Context\MessageContext
+  # Todo: Restore alphabetical ordering for TallinnContext once it is
+  # possible to determine the execution order of Behat hooks.
+  # Ref. https://github.com/Behat/Behat/issues/62
+  # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6060
+  - Drupal\joinup\Context\TallinnContext
+  - Drupal\joinup\Context\AdmsValidatorContext
+  - Drupal\joinup\Context\AssetDistributionContext
+  - Drupal\joinup\Context\AssetReleaseContext
+  - Drupal\joinup\Context\CollectionContext
+  - Drupal\joinup\Context\ContactFormContext
+  - Drupal\joinup\Context\ContactInformationContext
+  - Drupal\joinup\Context\CustomPageContext
+  - Drupal\joinup\Context\DigitQaPipelineContext
+  - Drupal\joinup\Context\DrupalContext
+  - Drupal\joinup\Context\EifContext
+  - Drupal\joinup\Context\EuplContext
+  - Drupal\joinup\Context\Isa2AnalyticsContext
+  - Drupal\joinup\Context\JoinupCommunityContentContext
+  - Drupal\joinup\Context\JoinupContext
+  - Drupal\joinup\Context\JoinupCoreContext
+  - Drupal\joinup\Context\JoinupDiscussionContext
+  - Drupal\joinup\Context\JoinupDocumentContext
+  - Drupal\joinup\Context\JoinupEuLoginContext
+  - Drupal\joinup\Context\JoinupEventContext
+  - Drupal\joinup\Context\JoinupFeaturedContext
+  - Drupal\joinup\Context\JoinupFrontPageContext
+  - Drupal\joinup\Context\JoinupGroupContext
+  - Drupal\joinup\Context\JoinupInviteContext
+  - Drupal\joinup\Context\JoinupLegalContext
+  - Drupal\joinup\Context\JoinupLicenceContext
+  - Drupal\joinup\Context\JoinupNewsContext
+  - Drupal\joinup\Context\JoinupNewsletterContext
+  - Drupal\joinup\Context\JoinupNotificationContext
+  - Drupal\joinup\Context\JoinupParagraphsContext
+  - Drupal\joinup\Context\JoinupSearchContext
+  - Drupal\joinup\Context\JoinupSeoContext
+  - Drupal\joinup\Context\JoinupSubscriptionContext
+  - Drupal\joinup\Context\JoinupUserContext
+  - Drupal\joinup\Context\MinkContext
+  - Drupal\joinup\Context\ModerationContext
+  - Drupal\joinup\Context\OeNewsroomNewsletterContext
+  - Drupal\joinup\Context\OwnerContext
+  - Drupal\joinup\Context\RdfEntityProvenanceContext
+  - Drupal\joinup\Context\RdfGraphContext
+  - Drupal\joinup\Context\RssContext
+  - Drupal\joinup\Context\ScreenshotContext:
+      localDir: /Users/clau/development/joinup-dev/tmp/behat
+  - Drupal\joinup\Context\SolutionContext
+  - Drupal\joinup\Context\WhatsNewContext
+  - Drupal\joinup\Context\WysiwygContext
+  - Drupal\Tests\cas_mock_server\Context\CasMockServerContext:
+      attributes_map:
+        firstName: First name
+        lastName: Last name
+  - Drupal\Tests\honeypot\Behat\HoneypotContext
+  - Drupal\Tests\message_digest\Behat\MessageDigestContext
+  - Drupal\Tests\oe_webtools\Behat\WebtoolsETransContext
+  - Drupal\Tests\oe_webtools\Behat\WebtoolsMapsContext
+  - Drupal\Tests\pipeline\Behat\PipelineContext
+  - Drupal\Tests\spdx\Behat\SpdxContext
+  - Drupal\joinup\Context\FeatureContext
+  - LoversOfBehat\TableExtension\Context\TableContext
+
+# Default profile.
 default:
   suites:
-    default:
-      contexts:
-        - Drupal\joinup\Context\BootstrapDrupalContext
-        - Drupal\DrupalExtension\Context\DrushContext
-        - Drupal\DrupalExtension\Context\MarkupContext
-        - Drupal\DrupalExtension\Context\MessageContext
-        # Todo: Restore alphabetical ordering for TallinnContext once it is
-        # possible to determine the execution order of Behat hooks.
-        # Ref. https://github.com/Behat/Behat/issues/62
-        # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6060
-        - Drupal\joinup\Context\TallinnContext
-        - Drupal\joinup\Context\AdmsValidatorContext
-        - Drupal\joinup\Context\AssetDistributionContext
-        - Drupal\joinup\Context\AssetReleaseContext
-        - Drupal\joinup\Context\CollectionContext
-        - Drupal\joinup\Context\ContactFormContext
-        - Drupal\joinup\Context\ContactInformationContext
-        - Drupal\joinup\Context\CustomPageContext
-        - Drupal\joinup\Context\DigitQaPipelineContext
-        - Drupal\joinup\Context\DrupalContext
-        - Drupal\joinup\Context\EifContext
-        - Drupal\joinup\Context\EuplContext
-        - Drupal\joinup\Context\Isa2AnalyticsContext
-        - Drupal\joinup\Context\JoinupCommunityContentContext
-        - Drupal\joinup\Context\JoinupContext
-        - Drupal\joinup\Context\JoinupCoreContext
-        - Drupal\joinup\Context\JoinupDiscussionContext
-        - Drupal\joinup\Context\JoinupDocumentContext
-        - Drupal\joinup\Context\JoinupEuLoginContext
-        - Drupal\joinup\Context\JoinupEventContext
-        - Drupal\joinup\Context\JoinupFeaturedContext
-        - Drupal\joinup\Context\JoinupFrontPageContext
-        - Drupal\joinup\Context\JoinupGroupContext
-        - Drupal\joinup\Context\JoinupInviteContext
-        - Drupal\joinup\Context\JoinupLegalContext
-        - Drupal\joinup\Context\JoinupLicenceContext
-        - Drupal\joinup\Context\JoinupNewsContext
-        - Drupal\joinup\Context\JoinupNewsletterContext
-        - Drupal\joinup\Context\JoinupNotificationContext
-        - Drupal\joinup\Context\JoinupParagraphsContext
-        - Drupal\joinup\Context\JoinupSearchContext
-        - Drupal\joinup\Context\JoinupSeoContext
-        - Drupal\joinup\Context\JoinupSubscriptionContext
-        - Drupal\joinup\Context\JoinupUserContext
-        - Drupal\joinup\Context\MinkContext
-        - Drupal\joinup\Context\ModerationContext
-        - Drupal\joinup\Context\OeNewsroomNewsletterContext
-        - Drupal\joinup\Context\OwnerContext
-        - Drupal\joinup\Context\RdfEntityProvenanceContext
-        - Drupal\joinup\Context\RdfGraphContext
-        - Drupal\joinup\Context\RssContext
-        - Drupal\joinup\Context\ScreenshotContext:
-            localDir: ${behat.screenshots.local.dir}
-        - Drupal\joinup\Context\SolutionContext
-        - Drupal\joinup\Context\WhatsNewContext
-        - Drupal\joinup\Context\WysiwygContext
-        - Drupal\Tests\cas_mock_server\Context\CasMockServerContext:
-            attributes_map:
-              firstName: First name
-              lastName: Last name
-        - Drupal\Tests\honeypot\Behat\HoneypotContext
-        - Drupal\Tests\message_digest\Behat\MessageDigestContext
-        - Drupal\Tests\oe_webtools\Behat\WebtoolsETransContext
-        - Drupal\Tests\oe_webtools\Behat\WebtoolsMapsContext
-        - Drupal\Tests\pipeline\Behat\PipelineContext
-        - Drupal\Tests\spdx\Behat\SpdxContext
-        - Drupal\joinup\Context\FeatureContext
-        - LoversOfBehat\TableExtension\Context\TableContext
-      paths:
-        - '%paths.base%/tests/features'
+    group_a:
+      contexts: *contexts
+      paths: *paths
       filters:
-        tags: '~@wip'
+        tags: '~@wip&&~@javascript&&@group-a'
+    group_b:
+      contexts: *contexts
+      paths: *paths
+      filters:
+        tags: '~@wip&&~@javascript&&@group-b'
+    selenium:
+      contexts: *contexts
+      paths: *paths
+      filters:
+        tags: '~@wip&&@javascript'
+    rest:
+      contexts: *contexts
+      paths: *paths
+      filters:
+        tags: '~@wip&&~@javascript&&~@group-a&&~@group-b'
   extensions:
     Drupal\MinkExtension:
       base_url: ${env.DRUPAL_BASE_URL}
