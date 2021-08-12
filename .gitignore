@@ -28,6 +28,7 @@
 
 # Ignore environment specific settings
 /.env
+/.env.pipeline
 /behat.yml
 /grumphp.yml
 /phpcs.xml
