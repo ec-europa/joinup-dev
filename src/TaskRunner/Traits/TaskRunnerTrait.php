@@ -7,7 +7,7 @@ namespace Joinup\TaskRunner\Traits;
 use DrupalFinder\DrupalFinder;
 use OpenEuropa\TaskRunner\TaskRunner;
 use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\NullOutput;
 
 /**
  * Reusable methods to allow Task Runner usage from code.
@@ -23,7 +23,7 @@ trait TaskRunnerTrait {
   protected static function runCommand(string $command): void {
     $initialDir = getcwd();
     $input = new StringInput("{$command} --working-dir=" . static::getPath());
-    $runner = new TaskRunner($input, new ConsoleOutput(), static::getClassLoader());
+    $runner = new TaskRunner($input, new NullOutput(), static::getClassLoader());
     $runner->run();
     chdir($initialDir);
   }
