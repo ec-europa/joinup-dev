@@ -84,7 +84,7 @@ class ScreenshotContext extends RawMinkContext {
    * @Then I take a screenshot :name
    */
   public function takeScreenshot(?string $name = NULL): void {
-    $message = "Screenshot created in @file_name";
+    $message = "Screenshot: @file_name";
     $this->createScreenshot($name, $message);
   }
 
@@ -94,8 +94,8 @@ class ScreenshotContext extends RawMinkContext {
    * @Then I take a screenshot
    */
   public function takeScreenshotUnnamed(): void {
-    $file_name = 'behat-screenshot-' . user_password();
-    $message = "Screenshot created in @file_name";
+    $file_name = 'screenshot-' . user_password();
+    $message = "Screenshot: @file_name";
     $this->createScreenshot($file_name, $message);
   }
 
@@ -121,15 +121,8 @@ class ScreenshotContext extends RawMinkContext {
             $context->assertNotWarningMessage('Notice:');
           }
           catch (ExpectationException $e) {
-            // Use the step test in the filename.
-            $step = $event->getStep();
-            $file_name = str_replace(' ', '_', $step->getKeyword() . '_' . $step->getText());
-            $file_name = preg_replace('![^0-9A-Za-z_.-]!', '', $file_name);
-            $file_name = substr($file_name, 0, 30);
-            $file_name = 'behat-notice__' . $file_name;
-
-            $message = "PHP notice detected, screenshot taken: @file_name";
-            $this->createScreenshot($file_name, $message);
+            $message = "{$this->getStepLine($event)} screenshot: @file_name";
+            $this->createScreenshot($this->buildScreenshotFileName('php-notice', $event), $message);
             // We don't throw $e any more because we don't fail on the notice.
           }
         }
@@ -149,17 +142,10 @@ class ScreenshotContext extends RawMinkContext {
    * @AfterStep
    */
   public function takeScreenshotAfterFailedStep(AfterStepScope $event): void {
-    if ($event->getTestResult()->isPassed()) {
-      // Not a failed step.
-      return;
+    if (!$event->getTestResult()->isPassed()) {
+      $message = "{$this->getStepLine($event)} screenshot: @file_name";
+      $this->createScreenshot($this->buildScreenshotFileName('failed', $event), $message);
     }
-    $step = $event->getStep();
-    $file_name = str_replace(' ', '_', $step->getKeyword() . '_' . $step->getText());
-    $file_name = preg_replace('![^0-9A-Za-z_.-]!', '', $file_name);
-    $file_name = substr($file_name, 0, 30);
-    $file_name = 'behat-failed__' . $file_name;
-    $message = "Screenshot for failed step created in @file_name";
-    $this->createScreenshot($file_name, $message);
   }
 
   /**
@@ -278,6 +264,37 @@ class ScreenshotContext extends RawMinkContext {
       'version' => 'latest',
       'region' => $this->s3Region,
     ]);
+  }
+
+  /**
+   * Builds a filename from the feature path and failed step line.
+   *
+   * @param string $type
+   *   The type of event (failure, PHP notice, etc).
+   *
+   * @param \Behat\Behat\Hook\Scope\AfterStepScope $event
+   *   The after step event.
+   *
+   * @return string
+   *   The screenshot filename.
+   */
+  protected function buildScreenshotFileName(string $type, AfterStepScope $event): string {
+    $step_line = str_replace('/', '--', ltrim(substr($event->getFeature()->getFile(), strlen($event->getEnvironment()->getSuite()->getSetting('paths')[0])), '/'));
+    return "{$type}--{$step_line}--{$event->getStep()->getLine()}";
+  }
+
+  /**
+   * Returns a concatenation of the feature file name and the failed step line.
+   *
+   * @param \Behat\Behat\Hook\Scope\AfterStepScope $event
+   *   The after step event.
+   *
+   * @return string
+   *   A concatenation of the feature file name and the failed step line.
+   */
+  protected function getStepLine(AfterStepScope $event): string {
+    // Remove the common path for readability reasons.
+    return ltrim(substr($event->getFeature()->getFile(), strlen($event->getEnvironment()->getSuite()->getSetting('paths')[0])), '/') . ":{$event->getStep()->getLine()}";
   }
 
 }
