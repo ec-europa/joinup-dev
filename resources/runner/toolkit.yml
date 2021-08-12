@@ -34,8 +34,9 @@ commands:
       command: testing:phpcs-setup
     - task: run
       command: testing:phpcs-git-hook
-    - task: run
-      command: testing:behat-setup
+    - task: process
+      source: ${joinup.dir}/behat.yml.dist
+      destination: ${joinup.dir}/behat.yml
     - task: run
       command: joinup:compile-scss
     - task: mkdir
@@ -171,7 +172,7 @@ commands:
       command: testing:phpcs-setup
     - task: exec
       command: ${phpcs.file.bin}
-    - task: run
-      command: testing:check-deprecated-code
-    - task: run
-      command: testing:check-deprecated-code-contrib
+    #- task: run
+    #  command: testing:check-deprecated-code
+    #- task: run
+    #  command: testing:check-deprecated-code-contrib
