@@ -21,5 +21,8 @@ $path = dirname(__DIR__, 2);
 // php-fpm. Also this file should not be included on any production environment
 // for performance reasons.
 // @see https://github.com/vlucas/phpdotenv/issues/446
-$dotenv = Dotenv::createUnsafeImmutable($path, ['.env.dist', '.env'], FALSE);
-$dotenv->safeLoad();
+Dotenv::createUnsafeImmutable($path, [
+  '.env.dist',
+  '.env',
+  '.env.pipeline',
+], FALSE)->safeLoad();

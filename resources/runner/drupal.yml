@@ -136,7 +136,14 @@ drupal:
       }
     sections:
       Main settings: |
-        $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT');
+        if (!$hash_salt = getenv('DRUPAL_HASH_SALT')) {
+          $hash_salt = \Drupal\Component\Utility\Crypt::randomBytesBase64(55);
+          $env_file = "{$app_root}/../.env.pipeline";
+          if (!file_exists($env_file)) {
+            file_put_contents($env_file, "DRUPAL_HASH_SALT={$hash_salt}");
+          }
+        }
+        $settings['hash_salt'] = $hash_salt;
         $settings['container_yamls'][] = "$app_root/$site_path/services.yml";
         $settings['file_scan_ignore_directories'] = [
           'node_modules',
