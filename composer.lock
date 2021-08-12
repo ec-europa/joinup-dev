@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a6637fce23e159c6f62d179175b2b734",
+    "content-hash": "7a2f631a4bc94ec52afae3d8d2504d91",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -14868,16 +14868,16 @@
         },
         {
             "name": "drupaltest/behat-one-time-login",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupaltest/behat-one-time-login.git",
-                "reference": "43e4374e18f0132d7ec949ffad6d929c1c46c49d"
+                "reference": "a7c754de36e3fcc563e496f65a7e6800c523f415"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupaltest/behat-one-time-login/zipball/43e4374e18f0132d7ec949ffad6d929c1c46c49d",
-                "reference": "43e4374e18f0132d7ec949ffad6d929c1c46c49d",
+                "url": "https://api.github.com/repos/drupaltest/behat-one-time-login/zipball/a7c754de36e3fcc563e496f65a7e6800c523f415",
+                "reference": "a7c754de36e3fcc563e496f65a7e6800c523f415",
                 "shasum": ""
             },
             "require": {
@@ -14904,9 +14904,6 @@
                     "web/core": [
                         "type:drupal-core"
                     ]
-                },
-                "patches_applied": {
-                    "Unable to log in when Drupal site is installed in a subfolder @see https://github.com/drupaltest/behat-one-time-login/issues/6": "https://github.com/drupaltest/behat-one-time-login/pull/7.patch"
                 }
             },
             "autoload": {
@@ -14926,7 +14923,7 @@
             ],
             "description": "Authenticates users through the Drupal one time login mechanism.",
             "homepage": "https://github.com/drupaltest/behat-one-time-login",
-            "time": "2020-10-19T13:55:55+00:00"
+            "time": "2021-08-12T06:48:58+00:00"
         },
         {
             "name": "ec-europa/qa-automation",
