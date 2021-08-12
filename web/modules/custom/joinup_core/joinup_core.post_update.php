@@ -16,7 +16,7 @@
 declare(strict_types = 1);
 
 /**
- * Implements hook_post_update_NAME().
+ * Update the text format of the abstract field for collections.
  */
 function joinup_core_post_update_0107400(&$sandbox): void {
   $graphs = [
