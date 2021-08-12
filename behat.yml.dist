@@ -52,7 +52,7 @@
   - Drupal\joinup\Context\RdfGraphContext
   - Drupal\joinup\Context\RssContext
   - Drupal\joinup\Context\ScreenshotContext:
-      localDir: /Users/clau/development/joinup-dev/tmp/behat
+      localDir: ${behat.screenshots.local.dir}
   - Drupal\joinup\Context\SolutionContext
   - Drupal\joinup\Context\WhatsNewContext
   - Drupal\joinup\Context\WysiwygContext
