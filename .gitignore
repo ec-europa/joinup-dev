@@ -28,10 +28,10 @@
 
 # Ignore environment specific settings
 /.env
+/behat.yml
 /grumphp.yml
 /phpcs.xml
 /runner.yml
-/tests/behat.yml
 /web/sites/default/services.yml
 
 # Ignore compiled CSS.
@@ -52,9 +52,6 @@
 
 # Ignore local docker compose file.
 /docker-compose.override.yml
-
-# CPHP Behat files.
-/tests/behat-*
 
 # Ignore project specific temporary generated files.
 /latest.sh1

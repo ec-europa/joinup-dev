@@ -1,11 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains step definitions for the Joinup project.
- */
-
 declare(strict_types = 1);
+
+namespace Drupal\joinup\Context;
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
@@ -469,14 +466,14 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *   Text value of the option to find.
    * @param string $select
    *   CSS selector of the select field.
-   * @param \Behat\Mink\Element\TraversableElement $region
+   * @param \Behat\Mink\Element\TraversableElement|null $region
    *   (optional) The region to search in. Defaults to the whole page.
    *
    * @throws \Exception
    *   Thrown when the select is not found in the page or the selected option is
    *   not the expected one.
    */
-  protected function assertFieldOptionSelectedInRegion(string $option, string $select, TraversableElement $region = NULL): void {
+  protected function assertFieldOptionSelectedInRegion(string $option, string $select, ?TraversableElement $region = NULL): void {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }
@@ -512,7 +509,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertFieldRadioSelected(string $radio, string $field): void {
     // Find the grouping fieldset that contains the radios field.
-    $fieldset = $this->getSession()->getPage()->find('named', ['fieldset', $field]);
+    $fieldset = $this->getSession()->getPage()->find('named', [
+      'fieldset',
+      $field,
+    ]);
 
     if (!$field) {
       throw new \Exception("The field '$field' was not found in the page.");
@@ -1379,7 +1379,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $this->checkMaterialCheckboxHelper($this->getSession()->getPage(), $text);
   }
 
-
   /**
    * Unchecks a material checkbox in a row that contains a certain text.
    *
@@ -1406,8 +1405,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @param string|null $text
    *   (optional) The checkbox label, if any. Defaults to false.
    *
-   * @throws \Behat\Mink\Exception\ElementNotFoundException When the checkbox cannot be found in $context.
-   * @throws \Exception When the checkbox is already checked.
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   When the checkbox cannot be found in $context.
+   * @throws \Exception
+   *   When the checkbox is already checked.
    */
   protected function checkMaterialCheckboxHelper(TraversableElement $element, ?string $text = NULL): void {
     $checkbox = $text ? $element->findField($text) : $element->find('css', 'input[type="checkbox"]');
@@ -1451,7 +1452,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   When the checkbox is already unchecked.
    */
-  protected function uncheckMaterialCheckboxHelper(TraversableElement $element, ?string $text =  NULL): void {
+  protected function uncheckMaterialCheckboxHelper(TraversableElement $element, ?string $text = NULL): void {
     $checkbox = $text ? $element->findField($text) : $element->find('css', 'input[type="checkbox"]');
     if (!$checkbox) {
       throw new ElementNotFoundException($this->getSession(), 'checkbox', NULL, $text);
@@ -1588,11 +1589,11 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * trouble with the static caching being preserved across step requests,
    * because clearing the static cache too often might affect performance.
    *
-   * @see \Drupal\Core\Cache\DatabaseCacheTagsChecksum
-   * @see https://github.com/jhedstrom/drupalextension/issues/133
-   *
    * @param \Behat\Behat\Hook\Scope\AfterStepScope $event
    *   The after step scope event.
+   *
+   * @see \Drupal\Core\Cache\DatabaseCacheTagsChecksum
+   * @see https://github.com/jhedstrom/drupalextension/issues/133
    *
    * @AfterStep
    */
@@ -1673,7 +1674,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \RuntimeException("Only Selenium is currently supported for typing in autocomplete fields.");
     }
 
-    $xpath = $this->getSession()->getSelectorsHandler()->selectorToXpath('named', ['field', $field]);
+    $xpath = $this->getSession()->getSelectorsHandler()->selectorToXpath('named', [
+      'field',
+      $field,
+    ]);
     try {
       $element = $driver->getWebDriverSession()->element('xpath', $xpath);
     }
@@ -1751,7 +1755,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Given the site error reporting verbosity is( set to) :error_level
    */
-  public function setSiteErrorLevel(string $error_level = NULL): void {
+  public function setSiteErrorLevel(?string $error_level = NULL): void {
     static $original_error_level;
 
     $config = \Drupal::configFactory()->getEditable('system.logging');
