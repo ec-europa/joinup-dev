@@ -9,6 +9,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\User\Entity\User;
@@ -2155,23 +2156,33 @@ class JoinupContext extends RawDrupalContext {
    *
    * @param string $link
    *   The text of the link.
-   * @param string $href
+   * @param string $expected_href
    *   The expected path the link should point to, without trailing slashes.
    *
    * @throws \Exception
    *   Thrown when the link is not found.
    *
-   * @Then the link :link should point to :href
+   * @Then the link :link should point to :expected_href
    */
-  public function assertLinkHref($link, $href) {
+  public function assertLinkHref(string $link, string $expected_href): void {
     $element = $this->getSession()->getPage()->findLink($link);
 
     if (!$element) {
       throw new \Exception("The link '$link' was not found in the page.");
     }
 
-    $attribute = trim($element->getAttribute('href'), '/');
-    Assert::assertEquals($href, $attribute, "The link '$link' doesn't point to the expected path '$href'.");
+    $expected_href = trim($expected_href, '/');
+    $actual_href = $element->getAttribute('href');
+
+    // Remove the leading base URL or base path from the link href.
+    if (strpos($actual_href, $GLOBALS['base_url']) === 0) {
+      $actual_href = ltrim(substr($actual_href, strlen($GLOBALS['base_url'])), '/');
+    }
+    elseif (($base_path = trim(base_path(), '/')) && strpos($actual_href, $base_path) === 0) {
+      $actual_href = trim(substr($actual_href, strlen($base_path)), '/');
+    }
+
+    Assert::assertSame($expected_href, $actual_href, "The link '$link' doesn't point to the expected path '$expected_href'.");
   }
 
   /**
