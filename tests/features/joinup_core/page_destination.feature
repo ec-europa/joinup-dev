@@ -1,4 +1,4 @@
-@api @javascript @casMockServer @group-b
+@api @casMockServer @group-b
 Feature:
   As a user of the website
   When I try to login
@@ -16,8 +16,7 @@ Feature:
 
   Scenario: A user logging in from the front page should end up again on the homepage.
     When I go to the homepage
-    And I open the account menu
-    And I click "Sign in"
+    And I click "Sign in with EU Login"
     And I fill in "E-mail address" with "mr.redirect@example.com"
     And I fill in "Password" with "Mr Redirect"
     And I press "Log in"
@@ -25,8 +24,7 @@ Feature:
 
   Scenario: A user logging in from another page should return to that page after login.
     When I am on "/search?keys=how+to+redirect"
-    And I open the account menu
-    And I click "Sign in"
+    And I click "Sign in with EU Login"
     And I fill in "E-mail address" with "mr.redirect@example.com"
     And I fill in "Password" with "Mr Redirect"
     And I press "Log in"
@@ -35,8 +33,7 @@ Feature:
 
   Scenario: Only the destination parameter should be carried over if one exists outside the user pages.
     When I am on "/search?keys=how+to+redirect&destination=/contact"
-    And I open the account menu
-    And I click "Sign in"
+    And I click "Sign in with EU Login"
     And I fill in "E-mail address" with "mr.redirect@example.com"
     And I fill in "Password" with "Mr Redirect"
     And I press "Log in"
