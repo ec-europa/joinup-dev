@@ -69,6 +69,8 @@ function contact_form_form_message_contact_form_submission_form_alter(&$form, Fo
   // Change the text of the submit button to "Submit".
   $form['actions']['submit']['#value'] = t('Submit');
 
+  $form['#action'] = \Drupal::request()->server->get('HTTP_REFERER');
+
   // Add a submit handler that sends a notification to moderators and shows a
   // success message informing the user that their message has been successfully
   // sent.

@@ -28,7 +28,9 @@ Feature: Submit the contact form
     # The honeypot field that needs to be empty on submission.
     Then the following fields should be present "user_homepage"
     And I should see the text "Submissions of this form are processed by a contractor of the European Commission."
+    And I am on the homepage
 
+    Then I click "Contact Joinup Support" in the "Footer" region
     When I fill in the following:
       | First name     | Oswine                      |
       | Last name      | Wulfric                     |
