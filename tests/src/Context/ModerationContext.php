@@ -45,8 +45,8 @@ class ModerationContext extends RawDrupalContext {
   public function clickLinkInModerationPreview($link_text, $title) {
     $node = $this->getEntityByLabel('node', $title);
     $xpath = '//h2/a[@href = "' . $node->toUrl('canonical', [
-        'base_url' => rtrim($GLOBALS['base_path'], '/'),
-      ])->toString() . '"]/ancestor::article//a[text() = "' . $link_text . '"]';
+      'base_url' => rtrim($GLOBALS['base_path'], '/'),
+    ])->toString() . '"]/ancestor::article//a[text() = "' . $link_text . '"]';
     $this->assertSession()->elementExists('xpath', $xpath)->click();
   }
 
