@@ -718,7 +718,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $links = $this->findContextualLinkPaths($region);
 
     if (!isset($links[$text])) {
-      throw new \Exception(sprintf('Contextual link %s expected but not found in the region %s', $text, $region));
+      throw new \Exception(sprintf('Contextual link %s expected but not found in page.', $text));
     }
   }
 

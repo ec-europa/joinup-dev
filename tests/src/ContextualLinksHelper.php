@@ -114,7 +114,7 @@ class ContextualLinksHelper {
     }
 
     // @see Drupal.behaviors.contextual.attach(), contextual.js
-    $client->request('POST', '/contextual/render', [
+    $client->request('POST', base_path() . 'contextual/render', [
       'ids' => $ids,
       'tokens' => $tokens,
     ]);
