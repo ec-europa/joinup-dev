@@ -1994,7 +1994,10 @@ class JoinupContext extends RawDrupalContext {
       throw new \Exception("Link '{$link}' was not found in the page.");
     }
 
-    $entity_url = $entity->toUrl()->setAbsolute()->toString();
+    // @todo Drop the base_url trick as soon as ISAICP-6648 is fixed.
+    $entity_url = $entity->toUrl('canonical', [
+      'base_url' => $GLOBALS['base_url'],
+    ])->setAbsolute()->toString();
     $href = $link_element->getAttribute('href');
 
     Assert::assertContains(urlencode($entity_url), $href);
