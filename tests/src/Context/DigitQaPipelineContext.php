@@ -51,8 +51,10 @@ class DigitQaPipelineContext extends RawMinkContext {
   public static function saveLogsAsArtifacts(AfterSuiteScope $event): void {
     if (static::isDigitQaPipeline() && !$event->getTestResult()->isPassed()) {
       $projectPath = rtrim(getenv('CI_PROJECT_DIR'), DIRECTORY_SEPARATOR);
-      $artifactsPath = rtrim(getenv('ARTIFACTS_DIR'), DIRECTORY_SEPARATOR) . '/logs/drupal';
-      exec("{$projectPath}/vendor/bin/drush sql:dump --tables-list=watchdog --gzip --result-file={$artifactsPath}/watchdog--{$event->getSuite()->getName()}.sql --root={$projectPath}");
+      $artifactsPath = rtrim(getenv('ARTIFACTS_DIR'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $event->getSuite()->getName();
+      $fileSystem = new Filesystem();
+      $fileSystem->mkdir($artifactsPath);
+      exec("{$projectPath}/vendor/bin/drush sql:dump --tables-list=watchdog --gzip --result-file={$artifactsPath}/watchdog.sql --root={$projectPath}");
 
       // @todo These two lines are here for debugging purposes. Will be removed as
       //   soon as we've fixed the tests in pipeline.
