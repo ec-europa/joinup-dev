@@ -3,7 +3,7 @@
 behat:
   screenshots:
     local:
-      dir: ${env.ARTIFACTS_DIR}/behat
+      dir: ${env.ARTIFACTS_DIR}
   # Either 'firefox' or 'chrome'.
   browser_name: chrome
   formatter:
