@@ -239,7 +239,7 @@ class JoinupSeoContext extends RawDrupalContext {
     // The URL structure is very important in the SEO metatags as a wrong URL
     // or an internal path could cause search engines to be misled. Thus,
     // the full URL must be always asserted.
-    $base_url = \Drupal::request()->getSchemeAndHttpHost();
+    $base_url = $this->getMinkParameter('base_url');
 
     $string = preg_quote($string, '#');
     $replacements = [
