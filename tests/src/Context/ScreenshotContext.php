@@ -122,8 +122,8 @@ class ScreenshotContext extends RawMinkContext {
           }
           catch (ExpectationException $e) {
             $message = "{$this->getStepLine($event)} screenshot: @file_name";
-            $this->createScreenshot($this->buildScreenshotFileName('php-notice', $event), $message);
-            // We don't throw $e any more because we don't fail on the notice.
+            $this->createScreenshot($this->buildScreenshotFileName('php-notice', $event), $message, $event->getSuite()->getName());
+            // We don't throw $e anymore because we don't fail on the notice.
           }
         }
       }
@@ -144,7 +144,7 @@ class ScreenshotContext extends RawMinkContext {
   public function takeScreenshotAfterFailedStep(AfterStepScope $event): void {
     if (!$event->getTestResult()->isPassed()) {
       $message = "{$this->getStepLine($event)} screenshot: @file_name";
-      $this->createScreenshot($this->buildScreenshotFileName('failed', $event), $message);
+      $this->createScreenshot($this->buildScreenshotFileName('failed', $event), $message, $event->getSuite()->getName());
     }
   }
 
@@ -155,8 +155,10 @@ class ScreenshotContext extends RawMinkContext {
    *   The filename of the screenshot (complete).
    * @param string $message
    *   The message to be printed. '@file_name' will be replaced with $file_name.
+   * @param string|null $suite_name
+   *   (optional) Suite name. Passed only from hook callers.
    */
-  public function createScreenshot(string $file_name, string $message): void {
+  public function createScreenshot(string $file_name, string $message, ?string $suite_name = NULL): void {
     try {
       if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
         $file_name .= '.png';
@@ -175,7 +177,7 @@ class ScreenshotContext extends RawMinkContext {
     }
 
     // Save the screenshot locally.
-    $path = $this->save($screenshot, $file_name);
+    $path = $this->save($screenshot, $file_name, $suite_name);
 
     // Upload the screenshot to Amazon S3.
     $this->upload($screenshot, $file_name);
@@ -196,14 +198,15 @@ class ScreenshotContext extends RawMinkContext {
    *   The screenshot data.
    * @param string $file_name
    *   The file name.
+   * @param string|null $suite_name
+   *   (optional) If passed, will be used to build the screenshot file path.
    *
    * @return string|null
    *   The saved screenshot path.
    *
-   * @throws \Exception
-   *   Thrown if the destination folder doesn't exist and couldn't be created.
+   * @throws \Exception Thrown if the destination folder doesn't exist and couldn't be created.
    */
-  protected function save(string $screenshot, string $file_name): ?string {
+  protected function save(string $screenshot, string $file_name, ?string $suite_name = NULL): ?string {
     // Don't attempt to save the screenshot if no folder name has been
     // configured.
     if (empty($this->localDir)) {
@@ -211,13 +214,17 @@ class ScreenshotContext extends RawMinkContext {
     }
 
     // Ensure the directory exists.
-    $dir = rtrim($this->localDir, '/');
+    $dir = rtrim($this->localDir, DIRECTORY_SEPARATOR);
+    if ($suite_name) {
+      $dir .= DIRECTORY_SEPARATOR . $suite_name;
+    }
+
     if (!is_dir($dir)) {
       if (!mkdir($dir, 0755, TRUE)) {
         throw new \Exception("The '$dir' folder does not exist and could not be created.");
       }
     }
-    $path = $this->localDir . DIRECTORY_SEPARATOR . $file_name;
+    $path = $dir . DIRECTORY_SEPARATOR . $file_name;
     file_put_contents($path, $screenshot);
 
     return $path;
