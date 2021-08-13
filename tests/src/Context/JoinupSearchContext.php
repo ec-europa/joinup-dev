@@ -649,7 +649,7 @@ class JoinupSearchContext extends RawDrupalContext {
 
     /** @var \Behat\Mink\Element\NodeElement $element */
     foreach ($elements as $element) {
-      $present[] = $element->getText();
+      $present[] = $element->getText() . ' close';
     }
 
     $present = array_map('trim', $present);
@@ -669,7 +669,7 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function removeFacetSummary(string $label): void {
 
-    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-summary-blocksearch-facets-summary ")]//span[text()="' . $label . '"]';
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-summary-blocksearch-facets-summary ")]//span[text()="' . $label . ' close"]';
     $element = $this->getSession()->getPage()->find('xpath', $xpath);
 
     if (empty($element)) {

@@ -16,11 +16,11 @@
  * @ingroup themeable
  */
 #}
-<span class="mdl-checkbox__label">
+<span class="mdl-chip mdl-chip--deletable">
+  <span class="mdl-chip__text facet-item__value">{{ value }}</span>
   {% if is_active %}
-    <span class="facet-item__status js-facet-deactivate">(-)</span>
+    <button type="button" class="facet-item__status js-facet-deactivate mdl-chip__action" aria-label="{{ 'Close'|t }}"><i class="material-icons">close</i></button>
   {% endif %}
-  <span class="facet-item__value">{{ value }}</span>
   {% if show_count %}
     <span class="facet-item__count">({{ count }})</span>
   {% endif %}
