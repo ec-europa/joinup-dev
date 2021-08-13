@@ -32,12 +32,6 @@ class DigitQaPipelineContext extends RawMinkContext {
       $fileSystem->chgrp($publicFilesPath, getenv('DAEMON_GROUP'), TRUE);
       $fileSystem->chmod($publicFilesPath, 0775);
     }
-
-    // @todo These two lines are here for debugging purposes. Will be removed as
-    //   soon as we've fixed the tests in pipeline.
-    print shell_exec('export');
-    print shell_exec('ls -la /var/log/apache2');
-    ob_flush();
   }
 
   /**
@@ -55,12 +49,6 @@ class DigitQaPipelineContext extends RawMinkContext {
       $fileSystem = new Filesystem();
       $fileSystem->mkdir($artifactsPath);
       exec("{$projectPath}/vendor/bin/drush sql:dump --tables-list=watchdog --gzip --result-file={$artifactsPath}/watchdog.sql --root={$projectPath}");
-
-      // @todo These two lines are here for debugging purposes. Will be removed as
-      //   soon as we've fixed the tests in pipeline.
-      print shell_exec('export');
-      print shell_exec('ls -la /var/log/apache2');
-      ob_flush();
     }
   }
 
