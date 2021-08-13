@@ -204,7 +204,8 @@ class ScreenshotContext extends RawMinkContext {
    * @return string|null
    *   The saved screenshot path.
    *
-   * @throws \Exception Thrown if the destination folder doesn't exist and couldn't be created.
+   * @throws \Exception
+   *   Thrown if the destination folder doesn't exist and couldn't be created.
    */
   protected function save(string $screenshot, string $file_name, ?string $suite_name = NULL): ?string {
     // Don't attempt to save the screenshot if no folder name has been
@@ -278,7 +279,6 @@ class ScreenshotContext extends RawMinkContext {
    *
    * @param string $type
    *   The type of event (failure, PHP notice, etc).
-   *
    * @param \Behat\Behat\Hook\Scope\AfterStepScope $event
    *   The after step event.
    *
