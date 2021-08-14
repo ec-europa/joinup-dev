@@ -102,6 +102,7 @@ default:
       browser_name: ${behat.browser_name}
       selenium2:
         wd_host: ${env.WEBDRIVER_URL}
+        capabilities: {"browserName": "chrome", "browser": "chrome", 'chrome': {'switches':['--no-sandbox']}}
     LoversOfBehat\TableExtension:
       table_map:
         'group menu edit table': '#menu-overview'
