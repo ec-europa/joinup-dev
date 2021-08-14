@@ -244,7 +244,7 @@ class JoinupUserContext extends RawDrupalContext {
       'hash' => user_pass_rehash($account, $timestamp),
     ],
     [
-      'absolute' => true,
+      'absolute' => TRUE,
       'language' => \Drupal::languageManager()->getLanguage($account->getPreferredLangcode()),
       // The base URL is derived by the Symfony request handler from
       // the global variables set by the web server, i.e. REQUEST_URI
