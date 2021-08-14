@@ -6,11 +6,13 @@ namespace Drupal\joinup\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope;
 use Drupal\joinup\Traits\MailCollectorTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
+use Drupal\user\UserInterface;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 
@@ -56,7 +58,7 @@ class JoinupUserContext extends RawDrupalContext {
       throw new \Exception("User {$user->getAccountName()} was not found.");
     }
 
-    $this->visitPath(user_pass_reset_url($user) . '/login');
+    $this->visitPath($this->getOneTimeLoginUrl($user) . '/login');
   }
 
   /**
@@ -223,6 +225,36 @@ class JoinupUserContext extends RawDrupalContext {
     if (\Drupal::entityQuery('user')->condition('name', $name)->execute()) {
       throw new ExpectationFailedException("The user $name exists but it should not.");
     }
+  }
+
+  /**
+   * Generates a unique URL for a user to log in and reset their password.
+   *
+   * @param \Drupal\user\UserInterface $account
+   *   An object containing the user account.
+   *
+   * @return string
+   *   A unique URL that provides a one-time log in for the user.
+   */
+  protected function getOneTimeLoginUrl(UserInterface $account): string {
+    $timestamp = time();
+    return Url::fromRoute('user.reset', [
+      'uid' => $account->id(),
+      'timestamp' => $timestamp,
+      'hash' => user_pass_rehash($account, $timestamp),
+    ],
+    [
+      'absolute' => true,
+      'language' => \Drupal::languageManager()->getLanguage($account->getPreferredLangcode()),
+      // The base URL is derived by the Symfony request handler from
+      // the global variables set by the web server, i.e. REQUEST_URI
+      // or similar. Since Behat tests are run from the command line
+      // this request context is not available and we need to set the
+      // base URL manually.
+      // @todo Remove this workaround once this is fixed in core.
+      // @see https://www.drupal.org/project/drupal/issues/2548095
+      'base_url' => $GLOBALS['base_url'],
+    ])->toString();
   }
 
 }
