@@ -118,9 +118,8 @@ class JoinupUserContext extends RawDrupalContext {
     // files are uploaded, for example when a test is run more than once.
     // We only check up to the filename and not the extension as the xpath
     // itself is long enough to ensure the extension part.
-    $parts = pathinfo($filename);
-    $host = \Drupal::request()->getSchemeAndHttpHost();
-    $filename = $parts['filename'];
+    $host = $this->getMinkParameter('base_url');
+    $filename = trim($filename, DIRECTORY_SEPARATOR);
     $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' featured__logo ') and contains(@style, 'background-image: url({$host}/sites/default/files/{$filename}')]";
     $this->assertSession()->elementExists('xpath', $xpath);
   }
