@@ -13,7 +13,7 @@ declare(strict_types = 1);
 use Dotenv\Dotenv;
 
 // Load the .env.dist file in the project root, and overridden settings in .env
-// and '.env.pipeline', if it exists.
+// and '.env.pipeline', if they exist.
 $path = dirname(__DIR__, 2);
 $candidates = array_filter(
   ['.env.dist', '.env', '.env.pipeline'],
