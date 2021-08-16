@@ -645,15 +645,21 @@ class JoinupSearchContext extends RawDrupalContext {
     $labels = $this->explodeCommaSeparatedStepArgument($labels);
     $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' block-facets-summary-blocksearch-facets-summary ')]//li[contains(concat(' ', normalize-space(@class), ' '), ' facet-summary-item--facet ')]";
     $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
-    $present = [];
+    $present = $present_labels = [];
 
     /** @var \Behat\Mink\Element\NodeElement $element */
     foreach ($elements as $element) {
-      $present[] = $element->getText() . ' close';
+      $present[] = $element->getText();
+    }
+
+    // Add label close in front of label.
+    foreach ($labels as $label) {
+      $present_labels[] = $label . ' close';
     }
 
     $present = array_map('trim', $present);
-    Assert::assertEquals($labels, $present);
+    $present_labels = array_map('trim', $present_labels);
+    Assert::assertEquals($present_labels, $present);
   }
 
   /**
@@ -669,7 +675,7 @@ class JoinupSearchContext extends RawDrupalContext {
    */
   public function removeFacetSummary(string $label): void {
 
-    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-summary-blocksearch-facets-summary ")]//span[text()="' . $label . ' close"]';
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-summary-blocksearch-facets-summary ")]//span[text()="' . $label . '"]';
     $element = $this->getSession()->getPage()->find('xpath', $xpath);
 
     if (empty($element)) {
