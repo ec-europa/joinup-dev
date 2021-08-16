@@ -17,7 +17,6 @@ use Drupal\Core\Url;
 use Drupal\contact_form\ContactFormEvents;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\user\Entity\User;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -70,8 +69,6 @@ function contact_form_form_message_contact_form_submission_form_alter(&$form, Fo
   // Change the text of the submit button to "Submit".
   $form['actions']['submit']['#value'] = t('Submit');
 
-  $form['#action'] = \Drupal::request()->server->get('HTTP_REFERER');
-
   // Add a submit handler that sends a notification to moderators and shows a
   // success message informing the user that their message has been successfully
   // sent.
@@ -91,13 +88,6 @@ function contact_form_form_message_contact_form_submission_submit(&$form, FormSt
 
   if ($event->isSuccessful()) {
     \Drupal::messenger()->addStatus(t('Your message has been submitted. Thank you for your feedback.'));
-
-    if ($form_state->getValue('content_redirect')) {
-      $url = Url::fromUri($form_state->getValue('content_redirect'));
-      $response = new RedirectResponse($url);
-      return $response;
-    }
-
   }
   else {
     \Drupal::messenger()->addError(t('The message submission failed.'));

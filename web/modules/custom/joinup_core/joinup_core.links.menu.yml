@@ -33,6 +33,7 @@ joinup_core.support.contact:
   title: 'Contact support'
   menu_name: support
   url: 'internal:/contact'
+  class: Drupal\contact_form\Plugin\Menu\ContactSupportMenuLink
   weight: -100
 
 joinup_core.manage_media:

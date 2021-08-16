@@ -49,11 +49,6 @@ class ContactFormController extends ControllerBase {
     $contact_message = $this->entityTypeManager()->getStorage('message')->create($values);
     $form = $this->entityFormBuilder()->getForm($contact_message);
 
-    $form['content_redirect'] = [
-      '#type' => 'value',
-      '#value' => $request->server->get('HTTP_REFERER'),
-    ];
-
     return $form;
   }
 
