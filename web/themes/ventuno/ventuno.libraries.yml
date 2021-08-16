@@ -1,0 +1,5 @@
+style:
+  version: VERSION
+  css:
+    theme:
+      css/styles.css: {}

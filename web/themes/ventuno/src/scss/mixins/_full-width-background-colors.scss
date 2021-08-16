@@ -1,0 +1,81 @@
+// Mixins for full-width double background color elements.
+
+// Fixed height on top, flexible on bottom.
+@mixin full-width-color-to-bottom(
+  // Background Color for mobile.
+    $mobile-color: $gray-100,
+  // Background Color Top for desktop.
+    $top-color: $gray-100,
+  // Top Background Color height on desktop.
+    $top-size: 8rem,
+  // Top padding.
+    $padding-top: 3rem,
+  // Background Color Bottom for desktop.
+    $bottom-color: $primary,
+  // Bottom Background Color height on desktop.
+    $bottom-size: 0,
+  // Bottom padding.
+    $padding-bottom: 3rem
+) {
+  position: relative;
+  padding-top: $padding-top;
+  padding-bottom: $padding-bottom;
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    top: 0;
+    bottom: 0;
+    background: $mobile-color;
+  }
+  @include media-breakpoint-up(md) {
+    &:before {
+      background: linear-gradient(
+        to bottom,
+        $top-color $top-size,
+        $bottom-color $bottom-size
+      );
+    }
+  }
+}
+
+// Fixed height on bottom, flexible on bottom.
+@mixin full-width-color-to-top(
+  // Background Color for mobile.
+    $mobile-color: $primary,
+  // Background Color Bottom for desktop.
+    $bottom-color: $primary,
+  // Bottom Background Color height on desktop.
+    $bottom-size: 8rem,
+  // Bottom padding.
+    $padding-bottom: 3rem,
+  // Background Color Top for desktop.
+    $top-color: $gray-100,
+  // Top Background Color height on desktop.
+    $top-size: 0,
+  // Top padding.
+    $padding-top: 3rem // Top padding.
+) {
+  position: relative;
+  padding-top: $padding-top;
+  padding-bottom: $padding-bottom;
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    top: 0;
+    bottom: 0;
+    background: $mobile-color;
+    @include media-breakpoint-up(md) {
+      background: linear-gradient(
+        to top,
+        $bottom-color $bottom-size,
+        $top-color $top-size
+      );
+    }
+  }
+}

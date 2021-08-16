@@ -1,0 +1,20 @@
+{
+  "name": "Ventuno",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Paulo",
+  "license": "ISC",
+  "devDependencies": {
+    "@openeuropa/bcl-theme-default": "0.5.0",
+    "@openeuropa/bcl-bootstrap": "0.5.0",
+    "@openeuropa/bcl-theme-joinup": "0.5.0",
+    "gulp": "^4.0.2",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5"
+  },
+  "dependencies": {}
+}
