@@ -54,4 +54,3 @@ Feature: Collection TCA agreement
 
     And I click "eligibility criteria"
     Then I should see the heading "Eligibility criteria"
-

@@ -121,3 +121,6 @@ Feature: Solution editing.
     And the "Additional fields" tab summary should be "Contains all optional fields providing additional information on the solution"
     And I click the "Additional fields" tab
     Then the "Additional fields" tab should be active
+    And the url should match "/collection/collection-example/solution/add#edit-group-management"
+    When I reload the page
+    Then the "Additional fields" tab should be active
