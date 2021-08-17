@@ -1,4 +1,4 @@
-# Ventuno for JoinUp theme
+# Ventuno for Joinup theme
 
 Custom theme for Joinup. Built on the [OpenEuropa Bootstrap
 theme](https://github.com/openeuropa/oe_bootstrap_theme).
