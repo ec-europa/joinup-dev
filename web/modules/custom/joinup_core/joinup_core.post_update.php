@@ -18,7 +18,7 @@ declare(strict_types = 1);
 /**
  * Update the text format of the abstract field for collections.
  */
-function joinup_core_post_update_0107400(&$sandbox): void {
+function joinup_core_post_update_0107500(&$sandbox): void {
   $graphs = [
     'http://joinup.eu/collection/draft',
     'http://joinup.eu/collection/published',
@@ -43,7 +43,7 @@ QUERY;
 /**
  * Update the index datasources before the search API updates the index.
  */
-function joinup_core_post_update_0107401(&$sandbox) {
+function joinup_core_post_update_0107501(&$sandbox) {
   // Search API updates the dependencies for each index. This creates conflicts
   // with the configuration update since we change the datasources
   // configuration. Manually update the index before the configuration.
