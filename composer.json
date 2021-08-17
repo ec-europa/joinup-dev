@@ -357,6 +357,9 @@
             "openeuropa/task-runner": {
                 "Allow to pass array options to 'run' & 'exec' tasks @see https://github.com/openeuropa/task-runner/pull/137": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/137.diff",
                 "Tokens containing digits are not supported @see https://github.com/openeuropa/task-runner/pull/145": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/145.diff"
+            },
+            "solarium/solarium": {
+                "implode() deprecated usage": "resources/patch/solarium.diff"
             }
         },
         "patches-ignore": {

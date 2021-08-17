@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "550412272f0b3c3437407b348f4b681f",
+    "content-hash": "c6aa6ae3a6cf5306cb96ac740dc56c1c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -10331,6 +10331,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-4.0.x": "4.0.x-dev"
+                },
+                "patches_applied": {
+                    "implode() deprecated usage": "resources/patch/solarium.diff"
                 }
             },
             "autoload": {
