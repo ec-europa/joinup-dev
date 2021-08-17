@@ -3,26 +3,15 @@
 Custom theme for Joinup. Built on the [OpenEuropa Bootstrap
 theme](https://github.com/openeuropa/oe_bootstrap_theme).
 
-## Requirements
+#### Step 1
+Make sure you have Node and npm installed.
+You can read a guide on how to install node here: https://docs.npmjs.com/getting-started/installing-node
 
-TBD
+#### Step 2
+Go to the root of Ventuno theme and run `npm install`
 
-* `npm`?
-
-Quick start:
-  - npm install
-  - gulp watch
-
-## Theme development
-
-TBD
-
-```shell
-# TBD
-$ cd web/themes/custom/ventuno
-$ npm install
-$ npm run watch
-```
+#### Step 3
+Run `npm run watch` to compile files onchange.
 
 ## Development workflow
 

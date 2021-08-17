@@ -1,4 +1,5 @@
 # Ignore build artifacts.
 /node_modules/*
+/css/
 *.map
 package-lock.json
