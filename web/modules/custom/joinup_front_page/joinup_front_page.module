@@ -12,8 +12,12 @@ declare(strict_types = 1);
  */
 function joinup_front_page_preprocess_block(&$variables): void {
   if (\Drupal::currentUser()->isAuthenticated()) {
-    // The libraries are available for authenticated users.
-    return;
+    // The libraries are available for all users except the
+    // ones only with authenticated role.
+    $roles = \Drupal::currentUser()->getRoles();
+    if (count($roles) > 1) {
+      return;
+    }
   }
   if (!isset($variables['derivative_plugin_id']) || $variables['derivative_plugin_id'] !== 'discover_topics-block') {
     return;
