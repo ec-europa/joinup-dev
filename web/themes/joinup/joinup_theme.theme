@@ -1555,6 +1555,17 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function joinup_theme_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+  if ($route_name === 'view.asset_distribution_downloads.page') {
+    $suggestions[] = 'page__distribution_downloads';
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_id) {

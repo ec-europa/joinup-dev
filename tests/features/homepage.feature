@@ -170,7 +170,7 @@ Feature: Homepage
     Then I should be on the search page
     And I should see the "RNA vaccines" tile
 
-  @terms @javascript
+  @terms @javascript @wip
   Scenario Outline: Discover topics block shows a list of topics.
     Given collection:
       | title | Clash of vania's |
