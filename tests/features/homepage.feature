@@ -216,6 +216,7 @@ Feature: Homepage
       | Social and Political |
     When I click "E-health Dpt."
     Then I should be on the advanced search page
+    And the option with text "E-health Dpt." from select facet "topic" is selected
 
     Examples:
       | logged in                                          |
