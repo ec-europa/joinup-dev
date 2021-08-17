@@ -161,8 +161,8 @@ Feature: Homepage
       | title | RNA vaccines |
       | state | validated    |
     And I am on the homepage
-    Then I should see the "Search" field in the Content region
-    And I should see the button "Search" in the Content region
+    Then I should see the "Search" field in the Featured region
+    And I should see the button "Search" in the Featured region
     But I should not see the "Search" field in the Header region
     And I should not see the button "Search" in the Header region
     When I enter "RNA" in the search bar

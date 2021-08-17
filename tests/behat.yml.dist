@@ -104,6 +104,7 @@ default:
         Discover topics block: '.block-views-blockdiscover-topics-block'
         Entity actions: '.block-joinup-local-tasks-block'
         Explore block: '.block-joinup-front-page-explore-block'
+        Featured: '.region-featured'
         Footer: '.section--footer, footer'
         Header menu: '#block-joinup-theme-main-menu'
         Header: '.section--featured, .section-header'
