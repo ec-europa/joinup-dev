@@ -5,7 +5,8 @@ theme](https://github.com/openeuropa/oe_bootstrap_theme).
 
 #### Step 1
 Make sure you have Node and npm installed.
-You can read a guide on how to install node here: https://docs.npmjs.com/getting-started/installing-node
+You can read a guide on how to install node here:
+https://docs.npmjs.com/getting-started/installing-node
 
 #### Step 2
 Go to the root of Ventuno theme and run `npm install`
@@ -183,4 +184,4 @@ might not be immediately obvious to devs expecting a standard Drupal site:
   or forcing a cache clear. In most cases inspecting the Behat test scenarios
   that accompany the functionality will give insight to which steps might be
   needed for content to show up.
-  
+
