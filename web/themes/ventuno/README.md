@@ -184,4 +184,3 @@ might not be immediately obvious to devs expecting a standard Drupal site:
   or forcing a cache clear. In most cases inspecting the Behat test scenarios
   that accompany the functionality will give insight to which steps might be
   needed for content to show up.
-
