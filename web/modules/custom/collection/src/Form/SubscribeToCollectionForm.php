@@ -170,7 +170,7 @@ class SubscribeToCollectionForm extends FormBase {
       // form will be loaded.
       // @see https://www.drupal.org/project/drupal/issues/2934463
       '#ajax' => [
-        'callback' => [static::class, 'confirmSubscription'],
+        'callback' => '::confirmSubscription',
         'url' => Url::fromRoute('collection.subscribe_to_collection_form', [
           'rdf_entity' => $rdf_entity->id(),
         ]),
