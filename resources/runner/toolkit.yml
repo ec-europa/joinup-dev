@@ -44,7 +44,7 @@ commands:
     - task: mkdir
       dir: ${env.DRUPAL_FILE_TEMP_PATH}
     - task: exec
-      command: git describe --tags | tr -d '\n' > ${joinup.dir}/VERSION
+      command: test "$(git tag)" = "" || git describe --tags | tr -d '\n' > ${joinup.dir}/VERSION
 
   # Overrides toolkit:install-clean.
   toolkit:install-clean:
