@@ -1,0 +1,54 @@
+// Highlighted Event
+.block-entityqueue--highlighted-event {
+  position: relative;
+  > h2 {
+    @include font-icon-before("\F133", 1.2rem, $warning);
+  }
+  .more-link {
+    position: absolute;
+    right: 0;
+    top: 12px;
+    @include font-icon-after("\E801", 1rem);
+  }
+  article {
+    background: $gray-300 url(../assets/images/highlighted-event.jpg) no-repeat center center;
+    background-size: cover;
+    @extend .rounded-3;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    @extend .p-4;
+    @extend .p-lg-5;
+    color: $white;
+    header {
+      @extend .mb-5;
+      @extend .pb-5;
+      h3 {
+        text-transform: uppercase;
+        color: $white;
+        @extend .h4;
+        font-weight: normal;
+        border-bottom: 4px solid $white;
+      }
+    }
+    > h2 {
+      line-height: $line-height-sm;
+      @extend .mb-1;
+      color: $white;
+    }
+    .field--name-field-event-date {
+      font-size: $h4-font-size;
+      font-weight: normal;
+    }
+    footer {
+      @extend .mt-5;
+      @extend .pt-5;
+      a {
+        @extend .btn;
+        @extend .btn-primary;
+      }
+    }
+  }
+}
