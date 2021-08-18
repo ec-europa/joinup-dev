@@ -388,6 +388,16 @@ display:
           plugin_id: search_api
       title: ''
       header:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          content: 'Search Results (@total)'
+          plugin_id: result
         views_block_area:
           id: views_block_area
           table: views

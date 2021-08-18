@@ -137,6 +137,7 @@ Feature: Asset distribution editing.
 
     Given I am logged in as a moderator
     And I go to the distribution downloads page
+    Then I should not see the "Left sidebar" region
 
     When I click "Download CSV"
     And I wait for the batch process to finish

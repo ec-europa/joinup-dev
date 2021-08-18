@@ -7,5 +7,5 @@ dependencies:
 id: anonymous_comment_links
 title: 'Anonymous comment links'
 content:
-  value: '<a href="/caslogin">Login</a> or <a href="/user/register">create an account</a> to comment.'
+  value: '<a href="[site:url]caslogin">Login</a> or <a href="[site:url]user/register">create an account</a> to comment.'
   format: content_editor

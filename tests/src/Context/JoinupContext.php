@@ -2048,6 +2048,42 @@ class JoinupContext extends RawDrupalContext {
   }
 
   /**
+   * Asserts that a certain link points to a specific path.
+   *
+   * Example: Then the link "Login" should point to "user/login"
+   *
+   * @param string $link
+   *   The text of the link.
+   * @param string $expected_href
+   *   The expected path the link should point to, without trailing slashes.
+   *
+   * @throws \Exception
+   *   Thrown when the link is not found.
+   *
+   * @Then the link :link should point to :expected_href
+   */
+  public function assertLinkHref(string $link, string $expected_href): void {
+    $element = $this->getSession()->getPage()->findLink($link);
+
+    if (!$element) {
+      throw new \Exception("The link '$link' was not found in the page.");
+    }
+
+    $expected_href = trim($expected_href, '/');
+    $actual_href = $element->getAttribute('href');
+
+    // Remove the leading base URL or base path from the link href.
+    if (strpos($actual_href, $GLOBALS['base_url']) === 0) {
+      $actual_href = ltrim(substr($actual_href, strlen($GLOBALS['base_url'])), '/');
+    }
+    elseif (($base_path = trim(base_path(), '/')) && strpos($actual_href, $base_path) === 0) {
+      $actual_href = trim(substr($actual_href, strlen($base_path)), '/');
+    }
+
+    Assert::assertSame($expected_href, $actual_href, "The link '$link' doesn't point to the expected path '$expected_href'.");
+  }
+
+  /**
    * Simulates picking of an autosuggestion value from a field.
    *
    * @param string $value
@@ -2101,32 +2137,6 @@ class JoinupContext extends RawDrupalContext {
     }
 
     throw new \Exception("The value '$value' was not found in the autocomplete suggestions.");
-  }
-
-  /**
-   * Asserts that a certain link points to a specific path.
-   *
-   * Example: Then the link "Login" should point to "user/login"
-   *
-   * @param string $link
-   *   The text of the link.
-   * @param string $href
-   *   The expected path the link should point to, without trailing slashes.
-   *
-   * @throws \Exception
-   *   Thrown when the link is not found.
-   *
-   * @Then the link :link should point to :href
-   */
-  public function assertLinkHref($link, $href) {
-    $element = $this->getSession()->getPage()->findLink($link);
-
-    if (!$element) {
-      throw new \Exception("The link '$link' was not found in the page.");
-    }
-
-    $attribute = trim($element->getAttribute('href'), '/');
-    Assert::assertEquals($href, $attribute, "The link '$link' doesn't point to the expected path '$href'.");
   }
 
   /**
