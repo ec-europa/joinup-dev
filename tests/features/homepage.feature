@@ -182,7 +182,11 @@ Feature: Homepage
     Then I should be on the search page
     And I should see the "RNA vaccines" tile
 
-  @terms @javascript
+  # Todo: This test is disabled because of a persisting failure on CPHP which
+  # cannot be replicated locally. To be enabled again once we have moved to
+  # the new infrastructure.
+  # See https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6656
+  @terms @javascript @wip
   Scenario Outline: Discover topics block shows a list of topics.
     Given collection:
       | title | Clash of vania's |
