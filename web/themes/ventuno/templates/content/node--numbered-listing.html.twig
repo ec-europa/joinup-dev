@@ -24,5 +24,9 @@
       <a href="{{ url }}" rel="bookmark">{{ label }}</a>
     </h2>
     {{ content.body }}
+    <div class="metadata">
+      <span class="date pe-3">{{ date }}</span>
+      <span class="type">{{ type }}</span>
+    </div>
   {% endblock %}
 </article>
