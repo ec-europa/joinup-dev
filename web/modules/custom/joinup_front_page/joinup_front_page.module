@@ -9,25 +9,13 @@ declare(strict_types = 1);
 
 /**
  * Implements hook_preprocess_HOOK().
+ *
+ * The 'Discover topics' block which is shown on the front page is created using
+ * the Views module. The block includes a 'See more topics' link which opens a
+ * modal dialog with the full list of available topics. Include the necessary JS
+ * so that all users can interact with the modal.
  */
 function joinup_front_page_preprocess_block(&$variables): void {
-  if (\Drupal::currentUser()->isAuthenticated()) {
-    // The libraries are available for all users except the
-    // ones only with authenticated role.
-    $roles = [
-      'licence_manager',
-      'moderator',
-      'administrator',
-      'rdf_graph_manager',
-    ];
-
-    $user_roles = \Drupal::currentUser()->getRoles();
-    foreach ($roles as $role) {
-      if (in_array($role, $user_roles)) {
-        return;
-      }
-    }
-  }
   if (!isset($variables['derivative_plugin_id']) || $variables['derivative_plugin_id'] !== 'discover_topics-block') {
     return;
   }
