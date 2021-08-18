@@ -161,8 +161,8 @@ Feature: Homepage
       | title | RNA vaccines |
       | state | validated    |
     And I am on the homepage
-    Then I should see the "Search" field in the Content region
-    And I should see the button "Search" in the Content region
+    Then I should see the "Search" field in the Featured region
+    And I should see the button "Search" in the Featured region
     But I should not see the "Search" field in the Header region
     And I should not see the button "Search" in the Header region
     When I enter "RNA" in the search bar
@@ -216,6 +216,7 @@ Feature: Homepage
       | Social and Political |
     When I click "E-health Dpt."
     Then I should be on the advanced search page
+    And the option with text "E-health Dpt." from select facet "topic" is selected
 
     Examples:
       | logged in                                          |
