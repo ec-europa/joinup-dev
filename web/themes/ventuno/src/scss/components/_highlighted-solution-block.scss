@@ -7,5 +7,13 @@
     .field--name-field-is-logo {
       @extend .mb-4;
     }
+    .field--name-field-is-description {
+      color: $gray-700;
+    }
+    .field--name-field-is-solution-type {
+      color: $gray-500;
+      @extend .mt-2;
+      @extend .fs-xs;
+    }
   }
 }
