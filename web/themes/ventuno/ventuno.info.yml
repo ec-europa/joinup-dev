@@ -6,6 +6,9 @@ core_version_requirement: ^8 || ^9
 php: 7.1
 base theme: oe_bootstrap_theme
 
+libraries:
+  - ventuno/style
+
 regions:
   header: Header
   header_bottom: 'Header bottom'
