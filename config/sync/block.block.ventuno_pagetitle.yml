@@ -4,6 +4,7 @@ status: true
 dependencies:
   module:
     - joinup_core
+    - system
   theme:
     - ventuno
 id: ventuno_pagetitle
@@ -23,5 +24,10 @@ visibility:
     routes:
       - entity.user.canonical
       - entity.user.edit_form
+    negate: true
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '<front>'
     negate: true
     context_mapping: {  }
