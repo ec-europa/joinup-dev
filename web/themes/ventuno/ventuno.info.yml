@@ -9,6 +9,12 @@ base theme: oe_bootstrap_theme
 libraries:
   - ventuno/style
 
+libraries-override:
+  joinup_layout/twocol_60_40:
+    css:
+      theme:
+        layouts/twocol-60-40/twocol_60_40.css: false
+
 regions:
   header: Header
   header_bottom: 'Header bottom'
