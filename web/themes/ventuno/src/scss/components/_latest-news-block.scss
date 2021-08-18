@@ -1,0 +1,37 @@
+// Latest News
+.block-views-blocklatest-news-block {
+  > h2 {
+    @include font-icon-before("\E804", 1.2rem, $warning);
+  }
+  .view-latest-news  {
+    article {
+      display: flex;
+      flex-direction: row;
+      .dated-listing--date {
+        color: rgba($primary, .5);
+        text-align: center;
+        min-width: 3rem;
+        display: flex;
+        flex-flow: column;
+        @extend .pe-3;
+        text-transform: uppercase;
+        .date--day {
+          font-size: $h3-font-size;
+        }
+        .date--month {
+          font-size: $h5-font-size; 
+        }
+      }
+      .dated-listing--content {
+        h2 {
+          font-size: $font-size-base;
+          @extend .fw-medium;
+          line-height: $line-height-base;
+          a {
+            color: $gray-900;
+          }
+        }
+      }
+    }
+  }
+}
