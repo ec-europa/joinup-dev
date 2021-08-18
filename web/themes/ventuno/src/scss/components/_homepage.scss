@@ -1,0 +1,46 @@
+// Homepage Common styles
+.joinup-layout {
+  .block {
+    & > h2 {
+      text-transform: uppercase;
+      @extend .h4;
+    }
+  }
+  .field--name-field-topic {
+    @extend .mb-3;
+    .field__item {
+      display: inline-block;
+    }
+    a {
+      @extend .badge;
+      @extend .bg-secondary;
+      font-size: $font-size-sm;
+      color: $link-color;
+      font-weight: normal;
+    }
+  }
+}
+.view-in-the-spotlight,
+.block-entityqueue--highlighted-solution,
+.view-latest-news {
+  .views-row {
+    @extend .mb-4;
+  }
+  .field--name-body {
+    color: $gray-700;
+  }
+  article {
+    h2 {
+      font-size: $font-size-base;
+      @extend .fw-medium;
+      line-height: $line-height-base;
+      a {
+        color: $gray-900;
+      }
+    }
+    img {
+      @extend .rounded;
+    }
+  }
+}
+
