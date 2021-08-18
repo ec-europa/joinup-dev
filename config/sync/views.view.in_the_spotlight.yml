@@ -63,56 +63,6 @@ display:
           separator: ''
           hide_empty: false
       fields:
-        counter:
-          id: counter
-          table: views
-          field: counter
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          counter_start: 1
-          plugin_id: counter
         rendered_entity:
           id: rendered_entity
           table: node
@@ -235,6 +185,8 @@ display:
         - 'config:core.entity_view_display.node.document.view_mode_tile'
         - 'config:core.entity_view_display.node.event.default'
         - 'config:core.entity_view_display.node.event.digest_message'
+        - 'config:core.entity_view_display.node.event.explore_item'
+        - 'config:core.entity_view_display.node.event.highlighted'
         - 'config:core.entity_view_display.node.event.moderation'
         - 'config:core.entity_view_display.node.event.numbered_listing'
         - 'config:core.entity_view_display.node.event.view_mode_featured'
@@ -244,6 +196,7 @@ display:
         - 'config:core.entity_view_display.node.news.dated_listing'
         - 'config:core.entity_view_display.node.news.default'
         - 'config:core.entity_view_display.node.news.digest_message'
+        - 'config:core.entity_view_display.node.news.explore_item'
         - 'config:core.entity_view_display.node.news.moderation'
         - 'config:core.entity_view_display.node.news.numbered_listing'
         - 'config:core.entity_view_display.node.news.view_mode_featured'
@@ -287,6 +240,8 @@ display:
         - 'config:core.entity_view_display.node.document.view_mode_tile'
         - 'config:core.entity_view_display.node.event.default'
         - 'config:core.entity_view_display.node.event.digest_message'
+        - 'config:core.entity_view_display.node.event.explore_item'
+        - 'config:core.entity_view_display.node.event.highlighted'
         - 'config:core.entity_view_display.node.event.moderation'
         - 'config:core.entity_view_display.node.event.numbered_listing'
         - 'config:core.entity_view_display.node.event.view_mode_featured'
@@ -296,6 +251,7 @@ display:
         - 'config:core.entity_view_display.node.news.dated_listing'
         - 'config:core.entity_view_display.node.news.default'
         - 'config:core.entity_view_display.node.news.digest_message'
+        - 'config:core.entity_view_display.node.news.explore_item'
         - 'config:core.entity_view_display.node.news.moderation'
         - 'config:core.entity_view_display.node.news.numbered_listing'
         - 'config:core.entity_view_display.node.news.view_mode_featured'
