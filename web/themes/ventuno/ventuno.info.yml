@@ -14,6 +14,10 @@ libraries-override:
     css:
       theme:
         layouts/twocol-60-40/twocol_60_40.css: false
+  joinup_layout/twocolfooter_onecol_67_33:
+    css:
+      theme:
+        layouts/twocolfooter-onecol-67-33/twocolfooter_onecol_67_33.css: false
 
 regions:
   header: Header
