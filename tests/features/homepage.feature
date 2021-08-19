@@ -51,6 +51,15 @@ Feature: Homepage
     Then I should be on the advanced search page
     And the option with text "Finance in EU" from select facet "topic" is selected
 
+    # There is a "More news" link that for the moment leads to the search page
+    # pre-filtered on news articles. In the future this will become a dedicated
+    # page showing all the news on Joinup.
+    Given I am on the homepage
+    When I click "More news"
+    Then I should be on the advanced search page
+    And the "News" content checkbox item should be selected
+    And the page should show the tiles "Current biodiversity crisis, Environmental stewardship, Spatial reconstruction, Earlier transformations"
+
   @terms
   Scenario: Community content can be placed "In the spotlight" on the homepage
     Given collection:
@@ -97,6 +106,9 @@ Feature: Homepage
 
     When I am on the homepage
     Then I should see "Mercury poisoning" as the highlighted solution
+    And I should see the link "More solutions"
+    When I click "More solutions"
+    Then I should be on the solutions overview page
 
   Scenario: An event can be highlighted on the homepage
     Given event content:

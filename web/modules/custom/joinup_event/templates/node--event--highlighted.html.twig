@@ -79,7 +79,7 @@
     'node--event--highlighted',
   ]
 %}
-<a href="/events" class="more-link">More events</a>
+{{ link('More events'|t, 'base:events', { 'class': ['more-link']}) }}
 <article{{ attributes.addClass(classes) }}>
   {% if header %}
     <header>
