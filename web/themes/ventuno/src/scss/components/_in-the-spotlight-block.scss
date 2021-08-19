@@ -1,18 +1,18 @@
 // In the Spotlight
 .block-views-blockin-the-spotlight-block {
+  @extend .pb-5;
+  border-bottom: 1px solid rgba($primary, .1);
   > h2 {
     @include font-icon-before("\E800", 1.2rem, $warning);
   }
 }
 .view-in-the-spotlight {
+  counter-reset: spotlight-counter;
   .views-row {
     display: flex;
-    flex-direction: row;
-    .views-field-counter {
-      font-size: $h3-font-size;
-      color: rgba($primary, .5);
-      width: 4rem;
-      @extend .pe-3;
+    flex-direction: column;    
+    @include media-breakpoint-up(md) {
+      flex-direction: row;
     }
     .metadata {
       color: $gray-500;
@@ -23,8 +23,21 @@
       div[class$="logo"] {
         max-width: 149px;
         float: left;
-        @extend .me-4;
+        @extend .mb-3;
+        @extend .mb-md-0;
+        @extend .me-md-4;
       }
+    }
+    &:before {
+      counter-increment: spotlight-counter;
+      content: counter(spotlight-counter,decimal-leading-zero);
+      display: inline-block;
+      font-size: $h3-font-size;
+      font-weight: 700;
+      color: rgba($primary, .3);
+      @extend .pe-3;
+      @extend .mb-2;
+      line-height: 1;
     }
   }
 }
