@@ -14,6 +14,11 @@
       width: 4rem;
       @extend .pe-3;
     }
+    .metadata {
+      color: $gray-500;
+      @extend .mt-2;
+      @extend .fs-xs;
+    }
     article {
       div[class$="logo"] {
         max-width: 149px;
