@@ -479,10 +479,6 @@ class JoinupCommunityContentContext extends RawDrupalContext {
     foreach ($columns as $i => $expected_data) {
       $actual_data = array_shift($articles);
 
-      // Check the row number.
-      $actual_row_number = $actual_data->find('css', '.views-field-counter .field-content')->getText();
-      Assert::assertEquals($i + 1, $actual_row_number, sprintf('Expected number "%d" for article %d in the "In the spotlight" section but instead found "%s".', $i + 1, $i + 1, $actual_row_number));
-
       // Check title text.
       $actual_title = $actual_data->find('css', 'h2')->getText();
       Assert::assertEquals($expected_data['title'], $actual_title, sprintf('Expected title "%s" for article %d in the "In the spotlight" section but instead found "%s".', $expected_data['title'], $i + 1, $actual_title));
