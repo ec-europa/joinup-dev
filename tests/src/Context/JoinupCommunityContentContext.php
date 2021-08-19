@@ -560,9 +560,7 @@ class JoinupCommunityContentContext extends RawDrupalContext {
       Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('The body text for the %s "%s" in the "Explore" section does not contain the expected text.', $type, $expected_data['title']));
 
       // Check date.
-      // @todo We should use our standard date format dd/mm/yyyy instead of this
-      //   weird format.
-      $expected_date = date("m/d/y", strtotime($expected_data['date']));
+      $expected_date = date("d/m/Y", strtotime($expected_data['date']));
       $xpath = '//*[text() = "' . $expected_date . '"]';
       Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('The date for the %s "%s" in the "Explore" section does not contain the expected format.', $type, $expected_data['title']));
     }

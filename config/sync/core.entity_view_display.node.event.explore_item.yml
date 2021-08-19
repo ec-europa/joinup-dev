@@ -71,7 +71,7 @@ third_party_settings:
                 label: hidden
                 settings:
                   date_format: custom
-                  custom_date_format: m/d/y
+                  custom_date_format: d/m/Y
                   timezone: ''
                 third_party_settings:
                   template_suggestion:
