@@ -13,10 +13,10 @@ dependencies:
     - field.field.node.news.field_news_referenced_solution
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_spatial_coverage
-    - field.field.node.news.field_topic
     - field.field.node.news.field_shared_in
     - field.field.node.news.field_site_featured
     - field.field.node.news.field_state
+    - field.field.node.news.field_topic
     - field.field.node.news.og_audience
     - node.type.news
   module:
@@ -35,17 +35,21 @@ content:
     type: smart_trim
     weight: 2
     settings:
-      trim_length: 600
+      trim_length: 200
       trim_type: chars
-      trim_suffix: ''
-      wrap_output: false
+      trim_suffix: …
       wrap_class: trimmed
-      more_link: false
-      more_class: more-link
       more_text: More
-      summary_handler: full
-      trim_options: {  }
-    third_party_settings: {  }
+      more_class: more-link
+      summary_handler: trim
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
     region: content
   field_topic:
     type: entity_reference_label

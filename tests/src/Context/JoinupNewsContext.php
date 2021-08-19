@@ -77,8 +77,9 @@ class JoinupNewsContext extends RawDrupalContext {
       $topic_elements = $actual_data->findAll('css', '.field--name-field-topic .field__item');
       Assert::assertEquals(count($expected_topic_titles), count($topic_elements), sprintf('Expected %d topics for the "%s" article in the "Latest news" section but found %d topics.', count($expected_topic_titles), $expected_data['title'], count($topic_elements)));
 
-      // Check the body text.
-      $actual_body = $actual_data->find('css', '.field--name-body')->getText();
+      // Check the body text. It should not contain any HTML tags.
+      $actual_body = $actual_data->find('css', '.field--name-body')->getHtml();
+      Assert::assertEquals(strip_tags($actual_body), $actual_body, sprintf('The body text for the article "%s" in the "Latest news" section should have all HTML tags stripped.', $actual_title));
       Assert::assertEquals($expected_data['body'], $actual_body, sprintf('The body text for the article "%s" in the "Latest news" section does not contain the expected text.', $actual_title));
 
       foreach ($expected_topic_titles as $j => $expected_topic_title) {
