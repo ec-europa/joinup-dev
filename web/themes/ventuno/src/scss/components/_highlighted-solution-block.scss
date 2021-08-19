@@ -1,5 +1,7 @@
 // Highlighted Solution
 .block-entityqueue--highlighted-solution {
+  @extend .pb-5;
+  border-bottom: 1px solid rgba($primary, .1);
   > h2 {
     @include font-icon-before("\E803", 1.2rem, $warning);
   }

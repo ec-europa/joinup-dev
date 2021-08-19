@@ -25,6 +25,9 @@
 .view-latest-news {
   .views-row {
     @extend .mb-4;
+    &:last-child {
+      @extend .mb-0;
+    }
   }
   .field--name-body {
     color: $gray-700;

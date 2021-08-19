@@ -8,17 +8,19 @@
       display: flex;
       flex-direction: row;
       .dated-listing--date {
-        color: rgba($primary, .5);
+        color: rgba($primary, .3);
         text-align: center;
-        min-width: 3rem;
         display: flex;
         flex-flow: column;
         @extend .pe-3;
+        line-height: 1;
         text-transform: uppercase;
+        font-weight: 700;
         .date--day {
           font-size: $h3-font-size;
         }
         .date--month {
+          line-height: 1.4;
           font-size: $h5-font-size; 
         }
       }
