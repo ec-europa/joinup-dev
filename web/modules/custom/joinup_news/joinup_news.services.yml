@@ -1,0 +1,6 @@
+services:
+  joinup_news.event_subscriber:
+    class: Drupal\joinup_news\EventSubscriber\JoinupNewsEventSubscriber
+    arguments: ['@path_processor_manager']
+    tags:
+      - { name: event_subscriber }
