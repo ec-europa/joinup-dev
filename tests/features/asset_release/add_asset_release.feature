@@ -120,6 +120,6 @@ Feature: "Add release" visibility options.
     And I should see the workflow buttons "Save as draft, Publish"
     And I fill in "Name" with "Release of the dark ship1"
     And I fill in "Release number" with "1"
-    And I fill in "Authored on" with the date "30-08-2022"
+    And I fill in "Authored on" with the date "+2 day"
     And I press "Publish"
     Then I should see the error message 'Your "Authored on" field date is greater than'
