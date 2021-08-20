@@ -209,6 +209,17 @@
   }
 }
 
+.listing__facets {
+  display: flex;
+  padding-left: 0;
+
+  li {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 1rem;
+  }
+}
+
 // Modifiers
 // --------------------------------------------------
 .listing__image--default {

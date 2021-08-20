@@ -17,7 +17,7 @@ settings:
   id: joinup_search_global_search
   label: 'Global search'
   provider: joinup_search
-  label_display: visible
+  label_display: '0'
   template_suggestion: homepage
 visibility:
   request_path:
