@@ -1,0 +1,27 @@
+{#
+/**
+ * @file
+ * Default theme implementation of a facet result item.
+ *
+ * Available variables:
+ * - value: The item value.
+ * - raw_value: The raw item value.
+ * - show_count: If this facet provides count.
+ * - count: The amount of results.
+ * - is_active: The item is active.
+ * - facet: The facet for this result item.
+ *   - id: the machine name for the facet.
+ *   - label: The facet label.
+ *
+ * @ingroup themeable
+ */
+#}
+<span class="mdl-chip mdl-chip--deletable">
+  <span class="mdl-chip__text facet-item__value">{{ value }}</span>
+  {% if is_active %}
+    <button type="button" class="facet-item__status js-facet-deactivate mdl-chip__action" aria-label="{{ 'Close'|t }}"><i class="material-icons">close</i></button>
+  {% endif %}
+  {% if show_count %}
+    <span class="facet-item__count">({{ count }})</span>
+  {% endif %}
+</span>

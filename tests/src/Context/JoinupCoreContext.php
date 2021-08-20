@@ -36,7 +36,7 @@ class JoinupCoreContext extends RawDrupalContext {
    *    Thrown when the region is not found.
    *
    * @Then the page should show( only) the( following) chip(s):
-   * @Then the page should show( only) the( following) chip(s) in the :region region:
+   * @Then the page should show( only) the( following) chip(s) in the :region( region):
    */
   public function assertChipElements(TableNode $table, ?string $region = NULL): void {
     $chips = $this->getChips($region);

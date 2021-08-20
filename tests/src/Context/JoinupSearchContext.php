@@ -630,4 +630,59 @@ class JoinupSearchContext extends RawDrupalContext {
     return reset($elements);
   }
 
+  /**
+   * Asserts that certain facet summary items are shown on the page.
+   *
+   * @param string $labels
+   *   A comma-separated list of facet item labels.
+   *
+   * @throws \Exception
+   *   Thrown when a wanted facet item is not shown in the page.
+   *
+   * @When I should see the following facet summary :labels
+   */
+  public function assertFacetSummary(string $labels): void {
+    $labels = $this->explodeCommaSeparatedStepArgument($labels);
+    $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' block-facets-summary-blocksearch-facets-summary ')]//li[contains(concat(' ', normalize-space(@class), ' '), ' facet-summary-item--facet ')]";
+    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    $present = $present_labels = [];
+
+    /** @var \Behat\Mink\Element\NodeElement $element */
+    foreach ($elements as $element) {
+      $present[] = $element->getText();
+    }
+
+    // Add label close in front of label.
+    foreach ($labels as $label) {
+      $present_labels[] = $label . ' close';
+    }
+
+    $present = array_map('trim', $present);
+    $present_labels = array_map('trim', $present_labels);
+    Assert::assertEquals($present_labels, $present);
+  }
+
+  /**
+   * Remove facet summary item that are on the page.
+   *
+   * @param string $label
+   *   A facet summary item label.
+   *
+   * @throws \Exception
+   *   Thrown when a wanted facet item is not shown in the page.
+   *
+   * @When I should remove the following facet summary :label
+   */
+  public function removeFacetSummary(string $label): void {
+
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " block-facets-summary-blocksearch-facets-summary ")]//span[text()="' . $label . '"]';
+    $element = $this->getSession()->getPage()->find('xpath', $xpath);
+
+    if (empty($element)) {
+      throw new \Exception("The $label facet summary item was not found in the page.");
+    }
+
+    $element->click();
+  }
+
 }
