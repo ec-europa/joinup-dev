@@ -192,8 +192,9 @@ Feature: Homepage
       | title | Clash of vania's |
       | state | validated        |
     And news content:
-      | title      | headline      | collection       | topic     | state     | publication date     | body |
-      | Some title | Some headline | Clash of vania's | E-justice | validated | 2021-04-26T19:09:00Z | Body |
+      | title             | headline                      | collection       | topic         | state     | publication date     | body                  |
+      | Some title        | Some headline                 | Clash of vania's | E-justice     | validated | 2021-04-26T19:09:00Z | Body                  |
+      | Internet medicine | It cures virtually everything | Clash of vania's | E-health Dpt. | validated | 2014-02-22T19:26:57Z | Electronic healthcare |
     And the "Discover topics" content listing contains:
       | type  | label                            |
       | topic | Employment and Support Allowance |
@@ -210,7 +211,7 @@ Feature: Homepage
     When I am on the homepage
     Then I should see the link "See more topics" in the "Discover topics block"
     And I should not see the text "Topic categories"
-    And I should not see the following links:
+    And I should not see the following links in the "Discover topics block":
       | Economy and Welfare  |
       | eGov                 |
       | E-health Dpt.        |
@@ -230,9 +231,10 @@ Feature: Homepage
       | Info                 |
       | Law and Justice      |
       | Social and Political |
-    When I click "E-health Dpt."
+    When I click "E-health Dpt." in the "Modal content"
     Then I should be on the advanced search page
     And the option with text "E-health Dpt." from select facet "topic" is selected
+    And the page should show the tiles "Internet medicine"
 
     Examples:
       | logged in                                          |
