@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0fd8db3b2549baee2028348b25778014",
+    "content-hash": "ae2339edbc192d1cbcec9ff0e45f6eb2",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3979,17 +3979,17 @@
         },
         {
             "name": "drupal/field_formatter_range",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/field_formatter_range.git",
-                "reference": "8.x-1.1"
+                "reference": "8.x-1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/field_formatter_range-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "8218ed565beb01866fbeda0c7e17b4c99859c601"
+                "url": "https://ftp.drupal.org/files/projects/field_formatter_range-8.x-1.2.zip",
+                "reference": "8.x-1.2",
+                "shasum": "f669d21a1ca6b42072e3e52281748a638ace5caf"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
@@ -3997,8 +3997,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1591120475",
+                    "version": "8.x-1.2",
+                    "datestamp": "1623763806",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7778,6 +7778,61 @@
             }
         },
         {
+            "name": "drupal/views_block_area",
+            "version": "1.0.0-beta3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/views_block_area.git",
+                "reference": "8.x-1.0-beta3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/views_block_area-8.x-1.0-beta3.zip",
+                "reference": "8.x-1.0-beta3",
+                "shasum": "bfc4a4b2c85545ef53f91f5f6633f7465c655494"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0-beta3",
+                    "datestamp": "1592206687",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                },
+                "patches_applied": {
+                    "Views block area missing schema @see https://www.drupal.org/project/views_block_area/issues/3157188": "https://www.drupal.org/files/issues/2020-07-06/views_block_area-missing_schema-3157188-2.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Leon Kessler",
+                    "homepage": "https://www.drupal.org/user/595374"
+                },
+                {
+                    "name": "cafuego",
+                    "homepage": "https://www.drupal.org/user/218525"
+                },
+                {
+                    "name": "nils.destoop",
+                    "homepage": "https://www.drupal.org/user/361625"
+                }
+            ],
+            "description": "Exposes all blocks as a views area.",
+            "homepage": "https://www.drupal.org/project/views_block_area",
+            "support": {
+                "source": "https://git.drupalcode.org/project/views_block_area"
+            }
+        },
+        {
             "name": "drupal/views_bulk_operations",
             "version": "2.6.0",
             "source": {
@@ -8809,7 +8864,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-10-31T20:10:45+00:00"
+            "time": "2021-06-30T06:04:10+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",
@@ -11057,7 +11112,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-08-03T19:59:39+00:00"
+            "time": "2021-07-31T00:07:16+00:00"
         },
         {
             "name": "stack/builder",
@@ -13617,16 +13672,16 @@
     "packages-dev": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.190.3",
+            "version": "3.190.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "4e641e25cc8f4d04002404afe050e25035fad0f3"
+                "reference": "b66a54a7825ce5a639fe929906746249d903ae5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4e641e25cc8f4d04002404afe050e25035fad0f3",
-                "reference": "4e641e25cc8f4d04002404afe050e25035fad0f3",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b66a54a7825ce5a639fe929906746249d903ae5d",
+                "reference": "b66a54a7825ce5a639fe929906746249d903ae5d",
                 "shasum": ""
             },
             "require": {
@@ -13698,7 +13753,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2021-08-16T18:13:42+00:00"
+            "time": "2021-08-17T18:17:31+00:00"
         },
         {
             "name": "behat/behat",
@@ -20079,6 +20134,7 @@
         "drupal/site_verify": 20,
         "drupal/subpathauto": 20,
         "drupal/swiftmailer": 20,
+        "drupal/views_block_area": 10,
         "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
