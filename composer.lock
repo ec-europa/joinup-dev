@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3edfcac07780f6de416e748640dabb04",
+    "content-hash": "10029cf9fda77a5a70039790efcdda89",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4850,6 +4850,52 @@
             }
         },
         {
+            "name": "drupal/layout_builder_component_attributes",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/layout_builder_component_attributes.git",
+                "reference": "1.2.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/layout_builder_component_attributes-1.2.1.zip",
+                "reference": "1.2.1",
+                "shasum": "b069d3d4d07defc8fe608e47d94e55af4214e4cc"
+            },
+            "require": {
+                "drupal/core": "^8.8|^9.0",
+                "neilime/php-css-lint": "^2.0|^3.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "1.2.1",
+                    "datestamp": "1623082136",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Burge",
+                    "homepage": "https://www.drupal.org/user/1826152"
+                }
+            ],
+            "description": "Allows editors to add HTML attributes to Layout Builder components (blocks)",
+            "homepage": "https://drupal.org/project/layout_builder_component_attributes",
+            "support": {
+                "source": "https://cgit.drupalcode.org/layout_builder_component_attributes",
+                "issues": "https://drupal.org/project/issues/layout_builder_component_attributes"
+            }
+        },
+        {
             "name": "drupal/linkit",
             "version": "5.0.0-beta12",
             "source": {
@@ -9549,6 +9595,58 @@
                 "jsonld"
             ],
             "time": "2020-06-16T17:45:06+00:00"
+        },
+        {
+            "name": "neilime/php-css-lint",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/neilime/php-css-lint.git",
+                "reference": "ac0cb275c7e6f98ba9ca3b94373d7ac0e64225e0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/neilime/php-css-lint/zipball/ac0cb275c7e6f98ba9ca3b94373d7ac0e64225e0",
+                "reference": "ac0cb275c7e6f98ba9ca3b94373d7ac0e64225e0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*.*",
+                "satooshi/php-coveralls": "1.*.*"
+            },
+            "bin": [
+                "scripts/php-css-lint"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CssLint\\": "src/CssLint"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Neilime",
+                    "homepage": "https://github.com/neilime",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Powerfull & memory efficiant CSS linter for PHP",
+            "homepage": "http://neilime.github.io/php-css-lint/",
+            "keywords": [
+                "css",
+                "lint",
+                "linter",
+                "syntax",
+                "validation"
+            ],
+            "time": "2018-04-09T13:05:16+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -16777,12 +16875,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pfrenssen/task-runner.git",
-                "reference": "f5a0aeb8651b8605fe5b1670951014c2542564d4"
+                "reference": "ec9791bc4426d4ab76a44aeb08dbcb353efb854d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/task-runner/zipball/f5a0aeb8651b8605fe5b1670951014c2542564d4",
-                "reference": "f5a0aeb8651b8605fe5b1670951014c2542564d4",
+                "url": "https://api.github.com/repos/pfrenssen/task-runner/zipball/ec9791bc4426d4ab76a44aeb08dbcb353efb854d",
+                "reference": "ec9791bc4426d4ab76a44aeb08dbcb353efb854d",
                 "shasum": ""
             },
             "require": {
@@ -16795,7 +16893,8 @@
             },
             "require-dev": {
                 "openeuropa/code-review": "~1.0.0-beta3",
-                "phpunit/phpunit": "~6.0||~7.0"
+                "phpunit/phpunit": "~6.0||~7.0",
+                "slevomat/coding-standard": "~6.0"
             },
             "bin": [
                 "bin/run"
@@ -16803,11 +16902,7 @@
             "type": "library",
             "extra": {
                 "enable-patching": true,
-                "composer-exit-on-patch-failure": true,
-                "patches_applied": {
-                    "Allow to pass array options to 'run' & 'exec' tasks @see https://github.com/openeuropa/task-runner/pull/137": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/137.diff",
-                    "Tokens containing digits are not supported @see https://github.com/openeuropa/task-runner/pull/145": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/145.diff"
-                }
+                "composer-exit-on-patch-failure": true
             },
             "autoload": {
                 "psr-4": {
@@ -16833,7 +16928,7 @@
             "support": {
                 "source": "https://github.com/pfrenssen/task-runner/tree/php-7.1"
             },
-            "time": "2020-05-19T11:58:57+00:00"
+            "time": "2021-09-10T10:44:20+00:00"
         },
         {
             "name": "pdepend/pdepend",
@@ -20061,6 +20156,12 @@
             "alias_normalized": "0.9.2.0",
             "version": "1.0.0.0",
             "package": "easyrdf/easyrdf"
+        },
+        {
+            "alias": "2.0.0",
+            "alias_normalized": "2.0.0.0",
+            "version": "1.1.0.0",
+            "package": "neilime/php-css-lint"
         },
         {
             "alias": "1.0.0-beta7",
