@@ -1,7 +1,14 @@
 // Latest News
 .block-views-blocklatest-news-block {
+  position: relative;
   > h2 {
     @include font-icon-before("\E804", 1.2rem, $warning);
+  }
+  .more-link {
+    position: absolute;
+    right: 0;
+    top: 12px;
+    @include font-icon-after("\E801", 1rem);
   }
   .view-latest-news  {
     article {
