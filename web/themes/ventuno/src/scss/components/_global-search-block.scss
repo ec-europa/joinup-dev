@@ -1,6 +1,7 @@
 .block-joinup-search-global-search {
   @extend .py-5;
   @extend .me-3;
+  @extend .col-lg;
   .search-bar {
     max-width: 40rem;
     .btn-search {
