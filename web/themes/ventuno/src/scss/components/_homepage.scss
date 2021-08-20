@@ -47,11 +47,12 @@
   }
 }
 
-// Region Featured  
+// Region Featured
 .region-featured {
   background-color: $gray-300;
   position: relative;
   overflow: hidden;
+  z-index: 0;
   &:before {
     content: "";
     position: absolute;
@@ -61,5 +62,6 @@
     border-radius: 50%;
     top: -200%;
     transform: translate(-50%, 0);
+    z-index: -1;
   }
 }
