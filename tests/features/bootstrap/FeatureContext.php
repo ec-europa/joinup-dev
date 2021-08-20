@@ -1207,14 +1207,18 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   A list of links.
+   * @param string $region
+   *   Optional region to check.
    *
    * @Then I (should )see the following links:
+   * @Then I (should )see the following links in the :region( region):
    */
-  public function assertLinks(TableNode $table): void {
+  public function assertLinks(TableNode $table, string $region = ''): void {
+    $region_element = $region ? $this->getRegion($region) : $this->getSession()->getPage();
     $links = $table->getColumn(0);
     $errors = [];
     foreach ($links as $link) {
-      $element = $this->getSession()->getPage()->findLink($link);
+      $element = $region_element->findLink($link);
       if (empty($element)) {
         $errors[] = $link;
       }
@@ -1234,14 +1238,18 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   A list of links.
+   * @param string $region
+   *   Optional region to check.
    *
    * @Then I should not see the following links:
+   * @Then I should not see the following links in the :region( region):
    */
-  public function assertNoLinks(TableNode $table): void {
+  public function assertNoLinks(TableNode $table, string $region = ''): void {
+    $region_element = $region ? $this->getRegion($region) : $this->getSession()->getPage();
     $links = $table->getColumn(0);
     $errors = [];
     foreach ($links as $link) {
-      $element = $this->getSession()->getPage()->findLink($link);
+      $element = $region_element->findLink($link);
       if (!empty($element)) {
         $errors[] = $link;
       }
