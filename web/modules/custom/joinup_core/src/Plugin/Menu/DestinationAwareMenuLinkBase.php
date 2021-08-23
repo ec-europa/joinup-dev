@@ -15,9 +15,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Provides abstract menu link class.
+ * Provides a base class for 'destination' query argument in Joinup.
  */
-class DestinationAwareMenuLinkBase extends MenuLinkDefault {
+abstract class DestinationAwareMenuLinkBase extends MenuLinkDefault {
 
   use RedirectDestinationTrait;
 
@@ -127,9 +127,7 @@ class DestinationAwareMenuLinkBase extends MenuLinkDefault {
     // If a 'destination' query argument exists, then this is what the user
     // should return to.
     if ($request->query->has('destination')) {
-      // The path should start with a slash.
-      $destination = '/' . ltrim($request->query->get('destination'), '/');
-      $return_to = Url::fromUserInput($destination)->setAbsolute()->toString();
+      $return_to = $this->getRedirectDestination()->get();
     }
     // If we are on the homepage, set the 'destination' path to '/' alias.
     elseif ($this->pathMatcher->isFrontPage()) {
