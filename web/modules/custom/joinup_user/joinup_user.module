@@ -638,16 +638,6 @@ function joinup_user_local_tasks_alter(&$local_tasks) {
 }
 
 /**
- * Implements hook_preprocess_page().
- *
- * Adds a destination parameter to the 'Sign in' menu item on every page towards
- * the current page.
- */
-function joinup_user_preprocess_page(&$variables) {
-  $variables['#attached']['library'][] = 'joinup_user/sign_in_destination';
-}
-
-/**
  * Implements hook_entity_type_alter().
  */
 function joinup_user_entity_type_alter(array &$entity_types) {
