@@ -30,6 +30,7 @@ permissions:
   - 'edit own document content'
   - 'edit own event content'
   - 'edit own news content'
+  - 'edit own tallinn_report content'
   - 'post comments'
   - 'share discussion content'
   - 'share document content'
