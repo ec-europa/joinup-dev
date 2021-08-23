@@ -13,9 +13,10 @@ Feature: Submit the contact form
 
     # There should be a link to the contact form in the footer.
     Given I am not logged in
-    When I am on the homepage
+    When I visit "/?destination=/collections"
     And I click "Contact Joinup Support" in the "Footer" region
-    Then I should see the heading "Contact"
+    Then I am on "/contact?destination=/collections"
+    And I should see the heading "Contact"
     And the "Category" select should contain the following options:
       | - Select a value -             |
       | Technical problem / bug report |
@@ -31,7 +32,8 @@ Feature: Submit the contact form
     And I am on the homepage
 
     Then I click "Contact Joinup Support" in the "Footer" region
-    When I fill in the following:
+    When I am on "/contact?destination=/homepage"
+    And I fill in the following:
       | First name     | Oswine                      |
       | Last name      | Wulfric                     |
       | Organisation   | The Deaf-Mute Society       |

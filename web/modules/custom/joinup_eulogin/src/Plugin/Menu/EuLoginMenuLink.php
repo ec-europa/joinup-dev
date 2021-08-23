@@ -36,8 +36,8 @@ class EuLoginMenuLink extends DestinationAwareMenuLinkBase {
   public function getOptions(): array {
     $options = parent::getOptions();
 
-    unset($options['query']['destination']);
     $options['query']['returnto'] = $this->getRedirectDestination()->get();
+    unset($options['query']['destination']);
 
     return $options;
   }

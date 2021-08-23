@@ -43,14 +43,17 @@ Feature:
     When I am on the homepage
     Then I should see the link "Take a tour"
     And I should see the link "Contact support"
+    And the response should contain "<a href=\"/contact?destination=/homepage\" class=\"support-menu__link\" data-drupal-link-query=\"{&quot;destination&quot;:&quot;\/homepage&quot;}\" data-drupal-link-system-path=\"contact\">Contact support</a>"
 
     When I go to "/collections"
     Then I should not see the link "Take a tour"
     But I should see the link "Contact support"
+    And the response should contain "<a href=\"/contact?destination=/collections\" class=\"support-menu__link\" data-drupal-link-query=\"{&quot;destination&quot;:&quot;\/collections&quot;}\" data-drupal-link-system-path=\"contact\">Contact support</a>"
 
     When I go to "/keep-up-to-date"
     Then I should see the link "Take a tour"
     And I should see the link "Contact support"
+    And the response should contain "<a href=\"/contact?destination=/keep-up-to-date\" class=\"support-menu__link\" data-drupal-link-query=\"{&quot;destination&quot;:&quot;\/keep-up-to-date&quot;}\" data-drupal-link-system-path=\"contact\">Contact support</a>"
 
     When I go to the homepage of the "Hotel California" collection
     Then I should see the link "Take a tour"
