@@ -1,4 +1,5 @@
 .block-views-blockdiscover-topics-block {
+  @extend .col-lg;
   > h2 {
     font-size: $font-size-sm;
     font-weight: $display-font-weight;
