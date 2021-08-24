@@ -170,7 +170,7 @@ variant_settings:
             component_attributes:
               block_attributes:
                 id: ''
-                class: about-how
+                class: about-how mt-4
                 style: ''
                 data: ''
               block_title_attributes:
