@@ -1,4 +1,11 @@
 // Explore
+
+// Temporarily hidding horizontal-scroll on window.
+html,
+body {
+  overflow-x: hidden;
+}
+
 .block-joinup-front-page-explore-block {
   position: relative;
   @extend .mb-5;
@@ -6,10 +13,10 @@
     $gray-200,
     $white,
     8rem,
-    2rem,
+    3rem,
     $gray-200,
     0,
-    2rem
+    3rem
   );
   > h2 {
     text-transform: uppercase;
@@ -20,15 +27,19 @@
     border-bottom: 1px solid rgba($primary, .1);
   }
   .nav-tabs {
-    position: absolute;
-    top: 2.6rem;
-    right: 0;
     border: none;
+    @extend .mb-3;
+    @include media-breakpoint-up(md) {
+      position: absolute;
+      top: $spacer * 3;
+      right: 0;
+    }
     .nav-link {
       border: none;
       background: none;
       padding: 0 0 $btn-padding-y 0;
-      margin: $spacer;
+      @extend .m-2;
+      @extend .m-lg-4;
       color: $gray-500;
       &.active {
         color: $black;
@@ -45,6 +56,44 @@
       }
       .tab-data {
         display: flex;
+        position: relative;
+        
+        // Temporary slide animation.
+        animation:slide 14s infinite;
+        @keyframes slide{
+          0%,100% {
+            margin-left:0%;
+          }
+
+          12% {
+            margin-left:0%;
+          }
+
+          24% {
+            margin-left:-50%;
+          }
+
+          36% {
+            margin-left:-50%;
+          }
+
+          48% {
+            margin-left:-100%;
+          }
+
+          60% {
+            margin-left:-100%;
+          }
+
+          72% {
+            margin-left:-150%;
+          }
+
+          84% {
+            margin-left:-150%;  
+          }
+        }
+
         article {
           background-color: $white;
           border-radius: $border-radius;
