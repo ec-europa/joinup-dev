@@ -1,13 +1,17 @@
 // Highlighted Event
 .block-entityqueue--highlighted-event {
   position: relative;
+  @extend .mb-5;
   > h2 {
     @include font-icon-before("\F133", 1.2rem, $warning);
   }
   .more-link {
     position: absolute;
-    right: 0;
-    top: 12px;
+    bottom: -2rem;
+    @include media-breakpoint-up(md) {
+      right: 0;
+      top: 12px;
+    }
     @include font-icon-after("\E801", 1rem);
   }
   article {
