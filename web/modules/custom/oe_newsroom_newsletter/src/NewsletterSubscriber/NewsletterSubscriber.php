@@ -19,7 +19,7 @@ class NewsletterSubscriber implements NewsletterSubscriberInterface {
   /**
    * The URL for the Newsroom newsletter subscription API endpoint.
    */
-  const NEWSROOM_NEWSLETTER_SUBSCRIPTION_URL = 'http://ec.europa.eu/newsroom/{universe}/subscription-quick-generic.cfm';
+  const NEWSROOM_NEWSLETTER_SUBSCRIPTION_URL = 'https://ec.europa.eu/newsroom/api/v1/subscriptions';
 
   /**
    * The HTTP client.
