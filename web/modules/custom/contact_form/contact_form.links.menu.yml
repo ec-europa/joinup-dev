@@ -2,5 +2,5 @@ contact_form.contact:
   title: 'Contact Joinup Support'
   weight: 0
   url: 'internal:/contact'
-  class: Drupal\contact_form\Plugin\Menu\ContactSupportMenuLink
   menu_name: footer
+  destination: true
