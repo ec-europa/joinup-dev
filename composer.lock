@@ -5200,7 +5200,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/menu_link_destination.git",
-                "reference": "ebef5e4b05972f1318527ebdea79670f36679d37"
+                "reference": "942c977395b77b079971a78ed03ca4190dbd709a"
             },
             "require": {
                 "drupal/core": "^8.9 || ^9.1"
@@ -5241,7 +5241,7 @@
                 "source": "https://git.drupalcode.org/project/menu_link_destination",
                 "issues": "https://www.drupal.org/project/issues/menu_link_destination"
             },
-            "time": "2021-08-25T08:02:10+00:00"
+            "time": "2021-08-25T09:02:12+00:00"
         },
         {
             "name": "drupal/message",
