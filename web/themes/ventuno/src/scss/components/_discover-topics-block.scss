@@ -41,14 +41,15 @@
   }
 }
 
+.ui-widget-overlay {
+  background-color: $primary;
+  opacity: .2;
+}
 .ui-dialog {
   &.ui-widget-content {
     border: none;
     border-radius: $btn-border-radius;
     @extend .pb-2;
-  }
-  .ui-widget-overlay {
-    opacity: .6;
   }
   .ui-widget-header {
     background: none;
@@ -74,6 +75,7 @@
     overflow-y: scroll;
     max-height: 70vh !important;
     .views-field-name {
+      @extend .mb-1;
       a {
         color: $brand;
       }
