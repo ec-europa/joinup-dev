@@ -862,7 +862,7 @@ class JoinupContext extends RawDrupalContext {
    * Fills a date or time field at a datetime widget.
    *
    * Examples:
-   * - When I fill in "Start date" with the date "29-08-2016".
+   * - When I fill in "Start date" with the date "2016-08-29".
    * - When I fill in "Start date" with the date "+2 days".
    * - When I fill in "Start date" with the time "26:59:00".
    * - When I fill in "Start date" with the time "+1 hour".
@@ -885,7 +885,7 @@ class JoinupContext extends RawDrupalContext {
     $is_relative_value = $date_component === 'date' ? preg_match('/^\d{2}-\d{2}-\d{4}$/', $value) === 0 : preg_match('/^\d{2}:\d{2}:\d{2}$/', $value) === 0;
 
     if ($is_relative_value) {
-      $value = date('d-m-Y', strtotime($value));
+      $value = date('Y-m-d', strtotime($value));
     }
 
     $field_selectors = $this->findDateFields($field_group);

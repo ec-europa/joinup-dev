@@ -354,7 +354,8 @@ function asset_release_form_alter(&$form, FormStateInterface $form_state, string
  */
 function _asset_release_edit_date_validate(array &$form, FormStateInterface $form_state): void {
   $dt_now = new DateTime();
-  $date_value = $form_state->getValue('created')[0]['value'];
+  $values = $form_state->getValues();
+  $date_value = $values['created'][0]['value'];
   if ($date_value->format('c') > $dt_now->format('c')) {
     $form_state->setErrorByName('created', t('Your "Authored on" field date is greater than @date', ['@date' => $dt_now->format('c')]));
   }
