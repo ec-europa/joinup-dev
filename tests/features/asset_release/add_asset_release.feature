@@ -105,7 +105,6 @@ Feature: "Add release" visibility options.
     And I go to "/rdf_entity/http_e_f_fexample1regression/asset_release/add"
     Then I should see the heading "Page not found"
 
-  @javascript
   Scenario: Check publish time release is present time and past.
     Given the following owner:
       | name                     | type    |
