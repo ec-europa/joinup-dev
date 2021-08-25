@@ -18,15 +18,21 @@
   {{ title_prefix }}
   {{ title_suffix }}
   {% block content %}
-    {{ logo }}
-    {{ content.field_topic }}
-    <h2{{ title_attributes }}>
-      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-    </h2>
-    {{ content.body }}
-    <div class="metadata">
-      <span class="date pe-3">{{ date }}</span>
-      <span class="type">{{ type }}</span>
+    <div class="row">
+      <div class="col-md-2 mb-3">
+        {{ logo }}
+      </div>
+      <div class="col-md-10">
+        {{ content.field_topic }}
+        <h2{{ title_attributes }}>
+          <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+        </h2>
+        {{ content.body }}
+        <div class="metadata">
+          <span class="date pe-3">{{ date }}</span>
+          <span class="type">{{ type }}</span>
+        </div>
+      </div>
     </div>
   {% endblock %}
 </article>
