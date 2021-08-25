@@ -82,16 +82,16 @@ default:
       paths: *paths
       filters:
         tags: '~@wip&&~@javascript&&@group-b'
-    selenium:
-      contexts: *contexts
-      paths: *paths
-      filters:
-        tags: '~@wip&&@javascript'
     rest:
       contexts: *contexts
       paths: *paths
       filters:
         tags: '~@wip&&~@javascript&&~@group-a&&~@group-b'
+    selenium:
+      contexts: *contexts
+      paths: *paths
+      filters:
+        tags: '~@wip&&@javascript'
   extensions:
     Drupal\MinkExtension:
       base_url: ${env.DRUPAL_BASE_URL}
