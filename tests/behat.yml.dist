@@ -22,6 +22,7 @@ default:
         - Drupal\joinup\Context\EifContext
         - Drupal\joinup\Context\EntityQueueContext
         - Drupal\joinup\Context\EuplContext
+        - Drupal\joinup\Context\HomepageContext
         - Drupal\joinup\Context\Isa2AnalyticsContext
         - Drupal\joinup\Context\JoinupCommunityContentContext
         - Drupal\joinup\Context\JoinupContext
