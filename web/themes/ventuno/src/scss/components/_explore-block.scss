@@ -58,7 +58,7 @@ body {
         article {
           background-color: $white;
           border-radius: $border-radius;
-          max-width: 352px;
+          max-width: 352px !important;
           @extend .p-4;
           @extend .me-4;
           @extend .shadow;
