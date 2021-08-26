@@ -70,7 +70,7 @@ body {
               color: $gray-800;
             }
           }
-          div[class$="description"] {
+          .explore-item__description {
             color: $gray-600;
             @extend .mb-4;
           }
