@@ -241,7 +241,7 @@ Feature: Homepage
       | am not logged in                                   |
       | am logged in as a user with the authenticated role |
 
-  @terms @a
+  @terms
   Scenario: Explore block shows a list of news.
     Given users:
       | Username     | E-mail                   |
