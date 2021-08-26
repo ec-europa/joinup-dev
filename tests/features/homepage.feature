@@ -10,9 +10,8 @@ Feature: Homepage
     When I reload the page
     Then the page should be cached
     And I should see the following lines of text:
-      | Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme.    |
-      | Joinup offers several services that aim to help e-Government professionals share their experience with each other. Joinup supports them to find, choose, re-use, develop and implement interoperability solutions. |
-      | For fresh start on creating content                                                                                                                                                                                |
+      | The European Commission created Joinup to provide a common venue that enables public administrations, businesses and citizens to share and reuse IT solutions and good practices, and facilitate communication and collaboration on IT projects across Europe. |
+      | Joinup offers several services that aim to help e-Government professionals share their experience with each other. Joinup supports them to find, choose, re-use, develop and implement interoperability solutions.                                             |
     And I should see the following links:
       | How to video |
       | Guided tour  |
