@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: homepage
 label: Homepage
-description: ''
+description: 'Used to render the About section in the homepage. This is injected in the homepage template `page--home.html.twig`. See `ventuno_preprocess_page__home()`.'
 use_admin_theme: false
 path: /home
 access_logic: and
