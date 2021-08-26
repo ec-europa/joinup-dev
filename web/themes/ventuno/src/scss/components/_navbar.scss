@@ -20,10 +20,6 @@
       letter-spacing: $font-size-base; // 1.6px
     }
   }
-  .navbar-collapse {
-    border-bottom-right-radius: $border-radius;
-    border-bottom-left-radius: $border-radius;
-  }
   .navbar-nav {
     justify-content: flex-end;
     width: 100%;
@@ -54,8 +50,6 @@
     position: absolute;
     z-index: 1;
     background: $primary;
-    border-bottom-right-radius: $border-radius;
-    border-bottom-left-radius: $border-radius;
     box-shadow: $box-shadow;
     margin-top: 1px;
     @include media-breakpoint-between(xs, md) {
