@@ -101,7 +101,7 @@
       <span class="navbar-motto d-none d-md-block">{{ _brand.motto }}</span>
     {% endif %}
 
-    <div class="collapse navbar-collapse" id="{{ _collapse_id }}">
+    <div class="collapse navbar-collapse rounded-bottom" id="{{ _collapse_id }}">
       <ul 
         {{ list_attributes }}
       >
@@ -135,7 +135,7 @@
               </span>
               <div 
                 id="collapse-{{ button.id }}"
-                class="accordion-collapse collapse"
+                class="accordion-collapse collapse rounded-bottom"
                 aria-labelledby="heading-{{ button.id }}"
                 data-bs-parent="#{{ _collapse_id }}"
                 >
@@ -178,7 +178,7 @@
               </span>
               <div 
                 id="collapse-{{ button.id }}"
-                class="accordion-collapse collapse"
+                class="accordion-collapse collapse rounded-bottom"
                 aria-labelledby="heading-{{ button.id }}"
                 data-bs-parent="#{{ _collapse_id }}"
                 >
