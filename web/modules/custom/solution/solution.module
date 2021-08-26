@@ -714,6 +714,9 @@ function solution_preprocess_rdf_entity(&$variables) {
 /**
  * Sync the solution settings with the corresponding entity.
  *
+ * Stores the values of the related solutions of a solution to a meta entity in
+ * order to handle the deltas.
+ *
  * @param \Drupal\solution\Entity\SolutionInterface $entity
  *   The solution entity.
  */
