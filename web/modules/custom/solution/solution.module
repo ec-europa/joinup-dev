@@ -19,6 +19,7 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
+use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
 use Drupal\og\OgRoleInterface;
@@ -149,6 +150,7 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
     $membership->save();
   }
   solution_invalidate_collection($entity);
+  solution_sync_settings($entity);
 }
 
 /**
@@ -601,6 +603,7 @@ function solution_rdf_entity_update(EntityInterface $entity) {
     \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'default');
   }
   solution_invalidate_collection($entity);
+  solution_sync_settings($entity);
 }
 
 /**
@@ -705,5 +708,60 @@ function solution_preprocess_rdf_entity(&$variables) {
   // If the solution is shared somewhere, attach the related library.
   if ($rdf_entity->hasField('field_is_shared_in') && !$rdf_entity->get('field_is_shared_in')->isEmpty()) {
     $variables['#attached']['library'][] = 'joinup_theme/shared_entity';
+  }
+}
+
+/**
+ * Sync the solution settings with the corresponding entity.
+ *
+ * @param \Drupal\solution\Entity\SolutionInterface $entity
+ *   The solution entity.
+ */
+function solution_sync_settings(SolutionInterface $entity): void {
+  $repository = \Drupal::getContainer()->get('meta_entity.repository');
+  $meta_entity = $repository->getMetaEntityForEntity($entity, 'solution_settings');
+  if (empty($meta_entity)) {
+    $meta_entity = MetaEntity::create([
+      'type' => 'solution_settings',
+      'target' => $entity,
+    ]);
+  }
+
+  // Avoid saving an extra entity without need.
+  if ($meta_entity->get('field_ss_related_solutions')->equals($entity->get('field_is_related_solutions'))) {
+    return;
+  }
+
+  $meta_entity->set('field_ss_related_solutions', $entity->get('field_is_related_solutions')->getValue());
+  $meta_entity->save();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_load().
+ *
+ * Syncs the order of the related solutions back to the entity.
+ */
+function solution_rdf_entity_load($entities) {
+  static $is_loop = FALSE;
+  $repository = \Drupal::getContainer()->get('meta_entity.repository');
+  foreach ($entities as $entity) {
+    if (!($entity instanceof SolutionInterface)) {
+      continue;
+    }
+
+    if (isset($is_loop) and $is_loop === TRUE) {
+      return;
+    }
+    $is_loop = TRUE;
+
+    if (!($meta_entity = $repository->getMetaEntityForEntity($entity, 'solution_settings'))) {
+      return;
+    }
+
+    if ($meta_entity->get('field_ss_related_solutions')->isEmpty()) {
+      return;
+    }
+
+    $entity->set('field_is_related_solutions', $meta_entity->get('field_ss_related_solutions')->getValue());
   }
 }
