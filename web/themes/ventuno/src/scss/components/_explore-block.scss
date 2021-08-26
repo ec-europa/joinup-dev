@@ -49,59 +49,20 @@ body {
     }
   }
   .tab-content {
+    width: 100vw;
     .tab-pane {
-      flex-flow: row nowrap;
       .see-more {
         display: block;
       }
       .tab-data {
-        display: flex;
-        position: relative;
-        
-        // Temporary slide animation.
-        animation:slide 14s infinite;
-        @keyframes slide{
-          0%,100% {
-            margin-left:0%;
-          }
-
-          12% {
-            margin-left:0%;
-          }
-
-          24% {
-            margin-left:-50%;
-          }
-
-          36% {
-            margin-left:-50%;
-          }
-
-          48% {
-            margin-left:-100%;
-          }
-
-          60% {
-            margin-left:-100%;
-          }
-
-          72% {
-            margin-left:-150%;
-          }
-
-          84% {
-            margin-left:-150%;  
-          }
-        }
-
         article {
           background-color: $white;
           border-radius: $border-radius;
+          max-width: 352px;
           @extend .p-4;
           @extend .me-4;
           @extend .shadow;
           h2 {
-            width: 290px;
             font-size: $h4-font-size;
             @extend .fw-medium;
             line-height: $line-height-base;
@@ -128,5 +89,34 @@ body {
         }
       }
     }
+  }
+}
+
+.splide {
+  padding-top: 1rem;
+  .splide__arrows {
+    display: flex;
+    float: left;
+    @extend .me-4;
+  }
+  .splide__arrow {
+    background-color: $white;
+    transform: none;
+    svg {
+      width: .8em;
+      height: .8em;
+    }
+  }
+  .splide__arrow--prev {
+    left: 0;
+    position: relative;
+  }
+  .splide__arrow--next {
+    right: 0;
+    position: relative;
+    margin-left: 1rem;
+  }
+  .splide__list {
+    padding: 10px 0 !important;
   }
 }
