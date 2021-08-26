@@ -128,7 +128,23 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: {  }
+            additional:
+              component_attributes:
+                block_attributes:
+                  id: ''
+                  class: date
+                  style: ''
+                  data: ''
+                block_title_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+                block_content_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
             weight: 2
           cfb0335f-0df9-4e8c-bafe-65b6909590ae:
             uuid: cfb0335f-0df9-4e8c-bafe-65b6909590ae
