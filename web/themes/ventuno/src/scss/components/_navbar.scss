@@ -168,7 +168,6 @@
     &:focus {
       color: $white;
       outline: 1px dotted white; // Accordion resets
-      // box-shadow: 0 -4px 0 0 $white inset;
     }
     &:not(:last-of-type) {
       margin-right: 0.5*$spacer; // 8px
