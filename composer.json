@@ -33,6 +33,7 @@
         "drupal/entityqueue": "^1.2",
         "drupal/error_page": "^1.0",
         "drupal/facets": "1.6.0",
+        "drupal/facets_form": "1.x-dev@dev",
         "drupal/field_delimiter": "^1.1",
         "drupal/field_formatter_range": "^1.1",
         "drupal/field_group": "^3.1",
