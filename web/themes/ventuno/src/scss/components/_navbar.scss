@@ -2,78 +2,34 @@
   background-color: $primary;
   box-shadow: $box-shadow;
   padding: 0;
-
-  @include media-breakpoint-between(xs, md) {
-    // height: 54px;
-  }
-
-  @include media-breakpoint-up(md) {
-    height: 72px;
-  }
-
   .navbar-brand {
-    font-size: .75rem; // 12px
+    font-size: $font-size-xs; // 12px
   }
-
   .navbar-brand-image {
-
     @include media-breakpoint-between(xs, md) {
       width: 6rem; // 96px
     }
-
     @include media-breakpoint-up(md) {
       width: 8rem; // 128px
     }
   }
-
   .navbar-motto {
-
-    @include media-breakpoint-between(xs, md) {
-      display: none;
-    }
-
     @include media-breakpoint-up(md) {
-      font-size: .875rem; // 14px
+      font-size: $font-size-sm; // 14px
       color: $white;
-      letter-spacing: .1rem; // 1.6px
+      letter-spacing: $font-size-base; // 1.6px
     }
-
   }
-
-  .navbar-toggler {
-    padding: $spacer*.75 0; // 12px 0
-    color: $white;
-    border: none;
-    border-radius: 0;
-
-    &:focus {
-      outline: none;
-      box-shadow: 0 -4px 0 0 $white inset;
-    }
-
-    &:not([aria-expanded="false"]) {
-      box-shadow: 0 -2px 0 0 $white inset;
-    }
-
-    .navbar-toggler-icon {
-      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-    }
-
-  }
-
   .navbar-collapse {
     border-bottom-right-radius: $border-radius;
     border-bottom-left-radius: $border-radius;
   }
-
   .navbar-nav {
     justify-content: flex-end;
     width: 100%;
   }
-
   .nav-item {
     list-style: none;
-
     @include media-breakpoint-up(md) {
       padding: 0 $spacer*.5; // 0 8px
       &:last-of-type {
@@ -81,25 +37,19 @@
       }
     }
   }
-
   .nav-link {
     font-weight: $font-weight-medium;
     color: $white;
-
     @include media-breakpoint-between(xs, md) {
       padding: $spacer*.75 0; // 12px 0
     }
-
     @include media-breakpoint-up(md) {
       padding: $spacer*1.5 0; // 24px 8px
     }
-
     &:hover {
       color: $gray-200;
     }
-
   }
-
   .accordion-collapse {
     position: absolute;
     z-index: 1;
@@ -108,47 +58,36 @@
     border-bottom-left-radius: $border-radius;
     box-shadow: $box-shadow;
     margin-top: 1px;
-
     @include media-breakpoint-between(xs, md) {
       padding: $spacer*.875 $spacer; // 14px 16px
     }
-
     @include media-breakpoint-up(md) {
       max-width: 20*$spacer; // 320px
       padding: $spacer $spacer*1.5; // 16px 24px
     }
-
     @include media-breakpoint-between(xs, sm) {
       right: $spacer*.75;
     }
-
     @include media-breakpoint-between(sm, md) {
       right: calc(50% - 258px);
     }
-
     @include media-breakpoint-between(md, lg) {
       right: calc(50% - 348px);
     }
-    
     @include media-breakpoint-between(lg, xl) {
       right: calc(50% - 468px);
     }
-
-    @include media-breakpoint-only(xl) {
+    @include media-breakpoint-between(xl, xxl) {
       right: calc(50% - 558px);
     }
-
-    @media (min-width: 1400px) {
+    @include media-breakpoint-up(xxl) {
       right: calc(50% - 648px);
     }
-
   }
-
   .accordion-body {
     padding: 0; // Accordion resets
     color: $white;
   }
-
   .accordion-item {
     &:first-of-type,
     &:last-of-type {
@@ -160,58 +99,44 @@
     background-color: transparent;// Accordion resets
     border: none;// Accordion resets
   }
-
   .accordion-title {
     margin-bottom: 0.25*$spacer; // 4px
     font-weight: $font-weight-medium;
-
     @include media-breakpoint-between(xs, md) {
       margin-top: 0.5*$spacer; // 8px
-      font-size: 0.875rem; // 14px
+      font-size: $font-size-sm; // 14px
     }
-
     @include media-breakpoint-up(md) {
-      font-size: 1rem; // 16px
+      font-size: $font-size-base; // 16px
     }
-
   }
-
   .accordion-text {
-
     @include media-breakpoint-between(xs, md) {
       margin-bottom: 0.25*$spacer; // 4px
-      font-size: 0.75rem; // 12px
+      font-size: $font-size-xs; // 12px
     }
-
     @include media-breakpoint-up(md) {
       margin-bottom: 0;
-      font-size: 0.825rem; // 13.2px
+      font-size: $font-size-sm; // 14px
     }
-
   }
   .accordion-cta {
-
     margin-bottom: 0;
     text-align: right;
-    
     @include media-breakpoint-between(xs, md) {
-      font-size: 0.825rem; // 13.2px
+      font-size: $font-size-sm; // 14px
     }
     @include media-breakpoint-up(md) {
-      font-size: 1rem; // 16px
+      font-size: $font-size-base; // 16px
     }
-
   }
-
   .accordion-cta-link {
     color: $white;
     text-decoration: none;
-
     &:hover {
       color: $gray-200;
       text-decoration: none;
     }
-    
     .bi {
       @include media-breakpoint-between(xs, md) {
         width: $spacer; // 16px
@@ -226,17 +151,14 @@
       }
     }
   }
-
   .accordion-item .accordion-button {
     color: $white;
     background-color: transparent; // Accordion resets
     border: none; // Accordion resets
     border-radius: 0; // Accordion resets
-    
     &.collapsed {
       border: none; // Accordion resets
     }
-
     &:not([aria-expanded="false"]) {
       box-shadow: 0 -2px 0 0 $white inset;
       color: $white;
@@ -249,36 +171,26 @@
       background: none; // Accordion resets
       transition: none; // Accordion resets
     }
-
     &:focus {
       color: $white;
       outline: 1px dotted white; // Accordion resets
       // box-shadow: 0 -4px 0 0 $white inset;
     }
-
-
     &:not(:last-of-type) {
       margin-right: 0.5*$spacer; // 8px
     }
-
     .bi {
-
       @include media-breakpoint-between(xs, md) {
         width: 1.375*$spacer; // 22px
         height: 1.375*$spacer; // 22px  
       }
-  
       @include media-breakpoint-up(md) {
         width: 1.5*$spacer; // 30px
         height: 1.5*$spacer; // 30px  
       }
-
     }
-
   }
-
   .bi + .accordion-button-label {
-    
     // Hide the label on mobile when combined with an icon
     @include media-breakpoint-between(xs, md) {
       display: none;
@@ -286,30 +198,21 @@
     @include media-breakpoint-up(md) {
       margin-left: 0.5*$spacer; // 8px
     }
-
   }
-
   .accordion-list {
     padding-left: 0;
   }
-
   .accordion-list-item {
     list-style: none;
-
     &:not(:last-of-type) {
       margin-bottom: $spacer; // 16px
     }
-
   }
-
   .accordion-list-link {
     color: $white;
-
     &:hover {
       color: $white;
       text-decoration: none;
     }
-
   }
-
 }
