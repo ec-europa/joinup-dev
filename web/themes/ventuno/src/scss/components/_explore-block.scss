@@ -57,7 +57,7 @@ body {
       .tab-data {
         display: flex;
         position: relative;
-        
+
         // Temporary slide animation.
         animation:slide 14s infinite;
         @keyframes slide{
@@ -90,7 +90,7 @@ body {
           }
 
           84% {
-            margin-left:-150%;  
+            margin-left:-150%;
           }
         }
 
@@ -109,7 +109,7 @@ body {
               color: $gray-800;
             }
           }
-          div[class$="description"] {
+          .explore-item__description {
             color: $gray-600;
             @extend .mb-4;
           }
