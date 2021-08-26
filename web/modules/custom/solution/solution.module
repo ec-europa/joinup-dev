@@ -718,6 +718,10 @@ function solution_preprocess_rdf_entity(&$variables) {
  *   The solution entity.
  */
 function solution_sync_settings(SolutionInterface $entity): void {
+  if (!\Drupal::moduleHandler()->moduleExists('meta_entity')) {
+    // Allow solution to not depend on meta_entity.
+    return;
+  }
   $repository = \Drupal::getContainer()->get('meta_entity.repository');
   $meta_entity = $repository->getMetaEntityForEntity($entity, 'solution_settings');
   if (empty($meta_entity)) {
@@ -743,6 +747,10 @@ function solution_sync_settings(SolutionInterface $entity): void {
  */
 function solution_rdf_entity_load($entities) {
   static $is_loop = FALSE;
+  if (!\Drupal::moduleHandler()->moduleExists('meta_entity')) {
+    // Allow solution to not depend on meta_entity.
+    return;
+  }
   $repository = \Drupal::getContainer()->get('meta_entity.repository');
   foreach ($entities as $entity) {
     if (!($entity instanceof SolutionInterface)) {
