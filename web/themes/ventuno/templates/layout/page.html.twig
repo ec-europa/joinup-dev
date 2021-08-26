@@ -79,34 +79,74 @@
 
   {{ page.content_bottom }}
 
-  <footer role="contentinfo">
-    {{ page.footer }}
+  {% if page.footer %}
+    <footer role="contentinfo" class="page__footer bg-primary">
+      <div class="container text-light">
+        <div class="row py-4 py-lg-5">
+        {#  {{ page.footer }} #}
 
-    <p class="joinup-version"><a href="{{ version_url }}">{{ version }}</a></p>
-    <div class="social-media">
-      <h3>{{ 'Follow us'|t }}:</h3>
-      <ul>
-        <li>
-          <a href="https://www.linkedin.com/groups/2600644/">{{ 'LinkedIn'|t }}</a>
-        </li>
-        <li>
-          <a href="http://twitter.com/Joinup_eu">{{ 'Twitter'|t }}</a>
-        </li>
-        <li>
-          <a href="http://ec.europa.eu/newsroom/joinup/newsletter-specific-archive-issue.cfm?newsletter_service_id=877&lang=default">{{ 'Joinup Newsletter'|t }}</a>
-        </li>
-      </ul>
-    </div>
-    <div class="ec-menu">
-      <ul>
-        <li><a href="http://ec.europa.eu/info/about-commissions-new-web-presence_en">{{ 'About the Commission\'s new web presence'|t }}</a></li>
-        <li><a href="http://ec.europa.eu/info/resources-partners_en">{{ 'Resources for partners'|t }}</a></li>
-        <li><a href="http://ec.europa.eu/info/cookies_en">{{ 'Cookies'|t }}</a></li>
-        <li><a href="/joinup/legal-notice">{{ 'Legal notice'|t }}</a></li>
-        <li><a href="http://ec.europa.eu/info/contact_en">{{ 'Contact'|t }}</a></li>
-        <li><a href="http://ec.europa.eu/info/europa-analytics_en">{{ 'Europa Analytics' }}</a></li>
-      </ul>
-    </div>
-  </footer>
+         <!--Joinup logo-->
+          <div class="col-md-12 col-lg-3 joinup-logo">
+            <p><a href="/" class="joinup-logo-white mb-4"><span class="visually-hidden">{{ 'Joinup'|t }}</span></a></p>
+          </div>
+
+          <!--About us menu-->
+          <div class="col-md-3 col-lg-2 about-us-menu">
+            <h3>{{ 'About us'|t }}</h3>
+            <ul class="list-unstyled">
+              <li><a href="/about">{{ 'About Joinup'|t }}</a></li>
+              <li><a href="/support">{{ 'Contact Joinup Support'|t }}</a></li>
+            </ul>
+          </div>
+
+          <!--Help and support menu-->
+          <div class="col-md-3 col-lg-2 help-support-menu">
+            <h3>{{ 'Help and support'|t }}</h3>
+            <ul class="list-unstyled">
+              <li><a href="#">{{ 'Guided tour'|t }}</a></li>
+              <li><a href="#">{{ 'How-to'|t }}</a></li>
+              <li><a href="#">{{ 'FAQ'|t }}</a></li>
+              <li><a href="#">{{ 'Contact Joinup Support'|t }}</a></li>
+              <li><a href="#">{{ 'Satisfaction survey'|t }}</a></li>
+              <li><a href="#">{{ 'Federation and solutions'|t }}</a></li>
+              <li><a href="#">{{ 'Joinup & EU Login'|t }}</a></li>
+              <li><a href="#">{{ 'Guided'|t }}</a></li>
+            </ul>
+          </div>
+
+          <!--European Comission menu-->
+          <div class="col-md-3 col-lg-3 ec-menu">
+            <h3>{{ 'European Comission'|t }}</h3>
+            <ul class="list-unstyled">
+              <li><a href="http://ec.europa.eu/info/about-commissions-new-web-presence_en">{{ 'About the Commission\'s new web presence'|t }}</a></li>
+              <li><a href="http://ec.europa.eu/info/resources-partners_en">{{ 'Resources for partners'|t }}</a></li>
+              <li><a href="http://ec.europa.eu/info/cookies_en">{{ 'Cookies'|t }}</a></li>
+              <li><a href="/joinup/legal-notice">{{ 'Legal notice'|t }}</a></li>
+              <li><a href="http://ec.europa.eu/info/contact_en">{{ 'Contact'|t }}</a></li>
+              <li><a href="http://ec.europa.eu/info/europa-analytics_en">{{ 'Europa Analytics' }}</a></li>
+            </ul>
+          </div>
+
+          <!--Social menu-->
+          <div class="col-md-3 col-lg-2 social-media">
+            <h3>{{ 'Follow us'|t }}</h3>
+            <ul class="list-unstyled mb-2">
+              <li>
+                <a href="http://ec.europa.eu/newsroom/joinup/newsletter-specific-archive-issue.cfm?newsletter_service_id=877&lang=default">{{ 'Joinup Newsletter'|t }}</a>
+              </li>
+            </ul>
+            <ul class="list-inline social-networks">
+              <li class="list-inline-item">
+                <a href="https://www.linkedin.com/groups/2600644/" class="linkedin"><span class="visually-hidden">{{ 'LinkedIn'|t }}</span></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="http://twitter.com/Joinup_eu" class="twitter"><span class="visually-hidden">{{ 'Twitter'|t }}</span></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  {% endif %}
 
 </div>{# /.layout-container #}
