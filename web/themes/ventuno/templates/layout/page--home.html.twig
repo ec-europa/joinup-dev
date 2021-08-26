@@ -1,0 +1,132 @@
+{#
+/**
+ * @file
+ * Theme override for the home page.
+ *
+ * This adds a dedicated "About" section which has a particular layout which
+ * would otherwise require 3 additional regions to be added to the theme just
+ * displaying this section on the homepage.
+ *
+ * There is no support for using the Layout API in arbitrary regions, so this
+ * has been hacked together by creating the layout in an unused variant in Page
+ * Manager variant and injecting this in the template.
+ *
+ * Once we have a way to leverage layouts in dedicated regions (such as support
+ * in core or when the Layout Builder Everywhere module is stabilized) we can
+ * replace this overridden template with the Layout Builder + the
+ * `twocolfooter-onecol-67-33` layout from the Joinup Layout module.
+ *
+ * @see https://www.drupal.org/project/drupal/issues/2924058
+ * @see https://www.drupal.org/project/lb_everywhere
+ *
+ * The doctype, html, head and body tags are not in this template. Instead they
+ * can be found in the html.html.twig template in this directory.
+ *
+ * Available variables:
+ *
+ * General utility variables:
+ * - base_path: The base URL path of the Drupal installation. Will usually be
+ *   "/" unless you have installed Drupal in a sub-directory.
+ * - is_front: A flag indicating if the current page is the front page.
+ * - logged_in: A flag indicating if the user is registered and signed in.
+ * - is_admin: A flag indicating if the user has permission to access
+ *   administration pages.
+ *
+ * Site identity:
+ * - front_page: The URL of the front page. Use this instead of base_path when
+ *   linking to the front page. This includes the language domain or prefix.
+ *
+ * Page content (in order of occurrence in the default page.html.twig):
+ * - messages: Status and error messages. Should be displayed prominently.
+ * - node: Fully loaded node, if there is an automatically-loaded node
+ *   associated with the page and the node ID is the second argument in the
+ *   page's path (e.g. node/12345 and node/12345/revisions, but not
+ *   comment/reply/12345).
+ *
+ * Regions:
+ * - page.header: Items for the header region.
+ * - page.featured: Items for the featured content region.
+ * - page.content_top: Items for the region displayed above the main content.
+ * - page.content: The main content of the current page.
+ * - page.content_bottom: Items for the region displayed below the main content.
+ * - page.sidebar: Items for the sidebar.
+ * - page.footer: Items for the footer region.
+ *
+ * @see template_preprocess_page()
+ * @see html.html.twig
+ */
+#}
+<div class="layout-container">
+  <div class="section-header">
+    <header role="banner" class="region-header">
+      {{ page.header }}
+    </header>
+
+    {% if page.header_bottom %}
+      <div class="region-header-bottom">
+        {{ page.header_bottom }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="region-featured mb-5 py-5">
+    <div class="container">
+      <div class="row">
+        {{ page.featured }}
+      </div>
+    </div>
+  </div>
+
+  {{ page.content_top }}
+
+  <main role="main">
+    <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+
+    <div class="container layout-content">
+      {{ page.content }}
+    </div>{# /.layout-content #}
+
+    {% if page.sidebar %}
+      <aside class="layout-sidebar" role="complementary">
+        {{ page.sidebar }}
+      </aside>
+    {% endif %}
+  </main>
+
+  <div class="about-section">
+    {{ about }}
+  </div>
+
+  {{ page.content_bottom }}
+
+  <footer role="contentinfo">
+    {{ page.footer }}
+
+    <p class="joinup-version"><a href="{{ version_url }}">{{ version }}</a></p>
+    <div class="social-media">
+      <h3>{{ 'Follow us'|t }}:</h3>
+      <ul>
+        <li>
+          <a href="https://www.linkedin.com/groups/2600644/">{{ 'LinkedIn'|t }}</a>
+        </li>
+        <li>
+          <a href="http://twitter.com/Joinup_eu">{{ 'Twitter'|t }}</a>
+        </li>
+        <li>
+          <a href="http://ec.europa.eu/newsroom/joinup/newsletter-specific-archive-issue.cfm?newsletter_service_id=877&lang=default">{{ 'Joinup Newsletter'|t }}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="ec-menu">
+      <ul>
+        <li><a href="http://ec.europa.eu/info/about-commissions-new-web-presence_en">{{ 'About the Commission\'s new web presence'|t }}</a></li>
+        <li><a href="http://ec.europa.eu/info/resources-partners_en">{{ 'Resources for partners'|t }}</a></li>
+        <li><a href="http://ec.europa.eu/info/cookies_en">{{ 'Cookies'|t }}</a></li>
+        <li><a href="/joinup/legal-notice">{{ 'Legal notice'|t }}</a></li>
+        <li><a href="http://ec.europa.eu/info/contact_en">{{ 'Contact'|t }}</a></li>
+        <li><a href="http://ec.europa.eu/info/europa-analytics_en">{{ 'Europa Analytics' }}</a></li>
+      </ul>
+    </div>
+  </footer>
+
+</div>{# /.layout-container #}
