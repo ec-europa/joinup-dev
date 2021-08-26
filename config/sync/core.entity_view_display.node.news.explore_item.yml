@@ -72,7 +72,23 @@ third_party_settings:
                 third_party_settings:
                   template_suggestion:
                     template_suggestion: ''
-            additional: {  }
+            additional:
+              component_attributes:
+                block_attributes:
+                  id: ''
+                  class: date
+                  style: ''
+                  data: ''
+                block_title_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+                block_content_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
             weight: -8
           10c28c1a-03f9-4ac8-a5b8-ed68b2dd4c58:
             uuid: 10c28c1a-03f9-4ac8-a5b8-ed68b2dd4c58

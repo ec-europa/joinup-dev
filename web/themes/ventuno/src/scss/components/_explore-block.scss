@@ -113,13 +113,12 @@ body {
             color: $gray-600;
             @extend .mb-4;
           }
-          div[class$="created"],
-          div[class$="published-at"] {
+          .date {
             display: inline-block;
             color: $gray-500;
             @extend .fs-xs;
           }
-          div[class$="read-more"] {
+          .read-more {
             display: inline-block;
             float: right;
             @extend .btn;
