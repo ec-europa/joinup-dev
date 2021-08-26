@@ -111,6 +111,18 @@ third_party_settings:
                     template_suggestion: ''
             additional: {  }
             weight: -8
+          5bae9701-073f-4f80-93b0-736bf37b025a:
+            uuid: 5bae9701-073f-4f80-93b0-736bf37b025a
+            region: content
+            configuration:
+              id: 'extra_field_block:node:event:read_more'
+              label: 'Read more'
+              provider: layout_builder
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: -7
         third_party_settings: {  }
 id: node.event.explore_item
 targetEntityType: node
@@ -141,6 +153,11 @@ content:
     third_party_settings:
       template_suggestion:
         template_suggestion: ''
+  read_more:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_attachment: true
   field_comments: true

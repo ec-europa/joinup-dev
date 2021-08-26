@@ -122,6 +122,18 @@ third_party_settings:
                   style: ''
                   data: ''
             weight: -9
+          e9a340ab-04be-4e59-9b31-6bc58f3b1473:
+            uuid: e9a340ab-04be-4e59-9b31-6bc58f3b1473
+            region: content
+            configuration:
+              id: 'extra_field_block:node:news:read_more'
+              label: 'Read more'
+              provider: layout_builder
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: -7
         third_party_settings: {  }
 id: node.news.explore_item
 targetEntityType: node
@@ -147,6 +159,11 @@ content:
     third_party_settings:
       template_suggestion:
         template_suggestion: ''
+  read_more:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_attachment: true
   field_comments: true
