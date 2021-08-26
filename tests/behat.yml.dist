@@ -120,6 +120,7 @@ default:
         Pager: 'nav.pager'
         Plus button menu: 'div.add-content-menu'
         Primary menu: '.region-primary-menu'
+        Related solutions: '.field--name-field-is-related-solutions'
         SevenHeader: '.region-header'
         Table of contents: '#block-table-of-contents'
         Table of contents outline: '#block-toc-outline'
