@@ -3,3 +3,11 @@ style:
   css:
     theme:
       css/styles.css: {}
+
+splide:
+  js:
+    assets/js/splide.min.js: { minified: true }
+    assets/js/splide-config.js: { minified: false }
+  css:
+    theme:
+      css/splide.min.css: { minified: true }

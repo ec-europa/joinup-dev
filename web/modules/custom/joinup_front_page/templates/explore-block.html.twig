@@ -11,6 +11,8 @@
  * @ingroup themeable
  */
 #}
+{{ attach_library('ventuno/splide') }}
+
 <div class="explore-block wrapper-class">
   <ul class="nav nav-tabs" id="myTab" role="tablist">
     {% for key, tab in data %}
@@ -24,9 +26,13 @@
     {% for key, tab in data %}
       <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{ key }}" role="tabpanel" aria-labelledby="{{ key }}-tab">
         {% if tab.data is not empty %}
-          <a href="{{ tab.url }}" class="btn btn-secondary mb-3">{{ 'See more'|t }}</a>
-          <div class="tab-data">
-            {{ tab.data }}
+          <div class="tab-data splide splide-{{ key }}">
+          <a href="{{ tab.url }}" class="btn btn-secondary mb-2">{{ 'See more'|t }}</a>
+            <div class="splide__track">
+              <div class="splide__list">
+                {{ tab.data }}
+              </div>
+            </div>
           </div>
         {% endif %}
       </div>
