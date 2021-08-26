@@ -25,6 +25,7 @@ class SolutionAffiliationTest extends KernelTestBase {
    */
   protected static $modules = [
     'field',
+    'meta_entity',
     'og',
     'rdf_schema_field_validation',
     'rdf_draft',
