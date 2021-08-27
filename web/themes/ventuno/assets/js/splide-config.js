@@ -12,7 +12,9 @@
         var elms = document.getElementsByClassName('splide');
 
         for (var i = 0, len = elms.length; i < len; i++) {
-          new Splide('.splide', {
+          new Splide(elms[i], {
+            fixedWidth: '22rem',
+            autoHeight: true,
             type: 'loop',
             perPage: 4,
             perMove: 1,
