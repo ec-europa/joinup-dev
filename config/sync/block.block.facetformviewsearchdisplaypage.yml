@@ -1,0 +1,25 @@
+uuid: 33e5f26c-41da-4f9b-85a8-144a7b0bfe07
+langcode: en
+status: true
+dependencies:
+  module:
+    - facets_form
+  theme:
+    - joinup_theme
+id: facetformviewsearchdisplaypage
+theme: joinup_theme
+region: sidebar_left
+weight: 0
+provider: null
+plugin: 'facets_form:search_api:views_page__search__page_1'
+settings:
+  id: 'facets_form:search_api:views_page__search__page_1'
+  label: 'Facet form: View Search, display Page'
+  provider: facets_form
+  label_display: '0'
+  button:
+    label:
+      submit: Search
+      reset: 'Clear filters'
+  facets: {  }
+visibility: {  }
