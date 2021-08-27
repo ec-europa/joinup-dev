@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: homepage
 label: Homepage
-description: 'Used to render the About section in the homepage. This is injected in the homepage template `page--home.html.twig`. See `ventuno_preprocess_page__home()`.'
+description: 'The Joinup homepage. This consists of two variants: the Layout Builder variant contains the content that is constructed with the Layout Builder module and is shown in the main content region. The second variant is used to render the About section which appears in a dedicated region on the homepage. This is never invoked by the Page Manager but is injected in the homepage template `page--home.html.twig`. See `ventuno_preprocess_page__home()`.'
 use_admin_theme: false
 path: /home
 access_logic: and
