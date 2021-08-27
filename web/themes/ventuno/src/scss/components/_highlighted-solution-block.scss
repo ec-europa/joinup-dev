@@ -8,8 +8,11 @@
   }
   .more-link {
     position: absolute;
-    right: 0;
-    top: 12px;
+    bottom: 1rem;
+    @include media-breakpoint-up(md) {
+      right: 0;
+      top: 12px;
+    }
     @include font-icon-after("\E801", 1rem);
   }
   article {
