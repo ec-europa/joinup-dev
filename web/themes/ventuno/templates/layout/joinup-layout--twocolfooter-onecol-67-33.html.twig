@@ -15,11 +15,19 @@
     'joinup-layout',
     'joinup-layout--twocolfooter-onecol-67-33',
     'row',
+    'py-5',
   ]
 %}
 {% if content %}
   <div{{ attributes.addClass(classes) }}>
-    <div class="inline-column-left col-lg-8">
+    <div class="inline-column-right col-lg-4 order-lg-2 mb-4 mb-lg-0">
+      {% if content.third %}
+        <div {{ region_attributes.third.addClass('layout__region', 'layout__region--third') }}>
+          {{ content.third }}
+        </div>
+      {% endif %}
+    </div>
+    <div class="inline-column-left col-lg-8 order-lg-1">
       {% if content.first or content.second %}
         <div class="row">
           {% if content.first %}
@@ -39,13 +47,6 @@
           <div {{ region_attributes.two_col_footer.addClass('layout__region', 'layout__region--two_col_footer', 'col') }}>
             {{ content.two_col_footer }}
           </div>
-        </div>
-      {% endif %}
-    </div>
-    <div class="inline-column-right col-lg-4">
-      {% if content.third %}
-        <div {{ region_attributes.third.addClass('layout__region', 'layout__region--third') }}>
-          {{ content.third }}
         </div>
       {% endif %}
     </div>

@@ -84,30 +84,48 @@ third_party_settings:
             uuid: 6de3b21b-ee1e-43e3-a0b3-530114e5c157
             region: content
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:rdf_entity:solution:field_is_description'
+              label: Description
+              provider: layout_builder
+              label_display: '0'
               formatter:
-                type: smart_trim
                 label: hidden
+                type: smart_trim
                 settings:
-                  trim_length: 500
+                  trim_length: 200
                   trim_type: chars
                   trim_suffix: …
+                  wrap_output: false
                   wrap_class: trimmed
+                  more_link: false
                   more_text: More
                   more_class: more-link
                   trim_options:
                     text: true
                     trim_zero: false
-                  wrap_output: false
-                  more_link: false
-                  summary_handler: full
                 third_party_settings:
                   template_suggestion:
                     template_suggestion: p_wrapper
-            additional: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional:
+              component_attributes:
+                block_attributes:
+                  id: ''
+                  class: explore-item__description
+                  style: ''
+                  data: ''
+                block_title_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+                block_content_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
             weight: 1
           4044431f-0d0a-46f8-af2f-aa11270f596a:
             uuid: 4044431f-0d0a-46f8-af2f-aa11270f596a
@@ -130,7 +148,23 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: {  }
+            additional:
+              component_attributes:
+                block_attributes:
+                  id: ''
+                  class: date
+                  style: ''
+                  data: ''
+                block_title_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+                block_content_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
             weight: 2
           0e4a6d85-b472-49b2-adb9-c6ff451c9e1b:
             uuid: 0e4a6d85-b472-49b2-adb9-c6ff451c9e1b
