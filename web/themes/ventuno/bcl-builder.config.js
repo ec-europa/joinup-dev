@@ -22,7 +22,7 @@ module.exports = {
   styles: [
     {
       entry: path.resolve(outputFolder, "src/scss/styles.scss"),
-      dest: path.resolve(outputFolder, "css/styles.css"),
+      dest: path.resolve(outputFolder, "assets/css/styles.css"),
       options: {
         includePaths,
         sourceMap: "file",
@@ -43,11 +43,31 @@ module.exports = {
     {
       from: [
         path.resolve(
+          __dirname,
+          "src/fonts/joinup-icons/*"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/fonts/joinup-icons"),
+      options: { up: true },
+    },
+    {
+      from: [
+        path.resolve(
+          __dirname,
+          "src/images/highlighted-event.jpg"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/images"),
+      options: { up: true },
+    },
+    {
+      from: [
+        path.resolve(
           nodeModules,
           "@splidejs/splide/dist/css/splide.min.css"
         ),
       ],
-      to: path.resolve(outputFolder, "css"),
+      to: path.resolve(outputFolder, "assets/css"),
       options: { up: true },
     },
     {
