@@ -2,7 +2,7 @@ style:
   version: VERSION
   css:
     theme:
-      css/styles.css: {}
+      assets/css/styles.css: {}
 
 splide:
   js:
@@ -10,4 +10,4 @@ splide:
     assets/js/splide-config.js: { minified: false }
   css:
     theme:
-      css/splide.min.css: { minified: true }
+      assets/css/splide.min.css: { minified: true }
