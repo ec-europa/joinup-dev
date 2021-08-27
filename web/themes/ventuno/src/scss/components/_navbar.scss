@@ -17,7 +17,7 @@
     @include media-breakpoint-up(md) {
       font-size: $font-size-sm; // 14px
       color: $white;
-      letter-spacing: $font-size-base/10; // 1.6px
+      letter-spacing: $font-size-base*.1; // 1.6px
     }
   }
   .navbar-nav {
