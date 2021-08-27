@@ -57,43 +57,6 @@ body {
       .tab-data {
         display: flex;
         position: relative;
-
-        // Temporary slide animation.
-        animation:slide 14s infinite;
-        @keyframes slide{
-          0%,100% {
-            margin-left:0%;
-          }
-
-          12% {
-            margin-left:0%;
-          }
-
-          24% {
-            margin-left:-50%;
-          }
-
-          36% {
-            margin-left:-50%;
-          }
-
-          48% {
-            margin-left:-100%;
-          }
-
-          60% {
-            margin-left:-100%;
-          }
-
-          72% {
-            margin-left:-150%;
-          }
-
-          84% {
-            margin-left:-150%;
-          }
-        }
-
         article {
           background-color: $white;
           border-radius: $border-radius;
