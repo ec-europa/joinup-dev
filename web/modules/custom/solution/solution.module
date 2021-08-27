@@ -721,6 +721,10 @@ function solution_preprocess_rdf_entity(&$variables) {
  *   The solution entity.
  */
 function solution_sync_settings(SolutionInterface $entity): void {
+  if (!$entity->isPublished()) {
+    // Do not store any unsaved updates.
+    return;
+  }
   if (!\Drupal::moduleHandler()->moduleExists('meta_entity')) {
     // Allow solution to not depend on meta_entity.
     return;
@@ -749,7 +753,7 @@ function solution_sync_settings(SolutionInterface $entity): void {
  * Syncs the order of the related solutions back to the entity.
  */
 function solution_rdf_entity_load($entities) {
-  static $is_loop = FALSE;
+  static $is_loop = [];
   if (!\Drupal::moduleHandler()->moduleExists('meta_entity')) {
     // Allow solution to not depend on meta_entity.
     return;
@@ -760,10 +764,16 @@ function solution_rdf_entity_load($entities) {
       continue;
     }
 
-    if (isset($is_loop) and $is_loop === TRUE) {
+    if (!$entity->isPublished()) {
+      // Do not sync anything for unpublished entities since they can be work
+      // in progress.
+      continue;
+    }
+
+    if (isset($is_loop[$entity->id()]) and $is_loop[$entity->id()] === TRUE) {
       return;
     }
-    $is_loop = TRUE;
+    $is_loop[$entity->id()] = TRUE;
 
     if (!($meta_entity = $repository->getMetaEntityForEntity($entity, 'solution_settings'))) {
       return;

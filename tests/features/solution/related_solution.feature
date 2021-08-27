@@ -53,7 +53,8 @@ Feature: Related solution
     When I click "Edit" in the "Entity actions" region
     And I check "Show solutions related by EIRA terms"
     And I press "Publish"
-    Then I should see the "Python" tile
+    Then I should see the heading "Java"
+    And I should see the "Python" tile
     And I should see the "Javascript" tile
     And I should see the "PHP" tile
 
