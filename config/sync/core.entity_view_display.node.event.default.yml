@@ -205,3 +205,4 @@ hidden:
   langcode: true
   og_audience: true
   published_at: true
+  read_more: true
