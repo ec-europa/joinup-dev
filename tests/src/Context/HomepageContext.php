@@ -51,9 +51,13 @@ class HomepageContext extends RawDrupalContext {
 
       if (in_array($type, ['collection', 'solution'])) {
         $entity = self::getEntityByLabel('rdf_entity', $expected_data['title']);
+        // In Joinup, "Read more" links of collections and solutions lead to the
+        // 'About' page.
+        $read_more_url = $entity->toUrl('about-page');
       }
       else {
         $entity = self::getNodeByTitle($expected_data['title']);
+        $read_more_url = $entity->toUrl('canonical');
       }
 
       // Check that title links to the canonical page of the
@@ -66,13 +70,17 @@ class HomepageContext extends RawDrupalContext {
       Assert::assertInstanceOf(NodeElement::class, $description_element, sprintf('Did not find a description for the %s "%s" in the "Explore" section.', $type, $expected_data['title']));
 
       $actual_description = $description_element->getHtml();
-      $xpath = '//*[text() = "' . $expected_data['description'] . '"]';
       Assert::assertEquals($expected_data['description'], $actual_description, sprintf('The body text for the %s "%s" in the "Explore" section does not contain the expected text.', $type, $expected_data['title']));
 
       // Check date.
       $expected_date = date("d/m/Y", strtotime($expected_data['date']));
       $xpath = '//*[text() = "' . $expected_date . '"]';
       Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('The date for the %s "%s" in the "Explore" section does not contain the expected format.', $type, $expected_data['title']));
+
+      // Check that a "Read more" link is present which leads to the canonical
+      // page of the news, event, solution and collection.
+      $xpath = '//a[@href = "' . $read_more_url->toString() . '" and contains(@class, "read-more")]';
+      Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('%s "%s" does not have a "Read more" link which leads to the canonical page.', $type, $expected_data['title']));
     }
   }
 

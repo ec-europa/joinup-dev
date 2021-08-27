@@ -242,7 +242,7 @@ Feature: Homepage
       | am logged in as a user with the authenticated role |
 
   @terms
-  Scenario: Explore block shows a list of news.
+  Scenario: Explore block shows a selection of news, events, collections and solutions
     Given users:
       | Username     | E-mail                   |
       | Quim Roscas  | quim.roscas@example.com  |
@@ -308,7 +308,6 @@ Feature: Homepage
       | Plasma supply               | Fast electrons                                                                                                                                                                                                                 | Clash of jonnys | Shiny Shan            | validated | 2021-01-29T10:18:00Z | 2021-01-29T10:18:00Z | 2021-01-29T10:18:00Z |
       | New material                | Colossal material                                                                                                                                                                                                              | Nature area     | Shiny Shan            | proposed  | 2021-02-29T10:18:00Z | 2021-02-29T10:18:00Z | 2021-02-29T10:18:00Z |
 
-    #Then I break
     When I am on the homepage
     Then the explore section should contain the following content:
       | type       | title                       | date                   | description                                                                                                                                                                                              |
