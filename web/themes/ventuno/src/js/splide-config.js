@@ -7,12 +7,14 @@
     attach: function (context) {
       var elms = document.getElementsByClassName( 'splide' );
       for ( var i = 0, len = elms.length; i < len; i++ ) {
-        new Splide( '.splide', {
-           type   : 'loop',
-           perPage: 3,
-           perMove: 1,
-           pagination: false,
-           breakpoints: {
+        new Splide(elms[i], {
+          fixedWidth: '22rem',
+          autoHeight: true,
+          type   : 'loop',
+          perPage: 4,
+          perMove: 1,
+          pagination: false,
+          breakpoints: {
             980: {
               perPage: 2,
             },

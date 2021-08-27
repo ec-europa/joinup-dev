@@ -14,17 +14,8 @@ module.exports = {
       dest: path.resolve(outputFolder, "assets/js/splide-config.js"),
       options: {
         name: "splide",
-        minify: true,
+        minify: false,
         sourceMap: true,
-        minifyOptions: {
-          mangle: true,
-          format: {
-            comments: /^!/,
-          },
-          compress: {
-            passes: 2,
-          },
-        },
       },
     },
   ],
