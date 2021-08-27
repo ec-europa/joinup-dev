@@ -28,6 +28,11 @@ function joinup_community_content_entity_extra_field_info() {
   $fields = [];
 
   foreach (CommunityContentHelper::BUNDLES as $bundle) {
+    $fields['node'][$bundle]['display']['read_more'] = [
+      'label' => t('Read more'),
+      'description' => t('A link to the canonical community content page'),
+      'visible' => FALSE,
+    ];
     $fields['node'][$bundle]['display']['share_link'] = [
       'label' => t('Share'),
       'description' => t('A link to share the content'),
@@ -42,16 +47,23 @@ function joinup_community_content_entity_extra_field_info() {
  * Implements hook_ENTITY_TYPE_view().
  */
 function joinup_community_content_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if (!$display->getComponent('share_link')) {
-    return;
+  // Read more link to the canonical page.
+  if ($display->getComponent('read_more')) {
+    $build['read_more'] = $entity->toLink(t('Read more'), 'canonical', [
+      'attributes' => [
+        'class' => ['read-more'],
+      ],
+    ])->toRenderable();
   }
 
-  $build['share_link'] = joinup_group_generate_share_link($entity, 'joinup_community_content.share_content_form');
-  $build['#cache'] = [
-    'contexts' => [
-      'og_role',
-    ],
-  ];
+  if ($display->getComponent('share_link')) {
+    $build['share_link'] = joinup_group_generate_share_link($entity, 'joinup_community_content.share_content_form');
+    $build['#cache'] = [
+      'contexts' => [
+        'og_role',
+      ],
+    ];
+  }
 }
 
 /**
