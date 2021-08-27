@@ -19,15 +19,6 @@
       @extend .mt-2;
       @extend .fs-xs;
     }
-    article {
-      div[class$="logo"] {
-        max-width: 149px;
-        float: left;
-        @extend .mb-3;
-        @extend .mb-md-0;
-        @extend .me-md-4;
-      }
-    }
     &:before {
       counter-increment: spotlight-counter;
       content: counter(spotlight-counter,decimal-leading-zero);
