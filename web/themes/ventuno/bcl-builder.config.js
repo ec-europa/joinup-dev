@@ -44,7 +44,7 @@ module.exports = {
       from: [
         path.resolve(
           __dirname,
-          "src/fonts/joinup-icons/*"
+          "src/fonts/joinup-icons/*.woff*"
         ),
       ],
       to: path.resolve(outputFolder, "assets/fonts/joinup-icons"),
