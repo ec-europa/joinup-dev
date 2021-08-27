@@ -1,0 +1,11 @@
+.block-joinup-search-global-search {
+  @extend .py-5;
+  @extend .me-3;
+  @extend .col-lg;
+  .search-bar {
+    max-width: 40rem;
+    .btn-search {
+      @include font-icon-before("\E805", 1.2rem, inherit, inherit, 0 12px 0 0);
+    }
+  }
+}

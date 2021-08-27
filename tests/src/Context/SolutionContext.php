@@ -59,6 +59,18 @@ class SolutionContext extends RawDrupalContext {
   protected $rdfEntities = [];
 
   /**
+   * Checks that the user is on the solutions overview page.
+   *
+   * The solutions overview page currently doesn't have a title so our common
+   * practice of checking the page title falls short here.
+   *
+   * @Then I should be on the solutions overview page
+   */
+  public function assertSolutionsOverviewPage(): void {
+    $this->assertSession()->addressEquals($this->locatePath('/solutions'));
+  }
+
+  /**
    * Navigates to the add solution form.
    *
    * @param string $collection

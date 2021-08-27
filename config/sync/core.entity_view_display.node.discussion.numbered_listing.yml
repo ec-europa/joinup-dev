@@ -64,7 +64,7 @@ content:
       field_formatter_range:
         limit: 2
         offset: 0
-        reverse: false
+        order: 0
       template_suggestion:
         template_suggestion: comma_separated
     type: entity_reference_label
@@ -82,5 +82,6 @@ hidden:
   links: true
   og_audience: true
   published_at: true
+  read_more: true
   report: true
   share_link: true

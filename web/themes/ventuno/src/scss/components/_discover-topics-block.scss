@@ -1,0 +1,84 @@
+.block-views-blockdiscover-topics-block {
+  @extend .col-lg;
+  > h2 {
+    font-size: $font-size-sm;
+    font-weight: $display-font-weight;
+    color: $gray-500;
+    text-transform: uppercase;
+  }
+  .view-discover-topics {
+    .discover-topics__items {
+      display: flex;
+      flex-wrap: wrap;
+      .field__item {
+        a {
+          display: block;
+          border: 1px solid $gray-300;
+          padding: $btn-padding-y $btn-padding-x;
+          background-color: $white;
+          color: $gray-400;
+          border-radius: $btn-border-radius;
+          margin: 0 .5rem .5rem 0;
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
+    }
+    .view-footer {
+      a {
+        display: inline-block;
+        padding: $btn-padding-y $btn-padding-x;
+        background-color: $secondary;
+        color: $brand;
+        border-radius: $btn-border-radius;
+        margin: 0 .5rem .5rem 0;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
+
+.ui-widget-overlay {
+  background-color: $primary;
+  opacity: .2;
+}
+.ui-dialog {
+  &.ui-widget-content {
+    border: none;
+    border-radius: $btn-border-radius;
+    @extend .pb-2;
+  }
+  .ui-widget-header {
+    background: none;
+    border: none;
+    @extend .px-3;
+    @extend .mt-2;
+    .ui-dialog-title {
+      @extend .h4;
+      text-transform: uppercase;
+      line-height: 1.4;
+    }    
+    .ui-dialog-titlebar-close {
+      @include font-icon-before("\E806", 2rem, $gray-400);
+      padding: 0;
+      border: none;
+      background: no-repeat;
+      position: static;
+      float: right;
+      margin: 0;
+    }
+  }
+  .ui-dialog-content {
+    overflow-y: scroll;
+    max-height: 70vh !important;
+    .views-field-name {
+      @extend .mb-1;
+      a {
+        color: $brand;
+      }
+    }
+  }
+}

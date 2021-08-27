@@ -479,10 +479,6 @@ class JoinupCommunityContentContext extends RawDrupalContext {
     foreach ($columns as $i => $expected_data) {
       $actual_data = array_shift($articles);
 
-      // Check the row number.
-      $actual_row_number = $actual_data->find('css', '.views-field-counter .field-content')->getText();
-      Assert::assertEquals($i + 1, $actual_row_number, sprintf('Expected number "%d" for article %d in the "In the spotlight" section but instead found "%s".', $i + 1, $i + 1, $actual_row_number));
-
       // Check title text.
       $actual_title = $actual_data->find('css', 'h2')->getText();
       Assert::assertEquals($expected_data['title'], $actual_title, sprintf('Expected title "%s" for article %d in the "In the spotlight" section but instead found "%s".', $expected_data['title'], $i + 1, $actual_title));
@@ -514,61 +510,6 @@ class JoinupCommunityContentContext extends RawDrupalContext {
         $xpath = '/a[@href = "' . $topic_entity->toUrl()->toString() . '"]';
         Assert::assertNotEmpty($topic_element->find('xpath', $xpath), sprintf('Topic "%s" for article "%s" does not link to the canonical topic page.', $actual_topic_title, $actual_title));
       }
-    }
-  }
-
-  /**
-   * Checks the contents of the "Explore" block.
-   *
-   * This is showing a number of community content
-   * (collections, solutions, news and events) on the homepage.
-   *
-   * This also checks if the content is in the correct order and if the total
-   * number of content items is correct.
-   *
-   * @codingStandardsIgnoreStart
-   * Table format:
-   *  | type       | title                         | date                   | description                                                                                                                                                                                                                                          |
-   *  | solution   | Cities of Italy               | 2020-01-01 17:36 +0200 | Sum is therefore                                                                                                                                                                                                                                     |
-   *  | collection | Products of Italy             | 2019-08-14 17:36 +0200 | Lorem Ipsum is therefore
-   * @codingStandardsIgnoreEnd
-   *
-   * @param \Behat\Gherkin\Node\TableNode $table
-   *   A table containing the expected content of the explore section.
-   *
-   * @Then the explore section should contain the following content:
-   */
-  public function assertExplore(TableNode $table) {
-    $columns = $table->getColumnsHash();
-    $articles = $this->getSession()->getPage()->findAll('css', '.block-joinup-front-page-explore-block article');
-    Assert::assertEquals(count($columns), count($articles), sprintf('Expected %d items in the "Explore" section but found %d items.', count($columns), count($articles)));
-
-    foreach ($columns as $expected_data) {
-      $actual_data = array_shift($articles);
-      $type = $expected_data['type'];
-
-      if (in_array($type, ['collection', 'solution'])) {
-        $entity = self::getEntityByLabel('rdf_entity', $expected_data['title']);
-      }
-      else {
-        $entity = self::getNodeByTitle($expected_data['title']);
-      }
-
-      // Check that title links to the canonical page of the
-      // news, event, solution and collection.
-      $xpath = '//h2/a[@href = "' . $entity->toUrl()->toString() . '" and contains(., "' . $expected_data['title'] . '")]';
-      Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('%s "%s" does not have the correct title which links to the canonical page.', $type, $expected_data['title']));
-
-      // Check the body/description text.
-      $xpath = '//*[text() = "' . $expected_data['description'] . '"]';
-      Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('The body text for the %s "%s" in the "Explore" section does not contain the expected text.', $type, $expected_data['title']));
-
-      // Check date.
-      // @todo We should use our standard date format dd/mm/yyyy instead of this
-      //   weird format.
-      $expected_date = date("m/d/y", strtotime($expected_data['date']));
-      $xpath = '//*[text() = "' . $expected_date . '"]';
-      Assert::assertNotEmpty($actual_data->find('xpath', $xpath), sprintf('The date for the %s "%s" in the "Explore" section does not contain the expected format.', $type, $expected_data['title']));
     }
   }
 

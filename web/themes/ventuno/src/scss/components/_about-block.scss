@@ -1,0 +1,31 @@
+.about-section {
+  @include media-breakpoint-up(lg) {
+    background-color: $white;
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+    &:before {
+      content: "";
+      position: absolute;
+      background-color: $gray-200;
+      width: 110rem;
+      height: 110rem;
+      border-radius: 50%;
+      right: -55rem;
+      top: 0;
+      z-index: -1;
+    }
+  }
+}
+
+.about-what,
+.about-who,
+.about-how {
+  color: $gray-700;
+}
+.about-how {
+  a {
+    @extend .btn;
+    @extend .btn-secondary;
+  }
+}

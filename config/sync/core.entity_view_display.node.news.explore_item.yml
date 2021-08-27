@@ -67,28 +67,89 @@ third_party_settings:
                 label: hidden
                 settings:
                   date_format: custom
-                  custom_date_format: m/d/y
+                  custom_date_format: d/m/Y
                   timezone: ''
                 third_party_settings:
                   template_suggestion:
                     template_suggestion: ''
-            additional: {  }
+            additional:
+              component_attributes:
+                block_attributes:
+                  id: ''
+                  class: date
+                  style: ''
+                  data: ''
+                block_title_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+                block_content_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
             weight: -8
           10c28c1a-03f9-4ac8-a5b8-ed68b2dd4c58:
             uuid: 10c28c1a-03f9-4ac8-a5b8-ed68b2dd4c58
             region: content
             configuration:
+              id: 'field_block:node:news:body'
+              label: Content
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: smart_trim
+                settings:
+                  trim_length: 200
+                  trim_type: chars
+                  trim_suffix: …
+                  wrap_output: false
+                  wrap_class: trimmed
+                  more_link: false
+                  more_text: More
+                  more_class: more-link
+                  summary_handler: trim
+                  trim_options:
+                    text: true
+                    trim_zero: false
+                third_party_settings:
+                  template_suggestion:
+                    template_suggestion: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional:
+              component_attributes:
+                block_attributes:
+                  id: ''
+                  class: explore-item__description
+                  style: ''
+                  data: ''
+                block_title_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+                block_content_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+            weight: -9
+          e9a340ab-04be-4e59-9b31-6bc58f3b1473:
+            uuid: e9a340ab-04be-4e59-9b31-6bc58f3b1473
+            region: content
+            configuration:
+              id: 'extra_field_block:node:news:read_more'
+              label: 'Read more'
+              provider: layout_builder
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:news:body'
-              formatter:
-                label: hidden
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
             additional: {  }
-            weight: -9
+            weight: -7
         third_party_settings: {  }
 id: node.news.explore_item
 targetEntityType: node
@@ -114,6 +175,11 @@ content:
     third_party_settings:
       template_suggestion:
         template_suggestion: ''
+  read_more:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_attachment: true
   field_comments: true

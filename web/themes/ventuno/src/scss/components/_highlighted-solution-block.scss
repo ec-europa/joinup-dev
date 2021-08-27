@@ -2,8 +2,18 @@
 .block-entityqueue--highlighted-solution {
   @extend .pb-5;
   border-bottom: 1px solid rgba($primary, .1);
+  position: relative;
   > h2 {
     @include font-icon-before("\E803", 1.2rem, $warning);
+  }
+  .more-link {
+    position: absolute;
+    bottom: 1rem;
+    @include media-breakpoint-up(md) {
+      right: 0;
+      top: 12px;
+    }
+    @include font-icon-after("\E801", 1rem);
   }
   article {
     .field--name-field-is-logo {

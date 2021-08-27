@@ -3,6 +3,7 @@
 
 // Custom Joinup mixins
 @import "mixins/joinup-icons";
+@import "mixins/full-width-background-colors";
 
 // Components
 @import "components/homepage";
@@ -10,3 +11,7 @@
 @import "components/latest-news-block";
 @import "components/highlighted-solution-block";
 @import "components/highlighted-event-block";
+@import "components/discover-topics-block";
+@import "components/global-search-block";
+@import "components/about-block";
+@import "components/explore-block";

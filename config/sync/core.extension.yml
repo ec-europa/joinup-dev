@@ -45,6 +45,7 @@ module:
   eu_sic: 0
   eupl: 0
   facets: 0
+  facets_summary: 0
   field: 0
   field_delimiter: 0
   field_formatter_range: 0
@@ -107,6 +108,7 @@ module:
   language: 0
   layout_builder: 0
   layout_builder_block: 0
+  layout_builder_component_attributes: 0
   layout_discovery: 0
   link: 0
   linkit: 0
@@ -205,6 +207,7 @@ module:
   video_embed_wysiwyg: 0
   view_unpublished: 0
   views_autosubmit: 0
+  views_block_area: 0
   views_bulk_operations: 0
   views_data_export: 0
   views_multiple_permissions: 0
