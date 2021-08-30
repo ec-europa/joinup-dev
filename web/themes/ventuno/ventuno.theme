@@ -7,6 +7,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Menu\MenuLinkTreeElement;
+use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\joinup_bundle_class\LogoInterface;
 
 /**
@@ -28,6 +30,31 @@ function ventuno_preprocess_page(&$variables) {
   $joinup_version = \Drupal::service('joinup_core.joinup_version');
   $variables['version'] = $joinup_version->getVersion();
   $variables['version_url'] = $joinup_version->getUrl();
+
+  // Export the user name to display in the header.
+  $variables['user_name'] = \Drupal::currentUser()->getDisplayName();
+
+  // Export the user account menu in the format expected by the header template.
+  /** @var \Drupal\Core\Menu\MenuLinkTreeInterface $menu_link_tree */
+  $menu_link_tree = \Drupal::service('menu.link_tree');
+  $tree = $menu_link_tree->load('account', new MenuTreeParameters());
+  $manipulators = [
+    ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+    ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+  ];
+  $tree = $menu_link_tree->transform($tree, $manipulators);
+  $tree = array_filter($tree, function (MenuLinkTreeElement $element): bool {
+    // Hide inaccessible links, as well as the 'EU Login info' link. This link
+    // is only intended for anonymous users.
+    // @see joinup_eulogin_preprocess_menu()
+    return $element->link->isEnabled() && $element->link->getPluginId() !== 'joinup_eulogin.eu_login_info';
+  });
+  $variables['profile_menu'] = array_map(function (MenuLinkTreeElement $element): array {
+    return [
+      'link' => $element->link->getUrlObject(),
+      'label' => $element->link->getTitle(),
+    ];
+  }, $tree);
 }
 
 /**
