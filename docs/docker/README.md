@@ -35,6 +35,8 @@ the background. You can ommit the `-d` parameter and docker-compose will run in 
 To stop the containers, you can use the command `docker-compose down` from the same directory as the docker-compose.yml.
 Using this command however, will only stop the machine and will not destroy the volume that was created with it. To
 clean the volume as well, use the `-v` parameter as `docker-compose down -v`.
+
+## Installing dependencies
 Run the following command to install all packages in the vendor folder:
 ```bash
 docker-compose exec --user www-data web composer install
@@ -97,7 +99,8 @@ Download both the SPARQL and SQL database dumps using the following command:
 $ docker-compose exec --user www-data web php -d memory_limit=-1 ./vendor/bin/run dev:download-databases
 ```
 **Note:** If you are changing from a clean install to a restored environment, you need to destroy the volumes with
-`docker-compose down -v` (the `-v` is the key) in order to destroy the volumes and rebuild.
+`docker-compose down -v` (the `-v` is the key) in order to destroy the volumes,
+and subsequently `docker-compose up -d` to rebuild.
 
 ## Launch containers using production databases
 To start the containers using the production database, in your `.env` file, set the variable `DOCKER_RESTORE_PRODUCTION`
