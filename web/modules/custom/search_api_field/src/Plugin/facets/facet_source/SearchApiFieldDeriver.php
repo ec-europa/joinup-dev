@@ -61,6 +61,7 @@ class SearchApiFieldDeriver extends FacetSourceDeriverBase {
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
+    $plugin_derivatives = [];
     $base_plugin_id = $base_plugin_definition['id'];
 
     if (!isset($this->derivatives[$base_plugin_id])) {
