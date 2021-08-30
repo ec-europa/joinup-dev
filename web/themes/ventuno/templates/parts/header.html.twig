@@ -4,13 +4,6 @@
 {# Parameters:
   - breakpoint (string) (default: 'md')
     options: ['', 'xs', 'sm', 'md', 'lg', 'xl']
-  - brand (object) (default: {})
-    format: {
-      src: '',
-      alt: '',
-      motto: '', (optional)
-      link: ''
-    }
   - collapse_id (string) (default: '')
   - list_id (string) (default: '')
   - anchors (array of objects) (default: [{}])
@@ -56,7 +49,6 @@
 #}
 
 {% set _breakpoint = breakpoint|default('') %}
-{% set _brand = brand|default({}) %}
 {% set _collapse_id = collapse_id|default('') %}
 {% set _list_id = list_id|default('') %}
 {% set _anchors = anchors|default([{}]) %}
