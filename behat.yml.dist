@@ -82,7 +82,7 @@ default:
       paths: *paths
       filters:
         tags: '~@wip&&~@javascript&&@group-b'
-    rest:
+    default:
       contexts: *contexts
       paths: *paths
       filters:
