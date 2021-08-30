@@ -4,7 +4,6 @@
 {# Parameters:
   - breakpoint (string) (default: 'md')
     options: ['', 'xs', 'sm', 'md', 'lg', 'xl']
-  - collapse_id (string) (default: '')
   - list_id (string) (default: '')
   - anchors (array of objects) (default: [{}])
     format: [{
@@ -49,7 +48,6 @@
 #}
 
 {% set _breakpoint = breakpoint|default('') %}
-{% set _collapse_id = collapse_id|default('') %}
 {% set _list_id = list_id|default('') %}
 {% set _anchors = anchors|default([{}]) %}
 {% set _buttons = buttons|default([{}]) %}
@@ -75,8 +73,8 @@
 {% set navbar_toggler_attributes = navbar_toggler_attributes.addClass(_navbar_toggler_classes) %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('type', 'button') %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('data-bs-toggle', 'collapse') %}
-{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('data-bs-target', '#' ~ _collapse_id) %}
-{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-controls', _collapse_id) %}
+{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('data-bs-target', '#navbar') %}
+{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-controls', 'navbar') %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-expanded', 'false') %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-label', 'Toggle navigation') %}
 {% set list_attributes = list_attributes.addClass(_list_classes) %}
@@ -91,7 +89,7 @@
     </a>
     <span class="navbar-motto d-none d-md-block">{{ 'Interoperability solutions'|t }}</span>
 
-    <div class="collapse navbar-collapse rounded-bottom" id="{{ _collapse_id }}">
+    <div class="collapse navbar-collapse rounded-bottom" id="navbar">
       <ul
         {{ list_attributes }}
       >
@@ -127,7 +125,7 @@
                 id="collapse-{{ button.id }}"
                 class="accordion-collapse collapse rounded-bottom"
                 aria-labelledby="heading-{{ button.id }}"
-                data-bs-parent="#{{ _collapse_id }}"
+                data-bs-parent="#navbar"
                 >
                 <div class="accordion-body">
                   <ul class="accordion-list">
@@ -170,7 +168,7 @@
                 id="collapse-{{ button.id }}"
                 class="accordion-collapse collapse rounded-bottom"
                 aria-labelledby="heading-{{ button.id }}"
-                data-bs-parent="#{{ _collapse_id }}"
+                data-bs-parent="#navbar"
                 >
                 <div class="accordion-body">
                   <ul class="accordion-list">
