@@ -209,8 +209,10 @@ function search_api_arbitrary_facet_search_api_solr_search_results_alter(ResultS
 function search_api_arbitrary_facet_widget_plugin_info_alter(array &$info) {
   foreach ($info as &$widget_info) {
     // Decorate all widgets with the arbitrary facet decorator.
-    $widget_info['decorated_class'] = $widget_info['class'];
-    $widget_info['class'] = '\Drupal\search_api_arbitrary_facet\ArbitraryFacetWidgetDecorator';
+    if  ($widget_info['provider'] !== 'facets_form') {
+      $widget_info['decorated_class'] = $widget_info['class'];
+      $widget_info['class'] = '\Drupal\search_api_arbitrary_facet\ArbitraryFacetWidgetDecorator';
+    }
   }
 }
 
