@@ -207,9 +207,11 @@ function search_api_arbitrary_facet_search_api_solr_search_results_alter(ResultS
  * Implements hook_field_widget_info_alter().
  */
 function search_api_arbitrary_facet_widget_plugin_info_alter(array &$info) {
+  // Set providers to exclude from Arbitrary Facet Widget.
+  $providers = ['facets_form', 'facets_form_date_range'];
   foreach ($info as &$widget_info) {
     // Decorate all widgets with the arbitrary facet decorator.
-    if  ($widget_info['provider'] !== 'facets_form') {
+    if (!in_array($widget_info['provider'], $providers)) {
       $widget_info['decorated_class'] = $widget_info['class'];
       $widget_info['class'] = '\Drupal\search_api_arbitrary_facet\ArbitraryFacetWidgetDecorator';
     }

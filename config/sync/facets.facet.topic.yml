@@ -10,7 +10,7 @@ dependencies:
 id: topic
 name: Topic
 url_alias: topic
-weight: 0
+weight: -3
 min_count: 1
 show_only_one_result: true
 field_identifier: topic

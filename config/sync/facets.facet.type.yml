@@ -10,18 +10,18 @@ dependencies:
 id: type
 name: Type
 url_alias: type
-weight: 0
+weight: -2
 min_count: 1
 show_only_one_result: false
 field_identifier: entity_bundle
 facet_source_id: 'search_api:views_page__search__page_1'
 widget:
-  type: facets_form_checkbox
+  type: facets_form_dropdown
   config:
+    default_option_label: 'Select Options'
+    child_items_prefix: '-'
     disabled_on_empty: false
-    indent_class: indented
     show_numbers: true
-    arbitrary_facet_plugin: _none
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -59,4 +59,4 @@ processor_configs:
     settings: {  }
 empty_behavior:
   behavior: none
-show_title: false
+show_title: true
