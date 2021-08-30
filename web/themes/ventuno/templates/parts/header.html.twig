@@ -98,49 +98,49 @@
             <a class="nav-link" href="{{ anchor.link }}" {{ anchor.extra_attributes }}>{{ anchor.label }}</a>
           </li>
         {% endfor %}
-        {% if breakpoint is empty %}
-          {% for button in _buttons %}
-            <li class="nav-item accordion-item">
-              <span class="accordion-header" id="heading-{{ button.id }}">
-                <button
-                  class="accordion-button nav-link"
-                  data-bs-toggle="collapse"
-                  autocomplete="off"
-                  data-bs-target="#collapse-{{ button.id }}"
-                  aria-controls="collapse-{{ button.id }}"
-                  aria-expanded="false"
-                  type="button"
-                >
-                  {% if button.icon is not empty %}
-                    <svg class="bi icon--s">
-                      <use xlink:href="{{ base_path ~ directory }}/assets/icons/bootstrap-icons.svg#{{ button.icon.name }}"></use>
-                    </svg>
-                  {% endif %}
-                  {% if button.label is not empty %}
-                    <span class="accordion-button-label">{{ button.label }}</span>
-                  {% endif %}
-                </button>
-              </span>
-              <div
-                id="collapse-{{ button.id }}"
-                class="accordion-collapse collapse rounded-bottom"
-                aria-labelledby="heading-{{ button.id }}"
-                data-bs-parent="#navbar"
-                >
-                <div class="accordion-body">
-                  <ul class="accordion-list">
-                    {% for link in button.links %}
-                      <li class="accordion-list-item">
-                        <a href="{{ link.link }}" class="accordion-list-link">
-                          {{ link.label }}
-                        </a>
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
+        {% if logged_in %}
+          {#
+            User profile menu.
+
+            Note that this is a list item since in the future we will add
+            additional elements such as notification icons etc.
+          #}
+          <li class="nav-item accordion-item">
+            <span class="accordion-header" id="heading-account">
+              <button
+                class="accordion-button nav-link"
+                data-bs-toggle="collapse"
+                autocomplete="off"
+                data-bs-target="#collapse-account"
+                aria-controls="collapse-account"
+                aria-expanded="false"
+                type="button"
+              >
+                <svg class="bi icon--s">
+                  <use xlink:href="{{ base_path ~ directory }}/assets/icons/bootstrap-icons.svg#person-circle"></use>
+                </svg>
+                <span class="accordion-button-label">{{ user_name }}</span>
+              </button>
+            </span>
+            <div
+              id="collapse-account"
+              class="accordion-collapse collapse rounded-bottom"
+              aria-labelledby="heading-account"
+              data-bs-parent="#navbar"
+            >
+              <div class="accordion-body">
+                <ul class="accordion-list">
+                  {% for link in profile_menu %}
+                    <li class="accordion-list-item">
+                      <a href="{{ link.link }}" class="accordion-list-link">
+                        {{ link.label }}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
               </div>
-            </li>
-          {% endfor %}
+            </div>
+          </li>
         {% else %}
           {% for button in _buttons %}
             <li class="nav-item accordion-item d-{{ _breakpoint }}-none">
