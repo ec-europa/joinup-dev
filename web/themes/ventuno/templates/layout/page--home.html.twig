@@ -59,8 +59,7 @@
 <div class="layout-container">
   <div class="section-header">
     <header role="banner" class="region-header">
-      {{ page.header }}
-      {# {{ page.header }} #}
+      {% include directory ~ '/templates/parts/header.html.twig' %}
       {# LOGGED IN #}
       {% include directory ~ '/templates/navigation/navbar.html.twig' with {
         breakpoint: "",

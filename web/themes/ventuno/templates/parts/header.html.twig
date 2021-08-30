@@ -1,0 +1,210 @@
+
+{% spaceless %}
+
+{# Parameters:
+  - breakpoint (string) (default: 'md')
+    options: ['', 'xs', 'sm', 'md', 'lg', 'xl']
+  - brand (object) (default: {})
+    format: {
+      src: '',
+      alt: '',
+      motto: '', (optional)
+      link: ''
+    }
+  - collapse_id (string) (default: '')
+  - list_id (string) (default: '')
+  - anchors (array of objects) (default: [{}])
+    format: [{
+      link: '',
+      label: '',
+      extra_attributes: '' (optional: for example 'target="_blank" rel="noopener"')
+    }]
+  - buttons (array of objects) (default: [{}])
+    format: [{
+      id: '',
+      label: '',
+      icon: '',
+      type: '', (options: ['teaser', 'notifications', 'links'])
+      amount: '',
+      teaser: (object)
+      format: {
+        title: '',
+        text: '',
+        cta: {
+          link: '',
+          label: ''
+        }
+      },
+      notifications: (array of objects)
+      format: [{
+        title: '',
+        text: '',
+        days_ago: '',
+        unread: , (boolean)
+      }]
+      mark_all_as_read: '',
+      days_ago: '',
+      see_all: '',
+      links: (array of objects)
+      format: [{
+        link: '',
+        label: '',
+        extra_classes: '',
+        separator: , (boolean)
+      }]
+    }]
+#}
+
+{% set _breakpoint = breakpoint|default('') %}
+{% set _brand = brand|default({}) %}
+{% set _collapse_id = collapse_id|default('') %}
+{% set _list_id = list_id|default('') %}
+{% set _anchors = anchors|default([{}]) %}
+{% set _buttons = buttons|default([{}]) %}
+
+{% set _nav_classes = ['joinup-navbar', 'navbar', 'navbar-expand'] %}
+{% set _navbar_toggler_classes = ['navbar-toggler'] %}
+{% set _list_classes = ['navbar-nav', 'accordion', 'accordion-flush'] %}
+{% set _list_id = list_id|default('accordion-1') %}
+
+{% if nav_attributes is empty %}
+  {% set nav_attributes = create_attribute() %}
+{% endif %}
+
+{% if navbar_toggler_attributes is empty %}
+  {% set navbar_toggler_attributes = create_attribute() %}
+{% endif %}
+
+{% if list_attributes is empty %}
+  {% set list_attributes = create_attribute() %}
+{% endif %}
+
+{% set nav_attributes = nav_attributes.addClass(_nav_classes) %}
+{% set navbar_toggler_attributes = navbar_toggler_attributes.addClass(_navbar_toggler_classes) %}
+{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('type', 'button') %}
+{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('data-bs-toggle', 'collapse') %}
+{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('data-bs-target', '#' ~ _collapse_id) %}
+{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-controls', _collapse_id) %}
+{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-expanded', 'false') %}
+{% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-label', 'Toggle navigation') %}
+{% set list_attributes = list_attributes.addClass(_list_classes) %}
+{% set list_attributes = list_attributes.setAttribute('id', _list_id) %}
+
+<nav
+  {{ nav_attributes }}
+>
+  <div class="container">
+    <a class="navbar-brand" href="{{ front_page }}">
+      <img class="navbar-brand-image" src="{{ base_path }}{{ active_theme_path() }}/assets/images/logo.svg" alt="{{ 'Joinup logo'|t }}" />
+    </a>
+    <span class="navbar-motto d-none d-md-block">{{ 'Interoperability solutions'|t }}</span>
+
+    <div class="collapse navbar-collapse rounded-bottom" id="{{ _collapse_id }}">
+      <ul
+        {{ list_attributes }}
+      >
+        {% for anchor in _anchors %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ anchor.link }}" {{ anchor.extra_attributes }}>{{ anchor.label }}</a>
+          </li>
+        {% endfor %}
+        {% if breakpoint is empty %}
+          {% for button in _buttons %}
+            <li class="nav-item accordion-item">
+              <span class="accordion-header" id="heading-{{ button.id }}">
+                <button
+                  class="accordion-button nav-link"
+                  data-bs-toggle="collapse"
+                  autocomplete="off"
+                  data-bs-target="#collapse-{{ button.id }}"
+                  aria-controls="collapse-{{ button.id }}"
+                  aria-expanded="false"
+                  type="button"
+                >
+                  {% if button.icon is not empty %}
+                    <svg class="bi icon--s">
+                      <use xlink:href="{{ base_path ~ directory }}/assets/icons/bootstrap-icons.svg#{{ button.icon.name }}"></use>
+                    </svg>
+                  {% endif %}
+                  {% if button.label is not empty %}
+                    <span class="accordion-button-label">{{ button.label }}</span>
+                  {% endif %}
+                </button>
+              </span>
+              <div
+                id="collapse-{{ button.id }}"
+                class="accordion-collapse collapse rounded-bottom"
+                aria-labelledby="heading-{{ button.id }}"
+                data-bs-parent="#{{ _collapse_id }}"
+                >
+                <div class="accordion-body">
+                  <ul class="accordion-list">
+                    {% for link in button.links %}
+                      <li class="accordion-list-item">
+                        <a href="{{ link.link }}" class="accordion-list-link">
+                          {{ link.label }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        {% else %}
+          {% for button in _buttons %}
+            <li class="nav-item accordion-item d-{{ _breakpoint }}-none">
+              <span class="accordion-header" id="heading-{{ button.id }}">
+                <button
+                  class="accordion-button nav-link"
+                  data-bs-toggle="collapse"
+                  autocomplete="off"
+                  data-bs-target="#collapse-{{ button.id }}"
+                  aria-controls="collapse-{{ button.id }}"
+                  aria-expanded="false"
+                  type="button"
+                >
+                  {% if button.icon is not empty %}
+                    <svg class="bi icon--s">
+                      <use xlink:href="{{ base_path ~ directory }}/assets/icons/bootstrap-icons.svg#{{ button.icon.name }}"></use>
+                    </svg>
+                  {% endif %}
+                  {% if button.label is not empty %}
+                    <span class="accordion-button-label">{{ button.label }}</span>
+                  {% endif %}
+                </button>
+              </span>
+              <div
+                id="collapse-{{ button.id }}"
+                class="accordion-collapse collapse rounded-bottom"
+                aria-labelledby="heading-{{ button.id }}"
+                data-bs-parent="#{{ _collapse_id }}"
+                >
+                <div class="accordion-body">
+                  <ul class="accordion-list">
+                    {% for link in button.links %}
+                      <li class="accordion-list-item">
+                        <a href="{{ link.link }}" class="accordion-list-link">
+                          {{ link.label }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <ul class="accordion-list d-none d-{{ _breakpoint }}-inline-flex">
+              {% for link in button.links %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ link.link }}" {{ anchor.extra_attributes }}>{{ link.label }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endfor %}
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% endspaceless %}
