@@ -90,6 +90,30 @@ body {
   }
 }
 
+.slick-controls {
+  width: 40px;
+  height: 40px;
+}
+.slick-prev span {
+  @include icon-only();
+  @include font-icon-before("\F104", 1.2rem, inherit, inherit, 0);
+}
+.slick-next span {
+  @include icon-only();
+  @include font-icon-before("\F105", 1.2rem, inherit, inherit, 0);
+}
+.slick-list {
+  overflow-y: unset !important;
+  overflow-x: clip !important;
+}
+.slick-track {
+  display: flex !important;
+}
+.slick-slide {
+  display: flex !important;
+  height: auto !important;
+  margin-right: $spacer*1.5;
+}
 /*
 .splide {
   padding-top: 1rem;
