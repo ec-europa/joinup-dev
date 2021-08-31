@@ -12,40 +12,38 @@
           slidesToShow: 5,
           slidesToScroll: 1,
           arrows: true,
-          prevArrow: '<button type="button" class="slick-controls slick-next btn btn-secondary rounded-circle"><span>Previous</span></button>',
-          nextArrow: '<button type="button" class="slick-controls slick-prev btn btn-secondary rounded-circle"><span>Next</span></button>',
+          appendArrows:  $(elms[i]).prev().prev('.append-buttons'),
+          nextArrow: '<button type="button" class="slick-controls slick-next rounded-circle"><span class="icon">&nbsp;</span><span class="visually-hidden">Next</span></button>',
+          prevArrow: '<button type="button" class="slick-controls slick-prev rounded-circle"><span class="icon">&nbsp;</span><span class="visually-hidden">Previous</span></button>',
           responsive: [
             {
-              breakpoint: 1200,
+              breakpoint: 1399,
               settings: {
                 slidesToShow: 4,
                 slidesToScroll: 1,
               }
             },
             {
-              breakpoint: 1024,
+              breakpoint: 1199,
               settings: {
                 slidesToShow: 3,
                 slidesToScroll: 1
               }
             },
             {
-              breakpoint: 768,
+              breakpoint: 991,
               settings: {
                 slidesToShow: 2,
                 slidesToScroll: 1
               }
             },
             {
-              breakpoint: 480,
+              breakpoint: 767,
               settings: {
                 slidesToShow: 1,
                 slidesToScroll: 1
               }
-            }
-            // You can unslick at a given breakpoint now by adding:
-            // settings: "unslick"
-            // instead of a settings object
+            },
           ]
         });
       };

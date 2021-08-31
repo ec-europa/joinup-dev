@@ -15,7 +15,7 @@
     @include font-icon-after("\E801", 1rem);
   }
   article {
-    background: $gray-300 url(../assets/images/highlighted-event.jpg) no-repeat center center;
+    background: $gray-300 url(../images/highlighted-event.jpg) no-repeat center center;
     background-size: cover;
     @extend .rounded-3;
     display: flex;

@@ -27,9 +27,10 @@
       <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{ key }}" role="tabpanel" aria-labelledby="{{ key }}-tab">
         {% if tab.data is not empty %}
           <div class="tab-data">
+            <span class="append-buttons me-4"></span>
             <a href="{{ tab.url }}" class="btn btn-secondary mb-2 explore-see-more">{{ 'See more'|t }}</a>
-            <div class="explore-slider explore-slider-{{ key }}">
-              {{ tab.data }}
+            <div class="explore-slider explore-slider-{{ key }} mt-3">
+            {{ tab.data }}
             </div>
           </div>
         {% endif %}
