@@ -4,12 +4,7 @@
  * Themeing for rdf entities.
  */
 #}
-{%
-  set classes = [
-    'splide__slide',
-  ]
-%}
-<article{{ attributes.addClass(classes) }}>
+<article{{ attributes }}>
     {{ title_prefix }}
     {% if not page %}
         <h2{{ title_attributes }}>

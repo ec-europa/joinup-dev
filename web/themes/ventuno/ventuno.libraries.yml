@@ -4,10 +4,10 @@ style:
     theme:
       assets/css/styles.css: {}
 
-splide:
+slick:
   js:
-    assets/js/splide.min.js: { minified: true }
-    assets/js/splide-config.js: { minified: false }
+    assets/js/slick.js: { minified: true }
+    assets/js/slick-config.js: { minified: false }
   css:
     theme:
-      assets/css/splide.min.css: { minified: true }
+      assets/css/slick.css: { minified: true }

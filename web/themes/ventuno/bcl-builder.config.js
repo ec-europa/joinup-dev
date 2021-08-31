@@ -10,10 +10,10 @@ const includePaths = [nodeModules];
 module.exports = {
   scripts: [
     {
-      entry: path.resolve(outputFolder, "src/js/splide-config.js"),
-      dest: path.resolve(outputFolder, "assets/js/splide-config.js"),
+      entry: path.resolve(outputFolder, "src/js/slick-config.js"),
+      dest: path.resolve(outputFolder, "assets/js/slick-config.js"),
       options: {
-        name: "splide",
+        name: "slick",
         minify: false,
         sourceMap: true,
       },
@@ -64,7 +64,7 @@ module.exports = {
       from: [
         path.resolve(
           nodeModules,
-          "@splidejs/splide/dist/css/splide.min.css"
+          "slick-carousel/slick/slick.css"
         ),
       ],
       to: path.resolve(outputFolder, "assets/css"),
@@ -74,7 +74,7 @@ module.exports = {
       from: [
         path.resolve(
           nodeModules,
-          "@splidejs/splide/dist/js/splide.min.js"
+          "slick-carousel/slick/slick.js"
         ),
       ],
       to: path.resolve(outputFolder, "assets/js"),

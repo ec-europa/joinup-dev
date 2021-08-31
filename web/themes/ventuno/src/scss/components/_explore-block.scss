@@ -58,7 +58,6 @@ body {
         article {
           background-color: $white;
           border-radius: $border-radius;
-          max-width: 22rem;
           @extend .p-4;
           @extend .me-4;
           @extend .shadow;
@@ -91,6 +90,7 @@ body {
   }
 }
 
+/*
 .splide {
   padding-top: 1rem;
   .splide__arrows {
@@ -119,3 +119,4 @@ body {
     padding: 10px 0 !important;
   }
 }
+*/
