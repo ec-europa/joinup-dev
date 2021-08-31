@@ -75,7 +75,7 @@ default:
   extensions:
     Drupal\MinkExtension:
       base_url: ${env.DRUPAL_BASE_URL}
-      ajax_timeout: 10
+      ajax_timeout: 30
       files_path: ${joinup.dir}/tests/fixtures/files
       goutte: ~
       javascript_session: selenium2
