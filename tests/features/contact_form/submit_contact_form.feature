@@ -15,7 +15,6 @@ Feature: Submit the contact form
     Given I am not logged in
     When I visit "/?destination=collections"
     And I click "Contact Joinup Support" in the "Footer" region
-    Then the url should match "/contact?destination=collections"
     And I should see the heading "Contact"
     And the "Category" select should contain the following options:
       | - Select a value -             |
@@ -29,10 +28,22 @@ Feature: Submit the contact form
     # The honeypot field that needs to be empty on submission.
     Then the following fields should be present "user_homepage"
     And I should see the text "Submissions of this form are processed by a contractor of the European Commission."
-    And I should be on the homepage
+    And I fill in the following:
+      | First name     | Wolverine                   |
+      | Last name      | Wolves                      |
+      | Organisation   | The Deaf-Mute Wolves        |
+      | E-mail address | oswine@example.pt           |
+      | Category       | other                       |
+      | Subject        | Screen reader accessibility |
+      | Message        | Dear sir, madam, ...        |
+    And I attach the file "logo.png" to "Attachment"
+    # We need to wait 5 seconds for the spam protection time limit to pass.
+    And I wait for the spam protection time limit to pass
+    And I press "Submit"
+    Then I am on "collections"
 
+    And I am on the homepage
     When I click "Contact Joinup Support" in the "Footer" region
-    When I am on "/contact?destination=/homepage"
     And I fill in the following:
       | First name     | Oswine                      |
       | Last name      | Wulfric                     |
@@ -45,6 +56,7 @@ Feature: Submit the contact form
     # We need to wait 5 seconds for the spam protection time limit to pass.
     And I wait for the spam protection time limit to pass
     And I press "Submit"
+    And I am on the homepage
 
     # Both moderators should have received the notification e-mail.
     Then the following email should have been sent:
