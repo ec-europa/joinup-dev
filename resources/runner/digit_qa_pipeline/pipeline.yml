@@ -1,0 +1,11 @@
+# Settings and commands only available inside Digit QA Pipeline.
+
+behat:
+  commands:
+    before:
+      - task: run
+        command: solr:empty
+      - task: run
+        command: sparql:empty
+      - task: run
+        command: dev:import-sparql-fixtures

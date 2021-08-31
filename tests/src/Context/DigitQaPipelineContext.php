@@ -7,12 +7,15 @@ namespace Drupal\joinup\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Testwork\Hook\Scope\AfterSuiteScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
+use Joinup\Traits\DigitQaPipelineAwareTrait;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Context to run within DIGIT QA GitLab pipeline.
  */
 class DigitQaPipelineContext extends RawMinkContext {
+
+  use DigitQaPipelineAwareTrait;
 
   /**
    * Initializes the environment before running the tests.
@@ -62,17 +65,6 @@ class DigitQaPipelineContext extends RawMinkContext {
       $artifactsPath = static::getArtifactsPath($event->getSuite()->getName());
       exec("{$projectPath}/vendor/bin/drush sql:dump --tables-list=watchdog --gzip --result-file={$artifactsPath}/watchdog.sql --root={$projectPath}");
     }
-  }
-
-  /**
-   * Checks if we're running inside DIGIT QA GitLab pipeline context.
-   *
-   * @return bool
-   *   TRUE if we're running in DIGIT QA GitLab pipeline.
-   */
-  protected static function isDigitQaPipeline(): bool {
-    // @todo Add more checks.
-    return getenv('GITLAB_CI') === 'true' && getenv('TOOLKIT_PROJECT_ID') === 'digit-joinup';
   }
 
   /**
