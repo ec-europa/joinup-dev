@@ -85,7 +85,7 @@ class SearchWidget extends DefaultSearchWidget {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
     // Swap the default label with one that better represents our functionality.
-    $element['enabled']['#title'] = $this->t('Add related content');
+    $element['enabled']['#title'] = $this->t('Show related content');
 
     // There is no need to allow customizing the facets. For now.
     foreach (['fields', 'refresh_rows', 'refresh'] as $key) {
@@ -129,6 +129,8 @@ class SearchWidget extends DefaultSearchWidget {
       '#weight' => -10,
     ];
 
+    $element['wrapper']['#element_validate'][] = [$this, 'validateEmptyQuerys'];
+
     return $element;
   }
 
@@ -144,6 +146,21 @@ class SearchWidget extends DefaultSearchWidget {
     }
 
     return $cleaned_values;
+  }
+
+  /**
+   * Validates if data is empty in the Content listing block.
+   *
+   * @param array $element
+   *   The query preset element.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   */
+  public function validateEmptyQuerys(array &$element, FormStateInterface $form_state) {
+
+    if (empty($element['query_presets']['#value']) && empty($element['query_builder']['filters']['#value'])) {
+      $form_state->setError($element, $this->t('You need to add a filter in the Content listing block'));
+    }
   }
 
 }
