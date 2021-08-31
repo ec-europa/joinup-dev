@@ -61,6 +61,20 @@ body {
           @extend .p-4;
           @extend .me-4;
           @extend .shadow;
+          height: 100%;
+          display: flex !important;
+          flex-flow: column;
+          .layout {
+            flex-grow: 1;
+            .layout__region {
+              display: flex;
+              flex-direction: column;
+              height: 100%;
+            }
+            .explore-item__description {
+              flex-grow: 1;
+            }
+          }
           h2 {
             font-size: $h4-font-size;
             @extend .fw-medium;
@@ -89,58 +103,47 @@ body {
     }
   }
 }
-
+.append-buttons {
+  display: flex;
+  float: left;
+}
 .slick-controls {
   width: 40px;
   height: 40px;
+  background-color: $white;
+  border: none;
 }
-.slick-prev span {
-  @include icon-only();
-  @include font-icon-before("\F104", 1.2rem, inherit, inherit, 0);
-}
-.slick-next span {
-  @include icon-only();
-  @include font-icon-before("\F105", 1.2rem, inherit, inherit, 0);
-}
-.slick-list {
-  overflow-y: unset !important;
-  overflow-x: clip !important;
-}
-.slick-track {
-  display: flex !important;
-}
-.slick-slide {
-  display: flex !important;
-  height: auto !important;
-  margin-right: $spacer*1.5;
-}
-/*
-.splide {
-  padding-top: 1rem;
-  .splide__arrows {
-    display: flex;
-    float: left;
-    @extend .me-4;
+.slick-prev {
+  margin-right: 1rem;
+  span.icon {
+    @include font-icon-before("\F104", 1.2rem, $primary, inherit, 0);
   }
-  .splide__arrow {
-    background-color: $white;
-    transform: none;
-    svg {
-      width: .8em;
-      height: .8em;
+}
+.slick-next {
+  span.icon {
+    @include font-icon-before("\F105", 1.2rem, $primary, inherit, 0 0 0 6px);
+  }
+}
+
+.slick-slider {
+  display: flex;
+  flex-flow: column;
+  .slick-list {
+    order: 3;
+    overflow-y: unset !important;
+    overflow-x: clip !important;
+    padding: 6px 0 6px 6px;
+  }
+  .slick-track {
+    display: flex !important;
+  }
+  .slick-slide {
+    display: flex !important;
+    height: auto !important;
+    margin-right: $spacer*1.5;
+    & > div {
+      width: 100%;
     }
   }
-  .splide__arrow--prev {
-    left: 0;
-    position: relative;
-  }
-  .splide__arrow--next {
-    right: 0;
-    position: relative;
-    margin-left: 1rem;
-  }
-  .splide__list {
-    padding: 10px 0 !important;
-  }
+
 }
-*/
