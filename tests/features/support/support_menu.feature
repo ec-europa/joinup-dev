@@ -43,17 +43,53 @@ Feature:
     When I am on the homepage
     Then I should see the link "Take a tour"
     And I should see the link "Contact support"
-    And the response should contain "<a href=\"/contact?destination=/homepage\" class=\"support-menu__link\" data-drupal-link-system-path=\"contact\">Contact support</a>"
+    Then I click "Contact support"
+    And I fill in the following:
+      | First name     | Rufus                       |
+      | Last name      | Modric                      |
+      | Organisation   | The Deaf-Mute Society       |
+      | E-mail address | oswine@example.ca           |
+      | Category       | other                       |
+      | Subject        | Mobile reader accessibility |
+      | Message        | Dear sir, madam, ...        |
+    # We need to wait 5 seconds for the spam protection time limit to pass.
+    And I wait for the spam protection time limit to pass
+    And I press "Submit"
+    Then I should be on the homepage
 
     When I go to "/collections"
     Then I should not see the link "Take a tour"
     But I should see the link "Contact support"
-    And the response should contain "<a href=\"/contact?destination=/collections\" class=\"support-menu__link\" data-drupal-link-system-path=\"contact\">Contact support</a>"
+    Then I click "Contact support"
+    And I fill in the following:
+      | First name     | Oswine                      |
+      | Last name      | Wulfric                     |
+      | Organisation   | The Deaf-Mute Society       |
+      | E-mail address | oswine@example.za           |
+      | Category       | other                       |
+      | Subject        | Screen reader accessibility |
+      | Message        | Dear sir, madam, ...        |
+    # We need to wait 5 seconds for the spam protection time limit to pass.
+    And I wait for the spam protection time limit to pass
+    And I press "Submit"
+    Then I am on "/collections"
 
     When I go to "/keep-up-to-date"
     Then I should see the link "Take a tour"
     And I should see the link "Contact support"
-    And the response should contain "<a href=\"/contact?destination=/keep-up-to-date\" class=\"support-menu__link\" data-drupal-link-system-path=\"contact\">Contact support</a>"
+    Then I click "Contact support"
+    And I fill in the following:
+      | First name     | Roscof                      |
+      | Last name      | Vulvric                     |
+      | Organisation   | The Deaf-Mute Society       |
+      | E-mail address | roswine@example.za          |
+      | Category       | other                       |
+      | Subject        | Screen reader disponibility |
+      | Message        | Dear sir, madam, ...        |
+    # We need to wait 5 seconds for the spam protection time limit to pass.
+    And I wait for the spam protection time limit to pass
+    And I press "Submit"
+    Then I am on "/keep-up-to-date"
 
     When I go to the homepage of the "Hotel California" collection
     Then I should see the link "Take a tour"

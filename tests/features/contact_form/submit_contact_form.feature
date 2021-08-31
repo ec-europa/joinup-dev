@@ -13,9 +13,9 @@ Feature: Submit the contact form
 
     # There should be a link to the contact form in the footer.
     Given I am not logged in
-    When I visit "/?destination=/collections"
+    When I visit "/?destination=collections"
     And I click "Contact Joinup Support" in the "Footer" region
-    Then I am on "/contact?destination=/collections"
+    Then the url should match "/contact?destination=collections"
     And I should see the heading "Contact"
     And the "Category" select should contain the following options:
       | - Select a value -             |
@@ -29,9 +29,9 @@ Feature: Submit the contact form
     # The honeypot field that needs to be empty on submission.
     Then the following fields should be present "user_homepage"
     And I should see the text "Submissions of this form are processed by a contractor of the European Commission."
-    And I am on the homepage
+    And I should be on the homepage
 
-    Then I click "Contact Joinup Support" in the "Footer" region
+    When I click "Contact Joinup Support" in the "Footer" region
     When I am on "/contact?destination=/homepage"
     And I fill in the following:
       | First name     | Oswine                      |
