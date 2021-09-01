@@ -90,10 +90,13 @@
     <span class="navbar-motto d-none d-md-block">{{ 'Interoperability solutions'|t }}</span>
 
     <div class="collapse navbar-collapse rounded-bottom" id="navbar">
-      <ul
-        {{ list_attributes }}
-      >
-        {% for anchor in _anchors %}
+      <ul class="navbar-nav accordion accordion-flush">
+        {#
+          Anchors are reserved for future expansion, they have already been
+          implemented according to design mockups, but we do not actually have
+          these in the backend yet.
+        #}
+        {% for anchor in _anchors|default([]) %}
           <li class="nav-item">
             <a class="nav-link" href="{{ anchor.link }}" {{ anchor.extra_attributes }}>{{ anchor.label }}</a>
           </li>
