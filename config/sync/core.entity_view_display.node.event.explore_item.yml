@@ -47,16 +47,49 @@ third_party_settings:
             uuid: f2446b89-b2e1-46df-a892-917a49160795
             region: content
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:event:body'
+              label: Description
+              provider: layout_builder
+              label_display: '0'
               formatter:
                 label: hidden
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
-            additional: {  }
+                type: smart_trim
+                settings:
+                  trim_length: 200
+                  trim_type: chars
+                  trim_suffix: …
+                  wrap_output: false
+                  wrap_class: trimmed
+                  more_link: false
+                  more_text: More
+                  more_class: more-link
+                  summary_handler: trim
+                  trim_options:
+                    text: true
+                    trim_zero: false
+                third_party_settings:
+                  template_suggestion:
+                    template_suggestion: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional:
+              component_attributes:
+                block_attributes:
+                  id: ''
+                  class: explore-item__description
+                  style: ''
+                  data: ''
+                block_title_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+                block_content_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
             weight: -9
           acce4cf6-0d1d-462d-a6f6-445fc1e8113f:
             uuid: acce4cf6-0d1d-462d-a6f6-445fc1e8113f
@@ -76,8 +109,36 @@ third_party_settings:
                 third_party_settings:
                   template_suggestion:
                     template_suggestion: ''
-            additional: {  }
+            additional:
+              component_attributes:
+                block_attributes:
+                  id: ''
+                  class: date
+                  style: ''
+                  data: ''
+                block_title_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
+                block_content_attributes:
+                  id: ''
+                  class: ''
+                  style: ''
+                  data: ''
             weight: -8
+          5bae9701-073f-4f80-93b0-736bf37b025a:
+            uuid: 5bae9701-073f-4f80-93b0-736bf37b025a
+            region: content
+            configuration:
+              id: 'extra_field_block:node:event:read_more'
+              label: 'Read more'
+              provider: layout_builder
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: -7
         third_party_settings: {  }
 id: node.event.explore_item
 targetEntityType: node
@@ -108,6 +169,11 @@ content:
     third_party_settings:
       template_suggestion:
         template_suggestion: ''
+  read_more:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_attachment: true
   field_comments: true
