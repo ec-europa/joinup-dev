@@ -130,7 +130,7 @@
             >
               <div class="accordion-body">
                 <ul class="accordion-list">
-                  {% for link in profile_menu %}
+                  {% for link in profile_links %}
                     <li class="accordion-list-item">
                       <a href="{{ link.link }}" class="accordion-list-link">
                         {{ link.label }}
@@ -142,55 +142,55 @@
             </div>
           </li>
         {% else %}
-          {% for button in _buttons %}
-            <li class="nav-item accordion-item d-{{ _breakpoint }}-none">
-              <span class="accordion-header" id="heading-{{ button.id }}">
-                <button
-                  class="accordion-button nav-link"
-                  data-bs-toggle="collapse"
-                  autocomplete="off"
-                  data-bs-target="#collapse-{{ button.id }}"
-                  aria-controls="collapse-{{ button.id }}"
-                  aria-expanded="false"
-                  type="button"
-                >
-                  {% if button.icon is not empty %}
-                    <svg class="bi icon--s">
-                      <use xlink:href="{{ base_path ~ directory }}/assets/icons/bootstrap-icons.svg#{{ button.icon.name }}"></use>
-                    </svg>
-                  {% endif %}
-                  {% if button.label is not empty %}
-                    <span class="accordion-button-label">{{ button.label }}</span>
-                  {% endif %}
-                </button>
-              </span>
-              <div
-                id="collapse-{{ button.id }}"
-                class="accordion-collapse collapse rounded-bottom"
-                aria-labelledby="heading-{{ button.id }}"
-                data-bs-parent="#navbar"
-                >
-                <div class="accordion-body">
-                  <ul class="accordion-list">
-                    {% for link in button.links %}
-                      <li class="accordion-list-item">
-                        <a href="{{ link.link }}" class="accordion-list-link">
-                          {{ link.label }}
-                        </a>
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
+          {#
+            Anonymous menu.
+
+            Anonymous users see 3 links to guide them to the About Us page and
+            allow them to log in. Also there is a section that explains some
+            details about the use of EU Login.
+          #}
+          <li class="nav-item accordion-item d-sm-none">
+            <span class="accordion-header" id="heading-navbar-toggler">
+              <button
+                class="accordion-button nav-link"
+                data-bs-toggle="collapse"
+                autocomplete="off"
+                data-bs-target="#collapse-navbar-toggler"
+                aria-controls="collapse-navbar-toggler"
+                aria-expanded="false"
+                type="button"
+              >
+                <svg class="bi icon--s">
+                  <use xlink:href="{{ base_path ~ directory }}/assets/icons/bootstrap-icons.svg#justify"></use>
+                </svg>
+              </button>
+            </span>
+            <div
+              id="collapse-navbar-toggler"
+              class="accordion-collapse collapse rounded-bottom"
+              aria-labelledby="heading-navbar-toggler"
+              data-bs-parent="#navbar"
+              >
+              <div class="accordion-body">
+                <ul class="accordion-list">
+                  {% for link in anonymous_links %}
+                    <li class="accordion-list-item">
+                      <a href="{{ link.link }}" class="accordion-list-link">
+                        {{ link.label }}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
               </div>
-            </li>
-            <ul class="accordion-list d-none d-{{ _breakpoint }}-inline-flex">
-              {% for link in button.links %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ link.link }}" {{ anchor.extra_attributes }}>{{ link.label }}</a>
-                </li>
-              {% endfor %}
-            </ul>
-          {% endfor %}
+            </div>
+          </li>
+          <ul class="accordion-list d-none d-sm-inline-flex">
+            {% for link in anonymous_links %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ link.link }}">{{ link.label }}</a>
+              </li>
+            {% endfor %}
+          </ul>
         {% endif %}
       </ul>
     </div>

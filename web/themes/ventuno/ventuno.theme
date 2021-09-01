@@ -7,9 +7,13 @@
 
 declare(strict_types = 1);
 
+use Drupal\collection\Entity\CollectionInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Url;
 use Drupal\joinup_bundle_class\LogoInterface;
+use Drupal\joinup_collection\JoinupCollectionHelper;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Implements hook_preprocess_rdf_entity().
@@ -49,12 +53,47 @@ function ventuno_preprocess_page(&$variables) {
     // @see joinup_eulogin_preprocess_menu()
     return $element->link->isEnabled() && $element->link->getPluginId() !== 'joinup_eulogin.eu_login_info';
   });
-  $variables['profile_menu'] = array_map(function (MenuLinkTreeElement $element): array {
+  $variables['profile_links'] = array_map(function (MenuLinkTreeElement $element): array {
     return [
       'link' => $element->link->getUrlObject(),
       'label' => $element->link->getTitle(),
     ];
   }, $tree);
+
+  // Populate the links shown to anonymous users.
+  $anonymous_links = [];
+
+  // Generate a link to the About page of the Joinup collection, to show as the
+  // "About us" link in the page header for anonymous users.
+  try {
+    $joinup_collection = Rdf::load(JoinupCollectionHelper::getCollectionId());
+    if (!$joinup_collection instanceof CollectionInterface) {
+      throw new Exception();
+    }
+    $url = $joinup_collection->toUrl('about-page');
+    $anonymous_links[] = [
+      'label' => t('About us'),
+      'link' => $url,
+    ];
+  }
+  catch (Exception $e) {
+    // The Joinup collection could not be loaded or the link to the About page
+    // could not be generated. This should not crash the page since the
+    // collection is considered to be optional. It is for example possible for a
+    // project to reuse the Joinup open source code without hosting a "Joinup"
+    // collection.
+    // However in scope of the Ventuno theme the About Us link is considered
+    // to be an important element, so we log an error to alert maintainers
+    // that corrective action is required.
+    \Drupal::logger('ventuno')->error('"About us" link could not be rendered because the Joinup collection is not defined or doesn\'t have an About page.');
+  }
+
+  // Generate a link to EU Login.
+  $anonymous_links[] = [
+    'label' => t('Sign in'),
+    'link' => Url::fromRoute('cas.login'),
+  ];
+  $variables['anonymous_links'] = $anonymous_links;
 }
 
 /**
