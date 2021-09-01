@@ -220,7 +220,10 @@ function custom_page_search_api_query_search_api_field_field_content_listing_alt
     // Show only content belonging to the same group.
     $query->addCondition('entity_groups', [$group->id()], 'IN');
   }
-
+  // Remove all results if no presets or content filter.
+  if (empty($field_value['query_presets']) && !array_key_exists('query_builder', $field_value)) {
+    $query->addCondition($parent_entity->getEntityType()->getKey('id'), $parent_entity->id());
+  }
   // Remove the page itself from the results.
   $query->addCondition($parent_entity->getEntityType()->getKey('id'), $parent_entity->id(), '<>');
 }
