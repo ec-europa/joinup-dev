@@ -130,3 +130,4 @@ hidden:
   field_site_featured: true
   langcode: true
   published_at: true
+  read_more: true
