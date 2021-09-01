@@ -1,5 +1,5 @@
 # Ignore build artifacts.
 /node_modules/*
+/assets/
 *.map
 package-lock.json
-/assets/
