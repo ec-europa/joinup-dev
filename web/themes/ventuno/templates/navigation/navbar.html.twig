@@ -64,8 +64,13 @@
 
 {% set _nav_classes = ['joinup-navbar', 'navbar', 'navbar-expand'] %}
 {% set _navbar_toggler_classes = ['navbar-toggler'] %}
-{% set _list_classes = ['navbar-nav', 'accordion', 'accordion-flush'] %}
 {% set _list_id = list_id|default('accordion-1') %}
+{% set _list_classes = ['navbar-nav', 'accordion', 'accordion-flush'] %}
+{% set _list_item_classes = ['nav-item', 'accordion-item'] %}
+
+{% if _breakpoint %}
+  {% set _list_item_classes = _list_item_classes|merge(['d-' ~ _breakpoint ~ '-none']) %}
+{% endif %}
 
 {% if nav_attributes is empty %}
   {% set nav_attributes = create_attribute() %}
@@ -79,6 +84,10 @@
   {% set list_attributes = create_attribute() %}
 {% endif %}
 
+{% if list_item_attributes is empty %}
+  {% set list_item_attributes = create_attribute() %}
+{% endif %}
+
 {% set nav_attributes = nav_attributes.addClass(_nav_classes) %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.addClass(_navbar_toggler_classes) %}
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('type', 'button') %}
@@ -89,8 +98,9 @@
 {% set navbar_toggler_attributes = navbar_toggler_attributes.setAttribute('aria-label', 'Toggle navigation') %}
 {% set list_attributes = list_attributes.addClass(_list_classes) %}
 {% set list_attributes = list_attributes.setAttribute('id', _list_id) %}
+{% set list_item_attributes = list_item_attributes.addClass(_list_item_classes) %}
 
-<nav 
+<nav
   {{ nav_attributes }}
 >
   <div class="container">
@@ -102,7 +112,7 @@
     {% endif %}
 
     <div class="collapse navbar-collapse rounded-bottom" id="{{ _collapse_id }}">
-      <ul 
+      <ul
         {{ list_attributes }}
       >
         {% for anchor in _anchors %}
@@ -110,91 +120,48 @@
             <a class="nav-link" href="{{ anchor.link }}" {{ anchor.extra_attributes }}>{{ anchor.label }}</a>
           </li>
         {% endfor %}
-        {% if breakpoint is empty %}
-          {% for button in _buttons %}
-            <li class="nav-item accordion-item">
-              <span class="accordion-header" id="heading-{{ button.id }}">
-                <button
-                  class="accordion-button nav-link"
-                  data-bs-toggle="collapse"
-                  autocomplete="off"
-                  data-bs-target="#collapse-{{ button.id }}"
-                  aria-controls="collapse-{{ button.id }}"
-                  aria-expanded="false"
-                  type="button"
-                >
-                  {% if button.icon is not empty %}
-                    <svg class="bi icon--s">
-                      <use xlink:href="{{ base_path ~ directory }}/assets/icons/bootstrap-icons.svg#{{ button.icon.name }}"></use>
-                    </svg>
-                  {% endif %}
-                  {% if button.label is not empty %}
-                    <span class="accordion-button-label">{{ button.label }}</span>
-                  {% endif %}
-                </button>
-              </span>
-              <div 
-                id="collapse-{{ button.id }}"
-                class="accordion-collapse collapse rounded-bottom"
-                aria-labelledby="heading-{{ button.id }}"
-                data-bs-parent="#{{ _collapse_id }}"
-                >
-                <div class="accordion-body">
-                  <ul class="accordion-list">
-                    {% for link in button.links %}
-                      <li class="accordion-list-item">
-                        <a href="{{ link.link }}" class="accordion-list-link">
-                          {{ link.label }}
-                        </a>
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
+        {% for button in _buttons %}
+          <li {{ list_item_attributes }}>
+            <span class="accordion-header" id="heading-{{ button.id }}">
+              <button
+                class="accordion-button nav-link"
+                data-bs-toggle="collapse"
+                autocomplete="off"
+                data-bs-target="#collapse-{{ button.id }}"
+                aria-controls="collapse-{{ button.id }}"
+                aria-expanded="false"
+                type="button"
+              >
+                {% if button.icon is not empty %}
+                  <svg class="bi icon--s">
+                    <use xlink:href="{{ base_path ~ directory }}/assets/icons/bootstrap-icons.svg#{{ button.icon.name }}"></use>
+                  </svg>
+                {% endif %}
+                {% if button.label is not empty %}
+                  <span class="accordion-button-label">{{ button.label }}</span>
+                {% endif %}
+              </button>
+            </span>
+            <div
+              id="collapse-{{ button.id }}"
+              class="accordion-collapse collapse rounded-bottom"
+              aria-labelledby="heading-{{ button.id }}"
+              data-bs-parent="#{{ _collapse_id }}"
+            >
+              <div class="accordion-body">
+                <ul class="accordion-list">
+                  {% for link in button.links %}
+                    <li class="accordion-list-item">
+                      <a href="{{ link.link }}" class="accordion-list-link">
+                        {{ link.label }}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
               </div>
-            </li>
-          {% endfor %}
-        {% else %}
-          {% for button in _buttons %}
-            <li class="nav-item accordion-item d-{{ _breakpoint }}-none">
-              <span class="accordion-header" id="heading-{{ button.id }}">
-                <button
-                  class="accordion-button nav-link"
-                  data-bs-toggle="collapse"
-                  autocomplete="off"
-                  data-bs-target="#collapse-{{ button.id }}"
-                  aria-controls="collapse-{{ button.id }}"
-                  aria-expanded="false"
-                  type="button"
-                >
-                  {% if button.icon is not empty %}
-                    <svg class="bi icon--s">
-                      <use xlink:href="{{ base_path ~ directory }}/assets/icons/bootstrap-icons.svg#{{ button.icon.name }}"></use>
-                    </svg>
-                  {% endif %}
-                  {% if button.label is not empty %}
-                    <span class="accordion-button-label">{{ button.label }}</span>
-                  {% endif %}
-                </button>
-              </span>
-              <div 
-                id="collapse-{{ button.id }}"
-                class="accordion-collapse collapse rounded-bottom"
-                aria-labelledby="heading-{{ button.id }}"
-                data-bs-parent="#{{ _collapse_id }}"
-                >
-                <div class="accordion-body">
-                  <ul class="accordion-list">
-                    {% for link in button.links %}
-                      <li class="accordion-list-item">
-                        <a href="{{ link.link }}" class="accordion-list-link">
-                          {{ link.label }}
-                        </a>
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
-              </div>
-            </li>
+            </div>
+          </li>
+          {% if _breakpoint %}
             <ul class="accordion-list d-none d-{{ _breakpoint }}-inline-flex">
               {% for link in button.links %}
                 <li class="nav-item">
@@ -202,8 +169,8 @@
                 </li>
               {% endfor %}
             </ul>
-          {% endfor %}
-        {% endif %}
+          {% endif %}
+        {% endfor %}
       </ul>
     </div>
   </div>
