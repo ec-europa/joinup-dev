@@ -63,7 +63,6 @@ Feature: Site menus
       | state | validated |
 
     When I am on the homepage
-    Then I see the "a" element with the "title" attribute set to "Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community." in the "Header" region
     And I see the "a" element with the "title" attribute set to "KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Collections and Solutions." in the "Header" region
 
     When I go to "/collections"

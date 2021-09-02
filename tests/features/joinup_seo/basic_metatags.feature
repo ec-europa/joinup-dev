@@ -18,7 +18,7 @@ Feature:
       | og:image:type | image/svg+xml                                                                                                                                                                                                              |
     And the HTML title of the page should be "Joinup"
 
-    When I click "Collections"
+    When I visit the collection overview
     Then the following meta tags should available in the html:
       | identifier    | value                                      |
       | og:url        | __base_url__/collections                   |
