@@ -162,13 +162,11 @@
             </div>
           </li>
           {% if _breakpoint %}
-            <ul class="accordion-list d-none d-{{ _breakpoint }}-inline-flex">
-              {% for link in button.links %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ link.link }}" {{ anchor.extra_attributes }}>{{ link.label }}</a>
-                </li>
-              {% endfor %}
-            </ul>
+            {% for link in button.links %}
+              <li class="nav-item d-none d-{{ _breakpoint }}-inline-flex">
+                <a class="nav-link" href="{{ link.link }}" {{ anchor.extra_attributes }}>{{ link.label }}</a>
+              </li>
+            {% endfor %}
           {% endif %}
         {% endfor %}
       </ul>
