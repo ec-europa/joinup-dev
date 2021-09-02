@@ -29,10 +29,10 @@
 #}
 {%
   set classes = [
-  'block',
-  'block-entityqueue',
-  'block-entityqueue--' ~ derivative_plugin_id|clean_class,
-]
+    'block',
+    'block-entityqueue',
+    'block-entityqueue--' ~ derivative_plugin_id|clean_class,
+  ]
 %}
 <div{{ attributes.addClass(classes) }}>
   {{ title_prefix }}
