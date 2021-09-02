@@ -15,7 +15,7 @@ use Symfony\Component\Console\Input\InputOption;
 /**
  * Provides commands to run tests.
  */
-class TestsCommands extends AbstractCommands implements FilesystemAwareInterface{
+class TestsCommands extends AbstractCommands implements FilesystemAwareInterface {
 
   use CollectionFactoryTasks;
   use FilesystemAwareTrait;
@@ -54,7 +54,7 @@ class TestsCommands extends AbstractCommands implements FilesystemAwareInterface
   public function toolkitBehat(array $options = [
     'from' => InputOption::VALUE_OPTIONAL,
     'to' => InputOption::VALUE_OPTIONAL,
-    'suite' => 'default'
+    'suite' => 'default',
   ]): CollectionBuilder {
     $tasks = [];
 
