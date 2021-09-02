@@ -40,7 +40,7 @@ Feature: Sharing content on social networks
 
     When I am logged in as a user with the "authenticated" role
     And I am on the homepage
-    And I click "Solutions"
+    And I click "More solutions"
     And I click the contextual link "Share" in the "Important solution" tile
 
     And I should see the link "Facebook"
