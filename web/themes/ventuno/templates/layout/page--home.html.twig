@@ -59,83 +59,25 @@
 <div class="layout-container">
   <div class="section-header">
     <header role="banner" class="region-header">
-      {% include directory ~ '/templates/parts/header.html.twig' %}
-      {# LOGGED IN #}
       {% include directory ~ '/templates/navigation/navbar.html.twig' with {
-        breakpoint: "",
+        breakpoint: logged_in ? "" : "sm",
         brand: {
-          src: "https://joinup.ec.europa.eu/themes/joinup/images/logo.svg",
-          alt: "JoinUp logo",
-          motto: "Interoperability solutions",
-          link: "#",
+          src: base_path ~ directory ~ "/assets/images/logo.svg",
+          alt: "Joinup logo"|t,
+          motto: "Interoperability solutions"|t,
+          link: front_page,
         },
         collapse_id: "navbar",
         list_id: "list",
         buttons: [
           {
-            id: "account",
+            id: logged_in ? "account" : "navbar-toggler",
             icon: {
-            name: "person-circle",
-          },
-            label: "Logged in",
+              name: logged_in ? "person-circle" : "justify",
+            },
+            label: logged_in ? user_name : "",
             type: "links",
-            links: [
-            {
-              link: "#",
-              label: "My subscriptions",
-              extra_classes: "",
-            },
-            {
-              link: "#",
-              label: "My profile",
-              extra_classes: "target='_blank'",
-            },
-            {
-              link: "#",
-              label: "Log out",
-              extra_classes: "",
-            },
-          ],
-          },
-        ],
-      } %}
-
-      {# ANONYMOUS #}
-      {% include directory ~ '/templates/navigation/navbar.html.twig' with {
-        breakpoint: "sm",
-        brand: {
-          src: "https://joinup.ec.europa.eu/themes/joinup/images/logo.svg",
-          alt: "JoinUp logo",
-          motto: "Interoperability solutions",
-          link: "#",
-        },
-        collapse_id: "navbar",
-        list_id: "list",
-        buttons: [
-          {
-            id: "navbar-toggler",
-            icon: {
-            name: "justify",
-          },
-            label: "",
-            type: "links",
-            links: [
-            {
-              link: "#",
-              label: "About us",
-              extra_classes: "",
-            },
-            {
-              link: "#",
-              label: "Log in",
-              extra_classes: "target='_blank'",
-            },
-            {
-              link: "#",
-              label: "Get started",
-              extra_classes: "",
-            },
-          ],
+            links: logged_in ? profile_links : anonymous_links,
           },
         ],
       } %}
