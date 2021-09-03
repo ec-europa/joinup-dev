@@ -44,6 +44,10 @@ Feature:
       | Title | Tile custom page |
       | Body  | Meh...           |
     And I press "Add Content listing"
+    And I fill in "Query presets" with:
+        """
+        entity_bundle|asset_distribution,asset_release,discussion,document,event,news|IN
+        """
     When I press "Save"
 
     Then I should see the "Tile release" tile
@@ -85,6 +89,10 @@ Feature:
       | Title | Tile custom page |
       | Body  | Meh...           |
     And I press "Add Content listing"
+    And I fill in "Query presets" with:
+        """
+        entity_bundle|discussion,document,event,news|IN
+        """
     When I press "Save"
 
     And I should see the "Tile news" tile
