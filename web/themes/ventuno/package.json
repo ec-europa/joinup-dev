@@ -5,7 +5,7 @@
   "version": "0.4.0",
   "description": "Ventuno theme for Joinup",
   "scripts": {
-    "watch": "watch 'npm run build:styles' src",
+    "watch": "watch 'npm run build' src",
     "clean:assets": "del-cli assets/*",
     "build": "npm-run-all clean:assets build:*",
     "build:scripts": "cross-env bcl-builder scripts",
