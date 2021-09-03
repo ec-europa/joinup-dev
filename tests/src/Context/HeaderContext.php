@@ -25,7 +25,7 @@ class HeaderContext extends RawDrupalContext {
     $logo_element = $link_element->find('css', 'img.navbar-brand-image');
     Assert::assertInstanceOf(NodeElement::class, $logo_element, 'A logo is present in the navbar.');
     Assert::assertEquals('Joinup logo', $logo_element->getAttribute('alt'), 'The logo has an alt text.');
-    $expected_logo_uri = base_path() . drupal_get_path('theme', 'ventuno') . '/assets/images/logo.svg';
+    $expected_logo_uri = base_path() . drupal_get_path('theme', 'ventuno') . '/src/images/logo.svg';
     Assert::assertEquals($expected_logo_uri, $logo_element->getAttribute('src'), 'The Joinup logo is shown in the navbar.');
   }
 
