@@ -753,12 +753,12 @@ function solution_sync_settings(SolutionInterface $entity): void {
  * Syncs the order of the related solutions back to the entity.
  */
 function solution_rdf_entity_load($entities) {
-  static $is_loop = [];
   if (!\Drupal::moduleHandler()->moduleExists('meta_entity')) {
     // Allow solution to not depend on meta_entity.
     return;
   }
-  $repository = \Drupal::getContainer()->get('meta_entity.repository');
+
+  $storage = \Drupal::entityTypeManager()->getStorage('meta_entity');
   foreach ($entities as $entity) {
     if (!($entity instanceof SolutionInterface)) {
       continue;
@@ -770,12 +770,19 @@ function solution_rdf_entity_load($entities) {
       continue;
     }
 
-    if (isset($is_loop[$entity->id()]) and $is_loop[$entity->id()] === TRUE) {
-      return;
-    }
-    $is_loop[$entity->id()] = TRUE;
+    // Load the meta entity manually to avoid cases where both entities have
+    // just been updated, caches are being updated and entity references are
+    // trying to load the entities.
+    $ids = $storage->getQuery()
+      ->condition('type', 'solution_settings')
+      ->condition('target.target_type', $entity->getEntityTypeId())
+      ->condition('target.target_id', $entity->id())
+      ->execute();
+    $id = reset($ids);
+    /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
+    $meta_entity = $id ? $storage->load($id) : NULL;
 
-    if (!($meta_entity = $repository->getMetaEntityForEntity($entity, 'solution_settings'))) {
+    if (!$meta_entity) {
       return;
     }
 
