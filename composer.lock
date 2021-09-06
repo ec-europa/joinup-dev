@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5107ae06bfee1639e16e47403b8e2469",
+    "content-hash": "90fca5a6e9943ed3e1299617f1ee77a7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -14992,16 +14992,16 @@
         },
         {
             "name": "ec-europa/toolkit",
-            "version": "4.4.8",
+            "version": "4.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/toolkit.git",
-                "reference": "5368b0ec4fb6f3bc412460c92b11046772bb2095"
+                "reference": "c3adea206f78be889a9f6cd03fdf6cbe880cdb41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/toolkit/zipball/5368b0ec4fb6f3bc412460c92b11046772bb2095",
-                "reference": "5368b0ec4fb6f3bc412460c92b11046772bb2095",
+                "url": "https://api.github.com/repos/ec-europa/toolkit/zipball/c3adea206f78be889a9f6cd03fdf6cbe880cdb41",
+                "reference": "c3adea206f78be889a9f6cd03fdf6cbe880cdb41",
                 "shasum": ""
             },
             "require": {
@@ -15033,7 +15033,7 @@
             ],
             "description": "Toolkit packaged for Drupal 8.",
             "homepage": "https://github.com/ec-europa/toolkit",
-            "time": "2021-08-17T07:56:26+00:00"
+            "time": "2021-09-06T09:13:52+00:00"
         },
         {
             "name": "fabpot/goutte",
