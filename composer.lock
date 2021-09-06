@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "10029cf9fda77a5a70039790efcdda89",
+    "content-hash": "ed522802835c332011149b6789c56bc2",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -14829,17 +14829,17 @@
         },
         {
             "name": "drupal/cas_mock_server",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_mock_server.git",
-                "reference": "8.x-1.1"
+                "reference": "8.x-1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cas_mock_server-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "7ce00c1b0f1825eb05553656c5c91244450fd87e"
+                "url": "https://ftp.drupal.org/files/projects/cas_mock_server-8.x-1.2.zip",
+                "reference": "8.x-1.2",
+                "shasum": "5f71d83896436d03778c38fd9731e644e00e778e"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
@@ -14864,8 +14864,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1617135219",
+                    "version": "8.x-1.2",
+                    "datestamp": "1630672049",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
