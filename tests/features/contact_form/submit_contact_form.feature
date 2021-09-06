@@ -56,7 +56,6 @@ Feature: Submit the contact form
     # We need to wait 5 seconds for the spam protection time limit to pass.
     And I wait for the spam protection time limit to pass
     And I press "Submit"
-    And I am on the homepage
 
     # Both moderators should have received the notification e-mail.
     Then the following email should have been sent:
@@ -69,6 +68,7 @@ Feature: Submit the contact form
     And I should see the following success messages:
       | success messages                                              |
       | Your message has been submitted. Thank you for your feedback. |
+    And I am on the homepage
     When I click the link for the "logo.png" attachment in the contact form email sent to "DIGIT-JOINUP-SUPPORT-EXT-FORWARD@ec.europa.eu"
     # For anonymous users, the file should not be accessible.
     # The redirection to the EU login page returns a 200 code instead of a 403
