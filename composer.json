@@ -244,6 +244,9 @@
             "drupal/cas": {
                 "Properly fetch submit handlers @see https://www.drupal.org/project/cas/issues/3179292": "https://www.drupal.org/files/issues/2020-10-27/properly_fetch_submit_handlers.patch"
             },
+            "drupal/cas_mock_server": {
+                "Potential circular dependency in ServerManager @see https://www.drupal.org/project/cas_mock_server/issues/3231532": "https://www.drupal.org/files/issues/2021-09-06/3231532-2.patch"
+            },
             "drupal/config_devel": {
                 "Add a Drush command for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://git.drupalcode.org/project/config_devel/-/merge_requests/4.diff"
             },
