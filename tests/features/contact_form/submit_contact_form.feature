@@ -40,7 +40,7 @@ Feature: Submit the contact form
     # We need to wait 5 seconds for the spam protection time limit to pass.
     And I wait for the spam protection time limit to pass
     And I press "Submit"
-    Then I am on "collections"
+    Then I should be on "collections"
 
     And I am on the homepage
     When I click "Contact Joinup Support" in the "Footer" region
