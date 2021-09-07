@@ -56,23 +56,20 @@ body {
       }
       .tab-data {
         article {
+          display: flex !important;
+          flex-flow: column;
           background-color: $white;
           border-radius: $border-radius;
           @extend .p-4;
           @extend .me-4;
           @extend .shadow;
           height: 100%;
-          display: flex !important;
-          flex-flow: column;
           .layout {
             flex-grow: 1;
             .layout__region {
               display: flex;
               flex-direction: column;
               height: 100%;
-            }
-            .explore-item__description {
-              flex-grow: 1;
             }
           }
           h2 {
@@ -84,13 +81,23 @@ body {
             }
           }
           .explore-item__description {
+            flex-grow: 1;
             color: $gray-600;
             @extend .mb-4;
           }
           .date {
-            display: inline-block;
             color: $gray-500;
             @extend .fs-xs;
+            .field--name-created {
+              padding-top: $btn-padding-y;
+            }
+          }
+          .block-extra-field-blockrdf-entitysolutionread-more,
+          .block-extra-field-blockrdf-entitycollectionread-more,
+          .block-extra-field-blocknodenewsread-more,
+          .block-extra-field-blocknodeeventread-more {
+            align-self: flex-end;
+            margin-top: -1.8rem;
           }
           .read-more {
             display: inline-block;
