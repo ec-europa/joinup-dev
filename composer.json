@@ -58,7 +58,7 @@
         "drupal/paragraphs_jquery_ui_accordion": "^1.4",
         "drupal/password_policy": "3.0-alpha5",
         "drupal/pathauto": "~1.8",
-        "drupal/pipeline": "^1.0",
+        "drupal/pipeline": "dev-1.x",
         "drupal/publication_date": "^2.0-beta2",
         "drupal/rdf_entity": "^1.0",
         "drupal/redirect": "^1.6",
@@ -306,7 +306,7 @@
                 "Display pass policy status table only if the password element is shown @see https://www.drupal.org/project/password_policy/issues/3068891": "https://www.drupal.org/files/issues/2019-08-10/3068891-5.patch"
             },
             "drupal/pipeline": {
-                "Allow other modules to interact when the pipeline finishes @see https://www.drupal.org/project/pipeline/issues/3192409": "https://git.drupalcode.org/project/pipeline/-/merge_requests/1.diff"
+                "Remove deprecated code @see https://www.drupal.org/project/pipeline/issues/3231729": "https://git.drupalcode.org/project/pipeline/-/merge_requests/2.diff"
             },
             "drupal/publication_date": {
                 "Provide computed properties that return the publication date or the created/updated date @see https://www.drupal.org/project/publication_date/issues/3066317": "https://www.drupal.org/files/issues/2019-07-07/3066317-3.patch"
