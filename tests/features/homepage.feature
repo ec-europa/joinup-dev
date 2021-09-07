@@ -343,13 +343,31 @@ Feature: Homepage
     And I should see the button "Collections" in the "Explore block"
     And I should see the button "News" in the "Explore block"
     And I should see the button "Events" in the "Explore block"
-    And I should see the link "See more" in the "Explore block"
+    And I should see the link "See more solutions" in the "Explore block"
+    And I should see the link "See more collections" in the "Explore block"
+    And I should see the link "See more news" in the "Explore block"
+    And I should see the link "See more events" in the "Explore block"
 
     And the page should be cacheable
     And the page should not be cached
     When I reload the page
     Then the page should be cached
 
-    When I click "See more"
+    When I click "See more solutions"
     Then I should be on the advanced search page
     And the "Solutions" content checkbox item should be selected
+
+    When I am on the homepage
+    And I click "See more collections"
+    Then I should be on the advanced search page
+    And the "Collections" content checkbox item should be selected
+
+    When I am on the homepage
+    And I click "See more news"
+    Then I should be on the advanced search page
+    And the "News" content checkbox item should be selected
+
+    When I am on the homepage
+    And I click "See more events"
+    Then I should be on the advanced search page
+    And the "Events" content checkbox item should be selected
