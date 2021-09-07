@@ -6,6 +6,11 @@
   > h2 {
     @include font-icon-before("\E800", 1.2rem, $warning);
   }
+  .field--name-field-topic {
+    a {
+      border-radius: $border-radius-pill;
+    }
+  }
 }
 .view-in-the-spotlight {
   counter-reset: spotlight-counter;
