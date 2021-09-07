@@ -30,13 +30,13 @@
     {% endif %}
 
     {% if content.first %}
-      <div {{ region_attributes.first.addClass('layout__region', 'layout__region--first', 'col-lg-7') }}>
+      <div {{ region_attributes.first.addClass('layout__region', 'layout__region--first', 'col-lg-6') }}>
         {{ content.first }}
       </div>
     {% endif %}
 
     {% if content.second %}
-      <div {{ region_attributes.second.addClass('layout__region', 'layout__region--second', 'col-lg-5') }}>
+      <div {{ region_attributes.second.addClass('layout__region', 'layout__region--second', 'col-lg-5 offset-lg-1') }}>
         {{ content.second }}
       </div>
     {% endif %}
