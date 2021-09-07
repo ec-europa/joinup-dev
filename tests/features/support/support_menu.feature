@@ -72,7 +72,7 @@ Feature:
     # We need to wait 5 seconds for the spam protection time limit to pass.
     And I wait for the spam protection time limit to pass
     And I press "Submit"
-    Then I am on "/collections"
+    Then I should be on "collections"
 
     When I go to "/keep-up-to-date"
     Then I should see the link "Take a tour"
@@ -89,7 +89,7 @@ Feature:
     # We need to wait 5 seconds for the spam protection time limit to pass.
     And I wait for the spam protection time limit to pass
     And I press "Submit"
-    Then I am on "/keep-up-to-date"
+    Then I should be on "keep-up-to-date"
 
     When I go to the homepage of the "Hotel California" collection
     Then I should see the link "Take a tour"
