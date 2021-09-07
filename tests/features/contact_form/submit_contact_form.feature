@@ -68,7 +68,7 @@ Feature: Submit the contact form
     And I should see the following success messages:
       | success messages                                              |
       | Your message has been submitted. Thank you for your feedback. |
-    And I am on the homepage
+    And I should be on the homepage
     When I click the link for the "logo.png" attachment in the contact form email sent to "DIGIT-JOINUP-SUPPORT-EXT-FORWARD@ec.europa.eu"
     # For anonymous users, the file should not be accessible.
     # The redirection to the EU login page returns a 200 code instead of a 403
