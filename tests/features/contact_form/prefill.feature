@@ -17,8 +17,8 @@ Feature: Prefill contact form fields
 
     # Create a page with a link that points to the contact form with the "subject" parameter containing some text.
     When I fill in the following:
-      | Title | Change management                                                               |
-      | Body  | <p>Follow this <a href="/contact?subject=CAMSS%20Change%20Request">link</a></p> |
+      | Title | Change management                                                                    |
+      | Body  | <p>Follow this <a href="../../contact?subject=CAMSS%20Change%20Request">link</a></p> |
     And I press "Save"
     Then I should see the heading "Change management"
 

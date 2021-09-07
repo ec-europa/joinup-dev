@@ -52,7 +52,7 @@
   - Drupal\joinup\Context\RdfGraphContext
   - Drupal\joinup\Context\RssContext
   - Drupal\joinup\Context\ScreenshotContext:
-      localDir: /Users/clau/development/joinup-dev/tmp/behat
+      localDir: ${behat.screenshots.local.dir}
   - Drupal\joinup\Context\SolutionContext
   - Drupal\joinup\Context\WhatsNewContext
   - Drupal\joinup\Context\WysiwygContext
@@ -82,16 +82,16 @@ default:
       paths: *paths
       filters:
         tags: '~@wip&&~@javascript&&@group-b'
+    default:
+      contexts: *contexts
+      paths: *paths
+      filters:
+        tags: '~@wip&&~@javascript&&~@group-a&&~@group-b'
     selenium:
       contexts: *contexts
       paths: *paths
       filters:
         tags: '~@wip&&@javascript'
-    rest:
-      contexts: *contexts
-      paths: *paths
-      filters:
-        tags: '~@wip&&~@javascript&&~@group-a&&~@group-b'
   extensions:
     Drupal\MinkExtension:
       base_url: ${env.DRUPAL_BASE_URL}
@@ -102,6 +102,7 @@ default:
       browser_name: ${behat.browser_name}
       selenium2:
         wd_host: ${env.WEBDRIVER_URL}
+        capabilities: {"browserName": "chrome", "browser": "chrome", 'chrome': {'switches':['--no-sandbox']}}
     LoversOfBehat\TableExtension:
       table_map:
         'group menu edit table': '#menu-overview'

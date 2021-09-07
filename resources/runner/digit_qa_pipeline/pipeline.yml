@@ -1,0 +1,18 @@
+# Settings and commands only available inside Digit QA Pipeline.
+
+behat:
+  commands:
+    # Digit QA pipeline installs the site in the 'install-clean' job and dumps
+    # the installed MySQL database, along with the codebase, as artifacts. Then
+    # subsequent Behat suite sub-jobs are restoring the codebase and MySQL dump
+    # from artifacts. While this might work for most of the sites, it's not
+    # enough for Joinup, as Joinup actively uses additional Virtuoso and a Solr
+    # backends, along with MySQL. Thus, before running the behat tests, we need
+    # to re-run again the import of SPARQL fixtures.
+    before:
+      - task: run
+        command: solr:empty
+      - task: run
+        command: sparql:empty
+      - task: run
+        command: dev:import-sparql-fixtures

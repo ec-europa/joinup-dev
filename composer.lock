@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd95ce198114926c142db48d451334aa",
+    "content-hash": "90fca5a6e9943ed3e1299617f1ee77a7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1233,62 +1233,6 @@
             "homepage": "https://github.com/container-interop/container-interop",
             "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
-        },
-        {
-            "name": "cpliakas/git-wrapper",
-            "version": "1.7.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cpliakas/git-wrapper.git",
-                "reference": "1a2f1131ec9ebe04a0b729b141396fa55f992d44"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cpliakas/git-wrapper/zipball/1a2f1131ec9ebe04a0b729b141396fa55f992d44",
-                "reference": "1a2f1131ec9ebe04a0b729b141396fa55f992d44",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "symfony/event-dispatcher": "~2.3|~3.0",
-                "symfony/process": "~2.3|~3.0"
-            },
-            "require-dev": {
-                "pdepend/pdepend": "~1.0",
-                "phploc/phploc": "~2.0",
-                "phpmd/phpmd": "~1.0",
-                "phpunit/phpunit": "~3.0",
-                "psr/log": "~1.0",
-                "scrutinizer/ocular": "~1.0",
-                "sebastian/phpcpd": "~2.0",
-                "symfony/filesystem": "~2.0"
-            },
-            "suggest": {
-                "monolog/monolog": "Enables logging of executed git commands"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "GitWrapper": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Chris Pliakas",
-                    "email": "opensource@chrispliakas.com"
-                }
-            ],
-            "description": "A PHP wrapper around the Git command line utility.",
-            "homepage": "https://github.com/cpliakas/git-wrapper",
-            "keywords": [
-                "git"
-            ],
-            "abandoned": "symplify/git-wrapper",
-            "time": "2016-04-19T16:12:33+00:00"
         },
         {
             "name": "cweagans/composer-patches",
@@ -6234,6 +6178,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Trying to access array offset on value of type int @see https://www.drupal.org/project/search_api_solr/issues/3173950": "resources/patch/search_api_solr-3173950.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10387,6 +10334,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-4.0.x": "4.0.x-dev"
+                },
+                "patches_applied": {
+                    "implode() deprecated usage": "resources/patch/solarium.diff"
                 }
             },
             "autoload": {
@@ -10422,7 +10372,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-08-03T19:59:39+00:00"
+            "time": "2020-10-26T14:41:29+00:00"
         },
         {
             "name": "stack/builder",
@@ -15000,20 +14950,20 @@
         },
         {
             "name": "ec-europa/qa-automation",
-            "version": "4.0.4",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/qa-automation.git",
-                "reference": "8707138803f0c86115cf352101f92dfbcaec7721"
+                "reference": "93838e643109c69eed5b5cbfce09a09a6ba71836"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/8707138803f0c86115cf352101f92dfbcaec7721",
-                "reference": "8707138803f0c86115cf352101f92dfbcaec7721",
+                "url": "https://api.github.com/repos/ec-europa/qa-automation/zipball/93838e643109c69eed5b5cbfce09a09a6ba71836",
+                "reference": "93838e643109c69eed5b5cbfce09a09a6ba71836",
                 "shasum": ""
             },
             "require": {
-                "openeuropa/code-review": "^1.0@beta",
+                "openeuropa/code-review": "^1.1.0",
                 "phpcompatibility/php-compatibility": "^9.1"
             },
             "require-dev": {
@@ -15038,33 +14988,31 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2020-02-28T08:38:08+00:00"
+            "time": "2020-10-20T08:22:40+00:00"
         },
         {
             "name": "ec-europa/toolkit",
-            "version": "4.4.6",
+            "version": "4.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/toolkit.git",
-                "reference": "8a84fdc4105379629fdb09c71ca348bf5c543abe"
+                "reference": "c3adea206f78be889a9f6cd03fdf6cbe880cdb41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/toolkit/zipball/8a84fdc4105379629fdb09c71ca348bf5c543abe",
-                "reference": "8a84fdc4105379629fdb09c71ca348bf5c543abe",
+                "url": "https://api.github.com/repos/ec-europa/toolkit/zipball/c3adea206f78be889a9f6cd03fdf6cbe880cdb41",
+                "reference": "c3adea206f78be889a9f6cd03fdf6cbe880cdb41",
                 "shasum": ""
             },
             "require": {
                 "cweagans/composer-patches": "^1.4",
                 "drush/drush": "^9.7.1 || ^10.0.0",
-                "ec-europa/qa-automation": "^4.0.0",
+                "ec-europa/qa-automation": "^4.2",
                 "ext-json": "*",
                 "guzzlehttp/guzzle": "^6.3",
                 "openeuropa/task-runner": "^1.0.0-beta6",
-                "php": "^7.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~6.0"
+                "php": "^7.1",
+                "phpunit/phpunit": "^6.0 || ^7.5 || ^9.5"
             },
             "suggest": {
                 "drupal/console": "The Drupal CLI, tool to generate boilerplate code, interact with and debug Drupal."
@@ -15085,7 +15033,7 @@
             ],
             "description": "Toolkit packaged for Drupal 8.",
             "homepage": "https://github.com/ec-europa/toolkit",
-            "time": "2021-05-26T22:33:38+00:00"
+            "time": "2021-09-06T09:13:52+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -16097,21 +16045,22 @@
         },
         {
             "name": "openeuropa/code-review",
-            "version": "1.0.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/code-review.git",
-                "reference": "99802c32dcecb0939d90d9f5c0c1d0e4fbef7b19"
+                "reference": "89e90d3016b4bfded98c15052628ecf7dcb1d50e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/code-review/zipball/99802c32dcecb0939d90d9f5c0c1d0e4fbef7b19",
-                "reference": "99802c32dcecb0939d90d9f5c0c1d0e4fbef7b19",
+                "url": "https://api.github.com/repos/openeuropa/code-review/zipball/89e90d3016b4bfded98c15052628ecf7dcb1d50e",
+                "reference": "89e90d3016b4bfded98c15052628ecf7dcb1d50e",
                 "shasum": ""
             },
             "require": {
                 "cweagans/composer-patches": "^1.0",
-                "drupal/coder": "^8.3.2",
+                "drupal/coder": "^8.3.4",
+                "php": ">=7.2",
                 "phpmd/phpmd": "^2.6",
                 "phpro/grumphp": "^0.15.2",
                 "squizlabs/php_codesniffer": "^3.5"
@@ -16134,7 +16083,7 @@
                 "EUPL-1.2"
             ],
             "description": "OpenEuropa code review component.",
-            "time": "2019-10-16T13:52:28+00:00"
+            "time": "2020-09-02T14:39:16+00:00"
         },
         {
             "name": "openeuropa/task-runner",
@@ -19457,7 +19406,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1.0",
+        "php": ">=7.4",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pdo": "*"
@@ -19467,7 +19416,7 @@
         "ext-libxml": "*"
     },
     "platform-overrides": {
-        "php": "7.1.9"
+        "php": "7.4.0"
     },
     "plugin-api-version": "1.1.0"
 }

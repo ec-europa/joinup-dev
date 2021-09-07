@@ -718,7 +718,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $links = $this->findContextualLinkPaths($region);
 
     if (!isset($links[$text])) {
-      throw new \Exception(sprintf('Contextual link %s expected but not found in the region %s', $text, $region));
+      throw new \Exception(sprintf('Contextual link %s expected but not found in page.', $text));
     }
   }
 
@@ -1991,11 +1991,13 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
 
     // Get the path part from the URL.
-    $path = trim(parse_url($url, PHP_URL_PATH), '/');
+    $path = rtrim(parse_url($url, PHP_URL_PATH), '/');
+    // Remove the base path.
+    $path = substr($path, strlen(base_path()));
 
     // Drupal private file.
     if (strpos($path, 'system/files') === 0) {
-      $path = Settings::get('file_private_path') . '/' . substr($path, 12);
+      $path = Settings::get('file_private_path') . substr($path, 12);
     }
     // Webserver accessible file.
     else {

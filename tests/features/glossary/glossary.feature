@@ -149,10 +149,10 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
 
   Scenario: Glossary terms should be shown as links in collection content
     Given collection:
-      | title       | Collection With Glossary                                                                        |
-      | state       | validated                                                                                       |
-      | description | Colors of Paradise. Abbreviated as CLR. <a href="/contact"><strong>Colors of Dream</strong></a> |
-      | abstract    | The Alphabet is back and it's s/ashy.                                                           |
+      | title       | Collection With Glossary                                                                             |
+      | state       | validated                                                                                            |
+      | description | Colors of Paradise. Abbreviated as CLR. <a href="../../contact"><strong>Colors of Dream</strong></a> |
+      | abstract    | The Alphabet is back and it's s/ashy.                                                                |
     And solution:
       | title       | Under The Bridge         |
       | description | No Colors                |
@@ -306,8 +306,8 @@ Feature: As a moderator or group facilitator I want to be able to add, edit and
     And I should see the link "Battle"
     And I should see the link "Evermore"
     And I should see the link "battle again"
-    And the response should contain "<a href=\"/collection/collection-glossary/glossary/term/battle\" class=\"glossary-term\" title=\"def\">Battle</a>"
-    And the response should contain "<a href=\"/collection/collection-glossary/glossary/term/battle-again\" class=\"glossary-term\" title=\"Not to be confused with a battle of sheep\">battle again</a>"
+    And the response should contain "/collection/collection-glossary/glossary/term/battle\" class=\"glossary-term\" title=\"def\">Battle</a>"
+    And the response should contain "/collection/collection-glossary/glossary/term/battle-again\" class=\"glossary-term\" title=\"Not to be confused with a battle of sheep\">battle again</a>"
     But I should not see the link "batTle"
     And I should not see the link "BATTLE"
     And I should not see the link "everMore"

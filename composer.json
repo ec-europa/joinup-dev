@@ -4,12 +4,11 @@
     "type": "project",
     "license": "EUPL-1.2",
     "require": {
-        "php": ">=7.1.0",
+        "php": ">=7.4",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pdo": "*",
         "composer/installers": "^1.9",
-        "cpliakas/git-wrapper": "~1.7",
         "cweagans/composer-patches": "^1.7",
         "dkarv/mdl-chip-input": "dev-master",
         "drupal/allowed_formats": "^1.3",
@@ -125,7 +124,7 @@
         "drupal/restui": "^1.18",
         "drupal/stage_file_proxy": "^1.1",
         "drupaltest/behat-one-time-login": "^1.0",
-        "ec-europa/toolkit": "^4.4.6",
+        "ec-europa/toolkit": "^4.4.9",
         "jcalderonzumba/gastonjs": "^1.2@dev",
         "lovers-of-behat/table-extension": "^1.2.0",
         "mglaman/phpstan-drupal": "^0.12.12",
@@ -156,7 +155,7 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "7.1.9"
+            "php": "7.4.0"
         }
     },
     "autoload": {
@@ -195,14 +194,12 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
             "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
             "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit",
             "test ! -f ./vendor/bin/run || ./vendor/bin/run toolkit:build-dev"
         ],
         "post-update-cmd": [
-            "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
             "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
             "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit",
@@ -327,6 +324,9 @@
                 "Bulk Form field for SAPI @see https://www.drupal.org/project/search_api/issues/3117171": "https://www.drupal.org/files/issues/2020-04-01/3117171-13.patch",
                 "Some bulk form field options are missing schema @see https://www.drupal.org/project/search_api/issues/3195199": "https://git.drupalcode.org/project/search_api/-/merge_requests/6.diff"
             },
+            "drupal/search_api_solr": {
+                "Trying to access array offset on value of type int @see https://www.drupal.org/project/search_api_solr/issues/3173950": "resources/patch/search_api_solr-3173950.diff"
+            },
             "drupal/site_alert": {
                 "Add drush commands @see https://www.drupal.org/project/site_alert/issues/3118800": "https://www.drupal.org/files/issues/2020-10-26/3118800-44.patch"
             },
@@ -360,6 +360,9 @@
             "openeuropa/task-runner": {
                 "Allow to pass array options to 'run' & 'exec' tasks @see https://github.com/openeuropa/task-runner/pull/137": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/137.diff",
                 "Tokens containing digits are not supported @see https://github.com/openeuropa/task-runner/pull/145": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/145.diff"
+            },
+            "solarium/solarium": {
+                "implode() deprecated usage": "resources/patch/solarium.diff"
             }
         },
         "patches-ignore": {

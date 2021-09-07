@@ -6,6 +6,8 @@ namespace Drupal\joinup\Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Testwork\Hook\Scope\AfterSuiteScope;
+use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
+use Joinup\Traits\DigitQaPipelineAwareTrait;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -13,31 +15,40 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class DigitQaPipelineContext extends RawMinkContext {
 
+  use DigitQaPipelineAwareTrait;
+
   /**
    * Initializes the environment before running the tests.
    *
+   * @param \Behat\Testwork\Hook\Scope\BeforeSuiteScope $event
+   *   The before suite scope event.
+   *
    * @BeforeSuite
    */
-  public static function init(): void {
+  public static function init(BeforeSuiteScope $event): void {
     if (static::isDigitQaPipeline()) {
       $fileSystem = new Filesystem();
-      // Allow Apache to write public and private files directories.
-      $publicFilesPath = implode(DIRECTORY_SEPARATOR, [
-        getenv('CI_PROJECT_DIR'),
-        'web',
-        'sites',
-        'default',
-        'files',
-      ]);
-      $fileSystem->chgrp($publicFilesPath, getenv('DAEMON_GROUP'), TRUE);
-      $fileSystem->chmod($publicFilesPath, 0775);
-    }
+      $paths = [
+        // The public and private files directory.
+        implode(DIRECTORY_SEPARATOR, [
+          getenv('CI_PROJECT_DIR'),
+          'web',
+          'sites',
+          'default',
+          'files',
+        ]),
+        // The artifacts directory.
+        static::getArtifactsPath($event->getSuite()->getName()),
+      ];
 
-    // @todo These two lines are here for debugging purposes. Will be removed as
-    //   soon as we've fixed the tests in pipeline.
-    print shell_exec('export');
-    print shell_exec('ls -la /var/log/apache2');
-    ob_flush();
+      foreach ($paths as $path) {
+        if (!$fileSystem->exists($path)) {
+          $fileSystem->mkdir($path);
+        }
+        $fileSystem->chgrp($path, getenv('DAEMON_GROUP'), TRUE);
+        $fileSystem->chmod($path, 0775);
+      }
+    }
   }
 
   /**
@@ -51,26 +62,22 @@ class DigitQaPipelineContext extends RawMinkContext {
   public static function saveLogsAsArtifacts(AfterSuiteScope $event): void {
     if (static::isDigitQaPipeline() && !$event->getTestResult()->isPassed()) {
       $projectPath = rtrim(getenv('CI_PROJECT_DIR'), DIRECTORY_SEPARATOR);
-      $artifactsPath = rtrim(getenv('ARTIFACTS_DIR'), DIRECTORY_SEPARATOR);
+      $artifactsPath = static::getArtifactsPath($event->getSuite()->getName());
       exec("{$projectPath}/vendor/bin/drush sql:dump --tables-list=watchdog --gzip --result-file={$artifactsPath}/watchdog.sql --root={$projectPath}");
-
-      // @todo These two lines are here for debugging purposes. Will be removed as
-      //   soon as we've fixed the tests in pipeline.
-      print shell_exec('export');
-      print shell_exec('ls -la /var/log/apache2');
-      ob_flush();
     }
   }
 
   /**
-   * Checks if we're running inside DIGIT QA GitLab pipeline context.
+   * Returns the suite artifacts path.
    *
-   * @return bool
-   *   TRUE if we're running in DIGIT QA GitLab pipeline.
+   * @param string $suiteName
+   *   The suite name.
+   *
+   * @return string
+   *   The suite artifacts path.
    */
-  protected static function isDigitQaPipeline(): bool {
-    // @todo Add more checks.
-    return getenv('GITLAB_CI') === 'true' && getenv('TOOLKIT_PROJECT_ID') === 'digit-joinup';
+  protected static function getArtifactsPath(string $suiteName): string {
+    return rtrim(getenv('ARTIFACTS_DIR'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $suiteName;
   }
 
 }
