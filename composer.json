@@ -351,6 +351,9 @@
             "drupal/views_autosubmit": {
                 "The views plugin options are missing schema @see https://www.drupal.org/i/3195213": "https://git.drupalcode.org/project/views_autosubmit/-/merge_requests/2.diff"
             },
+            "ec-europa/toolkit": {
+                "Allow before/after commands on Behat/PHPUnit testing @see https://github.com/ec-europa/toolkit/pull/325": "https://github.com/ec-europa/toolkit/pull/325.diff"
+            },
             "openeuropa/oe_webtools": {
                 "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                 "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
