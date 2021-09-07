@@ -1,10 +1,16 @@
-.block-views-blockdiscover-topics-block {
+.block-views-blockdiscover-topics-block {    
   @extend .col-lg;
   > h2 {
     font-size: $font-size-sm;
     font-weight: $display-font-weight;
     color: $gray-500;
     text-transform: uppercase;
+    @include media-breakpoint-between(lg, xl) {
+      margin-top: calc(2.75rem + (1.375rem + 1.5vw)*2); // Super custom spacing to align badges with search bar
+    }
+    @include media-breakpoint-up(xl) {
+      margin-top: calc(2.75rem + 2.5rem*2); // Super custom spacing to align badges with search bar
+    }
   }
   .view-discover-topics {
     .discover-topics__items {
@@ -13,7 +19,7 @@
       .field__item {
         a {
           display: block;
-          border: 1px solid $gray-300;
+          outline: 1px solid $gray-300;
           padding: $btn-padding-y $btn-padding-x;
           background-color: $white;
           color: $gray-400;

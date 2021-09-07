@@ -27,5 +27,10 @@
       @extend .mt-2;
       @extend .fs-xs;
     }
+    .field--name-field-topic {
+      a {
+        border-radius: $border-radius-pill;
+      }
+    }
   }
 }
