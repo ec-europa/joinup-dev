@@ -9,6 +9,7 @@ behat:
     # enough for Joinup, as Joinup actively uses additional Virtuoso and a Solr
     # backends, along with MySQL. Thus, before running the behat tests, we need
     # to re-run again the import of SPARQL fixtures.
+    # See \Joinup\TaskRunner\ConfigProviders\DigitQaPipelineConfigProvider
     before:
       - task: run
         command: solr:empty
