@@ -18,7 +18,7 @@ body {
     0,
     3rem
   );
-  > h2 {
+  .explore-block-title {
     text-transform: uppercase;
     @extend .h4;
     @extend .pb-2;
@@ -50,6 +50,9 @@ body {
   }
   .tab-content {
     width: 100vw;
+    @include media-breakpoint-up(xl) {
+      width: 90vw;
+    }
     .tab-pane {
       .see-more {
         display: block;
