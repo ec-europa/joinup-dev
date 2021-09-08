@@ -351,6 +351,40 @@ trait TraversingTrait {
   }
 
   /**
+   * Finds a facet form by alias.
+   *
+   * @param string $alias
+   *   The facet form alias.
+   * @param \Behat\Mink\Element\NodeElement|null $region
+   *   (optional) Limit the search to a specific region. If empty, the whole
+   *   page will be used. Defaults to NULL.
+   * @param string $html_tag
+   *   (optional) Limit to a specific html tag when searching for an element.
+   *   This can be useful in cases where the data drupal facet id is placed in
+   *   more than one html tag e.g. the dropdown has the id placed in both the
+   *   <li> tag of links as well as the <select> element.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The facet node element.
+   *
+   * @throws \Exception
+   *   Thrown when the facet form is not found in the designated area.
+   */
+  protected function findFacetFormByAlias(string $alias, ?NodeElement $region = NULL, string $html_tag = '*'): NodeElement {
+    if ($region === NULL) {
+      $region = $this->getSession()->getPage();
+    }
+    $facet_id = self::getFacetFormIdFromAlias($alias);
+    $element = $region->find('xpath', "//{$html_tag}[@data-drupal-selector='{$facet_id}']");
+
+    if (!$element) {
+      throw new \Exception("The facet form '$alias' was not found in the page.");
+    }
+
+    return $element;
+  }
+
+  /**
    * Maps an alias to an actual facet id.
    *
    * The facet id is used as "drupal-data-facet-id" property.
@@ -387,6 +421,34 @@ trait TraversingTrait {
 
     if (!isset($mappings[$alias])) {
       throw new \Exception("No facet id mapping found for '$alias'.");
+    }
+
+    return $mappings[$alias];
+  }
+
+  /**
+   * Maps an alias to an actual facet form id.
+   *
+   * The facet id is used as "data-drupal-selector" property.
+   *
+   * @param string $alias
+   *   The facet form alias.
+   *
+   * @return string
+   *   The facet form id.
+   *
+   * @throws \Exception
+   *   Thrown when the mapping is not found.
+   */
+  protected static function getFacetFormIdFromAlias(string $alias): string {
+    $mappings = [
+      'topic' => 'edit-topic',
+      'spatial coverage' => 'edit-spatial-coverage',
+      'Content types' => 'edit-type',
+    ];
+
+    if (!isset($mappings[$alias])) {
+      throw new \Exception("No facet form id mapping found for '$alias'.");
     }
 
     return $mappings[$alias];

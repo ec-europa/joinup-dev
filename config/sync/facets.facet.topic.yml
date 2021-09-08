@@ -8,7 +8,7 @@ dependencies:
   module:
     - search_api
 id: topic
-name: Topic
+name: Topics
 url_alias: topic
 weight: -3
 min_count: 1
@@ -22,7 +22,6 @@ widget:
     child_items_prefix: '-'
     disabled_on_empty: false
     show_numbers: false
-    arbitrary_facet_plugin: _none
 query_operator: or
 use_hierarchy: true
 expand_hierarchy: true
@@ -36,7 +35,7 @@ processor_configs:
     weights:
       sort: -8
     settings:
-      sort: DESC
+      sort: ASC
   aggregated_entity_reference_label:
     processor_id: aggregated_entity_reference_label
     weights:
@@ -54,7 +53,7 @@ processor_configs:
     weights:
       sort: -10
     settings:
-      sort: DESC
+      sort: ASC
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
