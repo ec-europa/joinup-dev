@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - facets.facet.creation_date
+    - facets.facet.group
     - facets.facet.spatial_coverage
     - facets.facet.topic
     - facets.facet.type

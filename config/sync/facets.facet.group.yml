@@ -1,0 +1,71 @@
+uuid: 8bcc75ab-8622-4bf3-8dbf-851df7ade764
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.published
+    - views.view.search
+  module:
+    - search_api
+id: group
+name: Collection/Solution
+url_alias: group
+weight: 0
+min_count: 1
+show_only_one_result: true
+field_identifier: entity_groups
+facet_source_id: 'search_api:views_page__search__page_1'
+widget:
+  type: facets_form_dropdown
+  config:
+    default_option_label: 'Any Collection or Solution'
+    child_items_prefix: '-'
+    disabled_on_empty: false
+    show_numbers: true
+query_operator: or
+use_hierarchy: false
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: true
+hard_limit: 50
+exclude: false
+only_visible_when_facet_source_is_visible: true
+processor_configs:
+  active_widget_order:
+    processor_id: active_widget_order
+    weights:
+      sort: -2
+    settings:
+      sort: ASC
+  aggregated_entity_reference_label:
+    processor_id: aggregated_entity_reference_label
+    weights:
+      build: 0
+    settings: {  }
+  count_limit:
+    processor_id: count_limit
+    weights:
+      build: -2
+    settings:
+      minimum_items: 1
+      maximum_items: null
+  count_widget_order:
+    processor_id: count_widget_order
+    weights:
+      sort: -1
+    settings:
+      sort: ASC
+  display_value_widget_order:
+    processor_id: display_value_widget_order
+    weights:
+      sort: 0
+    settings:
+      sort: ASC
+  url_processor_handler:
+    processor_id: url_processor_handler
+    weights:
+      pre_query: -10
+      build: -1
+    settings: {  }
+empty_behavior:
+  behavior: none
+show_title: true

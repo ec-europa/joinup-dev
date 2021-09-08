@@ -442,6 +442,7 @@ trait TraversingTrait {
    */
   protected static function getFacetFormIdFromAlias(string $alias): string {
     $mappings = [
+      'collection/solution' => 'edit-group',
       'topic' => 'edit-topic',
       'spatial coverage' => 'edit-spatial-coverage',
       'Content types' => 'edit-type',

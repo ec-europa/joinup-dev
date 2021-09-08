@@ -38,8 +38,6 @@ Feature: Global search
     And I should see the "El Celler de Can Roca" tile
     And I should see the "Spherification" tile
     And I should see the "Foam" tile
-    # Facets should be in place.
-    #And the option with text "Any topic" from select facet form "topic" is selected
     # Terms are sorted alphabetically
     And the "topic" select facet form should contain the following options:
       | Any topic               |
@@ -62,7 +60,6 @@ Feature: Global search
     And the response should contain "<option value=\"http://joinup.eu/ontology/topic/category#social-and-political\">Social and Political</option>"
     And the response should contain "<option value=\"http://joinup.eu/ontology/topic#demography\">- Demography</option>"
     And the response should contain "<option value=\"http://joinup.eu/ontology/topic#e-inclusion\">- E-inclusion</option></select>"
-    #And the option with text "Any location" from select facet form "spatial coverage" is selected
     And the "spatial coverage" select facet form should contain the following options:
       | Any location       |
       | Belgium (1)        |
