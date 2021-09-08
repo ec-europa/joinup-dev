@@ -93,8 +93,6 @@ QUERY;
   foreach ($results as $result) {
     if ($file = $file_storage->load($result->fid)) {
       $file->delete();
-      // https://www.xrepository.deutschland-online.de/Datei/urn:uuid:987739ac-80ef-4881-a7d4-b23e30379f3b.pdf
-      // https://www.xrepository.deutschland-online.de/Inhalt/urn:uuid:9ac808e0-85b4-4e29-8c1a-b07881a25e40.xhtml#1
     }
     else {
       $file_system->delete($result->uri);
