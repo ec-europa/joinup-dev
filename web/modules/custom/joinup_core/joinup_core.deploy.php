@@ -15,9 +15,9 @@
 declare(strict_types = 1);
 
 /**
- * Implements hook_deploy_N().
+ * Delete spam content from the specific user.
  */
-function joinup_core_deploy_0107500(&$sandbox = []): void {
+function joinup_core_deploy_0107500(array &$sandbox = []): void {
   $mysql = \Drupal::database();
   $sparql = \Drupal::getContainer()->get('sparql.endpoint');
   $sparql_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
