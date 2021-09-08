@@ -18,7 +18,7 @@ provider: null
 plugin: 'system_menu_block:footer'
 settings:
   id: 'system_menu_block:footer'
-  label: 'About US'
+  label: 'About us'
   provider: system
   label_display: visible
   level: 1
