@@ -16,7 +16,7 @@ provider: null
 plugin: 'system_menu_block:support'
 settings:
   id: 'system_menu_block:support'
-  label: 'Help and Support'
+  label: 'Help and support'
   provider: system
   label_display: visible
   level: 1
