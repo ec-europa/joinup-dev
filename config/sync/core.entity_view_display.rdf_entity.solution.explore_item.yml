@@ -92,7 +92,7 @@ third_party_settings:
                 label: hidden
                 type: smart_trim
                 settings:
-                  trim_length: 210
+                  trim_length: 230
                   trim_type: chars
                   trim_suffix: …
                   wrap_output: false
