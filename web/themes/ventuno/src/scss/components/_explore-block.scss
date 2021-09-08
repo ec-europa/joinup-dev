@@ -91,7 +91,7 @@ body {
           .date {
             color: $gray-500;
             @extend .fs-xs;
-            .field--name-created {
+            .field--name-created, .field--name-published-at {
               padding-top: $btn-padding-y;
             }
           }
