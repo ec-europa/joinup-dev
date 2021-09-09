@@ -3,3 +3,4 @@ contact_form.contact:
   weight: 0
   url: 'internal:/contact'
   menu_name: footer
+  destination: true

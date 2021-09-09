@@ -116,6 +116,7 @@ module:
   matomo: 0
   matomo_reporting_api: 0
   media: 0
+  menu_link_destination: 0
   menu_ui: 0
   message: 0
   message_digest: 0
