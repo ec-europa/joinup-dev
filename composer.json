@@ -48,6 +48,7 @@
         "drupal/matomo": "^1.11",
         "drupal/matomo_reporting_api": "^2.2",
         "drupal/menu_admin_per_menu": "^1.3",
+        "drupal/menu_link_destination": "1.x-dev@dev",
         "drupal/message": "^1.1",
         "drupal/message_digest": "^1.0.0",
         "drupal/message_notify": "~1.2",
