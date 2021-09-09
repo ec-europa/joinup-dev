@@ -106,8 +106,9 @@
       <div class="container text-light">
         <div class="row py-4 py-lg-5">
           <!--Joinup logo-->
-          <div class="col-md-12 col-lg-3 joinup-logo">
-            <p><a href="/" class="joinup-logo-white mb-4"><span class="visually-hidden">{{ 'Joinup'|t }}</span></a></p>
+          <div class="col-md-12 col-lg-3 column-logo">
+            <p class="joinup-logo"><a href="/" class="joinup-logo-white mb-3"><span class="visually-hidden">{{ 'Joinup'|t }}</span></a></p>
+            <p class="joinup-version"><a href="{{ version_url }}">{{ version }}</a></p>
           </div>
 
           {{ page.footer }}
@@ -139,11 +140,6 @@
               </li>
               <li class="list-inline-item">
                 <a href="http://twitter.com/Joinup_eu" class="twitter"><span class="visually-hidden">{{ 'Twitter'|t }}</span></a>
-              </li>
-            </ul>
-            <ul class="list-unstyled mb-2">
-              <li>
-                <p class="joinup-version"><a href="{{ version_url }}">{{ version }}</a></p>
               </li>
             </ul>
           </div>
