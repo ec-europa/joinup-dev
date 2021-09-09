@@ -71,7 +71,7 @@ Feature: Search inside groups
     # as a chip in the search field the search results should be filtered and
     # only show the content of the collection.
     When I submit the search by pressing enter
-    Then the option with text "Chalet construction   (6)" from select facet "collection/solution" is selected
+    Then the option with text "Chalet construction (6)" from select facet "collection/solution" is selected
     And the page should show the tiles "Room sizes, Ground plan, Opening of the winter season, Natural materials, Resources, Inclined foundations"
 
     # Check that other types of pages in the collection also show the collection
@@ -117,7 +117,7 @@ Feature: Search inside groups
     # as a chip in the search field the search results should be filtered and
     # only show the content of the solution.
     When I submit the search by pressing enter
-    Then the option with text "Inclined foundations   (6)" from select facet "collection/solution" is selected
+    Then the option with text "Inclined foundations (6)" from select facet "collection/solution" is selected
     Then the page should show the tiles "Pre-alpha, Presenting DrillMaster X88, Rock types, Still frozen, Geography, Terrace?"
 
     # Do a search with a keyword. The chip for the solution should be present
@@ -127,7 +127,7 @@ Feature: Search inside groups
     Then the page should show the following chip:
       | Inclined foundations |
     When I enter "ground" in the search bar and press enter
-    Then the option with text "Inclined foundations   (2)" from select facet "collection/solution" is selected
+    Then the option with text "Inclined foundations (2)" from select facet "collection/solution" is selected
     And the page should show the tiles "Pre-alpha, Presenting DrillMaster X88"
 
     # Do a search with a keyword after removing the chip for the solution. The
@@ -219,7 +219,7 @@ Feature: Search inside groups
     Then the page should show the following chip:
       | Chalet construction |
     When I enter "ground" in the search bar and press enter
-    Then the option with text "Chalet construction   (2)" from select facet "collection/solution" is selected
+    Then the option with text "Chalet construction (2)" from select facet "collection/solution" is selected
     And the page should show the tiles "Ground plan, Natural materials"
     And the page should show the following chip:
       | Chalet construction |
@@ -238,7 +238,7 @@ Feature: Search inside groups
     Then the page should not contain any chips
 
     When I select "Inclined foundations" from the "collection/solution" select facet
-    Then the option with text "Inclined foundations   (6)" from select facet "collection/solution" is selected
+    Then the option with text "Inclined foundations (6)" from select facet "collection/solution" is selected
     And I should see 6 tiles
 
     When I open the search bar by clicking on the search icon
@@ -247,7 +247,7 @@ Feature: Search inside groups
 
     # The filter chip should remain active when doing another search.
     When I enter "ground" in the search bar and press enter
-    Then the option with text "Inclined foundations   (2)" from select facet "collection/solution" is selected
+    Then the option with text "Inclined foundations (2)" from select facet "collection/solution" is selected
     And I should see 2 tiles
     When I open the search bar by clicking on the search icon
     Then the page should show the following chip:
