@@ -34,6 +34,7 @@ joinup_core.support.contact:
   menu_name: support
   url: 'internal:/contact'
   weight: -100
+  destination: true
 
 joinup_core.manage_media:
   title: 'Library'

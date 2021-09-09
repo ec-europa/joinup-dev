@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "90fca5a6e9943ed3e1299617f1ee77a7",
+    "content-hash": "ec72192bb8db80512e5ae7e656ae2843",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4937,6 +4937,55 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/menu_admin_per_menu"
             }
+        },
+        {
+            "name": "drupal/menu_link_destination",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/menu_link_destination.git",
+                "reference": "942c977395b77b079971a78ed03ca4190dbd709a"
+            },
+            "require": {
+                "drupal/core": "^8.9 || ^9.1"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "1.x-dev",
+                    "datestamp": "1629878552",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Claudiu Cristea",
+                    "homepage": "https://www.drupal.org/u/claudiucristea"
+                }
+            ],
+            "description": "Adds a destination to a menu link, either from URL or the current page",
+            "homepage": "https://www.drupal.org/project/menu_link_destination",
+            "keywords": [
+                "Drupal",
+                "destination",
+                "link",
+                "menu"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/menu_link_destination",
+                "issues": "https://www.drupal.org/project/issues/menu_link_destination"
+            },
+            "time": "2021-08-25T09:02:12+00:00"
         },
         {
             "name": "drupal/message",
@@ -14046,17 +14095,17 @@
         },
         {
             "name": "drupal/cas_mock_server",
-            "version": "1.1.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_mock_server.git",
-                "reference": "8.x-1.1"
+                "reference": "8.x-1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cas_mock_server-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "7ce00c1b0f1825eb05553656c5c91244450fd87e"
+                "url": "https://ftp.drupal.org/files/projects/cas_mock_server-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "b7fb047fc048f0f92136cd961a515f8ec7a43615"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
@@ -14081,8 +14130,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1617135219",
+                    "version": "8.x-1.3",
+                    "datestamp": "1630943966",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -18339,6 +18388,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2020-11-30T07:30:19+00:00"
         },
         {
@@ -19388,6 +19438,7 @@
         "dkarv/mdl-chip-input": 20,
         "drupal/cas_attributes": 20,
         "drupal/config_ignore": 20,
+        "drupal/menu_link_destination": 20,
         "drupal/og": 20,
         "drupal/site_verify": 20,
         "drupal/subpathauto": 20,
