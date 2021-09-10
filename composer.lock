@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a30d892546891f5ab1fa67c8b70007f1",
+    "content-hash": "c45651f9ffe1a99c3a2bc95a4b3bc213",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -15039,16 +15039,16 @@
         },
         {
             "name": "ec-europa/toolkit",
-            "version": "4.4.10",
+            "version": "4.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/toolkit.git",
-                "reference": "90b3442f3488f7b90f5b26ef11ea9997b5a4523b"
+                "reference": "06b6b9c3f1d8acce340a767c0cdb0b54b89246d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/toolkit/zipball/90b3442f3488f7b90f5b26ef11ea9997b5a4523b",
-                "reference": "90b3442f3488f7b90f5b26ef11ea9997b5a4523b",
+                "url": "https://api.github.com/repos/ec-europa/toolkit/zipball/06b6b9c3f1d8acce340a767c0cdb0b54b89246d3",
+                "reference": "06b6b9c3f1d8acce340a767c0cdb0b54b89246d3",
                 "shasum": ""
             },
             "require": {
@@ -15067,10 +15067,7 @@
             "type": "library",
             "extra": {
                 "enable-patching": true,
-                "composer-exit-on-patch-failure": true,
-                "patches_applied": {
-                    "Allow before/after commands on Behat/PHPUnit testing @see https://github.com/ec-europa/toolkit/pull/325": "https://github.com/ec-europa/toolkit/pull/325.diff"
-                }
+                "composer-exit-on-patch-failure": true
             },
             "autoload": {
                 "psr-4": {
@@ -15083,7 +15080,7 @@
             ],
             "description": "Toolkit packaged for Drupal 8.",
             "homepage": "https://github.com/ec-europa/toolkit",
-            "time": "2021-09-06T10:31:13+00:00"
+            "time": "2021-09-07T21:53:38+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -16168,7 +16165,10 @@
             "type": "library",
             "extra": {
                 "enable-patching": true,
-                "composer-exit-on-patch-failure": true
+                "composer-exit-on-patch-failure": true,
+                "patches_applied": {
+                    " @see https://github.com/openeuropa/task-runner/pull/155": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/155.diff"
+                }
             },
             "autoload": {
                 "psr-4": {
