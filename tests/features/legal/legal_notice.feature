@@ -145,7 +145,7 @@ Feature:
 
   @email
   Scenario: Anonymous using the support contact form.
-    Given all emails have been sent
+    Given all e-mails have been sent
     And I am on "/contact"
     Then I should see "I have read and accept the Legal notice"
     And I should see "Before you submit your request check our FAQ section in case it covers your query/issue."
