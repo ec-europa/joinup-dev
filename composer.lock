@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "139bee4505fed1cdcd2d397b18148105",
+    "content-hash": "a30d892546891f5ab1fa67c8b70007f1",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -15067,7 +15067,10 @@
             "type": "library",
             "extra": {
                 "enable-patching": true,
-                "composer-exit-on-patch-failure": true
+                "composer-exit-on-patch-failure": true,
+                "patches_applied": {
+                    "Allow before/after commands on Behat/PHPUnit testing @see https://github.com/ec-europa/toolkit/pull/325": "https://github.com/ec-europa/toolkit/pull/325.diff"
+                }
             },
             "autoload": {
                 "psr-4": {
