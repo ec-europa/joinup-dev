@@ -27,8 +27,7 @@ Feature: Asset release notification system
       | My awesome solution abc | Copernicus | owner |
 
   Scenario: Publish a release as a facilitator.
-    When all e-mails have been sent
-    And I am logged in as "Copernicus"
+    When I am logged in as "Copernicus"
     And I go to the homepage of the "My awesome solution abc" solution
     And I click "Add release"
     And I fill in the following:

@@ -144,8 +144,7 @@ Feature:
     And I delete the version "v2.0" of document "Legal notice"
 
   Scenario: Anonymous using the support contact form.
-    Given all e-mails have been sent
-    And I am on "/contact"
+    Given I am on "/contact"
     Then I should see "I have read and accept the Legal notice"
     And I should see "Before you submit your request check our FAQ section in case it covers your query/issue."
 

@@ -7,7 +7,6 @@ Feature: User registration
     Given users:
       | Username      | Roles     |
       | Mr. Moderator | Moderator |
-    And all e-mails have been sent
     And I am logged in as "Mr. Moderator"
     When I am on the homepage
     Then I click "People"

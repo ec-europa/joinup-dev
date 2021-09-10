@@ -29,8 +29,7 @@ Feature: Notification test for the document transitions on a post moderated pare
       | CC notify post delete                | CC member | body | Document      | CC collection | validated    |
 
     # Test 'create' operation.
-    When all e-mails have been sent
-    And I am logged in as "CC member"
+    When I am logged in as "CC member"
     And I go to the "CC collection" collection
     And I click "Add document" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
@@ -44,8 +43,7 @@ Feature: Notification test for the document transitions on a post moderated pare
       | body      | CC Member has published the new document - "CC notify create publish" in the collection: "CC collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
-    When all e-mails have been sent
-    And I am logged in as "CC member"
+    When I am logged in as "CC member"
     And I go to the "CC notify post publish" document
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
@@ -54,8 +52,7 @@ Feature: Notification test for the document transitions on a post moderated pare
       | subject   | Joinup: Content has been published                                                                      |
       | body      | CC Member has published the new document - "CC notify post publish" in the collection: "CC collection". |
 
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CC notify post request changes" document
     And I click "Edit" in the "Entity actions" region
     And I press "Request changes"
@@ -67,8 +64,7 @@ Feature: Notification test for the document transitions on a post moderated pare
       | subject   | Joinup: Content has been updated                                                                                                                                                                           |
       | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify post request changes" in the collection: "CC collection", with the following motivation: "Can you do some changes?". |
 
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CC notify post report" document
     And I click "Edit" in the "Entity actions" region
     And I press "Report"
@@ -80,8 +76,7 @@ Feature: Notification test for the document transitions on a post moderated pare
       | subject   | Joinup: Content has been updated                                                                                                                                                                  |
       | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify post report" in the collection: "CC collection", with the following motivation: "Your content is reported". |
 
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CC notify post approve proposed" document
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
@@ -91,8 +86,7 @@ Feature: Notification test for the document transitions on a post moderated pare
       | body      | the Facilitator, CC Facilitator has approved your request of publication of the document - "CC notify post approve proposed" in the collection: "CC collection". |
 
     # Test 'delete' operation.
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CC notify post delete" document
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"

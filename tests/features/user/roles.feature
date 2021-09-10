@@ -8,7 +8,6 @@ Feature: User role management
       | Rick Rolls | Moderator | rick.roles@example.com |
       | Nibby Noob |           | nicky.noob@example.com |
       | Ursus      |           |                        |
-    And all e-mails have been sent
 
   Scenario: Verify options available to the moderator.
     Given I am logged in as "Rick Rolls"

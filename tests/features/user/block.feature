@@ -15,7 +15,6 @@ Feature: Block users
     And I press the "Filter" button
 
     # Block the user
-    And all e-mails have been sent
     Then I check "Liam Lego"
     And I select "Block the selected user(s)" from "Action"
     And I press the "Apply to selected items" button
@@ -26,8 +25,7 @@ Feature: Block users
       | body      | Your Joinup account was recently blocked by our moderators. For more information about blocked accounts, please visit our |
 
     # Unblock the user
-    When all e-mails have been sent
-    Then I check "Liam Lego"
+    When I check "Liam Lego"
     Then I select "Unblock the selected user(s)" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the success message "Unblock the selected user(s) was applied to 1 item."

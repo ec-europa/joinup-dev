@@ -37,7 +37,6 @@ Feature: Add comments
       | title   | body                                                | <parent>       | state   | author       |
       | <title> | How could this ever happen? Moral panic on its way! | <parent title> | <state> | Salma Coster |
     Given I am logged in as "Miss tell tales"
-    And all e-mails have been sent
     When I go to the content page of the type "<content type>" with the title "<title>"
     # The honeypot field that needs to be empty on submission.
     Then the following fields should be present "user_homepage"
@@ -84,7 +83,6 @@ Feature: Add comments
 
     When I am logged in as "Salma Coster"
     And I click the comment link from the last email sent to "Salma Coster"
-    And all e-mails have been sent
     And I click "Reply"
     And I should see the "Create comment" wysiwyg editor
     When I enter "I am replying in user's comment." in the "Create comment" wysiwyg editor
@@ -116,7 +114,6 @@ Feature: Add comments
       | title   | body                                                | collection        | state   |
       | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <state> |
     Given I am logged in as "Miss tell tales"
-    And all e-mails have been sent
     When I go to the content page of the type "<content type>" with the title "<title>"
     # Authenticated users can insert <p> and <br> tags in the comment body.
     And I fill in "Create comment" with "<p>Mr scandal was doing something<br />weird the other day.<p/>"

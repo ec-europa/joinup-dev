@@ -9,7 +9,6 @@ Feature:
     Given users:
       | Username      | Roles     | E-mail                   | First name | Family name |
       | alicia__1997  |           | AliciaPotter@example.com | Alicia     | Potter      |
-    And all e-mails have been sent
 
   Scenario: A moderator cancels a user account.
     Given I am logged in as a moderator

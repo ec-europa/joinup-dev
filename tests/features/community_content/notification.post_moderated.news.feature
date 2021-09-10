@@ -29,8 +29,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | CCN post delete                | CC member | body | CCN post delete                | CC post collection | validated    |
 
     # Test 'create' operation.
-    When all e-mails have been sent
-    And I am logged in as "CC member"
+    When I am logged in as "CC member"
     And I go to the "CC post collection" collection
     And I click "Add news" in the plus button menu
     And I fill in "Short title" with "CCN create publish"
@@ -44,8 +43,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | body      | CC Member has published the new news - "CCN create publish" in the collection: "CC post collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
-    When all e-mails have been sent
-    And I am logged in as "CC member"
+    When I am logged in as "CC member"
     And I go to the "CCN post publish" news
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
@@ -54,8 +52,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | subject   | Joinup: Content has been published                                                                 |
       | body      | CC Member has published the new news - "CCN post publish" in the collection: "CC post collection". |
 
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CCN post request changes" news
     And I click "Edit" in the "Entity actions" region
     And I press "Request changes"
@@ -67,8 +64,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | the Facilitator, CC Facilitator has requested you to modify the news - "CCN post request changes" in the collection: "CC post collection", with the following motivation: "Can you do some changes?". |
       | If you think this action is not clear or not due, please contact Joinup Support at                                                                                                                    |
 
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CCN post report" news
     And I click "Edit" in the "Entity actions" region
     And I press "Report"
@@ -80,8 +76,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | the Facilitator, CC Facilitator has requested you to modify the news - "CCN post report" in the collection: "CC post collection", with the following motivation: "Your content is reported". |
       | If you think this action is not clear or not due, please contact Joinup Support at                                                                                                           |
 
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CCN post approve proposed" news
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
@@ -91,8 +86,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | body      | the Facilitator, CC Facilitator has approved your request of publication of the news - "CCN post approve proposed" in the collection: "CC post collection". |
 
     # Test 'delete' operation.
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
+    When I am logged in as "CC facilitator"
     And I go to the "CCN post delete" news
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
