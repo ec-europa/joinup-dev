@@ -1,4 +1,4 @@
-@api @email @terms @group-b
+@api @terms @group-b
 Feature: Notification test for the event transitions on a pre moderated parent.
   In order to manage my collections
   As an owner of the collection

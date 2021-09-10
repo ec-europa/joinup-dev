@@ -1,4 +1,4 @@
-@api @email @wip
+@api @wip
 Feature: Asset release notification system
   In order to manage releases
   As a user of the website

@@ -29,20 +29,6 @@ class JoinupNotificationContext extends RawDrupalContext {
   use UtilityTrait;
 
   /**
-   * The mail system storage settings.
-   *
-   * @var \Drupal\Core\Config\StorableConfigBase
-   */
-  protected $mailConfig;
-
-  /**
-   * Holds the default settings for the mail server so a revert is possible.
-   *
-   * @var array
-   */
-  protected $savedMailDefaults;
-
-  /**
    * Asserts that an email has been sent.
    *
    * Table format:
@@ -74,8 +60,6 @@ class JoinupNotificationContext extends RawDrupalContext {
    * @Then the following email should have been sent:
    */
   public function assertEmailSent(TableNode $table) {
-    $this->assertEmailTagPresent();
-
     /** @var string $template */
     /** @var string $recipient */
     /** @var string $recipient_mail */
@@ -209,8 +193,6 @@ class JoinupNotificationContext extends RawDrupalContext {
    * @Then the following email should not have been sent:
    */
   public function assertEmailNotSent(TableNode $table) {
-    $this->assertEmailTagPresent();
-
     try {
       // Reusing ::assertEmailSent().
       $this->assertEmailSent($table);
@@ -240,8 +222,6 @@ class JoinupNotificationContext extends RawDrupalContext {
    * @Then the email sent to :user with subject :subject contains the( following lines of) text:
    */
   public function assertEmailSentAndContainsText(string $user, string $subject, TableNode $table) {
-    $this->assertEmailTagPresent();
-
     $lines_of_text = $table->getColumnsHash();
     $user = user_load_by_name($user);
     $recipient = $user->getEmail();
@@ -283,7 +263,6 @@ class JoinupNotificationContext extends RawDrupalContext {
    * @Then the email sent to :user with subject :subject should not contain the( following lines of) text:
    */
   public function assertEmailSentNotContainsText(string $user, string $subject, TableNode $table) {
-    $this->assertEmailTagPresent();
     $lines_of_text = $table->getColumnsHash();
     $user = user_load_by_name($user);
     $recipient = $user->getEmail();
@@ -312,8 +291,6 @@ class JoinupNotificationContext extends RawDrupalContext {
    * @Given all (the )e-mails have been sent
    */
   public function clearMailCollectorCache() {
-    $this->assertEmailTagPresent();
-
     \Drupal::state()->set('system.test_mail_collector', []);
     \Drupal::state()->resetCache();
   }
@@ -330,8 +307,6 @@ class JoinupNotificationContext extends RawDrupalContext {
    * @Then :count e-mail(s) should have been sent
    */
   public function assertNumberOfEmailSent($count) {
-    $this->assertEmailTagPresent();
-
     $mails = $this->getMails();
     if (count($mails) != $count) {
       throw new \Exception("Invalid number of e-mail sent. Expected $count, sent " . count($mails));
@@ -351,8 +326,6 @@ class JoinupNotificationContext extends RawDrupalContext {
    * @Given I click the mail change link from the email sent to :mail
    */
   public function clickMailChangeLinkFromMail(string $mail): void {
-    $this->assertEmailTagPresent();
-
     $pattern = '#https?://[^/].*/user/mail-change/[^/].*/[^/].*/[^/].*/.*#';
     $no_mail_message = "No mail change verification E-mail has been sent to $mail.";
     $no_match_message = "The mail change verification E-mail doesn't contain a valid verification link.";
@@ -428,8 +401,6 @@ class JoinupNotificationContext extends RawDrupalContext {
    * @When I click the link for the :filename attachment in the contact form email sent to :mail
    */
   public function clickAttachmentInContactFormConfirmationMail(string $filename, string $mail): void {
-    $this->assertEmailTagPresent();
-
     // In case multiple files with the same name were uploaded, the File module
     // will append a number to the file. Account for this.
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
@@ -468,8 +439,6 @@ class JoinupNotificationContext extends RawDrupalContext {
    *   find any matches.
    */
   protected function assertMailLinkMatchingPattern(string $pattern, string $mail, string $no_mail_message, string $no_match_message, ?string $template = NULL): void {
-    $this->assertEmailTagPresent();
-
     $found = FALSE;
     foreach ($this->getMails() as $mail_sent) {
       // Optionally filter by mail template.
@@ -496,44 +465,6 @@ class JoinupNotificationContext extends RawDrupalContext {
       throw new \Exception($no_match_message);
     }
     throw new \Exception($no_mail_message);
-  }
-
-  /**
-   * Swaps the mailing system settings with a test one.
-   *
-   * @BeforeScenario @email&&@api
-   */
-  public function beforeEmailScenario(): void {
-    if (!$this->isTestMailCollectorUsed()) {
-      // Check if the mail system configuration has been overridden in
-      // settings.php or settings.override.php.
-      $this->checkMailConfigOverride();
-
-      self::bypassReadOnlyConfig();
-      $this->mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
-      $this->savedMailDefaults = $this->mailConfig->get('defaults.sender');
-      $this->mailConfig->set('defaults.sender', 'test_mail_collector')->save();
-      self::restoreReadOnlyConfig();
-    }
-    // Reset the mail collector by wiping any leftovers from a previous test.
-    \Drupal::state()->delete('system.test_mail_collector');
-  }
-
-  /**
-   * Restores the mailing system settings with the default one.
-   *
-   * @AfterScenario @email&&@api
-   */
-  public function afterEmailScenario(): void {
-    // Temporarily bypass read only config so that we can restore the original
-    // mail handler.
-    if (!empty($this->savedMailDefaults)) {
-      self::bypassReadOnlyConfig();
-
-      $this->mailConfig->set('defaults.sender', $this->savedMailDefaults)->save();
-
-      self::restoreReadOnlyConfig();
-    }
   }
 
 }

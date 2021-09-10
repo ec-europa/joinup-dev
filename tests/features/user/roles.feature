@@ -1,4 +1,4 @@
-@api @email
+@api
 Feature: User role management
   As a moderator I must be able to assign roles to users.
 

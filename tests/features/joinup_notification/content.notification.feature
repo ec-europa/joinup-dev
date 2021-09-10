@@ -1,4 +1,4 @@
-@api @email @wip
+@api @wip
 Feature: Content notification system
   As a user of the website
   In order to be up to date with the changes on my content

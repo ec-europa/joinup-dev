@@ -1,4 +1,4 @@
-@api @terms @email @group-a
+@api @terms @group-a
 Feature: Notification test for the collection transitions.
   In order to manage my collections
   As an user that is related to the collection

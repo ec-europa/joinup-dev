@@ -208,7 +208,6 @@ Feature: Log in through EU Login
     When I go to "/user/password"
     Then I should get an access denied error
 
-  @email
   Scenario: An existing local user wants to link their EU Login account but forgot their Drupal password.
     Given CAS users:
       | Username   | E-mail              | Password | First name  | Last name |

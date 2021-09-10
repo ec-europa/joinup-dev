@@ -25,6 +25,7 @@ use Drupal\joinup\Traits\AntibotTrait;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\MailConfigTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\PageCacheTrait;
 use Drupal\joinup\Traits\SearchTrait;
@@ -50,6 +51,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
   use EntityTrait;
+  use MailConfigTrait;
   use MaterialDesignTrait;
   use PageCacheTrait;
   use SearchTrait;
@@ -81,6 +83,20 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @var \Drupal\Core\Entity\EntityInterface[][]
    */
   protected $entities = [];
+
+  /**
+   * The mail system storage settings.
+   *
+   * @var \Drupal\Core\Config\StorableConfigBase
+   */
+  protected $mailConfig;
+
+  /**
+   * Holds the default settings for the mail server so a revert is possible.
+   *
+   * @var array
+   */
+  protected $savedMailDefaults;
 
   /**
    * Checks that a 200 OK response occurred.
@@ -2178,6 +2194,44 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       if ($fids) {
         $file_storage->delete($file_storage->loadMultiple($fids));
       }
+    }
+  }
+
+  /**
+   * Swaps the mailing system settings with a test one.
+   *
+   * @BeforeScenario @api
+   */
+  public function beforeEmailScenario(): void {
+    if (!$this->isTestMailCollectorUsed()) {
+      // Check if the mail system configuration has been overridden in
+      // settings.php or settings.override.php.
+      $this->checkMailConfigOverride();
+
+      self::bypassReadOnlyConfig();
+      $this->mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
+      $this->savedMailDefaults = $this->mailConfig->get('defaults.sender');
+      $this->mailConfig->set('defaults.sender', 'test_mail_collector')->save();
+      self::restoreReadOnlyConfig();
+    }
+    // Reset the mail collector by wiping any leftovers from a previous test.
+    \Drupal::state()->delete('system.test_mail_collector');
+  }
+
+  /**
+   * Restores the mailing system settings with the default one.
+   *
+   * @AfterScenario @api
+   */
+  public function afterEmailScenario(): void {
+    // Temporarily bypass read only config so that we can restore the original
+    // mail handler.
+    if (!empty($this->savedMailDefaults)) {
+      self::bypassReadOnlyConfig();
+
+      $this->mailConfig->set('defaults.sender', $this->savedMailDefaults)->save();
+
+      self::restoreReadOnlyConfig();
     }
   }
 

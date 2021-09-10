@@ -3,7 +3,6 @@ Feature: User registration
   As a user I must be able to register to the site and complete my user profile
   and receive appropriate notifications.
 
-  @email
   Scenario: A moderator can register a user
     Given users:
       | Username      | Roles     |

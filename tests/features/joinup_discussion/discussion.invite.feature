@@ -4,7 +4,7 @@ Feature: Invite members to subscribe to discussions
   As a discussion author or moderator
   I need to be able to invite users to discussions
 
-  @email @javascript
+  @javascript
   Scenario: Invite members to a discussion
     Given users:
       | Username         | E-mail                           | First name | Family name |

@@ -36,7 +36,6 @@ Feature: Subscribing to community content in solutions
     And all message digests have been delivered
     And the mail collector cache is empty
 
-  @email
   Scenario: Receive a digest of content that is published in my solutions
     Given discussion content:
       | title      | body                      | solution             | state     | author |

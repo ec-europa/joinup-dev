@@ -33,7 +33,6 @@ Feature: Subscribing to community content in collections
     And all message digests have been delivered
     And the mail collector cache is empty
 
-  @email
   Scenario: Receive a digest of content that is published in my collections
     Given discussion content:
       | title      | body                      | collection           | state     | author |

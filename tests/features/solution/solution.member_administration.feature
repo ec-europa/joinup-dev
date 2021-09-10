@@ -60,7 +60,6 @@ Feature: Solution membership administration
     When I click "Add members"
     Then I should see the heading "Add members"
 
-  @email
   Scenario: Assign and remove new role to a member
     When I am logged in as "Guadalupe Norman"
     And I go to the members page of "The Missing Sons"
@@ -86,7 +85,6 @@ Feature: Solution membership administration
       | subject   | Your role has been changed to member                                             |
       | body      | Guadalupe Norman has changed your role in solution "The Missing Sons" to member. |
 
-  @email
   Scenario: Privileged members should be allowed to invite users to a solution.
     Given users:
       | Username  | E-mail                 | First name | Family name |

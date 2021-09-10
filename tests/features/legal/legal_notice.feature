@@ -143,7 +143,6 @@ Feature:
     # As this version has been created via UI it should be manually deleted.
     And I delete the version "v2.0" of document "Legal notice"
 
-  @email
   Scenario: Anonymous using the support contact form.
     Given all e-mails have been sent
     And I am on "/contact"

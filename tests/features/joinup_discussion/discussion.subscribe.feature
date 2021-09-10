@@ -55,7 +55,6 @@ Feature: Following discussions
     And I should see the link "Follow"
     And the "Rare butter" discussion should have 0 subscribers
 
-  @email
   Scenario: Receive E-mail notifications when actions are taken in discussions.
     Given users:
       | Username    | E-mail            | First name | Family name | Notification frequency |
