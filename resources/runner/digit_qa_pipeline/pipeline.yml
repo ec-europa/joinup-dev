@@ -1,6 +1,48 @@
 # Settings and commands only available inside Digit QA Pipeline.
 
 .before: &before
+  # Ensure writable public file directory.
+  - task: chgrp
+    file: ${joinup.site_dir}/sites/default/files
+    group: ${env.DAEMON_GROUP}
+    recursive: true
+  - task: chmod
+    file: ${joinup.site_dir}/sites/default/files
+    # Octal 0775.
+    permissions: 509
+    umask: 0
+    recursive: true
+  # Ensure writable private files directory.
+  - task: chgrp
+    file: ${joinup.files_private_dir}
+    group: ${env.DAEMON_GROUP}
+    recursive: true
+  - task: chmod
+    file: ${joinup.files_private_dir}
+    # Octal 0775.
+    permissions: 509
+    umask: 0
+    recursive: true
+  # Ensure writable temporary files directory.
+  - task: chgrp
+    file: ${toolkit.tmp_folder}
+    group: ${env.DAEMON_GROUP}
+    recursive: true
+  - task: chmod
+    file: ${toolkit.tmp_folder}
+    # Octal 0775.
+    permissions: 509
+    umask: 0
+    recursive: true
+
+  # Digit QA pipeline installs the site in the 'install-clean' job and dumps the
+  # installed MySQL database, along with the codebase, as artifacts. Then
+  # subsequent Behat suite sub-jobs are restoring the codebase and MySQL dump
+  # from artifacts. While this might work for most of the sites, it's not enough
+  # for Joinup, as Joinup actively uses additional Virtuoso and a Solr backends,
+  # along with MySQL. Thus, before running the behat tests, we need to re-run
+  # again the import of SPARQL fixtures.
+  # See \Joinup\TaskRunner\ConfigProviders\DigitQaPipelineConfigProvider
   - task: run
     command: solr:empty
   - task: run
@@ -8,14 +50,6 @@
   - task: run
     command: dev:import-sparql-fixtures
 
-# Digit QA pipeline installs the site in the 'install-clean' job and dumps the
-# installed MySQL database, along with the codebase, as artifacts. Then
-# subsequent Behat suite sub-jobs are restoring the codebase and MySQL dump
-# from artifacts. While this might work for most of the sites, it's not enough
-# for Joinup, as Joinup actively uses additional Virtuoso and a Solr backends,
-# along with MySQL. Thus, before running the behat tests, we need to re-run
-# again the import of SPARQL fixtures.
-# See \Joinup\TaskRunner\ConfigProviders\DigitQaPipelineConfigProvider
 behat:
   commands:
     before: *before
