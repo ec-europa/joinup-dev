@@ -40,7 +40,7 @@ commands:
     - task: run
       command: joinup:compile-scss
     - task: mkdir
-      dir: ${env.DRUPAL_PRIVATE_FILE_SYSTEM}
+      dir: ${joinup.files_private_dir}
     - task: mkdir
       dir: ${env.DRUPAL_FILE_TEMP_PATH}
     - task: exec
