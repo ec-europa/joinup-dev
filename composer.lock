@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec72192bb8db80512e5ae7e656ae2843",
+    "content-hash": "c54f78c9777a7afe4fed119dfcbd710e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -8260,7 +8260,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-10-31T20:10:45+00:00"
+            "time": "2021-06-30T06:04:10+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",
@@ -16140,12 +16140,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pfrenssen/task-runner.git",
-                "reference": "f5a0aeb8651b8605fe5b1670951014c2542564d4"
+                "reference": "ec9791bc4426d4ab76a44aeb08dbcb353efb854d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/task-runner/zipball/f5a0aeb8651b8605fe5b1670951014c2542564d4",
-                "reference": "f5a0aeb8651b8605fe5b1670951014c2542564d4",
+                "url": "https://api.github.com/repos/pfrenssen/task-runner/zipball/ec9791bc4426d4ab76a44aeb08dbcb353efb854d",
+                "reference": "ec9791bc4426d4ab76a44aeb08dbcb353efb854d",
                 "shasum": ""
             },
             "require": {
@@ -16158,7 +16158,8 @@
             },
             "require-dev": {
                 "openeuropa/code-review": "~1.0.0-beta3",
-                "phpunit/phpunit": "~6.0||~7.0"
+                "phpunit/phpunit": "~6.0||~7.0",
+                "slevomat/coding-standard": "~6.0"
             },
             "bin": [
                 "bin/run"
@@ -16166,11 +16167,7 @@
             "type": "library",
             "extra": {
                 "enable-patching": true,
-                "composer-exit-on-patch-failure": true,
-                "patches_applied": {
-                    "Allow to pass array options to 'run' & 'exec' tasks @see https://github.com/openeuropa/task-runner/pull/137": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/137.diff",
-                    "Tokens containing digits are not supported @see https://github.com/openeuropa/task-runner/pull/145": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/145.diff"
-                }
+                "composer-exit-on-patch-failure": true
             },
             "autoload": {
                 "psr-4": {
@@ -16196,7 +16193,7 @@
             "support": {
                 "source": "https://github.com/pfrenssen/task-runner/tree/php-7.1"
             },
-            "time": "2020-05-19T11:58:57+00:00"
+            "time": "2021-09-10T10:44:20+00:00"
         },
         {
             "name": "pdepend/pdepend",
