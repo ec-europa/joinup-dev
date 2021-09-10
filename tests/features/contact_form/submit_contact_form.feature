@@ -14,7 +14,9 @@ Feature: Submit the contact form
     # There should be a link to the contact form in the footer.
     Given I am not logged in
     When I visit "/?destination=collections"
-    And I click "Contact Joinup Support" in the "Footer" region
+    # Todo: This should become "Contact Joinup Support" in the new theme.
+    # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6694
+    And I click "Contact support" in the "Footer" region
     And I should see the heading "Contact"
     And the "Category" select should contain the following options:
       | - Select a value -             |
@@ -43,7 +45,9 @@ Feature: Submit the contact form
     Then I should be on "collections"
 
     And I am on the homepage
-    When I click "Contact Joinup Support" in the "Footer" region
+    # Todo: This should become "Contact Joinup Support" in the new theme.
+    # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6694
+    And I click "Contact support" in the "Footer" region
     And I fill in the following:
       | First name     | Oswine                      |
       | Last name      | Wulfric                     |
