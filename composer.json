@@ -355,10 +355,6 @@
                 "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff",
                 "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff",
                 "Avoid CORS issues by requesting the Webtools Smartloader script over HTTPS @see https://github.com/openeuropa/oe_webtools/pull/149": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/149.diff"
-            },
-            "openeuropa/task-runner": {
-                "Allow to pass array options to 'run' & 'exec' tasks @see https://github.com/openeuropa/task-runner/pull/137": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/137.diff",
-                "Tokens containing digits are not supported @see https://github.com/openeuropa/task-runner/pull/145": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/145.diff"
             }
         },
         "patches-ignore": {
