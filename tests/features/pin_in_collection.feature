@@ -283,8 +283,9 @@ Feature: Pinning entities inside collections
     Then the "Lantern terms" tile should be marked as pinned
     And the "Lantern FAQs" tile should be marked as pinned
 
-    When I click the contextual link "Unpin" in the "Lantern FAQs" tile
-    Then the "Lantern FAQs" tile should not be marked as pinned
+    When I reload the page
+    Then I click the contextual link "Unpin" in the "Lantern FAQs" tile
+    And the "Lantern FAQs" tile should not be marked as pinned
     And the "Lantern terms" tile should be marked as pinned
 
     Examples:
