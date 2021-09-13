@@ -10,7 +10,6 @@ use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\TagTrait;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\MailCollectorTrait;
-use Drupal\joinup\Traits\MailConfigTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\message\Entity\MessageTemplate;
@@ -23,7 +22,6 @@ class JoinupNotificationContext extends RawDrupalContext {
 
   use ConfigReadOnlyTrait;
   use MailCollectorTrait;
-  use MailConfigTrait;
   use TagTrait;
   use UserTrait;
   use UtilityTrait;

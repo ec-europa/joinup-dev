@@ -25,7 +25,7 @@ trait MailConfigTrait {
    * @throws \Exception
    *   When mail configurations were overridden.
    */
-  protected function checkMailConfigOverride(): void {
+  protected static function checkMailConfigOverride(): void {
     $config_factory = \Drupal::configFactory();
     foreach (static::$mailOverridableConfigurations as $config_name => $config_path) {
       if ($config_factory->get($config_name)->hasOverrides($config_path)) {
@@ -42,7 +42,7 @@ trait MailConfigTrait {
    * @return bool
    *   TRUE if the testing mail collector is used.
    */
-  protected function isTestMailCollectorUsed(): bool {
+  protected static function isTestMailCollectorUsed(): bool {
     $config_factory = \Drupal::configFactory();
     $is_test_mail_collector_used = TRUE;
     foreach (static::$mailOverridableConfigurations as $config_name => $config_path) {

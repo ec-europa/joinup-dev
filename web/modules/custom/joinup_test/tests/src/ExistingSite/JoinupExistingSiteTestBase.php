@@ -116,10 +116,10 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
   protected function startMailCollection(): void {
     // Check if the mail system configuration has been overridden in
     // settings.php or settings.override.php.
-    $this->checkMailConfigOverride();
+    static::checkMailConfigOverride();
 
     static::bypassReadOnlyConfig();
-    $this->traitStartMailCollection();
+    static::$traitStartMailCollection();
     static::restoreReadOnlyConfig();
   }
 

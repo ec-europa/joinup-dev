@@ -89,14 +89,14 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @var \Drupal\Core\Config\StorableConfigBase
    */
-  protected $mailConfig;
+  protected static $mailConfig;
 
   /**
    * Holds the default settings for the mail server so a revert is possible.
    *
    * @var array
    */
-  protected $savedMailDefaults;
+  protected static $savedMailDefaults;
 
   /**
    * Checks that a 200 OK response occurred.
@@ -2200,18 +2200,18 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Swaps the mailing system settings with a test one.
    *
-   * @BeforeScenario @api
+   * @BeforeSuite @api
    */
-  public function beforeEmailScenario(): void {
-    if (!$this->isTestMailCollectorUsed()) {
+  public static function setupEmailCollector(): void {
+    if (!static::isTestMailCollectorUsed()) {
       // Check if the mail system configuration has been overridden in
       // settings.php or settings.override.php.
-      $this->checkMailConfigOverride();
+      static::checkMailConfigOverride();
 
       self::bypassReadOnlyConfig();
-      $this->mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
-      $this->savedMailDefaults = $this->mailConfig->get('defaults.sender');
-      $this->mailConfig->set('defaults.sender', 'test_mail_collector')->save();
+      static::$mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
+      static::$savedMailDefaults = static::$mailConfig->get('defaults.sender');
+      static::$mailConfig->set('defaults.sender', 'test_mail_collector')->save();
       self::restoreReadOnlyConfig();
     }
     // Reset the mail collector by wiping any leftovers from a previous test.
@@ -2221,15 +2221,15 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Restores the mailing system settings with the default one.
    *
-   * @AfterScenario @api
+   * @AfterSuite @api
    */
-  public function afterEmailScenario(): void {
+  public static function revertEmailCollector(): void {
     // Temporarily bypass read only config so that we can restore the original
     // mail handler.
-    if (!empty($this->savedMailDefaults)) {
+    if (!empty(static::$savedMailDefaults)) {
       self::bypassReadOnlyConfig();
 
-      $this->mailConfig->set('defaults.sender', $this->savedMailDefaults)->save();
+      static::$mailConfig->set('defaults.sender', static::$savedMailDefaults)->save();
 
       self::restoreReadOnlyConfig();
     }
