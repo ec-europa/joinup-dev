@@ -74,3 +74,13 @@ commands:
     - task: exec
       # Mute the returning error code as is used only for reporting.
       command: php -d memory_limit=-1 ${phpstan.bin} --no-progress analyse web/modules/contrib || true
+
+  # Lints YAML files.
+  testing:yaml-lint:
+    - task: exec
+      command: ${joinup.dir}/node_modules/.bin/eslint --ext .yml .
+
+  # Fixes YAML files.
+  testing:yaml-fix:
+    - task: exec
+      command: ${joinup.dir}/node_modules/.bin/eslint --ext .yml --fix .
