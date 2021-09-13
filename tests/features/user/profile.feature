@@ -105,8 +105,12 @@ Feature: User profile
       | Ada Lovelace      | moderator@example.com | ada.png      |
 
     When I am logged in as "Leonardo Da Vinci"
+    # New homepage has a different header where the profile picture is no longer
+    # shown. Let's move to a page that still shows the old header.
+    And I visit the collection overview
     Then my user profile picture should be shown in the page header
     When I am logged in as "Ada Lovelace"
+    And I visit the collection overview
     Then my user profile picture should be shown in the page header
 
   Scenario: The user public profile page shows the content he's author of or is member of.

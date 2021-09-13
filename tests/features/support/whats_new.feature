@@ -14,6 +14,8 @@ Feature:
 
   Scenario: Only content entity internal URLs are allowed for flagging menu items.
     When I am logged in as a moderator
+    # The support menu has been removed from the homepage. Let's check another page.
+    And I visit the collection overview
     Then I should not see the bell icon in the support menu
 
     When I go to "/admin/structure/menu/manage/support"
@@ -43,12 +45,12 @@ Feature:
     And the "Check what's new" link should be featured as what's new
 
     Given I am an anonymous user
-    And I am on the homepage
+    And I visit the collection overview
     Then I should not see the bell icon in the support menu
     And the "Check what's new" link should not be featured as what's new
 
     Given I am logged in as a user with the authenticated role
-    And I am on the homepage
+    And I visit the collection overview
     And I should see the bell icon in the support menu
     When I click "Check what's new"
     Then I should see the heading "Some title"
@@ -56,12 +58,14 @@ Feature:
     And the "Check what's new" link should not be featured as what's new
 
     Given I am an anonymous user
-    And I am on the homepage
+    And I visit the collection overview
     Then I should not see the bell icon in the support menu
     And the "Check what's new" link should not be featured as what's new
 
   Scenario: Only one live link is allowed at a time.
     When I am logged in as a moderator
+    # The support menu has been removed from the homepage. Let's check another page.
+    And I visit the collection overview
     Then I should not see the bell icon in the support menu
 
     When I go to "/admin/structure/menu/manage/support"
@@ -94,5 +98,6 @@ Feature:
     And I should see the bell icon in the support menu
 
     Given I am an anonymous user
-    And I am on the homepage
+    # The support menu has been removed from the homepage. Let's check another page.
+    And I visit the collection overview
     Then I should not see the bell icon in the support menu
