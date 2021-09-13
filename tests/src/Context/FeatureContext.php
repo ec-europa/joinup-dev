@@ -25,7 +25,6 @@ use Drupal\joinup\Traits\AntibotTrait;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
-use Drupal\joinup\Traits\MailConfigTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\PageCacheTrait;
 use Drupal\joinup\Traits\SearchTrait;
@@ -51,7 +50,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
   use EntityTrait;
-  use MailConfigTrait;
   use MaterialDesignTrait;
   use PageCacheTrait;
   use SearchTrait;
@@ -2198,41 +2196,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Swaps the mailing system settings with a test one.
+   * Cleans the mail collector before the scenario starts.
    *
-   * @BeforeSuite @api
+   * @BeforeScenario @api
    */
-  public static function setupEmailCollector(): void {
-    if (!static::isTestMailCollectorUsed()) {
-      // Check if the mail system configuration has been overridden in
-      // settings.php or settings.override.php.
-      static::checkMailConfigOverride();
-
-      self::bypassReadOnlyConfig();
-      static::$mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
-      static::$savedMailDefaults = static::$mailConfig->get('defaults.sender');
-      static::$mailConfig->set('defaults.sender', 'test_mail_collector')->save();
-      self::restoreReadOnlyConfig();
-    }
-    // Reset the mail collector by wiping any leftovers from a previous test.
+  public static function cleanUpEmailCollector(): void {
     \Drupal::state()->delete('system.test_mail_collector');
-  }
-
-  /**
-   * Restores the mailing system settings with the default one.
-   *
-   * @AfterSuite @api
-   */
-  public static function revertEmailCollector(): void {
-    // Temporarily bypass read only config so that we can restore the original
-    // mail handler.
-    if (!empty(static::$savedMailDefaults)) {
-      self::bypassReadOnlyConfig();
-
-      static::$mailConfig->set('defaults.sender', static::$savedMailDefaults)->save();
-
-      self::restoreReadOnlyConfig();
-    }
   }
 
   /**

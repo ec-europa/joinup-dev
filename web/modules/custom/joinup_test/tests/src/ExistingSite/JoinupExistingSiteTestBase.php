@@ -5,9 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_test\ExistingSite;
 
 use Drupal\joinup\Traits\AntibotTrait;
-use Drupal\joinup\Traits\MailConfigTrait;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
-use weitzman\DrupalTestTraits\Mail\MailCollectionTrait;
 
 /**
  * Base class for Joinup ExistingSite tests.
@@ -15,11 +13,6 @@ use weitzman\DrupalTestTraits\Mail\MailCollectionTrait;
 abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
 
   use AntibotTrait;
-  use MailCollectionTrait {
-    startMailCollection as traitStartMailCollection;
-    restoreMailSettings as traitRestoreMailSettings;
-  }
-  use MailConfigTrait;
 
   /**
    * The list of Honeypot forms.
@@ -47,9 +40,6 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
    */
   protected function setUp(): void {
     parent::setUp();
-
-    // Use the testing mail collector during tests.
-    $this->startMailCollection();
 
     // A user whose account in not yet linked with an EU Login account has
     // limited access to the website features. They can login only by using the
@@ -89,9 +79,6 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     // Re-enable limited access functionality.
     $this->state->delete('joinup_eulogin.disable_limited_access');
 
-    // Restore the mail settings.
-    $this->restoreMailSettings();
-
     /** @var \Drupal\Component\Plugin\PluginManagerInterface $delete_orphans_manager */
     $delete_orphans_manager = $this->container->get('plugin.manager.og.delete_orphans');
     /** @var \Drupal\og\OgDeleteOrphansInterface $delete_orphans_plugin */
@@ -105,31 +92,6 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     // Delete the OG group content orphans now because parent::tearDown() is
     // destroying the container and the registered shutdown callback will fail.
     $delete_orphans_plugin->process();
-  }
-
-  /**
-   * Overrides the trait method by bypassing config read-only.
-   *
-   * @throws \Exception
-   *   If mail config is overwritten in settings.php or settings.override.php.
-   */
-  protected function startMailCollection(): void {
-    // Check if the mail system configuration has been overridden in
-    // settings.php or settings.override.php.
-    static::checkMailConfigOverride();
-
-    static::bypassReadOnlyConfig();
-    static::traitStartMailCollection();
-    static::restoreReadOnlyConfig();
-  }
-
-  /**
-   * Overrides the trait method by bypassing config read-only.
-   */
-  protected function restoreMailSettings(): void {
-    static::bypassReadOnlyConfig();
-    static::traitRestoreMailSettings();
-    static::restoreReadOnlyConfig();
   }
 
   /**

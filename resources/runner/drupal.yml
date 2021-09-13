@@ -75,6 +75,7 @@ drupal:
         - OpenEuropa Webtools Geocoding Cache
         - Redis
         - Custom queue services
+        - Test mail collector
       error_page_test:
         - Main settings
         - Databases
@@ -102,6 +103,7 @@ drupal:
         - OpenEuropa Webtools Geocoding Cache
         - Error logging
         - Custom queue services
+        - Test mail collector
       prod:
         - Main settings
         - Databases
@@ -243,3 +245,6 @@ drupal:
       Custom queue services: |
         $settings['queue_service_joinup_group:group_update'] = 'joinup_group.group_aware_queue';
         $settings['queue_service_joinup_group:group_content_update'] = 'joinup_group.group_aware_queue';
+      Test mail collector: |
+        $config['system.mail']['interface']['default'] = 'test_mail_collector';
+        $config['mailsystem.settings']['defaults']['sender'] = 'test_mail_collector';
