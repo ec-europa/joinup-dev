@@ -22,8 +22,10 @@ default:
         - Drupal\joinup\Context\EifContext
         - Drupal\joinup\Context\EntityQueueContext
         - Drupal\joinup\Context\EuplContext
+        - Drupal\joinup\Context\HeaderContext
         - Drupal\joinup\Context\HomepageContext
         - Drupal\joinup\Context\Isa2AnalyticsContext
+        - Drupal\joinup\Context\JoinupCollectionContext
         - Drupal\joinup\Context\JoinupCommunityContentContext
         - Drupal\joinup\Context\JoinupContext
         - Drupal\joinup\Context\JoinupCoreContext
@@ -119,6 +121,7 @@ default:
         Modal content: '#drupal-modal'
         Modal title: '.ui-dialog-title'
         My unpublished content area: '.block-user-unpublished'
+        Navigation bar: 'nav.joinup-navbar'
         Navigation menu block: '#block-navigation'
         Navigation menu: 'div.navigation-menu ul'
         Page title: 'div.page__title-wrapper'

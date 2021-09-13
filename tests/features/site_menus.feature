@@ -64,11 +64,6 @@ Feature: Site menus
       | title | Some collection |
       | state | validated       |
 
-    When I am on the homepage
-    Then I see the "a" element with the "title" attribute set to "Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community." in the "Header" region
-    And I see the "a" element with the "title" attribute set to "A Solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories." in the "Header" region
-    And I see the "a" element with the "title" attribute set to "KEEP UP TO DATE items, like news, events, discussions and documents can be included in both Collections and Solutions." in the "Header" region
-
     When I go to "/collections"
     Then I see the "a" element with the "title" attribute set to "Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community." in the "Header menu" region
     And I see the "a" element with the "title" attribute set to "A Solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories." in the "Header menu" region
