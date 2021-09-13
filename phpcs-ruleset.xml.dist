@@ -18,6 +18,7 @@
     <!-- Exclude frontend third-party libraries from coding standards -->
     <exclude-pattern>/web/themes/joinup/vendor/*</exclude-pattern>
     <exclude-pattern>/web/themes/joinup/node_modules/*</exclude-pattern>
+    <exclude-pattern>/web/themes/ventuno/assets/*</exclude-pattern>
 
     <rule ref="./vendor/drupal/coder/coder_sniffer/Drupal">
         <exclude name="Drupal.Semantics.FunctionTriggerError.TriggerErrorTextLayoutStrict" />
