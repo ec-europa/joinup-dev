@@ -119,7 +119,7 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     static::checkMailConfigOverride();
 
     static::bypassReadOnlyConfig();
-    static::$traitStartMailCollection();
+    static::traitStartMailCollection();
     static::restoreReadOnlyConfig();
   }
 
@@ -128,7 +128,7 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
    */
   protected function restoreMailSettings(): void {
     static::bypassReadOnlyConfig();
-    $this->traitRestoreMailSettings();
+    static::traitRestoreMailSettings();
     static::restoreReadOnlyConfig();
   }
 
