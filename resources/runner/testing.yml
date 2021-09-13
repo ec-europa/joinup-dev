@@ -7,7 +7,7 @@ behat:
   # Either 'firefox' or 'chrome'.
   browser_name: chrome
   formatter:
-    name: progress
+    name: pretty
 
 phpcs:
   file:
