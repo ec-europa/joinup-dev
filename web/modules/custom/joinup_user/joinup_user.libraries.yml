@@ -1,7 +1,0 @@
-sign_in_destination:
-  js:
-    js/sign_in_destination.js: {}
-  dependencies:
-    - core/jquery
-    - core/jquery.once
-    - core/drupal
