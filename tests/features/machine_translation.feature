@@ -95,7 +95,5 @@ Feature: Machine translation
     Then I should not see any Webtools eTrans elements
 
     # Pages that are not content focused should not be translatable.
-    # Todo: This should become "Contact Joinup Support" in the new theme.
-    # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6694
-    When I click "Contact support" in the "Footer" region
+    When I click "Contact Joinup Support" in the "Footer" region
     Then I should not see any Webtools eTrans elements
