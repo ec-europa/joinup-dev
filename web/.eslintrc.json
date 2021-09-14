@@ -1,10 +1,8 @@
 {
   // This is copied from Drupal 9.3 which is the version in which YAML linting
-  // was introduced. Once we are on Drupal 9.3, replace this file with:
-  // ```
-  // {
-  //   "extends": "./core/.eslintrc.json",
-  // }
+  // was introduced. Once we are on Drupal 9.3, allow this file to be scaffolded
+  // again by drupal-scaffold. It is currently excluded from scaffolding in
+  // `composer.json`.
   "extends": [
     "airbnb",
     "plugin:prettier/recommended",
