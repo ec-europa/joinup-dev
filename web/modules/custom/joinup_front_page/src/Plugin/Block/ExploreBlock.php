@@ -92,22 +92,26 @@ class ExploreBlock extends BlockBase implements ContainerFactoryPluginInterface 
   public function build(): array {
     $data = [
       'solutions' => [
-        'name' => $this->t('Solutions'),
+        'label' => $this->t('Solutions'),
+        'plural_type' => $this->t('solutions'),
         'data' => $this->getRdfEntity('solution'),
         'url' => '/search?keys=&f[0]=type%3Asolution',
       ],
       'collections' => [
-        'name' => $this->t('Collections'),
+        'label' => $this->t('Collections'),
+        'plural_type' => $this->t('collections'),
         'data' => $this->getRdfEntity('collection'),
         'url' => '/search?keys=&f[0]=type%3Acollection',
       ],
       'news' => [
-        'name' => $this->t('News'),
+        'label' => $this->t('News'),
+        'plural_type' => $this->t('news'),
         'data' => $this->getContent('news'),
         'url' => '/search?keys=&f[0]=type%3Anews',
       ],
       'events' => [
-        'name' => $this->t('Events'),
+        'label' => $this->t('Events'),
+        'plural_type' => $this->t('events'),
         'data' => $this->getContent('event'),
         'url' => '/search?keys=&f[0]=type%3Aevent',
       ],

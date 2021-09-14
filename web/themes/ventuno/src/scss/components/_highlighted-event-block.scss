@@ -2,6 +2,7 @@
 .block-entityqueue--highlighted-event {
   position: relative;
   @extend .mb-5;
+  height: 100%;
   > h2 {
     @include font-icon-before("\F133", 1.2rem, $warning);
   }

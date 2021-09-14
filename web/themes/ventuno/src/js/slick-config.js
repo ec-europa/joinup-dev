@@ -9,21 +9,13 @@
         $(elms[i]).slick({
           infinite: true,
           speed: 300,
-          slidesToShow: 5,
+          slidesToShow: 4,
           swipeToSlide: true,
           arrows: true,
           appendArrows:  $(elms[i]).prev().prev('.append-buttons'),
           nextArrow: '<button type="button" class="slick-controls slick-next rounded-circle"><span class="icon">&nbsp;</span><span class="visually-hidden">Next</span></button>',
           prevArrow: '<button type="button" class="slick-controls slick-prev rounded-circle"><span class="icon">&nbsp;</span><span class="visually-hidden">Previous</span></button>',
           responsive: [
-            {
-              breakpoint: 1399,
-              settings: {
-                slidesToShow: 4,
-                slidesToScroll: 4,
-                swipeToSlide: false
-              }
-            },
             {
               breakpoint: 1199,
               settings: {

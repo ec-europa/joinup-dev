@@ -1,6 +1,7 @@
 // In the Spotlight
 .block-views-blockin-the-spotlight-block {
   @extend .pb-5;
+  height: 100%;
   border-bottom: 1px solid rgba($primary, .1);
   > h2 {
     @include font-icon-before("\E800", 1.2rem, $warning);
