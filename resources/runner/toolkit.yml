@@ -40,7 +40,7 @@ commands:
     - task: run
       command: joinup:compile-scss
     - task: mkdir
-      dir: ${env.DRUPAL_PRIVATE_FILE_SYSTEM}
+      dir: ${joinup.files_private_dir}
     - task: mkdir
       dir: ${env.DRUPAL_FILE_TEMP_PATH}
     - task: exec
@@ -100,6 +100,14 @@ commands:
 
   # Overrides the toolkit:test-phpcs command.
   toolkit:test-phpcs:
+    # Handle a potential case where the repo has been shallow cloned. Typically,
+    # this happens in GitLab pipelines, where the repos are shallow cloned for
+    # performance reasons. A shallow clone prevents us to get the Git latest tag
+    # as no tags are available. But we require this info during the coding
+    # standards check.
+    # See \Joinup\CodingStandards\Sniffs\NamingConventions\ValidUpdateNameSniff
+    - task: exec
+      command: if $(git rev-parse --is-shallow-repository); then git fetch --unshallow; fi
     - task: run
       command: testing:phpcs-setup
     - task: exec

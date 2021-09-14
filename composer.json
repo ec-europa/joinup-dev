@@ -58,7 +58,7 @@
         "drupal/paragraphs_jquery_ui_accordion": "^1.4",
         "drupal/password_policy": "3.0-alpha5",
         "drupal/pathauto": "~1.8",
-        "drupal/pipeline": "^1.0",
+        "drupal/pipeline": "dev-1.x",
         "drupal/publication_date": "^2.0-beta2",
         "drupal/rdf_entity": "^1.0",
         "drupal/redirect": "^1.6",
@@ -125,7 +125,7 @@
         "drupal/restui": "^1.18",
         "drupal/stage_file_proxy": "^1.1",
         "drupaltest/behat-one-time-login": "^1.0",
-        "ec-europa/toolkit": "^4.4.9",
+        "ec-europa/toolkit": "^4.4.11",
         "foxy/foxy": "^1.1",
         "jcalderonzumba/gastonjs": "^1.2@dev",
         "lovers-of-behat/table-extension": "^1.2.0",
@@ -307,9 +307,6 @@
                 "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2019-08-15/2771129-100_0.patch",
                 "Display pass policy status table only if the password element is shown @see https://www.drupal.org/project/password_policy/issues/3068891": "https://www.drupal.org/files/issues/2019-08-10/3068891-5.patch"
             },
-            "drupal/pipeline": {
-                "Allow other modules to interact when the pipeline finishes @see https://www.drupal.org/project/pipeline/issues/3192409": "https://git.drupalcode.org/project/pipeline/-/merge_requests/1.diff"
-            },
             "drupal/publication_date": {
                 "Provide computed properties that return the publication date or the created/updated date @see https://www.drupal.org/project/publication_date/issues/3066317": "https://www.drupal.org/files/issues/2019-07-07/3066317-3.patch"
             },
@@ -359,6 +356,9 @@
                 "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff",
                 "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff",
                 "Avoid CORS issues by requesting the Webtools Smartloader script over HTTPS @see https://github.com/openeuropa/oe_webtools/pull/149": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/149.diff"
+            },
+            "openeuropa/task-runner": {
+                " @see https://github.com/openeuropa/task-runner/pull/155": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/155.diff"
             },
             "solarium/solarium": {
                 "implode() deprecated usage": "resources/patch/solarium.diff"
