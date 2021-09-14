@@ -49,22 +49,33 @@ body {
     }
   }
   .tab-content {
+    width: 100vw;
     .tab-pane {
-      flex-flow: row nowrap;
       .see-more {
         display: block;
       }
       .tab-data {
-        display: flex;
-        position: relative;
         article {
           background-color: $white;
           border-radius: $border-radius;
           @extend .p-4;
           @extend .me-4;
           @extend .shadow;
+          height: 100%;
+          display: flex !important;
+          flex-flow: column;
+          .layout {
+            flex-grow: 1;
+            .layout__region {
+              display: flex;
+              flex-direction: column;
+              height: 100%;
+            }
+            .explore-item__description {
+              flex-grow: 1;
+            }
+          }
           h2 {
-            width: 290px;
             font-size: $h4-font-size;
             @extend .fw-medium;
             line-height: $line-height-base;
@@ -91,4 +102,48 @@ body {
       }
     }
   }
+}
+.append-buttons {
+  display: flex;
+  float: left;
+}
+.slick-controls {
+  width: 40px;
+  height: 40px;
+  background-color: $white;
+  border: none;
+}
+.slick-prev {
+  margin-right: 1rem;
+  span.icon {
+    @include font-icon-before("\F104", 1.2rem, $primary, inherit, 0);
+  }
+}
+.slick-next {
+  span.icon {
+    @include font-icon-before("\F105", 1.2rem, $primary, inherit, 0 0 0 6px);
+  }
+}
+
+.slick-slider {
+  display: flex;
+  flex-flow: column;
+  .slick-list {
+    order: 3;
+    overflow-y: unset !important;
+    overflow-x: clip !important;
+    padding: 6px 0 6px 6px;
+  }
+  .slick-track {
+    display: flex !important;
+  }
+  .slick-slide {
+    display: flex !important;
+    height: auto !important;
+    margin-right: $spacer*1.5;
+    & > div {
+      width: 100%;
+    }
+  }
+
 }

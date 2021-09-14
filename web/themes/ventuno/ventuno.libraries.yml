@@ -2,4 +2,12 @@ style:
   version: VERSION
   css:
     theme:
-      css/styles.css: {}
+      assets/css/styles.css: {}
+
+slick:
+  js:
+    assets/js/slick.js: { minified: true }
+    assets/js/slick-config.js: { minified: false }
+  css:
+    theme:
+      assets/css/slick.css: { minified: true }
