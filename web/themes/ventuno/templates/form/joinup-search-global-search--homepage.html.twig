@@ -19,10 +19,10 @@
     {% for id, filter in filters %}
       <input type="hidden" class="search-bar__chip" name="f[]" value="{{ id }}" data-description="{{ filter }}">
     {% endfor %}
-    <div class="input-group shadow">
-      <input class="search-bar__input form-control px-4 py-3" type="text" name="keys" id="search-bar__input" placeholder="{{ 'Start typing to search…'|trans }}">
-      <button type="submit" class="btn btn-primary btn-search">{{ 'Search'|trans }}</button>
+    <div class="input-group">
+      <input class="search-bar__input form-control px-4 py-3 shadow" type="text" name="keys" id="search-bar__input" placeholder="{{ 'Start typing to search…'|trans }}">
+      <button type="submit" class="btn btn-primary btn-search shadow">{{ 'Search'|trans }}</button>
     </div>
   </form>
 </div>
-<p>{% trans %}Need more search options? Use our <a href="{{ search_url }}">advanced search</a>{% endtrans %}</p>
+<p>{% trans %}Need more search options? Use our <a class="text-primary text-decoration-underline" href="{{ search_url }}">advanced search</a>{% endtrans %}</p>
