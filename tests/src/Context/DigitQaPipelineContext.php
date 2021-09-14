@@ -28,26 +28,12 @@ class DigitQaPipelineContext extends RawMinkContext {
   public static function init(BeforeSuiteScope $event): void {
     if (static::isDigitQaPipeline()) {
       $fileSystem = new Filesystem();
-      $paths = [
-        // The public and private files directory.
-        implode(DIRECTORY_SEPARATOR, [
-          getenv('CI_PROJECT_DIR'),
-          'web',
-          'sites',
-          'default',
-          'files',
-        ]),
-        // The artifacts directory.
-        static::getArtifactsPath($event->getSuite()->getName()),
-      ];
-
-      foreach ($paths as $path) {
-        if (!$fileSystem->exists($path)) {
-          $fileSystem->mkdir($path);
-        }
-        $fileSystem->chgrp($path, getenv('DAEMON_GROUP'), TRUE);
-        $fileSystem->chmod($path, 0775);
+      $artifactsPath = static::getArtifactsPath($event->getSuite()->getName());
+      if (!$fileSystem->exists($artifactsPath)) {
+        $fileSystem->mkdir($artifactsPath);
       }
+      $fileSystem->chgrp($artifactsPath, getenv('DAEMON_GROUP'), TRUE);
+      $fileSystem->chmod($artifactsPath, 0775);
     }
   }
 
