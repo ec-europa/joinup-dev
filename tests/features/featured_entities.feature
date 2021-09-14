@@ -78,7 +78,8 @@ Feature: Featuring content site-wide
     When I click "Keep up to date" in the "Header menu" region
     Then the "Ionizing radiation types" tile should be marked as featured
 
-    When I click the contextual link "Remove from featured" in the "Ionizing radiation types" tile
+    When I reload the page
+    Then I click the contextual link "Remove from featured" in the "Ionizing radiation types" tile
     Then I should see the success message "<label> Ionizing radiation types has been removed from the featured contents."
     And the "Ionizing radiation types" <content type> tile should not be marked as featured
 
@@ -123,7 +124,8 @@ Feature: Featuring content site-wide
     Then I should see the success message "<label> <unfeatured> has been set as featured content."
     And the "<featured>" tile should be marked as featured
 
-    And I click the contextual link "Remove from featured" in the "<unfeatured>" tile
+    When I reload the page
+    Then I click the contextual link "Remove from featured" in the "<unfeatured>" tile
     Then I should see the success message "<label> <unfeatured> has been removed from the featured contents."
     And the "<unfeatured>" <content type> tile should not be marked as featured
 
