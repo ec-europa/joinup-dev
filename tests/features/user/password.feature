@@ -45,7 +45,9 @@ Feature: Password management
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
 
-  Scenario: A user can request a one-time-login link.
+  # Todo: Re-enable this in ISAICP-6662, or move this inside header.feature.
+  @wip
+  Scenario: A user can see information about EU Login
     When I am an anonymous user
     And I am on the homepage
     Then I should not see the link "Sign in (legacy)"

@@ -167,15 +167,13 @@ Feature: Homepage
       | v1.57.0                    | /ec-europa/joinup-dev/releases/tag/v1.57.0 |
       | v1.57.0-177-g0123456abcdef | /ec-europa/joinup-dev/commit/0123456abcdef |
 
-  Scenario: Search box is shown in the main content instead of the header on the homepage
+  Scenario: Search box is shown in the main content
     Given collection:
       | title | RNA vaccines |
       | state | validated    |
     And I am on the homepage
     Then I should see the "Search" field in the Featured region
     And I should see the button "Search" in the Featured region
-    But I should not see the "Search" field in the Header region
-    And I should not see the button "Search" in the Header region
     When I enter "RNA" in the search bar
     And press "Search"
     Then I should be on the search page

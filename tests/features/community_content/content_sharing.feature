@@ -201,8 +201,7 @@ Feature: Sharing content between collections
     And I wait for AJAX to finish
     Then I should see the success message "Item was shared on the following groups: Essos city."
 
-    When I am on the homepage
-    And I click "Keep up to date"
+    When I visit the content overview
     Then I should see the contextual link "Share" in the "Iron throne" tile
     # Simple members can still not unshare content from any group.
     But I should not see the contextual link "Unshare" in the "Iron throne" tile
@@ -266,8 +265,7 @@ Feature: Sharing content between collections
     Then I should see the "Venus content" tile
     And the "Venus content" tile should not be marked as shared
 
-    When I go to the homepage
-    And I click "Keep up to date"
+    And I visit the content overview
     Then the "Earth content" tile should not be marked as shared
     And the "Mars content" tile should not be marked as shared
     And the "Venus content" tile should not be marked as shared
