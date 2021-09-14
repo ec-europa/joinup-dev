@@ -40,23 +40,6 @@ Feature:
 
     Given I am <role>
 
-    When I am on the homepage
-    Then I should see the link "Take a tour"
-    And I should see the link "Contact support"
-    Then I click "Contact support"
-    And I fill in the following:
-      | First name     | Rufus                       |
-      | Last name      | Modric                      |
-      | Organisation   | The Deaf-Mute Society       |
-      | E-mail address | oswine@example.ca           |
-      | Category       | other                       |
-      | Subject        | Mobile reader accessibility |
-      | Message        | Dear sir, madam, ...        |
-    # We need to wait 5 seconds for the spam protection time limit to pass.
-    And I wait for the spam protection time limit to pass
-    And I press "Submit"
-    Then I should be on the homepage
-
     When I go to "/collections"
     Then I should not see the link "Take a tour"
     But I should see the link "Contact support"
@@ -129,7 +112,8 @@ Feature:
     When I click "Edit" in the "Contact support" row
     Then I should see the heading "Edit menu link Contact support"
 
-    When I am on the homepage
+    # The homepage no longer features the support menu. Let's check another page.
+    When I visit the content overview page
     Then I should see the link "Contact support"
     And I should see "Arbitrary support menu link"
     # Tour has been disabled.
@@ -153,7 +137,7 @@ Feature:
     Then I should see the success message "The menu link Arbitrary support menu link has been deleted."
     And I should not see the link "Arbitrary support menu link"
 
-    When I am on the homepage
+    When I visit the content overview page
     Then I should see the link "Contact support"
     # The custom link has been deleted.
     But I should not see "Arbitrary support menu link"
