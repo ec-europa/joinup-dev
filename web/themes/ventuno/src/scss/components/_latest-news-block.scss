@@ -47,4 +47,11 @@
       }
     }
   }
+  .field--name-field-topic {
+    a {
+      border-radius: $border-radius-pill;
+      padding-right: $spacer; // 16px
+      padding-left: $spacer; // 16px
+    }
+  }
 }

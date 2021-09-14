@@ -4,6 +4,11 @@
   @extend .col-lg;
   .search-bar {
     max-width: 40rem;
+    .search-bar__input {
+      border-style: none;
+      border-top-left-radius: $border-radius;
+      border-bottom-left-radius: $border-radius;
+    }
     .btn-search {
       @include font-icon-before("\E805", 1.2rem, inherit, inherit, 0 12px 0 0);
     }
