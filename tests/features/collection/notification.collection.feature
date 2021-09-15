@@ -108,7 +108,7 @@ Feature: Notification test for the collection transitions.
       | If you think this action is not clear or not due, please contact Joinup Support at |
 
     # Test deletion of a collection by the owner.
-    When I mark all emails are read
+    When I mark all emails as read
     And I go to the homepage of the "NC to delete" collection
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
@@ -200,7 +200,7 @@ Feature: Notification test for the collection transitions.
 
     # Test the deletion of a collection by a moderator. This should also inform
     # the collection owner.
-    When I mark all emails are read
+    When I mark all emails as read
     And I go to the homepage of the "NC to delete by mod" collection
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"

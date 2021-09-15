@@ -163,7 +163,7 @@ Feature: Invite members to subscribe to discussions
       | Glory Ruskin         |
 
     # Invite some users.
-    Given I mark all emails are read
+    Given I mark all emails as read
     And I press "Invite to discussion"
     Then I should see the success message "2 user(s) have been invited to this discussion."
     And the following email should have been sent:
@@ -207,7 +207,7 @@ Feature: Invite members to subscribe to discussions
 
     # Try to invite the user again. This should not send an invitation since the
     # user is already subscribed.
-    Given I mark all emails are read
+    Given I mark all emails as read
     And I am logged in as "Lynwood Crawford"
     When I go to the "Concerned about dissolved gases?" discussion
     And I click "Invite"

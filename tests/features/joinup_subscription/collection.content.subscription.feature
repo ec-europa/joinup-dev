@@ -145,7 +145,7 @@ Feature: Subscribing to community content in collections
     And the content subscription digest sent to kalin should have the subject "Joinup: Monthly digest message"
 
     # Clean out the message queue for the next test.
-    And I mark all emails are read
+    And I mark all emails as read
 
     # Check that if community content is published a second time it is not
     # included in the next digest.

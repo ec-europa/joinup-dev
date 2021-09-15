@@ -106,7 +106,7 @@ Feature: Solution notifications
 
     # The owner deletes their own solution. No email should be sent to the owner
     # since we do not send notifications to the actor.
-    When I mark all emails are read
+    When I mark all emails as read
     And I go to the homepage of the "Solution notification to delete by owner" solution
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"

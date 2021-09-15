@@ -43,7 +43,7 @@ Feature: Asset release notification system
       | body      | Dear Copernicus, Your release "1" for the "My awesome solution abc" solution was uploaded succesfully. Kind regards, The Joinup Support Team. |
 
     # Update an existing release.
-    When I mark all emails are read
+    When I mark all emails as read
     And I go to the homepage of the "My awesome release abc" release
     And I click "Edit" in the "Entity actions" region
     And I fill in "Release number" with "v2"

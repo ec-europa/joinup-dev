@@ -44,7 +44,7 @@ Feature: Content notification system
       | subject   | Joinup: user Jerrard Verity updated a News of your collection                                                 |
       | body      | Devyn Queshire, Jerrard Verity updated the News "Communication tools" in your Communication tools collection. |
 
-    Given I mark all emails are read
+    Given I mark all emails as read
     When I go to the "Smoke signals pre-conference party" event
     And I click "Edit"
     And I fill in "Location" with "Somewhere with a clean sky"
@@ -69,7 +69,7 @@ Feature: Content notification system
       | body      | Dear Devyn Queshire, your news "Infrared long-range communications" was successfully deleted. Kinds regards, The Joinup Support Team. |
 
     When I am logged in as "Jerrard Verity"
-    And I mark all emails are read
+    And I mark all emails as read
     When I go to the "Smoke signals pre-conference party" event
     And I click "Delete"
     And I press "Delete"
