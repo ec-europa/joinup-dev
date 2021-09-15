@@ -75,7 +75,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
       | subject   | Joinup: Content has been updated                                                                                                                                                                         |
       | body      | the Facilitator, CC Facilitator has requested you to modify the discussion - "CC notify post report" in the collection: "CC post collection", with the following motivation: "Your content is reported". |
 
-    When all e-mails have been sent
+    When I mark all emails are read
     And I am logged in as "CC facilitator"
     And I go to the "CC notify post approve proposed" discussion
     And I click "Edit" in the "Entity actions" region
@@ -87,7 +87,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
       | body      | the Facilitator, CC Facilitator has approved your request of publication of the discussion - "CC notify post approve proposed" in the collection: "CC post collection". |
 
     # Test 'delete' operation.
-    When all e-mails have been sent
+    When I mark all emails are read
     And I am logged in as "CC facilitator"
     And I go to the "CC notify post delete" discussion
     And I click "Edit" in the "Entity actions" region
@@ -130,7 +130,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
       | message              | author          | parent                           |
       | Huge magnetic fields | Monroe Fearchar | How do the jets fire into space? |
 
-    When all e-mails have been sent
+    When I mark all emails are read
     And I am logged in as a moderator
     And I go to the homepage of the "Event Horizon Telescope" collection
     And I click "Edit" in the "Entity actions" region

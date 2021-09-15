@@ -285,8 +285,7 @@ class JoinupNotificationContext extends RawDrupalContext {
    * Use this if you don't want to match on emails that have been sent earlier
    * in the scenario.
    *
-   * @Given the mail collector cache is empty
-   * @Given all (the )e-mails have been sent
+   * @Given I mark all emails as read
    */
   public function clearMailCollectorCache() {
     \Drupal::state()->set('system.test_mail_collector', []);

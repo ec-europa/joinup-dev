@@ -96,7 +96,7 @@ Feature: Following discussions
 
     # No E-mail notification is sent when the discussion is updated but no
     # relevant fields are changed.
-    And the mail collector cache is empty
+    And I mark all emails are read
     And I am logged in as "Dr. Hans Zarkov"
     And I go to the edit form of the "Rare Butter" discussion
     And I press "Update"
@@ -125,7 +125,7 @@ Feature: Following discussions
 
     # If the discussion is moved from 'validated' to any other state, no
     # notification will be sent, regardless if a relevant field is changed.
-    Given the mail collector cache is empty
+    Given I mark all emails are read
     And I am logged in as a moderator
     When I go to the edit form of the "Rare Butter" discussion
     And I fill in "Content" with "Is this change triggering notifications?"

@@ -36,7 +36,7 @@ Feature: User role management
       | body      | A moderator has edited your user profile on Joinup. Please check your profile to verify the changes done. |
 
     Given I am on the homepage
-    When all e-mails have been sent
+    When I mark all emails are read
     And I click "People"
 
     When I click "Edit" in the "Ursus" row
