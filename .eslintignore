@@ -1,11 +1,22 @@
 # Ignore generated files.
 behat.yml
+docker-compose.override.yml
+runner.yml
 
 # Ignore third party dependencies.
+/node_modules/
 /vendor/
 /web/core/
 /web/modules/contrib/
 /web/themes/contrib/
 
 # Ignore user uploaded content.
+/private/
 /web/sites/default/files/
+
+# Ignore the distribution build directory.
+/dist/
+
+# Ignore database backups and temporary files directories.
+/db/
+/tmp/
