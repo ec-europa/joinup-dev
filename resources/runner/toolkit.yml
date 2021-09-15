@@ -116,3 +116,13 @@ commands:
     #  command: testing:check-deprecated-code
     #- task: run
     #  command: testing:check-deprecated-code-contrib
+
+  # Lints YAML files using ESLint.
+  toolkit:lint-yaml:
+    - task: exec
+      command: ${joinup.dir}/node_modules/.bin/eslint --ext .yml .
+
+  # Fixes YAML files using ESLint.
+  toolkit:fix-yaml:
+    - task: exec
+      command: ${joinup.dir}/node_modules/.bin/eslint --ext .yml --fix .

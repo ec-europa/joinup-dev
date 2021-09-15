@@ -126,6 +126,7 @@
         "drupal/stage_file_proxy": "^1.1",
         "drupaltest/behat-one-time-login": "^1.0",
         "ec-europa/toolkit": "^4.4.11",
+        "foxy/foxy": "^1.1",
         "jcalderonzumba/gastonjs": "^1.2@dev",
         "lovers-of-behat/table-extension": "^1.2.0",
         "mglaman/phpstan-drupal": "^0.12.12",
@@ -224,6 +225,7 @@
                 "web-root": "web/"
             },
             "file-mapping": {
+                "[web-root]/.eslintrc.json": false,
                 "[web-root]/robots.txt": {
                     "append": "resources/drupal-scaffold/robots.txt.append"
                 },
@@ -304,9 +306,6 @@
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",
                 "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2019-08-15/2771129-100_0.patch",
                 "Display pass policy status table only if the password element is shown @see https://www.drupal.org/project/password_policy/issues/3068891": "https://www.drupal.org/files/issues/2019-08-10/3068891-5.patch"
-            },
-            "drupal/pipeline": {
-                "Remove deprecated code @see https://www.drupal.org/project/pipeline/issues/3231729": "https://git.drupalcode.org/project/pipeline/-/merge_requests/2.diff"
             },
             "drupal/publication_date": {
                 "Provide computed properties that return the publication date or the created/updated date @see https://www.drupal.org/project/publication_date/issues/3066317": "https://www.drupal.org/files/issues/2019-07-07/3066317-3.patch"
