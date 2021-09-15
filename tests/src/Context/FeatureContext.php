@@ -2200,7 +2200,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @BeforeScenario @api
    */
-  public static function cleanUpEmailCollector(): void {
+  public function cleanUpEmailCollector(): void {
     \Drupal::state()->delete('system.test_mail_collector');
   }
 
