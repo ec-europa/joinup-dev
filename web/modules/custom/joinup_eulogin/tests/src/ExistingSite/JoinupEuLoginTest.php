@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_eulogin\ExistingSite;
 
+use Drupal\Core\Test\AssertMailTrait;
 use Drupal\Tests\cas\Traits\CasTestTrait;
 use Drupal\Tests\joinup_test\ExistingSite\JoinupExistingSiteTestBase;
 use Drupal\user\Entity\User;
@@ -16,6 +17,7 @@ use weitzman\LoginTrait\LoginTrait;
  */
 class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
 
+  use AssertMailTrait;
   use CasTestTrait;
   use LoginTrait;
 

@@ -31,9 +31,7 @@ Feature: Subscribing to community content in collections
       | Cities of Bulgaria   | bisera | discussion, event, news              |
       | Cities of Bulgaria   | kalin  | discussion, document, news, solution |
     And all message digests have been delivered
-    And the mail collector cache is empty
 
-  @email
   Scenario: Receive a digest of content that is published in my collections
     Given discussion content:
       | title      | body                      | collection           | state     | author |
@@ -147,7 +145,7 @@ Feature: Subscribing to community content in collections
     And the content subscription digest sent to kalin should have the subject "Joinup: Monthly digest message"
 
     # Clean out the message queue for the next test.
-    And the mail collector cache is empty
+    And I mark all emails as read
 
     # Check that if community content is published a second time it is not
     # included in the next digest.

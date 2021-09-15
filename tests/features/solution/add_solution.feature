@@ -52,7 +52,7 @@ Feature: "Add solution" visibility options.
     And I go to the homepage of the "Collection solution test" collection
     Then I should not see the link "Add solution"
 
-  @terms @email @uploadFiles:logo.png,banner.jpg
+  @terms @uploadFiles:logo.png,banner.jpg
   Scenario: Add solution as a collection facilitator.
     Given the following collection:
       | title | Belgian barista's |
@@ -69,8 +69,7 @@ Feature: "Add solution" visibility options.
       | collection        | user          | roles              |
       | Belgian barista's | Wendell Silva | owner, facilitator |
 
-    When all e-mails have been sent
-    And I am logged in as "Wendell Silva"
+    When I am logged in as "Wendell Silva"
     And I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
     And I check "I have read and accept the legal notice and I commit to manage my solution on a regular basis."
@@ -122,9 +121,8 @@ Feature: "Add solution" visibility options.
     But I should see a logo on the header
     And I should see a banner on the header
     And I should see the heading "Espresso is the solution"
-    When all e-mails have been sent
-    And I am logged in as "Ruth Lee"
-    When I go to the edit form of the "Espresso is the solution" solution
+    When I am logged in as "Ruth Lee"
+    And I go to the edit form of the "Espresso is the solution" solution
     And I press "Publish"
     # The name of the solution should exist in the block of the relative content in a collection.
     Then I should see the heading "Espresso is the solution"

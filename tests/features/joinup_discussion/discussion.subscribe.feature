@@ -55,7 +55,6 @@ Feature: Following discussions
     And I should see the link "Follow"
     And the "Rare butter" discussion should have 0 subscribers
 
-  @email
   Scenario: Receive E-mail notifications when actions are taken in discussions.
     Given users:
       | Username    | E-mail            | First name | Family name | Notification frequency |
@@ -97,7 +96,7 @@ Feature: Following discussions
 
     # No E-mail notification is sent when the discussion is updated but no
     # relevant fields are changed.
-    And the mail collector cache is empty
+    And I mark all emails as read
     And I am logged in as "Dr. Hans Zarkov"
     And I go to the edit form of the "Rare Butter" discussion
     And I press "Update"
@@ -126,24 +125,12 @@ Feature: Following discussions
 
     # If the discussion is moved from 'validated' to any other state, no
     # notification will be sent, regardless if a relevant field is changed.
-    Given the mail collector cache is empty
+    Given I mark all emails as read
     And I am logged in as a moderator
     When I go to the edit form of the "Rare Butter" discussion
     And I fill in "Content" with "Is this change triggering notifications?"
     And I fill in "Motivation" with "Reporting this content..."
     And I press "Report"
-    Then the following email should not have been sent:
-      | recipient_mail | dale@example.com                                                                  |
-      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
-    And the following email should not have been sent:
-      | recipient_mail | flash@example.com                                                                 |
-      | mail_subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | mail_body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
-    And the following email should not have been sent:
-      | recipient_mail | ming@example.com                                                                  |
-      | mail_subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | mail_body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     # The notification that a moderator requests a modification should still be
     # sent to the content author.
     But the following email should have been sent:
@@ -152,7 +139,6 @@ Feature: Following discussions
       | body           | the Moderator, has requested you to modify the discussion - "Rare Butter" |
     And 1 e-mail should have been sent
 
-    Given the mail collector cache is empty
     When I go to the "Rare Butter" discussion
     And I click "Delete" in the "Entity actions" region
     And I press "Delete"

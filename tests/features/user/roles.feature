@@ -1,4 +1,4 @@
-@api @email
+@api
 Feature: User role management
   As a moderator I must be able to assign roles to users.
 
@@ -8,7 +8,6 @@ Feature: User role management
       | Rick Rolls | Moderator | rick.roles@example.com |
       | Nibby Noob |           | nicky.noob@example.com |
       | Ursus      |           |                        |
-    And all e-mails have been sent
 
   Scenario: Verify options available to the moderator.
     Given I am logged in as "Rick Rolls"
@@ -37,7 +36,7 @@ Feature: User role management
       | body      | A moderator has edited your user profile on Joinup. Please check your profile to verify the changes done. |
 
     Given I am on the homepage
-    When all e-mails have been sent
+    When I mark all emails as read
     And I click "People"
 
     When I click "Edit" in the "Ursus" row

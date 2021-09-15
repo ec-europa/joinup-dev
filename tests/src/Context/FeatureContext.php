@@ -83,6 +83,20 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   protected $entities = [];
 
   /**
+   * The mail system storage settings.
+   *
+   * @var \Drupal\Core\Config\StorableConfigBase
+   */
+  protected static $mailConfig;
+
+  /**
+   * Holds the default settings for the mail server so a revert is possible.
+   *
+   * @var array
+   */
+  protected static $savedMailDefaults;
+
+  /**
    * Checks that a 200 OK response occurred.
    *
    * @Then I should get a valid web page
@@ -2179,6 +2193,15 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
         $file_storage->delete($file_storage->loadMultiple($fids));
       }
     }
+  }
+
+  /**
+   * Cleans the mail collector before the scenario starts.
+   *
+   * @BeforeScenario @api
+   */
+  public function cleanUpEmailCollector(): void {
+    \Drupal::state()->delete('system.test_mail_collector');
   }
 
   /**

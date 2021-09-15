@@ -31,7 +31,6 @@ Feature: As a group (collection or solution) owner or site moderator
       | Learn German in 1 Month | shy    | facilitator |
       | Learn German in 1 Month | frozen | owner       |
 
-  @email
   Scenario Outline: Administrators, moderators and owners can transfer the group ownership.
     Given I am logged in as "<user>"
     And I am on the members page of "<title>"

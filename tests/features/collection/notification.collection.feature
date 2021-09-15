@@ -1,4 +1,4 @@
-@api @terms @email @group-a
+@api @terms @group-a
 Feature: Notification test for the collection transitions.
   In order to manage my collections
   As an user that is related to the collection
@@ -63,7 +63,6 @@ Feature: Notification test for the collection transitions.
       | NC to delete by mod    | NC member2     |                    |
 
     # Test 'create' operation.
-    When all e-mails have been sent
     And I am logged in as "NC user"
     When I go to the propose collection form
     When I fill in the following:
@@ -88,7 +87,6 @@ Feature: Notification test for the collection transitions.
     And I delete the "Super Sayan Academy" contact information
 
     # Test 'propose' operation (on an existing collection)
-    When all e-mails have been sent
     And I am logged in as "NC owner"
     And I go to the homepage of the "NC to propose" collection
     And I click "Edit" in the "Entity actions" region
@@ -100,7 +98,6 @@ Feature: Notification test for the collection transitions.
       | If you think this action is not clear or not due, please contact Joinup Support at |
 
     # Test 'request archival' operation.
-    When all e-mails have been sent
     And I go to the homepage of the "NC to request archival" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Request archival"
@@ -111,7 +108,7 @@ Feature: Notification test for the collection transitions.
       | If you think this action is not clear or not due, please contact Joinup Support at |
 
     # Test deletion of a collection by the owner.
-    When all e-mails have been sent
+    When I mark all emails as read
     And I go to the homepage of the "NC to delete" collection
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
@@ -127,7 +124,6 @@ Feature: Notification test for the collection transitions.
       | body      | The collection "NC to delete", of which you are a member, has been deleted. |
 
     # Test 'propose edit' operation.
-    When all e-mails have been sent
     And I am logged in as "NC facilitator"
     And I go to the homepage of the "NC to propose edit" collection
     And I click "Edit" in the "Entity actions" region
@@ -143,7 +139,6 @@ Feature: Notification test for the collection transitions.
       | To modify your collection, please go to                                       |
 
     # Test the 'approve new' operation.
-    When all e-mails have been sent
     And I am logged in as "NC moderator"
     And I go to the homepage of the "NC to validate" collection
     And I click "Edit" in the "Entity actions" region
@@ -154,7 +149,6 @@ Feature: Notification test for the collection transitions.
       | body      | Your proposed collection "NC to validate" has been validated as per your request. |
 
     # Test the 'approve proposed' that was proposed through the 'propose edit' operation.
-    When all e-mails have been sent
     And I go to the homepage of the "NC to propose edit proposed" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
@@ -164,7 +158,6 @@ Feature: Notification test for the collection transitions.
       | You can verify the edited version of the collection at                                |
 
     # Test the 'reject archival' operation.
-    When all e-mails have been sent
     And I go to the homepage of the "NC to reject archival" collection
     And I click "Edit" in the "Entity actions" region
     # @todo: This should change into a separate transition.
@@ -178,7 +171,6 @@ Feature: Notification test for the collection transitions.
       | The reason for rejection is: It will not be archived.                                     |
 
     # Test the 'archive' operation.
-    When all e-mails have been sent
     And I go to the homepage of the "NC to archive" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Archive"
@@ -208,7 +200,7 @@ Feature: Notification test for the collection transitions.
 
     # Test the deletion of a collection by a moderator. This should also inform
     # the collection owner.
-    When all e-mails have been sent
+    When I mark all emails as read
     And I go to the homepage of the "NC to delete by mod" collection
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"

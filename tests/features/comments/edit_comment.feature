@@ -1,4 +1,4 @@
-@api @email @group-a
+@api @group-a
 Feature: Edit a comment
   As a moderator of the site,
   I should receive notifications when someone edits a comment.
@@ -19,7 +19,6 @@ Feature: Edit a comment
       | This comment should be edited | Let's all use it | Sons of anarchy | Paying with cash |
 
     Given I am logged in as "Sons of anarchy"
-    And all e-mails have been sent
     When I go to the "Paying with cash" news
     # Sons' comment is the only comment available.
     And I click "Edit" in comment #1

@@ -4,7 +4,7 @@ Feature: Invite members to subscribe to discussions
   As a discussion author or moderator
   I need to be able to invite users to discussions
 
-  @email @javascript
+  @javascript
   Scenario: Invite members to a discussion
     Given users:
       | Username         | E-mail                           | First name | Family name |
@@ -163,7 +163,7 @@ Feature: Invite members to subscribe to discussions
       | Glory Ruskin         |
 
     # Invite some users.
-    Given the mail collector cache is empty
+    Given I mark all emails as read
     And I press "Invite to discussion"
     Then I should see the success message "2 user(s) have been invited to this discussion."
     And the following email should have been sent:
@@ -177,7 +177,6 @@ Feature: Invite members to subscribe to discussions
     And 2 e-mails should have been sent
 
     # Try if it is possible to resend an invitation.
-    Given the mail collector cache is empty
     When I fill in "E-mail" with "gloruskin.hr@example.com"
     And I hit "enter" in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
@@ -208,7 +207,7 @@ Feature: Invite members to subscribe to discussions
 
     # Try to invite the user again. This should not send an invitation since the
     # user is already subscribed.
-    Given the mail collector cache is empty
+    Given I mark all emails as read
     And I am logged in as "Lynwood Crawford"
     When I go to the "Concerned about dissolved gases?" discussion
     And I click "Invite"

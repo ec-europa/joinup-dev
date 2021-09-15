@@ -1,4 +1,4 @@
-@api @email @group-a
+@api @group-a
 Feature: Pinning content to the front page
   As a moderator of Joinup
   I want to pin content in the website
