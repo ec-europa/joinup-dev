@@ -305,8 +305,8 @@ Feature: Global search
       | Ornithology: the study of birds   |
       | Bird outposts in the wild         |
       | Disturbed birds                   |
-      | Bird spotting                     |
       | Chickens are small birds          |
+      | Bird spotting                     |
       | Best place to find an exotic bird |
       | Bird Birdman                      |
 
