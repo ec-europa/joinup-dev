@@ -5741,10 +5741,10 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/pipeline.git",
-                "reference": "4666ac53cba492a0e52a2a1caa068d5c1626e4dd"
+                "reference": "5595a2832b58c83a06dbad66f7f974411f8d19cd"
             },
             "require": {
-                "drupal/core": "^8 || ^9"
+                "drupal/core": "^8.9 || ^9.1"
             },
             "type": "drupal-module",
             "extra": {
@@ -5752,15 +5752,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2+1-dev",
-                    "datestamp": "1611160131",
+                    "version": "8.x-1.0-alpha2+2-dev",
+                    "datestamp": "1616696484",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Remove deprecated code @see https://www.drupal.org/project/pipeline/issues/3231729": "https://git.drupalcode.org/project/pipeline/-/merge_requests/2.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5792,7 +5789,7 @@
                 "source": "https://git.drupalcode.org/project/pipeline",
                 "issues": "https://www.drupal.org/project/issues/pipeline"
             },
-            "time": "2021-03-25T18:20:55+00:00"
+            "time": "2021-09-14T07:28:36+00:00"
         },
         {
             "name": "drupal/publication_date",
@@ -8258,7 +8255,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-10-31T20:10:45+00:00"
+            "time": "2021-06-30T06:04:10+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",
@@ -10419,7 +10416,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-08-03T19:59:39+00:00"
+            "time": "2020-10-26T14:41:29+00:00"
         },
         {
             "name": "stack/builder",
@@ -14034,7 +14031,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-2.4",
-                    "datestamp": "1629907119",
+                    "datestamp": "1601999178",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
