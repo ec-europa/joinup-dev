@@ -131,18 +131,6 @@ Feature: Following discussions
     And I fill in "Content" with "Is this change triggering notifications?"
     And I fill in "Motivation" with "Reporting this content..."
     And I press "Report"
-    Then the following email should not have been sent:
-      | recipient_mail | dale@example.com                                                                  |
-      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
-    And the following email should not have been sent:
-      | recipient_mail | flash@example.com                                                                 |
-      | mail_subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | mail_body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
-    And the following email should not have been sent:
-      | recipient_mail | ming@example.com                                                                  |
-      | mail_subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | mail_body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     # The notification that a moderator requests a modification should still be
     # sent to the content author.
     But the following email should have been sent:
@@ -151,7 +139,6 @@ Feature: Following discussions
       | body           | the Moderator, has requested you to modify the discussion - "Rare Butter" |
     And 1 e-mail should have been sent
 
-    Given the mail collector cache is empty
     When I go to the "Rare Butter" discussion
     And I click "Delete" in the "Entity actions" region
     And I press "Delete"

@@ -177,7 +177,6 @@ Feature: Invite members to subscribe to discussions
     And 2 e-mails should have been sent
 
     # Try if it is possible to resend an invitation.
-    Given the mail collector cache is empty
     When I fill in "E-mail" with "gloruskin.hr@example.com"
     And I hit "enter" in the keyboard on the field "E-mail"
     And I wait for AJAX to finish

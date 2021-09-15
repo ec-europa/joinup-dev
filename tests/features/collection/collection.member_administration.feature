@@ -387,7 +387,6 @@ Feature: Collection membership administration
       | Christian Dwight   |
       | Jeannette Belanger |
     When I select "Facilitator" from "Role"
-    And the mail collector cache is empty
     And I press "Invite members"
     Then I should see the success message "2 users have been invited to this group."
     And the following email should have been sent:

@@ -31,7 +31,6 @@ Feature: Subscribing to community content in collections
       | Cities of Bulgaria   | bisera | discussion, event, news              |
       | Cities of Bulgaria   | kalin  | discussion, document, news, solution |
     And all message digests have been delivered
-    And the mail collector cache is empty
 
   Scenario: Receive a digest of content that is published in my collections
     Given discussion content:

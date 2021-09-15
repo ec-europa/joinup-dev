@@ -32,7 +32,6 @@ Feature: Subscribing to community content in collections and solutions
       | Bolometric appearance | jpluminet | discussion, document, event, news |
 
     And all message digests have been delivered
-    And the mail collector cache is empty
 
   Scenario: Receive a digest of community content that is published
     Given discussion content:
