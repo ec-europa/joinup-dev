@@ -86,13 +86,14 @@ class StrippedHTMLFormatter extends FormatterBase {
       // Default to the summary if present.
       $output = $item->summary ?? $item->value;
 
-      // Strip out any funny whitespace.
+      // Strip HTML, after applying all embedded media filters.
+      $output = check_markup($output, 'stripped_html');
+
+      // Replace funny whitespace.
       $output = preg_replace('/\n|\r|\t/m', ' ', $output);
       $output = str_replace('&nbsp;', ' ', $output);
       $output = str_replace("\xc2\xa0", ' ', $output);
       $output = trim(preg_replace('/\s\s+/', ' ', $output));
-
-      $output = check_markup($output, 'stripped_html');
 
       // Trim the text if a maximum length has been set.
       if ($this->getSetting('trim_length') !== 0) {
