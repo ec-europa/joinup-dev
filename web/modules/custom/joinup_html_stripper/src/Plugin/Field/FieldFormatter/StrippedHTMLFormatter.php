@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_html_stripper\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
@@ -71,8 +73,8 @@ class StrippedHTMLFormatter extends FormatterBase {
   public function settingsSummary() {
     return [
       $this->t('@length characters', [
-        '@length' => $this->getSetting('trim_length')
-      ])
+        '@length' => $this->getSetting('trim_length'),
+      ]),
     ];
   }
 
