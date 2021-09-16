@@ -45,6 +45,9 @@ commands:
       dir: ${env.DRUPAL_FILE_TEMP_PATH}
     - task: exec
       command: test "$(git tag)" = "" || git describe --tags | tr -d '\n' > ${joinup.dir}/VERSION
+    - task: copy
+      from: ${joinup.site_dir}/modules/contrib/search_api_solr/solr-conf/6.x
+      to: resources/solr/config
 
   # Overrides toolkit:install-clean.
   toolkit:install-clean:
