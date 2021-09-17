@@ -10,6 +10,7 @@ dependencies:
     - facets.facet.type
   module:
     - facets_form
+    - system
   theme:
     - joinup_theme
 id: facetformviewsearchdisplaypage
@@ -28,4 +29,9 @@ settings:
       submit: Search
       reset: 'Clear filters'
   facets: {  }
-visibility: {  }
+visibility:
+  request_path:
+    id: request_path
+    pages: "/search\r\n/search/*"
+    negate: false
+    context_mapping: {  }
