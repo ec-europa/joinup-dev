@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24fa1105013bc1992a55634fec22c194",
+    "content-hash": "5ea70e9ffde8132b4202258349ace72a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3964,6 +3964,9 @@
                     "drupal/facets": {
                         "https://www.drupal.org/project/facets/issues/3223956": "https://git.drupalcode.org/project/facets/-/merge_requests/25.diff"
                     }
+                },
+                "patches_applied": {
+                    "Implement calculate dependencies. @see https://www.drupal.org/project/facets_form/issues/3230468": "https://git.drupalcode.org/project/facets_form/-/merge_requests/15.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
