@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "659bd2b81306c574738e4403613bb2bb",
+    "content-hash": "f132ed888f9409df8c1d95c67066febb",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4567,29 +4567,26 @@
         },
         {
             "name": "drupal/iframe",
-            "version": "2.12.0",
+            "version": "2.11.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/iframe.git",
-                "reference": "8.x-2.12"
+                "reference": "8.x-2.11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/iframe-8.x-2.12.zip",
-                "reference": "8.x-2.12",
-                "shasum": "e4b97db485e6a9c90c528f551d83ab1e9b60ebe8"
+                "url": "https://ftp.drupal.org/files/projects/iframe-8.x-2.11.zip",
+                "reference": "8.x-2.11",
+                "shasum": "9ba01bebbeb7e3ed1d8d4ad3cc5ce1d1bd6831aa"
             },
             "require": {
-                "drupal/core": "^8.8 || ^9"
-            },
-            "require-dev": {
-                "drupal/token": "^1.0"
+                "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.12",
-                    "datestamp": "1630873445",
+                    "version": "8.x-2.11",
+                    "datestamp": "1624093905",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4607,7 +4604,7 @@
                 }
             ],
             "description": "Defines a simple iframe field type.",
-            "homepage": "http://drupal.org/project/iframe",
+            "homepage": "https://www.drupal.org/project/iframe",
             "support": {
                 "source": "https://git.drupalcode.org/project/iframe"
             }
