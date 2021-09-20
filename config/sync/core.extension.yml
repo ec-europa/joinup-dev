@@ -159,6 +159,7 @@ module:
   rdf_taxonomy: 0
   redirect: 0
   redis: 0
+  responsive_image: 0
   rest: 0
   schema_article: 0
   schema_digital_document: 0
