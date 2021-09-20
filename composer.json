@@ -205,7 +205,8 @@
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
             "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
             "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit",
-            "test ! -f ./vendor/bin/run || ./vendor/bin/run toolkit:build-dev"
+            "test ! -f ./vendor/bin/run || ./vendor/bin/run toolkit:build-dev",
+            "rm -rf ./resources/solr/conf && cp -r ./web/modules/contrib/search_api_solr/solr-conf/6.x ./resources/solr/conf"
         ]
     },
     "extra": {
