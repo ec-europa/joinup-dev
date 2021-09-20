@@ -21,4 +21,4 @@ mapping:
   rdf_entity:
     solution:
       field_name: related_solution
-      auto_create: true
+      auto_create: false
