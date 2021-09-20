@@ -2,8 +2,8 @@ uuid: de076304-a461-4460-92a3-5a9122a08d4f
 langcode: en
 status: true
 dependencies: {  }
-name: sm_col_3_9x16
-label: sm-col-3_9x16
+name: sm_col_3_3x4
+label: sm-col-3_3x4
 effects:
   45298c04-f7df-41bf-89c8-8d3a73f40c8f:
     uuid: 45298c04-f7df-41bf-89c8-8d3a73f40c8f
