@@ -18,14 +18,14 @@ dependencies:
     - field.field.node.news.field_state
     - field.field.node.news.field_topic
     - field.field.node.news.og_audience
-    - image.style.horizontal_medium_image
     - node.type.news
+    - responsive_image.styles.promoted_news
   module:
     - field_delimiter
     - field_formatter_range
     - field_group
-    - image
     - layout_builder
+    - responsive_image
     - smart_trim
     - template_suggestion
     - user
@@ -77,12 +77,12 @@ content:
         template_suggestion: ''
     region: content
   field_news_logo:
-    type: image
+    type: responsive_image
     weight: 0
     region: content
     label: hidden
     settings:
-      image_style: horizontal_medium_image
+      responsive_image_style: promoted_news
       image_link: content
     third_party_settings:
       template_suggestion:
