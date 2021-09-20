@@ -729,14 +729,8 @@ function solution_sync_settings(SolutionInterface $entity): void {
     // Allow solution to not depend on meta_entity.
     return;
   }
-  $repository = \Drupal::getContainer()->get('meta_entity.repository');
-  $meta_entity = $repository->getMetaEntityForEntity($entity, 'solution_settings');
-  if (empty($meta_entity)) {
-    $meta_entity = MetaEntity::create([
-      'type' => 'solution_settings',
-      'target' => $entity,
-    ]);
-  }
+
+  $meta_entity = MetaEntity::loadOrCreate('solution_settings', $entity);
 
   // Avoid saving an extra entity without need.
   if ($meta_entity->get('field_ss_related_solutions')->equals($entity->get('field_is_related_solutions'))) {
@@ -758,7 +752,6 @@ function solution_rdf_entity_load($entities) {
     return;
   }
 
-  $storage = \Drupal::entityTypeManager()->getStorage('meta_entity');
   foreach ($entities as $entity) {
     if (!($entity instanceof SolutionInterface)) {
       continue;
@@ -770,22 +763,7 @@ function solution_rdf_entity_load($entities) {
       continue;
     }
 
-    // Load the meta entity manually to avoid cases where both entities have
-    // just been updated, caches are being updated and entity references are
-    // trying to load the entities.
-    $ids = $storage->getQuery()
-      ->condition('type', 'solution_settings')
-      ->condition('target.target_type', $entity->getEntityTypeId())
-      ->condition('target.target_id', $entity->id())
-      ->execute();
-    $id = reset($ids);
-    /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
-    $meta_entity = $id ? $storage->load($id) : NULL;
-
-    if (!$meta_entity) {
-      return;
-    }
-
+    $meta_entity = MetaEntity::loadOrCreate('solution_settings', $entity);
     if ($meta_entity->get('field_ss_related_solutions')->isEmpty()) {
       return;
     }
