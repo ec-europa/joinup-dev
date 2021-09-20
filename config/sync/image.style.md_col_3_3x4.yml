@@ -2,8 +2,8 @@ uuid: 2ab471e3-fa6f-4d15-866c-6229500c3e99
 langcode: en
 status: true
 dependencies: {  }
-name: md_col_3_9x16
-label: md-col-3_9x16
+name: md_col_3_3x4
+label: md-col-3_3x4
 effects:
   48b4ba19-57f9-43c6-b084-461b4e82711c:
     uuid: 48b4ba19-57f9-43c6-b084-461b4e82711c

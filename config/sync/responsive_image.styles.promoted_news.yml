@@ -1,0 +1,31 @@
+uuid: 119a4ff2-fb79-4e54-95d1-7ec72ebd67bc
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.lg_col_2_16x9
+    - image.style.lg_col_2_3x4
+    - image.style.md_col_3_3x4
+    - image.style.sm_col_12_16x9
+  theme:
+    - ventuno
+id: promoted_news
+label: promoted-news
+image_style_mappings:
+  -
+    breakpoint_id: ventuno.large
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: lg_col_2_3x4
+  -
+    breakpoint_id: ventuno.medium
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: md_col_3_3x4
+  -
+    breakpoint_id: ventuno.small
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: sm_col_12_16x9
+breakpoint_group: ventuno
+fallback_image_style: lg_col_2_16x9

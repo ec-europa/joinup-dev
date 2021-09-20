@@ -1,0 +1,30 @@
+uuid: 252d7674-d4f8-4ef7-99bd-8918a308a2d0
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.lg_col_5
+    - image.style.md_col_12
+    - image.style.sm_col_12
+  theme:
+    - ventuno
+id: highlighted_solution
+label: highlighted-solution
+image_style_mappings:
+  -
+    breakpoint_id: ventuno.large
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: lg_col_5
+  -
+    breakpoint_id: ventuno.medium
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: md_col_12
+  -
+    breakpoint_id: ventuno.small
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: sm_col_12
+breakpoint_group: ventuno
+fallback_image_style: lg_col_5

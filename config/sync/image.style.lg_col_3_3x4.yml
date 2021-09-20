@@ -2,8 +2,8 @@ uuid: 79ca95ca-56d6-4594-be50-a792256f6d98
 langcode: en
 status: true
 dependencies: {  }
-name: lg_col_3_9x16
-label: lg-col-3_9x16
+name: lg_col_3_3x4
+label: lg-col-3_3x4
 effects:
   5a558b40-b2a9-4db9-a9f8-e194d37f4456:
     uuid: 5a558b40-b2a9-4db9-a9f8-e194d37f4456
