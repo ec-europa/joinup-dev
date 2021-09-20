@@ -22,6 +22,16 @@
     @include media-breakpoint-up(md) {
       flex-direction: row;
     }
+    .news__logo-wrapper {
+      @include media-breakpoint-up(md) { 
+        width: calc(100% / 3 - 33px);
+      }
+    }
+    .news__field-wrapper {
+      @include media-breakpoint-up(md) { 
+        width: calc(200% / 3 + 33px);
+      }
+    }
     .metadata {
       color: $gray-500;
       @extend .mt-2;
