@@ -1,0 +1,15 @@
+uuid: 8f230a5a-7d2d-44e8-993b-303bba7c035b
+langcode: en
+status: true
+dependencies: {  }
+name: sm_col_5
+label: sm-col-5
+effects:
+  136aefb3-dec9-4f27-9a0b-6e64e847be1c:
+    uuid: 136aefb3-dec9-4f27-9a0b-6e64e847be1c
+    id: image_scale
+    weight: 1
+    data:
+      width: 201
+      height: null
+      upscale: false

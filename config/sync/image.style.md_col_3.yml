@@ -1,0 +1,15 @@
+uuid: 12f7fefc-7ba9-4b77-aa94-068b25995afa
+langcode: en
+status: true
+dependencies: {  }
+name: md_col_3
+label: md-col-3
+effects:
+  a3ef0bb2-1753-4dee-a042-487997c6af58:
+    uuid: a3ef0bb2-1753-4dee-a042-487997c6af58
+    id: image_scale
+    weight: 1
+    data:
+      width: 216
+      height: null
+      upscale: false
