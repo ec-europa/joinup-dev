@@ -771,3 +771,16 @@ function solution_rdf_entity_load($entities) {
     $entity->set('field_is_related_solutions', $meta_entity->get('field_ss_related_solutions')->getValue());
   }
 }
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function solution_module_implements_alter(&$implementations, $hook) {
+  if ($hook === 'rdf_entity_update') {
+    // Make sure the solution update hook runs first so that the entity settings
+    // are synced with its meta_entity.
+    $solution = $implementations['solution'];
+    unset($implementations['solution']);
+    $implementations = ['solution' => $solution] + $implementations;
+  }
+}
