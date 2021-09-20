@@ -1,0 +1,15 @@
+uuid: f8e00e11-36a6-4782-8acf-e84b99e86448
+langcode: en
+status: true
+dependencies: {  }
+name: lg_col_5_16x9
+label: lg-col-5_16x9
+effects:
+  ac0ff68a-01da-46b6-b310-b2d0c4ddf19b:
+    uuid: ac0ff68a-01da-46b6-b310-b2d0c4ddf19b
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 526
+      height: 295
+      anchor: center-center

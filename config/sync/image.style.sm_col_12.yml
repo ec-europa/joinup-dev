@@ -1,0 +1,15 @@
+uuid: e979126a-3f97-48ec-8c1d-73bc869bfb7d
+langcode: en
+status: true
+dependencies: {  }
+name: sm_col_12
+label: sm-col-12
+effects:
+  03f85868-c6ab-459d-84d6-c6f63fa03598:
+    uuid: 03f85868-c6ab-459d-84d6-c6f63fa03598
+    id: image_scale
+    weight: 1
+    data:
+      width: 516
+      height: null
+      upscale: false

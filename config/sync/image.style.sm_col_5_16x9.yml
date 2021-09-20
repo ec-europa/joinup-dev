@@ -1,0 +1,15 @@
+uuid: 30c27673-8bd1-436a-b361-07fd454f8b65
+langcode: en
+status: true
+dependencies: {  }
+name: sm_col_5_16x9
+label: sm-col-5_16x9
+effects:
+  5a5d07f1-1573-4133-ada6-ebd66e5c5007:
+    uuid: 5a5d07f1-1573-4133-ada6-ebd66e5c5007
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 201
+      height: 113
+      anchor: center-center

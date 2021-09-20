@@ -1,0 +1,15 @@
+uuid: 44077666-031b-41bd-afdc-0dd4675f687f
+langcode: en
+status: true
+dependencies: {  }
+name: lg_col_2
+label: lg-col-2
+effects:
+  e0456556-e792-44ac-8102-22881f20e4a4:
+    uuid: e0456556-e792-44ac-8102-22881f20e4a4
+    id: image_scale
+    weight: 1
+    data:
+      width: 196
+      height: null
+      upscale: false

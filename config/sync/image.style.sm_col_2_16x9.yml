@@ -1,0 +1,15 @@
+uuid: 377419cc-7764-4411-abba-944e02159738
+langcode: en
+status: true
+dependencies: {  }
+name: sm_col_2_16x9
+label: sm-col-2_16x9
+effects:
+  71773de2-05ad-4882-92af-1d9858eafca3:
+    uuid: 71773de2-05ad-4882-92af-1d9858eafca3
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 66
+      height: 37
+      anchor: center-center
