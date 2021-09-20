@@ -2,6 +2,7 @@
 .block-entityqueue--highlighted-event {
   position: relative;
   @extend .mb-5;
+  height: 100%;
   > h2 {
     @include font-icon-before("\F133", 1.2rem, $warning);
   }
@@ -15,7 +16,7 @@
     @include font-icon-after("\E801", 1rem);
   }
   article {
-    background: $gray-300 url(../assets/images/highlighted-event.jpg) no-repeat center center;
+    background: $gray-300 url(../images/highlighted-event.jpg) no-repeat center center;
     background-size: cover;
     @extend .rounded-3;
     display: flex;
@@ -51,7 +52,7 @@
       @extend .pt-5;
       a {
         @extend .btn;
-        @extend .btn-primary;
+        @extend .btn-secondary;
       }
     }
   }

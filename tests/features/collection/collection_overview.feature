@@ -3,7 +3,8 @@ Feature: Collections Overview
 
   Scenario: Check visibility of "Collections" menu link.
     Given I am an anonymous user
-    When I am on the homepage
+    # The homepage no longer has a link to the collections overview. Let's try another page.
+    When I am on the search page
     Then I should see the link "Collections"
     When I click "Collections"
     Then I should see the heading "Collections"
@@ -30,16 +31,13 @@ Feature: Collections Overview
       | Organisation example | Non-Profit Organisation |
     # Check that visiting as an anonymous does not create cache for all users.
     When I am an anonymous user
-    And I am on the homepage
-    Then I should see the link "Collections"
-    And I click "Collections"
+    And I visit the collection overview
     And I should see the text "Collections are the main collaborative space"
     And the page should be cacheable
 
     # Check page for authenticated users.
     When I am logged in as "Madam Shirley"
-    And I am on the homepage
-    And I click "Collections"
+    And I visit the collection overview
     Then I should see the following tiles in the correct order:
       # Created in 8:33am.
       | Open Data         |
@@ -49,9 +47,7 @@ Feature: Collections Overview
       | E-health          |
 
     When I am an anonymous user
-    And I am on the homepage
-    Then I should see the link "Collections"
-    When I click "Collections"
+    And I visit the collection overview
     Then I should see the link "E-health"
     And I should not see the text "Supports health-related fields"
     And I should see the link "Open Data"
@@ -84,8 +80,7 @@ Feature: Collections Overview
     Then I visit the "Colonies in space" collection
     Then I should see the text "Colonies in space"
 
-    And I am on the homepage
-    And I click "Collections"
+    When I visit the collection overview
     Then I should see the text "Colonies in space"
     And the page should be cacheable
 
@@ -93,9 +88,7 @@ Feature: Collections Overview
     # It will not be immediately available.
     # Check the new collection as an anonymous user.
     When I am an anonymous user
-    And I am on the homepage
-    Then I should see the link "Collections"
-    When I click "Collections"
+    And I visit the collection overview
     Then I should see the link "Colonies in space"
 
     # Clean up the collection that was created manually.

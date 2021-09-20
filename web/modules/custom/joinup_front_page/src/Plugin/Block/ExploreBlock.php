@@ -92,22 +92,26 @@ class ExploreBlock extends BlockBase implements ContainerFactoryPluginInterface 
   public function build(): array {
     $data = [
       'solutions' => [
-        'name' => $this->t('Solutions'),
-        'data' => $this->getRdfEntity('solution'),
+        'label' => $this->t('Solutions'),
+        'plural_type' => $this->t('solutions'),
+        'data' => $this->getRdfEntities('solution'),
         'url' => '/search?keys=&f[0]=type%3Asolution',
       ],
       'collections' => [
-        'name' => $this->t('Collections'),
-        'data' => $this->getRdfEntity('collection'),
+        'label' => $this->t('Collections'),
+        'plural_type' => $this->t('collections'),
+        'data' => $this->getRdfEntities('collection'),
         'url' => '/search?keys=&f[0]=type%3Acollection',
       ],
       'news' => [
-        'name' => $this->t('News'),
+        'label' => $this->t('News'),
+        'plural_type' => $this->t('news'),
         'data' => $this->getContent('news'),
         'url' => '/search?keys=&f[0]=type%3Anews',
       ],
       'events' => [
-        'name' => $this->t('Events'),
+        'label' => $this->t('Events'),
+        'plural_type' => $this->t('events'),
         'data' => $this->getContent('event'),
         'url' => '/search?keys=&f[0]=type%3Aevent',
       ],
@@ -152,7 +156,7 @@ class ExploreBlock extends BlockBase implements ContainerFactoryPluginInterface 
   }
 
   /**
-   * Get entity data.
+   * Returns the 12 most recent nodes of the given type as render arrays.
    *
    * @param string $type
    *   The type of content.
@@ -163,7 +167,7 @@ class ExploreBlock extends BlockBase implements ContainerFactoryPluginInterface 
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function getContent(string $type): array {
+  protected function getContent(string $type): array {
     $content = [];
     $entity = $this->entityTypeManager->getStorage('node');
     $view_builder = $this->entityTypeManager->getViewBuilder('node');
@@ -184,10 +188,10 @@ class ExploreBlock extends BlockBase implements ContainerFactoryPluginInterface 
   }
 
   /**
-   * Get rdf entity data.
+   * Returns the 12 most recent RDF entities of the given type as render arrays.
    *
    * @param string $type
-   *   The type of content.
+   *   The RDF entity type to return.
    *
    * @return array
    *   List of rdf entity with view mode "explore_item".
@@ -195,7 +199,7 @@ class ExploreBlock extends BlockBase implements ContainerFactoryPluginInterface 
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function getRdfEntity(string $type): array {
+  protected function getRdfEntities(string $type): array {
     $rdf = [];
     $entity = $this->entityTypeManager->getStorage('rdf_entity');
     $view_builder = $this->entityTypeManager->getViewBuilder('rdf_entity');

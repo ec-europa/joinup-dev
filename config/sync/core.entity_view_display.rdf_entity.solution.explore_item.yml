@@ -92,7 +92,7 @@ third_party_settings:
                 label: hidden
                 type: smart_trim
                 settings:
-                  trim_length: 200
+                  trim_length: 230
                   trim_type: chars
                   trim_suffix: …
                   wrap_output: false
@@ -105,7 +105,7 @@ third_party_settings:
                     trim_zero: false
                 third_party_settings:
                   template_suggestion:
-                    template_suggestion: p_wrapper
+                    template_suggestion: ''
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode

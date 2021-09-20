@@ -9,7 +9,11 @@ declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Render\Markup;
+use Drupal\asset_distribution\Entity\AssetDistributionInterface;
+use Drupal\asset_distribution\Exception\MissingDistributionParentException;
 use Drupal\joinup_community_content\Entity\CommunityContentInterface;
+use Drupal\joinup_group\Entity\GroupContentInterface;
+use Drupal\joinup_group\Exception\MissingGroupException;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\rdf_entity\RdfInterface;
@@ -116,6 +120,25 @@ function joinup_notification_rdf_entity_update(EntityInterface $entity) {
  * Implements hook_ENTITY_TYPE_delete().
  */
 function joinup_notification_rdf_entity_predelete(EntityInterface $entity) {
+  // Avoid sending notifications e.g. when orphaned entities are deleted.
+  if ($entity instanceof AssetDistributionInterface) {
+    try {
+      $entity->getParent();
+    }
+    catch (MissingDistributionParentException $e) {
+      return;
+    }
+  }
+
+  if ($entity instanceof GroupContentInterface) {
+    try {
+      $entity->getGroup();
+    }
+    catch (MissingGroupException $e) {
+      return;
+    }
+  }
+
   joinup_notification_dispatch_notification('delete', NotificationEvents::RDF_ENTITY_CRUD, $entity);
 }
 

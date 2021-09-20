@@ -100,20 +100,9 @@ third_party_settings:
               label_display: '0'
               formatter:
                 label: hidden
-                type: smart_trim
+                type: joinup_html_stripper_stripped
                 settings:
-                  trim_length: 200
-                  trim_type: chars
-                  trim_suffix: …
-                  wrap_output: false
-                  wrap_class: trimmed
-                  more_link: false
-                  more_text: More
-                  more_class: more-link
-                  summary_handler: trim
-                  trim_options:
-                    text: true
-                    trim_zero: false
+                  trim_length: 230
                 third_party_settings:
                   template_suggestion:
                     template_suggestion: ''
