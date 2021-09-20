@@ -19,10 +19,10 @@
   {{ title_suffix }}
   {% block content %}
     <div class="row">
-      <div class="col-md-3 mb-3">
+      <div class="news__logo-wrapper mb-3">
         {{ logo }}
       </div>
-      <div class="col-md-9">
+      <div class="news__field-wrapper">
         {{ content.field_topic }}
         <h2{{ title_attributes }}>
           <a href="{{ url }}" rel="bookmark">{{ label }}</a>
