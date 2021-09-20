@@ -1,0 +1,15 @@
+ventuno.small:
+  label: Small
+  mediaQuery: '(max-width: 767px)'
+  weight: 0
+    - 1x
+ventuno.medium:
+  label: Medium
+  mediaQuery: '(min-width: 768px) and (max-width: 1199px)'
+  weight: 1
+    - 1x
+ventuno.large:
+  label: Large
+  mediaQuery: '(min-width: 1200px)'
+  weight: 2
+    - 1x
