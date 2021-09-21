@@ -107,6 +107,15 @@ function ventuno_preprocess_page(&$variables) {
     'link' => Url::fromRoute('cas.login'),
   ];
   $variables['anonymous_links'] = $anonymous_links;
+
+  // Generate a link button that opens the "Get started" popup.
+  $anonymous_links[] = [
+    'label' => t('Get started'),
+    'link' => '#',
+    'extra_attributes' => ['class' => ['btn', 'btn-light']],
+  ];
+
+  $variables['anonymous_links'] = $anonymous_links;
 }
 
 /**

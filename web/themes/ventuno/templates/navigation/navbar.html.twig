@@ -49,7 +49,7 @@
       format: [{
         link: '',
         label: '',
-        extra_classes: '',
+        extra_attributes: [] (example: ['class' => ['btn', 'btn-primary]])
         separator: , (boolean)
       }]
     }]
@@ -124,7 +124,9 @@
           {% if _breakpoint %}
             {% for link in button.links %}
               <li class="nav-item d-none d-{{ _breakpoint }}-inline-flex">
-                <a class="nav-link" href="{{ link.link }}" {{ anchor.extra_attributes }}>{{ link.label }}</a>
+                {% set link_attributes = create_attribute(link.extra_attributes|default([])) %}
+                {% set link_attributes = link_attributes.addClass('nav-link') %}
+                <a {{ link_attributes|without('href') }} href="{{ link.link }}">{{ link.label }}</a>
               </li>
             {% endfor %}
           {% endif %}
