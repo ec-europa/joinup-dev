@@ -16,28 +16,34 @@
  *   - is_collapsed: TRUE if the link has children within the current menu tree
  *     that are not currently visible.
  *   - in_active_trail: TRUE if the link is in the active trail.
+ *
+ * @ingroup themeable
  */
 #}
-
 {% import _self as menus %}
+
 {#
-  We call a macro which calls itself to render the full tree.
-  @see http://twig.sensiolabs.org/doc/tags/macro.html
+We call a macro which calls itself to render the full tree.
+@see https://twig.symfony.com/doc/1.x/tags/macro.html
 #}
 {{ menus.menu_links(items, attributes, 0) }}
+
 {% macro menu_links(items, attributes, menu_level) %}
+  {% import _self as menus %}
   {% if items %}
-    <div class="support-menu">
-      <div id="support-menu__button" {{ attributes.addClass(['button']) }}>
-        <button aria-pressed="false" type="button" title="User support">Support</button>
-      </div>
-      <ul class="dropdown" for="support-menu__button">
-        {% for item in items %}
-          <li{{ item.attributes }}>
-            {{ link(item.title, item.url, { 'class':['link'] } ) }}
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
+    {% if menu_level == 0 %}
+      <ul{{ attributes.addClass('list-unstyled') }}>
+    {% else %}
+      <ul>
     {% endif %}
+      {% for item in items %}
+        <li{{ item.attributes }}>
+          {{ link(item.title, item.url) }}
+          {% if item.below %}
+            {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
 {% endmacro %}
