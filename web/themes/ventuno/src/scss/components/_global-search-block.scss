@@ -1,5 +1,6 @@
 .block-joinup-search-global-search {
-  @extend .py-5;
+  @extend .pt-5;
+  @extend .pb-2;
   @extend .me-3;
   @extend .col-lg;
   .search-bar {
@@ -10,7 +11,7 @@
       border-bottom-left-radius: $border-radius;
     }
     .btn-search {
-      @include font-icon-before("\E805", 1.2rem, inherit, inherit, 0 12px 0 0);
+      @include font-icon-before("\E805", 1.2rem, inherit, inherit, 0);
     }
   }
 }
