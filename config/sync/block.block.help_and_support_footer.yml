@@ -1,0 +1,25 @@
+uuid: d6b3e8ba-af9b-417a-a18e-861ab66e1292
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.support
+  module:
+    - system
+  theme:
+    - ventuno
+id: help_and_support_footer
+theme: ventuno
+region: footer
+weight: 0
+provider: null
+plugin: 'system_menu_block:support'
+settings:
+  id: 'system_menu_block:support'
+  label: 'Help and support'
+  provider: system
+  label_display: visible
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }

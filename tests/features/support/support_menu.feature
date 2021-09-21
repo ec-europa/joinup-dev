@@ -40,7 +40,25 @@ Feature:
 
     Given I am <role>
 
-    When I go to "/collections"
+    When I am on the homepage
+    Then I should not see the link "Guided tour" in the "Footer"
+    And I should see the link "Contact support"
+    Then I click "Contact support"
+    And I fill in the following:
+      | First name     | Rufus                       |
+      | Last name      | Modric                      |
+      | Organisation   | The Deaf-Mute Society       |
+      | E-mail address | oswine@example.ca           |
+      | Category       | other                       |
+      | Subject        | Mobile reader accessibility |
+      | Message        | Dear sir, madam, ...        |
+    # We need to wait 5 seconds for the spam protection time limit to pass.
+    And I wait for the spam protection time limit to pass
+    And I press "Submit"
+    Then I should be on the homepage
+
+    When I visit the collection overview page
+    # Todo this will be renamed to "Guided tour" in the new theme.
     Then I should not see the link "Take a tour"
     But I should see the link "Contact support"
     Then I click "Contact support"
@@ -57,7 +75,8 @@ Feature:
     And I press "Submit"
     Then I should be on "collections"
 
-    When I go to "/keep-up-to-date"
+    When I visit the content overview page
+    # Todo this will be renamed to "Guided tour" in the new theme.
     Then I should see the link "Take a tour"
     And I should see the link "Contact support"
     Then I click "Contact support"
@@ -75,10 +94,12 @@ Feature:
     Then I should be on "keep-up-to-date"
 
     When I go to the homepage of the "Hotel California" collection
+    # Todo this will be renamed to "Guided tour" in the new theme.
     Then I should see the link "Take a tour"
     And I should see the link "Contact support"
 
     When I go to "/user"
+    # Todo this will be renamed to "Guided tour" in the new theme.
     Then I should <expectation> the link "Take a tour"
     And I should see the link "Contact support"
 
@@ -91,6 +112,7 @@ Feature:
 
     Given I am logged in as a moderator
     When I go to "/admin/structure/menu/manage/support"
+    # Todo this will be renamed to "Guided tour" in the new theme.
     And I uncheck the "Take a tour" row
     And I press "Save"
 
@@ -117,6 +139,7 @@ Feature:
     Then I should see the link "Contact support"
     And I should see "Arbitrary support menu link"
     # Tour has been disabled.
+    # Todo this will be renamed to "Guided tour" in the new theme.
     But I should not see the link "Take a tour"
 
     # Restore the tour menu link.
