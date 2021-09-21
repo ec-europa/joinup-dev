@@ -24,6 +24,9 @@
     }
     .news__logo-wrapper {
       @include media-breakpoint-up(md) { 
+        width: calc(100% / 4 - 33px);
+      }
+      @include media-breakpoint-up(lg) { 
         width: calc(100% / 3 - 33px);
       }
     }
