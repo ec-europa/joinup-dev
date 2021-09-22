@@ -287,12 +287,12 @@ class JoinupSearchContext extends RawDrupalContext {
    * @When I select :option from the :facet select facet form
    */
   public function iSelectAnOptionFromFacetForm(string $select, string $facet): void {
-    $facet = $this->findFacetFormByAlias($facet, NULL, 'select');
+    $facet = $this->findFacetByAlias($facet, NULL, 'select', TRUE);
     $facet->selectOption($select);
   }
 
   /**
-   * Clicks in other facet item in an inline facet form.
+   * Clicks in more facet items in an inline facet form.
    *
    * @param string $select
    *   The option to select.
@@ -302,10 +302,10 @@ class JoinupSearchContext extends RawDrupalContext {
    * @throws \Exception
    *   Thrown when the facet or the link inside the facet is not found.
    *
-   * @When I select other :option from the :facet select facet form
+   * @When I select :option option in the :facet select facet form
    */
   public function iSelectOtherOptionFromFacetForm(string $select, string $facet): void {
-    $facet = $this->findFacetFormByAlias($facet, NULL, 'select');
+    $facet = $this->findFacetByAlias($facet, NULL, 'select', TRUE);
     $facet->selectOption($select, TRUE);
   }
 
@@ -353,14 +353,15 @@ class JoinupSearchContext extends RawDrupalContext {
    * @param string $option
    *   Text value of the option to find.
    * @param string $select
-   *   CSS selector of the select field.
+   *   Title of the select field.
    *
    * @throws \Exception
+   *    Throws an exception when the select is not found in page.
    *
    * @Then the option with text :option from select facet form :select is selected
    */
   public function assertSelectFacetFormOptionSelected(string $option, string $select): void {
-    $element = $this->findFacetFormByAlias($select, NULL, 'select');
+    $element = $this->findFacetByAlias($select, NULL, 'select', TRUE);
     if (!$element) {
       throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
     }
@@ -375,7 +376,7 @@ class JoinupSearchContext extends RawDrupalContext {
         $text = preg_replace('/^\(-\) /', '', $text);
         // Ignore duplicate whitespace.
         $option = preg_replace('/\s{2,}/', ' ', $option);
-        Assert::assertEquals($option, $text, sprintf('The option "%s" is selected in the "%s" facet, but the option "%s" was expected.', $text, $select, $option));
+        Assert::assertSame($option, $text, sprintf('The option "%s" is selected in the "%s" facet, but the option "%s" was expected.', $text, $select, $option));
       }
     }
   }
@@ -431,7 +432,7 @@ class JoinupSearchContext extends RawDrupalContext {
    * @Then the :select select facet form should contain the following options:
    */
   public function assertSelectFacetFormOptionsAsList($select, TableNode $table) {
-    $element = $this->findFacetFormByAlias($select, NULL, 'select');
+    $element = $this->findFacetByAlias($select, NULL, 'select', TRUE);
     $this->assertSelectAvailableOptions($element, $table);
   }
 
@@ -476,7 +477,7 @@ class JoinupSearchContext extends RawDrupalContext {
    * @Given I check the :option checkbox from the :facet_type facet form
    */
   public function checkCheckboxFacetForm(string $option, string $facet_type): void {
-    $facet = $this->findFacetFormByAlias($facet_type);
+    $facet = $this->findFacetByAlias($facet_type, NULL, '*', TRUE);
     /** @var \Behat\Mink\Element\NodeElement[] $node_elements */
     $node_elements = $facet->findAll('xpath', '//option');
     foreach ($node_elements as $node_element) {
@@ -490,7 +491,7 @@ class JoinupSearchContext extends RawDrupalContext {
   }
 
   /**
-   * Facets form inputs.
+   * Facets form action buttons.
    *
    * @param string $name
    *   The label of the input.

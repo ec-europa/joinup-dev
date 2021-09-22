@@ -329,6 +329,8 @@ trait TraversingTrait {
    *   This can be useful in cases where the data drupal facet id is placed in
    *   more than one html tag e.g. the dropdown has the id placed in both the
    *   <li> tag of links as well as the <select> element.
+   * @param bool $facet_form
+   *   (optional) Check if is a facet form element.
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The facet node element.
@@ -336,49 +338,20 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when the facet is not found in the designated area.
    */
-  protected function findFacetByAlias(string $alias, ?NodeElement $region = NULL, string $html_tag = '*'): NodeElement {
+  protected function findFacetByAlias(string $alias, ?NodeElement $region = NULL, string $html_tag = '*', bool $facet_form = FALSE): NodeElement {
     if ($region === NULL) {
       $region = $this->getSession()->getPage();
     }
     $facet_id = self::getFacetIdFromAlias($alias);
-    $element = $region->find('xpath', "//{$html_tag}[@data-drupal-facet-id='{$facet_id}']");
+    if ($facet_form) {
+      $element = $region->find('xpath', "//{$html_tag}[@data-drupal-selector='{$facet_id}']");
+    }
+    else {
+      $element = $region->find('xpath', "//{$html_tag}[@data-drupal-facet-id='{$facet_id}']");
+    }
 
     if (!$element) {
       throw new \Exception("The facet '$alias' was not found in the page.");
-    }
-
-    return $element;
-  }
-
-  /**
-   * Finds a facet form by alias.
-   *
-   * @param string $alias
-   *   The facet form alias.
-   * @param \Behat\Mink\Element\NodeElement|null $region
-   *   (optional) Limit the search to a specific region. If empty, the whole
-   *   page will be used. Defaults to NULL.
-   * @param string $html_tag
-   *   (optional) Limit to a specific html tag when searching for an element.
-   *   This can be useful in cases where the data drupal facet id is placed in
-   *   more than one html tag e.g. the dropdown has the id placed in both the
-   *   <li> tag of links as well as the <select> element.
-   *
-   * @return \Behat\Mink\Element\NodeElement
-   *   The facet node element.
-   *
-   * @throws \Exception
-   *   Thrown when the facet form is not found in the designated area.
-   */
-  protected function findFacetFormByAlias(string $alias, ?NodeElement $region = NULL, string $html_tag = '*'): NodeElement {
-    if ($region === NULL) {
-      $region = $this->getSession()->getPage();
-    }
-    $facet_id = self::getFacetFormIdFromAlias($alias);
-    $element = $region->find('xpath', "//{$html_tag}[@data-drupal-selector='{$facet_id}']");
-
-    if (!$element) {
-      throw new \Exception("The facet form '$alias' was not found in the page.");
     }
 
     return $element;
@@ -402,18 +375,18 @@ trait TraversingTrait {
     $mappings = [
       'collection type' => 'collection_type',
       'collection topic' => 'collection_topic',
-      'collection/solution' => 'group',
-      'topic' => 'topic',
+      'collection/solution' => 'edit-group',
+      'topic' => 'edit-topic',
       'solution topic' => 'solution_topic',
       'solution spatial coverage' => 'solution_spatial_coverage',
-      'spatial coverage' => 'spatial_coverage',
+      'spatial coverage' => 'edit-spatial-coverage',
       'My solutions content' => 'solution_my_content',
       'My collections content' => 'collection_my_content',
       'My content' => 'content_my_content',
       'Event date' => 'event_date',
       'EIF recommendations' => 'category',
       'Collection event date' => 'collection_event_type',
-      'Content types' => 'type',
+      'Content types' => 'edit-type',
       'eif principle' => 'principle',
       'eif interoperability layer' => 'interoperability_layer',
       'eif conceptual model' => 'conceptual_model',
@@ -421,35 +394,6 @@ trait TraversingTrait {
 
     if (!isset($mappings[$alias])) {
       throw new \Exception("No facet id mapping found for '$alias'.");
-    }
-
-    return $mappings[$alias];
-  }
-
-  /**
-   * Maps an alias to an actual facet form id.
-   *
-   * The facet id is used as "data-drupal-selector" property.
-   *
-   * @param string $alias
-   *   The facet form alias.
-   *
-   * @return string
-   *   The facet form id.
-   *
-   * @throws \Exception
-   *   Thrown when the mapping is not found.
-   */
-  protected static function getFacetFormIdFromAlias(string $alias): string {
-    $mappings = [
-      'collection/solution' => 'edit-group',
-      'topic' => 'edit-topic',
-      'spatial coverage' => 'edit-spatial-coverage',
-      'Content types' => 'edit-type',
-    ];
-
-    if (!isset($mappings[$alias])) {
-      throw new \Exception("No facet form id mapping found for '$alias'.");
     }
 
     return $mappings[$alias];

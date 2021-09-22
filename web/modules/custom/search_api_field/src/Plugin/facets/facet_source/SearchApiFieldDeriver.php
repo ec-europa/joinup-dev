@@ -61,7 +61,6 @@ class SearchApiFieldDeriver extends FacetSourceDeriverBase {
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
-    $plugin_derivatives = [];
     $base_plugin_id = $base_plugin_definition['id'];
 
     if (!isset($this->derivatives[$base_plugin_id])) {
@@ -74,6 +73,7 @@ class SearchApiFieldDeriver extends FacetSourceDeriverBase {
         }
       }
 
+      $plugin_derivatives = [];
       $fs = FieldStorageConfig::loadMultiple($ids);
       /** @var \Drupal\field\Entity\FieldStorageConfig $field_config */
       foreach ($fs as $id => $field_config) {
