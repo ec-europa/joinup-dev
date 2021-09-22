@@ -4,8 +4,6 @@
   @extend .me-3;
   @extend .col-lg;
   .search-bar {
-    max-width: 40rem;
-    margin: 0 auto;
     .search-bar__input {
       border-style: none;
       border-top-left-radius: $border-radius;
