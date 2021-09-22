@@ -19,15 +19,17 @@ Feature: Site menus
       | title          | description              | access url | parent              |
       | First movement | First alphorn moveement. | text.pdf   | Alphorn sheet music |
     And news content:
-      | title                                | body                            | collection         | solution   | state     |
-      | Purple firecraker powder price raise | Summer festivals are the cause. | Hungry Firecracker |            | validated |
-      | Alphorn first movement released      | Check the sheet music.          |                    | Rich Sound | validated |
+      | title                                 | body                            | collection         | solution   | state     |
+      | Purple firecracker powder price raise | Summer festivals are the cause. | Hungry Firecracker |            | validated |
+      | Alphorn first movement released       | Check the sheet music.          |                    | Rich Sound | validated |
     And custom_page content:
       | title            | body                  | collection         | state     |
       | Firecrakers list | Check the list first. | Hungry Firecracker | validated |
 
     When I am on the homepage
-    And I click "Contact Joinup Support" in the Footer region
+    # Todo: This should become "Contact Joinup Support" in the new theme.
+    # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6694
+    And I click "Contact support" in the Footer region
     Then no menu items should be active in the "Header menu" menu
 
     # Collections menu item should be active when visiting a collection homepage.
@@ -40,7 +42,7 @@ Feature: Site menus
     Then "Collections" should be the active item in the "Header menu" menu
     # Go back to the homepage of the collection to check another content.
     When I click "Hungry Firecracker" in the "Header" region
-    And I click "Purple firecraker powder price raise"
+    And I click "Purple firecracker powder price raise"
     Then "Collections" should be the active item in the "Header menu" menu
 
     # Go back again to the collection homepage and click the solution tile.
@@ -60,7 +62,7 @@ Feature: Site menus
   Scenario: Tooltip text should be set for important menu items.
     Given collection:
       | title | Some collection |
-      | state | validated |
+      | state | validated       |
 
     When I go to "/collections"
     Then I see the "a" element with the "title" attribute set to "Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community." in the "Header menu" region
