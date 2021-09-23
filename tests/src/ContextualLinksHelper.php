@@ -170,7 +170,7 @@ class ContextualLinksHelper {
     $this->openContextualLinksMenu($element);
 
     $link_list = $element->find('css', '.contextual ul.contextual-links');
-    return $link_list->findAll('xpath', '//a');
+    return $link_list->findAll('css', 'a');;
   }
 
   /**
@@ -256,7 +256,6 @@ class ContextualLinksHelper {
     if ($this->browserSupportsJavaScript()) {
       $this->openContextualLinksMenu($element);
       $link_element = $this->findContextualLinkElement($element, $link_title);
-      $link_element->focus();
       $link_element->click();
     }
     else {
