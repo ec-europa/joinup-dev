@@ -1,0 +1,15 @@
+uuid: 9b88cebd-2c9f-4d8b-87ad-59ee160fd0d3
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_xxl_1_5x
+label: 'Spotlight humongous 1.5x'
+effects:
+  a2c7f3d2-1ae5-4529-a82a-c6569abe3260:
+    uuid: a2c7f3d2-1ae5-4529-a82a-c6569abe3260
+    id: image_scale
+    weight: 1
+    data:
+      width: 226
+      height: null
+      upscale: true

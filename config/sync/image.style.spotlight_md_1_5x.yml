@@ -1,0 +1,15 @@
+uuid: 65ec09d8-6a10-4880-a36d-3a80371f6248
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_md_1_5x
+label: 'Spotlight medium 1.5x'
+effects:
+  b67337bb-047b-4ab5-9950-1af94daa9669:
+    uuid: b67337bb-047b-4ab5-9950-1af94daa9669
+    id: image_scale
+    weight: 1
+    data:
+      width: 171
+      height: null
+      upscale: true

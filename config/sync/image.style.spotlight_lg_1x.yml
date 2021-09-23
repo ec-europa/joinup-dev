@@ -1,0 +1,15 @@
+uuid: c548d225-2919-46c5-848f-8ce7b5e71823
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_lg_1x
+label: 'Spotlight large 1x'
+effects:
+  bea6bb09-711d-4d4d-84aa-907a0b1388c3:
+    uuid: bea6bb09-711d-4d4d-84aa-907a0b1388c3
+    id: image_scale
+    weight: 1
+    data:
+      width: 91
+      height: null
+      upscale: true

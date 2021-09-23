@@ -269,4 +269,7 @@ settings:
   entity_subqueue:
     handler: 'default:entity_subqueue'
     handler_settings: {  }
+  responsive_image_style:
+    handler: 'default:responsive_image_style'
+    handler_settings: {  }
 field_type: dynamic_entity_reference

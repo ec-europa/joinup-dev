@@ -26,13 +26,13 @@ dependencies:
     - field.field.node.event.field_state
     - field.field.node.event.field_topic
     - field.field.node.event.og_audience
-    - image.style.horizontal_medium_image
     - node.type.event
+    - responsive_image.styles.spotlight
   module:
     - field_delimiter
     - field_formatter_range
-    - image
     - layout_builder
+    - responsive_image
     - smart_trim
     - template_suggestion
     - user
@@ -70,12 +70,12 @@ content:
     weight: 0
     label: hidden
     settings:
-      image_style: horizontal_medium_image
+      responsive_image_style: spotlight
       image_link: content
     third_party_settings:
       template_suggestion:
         template_suggestion: ''
-    type: image
+    type: responsive_image
     region: content
   field_topic:
     type: entity_reference_label

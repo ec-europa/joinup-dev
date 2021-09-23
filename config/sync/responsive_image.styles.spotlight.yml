@@ -1,0 +1,101 @@
+uuid: a578a412-a9f4-4583-a285-c7abdd7b324a
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.spotlight_lg_1_5x
+    - image.style.spotlight_lg_1x
+    - image.style.spotlight_lg_2x
+    - image.style.spotlight_md_1_5x
+    - image.style.spotlight_md_1x
+    - image.style.spotlight_md_2x
+    - image.style.spotlight_sm_1_5x
+    - image.style.spotlight_sm_1x
+    - image.style.spotlight_sm_2x
+    - image.style.spotlight_xl_1_5x
+    - image.style.spotlight_xl_2x
+    - image.style.spotlight_xxl_1_5x
+    - image.style.spotlight_xxl_1x
+    - image.style.spotlight_xxl_2x
+  theme:
+    - ventuno
+id: spotlight
+label: Spotlight
+image_style_mappings:
+  -
+    breakpoint_id: ventuno.xxl
+    multiplier: 1.5x
+    image_mapping_type: image_style
+    image_mapping: spotlight_xxl_1_5x
+  -
+    breakpoint_id: ventuno.xxl
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: spotlight_xxl_1x
+  -
+    breakpoint_id: ventuno.xxl
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: spotlight_xxl_2x
+  -
+    breakpoint_id: ventuno.xl
+    multiplier: 1.5x
+    image_mapping_type: image_style
+    image_mapping: spotlight_xl_1_5x
+  -
+    breakpoint_id: ventuno.xl
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: spotlight_lg_1x
+  -
+    breakpoint_id: ventuno.xl
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: spotlight_xl_2x
+  -
+    breakpoint_id: ventuno.lg
+    multiplier: 1.5x
+    image_mapping_type: image_style
+    image_mapping: spotlight_lg_1_5x
+  -
+    breakpoint_id: ventuno.lg
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: spotlight_lg_1x
+  -
+    breakpoint_id: ventuno.lg
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: spotlight_lg_2x
+  -
+    breakpoint_id: ventuno.md
+    multiplier: 1.5x
+    image_mapping_type: image_style
+    image_mapping: spotlight_md_1_5x
+  -
+    breakpoint_id: ventuno.md
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: spotlight_md_1x
+  -
+    breakpoint_id: ventuno.md
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: spotlight_md_2x
+  -
+    breakpoint_id: ventuno.sm
+    multiplier: 1.5x
+    image_mapping_type: image_style
+    image_mapping: spotlight_sm_1_5x
+  -
+    breakpoint_id: ventuno.sm
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: spotlight_sm_1x
+  -
+    breakpoint_id: ventuno.sm
+    multiplier: 2x
+    image_mapping_type: image_style
+    image_mapping: spotlight_sm_2x
+breakpoint_group: ventuno
+fallback_image_style: spotlight_sm_1x

@@ -1,0 +1,15 @@
+uuid: 390f527c-0740-4197-9ff4-db6367a1adcb
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_sm_2x
+label: 'Spotlight small 2x'
+effects:
+  8b43b784-730d-45c1-97ed-54bd4c736751:
+    uuid: 8b43b784-730d-45c1-97ed-54bd4c736751
+    id: image_scale
+    weight: 1
+    data:
+      width: 1035
+      height: null
+      upscale: true

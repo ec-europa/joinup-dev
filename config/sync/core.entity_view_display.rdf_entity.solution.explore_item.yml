@@ -96,9 +96,6 @@ third_party_settings:
                 third_party_settings:
                   template_suggestion:
                     template_suggestion: ''
-                third_party_settings:
-                  template_suggestion:
-                    template_suggestion: ''
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode

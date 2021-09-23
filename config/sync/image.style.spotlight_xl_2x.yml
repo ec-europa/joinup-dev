@@ -1,0 +1,15 @@
+uuid: cdaf6673-39e4-4e13-9261-a3dec0dc23b3
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_xl_2x
+label: 'Spotlight extra large 2x'
+effects:
+  f961a51d-9628-4b28-82cd-0b555744a310:
+    uuid: f961a51d-9628-4b28-82cd-0b555744a310
+    id: image_scale
+    weight: 1
+    data:
+      width: 242
+      height: null
+      upscale: true

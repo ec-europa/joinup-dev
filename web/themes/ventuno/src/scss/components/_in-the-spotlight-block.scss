@@ -18,20 +18,20 @@
   counter-reset: spotlight-counter;
   .views-row {
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
     @include media-breakpoint-up(md) {
       flex-direction: row;
     }
     .news__logo-wrapper {
-      @include media-breakpoint-up(md) { 
+      @include media-breakpoint-up(md) {
         width: calc(100% / 4 - 33px);
       }
-      @include media-breakpoint-up(lg) { 
+      @include media-breakpoint-up(lg) {
         width: calc(100% / 3 - 33px);
       }
     }
     .news__field-wrapper {
-      @include media-breakpoint-up(md) { 
+      @include media-breakpoint-up(md) {
         width: calc(200% / 3 + 33px);
       }
     }

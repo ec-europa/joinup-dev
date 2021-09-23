@@ -1,0 +1,15 @@
+uuid: 9822022e-2737-4488-9775-f6305f5bce63
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_md_2x
+label: 'Spotlight medium 2x'
+effects:
+  4c96bd95-6ca5-4fe8-8cc6-8e88e9b248c0:
+    uuid: 4c96bd95-6ca5-4fe8-8cc6-8e88e9b248c0
+    id: image_scale
+    weight: 1
+    data:
+      width: 229
+      height: null
+      upscale: true
