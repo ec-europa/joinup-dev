@@ -170,7 +170,7 @@ class ContextualLinksHelper {
     $this->openContextualLinksMenu($element);
 
     $link_list = $element->find('css', '.contextual ul.contextual-links');
-    return $link_list->findAll('css', 'a');;
+    return $link_list->findAll('css', 'a');
   }
 
   /**
