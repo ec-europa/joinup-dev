@@ -19,14 +19,14 @@ dependencies:
     - field.field.node.document.field_topic
     - field.field.node.document.field_type
     - field.field.node.document.og_audience
-    - image.style.horizontal_medium_image
     - node.type.document
+    - responsive_image.styles.spotlight
   module:
     - field_delimiter
     - field_formatter_range
     - field_group
-    - image
     - layout_builder
+    - responsive_image
     - smart_trim
     - template_suggestion
     - user
@@ -99,12 +99,12 @@ content:
         template_suggestion: ''
     region: content
   field_document_logo:
-    type: image
+    type: responsive_image
     weight: 0
     region: content
     label: hidden
     settings:
-      image_style: horizontal_medium_image
+      responsive_image_style: spotlight
       image_link: content
     third_party_settings:
       template_suggestion:

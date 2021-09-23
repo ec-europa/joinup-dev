@@ -1,15 +1,48 @@
-ventuno.small:
-  label: Small
-  mediaQuery: '(max-width: 767px)'
+ventuno.xs:
+  label: Extra small < 576px
+  mediaQuery: '(max-width: 575px)'
   weight: 0
+  multipliers:
     - 1x
-ventuno.medium:
-  label: Medium
-  mediaQuery: '(min-width: 768px) and (max-width: 1199px)'
+    - 1.5x
+    - 2x
+ventuno.sm:
+  label: Small > 576px
+  mediaQuery: '(min-width: 576px)'
   weight: 1
+  multipliers:
     - 1x
-ventuno.large:
-  label: Large
-  mediaQuery: '(min-width: 1200px)'
+    - 1.5x
+    - 2x
+ventuno.md:
+  label: Medium > 768px
+  mediaQuery: '(min-width: 768px)'
   weight: 2
+  multipliers:
     - 1x
+    - 1.5x
+    - 2x
+ventuno.lg:
+  label: Large > 992px
+  mediaQuery: '(min-width: 992px)'
+  weight: 3
+  multipliers:
+    - 1x
+    - 1.5x
+    - 2x
+ventuno.xl:
+  label: Extra large > 1200px
+  mediaQuery: '(min-width: 1200px)'
+  weight: 4
+  multipliers:
+    - 1x
+    - 1.5x
+    - 2x
+ventuno.xxl:
+  label: Humongous >= 1400px
+  mediaQuery: '(min-width: 1400px)'
+  weight: 5
+  multipliers:
+    - 1x
+    - 1.5x
+    - 2x

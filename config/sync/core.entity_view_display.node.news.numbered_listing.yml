@@ -19,7 +19,7 @@ dependencies:
     - field.field.node.news.field_topic
     - field.field.node.news.og_audience
     - node.type.news
-    - responsive_image.styles.promoted_news
+    - responsive_image.styles.spotlight
   module:
     - field_delimiter
     - field_formatter_range
@@ -82,7 +82,7 @@ content:
     region: content
     label: hidden
     settings:
-      responsive_image_style: promoted_news
+      responsive_image_style: spotlight
       image_link: content
     third_party_settings:
       template_suggestion:
