@@ -48,30 +48,27 @@
   }
   .accordion-collapse {
     position: absolute;
+    right: $spacer*.75;
     z-index: 1;
+    width: 240px;
     background: $primary;
     box-shadow: $box-shadow;
     margin-top: 1px;
-    @include media-breakpoint-between(xs, md) {
-      padding: $spacer*.875 $spacer; // 14px 16px
-    }
+    padding: $spacer*.875 $spacer; // 14px 16px
     @include media-breakpoint-up(md) {
       max-width: 20*$spacer; // 320px
       padding: $spacer $spacer*1.5; // 16px 24px
     }
-    @include media-breakpoint-between(xs, sm) {
-      right: $spacer*.75;
-    }
-    @include media-breakpoint-between(sm, md) {
+    @include media-breakpoint-up(sm) {
       right: calc(50% - 258px);
     }
-    @include media-breakpoint-between(md, lg) {
+    @include media-breakpoint-up(md) {
       right: calc(50% - 348px);
     }
-    @include media-breakpoint-between(lg, xl) {
+    @include media-breakpoint-up(lg) {
       right: calc(50% - 468px);
     }
-    @include media-breakpoint-between(xl, xxl) {
+    @include media-breakpoint-up(xl) {
       right: calc(50% - 558px);
     }
     @include media-breakpoint-up(xxl) {
@@ -207,5 +204,49 @@
       color: $white;
       text-decoration: none;
     }
+  }
+  button.popover-trigger {
+    border: 0;
+    font-family: $font-family-base;
+    background-color: transparent;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    &:focus {
+      text-decoration: underline;
+    }
+    @include media-breakpoint-up(sm) {
+      padding-left: $spacer * .5; // 8px
+      padding-right: $spacer * .5; // 8px
+      font-weight: 500;
+    }
+  }
+}
+
+.navbar__popover {
+  border-radius: 0 0 $border-radius $border-radius;
+  border: none;
+  background-color: $primary;
+  .popover-arrow {
+    display: none;
+  }
+  .popover__title {
+    font-weight: $font-weight-bold;
+    font-size: $font-size-base; // 16px
+    margin-bottom: 0;
+    color: $white;
+  }
+  .popover__description {
+    font-size: $font-size-xs; // 12px
+    margin-bottom: 0;
+    color: $white;
+  }
+  .popover__cta {
+    display: block;
+    font-size: $font-size-base; // 16px
+    text-align: right;
+    color: $gray-100;
+    @include font-icon-after("\E801", 1rem);
   }
 }
