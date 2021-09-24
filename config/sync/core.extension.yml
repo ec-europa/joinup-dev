@@ -45,6 +45,8 @@ module:
   eu_sic: 0
   eupl: 0
   facets: 0
+  facets_form: 0
+  facets_form_date_range: 0
   facets_summary: 0
   field: 0
   field_delimiter: 0

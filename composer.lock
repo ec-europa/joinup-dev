@@ -3894,7 +3894,8 @@
                 "patches_applied": {
                     "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
                     "Configurable dropdown child prefix. @see https://www.drupal.org/project/facets/issues/3214662": "https://git.drupalcode.org/project/facets/-/merge_requests/20.diff",
-                    "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "https://www.drupal.org/files/issues/2021-05-17/3213582-facets-1.6-1.7.patch"
+                    "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "https://www.drupal.org/files/issues/2021-05-17/3213582-facets-1.6-1.7.patch",
+                    "https://www.drupal.org/project/facets/issues/3223956": "https://git.drupalcode.org/project/facets/-/merge_requests/25.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3930,6 +3931,67 @@
                 "issues": "https://www.drupal.org/project/issues/facets",
                 "irc": "irc://irc.freenode.org/drupal-search-api"
             }
+        },
+        {
+            "name": "drupal/facets_form",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/facets_form.git",
+                "reference": "85965678f7d051c929be267cd1fd15453d556559"
+            },
+            "require": {
+                "cweagans/composer-patches": "^1.7",
+                "drupal/core": "^8.9 || ^9.1",
+                "drupal/facets": "^1.6"
+            },
+            "require-dev": {
+                "drupal/search_api": "^1.13"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "1.x-dev",
+                    "datestamp": "1629847996",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                },
+                "enable-patching": true,
+                "patches": {
+                    "drupal/facets": {
+                        "https://www.drupal.org/project/facets/issues/3223956": "https://git.drupalcode.org/project/facets/-/merge_requests/25.diff"
+                    }
+                },
+                "patches_applied": {
+                    "Implement calculate dependencies. @see https://www.drupal.org/project/facets_form/issues/3230468": "https://git.drupalcode.org/project/facets_form/-/merge_requests/15.diff"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Claudiu Cristea",
+                    "homepage": "https://www.drupal.org/u/claudiucristea"
+                },
+                {
+                    "name": "Andras Szilagyi",
+                    "homepage": "https://www.drupal.org/u/andras_szilagyi"
+                }
+            ],
+            "description": "Place the facets of a given facets source in a form",
+            "homepage": "https://www.drupal.org/project/facets_form",
+            "support": {
+                "source": "https://git.drupalcode.org/project/facets_form",
+                "issues": "https://www.drupal.org/project/issues/facets_form"
+            },
+            "time": "2021-09-06T17:00:30+00:00"
         },
         {
             "name": "drupal/field_delimiter",
@@ -20323,6 +20385,7 @@
         "dkarv/mdl-chip-input": 20,
         "drupal/cas_attributes": 20,
         "drupal/config_ignore": 20,
+        "drupal/facets_form": 20,
         "drupal/menu_link_destination": 20,
         "drupal/og": 20,
         "drupal/page_manager": 10,

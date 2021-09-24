@@ -38,32 +38,29 @@ Feature: Global search
     And I should see the "El Celler de Can Roca" tile
     And I should see the "Spherification" tile
     And I should see the "Foam" tile
-    # Facets should be in place.
-    And the option with text "Any topic" from select facet "topic" is selected
     # Terms are sorted alphabetically
-    And the "topic" select facet should contain the following options:
+    And the "topic" select facet form should contain the following options:
       | Any topic               |
       # Parent term.
       | Info                    |
       # Child term.
-      | Statistics and Analysis |
+      | - Statistics and Analysis |
       # Parent term.
       | Social and Political    |
       # Child terms.
-      | Demography              |
-      | E-inclusion             |
+      | - Demography              |
+      | - E-inclusion             |
     # Since the topics are indented by a whitespace, and the whitespaces are trimmed in the step above, we are testing
     # the full response in order to ensure that the results are indented properly. The &nbsp; character below is the
     # printable space character.
     # @todo and WARNING. The following   character is supported by the old 3.4 selenium server. Change this in the
     # new infrastructure with the &nbsp; encoded character.
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic/category%23info\"> Info</option>"
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23statistics-and-analysis\">  Statistics and Analysis</option>"
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic/category%23social-and-political\"> Social and Political</option>"
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23demography\">  Demography</option>"
-    And the response should contain "<option value=\"/search?f%5B0%5D=topic%3Ahttp%3A//joinup.eu/ontology/topic%23e-inclusion\">  E-inclusion</option>"
-    And the option with text "Any location" from select facet "spatial coverage" is selected
-    And the "spatial coverage" select facet should contain the following options:
+    And the response should contain "<option value=\"http://joinup.eu/ontology/topic/category#info\">Info</option>"
+    And the response should contain "<option value=\"http://joinup.eu/ontology/topic#statistics-and-analysis\">- Statistics and Analysis</option>"
+    And the response should contain "<option value=\"http://joinup.eu/ontology/topic/category#social-and-political\">Social and Political</option>"
+    And the response should contain "<option value=\"http://joinup.eu/ontology/topic#demography\">- Demography</option>"
+    And the response should contain "<option value=\"http://joinup.eu/ontology/topic#e-inclusion\">- E-inclusion</option></select>"
+    And the "spatial coverage" select facet form should contain the following options:
       | Any location       |
       | Belgium (1)        |
       | European Union (1) |
@@ -72,15 +69,16 @@ Feature: Global search
     # Joinup there were two search fields, but this was confusing users.
     And there should be exactly 1 "search field" on the page
 
-    When I select "Social and Political" from the "topic" select facet
-    Then the option with text "Social and Political" from select facet "topic" is selected
-    And the "topic" select facet should contain the following options:
-      | Any topic               |
-      | Info                    |
-      | Statistics and Analysis |
-      | Social and Political    |
-      | Demography              |
-      | E-inclusion             |
+    When I select "Social and Political" from the "topic" select facet form
+    And I click Search in facets form
+    Then the option with text "Social and Political" from select facet form "topic" is selected
+    And the "topic" select facet form should contain the following options:
+      | Any topic                 |
+      | Info                      |
+      | - Statistics and Analysis |
+      | Social and Political      |
+      | - Demography              |
+      | - E-inclusion             |
     # The tiles appear because the parent term is selected even though they do not have a direct reference there.
     And I should see the "Dummy news 1" tile
     And I should see the "Dummy news 2" tile
@@ -88,19 +86,20 @@ Feature: Global search
     And I should see the "Dummy news 4" tile
 
     # Test the topic facet. The space prefixing "Demography" is due to the hierarchy.
-    When I select " Demography" from the "topic" select facet
-    Then the option with text "Demography" from select facet "topic" is selected
+    When I select " Demography" from the "topic" select facet form
+    And I click Search in facets form
+    Then the option with text "- Demography" from select facet form "topic" is selected
     # The selected option moves to the last position by default.
-    And the "topic" select facet should contain the following options:
-      | Any topic               |
-      | Info                    |
-      | Statistics and Analysis |
-      | Social and Political    |
-      | Demography              |
-      | E-inclusion             |
+    And the "topic" select facet form should contain the following options:
+      | Any topic                 |
+      | Info                      |
+      | - Statistics and Analysis |
+      | Social and Political      |
+      | - Demography              |
+      | - E-inclusion             |
 
-    Then the option with text "Any location" from select facet "spatial coverage" is selected
-    And the "spatial coverage" select facet should contain the following options:
+    #Then the option with text "Any location" from select facet form "spatial coverage" is selected
+    And the "spatial coverage" select facet form should contain the following options:
       | Any location       |
       | Belgium (1)        |
       | European Union (1) |
@@ -110,17 +109,18 @@ Feature: Global search
     And I should not see the "Foam" tile
 
     # Test the spatial coverage facet.
-    When I select "Belgium" from the "spatial coverage" select facet
-    Then the option with text "Belgium (1)" from select facet "spatial coverage" is selected
-    And the "spatial coverage" select facet should contain the following options:
+    When I select "Belgium" from the "spatial coverage" select facet form
+    And I click Search in facets form
+    Then the option with text "Belgium (1)" from select facet form "spatial coverage" is selected
+    And the "spatial coverage" select facet form should contain the following options:
       | Any location       |
       | Belgium (1)        |
       | European Union (1) |
-    Then the option with text "Demography" from select facet "topic" is selected
-    And the "topic" select facet should contain the following options:
+    Then the option with text "- Demography" from select facet form "topic" is selected
+    And the "topic" select facet form should contain the following options:
       | Any topic            |
       | Social and Political |
-      | Demography           |
+      | - Demography         |
     And I should see the "Molecular cooking collection" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Spherification" tile
@@ -131,22 +131,29 @@ Feature: Global search
     Then I should see the text "Content types" in the "Left sidebar" region
 
     # Select link in the 'type' facet.
-    When I check the "News (5)" checkbox from the "Content types" facet
-    Then the "News" content checkbox item should be selected
-    And the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (5)"
+    When I check the "News (5)" checkbox from the "Content types" facet form
+    And I click Search in facets form
+    Then the option with text "News (5)" from select facet form "Content types" is selected
+    And the "Content types" select facet form should contain the following options:
+      | Collection (1)  |
+      | News (5)        |
+      | Solutions (2)   |
 
-    When I check the "Solutions (2)" checkbox from the "Content types" facet
-    Then the "Solutions" content checkbox item should be selected
-    And the "News" content checkbox item should be selected
-    Then the "Content types" checkbox facet should allow selecting the following values "Collection (1), Solutions (2), News (5)"
-    And the "topic" select facet should contain the following options:
-      | Any topic               |
-      | Info                    |
-      | Statistics and Analysis |
-      | Social and Political    |
-      | Demography              |
-      | E-inclusion             |
-    And the "spatial coverage" select facet should contain the following options:
+    When I check the "Solutions (2)" checkbox from the "Content types" facet form
+    And I click Search in facets form
+    And I should see the following facet summary "News, Solutions"
+    And the "Content types" select facet form should contain the following options:
+      | Collection (1)  |
+      | News (5)        |
+      | Solutions (2)   |
+    And the "topic" select facet form should contain the following options:
+      | Any topic                 |
+      | Info                      |
+      | - Statistics and Analysis |
+      | Social and Political      |
+      | - Demography              |
+      | - E-inclusion             |
+    And the "spatial coverage" select facet form should contain the following options:
       | Any location       |
       | European Union (1) |
       | Luxembourg (5)     |
@@ -184,15 +191,16 @@ Feature: Global search
       | Document omega | Document      | Document short delta | A document consists of epsilon strings. | Luxembourg       | Alphabet | Collection alpha | validated |
 
     When I visit the search page
-    And the "spatial coverage" select facet should contain the following options:
+    And the "spatial coverage" select facet form should contain the following options:
       | Any location     |
       | Greece   (1)     |
       | Luxembourg   (2) |
-    When I select "Luxembourg" from the "spatial coverage" select facet
-    Then the option with text "Luxembourg   (2)" from select facet "spatial coverage" is selected
+    When I select "Luxembourg" from the "spatial coverage" select facet form
+    And I click Search in facets form
+    Then the option with text "Luxembourg (2)" from select facet form "spatial coverage" is selected
     And I should see the text "Search Results (2)"
     # The countries are still sorted alphabetically even though the Luxembourg value is selected and has more results.
-    And the "spatial coverage" select facet should contain the following options:
+    And the "spatial coverage" select facet form should contain the following options:
       | Any location     |
       | Greece   (1)     |
       | Luxembourg   (2) |
@@ -245,7 +253,17 @@ Feature: Global search
       | ulyssesfrees | ulysses.freeman@example.com | Ulysses    | Freeman     | Omero snc    |
 
     When I visit the search page
-    Then the "Content types" checkbox facet should allow selecting the following values "Collections (2), Solution (1), News (1), Events (2), Document (1), Discussion (1), Release (1), Custom page (1), Licence (1), Video (1)"
+    And the "Content types" select facet form should contain the following options:
+      | Collections (2)	|
+      | Custom page (1)	|
+      | Discussion (1)	|
+      | Document (1)		|
+      | Events (2)		  |
+      | Licence (1)		  |
+      | News (1)			  |
+      | Release (1)		  |
+      | Solution (1)		|
+      | Video (1)			  |
 
     # "Alpha" is used in all the rdf entities titles.
     When I enter "Alpha" in the search bar and press enter
@@ -615,15 +633,21 @@ Feature: Global search
 
     Given I am logged in as a user with the "authenticated" role
     When I visit the search page
-    And I check the "Solutions (2)" checkbox from the "Content types" facet
-    Then I check the "News (5)" checkbox from the "Content types" facet
-    And I should see the following facet summary "Solutions, News"
+    And I select "Solutions (2)" from the "Content types" select facet form
+    And I select "News (5)" option in the "Content types" select facet form
+    And I click Search in facets form
+    And I should see the following facet summary "News, Solutions"
 
-    Then I check the "Solutions (2)" checkbox from the "Content types" facet
+    Then I click "Clear filters"
+    And I select "News (5)" from the "Content types" select facet form
+    And I click Search in facets form
     And I should see the following facet summary "News"
 
     # Check if facet summary was remove correctly.
-    Then I check the "Collection (1)" checkbox from the "Content types" facet
+    Then I click "Clear filters"
+    And I select "News (5)" from the "Content types" select facet form
+    And I select "Collection (1)" option in the "Content types" select facet form
+    And I click Search in facets form
     And I should see the following facet summary "Collection, News"
     Then I should remove the following facet summary "News"
     And the page should show only the tiles "Radio cooking collection"

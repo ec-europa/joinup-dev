@@ -274,6 +274,42 @@ class JoinupSearchContext extends RawDrupalContext {
   }
 
   /**
+   * Clicks a facet item in an inline facet form.
+   *
+   * @param string $select
+   *   The option to select.
+   * @param string $facet
+   *   The facet alias.
+   *
+   * @throws \Exception
+   *   Thrown when the facet or the link inside the facet is not found.
+   *
+   * @When I select :option from the :facet select facet form
+   */
+  public function iSelectAnOptionFromFacetForm(string $select, string $facet): void {
+    $facet = $this->findFacetByAlias($facet, NULL, 'select', TRUE);
+    $facet->selectOption($select);
+  }
+
+  /**
+   * Clicks in more facet items in an inline facet form.
+   *
+   * @param string $select
+   *   The option to select.
+   * @param string $facet
+   *   The facet alias.
+   *
+   * @throws \Exception
+   *   Thrown when the facet or the link inside the facet is not found.
+   *
+   * @When I select :option option in the :facet select facet form
+   */
+  public function iSelectOtherOptionFromFacetForm(string $select, string $facet): void {
+    $facet = $this->findFacetByAlias($facet, NULL, 'select', TRUE);
+    $facet->selectOption($select, TRUE);
+  }
+
+  /**
    * Asserts a selected option in the .
    *
    * @param string $option
@@ -307,6 +343,40 @@ class JoinupSearchContext extends RawDrupalContext {
         // Ignore duplicate whitespace.
         $option = preg_replace('/\s{2,}/', ' ', $option);
         Assert::assertEquals($option, $text, sprintf('The option "%s" is selected in the "%s" facet, but the option "%s" was expected.', $text, $select, $option));
+      }
+    }
+  }
+
+  /**
+   * Asserts a selected option in the select facets form.
+   *
+   * @param string $option
+   *   Text value of the option to find.
+   * @param string $select
+   *   Title of the select field.
+   *
+   * @throws \Exception
+   *    Throws an exception when the select is not found in page.
+   *
+   * @Then the option with text :option from select facet form :select is selected
+   */
+  public function assertSelectFacetFormOptionSelected(string $option, string $select): void {
+    $element = $this->findFacetByAlias($select, NULL, 'select', TRUE);
+    if (!$element) {
+      throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
+    }
+    if ($this->browserSupportsJavaScript()) {
+      $this->assertSelectedOption($element, $option);
+    }
+    else {
+      $selected_option = $element->find('css', 'a.is-active');
+      if ($selected_option instanceof NodeElement) {
+        $text = $selected_option->getText();
+        // Selected facet options are prefixed with '(-) '. Strip this.
+        $text = preg_replace('/^\(-\) /', '', $text);
+        // Ignore duplicate whitespace.
+        $option = preg_replace('/\s{2,}/', ' ', $option);
+        Assert::assertSame($option, $text, sprintf('The option "%s" is selected in the "%s" facet, but the option "%s" was expected.', $text, $select, $option));
       }
     }
   }
@@ -348,6 +418,25 @@ class JoinupSearchContext extends RawDrupalContext {
   }
 
   /**
+   * Asserts the list of available options in a facet form select box.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws \Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   *
+   * @Then the :select select facet form should contain the following options:
+   */
+  public function assertSelectFacetFormOptionsAsList($select, TableNode $table) {
+    $element = $this->findFacetByAlias($select, NULL, 'select', TRUE);
+    $this->assertSelectAvailableOptions($element, $table);
+  }
+
+  /**
    * Checks a checkbox link in a facet.
    *
    * @param string $option
@@ -372,6 +461,47 @@ class JoinupSearchContext extends RawDrupalContext {
     }
 
     throw new \Exception("The option '{$option}' was not found in the '{$facet_type}' facet.");
+  }
+
+  /**
+   * Checks a checkbox in a facet form.
+   *
+   * @param string $option
+   *   The label of the checkbox.
+   * @param string $facet_type
+   *   The label of the facet.
+   *
+   * @throws \Exception
+   *   Thrown when the checkbox is not found.
+   *
+   * @Given I check the :option checkbox from the :facet_type facet form
+   */
+  public function checkCheckboxFacetForm(string $option, string $facet_type): void {
+    $facet = $this->findFacetByAlias($facet_type, NULL, '*', TRUE);
+    /** @var \Behat\Mink\Element\NodeElement[] $node_elements */
+    $node_elements = $facet->findAll('xpath', '//option');
+    foreach ($node_elements as $node_element) {
+      if ($node_element->getText() === $option) {
+        $node_element->click();
+        return;
+      }
+    }
+
+    throw new \Exception("The option '{$option}' was not found in the '{$facet_type}' facet.");
+  }
+
+  /**
+   * Facets form action buttons.
+   *
+   * @param string $name
+   *   The label of the input.
+   *
+   * @Given I click :name in facets form
+   */
+  public function iClickActionsInFacetsForm(string $name) {
+    $region = $this->getSession()->getPage();
+    $element = $region->find('xpath', "//input[@value='{$name}']");
+    $element->click();
   }
 
   /**
