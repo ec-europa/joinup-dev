@@ -78,8 +78,8 @@ Feature: Solutions Overview
     And I am on the homepage
     Then I should see the link "More solutions"
     When I click "More solutions"
-    Then I should see the heading "Solutions"
-    And I should see the text "A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories."
+    Then I should be on the advanced search page
+    And I should see the following facet summary "Solutions"
     And the page should be cacheable
 
     # Access the page as a moderator to ensure proper caching.
@@ -87,34 +87,34 @@ Feature: Solutions Overview
     And I am on the homepage
     Then I should see the link "More solutions"
     When I click "More solutions"
-    Then I should see the heading "Solutions"
-    And I should see the text "A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories."
+    Then I should be on the advanced search page
+    And I should see the following facet summary "Solutions"
     And I should see the "Non electronic health" tile
     And I should see the "Closed data" tile
     And I should see the "Isolating Europe" tile
     And I should not see the "Uniting Europe" tile
-    And the page should be cacheable
+    And the page should not be cacheable
 
     # Check page for authenticated users.
     When I am logged in as "Madam Shirley"
     And I am on the homepage
     Then I should see the link "More solutions"
     When I click "More solutions"
-    Then I should see the heading "Solutions"
-    And I should see the text "A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories."
+    Then I should be on the advanced search page
+    And I should see the following facet summary "Solutions"
     Then I should see the "Non electronic health" tile
     And I should see the "Closed data" tile
     And I should see the "Isolating Europe" tile
     But I should not see the "Uniting Europe" tile
-    And the page should be cacheable
+    And the page should not be cacheable
 
     # Once more for anonymous.
     When I am an anonymous user
     And I am on the homepage
     Then I should see the link "More solutions"
     When I click "More solutions"
-    Then I should see the heading "Solutions"
-    And I should see the text "A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories."
+    Then I should be on the advanced search page
+    And I should see the following facet summary "Solutions"
     And I should see the link "Non electronic health"
     And I should not see the text "Supports health-related fields"
     And I should see the link "Closed data"
@@ -153,7 +153,7 @@ Feature: Solutions Overview
     When I am on the homepage
     And I click "More solutions"
     Then I should see the text "Colonies in Earth"
-    And the page should be cacheable
+    And the page should not be cacheable
 
     # Check the new solution as an anonymous user.
     When I am an anonymous user
