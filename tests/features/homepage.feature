@@ -108,7 +108,7 @@ Feature: Homepage
     And I should see the link "More solutions"
     When I click "More solutions"
     Then I should be on the advanced search page
-    And I should see the following facet summary "Solutions"
+    And I should see the following facet summary "Solution"
 
   Scenario: An event can be highlighted on the homepage
     Given event content:
