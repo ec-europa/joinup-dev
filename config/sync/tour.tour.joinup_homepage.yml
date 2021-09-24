@@ -1,0 +1,75 @@
+uuid: 422ca239-278b-4488-8267-d5f66e22997a
+langcode: en
+status: true
+dependencies: {  }
+id: joinup_homepage
+label: 'Joinup homepage tour.'
+module: null
+routes:
+  -
+    route_name: page_manager.page_view_homepage_homepage-layout_builder-0
+tips:
+  account:
+    id: account
+    plugin: text
+    body: 'Sign in or out, and manage your user account.'
+    weight: 1
+    location: left
+    attributes:
+      data-class: 'joinup-navbar .nav-item:nth-child(2), #heading-account'
+  search:
+    id: search
+    plugin: text
+    body: 'Search through the entire Joinup platform and its supported content items.'
+    weight: 2
+    location: left
+    attributes:
+      data-class: 'search-bar'
+  discover_topics:
+    id: discover_topics
+    plugin: text
+    body: 'Or, select a topic to view relevant content items.'
+    weight: 3
+    location: right
+    attributes:
+      data-class: 'view-discover-topics'
+  spotlight:
+    id: spotlight
+    plugin: text
+    body: 'View a list of curated content items published on the platform.'
+    weight: 4
+    location: left
+    attributes:
+      data-class: 'block-views-blockin-the-spotlight-block'
+  news:
+    id: news
+    plugin: text
+    body: 'View the latest news and events published on the platform.'
+    weight: 5
+    location: left
+    attributes:
+      data-class: 'block-views-blocklatest-news-block'
+  explore:
+    id: explore
+    plugin: text
+    body: 'Explore the platform''s published content items per type.'
+    weight: 6
+    location: left
+    attributes:
+      data-class: 'block-joinup-front-page-explore-block .explore-block-title'
+  about:
+    id: about
+    plugin: text
+    body: 'Learn more about the platform.'
+    weight: 7
+    location: left
+    attributes:
+      data-class: 'about-what'
+  contact:
+    id: contact
+    plugin: text
+    body: 'If you have any questions or suggestions regarding the Joinup platform, you can contact us through this link.'
+    weight: 8
+    location: bottom
+    attributes:
+      data-class: 'about-us-menu li:nth-child(2)'
