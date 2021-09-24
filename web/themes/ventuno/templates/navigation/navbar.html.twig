@@ -13,44 +13,27 @@
     }
   - collapse_id (string) (default: '')
   - list_id (string) (default: '')
-  - anchors (array of objects) (default: [{}])
-    format: [{
-      link: '',
-      label: '',
-      extra_attributes: '' (optional: for example 'target="_blank" rel="noopener"')
-    }]
-  - buttons (array of objects) (default: [{}])
+  - items (array of objects) (default: [{}])
     format: [{
       id: '',
       label: '',
       icon: '',
-      type: '', (options: ['teaser', 'notifications', 'links'])
-      amount: '',
-      teaser: (object)
-      format: {
-        title: '',
-        text: '',
-        cta: {
-          link: '',
-          label: ''
-        }
-      },
-      notifications: (array of objects)
-      format: [{
-        title: '',
-        text: '',
-        days_ago: '',
-        unread: , (boolean)
-      }]
-      mark_all_as_read: '',
-      days_ago: '',
-      see_all: '',
       links: (array of objects)
       format: [{
         link: '',
         label: '',
         extra_attributes: [] (example: ['class' => ['btn', 'btn-primary]])
-        separator: , (boolean)
+        popover (object) (default: {})
+        format: {
+          title: '',
+          description: '',
+          cta (object) (default: {})
+          format: {
+            link: '',
+            text: '',
+            attributes: '', (optional)
+          }
+        }
       }]
     }]
 #}
@@ -59,8 +42,7 @@
 {% set _brand = brand|default({}) %}
 {% set _collapse_id = collapse_id|default('') %}
 {% set _list_id = list_id|default('') %}
-{% set _anchors = anchors|default([]) %}
-{% set _buttons = buttons|default([{}]) %}
+{% set _items = items|default([{}]) %}
 
 {% set _nav_classes = ['joinup-navbar', 'navbar', 'navbar-expand'] %}
 {% set _navbar_toggler_classes = ['navbar-toggler'] %}
@@ -115,14 +97,9 @@
       <ul
         {{ list_attributes }}
       >
-        {% for anchor in _anchors %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ anchor.link }}" {{ anchor.extra_attributes }}>{{ anchor.label }}</a>
-          </li>
-        {% endfor %}
-        {% for button in _buttons %}
+        {% for item in _items %}
           {% if _breakpoint %}
-            {% for link in button.links %}
+            {% for link in item.links %}
               <li class="nav-item d-none d-{{ _breakpoint }}-inline-flex">
                 {% if link.link %}
                   <a class="nav-link" href="{{ link.link }}" {{ anchor.extra_attributes }}>{{ link.label }}</a>  
@@ -148,35 +125,35 @@
             {% endfor %}
           {% endif %}
           <li {{ list_item_attributes }}>
-            <span class="accordion-header" id="heading-{{ button.id }}">
+            <span class="accordion-header" id="heading-{{ item.id }}">
               <button
                 class="accordion-button nav-link"
                 data-bs-toggle="collapse"
                 autocomplete="off"
-                data-bs-target="#collapse-{{ button.id }}"
-                aria-controls="collapse-{{ button.id }}"
+                data-bs-target="#collapse-{{ item.id }}"
+                aria-controls="collapse-{{ item.id }}"
                 aria-expanded="false"
                 type="button"
               >
-                {% if button.icon is not empty %}
+                {% if item.icon is not empty %}
                   <svg class="bi icon--s">
-                    <use xlink:href="{{ base_path ~ directory }}/assets/icons/bootstrap-icons.svg#{{ button.icon.name }}"></use>
+                    <use xlink:href="{{ base_path ~ directory }}/assets/icons/bootstrap-icons.svg#{{ item.icon.name }}"></use>
                   </svg>
                 {% endif %}
-                {% if button.label is not empty %}
-                  <span class="accordion-button-label">{{ button.label }}</span>
+                {% if item.label is not empty %}
+                  <span class="accordion-button-label">{{ item.label }}</span>
                 {% endif %}
               </button>
             </span>
             <div
-              id="collapse-{{ button.id }}"
+              id="collapse-{{ item.id }}"
               class="accordion-collapse collapse rounded-bottom"
-              aria-labelledby="heading-{{ button.id }}"
+              aria-labelledby="heading-{{ item.id }}"
               data-bs-parent="#{{ _collapse_id }}"
             >
               <div class="accordion-body">
                 <ul class="accordion-list">
-                  {% for link in button.links %}
+                  {% for link in item.links %}
                     <li class="accordion-list-item">
                       {% if link.link %}
                         <a href="{{ link.link }}" class="accordion-list-link">

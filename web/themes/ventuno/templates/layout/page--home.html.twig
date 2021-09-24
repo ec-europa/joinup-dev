@@ -69,14 +69,13 @@
         },
         collapse_id: "navbar",
         list_id: "list",
-        buttons: [
+        items: [
           {
             id: logged_in ? "account" : "navbar-toggler",
             icon: {
               name: logged_in ? "person-circle" : "justify",
             },
             label: logged_in ? user_name : "",
-            type: "links",
             links: logged_in ? profile_links : anonymous_links,
           },
         ],

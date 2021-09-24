@@ -113,7 +113,7 @@ function ventuno_preprocess_page(&$variables) {
       'title' => t('Create an account'),
       'description' => t('As a signed-in user you can create content, become a member of a community, receive notifications on your favourite solutions and topics, anc access all other features available on the platform.'),
       'cta' => (object)array(
-          'link' => '#/example.html',
+          'link' => 'example.html',
           'attributes' => 'target="_blank" rel="noopener"',
           'text' => t('About EU Login'),
       ),
