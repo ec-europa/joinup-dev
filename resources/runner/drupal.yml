@@ -87,6 +87,7 @@ drupal:
         - Development
         - OpenEuropa Newsroom Newsletter
         - OpenEuropa Webtools Geocoding Cache
+        - Error logging
         - Redis
         - Pipe errors to a temporary file
         - Custom queue services

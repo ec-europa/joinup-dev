@@ -1,12 +1,9 @@
-# The test is marked as @wip as there is a failure in our current CI that needs to be debugged.
-# @see: https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-5665
-@api @wip
+@api
 Feature: Solutions message overview
   As a moderator of the site
   In order to be able to manage incoming requests
   I need to be able to list messages that are sent throughout the website.
 
-  @messageCleanup
   Scenario: Only privileged users can access the report.
     When I am logged in as a user with the "authenticated" role
     And I go to "/admin/content/messages"
@@ -18,7 +15,6 @@ Feature: Solutions message overview
     And I click "Messages overview"
     Then the response status code should be 200
 
-  @messageCleanup
   Scenario: Contact form messages are available in the message overview.
     And I am not logged in
     When I am on the homepage
@@ -50,7 +46,7 @@ Feature: Solutions message overview
       | Ran out of gas                          |
       | Do you have 1 euro to buy a cheese pie? |
 
-  @messageCleanup @terms
+  @terms
   Scenario: Workflow messages are available in the message overview.
     Given owner:
       | name                 | type    |
@@ -64,6 +60,10 @@ Feature: Solutions message overview
     When I select "HR" from "Topic"
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
+    And I fill in the following:
+      | E-mail | invisible.man@example.com |
+      | Name   | Invisible Man             |
+    And I press "Create contact information"
     And I press "Propose"
     And I should see the heading "Message overview proposal"
 

@@ -85,7 +85,7 @@ class ScreenshotContext extends RawMinkContext {
    */
   public function takeScreenshot(?string $name = NULL): void {
     $message = "Screenshot: @file_name";
-    $this->createScreenshot($name, $message);
+    $this->createScreenshots($name, $message);
   }
 
   /**
@@ -96,7 +96,7 @@ class ScreenshotContext extends RawMinkContext {
   public function takeScreenshotUnnamed(): void {
     $file_name = 'screenshot-' . user_password();
     $message = "Screenshot: @file_name";
-    $this->createScreenshot($file_name, $message);
+    $this->createScreenshots($file_name, $message);
   }
 
   /**
@@ -122,7 +122,7 @@ class ScreenshotContext extends RawMinkContext {
           }
           catch (ExpectationException $e) {
             $message = "{$this->getStepLine($event)} screenshot: @file_name";
-            $this->createScreenshot($this->buildScreenshotFileName('php-notice', $event), $message, $event->getSuite()->getName());
+            $this->createScreenshots($this->buildScreenshotFileName('php-notice', $event), $message, $event->getSuite()->getName());
             // We don't throw $e anymore because we don't fail on the notice.
           }
         }
@@ -144,7 +144,7 @@ class ScreenshotContext extends RawMinkContext {
   public function takeScreenshotAfterFailedStep(AfterStepScope $event): void {
     if (!$event->getTestResult()->isPassed()) {
       $message = "{$this->getStepLine($event)} screenshot: @file_name";
-      $this->createScreenshot($this->buildScreenshotFileName('failed', $event), $message, $event->getSuite()->getName());
+      $this->createScreenshots($this->buildScreenshotFileName('failed', $event), $message, $event->getSuite()->getName());
     }
   }
 
@@ -154,20 +154,14 @@ class ScreenshotContext extends RawMinkContext {
    * @param string $file_name
    *   The filename of the screenshot (complete).
    * @param string $message
-   *   The message to be printed. '@file_name' will be replaced with $file_name.
+   *   The message to be printed.
    * @param string|null $suite_name
    *   (optional) Suite name. Passed only from hook callers.
    */
-  public function createScreenshot(string $file_name, string $message, ?string $suite_name = NULL): void {
+  protected function createScreenshots(string $file_name, string $message, ?string $suite_name = NULL): void {
     try {
-      if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-        $file_name .= '.png';
-        $screenshot = $this->getSession()->getDriver()->getScreenshot();
-      }
-      else {
-        $file_name .= '.html';
-        $screenshot = $this->getSession()->getPage()->getContent();
-      }
+      $screenshot = $this->getSession()->getPage()->getContent();
+      $this->storeScreenshot($screenshot, "{$file_name}.html", $message, $suite_name);
     }
     catch (DriverException $e) {
       // A DriverException might occur if no page has been loaded yet so no
@@ -176,19 +170,41 @@ class ScreenshotContext extends RawMinkContext {
       return;
     }
 
+    // For Selenium tests, create an additional .png screenshot.
+    if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+      try {
+        $screenshot = $this->getSession()->getDriver()->getScreenshot();
+        $this->storeScreenshot($screenshot, "{$file_name}.png", $message, $suite_name);
+      }
+      catch (DriverException $e) {
+        // If the .html screenshot was successful, do nothing.
+      }
+    }
+
+    // Depending on the output formatter used, Behat will suppress any output
+    // generated during the test. Flush the output buffers so out message will
+    // show up in the test logs.
+    ob_flush();
+  }
+
+  /**
+   * Stores the screenshot locally and, optionally, in S3.
+   *
+   * @param string $screenshot
+   *   The screenshot content.
+   * @param string $file_name
+   *   The filename of the screenshot (complete).
+   * @param string $message
+   *   The message to be printed.
+   * @param string|null $suite_name
+   *   (optional) Suite name. Passed only from hook callers.
+   */
+  protected function storeScreenshot(string $screenshot, string $file_name, string $message, ?string $suite_name = NULL): void {
     // Save the screenshot locally.
     $path = $this->save($screenshot, $file_name, $suite_name);
-
     // Upload the screenshot to Amazon S3.
     $this->upload($screenshot, $file_name);
-
-    if ($message) {
-      print strtr($message, ['@file_name' => $path ?: $file_name]);
-      // Depending on the output formatter used, Behat will suppress any output
-      // generated during the test. Flush the output buffers so out message will
-      // show up in the test logs.
-      ob_flush();
-    }
+    print strtr($message, ['@file_name' => $path ?: $file_name]);
   }
 
   /**
