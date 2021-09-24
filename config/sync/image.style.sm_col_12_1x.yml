@@ -1,0 +1,15 @@
+uuid: e0b78770-cc17-44a2-b866-654d056d9771
+langcode: en
+status: true
+dependencies: {  }
+name: sm_col_12_1x
+label: sm-col-12-1x
+effects:
+  78382897-6570-4034-87f9-63834db0babb:
+    uuid: 78382897-6570-4034-87f9-63834db0babb
+    id: image_scale
+    weight: 1
+    data:
+      width: 518
+      height: null
+      upscale: false
