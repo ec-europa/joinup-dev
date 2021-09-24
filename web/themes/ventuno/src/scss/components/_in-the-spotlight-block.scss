@@ -23,6 +23,7 @@
       flex-direction: row;
     }
     .news__logo-wrapper {
+      text-align: center;
       @include media-breakpoint-up(md) {
         width: calc(100% / 4 - 33px);
       }
