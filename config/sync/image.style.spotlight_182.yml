@@ -1,0 +1,15 @@
+uuid: 94a9d74c-ee7d-424e-969e-12722afe6d4f
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_182
+label: 'Spotlight 182px'
+effects:
+  85901a11-f455-4c3e-975e-ebc810f8688d:
+    uuid: 85901a11-f455-4c3e-975e-ebc810f8688d
+    id: image_scale
+    weight: 1
+    data:
+      width: 182
+      height: null
+      upscale: false

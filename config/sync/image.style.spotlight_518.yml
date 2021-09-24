@@ -1,0 +1,15 @@
+uuid: f3010dc5-a5a6-42df-8c71-adb212c0e26f
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_518
+label: 'Spotlight 518px'
+effects:
+  7f831f29-92c3-475b-bb4f-4cdf40eed502:
+    uuid: 7f831f29-92c3-475b-bb4f-4cdf40eed502
+    id: image_scale
+    weight: 1
+    data:
+      width: 518
+      height: null
+      upscale: false
