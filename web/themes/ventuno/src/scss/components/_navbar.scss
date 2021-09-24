@@ -54,10 +54,9 @@
     background: $primary;
     box-shadow: $box-shadow;
     margin-top: 1px;
-    padding: $spacer*.875 $spacer; // 14px 16px
+    padding: $spacer; // 16px
     @include media-breakpoint-up(md) {
       max-width: 20*$spacer; // 320px
-      padding: $spacer $spacer*1.5; // 16px 24px
     }
     @include media-breakpoint-up(sm) {
       right: calc(50% - 258px);
@@ -195,7 +194,7 @@
   .accordion-list-item {
     list-style: none;
     &:not(:last-of-type) {
-      margin-bottom: $spacer; // 16px
+      margin-bottom: $spacer * .5; // 12px
     }
   }
   .accordion-list-link {
@@ -243,6 +242,7 @@
     color: $white;
   }
   .popover__cta {
+    margin-top: $spacer * .5; // 8px
     display: block;
     font-size: $font-size-base; // 16px
     text-align: right;
