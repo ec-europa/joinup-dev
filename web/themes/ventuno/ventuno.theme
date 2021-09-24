@@ -109,16 +109,19 @@ function ventuno_preprocess_page(&$variables) {
   $variables['anonymous_links'] = $anonymous_links;
 
   // Generate a link button that opens the "Get started" popover.
+  $popover = (object)array(
+      'title' => t('Create an account'),
+      'description' => t('As a signed-in user you can create content, become a member of a community, receive notifications on your favourite solutions and topics, anc access all other features available on the platform.'),
+      'cta' => (object)array(
+          'link' => '#/example.html',
+          'attributes' => 'target="_blank" rel="noopener"',
+          'text' => t('About EU Login'),
+      ),
+  );
   $anonymous_links[] = [
     'label' => t('Get started'),
-    'popover' => true,
-    'popovertitle' => t('Create an account'),
-    'popoverdescription' => t('As a signed-in user you can create content, become a member of a community, recieve notifications on your favourite solutions and topics, and access all other features available on the platform.'),
-    'popoverctalink' => '/example.html',
-    'popoverctaattributes' => 'tabindex="0"',
-    'popoverctatext' => t('About EU Login'),
+    'popover' => $popover,
   ];
-
   $variables['anonymous_links'] = $anonymous_links;
 }
 
