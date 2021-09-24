@@ -133,8 +133,7 @@ Feature: Pinning content entities inside solutions
     Then the "Lantern TCA" tile should be marked as pinned
     And the "Lantern FAQ" tile should be marked as pinned
 
-    When I reload the page
-    Then I click the contextual link "Unpin" in the "Lantern FAQ" tile
+    When I click the contextual link "Unpin" in the "Lantern FAQ" tile
     Then the "Lantern FAQ" tile should not be marked as pinned
     And the "Lantern TCA" tile should be marked as pinned
 

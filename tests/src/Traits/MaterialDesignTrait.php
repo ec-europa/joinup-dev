@@ -178,7 +178,7 @@ trait MaterialDesignTrait {
       $button->click();
 
       // Wait for the menu opening animation to end before continuing.
-      $end = microtime(TRUE) + 10;
+      $end = microtime(TRUE) + 5;
       do {
         usleep(100000);
         // The plus button opening animation runs from the top right to the
