@@ -1,0 +1,15 @@
+uuid: 1ca61583-d84e-40b1-94f4-76ba78c3f449
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_302
+label: 'Spotlight 302px'
+effects:
+  bde5b391-234e-4c64-a261-6b9feca8f125:
+    uuid: bde5b391-234e-4c64-a261-6b9feca8f125
+    id: image_scale
+    weight: 1
+    data:
+      width: 302
+      height: null
+      upscale: false
