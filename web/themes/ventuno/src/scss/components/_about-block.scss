@@ -1,18 +1,20 @@
-.joinup-layout--twocolfooter-onecol-67-33 {
-  background-color: $white;
-  position: relative;
-  overflow: hidden;
-  z-index: 0;
-  &:before {
-    content: "";
-    position: absolute;
-    background-color: $gray-200;
-    width: 100%;
-    height: 350%;
-    border-radius: 50%;
-    top: 0;
-    transform: translate(60%, 0);
-    z-index: -1;
+.about-section {
+  @include media-breakpoint-up(lg) {
+    background-color: $white;
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+    &:before {
+      content: "";
+      position: absolute;
+      background-color: $gray-200;
+      width: 110rem;
+      height: 110rem;
+      border-radius: 50%;
+      right: -55rem;
+      top: 0;
+      z-index: -1;
+    }
   }
 }
 
