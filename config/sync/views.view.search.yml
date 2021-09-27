@@ -386,7 +386,17 @@ display:
             identifier: last-updated-date
           plugin_id: search_api
       title: ''
-      header: {  }
+      header:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          content: 'Search Results (@total)'
+          plugin_id: result
       footer: {  }
       empty:
         area_text_custom:
