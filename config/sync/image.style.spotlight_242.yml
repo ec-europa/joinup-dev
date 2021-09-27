@@ -1,0 +1,15 @@
+uuid: 4d72f4cf-f42e-4a18-b1ee-69aa1686f09c
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_242
+label: 'Spotlight 242px'
+effects:
+  f01cd106-6ea4-473c-b12c-a5e4c61ffc62:
+    uuid: f01cd106-6ea4-473c-b12c-a5e4c61ffc62
+    id: image_scale
+    weight: 1
+    data:
+      width: 242
+      height: null
+      upscale: false

@@ -1,0 +1,15 @@
+uuid: f340d0b9-6179-498e-a58f-0967ceaf3c43
+langcode: en
+status: true
+dependencies: {  }
+name: xxl_col_5_2x
+label: xxl-col-5-2x
+effects:
+  6de5d260-9e93-471e-ac95-f0db35eae5e7:
+    uuid: 6de5d260-9e93-471e-ac95-f0db35eae5e7
+    id: image_scale
+    weight: 1
+    data:
+      width: 1055
+      height: null
+      upscale: false

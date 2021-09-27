@@ -1,0 +1,15 @@
+uuid: 36e9b256-601f-499d-86d8-eeb5736af2d8
+langcode: en
+status: true
+dependencies: {  }
+name: lg_col_5_1x
+label: lg-col-5-1x
+effects:
+  d37a1e79-2ebe-4dc6-83b6-d0c55e38cada:
+    uuid: d37a1e79-2ebe-4dc6-83b6-d0c55e38cada
+    id: image_scale
+    weight: 1
+    data:
+      width: 378
+      height: null
+      upscale: false

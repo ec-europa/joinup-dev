@@ -45,14 +45,14 @@ dependencies:
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
     - field.field.rdf_entity.solution.field_topic
-    - image.style.large
     - rdf_entity.rdfentity.solution
+    - responsive_image.styles.highlighted_solution
   module:
     - field_delimiter
     - field_formatter_range
     - field_group
-    - image
     - layout_builder
+    - responsive_image
     - smart_trim
     - template_suggestion
     - user
@@ -104,12 +104,12 @@ content:
       template_suggestion:
         template_suggestion: ''
   field_is_logo:
-    type: image
+    type: responsive_image
     weight: 0
     region: content
     label: hidden
     settings:
-      image_style: large
+      responsive_image_style: highlighted_solution
       image_link: content
     third_party_settings:
       template_suggestion:

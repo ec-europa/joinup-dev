@@ -1,0 +1,15 @@
+uuid: 547b90a7-37ea-4723-9dbb-2f9fc64e8998
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_1035
+label: 'Spotlight 1035px'
+effects:
+  451fcc2e-3e5a-4a69-b5f1-f414766dd81c:
+    uuid: 451fcc2e-3e5a-4a69-b5f1-f414766dd81c
+    id: image_scale
+    weight: 1
+    data:
+      width: 1035
+      height: 582
+      upscale: false

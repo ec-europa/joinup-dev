@@ -1,0 +1,15 @@
+uuid: 59ff3253-80bb-485b-989e-5d63708fd5e3
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_776
+label: 'Spotlight 776px'
+effects:
+  1339a854-f0c3-4041-af0c-a0c29798c5b1:
+    uuid: 1339a854-f0c3-4041-af0c-a0c29798c5b1
+    id: image_scale
+    weight: 1
+    data:
+      width: 776
+      height: 436
+      upscale: false
