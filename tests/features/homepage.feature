@@ -107,7 +107,8 @@ Feature: Homepage
     Then I should see "Mercury poisoning" as the highlighted solution
     And I should see the link "More solutions"
     When I click "More solutions"
-    Then I should be on the solutions overview page
+    Then I should be on the advanced search page
+    And I should see the following facet summary "Solution"
 
   Scenario: An event can be highlighted on the homepage
     Given event content:

@@ -22,8 +22,9 @@ Feature: Solutions Overview
       | Tortoise   | 2018-10-04 8:34am | validated |
       | Warg       | 2018-10-04 8:39am | validated |
     And I am an anonymous user
-    And I am on the homepage
-    When I click "More solutions"
+    # The solutions page is still linked in the header of the old theme.
+    And I visit the content overview
+    When I click "Solutions"
     Then I should see the following tiles in the correct order:
       | Muffalo    |
       | Gazelle    |
@@ -73,20 +74,21 @@ Feature: Solutions Overview
     And the following owner:
       | name              | type                    |
       | NonProfit example | Non-Profit Organisation |
+
     # Check that visiting as an anonymous does not create cache for all users.
-    When I am an anonymous user
-    And I am on the homepage
-    Then I should see the link "More solutions"
-    When I click "More solutions"
+    Given I am an anonymous user
+    # The solutions page is still linked in the header of the old theme.
+    And I visit the content overview
+    When I click "Solutions"
     Then I should see the heading "Solutions"
     And I should see the text "A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories."
     And the page should be cacheable
 
     # Access the page as a moderator to ensure proper caching.
-    When I am logged in as a "moderator"
-    And I am on the homepage
-    Then I should see the link "More solutions"
-    When I click "More solutions"
+    Given I am logged in as a "moderator"
+    # The solutions page is still linked in the header of the old theme.
+    And I visit the content overview
+    When I click "Solutions"
     Then I should see the heading "Solutions"
     And I should see the text "A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories."
     And I should see the "Non electronic health" tile
@@ -96,10 +98,10 @@ Feature: Solutions Overview
     And the page should be cacheable
 
     # Check page for authenticated users.
-    When I am logged in as "Madam Shirley"
-    And I am on the homepage
-    Then I should see the link "More solutions"
-    When I click "More solutions"
+    Given I am logged in as "Madam Shirley"
+    # The solutions page is still linked in the header of the old theme.
+    And I visit the content overview
+    When I click "Solutions"
     Then I should see the heading "Solutions"
     And I should see the text "A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories."
     Then I should see the "Non electronic health" tile
@@ -109,10 +111,10 @@ Feature: Solutions Overview
     And the page should be cacheable
 
     # Once more for anonymous.
-    When I am an anonymous user
-    And I am on the homepage
-    Then I should see the link "More solutions"
-    When I click "More solutions"
+    Given I am an anonymous user
+    # The solutions page is still linked in the header of the old theme.
+    And I visit the content overview
+    When I click "Solutions"
     Then I should see the heading "Solutions"
     And I should see the text "A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories."
     And I should see the link "Non electronic health"
@@ -150,16 +152,17 @@ Feature: Solutions Overview
     And I visit the "Colonies in Earth" solution
     And I should see the text "Colonies in Earth"
 
-    When I am on the homepage
-    And I click "More solutions"
+    # The solutions page is still linked in the header of the old theme.
+    When I visit the content overview
+    And I click "Solutions"
     Then I should see the text "Colonies in Earth"
     And the page should be cacheable
 
     # Check the new solution as an anonymous user.
     When I am an anonymous user
-    And I am on the homepage
-    Then I should see the link "More solutions"
-    When I click "More solutions"
+    # The solutions page is still linked in the header of the old theme.
+    And I visit the content overview
+    And I click "Solutions"
     Then I should see the link "Colonies in Earth"
     And the page should be cacheable
 
