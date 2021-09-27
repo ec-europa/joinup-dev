@@ -32,6 +32,7 @@
         "drupal/entityqueue": "^1.2",
         "drupal/error_page": "^1.0",
         "drupal/facets": "1.6.0",
+        "drupal/facets_form": "1.x-dev@dev",
         "drupal/field_delimiter": "^1.1",
         "drupal/field_formatter_range": "^1.1",
         "drupal/field_group": "^3.1",
@@ -90,6 +91,7 @@
         "drupal/video_embed_field": "^2",
         "drupal/view_unpublished": "^1.0",
         "drupal/views_autosubmit": "^1.2",
+        "drupal/views_block_area": "^1.0@beta",
         "drupal/views_bulk_operations": "^4",
         "drupal/views_data_export": "^1.0",
         "drupal/views_multiple_permissions": "^1.0",
@@ -362,8 +364,8 @@
             "drupal/views_autosubmit": {
                 "The views plugin options are missing schema @see https://www.drupal.org/i/3195213": "https://git.drupalcode.org/project/views_autosubmit/-/merge_requests/2.diff"
             },
-            "openeuropa/oe_bootstrap_theme": {
-                "Preserve link attributes in navigation menus @see https://github.com/openeuropa/oe_bootstrap_theme/pull/38": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_bootstrap_theme/pull/38.diff"
+            "drupal/views_block_area": {
+                "Views block area missing schema @see https://www.drupal.org/project/views_block_area/issues/3157188": "https://www.drupal.org/files/issues/2020-07-06/views_block_area-missing_schema-3157188-2.patch"
             },
             "openeuropa/oe_webtools": {
                 "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
@@ -371,6 +373,9 @@
                 "Add the possibility to display a marker on the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://github.com/openeuropa/oe_webtools/compare/master...cbee0e9.diff",
                 "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff",
                 "Avoid CORS issues by requesting the Webtools Smartloader script over HTTPS @see https://github.com/openeuropa/oe_webtools/pull/149": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/149.diff"
+            },
+            "openeuropa/oe_bootstrap_theme": {
+                "Preserve link attributes in navigation menus @see https://github.com/openeuropa/oe_bootstrap_theme/pull/38": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_bootstrap_theme/pull/38.diff"
             },
             "solarium/solarium": {
                 "implode() deprecated usage": "resources/patch/solarium.diff"

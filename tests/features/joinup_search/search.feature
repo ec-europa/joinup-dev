@@ -581,3 +581,39 @@ Feature: Global search
       | Relativity news: Relativity theory |
       | Absolutely nonesense               |
     And I should be on "/search?keys=Relativity&sort_by=last-updated-date"
+
+  @javascript
+  Scenario: Anonymous user can find facets summary
+    Given the following collection:
+      | title            | Radio cooking collection     |
+      | logo             | logo.png                     |
+      | moderation       | no                           |
+      | topic            | Demography                   |
+      | spatial coverage | Belgium                      |
+      | state            | validated                    |
+    And the following solutions:
+      | title          | collection                   | description                                                                                                                          | topic      | spatial coverage | state     |
+      | Spheres        | Radio cooking collection     | Spherification is the culinary process of shaping a liquid into spheres                                                              | Demography | European Union   | validated |
+      | Movistar       | Radio cooking collection     | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" |            |                  | validated |
+    And news content:
+      | title                 | body             | collection                   | topic                   | spatial coverage | state     |
+      | El Cabo da Roca       | The best in town | Radio cooking collection     | Statistics and Analysis | Luxembourg       | validated |
+      | Funny news 1          | Dummy body       | Radio cooking collection     | E-inclusion             | Luxembourg       | validated |
+      | Funny news 2          | Dummy body       | Radio cooking collection     | E-inclusion             | Luxembourg       | validated |
+      | Funny news 3          | Dummy body       | Radio cooking collection     | E-inclusion             | Luxembourg       | validated |
+      | Funny news 4          | Dummy body       | Radio cooking collection     | E-inclusion             | Luxembourg       | validated |
+
+    Given I am logged in as a user with the "authenticated" role
+    When I visit the search page
+    And I check the "Solutions (2)" checkbox from the "Content types" facet
+    Then I check the "News (5)" checkbox from the "Content types" facet
+    And I should see the following facet summary "Solutions, News"
+
+    Then I check the "Solutions (2)" checkbox from the "Content types" facet
+    And I should see the following facet summary "News"
+
+    # Check if facet summary was remove correctly.
+    Then I check the "Collection (1)" checkbox from the "Content types" facet
+    And I should see the following facet summary "Collection, News"
+    Then I should remove the following facet summary "News"
+    And the page should show only the tiles "Radio cooking collection"

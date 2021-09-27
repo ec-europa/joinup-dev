@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f07dc4ca785e2871732baad839ea4cc",
+    "content-hash": "2ee78642e5c3bca4f5b5682ad9fe5132",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3884,7 +3884,8 @@
                 "patches_applied": {
                     "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
                     "Configurable dropdown child prefix. @see https://www.drupal.org/project/facets/issues/3214662": "https://git.drupalcode.org/project/facets/-/merge_requests/20.diff",
-                    "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "https://www.drupal.org/files/issues/2021-05-17/3213582-facets-1.6-1.7.patch"
+                    "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "https://www.drupal.org/files/issues/2021-05-17/3213582-facets-1.6-1.7.patch",
+                    "https://www.drupal.org/project/facets/issues/3223956": "https://git.drupalcode.org/project/facets/-/merge_requests/25.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3920,6 +3921,64 @@
                 "issues": "https://www.drupal.org/project/issues/facets",
                 "irc": "irc://irc.freenode.org/drupal-search-api"
             }
+        },
+        {
+            "name": "drupal/facets_form",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/facets_form.git",
+                "reference": "85965678f7d051c929be267cd1fd15453d556559"
+            },
+            "require": {
+                "cweagans/composer-patches": "^1.7",
+                "drupal/core": "^8.9 || ^9.1",
+                "drupal/facets": "^1.6"
+            },
+            "require-dev": {
+                "drupal/search_api": "^1.13"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "1.x-dev",
+                    "datestamp": "1629847996",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                },
+                "enable-patching": true,
+                "patches": {
+                    "drupal/facets": {
+                        "https://www.drupal.org/project/facets/issues/3223956": "https://git.drupalcode.org/project/facets/-/merge_requests/25.diff"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Claudiu Cristea",
+                    "homepage": "https://www.drupal.org/u/claudiucristea"
+                },
+                {
+                    "name": "Andras Szilagyi",
+                    "homepage": "https://www.drupal.org/u/andras_szilagyi"
+                }
+            ],
+            "description": "Place the facets of a given facets source in a form",
+            "homepage": "https://www.drupal.org/project/facets_form",
+            "support": {
+                "source": "https://git.drupalcode.org/project/facets_form",
+                "issues": "https://www.drupal.org/project/issues/facets_form"
+            },
+            "time": "2021-09-06T17:00:30+00:00"
         },
         {
             "name": "drupal/field_delimiter",
@@ -8142,6 +8201,61 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/views_autosubmit",
                 "issues": "https://www.drupal.org/project/issues/views_autosubmit"
+            }
+        },
+        {
+            "name": "drupal/views_block_area",
+            "version": "1.0.0-beta3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/views_block_area.git",
+                "reference": "8.x-1.0-beta3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/views_block_area-8.x-1.0-beta3.zip",
+                "reference": "8.x-1.0-beta3",
+                "shasum": "bfc4a4b2c85545ef53f91f5f6633f7465c655494"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0-beta3",
+                    "datestamp": "1592206687",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                },
+                "patches_applied": {
+                    "Views block area missing schema @see https://www.drupal.org/project/views_block_area/issues/3157188": "https://www.drupal.org/files/issues/2020-07-06/views_block_area-missing_schema-3157188-2.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Leon Kessler",
+                    "homepage": "https://www.drupal.org/user/595374"
+                },
+                {
+                    "name": "cafuego",
+                    "homepage": "https://www.drupal.org/user/218525"
+                },
+                {
+                    "name": "nils.destoop",
+                    "homepage": "https://www.drupal.org/user/361625"
+                }
+            ],
+            "description": "Exposes all blocks as a views area.",
+            "homepage": "https://www.drupal.org/project/views_block_area",
+            "support": {
+                "source": "https://git.drupalcode.org/project/views_block_area"
             }
         },
         {
@@ -20677,6 +20791,7 @@
     "stability-flags": {
         "dkarv/mdl-chip-input": 20,
         "drupal/config_ignore": 20,
+        "drupal/facets_form": 20,
         "drupal/menu_link_destination": 20,
         "drupal/og": 20,
         "drupal/page_manager": 10,
@@ -20685,6 +20800,7 @@
         "drupal/site_verify": 20,
         "drupal/subpathauto": 20,
         "drupal/swiftmailer": 20,
+        "drupal/views_block_area": 10,
         "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
