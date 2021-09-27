@@ -90,7 +90,7 @@ content:
       field_formatter_range:
         limit: 2
         offset: 0
-        reverse: false
+        order: 0
       template_suggestion:
         template_suggestion: ''
 hidden:

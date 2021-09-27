@@ -127,7 +127,7 @@ content:
       field_formatter_range:
         limit: 1
         offset: 0
-        reverse: false
+        order: 0
       template_suggestion:
         template_suggestion: ''
   field_topic:
@@ -143,7 +143,7 @@ content:
       field_formatter_range:
         limit: 2
         offset: 0
-        reverse: false
+        order: 0
       template_suggestion:
         template_suggestion: ''
   label:
