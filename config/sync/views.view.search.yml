@@ -8,6 +8,7 @@ dependencies:
     - joinup_material_design
     - search_api
     - views_autosubmit
+    - views_block_area
 _core:
   default_config_hash: IZ_1De9xX5-8975-JeHxZJ0f_58o9R3nM9pxnxboN_k
 id: search
@@ -397,6 +398,16 @@ display:
           empty: false
           content: 'Search Results (@total)'
           plugin_id: result
+        views_block_area:
+          id: views_block_area
+          table: views
+          field: views_block_area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          block_id: 'facets_summary_block:search_facets_summary'
+          plugin_id: views_block_area
       footer: {  }
       empty:
         area_text_custom:

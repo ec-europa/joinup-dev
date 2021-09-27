@@ -128,6 +128,7 @@ default:
         Pager: 'nav.pager'
         Plus button menu: 'div.add-content-menu'
         Primary menu: '.region-primary-menu'
+        Search bar: 'div.search-bar'
         SevenHeader: '.region-header'
         Statistics: '#block-statistics, #block-ventuno-statistics'
         Table of contents: '#block-table-of-contents'
