@@ -57,7 +57,7 @@ Feature:
     And I press "Submit"
     Then I should be on the homepage
 
-    When I go to "/collections"
+    When I visit the collection overview page
     # Todo this will be renamed to "Guided tour" in the new theme.
     Then I should not see the link "Take a tour"
     But I should see the link "Contact support"
@@ -75,7 +75,7 @@ Feature:
     And I press "Submit"
     Then I should be on "collections"
 
-    When I go to "/keep-up-to-date"
+    When I visit the content overview page
     # Todo this will be renamed to "Guided tour" in the new theme.
     Then I should see the link "Take a tour"
     And I should see the link "Contact support"

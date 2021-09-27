@@ -1881,7 +1881,7 @@ class JoinupContext extends RawDrupalContext {
     // A modal can be opened only in a JavaScript-enabled browser.
     self::assertJavaScriptEnabledBrowser();
 
-    $result = $this->getSession()->getPage()->waitFor(10, function () {
+    $result = $this->getSession()->getPage()->waitFor(5, function () {
       // Retrieve again a fresh copy of the page element at each cycle.
       $modal = $this->getSession()->getPage()->find('css', '#drupal-modal');
 
