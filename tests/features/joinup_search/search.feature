@@ -651,3 +651,9 @@ Feature: Global search
     And I should see the following facet summary "Collection, News"
     Then I should remove the following facet summary "News"
     And the page should show only the tiles "Radio cooking collection"
+
+    Then I enter "funn" in the search and I should see the suggestions:
+      | funni |
+      | funny |
+
+    Then I enter "bott" in the search and it should see the suggestion "body"

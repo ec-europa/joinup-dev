@@ -275,4 +275,7 @@ settings:
   facets_summary:
     handler: 'default:facets_summary'
     handler_settings: {  }
+  search_api_autocomplete_search:
+    handler: 'default:search_api_autocomplete_search'
+    handler_settings: {  }
 field_type: dynamic_entity_reference
