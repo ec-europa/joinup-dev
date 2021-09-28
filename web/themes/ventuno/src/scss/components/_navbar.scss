@@ -171,11 +171,11 @@
     .bi {
       @include media-breakpoint-between(xs, md) {
         width: 1.375*$spacer; // 22px
-        height: 1.375*$spacer; // 22px  
+        height: 1.375*$spacer; // 22px
       }
       @include media-breakpoint-up(md) {
         width: 1.5*$spacer; // 30px
-        height: 1.5*$spacer; // 30px  
+        height: 1.5*$spacer; // 30px
       }
     }
   }
@@ -216,9 +216,16 @@
       text-decoration: underline;
     }
     @include media-breakpoint-up(sm) {
-      padding-left: $spacer * .5; // 8px
-      padding-right: $spacer * .5; // 8px
+      border-radius: $border-radius;
+      background-color: $gray-100;
+      color: $brand;
+      margin: $spacer * .9;
+      padding-left: $spacer * 1.5; // 24px
+      padding-right: $spacer * 1.5; // 24px
       font-weight: 500;
+      &:hover {
+        box-shadow: $box-shadow;
+      }
     }
   }
 }
