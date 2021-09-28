@@ -14,7 +14,8 @@ upgrade_commands:
 php_version: 7.4
 
 solr: True
-solr_image: registry.fpfis.eu/ec-europa/digit-joinup-reference:solr
+solr_version: 6
+solr_core: custom
 
 virtuoso_image: registry.fpfis.eu/ec-europa/digit-joinup-reference:virtuoso
 
