@@ -22,3 +22,23 @@ Feature: Header
     Examples:
       | page         |
       | the homepage |
+
+  @joinup @javascript
+  Scenario Outline: The 'Get started' button opens a popup with information about EU Login
+    Given I am not logged in
+    And I am on <page>
+
+    # The popup is not shown initially.
+    Then I should not see the text "Create an account"
+    And I should not see the text "As a signed-in user you can create content, become a member of a community, receive notifications on your favourite solutions and topics, and access all other features available on the platform."
+    And I should not see the link "About EU Login"
+
+    # The popup appears when clicking on 'Get started'.
+    When I press "Get started"
+    Then I should see the text "Create an account"
+    And I should see the text "As a signed-in user you can create content, become a member of a community, receive notifications on your favourite solutions and topics, and access all other features available on the platform."
+    And I should see the link "About EU Login"
+
+    Examples:
+      | page         |
+      | the homepage |
