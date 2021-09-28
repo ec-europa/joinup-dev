@@ -49,7 +49,7 @@
   .accordion-collapse {
     position: absolute;
     right: $spacer*.75;
-    z-index: 1;
+    z-index: 3;
     width: 240px;
     background: $primary;
     box-shadow: $box-shadow;
