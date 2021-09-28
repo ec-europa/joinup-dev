@@ -1,0 +1,18 @@
+uuid: d829d7dc-4cc7-4988-9f6b-1db7ef4901ce
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+  theme:
+    - ventuno
+id: search
+label: Search
+theme: ventuno
+weight: 0
+conditions:
+  request_route:
+    id: request_route
+    routes:
+      - view.search.page_1
+    negate: false
