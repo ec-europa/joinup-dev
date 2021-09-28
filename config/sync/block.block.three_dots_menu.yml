@@ -2,6 +2,8 @@ uuid: 998c6074-0e67-43ac-b241-615239dee76a
 langcode: en
 status: true
 dependencies:
+  module:
+    - joinup_core
   theme:
     - joinup_theme
 id: three_dots_menu
