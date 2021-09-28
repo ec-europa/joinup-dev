@@ -53,7 +53,7 @@ Feature: Global search
     # Since the topics are indented by a whitespace, and the whitespaces are trimmed in the step above, we are testing
     # the full response in order to ensure that the results are indented properly. The &nbsp; character below is the
     # printable space character.
-    # @todo and WARNING. The following   character is supported by the old 3.4 selenium server. Change this in the
+    # @todo and WARNING. The following   character is supported by the old 3.4 selenium server. Change this in the
     # new infrastructure with the &nbsp; encoded character.
     And the response should contain "<option value=\"http://joinup.eu/ontology/topic/category#info\">Info</option>"
     And the response should contain "<option value=\"http://joinup.eu/ontology/topic#statistics-and-analysis\">- Statistics and Analysis</option>"
