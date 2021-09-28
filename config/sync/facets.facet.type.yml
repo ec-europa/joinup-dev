@@ -8,25 +8,20 @@ dependencies:
   module:
     - search_api
 id: type
-name: Type
+name: 'Content types'
 url_alias: type
-weight: 0
+weight: -2
 min_count: 1
 show_only_one_result: false
 field_identifier: entity_bundle
 facet_source_id: 'search_api:views_page__search__page_1'
 widget:
-  type: checkbox
+  type: facets_form_dropdown
   config:
+    default_option_label: Choose
+    child_items_prefix: '-'
+    disabled_on_empty: false
     show_numbers: true
-    soft_limit: 0
-    soft_limit_settings:
-      show_less_label: 'Show less'
-      show_more_label: 'Show more'
-    show_reset_link: false
-    reset_text: 'Show all'
-    hide_reset_when_no_selection: false
-    arbitrary_facet_plugin: _none
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -38,7 +33,7 @@ processor_configs:
   aggregated_entity_bundle_label:
     processor_id: aggregated_entity_bundle_label
     weights:
-      build: -10
+      build: 5
     settings:
       plural_count_label:
         enabled: true
@@ -46,10 +41,16 @@ processor_configs:
   count_limit:
     processor_id: count_limit
     weights:
-      build: 0
+      build: -10
     settings:
       minimum_items: 1
       maximum_items: null
+  display_value_widget_order:
+    processor_id: display_value_widget_order
+    weights:
+      sort: 40
+    settings:
+      sort: ASC
   joinup_search_content_type_fixed_order:
     processor_id: joinup_search_content_type_fixed_order
     weights:
@@ -64,4 +65,4 @@ processor_configs:
     settings: {  }
 empty_behavior:
   behavior: none
-show_title: false
+show_title: true

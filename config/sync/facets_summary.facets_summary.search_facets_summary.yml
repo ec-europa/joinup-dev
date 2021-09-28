@@ -10,12 +10,6 @@ dependencies:
 id: search_facets_summary
 name: 'Search facets summary'
 facets:
-  group:
-    checked: true
-    label: Collection/Solution
-    separator: ', '
-    weight: 0
-    show_count: false
   spatial_coverage:
     checked: true
     label: 'Geographic coverage'

@@ -329,6 +329,8 @@ trait TraversingTrait {
    *   This can be useful in cases where the data drupal facet id is placed in
    *   more than one html tag e.g. the dropdown has the id placed in both the
    *   <li> tag of links as well as the <select> element.
+   * @param bool $facet_form
+   *   (optional) Check if is a facet form element.
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The facet node element.
@@ -336,12 +338,17 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when the facet is not found in the designated area.
    */
-  protected function findFacetByAlias(string $alias, ?NodeElement $region = NULL, string $html_tag = '*'): NodeElement {
+  protected function findFacetByAlias(string $alias, ?NodeElement $region = NULL, string $html_tag = '*', bool $facet_form = FALSE): NodeElement {
     if ($region === NULL) {
       $region = $this->getSession()->getPage();
     }
     $facet_id = self::getFacetIdFromAlias($alias);
-    $element = $region->find('xpath', "//{$html_tag}[@data-drupal-facet-id='{$facet_id}']");
+    if ($facet_form) {
+      $element = $region->find('xpath', "//{$html_tag}[@data-drupal-selector='{$facet_id}']");
+    }
+    else {
+      $element = $region->find('xpath', "//{$html_tag}[@data-drupal-facet-id='{$facet_id}']");
+    }
 
     if (!$element) {
       throw new \Exception("The facet '$alias' was not found in the page.");
@@ -368,18 +375,18 @@ trait TraversingTrait {
     $mappings = [
       'collection type' => 'collection_type',
       'collection topic' => 'collection_topic',
-      'collection/solution' => 'group',
-      'topic' => 'topic',
+      'collection/solution' => 'edit-group',
+      'topic' => 'edit-topic',
       'solution topic' => 'solution_topic',
       'solution spatial coverage' => 'solution_spatial_coverage',
-      'spatial coverage' => 'spatial_coverage',
+      'spatial coverage' => 'edit-spatial-coverage',
       'My solutions content' => 'solution_my_content',
       'My collections content' => 'collection_my_content',
       'My content' => 'content_my_content',
       'Event date' => 'event_date',
       'EIF recommendations' => 'category',
       'Collection event date' => 'collection_event_type',
-      'Content types' => 'type',
+      'Content types' => 'edit-type',
       'eif principle' => 'principle',
       'eif interoperability layer' => 'interoperability_layer',
       'eif conceptual model' => 'conceptual_model',
