@@ -824,4 +824,26 @@ class JoinupSearchContext extends RawDrupalContext {
     $element->click();
   }
 
+  /**
+   * Asserts that the expected number of summaries are shown.
+   *
+   * @param string|null $number
+   *   The expected number of summaries. This is a string rather than an integer
+   *   because step definitions are represented in text.
+   *
+   * @throws \Exception
+   *    Thrown when the region is not found.
+   *
+   * @Then the page should contain :number summary(s)
+   * @Then the page should not contain any summary
+   * @Then the :region region should contain :number summary(s)
+   * @Then the :region region should not contain any summary
+   */
+  public function assertFacetsSummaryCount(?string $number = NULL): void {
+    $number = (int) $number;
+    $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' block-facets-summary-blocksearch-facets-summary ')]//li[contains(concat(' ', normalize-space(@class), ' '), ' facet-summary-item--facet ')]";
+    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    Assert::assertCount($number, $elements);
+  }
+
 }
