@@ -220,11 +220,9 @@ Feature: Search inside groups
     When I enter "ground" in the search bar and press enter
     Then the option with text "Chalet construction (2)" from select facet form "collection/solution" is selected
     And the page should show the tiles "Ground plan, Natural materials"
-    And the page should show the following chip in the "Search bar":
-      | Chalet construction |
-    When I press the remove button on the chip "Chalet construction"
-    And I submit the search by pressing enter
-    Then the page should not contain any chips
+    And I should see the following facet summary "Chalet construction"
+    When I should remove the following facet summary "Chalet construction"
+    Then the page should not contain any summary
     And the page should show the tiles "Ground plan, Pre-alpha, Natural materials, Presenting DrillMaster X88"
 
   @javascript

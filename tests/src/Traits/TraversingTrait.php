@@ -569,7 +569,7 @@ trait TraversingTrait {
           // The site-wide search field in the top right corner.
           ['css', 'input#search-bar__input'],
           // The search field on the search result pages.
-          ['css', '#block-exposed-form-search-page input.form-text'],
+          ['css', '.form-item-keys input[type=text]'],
         ],
       ],
     ];
