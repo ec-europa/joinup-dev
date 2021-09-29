@@ -100,22 +100,21 @@
         {% for item in _items %}
           {% if _breakpoint %}
             {% for link in item.links %}
-              <li class="nav-item d-none d-{{ _breakpoint }}-inline-flex">
+              <li class="nav-item d-none d-{{ _breakpoint }}-inline-block">
                 {% if link.link %}
                   <a class="nav-link" href="{{ link.link }}" {{ anchor.extra_attributes }}>{{ link.label }}</a>  
                 {% elseif link.popover %}
                   <button
                     data-bs-toggle="popover"
                     autocomplete="off"
-                    data-bs-trigger="click"
                     data-bs-placement="bottom"
-                    data-bs-content="<p class='popover__title'>{{ link.popover.title }}</p><p class='popover__description'>{{ link.popover.description }}</p><a class='popover__cta' href='{{ link.popover.cta.link }}' {{ link.popover.cta.attributes }}>{{ link.popover.cta.text }}</a>"
+                    data-bs-content="<a class='popover__cta' href='{{ link.popover.cta.link }}' {{ link.popover.cta.attributes }}>{{ link.popover.cta.text }}</a><p class='popover__description'>{{ link.popover.description }}</p>"
                     data-bs-custom-class="navbar__popover"
                     data-bs-html="true"
                     data-bs-container=".nav-item"
-                    data-bs-offset="-98, 1"
+                    data-bs-offset="-74, 16"
                     title=""
-                    class="popover-trigger popover-getstarted--lg"
+                    class="btn btn-light popover-trigger popover-getstarted"
                     type="button"
                   >
                     {{ link.label }}
@@ -154,28 +153,11 @@
               <div class="accordion-body">
                 <ul class="accordion-list">
                   {% for link in item.links %}
-                    <li class="accordion-list-item">
-                      {% if link.link %}
+                    {% if link.link %}
+                      <li class="accordion-list-item">
                         <a href="{{ link.link }}" class="accordion-list-link">
                           {{ link.label }}
                         </a>
-                      {% elseif link.popover %}
-                        <button
-                          data-bs-toggle="popover"
-                          autocomplete="off"
-                          data-bs-trigger="click"
-                          data-bs-placement="bottom"
-                          data-bs-content="<p class='popover__title'>{{ link.popover.title }}</p><p class='popover__description'>{{ link.popover.description }}</p><a class='popover__cta' href='{{ link.popover.cta.link }}' {{ link.popover.cta.attributes }}>{{ link.popover.cta.text }}</a>"
-                          data-bs-custom-class="navbar__popover"
-                          data-bs-html="true"
-                          data-bs-container=".accordion-list-item"
-                          data-bs-offset="64, -2"
-                          title=""
-                          class="popover-trigger popover-getstarted--sm"
-                          type="button"
-                        >
-                          {{ link.label }}
-                        </button>
                       {% endif %}
                     </li>
                   {% endfor %}

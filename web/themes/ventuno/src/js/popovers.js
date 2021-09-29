@@ -5,8 +5,7 @@
   Drupal.behaviors.popovers = {
     attach: function (context) {
       $(function () {
-        $('.popover-getstarted--sm').popover();
-        $('.popover-getstarted--lg').popover();
+        $('.popover-getstarted').popover({ trigger: "click" });
       })
     }
   };
