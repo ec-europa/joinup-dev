@@ -85,7 +85,11 @@ Feature: Machine translation
     # Pages that primarily list content should not be translatable.
     When I go to the homepage
     Then I should not see any Webtools eTrans elements
+    # The search no longer has a link to the collections, solutions and
+    # keep up to date. Let's try another page.
     When I visit the search page
+    Then I should not see any Webtools eTrans elements
+    When I visit "/keep-up-to-date"
     Then I should not see any Webtools eTrans elements
     When I click "Collections" in the "Header menu" region
     Then I should not see any Webtools eTrans elements

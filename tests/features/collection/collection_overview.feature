@@ -3,8 +3,8 @@ Feature: Collections Overview
 
   Scenario: Check visibility of "Collections" menu link.
     Given I am an anonymous user
-    # The homepage no longer has a link to the collections overview. Let's try another page.
-    When I am on the search page
+    # The homepage and search no longer has a link to the collections overview. Let's try another page.
+    When I visit "/keep-up-to-date"
     Then I should see the link "Collections"
     When I click "Collections"
     Then I should see the heading "Collections"

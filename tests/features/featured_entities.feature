@@ -91,9 +91,9 @@ Feature: Featuring content site-wide
 
   Scenario Outline: Moderators can feature and unfeature collections and solutions site-wide.
     When I am an anonymous user
-    # The homepage no longer shows links to the collection and solution overview
+    # The homepage and search no longer shows links to the collection and solution overview
     # pages. Let's do this from another page.
-    And I am on the search page
+    And I am on "/keep-up-to-date"
     And I click "<header link>"
     Then I should see the following tiles in the correct order:
       | <featured>   |
