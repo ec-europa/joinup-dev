@@ -217,33 +217,36 @@
       padding: .5rem 1.5rem;
     }
   }
-}
 
-.navbar__popover {
-  border-radius: 0 0 $border-radius $border-radius;
-  border: none;
-  background-color: $primary;
-  .popover-arrow {
-    display: none;
-  }
-  .popover__cta {
-    font-weight: $font-weight-bold;
-    font-size: $font-size-base; // 16px
-    margin-bottom: 0;
-    color: $white;
-    @include font-icon-after("\E801", 1rem);
-  }
-  .popover__description {
-    font-size: $font-size-xs; // 12px
-    margin-bottom: 0;
-    color: $white;
-  }
-}
+  .navbar__popover {
+    border-radius: 0 0 $border-radius $border-radius;
+    border: none;
+    background-color: $primary;
 
-// Temporal fix for the demo. This styles should come from the theme and already be available
-.btn-light,
-.btn-light:hover {
-  background-color: $white;
-  border-color: $white;
-  color: $primary;
+    .popover-arrow {
+      display: none;
+    }
+
+    .popover__cta {
+      font-weight: $font-weight-bold;
+      font-size: $font-size-base; // 16px
+      margin-bottom: 0;
+      color: $white;
+      @include font-icon-after("\E801", 1rem);
+    }
+
+    .popover__description {
+      font-size: $font-size-xs; // 12px
+      margin-bottom: 0;
+      color: $white;
+    }
+  }
+
+  // Temporary fix for the demo. This styles should come from the theme and already be available
+  .btn-light,
+  .btn-light:hover {
+    background-color: $white;
+    border-color: $white;
+    color: $primary;
+  }
 }
