@@ -239,3 +239,11 @@
     color: $white;
   }
 }
+
+// Temporal fix for the demo. This styles should come from the theme and already be available
+.btn-light,
+.btn-light:hover {
+  background-color: $white;
+  border-color: $white;
+  color: $primary;
+}
