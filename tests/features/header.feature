@@ -10,13 +10,30 @@ Feature: Header
     And I am on <page>
     Then I should see the Joinup logo in the navigation bar
     And I should see the text "Interoperability solutions" in the "Navigation bar"
-    And I should see the link "About us" in the "Navigation bar"
-    And I should see the link "Sign in" in the "Navigation bar"
-    When I click "About us" in the "Navigation bar"
+
+    # The links "Home" and "About us" are only shown in the hamburger menu since
+    # people using mobile devices are always on the move and need to navigate as
+    # quickly as possible.
+    And I should see the following items in the main navigation:
+      | link        | desktop menu | hamburger menu |
+      | Home        | not shown    | link           |
+      | Sign in     | link         | link           |
+      | Get started | button       | not shown      |
+      | About us    | not shown    | link           |
+
+    # Check that the links lead to the expected pages.
+    When I click "Home" in the "Hamburger menu"
+    Then I should be on "/"
+
+    When I click "About us" in the "Hamburger menu"
     Then I should see the heading "About Joinup"
 
     Given I am on <page>
     When I click "Sign in" in the "Navigation bar"
+    Then I should see the heading "Sign in to continue"
+
+    Given I am on <page>
+    When I click "Sign in" in the "Hamburger menu"
     Then I should see the heading "Sign in to continue"
 
     Examples:
