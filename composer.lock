@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ee78642e5c3bca4f5b5682ad9fe5132",
+    "content-hash": "edac0f0611125534002ce69a61071ae6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6143,7 +6143,7 @@
                     "datestamp": "1600173534",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Project has not opted into security advisory coverage!"
                     }
                 },
                 "patches_applied": {
@@ -9020,7 +9020,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-10-31T20:10:45+00:00"
+            "time": "2021-05-17T17:56:07+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",
@@ -11320,7 +11320,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-08-03T19:59:39+00:00"
+            "time": "2021-05-20T17:05:25+00:00"
         },
         {
             "name": "stack/builder",
