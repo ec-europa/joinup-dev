@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f132ed888f9409df8c1d95c67066febb",
+    "content-hash": "3804ec54be4c80b817eff917da8f54c5",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2350,47 +2350,44 @@
         },
         {
             "name": "drupal/cas",
-            "version": "1.7.0",
+            "version": "2.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas.git",
-                "reference": "8.x-1.7"
+                "reference": "2.0.0-beta3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cas-8.x-1.7.zip",
-                "reference": "8.x-1.7",
-                "shasum": "a8f7689f1e610bf3d9390d5a2a97eaa6911842d1"
+                "url": "https://ftp.drupal.org/files/projects/cas-2.0.0-beta3.zip",
+                "reference": "2.0.0-beta3",
+                "shasum": "73f09e95914942756b15de24fe47117bac946a1b"
             },
             "require": {
-                "drupal/core": "^8 || ^9",
+                "drupal/core": "^8.8 || ^9",
                 "drupal/externalauth": "^1.2"
             },
             "require-dev": {
-                "drupal/cas_mock_server": "^1.0||dev-0.x"
+                "drupal/cas_mock_server": "^1.2"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.7",
-                    "datestamp": "1592250922",
+                    "version": "2.0.0-beta3",
+                    "datestamp": "1633006042",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 },
                 "drush": {
                     "services": {
-                        "drush.services.yml": "^9"
+                        "drush.services.yml": "^9 || ^10"
                     }
-                },
-                "patches_applied": {
-                    "Properly fetch submit handlers @see https://www.drupal.org/project/cas/issues/3179292": "https://www.drupal.org/files/issues/2020-10-27/properly_fetch_submit_handlers.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -2424,33 +2421,30 @@
         },
         {
             "name": "drupal/cas_account_link",
-            "version": "2.0.0-alpha1",
+            "version": "dev-2.0.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_account_link.git",
-                "reference": "2.0.0-alpha1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cas_account_link-2.0.0-alpha1.zip",
-                "reference": "2.0.0-alpha1",
-                "shasum": "04356c5210e347fa4576c6cf159700842e1c8d09"
+                "reference": "17301f961eb7dba7cb4c8e416fd9319bf76f7410"
             },
             "require": {
-                "drupal/cas": "^1.6",
-                "drupal/core": "^8 || ^9"
+                "drupal/cas": "^2.0",
+                "drupal/core": "^8.9 || ^9.1"
             },
             "require-dev": {
-                "drupal/cas_mock_server": "^1.0"
+                "drupal/cas_mock_server": "^1.3"
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-2.0.x": "2.0.x-dev"
+                },
                 "drupal": {
-                    "version": "2.0.0-alpha1",
-                    "datestamp": "1591462872",
+                    "version": "2.0.0-alpha1+1-dev",
+                    "datestamp": "1633013379",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -2483,32 +2477,36 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/cas_account_link",
                 "issues": "https://www.drupal.org/project/issues/cas_account_link"
-            }
+            },
+            "time": "2021-10-01T07:57:25+00:00"
         },
         {
             "name": "drupal/cas_attributes",
-            "version": "dev-1.x",
+            "version": "2.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_attributes.git",
-                "reference": "49c318277f945f1169814b89979d4ca6f15deea9"
+                "reference": "2.0.0-beta3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/cas_attributes-2.0.0-beta3.zip",
+                "reference": "2.0.0-beta3",
+                "shasum": "e76b90f025b88e5ed43556f23ac48045fb9488b5"
             },
             "require": {
-                "drupal/cas": "^1.0",
-                "drupal/core": "^8 || ^9",
+                "drupal/cas": "^1.7 || ^2.0@beta",
+                "drupal/core": "^8.8 || ^9",
                 "drupal/token": "*"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.0-beta2+7-dev",
-                    "datestamp": "1615245777",
+                    "version": "2.0.0-beta3",
+                    "datestamp": "1617032053",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -2552,8 +2550,7 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/cas_attributes",
                 "issues": "https://www.drupal.org/project/issues/cas_attributes"
-            },
-            "time": "2021-03-08T22:03:22+00:00"
+            }
         },
         {
             "name": "drupal/changed_fields",
@@ -4720,7 +4717,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-5.0-beta12",
-                    "datestamp": "1608957625",
+                    "datestamp": "1632933670",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -4740,6 +4737,10 @@
                     "homepage": "https://stjerneman.com",
                     "email": "emil@stjerneman.com",
                     "role": "Maintainer"
+                },
+                {
+                    "name": "johnwebdev",
+                    "homepage": "https://www.drupal.org/user/3331569"
                 }
             ],
             "description": "Linkit - Enriched linking experience",
@@ -19526,7 +19527,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "dkarv/mdl-chip-input": 20,
-        "drupal/cas_attributes": 20,
+        "drupal/cas_account_link": 20,
         "drupal/config_ignore": 20,
         "drupal/menu_link_destination": 20,
         "drupal/og": 20,
