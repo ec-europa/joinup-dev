@@ -100,27 +100,29 @@
         {% for item in _items %}
           {% if _breakpoint %}
             {% for link in item.links %}
-              <li class="nav-item d-none d-{{ _breakpoint }}-inline-block">
-                {% if link.link %}
-                  <a class="nav-link" href="{{ link.link }}" {{ anchor.extra_attributes }}>{{ link.label }}</a>  
-                {% elseif link.popover %}
-                  <button
-                    data-bs-toggle="popover"
-                    autocomplete="off"
-                    data-bs-placement="bottom"
-                    data-bs-content="<a class='popover__cta' href='{{ link.popover.cta.link }}' {{ link.popover.cta.attributes }}>{{ link.popover.cta.text }}</a><p class='popover__description'>{{ link.popover.description }}</p>"
-                    data-bs-custom-class="navbar__popover"
-                    data-bs-html="true"
-                    data-bs-container=".nav-item"
-                    data-bs-offset="-74, 16"
-                    title=""
-                    class="btn btn-light popover-trigger popover-getstarted"
-                    type="button"
-                  >
-                    {{ link.label }}
-                  </button>
-                {% endif %}
-              </li>
+              {% if not link.hide_on_desktop %}
+                <li class="nav-item d-none d-{{ _breakpoint }}-inline-block">
+                  {% if link.link %}
+                    <a class="nav-link" href="{{ link.link }}" {{ anchor.extra_attributes }}>{{ link.label }}</a>
+                  {% elseif link.popover %}
+                    <button
+                      data-bs-toggle="popover"
+                      autocomplete="off"
+                      data-bs-placement="bottom"
+                      data-bs-content="<a class='popover__cta' href='{{ link.popover.cta.link }}' {{ link.popover.cta.attributes }}>{{ link.popover.cta.text }}</a><p class='popover__description'>{{ link.popover.description }}</p>"
+                      data-bs-custom-class="navbar__popover"
+                      data-bs-html="true"
+                      data-bs-container=".nav-item"
+                      data-bs-offset="-74, 16"
+                      title=""
+                      class="btn btn-light popover-trigger popover-getstarted"
+                      type="button"
+                    >
+                      {{ link.label }}
+                    </button>
+                  {% endif %}
+                </li>
+              {% endif %}
             {% endfor %}
           {% endif %}
           <li {{ list_item_attributes }}>

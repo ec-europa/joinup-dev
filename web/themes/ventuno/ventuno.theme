@@ -76,30 +76,12 @@ function ventuno_preprocess_page(&$variables) {
   // Populate the links shown to anonymous users.
   $anonymous_links = [];
 
-  // Generate a link to the About page of the Joinup collection, to show as the
-  // "About us" link in the page header for anonymous users.
-  try {
-    $joinup_collection = Rdf::load(JoinupCollectionHelper::getCollectionId());
-    if (!$joinup_collection instanceof CollectionInterface) {
-      throw new Exception();
-    }
-    $url = $joinup_collection->toUrl('about-page');
-    $anonymous_links[] = [
-      'label' => t('About us'),
-      'link' => $url,
-    ];
-  }
-  catch (Exception $e) {
-    // The Joinup collection could not be loaded or the link to the About page
-    // could not be generated. This should not crash the page since the
-    // collection is considered to be optional. It is for example possible for a
-    // project to reuse the Joinup open source code without hosting a "Joinup"
-    // collection.
-    // However in scope of the Ventuno theme the About Us link is considered
-    // to be an important element, so we log an error to alert maintainers
-    // that corrective action is required.
-    \Drupal::logger('ventuno')->error('"About us" link could not be rendered because the Joinup collection is not defined or doesn\'t have an About page.');
-  }
+  // Add a link to the homepage, only to be shown in the hamburger menu.
+  $anonymous_links[] = [
+    'label' => t('Home'),
+    'link' => Url::fromRoute('<front>'),
+    'hide_on_desktop' => TRUE,
+  ];
 
   // Generate a link to EU Login.
   $cas_login_link = Url::fromRoute('cas.login');
@@ -125,6 +107,33 @@ function ventuno_preprocess_page(&$variables) {
     'label' => t('Get started'),
     'popover' => $popover,
   ];
+
+  // Generate a link to the About page of the Joinup collection, to show as the
+  // "About us" link in the hamburger menu for anonymous users.
+  try {
+    $joinup_collection = Rdf::load(JoinupCollectionHelper::getCollectionId());
+    if (!$joinup_collection instanceof CollectionInterface) {
+      throw new Exception();
+    }
+    $url = $joinup_collection->toUrl('about-page');
+    $anonymous_links[] = [
+      'label' => t('About us'),
+      'link' => $url,
+      'hide_on_desktop' => TRUE,
+    ];
+  }
+  catch (Exception $e) {
+    // The Joinup collection could not be loaded or the link to the About page
+    // could not be generated. This should not crash the page since the
+    // collection is considered to be optional. It is for example possible for a
+    // project to reuse the Joinup open source code without hosting a "Joinup"
+    // collection.
+    // However in scope of the Ventuno theme the About Us link is considered
+    // to be an important element, so we log a warning to alert the webmaster
+    // that corrective action is required.
+    \Drupal::logger('ventuno')->warning('"About us" link could not be rendered because the Joinup collection is not defined or doesn\'t have an About page.');
+  }
+
   $variables['anonymous_links'] = $anonymous_links;
 }
 
