@@ -40,7 +40,7 @@ Feature: Header
       | page         |
       | the homepage |
 
-  @joinup @javascript
+  @joinup @javascript @wip
   Scenario Outline: The 'Get started' button opens a popup with information about EU Login
     Given I am not logged in
     And I am on <page>
