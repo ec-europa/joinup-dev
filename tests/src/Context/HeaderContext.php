@@ -47,12 +47,10 @@ class HeaderContext extends RawDrupalContext {
    * @Then I should see the following items in the main navigation:
    */
   public function assertMainNavigationItems(TableNode $items): void {
-    file_put_contents('/home/pieter/v/joinup-dev/testpage.html', $this->getSession()->getPage()->getHtml());
     // Retrieve the main navigation links on desktop.
     $desktop_items = $this->getSession()->getPage()->findAll('xpath', '//nav[contains(concat(" ", normalize-space(@class), " "), " joinup-navbar ")]//ul[contains(concat(" ", normalize-space(@class), " "), " navbar-nav ")]/li/*[self::a or self::button]');
     // Retrieve the main navigation links on mobile.
     $mobile_items = $this->getSession()->getPage()->findAll('css', 'nav.joinup-navbar ul.accordion-list a');
-
 
     foreach ($items->getColumnsHash() as $item) {
       // Check if the item is present in the desktop menu.
