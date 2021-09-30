@@ -51,6 +51,7 @@ Feature: Header
 
     # The popup appears when clicking on 'Get started'.
     When I press "Get started"
+    And I wait until the page contains the text "Create an account"
     Then I should see the link "Create an account"
     And I should see the text "As a signed-in user you can create content, become a member of a community, receive notifications on your favourite solutions and topics, and access all other features available on the platform."
 
