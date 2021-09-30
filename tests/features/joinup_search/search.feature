@@ -126,12 +126,9 @@ Feature: Global search
     And I should not see the "Spherification" tile
     And I should not see the "Foam" tile
 
-    # Reset the search by visiting again the search page.
-    Given I am on the search page
-    Then I should see the text "Content types" in the "Left sidebar" region
-
     # Select link in the 'type' facet.
-    When I select "News (5)" from the "Content type" select facet form
+    Given I am on the search page
+    When I select "News (5)" from the "Content types" select facet form
     And I click Search in facets form
     Then the option with text "News (5)" from select facet form "Content types" is selected
     And the "Content types" select facet form should contain the following options:
@@ -139,20 +136,17 @@ Feature: Global search
       | News (5)        |
       | Solutions (2)   |
 
-    When I select "Solutions (2)" from the "Content type" select facet form
+    When I select "Solutions (2)" from the "Content types" select facet form
     And I click Search in facets form
-    And I should see the following facet summary "News, Solutions"
+    And I should see the following facet summary "Solutions"
     And the "Content types" select facet form should contain the following options:
       | Collection (1)  |
       | News (5)        |
       | Solutions (2)   |
     And the "topic" select facet form should contain the following options:
       | Any topic                 |
-      | Info                      |
-      | - Statistics and Analysis |
       | Social and Political      |
       | - Demography              |
-      | - E-inclusion             |
     And the "spatial coverage" select facet form should contain the following options:
       | Any location       |
       | European Union (1) |
@@ -598,19 +592,20 @@ Feature: Global search
       | Absolutely nonesense               |
     And I should be on "/search?keys=Relativity&sort_by=relevance"
 
-    Given I select "Creation Date" from "Sort by"
-    Then I should see the following tiles in the correct order:
-      | Absolutely nonesense               |
-      | Relativity news: Relativity theory |
-      | Relativity is the word             |
-    And I should be on "/search?keys=Relativity&sort_by=creation-date"
-
-    Given I select "Last Updated Date" from "Sort by"
-    Then I should see the following tiles in the correct order:
-      | Relativity is the word             |
-      | Relativity news: Relativity theory |
-      | Absolutely nonesense               |
-    And I should be on "/search?keys=Relativity&sort_by=last-updated-date"
+    # @todo Enable when this ticket is implemented ISAICP-6575.
+    # When I select "Creation Date" from "Sort by"
+    # And I should see the following tiles in the correct order:
+    #   | Absolutely nonesense               |
+    #   | Relativity news: Relativity theory |
+    #   | Relativity is the word             |
+    # And I should be on "/search?keys=Relativity&sort_by=creation-date"
+    #
+    # When I select "Last Updated Date" from "Sort by"
+    # And I should see the following tiles in the correct order:
+    #   | Relativity is the word             |
+    #   | Relativity news: Relativity theory |
+    #   | Absolutely nonesense               |
+    # And I should be on "/search?keys=Relativity&sort_by=last-updated-date"
 
   @javascript
   Scenario: Anonymous user can find facets summary
