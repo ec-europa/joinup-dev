@@ -102,21 +102,25 @@ function ventuno_preprocess_page(&$variables) {
   }
 
   // Generate a link to EU Login.
+  $cas_login_link = Url::fromRoute('cas.login');
   $anonymous_links[] = [
     'label' => t('Sign in'),
-    'link' => Url::fromRoute('cas.login'),
+    'link' => $cas_login_link,
   ];
   $variables['anonymous_links'] = $anonymous_links;
 
   // Generate a link button that opens the "Get started" popover.
-  $popover = (object)array(
-    'cta' => (object)array(
-      'link' => 'example.html',
-      'attributes' => 'target="_blank" rel="noopener" tabindex="0"',
+  $popover = [
+    'cta' => [
+      // Even though the link claims to lead to an account creation form, we are
+      // linking to the EU Login portal. Account creation is not handled inside
+      // the Joinup domain.
+      'link' => $cas_login_link,
+      'attributes' => 'tabindex="0"',
       'text' => t('Create an account'),
-    ),
+    ],
     'description' => t('As a signed-in user you can create content, become a member of a community, receive notifications on your favourite solutions and topics, and access all other features available on the platform.'),
-  );
+  ];
   $anonymous_links[] = [
     'label' => t('Get started'),
     'popover' => $popover,

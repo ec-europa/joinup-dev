@@ -29,15 +29,20 @@ Feature: Header
     And I am on <page>
 
     # The popup is not shown initially.
-    Then I should not see the text "Create an account"
+    Then I should not see the link "Create an account"
     And I should not see the text "As a signed-in user you can create content, become a member of a community, receive notifications on your favourite solutions and topics, and access all other features available on the platform."
-    And I should not see the link "About EU Login"
 
     # The popup appears when clicking on 'Get started'.
     When I press "Get started"
-    Then I should see the text "Create an account"
+    Then I should see the link "Create an account"
     And I should see the text "As a signed-in user you can create content, become a member of a community, receive notifications on your favourite solutions and topics, and access all other features available on the platform."
-    And I should see the link "About EU Login"
+
+    # Even though the link claims to lead to an account creation page, we are in
+    # fact obliged to authenticate through EU Login. If the user doesn't have an
+    # EU Login account yet they can create one inside the EU Login portal. We
+    # just have to check that the link leads to our mocked EU Login portal.
+    When I click "Create an account"
+    Then I should see the heading "Sign in to continue"
 
     Examples:
       | page         |
