@@ -505,6 +505,70 @@ class JoinupSearchContext extends RawDrupalContext {
   }
 
   /**
+   * Asserts the autocomplete items from search.
+   *
+   * This function asserts also the order of the items.
+   *
+   * @param string $keywords
+   *   A list of words to search.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   A list of items to be present.
+   *
+   * @throws \Exception
+   *    Thrown when the suggestions are not present in the page.
+   *
+   * @Then I enter :keywords in the search and I should see the suggestions:
+   */
+  public function iShouldSeeTheSuggestions(string $keywords, TableNode $table): void {
+    $session = $this->getSession();
+    $element = $this->getSearchBarElement();
+    $element->setValue($keywords);
+
+    $session->getDriver()->keyDown($element->getXpath(), '', NULL);
+    $session->wait(500);
+    $allResults = $session->getPage()->findAll('css', '.ui-autocomplete a');
+
+    $found = array_map(function ($item) {
+      /** @var \Behat\Mink\Element\NodeElement $item */
+      return $item->getText();
+    }, $allResults);
+
+    Assert::assertEquals($table->getColumn(0), $found, "The autocomplete values mismatch the expected ones.");
+  }
+
+  /**
+   * Asserts the autocomplete single item from search.
+   *
+   * This function asserts also the order of the items.
+   *
+   * @param string $keywords
+   *   A list of words to search.
+   * @param string $suggestion
+   *   The word we need to see in suggestion.
+   *
+   * @throws \Exception
+   *   Thrown when the suggestion is not present in the page.
+   *
+   * @Then I enter :keywords in the search and it should see the suggestion :suggestion
+   */
+  public function iShouldSeeTheSuggestion(string $keywords, string $suggestion): void {
+    $session = $this->getSession();
+    $element = $this->getSearchBarElement();
+    $element->setValue($keywords);
+
+    $session->getDriver()->keyDown($element->getXpath(), '', NULL);
+    $session->wait(500);
+    $allResults = $session->getPage()->findAll('css', '.ui-autocomplete a');
+
+    $found = array_map(function ($item) {
+      /** @var \Behat\Mink\Element\NodeElement $item */
+      return $item->getText();
+    }, $allResults);
+
+    Assert::assertEquals([$suggestion], $found, "The autocomplete values mismatch the expected ones.");
+  }
+
+  /**
    * Opens the dropdown for the given facet element.
    *
    * @param \Behat\Mink\Element\NodeElement $facet

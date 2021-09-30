@@ -171,6 +171,7 @@ module:
   schema_social_media_posting: 0
   search_api: 0
   search_api_arbitrary_facet: 0
+  search_api_autocomplete: 0
   search_api_db: 0
   search_api_field: 0
   search_api_solr: 0

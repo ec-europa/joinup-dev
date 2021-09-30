@@ -1,0 +1,27 @@
+diff --git a/js/search_api_autocomplete.js b/js/search_api_autocomplete.js
+index 0b08e19..a2a8b77 100644
+--- a/js/search_api_autocomplete.js
++++ b/js/search_api_autocomplete.js
+@@ -61,6 +61,14 @@
+         .find('.ui-autocomplete-input[data-search-api-autocomplete-search]')
+         .once('search-api-autocomplete')
+         .each(function () {
++
++          // Clear timeout autosubmit used in views_autosubmit.
++          if (Drupal.behaviors.ViewsAutoSubmit.alterTextInputTimeout) {
++            Drupal.behaviors.ViewsAutoSubmit.alterTextInputTimeout = function(timeoutID) {
++              return clearTimeout(timeoutID);
++            }
++          }
++
+           var uiAutocomplete = $(this).data('ui-autocomplete');
+           if (!uiAutocomplete) {
+             return;
+@@ -69,6 +77,7 @@
+           $element.data('search-api-autocomplete-input-id', this.id);
+           $element.addClass('search-api-autocomplete-search');
+           var elementSettings = autocomplete.getSettings(this, settings);
++
+           if (elementSettings['delay']) {
+             uiAutocomplete.options['delay'] = elementSettings['delay'];
+           }

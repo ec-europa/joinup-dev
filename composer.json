@@ -72,6 +72,7 @@
         "drupal/redis": "^1.4",
         "drupal/schema_metatag": "^1.8",
         "drupal/search_api": "1.13",
+        "drupal/search_api_autocomplete": "^1.5",
         "drupal/search_api_solr": "2.2",
         "drupal/simple_block": "^1.3",
         "drupal/simple_sitemap": "^3.10",
@@ -346,6 +347,12 @@
                 "Some bulk form field options are missing schema @see https://www.drupal.org/project/search_api/issues/3195199": "https://git.drupalcode.org/project/search_api/-/merge_requests/6.diff",
                 "Duplicate dependencies @see https://www.drupal.org/project/search_api/issues/3111635": "https://www.drupal.org/files/issues/2020-02-08/3111635-8--fix_duplicate_dependencies.patch"
             },
+            "drupal/search_api_autocomplete": {
+                "Clear timeout autosubmit used in views_autosubmit.": "resources/patch/search_api_autocomplete_override_views_autosubmit.patch"
+            },
+            "drupal/search_api_solr": {
+                "Missing config schema @see https://www.drupal.org/project/search_api_solr/issues/3236773": "https://git.drupalcode.org/project/search_api_solr/-/merge_requests/8.diff"
+            },
             "drupal/site_alert": {
                 "Add drush commands @see https://www.drupal.org/project/site_alert/issues/3118800": "https://www.drupal.org/files/issues/2020-10-26/3118800-44.patch"
             },
@@ -367,7 +374,7 @@
                 "Extend support for embed URLs. Option to force privacy @see https://www.drupal.org/project/video_embed_field/issues/3060201 (originally on https://www.drupal.org/node/2899093)": "https://www.drupal.org/files/issues/2019-06-11/privacy_mode-3060201-D8-6.patch"
             },
             "drupal/views_autosubmit": {
-                "The views plugin options are missing schema @see https://www.drupal.org/i/3195213": "https://git.drupalcode.org/project/views_autosubmit/-/merge_requests/2.diff"
+                "Stop auto submitting first character entered in an Autocomplete Filter field. @see https://www.drupal.org/project/views_autosubmit/issues/3160600" : "https://www.drupal.org/files/issues/2021-09-06/3160600_views_autosubmit_16.patch"
             },
             "drupal/views_block_area": {
                 "Views block area missing schema @see https://www.drupal.org/project/views_block_area/issues/3157188": "https://www.drupal.org/files/issues/2020-07-06/views_block_area-missing_schema-3157188-2.patch"
