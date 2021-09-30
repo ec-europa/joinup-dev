@@ -48,7 +48,7 @@ Feature: Homepage
     #   page instead.
     When I click "Finance in EU"
     Then I should be on the advanced search page
-    And the option with text "Finance in EU" from select facet "topic" is selected
+    And the option with text "Finance in EU" from select facet form "topic" is selected
 
     # There is a "More news" link that for the moment leads to the search page
     # pre-filtered on news articles. In the future this will become a dedicated
@@ -56,7 +56,7 @@ Feature: Homepage
     Given I am on the homepage
     When I click "More news"
     Then I should be on the advanced search page
-    And the "News" content checkbox item should be selected
+    And I should see the following facet summary "News"
     And the page should show the tiles "Current biodiversity crisis, Environmental stewardship, Spatial reconstruction, Earlier transformations"
 
   @terms
@@ -108,7 +108,7 @@ Feature: Homepage
     And I should see the link "More solutions"
     When I click "More solutions"
     Then I should be on the advanced search page
-    And the "Solution" content checkbox item should be selected
+    And I should see the following facet summary "Solution"
 
   Scenario: An event can be highlighted on the homepage
     Given event content:
@@ -152,7 +152,7 @@ Feature: Homepage
     Given I am on the homepage
     When I click "More events"
     Then I should be on the advanced search page
-    And the "Event" content checkbox item should be selected
+    And I should see the following facet summary "Event"
     And I should see the "Florentine steak festival" tile
 
   @version
@@ -202,7 +202,7 @@ Feature: Homepage
     And I should see the link "E-justice" in the "Discover topics block"
     When I click "E-justice"
     Then I should be on the advanced search page
-    And the option with text "E-justice" from select facet "topic" is selected
+    And the option with text "E-justice" from select facet form "topic" is selected
 
     # See more topics modal.
     When I am on the homepage
@@ -230,7 +230,7 @@ Feature: Homepage
       | Social and Political |
     When I click "E-health Dpt." in the "Modal content"
     Then I should be on the advanced search page
-    And the option with text "E-health Dpt." from select facet "topic" is selected
+    And the option with text "E-health Dpt." from select facet form "topic" is selected
     And the page should show the tiles "Internet medicine"
 
     Examples:
@@ -353,19 +353,19 @@ Feature: Homepage
 
     When I click "See more solutions"
     Then I should be on the advanced search page
-    And the "Solutions" content checkbox item should be selected
+    And I should see the following facet summary "Solutions"
 
     When I am on the homepage
     And I click "See more collections"
     Then I should be on the advanced search page
-    And the "Collections" content checkbox item should be selected
+    And I should see the following facet summary "Collections"
 
     When I am on the homepage
     And I click "See more news"
     Then I should be on the advanced search page
-    And the "News" content checkbox item should be selected
+    And I should see the following facet summary "News"
 
     When I am on the homepage
     And I click "See more events"
     Then I should be on the advanced search page
-    And the "Events" content checkbox item should be selected
+    And I should see the following facet summary "Events"
