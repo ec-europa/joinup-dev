@@ -1,4 +1,4 @@
-@api @terms @group-d
+@api @terms @group-b
 Feature: Global search
   As a user of the site I can find content through the global search.
 
@@ -126,9 +126,12 @@ Feature: Global search
     And I should not see the "Spherification" tile
     And I should not see the "Foam" tile
 
-    # Select link in the 'type' facet.
+    # Reset the search by visiting again the search page.
     Given I am on the search page
-    When I select "News (5)" from the "Content types" select facet form
+    Then I should see the text "Content types" in the "Left sidebar" region
+
+    # Select link in the 'type' facet.
+    When I select "News (5)" from the "Content type" select facet form
     And I click Search in facets form
     Then the option with text "News (5)" from select facet form "Content types" is selected
     And the "Content types" select facet form should contain the following options:
@@ -136,7 +139,7 @@ Feature: Global search
       | News (5)        |
       | Solutions (2)   |
 
-    When I select "Solutions (2)" option in the "Content types" select facet form
+    When I select "Solutions (2)" from the "Content type" select facet form
     And I click Search in facets form
     And I should see the following facet summary "News, Solutions"
     And the "Content types" select facet form should contain the following options:
@@ -315,14 +318,15 @@ Feature: Global search
     Then the page should show the tiles "Solution alpha, Release Alpha"
 
     # Users should be found by first name, family name and organisation.
-    When I enter "Jenessa" in the search bar and press enter
-    Then the page should show the tiles "Jenessa Carlyle"
-    When I enter "freeman" in the search bar and press enter
-    Then the page should show the tiles "Ulysses Freeman"
-    When I enter "clyffco" in the search bar and press enter
-    Then the page should show the tiles "Jenessa Carlyle"
-    When I enter "Omero+snc" in the search bar and press enter
-    Then the page should show the tiles "Ulysses Freeman"
+    # @todo Enable when this ticket is implemented ISAICP-6575.
+    # When I enter "Jenessa" in the search bar and press enter
+    # Then the page should show the tiles "Jenessa Carlyle"
+    # When I enter "freeman" in the search bar and press enter
+    # Then the page should show the tiles "Ulysses Freeman"
+    # When I enter "clyffco" in the search bar and press enter
+    # Then the page should show the tiles "Jenessa Carlyle"
+    # When I enter "Omero+snc" in the search bar and press enter
+    # Then the page should show the tiles "Ulysses Freeman"
 
   Scenario: Advanced search
     # An advanced search link is shown in the header, except on the search page.
@@ -371,7 +375,8 @@ Feature: Global search
       | Chickens are small birds          |
       | Bird spotting                     |
       | Best place to find an exotic bird |
-      | Bird Birdman                      |
+      # @todo Enable when this ticket is implemented ISAICP-6575.
+      # | Bird Birdman                      |
 
   @clearStaticCache
   Scenario: Solutions and/or releases are found by their distribution keyword.
