@@ -213,8 +213,7 @@
             "Joinup\\Composer\\CaptureGitReleaseTag::capture",
             "Joinup\\Composer\\ScriptHandler::createRequiredFiles",
             "Joinup\\Composer\\RemoveWrongPatchedObjects::remove",
-            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit",
-            "npm install -C web/modules/contrib/slim_select"
+            "test ! -f ./vendor/bin/grumphp || ./vendor/bin/grumphp git:deinit"
         ],
         "post-update-cmd": [
             "Joinup\\Composer\\CaptureGitReleaseTag::capture",
