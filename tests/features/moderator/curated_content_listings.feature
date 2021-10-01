@@ -15,7 +15,7 @@ Feature: Curated content listings
       | Highlighted solution |
       | In the spotlight     |
     When I click "Discover topics"
-    Then I should see the heading "Edit subqueue Discover topics"
+    Then I should see the heading "Update curated content listing Discover topics"
     And I should see the button "Add item"
     And I should see the button "Save"
     And I should see the button "Reverse"
