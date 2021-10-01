@@ -3,6 +3,8 @@ style:
   css:
     theme:
       assets/css/styles.css: {}
+  js:
+    assets/js/popovers.js: {}
 
 slick:
   js:
