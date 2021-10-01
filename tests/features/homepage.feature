@@ -370,3 +370,34 @@ Feature: Homepage
     And I click "See more events"
     Then I should be on the advanced search page
     And the "Events" content checkbox item should be selected
+
+  Scenario: Moderators can quickly access curated content listing pages.
+    Given I am an anonymous user
+    And I am on the homepage
+    Then I should not see any contextual links in the "In the spotlight" region
+    And I should not see any contextual links in the "Highlighted event" region
+    And I should not see any contextual links in the "Highlighted solution" region
+
+    Given I am logged in as an "authenticated user"
+    And I am on the homepage
+    Then I should not see any contextual links in the "In the spotlight" region
+    And I should not see any contextual links in the "Highlighted event" region
+    And I should not see any contextual links in the "Highlighted solution" region
+
+    Given I am logged in as a "moderator"
+    And I am on the homepage
+    Then I should see the contextual link "Update curated content" in the "In the spotlight" region
+    And I should see the contextual link "Update curated content" in the "Highlighted event" region
+    And I should see the contextual link "Update curated content" in the "Highlighted solution" region
+
+    Given I am on the homepage
+    When I click the contextual link "Update curated content" in the "In the spotlight" region
+    Then I should see the heading "Update curated content listing In the spotlight"
+
+    Given I am on the homepage
+    When I click the contextual link "Update curated content" in the "Highlighted event" region
+    Then I should see the heading "Update curated content listing Highlighted event"
+
+    Given I am on the homepage
+    When I click the contextual link "Update curated content" in the "Highlighted solution" region
+    Then I should see the heading "Update curated content listing Highlighted solution"
