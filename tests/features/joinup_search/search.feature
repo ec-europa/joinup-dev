@@ -136,17 +136,20 @@ Feature: Global search
       | News (5)        |
       | Solutions (2)   |
 
-    When I select "Solutions (2)" from the "Content types" select facet form
+    When I select "Solutions (2)" option in the "Content types" select facet form
     And I click Search in facets form
-    And I should see the following facet summary "Solutions"
+    And I should see the following facet summary "News, Solutions"
     And the "Content types" select facet form should contain the following options:
       | Collection (1)  |
       | News (5)        |
       | Solutions (2)   |
     And the "topic" select facet form should contain the following options:
       | Any topic                 |
+      | Info                      |
+      | - Statistics and Analysis |
       | Social and Political      |
       | - Demography              |
+      | - E-inclusion             |
     And the "spatial coverage" select facet form should contain the following options:
       | Any location       |
       | European Union (1) |
