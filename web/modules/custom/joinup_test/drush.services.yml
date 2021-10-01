@@ -1,0 +1,6 @@
+services:
+  joinup_test.commands:
+    class: \Drupal\joinup_test\Commands\JoinupTestCommands
+    arguments: [ '@state' ]
+    tags:
+      - { name: drush.command }

@@ -1,0 +1,11 @@
+{
+    "name": "drupal/joinup_test",
+    "type": "drupal-module",
+    "extra": {
+        "drush": {
+            "services": {
+                "drush.services.yml": "^10"
+            }
+        }
+    }
+}
