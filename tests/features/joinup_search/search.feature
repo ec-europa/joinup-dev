@@ -39,7 +39,7 @@ Feature: Global search
     And I should see the "Spherification" tile
     And I should see the "Foam" tile
     # Terms are sorted alphabetically
-    And the "topic" select facet form should contain the following options:
+    And the slim select "topic" should contain the following options:
       | Any topic               |
       # Parent term.
       | Info                    |
@@ -69,10 +69,10 @@ Feature: Global search
     # Joinup there were two search fields, but this was confusing users.
     And there should be exactly 1 "search field" on the page
 
-    When I select "Social and Political" from the "topic" select facet form
+    When I select "Social and Political" from the "topic" slim select
     And I click Search in facets form
-    Then the option with text "Social and Political" from select facet form "topic" is selected
-    And the "topic" select facet form should contain the following options:
+    Then the option with text "Social and Political" from slim select "topic" is selected
+    And the slim select "topic" should contain the following options:
       | Any topic                 |
       | Info                      |
       | - Statistics and Analysis |
@@ -86,11 +86,11 @@ Feature: Global search
     And I should see the "Dummy news 4" tile
 
     # Test the topic facet. The space prefixing "Demography" is due to the hierarchy.
-    When I select " Demography" from the "topic" select facet form
+    When I select " Demography" from the "topic" slim select
     And I click Search in facets form
-    Then the option with text "- Demography" from select facet form "topic" is selected
+    Then the option with text "- Demography" from slim select "topic" is selected
     # The selected option moves to the last position by default.
-    And the "topic" select facet form should contain the following options:
+    And the slim select "topic" should contain the following options:
       | Any topic                 |
       | Info                      |
       | - Statistics and Analysis |
@@ -116,8 +116,8 @@ Feature: Global search
       | Any location       |
       | Belgium (1)        |
       | European Union (1) |
-    Then the option with text "- Demography" from select facet form "topic" is selected
-    And the "topic" select facet form should contain the following options:
+    Then the option with text "- Demography" from slim select "topic" is selected
+    And the slim select "topic" should contain the following options:
       | Any topic            |
       | Social and Political |
       | - Demography         |
@@ -143,7 +143,7 @@ Feature: Global search
       | Collection (1)  |
       | News (5)        |
       | Solutions (2)   |
-    And the "topic" select facet form should contain the following options:
+    And the slim select "topic" should contain the following options:
       | Any topic                 |
       | Info                      |
       | - Statistics and Analysis |
