@@ -16,7 +16,7 @@
         "drupal/antibot": "^1.4",
         "drupal/cached_computed_field": "^1.0-beta5",
         "drupal/cas": "^2.0",
-        "drupal/cas_account_link": "dev-2.0.x",
+        "drupal/cas_account_link": "^2.0",
         "drupal/cas_attributes": "^2.0",
         "drupal/changed_fields": "^3.2",
         "drupal/config_ignore": "dev-3.x",

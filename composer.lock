@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "683b3d64b5ac974ea3c272270b243b36",
+    "content-hash": "726bbef56e53ab5c5e4e1ffedc73dc55",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2421,11 +2421,17 @@
         },
         {
             "name": "drupal/cas_account_link",
-            "version": "dev-2.0.x",
+            "version": "2.0.0-alpha2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_account_link.git",
-                "reference": "17301f961eb7dba7cb4c8e416fd9319bf76f7410"
+                "reference": "2.0.0-alpha2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/cas_account_link-2.0.0-alpha2.zip",
+                "reference": "2.0.0-alpha2",
+                "shasum": "9c68e74f4306bd8ef813131456e37b80154c7659"
             },
             "require": {
                 "drupal/cas": "^2.0",
@@ -2436,15 +2442,12 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-2.0.x": "2.0.x-dev"
-                },
                 "drupal": {
-                    "version": "2.0.0-alpha1+1-dev",
-                    "datestamp": "1633013379",
+                    "version": "2.0.0-alpha2",
+                    "datestamp": "1633095009",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -2477,8 +2480,7 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/cas_account_link",
                 "issues": "https://www.drupal.org/project/issues/cas_account_link"
-            },
-            "time": "2021-10-01T07:57:25+00:00"
+            }
         },
         {
             "name": "drupal/cas_attributes",
@@ -19524,7 +19526,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "dkarv/mdl-chip-input": 20,
-        "drupal/cas_account_link": 20,
         "drupal/config_ignore": 20,
         "drupal/menu_link_destination": 20,
         "drupal/og": 20,
