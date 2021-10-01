@@ -303,9 +303,6 @@
                 "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2019-08-15/2771129-100_0.patch",
                 "Display pass policy status table only if the password element is shown @see https://www.drupal.org/project/password_policy/issues/3068891": "https://www.drupal.org/files/issues/2019-08-10/3068891-5.patch"
             },
-            "drupal/pipeline": {
-                "Allow other modules to interact when the pipeline finishes @see https://www.drupal.org/project/pipeline/issues/3192409": "https://git.drupalcode.org/project/pipeline/-/merge_requests/1.diff"
-            },
             "drupal/publication_date": {
                 "Provide computed properties that return the publication date or the created/updated date @see https://www.drupal.org/project/publication_date/issues/3066317": "https://www.drupal.org/files/issues/2019-07-07/3066317-3.patch"
             },
