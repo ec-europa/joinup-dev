@@ -39,6 +39,8 @@ services:
       ASDA_URL:
       ASDA_USER:
       ASDA_PASSWORD:
+      DISABLE_XDEBUG:
+      DISABLE_BLACKFIRE:
     depends_on:
       - mysql
       - virtuoso
