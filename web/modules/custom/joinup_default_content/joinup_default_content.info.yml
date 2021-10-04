@@ -1,0 +1,8 @@
+name: Joinup default content
+type: module
+description: Provides exported content that can be imported on will in Joinup.
+package: Custom
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - default_content
