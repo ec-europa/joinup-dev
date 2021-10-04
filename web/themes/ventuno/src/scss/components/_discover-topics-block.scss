@@ -105,4 +105,23 @@
       }
     }
   }
+  @include media-breakpoint-up(md) {
+    min-width: 740px;
+    .view-topic-parent-list {
+      .view-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin: 0 -15px;
+        .views-row {
+          flex: 1 0 33.3%;
+          padding: 0 15px;
+        }
+      }
+    }
+  }
+  @include media-breakpoint-up(lg) {
+    min-width: 830px;
+  }
+
 }
