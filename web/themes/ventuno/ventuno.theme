@@ -23,7 +23,15 @@ use Drupal\smart_trim\Truncate\TruncateHTML;
  * styled in the same way.
  */
 function ventuno_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
-  if (in_array($variables['menu_name'], ['footer', 'support'])) {
+  if (in_array($variables['menu_name'], [
+    'footer',
+    'support',
+    'footer-about-us',
+    'footer-european-commission',
+    'footer-follow-us',
+    'footer-help-and-support',
+    'footer-social-media',
+  ])) {
     $suggestions[] = 'menu__region_footer';
   }
 }
