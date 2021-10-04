@@ -1,22 +1,22 @@
-uuid: d6b3e8ba-af9b-417a-a18e-861ab66e1292
+uuid: 7202a38b-0b30-4f16-b17e-5adbd97924c1
 langcode: en
 status: true
 dependencies:
   config:
-    - system.menu.support
+    - system.menu.footer-social-media
   module:
     - system
   theme:
     - ventuno
-id: help_and_support_footer
+id: socialmedia
 theme: ventuno
 region: footer
-weight: 0
+weight: -23
 provider: null
-plugin: 'system_menu_block:support'
+plugin: 'system_menu_block:footer-social-media'
 settings:
-  id: 'system_menu_block:support'
-  label: 'Help and support'
+  id: 'system_menu_block:footer-social-media'
+  label: 'Social media'
   provider: system
   label_display: visible
   level: 1

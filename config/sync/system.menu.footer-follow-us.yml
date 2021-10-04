@@ -1,0 +1,8 @@
+uuid: da299060-2fac-45b2-8ca1-031627f884dd
+langcode: en
+status: true
+dependencies: {  }
+id: footer-follow-us
+label: 'Follow us'
+description: 'Footer: Follow us'
+locked: false

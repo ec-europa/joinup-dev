@@ -1,0 +1,25 @@
+uuid: 3c616799-451c-4e41-a80f-53005908a1e2
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.footer-follow-us
+  module:
+    - system
+  theme:
+    - ventuno
+id: followus
+theme: ventuno
+region: footer
+weight: -24
+provider: null
+plugin: 'system_menu_block:footer-follow-us'
+settings:
+  id: 'system_menu_block:footer-follow-us'
+  label: 'Follow us'
+  provider: system
+  label_display: visible
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }

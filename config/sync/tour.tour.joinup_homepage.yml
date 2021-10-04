@@ -24,7 +24,7 @@ tips:
     weight: 2
     location: left
     attributes:
-      data-class: 'search-bar'
+      data-class: search-bar
   discover_topics:
     id: discover_topics
     plugin: text
@@ -32,7 +32,7 @@ tips:
     weight: 3
     location: right
     attributes:
-      data-class: 'view-discover-topics'
+      data-class: view-discover-topics
   spotlight:
     id: spotlight
     plugin: text
@@ -40,7 +40,7 @@ tips:
     weight: 4
     location: left
     attributes:
-      data-class: 'block-views-blockin-the-spotlight-block'
+      data-class: block-views-blockin-the-spotlight-block
   news:
     id: news
     plugin: text
@@ -48,7 +48,7 @@ tips:
     weight: 5
     location: left
     attributes:
-      data-class: 'block-views-blocklatest-news-block'
+      data-class: block-views-blocklatest-news-block
   explore:
     id: explore
     plugin: text
@@ -64,7 +64,7 @@ tips:
     weight: 7
     location: left
     attributes:
-      data-class: 'about-what'
+      data-class: about-what
   contact:
     id: contact
     plugin: text

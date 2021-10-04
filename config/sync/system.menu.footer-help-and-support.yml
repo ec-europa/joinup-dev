@@ -1,0 +1,8 @@
+uuid: e05063d8-6fbb-4fed-82b1-c9b493484249
+langcode: en
+status: true
+dependencies: {  }
+id: footer-help-and-support
+label: 'Help and support'
+description: 'Footer: Help and support'
+locked: false
