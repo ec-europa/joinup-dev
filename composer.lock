@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0be6563e183a45e83402fdbab94e9b40",
+    "content-hash": "cf6873f09baec3e36f41d81cfe6c7ad1",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2953,7 +2953,7 @@
                     "Views exposed sort identifiers are not configurable @see https://www.drupal.org/project/drupal/issues/2897638": "https://www.drupal.org/files/issues/2020-09-06/2897638-33-8.9.x.patch",
                     "Pass current route parameters to the confirmation form route @see https://www.drupal.org/project/drupal/issues/2901412": "https://www.drupal.org/files/issues/2020-02-25/2901412-13.patch",
                     "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
-                    "CSS aggregation fails on many variations of @import @see https://www.drupal.org/project/drupal/issues/2936067": "https://www.drupal.org/files/issues/2021-10-04/2936067-backport-to-older-drupal-versions.patch",
+                    "CSS aggregation fails on many variations of @import @see https://www.drupal.org/project/drupal/issues/2936067": "https://www.drupal.org/files/issues/2021-10-04/2936067-67-backport.patch",
                     "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch",
                     "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2019-12-03/3008254-19-8.8.x.patch",
                     "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch",
