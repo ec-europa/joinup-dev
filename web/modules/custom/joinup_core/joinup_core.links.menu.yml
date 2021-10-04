@@ -14,11 +14,9 @@ joinup_core.redirects:
   weight: 0
 
 joinup_core.edit_support_menu:
-  title: 'Support menu'
-  route_name: entity.menu.edit_form
-  route_parameters:
-    menu: support
-  description: 'Allows to manage the user support menu.'
+  title: 'Menus'
+  route_name: entity.menu.collection
+  description: 'Allows users to manage menus.'
   parent: system.admin
   weight: 0
 
