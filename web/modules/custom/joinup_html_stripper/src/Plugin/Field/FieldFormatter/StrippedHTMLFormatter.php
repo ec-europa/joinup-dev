@@ -86,7 +86,7 @@ class StrippedHTMLFormatter extends FormatterBase {
 
     foreach ($items as $delta => $item) {
       // Default to the summary if present.
-      $output = $item->summary ?? $item->value;
+      $output = !empty($item->summary) ? $item->summary : $item->value;
 
       // Strip HTML, after applying all embedded media filters.
       $output = check_markup($output, 'stripped_html');
