@@ -290,7 +290,8 @@
                 "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2020-03-11/2877535-12.patch"
             },
             "drupal/matomo_reporting_api": {
-                "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch"
+                "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch",
+                "Create a D9 compatible release @see https://www.drupal.org/project/matomo_reporting_api/issues/3239018": "https://www.drupal.org/files/issues/2021-10-04/3239018-4.patch"
             },
             "drupal/message_digest": {
                 "MessageDigestSubcontext is deprecated @see https://www.drupal.org/project/message_digest/issues/3168495": "https://www.drupal.org/files/issues/2020-09-01/3168495-2.patch"
