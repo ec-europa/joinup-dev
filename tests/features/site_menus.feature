@@ -29,7 +29,7 @@ Feature: Site menus
     When I am on the homepage
     # Todo: This should become "Contact Joinup Support" in the new theme.
     # Ref. https://citnet.tech.ec.europa.eu/CITnet/jira/browse/ISAICP-6694
-    And I click "Contact support" in the Footer region
+    And I click "Contact Joinup Support" in the Footer region
     Then no menu items should be active in the "Header menu" menu
 
     # Collections menu item should be active when visiting a collection homepage.
