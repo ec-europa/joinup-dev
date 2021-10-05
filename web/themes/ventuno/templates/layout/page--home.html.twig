@@ -58,6 +58,16 @@
 #}
 <div class="layout-container">
   <div class="section-header">
+    {# Temporal solution for EC header, waiting for this pattern to be released on OE Bootstrap Theme #}
+    <div class="ec__header bcl-header">
+      <nav class="w-100 shadow-sm navbar">
+        <div class="container">
+          <a class="navbar-brand" href="https://ec.europa.eu/info/index_en">
+            <img src="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.0.2/ec/images/logo/logo-ec--en.svg" alt="European Commission logo"/>
+          </a>
+        </div>
+      </nav>
+    </div>
     <header role="banner" class="region-header">
       {% include directory ~ '/templates/navigation/navbar.html.twig' with {
         breakpoint: logged_in ? "" : "sm",
