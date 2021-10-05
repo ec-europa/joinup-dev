@@ -725,8 +725,9 @@ function solution_sync_settings(SolutionInterface $entity): void {
     // Do not store any unsaved updates.
     return;
   }
+
+  // Avoid a hard dependency on the meta_entity module.
   if (!\Drupal::moduleHandler()->moduleExists('meta_entity')) {
-    // Allow solution to not depend on meta_entity.
     return;
   }
 
@@ -747,8 +748,8 @@ function solution_sync_settings(SolutionInterface $entity): void {
  * Syncs the order of the related solutions back to the entity.
  */
 function solution_rdf_entity_load($entities) {
+  // Avoid a hard dependency on the meta_entity module.
   if (!\Drupal::moduleHandler()->moduleExists('meta_entity')) {
-    // Allow solution to not depend on meta_entity.
     return;
   }
 

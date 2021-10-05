@@ -6,11 +6,9 @@ core_version_requirement: ^8.9 || ^9.1
 php: 7.1
 
 dependencies:
-  - 'dynamic_entity_reference:dynamic_entity_reference'
   - 'drupal:datetime'
   - 'drupal:image'
   - 'drupal:link'
-  - 'drupal:meta_entity'
   - 'drupal:options'
   - 'drupal:text'
   - 'file_url:file_url'
