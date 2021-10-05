@@ -1,9 +1,9 @@
 @api
 Feature:
   - As a moderator, in order to maintain the support dropdown, I am able to
-    administer the 'support' menu.
+  administer the 'support' menu.
   - As a user, I should see the the 'Take a tour' menu item only on pages that
-    are implementing tours.
+  are implementing tours.
   - As a moderator I can add custom menu items and disable default menu items.
 
   Scenario Outline: Moderators are not able to admin menus except support menu.
@@ -24,13 +24,18 @@ Feature:
     But I should <add link> the link "Add link"
 
     Examples:
-      | menu    | code | add link |
-      | admin   | 403  | not see  |
-      | footer  | 403  | not see  |
-      | main    | 403  | not see  |
-      | support | 200  | see      |
-      | tools   | 403  | not see  |
-      | account | 403  | not see  |
+      | menu                       | code | add link |
+      | admin                      | 403  | not see  |
+      | footer                     | 403  | not see  |
+      | main                       | 403  | not see  |
+      | support                    | 200  | see      |
+      | footer-about-us            | 200  | see      |
+      | footer-european-commission | 200  | see      |
+      | footer-follow-us           | 200  | see      |
+      | footer-help-and-support    | 200  | see      |
+      | footer-social-media        | 200  | see      |
+      | tools                      | 403  | not see  |
+      | account                    | 403  | not see  |
 
   Scenario Outline: Test user support menu usage.
 
