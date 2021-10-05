@@ -34,6 +34,13 @@ joinup_core.support.contact:
   weight: -100
   destination: true
 
+joinup_core.support.homepage_contact:
+  title: 'Contact Joinup Support'
+  menu_name: footer-help-and-support
+  url: 'internal:/contact'
+  weight: -100
+  destination: true
+
 joinup_core.manage_media:
   title: 'Library'
   route_name: view.media.media_page_list
