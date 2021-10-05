@@ -47,8 +47,8 @@ Feature:
 
     When I am on the homepage
     Then I should not see the link "Guided tour" in the "Footer"
-    And I should see the link "Contact support"
-    Then I click "Contact support"
+    And I should see the link "Contact Joinup Support"
+    Then I click "Contact Joinup Support"
     And I fill in the following:
       | First name     | Rufus                       |
       | Last name      | Modric                      |
