@@ -10,6 +10,7 @@ dev:
     - config_devel
     - config_update
     - dblog
+    - joinup_default_content
     - devel
     - field_ui
     - filecache
