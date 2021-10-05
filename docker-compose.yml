@@ -42,7 +42,7 @@ services:
       DISABLE_XDEBUG:
     depends_on:
       - mysql
-      - virtuoso
+      - sparql
       - solr
       - redis
       - mail
