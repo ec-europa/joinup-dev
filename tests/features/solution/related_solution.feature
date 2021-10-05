@@ -59,7 +59,7 @@ Feature: Related solution
     And I should see the "PHP" tile
 
   @javascript
-  Scenario: Order is maintained for the related solutions.
+  Scenario: Moderators can reorder the related solutions.
     When I am logged in as a moderator
 
     # Solutions that have 'Solution related by type' off, should not show solutions related by type.
