@@ -15,9 +15,9 @@ dependencies:
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
+    - joinup_html_stripper
     - layout_builder
     - template_suggestion
-    - text
     - user
 third_party_settings:
   layout_builder:
@@ -33,9 +33,12 @@ content:
   body:
     weight: 1
     label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
+    settings:
+      trim_length: 300
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
+    type: joinup_html_stripper_stripped
     region: content
   field_topic:
     weight: 0
@@ -71,5 +74,6 @@ hidden:
   langcode: true
   links: true
   og_audience: true
+  read_more: true
   report: true
   share_link: true

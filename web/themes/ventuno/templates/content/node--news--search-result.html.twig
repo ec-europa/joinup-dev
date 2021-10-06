@@ -1,0 +1,14 @@
+{#
+/**
+ * @file
+ * Theme override to display a node.
+ */
+#}
+{% block content %}
+  {{ pattern('card', {
+    'variants': 'horizontal',
+    'url': url,
+    'title': label,
+    'content': content,
+  }) }}
+{% endblock %}

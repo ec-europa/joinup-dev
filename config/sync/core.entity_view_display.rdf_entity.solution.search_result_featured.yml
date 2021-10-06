@@ -50,8 +50,8 @@ dependencies:
   module:
     - field_group
     - image
+    - joinup_html_stripper
     - layout_builder
-    - smart_trim
     - template_suggestion
     - user
 third_party_settings:
@@ -114,23 +114,12 @@ content:
       template_suggestion:
         template_suggestion: ''
   field_is_description:
-    type: smart_trim
+    type: joinup_html_stripper_stripped
     weight: 4
     region: content
     label: hidden
     settings:
       trim_length: 200
-      trim_type: chars
-      trim_suffix: …
-      wrap_class: ''
-      more_text: ''
-      more_class: ''
-      trim_options:
-        text: true
-        trim_zero: false
-      wrap_output: false
-      more_link: false
-      summary_handler: full
     third_party_settings:
       template_suggestion:
         template_suggestion: ''

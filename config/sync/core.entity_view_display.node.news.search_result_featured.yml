@@ -25,9 +25,9 @@ dependencies:
     - field_formatter_range
     - field_group
     - image
+    - joinup_html_stripper
     - layout_builder
     - template_suggestion
-    - text
     - user
 third_party_settings:
   field_group:
@@ -58,10 +58,13 @@ mode: search_result_featured
 content:
   body:
     label: hidden
-    type: text_default
+    type: joinup_html_stripper_stripped
     weight: 2
-    settings: {  }
-    third_party_settings: {  }
+    settings:
+      trim_length: 200
+    third_party_settings:
+      template_suggestion:
+        template_suggestion: ''
     region: content
   field_news_logo:
     type: image
@@ -116,5 +119,6 @@ hidden:
   langcode: true
   links: true
   og_audience: true
+  read_more: true
   report: true
   share_link: true

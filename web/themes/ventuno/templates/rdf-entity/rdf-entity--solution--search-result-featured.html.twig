@@ -1,0 +1,15 @@
+{#
+/**
+ * @file
+ * Theme override to display a rdf entities.
+ */
+#}
+{% block content %}
+  {{ pattern('card', {
+    'variants': 'horizontal',
+    'url': url,
+    'title': label,
+    'content': content|without('field_is_logo'),
+    'image': content.field_is_logo,
+  }) }}
+{% endblock %}
