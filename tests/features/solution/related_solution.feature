@@ -3,7 +3,7 @@ Feature: Related solution
   As a solution facilitator, I need to be able to relate my solution to other
   solutions and present the related solutions to the users.
 
-  Scenario: Related solutions
+  Background:
     Given the following contact:
       | email | bar@bar.com |
       | name  | Kalikatoura |
@@ -17,8 +17,9 @@ Feature: Related solution
       | PHP        |                   | Make a site.                        | text.pdf      | yes             | yes        | logo.png | banner.jpg | Demography | validated | Citizen       | Kalikatoures | Kalikatoura         |
       | Golang     |                   | Concurrency for the masses          | text.pdf      | yes             | yes        | logo.png | banner.jpg | Demography | proposed  | Citizen       | Kalikatoures | Kalikatoura         |
       | Python     |                   | Get stuff done.                     | text.pdf      | yes             | no         | logo.png | banner.jpg | Demography | validated |               | Kalikatoures | Kalikatoura         |
-      | Javascript | Java              | Java is related to javascript. Huh? | text.pdf      | no              | no         | logo.png | banner.jpg | Demography | validated | Citizen       | Kalikatoures | Kalikatoura         |
+      | Javascript | Java, PHP         | Java is related to javascript. Huh? | text.pdf      | no              | no         | logo.png | banner.jpg | Demography | validated | Citizen       | Kalikatoures | Kalikatoura         |
 
+  Scenario: Related solutions
     # Scenario A. A collection owner manages his own collection.
     When I visit the "Java" solution
     # Referenced through EIRA building block.
@@ -52,12 +53,26 @@ Feature: Related solution
     When I click "Edit" in the "Entity actions" region
     And I check "Show solutions related by EIRA terms"
     And I press "Publish"
-    Then I should see the "Python" tile
+    Then I should see the heading "Java"
+    And I should see the "Python" tile
     And I should see the "Javascript" tile
     And I should see the "PHP" tile
 
+  @javascript
+  Scenario: Moderators can reorder the related solutions.
+    When I am logged in as a moderator
+
     # Solutions that have 'Solution related by type' off, should not show solutions related by type.
-    When I visit the "Javascript" solution
-    Then I should see the "Java" tile
-    But I should not see the "PHP" tile
-    And I should not see the "Goland" tile
+    And I visit the "Javascript" solution
+    Then I should see the following tiles in the correct order:
+      | Java |
+      | PHP  |
+
+    When I go to the edit form of the "Javascript" solution
+    And I click "Additional fields" tab
+    And I drag the table row in the "Related solutions" region at position 2 up
+    And I press "Publish"
+    Then I should see the heading "Javascript"
+    And I should see the following tiles in the correct order:
+      | PHP  |
+      | Java |
