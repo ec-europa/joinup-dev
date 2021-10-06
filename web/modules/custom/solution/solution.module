@@ -723,10 +723,10 @@ function solution_preprocess_rdf_entity(&$variables) {
  * Once RDF entities can store deltas / weights reliably we will not need this
  * workaround any more.
  *
- * @see https://www.drupal.org/project/rdf_entity/issues/2892361
- *
  * @param \Drupal\solution\Entity\SolutionInterface $entity
  *   The solution entity.
+ *
+ * @see https://www.drupal.org/project/rdf_entity/issues/2892361
  */
 function solution_sync_settings(SolutionInterface $entity): void {
   if (!$entity->isPublished()) {
