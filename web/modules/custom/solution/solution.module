@@ -717,6 +717,14 @@ function solution_preprocess_rdf_entity(&$variables) {
  * Stores the values of the related solutions of a solution to a meta entity in
  * order to handle the deltas.
  *
+ * Due to a limitation in the RDF Entity module it is currently not possible to
+ * store weights in multivalue fields. We work around this by storing them in a
+ * meta entity (which is not subject to this problem since it uses SQL storage).
+ * Once RDF entities can store deltas / weights reliably we will not need this
+ * workaround any more.
+ *
+ * @see https://www.drupal.org/project/rdf_entity/issues/2892361
+ *
  * @param \Drupal\solution\Entity\SolutionInterface $entity
  *   The solution entity.
  */
@@ -725,8 +733,9 @@ function solution_sync_settings(SolutionInterface $entity): void {
     // Do not store any unsaved updates.
     return;
   }
+
+  // Avoid a hard dependency on the meta_entity module.
   if (!\Drupal::moduleHandler()->moduleExists('meta_entity')) {
-    // Allow solution to not depend on meta_entity.
     return;
   }
 
@@ -747,8 +756,8 @@ function solution_sync_settings(SolutionInterface $entity): void {
  * Syncs the order of the related solutions back to the entity.
  */
 function solution_rdf_entity_load($entities) {
+  // Avoid a hard dependency on the meta_entity module.
   if (!\Drupal::moduleHandler()->moduleExists('meta_entity')) {
-    // Allow solution to not depend on meta_entity.
     return;
   }
 
@@ -758,8 +767,8 @@ function solution_rdf_entity_load($entities) {
     }
 
     if (!$entity->isPublished()) {
-      // Do not sync anything for unpublished entities since they can be work
-      // in progress.
+      // Do not sync anything for unpublished entities since they can be work in
+      // progress.
       continue;
     }
 
