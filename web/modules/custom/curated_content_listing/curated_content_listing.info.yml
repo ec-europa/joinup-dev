@@ -1,0 +1,11 @@
+name: Curated content listings
+type: module
+description: Provides listings of content that can be hand picked by moderators.
+package: Joinup
+
+core_version_requirement: ^8 || ^9
+php: 7.1
+
+dependencies:
+  - entityqueue:entityqueue
+  - joinup:entityqueue_block

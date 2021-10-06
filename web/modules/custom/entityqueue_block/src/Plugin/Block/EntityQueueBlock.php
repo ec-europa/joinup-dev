@@ -87,6 +87,14 @@ class EntityQueueBlock extends BlockBase implements ContainerFactoryPluginInterf
       ->getViewBuilder($subqueue->getQueue()->getTargetEntityTypeId())
       ->viewMultiple($item_list->referencedEntities(), $this->configuration['view_mode']);
 
+    // Provide a contextual link to edit the entity subqueue.
+    $build['#contextual_links']['entityqueue'] = [
+      'route_parameters' => [
+        'entity_queue' => $subqueue->getQueue()->id(),
+        'entity_subqueue' => $subqueue->id(),
+      ],
+    ];
+
     return $build;
   }
 
