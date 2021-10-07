@@ -1,0 +1,28 @@
+uuid: 4cacf604-3e96-4204-94f6-3017de52e06a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.meta_entity.field_ss_related_solutions
+    - meta_entity.type.solution_settings
+    - rdf_entity.rdfentity.solution
+id: meta_entity.solution_settings.field_ss_related_solutions
+field_name: field_ss_related_solutions
+entity_type: meta_entity
+bundle: solution_settings
+label: 'Related solutions'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      solution: solution
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

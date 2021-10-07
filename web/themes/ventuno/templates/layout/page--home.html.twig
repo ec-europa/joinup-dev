@@ -64,19 +64,17 @@
         brand: {
           src: base_path ~ directory ~ "/src/images/logo.svg",
           alt: "Joinup logo"|t,
-          motto: "Interoperability solutions"|t,
           link: front_page,
         },
-        collapse_id: "navbar",
-        list_id: "list",
-        buttons: [
+        collapse_id: "main-navbar",
+        list_id: "main-navbar-list",
+        items: [
           {
             id: logged_in ? "account" : "navbar-toggler",
             icon: {
               name: logged_in ? "person-circle" : "justify",
             },
             label: logged_in ? user_name : "",
-            type: "links",
             links: logged_in ? profile_links : anonymous_links,
           },
         ],
