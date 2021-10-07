@@ -4,7 +4,8 @@ style:
     theme:
       assets/css/styles.css: {}
   js:
-    assets/js/popovers.js: {}
+    assets/js/main.min.js: { minified: true }
+    assets/js/popovers.js: { minified: false }
 
 slick:
   js:

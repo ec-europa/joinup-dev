@@ -10,6 +10,15 @@ const includePaths = [nodeModules];
 module.exports = {
   scripts: [
     {
+      entry: path.resolve(outputFolder, "src/js/main.js"),
+      dest: path.resolve(outputFolder, "assets/js/main.js"),
+      options: {
+        name: "main",
+        minify: true,
+        sourceMap: true,
+      },
+    },
+    {
       entry: path.resolve(outputFolder, "src/js/slick-config.js"),
       dest: path.resolve(outputFolder, "assets/js/slick-config.js"),
       options: {
