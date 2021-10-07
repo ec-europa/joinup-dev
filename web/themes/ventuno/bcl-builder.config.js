@@ -10,11 +10,10 @@ const includePaths = [nodeModules];
 module.exports = {
   scripts: [
     {
-      entry: path.resolve(outputFolder, "src/js/main.js"),
-      dest: path.resolve(outputFolder, "assets/js/main.js"),
+      entry: path.resolve(outputFolder, "src/js/popovers.js"),
+      dest: path.resolve(outputFolder, "assets/js/popovers.js"),
       options: {
-        name: "main",
-        minify: true,
+        minify: false,
         sourceMap: true,
       },
     },
@@ -23,15 +22,6 @@ module.exports = {
       dest: path.resolve(outputFolder, "assets/js/slick-config.js"),
       options: {
         name: "slick",
-        minify: false,
-        sourceMap: true,
-      },
-    },
-    {
-      entry: path.resolve(outputFolder, "src/js/popovers.js"),
-      dest: path.resolve(outputFolder, "assets/js/popovers.js"),
-      options: {
-        name: "popovers",
         minify: false,
         sourceMap: true,
       },
@@ -48,6 +38,16 @@ module.exports = {
     },
   ],
   copy: [
+    {
+      from: [
+        path.resolve(
+          nodeModules,
+          "@openeuropa/bcl-theme-joinup/js/oe-bcl-joinup.bundle.min.js"
+        ),
+      ],
+      to: path.resolve(outputFolder, "assets/js"),
+      options: { up: true },
+    },
     {
       from: [
         path.resolve(

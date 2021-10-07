@@ -4,7 +4,7 @@ style:
     theme:
       assets/css/styles.css: {}
   js:
-    assets/js/main.min.js: { minified: true }
+    assets/js/oe-bcl-joinup.bundle.min.js: { minified: true }
     assets/js/popovers.js: { minified: false }
 
 slick:
