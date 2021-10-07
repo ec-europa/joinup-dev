@@ -34,12 +34,15 @@ class SpdxToJoinupLicence extends JoinupFederationStepPluginBase implements Pipe
   public function initBatchProcess(): int {
     $conversion_map = $this->getConversionMap();
 
-    $ids = array_values($this->getSparqlQuery()
-      ->graphs(['staging'])
-      ->condition('rid', 'asset_distribution')
-      // Limit to distributions that really have a SPDX licence.
-      ->condition('field_ad_licence', array_keys($conversion_map), 'IN')
-      ->execute());
+    $ids = [];
+    if (!empty($conversion_map)) {
+      $ids = array_values($this->getSparqlQuery()
+        ->graphs(['staging'])
+        ->condition('rid', 'asset_distribution')
+        // Limit to distributions that really have a SPDX licence.
+        ->condition('field_ad_licence', array_keys($conversion_map), 'IN')
+        ->execute());
+    }
     $this->setBatchValue('distribution_ids', $ids);
 
     return (int) ceil(count($ids) / static::BATCH_SIZE);
