@@ -29,13 +29,14 @@ function joinup_rdf_form_rdf_entity_form_alter(&$form, FormStateInterface $form_
   $form_object = $form_state->getFormObject();
   /** @var \Drupal\rdf_entity\RdfInterface $rdf */
   $rdf = $form_object->getEntity();
+  $exceptions = ['field_is_related_solutions'];
 
   /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $field_definitions */
   $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($rdf->getEntityTypeId(), $rdf->bundle());
   // Keep only fields that are on the form.
   $field_definitions = array_intersect_key($field_definitions, $form);
   foreach ($field_definitions as $field_name => $field_definition) {
-    if ($field_definition->getFieldStorageDefinition()->isMultiple()) {
+    if ($field_definition->getFieldStorageDefinition()->isMultiple() && !in_array($field_definition->getName(), $exceptions)) {
       // We are questioning only multi-value fields.
       $form[$field_name]['#attributes']['class'][] = 'joinup-nodrag';
     }
