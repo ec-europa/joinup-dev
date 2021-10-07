@@ -43,6 +43,7 @@
         "drupal/iframe": "2.11.0",
         "drupal/image_library_widget": "^1.0",
         "drupal/inline_entity_form": "^1.0",
+        "drupal/jquery_ui_accordion": "^1.1",
         "drupal/json_field": "^1.0",
         "drupal/linkit": "^5.0-beta11",
         "drupal/matomo": "^1.11",
