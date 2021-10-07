@@ -60,20 +60,16 @@ class JoinupTestSubscriber implements EventSubscriberInterface {
    *   Response event.
    */
   public function onKernelRequest(GetResponseEvent $event): void {
-    if (!$this->pathMatcher->isFrontPage()) {
-      return;
-    }
-
     $state = $this->stateManager->get('joinup_test_messages');
     if (empty($state)) {
       return;
     }
 
-    $message = $state['message'];
-    $this->messenger->addMessage('Message: ' . $message);
-    $this->messenger->addStatus('Status: ' . $message);
-    $this->messenger->addWarning('Warning: ' . $message);
-    $this->messenger->addError('Error: ' . $message);
+    foreach ($state['messages'] as $type => $messages) {
+      foreach ($messages as $message) {
+        $this->messenger->addMessage(t($message), $type);
+      }
+    }
   }
 
   /**
