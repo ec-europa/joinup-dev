@@ -88,7 +88,7 @@
         "drupal/video_embed_field": "~1.6",
         "drupal/view_unpublished": "^1.0",
         "drupal/views_autosubmit": "^1.2",
-        "drupal/views_bulk_operations": "^2.6",
+        "drupal/views_bulk_operations": "^4",
         "drupal/views_data_export": "^1.0",
         "drupal/views_multiple_permissions": "^1.0",
         "drush/drush": "~10.3",
