@@ -2,55 +2,55 @@
 .site-alert {
   @extend .container;
   & > div {
-    padding: $spacer;
+    padding: $spacer*1.5 $spacer;
     border-radius: $border-radius;
-    margin-bottom: $spacer;
+    margin-bottom: $spacer * 2;
   }
   .severity-low {
-    border: 4px solid $secondary;
+    background-color: $brand;
     .text {
-      @include font-icon-before("\E81A", 2rem, $secondary);
+      @include font-icon-before("\E81A", 2rem, $white);
     }
   }
   .severity-medium {
-    border: 4px solid $warning;
+    background-color: $warning;
     .text {
-      @include font-icon-before("\E807", 2rem, $warning);
+      @include font-icon-before("\E807", 2rem, $white);
     }
   }
   .severity-high {
-    border: 4px solid $danger;
+    background-color: $danger;
     .text {
-      @include font-icon-before("\E810", 2rem, $danger);
+      @include font-icon-before("\E810", 2rem, $white);
     }
   }
 }
 
 // Status messages
 .messages {
-  padding: $spacer;
+  padding: $spacer*1.5 $spacer;
   border-radius: $border-radius;
-  margin-bottom: $spacer;
+  margin-bottom: $spacer * 2;
   .messages__list {
     margin-bottom: 0;
     padding-left: $spacer;
   }
   &.messages--status {
-    border: 4px solid $success;
+    background-color: $success;
     .text {
-      @include font-icon-before("\E81A", 2rem, $success);
+      @include font-icon-before("\E81A", 2rem, $white);
     }
   }
   &.messages--warning {
-    border: 4px solid $warning;
+    background-color: $warning;
     .text {
-      @include font-icon-before("\E807", 2rem, $warning);
+      @include font-icon-before("\E807", 2rem, $white);
     }
   }
   &.messages--error {
-    border: 4px solid $danger;
+    background-color: $danger;
     .text {
-      @include font-icon-before("\E810", 2rem, $danger);
+      @include font-icon-before("\E810", 2rem, $white);
     }
   }
 }
@@ -58,12 +58,22 @@
 .site-alert,
 .messages {
   .text {
+    color: $white;
     position: relative;
     padding-left: $spacer * 2.5;
+    a {
+      &:link,
+      &:visited {
+        color: $white;
+      }
+      &:hover {
+        text-decoration: underline;
+      }
+    }
     &:before {
       position: absolute;
       left: -0.2rem;
-      top: -0.2rem;
+      top: calc(50% - 1rem);
     }
   }
 }
