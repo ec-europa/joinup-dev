@@ -1,3 +1,11 @@
+slick:
+  js:
+    assets/js/slick.js: { minified: true }
+    assets/js/slick-config.js: { minified: false }
+  css:
+    theme:
+      assets/css/slick.css: { minified: true }
+
 style:
   version: VERSION
   css:
@@ -6,10 +14,7 @@ style:
   js:
     assets/js/popovers.js: {}
 
-slick:
-  js:
-    assets/js/slick.js: { minified: true }
-    assets/js/slick-config.js: { minified: false }
+tour:
   css:
     theme:
-      assets/css/slick.css: { minified: true }
+      assets/css/tour.css: { media: screen }

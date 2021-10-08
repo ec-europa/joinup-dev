@@ -19,6 +19,10 @@ libraries-override:
       theme:
         layouts/twocolfooter-onecol-67-33/twocolfooter_onecol_67_33.css: false
 
+libraries-extend:
+  tour/tour-styling:
+    - ventuno/tour
+
 regions:
   header: Header
   header_bottom: 'Header bottom'

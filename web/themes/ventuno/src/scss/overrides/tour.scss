@@ -1,5 +1,10 @@
- // Style tour popup nub
+@import "@openeuropa/bcl-bootstrap/scss/functions";
+@import "@openeuropa/bcl-bootstrap/scss/variables";
+@import "@openeuropa/bcl-bootstrap/scss/mixins";
+@import "@openeuropa/bcl-theme-joinup/src/scss/base/variables";
+// Style tour popup nub
  .joyride-tip-guide {
+   background-color: green;
    .joyride-nub {
      border: solid 14px $gray-300;
 
@@ -106,7 +111,7 @@
   }
 
   .joyride-close-tip {
-    @extend .icon;
+    @extend .icon !optional;
 
     top: 10px;
     right: 10px;
