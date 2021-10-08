@@ -1,0 +1,69 @@
+// Site alerts
+.site-alert {
+  @extend .container;
+  & > div {
+    padding: $spacer;
+    border-radius: $border-radius;
+    margin-bottom: $spacer;
+  }
+  .severity-low {
+    border: 4px solid $secondary;
+    .text {
+      @include font-icon-before("\E81A", 2rem, $secondary);
+    }
+  }
+  .severity-medium {
+    border: 4px solid $warning;
+    .text {
+      @include font-icon-before("\E807", 2rem, $warning);
+    }
+  }
+  .severity-high {
+    border: 4px solid $danger;
+    .text {
+      @include font-icon-before("\E810", 2rem, $danger);
+    }
+  }
+}
+
+// Status messages
+.messages {
+  padding: $spacer;
+  border-radius: $border-radius;
+  margin-bottom: $spacer;
+  .messages__list {
+    margin-bottom: 0;
+    padding-left: $spacer;
+  }
+  &.messages--status {
+    border: 4px solid $success;
+    .text {
+      @include font-icon-before("\E81A", 2rem, $success);
+    }
+  }
+  &.messages--warning {
+    border: 4px solid $warning;
+    .text {
+      @include font-icon-before("\E807", 2rem, $warning);
+    }
+  }
+  &.messages--error {
+    border: 4px solid $danger;
+    .text {
+      @include font-icon-before("\E810", 2rem, $danger);
+    }
+  }
+}
+
+.site-alert,
+.messages {
+  .text {
+    position: relative;
+    padding-left: $spacer * 2.5;
+    &:before {
+      position: absolute;
+      left: -0.2rem;
+      top: -0.2rem;
+    }
+  }
+}
