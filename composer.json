@@ -121,7 +121,7 @@
         "drupal/config_update": "dev-1.x",
         "drupal/devel": "^4.0",
         "drupal/drupal-extension": "^4.1",
-        "drupal/filecache": "^1.0-beta2",
+        "drupal/filecache": "dev-1.x",
         "drupal/renderviz": "^1.0",
         "drupal/restui": "^1.18",
         "drupal/stage_file_proxy": "^1.1",

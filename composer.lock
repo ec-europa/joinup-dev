@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c61c9b160bcd506b3f00e5e56179c5c",
+    "content-hash": "f22670473da1e2cc09a6e6e7a2a8b127",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3831,8 +3831,7 @@
                 },
                 "patches_applied": {
                     "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch",
-                    "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "https://www.drupal.org/files/issues/2021-05-17/3213582-facets-1.6-1.7.patch",
-                    "https://www.drupal.org/project/facets/issues/3223956": "https://git.drupalcode.org/project/facets/-/merge_requests/25.diff"
+                    "SA-CONTRIB-2021-008. @see https://www.drupal.org/sa-contrib-2021-008": "https://www.drupal.org/files/issues/2021-05-17/3213582-facets-1.6-1.7.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -14845,16 +14844,15 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/filecache.git",
-                "reference": "474f3562b045200b5abb983ee94c9d96c49c7cde"
+                "reference": "581e3e5a4a5d5efbcf6759bae1cb3bff1423c1cd"
             },
             "require": {
-                "drupal/core": "~8.5"
+                "drupal/core": "^8 || ^9",
+                "php": "^7.1 || ^8"
             },
             "require-dev": {
-                "composer/installers": "^1.2",
-                "drupal-composer/drupal-scaffold": "^2.5",
                 "drupal/coder": "^8.3.1",
-                "webflo/drupal-core-require-dev": "~8.5"
+                "slevomat/coding-standard": "^6 || ^7"
             },
             "type": "drupal-module",
             "extra": {
@@ -14862,23 +14860,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2+2-dev",
-                    "datestamp": "1568894884",
+                    "version": "8.x-1.0-alpha3+1-dev",
+                    "datestamp": "1633700635",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
-                },
-                "installer-paths": {
-                    "../build/core": [
-                        "type:drupal-core"
-                    ],
-                    "../build/modules/contrib/{$name}": [
-                        "type:drupal-module"
-                    ],
-                    "../build/themes/contrib/{$name}": [
-                        "type:drupal-theme"
-                    ]
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -14902,8 +14889,7 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/filecache",
                 "issues": "https://drupal.org/project/issues/filecache"
-            },
-            "time": "2019-09-19T12:07:17+00:00"
+            }
         },
         {
             "name": "drupal/renderviz",
@@ -19606,6 +19592,7 @@
         "jacklmoore/autosize": 20,
         "semiceu/adms-ap_validator": 20,
         "drupal/config_update": 20,
+        "drupal/filecache": 20,
         "jcalderonzumba/gastonjs": 20,
         "openeuropa/task-runner": 20,
         "php-task-runner/composer": 20,
