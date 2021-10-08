@@ -645,7 +645,7 @@ progress {
   color: #6c757d;
 }
 
-.container,
+.container, .site-alert,
 .container-fluid,
 .container-xxl,
 .container-xl,
@@ -660,27 +660,27 @@ progress {
 }
 
 @media (min-width: 576px) {
-  .container-sm, .container {
+  .container-sm, .container, .site-alert {
     max-width: 540px;
   }
 }
 @media (min-width: 768px) {
-  .container-md, .container-sm, .container {
+  .container-md, .container-sm, .container, .site-alert {
     max-width: 720px;
   }
 }
 @media (min-width: 992px) {
-  .container-lg, .container-md, .container-sm, .container {
+  .container-lg, .container-md, .container-sm, .container, .site-alert {
     max-width: 960px;
   }
 }
 @media (min-width: 1200px) {
-  .container-xl, .container-lg, .container-md, .container-sm, .container {
+  .container-xl, .container-lg, .container-md, .container-sm, .container, .site-alert {
     max-width: 1140px;
   }
 }
 @media (min-width: 1400px) {
-  .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+  .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container, .site-alert {
     max-width: 1320px;
   }
 }
@@ -4023,7 +4023,7 @@ textarea.form-control-lg {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
-.navbar > .container,
+.navbar > .container, .navbar > .site-alert,
 .navbar > .container-fluid,
 .navbar > .container-sm,
 .navbar > .container-md,
@@ -12734,5 +12734,161 @@ body {
   font-weight: 300;
   color: #6d7173;
   font-size: 14px;
+}
+
+.site-alert > div {
+  padding: 1.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+}
+.site-alert .severity-low {
+  background-color: #1073de;
+}
+.site-alert .severity-low .text::before {
+  content: "";
+  font-family: "joinup-icons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  font-size: 2rem;
+  color: #fff;
+  line-height: 1;
+  margin: 0 8px 0 0;
+  text-decoration: none;
+}
+.site-alert .severity-medium {
+  background-color: #eba843;
+}
+.site-alert .severity-medium .text::before {
+  content: "";
+  font-family: "joinup-icons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  font-size: 2rem;
+  color: #fff;
+  line-height: 1;
+  margin: 0 8px 0 0;
+  text-decoration: none;
+}
+.site-alert .severity-high {
+  background-color: #eb3434;
+}
+.site-alert .severity-high .text::before {
+  content: "";
+  font-family: "joinup-icons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  font-size: 2rem;
+  color: #fff;
+  line-height: 1;
+  margin: 0 8px 0 0;
+  text-decoration: none;
+}
+
+.messages {
+  padding: 1.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+}
+.messages .messages__list {
+  margin-bottom: 0;
+  padding-left: 1rem;
+}
+.messages.messages--status {
+  background-color: #18bf80;
+}
+.messages.messages--status .text::before {
+  content: "";
+  font-family: "joinup-icons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  font-size: 2rem;
+  color: #fff;
+  line-height: 1;
+  margin: 0 8px 0 0;
+  text-decoration: none;
+}
+.messages.messages--warning {
+  background-color: #eba843;
+}
+.messages.messages--warning .text::before {
+  content: "";
+  font-family: "joinup-icons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  font-size: 2rem;
+  color: #fff;
+  line-height: 1;
+  margin: 0 8px 0 0;
+  text-decoration: none;
+}
+.messages.messages--error {
+  background-color: #eb3434;
+}
+.messages.messages--error .text::before {
+  content: "";
+  font-family: "joinup-icons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  font-size: 2rem;
+  color: #fff;
+  line-height: 1;
+  margin: 0 8px 0 0;
+  text-decoration: none;
+}
+
+.site-alert .text,
+.messages .text {
+  color: #fff;
+  position: relative;
+  padding-left: 2.5rem;
+}
+.site-alert .text a,
+.messages .text a {
+  text-decoration: underline;
+}
+.site-alert .text a:link, .site-alert .text a:visited,
+.messages .text a:link,
+.messages .text a:visited {
+  color: #fff;
+}
+.site-alert .text a:hover,
+.messages .text a:hover {
+  text-decoration: unset;
+}
+.site-alert .text:before,
+.messages .text:before {
+  position: absolute;
+  left: -0.2rem;
+  top: calc(50% - 1rem);
 }
 /*# sourceMappingURL=styles.css.map */
