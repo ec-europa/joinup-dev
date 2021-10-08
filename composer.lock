@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "39f72e26f9d7131a6bf8b73e9e3ee2b4",
+    "content-hash": "1380cbf5249c71c884247bd7988e1f87",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5077,28 +5077,28 @@
         },
         {
             "name": "drupal/matomo_reporting_api",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/matomo_reporting_api.git",
-                "reference": "8.x-2.2"
+                "reference": "8.x-2.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/matomo_reporting_api-8.x-2.2.zip",
-                "reference": "8.x-2.2",
-                "shasum": "79be0b1c4ec8bb669dfd2f736fa6453d3bb4f106"
+                "url": "https://ftp.drupal.org/files/projects/matomo_reporting_api-8.x-2.3.zip",
+                "reference": "8.x-2.3",
+                "shasum": "50347318cf4aa9ae898c8307707b5ce922e5c72e"
             },
             "require": {
-                "drupal/core": "~8.0",
+                "drupal/core": "^8 || ^9",
                 "drupal/matomo": "^1.7",
                 "pfrenssen/matomo-reporting-api": "^2.0"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.2",
-                    "datestamp": "1603137700",
+                    "version": "8.x-2.3",
+                    "datestamp": "1633442026",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
