@@ -29,8 +29,16 @@ module.exports = {
   ],
   styles: [
     {
-      entry: path.resolve(outputFolder, "src/scss/styles.scss"),
-      dest: path.resolve(outputFolder, "assets/css/styles.css"),
+      entry: path.resolve(outputFolder, "src/scss/main.scss"),
+      dest: path.resolve(outputFolder, "assets/css/main.css"),
+      options: {
+        includePaths,
+        sourceMap: "file",
+      },
+    },
+    {
+      entry: path.resolve(outputFolder, "src/scss/homepage.scss"),
+      dest: path.resolve(outputFolder, "assets/css/homepage.css"),
       options: {
         includePaths,
         sourceMap: "file",

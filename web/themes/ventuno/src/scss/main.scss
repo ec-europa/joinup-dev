@@ -1,0 +1,14 @@
+// Main CSS
+// Only common styles across the whole website
+
+// Joinup variables
+@import "@openeuropa/bcl-theme-joinup/src/scss/oe-bcl-joinup.scss";
+
+// Custom Joinup mixins
+@import "mixins/joinup-icons";
+@import "mixins/full-width-background-colors";
+
+// Components
+@import "components/navbar";
+@import "components/footer";
+@import "components/tour"; // TO-DO: remove this and load it selectively with "tour" popup

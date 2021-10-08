@@ -106,8 +106,7 @@
   }
 
   .joyride-close-tip {
-    @extend .icon;
-
+    // @include font-icon-before("\E806", 1.2rem, $primary, inherit, 0);
     top: 10px;
     right: 10px;
     text-decoration: none;
