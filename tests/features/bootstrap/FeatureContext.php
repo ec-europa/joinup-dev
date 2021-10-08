@@ -1646,9 +1646,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function iWaitUntilPageContains(string $text): void {
     $text = addslashes($text);
-    $this->getSession()->wait(60000,
-      "jQuery(':contains(\"$text\")').length > 0"
+    $result = $this->getSession()->wait(60000,
+      'document.evaluate(\'//*[contains(., "' . $text . '")]\', document, null, XPathResult.ANY_TYPE, null).iterateNext()'
     );
+    Assert::assertTrue($result);
   }
 
   /**

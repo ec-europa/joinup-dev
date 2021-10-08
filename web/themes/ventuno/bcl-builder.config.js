@@ -18,6 +18,15 @@ module.exports = {
         sourceMap: true,
       },
     },
+    {
+      entry: path.resolve(outputFolder, "src/js/popovers.js"),
+      dest: path.resolve(outputFolder, "assets/js/popovers.js"),
+      options: {
+        name: "popovers",
+        minify: false,
+        sourceMap: true,
+      },
+    },
   ],
   styles: [
     {
