@@ -62,12 +62,13 @@
     position: relative;
     padding-left: $spacer * 2.5;
     a {
+      text-decoration: underline;
       &:link,
       &:visited {
         color: $white;
       }
       &:hover {
-        text-decoration: underline;
+        text-decoration: unset;
       }
     }
     &:before {
