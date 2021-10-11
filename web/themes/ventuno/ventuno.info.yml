@@ -21,11 +21,7 @@ libraries-override:
   tour/tour-styling:
     css:
       component:
-        css/tour.module.css: false
-
-libraries-extend:
-  tour/tour-styling:
-    - ventuno/tour
+        css/tour.module.css: assets/css/tour.css
 
 regions:
   header: Header

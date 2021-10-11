@@ -13,8 +13,3 @@ style:
       assets/css/styles.css: {}
   js:
     assets/js/popovers.js: {}
-
-tour:
-  css:
-    theme:
-      assets/css/tour.css: { media: screen }
