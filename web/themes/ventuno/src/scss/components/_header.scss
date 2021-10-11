@@ -1,0 +1,19 @@
+// header
+.bcl-header .navbar-brand img {
+  width: 100px;
+}
+
+@include media-breakpoint-up(md) {
+  .ec__header .navbar-brand img {
+    width: 180px;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .bcl-header .navbar-brand img {
+    width: auto;
+  }
+  .ec__header .navbar-brand img {
+    width: 285px;
+  }
+}
