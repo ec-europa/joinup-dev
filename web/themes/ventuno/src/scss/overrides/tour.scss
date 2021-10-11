@@ -2,136 +2,131 @@
 @import "@openeuropa/bcl-bootstrap/scss/variables";
 @import "@openeuropa/bcl-bootstrap/scss/mixins";
 @import "@openeuropa/bcl-theme-joinup/src/scss/base/variables";
+@import "../mixins/joinup-icons";
+
 // Style tour popup nub
- .joyride-tip-guide {
-   background-color: green;
-   .joyride-nub {
-     border: solid 14px $gray-300;
-
-     &:after {
-       content: " ";
-       display: block;
-       border: 14px solid #fff;
-       width: 0;
-       height: 0;
-       z-index: 20;
-       position: absolute;
-     }
-
-     &.top {
-       border-top-color: transparent;
-       border-left-color: transparent;
-       border-right-color: transparent;
-
-       &:after {
-         border-top-color: transparent;
-         border-left-color: transparent;
-         border-right-color: transparent;
-         top: -13px;
-         left: -14px;
-       }
-     }
-
-     &.bottom {
-       border-bottom-color: transparent;
-       border-left-color: transparent;
-       border-right-color: transparent;
-
-       &:after {
-         border-bottom-color: transparent;
-         border-left-color: transparent;
-         border-right-color: transparent;
-         bottom: -13px;
-         left: -14px;
-       }
-     }
-
-     &.right {
-       border-top-color: transparent;
-       border-right-color: transparent;
-       border-bottom-color: transparent;
-
-       &:after {
-         border-top-color: transparent;
-         border-right-color: transparent;
-         border-bottom-color: transparent;
-         top: -14px;
-         right: -13px;
-       }
-     }
-
-     &.left {
-       border-top-color: transparent;
-       border-left-color: transparent;
-       border-bottom-color: transparent;
-
-       &:after {
-         border-top-color: transparent;
-         border-left-color: transparent;
-         border-bottom-color: transparent;
-         top: -14px;
-         left: -13px;
-       }
-     }
-
-     &.top-right {
-       border-top-color: transparent;
-       border-left-color: transparent;
-       border-right-color: transparent;
-
-       &:after {
-         border-top-color: transparent;
-         border-left-color: transparent;
-         border-right-color: transparent;
-         top: -13px;
-         right: -14px;
-       }
-     }
-   }
- }
-
-// Style tour popup content
 .joyride-tip-guide {
-  border-radius: 3px;
-  border: 1px solid $gray-300;
+  background-color: $gray-200;
+  filter: drop-shadow(0 0.3rem 0.6rem rgba($black, 0.2)); // Emulate $box-shadow with slight changes
+  border-radius: $border-radius; // .5rem
+
+  .joyride-nub {
+    border: solid 14px $gray-200;
+
+    &:after {
+      content: "";
+      display: block;
+      border: 14px solid $gray-200;
+      width: 0;
+      height: 0;
+      z-index: 20;
+      position: absolute;
+    }
+
+    &.top {
+      border-top-color: transparent;
+      border-left-color: transparent;
+      border-right-color: transparent;
+
+      &:after {
+        border-top-color: transparent;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        top: -13px;
+        left: -14px;
+      }
+    }
+
+    &.bottom {
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+      border-right-color: transparent;
+
+      &:after {
+        border-bottom-color: transparent;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        bottom: -13px;
+        left: -14px;
+      }
+    }
+
+    &.right {
+      border-top-color: transparent;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+
+      &:after {
+        border-top-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        top: -14px;
+        right: -13px;
+      }
+    }
+
+    &.left {
+      border-top-color: transparent;
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+
+      &:after {
+        border-top-color: transparent;
+        border-left-color: transparent;
+        border-bottom-color: transparent;
+        top: -14px;
+        left: -13px;
+      }
+    }
+
+    &.top-right {
+      border-top-color: transparent;
+      border-left-color: transparent;
+      border-right-color: transparent;
+
+      &:after {
+        border-top-color: transparent;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        top: -13px;
+        right: -14px;
+      }
+    }
+  }
 }
 
-.joyride-content-wrapper {
-  padding: 20px 25px 70px 20px;
+// Style tour popup content
 
+.joyride-content-wrapper {
+  padding: $spacer $spacer*2.5 $spacer $spacer; // 16px 40px 16px 16px
+
+  // Emulate button link "btn btn-link btn-sm"
   .button {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    padding: 5px 10px;
+    font-weight: $font-weight-base; // 400
+    padding: $spacer*.25 $spacer*.5; // 4px 8px
+    font-size: $font-size-sm; // 0.875rem
+    border-radius: $btn-border-radius-sm; // .2rem
+    color: $link-color; // $brand
+    text-decoration: none;
   }
 
-  .tour-progress, .button {
-    font-size: 12px;
+  .tour-progress {
+    font-size: $font-size-sm; // 0.875rem
+    color:$gray-500;
+    right: $spacer*.75; // 12px
+    bottom: $spacer*.75; // 12px
   }
 
   .joyride-close-tip {
-    @extend .icon !optional;
-
-    top: 10px;
-    right: 10px;
-    text-decoration: none;
-    color: $blue-800;
-    text-indent: 0;
+    @include font-icon-after("\E806", 1.5rem, $primary);
     font-size: 0;
-
-    &:before {
-      width: 15px;
-      height: 15px;
-      line-height: 15px;
-      font-size: 15px;
-      content: "✕";
-    }
+    top: $spacer*.75; // 12px
+    right: $spacer*.75; // 12px
   }
 
   .tour-tip-label {
-    margin: 0 0 10px 0;
-    font-size: 16px;
+    margin-bottom: $spacer*.5; // 8px
+    font-size: $font-size-base; // 16px
 
     &:empty {
       margin-bottom: 0;
@@ -139,9 +134,8 @@
   }
 
   .tour-tip-body {
-    margin-bottom: 0;
-    font-weight: 300;
-    color: $gray-600;
-    font-size: 14px;
+    margin-bottom: $spacer; // 16px
+    color: $primary;
+    font-size: $font-size-sm; // 0.875rem
   }
 }
