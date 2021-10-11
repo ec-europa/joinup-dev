@@ -2759,49 +2759,6 @@ class JoinupContext extends RawDrupalContext {
   }
 
   /**
-   * Returns selectors used to find elements with a human readable identifier.
-   *
-   * @param string $alias
-   *   A human readable element identifier.
-   *
-   * @return array[]
-   *   An indexed array of selectors intended to be used with Mink's `find()`
-   *   methods. Each value is a tuple containing two strings:
-   *   - 0: the selector, e.g. 'css' or 'xpath'.
-   *   - 1: the locator.
-   *
-   * @throws \InvalidArgumentException
-   *   Thrown when the element name is not defined.
-   */
-  protected function getSelectorsMatchingElementAlias(string $alias): array {
-    $elements = [
-      // The various search input fields.
-      [
-        'names' => [
-          'search bar',
-          'search bars',
-          'search field',
-          'search fields',
-        ],
-        'selectors' => [
-          // The site-wide search field in the top right corner.
-          ['css', 'input#search-bar__input'],
-          // The search field on the search result pages.
-          ['css', '.form-item-keys input[type=text]'],
-        ],
-      ],
-    ];
-
-    foreach ($elements as $element) {
-      if (in_array($alias, $element['names'])) {
-        return $element['selectors'];
-      }
-    }
-
-    throw new \InvalidArgumentException("No selectors are defined for the element named '$alias'.");
-  }
-
-  /**
    * Returns elements that match the given human readable identifier.
    *
    * @param string $alias
