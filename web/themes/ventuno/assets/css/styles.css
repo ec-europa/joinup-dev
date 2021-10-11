@@ -12454,7 +12454,7 @@ body {
 .slick-prev {
   margin-right: 1rem;
 }
-.slick-prev span.icon::before, .slick-prev .joyride-content-wrapper span.joyride-close-tip::before, .joyride-content-wrapper .slick-prev span.joyride-close-tip::before {
+.slick-prev span.icon::before {
   content: "";
   font-family: "joinup-icons";
   font-style: normal;
@@ -12471,7 +12471,7 @@ body {
   text-decoration: none;
 }
 
-.slick-next span.icon::before, .slick-next .joyride-content-wrapper span.joyride-close-tip::before, .joyride-content-wrapper .slick-next span.joyride-close-tip::before {
+.slick-next span.icon::before {
   content: "";
   font-family: "joinup-icons";
   font-style: normal;
@@ -12615,125 +12615,6 @@ body {
     top: 1.4rem;
     right: 1rem;
   }
-}
-
-.joyride-tip-guide .joyride-nub {
-  border: solid 14px #dadee0;
-}
-.joyride-tip-guide .joyride-nub:after {
-  content: " ";
-  display: block;
-  border: 14px solid #fff;
-  width: 0;
-  height: 0;
-  z-index: 20;
-  position: absolute;
-}
-.joyride-tip-guide .joyride-nub.top {
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-right-color: transparent;
-}
-.joyride-tip-guide .joyride-nub.top:after {
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-right-color: transparent;
-  top: -13px;
-  left: -14px;
-}
-.joyride-tip-guide .joyride-nub.bottom {
-  border-bottom-color: transparent;
-  border-left-color: transparent;
-  border-right-color: transparent;
-}
-.joyride-tip-guide .joyride-nub.bottom:after {
-  border-bottom-color: transparent;
-  border-left-color: transparent;
-  border-right-color: transparent;
-  bottom: -13px;
-  left: -14px;
-}
-.joyride-tip-guide .joyride-nub.right {
-  border-top-color: transparent;
-  border-right-color: transparent;
-  border-bottom-color: transparent;
-}
-.joyride-tip-guide .joyride-nub.right:after {
-  border-top-color: transparent;
-  border-right-color: transparent;
-  border-bottom-color: transparent;
-  top: -14px;
-  right: -13px;
-}
-.joyride-tip-guide .joyride-nub.left {
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-bottom-color: transparent;
-}
-.joyride-tip-guide .joyride-nub.left:after {
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-bottom-color: transparent;
-  top: -14px;
-  left: -13px;
-}
-.joyride-tip-guide .joyride-nub.top-right {
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-right-color: transparent;
-}
-.joyride-tip-guide .joyride-nub.top-right:after {
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-right-color: transparent;
-  top: -13px;
-  right: -14px;
-}
-
-.joyride-tip-guide {
-  border-radius: 3px;
-  border: 1px solid #dadee0;
-}
-
-.joyride-content-wrapper {
-  padding: 20px 25px 70px 20px;
-}
-.joyride-content-wrapper .button {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  padding: 5px 10px;
-}
-.joyride-content-wrapper .tour-progress, .joyride-content-wrapper .button {
-  font-size: 12px;
-}
-.joyride-content-wrapper .joyride-close-tip {
-  top: 10px;
-  right: 10px;
-  text-decoration: none;
-  color: #052c65;
-  text-indent: 0;
-  font-size: 0;
-}
-.joyride-content-wrapper .joyride-close-tip:before {
-  width: 15px;
-  height: 15px;
-  line-height: 15px;
-  font-size: 15px;
-  content: "✕";
-}
-.joyride-content-wrapper .tour-tip-label {
-  margin: 0 0 10px 0;
-  font-size: 16px;
-}
-.joyride-content-wrapper .tour-tip-label:empty {
-  margin-bottom: 0;
-}
-.joyride-content-wrapper .tour-tip-body {
-  margin-bottom: 0;
-  font-weight: 300;
-  color: #6d7173;
-  font-size: 14px;
 }
 
 .site-alert > div {
