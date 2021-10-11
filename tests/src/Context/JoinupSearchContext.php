@@ -825,10 +825,9 @@ class JoinupSearchContext extends RawDrupalContext {
    * @throws \Exception
    *    Thrown when the region is not found.
    *
-   * @Then the page should contain :number summary(s)
-   * @Then the page should not contain any summary
-   * @Then the :region region should contain :number summary(s)
-   * @Then the :region region should not contain any summary
+   * @Then the page should contain one facet summary
+   * @Then the page should contain :number facets summaries
+   * @Then the page should not contain any facet summary
    */
   public function assertFacetsSummaryCount(?string $number = NULL): void {
     $number = (int) $number;

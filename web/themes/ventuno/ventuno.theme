@@ -84,7 +84,20 @@ function ventuno_preprocess_page(&$variables) {
   ];
 
   // Generate a link to EU Login.
-  $cas_login_link = Url::fromRoute('cas.login');
+  // Get return URL from current page.
+  $destination = \Drupal::request()->query->get('destination');
+  if ($destination) {
+    $destination = '/' . ltrim($destination, '/');
+    $returnto = Url::fromUserInput($destination)->setAbsolute()->toString();
+  }
+  else {
+    $returnto = Url::fromRoute('<current>', [], ['query' => \Drupal::request()->query->all()])->toString();
+  }
+  $cas_login_link = Url::fromRoute('cas.login', [], [
+    'query' => [
+      'destination' => $returnto,
+    ],
+  ]);
   $anonymous_links[] = [
     'label' => t('Sign in'),
     'link' => $cas_login_link,
@@ -133,26 +146,6 @@ function ventuno_preprocess_page(&$variables) {
     // that corrective action is required.
     \Drupal::logger('ventuno')->warning('"About us" link could not be rendered because the Joinup collection is not defined or doesn\'t have an About page.');
   }
-
-  // Generate a link to EU Login.
-  // Get return url from current page.
-  $destination = \Drupal::request()->query->get('destination');
-  if ($destination) {
-    $destination = '/' . ltrim($destination, '/');
-    $returnto = Url::fromUserInput($destination)->setAbsolute()->toString();
-  }
-  else {
-    $returnto = Url::fromRoute('<current>', [], ['query' => \Drupal::request()->query->all()])->toString();
-  }
-  $anonymous_links[] = [
-    'label' => t('Sign in'),
-    'link' => Url::fromRoute('cas.login', [], [
-      'query' => [
-        'returnto' => $returnto,
-      ],
-    ]),
-  ];
-  $variables['anonymous_links'] = $anonymous_links;
 }
 
 /**
