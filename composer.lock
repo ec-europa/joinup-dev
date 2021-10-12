@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "056d84b6d7cf2a373584e3a94a97aac7",
+    "content-hash": "569817e3e6976d5326363a5061564e02",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6105,6 +6105,91 @@
             }
         },
         {
+            "name": "drupal/schema_article",
+            "version": "2.2.0",
+            "require": {
+                "drupal/core": "^8 || ^9",
+                "drupal/schema_metatag": "*"
+            },
+            "type": "metapackage",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-2.2",
+                    "datestamp": "1619640197",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "KarenS",
+                    "homepage": "https://www.drupal.org/user/45874"
+                }
+            ],
+            "description": "Adds Schema.org/Article to the JSON LD array. Creates Article, BlogPosting, SocialMediaPosting, Report, ScholarlyArticle, TechArticle or APIReference.",
+            "homepage": "https://www.drupal.org/project/schema_metatag",
+            "support": {
+                "source": "https://git.drupalcode.org/project/schema_metatag"
+            }
+        },
+        {
+            "name": "drupal/schema_digital_document",
+            "version": "dev-1.0.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/schema_digital_document.git",
+                "reference": "3036371dea802920d737684a85d7b49afc57864e"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9",
+                "drupal/schema_metatag": "^2"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.0.x": "1.0.x-dev"
+                },
+                "drupal": {
+                    "version": "1.0.x-dev",
+                    "datestamp": "1634050839",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
+                },
+                {
+                    "name": "idimopoulos",
+                    "homepage": "https://www.drupal.org/user/2578708"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
+                }
+            ],
+            "description": "Adds Schema.org/DigitalDocument to the JSON-LD array. Provides DigitalDocument, NoteDigitalDocument, PresentationDigitalDocument, SpreadsheetDigitalDocument, TextDigitalDocument.",
+            "homepage": "https://www.drupal.org/project/schema_digital_document",
+            "support": {
+                "source": "https://git.drupalcode.org/project/schema_digital_document"
+            },
+            "time": "2021-10-12T14:22:51+00:00"
+        },
+        {
             "name": "drupal/schema_metatag",
             "version": "2.2.0",
             "source": {
@@ -6157,6 +6242,58 @@
                 "source": "http://cgit.drupalcode.org/schema_metatag",
                 "issues": "https://www.drupal.org/project/issues/schema_metatag"
             }
+        },
+        {
+            "name": "drupal/schema_social_media_posting",
+            "version": "dev-1.0.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/schema_social_media_posting.git",
+                "reference": "960ee55f3a02796858f72763292d5cbc2a745661"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9",
+                "drupal/schema_article": "*",
+                "drupal/schema_metatag": "^2"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.0.x": "1.0.x-dev"
+                },
+                "drupal": {
+                    "version": "1.0.x-dev",
+                    "datestamp": "1634031971",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
+                },
+                {
+                    "name": "idimopoulos",
+                    "homepage": "https://www.drupal.org/user/2578708"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
+                }
+            ],
+            "description": "Adds the full Schema.org/SocialMediaPosting to the JSON-LD array. Provides SocialMediaPosting, BlogPosting, LiveBlogPosting, DiscussionForumPosting.",
+            "homepage": "https://www.drupal.org/project/schema_social_media_posting",
+            "support": {
+                "source": "https://git.drupalcode.org/project/schema_social_media_posting"
+            },
+            "time": "2021-10-12T13:03:12+00:00"
         },
         {
             "name": "drupal/search_api",
@@ -19593,6 +19730,8 @@
         "drupal/config_ignore": 20,
         "drupal/menu_link_destination": 20,
         "drupal/og": 20,
+        "drupal/schema_digital_document": 20,
+        "drupal/schema_social_media_posting": 20,
         "drupal/site_verify": 20,
         "drupal/subpathauto": 20,
         "drupal/swiftmailer": 20,
