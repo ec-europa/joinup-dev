@@ -146,6 +146,8 @@ function ventuno_preprocess_page(&$variables) {
     // that corrective action is required.
     \Drupal::logger('ventuno')->warning('"About us" link could not be rendered because the Joinup collection is not defined or doesn\'t have an About page.');
   }
+
+  $variables['anonymous_links'] = $anonymous_links;
 }
 
 /**
