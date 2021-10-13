@@ -80,7 +80,7 @@
         "drupal/subpathauto": "dev-1.x#fcd7c1c4c49d5ee1648630d92eb9da46e6bf25f0",
         "drupal/swiftmailer": "dev-1.x#694cbf25d8c026b0c7c118093696d151a7874754",
         "drupal/token": "~1.7",
-        "drupal/video_embed_field": "~1.6",
+        "drupal/video_embed_field": "^2",
         "drupal/view_unpublished": "^1.0",
         "drupal/views_autosubmit": "^1.2",
         "drupal/views_bulk_operations": "^4",
