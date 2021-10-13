@@ -45,12 +45,7 @@ class JoinupCoreDataSanitizationCommands extends DrushCommands implements Saniti
   }
 
   /**
-   * Sanitize Joinup specific private data.
-   *
-   * @param $result
-   *   Exit code from the main operation for sql-sanitize.
-   * @param CommandData $commandData
-   *   Information about the current request.
+   * {@inheritdoc}
    *
    * @hook post-command sql-sanitize
    */
@@ -64,9 +59,9 @@ class JoinupCoreDataSanitizationCommands extends DrushCommands implements Saniti
   }
 
   /**
-   * @hook on-event sql-sanitize-confirms
+   * {@inheritdoc}
    *
-   * @inheritdoc
+   * @hook on-event sql-sanitize-confirms
    */
   public function messages(&$messages, InputInterface $input): void {
     $messages[] = dt('Sanitize user social media data.');
