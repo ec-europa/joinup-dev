@@ -42,25 +42,33 @@
 #}
 <div class="layout-container">
   <div class="section-header">
+    {# Temporary EC header, until this pattern is included in oe_bootstrap. #}
+    <div class="ec__header bcl-header">
+      <nav class="w-100 shadow-sm navbar">
+        <div class="container">
+          <a class="navbar-brand" href="https://ec.europa.eu/info/index_en">
+            <img src="https://cdn1.fpfis.tech.ec.europa.eu/ecl/v3.0.2/ec/images/logo/logo-ec--en.svg" alt="European Commission logo"/>
+          </a>
+        </div>
+      </nav>
+    </div>
     <header role="banner" class="region-header">
       {% include directory ~ '/templates/navigation/navbar.html.twig' with {
         breakpoint: logged_in ? "" : "sm",
         brand: {
           src: base_path ~ directory ~ "/src/images/logo.svg",
           alt: "Joinup logo"|t,
-          motto: "Interoperability solutions"|t,
           link: front_page,
         },
-        collapse_id: "navbar",
-        list_id: "list",
-        buttons: [
+        collapse_id: "main-navbar",
+        list_id: "main-navbar-list",
+        items: [
           {
             id: logged_in ? "account" : "navbar-toggler",
             icon: {
             name: logged_in ? "person-circle" : "justify",
           },
             label: logged_in ? user_name : "",
-            type: "links",
             links: logged_in ? profile_links : anonymous_links,
           },
         ],
