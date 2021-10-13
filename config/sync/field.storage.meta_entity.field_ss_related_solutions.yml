@@ -1,0 +1,24 @@
+uuid: c615105e-4e5c-4bc4-bf26-ddff77f4ae3a
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - meta_entity
+    - rdf_entity
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: meta_entity.field_ss_related_solutions
+field_name: field_ss_related_solutions
+entity_type: meta_entity
+type: entity_reference
+settings:
+  target_type: rdf_entity
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -222,7 +222,7 @@ Feature: Search inside groups
     And the page should show the tiles "Ground plan, Natural materials"
     And I should see the following facet summary "Chalet construction"
     When I should remove the following facet summary "Chalet construction"
-    Then the page should not contain any summary
+    Then the page should not contain any facet summary
     And the page should show the tiles "Ground plan, Pre-alpha, Natural materials, Presenting DrillMaster X88"
 
   @javascript
