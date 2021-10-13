@@ -1,0 +1,6 @@
+services:
+  joinup_core.sanitize.commands:
+    class: Drupal\joinup_core\Commands\JoinupCoreDataSanitizationCommands
+    arguments: ['@database', '@sparql.endpoint']
+    tags:
+      -  { name: drush.command }

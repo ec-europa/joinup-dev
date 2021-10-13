@@ -7,6 +7,9 @@ upgrade_commands:
   default:
     - ./vendor/bin/drush state:set system.maintenance_mode 1 --input-format=integer --yes
     - touch disable-config-readonly
+    # Fields excluded with --allowlist are handled in our custom plugin.
+    # See \Drupal\joinup_core\Commands\JoinupCoreDataSanitizationCommands::sanitize().
+    - ./vendor/bin/drush sql:sanitize --allowlist-fields=field_user_organisation,field_user_family_name,field_user_first_name,field_user_business_title --yes
     - ./vendor/bin/drush deploy --yes
     - rm disable-config-readonly
     - ./vendor/bin/drush state:set system.maintenance_mode 0 --input-format=integer --yes
@@ -20,4 +23,3 @@ solr_core: custom
 virtuoso_image: registry.fpfis.eu/ec-europa/digit-joinup-reference:virtuoso
 
 install_clean: Yes
-
