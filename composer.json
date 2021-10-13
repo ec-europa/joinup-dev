@@ -239,6 +239,9 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "drupal/cached_computed_field": {
+                "Create a D9 compatible release @see https://www.drupal.org/project/cached_computed_field/issues/3239021": "https://git.drupalcode.org/project/cached_computed_field/-/merge_requests/2.diff"
+            },
             "drupal/config_devel": {
                 "Add a Drush command for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://git.drupalcode.org/project/config_devel/-/merge_requests/4.diff"
             },

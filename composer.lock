@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c967f9516e17caa31e0ccb24e6d364d1",
+    "content-hash": "0b34962c13eb639aee534ca6ecc940f8",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2312,6 +2312,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Create a D9 compatible release @see https://www.drupal.org/project/cached_computed_field/issues/3239021": "https://git.drupalcode.org/project/cached_computed_field/-/merge_requests/2.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -8377,7 +8380,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2021-06-30T06:04:10+00:00"
+            "time": "2021-05-17T17:56:07+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",
