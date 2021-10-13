@@ -14,9 +14,9 @@
         "drupal/allowed_formats": "^1.3",
         "drupal/antibot": "^1.4",
         "drupal/cached_computed_field": "^1.0-beta5",
-        "drupal/cas": "^1.7",
-        "drupal/cas_account_link": "~2.0",
-        "drupal/cas_attributes": "dev-1.x",
+        "drupal/cas": "^2.0",
+        "drupal/cas_account_link": "^2.0",
+        "drupal/cas_attributes": "^2.0",
         "drupal/changed_fields": "^3.2",
         "drupal/config_ignore": "dev-3.x",
         "drupal/config_readonly": "^1.0",
@@ -45,7 +45,7 @@
         "drupal/json_field": "^1.0",
         "drupal/linkit": "^5.0-beta11",
         "drupal/matomo": "^1.11",
-        "drupal/matomo_reporting_api": "^2.2",
+        "drupal/matomo_reporting_api": "^2.3",
         "drupal/menu_admin_per_menu": "^1.3",
         "drupal/menu_link_destination": "1.x-dev@dev",
         "drupal/message": "^1.1",
@@ -58,7 +58,7 @@
         "drupal/paragraphs_jquery_ui_accordion": "^1.4",
         "drupal/password_policy": "3.0-alpha5",
         "drupal/pathauto": "~1.8",
-        "drupal/pipeline": "dev-1.x",
+        "drupal/pipeline": "^1.0",
         "drupal/publication_date": "^2.0-beta2",
         "drupal/rdf_entity": "^1.0",
         "drupal/redirect": "^1.6",
@@ -78,10 +78,10 @@
         "drupal/subpathauto": "dev-1.x#fcd7c1c4c49d5ee1648630d92eb9da46e6bf25f0",
         "drupal/swiftmailer": "dev-1.x#694cbf25d8c026b0c7c118093696d151a7874754",
         "drupal/token": "~1.7",
-        "drupal/video_embed_field": "~1.6",
+        "drupal/video_embed_field": "^2",
         "drupal/view_unpublished": "^1.0",
         "drupal/views_autosubmit": "^1.2",
-        "drupal/views_bulk_operations": "^2.6",
+        "drupal/views_bulk_operations": "^4",
         "drupal/views_data_export": "^1.0",
         "drush/drush": "~10.3",
         "easyrdf/easyrdf": "1.0.0 as 0.9.2",
@@ -243,9 +243,6 @@
         "patches": {
             "drupal/cached_computed_field": {
                 "Missing schema for fields default values @see https://www.drupal.org/i/3194940": "https://git.drupalcode.org/project/cached_computed_field/-/merge_requests/1.diff"
-            },
-            "drupal/cas": {
-                "Properly fetch submit handlers @see https://www.drupal.org/project/cas/issues/3179292": "https://www.drupal.org/files/issues/2020-10-27/properly_fetch_submit_handlers.patch"
             },
             "drupal/config_devel": {
                 "Add a Drush command for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://git.drupalcode.org/project/config_devel/-/merge_requests/4.diff"

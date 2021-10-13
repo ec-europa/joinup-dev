@@ -1,0 +1,32 @@
+uuid: 58ff6176-6abb-4a18-b886-e7fe945c2c96
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.meta_entity.solution_settings.field_ss_related_solutions
+    - meta_entity.type.solution_settings
+id: meta_entity.solution_settings.default
+targetEntityType: meta_entity
+bundle: solution_settings
+mode: default
+content:
+  field_ss_related_solutions:
+    weight: -4
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  label:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  target: true
