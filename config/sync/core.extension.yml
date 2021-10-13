@@ -22,6 +22,7 @@ module:
   contextual: 0
   csv_serialization: 0
   ctools: 0
+  curated_content_listing: 0
   custom_page: 0
   dashboard: 0
   datetime: 0

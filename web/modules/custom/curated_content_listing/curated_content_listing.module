@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the Curated content listing module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+
+/**
+ * Implements hook_contextual_links_view_alter().
+ */
+function curated_content_listing_contextual_links_view_alter(&$element, $items) {
+  // Change the title of the contextual links to edit entity subqueues. In our
+  // business language these are called 'Curated content listings'.
+  if (!empty($element['#links']['entityentity-subqueueedit-form']['title'])) {
+    $element['#links']['entityentity-subqueueedit-form']['title'] = t('Update curated content');
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * Updates the title of the entity subqueue edit form. In our business language
+ * the subqueues are known as 'Curated content listings'.
+ */
+function curated_content_listing_form_entity_subqueue_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Retrieve the original title.
+  $label = $form['#title'];
+
+  // Set a generic fallback title.
+  $form['#title'] = t('Update curated content listing.');
+
+  // If we have the original subqueue label available, include it in the title.
+  if ($label instanceof TranslatableMarkup) {
+    $arguments = $label->getArguments();
+    if (!empty($arguments['%label'])) {
+      $form['#title'] = t('Update curated content listing %label', $arguments);
+    }
+  }
+}
