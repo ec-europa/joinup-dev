@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2989bc60465f90c0c9ad8e07e64fc26",
+    "content-hash": "e3de95b4e326931c6567e10ce0fa9c19",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -16307,16 +16307,16 @@
         },
         {
             "name": "openeuropa/task-runner",
-            "version": "dev-php-7.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pfrenssen/task-runner.git",
-                "reference": "ec9791bc4426d4ab76a44aeb08dbcb353efb854d"
+                "url": "https://github.com/openeuropa/task-runner.git",
+                "reference": "f7d91155e9f84be4aa46af0343fa3d8b97aa9140"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/task-runner/zipball/ec9791bc4426d4ab76a44aeb08dbcb353efb854d",
-                "reference": "ec9791bc4426d4ab76a44aeb08dbcb353efb854d",
+                "url": "https://api.github.com/repos/openeuropa/task-runner/zipball/f7d91155e9f84be4aa46af0343fa3d8b97aa9140",
+                "reference": "f7d91155e9f84be4aa46af0343fa3d8b97aa9140",
                 "shasum": ""
             },
             "require": {
@@ -16324,7 +16324,7 @@
                 "gitonomy/gitlib": "^1.0",
                 "jakeasmith/http_build_url": "^1.0.1",
                 "nuvoleweb/robo-config": "^0.2.1",
-                "php": ">=7.1",
+                "php": ">=7.2",
                 "symfony/console": "^3.4.21|^4|^5"
             },
             "require-dev": {
@@ -16345,26 +16345,18 @@
                     "OpenEuropa\\TaskRunner\\": "./src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "OpenEuropa\\TaskRunner\\Tests\\": "./tests/",
-                    "My\\Custom\\": "./tests/custom/src/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "EUPL-1.2"
             ],
             "description": "PHP task runner based on Robo, focused on extensibility.",
             "keywords": [
-                "Robo",
                 "automation",
+                "robo",
                 "task-runner",
                 "yaml"
             ],
-            "support": {
-                "source": "https://github.com/pfrenssen/task-runner/tree/php-7.1"
-            },
-            "time": "2021-09-10T10:44:20+00:00"
+            "time": "2021-09-14T08:26:33+00:00"
         },
         {
             "name": "pdepend/pdepend",
@@ -19595,7 +19587,7 @@
         {
             "alias": "1.0.0-beta7",
             "alias_normalized": "1.0.0.0-beta7",
-            "version": "dev-php-7.1",
+            "version": "9999999-dev",
             "package": "openeuropa/task-runner"
         }
     ],

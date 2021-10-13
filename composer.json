@@ -131,7 +131,7 @@
         "lovers-of-behat/table-extension": "^1.2.0",
         "mglaman/phpstan-drupal": "^0.12.12",
         "mikey179/vfsstream": "~1.6",
-        "openeuropa/task-runner": "dev-php-7.1 as 1.0.0-beta7",
+        "openeuropa/task-runner": "dev-master as 1.0.0-beta7",
         "pear/http_request2": "~2.4",
         "pfrenssen/phpcs-pre-push": "1.1",
         "php-task-runner/composer": "dev-master",
@@ -356,9 +356,6 @@
                 "Integrate with Webtools eTrans component @see https://github.com/openeuropa/oe_webtools/pull/146": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/146.diff",
                 "Avoid CORS issues by requesting the Webtools Smartloader script over HTTPS @see https://github.com/openeuropa/oe_webtools/pull/149": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/149.diff"
             },
-            "openeuropa/task-runner": {
-                " @see https://github.com/openeuropa/task-runner/pull/155": "https://patch-diff.githubusercontent.com/raw/openeuropa/task-runner/pull/155.diff"
-            },
             "solarium/solarium": {
                 "implode() deprecated usage": "resources/patch/solarium.diff"
             }
@@ -407,10 +404,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/gizra/og.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/pfrenssen/task-runner.git"
         },
         {
             "type": "composer",
