@@ -1,0 +1,50 @@
+uuid: e0232914-1969-4458-9f9b-039053a3c46a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.meta_entity.solution_settings.field_ss_related_solutions
+    - meta_entity.type.solution_settings
+id: meta_entity.solution_settings.default
+targetEntityType: meta_entity
+bundle: solution_settings
+mode: default
+content:
+  changed:
+    label: inline
+    type: timestamp
+    weight: 22
+    region: content
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+  created:
+    label: inline
+    type: timestamp
+    weight: 20
+    region: content
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+  field_ss_related_solutions:
+    weight: 23
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  label:
+    label: hidden
+    type: string
+    weight: -5
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  target: true

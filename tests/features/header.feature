@@ -9,7 +9,6 @@ Feature: Header
     Given I am not logged in
     And I am on <page>
     Then I should see the Joinup logo in the navigation bar
-    And I should see the text "Interoperability solutions" in the "Navigation bar"
 
     # The links "Home" and "About us" are only shown in the hamburger menu since
     # people using mobile devices are always on the move and need to navigate as
